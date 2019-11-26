@@ -11,7 +11,7 @@ body { font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고
 
 .navbar						{ min-width:820px }
 .navbar .brand				{ text-indent:-2000px; background: url(../images/logo.png) 10px 4px no-repeat; background-size: 105px; width: 150px; }
-.navbar .ace-nav>li 		{ width: 80px; background-color: #0000; border: none; text-align: center; }
+.navbar .ace-nav>li 		{ width: 100px; background-color: #0000; border: none; text-align: center; }
 .navbar .ace-nav>li>a		{ color:rgb(165, 165, 165); }
 .navbar .nav>li>a:hover,
 .navbar .nav>li>a:focus,
