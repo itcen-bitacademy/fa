@@ -18,7 +18,7 @@
 		
 		
 			<div class="page-header position-relative">
-				<h1 class="pull-left">테스트 리스트 25</h1>
+				<h1 class="pull-left">테스트 리스트 26</h1>
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
