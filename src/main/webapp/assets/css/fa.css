@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+
+@import "../ace/css/bootstrap.min.css";
+@import "../ace/css/font-awesome.min.css";
+@import "../ace/css/ace-fonts.css";
+@import "../ace/css/ace.min.css";
+@import "../ace/css/ace-skins.min.css";
+
+
+body { font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif; }
+
+.navbar						{ min-width:820px }
+.navbar .brand				{ text-indent:-2000px; background: url(../images/logo.png) 10px 4px no-repeat; background-size: 105px; width: 150px; }
+.navbar .ace-nav>li 		{ width: 80px; background-color: #0000; border: none; text-align: center; }
+.navbar .ace-nav>li>a		{ color:rgb(165, 165, 165); }
+.navbar .nav>li>a:hover,
+.navbar .nav>li>a:focus,
+.navbar .nav>li.selected>a	{ font-size: 13px; text-shadow: none; color: #fff; background-color: #000; }
+.navbar .tlt				{ display: block; margin:12px 0 0 5px; font-size: 18px; }
+
+
+#user-profile					{ padding:10px; position: relative; }
+#user-profile .photo			{ margin: 0px 8px 0 0; border-radius: 24px; border: 2px solid #FFF; max-width: 36px!important; }
+#user-profile .user-info		{ font-size: 100%; line-height: 120%; }
+#user-profile .user-info em		{ display: block; padding: 0 0 3px 0; font-style: normal; }	
+#user-profile .dropdown-menu	{ min-width: 160px; width:160px; }
+#user-profile .dropdown-toggle	{ position: relative; }
+#user-profile a:link,
+#user-profile a:hover,
+#user-profile a:active,
+#user-profile a:visited			{ text-decoration: none; color: rgb(100, 100, 100); }
+#user-profile .dropdown-menu.dropdown-closer.pull-right			{ position: absolute; float: none; left: 22px; right: 0; top: 38px;}
+#user-profile .dropdown-menu.pull-right.dropdown-caret:before	{ left: auto; right: 48px; }
+#user-profile .dropdown-menu.pull-right.dropdown-caret:after	{ left: auto; right: 49px; }
+
+.skin-3 .main-content			{ background: none }
+.skin-3 .nav-list>li:before		{ border-left: none; }
+.skin-3 .breadcrumbs			{ background-color: #eee; border-radius: 0; margin: 0; border-bottom:1px solid #dfdfdf; z-index: 20; }
+.skin-3 .nav-list>li.selected>a	{ background-color: rgb(238, 238, 238); color: rgb(52, 115, 175); }
+
+.page-header 					{ padding:0 }
+.page-header h1					{ font-size: 18px; }
+.page-header					{ height:40px; }
+.page-header .btn				{ margin:10px 5px 0 0 }
+.page-header a.btn-link:hover	{ text-decoration:none }
+
+.pagination			{ margin:5px 0;  text-align:center }
+.pagination	ul		{ margin: 0 auto; }
+
+td[rowspan]			{ vertical-align: middle }

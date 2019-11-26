@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+
+@import "fa.css";
+
+.login-layout.skin-3 .main-content {
+	background: RGB(29, 32, 36);
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="fileAppender1" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/log-fa/exception.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+			</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/log-fa/exception.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>50KB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<!--
+		kr.co.itcen.fa.exception 아래 패키지 로그들만  
+		/log-mysite/exception.log 파일에만  출력하는 로거
+	-->
+	<logger name="kr.co.itcen.fa.exception" level="debug" additivity="false">
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="fileAppender1" />
+    </logger>
+	
+	<!-- 루트(글로벌) 로거 -->
+	<root level="warn">
+		<appender-ref ref="consoleAppender" />
+	</root>
+
+</configuration>

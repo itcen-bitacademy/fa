@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+	<insert id="save" parameterType="uservo">
+		<![CDATA[
+		insert
+		  into user
+		values (null, #{id }, password('${password }'), #{name }, now(), now(), '', #{role }, #{teamNo })
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="findAll" resultType="uservo">
+		<![CDATA[
+		   select a.no,
+		          a.id,
+		          a.name,
+		          date_format(a.last_update, '%Y-%m-%d %h:%i:%s') as lastUpdate,
+		          date_format(a.last_login, '%Y-%m-%d %h:%i:%s') as lastLogin,
+		          b.name as teamName
+		     from user a, team b
+		    where a.team_no = b.no
+		 order by a.no	
+		]]>
+	</select>
+	
+	<select id="findByIdAndPassword" parameterType="uservo" resultType="uservo">
+		<![CDATA[
+		    select a.no, a.name, a.role, ifnull(b.name,'시스템관리') as teamName, ifnull(b.menu_no, 0) as menuNo 
+		      from user a, team b
+		     where a.team_no = b.no
+		       and id = #{id }
+		       and password = password('${password }')		
+		]]>
+	</select>
+
+	<select id="findByNo" parameterType="long" resultType="uservo">
+		<![CDATA[
+		]]>
+	</select>
+	
+	<update id="update" parameterType="uservo">
+		<![CDATA[
+		]]>
+	</update>
+
+
+</mapper>

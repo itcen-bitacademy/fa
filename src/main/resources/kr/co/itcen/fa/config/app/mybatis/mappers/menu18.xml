@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+	<!-- Team -->
+	<insert id="saveTeam" parameterType="teamvo">
+		<![CDATA[
+		insert
+		  into team
+		values (null, #{name }, #{info }, now(), #{menuNo })
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="findAllTeam" resultType="teamvo">
+		<![CDATA[
+		  select a.no, a.name, a.info, date_format(a.last_update, '%Y-%m-%d %h:%i:%s') as lastUpdate, b.name as menuName 
+		    from team a, menu b
+		   where a.menu_no = b.no 
+		order by a.no asc 		
+		]]>
+	</select>
+</mapper>
