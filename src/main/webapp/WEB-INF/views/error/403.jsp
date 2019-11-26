@@ -57,7 +57,7 @@
 
 									<div class="row-fluid">
 										<div class="center">
-											<a href="hostory.go(-1);" class="btn btn-grey">
+											<a href="history.go(-1);" class="btn btn-grey">
 												<i class="icon-arrow-left"></i>
 												이전 페이지
 											</a>

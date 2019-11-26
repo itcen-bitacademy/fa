@@ -18,19 +18,17 @@
 		
 		
 			<div class="page-header position-relative">
-				<h1 class="pull-left">테스트 list</h1>
+				<h1 class="pull-left">결산작업[61] list</h1>
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">
 				
+					<h1>!!! 결산작업[61] test !!!</h1>
+				
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
-						<div class="span12">
-							
-							<h1>Test 완료!!!!</h1>
-							
-						</div><!-- /span -->
+						
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
 					
