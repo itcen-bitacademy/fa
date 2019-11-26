@@ -7,28 +7,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.menu01.Menu25Service;
+import kr.co.itcen.fa.service.menu01.Menu31Service;
 
 
 /**
  * 
- * @author 황슬기
- * 계좌관리
+ * @author 임성주
+ * 계정별원장조회
  *
  */
 @Auth
 @Controller
-@RequestMapping("/" + Menu25Controller.MAINMENU)
-public class Menu25Controller {
+@RequestMapping("/" + Menu31Controller.MAINMENU)
+public class Menu31Controller {
 	public static final String MAINMENU = "01";
-	public static final String SUBMENU = "25";
+	public static final String SUBMENU = "31";
 
 	@Autowired
-	private Menu25Service menu25Service;
+	private Menu31Service menu31Service;
 
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model) {
-		menu25Service.test();
+		menu31Service.test();
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

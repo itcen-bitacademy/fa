@@ -8,20 +8,20 @@ import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
  * 
- * @author 이지수
- * 은행코드관리
+ * @author 박준호
+ * 사채현황조회
  *
  */
 @Repository
-public class Menu16Repository {
+public class Menu51Repository {
 
 	@Autowired
 	private SqlSession sqlSession;
 	
 	public void test() {
 		TestVo testVo = new TestVo();
-		testVo.setName("이지수");
-		sqlSession.insert("menu16.save", testVo);
+		testVo.setName("박준호");
+		sqlSession.insert("menu51.save", testVo);
 	}
 	
 }
