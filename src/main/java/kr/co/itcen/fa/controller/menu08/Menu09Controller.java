@@ -13,7 +13,7 @@ import kr.co.itcen.fa.service.menu08.Menu09Service;
  * 
  * @author 정의돈
  * 
- * 토지관리
+ * 토지관리 
  *
  */
 
