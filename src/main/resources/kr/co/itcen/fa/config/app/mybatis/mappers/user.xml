@@ -25,7 +25,7 @@
 		          b.name as teamName
 		     from user a, team b
 		    where a.team_no = b.no
-		 order by a.no	
+		 order by b.no, a.no	
 		]]>
 	</select>
 	
