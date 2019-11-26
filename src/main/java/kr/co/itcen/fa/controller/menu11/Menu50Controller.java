@@ -25,13 +25,13 @@ public class Menu50Controller {
 	private Menu50Service menu50Service;
 	
 	                                   //   /11/50, /11/50/list
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String test(Model model) {
 		menu50Service.test();
 		/*
 		 *    JSP
-		 *    11/50/list.jsp
+		 *    11/50/add.jsp
 		 */
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 }

@@ -27,9 +27,7 @@
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
 						<div class="span12">
-							
-							<h1>Test 완료!!!!</h1>
-							
+							<h1>Test 완료!!!</h1>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
