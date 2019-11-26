@@ -6,31 +6,31 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.menu11.Menu50Service;
+import kr.co.itcen.fa.service.menu11.Menu49Service;
 
 /**
  * 
- * @author 박준호
- * 사채관리
+ * @author 김준호
+ * 장기차입금현황조회
  *
  */
 @Auth
 @Controller
-@RequestMapping("/" + Menu50Controller.MAINMENU)
-public class Menu50Controller {
+@RequestMapping("/" + Menu49Controller.MAINMENU)
+public class Menu49Controller {
 	public static final String MAINMENU = "11";
-	public static final String SUBMENU = "50";
+	public static final String SUBMENU = "49";
 	
 	@Autowired
-	private Menu50Service menu50Service;
+	private Menu49Service menu49Service;
 	
-	                                   //   /11/50, /11/50/list
+	                                   //   /11/49, /11/49/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model) {
-		menu50Service.test();
+		menu49Service.test();
 		/*
 		 *    JSP
-		 *    11/50/list.jsp
+		 *    11/49/list.jsp
 		 */
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

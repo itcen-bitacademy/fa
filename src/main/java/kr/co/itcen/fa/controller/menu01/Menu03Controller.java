@@ -7,28 +7,30 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.menu01.Menu25Service;
+import kr.co.itcen.fa.service.menu01.Menu03Service;
 
 
 /**
  * 
- * @author 황슬기
- * 계좌관리
+ * @author 임성주
+ * 전표관리
  *
  */
 @Auth
 @Controller
-@RequestMapping("/" + Menu25Controller.MAINMENU)
-public class Menu25Controller {
+@RequestMapping("/" + Menu03Controller.MAINMENU)
+public class Menu03Controller {
 	public static final String MAINMENU = "01";
-	public static final String SUBMENU = "25";
+	public static final String SUBMENU = "03";
 
 	@Autowired
-	private Menu25Service menu25Service;
+	private Menu03Service menu03Service;
 
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
+	// ""는 첫 메뉴에만 사용 - 성주 완성 후 삭제요망
+	//  /18 /18/65 /18/65/list
+	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model) {
-		menu25Service.test();
+		menu03Service.test();
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

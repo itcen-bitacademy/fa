@@ -9,11 +9,11 @@ import kr.co.itcen.fa.vo.menu11.TestVo;
 /**
  * 
  * @author 이지수
- * 은행코드관리
+ * 은행코드현황조회
  *
  */
 @Repository
-public class Menu16Repository {
+public class Menu45Repository {
 
 	@Autowired
 	private SqlSession sqlSession;
@@ -21,7 +21,7 @@ public class Menu16Repository {
 	public void test() {
 		TestVo testVo = new TestVo();
 		testVo.setName("이지수");
-		sqlSession.insert("menu16.save", testVo);
+		sqlSession.insert("menu45.save", testVo);
 	}
 	
 }
