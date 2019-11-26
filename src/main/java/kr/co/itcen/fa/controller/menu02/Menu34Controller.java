@@ -5,40 +5,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.menu02.Menu33Service;
+import kr.co.itcen.fa.service.menu02.Menu34Service;
 
 /**
  * 
- * @author 강민호 
- * 매입품목관리
+ * @author 강민호
+ * 매입품목현황조회
  *
  */
 
 @Auth
 @Controller
-@RequestMapping("/" + Menu33Controller.MAINMENU)
-public class Menu33Controller {
+@RequestMapping("/" + Menu34Controller.MAINMENU)
+public class Menu34Controller {
 	public static final String MAINMENU = "02";
-	public static final String SUBMENU = "33";
+	public static final String SUBMENU = "34";
 	
 	@Autowired
-	private Menu33Service menu33Service;
+	private Menu34Service menu34Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test() {
-		menu33Service.test();
+		menu34Service.test();
 		
-		/*
-		JSP
-		02/33/list.jsp
-		*/
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }
-
-
-
-
-
-
-
