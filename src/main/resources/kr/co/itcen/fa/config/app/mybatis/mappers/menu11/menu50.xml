@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu50">
 	<!-- Team -->
-	<insert id="save" parameterType="testvo">
+	<insert id="save" parameterType="test4vo">
 		<![CDATA[
 		insert
 		  into test
