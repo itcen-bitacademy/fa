@@ -3,21 +3,21 @@ package kr.co.itcen.fa.service.menu11;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.itcen.fa.repository.menu11.Menu16Repository;
+import kr.co.itcen.fa.repository.menu11.Menu51Repository;
 
 /**
  * 
- * @author 이지수
- * 은행코드관리
+ * @author 박준호
+ * 사채현황조회
  *
  */
 @Service
-public class Menu16Service {
+public class Menu51Service {
 	
 	@Autowired
-	private Menu16Repository menu16Repository;
+	private Menu51Repository menu51Repository;
 	
 	public void test() {
-		menu16Repository.test();
+		menu51Repository.test();
 	}
 }
