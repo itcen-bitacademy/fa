@@ -4,10 +4,4 @@
 	<typeAliases>
 		<package name="kr.co.itcen.fa.vo"/>
 	</typeAliases>
-	<mappers>
-		<mapper resource="kr/co/itcen/fa/config/app/mybatis/mappers/user.xml" />
-		<mapper resource="kr/co/itcen/fa/config/app/mybatis/mappers/menu.xml" />
-         
-		<mapper resource="kr/co/itcen/fa/config/app/mybatis/mappers/menu18.xml" />
-	</mappers>
 </configuration>

@@ -20,10 +20,10 @@ public class Menu21Repository {
 	private SqlSession sqlSession;
 
 	public void saveTeam(TeamVo teamVo) {
-		sqlSession.insert("admin.saveTeam", teamVo);
+		sqlSession.insert("menu21.save", teamVo);
 	}
 
 	public List<TeamVo> findAllTeam() {
-		return sqlSession.selectList("admin.findAllTeam");
+		return sqlSession.selectList("menu21.findAll");
 	}
 }
