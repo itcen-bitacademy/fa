@@ -28,7 +28,7 @@ public class Menu25Controller {
 
 	// ""는 첫 메뉴에만 사용 - 성주 완성 후 삭제요망
 	//  /18 /18/65 /18/65/list
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model) {
 		menu25Service.test();
 		return MAINMENU + "/" + SUBMENU + "/list";
