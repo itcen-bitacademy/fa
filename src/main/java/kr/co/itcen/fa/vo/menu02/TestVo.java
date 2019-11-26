@@ -2,7 +2,7 @@ package kr.co.itcen.fa.vo.menu02;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("test2Vo")
+@Alias("test2vo")
 public class TestVo {
 	private Long no;
 	private String name;

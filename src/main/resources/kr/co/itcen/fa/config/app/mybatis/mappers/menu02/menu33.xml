@@ -5,7 +5,7 @@
 	<insert id="save" parameterType="test2vo">
 		<![CDATA[
 		insert
-		  into team
+		  into test
 		values (null, #{name })
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
