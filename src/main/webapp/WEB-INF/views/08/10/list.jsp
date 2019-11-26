@@ -28,7 +28,7 @@
 					<div class="row-fluid">
 						<div class="span12">
 							  
-							  <h1>토지관리 Test  완료 !!! </h1>
+							  <h1> 건물관리 Test  완료 !!! </h1>
 							  
 						</div><!-- /span -->
 					</div><!-- /row -->

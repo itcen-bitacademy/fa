@@ -9,18 +9,18 @@ import kr.co.itcen.fa.vo.menu08.TestVo;
 
 /**
  * 
- *  @author 정의돈
- *  토지관리
+ *  @author 김유진
+ *  무형자산현황조회
  */
 @Repository
-public class Menu09Repository {
+public class Menu44Repository {
 
 	@Autowired
 	private SqlSession sqlSession;
 
 	public void test() {
 		TestVo testVo = new TestVo();
-		testVo.setName("정의돈관리");
-		sqlSession.insert("menu09.save", testVo);
+		testVo.setName("김유진현황");
+		sqlSession.insert("menu44.save", testVo);
 	}
 }
