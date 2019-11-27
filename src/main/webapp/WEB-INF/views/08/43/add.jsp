@@ -49,7 +49,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1">대분류 코드</label>
 									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="sectionNo" data-placeholder="전체">
+										<select class="span1 chosen-select" id="form-field-select-1" name="sectionNo" data-placeholder="전체">
 											<c:forEach items="${listMainMenu }" var="sectionVo">
 												<option value="${sectionVo.no }">${sectionVo.name }</option>
 											</c:forEach>
@@ -107,7 +107,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">사용 담당자</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="user" placeholder="이름을 입력하세요"/>
+										<input type="text" class="span7" id="form-field-1" name="user" placeholder="이름을 입력하세요"/>
 									</div>
 								</div>
 								<div class="control-group">
@@ -119,35 +119,41 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">담당자</label>
 									<div class="controls">
-										<input readonly type="text" id="form-input-readonly" value="코드를 지정하면 대분류명이 등록됩니다"/>
+										<input readonly type="text" class="span7" id="form-input-readonly" value="코드를 지정하면 대분류명이 등록됩니다"/>
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label" for="form-field-select-1">대분류 코드</label>
+									<label class="control-label" for="form-field-1">용도</label>
 									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="menuNo" data-placeholder="전체">
-											<c:forEach items="${listMainMenu }" var="menuVo">
-												<option value="${menuVo.no }">${menuVo.name }</option>
-											</c:forEach>
-										</select>
-										<input readonly type="text" class="span5" id="form-input-readonly" value="코드를 지정하면 대분류명이 등록됩니다">
+										<input type="text" class="span11" id="form-field-1" name="using" placeholder="용도를 입력하세요"/>
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label" for="form-field-select-1">거래처 코드</label>
+									<label class="control-label" for="id-date-picker-1">매입일자</label>
 									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="menuNo" data-placeholder="전체">
-											<c:forEach items="${listMainMenu }" var="menuVo">
-												<option value="${menuVo.no }">${menuVo.name }</option>
-											</c:forEach>
-										</select>
-										<input readonly type="text" class="span5" id="form-input-readonly" value="코드를 지정하면 거래처명이 등록됩니다">
+										<input class="date-picker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy">
+										<div class="input-append">
+											<span class="add-on">
+												<i class="icon-calendar"></i>
+											</span>
+										</div>
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label" for="form-field-2">부가정보</label>
+									<label class="control-label">구분</label>
 									<div class="controls">
-										<textarea id="form-field-2" name="info" placeholder="부가정보"></textarea>
+										<div class="span2">
+											<label>
+												<input name="form-field-radio" type="radio" vlaue="tax" class="ace">
+												<span class="lbl"> 과세</span>
+											</label>
+										</div>
+										<div class="span2">
+											<label>
+												<input name="form-field-radio" type="radio" vlaue="zeroTax" class="ace">
+												<span class="lbl"> 영세</span>
+											</label>
+										</div>
 									</div>
 								</div>
 							</form>
@@ -159,6 +165,67 @@
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 
+			<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th class="center">
+							<label>
+								<input type="checkbox" class="ace">
+								<span class="lbl"></span>
+							</label>
+						</th>
+						<th>No</th>
+						<th>무형자산코드</th>
+						<th>무형자산명</th>
+						<th>설치주소</th>
+						<th>사용담당자</th>
+						<th>대분류코드</th>
+						<th>대분류명</th>
+						<th>수량</th>
+						<th>거래처코드</th>
+						<th>거래처명</th>
+						<th>담당자</th>
+						<th>취득금액(원)</th>
+						<th>용도</th>
+						<th>부대비용(원)</th>
+						<th>매입일자</th>
+						<th>세금계산서번호</th>
+						<th>구분</th>
+						<th>작성자</th>
+						<th>작성일</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td class="center">
+							<label>
+								<input type="checkbox" class="ace">
+								<span class="lbl"></span>
+							</label>
+						</td>
+						<td>1</td>
+						<td>무형자산코드</td>
+						<td>무형자산명</td>
+						<td>설치주소</td>
+						<td>사용담당자</td>
+						<td>대분류코드</td>
+						<td>대분류명</td>
+						<td>수량</td>
+						<td>거래처코드</td>
+						<td>거래처명</td>
+						<td>담당자</td>
+						<td>취득금액(원)</td>
+						<td>용도</td>
+						<td>부대비용(원)</td>
+						<td>매입일자</td>
+						<td>세금계산서번호</td>
+						<td>구분</td>
+						<td>작성자</td>
+						<td>작성일</td>
+					</tr>
+				</tbody>
+			</table>
 
 
 		</div><!-- /.page-content -->
