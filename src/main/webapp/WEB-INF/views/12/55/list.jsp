@@ -41,23 +41,62 @@
 								</div>
 								<button class="btn btn-default span1">조회</button>
 								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+									<tr>
+										<th>품목코드</th>
+										<th>품목명</th>
+										<th>입고수량</th>
+										<th>입고금액</th>
+										<th>입고부가세</th>
+										<th>출고수량</th>
+										<th>출고금액</th>
+										<th>출고부가세</th>
+										<th>재고수량</th>
+										<th>재고금액</th>
+										<th>재고부가세</th>
+									</tr>
+									</thead>
 									<tbody>
 									<tr>
-									<th>품목코드</th>
-									<th>품목명</th>
-									<th>입고수량</th>
-									<th>입고금액</th>
-									<th>입고부가세</th>
-									<th>출고수량</th>
-									<th>출고금액</th>
-									<th>출고부가세</th>
-									<th>재고수량</th>
-									<th>재고금액</th>
-									<th>재고부가세</th>
+										<td>품목코드123456</td>
+										<td>IBM서버</td>
+										<td>10</td>
+										<td>10000</td>
+										<td>1000</td>
+										<td>5</td>
+										<td>5000</td>
+										<td>500</td>
+										<td>5</td>
+										<td>5000</td>
+										<td>500</td>
 									</tr>
 									</tbody>
 								</table>
 								</div>
+								<div class="pagination no-margin">
+										<ul>
+											<li class="prev disabled">
+												<a href="#">
+													<i class="icon-double-angle-left"></i>
+												</a>
+											</li>
+											<li class="active">
+												<a href="#">1</a>
+											</li>
+											<li>
+												<a href="#">2</a>
+											</li>
+											<li>
+												<a href="#">3</a>
+											</li>
+											<li class="next">
+												<a href="#">
+													<i class="icon-double-angle-right"></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								
 						
 						</div>
 					</div>
