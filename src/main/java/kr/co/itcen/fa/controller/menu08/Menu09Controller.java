@@ -26,7 +26,7 @@ public class Menu09Controller {
 	public static final String SUBMENU = "09";
 	
 	
-	@Autowired
+	@Autowired 
 	private Menu09Service menu09Service;
 	
 	
@@ -39,7 +39,7 @@ public class Menu09Controller {
 		 *   08/09/list.jsp
 		 * 
 		 */
-		return MAINMENU + "/" + SUBMENU + "/add2";
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 }
