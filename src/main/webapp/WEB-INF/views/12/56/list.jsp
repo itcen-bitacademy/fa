@@ -6,30 +6,14 @@
 <html lang="ko">
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
-
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
-<script type="text/javascript">
-	
-	$(function(){
-		$(".chosen-select").chosen(); 
-	});
-</script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 </head>
-
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-		
-		
-		
-		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">품목 대분류별 매입매출 현황</h1>
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
@@ -40,17 +24,13 @@
 								년 월				
 									<input type="text" id="form-field-1" placeholder="년월6자리">
 							
-								
 								&nbsp;
-							
 								대분류 코드
 								<select class="chosen-select" id="form-field-select-1" name="gruop_code" data-placeholder="대분류코드 선택">
 										<option value="1">대분류코드11111</option>
 										<option value="2">대분류코드22222</option>
-									
 								</select>
 							
-						
 								&nbsp;
 								
 								품목 코드
@@ -62,6 +42,7 @@
 								&nbsp;
 								
 								<button class="btn btn-small btn-info">조회</button>
+								
 								
 								<div class="hr hr-18 dotted"></div>
 								
@@ -127,5 +108,13 @@
 
 
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+	
+	$(function(){
+		$(".chosen-select").chosen(); 
+	});
+</script>
 </body>
 </html>

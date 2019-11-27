@@ -8,15 +8,9 @@
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
-<script type="text/javascript">
-	
-	$(function(){
-		$(".chosen-select").chosen(); 
-	});
-</script>
+
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -43,12 +37,14 @@
 								&nbsp;
 								
 								품목 코드
-								<select class="chosen-select" id="form-field-select-2" name="item_code" data-placeholder="품목코드 선택">
+								<select class="chosen-select" id="form-field-select-1" name="item_code" data-placeholder="품목코드 선택">
 										<option value="1">품목코드11111</option>
 										<option value="2">품목코드22222</option>
 								</select>
 								
 								&nbsp;
+								
+								
 								
 								
 								<button class="btn btn-small btn-info">조회</button>
@@ -112,5 +108,13 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script type="text/javascript">
+	
+	$(function(){
+		$(".chosen-select").chosen();
+	});
+</script>
 </body>
 </html>
