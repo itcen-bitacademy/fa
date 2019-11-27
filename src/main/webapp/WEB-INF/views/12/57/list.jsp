@@ -6,6 +6,17 @@
 <html lang="ko">
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
+<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
+<script type="text/javascript">
+	
+	$(function(){
+		$(".chosen-select").chosen(); 
+	});
+</script>
+
 </head>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -24,19 +35,25 @@
 			<div class="row-fluid">
 					<div class="span9 center">
 							<div class="control-group">
-								<label class="control-label span2" for="form-field-1">년 월</label>
-								<div class="controls span3">
+								년 월
+							
 									<input type="text" id="form-field-1" placeholder="년월6자리">
-								</div>
-								<label class="control-label span3" for="form-field-2">거래처 코드</label>
-								<div class="controls span3">
-								<select id="form-field-select-1">
-								<option value>&nbsp;</option>
-								<option value="거1">거래처 코드11111</option>
-								<option value="거2">거래처 코드22222</option>
+														
+								&nbsp;
+								
+								거래처 코드
+								<select class="chosen-select" id="form-field-select-2" name="client_code" data-placeholder="거래처코드 선택">
+										<option value="1">거래처코드11111</option>
+										<option value="2">거래처코드22222</option>
 								</select>
-								</div>
-								<button class="btn btn-default span1">조회</button>
+								
+								&nbsp;
+								
+								
+								<button class="btn btn-small btn-info">조회</button>
+								
+								<div class="hr hr-18 dotted"></div>
+								
 								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 																		<thead>
 									<tr>
@@ -66,29 +83,17 @@
 									</tbody>
 								</table>
 								</div>
-								<div class="pagination no-margin">
-										<ul>
-											<li class="prev disabled">
-												<a href="#">
-													<i class="icon-double-angle-left"></i>
-												</a>
-											</li>
-											<li class="active">
-												<a href="#">1</a>
-											</li>
-											<li>
-												<a href="#">2</a>
-											</li>
-											<li>
-												<a href="#">3</a>
-											</li>
-											<li class="next">
-												<a href="#">
-													<i class="icon-double-angle-right"></i>
-												</a>
-											</li>
-										</ul>
-									</div>
+								<div class="pagination">
+									<ul>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+									<li class="active"><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+									</ul>
+								</div>
 						</div>
 					</div>
 
