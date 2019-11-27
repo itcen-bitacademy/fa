@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -18,11 +19,6 @@
 <script type="text/javascript">
 	jQuery(function($) {
 		$("#id-date-picker-1").datepicker({
-			showOtherMonths : true,
-			selectOtherMonths : false,
-		});
-		
-		$("#id-date-picker-2").datepicker({
 			showOtherMonths : true,
 			selectOtherMonths : false,
 		});
@@ -42,12 +38,12 @@
 		<div class="page-content">
 		
 			<div class="page-header position-relative">
-				<h1 class="pull-left">매입품목 현황조회</h1>
+				<h1 class="pull-left">매입품목관리</h1>
 			</div><!-- /.page-header -->
-			
 			<div class="row-fluid">
-				<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+				
+					<!-- PAGE CONTENT BEGINS -->
+					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 						
 						<div class="span4">
 							<div class="control-group">
@@ -72,39 +68,23 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-factory-name">생산공장명</label>
 								<div class="controls">
-									<div class="row-fluid input-append">
-										<input class="span7" id="form-field-factory-name" name="factory-name" type="text" readonly="true"/>
-										<span class="add-on">
-											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
-										</span>
-									</div>
+									<input class="span8" type="text" id="form-field-factory-name" name="factory-name" placeholder="생산공장명"/>
 								</div>
 							</div>
 							
 							<div class="control-group">
-								<label class="control-label" for="form-field-price">단가</label>
+								<label class="control-label" for="form-field-factory-address">생산공장 주소</label>
 								<div class="controls">
-									<input class="span4" type="text" id="form-field-price" name="field-price"/>
-									&nbsp;~&nbsp;
-									<input class="span4" type="text" id="form-field-price" name="field-price"/> 원
+									<div class="row-fluid input-append" style="margin:0 0 5px 0">
+										<input class="span9" id="form-field-factory-address" name="factory-address" type="text" readonly="true"/>
+										<span class="add-on">
+											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+										</span>
+									</div>
+									
+									<input class="span10" type="text" id="form-field-factory-address" name="factory-address" placeholder="상세 주소"/>
 								</div>
-							</div>
-						</div>
-						
-						<div class="span8">
-							<div class="control-group">
-								<label class="control-label" for="form-field-item-name">품목명</label>
-								<div class="controls">
-									<input type="text" id="form-field-item-name" name="item-name" placeholder="품목명" style="display:inline"/>&nbsp;&nbsp;&nbsp;
-									<input class="ace" type="checkbox" id="id-disable-check" style="display:inline">
-									<label class="lbl" for="id-disable-check" style="display:inline"> 삭제 품목 포함</label>
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" for="form-field-section-code">품목 대분류코드</label>
-								<div class="controls">
-									<input class="span2" type="text" id="form-field-section-code" name="section-code" readonly="true"/>
-								</div>
+								
 							</div>
 							
 							<div class="control-group">
@@ -115,29 +95,64 @@
 							</div>
 							
 							<div class="control-group">
+								<label class="control-label" for="form-field-price">단가</label>
+								<div class="controls">
+									<input class="span4" type="text" id="form-field-price" name="factory-price"/>&nbsp;원
+								</div>
+							</div>
+						</div>
+						
+						<div class="span8">
+							<div class="control-group">
+								<label class="control-label" for="form-field-item-name">품목명</label>
+								<div class="controls">
+									<input type="text" id="form-field-item-name" name="item-name" placeholder="품목명"/>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label" for="form-field-section-code">품목 대분류코드</label>
+								<div class="controls">
+									<input class="span2" type="text" id="form-field-section-code" name="section-code" readonly="true"/>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label" for="form-field-factory-manager">생산담당자</label>
+								<div class="controls">
+									<input class="span2" type="text" id="form-field-factory-manager" name="factory-manager" placeholder="생산담당자"/>
+								</div>
+							</div>
+							
+							<div class="control-group">
 								<label class="control-label" for="form-field-date">생산 일자</label>
 								<div class="controls">
 									<div class="control-group">
-										<div class="input-append">
-											<input class="span7 date-picker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy" style="width:130px">
+										<div class="row-fluid input-append">
+											<input class="span2 date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" style="margin:0 0 16px 0">
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
 										</div>
-										&nbsp; ~ &nbsp;
-										<div class="input-append">
-											<input class="span7 date-picker" id="id-date-picker-2" type="text" data-date-format="dd-mm-yyyy" style="width:130px">
-											<span class="add-on">
-												<i class="icon-calendar"></i>
-											</span>
-										</div>
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<button class="btn btn-small btn-info" style="display:inline">조회</button>
 									</div>
-									
-									
 								</div>
 							</div>
+							
+							<div class="control-group">
+								<label class="control-label" for="form-field-purpose">사용용도</label>
+								<div class="controls">
+									<input type="text" id="form-field-purpose" name="field-purpose" style="margin:0 0 20px 0"/>
+								</div>
+							</div>
+							<br>
+							<br>
+						</div>
+						<div>
+							<button class="btn btn-info btn-small" type="submit">조회</button>
+							<button class="btn btn-danger btn-small" type="submit">삭제</button>
+							<button class="btn btn-warning btn-small" type="submit">수정</button>
+							<button class="btn btn-primary btn-small" type="submit">입력</button>
+							<button class="btn btn-default btn-small" type="submit">취소</button>
 						</div>
 					</form>
 					
@@ -152,11 +167,8 @@
 										<th>대분류명</th>
 										<th>규격</th>
 										<th>단가</th>
-										<th>사용 용도</th>
-										<th>생산공장명</th>
-										<th>생산공장 주소</th>
-										<th>생산 담당자</th>
-										<th>생산 일자</th>
+										<th>담당자</th>
+										<th>일자</th>
 									</tr>
 								</thead>
 
@@ -176,15 +188,6 @@
 											7,000
 										</td>
 										<td>
-											사무용 컴퓨터 모니터
-										</td>
-										<td>
-											OO공장
-										</td>
-										<td>
-											경기도...
-										</td>
-										<td>
 											OOO
 										</td>
 										<td>
@@ -194,19 +197,22 @@
 								</tbody>
 							</table>
 						</div><!-- /span -->
+						
 						<div class="dataTables_paginate paging_bootstrap pagination"><ul><li class="prev disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li class="next"><a href="#"><i class="icon-double-angle-right"></i></a></li></ul></div>
 					</div>
-				
-				<!-- PAGE CONTENT ENDS -->
-			</div>
-			<!-- /.row-fluid -->
-			
-			
-			
+					
+					<!-- PAGE CONTENT ENDS -->
+			</div><!-- /.row-fluid -->
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script>
+$(function(){
+	$(".chosen-select").chosen(); 
+});
+</script>
 </body>
 </html>

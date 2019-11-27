@@ -26,7 +26,7 @@ public class Menu09Controller {
 	public static final String SUBMENU = "09";
 	
 	
-	@Autowired
+	@Autowired 
 	private Menu09Service menu09Service;
 	
 	

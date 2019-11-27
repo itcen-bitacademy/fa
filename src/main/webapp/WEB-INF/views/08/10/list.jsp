@@ -14,20 +14,151 @@
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-		
-		
-		
+
 			<div class="page-header position-relative">
-				<h1 class="pull-left">팀추가</h1>
+				<h1 class="pull-left">토지현황조회</h1>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">
-
-					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
-						<div class="span12">
-							  <div class="row-fluid">
-								<div class="span12">
+					<!-- PAGE CONTENT BEGINS -->
+
+						<div class="span6"><!-- 차변 -->
+							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+								
+								<div class="control-group">
+										<div style="float:left;width:50%">											
+											<label class="control-label" for="form-field-1">토지코드</label>
+											<div class="controls">
+												<input type="text" id="form-field-1" name="payDate" placeholder="달력을 클릭해주세요"/>
+											</div>
+										</div>	
+										<div style="float:left;width:50%;">											
+											<label style="margin-right: 20px" class="control-label" for="form-field-1">토지대분류명</label>
+											<select class="chosen-select" id="form-field-select-1" name="sectionNo" data-placeholder="전체">
+												<c:forEach items="${listMainMenu }" var="sectionVo">
+													<option value="${sectionVo.no }">${sectionVo.name }</option>
+												</c:forEach>
+											</select>
+										</div>	
+								</div>
+								
+								<div class="control-group">
+										<div style="float:left;width:50%">											
+											<label class="control-label" for="form-field-1">매입거래처명</label>
+											<div class="controls">
+												<input type="text" id="form-field-1" name="payDate" placeholder=""/>
+											</div>
+										</div>	
+										<div style="float:left;width:50%">											
+											<label class="control-label" for="form-field-1">거래처담당자명</label>
+											<div class="controls">
+												<input type="text" id="form-field-1" name="payDate" placeholder=""/>
+											</div>
+										</div>	
+								</div>
+								
+								<div class="control-group">
+										<div style="float:left;">											
+											<label class="control-label" for="form-field-1">주소</label>
+											<div class="controls">
+												<select style="width:205px;" class="chosen-select" id="form-field-select-1" name="sectionNo" data-placeholder="전체">
+													<c:forEach items="${listMainMenu }" var="sectionVo">
+														<option value="${sectionVo.no }">${sectionVo.name }</option>
+													</c:forEach>
+												</select>
+											</div>
+										</div>
+										<div style="float:left; margin-left:10px" class="controls">
+											<select style="width:205px;" class="chosen-select" id="form-field-select-1" name="sectionNo" data-placeholder="전체">
+												<c:forEach items="${listMainMenu }" var="sectionVo">
+													<option value="${sectionVo.no }">${sectionVo.name }</option>
+												</c:forEach>
+											</select>
+										</div>
+										<div style="float:left; margin-left:10px" class="controls">
+											<select style="width:205px;" class="chosen-select" id="form-field-select-1" name="sectionNo" data-placeholder="전체">
+												<c:forEach items="${listMainMenu }" var="sectionVo">
+													<option value="${sectionVo.no }">${sectionVo.name }</option>
+												</c:forEach>
+											</select>
+										</div>
+								</div>
+								
+
+								<div class="control-group">
+									<label class="control-label" >취득금액</label>
+									<div class="controls">
+										<input type="text" id="area" name="area" placeholder="숫자만 입력해주세요"/>
+										<input style="border-style: none;" type="text" id="area" name="area" placeholder="입력된 금액이하로 검색됩니다."/>
+									</div>
+								</div>
+								
+								
+								
+								
+								
+							</form>
+						</div><!-- 차변 span -->
+						
+						
+						
+							
+						<div class="span6"><!-- 대변 -->
+							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+								
+								<div class="control-group">
+										<label class="control-label" for="id-date-picker-1">매입일자</label>
+										<div class="controls">
+											<div class="input-append">
+												<span class="add-on">
+													<i class="icon-calendar"></i>
+												</span>
+											</div>
+											<input class="span5" type="text" name="date-range-picker" id="id-date-range-picker-1">
+										</div>
+									</div>
+								
+								
+								
+								<div class="control-group">
+									<label class="control-label" >평수</label>
+									<div class="controls">
+										<input type="text" id="area" name="area" placeholder="숫자만 입력해주세요"/>
+										<input style="border-style: none;" type="text" id="area" name="area" placeholder="입력된 숫자이하로 검색됩니다."/>
+									</div>
+								</div>
+								
+								<div class="control-group" >
+										<div class="controls">
+											<div class="span3" style="float:right;">
+												<button class="btn btn-small btn-info" type="submit" style="height:36px; float:right; margin-right:15px"><i class="icon-ok bigger-80"></i>상세조회</button>
+											</div>
+											<div class="span2" style="float:right">
+												<label style="float:right;">
+													<input name="checkDel" type="checkbox" class="ace">
+														<span class="lbl"> 삭제포함</span>
+												</label>
+											</div>
+										</div>
+									</div>
+							</form>
+						</div><!-- 대변 span -->
+					</div><!-- 차변 대변 나누기 위한 row-fluid -->
+						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+									<div class="control-group">
+										<div class="controls">
+											<div class="span1" style="float:right">
+												<button class="btn btn-info" type="submit" style="height:36px"><i class="icon-ok bigger-80"></i>조회</button>
+											</div>
+											<div class="span2" style="float:right;">
+												<input type="text" class="span11" id="form-field-1" name="search" placeholder="검색어를 입력하세요"/>
+											</div>
+										</div>
+									</div>
+								</form>
+								
+								<div>
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
@@ -144,15 +275,23 @@
 
 											
 										</tbody>
-									</table>
-								</div><!-- /span -->
-							</div>
-							  
-							  
-						</div><!-- /span -->
-					</div><!-- /row -->					
+										</table>
+									</div>
+									
+									<div class="pagination">
+										<ul>
+											<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+										</ul>
+									</div>	
 					<!-- PAGE CONTENT ENDS -->
-
+					
+				
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 
