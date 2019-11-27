@@ -84,7 +84,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">취득금액</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="acqPrice" placeholder=""/>
+											<input type="text" id="form-field-1" name="acqPrice" placeholder="입력된 숫자 이하로 검색됩니다"/>
 										</div>
 									</div>
 									<div class="control-group">
@@ -117,109 +117,112 @@
 									</div>
 								</div>
 							</form>
-							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
-								<thead>
-									<tr>
-										<th>No</th>
-										<th>무형자산코드</th>
-										<th>무형자산명</th>
-										<th>설치주소</th>
-										<th>사용담당자</th>
-										<th>대분류코드</th>
-										<th>대분류명</th>
-										<th>수량</th>
-										<th>거래처코드</th>
-										<th>거래처명</th>
-										<th>담당자</th>
-										<th>취득금액(원)</th>
-										<th>용도</th>
-										<th>부대비용(원)</th>
-										<th>매입일자</th>
-										<th>세금계산서번호</th>
-										<th>구분</th>
-										<th>작성자</th>
-										<th>작성일</th>
-										<th>삭제여부</th>
-									</tr>
-								</thead>
-
-								<tbody>
-									<tr>
-										<td>1</td>
-										<td>무형자산코드</td>
-										<td>무형자산명</td>
-										<td>설치주소</td>
-										<td>사용담당자</td>
-										<td>대분류코드</td>
-										<td>대분류명</td>
-										<td>수량</td>
-										<td>거래처코드</td>
-										<td>거래처명</td>
-										<td>담당자</td>
-										<td>취득금액(원)</td>
-										<td>용도</td>
-										<td>부대비용(원)</td>
-										<td>매입일자</td>
-										<td>세금계산서번호</td>
-										<td>구분</td>
-										<td>작성자</td>
-										<td>작성일</td>
-										<td>
-											<div class="hidden-phone visible-desktop btn-group">
-												<button class="btn btn-mini btn-success">
-													<i class="icon-ok bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-info">
-													<i class="icon-edit bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-danger">
-													<i class="icon-trash bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-warning">
-													<i class="icon-flag bigger-120"></i>
-												</button>
-											</div>
-
-											<div class="hidden-desktop visible-phone">
-												<div class="inline position-relative">
-													<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
-														<i class="icon-cog icon-only bigger-110"></i>
+							
+							<div>
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>No</th>
+											<th>무형자산코드</th>
+											<th>무형자산명</th>
+											<th>설치주소</th>
+											<th>사용담당자</th>
+											<th>대분류코드</th>
+											<th>대분류명</th>
+											<th>수량</th>
+											<th>거래처코드</th>
+											<th>거래처명</th>
+											<th>담당자</th>
+											<th>취득금액(원)</th>
+											<th>용도</th>
+											<th>부대비용(원)</th>
+											<th>매입일자</th>
+											<th>세금계산서번호</th>
+											<th>구분</th>
+											<th>작성자</th>
+											<th>작성일</th>
+											<th>삭제여부</th>
+										</tr>
+									</thead>
+	
+									<tbody>
+										<tr>
+											<td>1</td>
+											<td>무형자산코드</td>
+											<td>무형자산명</td>
+											<td>설치주소</td>
+											<td>사용담당자</td>
+											<td>대분류코드</td>
+											<td>대분류명</td>
+											<td>수량</td>
+											<td>거래처코드</td>
+											<td>거래처명</td>
+											<td>담당자</td>
+											<td>취득금액(원)</td>
+											<td>용도</td>
+											<td>부대비용(원)</td>
+											<td>매입일자</td>
+											<td>세금계산서번호</td>
+											<td>구분</td>
+											<td>작성자</td>
+											<td>작성일</td>
+											<td>
+												<div class="hidden-phone visible-desktop btn-group">
+													<button class="btn btn-mini btn-success">
+														<i class="icon-ok bigger-120"></i>
 													</button>
-
-													<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
-														<li>
-															<a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View">
-																<span class="blue">
-																	<i class="icon-zoom-in bigger-120"></i>
-																</span>
-															</a>
-														</li>
-
-														<li>
-															<a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
-																<span class="green">
-																	<i class="icon-edit bigger-120"></i>
-																</span>
-															</a>
-														</li>
-
-														<li>
-															<a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
-																<span class="red">
-																	<i class="icon-trash bigger-120"></i>
-																</span>
-															</a>
-														</li>
-													</ul>
+	
+													<button class="btn btn-mini btn-info">
+														<i class="icon-edit bigger-120"></i>
+													</button>
+	
+													<button class="btn btn-mini btn-danger">
+														<i class="icon-trash bigger-120"></i>
+													</button>
+	
+													<button class="btn btn-mini btn-warning">
+														<i class="icon-flag bigger-120"></i>
+													</button>
 												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+	
+												<div class="hidden-desktop visible-phone">
+													<div class="inline position-relative">
+														<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+															<i class="icon-cog icon-only bigger-110"></i>
+														</button>
+	
+														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+															<li>
+																<a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View">
+																	<span class="blue">
+																		<i class="icon-zoom-in bigger-120"></i>
+																	</span>
+																</a>
+															</li>
+	
+															<li>
+																<a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
+																	<span class="green">
+																		<i class="icon-edit bigger-120"></i>
+																	</span>
+																</a>
+															</li>
+	
+															<li>
+																<a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
+																	<span class="red">
+																		<i class="icon-trash bigger-120"></i>
+																	</span>
+																</a>
+															</li>
+														</ul>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 							  
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
