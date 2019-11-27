@@ -20,7 +20,7 @@ public class Menu06Repository {
 	
 	public void test() {
 		TestVo testVo = new TestVo();
-		testVo.setName("크크크"); // 이름
+		testVo.setName("zxcvb123"); // 이름
 		
 		sqlSession.insert("menu06.save", testVo);
 	}

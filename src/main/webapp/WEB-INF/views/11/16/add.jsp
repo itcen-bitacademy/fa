@@ -168,6 +168,7 @@
                                        <td class="center">2019-10-29</td>
                                        <td class="center">02-759-4114</td>
                                        <td class="center">서울특별시 중구 남대문로 39</td>
+                                       <td class="center">제1금융</td>
                                        <td class="center">배준석</td>
                                        <td class="center">02-759-4041</td>
                                        <td class="center">bokdplp@bok.or.kr</td>

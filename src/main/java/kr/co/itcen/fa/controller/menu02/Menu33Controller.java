@@ -24,15 +24,15 @@ public class Menu33Controller {
 	@Autowired
 	private Menu33Service menu33Service;
 	
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String test() {
-		menu33Service.test();
+		//menu33Service.test();
 		
 		/*
 		JSP
 		02/33/list.jsp
 		*/
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 }
 
