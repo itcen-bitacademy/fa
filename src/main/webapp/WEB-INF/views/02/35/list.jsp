@@ -238,7 +238,7 @@
 														</button>
 
 														<button class="btn btn-mini btn-warning">
-															<i class="icon-flag bigger-120"></i>
+															<i class="icon-flag bigger-120" ></i>
 														</button>
 													</div>
 
