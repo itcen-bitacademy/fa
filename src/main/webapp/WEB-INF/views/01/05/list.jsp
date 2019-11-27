@@ -1,22 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+<style>
+.chosen-search {
+	display: none;
+}
+</style>
 
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
-<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 
-<script src="/fa/ace/assets/js/ace-elements.min.js"></script>
-<script src="/fa/ace/assets/js/ace.min.js"></script>
+
+
+<link href="${pageContext.request.contextPath }//ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+
+<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
 
 <script type="text/javascript">
-
 	jQuery(function($) {
 
 		$("#datepicker").datepicker({
@@ -29,7 +38,6 @@
 			selectOtherMonths : false,
 		});
 	});
-	
 </script>
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -47,13 +55,13 @@
 				<div class="page-header position-relative">
 					<h1 class="pull-left">카드 관리</h1>
 				</div>
-				
+
 				<div class="row-fluid">
 					<div class="span6">
 						<div class="tabbable">
 							<form class="form-horizontal">
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">카   드   번   호</label>
+									<label class="control-label" for="form-field-1">카 드 번 호</label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="카드 번호" />
@@ -61,208 +69,209 @@
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">사       용      자</label>
+									<label class="control-label" for="form-field-1">사 용 자</label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="사용자" />
 									</div>
 								</div>
 
-								
+
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">카  드 발 급  자
-									</label>
+									<label class="control-label" for="form-field-1">카 드 발 급
+										자 </label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="카드발급자" />
 									</div>
 								</div>
-								
-								<div class="control-group">
-									<label class="control-label" for="form-field-1"></label>
 
-									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="예금한도(만원)" />
-									</div>
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">계 좌 번 호
+									</label> <input type="text" id="form-field-1" placeholder="계좌번호" /> <input
+										type="text" value="예금주" readonly />
+
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">이 율 </label>
+									<label class="control-label" for="form-field-1">은 행 </label> <input
+										type="text" value="은행코드" readonly /> <input type="text"
+										value="은행명" readonly />
+
+								</div>
+
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">카드한도(만원)
+									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="이율(%)" />
+										<input type="text" id="form-field-1" placeholder="한도" />
 									</div>
 								</div>
+
+
+
 							</form>
 						</div>
 					</div>
-					<!-- /span -->
 
-					<!-- 4조에서 데이터 가져오는 부분 -->
+
 					<div class="span6">
 						<form class="form-horizontal">
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">은행 코드 </label>
-								<div class="controls">
-									<input type="text" id="form-field-1" placeholder="Username" />
-								</div>
+								<label class="control-label" for="form-field-1">유효기간 </label> <input
+									type="text" id="form-field-1" placeholder="MM" /> / <input
+									type="text" id="form-field-1" placeholder="YY" /> <label
+									class="control-label" for="form-field-1">CVC </label> <input
+									type="text" id="form-field-1" placeholder="CVC" />
+
 							</div>
+
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">개설 지점 </label>
-								<div class="controls">
-									<input type="text" id="form-field-1" placeholder="Username" />
-								</div>
+								<label class="control-label" for="form-field-1">교통카드 유무
+								</label> <input name="form-field-radio" type="radio" class="ace" checked />
+								<span class="lbl"> Yes</span> <input name="form-field-radio"
+									type="radio" class="ace" /> <span class="lbl"> No</span>
+
 							</div>
+
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">은행담당자 </label>
-								<div class="controls">
-									<input type="text" id="form-field-1" placeholder="Username" />
-								</div>
+								<label class="control-label" for="form-field-1">해외사용 여부
+								</label> <input name="form-field-radio2" type="radio" class="ace"
+									checked /> <span class="lbl"> Yes</span> <input
+									name="form-field-radio2" type="radio" class="ace" /> <span
+									class="lbl"> No</span>
+
 							</div>
+
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">은행전화번호 </label>
+								<label class="control-label" for="form-field-1">비밀번호 </label>
+
 								<div class="controls">
-									<input type="text" id="form-field-1" placeholder="Username" />
+									<input type="text" id="form-field-1" placeholder="비밀번호" />
 								</div>
 							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-field-1">카드사 </label>
+
+								<div class="controls">
+									<input type="text" id="form-field-1" placeholder="카드사" />
+								</div>
+							</div>
+
+
 						</form>
-					</div><!-- /.span -->
-				</div><!-- /row -->
-			</div><!-- /.row-fluid -->
-
-
-			<!-- buttons -->
-			<div class="row-fluid">
-				<div class="span12">
-					<div class="form-actions">
-						<button class="btn btn-info" type="button">
-							<i class="icon-ok bigger-110"></i> 입 력
-						</button>
-						&nbsp; &nbsp; &nbsp;
-						<button class="btn" type="reset">
-							<i class="icon-undo bigger-110"></i> 조 회
-						</button>
-						&nbsp; &nbsp; &nbsp;
-						<button class="btn" type="reset">
-							<i class="icon-undo bigger-110"></i> 수 정
-						</button>
-						&nbsp; &nbsp; &nbsp;
-						<button class="btn" type="reset">
-							<i class="icon-undo bigger-110"></i> 삭 제
-						</button>
 					</div>
-					<div class="hr"></div>
-				</div><!-- /.span -->
-			</div><!-- /.row-fluid -->
+					<!-- /.span -->
+				</div>
+				<!-- /row -->
+				<!-- /.row-fluid -->
 
 
-			<!-- Tables -->
-			<div class="row-fluid">
-			<div class="span12">
-				<table id="sample-table-1"
-					class="table table-striped table-bordered table-hover">
-					<thead>
-						<tr>
-							<th class="center"><label> <input type="checkbox"
-									class="ace" /> <span class="lbl"></span>
-							</label></th>
-							<th>계좌번호</th>
-							<th>은행번호</th>
-							<th>예금주</th>
-							<th>개설일자</th>
-							<th>만기일자</th>
-							<th>예금한도(만원)</th>
-							<th>이율(%)</th>
-							<th>개설지점</th>
-							<th>은행</th>
-							<th>담당자</th>
-							<th>은행전화번호</th>
-							<th>입력일자</th>
-							<th>입력담당자</th>
-							<th>수정일자</th>
-							<th>수정담당자</th>							
-						</tr>
-					</thead>
+				<!-- buttons -->
+				<div class="row-fluid">
+					<div class="span8">
+						<button class="btn btn-info btn-small">조회</button>
+						<button class="btn btn-danger btn-small">삭제</button>
+						<button class="btn btn-warning btn-small">수정</button>
+						<button class="btn btn-primary btn-small">입력</button>
+						<button class="btn btn-default btn-small">취소</button>
+					</div>
 
-					<tbody>
-						<tr>
-							<td class="center"><label> <input type="checkbox"
-									class="ace" /> <span class="lbl"></span>
-							</label></td>
+				</div>
+				<div class="hr hr-18 dotted"></div>
 
-							
-							<td>201911150001</td>
-							<td>1234567</td>
-							<td>이고니</td>
-							<td>2018-01-12</td>
-							<td>2023-01-11</td>
-							<td>5,000</td>
-							<td>0.09</td>
-							<td>가로수길</td>
-							<td>국민</td>
-							<td>김길동</td>
-							<td>02)442-2213</td>
-							<td>20119-11-12</td>
-							<td>신동주</td>
-							<td>-</td>
-							<td>-</td>
-							
-							
-						</tr>
-						<tr>
-							<td class="center"><label> <input type="checkbox"
-									class="ace" /> <span class="lbl"></span>
-							</label></td>
-							
-							
-							<td>201911150001</td>
-							<td>1234567</td>
-							<td>곽철용</td>
-							<td>20189-05-11</td>
-							<td>2024-05-10</td>
-							<td>10,000</td>
-							<td>0.05</td>
-							<td>강남(서)</td>
-							<td>우리</td>
-							<td>잔나비</td>
-							<td>02)4512-5532</td>
-							<td>20119-11-12</td>
-							<td>신동주</td>
-							<td>-</td>
-							<td>-</td>
-						</tr>
-					</tbody>
-				</table>
+
+				<!-- Tables -->
+				<div class="row-fluid">
+					<div class="span12">
+						<table id="sample-table-1"
+							class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center"><label> <input type="checkbox"
+											class="ace" /> <span class="lbl"></span>
+									</label></th>
+									<th>카드번호</th>
+									<th>유효기간</th>
+									<th>CVC</th>
+									<th>사용자</th>
+									<th>카드발급자</th>
+									<th>계좌번호</th>
+									<th>예금주</th>
+									<th>비밀번호</th>
+									<th>은행코드</th>
+									<th>은행명</th>
+									<th>카드사</th>
+									<th>카드한도(만원)</th>
+									<th>교통카드 유무</th>
+									<th>해외사용 여부</th>
+									<th>입력일자</th>
+									<th>입력담당자</th>
+									<th>수정일자</th>
+									<th>수정담당자</th>	
+									
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr>
+									<td class="center"><label> <input type="checkbox"
+											class="ace" /> <span class="lbl"></span>
+									</label></td>
+
+
+									<td>1111-1111-1111-1111</td>
+									<td>12/23</td>
+									<td>111</td>
+									<td>김승곤</td>
+									<td>안대혁</td>
+									<td>111-11-11111</td>
+									<td>김승곤</td>
+									<td>****</td>
+									<td>11111111</td>
+									<td>국민은행</td>
+									<td>삼성</td>
+									<td>100,000</td>
+									<td>가능</td>
+									<td>가능</td>
+									<td>2019-11-18</td>
+									<td>김승곤</td>
+									<td>2019-11-27</td>
+									<td>승곤</td>
+
+
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- /row -->
+				<div class="pagination">
+					<ul>
+						<li class="disabled"><a href="#"><i
+								class="icon-double-angle-left"></i></a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					</ul>
+				</div>
+				
+				
+				
+				
+				
 			</div>
-			<!-- /span -->
+			<!-- /.page-content -->
 		</div>
-		<!-- /row -->
-			<div class="pagination no-margin">
-				<ul>
-					<li class="prev disabled"><a href="#"> <i
-							class="icon-double-angle-left"></i>
-					</a></li>
-
-					<li class="active"><a href="#">1</a></li>
-
-					<li><a href="#">2</a></li>
-
-					<li><a href="#">3</a></li>
-
-					<li class="next"><a href="#"> <i
-							class="icon-double-angle-right"></i>
-					</a></li>
-				</ul>
-			</div>
-
-		</div>
-	<!-- /.page-content -->
+		<!-- /.main-content -->
 	</div>
-	<!-- /.main-content -->
-
-
-
-
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>

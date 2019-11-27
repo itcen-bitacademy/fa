@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -33,7 +34,6 @@
 										<input type="text" id="land_code" name="landCode" placeholder="10자로 입력하세요"/>
 									</div>
 								</div>
-								
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1">대분류 코드</label>
@@ -68,7 +68,7 @@
 												<option value="${customerVo.no }">${customerVo.name }</option>
 											</c:forEach>
 										</select>
-										<input readonly type="text" class="span6" id="form-input-readonly" value="코드를 지정하면 거래처명이 등록됩니다">
+										<input readonly type="text" class="span6" id="customerName" name="customerName" value="코드를 지정하면 거래처명이 등록됩니다">
 									</div>
 								</div>
 								<div class="control-group">
@@ -99,7 +99,7 @@
 								</div>
 								
 								<div class="control-group">
-										<div style="float:left;width:50%">											
+										<div style="float:left;width:50%">
 											<label class="control-label" for="form-field-1">토지소유자</label>
 											<div class="controls">
 												<input type="text" id="form-field-1" name="ownerName" placeholder="이름을 입력하세요"/>
@@ -120,16 +120,12 @@
 						<div class="span6"><!-- 대변 -->
 							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 								<div class="control-group">
-									<div class="controls">
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>등록</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>수정</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>삭제</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>조회</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn" type="reset"><i class="icon-undo bigger-110"></i>Reset</button>
+									<div class="controls" >
+										 <button class="btn btn-primary btn-small" style="float:left; margin-left:200px; margin-right:20px;">등록</button>
+		                                 <button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
+		                                 <button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
+		                                 <button class="btn btn-info btn-small" style="float:left;margin-right:20px;">조회</button>
+		                                 <button class="btn btn-default btn-small" style="float:left;margin-right:20px;">초기화</button>
 									</div>
 								</div>
 								<div class="control-group">
@@ -266,7 +262,19 @@
 												
 											</tbody>
 										</table>
-									</div>		
+										
+									</div>
+									<div class="pagination">
+										<ul>
+											<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+										</ul>
+									</div>	
 					<!-- PAGE CONTENT ENDS -->
 					
 				

@@ -129,10 +129,10 @@
 									</div>
 								</div>
 								
-								<div class="control-group">
+								<div class="control-group" >
 										<div class="controls">
 											<div class="span3" style="float:right;">
-												<button class="btn btn-info" type="submit" style="height:36px; float:right; margin-right:15px"><i class="icon-ok bigger-80"></i>상세조회</button>
+												<button class="btn btn-small btn-info" type="submit" style="height:36px; float:right; margin-right:15px"><i class="icon-ok bigger-80"></i>상세조회</button>
 											</div>
 											<div class="span2" style="float:right">
 												<label style="float:right;">
@@ -151,7 +151,7 @@
 											<div class="span1" style="float:right">
 												<button class="btn btn-info" type="submit" style="height:36px"><i class="icon-ok bigger-80"></i>조회</button>
 											</div>
-											<div class="span2" style="float:right">
+											<div class="span2" style="float:right;">
 												<input type="text" class="span11" id="form-field-1" name="search" placeholder="검색어를 입력하세요"/>
 											</div>
 										</div>
@@ -276,7 +276,19 @@
 											
 										</tbody>
 										</table>
-									</div>		
+									</div>
+									
+									<div class="pagination">
+										<ul>
+											<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+										</ul>
+									</div>	
 					<!-- PAGE CONTENT ENDS -->
 					
 				
