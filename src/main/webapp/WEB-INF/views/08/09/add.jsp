@@ -75,34 +75,46 @@
 								<div class="control-group">
 										<div style="float:left;width:50%">											
 											<label class="control-label" for="form-field-1">매입일자</label>
-											<div class="controls">
-												<input style="width:150px" type="text" id="form-field-1" name="acqPrice" placeholder=""/> <i class="icon-calendar"></i>
+											<div class="controls" style="width:90%">
+												<input type="text" id="form-field-1" name="acqPrice" placeholder=""/> <i class="icon-calendar"></i>
 											</div>
 										</div>	
 										<div style="float:left;width:50%">											
 											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">공시지가</label>
-											<input style="width:200px" type="text" id="form-field-1" name="acqPrice" placeholder=""/>
+											<input type="text" id="form-field-1" name="acqPrice" placeholder=""/>
+										</div>	
+								</div>
+								
+								
+								<div class="control-group">
+										<div style="float:left;width:50%">											
+											<label class="control-label" for="form-field-1">등록세</label>
+											<div class="controls">
+												<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
+											</div>
+										</div>	
+										<div style="float:left;width:50%">											
+											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">취득세</label>
+											<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
 										</div>	
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">취득금액</label>
-									<div class="controls">
-										<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
-									</div>
+										<div style="float:left;width:50%">											
+											<label class="control-label" for="form-field-1">토지소유자</label>
+											<div class="controls">
+												<input type="text" id="form-field-1" name="acqPrice" placeholder=""/>
+											</div>
+										</div>	
+										<div style="float:left;width:50%">											
+											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">합병코드</label>
+											<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
+										</div>	
 								</div>
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">부대비용</label>
-									<div class="controls">
-										<input type="text" id="form-field-1" name="addiFee" placeholder="금액을 입력하세요"/>
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">세금계산서 번호</label>
-									<div class="controls">
-										<input type="text" class="span7" id="form-field-1" name="taxbillNo" placeholder="12자로 입력하세요"/>
-									</div>
-								</div>
+								
+								
+								
+								
 							</form>
 						</div><!-- 차변 span -->
 							
