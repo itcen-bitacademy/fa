@@ -126,11 +126,11 @@
 							<div class="hr hr-18 dotted"></div>
 							
 							<div class="span8">
-								<button class="btn btn-info btn-small" style="float:left;margin-right:20px;">조회</button>
-								<button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
-								<button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
-								<button class="btn btn-primary btn-small" style="float:left;margin-right:20px;">입력</button>
-								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;">취소</button>
+								<button class="btn btn-info btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
+								<button class="btn btn-danger btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
+								<button class="btn btn-warning btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
+								<button class="btn btn-primary btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
+								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">취소</button>
 							</div>
 							<div class="hr hr-18 dotted"></div>
 							</form>
