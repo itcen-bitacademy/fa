@@ -5,8 +5,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<c:import url="/WEB-INF/views/common/head.jsp" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
 

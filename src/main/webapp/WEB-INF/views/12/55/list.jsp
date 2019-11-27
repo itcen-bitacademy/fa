@@ -6,11 +6,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<c:import url="/WEB-INF/views/common/head.jsp" />
-
-
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
-
+<c:import url="/WEB-INF/views/common/head.jsp" />
+<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -18,8 +17,6 @@
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
-
-
 
 
 				<div class="page-header position-relative">
@@ -43,9 +40,6 @@
 								</select>
 								
 								&nbsp;
-								
-								
-								
 								
 								<button class="btn btn-small btn-info">조회</button>
 								
@@ -108,9 +102,7 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	<script type="text/javascript">
+<script>
 	
 	$(function(){
 		$(".chosen-select").chosen();

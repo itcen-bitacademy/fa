@@ -5,14 +5,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
 
 <script type="text/javascript">
-	
 	$(function(){
 		$(".chosen-select").chosen(); 
 	});
@@ -25,9 +24,6 @@
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-		
-		
-		
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">월별 거래처 매출 현황</h1>
