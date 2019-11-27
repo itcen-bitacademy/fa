@@ -14,8 +14,7 @@
 }
 </style>
 
-
-<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
 <link href="${pageContext.request.contextPath }//ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
@@ -58,14 +57,14 @@
 					<form class="form-horizontal">
 						입력 기간
 
-						<div class="input-append">
-							<input type="text" id="datepicker" class="input-small" /> <span
+						<<div class="input-append">
+							<input type="text" id="datepicker" class="cl-date-picker"  /> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" class="input-small" /> <span
+							<input type="text" id="datepicker2" class="cl-date-picker"  /> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
@@ -189,7 +188,6 @@
 
 
 
-
 			</div>
 			<!-- /.page-content -->
 		</div>
@@ -198,5 +196,41 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	
+	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		})
+	</script>
+	
+	
+	
 </body>
 </html>

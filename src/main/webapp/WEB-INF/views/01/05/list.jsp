@@ -25,21 +25,6 @@
 <script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
 
-<script type="text/javascript">
-	jQuery(function($) {
-
-		$("#datepicker").datepicker({
-			showOtherMonths : true,
-			selectOtherMonths : false,
-		});
-
-		$("#datepicker2").datepicker({
-			showOtherMonths : true,
-			selectOtherMonths : false,
-		});
-	});
-</script>
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 
