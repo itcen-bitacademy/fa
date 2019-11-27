@@ -39,7 +39,7 @@ public class Menu09Controller {
 		 *   08/09/list.jsp
 		 * 
 		 */
-		return MAINMENU + "/" + SUBMENU + "/add";
+		return MAINMENU + "/" + SUBMENU + "/add2";
 	}
 	
 }
