@@ -5,6 +5,16 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+
+<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+
+<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
+
+<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="/fa/ace/assets/js/jquery.ui.touch-punch.min.js"></script>
+
+<script src="/fa/ace/assets/js/ace-elements.min.js"></script>
+<script src="/fa/ace/assets/js/ace.min.js"></script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -48,23 +58,51 @@
 								</div>
 								
 								<br/>
+								
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 대표자:&nbsp; </label>
 									<input type="text" id="customer_ceo" placeholder="대표자" class="col-xs-10 col-sm-5" />
 								</div>
+								
+								<br/>
+								
+								<div class="form-group" >
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 주소:&nbsp; </label>
+									<div class="input-append">
+										<input type="text" id="customer_address" placeholder="주소" class="col-xs-10 col-sm-5" />
+										<button type="button" class="">
+											<i class="icon-search bigger-110"></i> 검색
+										</button>
+									</div>
+									
+									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
+									
+									<input type="text" id="customer_address" placeholder="자동입력" class="col-xs-10 col-sm-5" />
+								</div>
+								
+								<br/>
+								
+								<div class="form-group" style=float:left>
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 업태:&nbsp; </label>
+									<input type="text" id="customer_no" placeholder="업태" class="col-xs-10 col-sm-5" />	
+								</div>
+								<div class="form-group" >
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 종목:&nbsp; </label>
+									<input type="text" id="customer_name" placeholder="종목" class="col-xs-10 col-sm-5" />
+								</div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 법인번호:&nbsp; </label>
+									<input type="text" id="form-field-1" placeholder="법인번호" class="col-xs-10 col-sm-5" />
+								</div>
+
 							</form>
 							
 						</div><!-- /span -->
 						
 						<div class="span6">
 							<form class="form-horizontal" role="form">
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 법인번호:&nbsp; </label>
-									<input type="text" id="form-field-1" placeholder="법인번호" class="col-xs-10 col-sm-5" />
-								</div>
-								
-								<br/>
-								
+							
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 관할 영업소:&nbsp; </label>
 									<input type="text" id="form-field-1" placeholder="관할 영업소" class="col-xs-10 col-sm-5" />
@@ -80,23 +118,130 @@
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> E-mail:&nbsp; </label>
 									<input type="text" id="customer_name" placeholder="E-mail" class="col-xs-10 col-sm-5" />
 								</div>
+								
+								<br/>
+								
+								<div class="form-group" >
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 계좌번호:&nbsp; </label>
+									<div class="input-append">
+										<input type="text" id="customer_address" placeholder="주소" class="col-xs-10 col-sm-5" />
+										<button type="button" class="">
+											<i class="icon-search bigger-110"></i> 조회
+										</button>
+									</div>
+									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
+									<input type="text" id="customer_address" placeholder="자동입력" class="col-xs-10 col-sm-5" />
+								</div>
+								
+								<br/>
+								
+								<div class="form-group" style=float:left>
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 은행명:&nbsp; </label>
+									<input type="text" id="customer_no" placeholder="자동입력" class="col-xs-10 col-sm-5" />	
+								</div>
+								<div class="form-group" >
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 예금주:&nbsp; </label>
+									<input type="text" id="customer_name" placeholder="E-mail" class="col-xs-10 col-sm-5" />
+								</div>
+								
+								
 							</form>
-							
+						</div><!-- span -->
 						
+						<div class="row-fluid">
+							<div class="span12">
+								<div class="form-actions">
+								
+									<button class="btn btn-info" type="button">
+										<i class="icon-ok bigger-110"></i> 입 력
+									</button>
+								
+									&nbsp; &nbsp;
+									<button class="btn" type="reset">
+										<i class="icon-list bigger-110"></i> 조 회
+									</button>
+									
+									&nbsp; &nbsp;
+									<button class="btn" type="reset">
+										<i class="icon-edit bigger-110"></i> 수 정
+									</button>
+									&nbsp; &nbsp;
+									<button class="btn" type="reset">
+										<i class="icon-remove bigger-110"></i> 삭 제
+									</button>
+								</div>
+								<div class="hr"></div>
+							</div><!-- /.span -->
 						</div>
+						
+						<div class="row-fluid">
+						<div class="span12">
+							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center">
+											<label class="pos-rel">
+											<input type="checkbox" class="ace" />
+											<span class="lbl"></span>
+											</label>
+										</th>
+										<th>사업자등록번호</th>
+										<th>상호</th>
+										<th>대표자</th>
+										<th>주소</th>
+										<th>업태/종목</th>
+										<th>관할영업소</th>
+										<th>거래처 전화번호</th>
+										<th>거래처 담당자 성명</th>
+										<th>e-mail</th>
+										<th>은행명</th>
+										<th>계좌번호</th>
+										<th>예금주</th>
+										<th>입력일자</th>
+										<th>수정일자</th>
+										<th>입력담당자</th>
+										<th>수정담당자</th>
+									</tr>
+								</thead>
+								<tbody>
+										<tr>
+											<td class="center">
+												<label class="pos-rel">
+													<input type="checkbox" class="ace" />
+													<span class="lbl"></span>
+												</label>
+											</td>
+											<td>120-86-81451</td>
+											<td>아이티센</td>
+											<td>박진국</td>
+											<td>서울특별시 서초구 반포대로 13</td>
+											<td>컴퓨터시스템 통합 자문 및 구축 서비스업</td>
+											<td>본사</td>
+											<td>02-3497-8300</td>
+											<td>이종윤</td>
+											<td>leejy3653@naver.com</td>
+											<td>국민은행</td>
+											<td>367802-01-110999</td>
+											<td>이종윤</td>
+											<td>2019-11-27</td>
+											<td>-</td>
+											<td>yoon3653</td>
+											<td>-</td>
+										</tr>
+								</tbody>
+							</table>
+						</div><!-- /span -->
+					</div>
 					</div>
 					
 					
 					<!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
-					
-			</div><!-- /.row-fluid -->
-			
-			
-			
-		</div><!-- /.page-content -->
-	</div><!-- /.main-content -->
-</div><!-- /.main-container -->
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div>
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
