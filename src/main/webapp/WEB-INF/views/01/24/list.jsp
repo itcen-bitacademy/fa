@@ -20,6 +20,9 @@
 <script src="/fa/ace/assets/js/ace-elements.min.js"></script>
 <script src="/fa/ace/assets/js/ace.min.js"></script>
 
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
+
 <script type="text/javascript">
 	jQuery(function($) {
 
@@ -32,6 +35,10 @@
 			showOtherMonths : true,
 			selectOtherMonths : false,
 		});
+	});
+	
+	$(function(){
+		$(".chosen-select").chosen(); 
 	});
 </script>
 
@@ -67,21 +74,30 @@
 							</div>				
 						
 						
-						계좌번호 :
+						카드시작번호 :
 
 						<input type="text" id="form-field-1" placeholder="계좌번호" />
 							
 						삭제여부 : 
-							<select size="1" name="sample-table-2_length"
-								aria-controls="sample-table-2">
-								<option value="10" selected="selected">10</option>
-								<option value="25">25</option>
-								<option value="50">50</option>
-								<option value="100">100</option>
-							</select>
+								<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="상위메뉴 선택">
+								<option value="1">전표관리</option>
+									
+								<option value="2">매입관리</option>
+									
+								<option value="8">재산관리</option>
+									
+								<option value="11">부채관리</option>
+									
+								<option value="12">매출관리</option>
+									
+								<option value="17">결산관리</option>
+									
+								<option value="18">시스템관리</option>
+									
+								</select>
 							
 						<button class="btn btn-small btn-success">
-						조회
+						조회 
 							<i class="icon-arrow-right icon-on-right bigger-110"></i>
 						</button>
 						
