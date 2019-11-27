@@ -26,12 +26,12 @@ public class Menu09Controller {
 	public static final String SUBMENU = "09";
 	
 	
-	@Autowired
+	@Autowired 
 	private Menu09Service menu09Service;
 	
 	
 	//               /08   /   09     , /08/09/list
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model) {
 		menu09Service.test();
 		/*
@@ -39,7 +39,7 @@ public class Menu09Controller {
 		 *   08/09/list.jsp
 		 * 
 		 */
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 }

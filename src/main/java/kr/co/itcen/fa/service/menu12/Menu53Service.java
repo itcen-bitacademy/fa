@@ -18,7 +18,7 @@ public class Menu53Service {
 	private Menu53Repository menu53Repository;
 
 	public void test() {
-		menu53Repository.test();
+		//menu53Repository.test();
 	}
 }
 
