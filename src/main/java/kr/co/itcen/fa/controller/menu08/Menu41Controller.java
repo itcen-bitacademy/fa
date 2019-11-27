@@ -52,9 +52,9 @@ public class Menu41Controller {
 		 *   08/41/list.jsp
 		 * 
 		 */
-		Map<String, Object> map = new HashMap<>();
-		map.putAll(menu41Service.getName());
-		model.addAllAttributes(map);
+//		Map<String, Object> map = new HashMap<>();
+//		map.putAll(menu41Service.getName());
+//		model.addAllAttributes(map);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
