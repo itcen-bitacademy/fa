@@ -33,7 +33,7 @@
 									<label class="control-label" for="cl-ym-date-picker" style="text-align:left;width:120px;">년 월:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker" id="cl-ym-date-picker" type="text" data-date-format="yyyy-mm" />
+											<input class="span11 date-picker" id="cl-ym-date-picker" type="text" data-date-format="yyyy-mm" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -49,7 +49,7 @@
 									<label class="control-label" for="cl-total-date-picker" style="text-align:left;width:120px;">전체 마감일:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker cl-date-picker" id="cl-total-date-picker" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="span11 date-picker cl-date-picker" id="cl-total-date-picker" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -63,7 +63,7 @@
 									<label class="control-label" for="cl-assets-date-picker" style="text-align:left;width:120px;">자산 마감일:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker cl-date-picker" id="cl-assets-date-picker" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="span11 date-picker cl-date-picker" id="cl-assets-date-picker" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -77,7 +77,7 @@
 									<label class="control-label" for="cl-debt-date-picker" style="text-align:left;width:120px;">부채 마감일:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker cl-date-picker" id="cl-debt-date-picker" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="span11 date-picker cl-date-picker" id="cl-debt-date-picker" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -94,7 +94,7 @@
 									<label class="control-label" for="cl-stmt-date-picker" style="text-align:left;width:120px;">전표 마감일:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker cl-date-picker" id="cl-stmt-date-picker" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="span11 date-picker cl-date-picker" id="cl-stmt-date-picker" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -108,7 +108,7 @@
 									<label class="control-label" for="cl-purchase-date-picker" style="text-align:left;width:120px;">매입 마감일:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker cl-date-picker" id="cl-purchase-date-picker" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="span11 date-picker cl-date-picker" id="cl-purchase-date-picker" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -122,7 +122,7 @@
 									<label class="control-label" for="cl-sales-date-picker" style="text-align:left;width:120px;">매출 마감일:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker cl-date-picker" id="cl-sales-date-picker" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="span11 date-picker cl-date-picker" id="cl-sales-date-picker" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -139,7 +139,7 @@
 									<label class="control-label" for="cl-settlement-date-picker" style="text-align:left;width:120px;">결산 마감일:</label>
 									<div class="controls" style="margin-left:120px;">
 										<div class="row-fluid input-append">
-											<input class="span10 date-picker cl-date-picker" id="cl-settlement-date-picker" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="span11 date-picker cl-date-picker" id="cl-settlement-date-picker" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
