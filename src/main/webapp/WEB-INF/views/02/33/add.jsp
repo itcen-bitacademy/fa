@@ -56,8 +56,12 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-section-name">품목 대분류명</label>
 								<div class="controls">
-									<input class="span7" type="text" id="form-field-section-name" name="section-name" readonly="true"/>
-									<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+									<div class="row-fluid input-append">
+										<input class="span7" id="form-field-section-name" name="section-name" type="text" readonly="true"/>
+										<span class="add-on">
+											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+										</span>
+									</div>
 								</div>
 							</div>
 							
@@ -71,8 +75,13 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-factory-address">생산공장 주소</label>
 								<div class="controls">
-									<input class="span10" type="text" id="form-field-factory-address" name="factory-address" style="margin:0 0 5px 0" readonly="true"/>
-									<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+									<div class="row-fluid input-append" style="margin:0 0 5px 0">
+										<input class="span9" id="form-field-factory-address" name="factory-address" type="text" readonly="true"/>
+										<span class="add-on">
+											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+										</span>
+									</div>
+									
 									<input class="span10" type="text" id="form-field-factory-address" name="factory-address" placeholder="상세 주소"/>
 								</div>
 								
@@ -139,14 +148,11 @@
 							<br>
 						</div>
 						<div>
-							<button class="btn" type="submit">입력</button>
-							&nbsp;
-							<button class="btn" type="submit">수정</button>
-							&nbsp;
-							<button class="btn" type="submit">삭제</button>
-							&nbsp;
-							<button class="btn" type="submit">조회</button>
-							&nbsp;
+							<button class="btn btn-info btn-small" type="submit">조회</button>
+							<button class="btn btn-danger btn-small" type="submit">삭제</button>
+							<button class="btn btn-warning btn-small" type="submit">수정</button>
+							<button class="btn btn-primary btn-small" type="submit">입력</button>
+							<button class="btn btn-default btn-small" type="submit">취소</button>
 						</div>
 					</form>
 					

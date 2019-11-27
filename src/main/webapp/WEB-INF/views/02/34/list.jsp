@@ -60,16 +60,24 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-section-name">품목 대분류명</label>
 								<div class="controls">
-									<input class="span7" type="text" id="form-field-section-name" name="section-name" readonly="true"/>
-									<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+									<div class="row-fluid input-append">
+										<input class="span7" id="form-field-section-name" name="section-name" type="text" readonly="true"/>
+										<span class="add-on">
+											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+										</span>
+									</div>
 								</div>
 							</div>
 							
 							<div class="control-group">
 								<label class="control-label" for="form-field-factory-name">생산공장명</label>
 								<div class="controls">
-									<input class="span8" type="text" id="form-field-factory-name" name="factory-name" placeholder="생산공장명" readonly="true"/>
-									<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+									<div class="row-fluid input-append">
+										<input class="span7" id="form-field-factory-name" name="factory-name" type="text" readonly="true"/>
+										<span class="add-on">
+											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+										</span>
+									</div>
 								</div>
 							</div>
 							
@@ -87,10 +95,11 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-item-name">품목명</label>
 								<div class="controls">
-									<input type="text" id="form-field-item-name" name="item-name" placeholder="품목명"/>
+									<input type="text" id="form-field-item-name" name="item-name" placeholder="품목명" style="display:inline"/>&nbsp;&nbsp;&nbsp;
+									<input class="ace" type="checkbox" id="id-disable-check" style="display:inline">
+									<label class="lbl" for="id-disable-check" style="display:inline"> 삭제 품목 포함</label>
 								</div>
 							</div>
-							
 							<div class="control-group">
 								<label class="control-label" for="form-field-section-code">품목 대분류코드</label>
 								<div class="controls">
@@ -122,13 +131,13 @@
 												<i class="icon-calendar"></i>
 											</span>
 										</div>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<button class="btn btn-small btn-info" style="display:inline">조회</button>
 									</div>
+									
+									
 								</div>
 							</div>
-						</div>
-						<div>
-							<button class="btn" type="submit">조회</button>
-							&nbsp;
 						</div>
 					</form>
 					
