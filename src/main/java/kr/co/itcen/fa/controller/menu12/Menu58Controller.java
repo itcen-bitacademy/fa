@@ -4,37 +4,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu15Service;
-import kr.co.itcen.fa.vo.menu12.CustomerVo;
 
 /**
  * 
  * @author 양홍석
- * 매출거래처관리
+ * 월별거래처매입현황
  *
  */
 @Auth
 @Controller
-@RequestMapping("/" + Menu15Controller.MAINMENU)
-public class Menu15Controller {
+@RequestMapping("/" + Menu58Controller.MAINMENU)
+public class Menu58Controller {
 	public static final String MAINMENU = "12";
-	public static final String SUBMENU = "15";
+	public static final String SUBMENU = "58";
 
 	@Autowired
 	private Menu15Service menu15Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
-		//menu15Service.list();
 		return MAINMENU + "/" + SUBMENU + "/list";
-	}
-	
-	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String add(CustomerVo customerVo) {
-		menu15Service.addCustomer(customerVo);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 }

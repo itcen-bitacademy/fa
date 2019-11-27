@@ -4,23 +4,20 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.itcen.fa.vo.menu12.CustomerVo;
-
 /**
  * 
  * @author 양홍석
- * 매출거래처관리
+ * 매출거래처현황조회
  *
  */
 @Repository
-public class Menu15Repository {
+public class Menu52Repository {
 
 	@Autowired
 	private SqlSession sqlSession;
 
-	public void saveCustomer(CustomerVo customerVo) {
-		
-		sqlSession.insert("menu15.save", customerVo);
+	public void test() {
+
 	}
 	
 	
