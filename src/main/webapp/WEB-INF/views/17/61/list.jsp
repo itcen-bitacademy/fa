@@ -55,9 +55,6 @@
 					</form>
 					<!-- /row -->
 
-					<%-- 실선 --%>
-					<%-- <div class="hr hr-18 solid"></div> --%>
-
 					<%-- 테이블 영역 --%>
 					<div class="row-fluid">
 						<div class="span12">
@@ -92,7 +89,7 @@
 										<td>-</td>
 										<td>-</td>
 										<td>
-											<button>결산</button>
+											<button class="btn btn-info btn-small">결산</button>
 										</td>
 									</tr>
 									<tr>
@@ -115,6 +112,7 @@
 					</div>
 					<!-- PAGE CONTENT ENDS -->
 
+					<%-- 페이징 --%>
 					<div class="pagination">
 						<ul>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
