@@ -6,22 +6,26 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+<style>
+.chosen-search {
+	display: none;
+}
+</style>
 
-<script src="/fa/ace/assets/js/bootstrap.min.js"></script>
-<link href="/fa/ace/assets/css/bootstrap.min.css" type="text/css"
-	rel="stylesheet" />
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
-	type="text/css" rel="stylesheet" />
-<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
-<script src="/fa/ace/assets/js/ace-elements.min.js"></script>
-<script src="/fa/ace/assets/js/ace.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
 
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
+
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 
 <script type="text/javascript">
 	jQuery(function($) {
@@ -60,41 +64,33 @@
 					<form class="form-horizontal">
 						입력 기간
 
-						
-							<div class="input-append">
-								<input type="text" id="datepicker" class="input-small" /> <span
-									class="add-on"> <i class="icon-calendar"></i>
-								</span>
-							</div>
-							&nbsp; &nbsp; ~ &nbsp;
-							<div class="input-append">
-								<input type="text" id="datepicker2" class="input-small" /> <span
-									class="add-on"> <i class="icon-calendar"></i>
-								</span>
-							</div>				
-						
-						
-						카드시작번호 :
+						<div class="input-append">
+							<input type="text" id="datepicker" class="input-small" /> <span
+								class="add-on"> <i class="icon-calendar"></i>
+							</span>
+						</div>
+						&nbsp; &nbsp; ~ &nbsp;
+						<div class="input-append">
+							<input type="text" id="datepicker2" class="input-small" /> <span
+								class="add-on"> <i class="icon-calendar"></i>
+							</span>
+						</div>
 
-						<input type="text" id="form-field-1" placeholder="계좌번호" />
-							
-						삭제여부 : 
-								<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="상위메뉴 선택">
-								<option value="false">N</option>
-								
-								<option value="true">Y</option>
-										
-								</select>
-							
-						<button class="btn btn-small btn-success">
-						조회 
-							<i class="icon-arrow-right icon-on-right bigger-110"></i>
-						</button>
-						
-						
-						
+
+						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호" size=4 /> 
+						카드종료번호 : <input type="text" id="form-field-1" placeholder="종료번호" /> 
+						삭제여부 : <select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="상위메뉴 선택">
+							<option value="false">N</option>
+							<option value="true">Y</option>
+
+						</select>
+
+						<button class="btn btn-small btn-info">조회</button>
+
+
+
 					</form>
-					<div class="hr"></div>
+					<div class="hr hr-18 dotted"></div>
 				</div>
 
 
@@ -105,17 +101,20 @@
 							class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
+									<th>카드번호</th>
+									<th>유효기간</th>
+									<th>CVC</th>
+									<th>사용자</th>
+									<th>카드발급자</th>
 									<th>계좌번호</th>
-									<th>은행번호</th>
 									<th>예금주</th>
-									<th>개설일자</th>
-									<th>만기일자</th>
-									<th>예금한도(만원)</th>
-									<th>이율(%)</th>
-									<th>개설지점</th>
-									<th>은행</th>
-									<th>담당자</th>
-									<th>은행전화번호</th>
+									<th>비밀번호</th>
+									<th>은행코드</th>
+									<th>은행명</th>
+									<th>카드사</th>
+									<th>카드한도(만원)</th>
+									<th>교통카드 유무</th>
+									<th>해외사용 여부</th>
 									<th>입력일자</th>
 									<th>입력담당자</th>
 									<th>수정일자</th>
@@ -125,66 +124,48 @@
 
 							<tbody>
 								<tr>
-
-									<td>201911150001</td>
-									<td>1234567</td>
-									<td>이고니</td>
-									<td>2018-01-12</td>
-									<td>2023-01-11</td>
-									<td>5,000</td>
-									<td>0.09</td>
-									<td>가로수길</td>
-									<td>국민</td>
-									<td>김길동</td>
-									<td>02)442-2213</td>
-									<td>20119-11-12</td>
-									<td>신동주</td>
-									<td>-</td>
-									<td>-</td>
-
+									<td>1111-1111-1111-1111</td>
+									<td>12/23</td>
+									<td>111</td>
+									<td>김승곤</td>
+									<td>안대혁</td>
+									<td>111-11-11111</td>
+									<td>김승곤</td>
+									<td>****</td>
+									<td>11111111</td>
+									<td>국민은행</td>
+									<td>삼성</td>
+									<td>100,000</td>
+									<td>가능</td>
+									<td>가능</td>
+									<td>2019-11-18</td>
+									<td>김승곤</td>
+									<td>2019-11-27</td>
+									<td>승곤</td>
 
 								</tr>
-								<tr>
 
-									<td>201911150001</td>
-									<td>1234567</td>
-									<td>곽철용</td>
-									<td>20189-05-11</td>
-									<td>2024-05-10</td>
-									<td>10,000</td>
-									<td>0.05</td>
-									<td>강남(서)</td>
-									<td>우리</td>
-									<td>잔나비</td>
-									<td>02)4512-5532</td>
-									<td>20119-11-12</td>
-									<td>신동주</td>
-									<td>-</td>
-									<td>-</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
 					<!-- /span -->
 				</div>
 
-				<div class="pagination no-margin">
-				<ul>
-					<li class="prev disabled"><a href="#"> <i
-							class="icon-double-angle-left"></i>
-					</a></li>
-
-					<li class="active"><a href="#">1</a></li>
-
-					<li><a href="#">2</a></li>
-
-					<li><a href="#">3</a></li>
-
-					<li class="next"><a href="#"> <i
-							class="icon-double-angle-right"></i>
-					</a></li>
-				</ul>
-			</div>
+				<div class="pagination">
+					<ul>
+						<li class="disabled"><a href="#"><i
+								class="icon-double-angle-left"></i></a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					</ul>
+				</div>
+				
+				
+				
 			</div>
 			<!-- /.page-content -->
 		</div>
