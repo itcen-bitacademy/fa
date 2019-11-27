@@ -80,20 +80,10 @@
 							
 						삭제여부 : 
 								<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="상위메뉴 선택">
-								<option value="1">전표관리</option>
-									
-								<option value="2">매입관리</option>
-									
-								<option value="8">재산관리</option>
-									
-								<option value="11">부채관리</option>
-									
-								<option value="12">매출관리</option>
-									
-								<option value="17">결산관리</option>
-									
-								<option value="18">시스템관리</option>
-									
+								<option value="false">N</option>
+								
+								<option value="true">Y</option>
+										
 								</select>
 							
 						<button class="btn btn-small btn-success">
@@ -115,9 +105,6 @@
 							class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></th>
 									<th>계좌번호</th>
 									<th>은행번호</th>
 									<th>예금주</th>
@@ -138,10 +125,6 @@
 
 							<tbody>
 								<tr>
-									<td class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></td>
-
 
 									<td>201911150001</td>
 									<td>1234567</td>
@@ -162,10 +145,6 @@
 
 								</tr>
 								<tr>
-									<td class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></td>
-
 
 									<td>201911150001</td>
 									<td>1234567</td>
@@ -189,7 +168,23 @@
 					<!-- /span -->
 				</div>
 
+				<div class="pagination no-margin">
+				<ul>
+					<li class="prev disabled"><a href="#"> <i
+							class="icon-double-angle-left"></i>
+					</a></li>
 
+					<li class="active"><a href="#">1</a></li>
+
+					<li><a href="#">2</a></li>
+
+					<li><a href="#">3</a></li>
+
+					<li class="next"><a href="#"> <i
+							class="icon-double-angle-right"></i>
+					</a></li>
+				</ul>
+			</div>
 			</div>
 			<!-- /.page-content -->
 		</div>
