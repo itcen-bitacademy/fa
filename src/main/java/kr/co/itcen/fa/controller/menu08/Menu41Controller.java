@@ -1,5 +1,8 @@
 package kr.co.itcen.fa.controller.menu08;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,15 +34,28 @@ public class Menu41Controller {
 	
 	
 	//               /08   /   41     , /08/41/list
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
+//	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
+//	public String list(Model model) {
+//		menu41Service.test();
+//		/*
+//		 *   JSP
+//		 *   08/41/list.jsp
+//		 * 
+//		 */
+//		return MAINMENU + "/" + SUBMENU + "/list";
+//	}
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model) {
-		menu41Service.test();
+		
 		/*
 		 *   JSP
 		 *   08/41/list.jsp
 		 * 
 		 */
-		return MAINMENU + "/" + SUBMENU + "/list";
+//		Map<String, Object> map = new HashMap<>();
+//		map.putAll(menu41Service.getName());
+//		model.addAllAttributes(map);
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 }

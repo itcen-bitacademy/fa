@@ -6,9 +6,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<c:import url="/WEB-INF/views/common/head.jsp" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .chosen-search {
 	display: none;
@@ -151,6 +151,7 @@
 								
 								<div class="form-horizontal">
 									<div class="control-group">
+									
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서발행일</label>
 											<div class="controls">

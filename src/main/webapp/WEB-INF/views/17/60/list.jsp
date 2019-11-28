@@ -59,13 +59,9 @@
 
 							<div class="span3">
 								&nbsp;
-								<button class="btn btn-info" type="submit">
-									<i class="icon-search"></i>조회
-								</button>
+								<button class="btn btn-info btn-small">조회</button>
 								&nbsp;
-								<button class="btn" type="reset">
-									<i class="icon-undo bigger-110"></i>Reset
-								</button>
+								<button class="btn btn-default btn-small" type="reset">취소</button>
 							</div>
 						</form>
 						<!-- PAGE CONTENT ENDS -->
@@ -119,7 +115,17 @@
 		<!-- /.page-content -->
 	</div>
 	<!-- /.main-content -->
-
+	<div class="pagination">
+		<ul>
+			<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+			<li class="active"><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+		</ul>
+	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
