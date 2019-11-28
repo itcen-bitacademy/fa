@@ -98,21 +98,10 @@
 									</div>
 
 
-									<div class="control-group">
-										<label class="control-label">취득금액</label>
-										<div class="controls">
-											<input type="text" id="area" name="area"
-												placeholder="숫자만 입력해주세요" /> <input
-												style="border-style: none;" type="text" id="area"
-												name="area" placeholder="입력된 금액이하로 검색됩니다." />
-										</div>
-									</div>
+									
 
 								</div>
 								<!-- 차변 span -->
-
-
-
 								<div class="row-fluid">
 								<div class="span6">
 									<!-- 대변 -->
@@ -139,24 +128,30 @@
 												name="area" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
+									
+									<div class="control-group">
+										<label class="control-label">취득금액</label>
+										<div class="controls">
+											<input type="text" id="area" name="area"placeholder="숫자만 입력해주세요" /> 
+											<input style="border-style: none;" type="text" id="area" name="area" placeholder="입력된 금액이하로 검색됩니다." />
+										</div>
+									</div>
+									
 
+								</div>
 									<div class="control-group">
 										<div class="controls">
-											<div class="span3" style="float: right;">
-												<button class="btn btn-small btn-info" type="submit"
-													style="height: 36px; float: right; margin-right: 15px">
-													<i class="icon-ok bigger-80"></i>상세조회
-												</button>
+											<div class="span3" style="float:right;width:120px">
+												<button class="btn btn-info btn-small" type="submit" style="float:right;margin-right:20px;"><i class="icon-ok bigger-80"></i>상세조회</button>
 											</div>
-											<div class="span2" style="float: right">
-												<label style="float: right;"> <input name="checkDel"
-													type="checkbox" class="ace"> <span class="lbl">
-														삭제포함</span>
+											<div class="span2" style="float:right">
+												<label style="float:right">
+													<input name="checkDel" type="checkbox" class="ace">
+														<span class="lbl"> 삭제포함</span>
 												</label>
 											</div>
 										</div>
 									</div>
-								</div>
 								
 								</div>
 								<!-- 대변 span -->
@@ -169,10 +164,8 @@
 							<div class="control-group">
 								<div class="controls">
 									<div class="span1" style="float: right">
-										<button class="btn btn-info" type="submit"
-											style="height: 36px">
-											<i class="icon-ok bigger-80"></i>조회
-										</button>
+										<button class="btn btn-info btn-small"
+												style="float: right; margin-right: 20px;">조회</button>
 									</div>
 									<div class="span2" style="float: right;">
 										<input type="text" class="span11" id="form-field-1"
