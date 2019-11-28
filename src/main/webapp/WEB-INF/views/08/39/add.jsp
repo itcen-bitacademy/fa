@@ -332,7 +332,6 @@
 			<!-- /.page-content -->
 		</div>
 		<!-- /.main-content -->
-	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />

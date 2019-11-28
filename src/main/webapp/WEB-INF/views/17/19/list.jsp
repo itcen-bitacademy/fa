@@ -174,43 +174,21 @@
 										<th>매입마감일</th>
 										<th>매출마감일</th>
 										<th>결산마감일</th>
-										<%-- <th>결산여부</th>
-										<th>결산일</th>
-										<th>작업자</th>
-										<th>결산</th> --%>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>2019-12</td>
-										<td>2020-01-03</td>
-										<td>2020-01-02</td>
-										<td>2019-12-30</td>
-										<td>2019-12-31</td>
-										<td>2019-12-30</td>
-										<td>2019-12-31</td>
-										<td>2020-01-03</td>
-										<%-- <td>미결산</td>
-										<td>-</td>
-										<td>-</td>
-										<td> --%>
-											<%-- <button class="btn btn-info btn-small">결산</button>
-										</td> --%>
-									</tr>
-									<tr>
-										<td>2019-11</td>
-										<td>2019-12-03</td>
-										<td>2019-12-02</td>
-										<td>2019-11-29</td>
-										<td>2019-11-30</td>
-										<td>2019-11-29</td>
-										<td>2019-11-30</td>
-										<td>2019-12-03</td>
-										<%-- <td>완료</td>
-										<td>2019-12-03</td>
-										<td>최웅</td>
-										<td></td> --%>
-									</tr>
+									<c:forEach var="dt" items="${closingDateList}">
+										<tr>
+											<td>${dt.closingYearMonth }</td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingStatementDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingAssetsDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingDebtDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingPurchaseDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingSalesDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingSettlementDate }"></fmt:formatDate></td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div>

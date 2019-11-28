@@ -320,7 +320,9 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
-			$('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
+			$('#id-date-range-picker-1').daterangepicker({
+				format : 'YYYY-MM-DD'
+			}).prev().on(ace.click_event, function(){
 				$(this).next().focus();
 			});
 		});

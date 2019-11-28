@@ -2,14 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu39">
 
-	<!--  등록 -->
-	<insert id="insert" parameterType="test08vo">
+	<!--  test -->
+	<insert id="save" parameterType="test08vo">
 		<![CDATA[
 		insert
 		  into test
 		values (null, #{name })
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<!-- 등록 -->
+	<insert id="insert" parameterType="building08vo">
+		<![CDATA[
+		insert
+		  into tb_building
+		values (#{no}, #{bd_area }, #{pay_date}, null)
+		]]>
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
 			<![CDATA[
 			select last_insert_id()
 			]]>

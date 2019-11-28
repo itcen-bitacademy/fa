@@ -85,45 +85,47 @@ public class ClosingDate {
 	public Date getClosingDate() {
 		return closingDate;
 	}
-	public void setClosingDate(String closingDate) throws ParseException {
-		this.closingDate = sdf.parse(closingDate);
-	}
 	public Date getClosingStatementDate() {
 		return closingStatementDate;
-	}
-	public void setClosingStatementDate(String closingStatementDate) throws ParseException {
-		this.closingStatementDate = sdf.parse(closingStatementDate);
 	}
 	public Date getClosingPurchaseDate() {
 		return closingPurchaseDate;
 	}
-	public void setClosingPurchaseDate(String closingPurchaseDate) throws ParseException {
-		this.closingPurchaseDate = sdf.parse(closingPurchaseDate);
-	}
 	public Date getClosingSalesDate() {
 		return closingSalesDate;
-	}
-	public void setClosingSalesDate(String closingSalesDate) throws ParseException {
-		this.closingSalesDate = sdf.parse(closingSalesDate);
 	}
 	public Date getClosingAssetsDate() {
 		return closingAssetsDate;
 	}
-	public void setClosingAssetsDate(String closingAssetsDate) throws ParseException {
-		this.closingAssetsDate = sdf.parse(closingAssetsDate);
-	}
 	public Date getClosingDebtDate() {
 		return closingDebtDate;
-	}
-	public void setClosingDebtDate(String closingDebtDate) throws ParseException {
-		this.closingDebtDate = sdf.parse(closingDebtDate);
 	}
 	public Date getClosingSettlementDate() {
 		return closingSettlementDate;
 	}
+	
+	public void setClosingDate(String closingDate) throws ParseException {
+		this.closingDate = sdf.parse(closingDate);
+	}
+	public void setClosingStatementDate(String closingStatementDate) throws ParseException {
+		this.closingStatementDate = sdf.parse(closingStatementDate);
+	}
+	public void setClosingPurchaseDate(String closingPurchaseDate) throws ParseException {
+		this.closingPurchaseDate = sdf.parse(closingPurchaseDate);
+	}
+	public void setClosingSalesDate(String closingSalesDate) throws ParseException {
+		this.closingSalesDate = sdf.parse(closingSalesDate);
+	}
+	public void setClosingAssetsDate(String closingAssetsDate) throws ParseException {
+		this.closingAssetsDate = sdf.parse(closingAssetsDate);
+	}
+	public void setClosingDebtDate(String closingDebtDate) throws ParseException {
+		this.closingDebtDate = sdf.parse(closingDebtDate);
+	}
 	public void setClosingSettlementDate(String closingSettlementDate) throws ParseException {
 		this.closingSettlementDate = sdf.parse(closingSettlementDate);
 	}
+	
 	public boolean isClosingYn() {
 		return closingYn;
 	}
