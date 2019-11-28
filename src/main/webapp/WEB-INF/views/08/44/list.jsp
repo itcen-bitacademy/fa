@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -23,9 +24,8 @@
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">
-				
+					<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
-						<div class="row-fluid">
 							
 							
 							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
@@ -71,7 +71,7 @@
 							
 								<div class="span6">
 									<div class="control-group">
-										<label class="control-label" for="id-date-picker-1">매입일자</label>
+										<label class="control-label" for="id-date-range-picker-1">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<span class="add-on">
@@ -90,7 +90,7 @@
 									<div class="control-group">
 										<div class="controls">
 											<div class="span3" style="float:right">
-												<button class="btn btn-info" type="submit" style="height:36px; float:right"><i class="icon-ok bigger-80"></i>상세조회</button>
+												<button class="btn btn-info btn-small" type="submit" style="float:right;margin-right:20px;"><i class="icon-ok bigger-80"></i>상세조회</button>
 											</div>
 											<div class="span2" style="float:right">
 												<label style="float:right">
@@ -109,7 +109,7 @@
 								<div class="control-group">
 									<div class="controls">
 										<div class="span1" style="float:right">
-											<button class="btn btn-info" type="submit" style="height:36px"><i class="icon-ok bigger-80"></i>조회</button>
+											<button class="btn btn-info btn-small" type="submit" style="float:right;margin-right:20px;"><i class="icon-ok bigger-80"></i>조회</button>
 										</div>
 										<div class="span2" style="float:right">
 											<input type="text" class="span11" id="form-field-1" name="search" placeholder="검색어를 입력하세요"/>
@@ -241,6 +241,15 @@
 <script>
 $(function(){
 	$(".chosen-select").chosen(); 
+});
+</script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
+<script>
+$(function() {
+	$("#id-date-range-picker-1").daterangepicker().prev().on(ace.click_event, function(){
+		$(this).next().focus();
+	});
 });
 </script>
 </body>
