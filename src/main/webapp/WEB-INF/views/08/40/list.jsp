@@ -8,6 +8,8 @@
 <head>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -113,17 +115,18 @@
 
 								<!-- 우측 -->
 								<div class="span6">
+								
 									<div class="control-group">
-										<label class="control-label" for="id-date-picker-1">매입일자</label>
+										<label class="control-label" for="id-date-range-picker-1">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
-												<span class="add-on"> <i class="icon-calendar"></i>
+												<span class="add-on">
+													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="date-range-picker"
-												id="id-date-range-picker-1">
+											<input class="span5" type="text" name="date-range-picker" id="id-date-range-picker-1">
 										</div>
-									</div>
+									</div>		
 									<div class="control-group">
 										<label class="control-label">평수</label>
 										<div class="controls">
@@ -139,7 +142,7 @@
 												class="lbl"> 삭제여부</span>
 										</div>
 									</div>
-									<div class="control-group">
+									<div class="control-group" style="margin-bottom:0px;">
 										<div class="span3" style="float: right;">
 											<button class="btn btn-info btn-small"
 												style="float: right; margin-right: 20px;">상세조회</button>
@@ -148,8 +151,14 @@
 								</div>
 								<!-- 우측 span -->
 							</form>
+							
+						<!-- 구분선 -->
+						<div class="span12" style="margin-left:0px;">
+							<div class="hr hr-18 dotted"></div>
 						</div>
-						<!-- 차변 대변 나누기 위한 row-fluid -->
+						
+						</div>
+						<!-- 나누기 위한 row-fluid -->
 						
 						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 							<div class="control-group">
@@ -309,11 +318,15 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
+			$('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
+				$(this).next().focus();
+			});
 		});
 	</script>
 </body>
