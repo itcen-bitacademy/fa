@@ -122,6 +122,8 @@
 				</div><!-- /.row-fluid -->
 				<div class="row-fluid">
 						<div class="span12">
+						<div style="width:100%; overflow-x:auto">
+
 							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
@@ -131,53 +133,67 @@
 											<span class="lbl"></span>
 											</label>
 										</th>
-										<th>사업자등록번호</th>
-										<th>상호</th>
-										<th>대표자</th>
-										<th>주소</th>
-										<th>업태/종목</th>
-										<th>관할영업소</th>
-										<th>거래처 전화번호</th>
-										<th>거래처 담당자 성명</th>
-										<th>e-mail</th>
-										<th>은행명</th>
-										<th>계좌번호</th>
-										<th>예금주</th>
-										<th>입력일자</th>
-										<th>수정일자</th>
-										<th>입력담당자</th>
-										<th>수정담당자</th>
+										<th class="center">거래처 구분</th>
+										<th class="center">사업자등록번호</th>
+										<th class="center">상호</th>
+										<th class="center">대표자</th>
+										<th class="center">주소</th>
+										<th class="center">업태/종목</th>
+										<th class="center">관할영업소</th>
+										<th class="center">거래처 전화번호</th>
+										<th class="center">거래처 담당자 성명</th>
+										<th class="center">e-mail</th>
+										<th class="center">은행명</th>
+										<th class="center">계좌번호</th>
+										<th class="center">예금주</th>
+										<th class="center">입력일자</th>
+										<th class="center">수정일자</th>
+										<th class="center">입력담당자</th>
+										<th class="center">수정담당자</th>
 									</tr>
 								</thead>
 								<tbody>
-										<tr>
+										<tr >
 											<td class="center">
 												<label class="pos-rel">
 													<input type="checkbox" class="ace" />
 													<span class="lbl"></span>
 												</label>
 											</td>
-											<td>120-86-81451</td>
-											<td>아이티센</td>
-											<td>박진국</td>
-											<td>서울특별시 서초구 반포대로 13</td>
-											<td>컴퓨터시스템 통합 자문 및 구축 서비스업</td>
-											<td>본사</td>
-											<td>02-3497-8300</td>
-											<td>이종윤</td>
-											<td>leejy3653@naver.com</td>
-											<td>국민은행</td>
-											<td>367802-01-110999</td>
-											<td>이종윤</td>
-											<td>2019-11-27</td>
-											<td>-</td>
-											<td>yoon3653</td>
-											<td>-</td>
+											<td class="center">자산</td>
+											<td class="center">120-86-81451</td>
+											<td class="center">아이티센</td>
+											<td class="center">박진국</td>
+											<td class="center">서울특별시 서초구 반포대로 13</td>
+											<td class="center">컴퓨터시스템 통합 자문 및 구축 서비스업</td>
+											<td class="center">본사</td>
+											<td class="center">02-3497-8300</td>
+											<td class="center">이종윤</td>
+											<td class="center">leejy3653@naver.com</td>
+											<td class="center">국민은행</td>
+											<td class="center">367802-01-110999</td>
+											<td class="center">이종윤</td>
+											<td class="center">2019-11-27</td>
+											<td class="center">-</td>
+											<td class="center">yoon3653</td>
+											<td class="center">-</td>
 										</tr>
 								</tbody>
 							</table>
 						</div><!-- /span -->
+						</div>
 					</div>
+						<div class="pagination"><!-- 페이징 공통 -->
+							<ul>
+								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</ul>
+						</div>
 			
 			
 			
