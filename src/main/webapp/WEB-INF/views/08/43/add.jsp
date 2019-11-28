@@ -128,7 +128,7 @@
 										<label class="control-label" for="form-field-1">담당자</label>
 										<div class="controls">
 											<input readonly type="text" class="span7"
-												id="form-input-readonly" value="코드를 지정하면 대분류명이 등록됩니다" />
+												id="form-input-readonly" value="코드를 지정하면 담당자가 등록됩니다" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -142,7 +142,7 @@
 										<label class="control-label" for="id-date-picker-1">매입일자</label>
 										<div class="controls">
 											<input class="cl-date-picker" id="id-date-picker-1"
-												type="text" data-date-format="dd-mm-yyyy">
+												type="text">
 											<div class="input-append">
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
@@ -154,13 +154,13 @@
 										<div class="controls">
 											<div class="span2">
 												<label> <input name="form-field-radio" type="radio"
-													vlaue="tax" class="ace"> <span class="lbl">
+													value="tax" class="ace"> <span class="lbl">
 														과세</span>
 												</label>
 											</div>
 											<div class="span2">
 												<label> <input name="form-field-radio" type="radio"
-													vlaue="zeroTax" class="ace"> <span class="lbl">
+													value="zeroTax" class="ace"> <span class="lbl">
 														영세</span>
 												</label>
 											</div>
@@ -168,44 +168,40 @@
 									</div>
 								</div>
 								<!-- 대변 span -->
-								
-								<div class="span12" style="margin-left: 0px;">
-									<div class="hr hr-18 dotted"></div>
-								</div>
-					
-								<div class="control-group span6"
-									style="margin-bottom: 0px; margin-left: 0px;">
-									<div class="controls">
-										<button class="btn btn-primary btn-small"
-											style="float: left; margin-right: 20px;">등록</button>
-										<button class="btn btn-warning btn-small"
-											style="float: left; margin-right: 20px;">수정</button>
-										<button class="btn btn-danger btn-small"
-											style="float: left; margin-right: 20px;">삭제</button>
-										<button class="btn btn-info btn-small" type="submit"
-											style="float: left; margin-right: 20px;">조회</button>
-										<button class="btn btn-default btn-small" type="reset"
-											style="float: left; margin-right: 20px;">
-											<i class="icon-undo bigger-110"></i>초기화
-										</button>
+
+								<div class="row-fluid">
+									<div class="span12">
+										<div class="hr hr-18 dotted"></div>
+										<div class="control-group" style="margin-left: 0px;">
+											<div class="controls" style="margin-left: 0px;">
+												<button class="btn btn-primary btn-small"
+													style="float: left; margin-right: 20px;">등록</button>
+												<button class="btn btn-warning btn-small"
+													style="float: left; margin-right: 20px;">수정</button>
+												<button class="btn btn-danger btn-small"
+													style="float: left; margin-right: 20px;">삭제</button>
+												<button class="btn btn-info btn-small" type="submit"
+													style="float: left; margin-right: 20px;">조회</button>
+												<button class="btn btn-default btn-small" type="reset"
+													style="float: left; margin-right: 20px;">
+													<i class="icon-undo bigger-110"></i>초기화
+												</button>
+											</div>
+										</div>
+										<div class="hr hr-18 dotted"></div>
 									</div>
 								</div>
-					
-								<div class="span12" style="margin-left: 0px;">
-									<div class="hr hr-18 dotted"></div>
-								</div>
-								
+
 							</form>
 						</div>
 						<!-- 차변 대변 나누기 위한 row-fluid -->
 						<!-- PAGE CONTENT ENDS -->
 
-
 					</div>
 					<!-- /.span -->
 				</div>
 				<!-- /.row-fluid -->
-				
+
 				<table id="sample-table-1"
 					class="table table-striped table-bordered table-hover">
 					<thead>
@@ -263,11 +259,24 @@
 					</tbody>
 				</table>
 
-
 			</div>
 			<!-- /.page-content -->
 		</div>
 		<!-- /.main-content -->
+
+		<div class="pagination">
+			<ul>
+				<li class="disabled"><a href="#"><i
+						class="icon-double-angle-left"></i></a></li>
+				<li class="active"><a href="#">1</a></li>
+				<li><a href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">5</a></li>
+				<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+			</ul>
+		</div>
+
 	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
