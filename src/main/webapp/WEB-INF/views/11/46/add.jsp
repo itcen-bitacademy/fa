@@ -95,7 +95,7 @@ tr td:first-child {
 									<td><input type="text" name="amount" /></td>
 								</tr>
 								<tr>
-									<td><h4>차입일자 ~ 만기일자</h4></td>
+									<td style="width:170px;"><h4>차입일자 ~ 만기일자</h4></td>
 									<td>
 				                        <div class="row-fluid input-prepend">
 				                           <input type="text" name="date-range-picker" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
@@ -120,7 +120,7 @@ tr td:first-child {
 												<span class="lbl">월</span>
 											</label>
 										</div>
-										<div class="radio">
+										<div class="radio" style="width:15%;">
 											<label>
 												<input name="form-field-radio" type="radio" class="ace" />
 												<span class="lbl">만기</span>
