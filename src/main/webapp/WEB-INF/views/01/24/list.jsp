@@ -86,7 +86,7 @@
 
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">카드 현황조11회</h1>
+					<h1 class="pull-left">카드 현황조회</h1>
 				</div>
 
 

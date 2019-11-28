@@ -100,16 +100,18 @@
 						</div>
 					</div>
 
-
 					<div class="span6">
 						<form class="form-horizontal">
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">유효기간 </label> <input
-									type="text" id="form-field-1" placeholder="MM" /> / <input
-									type="text" id="form-field-1" placeholder="YY" /> <label
-									class="control-label" for="form-field-1">CVC </label> <input
-									type="text" id="form-field-1" placeholder="CVC" />
-
+								<div>
+								<label class="control-label" for="form-field-1">유효기간 </label> 
+								<input type="text" id="form-field-1" placeholder="MM" /> / 
+								<input type="text" id="form-field-1" placeholder="YY" /> 
+								</div>
+								<div>
+								<label class="control-label" for="form-field-1">CVC </label> 
+								<input type="text" id="form-field-1" placeholder="CVC" />
+								</div>
 							</div>
 
 							<div class="control-group">
@@ -153,7 +155,7 @@
 				<!-- /row -->
 				<!-- /.row-fluid -->
 
-
+				<div class="hr hr-18 dotted"></div>
 				<!-- buttons -->
 				<div class="row-fluid">
 					<div class="span8">
