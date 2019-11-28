@@ -14,36 +14,42 @@
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
+		
 			<div class="page-header position-relative">
-				<h1 class="pull-left">팀추가</h1>
+				<h1 class="pull-left">공통코드 추가</h1>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">
-
+				
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+					
 						<div class="control-group">
-							<label class="control-label" for="form-field-1">이름</label>
+							<label class="control-label" for="form-field-1">분류명</label>
 							<div class="controls">
-								<input type="text" id="form-field-1" name="name" placeholder="이름"/>
+								<input type="text" id="form-field-1" name="classification" placeholder="분류명"/>
 							</div>
 						</div>
+						
 						<div class="control-group">
-							<label class="control-label" for="form-field-select-1">접근메뉴</label>
+							<label class="control-label" for="form-field-1">코드명</label>
 							<div class="controls">
-								<select class="chosen-select" id="form-field-select-1" name="menuNo" data-placeholder="메뉴선택">
-									<c:forEach items="${listMainMenu }" var="menuVo">
-										<option value="${menuVo.no }">${menuVo.name }</option>
+								<input type="text" id="form-field-1" name="code" placeholder="코드명[003]"/>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="form-field-select-1">대분류구분</label>
+							<div class="controls">
+								<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
+									<option value="">없음</option>
+									<c:forEach items="${listMainSection }" var="sectionVo">
+										<option value="${sectionVo.no }">${sectionVo.classification }</option>
 									</c:forEach>
 								</select>
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label" for="form-field-2">부가정보</label>
-							<div class="controls">
-								<textarea id="form-field-2" name="info" placeholder="부가정보"></textarea>
-							</div>
-						</div>
+						
 						<div class="form-actions">
 							<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>등록</button>
 							&nbsp; &nbsp; &nbsp;
@@ -51,11 +57,9 @@
 						</div>						
 					</form>					
 					<!-- PAGE CONTENT ENDS -->
-
+					
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-
-
 
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
@@ -63,9 +67,14 @@
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/fuelux/fuelux.spinner.min.js"></script>
 <script>
 $(function(){
-	$(".chosen-select").chosen(); 
+	$(".chosen-select").chosen();
+	$('#spinner1').ace_spinner({value:1,min:1,max:10,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'})
+	.on('change', function(){
+		//alert(this.value)
+	});
 });
 </script>
 </body>

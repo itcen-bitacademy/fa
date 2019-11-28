@@ -212,13 +212,13 @@ tr td:first-child {
 				</div>
 				<hr>
 				<div>
-					<button type="button" class="btn">입력</button>
+					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">입력</button>
 					&nbsp;
-					<button type="button" class="btn">수정</button>
+					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">수정</button>
 					&nbsp;
-					<button type="button" class="btn">삭제</button>
+					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">삭제</button>
 					&nbsp;
-					<button type="button" class="btn">조회</button>
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;">조회</button>
 					&nbsp;
 					<button type="button" class="btn">상환</button>
 					&nbsp;

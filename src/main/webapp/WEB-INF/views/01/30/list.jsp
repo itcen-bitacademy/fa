@@ -6,7 +6,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 
 <style>
 .chosen-search {
@@ -14,28 +15,45 @@
 }
 </style>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
-<link href="${pageContext.request.contextPath }//ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
-<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm",
+			titleFormat: "yyyy", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		})
+	</script>
 
-<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
-<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
 
-<script type="text/javascript">
-	jQuery(function($) {
-
-		$("#datepicker").datepicker({
-			showOtherMonths : true,
-			selectOtherMonths : false,
-		});
-
-		$("#datepicker2").datepicker({
-			showOtherMonths : true,
-			selectOtherMonths : false,
-		});
-	});
-</script>
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
@@ -56,25 +74,24 @@
 				<div class="row-fluid">
 					<form class="form-horizontal">
 						입력 기간
-
-						<<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker"  /> <span
+						<div class="input-append">
+							<input type="text" id="datepicker" class="cl-date-picker" /> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" class="cl-date-picker"  /> <span
+							<input type="text" id="datepicker2" class="cl-date-picker" /> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
 
 
-						계정과목코드 : <input type="text" id="form-field-1" placeholder="계정과목코드" /> 
-						
-					
-						거래처코드 : <input type="text" id="form-field-1" placeholder="거래처코드" /> 
-						
+						계정과목코드 : <input type="text" id="form-field-1" placeholder="계정과목코드" />
+
+
+						거래처코드 : <input type="text" id="form-field-1" placeholder="거래처코드" />
+
 
 
 						<button class="btn btn-small btn-info">조회</button>
@@ -91,7 +108,7 @@
 						<table id="sample-table-1"
 							class="table table-striped table-bordered table-hover">
 							<thead>
-									<tr>
+								<tr>
 									<th>날짜</th>
 									<th>거래처 코드</th>
 									<th>거래처명</th>
@@ -117,7 +134,7 @@
 									<td>-25,000,000</td>
 
 								</tr>
-								
+
 								<tr>
 									<td>2019-12-22</td>
 									<td>123-56-789</td>
@@ -130,7 +147,7 @@
 									<td>-25,300,000</td>
 
 								</tr>
-								
+
 								<tr>
 									<td>2019-12-22</td>
 									<td>123-56-888</td>
@@ -143,7 +160,7 @@
 									<td>-25,800,000</td>
 
 								</tr>
-								
+
 								<tr>
 									<td>[합계]</td>
 									<td></td>
@@ -155,7 +172,7 @@
 									<td></td>
 									<td></td>
 								</tr>
-								
+
 								<tr>
 									<td>[누계]</td>
 									<td></td>
@@ -196,41 +213,6 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	
-	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
-	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			today: "Today",
-			clear: "Clear",
-			format: "yyyy-mm-dd",
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart: 0
-			};
-	
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
-	</script>
-	
-	
-	
+
 </body>
 </html>
