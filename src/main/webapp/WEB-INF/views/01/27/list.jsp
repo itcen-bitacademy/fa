@@ -175,6 +175,8 @@
 						
 						<div class="row-fluid">
 						<div class="span12">
+						
+						<div style="width:100%; overflow-x:auto">
 							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
@@ -230,6 +232,7 @@
 								</tbody>
 							</table>
 						</div><!-- /span -->
+						</div>
 					</div>
 					</div>
 					
