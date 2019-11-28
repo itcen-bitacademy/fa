@@ -211,23 +211,20 @@ tr td:first-child {
 					</div>
 				</div>
 				<hr>
-				<div>
-					<button type="button" class="btn">입력</button>
-					&nbsp;
-					<button type="button" class="btn">수정</button>
-					&nbsp;
-					<button type="button" class="btn">삭제</button>
-					&nbsp;
-					<button type="button" class="btn">조회</button>
-					&nbsp;
-					<button type="button" class="btn">상환</button>
-					&nbsp;
-					<button type="button" class="btn ">초기화</button>
+				
+				<div class="span8">
+					<button class="btn btn-info btn-small">입력</button>
+					<button class="btn btn-danger btn-small">수정</button>
+					<button class="btn btn-warning btn-small">삭제</button>
+					<button class="btn btn-primary btn-small">조회</button>
+					<button class="btn btn-default btn-small" >상환</button>
+					<button class="btn btn-default btn-small" >초기화</button>
 				</div>
+				
 				<hr>
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
-			
+				
 			<!-- list -->
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
@@ -273,6 +270,8 @@ tr td:first-child {
 						</tr>
 					</tbody>
 				</table>
+				
+				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -283,7 +282,17 @@ tr td:first-child {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+<script>
+/*
+$(function() {
+  
+  $('input[name="date-range-picker"]').on('apply.daterangepicker', function(ev, picker) {
+	    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+	});
+});
+*/
 
+</script>
 <script>
 $(function(){
 	 $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
