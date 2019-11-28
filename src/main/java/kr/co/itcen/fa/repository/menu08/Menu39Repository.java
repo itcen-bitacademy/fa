@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu08.BuildingVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
 
 
@@ -20,7 +21,7 @@ public class Menu39Repository {
 
 	public void test() {
 		TestVo testVo = new TestVo();
-		testVo.setName("김민준관리");
-		sqlSession.insert("menu39.save", testVo);
+		testVo.setName("김민준관리!");
+		sqlSession.insert("menu09.save", testVo);
 	}
 }
