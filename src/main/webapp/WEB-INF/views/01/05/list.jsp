@@ -7,7 +7,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 
 <style>
 .chosen-search {
@@ -15,15 +16,9 @@
 }
 </style>
 
-<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 
-
-
-<link href="${pageContext.request.contextPath }//ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
-<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-
-<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
-<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
@@ -46,7 +41,7 @@
 						<div class="tabbable">
 							<form class="form-horizontal">
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">카 드 번 호</label>
+									<label class="control-label" for="form-field-1">카드 번호</label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="카드 번호" />
@@ -54,7 +49,7 @@
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">사 용 자</label>
+									<label class="control-label" for="form-field-1">사용자</label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="사용자" />
@@ -63,8 +58,8 @@
 
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">카 드 발 급
-										자 </label>
+									<label class="control-label" for="form-field-1">카드 발급 자
+									</label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="카드발급자" />
@@ -72,14 +67,14 @@
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">계 좌 번 호
-									</label> <input type="text" id="form-field-1" placeholder="계좌번호" /> <input
+									<label class="control-label" for="form-field-1">계좌 번호 </label>
+									<input type="text" id="form-field-1" placeholder="계좌번호" /> <input
 										type="text" value="예금주" readonly />
 
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">은 행 </label> <input
+									<label class="control-label" for="form-field-1">은행 </label> <input
 										type="text" value="은행코드" readonly /> <input type="text"
 										value="은행명" readonly />
 
@@ -104,13 +99,13 @@
 						<form class="form-horizontal">
 							<div class="control-group">
 								<div>
-								<label class="control-label" for="form-field-1">유효기간 </label> 
-								<input type="text" id="form-field-1" placeholder="MM" /> / 
-								<input type="text" id="form-field-1" placeholder="YY" /> 
+									<label class="control-label" for="form-field-1">유효기간 </label> <input
+										type="text" id="form-field-1" placeholder="MM" /> / <input
+										type="text" id="form-field-1" placeholder="YY" />
 								</div>
 								<div>
-								<label class="control-label" for="form-field-1">CVC </label> 
-								<input type="text" id="form-field-1" placeholder="CVC" />
+									<label class="control-label" for="form-field-1">CVC </label> <input
+										type="text" id="form-field-1" placeholder="CVC" />
 								</div>
 							</div>
 
@@ -197,8 +192,8 @@
 									<th>입력일자</th>
 									<th>입력담당자</th>
 									<th>수정일자</th>
-									<th>수정담당자</th>	
-									
+									<th>수정담당자</th>
+
 								</tr>
 							</thead>
 
@@ -230,7 +225,7 @@
 
 
 								</tr>
-								
+
 							</tbody>
 						</table>
 					</div>
@@ -249,11 +244,11 @@
 						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
 					</ul>
 				</div>
-				
-				
-				
-				
-				
+
+
+
+
+
 			</div>
 			<!-- /.page-content -->
 		</div>

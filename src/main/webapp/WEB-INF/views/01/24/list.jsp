@@ -6,7 +6,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 
 <style>
 .chosen-search {
@@ -14,67 +15,61 @@
 }
 </style>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
 
-
-	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
-
-<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
-<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-
-<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
-<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
-
-
-<script	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
-<script type="text/javascript">
-	
+<script>
 	$(function() {
+		$.fn.datepicker.dates['ko'] = {
+			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
+			daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
+			daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
+			months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월",
+					"10월", "11월", "12월" ],
+			monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+					"9월", "10월", "11월", "12월" ],
+			today : "Today",
+			clear : "Clear",
+			format : "yyyy-mm-dd",
+			titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart : 0
+		};
+
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode : 4,
+			minViewMode : 1,
+			language : 'ko'
+		}).next().on(ace.click_event, function() {
+			$(this).prev().focus();
+		});
+
+		$('.cl-date-picker').datepicker({
+			language : 'ko'
+		}).next().on(ace.click_event, function() {
+			$(this).prev().focus();
+		});
+
 		$(".chosen-select").chosen();
 	})
 </script>
 
-	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			today: "Today",
-			clear: "Clear",
-			format: "yyyy-mm-dd",
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart: 0
-			};
-	
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
-	</script>
-	
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 
 <body class="skin-3">
 
-	
+
 
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
@@ -95,21 +90,23 @@
 						입력 기간
 
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker"  /> <span
+							<input type="text" id="datepicker" class="cl-date-picker" /> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" class="cl-date-picker"  /> <span
+							<input type="text" id="datepicker2" class="cl-date-picker" /> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
 
 
-						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호" size=4 /> 
-						카드종료번호 : <input type="text" id="form-field-1" placeholder="종료번호" /> 
-						삭제여부 : <select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="상위메뉴 선택">
+						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호"
+							size=4 /> 카드종료번호 : <input type="text" id="form-field-1"
+							placeholder="종료번호" /> 삭제여부 : <select class="chosen-select"
+							id="form-field-select-1" name="parentNo"
+							data-placeholder="상위메뉴 선택">
 							<option value="false">N</option>
 							<option value="true">Y</option>
 
@@ -193,9 +190,9 @@
 						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
 					</ul>
 				</div>
-				
-				
-				
+
+
+
 			</div>
 			<!-- /.page-content -->
 		</div>
@@ -204,10 +201,10 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	
-	
 
-	
-	
+
+
+
+
 </body>
 </html>
