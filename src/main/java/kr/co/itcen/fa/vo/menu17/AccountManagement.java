@@ -9,16 +9,16 @@ package kr.co.itcen.fa.vo.menu17;
 
 public class AccountManagement {
 
-	private Long no;                       //번호
-	private Long accountOrder;            //계정과목 순서
-	private Long accountNo;			   //계정과목 코드
-	private String accountUsedyear;       //계정과목 사용년도
+	private Long no;                     //번호
+	private Long accountOrder;           //계정과목 순서
+	private Long accountNo;			     //계정과목 코드
+	private String accountUsedyear;      //계정과목 사용년도
 	private String accountStatementType; //제무재표 구분
-	private Boolean useYn;                //사용여부
-	private String insertUserid;          //등록자
-	private String insertDay;             //등록일                 
-	private String updateUserid;          //수정자
-	private String updateDay;             //수정일
+	private Boolean useYn;               //사용여부
+	private String insertUserid;         //등록자
+	private String insertDay;            //등록일                 
+	private String updateUserid;         //수정자
+	private String updateDay;            //수정일 
 	public Long getNo() {
 		return no;
 	}

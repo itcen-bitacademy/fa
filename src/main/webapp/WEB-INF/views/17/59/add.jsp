@@ -102,8 +102,8 @@ $(function(){
 									<input type="number" min="1900" max="2099" step="1" value="2019" id="accountUsedyear" name="accountUsedyear" placeholder="회계연도" />
 								</div>
 							</div>
-							
-							<!-- 구분  -->
+							 
+							<!-- 구분d  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">구분</label>
 								<div class="controls">

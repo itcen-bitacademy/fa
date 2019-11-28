@@ -9,7 +9,7 @@ import kr.co.itcen.fa.vo.menu17.AccountManagement;
 /**
  * @작성자:	이성훈
  * @작성일:	Nov 27, 2019
- * @이메일:	dltjdgnsok72@gmail.com
+ * @이메일:	dltjdgnsok72@gmail.com 
  */
 
 @Repository

@@ -19,7 +19,7 @@
 				<div class="page-header position-relative">
 					<h1 class="pull-left">재무제표계정관리</h1>
 				</div>
-				<!-- /.page-header -->
+				<!-- /.page-headerr -->
 				<div class="row-fluid">
 					<div class="span16">
 						<!-- PAGE CONTENT BEGINS -->

@@ -56,7 +56,7 @@ public class Menu59Controller {
 		}
 		
 	
-		accountManagement.setAccountNo(1000000L); //우선 코드값 임의로 줌
+		accountManagement.setAccountNo(1000000L); //우선 코드값 임의로  줌
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setInsertUserid(authUser.getName());
 		

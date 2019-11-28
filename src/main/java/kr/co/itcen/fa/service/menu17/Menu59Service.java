@@ -10,7 +10,7 @@ import kr.co.itcen.fa.vo.menu17.AccountManagement;
 /**
  * 
  * @author 이성훈
- * 재무제표계정관리
+ * 재무제표계정관리 
  */
 
 @Service
