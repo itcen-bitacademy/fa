@@ -28,7 +28,7 @@
 		
 		
 			<div class="page-header position-relative">
-				<h1 class="pull-left">테스트 리스트27</h1>
+				<h1 class="pull-left">거래처관리</h1>
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
@@ -91,6 +91,7 @@
 									<input type="text" id="customer_name" placeholder="종목" class="col-xs-10 col-sm-5" />
 								</div>
 								
+								<br/>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 법인번호:&nbsp; </label>
 									<input type="text" id="form-field-1" placeholder="법인번호" class="col-xs-10 col-sm-5" />
@@ -114,6 +115,7 @@
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 거래처 전화번호:&nbsp; </label>
 									<input type="text" id="customer_no" placeholder="거래처 전화번호" class="col-xs-10 col-sm-5" />	
 								</div>
+								
 								<div class="form-group" >
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> E-mail:&nbsp; </label>
 									<input type="text" id="customer_name" placeholder="E-mail" class="col-xs-10 col-sm-5" />
@@ -143,6 +145,16 @@
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 예금주:&nbsp; </label>
 									<input type="text" id="customer_name" placeholder="E-mail" class="col-xs-10 col-sm-5" />
 								</div>
+								
+								<br/>
+								<div class="form-group" >
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 거래처 담당자 성명:&nbsp; </label>
+									<input type="text" id="customer_name" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" />
+								</div>
+								
+								
+								
+								
 								
 								
 							</form>
@@ -240,6 +252,17 @@
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
+						<div class="pagination"><!-- 페이징 공통 -->
+							<ul>
+								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</ul>
+						</div>
 					</div><!-- /.page-content -->
 				</div>
 <!-- basic scripts -->
