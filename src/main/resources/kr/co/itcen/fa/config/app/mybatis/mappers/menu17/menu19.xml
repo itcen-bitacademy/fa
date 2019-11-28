@@ -16,4 +16,32 @@
       </selectKey>
    </insert>
 
+
+	<insert id="insertClosingDate" parameterType="closingDate19Vo">
+		insert	into tb_closing_date (
+			closing_year_month
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , insert_userid
+		) values (
+			#{closingYearMonth }
+			, #{closingDate }
+		    , #{closingStatementDate }
+		    , #{closingPurchaseDate }
+		    , #{closingSalesDate }
+		    , #{closingAssetsDate }
+		    , #{closingDebtDate }
+		    , #{closingSettlementDate }
+		    , #{insertUserid }
+		);
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
 </mapper>

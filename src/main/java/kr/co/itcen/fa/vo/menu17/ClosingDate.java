@@ -1,6 +1,10 @@
 package kr.co.itcen.fa.vo.menu17;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.ibatis.type.Alias;
 
 /**
  * @작성자:	kbetter3
@@ -8,8 +12,9 @@ import java.util.Date;
  * @이메일:	kbetter3@gmail.com
  * 
  */
+@Alias("closingDate19Vo")
 public class ClosingDate {
-	private int no;							// 번호
+	private Long no;						// 번호
 	private String closingYearMonth;		// 마감년월
 	private Date closingDate;				// 최종마감일
 	private Date closingStatementDate;		// 전표마감일
@@ -25,6 +30,8 @@ public class ClosingDate {
 	private String updateUserid;			// 수정자
 	private Date updateDay;					// 수정일
 	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
 	@Override
 	public String toString() {
 		return "ClosingDate [no=" + no + ", closingYearMonth=" + closingYearMonth + ", closingDate=" + closingDate
@@ -35,10 +42,38 @@ public class ClosingDate {
 				+ insertDay + ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}
 	
-	public int getNo() {
+//	public void setClosingDate(Date closingDate) {
+//		this.closingDate = closingDate;
+//	}
+//
+//	public void setClosingStatementDate(Date closingStatementDate) {
+//		this.closingStatementDate = closingStatementDate;
+//	}
+//
+//	public void setClosingPurchaseDate(Date closingPurchaseDate) {
+//		this.closingPurchaseDate = closingPurchaseDate;
+//	}
+//
+//	public void setClosingSalesDate(Date closingSalesDate) {
+//		this.closingSalesDate = closingSalesDate;
+//	}
+//
+//	public void setClosingAssetsDate(Date closingAssetsDate) {
+//		this.closingAssetsDate = closingAssetsDate;
+//	}
+//
+//	public void setClosingDebtDate(Date closingDebtDate) {
+//		this.closingDebtDate = closingDebtDate;
+//	}
+//
+//	public void setClosingSettlementDate(Date closingSettlementDate) {
+//		this.closingSettlementDate = closingSettlementDate;
+//	}
+
+	public Long getNo() {
 		return no;
 	}
-	public void setNo(int no) {
+	public void setNo(Long no) {
 		this.no = no;
 	}
 	public String getClosingYearMonth() {
@@ -50,44 +85,44 @@ public class ClosingDate {
 	public Date getClosingDate() {
 		return closingDate;
 	}
-	public void setClosingDate(Date closingDate) {
-		this.closingDate = closingDate;
+	public void setClosingDate(String closingDate) throws ParseException {
+		this.closingDate = sdf.parse(closingDate);
 	}
 	public Date getClosingStatementDate() {
 		return closingStatementDate;
 	}
-	public void setClosingStatementDate(Date closingStatementDate) {
-		this.closingStatementDate = closingStatementDate;
+	public void setClosingStatementDate(String closingStatementDate) throws ParseException {
+		this.closingStatementDate = sdf.parse(closingStatementDate);
 	}
 	public Date getClosingPurchaseDate() {
 		return closingPurchaseDate;
 	}
-	public void setClosingPurchaseDate(Date closingPurchaseDate) {
-		this.closingPurchaseDate = closingPurchaseDate;
+	public void setClosingPurchaseDate(String closingPurchaseDate) throws ParseException {
+		this.closingPurchaseDate = sdf.parse(closingPurchaseDate);
 	}
 	public Date getClosingSalesDate() {
 		return closingSalesDate;
 	}
-	public void setClosingSalesDate(Date closingSalesDate) {
-		this.closingSalesDate = closingSalesDate;
+	public void setClosingSalesDate(String closingSalesDate) throws ParseException {
+		this.closingSalesDate = sdf.parse(closingSalesDate);
 	}
 	public Date getClosingAssetsDate() {
 		return closingAssetsDate;
 	}
-	public void setClosingAssetsDate(Date closingAssetsDate) {
-		this.closingAssetsDate = closingAssetsDate;
+	public void setClosingAssetsDate(String closingAssetsDate) throws ParseException {
+		this.closingAssetsDate = sdf.parse(closingAssetsDate);
 	}
 	public Date getClosingDebtDate() {
 		return closingDebtDate;
 	}
-	public void setClosingDebtDate(Date closingDebtDate) {
-		this.closingDebtDate = closingDebtDate;
+	public void setClosingDebtDate(String closingDebtDate) throws ParseException {
+		this.closingDebtDate = sdf.parse(closingDebtDate);
 	}
 	public Date getClosingSettlementDate() {
 		return closingSettlementDate;
 	}
-	public void setClosingSettlementDate(Date closingSettlementDate) {
-		this.closingSettlementDate = closingSettlementDate;
+	public void setClosingSettlementDate(String closingSettlementDate) throws ParseException {
+		this.closingSettlementDate = sdf.parse(closingSettlementDate);
 	}
 	public boolean isClosingYn() {
 		return closingYn;

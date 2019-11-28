@@ -24,10 +24,9 @@
 				<div class="span12">
 					<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
-						
-						
-						<div class="span6"><!-- 차변 -->
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+							
+							<div class="span6"><!-- 차변 -->
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">차량 코드</label>
 									<div class="controls">
@@ -82,27 +81,19 @@
 								</div>
 								
 								
-							<div class="control-group">
-								<div style="float:left;width:50%">											
-									<label class="control-label" for="form-field-1">매입일자</label>
-									<div class="controls">
-										<input style="width:150px" type="text" id="form-field-1" name="acqPrice" placeholder=""/> <i class="icon-calendar"></i>
-									</div>
-								</div>	
-								<div style="float:left;width:50%">											
-									<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">출시가</label>
-									<input style="width:200px" type="text" id="form-field-1" name="acqPrice" placeholder=""/>
-								</div>	
-							</div>
-                       		
-                        
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">취득금액</label>
-									<div class="controls">
-										<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
-									</div>
+									<div style="float:left;width:50%">											
+										<label class="control-label" for="form-field-1">매입일자</label>
+										<div class="controls">
+											<input class="cl-date-picker" style="width:150px" type="text" id="form-field-1" name="acqPrice" placeholder=""/> <i class="icon-calendar"></i>
+										</div>
+									</div>	
+									<div style="float:left;width:50%">											
+										<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">출시가</label>
+										<input style="width:200px" type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
+									</div>	
 								</div>
-								
+                       		
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">부대비용</label>
 									<div class="controls">
@@ -134,25 +125,13 @@
 								<div style="float:left;width:50%">											
 									<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">월 사용료 납부금액</label>
 									<input readonly type="text" class="span6" id="form-input-readonly" value="월 누적금액">
-								</div>	
-						
-                              	
-                              	  
-                        	</div>
-						</form>
-					</div><!-- 차변 span -->
+								</div>
+							</div>	
+                       	</div>
+					
 							
 						<div class="span6"><!-- 대변 -->
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-								<div class="control-group">
-									<div class="controls">
-										 <button class="btn btn-primary btn-small" style="float:left; margin-right:20px;">등록</button>
-		                                 <button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
-		                                 <button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
-		                                 <button class="btn btn-info btn-small" style="float:left;margin-right:20px;">조회</button>
-		                                 <button class="btn btn-default btn-small" style="float:left;margin-right:20px;">취소</button>
-									</div>
-								</div>
+							
 								
 			
 								<div class="control-group">
@@ -198,16 +177,16 @@
 								</div>
 								
 								<div class="control-group">
-										<div style="float:left;width:50%">											
-											<label class="control-label" for="form-field-1">등록세</label>
-											<div class="controls" style="width:90%">
-												<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
-											</div>
-										</div>	
-										<div style="float:left;width:50%">											
-											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">취득세</label>
+									<div style="float:left;width:50%">											
+										<label class="control-label" for="form-field-1">등록세</label>
+										<div class="controls" style="width:90%">
 											<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
-										</div>	
+										</div>
+									</div>	
+									<div style="float:left;width:50%">											
+										<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">취득세</label>
+										<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
+									</div>	
 								</div>
 								
 								
@@ -221,7 +200,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">보증금 납부일자</label>
 									<div class="controls">
-										<input type="text" class="span4" id="form-field-1" name="name" placeholder=""/>	
+										<input class="cl-date-picker" type="text" style="width:150px" id="form-field-1" name="depositeDate" placeholder=""/>	
 										<i class="icon-calendar"></i>
 									</div>
 								</div>
@@ -241,11 +220,33 @@
 										</div>
 									</div>	
 								</div>
-							</form>
-						</div><!-- 대변 span -->
-					</div><!-- 차변 대변 나누기 위한 row-fluid -->	
-					<div>
-						
+								
+							</div><!-- 대변 span -->
+							
+							
+							<div class="row-fluid">
+								<div class="span12">
+								<div class="hr hr-18 dotted"></div>
+								<div class="controls" style="margin-left: 0px;">
+									<div class="controls" style="margin-left: 0px;">
+										 <button class="btn btn-primary btn-small" style="float:left; margin-right:20px;">등록</button>
+				                               <button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
+				                               <button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
+				                               <button class="btn btn-info btn-small" style="float:left;margin-right:20px;">조회</button>
+				                               <button class="btn btn-default btn-small" style="float:left;margin-right:20px;">초기화</button>
+									</div>
+								</div>
+								</div>
+								<div class="row-fluid">
+								<div class="span12">
+								<div class="hr hr-18 dotted"></div>
+								</div>
+								</div>
+							</div>
+						</form>
+						</div><!-- 차변 대변 나누기 위한 row-fluid -->	
+							
+								<div>
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
@@ -322,8 +323,6 @@
 												<td>작성자</td>
 												<td>작성일자</td>
 											</tr>
-
-											
 										</tbody>
 									</table>
 									
@@ -337,16 +336,11 @@
 												<li><a href="#">5</a></li>
 												<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
 											</ul>
-									</div>
-					</div>					
+										</div>
+								</div>					
 					<!-- PAGE CONTENT ENDS -->
-					
-				
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-
-
-
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -358,5 +352,38 @@ $(function(){
 	$(".chosen-select").chosen(); 
 });
 </script>
+
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		})
+	</script>
+	
 </body>
 </html>

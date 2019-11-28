@@ -237,7 +237,7 @@
 							<table class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th>순 번</th>
+										<th>번 호</th>
 										<th>품목코드</th>
 										<th>품 목 명</th>
 										<th>수량</th>
