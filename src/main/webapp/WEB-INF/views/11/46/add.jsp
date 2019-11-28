@@ -56,8 +56,7 @@ tr td:first-child {
 
 .mgr-call-input {
 	width: 150px;
-	display: inline;
-}
+	display: inline;}
 </style>
 </head>
 <body class="skin-3">
