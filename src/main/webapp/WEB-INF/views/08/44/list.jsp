@@ -104,6 +104,8 @@
 							</form>
 						</div><!-- /row -->
 						
+						<div class="hr hr-18 dotted"></div>
+						
 						<div class="row-fluid">
 							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 								<div class="control-group">
