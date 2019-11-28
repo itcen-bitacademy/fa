@@ -171,9 +171,6 @@
 								class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th class="center"><label> <input type="checkbox"
-												class="ace"> <span class="lbl"></span>
-										</label></th>
 										<th>NO</th>
 										<th>건물코드</th>
 										<th>건물대분류코드</th>
@@ -207,9 +204,6 @@
 								</thead>
 								<tbody>
 									<tr>
-										<th class="center"><label> <input type="checkbox"
-												class="ace"> <span class="lbl"></span>
-										</label></th>
 										<td></td>
 										<td></td>
 										<td></td>
