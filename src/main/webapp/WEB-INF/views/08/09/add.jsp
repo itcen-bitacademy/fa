@@ -162,13 +162,13 @@
 									</div>
 								</div>
 							</div><!-- 대변 span -->
-						</form>
-					</div><!-- 차변 대변 나누기 위한 row-fluid -->
+						
+					
 					<div class="row-fluid">
 					<div class="span12">
 					<div class="hr hr-18 dotted"></div>
-					<div class="control-group">
-						<div class="controls">
+					<div class="controls" style="margin-left: 0px;">
+						<div class="controls" style="margin-left: 0px;">
 							 <button class="btn btn-primary btn-small" style="float:left; margin-right:20px;">등록</button>
 	                               <button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
 	                               <button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
@@ -183,7 +183,8 @@
 					</div>
 					</div>
 					</div>
-					
+					</form>
+					</div><!-- 차변 대변 나누기 위한 row-fluid -->
 					
 					<div class="row-fluid">
 						<table id="sample-table-1" class="table table-striped table-bordered table-hover">
