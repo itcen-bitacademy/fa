@@ -7,7 +7,8 @@
 <html lang="ko">
 
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
     <c:import url="/WEB-INF/views/common/head.jsp" />
     <style>
     	#sample-table-1 tr td{
@@ -23,6 +24,13 @@
     		width:94%;
 			border:0
     	}    
+    	.form-horizontal .control-label{
+    		text-align:left
+    	}
+    	.controls input[type=text]{
+    		width:50%;
+    		min-width: 200px
+    	}
     </style>
     <script>
 	    cnt = 2;   
@@ -59,10 +67,10 @@
 
 <body class="skin-3">
     <c:import url="/WEB-INF/views/common/navbar.jsp" />
-    <div class="main-container container-fluid">
+    <div class="main-container container-fluid" style="height:100%">
         <c:import url="/WEB-INF/views/common/sidebar.jsp" />
-        <div class="main-content">
-            <div class="page-content">
+        <div class="main-content" style="overflow-x:auto;height:calc(100% - 80px);">
+            <div class="page-content" style="min-width:1280px;">
 
 
                 <div class="page-header position-relative">
@@ -102,8 +110,13 @@
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="form-field-7">출고일</label>
-                                    <div class="controls">
-                                        <input type="text" id="form-field-7" placeholder="출고일">
+	                                    <div class="controls">
+		                                    <div class="input-append">
+													<input class="cl-date-picker" id="cl-total-date-picker" 
+													type="text" data-date-format="yyyy-mm-dd"> <span
+													class="add-on"> <i class="icon-calendar"></i>
+												</span>
+											</div>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -215,10 +228,43 @@
     <!-- basic scripts -->
     <c:import url="/WEB-INF/views/common/footer.jsp" />
     <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
     <script>
-        $(function() {
-            $(".chosen-select").chosen();
-        });
+    $(function() {
+    	$(".chosen-select").chosen();
+    	
+		$.fn.datepicker.dates['ko'] = {
+		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		today: "Today",
+		clear: "Clear",
+		format: "yyyy-mm-dd",
+		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+		weekStart: 0
+		};
+
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode: 4,
+			minViewMode: 1,
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+		$('.cl-date-picker').datepicker({
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+			
+	})
+	
+	$(document).ready(function () {
+    $(".main-content").floatingScroll();
+});
     </script>
 </body>
 
