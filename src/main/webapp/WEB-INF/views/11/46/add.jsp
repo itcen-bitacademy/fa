@@ -212,17 +212,17 @@ tr td:first-child {
 				</div>
 				<hr>
 				<div>
-					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">입력</button>
+					<button class="btn btn-success btn-small" style="float:right;margin-right:20px;">초기화</button>
 					&nbsp;
-					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">수정</button>
+					<button class="btn btn-pink btn-small" style="float:right;margin-right:20px;">상환</button>
 					&nbsp;
-					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">삭제</button>
+					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">조회</button>
 					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;">조회</button>
+					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">삭제</button>
 					&nbsp;
-					<button type="button" class="btn">상환</button>
+					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">수정</button>
 					&nbsp;
-					<button type="button" class="btn ">초기화</button>
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;">입력</button>
 				</div>
 				<hr>
 			</form>					
@@ -247,7 +247,7 @@ tr td:first-child {
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
-							<th class="center">담당자전화번호</th>
+							<th class="center">담당자전화번호</th>	
 							<th class="center">은행코드</th>
 							<th class="center">계좌</th>
 						</tr>
