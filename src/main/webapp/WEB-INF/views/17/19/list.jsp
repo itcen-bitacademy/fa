@@ -245,16 +245,16 @@
 	$(function() {
 		// 데이트피커 한글설정
 		$.fn.datepicker.dates['ko'] = {
-		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-		today: "Today",
-		clear: "Clear",
-		format: "yyyy-mm-dd",
-		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-		weekStart: 0
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
 		};
 
 		// 년월 설정 데이트피커
@@ -289,8 +289,12 @@
 	// 마감일 신규 등록
 	function saveClosingDate(event) {
 		console.log(getClosingDates());
+
+		var form = $('#test-form')[0]
+		form.submit()
 	}
 
+	// 마감일 입력 데이터 객체화
 	function getClosingDates() {
 		var closingDates;
 
@@ -305,9 +309,6 @@
 			closingDebtDate: $('#cl-debt-date-picker').val(),
 			closingSettlementDate: $('#cl-settlement-date-picker').val()
 		}
-
-		var form = $('#test-form')[0]
-		form.submit()
 
 		return closingDates
 	}
