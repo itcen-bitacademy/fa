@@ -83,8 +83,8 @@
 				
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
-			<div class="row-fluid">
-					<form class="form-horizontal">
+			<div class="row-fluid"> <!-- 검색조건 start -->
+					<form class="form-horizontal; center">
 					거래처 구분 : &nbsp;<select class="chosen-select" id="form-field-select-1" name="customer_kind" data-placeholder="거래처 종류" style="width:70px">
 							<option value="All">전체</option>
 							<option value="Purchase">매입</option>
@@ -113,13 +113,15 @@
 							<option value="false">N</option>
 							<option value="true">Y</option>
 						</select>
+						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-small btn-info">조회</button>
 
 
 
 					</form>
 					<div class="hr hr-18 dotted"></div>
-				</div><!-- /.row-fluid -->
+				</div><!-- 검색조건 end -->
+				
 				<div class="row-fluid">
 						<div class="span12">
 						<div style="width:100%; overflow-x:auto">
