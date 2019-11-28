@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -26,8 +27,8 @@
 					<!-- PAGE CONTENT BEGINS -->
 						
 						
+					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 						<div class="span6"><!-- 차변 -->
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">무형자산 코드</label>
 									<div class="controls">
@@ -86,22 +87,16 @@
 										<input type="text" class="span7" id="form-field-1" name="taxbillNo" placeholder="12자로 입력하세요"/>
 									</div>
 								</div>
-							</form>
 						</div><!-- 차변 span -->
 							
 						<div class="span6"><!-- 대변 -->
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 								<div class="control-group">
 									<div class="controls">
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>등록</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>수정</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>삭제</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>조회</button>
-											&nbsp; &nbsp; &nbsp;
-										<button class="btn" type="reset"><i class="icon-undo bigger-110"></i>Reset</button>
+										<button class="btn btn-primary btn-small" style="float:left;margin-right:20px;">등록</button>
+										<button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
+										<button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
+										<button class="btn btn-info btn-small" type="submit" style="float:left;margin-right:20px;">조회</button>
+										<button class="btn btn-default btn-small" type="reset" style="float:left;margin-right:20px;"><i class="icon-undo bigger-110"></i>초기화</button>
 									</div>
 								</div>
 								<div class="control-group">
@@ -131,7 +126,7 @@
 								<div class="control-group">
 									<label class="control-label" for="id-date-picker-1">매입일자</label>
 									<div class="controls">
-										<input class="date-picker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy">
+										<input class="cl-date-picker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy">
 										<div class="input-append">
 											<span class="add-on">
 												<i class="icon-calendar"></i>
@@ -156,8 +151,8 @@
 										</div>
 									</div>
 								</div>
-							</form>
 						</div><!-- 대변 span -->
+					</form>
 					</div><!-- 차변 대변 나누기 위한 row-fluid -->						
 					<!-- PAGE CONTENT ENDS -->
 					
@@ -238,6 +233,37 @@
 $(function(){
 	$(".chosen-select").chosen(); 
 });
+</script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script>
+	$(function() {
+		$.fn.datepicker.dates['ko'] = {
+		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		today: "Today",
+		clear: "Clear",
+		format: "yyyy-mm-dd",
+		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+		weekStart: 0
+		};
+	
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode: 4,
+			minViewMode: 1,
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	
+		$('.cl-date-picker').datepicker({
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	})
 </script>
 </body>
 </html>
