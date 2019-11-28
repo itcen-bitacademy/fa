@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -24,11 +25,8 @@
 				<div class="span12">
 					<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
-						
-						
+					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 						<div class="span5"><!-- 차변 -->
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">차량 코드</label>
 									<div class="controls">
@@ -69,30 +67,24 @@
                                  </select>
                               </div>
                         </div>
-								
-							
-								
-								
+			
 						<div class="control-group">
-								<label class="control-label" for="id-date-picker-1">매입일자</label>
+								<label class="control-label" for="id-date-range-picker-1">매입일자</label>
 								<div class="controls">
 									<div class="input-append">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
 									</div>
-									<input class="span5" type="text" name="acqPrice" id="id-date-range-picker-1">
+									<input class="id-date-range-picker-1" type="text" name="acqPrice" >
+									
 								</div>
 							</div>
  	
-                         
-						</form>
 					</div><!-- 차변 span -->
 							
 						<div class="span3"><!-- 대변 -->
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-							
-			
+					
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1">차량분류</label>
 									<div class="controls">
@@ -111,12 +103,11 @@
 										<input type="text" id="form-field-1" name="customerManager" placeholder="이름을 입력하세요"/>
 									</div>
 								</div>
-							</form>
+							
 						</div><!-- 대변 span -->
 						
 						<div class="span4"><!-- 차변 -->
-						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-							
+						
 						
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1">직급</label>
@@ -131,14 +122,15 @@
 								
 								
 									<div class="control-group">
-										<label class="control-label" for="id-date-picker-1">납부일자</label>
+										<label class="control-label" for="id-date-range-picker-1">납부일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1">
+											<input class="id-date-range-picker-2" type="text" name="payDate" >
+							
 										</div>
 									</div>
 								
@@ -146,51 +138,51 @@
 								<div style="float:left;width:50%">											
 									<label class="control-label" for="form-field-3">납부금액</label>
 										<div class="controls">
-											<input style="width:150px" type="text" id="form-field-1" name="payPrice" placeholder=""/>
+											<input style="width:200px" type="text" id="form-field-1" name="payPrice" placeholder="작성된 금액이하로 검색됩니다."/>
 										</div>
 									</div>	
 								</div>
 								<div class="control-group">
                               <div class="controls">
                                  <div class="span4" style="float:right">
-                                    <button class="btn btn-info btn-small" style="width:80px; float:right; margin-right:45px">상세조회</button>
+                                    <button class="btn btn-info btn-small" style="width:80px; float:right; margin-right:15px">상세조회</button>
                                  </div>
                                  <div class="span2" style="float:right">
                                     <label style="float:right">
                                        <input name="checkDel" type="checkbox" class="ace">
-                                          <span class="lbl" style="width:90px; margin-right:20px">삭제포함</span>
+                                          <span class="lbl" style="width:72px; margin-right:0px">삭제포함</span>
                                     </label>
                                  </div>
                               </div>
                            </div>
-							
-							
-						
-						</form>
-					</div><!-- 차변 대변 나누기 위한 row-fluid -->	
-					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-								<div class="control-group">
-									<div class="controls">
-										<div class="span1" style="float:right; margin-left:0px">
-											<button class="btn btn-info btn-small" style="float:left; margin-right:0px;">조회</button>
-										</div>
-										<div class="span2" style="float:right; margin-left:50px">
-											<input type="text" class="span11" id="form-field-1" name="search" placeholder="검색어를 입력하세요"/>
-										</div>
+						</div>
+					</form>
+					</div>
+						<div class="hr hr-18 dotted"></div>
+						<!-- 차변 대변 나누기 위한 row-fluid -->
+						<div>
+						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+							<div class="control-group">
+								<div class="controls">
+									<div class="span1" style="float: right">
+										<button class="btn btn-info" type="submit"
+											style="height: 36px">
+											<i class="icon-ok bigger-80"></i>조회
+										</button>
+									</div>
+									<div class="span2" style="float: right;">
+										<input type="text" class="span11" id="form-field-1"
+											name="search" placeholder="검색어를 입력하세요" />
 									</div>
 								</div>
-							</form>
-					<div>
-						
+							</div>
+						</form>
+						</div>
+							
+								<div>
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th class="center">
-													<label>
-														<input type="checkbox" class="ace">
-														<span class="lbl"></span>
-													</label>
-												</th>
 												<th>NO</th>
 												<th>차량코드</th>
 												<th>차량대분류</th>
@@ -224,13 +216,6 @@
 
 										<tbody>
 											<tr>
-												<td class="center">
-													<label>
-														<input type="checkbox" class="ace">
-														<span class="lbl"></span>
-													</label>
-												</td>
-
 												<td>1</td>
 												<td>차량코드</td>
 												<td>차량대분류</td>
@@ -260,8 +245,6 @@
 												<td>작성일자</td>
 												<td>삭제여부</td>
 											</tr>
-
-											
 										</tbody>
 									</table>
 									
@@ -276,15 +259,10 @@
 												<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
 											</ul>
 									</div>
-					</div>					
+							</div>					
 					<!-- PAGE CONTENT ENDS -->
-					
-				
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-
-
-
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -294,6 +272,20 @@
 <script>
 $(function(){
 	$(".chosen-select").chosen(); 
+});
+</script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
+<script>
+$(function() {
+	$(".id-date-range-picker-1").daterangepicker().prev().on(ace.click_event, function(){
+		$(this).next().focus();
+	});
+});
+$(function() {
+	$(".id-date-range-picker-2").daterangepicker().prev().on(ace.click_event, function(){
+		$(this).next().focus();
+	});
 });
 </script>
 </body>
