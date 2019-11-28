@@ -211,16 +211,19 @@ tr td:first-child {
 					</div>
 				</div>
 				<hr>
-				
-				<div class="span8">
-					<button class="btn btn-info btn-small">입력</button>
-					<button class="btn btn-danger btn-small">수정</button>
-					<button class="btn btn-warning btn-small">삭제</button>
-					<button class="btn btn-primary btn-small">조회</button>
-					<button class="btn btn-default btn-small" >상환</button>
-					<button class="btn btn-default btn-small" >초기화</button>
+				<div>
+					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">입력</button>
+					&nbsp;
+					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">수정</button>
+					&nbsp;
+					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">삭제</button>
+					&nbsp;
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;">조회</button>
+					&nbsp;
+					<button type="button" class="btn">상환</button>
+					&nbsp;
+					<button type="button" class="btn ">초기화</button>
 				</div>
-				
 				<hr>
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
@@ -282,17 +285,7 @@ tr td:first-child {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
-<script>
-/*
-$(function() {
-  
-  $('input[name="date-range-picker"]').on('apply.daterangepicker', function(ev, picker) {
-	    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
-	});
-});
-*/
 
-</script>
 <script>
 $(function(){
 	 $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
@@ -302,6 +295,13 @@ $(function(){
 	      $(this).next().focus();
 	   });
 	$(".chosen-select").chosen();
+});
+$(function() {
+  $('input[name="date-range-picker"]').daterangepicker({
+    locale: {
+      format: 'YYYY-MM-DD'
+    }
+  });
 });
 </script>
 </body>
