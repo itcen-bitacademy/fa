@@ -65,7 +65,7 @@
 								</div>
 								
 								<br/>
-								
+
 								<div class="form-group" >
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 주소:&nbsp; </label>
 									<div class="input-append">
@@ -77,10 +77,11 @@
 									
 									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
 									
-									<input type="text" id="customer_address" placeholder="자동입력" class="col-xs-10 col-sm-5" />
+									<input type="text" id="customer_address" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 								
 								<br/>
+								
 								
 								<div class="form-group" style=float:left>
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 업태:&nbsp; </label>
@@ -132,18 +133,18 @@
 										</button>
 									</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
-									<input type="text" id="customer_address" placeholder="자동입력" class="col-xs-10 col-sm-5" />
+									<input type="text" id="customer_address" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly/>
 								</div>
 								
 								<br/>
 								
 								<div class="form-group" style=float:left>
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 은행명:&nbsp; </label>
-									<input type="text" id="customer_no" placeholder="자동입력" class="col-xs-10 col-sm-5" />	
+									<input type="text" id="customer_no" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly/>	
 								</div>
 								<div class="form-group" >
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 예금주:&nbsp; </label>
-									<input type="text" id="customer_name" placeholder="E-mail" class="col-xs-10 col-sm-5" />
+									<input type="text" id="customer_name" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly/>
 								</div>
 								
 								<br/>
@@ -161,30 +162,16 @@
 						</div><!-- span -->
 						
 						<div class="row-fluid">
-							<div class="span12">
-								<div class="form-actions">
-								
-									<button class="btn btn-info" type="button">
-										<i class="icon-ok bigger-110"></i> 입 력
-									</button>
-								
-									&nbsp; &nbsp;
-									<button class="btn" type="reset">
-										<i class="icon-list bigger-110"></i> 조 회
-									</button>
-									
-									&nbsp; &nbsp;
-									<button class="btn" type="reset">
-										<i class="icon-edit bigger-110"></i> 수 정
-									</button>
-									&nbsp; &nbsp;
-									<button class="btn" type="reset">
-										<i class="icon-remove bigger-110"></i> 삭 제
-									</button>
-								</div>
-								<div class="hr"></div>
+							<div class="span8">
+								<button class="btn btn-info">조회</button>
+								<button class="btn btn-danger">삭제</button>
+								<button class="btn btn-warning">수정</button>
+								<button class="btn btn-primary">입력</button>
+								<button class="btn btn-default">취소</button>
 							</div><!-- /.span -->
 						</div>
+						
+						<br/>
 						
 						<div class="row-fluid">
 						<div class="span12">
