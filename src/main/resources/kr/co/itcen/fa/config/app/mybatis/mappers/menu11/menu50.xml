@@ -16,30 +16,24 @@
 	<select id="list" resultType="pdebtvo">
 		<![CDATA[
 			select 
-			no as no, 
-			code as code,
-			name as name,
-			debt_amount as debtAmount,
-			repay_bal as repayBal,
-			repay_way as repayWay,
-			date_format(debt_date, '%Y-%m-%d') as debtDate,
-			date_format(exp_date, '%Y-%m-%d') as expDate,
-			int_rate as intRate,
-			int_pay_way as intPayWay,
-			int_amount as intAmount,
-			mgr as mgr,
-			mgr_call as mgrCall,
-			danger_code as dangerCode,
-			danger_name as dangerName,
-			bank_code as bankCode,
-			deposit_no as depositNo,
-			account_no as accountNo,
-			voucher_no as voucherNo,
-			delete_flag as deleteFlag,
-			insert_id as insertId,
-			insert_date as insertDate,
-			update_id as updateId,
-			update_date as updateDate from tb_p_debt
+			no as no, code as code, name as name, debt_amount as debtAmount,
+			repay_bal as repayBal, repay_way as repayWay, 
+			date_format(debt_date, '%Y-%m-%d') as debtDate, 
+			date_format(exp_date, '%Y-%m-%d') as expDate, 
+			int_rate as intRate, int_pay_way as intPayWay, int_amount as intAmount, 
+			mgr as mgr, mgr_call as mgrCall, danger_code as dangerCode, danger_name as dangerName, 
+			bank_code as bankCode, deposit_no as depositNo, account_no as accountNo, 
+			voucher_no as voucherNo, delete_flag as deleteFlag, 
+			insert_id as insertId, insert_date as insertDate, update_id as updateId,
+			update_date as updateDate 
+			from tb_p_debt 
+			limit #{startNum}, #{lastNum}
+		]]>
+	</select>
+	
+	<select id="pdebtTotalcount" resultType="int">
+		<![CDATA[
+			select count(*) from tb_p_debt
 		]]>
 	</select>
 

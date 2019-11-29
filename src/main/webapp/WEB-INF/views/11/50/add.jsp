@@ -102,9 +102,9 @@ tr td:first-child {
 									<td><h4>차입일자 ~ 만기일자</h4></td>
 									<td colspan="2">
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="debtExpDate" id="id-date-range-picker-1" />
+				                           <input type="text" name="debtExpDate" name="date-range-picker" id="id-date-range-picker-1" />
 				                           <span class="add-on">
-				                              <i class="icon-calendar"></i>
+				                              <i class="icon-calendar" ></i>
 				                           </span>
 				                           </div>
 									</td>
@@ -253,7 +253,7 @@ tr td:first-child {
 						<tr>
 							<th class="center">
 								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
+									<input type="checkbox" class="ace"  id="selectAll"/>
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -297,18 +297,67 @@ tr td:first-child {
 					</c:forEach>
 				</table>
 				
-				
 				<div class="pagination">
-					<ul>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					<%--Page 이전 페이지 구현 --%>
+					<ul> 
+						<c:choose>
+							<%-- all data list pagination --%>
+							<c:when test="${pageInfo.totalRows != 0}">
+								<c:choose>
+									<c:when test="${pageInfo.currentBlock eq 1}">
+										<li class="disabled"><a><i class="icon-double-angle-left"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock-1)*pageInfo.pagesPerBlock}"><i class="icon-double-angle-left"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+								<%--Page  페이지 구현 --%>
+								<c:choose>
+									<%-- 첫 페이지 출력 ex) 1 2 3 4 5
+									currentBlock : 현재 전체 블럭 --%>
+									<c:when test="${pageInfo.currentBlock ne pageInfo.totalBlocks}">
+										<c:forEach begin="1" end="${pageInfo.pagesPerBlock}" varStatus="num">
+											<c:choose>
+												<c:when test="${num.count == pageInfo.currentPage}">
+													<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:otherwise>
+											</c:choose>
+	                       				</c:forEach>
+									</c:when>
+									<%-- 첫 페이지 이후의 모든 페이지 출력 ex) 6 7 8 9 10 
+																									  11 12 13 14 15 
+																									  16 17 18 19 20  totalBlocks : 모두 출력되어야 하는 블럭의 수 --%>
+									<c:otherwise>
+										<c:forEach begin="${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + 1}" end="${pageInfo.totalPages}" varStatus="num" var="i">
+											<c:choose>
+												<c:when test="${i == pageInfo.currentPage}">
+													<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:otherwise>
+											</c:choose>
+	                   					 </c:forEach>
+									</c:otherwise>
+								</c:choose>
+								<%--Page 다음 페이지 구현 --%>
+								<c:choose>
+									<c:when test="${pageInfo.currentBlock eq pageInfo.totalBlocks}">
+										<li class="disabled"><a><i class="icon-double-angle-right"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pageInfo.currentBlock * pageInfo.pagesPerBlock + 1 }"><i class="icon-double-angle-right"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+						</c:choose>
 					</ul>
 				</div>
+				
+				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -320,20 +369,42 @@ tr td:first-child {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script>
-$(function(){
-	$(".chosen-select").chosen();
-	$('#id-date-range-picker-1').daterangepicker({
+	$(function() {
+		$(".chosen-select").chosen();
+
+		$('#id-date-range-picker-1').daterangepicker({
 			format : 'YYYY-MM-DD'
 		}).next().on(ace.click_event, function() {
 			$(this).next().focus();
 		});
-
-		$('.icon-calendar').daterangepicker({
-			format : 'YYYY-MM-DD'
-		}).next().on(ace.click_event, function() {
+		
+		//to translate the daterange picker, please copy the "examples/daterange-fr.js" contents here before initialization
+		$('input[name=date-range-picker]').daterangepicker({
+			'applyClass' : 'btn-sm btn-success',
+			'cancelClass' : 'btn-sm btn-default',
+			format : 'YYYY-MM-DD',
+			locale: {
+				applyLabel: 'Apply',
+				cancelLabel: 'Cancel',
+			}
+		})
+		.next().on(ace.click_event, function(){
 			$(this).next().focus();
 		});
 	});
+	
+	// checkbox로 데이터 모든 데이터 선택하거나 낱개로 선택
+	$(document).ready(function() {
+		$('body').on('click', '#selectAll', function() {
+			if ($(this).hasClass('allChecked')) {
+				$('input[type="checkbox"]', '#simple-table').prop('checked', false);
+			} else {
+				$('input[type="checkbox"]', '#simple-table').prop('checked', true);
+			}
+			$(this).toggleClass('allChecked');
+		})
+	});
+	
 </script>
 </body>
 </html>
