@@ -25,11 +25,11 @@
 
 	<select id="findAll" resultType="menuvo">
 		<![CDATA[
-	        select b.no, b.parent_no as parentNo, ifnull(b.parent_no, b.no) as _parentNo, b.name, date_format(b.last_update, '%Y-%m-%d %h:%i:%s') as lastUpdate
+	        select b.no, b.parent_no as parentNo, ifnull(b.parent_no, b.no) as pn, b.name, date_format(b.last_update, '%Y-%m-%d %h:%i:%s') as lastUpdate
 	          from menu a 
 	    right join menu b
 	            on a.no = b.parent_no
-	      order by _parentNo, b.parent_no, b.order_no; 		
+	      order by pn, b.parent_no, b.order_no; 		
 		]]>
 	</select>
 

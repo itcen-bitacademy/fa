@@ -24,10 +24,10 @@ public class Menu37Controller {
 	@Autowired
 	private Menu37Service menu37Service;
 	
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test() {
-		menu37Service.test();
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
+	public String add() {
+		//menu37Service.test();
 		
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 }

@@ -31,7 +31,7 @@ public class Menu39Controller {
 	
 	
 	//               /08   /   39     , /08/39/list
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model) {
 		menu39Service.test();
 		/*
@@ -39,7 +39,7 @@ public class Menu39Controller {
 		 *   08/39/list.jsp
 		 * 
 		 */
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 }
