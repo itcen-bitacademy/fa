@@ -17,6 +17,12 @@
 	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
 <style>
+.table-responsive {
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
 input:focus {
 	outline: none;
 }
@@ -32,13 +38,12 @@ input:focus {
 			selectOtherMonths : false,
 		});
 	});
-
 	$(function() {
 		$(".chosen-select").chosen();
 	});
 </script>
 </head>
-<body class="skin-3">
+<body class="skin-3" style="min-width: 1280px">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -117,24 +122,64 @@ input:focus {
 								<label style="display: inline;"> <input
 									name="form-field-radio" type="radio" class="ace"> <span
 									class="lbl">최근 순</span>
-								</label> 
-								<label style="display: inline;"> <input
+								</label> <label style="display: inline;"> <input
 									name="form-field-radio" type="radio" class="ace"> <span
 									class="lbl">공급가액 순</span>
-								</label> 
-								<label style="display: inline;"> <input
+								</label> <label style="display: inline;"> <input
 									name="form-field-radio" type="radio" class="ace"> <span
 									class="lbl">품목명 순</span>
-								</label>
-								<label style="display: inline;"> <input
+								</label> <label style="display: inline;"> <input
 									name="form-field-radio" type="radio" class="ace"> <span
 									class="lbl">거래처명 순</span>
 								</label>
-								
+
 							</div>
 							<button class="btn btn-default btn-small span1"
 								style="float: left; margin-left: 20px;">조회</button>
 						</div>
+						<div class="control-group span12"
+							style="overflow-x: scroll; max-width:1000px">
+							<table id="sample-table-1"
+								class="table table-striped table-bordered table-hover" style="width:1200px">
+								<tr>
+									<th>번호</th>
+									<th>승인번호</th>
+									<th>작성일자</th>
+									<th>매입번호</th>
+									<th>매입일자</th>
+									<th>등록번호</th>
+									<th>거래처명</th>
+									<th>대표자명</th>
+									<th>품목명</th>
+									<th>업태</th>
+									<th>종목</th>
+									<th>수량</th>
+									<th>단가</th>
+									<th>총 공급가액</th>
+									<th>총 세액</th>
+									<th>과세유형</th>
+									<th>삭제여부</th>
+							
+								</tr>
+								<tr>
+
+								</tr>
+							</table>
+						</div>
+						<div class="control-group span12 pagination">
+							<ul>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-left"></i></a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</ul>
+						</div>
+
+
 						<!-- PAGE CONTENT ENDS -->
 
 					</div>

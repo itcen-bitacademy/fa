@@ -131,7 +131,7 @@
 											<label class="control-label" for="form-field-1">평수</label>
 											<div class="controls">
 												<input style="width: 206px" type="text" id="form-field-1"
-													name="acqPrice" placeholder="숫자만 입력하세요" />
+													name="area" placeholder="숫자만 입력하세요" />
 											</div>
 										</div>
 										<div style="float: left">
@@ -139,9 +139,9 @@
 												class="control-label" for="form-field-1">층수</label>
 											<div style="width: 205px; margin-left: 10px" class="controls">
 												<input style="width: 50px" type="text" id="form-field-1"
-													name="acqPrice" placeholder="지상" /> <input
+													name="floor" placeholder="지상" /> <input
 													style="width: 50px" type="text" id="form-field-1"
-													name="acqPrice" placeholder="지하" />
+													name="basement" placeholder="지하" />
 											</div>
 										</div>
 									</div>
@@ -207,34 +207,34 @@
 									</div>
 								</div>
 								<!-- 우측 -->
-
-								<div class="span12" style="margin-left: 0px;">
-									<div class="hr hr-18 dotted"></div>
-								</div>
-
-								<div class="control-group span6"
-									style="margin-bottom: 0px; margin-left: 0px;">
-									<div class="controls">
-										<button class="btn btn-primary btn-small"
-											style="float: left; margin-right: 20px;">등록</button>
-										<button class="btn btn-warning btn-small"
-											style="float: left; margin-right: 20px;">수정</button>
-										<button class="btn btn-danger btn-small"
-											style="float: left; margin-right: 20px;">삭제</button>
-										<button class="btn btn-info btn-small"
-											style="float: left; margin-right: 20px;">조회</button>
-										<button class="btn btn-default btn-small"
-											style="float: left; margin-right: 20px;">초기화</button>
+								<div class="row-fluid">
+									<div class="span12">
+										<div class="hr hr-18 dotted"></div>
+										<div class="controls" style="margin-left: 0px;">
+											<div class="controls" style="margin-left: 0px;">
+												<button class="btn btn-primary btn-small"
+													style="float: left; margin-right: 20px;">등록</button>
+												<button class="btn btn-warning btn-small"
+													style="float: left; margin-right: 20px;">수정</button>
+												<button class="btn btn-danger btn-small"
+													style="float: left; margin-right: 20px;">삭제</button>
+												<button class="btn btn-info btn-small"
+													style="float: left; margin-right: 20px;">조회</button>
+												<button class="btn btn-default btn-small"
+													style="float: left; margin-right: 20px;">취소</button>
+											</div>
+										</div>
+									</div>
+									<div class="row-fluid">
+										<div class="span12">
+											<div class="hr hr-18 dotted"></div>
+										</div>
 									</div>
 								</div>
-
-								<div class="span12" style="margin-left: 0px;">
-									<div class="hr hr-18 dotted"></div>
-								</div>
-
 							</form>
 						</div>
 						<!-- 좌,우측  row-fluid -->
+
 
 						<!-- 테이블 -->
 						<table id="sample-table-1"
@@ -332,7 +332,6 @@
 			<!-- /.page-content -->
 		</div>
 		<!-- /.main-content -->
-	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />

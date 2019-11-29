@@ -136,14 +136,13 @@
 												name="area" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
-									<div class="control-group">
-										<div class="controls">
-											<input name="checkDel" type="checkbox" class="ace"> <span
-												class="lbl"> 삭제여부</span>
-										</div>
-									</div>
+									
+									<span style="line-height:550%"><br></span>
+									
 									<div class="control-group" style="margin-bottom:0px;">
 										<div class="span3" style="float: right;">
+												<input name="checkDel" type="checkbox" class="ace">
+												<span class="lbl">삭제포함</span>
 											<button class="btn btn-info btn-small"
 												style="float: right; margin-right: 20px;">상세조회</button>
 										</div>
@@ -151,15 +150,11 @@
 								</div>
 								<!-- 우측 span -->
 							</form>
-							
-						<!-- 구분선 -->
-						<div class="span12" style="margin-left:0px;">
-							<div class="hr hr-18 dotted"></div>
-						</div>
+							<!-- 구분선 -->
+						</div><!-- 나누기 위한 row-fluid -->
+						<div class="hr hr-18 dotted"></div>
 						
-						</div>
-						<!-- 나누기 위한 row-fluid -->
-						
+						<div>
 						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 							<div class="control-group">
 								<div class="controls">
@@ -174,6 +169,7 @@
 								</div>
 							</div>
 						</form>
+						</div>
 						
 						<div>
 							<table id="sample-table-1"
@@ -324,7 +320,9 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
-			$('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
+			$('#id-date-range-picker-1').daterangepicker({
+				format : 'YYYY-MM-DD'
+			}).prev().on(ace.click_event, function(){
 				$(this).next().focus();
 			});
 		});

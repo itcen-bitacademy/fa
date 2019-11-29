@@ -23,7 +23,7 @@ public class MyBatisConfig {
 		sqlSessionFactoryBean.setDataSource(dataSource);
 		sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:kr/co/itcen/fa/config/app/mybatis/configuration.xml"));
 		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:kr/co/itcen/fa/config/app/mybatis/mappers/**/*.xml"));
-
+		
 		return sqlSessionFactoryBean.getObject();
 	}
 	
