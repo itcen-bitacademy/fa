@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
-import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
  * 
@@ -25,4 +24,13 @@ public class Menu46Repository {
 		return sqlSession.selectList("menu46.getList");
 	}
 	
+	public Boolean insert(STermDebtVo sTermDebtVo) {
+		int count = sqlSession.insert("menu46.insert", sTermDebtVo);
+		return (count==1);
+	}
+	
+	public Boolean update(STermDebtVo sTermDebtVo) {
+		int count = sqlSession.update("menu46.update", sTermDebtVo);
+		return (count==1);
+	}
 }
