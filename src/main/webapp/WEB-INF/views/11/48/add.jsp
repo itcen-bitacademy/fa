@@ -9,17 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
-<script>
-$(function(){
-   $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
-      $(this).next().focus();
-   });
-   $(".chosen-select").chosen(); 
-});
-</script>
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 tr td:first-child {
@@ -97,12 +86,14 @@ tr td:first-child {
 								<tr>
 									<td><h4>차입일자 ~ 만기일자</h4></td>
 									<td colspan="2">
-				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="date-range-picker" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
+									<div class="control-group">
+				                        <div class="row-fluid input-prepend">			                        	
+				                           <input type="text" name="date-range-picker" id ="id-date-range-picker-1" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
-				                           </div>
+				                          </div>
+				                      </div>
 									</td>
 								</tr>
 								<tr>
@@ -110,19 +101,19 @@ tr td:first-child {
 									<td colspan="2">
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="repay_way" type="radio" class="ace" />
 												<span class="lbl">년</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="repay_way" type="radio" class="ace" />
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="repay_way" type="radio" class="ace" />
 												<span class="lbl">만기</span>
 											</label>
 										</div>
@@ -274,7 +265,6 @@ tr td:first-child {
 					</tbody>
 				</table>
 				
-				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -286,23 +276,22 @@ tr td:first-child {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 
+
+
 <script>
+	
 $(function(){
-	 $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
-	      $(this).next().focus();
-	   });
-	 $('.icon-calendar').daterangepicker().prev().on(ace.click_event, function(){
-	      $(this).next().focus();
-	   });
+	
+	$('#id-date-range-picker-1').daterangepicker({
+	    format: 'YYYY-MM-DD'
+	  }).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	
+	
 	$(".chosen-select").chosen();
 });
-$(function() {
-  $('input[name="date-range-picker"]').daterangepicker({
-    locale: {
-      format: 'YYYY-MM-DD'
-    }
-  });
-});
+
 </script>
 </body>
 </html>
