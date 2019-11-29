@@ -15,5 +15,11 @@
 			]]>
 		</selectKey>
 	</insert>
-
+	
+	<!-- 직급 리스트 TEST -->
+	<select id="name"  resultType="name">
+		<![CDATA[
+		select staff_name as staffName from tb_staff;
+		]]>
+	</select>
 </mapper>

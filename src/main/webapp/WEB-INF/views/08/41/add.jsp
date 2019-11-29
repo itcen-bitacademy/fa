@@ -138,9 +138,10 @@
 									<div style="float:left;width:50%">											
 										<label class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width:90%">
-												<select class="chosen-select" id="form-field-select-1" name="staffName" data-placeholder="전체">
-													<c:forEach items="${listMainMenu }" var="sectionVo">
-														<option value="${sectionVo.no }">${sectionVo.name }</option>
+												<select class="chosen-select-1" name="staffName" data-placeholder="전체">
+												<!-- <select class="chosen-select-1" id="form-field-select-1" name="staffName" data-placeholder="전체"> -->
+													<c:forEach items="${jikNameList}" var="StaffVo">
+														<option value="${StaffVo.no }">${StaffVo.staffName }</option>
 													</c:forEach>
 												</select>
 											</div>
@@ -229,11 +230,11 @@
 								<div class="hr hr-18 dotted"></div>
 								<div class="controls" style="margin-left: 0px;">
 									<div class="controls" style="margin-left: 0px;">
-										 <button class="btn btn-primary btn-small" style="float:left; margin-right:20px;">등록</button>
-				                               <button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
-				                               <button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
-				                               <button class="btn btn-info btn-small" style="float:left;margin-right:20px;">조회</button>
-				                               <button class="btn btn-default btn-small" style="float:left;margin-right:20px;">초기화</button>
+										   <button class="btn btn-primary btn-small" style="float:left; margin-right:20px;">등록</button>
+			                               <button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
+			                               <button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
+			                               <button class="btn btn-info btn-small" style="float:left;margin-right:20px;">조회</button>
+			                               <button class="btn btn-default btn-small" style="float:left;margin-right:20px;">초기화</button>
 									</div>
 								</div>
 								</div>
