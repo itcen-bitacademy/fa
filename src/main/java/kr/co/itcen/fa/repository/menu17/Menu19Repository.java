@@ -1,9 +1,12 @@
 package kr.co.itcen.fa.repository.menu17;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu17.ClosingDate;
 import kr.co.itcen.fa.vo.menu17.TestVo;
 
 /**
@@ -24,4 +27,21 @@ public class Menu19Repository {
 		sqlSession.insert("menu19.save",testVo);
 	}
 
+	
+	/**
+	 * 
+	 * 마감일 등록
+	 */
+	public int insertClosingDate(ClosingDate closingDate) {
+		return sqlSession.insert("menu19.insertClosingDate", closingDate);
+	}
+	
+	/**
+	 * 
+	 * 마감일 전체 조회(마감일 순 내림차순)
+	 */
+	public List<ClosingDate> selectAllClosingDate() {
+		// TODO: 페이징 추가
+		return sqlSession.selectList("menu19.selectAllClosingDate");
+	}
 }

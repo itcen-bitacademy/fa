@@ -31,7 +31,7 @@
 	
 	<select id="findByIdAndPassword" parameterType="uservo" resultType="uservo">
 		<![CDATA[
-		    select a.no, a.name, a.role, ifnull(b.name,'시스템관리') as teamName, ifnull(b.menu_no, 0) as menuNo 
+		    select a.no, a.id, a.name, a.role, ifnull(b.name,'시스템관리') as teamName, ifnull(b.menu_no, 0) as menuNo 
 		      from user a, team b
 		     where a.team_no = b.no
 		       and id = #{id }

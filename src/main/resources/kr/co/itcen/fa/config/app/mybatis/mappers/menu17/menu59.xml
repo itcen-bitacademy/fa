@@ -3,11 +3,11 @@
 <mapper namespace="menu59">
 
 	<!--  TEST -->
-   <insert id="save" parameterType="test19vo">
+   <insert id="insert" parameterType="AccountManagement">
       <![CDATA[
-      insert
-        into test
-      values (null, #{name })
+	 insert 
+	    into tb_account_management(account_order,account_no,account_usedyear,account_statement_type,use_yn,insert_userid,insert_day) 
+	  values(#{accountOrder}, #{accountNo}, #{accountUsedyear}, #{accountStatementType}, true, #{insertUserid}, now())
       ]]>
       <selectKey keyProperty="no" resultType="long" order="AFTER">
          <![CDATA[
@@ -16,4 +16,4 @@
       </selectKey>
    </insert>
 
-</mapper>
+</mapper> 

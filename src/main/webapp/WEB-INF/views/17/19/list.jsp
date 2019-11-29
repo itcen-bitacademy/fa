@@ -174,43 +174,21 @@
 										<th>매입마감일</th>
 										<th>매출마감일</th>
 										<th>결산마감일</th>
-										<%-- <th>결산여부</th>
-										<th>결산일</th>
-										<th>작업자</th>
-										<th>결산</th> --%>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>2019-12</td>
-										<td>2020-01-03</td>
-										<td>2020-01-02</td>
-										<td>2019-12-30</td>
-										<td>2019-12-31</td>
-										<td>2019-12-30</td>
-										<td>2019-12-31</td>
-										<td>2020-01-03</td>
-										<%-- <td>미결산</td>
-										<td>-</td>
-										<td>-</td>
-										<td> --%>
-											<%-- <button class="btn btn-info btn-small">결산</button>
-										</td> --%>
-									</tr>
-									<tr>
-										<td>2019-11</td>
-										<td>2019-12-03</td>
-										<td>2019-12-02</td>
-										<td>2019-11-29</td>
-										<td>2019-11-30</td>
-										<td>2019-11-29</td>
-										<td>2019-11-30</td>
-										<td>2019-12-03</td>
-										<%-- <td>완료</td>
-										<td>2019-12-03</td>
-										<td>최웅</td>
-										<td></td> --%>
-									</tr>
+									<c:forEach var="dt" items="${closingDateList}">
+										<tr>
+											<td>${dt.closingYearMonth }</td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingStatementDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingAssetsDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingDebtDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingPurchaseDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingSalesDate }"></fmt:formatDate></td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingSettlementDate }"></fmt:formatDate></td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div>
@@ -245,16 +223,16 @@
 	$(function() {
 		// 데이트피커 한글설정
 		$.fn.datepicker.dates['ko'] = {
-		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-		today: "Today",
-		clear: "Clear",
-		format: "yyyy-mm-dd",
-		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-		weekStart: 0
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
 		};
 
 		// 년월 설정 데이트피커
@@ -289,8 +267,12 @@
 	// 마감일 신규 등록
 	function saveClosingDate(event) {
 		console.log(getClosingDates());
+
+		var form = $('#test-form')[0]
+		form.submit()
 	}
 
+	// 마감일 입력 데이터 객체화
 	function getClosingDates() {
 		var closingDates;
 
@@ -305,9 +287,6 @@
 			closingDebtDate: $('#cl-debt-date-picker').val(),
 			closingSettlementDate: $('#cl-settlement-date-picker').val()
 		}
-
-		var form = $('#test-form')[0]
-		form.submit()
 
 		return closingDates
 	}
