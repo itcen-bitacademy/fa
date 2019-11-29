@@ -252,23 +252,25 @@ tr td:first-child {
 					</thead>
 
 					<tbody>
-						<tr>
-							<td class="center"><label class="pos-rel"> <input
-									type="checkbox" class="ace" /> <span class="lbl"></span>
-							</label></td>
-							<td class="center">2019112701</td>
-							<td>GS칼텍스는...</td>
-							<td class="center">008-국내은행</td>
-							<td class="center">70,000,000,000</td>
-							<td class="center">월</td>
-							<td class="center">2019-10-29 ~ 2029-10-29</td>
-							<td class="center">1.99%</td>
-							<td class="center">월</td>
-							<td class="center">홍길동</td>
-							<td class="center">010-1234-5678</td>
-							<td class="center">0010987</td>
-							<td class="center">한국은행</td>
-						</tr>
+						<c:forEach items="${list }" var="vo" varStatus="status">
+							<tr>
+								<td class="center">
+									<label class="pos-rel"> <input type="checkbox" class="ace" /> <span class="lbl"></span></label>
+								</td>
+								<td class="center">${vo.code }</td>
+							<td>${vo.name }</td>
+							<td class="center">${vo.name }</td>
+							<td class="center">${vo.debtAmount }</td>
+							<td class="center">${vo.repayWay }</td>
+							<td class="center">${vo.debtDate } ~ ${vo.expDate }</td>
+							<td class="center">${vo.intRate }</td>
+							<td class="center">${vo.intPayWay }</td>
+							<td class="center">${vo.mgr }</td>
+							<td class="center">${vo.mgrCall }</td>
+							<td class="center">${vo.bankCode }</td>
+							<td class="center">${vo.depositNo }</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div><!-- /.page-content -->
