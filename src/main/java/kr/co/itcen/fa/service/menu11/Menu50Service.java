@@ -20,8 +20,8 @@ public class Menu50Service {
 	@Autowired
 	private Menu50Repository menu50Repository;
 	
-	public void add(PdebtVo pdebtVo) {
-		menu50Repository.add(pdebtVo);
+	public void insert(PdebtVo pdebtVo) {
+		menu50Repository.insert(pdebtVo);
 	}
 	
 	public List<PdebtVo> list() {

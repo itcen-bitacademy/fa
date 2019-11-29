@@ -56,6 +56,12 @@ tr td:first-child {
 	width: 150px;
 	display: inline;
 }
+
+/* button 정렬 */
+.mybtn {
+	float:right;
+	margin-right:20px;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -139,11 +145,11 @@ tr td:first-child {
 									<td colspan="2">
 										<select class="chosen-select form-control" name="dangerCode" id="form-field-select-3" data-placeholder="위험등급">
 											<option value=""></option>
-											<option value="1">초고위험</option>
-											<option value="2">고위험</option>
-											<option value="3">중위험</option>
-											<option value="4">저위험</option>
-											<option value="5">초저위험</option>
+											<option value="RED1-초고위험">초고위험</option>
+											<option value="ORANGE2-고위험">고위험</option>
+											<option value="YELLOW3-중위험">중위험</option>
+											<option value="GREEN4-저위험">저위험</option>
+											<option value="BLUE5-초저위험">초저위험</option>
 										</select>
 									</td>
 								</tr>
@@ -222,21 +228,26 @@ tr td:first-child {
 						</div>
 					</div>
 				</div>
+				
 				<hr>
-					<div>
-						<button type="submit" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
-						<button type="submit" class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-						<button type="submit" class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
-						<button type="submit" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
-						<button type="submit" class="btn btn-default btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
-						<button type="submit" class="btn btn-default btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/initialize">초기화</button>
-					</div>
+				<div class="row-fluid">
+					<button type="submit" class="btn btn-success btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/initialize">초기화</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
+				</div>
 				<hr>
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
 			
 			<!-- list -->
-				
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
@@ -251,7 +262,8 @@ tr td:first-child {
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자</th>
+							<th class="center">만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -272,7 +284,8 @@ tr td:first-child {
 							<td class="center">${vo.name }</td>
 							<td class="center">${vo.debtAmount }</td>
 							<td class="center">${vo.repayWay }</td>
-							<td class="center">${vo.debtDate } ~ ${vo.expDate }</td>
+							<td class="center"><fmt:formatDate value="${vo.debtDate }" pattern="yyyy-MM-dd"/></td>
+							<td class="center"><fmt:formatDate value="${vo.expDate }" pattern="yyyy-MM-dd"/></td>
 							<td class="center">${vo.intRate }</td>
 							<td class="center">${vo.intPayWay }</td>
 							<td class="center">${vo.mgr }</td>
