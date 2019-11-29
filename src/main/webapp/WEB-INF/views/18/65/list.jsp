@@ -38,28 +38,28 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${menus }" var="mainMenu">
+									<c:forEach items="${sectionList }" var="sections">
 										<c:choose>
-											<c:when test="${fn:length(mainMenu.subMenus) == 0 }">
+											<c:when test="${fn:length(sections.subSections) == 0 }">
 												<tr>
-													<td><a href="#">${mainMenu.name }[${mainMenu.code }]</a></td>
+													<td><a href="#">${sections.classification }[${sections.code }]</a></td>
 													<td></td>
-													<td class="hidden-phone">${mainMenu.lastUpdate }</td>
+													<td class="hidden-phone">${sections.lastUpdate }</td>
 													<td></td>
 												</tr>
 											</c:when>
 											
 											<c:otherwise>
-												<c:forEach items="${mainMenu.subMenus }" var="subMenu" varStatus="status">
+												<c:forEach items="${sections.subSections }" var="subSection" varStatus="status">
 													<tr>
 														
 														<c:if test="${status.index == 0 }">
-															<td rowspan="${fn:length(mainMenu.subMenus) }"><a href="#">${mainMenu.name }[${mainMenu.code }]</a></td>	
+															<td rowspan="${fn:length(sections.subSections) }"><a href="#">${sections.classification }[${sections.code }]</a></td>	
 														</c:if>
 														
-														<td><a href="#">${subMenu.name }[${subMenu.code }]</a></td>
+														<td><a href="#">${subSection.classification }[${subSection.code }]</a></td>
 														
-														<td class="hidden-phone">${subMenu.lastUpdate }</td>
+														<td class="hidden-phone">${subSection.lastUpdate }</td>
 														
 														<td>
 															<div class="hidden-phone visible-desktop action-buttons">

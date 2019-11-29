@@ -12,7 +12,7 @@ import kr.co.itcen.fa.vo.SectionVo;
 
 /**
  * 
- *  @author 안대혁
+ *  @author 안태영
  *  공통코드관리
  */
 @Service
@@ -25,10 +25,12 @@ public class Menu65Service {
 		menu65Repository.test();
 	}
 	
+	// 추가 화면에서 Select List에 대해 출력해주는 기능 
 	public List<SectionVo> getAllMainSection(){
 		return menu65Repository.findAllByParentNoNull();
 	}
 	
+	// 추가 화면에서 화면에 입력한 내용에 대해서 넣어주는 기능
 	public void addSection(SectionVo sectionVo) {
 		menu65Repository.save(sectionVo);
 		
@@ -41,8 +43,22 @@ public class Menu65Service {
 		Section listSection = null;
 		List<SectionVo> list = menu65Repository.findAll();
 		
+		for(SectionVo vo : list) {
+			if(vo.getParentNo() == null) {
+				listSection = new Section(vo.getNo(), vo.getClassification(), vo.getLastUpdate());
+				result.add(listSection);
+				continue;
+			}
+			
+			if(listSection != null) {
+				listSection.addsubMenu(new Section(vo.getNo(), vo.getClassification(), vo.getLastUpdate()));
+			}
+		}
+		
 		return result;
 	}
+	
+	
 	
 	
 	
