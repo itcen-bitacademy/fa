@@ -59,14 +59,14 @@
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
-					<div class="span9 center">
+					<div class="span12">
 							<div class="control-group">
 
 									<div class="row-fluid">
 										<div class="span4">
 											<form class="form-horizontal">
 												<div class="control-group">
-													<label class="control-label" for="cl-ym-date-picker" style="text-align:left;width:120px;">년 월</label>
+													<label class="control-label" for="cl-ym-date-picker" style="text-align:left;width:120px;"> 년 월</label>
 													<div class="controls" style="margin-left:120px;">
 														<div class="row-fluid input-append">
 															<input class="span11 date-picker" id="cl-ym-date-picker" name="closingYearMonth" type="text" data-date-format="yyyy-mm" />
@@ -87,12 +87,15 @@
 															<option value="1">거래처코드11111</option>
 															<option value="2">거래처코드22222</option>
 														</select>														
-														<button class="btn btn-small btn-info">조회</button>
 													</div>
 												</div>
 											</form>
 										</div>
-									</div>
+								<div class="span1">
+									<button class="btn btn-small btn-info">조회</button>
+
+								</div>
+							</div>
 									
 								
 								<div class="hr hr-18 dotted"></div>
