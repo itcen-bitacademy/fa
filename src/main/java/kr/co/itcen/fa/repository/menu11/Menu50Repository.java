@@ -46,4 +46,7 @@ public class Menu50Repository {
 		return sqlSession.selectList("menu50.list", map);
 	}
 	
+	public PdebtVo selectOnePdebtInfo(String debtcode) {
+		return sqlSession.selectOne("menu50.getPdebtInfo", debtcode);
+	}
 }
