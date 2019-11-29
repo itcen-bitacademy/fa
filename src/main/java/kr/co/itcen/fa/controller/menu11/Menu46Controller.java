@@ -26,12 +26,9 @@ public class Menu46Controller {
 	
 	                                   //   /11/46, /11/46/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
-	public String test(Model model) {
+	public String add(Model model) {
 		menu46Service.test();
-		/*
-		 *    JSP
-		 *    11/46/add.jsp
-		 */
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 }

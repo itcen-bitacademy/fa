@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
 <script>
 $(function(){
    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
@@ -28,7 +26,7 @@ tr td:first-child {
 
 .radio {
 	float: left;
-	width: 10%;
+	width: 18%;
 }
 
 .search-input-width-first {
@@ -56,7 +54,8 @@ tr td:first-child {
 
 .mgr-call-input {
 	width: 150px;
-	display: inline;}
+	display: inline;
+	}
 </style>
 </head>
 <body class="skin-3">
@@ -122,7 +121,7 @@ tr td:first-child {
 										<div class="radio" style="width:15%;">
 											<label>
 												<input name="form-field-radio" type="radio" class="ace" />
-												<span class="lbl">만기</span>
+												<span class="lbl">해당없음</span>
 											</label>
 										</div>
 									</td>
