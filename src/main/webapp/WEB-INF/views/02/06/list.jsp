@@ -37,13 +37,13 @@
 						<div class="span12">
 						
 							<form class="form-horizontal">
-							<div class="span6">
+							<div class="span4">
 							
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 일 자</label>
 									<div class="controls">
 									<div class="input-append">
-										<input class="cl-date-picker1" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd">
+										<input class="cl-date-picker1 input-small" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -54,7 +54,7 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">거래처코드</label>
 										<div class=" controls">
-										<select class="chosen-select" id="zero" name="zero">
+										<select class="chosen-select span1" id="p_code" name="p_code">
 										<option value="10" selected="selected">A123456789</option>
 										<option value="25">B123456789</option>
 										<option value="50">C123456789</option>
@@ -76,24 +76,32 @@
 
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="">
+										
+									</div>
+									<div class="controls">
+									<label class="span3">
+											<input name="form-field-radio" type="radio" class="ace">
+											<span class="lbl"> 과세</span>
+										</label>
+										<label class="span3">
+											<input name="form-field-radio" type="radio" class="ace">
+											<span class="lbl"> 비과세</span>
+										</label>
 									</div>
 							</div>
 							</div>
 							
-							<div class="span6">
+							<div class="span4">
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 번 호</label>
 									<div class="controls">
 										<input class="input-mini" type="text" id="form-field-1" placeholder="">
-										<span class="btn btn-small">
-													조회
-										</span>
+										<span class="btn btn-small">조회</span>
 									</div>
 							</div>
 							
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">거 래 처 명</label>
-
 									<div class="controls">
 										<input type="text" id="form-field-1" placeholder="" readonly>
 									</div>
@@ -103,7 +111,7 @@
 									<label class="control-label" for="form-field-1">입 고 일 자</label>
 									<div class="controls">
 									<div class="input-append">
-										<input class="cl-date-picker2" id="id-date-picker-2" type="text" data-date-format="yyyy-mm-dd">
+										<input class="cl-date-picker2 input-small" id="id-date-picker-2" type="text" data-date-format="yyyy-mm-dd">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -115,7 +123,7 @@
 									<label class="control-label" for="form-field-1">출 고 일 자</label>
 									<div class="controls">
 									<div class="input-append">
-										<input class="cl-date-picker3" id="id-date-picker-3" type="text" data-date-format="yyyy-mm-dd">
+										<input class="cl-date-picker3 input-small" id="id-date-picker-3" type="text" data-date-format="yyyy-mm-dd">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -123,19 +131,18 @@
 									</div>
 							</div>
 							</div>
-							<div class="hr hr-18 dotted"></div>
 							
-							<div class="span8">
+							<div class="span1">
+							<div class="hr hr-18 dotted"></div>
 								<button class="btn btn-info btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
 								<button class="btn btn-danger btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
 								<button class="btn btn-warning btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
 								<button class="btn btn-primary btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
-								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">취소</button>
+								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">행추가</button>
+								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">행삭제</button>				
 							</div>
-							<div class="hr hr-18 dotted"></div>
 							</form>
-							<div class="hr hr-18 dotted"></div>
-							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+							<table id="sample-table-1" class="table table-striped table-bordered table-hover">							
 							<thead>
 									<tr>
 										<th class="center">
@@ -162,7 +169,7 @@
 								</td>
 								<td class="center"><input class="input-mini" type="text" id="form-field-4" placeholder=""></td>
 								<td class="center">
-									<select id="form-field-select-1">
+									<select class="chosen-select span1" id="itemCode" name="itemCode">
 									<option value="10" selected="selected">A123456789</option>
 									<option value="25">B123456789</option>
 									<option value="50">C123456789</option>
@@ -172,7 +179,7 @@
 								<td class="center"><input class="input-large" type="text" id="form-field-4" placeholder="" readonly></td>	
 								<td class="center"><input class="input-mini" type="text" id="form-field-4" placeholder=""></td>
 								<td class="center"><input class="input-medium" type="text" id="form-field-4" placeholder="" readonly></td>
-								<td class="center"><input class="input-medium" type="text" id="form-field-4" placeholder="" readonly></td>
+								<td class="center"><input class="input-medium" type="text" id="form-field-4" placeholder="" readonly></td>								
 								</tr>
 								</tbody>
 							</table>
@@ -182,9 +189,6 @@
 					
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-			
-			
-			
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->

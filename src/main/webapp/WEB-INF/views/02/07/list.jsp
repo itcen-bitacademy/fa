@@ -36,7 +36,7 @@
 					<div class="row-fluid">
 						<div class="span12">
 							<form class="form-horizontal">
-							<div class="span6">
+							<div class="span4">
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 번 호</label>
 									<div class="controls">
@@ -61,7 +61,7 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">삭제여부</label>
 									<div class="controls">
-										<select class="chosen-select" id="zero" name="zero">
+										<select class="chosen-select span1" id="del" name="del">
 										<option value="10" selected="selected">Y</option>
 										<option value="25">N</option>
 										</select>
@@ -71,9 +71,9 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">정렬기준</label>
 									<div class="controls">
-										<select class="chosen-select" id="zero" name="zero">
-										<option value="10" selected="selected">매입일자순</option>
-										<option value="25">품목코드순</option>
+										<select class="chosen-select span1" id="order_std" name="order_std">
+										<option value="10" selected="selected">매입일자</option>
+										<option value="25">품목코드</option>
 										</select>
 										<span class="btn btn-small">
 													조회
@@ -82,18 +82,18 @@
 							</div>
 							</div>
 							
-							<div class="span6">
+							<div class="span4">
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">기간</label>
 									<div class="controls">
-										<input class="cl-date-picker1" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd">
+										<input class="cl-date-picker1 input-small" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>										
 									<span>
 										~
 									</span>
-									<input class="cl-date-picker2" id="id-date-picker-2" type="text" data-date-format="yyyy-mm-dd">
+									<input class="cl-date-picker2 input-small" id="id-date-picker-2" type="text" data-date-format="yyyy-mm-dd">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -116,11 +116,9 @@
 										<input type="text" id="form-field-1" placeholder="">
 									</div>
 							</div>
-							
 							</div>
-							
 							</form>
-							<div class="hr"></div>
+							
 							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 							<thead>
 									<tr>
@@ -138,7 +136,6 @@
 										<th class="center">공급가액</th>
 										<th class="center">부가세</th>
 										<th class="center">세금계산서번호</th>
-										
 									</tr>
 								</thead>
 								<tbody>
@@ -160,6 +157,17 @@
 								</tr>
 								</tbody>
 							</table>
+							<div class="pagination">
+								<ul>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+									<li class="active"><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</ul>
+							</div>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
