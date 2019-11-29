@@ -24,4 +24,9 @@ public class Menu39Repository {
 		testVo.setName("김민준관리!");
 		sqlSession.insert("menu09.save", testVo);
 	}
+	
+	public void add(BuildingVo vo) {
+		vo.setFlag("s");
+		sqlSession.insert("menu09.add", vo);
+	}
 }

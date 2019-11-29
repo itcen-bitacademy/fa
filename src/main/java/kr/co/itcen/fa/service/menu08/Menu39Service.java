@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu08.Menu39Repository;
+import kr.co.itcen.fa.vo.menu08.BuildingVo;
 
 
 /**
@@ -20,5 +21,9 @@ public class Menu39Service {
 	
 	public void test() {
 		menu39Repository.test();
+	}
+	
+	public void add(BuildingVo vo) {
+		menu39Repository.add(vo);
 	}
 }
