@@ -24,8 +24,12 @@ public class Menu50Service {
 		menu50Repository.insert(pdebtVo);
 	}
 	
-	public List<PdebtVo> list() {
-		return menu50Repository.list();
+	public List<PdebtVo> list(int startNum, int lastNum) {
+		return menu50Repository.list(startNum, lastNum);
+	}
+	
+	public int pdebtTotalcount() {
+		return menu50Repository.pdebtTotalcount();
 	}
 	
 	public void test() {

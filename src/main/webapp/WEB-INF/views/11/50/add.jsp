@@ -297,18 +297,67 @@ tr td:first-child {
 					</c:forEach>
 				</table>
 				
-				
 				<div class="pagination">
-					<ul>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					<%--Page 이전 페이지 구현 --%>
+					<ul> 
+						<c:choose>
+							<%-- all data list pagination --%>
+							<c:when test="${pageInfo.totalRows != 0}">
+								<c:choose>
+									<c:when test="${pageInfo.currentBlock eq 1}">
+										<li class="disabled"><a><i class="icon-double-angle-left"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock-1)*pageInfo.pagesPerBlock}"><i class="icon-double-angle-left"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+								<%--Page  페이지 구현 --%>
+								<c:choose>
+									<%-- 첫 페이지 출력 ex) 1 2 3 4 5
+									currentBlock : 현재 전체 블럭 --%>
+									<c:when test="${pageInfo.currentBlock ne pageInfo.totalBlocks}">
+										<c:forEach begin="1" end="${pageInfo.pagesPerBlock}" varStatus="num">
+											<c:choose>
+												<c:when test="${num.count == pageInfo.currentPage}">
+													<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:otherwise>
+											</c:choose>
+	                       				</c:forEach>
+									</c:when>
+									<%-- 첫 페이지 이후의 모든 페이지 출력 ex) 6 7 8 9 10 
+																									  11 12 13 14 15 
+																									  16 17 18 19 20  totalBlocks : 모두 출력되어야 하는 블럭의 수 --%>
+									<c:otherwise>
+										<c:forEach begin="${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + 1}" end="${pageInfo.totalPages}" varStatus="num" var="i">
+											<c:choose>
+												<c:when test="${i == pageInfo.currentPage}">
+													<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:otherwise>
+											</c:choose>
+	                   					 </c:forEach>
+									</c:otherwise>
+								</c:choose>
+								<%--Page 다음 페이지 구현 --%>
+								<c:choose>
+									<c:when test="${pageInfo.currentBlock eq pageInfo.totalBlocks}">
+										<li class="disabled"><a><i class="icon-double-angle-right"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pageInfo.currentBlock * pageInfo.pagesPerBlock + 1 }"><i class="icon-double-angle-right"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+						</c:choose>
 					</ul>
 				</div>
+				
+				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
