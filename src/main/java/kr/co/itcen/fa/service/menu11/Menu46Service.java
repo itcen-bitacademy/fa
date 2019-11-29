@@ -23,4 +23,13 @@ public class Menu46Service {
 	public List<STermDebtVo> getList() {
 		return menu46Repository.getList();
 	}
+	
+	public void insert(STermDebtVo sTermDebtVo) {
+		menu46Repository.insert(sTermDebtVo);
+	}
+	
+	public void update(STermDebtVo sTermDebtVo) {
+		menu46Repository.update(sTermDebtVo);
+	}
+	
 }

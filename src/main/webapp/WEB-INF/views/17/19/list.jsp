@@ -27,6 +27,8 @@
 					<%-- 마감일자 입력폼 --%>
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" id="test-form" action="${pageContext.request.contextPath }/17/19/add" method="post">
+						<input type="hidden" type="text" name="no" id="cl-no"/>
+						<input type="hidden" type="text" id="cl-yn"/>
 						<div class="row-fluid">
 							<div class="span4">
 								<div class="control-group">
@@ -147,17 +149,21 @@
 									</div>
 								</div>
 							</div>
-							<%-- 입력수정삭제버튼 --%>
-							<div class="span8">
-								<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">조회</button>
-								<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">삭제</button>
-								<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">수정</button>
-								<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" id="submit-btn">입력</button>
-							</div>
 						</div>
 					</form>
 
 					<%-- 구분선 --%>
+					<div class="hr hr-18 dotted"></div>
+						<%-- 입력수정삭제버튼 --%>
+						<div class="row-fluid">
+							<div class="span12">
+								<%-- <button class="btn btn-info btn-small" style="margin-right:20px;">조회</button> --%>
+								<button class="btn btn-primary btn-small" style="margin-right:20px;" id="submit-btn">입력</button>
+								<button class="btn btn-warning btn-small" style="margin-right:20px; display:none;" id="update-btn">수정</button>
+								<button class="btn btn-danger btn-small" style="margin-right:20px; display:none;" id="delete-btn">삭제</button>
+								<button class="btn btn-small" style="margin-right:20px;" id="reset-btn">리셋</button>
+							</div>
+						</div>
 					<div class="hr hr-18 dotted"></div>
 
 					<%-- 마감일 조회 테이블 --%>
@@ -174,19 +180,30 @@
 										<th>매입마감일</th>
 										<th>매출마감일</th>
 										<th>결산마감일</th>
+										<th>결산여부</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="dt" items="${closingDateList}">
-										<tr>
-											<td>${dt.closingYearMonth }</td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingDate }"></fmt:formatDate></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingStatementDate }"></fmt:formatDate></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingAssetsDate }"></fmt:formatDate></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingDebtDate }"></fmt:formatDate></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingPurchaseDate }"></fmt:formatDate></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingSalesDate }"></fmt:formatDate></td>
-											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${dt.closingSettlementDate }"></fmt:formatDate></td>
+									<c:forEach var="cdt" items="${closingDateList }">
+										<tr class="cdt-tr" no="${cdt.no }" closing-yn="${cdt.closingYn }">
+											<td class="closing-year-month">${cdt.closingYearMonth }</td>
+											<td class="closing-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingDate }"></fmt:formatDate></td>
+											<td class="closing-statement-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingStatementDate }"></fmt:formatDate></td>
+											<td class="closing-assets-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingAssetsDate }"></fmt:formatDate></td>
+											<td class="closing-debt-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingDebtDate }"></fmt:formatDate></td>
+											<td class="closing-purchase-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingPurchaseDate }"></fmt:formatDate></td>
+											<td class="closing-sales-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingSalesDate }"></fmt:formatDate></td>
+											<td class="closing-settlement-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingSettlementDate }"></fmt:formatDate></td>
+											<td class="closing-yn">
+												<c:choose>
+													<c:when test="${cdt.closingYn }">
+														결산완료
+													</c:when>
+													<c:otherwise>
+														미결산
+													</c:otherwise>
+												</c:choose>
+											</td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -257,6 +274,18 @@
 
 		// 입력버튼 이벤트 연결
 		$('#submit-btn').on('click', saveClosingDate)
+
+		// 수정버튼 이벤트 연결
+		$('#update-btn').on('click', updateClosingDate)
+
+		// 삭제버튼 이벤트 연결
+		$('#delete-btn').on('click', deleteClosingDate)
+
+		// 리셋버튼 이벤트 연결
+		$('#reset-btn').on('click', clearForm)
+
+		// 마감일 클릭 시 입력폼에 마감일 설정
+		$('.cdt-tr').on('click', setClosingDate)
 	})
 
 	// 버튼 prevent default 설정
@@ -269,6 +298,7 @@
 		console.log(getClosingDates());
 
 		var form = $('#test-form')[0]
+		$(form).attr('action', '${pageContext.request.contextPath }/17/19/add')
 		form.submit()
 	}
 
@@ -289,6 +319,72 @@
 		}
 
 		return closingDates
+	}
+
+	// 마감일 선택시 - 입력롬에 선택된 마감일 정보 등록
+	function setClosingDate(event) {
+		$('#cl-no').val($(this).attr('no'))
+		$('#cl-yn').val($(this).attr('closing-yn'))
+		$('#cl-ym-date-picker').val($(this).find('.closing-year-month').text()),
+		$('#cl-total-date-picker').val($(this).find('.closing-date').text()),
+		$('#cl-stmt-date-picker').val($(this).find('.closing-statement-date').text()),
+		$('#cl-purchase-date-picker').val($(this).find('.closing-purchase-date').text()),
+		$('#cl-sales-date-picker').val($(this).find('.closing-sales-date').text()),
+		$('#cl-assets-date-picker').val($(this).find('.closing-assets-date').text()),
+		$('#cl-debt-date-picker').val($(this).find('.closing-debt-date').text()),
+		$('#cl-settlement-date-picker').val($(this).find('.closing-settlement-date').text())
+
+		// 입력상태 변경
+		changeStatus()
+	}
+
+	// 입력폼 데이터 리셋
+	function clearForm() {
+		$('#cl-no').val('')
+		$('#cl-yn').val('')
+		$('#cl-ym-date-picker').val(''),
+		$('#cl-total-date-picker').val(''),
+		$('#cl-stmt-date-picker').val(''),
+		$('#cl-purchase-date-picker').val(''),
+		$('#cl-sales-date-picker').val(''),
+		$('#cl-assets-date-picker').val(''),
+		$('#cl-debt-date-picker').val(''),
+		$('#cl-settlement-date-picker').val('')
+
+		// 입력상태 변경
+		changeStatus()
+	}
+
+	// 마감일 수정
+	function updateClosingDate() {
+		console.log('updateClosingDate');
+
+		var form = $('#test-form')[0]
+		$(form).attr('action', '${pageContext.request.contextPath }/17/19/update')
+		form.submit()
+	}
+
+	// 마감일 삭제
+	function deleteClosingDate() {
+		console.log('deleteClosingDate');
+		var form = $('#test-form')[0]
+		$(form).attr('action', '${pageContext.request.contextPath }/17/19/delete')
+		form.submit()
+	}
+
+	// 마감일 신규등록, 수정상태 변경 - 상태에 따른 버튼 출력
+	function changeStatus(event) {
+		if ($('#cl-no').val()) {			// 마감일 번호 존재시
+			$('#submit-btn').hide()
+			if ($('#cl-yn').val() == 'false') {		// 결산 미완료시 수정, 삭제 버튼 노출
+				$('#update-btn').show()
+				$('#delete-btn').show()
+			}
+		} else {											// 마감일 번호 미존재시
+			$('#update-btn').hide()
+			$('#delete-btn').hide()
+			$('#submit-btn').show()
+		}
 	}
 </script>
 </body>

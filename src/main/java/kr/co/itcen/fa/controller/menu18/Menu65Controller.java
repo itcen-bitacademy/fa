@@ -16,7 +16,7 @@ import kr.co.itcen.fa.vo.SectionVo;
 
 /**
  * 
- * @author 안대혁
+ * @author 안태영
  * 공통코드관리
  *
  */
@@ -32,6 +32,7 @@ public class Menu65Controller {
 	private Menu65Service menu65Service;
 	
 	               // /18, /18/65, /18/65/list
+	// list에 화면을 출력해주는 기능
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
 		
@@ -42,6 +43,9 @@ public class Menu65Controller {
 		 */
 		//List<Section> sections = menu65Service.getAllSection();
 		//model.addAttribute("sections", sections);
+		
+		List<Section> sectionList = menu65Service.getAllSection();
+		model.addAttribute("sectionList", sectionList);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
@@ -55,11 +59,12 @@ public class Menu65Controller {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
+	// 분류명을 화면에 넣는 기능
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
 	public String add(SectionVo sectionVo) {
 		menu65Service.addSection(sectionVo);
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		return "redirect:/" + MAINMENU + "/" + SUBMENU; // 화면에 다시 넣는 화면으로 돌아옴
 	}
 	
 	

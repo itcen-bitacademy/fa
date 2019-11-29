@@ -26,9 +26,9 @@ public class STermDebtVo {
 	private String accountNo; // 계정코드
 	private int voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
-	private int insertId; // 등록자
+	private String insertId; // 등록자
 	private Date insertDate; // 등록일
-	private int updateId; // 수정자
+	private String updateId; // 수정자
 	private Date updateDate; // 수정일
 	
 	public Long getNo() {
@@ -151,29 +151,29 @@ public class STermDebtVo {
 	public void setDeleteFlag(String deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
-	public int getInsertId() {
-		return insertId;
-	}
-	public void setInsertId(int insertId) {
-		this.insertId = insertId;
-	}
 	public Date getInsertDate() {
 		return insertDate;
 	}
 	public void setInsertDate(Date insertDate) {
 		this.insertDate = insertDate;
 	}
-	public int getUpdateId() {
-		return updateId;
-	}
-	public void setUpdateId(int updateId) {
-		this.updateId = updateId;
-	}
 	public Date getUpdateDate() {
 		return updateDate;
 	}
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+	public String getInsertId() {
+		return insertId;
+	}
+	public void setInsertId(String insertId) {
+		this.insertId = insertId;
+	}
+	public String getUpdateId() {
+		return updateId;
+	}
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
 	}
 	@Override
 	public String toString() {

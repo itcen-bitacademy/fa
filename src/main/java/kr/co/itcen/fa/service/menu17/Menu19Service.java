@@ -40,4 +40,22 @@ public class Menu19Service {
 	public List<ClosingDate> selectAllClosingDate() {
 		return menu19Repository.selectAllClosingDate();
 	}
+	
+	
+	/**
+	 * 
+	 * 마감일 수정(미결산 마감일만 수정 가능)
+	 */
+	public int updateClosingDate(ClosingDate closingDate) {
+		return menu19Repository.updateClosingDate(closingDate);
+	}
+	
+	
+	/**
+	 * 
+	 * 마감일 삭제(미결산 마감일만 삭제 가능)
+	 */
+	public int deleteClosingDate(ClosingDate closingDate) {
+		return menu19Repository.deleteClosingDate(closingDate);
+	}
 }

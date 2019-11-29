@@ -56,6 +56,12 @@ tr td:first-child {
 	width: 150px;
 	display: inline;
 }
+
+/* button 정렬 */
+.mybtn {
+	float:right;
+	margin-right:20px;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -139,11 +145,11 @@ tr td:first-child {
 									<td colspan="2">
 										<select class="chosen-select form-control" name="dangerCode" id="form-field-select-3" data-placeholder="위험등급">
 											<option value=""></option>
-											<option value="1">초고위험</option>
-											<option value="2">고위험</option>
-											<option value="3">중위험</option>
-											<option value="4">저위험</option>
-											<option value="5">초저위험</option>
+											<option value="RED1-초고위험">초고위험</option>
+											<option value="ORANGE2-고위험">고위험</option>
+											<option value="YELLOW3-중위험">중위험</option>
+											<option value="GREEN4-저위험">저위험</option>
+											<option value="BLUE5-초저위험">초저위험</option>
 										</select>
 									</td>
 								</tr>
@@ -222,21 +228,26 @@ tr td:first-child {
 						</div>
 					</div>
 				</div>
+				
 				<hr>
-					<div>
-						<button type="submit" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
-						<button type="submit" class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-						<button type="submit" class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
-						<button type="submit" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
-						<button type="submit" class="btn btn-default btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
-						<button type="submit" class="btn btn-default btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/initialize">초기화</button>
-					</div>
+				<div class="row-fluid">
+					<button type="submit" class="btn btn-success btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/initialize">초기화</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+	               &nbsp;
+	               <button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
+				</div>
 				<hr>
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
 			
 			<!-- list -->
-				
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
@@ -251,7 +262,8 @@ tr td:first-child {
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자</th>
+							<th class="center">만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -272,7 +284,8 @@ tr td:first-child {
 							<td class="center">${vo.name }</td>
 							<td class="center">${vo.debtAmount }</td>
 							<td class="center">${vo.repayWay }</td>
-							<td class="center">${vo.debtDate } ~ ${vo.expDate }</td>
+							<td class="center"><fmt:formatDate value="${vo.debtDate }" pattern="yyyy-MM-dd"/></td>
+							<td class="center"><fmt:formatDate value="${vo.expDate }" pattern="yyyy-MM-dd"/></td>
 							<td class="center">${vo.intRate }</td>
 							<td class="center">${vo.intPayWay }</td>
 							<td class="center">${vo.mgr }</td>
@@ -284,18 +297,67 @@ tr td:first-child {
 					</c:forEach>
 				</table>
 				
-				
 				<div class="pagination">
-					<ul>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					<%--Page 이전 페이지 구현 --%>
+					<ul> 
+						<c:choose>
+							<%-- all data list pagination --%>
+							<c:when test="${pageInfo.totalRows != 0}">
+								<c:choose>
+									<c:when test="${pageInfo.currentBlock eq 1}">
+										<li class="disabled"><a><i class="icon-double-angle-left"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock-1)*pageInfo.pagesPerBlock}"><i class="icon-double-angle-left"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+								<%--Page  페이지 구현 --%>
+								<c:choose>
+									<%-- 첫 페이지 출력 ex) 1 2 3 4 5
+									currentBlock : 현재 전체 블럭 --%>
+									<c:when test="${pageInfo.currentBlock ne pageInfo.totalBlocks}">
+										<c:forEach begin="1" end="${pageInfo.pagesPerBlock}" varStatus="num">
+											<c:choose>
+												<c:when test="${num.count == pageInfo.currentPage}">
+													<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:otherwise>
+											</c:choose>
+	                       				</c:forEach>
+									</c:when>
+									<%-- 첫 페이지 이후의 모든 페이지 출력 ex) 6 7 8 9 10 
+																									  11 12 13 14 15 
+																									  16 17 18 19 20  totalBlocks : 모두 출력되어야 하는 블럭의 수 --%>
+									<c:otherwise>
+										<c:forEach begin="${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + 1}" end="${pageInfo.totalPages}" varStatus="num" var="i">
+											<c:choose>
+												<c:when test="${i == pageInfo.currentPage}">
+													<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
+												</c:otherwise>
+											</c:choose>
+	                   					 </c:forEach>
+									</c:otherwise>
+								</c:choose>
+								<%--Page 다음 페이지 구현 --%>
+								<c:choose>
+									<c:when test="${pageInfo.currentBlock eq pageInfo.totalBlocks}">
+										<li class="disabled"><a><i class="icon-double-angle-right"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pageInfo.currentBlock * pageInfo.pagesPerBlock + 1 }"><i class="icon-double-angle-right"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+						</c:choose>
 					</ul>
 				</div>
+				
+				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->

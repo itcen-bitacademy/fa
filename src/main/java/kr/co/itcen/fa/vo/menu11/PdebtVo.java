@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.vo.menu11;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
@@ -20,7 +21,7 @@ public class PdebtVo {
 	private int intAmount; // 이자금액
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
-	private int dangerCode; // 위험등급
+	private String dangerCode; // 위험등급
 	private String dangerName; // 위험등급명
 	private String deptClassification; // 차입금대분류
 	private int bankCode; // 은행코드
@@ -28,7 +29,7 @@ public class PdebtVo {
 	private String accountNo; // 계정코드
 	private int voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
-	private int insertId; // 등록자
+	private String insertId; // 등록자
 	private Date insertDate; // 등록일
 	private int updateId; // 수정자
 	private Date updateDate; // 수정일
@@ -145,11 +146,11 @@ public class PdebtVo {
 		this.mgrCall = mgrCall;
 	}
 
-	public int getDangerCode() {
+	public String getDangerCode() {
 		return dangerCode;
 	}
 
-	public void setDangerCode(int dangerCode) {
+	public void setDangerCode(String dangerCode) {
 		this.dangerCode = dangerCode;
 	}
 
@@ -209,11 +210,11 @@ public class PdebtVo {
 		this.deleteFlag = deleteFlag;
 	}
 
-	public int getInsertId() {
+	public String getInsertId() {
 		return insertId;
 	}
 
-	public void setInsertId(int insertId) {
+	public void setInsertId(String insertId) {
 		this.insertId = insertId;
 	}
 
@@ -252,5 +253,5 @@ public class PdebtVo {
 				+ ", insertId=" + insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate="
 				+ updateDate + "]";
 	}
-	
+
 }

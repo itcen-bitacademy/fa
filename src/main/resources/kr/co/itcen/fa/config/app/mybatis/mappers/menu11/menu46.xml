@@ -44,7 +44,32 @@
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
-			update_date from tb_p_debt
+			update_date from tb_s_term_debt
 		]]>
 	</select>
+	
+	<insert id="insert" parameterType="stermdebtvo">
+		<![CDATA[
+			insert into tb_s_term_debt(no, code, name, debt_amount, repay_bal, repay_way,
+			debt_date, exp_date, int_rate, int_pay_way, int_amount, mgr,
+			mgr_call, bank_code, deposit_no, account_no, voucher_no, 
+			delete_flag,insert_id, insert_date, update_id, update_date)
+			values (null, #{code }, #{name }, ${debtAmount }, 
+			${debtAmount }, #{repayWay }, now(), now(),
+			${intRate }, #{intPayWay }, ${intAmount }, #{mgr }, 
+			#{mgrCall }, ${bankCode },
+			#{depositNo }, 123, 123, 
+			'N', #{insertId }, now(), null, now()) 
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="Long">
+		<![CDATA[
+			update tb_s_term_debt 
+			set code=#{code}, name=#{name}, debt_amount=${debtAmount}, reapy_bal=${repayBal}, repay_way=#{repayWay}, 
+			    debt_date=#{debtDate}, exp_date=#{expDate}, int_rate=#{intRate}, int_pay_way=#{intPayWay}, $int_amount={intAmount},
+			    mgr=#{mgr }, mgr_call=#{mgrCall}, bank_code=${bankCode}, deposit_no=#{depositNo}, update_id=#{updateId}, update_date=now()
+			where no=${no}
+		]]>
+	</update>
 </mapper>

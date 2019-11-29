@@ -20,12 +20,16 @@ public class Menu50Service {
 	@Autowired
 	private Menu50Repository menu50Repository;
 	
-	public void add(PdebtVo pdebtVo) {
-		menu50Repository.add(pdebtVo);
+	public void insert(PdebtVo pdebtVo) {
+		menu50Repository.insert(pdebtVo);
 	}
 	
-	public List<PdebtVo> list() {
-		return menu50Repository.list();
+	public List<PdebtVo> list(int startNum, int lastNum) {
+		return menu50Repository.list(startNum, lastNum);
+	}
+	
+	public int pdebtTotalcount() {
+		return menu50Repository.pdebtTotalcount();
 	}
 	
 	public void test() {

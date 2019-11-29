@@ -33,6 +33,9 @@ public class Menu19Controller {
 	@Autowired
 	private Menu19Service menu19Service;
 	
+	/**
+	 * 마감일자관리 페이지 조
+	 */
 	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
 	public String closingDateListPage(Model model) {
 		List<ClosingDate> list = menu19Service.selectAllClosingDate();
@@ -42,14 +45,42 @@ public class Menu19Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	/**
+	 * 마감일자 신규 등록
+	 */
 	@PostMapping("/" + SUBMENU + "/add")
 	public String addClosingDate(ClosingDate closingDate, HttpSession session) {
 		UserVo userVo = (UserVo) session.getAttribute("authUser");
 		
 		closingDate.setInsertUserid(userVo.getId());
 		
-		
 		menu19Service.insertClosingDate(closingDate);
+		
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+	
+	
+	/**
+	 * 마감일 수정(미결산 마감일만 수정가능)
+	 */
+	@PostMapping("/" + SUBMENU + "/update")
+	public String updateClosingDate(ClosingDate closingDate, HttpSession session) {
+		UserVo userVo = (UserVo) session.getAttribute("authUser");
+		
+		closingDate.setUpdateUserid(userVo.getId());
+		
+		menu19Service.updateClosingDate(closingDate);
+		
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+	
+	
+	/**
+	 * 마감일 삭제(미결산 마감일만 삭제가능)
+	 */
+	@PostMapping("/" + SUBMENU + "/delete")
+	public String deleteClosingDate(ClosingDate closingDate) {
+		menu19Service.deleteClosingDate(closingDate);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
