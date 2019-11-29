@@ -27,8 +27,8 @@ public class Menu50Repository {
 		sqlSession.insert("menu50.save", testVo);
 	}
 	
-	public void add(PdebtVo pdebtVo) {
-		sqlSession.insert("menu50.add", pdebtVo);
+	public void insert(PdebtVo pdebtVo) {
+		sqlSession.insert("menu50.insert", pdebtVo);
 	}
 	
 	public List<PdebtVo> list() {

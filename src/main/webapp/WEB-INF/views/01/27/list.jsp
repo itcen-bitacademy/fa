@@ -163,11 +163,11 @@
 						
 						<div class="row-fluid">
 							<div class="span8">
-								<button class="btn btn-info">조회</button>
-								<button class="btn btn-danger">삭제</button>
-								<button class="btn btn-warning">수정</button>
-								<button class="btn btn-primary">입력</button>
-								<button class="btn btn-default">취소</button>
+								<button class="btn btn-info btn-small">조회</button>
+								<button class="btn btn-danger btn-small">삭제</button>
+								<button class="btn btn-warning btn-small">수정</button>
+								<button class="btn btn-primary btn-small">입력</button>
+								<button class="btn btn-default btn-small">취소</button>
 							</div><!-- /.span -->
 						</div>
 						

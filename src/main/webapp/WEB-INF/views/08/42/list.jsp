@@ -249,15 +249,15 @@
 									</table>
 									
 									<div class="pagination">
-											<ul>
-												<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-												<li class="active"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-											</ul>
+										<ul>
+											<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+										</ul>
 									</div>
 							</div>					
 					<!-- PAGE CONTENT ENDS -->
@@ -278,14 +278,21 @@ $(function(){
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script>
 $(function() {
-	$(".id-date-range-picker-1").daterangepicker().prev().on(ace.click_event, function(){
-		$(this).next().focus();
-	});
+   $(".chosen-select").chosen();
+   $('.id-date-range-picker-1').daterangepicker({
+      format : 'YYYY-MM-DD'
+   }).prev().on(ace.click_event, function(){
+      $(this).next().focus();
+   });
 });
+
 $(function() {
-	$(".id-date-range-picker-2").daterangepicker().prev().on(ace.click_event, function(){
-		$(this).next().focus();
-	});
+   $(".chosen-select").chosen();
+   $('.id-date-range-picker-2').daterangepicker({
+      format : 'YYYY-MM-DD'
+   }).prev().on(ace.click_event, function(){
+      $(this).next().focus();
+   });
 });
 </script>
 </body>

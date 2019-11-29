@@ -30,13 +30,14 @@ public class Menu65Repository {
 		sqlSession.insert("section.save", sectionVo);
 	}
 	
+	// 대분류명을 SelectBox에 표시해주는 메소드 
 	public List<SectionVo> findAllByParentNoNull(){
 		return sqlSession.selectList("section.findAllByParentNoNull");
 	}
 	
-	// 대분류명을 SelectBox에 표시해주는 메소드
+	// 리스트에 출력해주는 코드
 	public List<SectionVo> findAll(){
-		return sqlSession.selectList(null);
+		return sqlSession.selectList("section.findAll");
 	}
 	
 	

@@ -52,10 +52,9 @@ public class Section {
 		this.subSections = subSections;
 	}
 	
+	public void addsubMenu(Section section) {
+		subSections.add(section);
+	}
 	
 	
-	
-	
-	
-
 }

@@ -2,15 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu50">
 
-	<insert id="add" parameterType="pdebtvo">
+	<insert id="insert" parameterType="pdebtvo">
 		<![CDATA[
-		insert into user
-		values (null, #{code }, #{name }, #{debtAmount }, 
-		#{debtAmount }, #{repayWay }, #{debtDate }, #{expDate },
-		#{intRate }, #{intPayWay }, #{intAmount }, #{mgr }, 
-		#{mgrCall }, #{dangerCode }, #{dangerName }, #{bankCode },
-		#{depositNo }, #{accountNo }, #{voucherNo }, 
-		'N', #{insertId }, now(), null, now())
+		insert into tb_p_debt
+		values (null, #{code }, #{name }, #{debtAmount }, #{debtAmount }, 
+				#{repayWay }, #{debtDate }, #{expDate }, #{intRate }, #{intPayWay }, 
+				#{intAmount }, #{mgr }, #{mgrCall }, #{dangerCode }, #{dangerName }, 
+				#{bankCode }, #{depositNo }, #{accountNo }, #{voucherNo }, 'N', 
+				#{insertId }, now(), 0, now())
 		]]>
 	</insert>
 		
@@ -23,8 +22,8 @@
 			debt_amount as debtAmount,
 			repay_bal as repayBal,
 			repay_way as repayWay,
-			debt_date as debtDate,
-			exp_date as expDate,
+			date_format(debt_date, '%Y-%m-%d') as debtDate,
+			date_format(exp_date, '%Y-%m-%d') as expDate,
 			int_rate as intRate,
 			int_pay_way as intPayWay,
 			int_amount as intAmount,
