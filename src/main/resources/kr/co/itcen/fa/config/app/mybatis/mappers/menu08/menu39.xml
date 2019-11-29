@@ -16,12 +16,12 @@
 		</selectKey>
 	</insert>
 	
-	<!-- 등록 -->
-	<insert id="insert" parameterType="building08vo">
+	<!--  등록 -->
+	<insert id="add" parameterType="building08vo">
 		<![CDATA[
 		insert
-		  into tb_building
-		values (#{no}, #{bd_area }, #{pay_date}, null)
+		  into tb_building(id, area, payDate)
+		values (#{id }, #{area }, #{payDate })
 		]]>
 		<selectKey keyProperty="id" resultType="long" order="AFTER">
 			<![CDATA[

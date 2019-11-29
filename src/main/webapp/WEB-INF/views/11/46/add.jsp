@@ -9,8 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
 <script>
 $(function(){
    $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
@@ -28,7 +26,7 @@ tr td:first-child {
 
 .radio {
 	float: left;
-	width: 10%;
+	width: 18%;
 }
 
 .search-input-width-first {
@@ -57,7 +55,9 @@ tr td:first-child {
 .mgr-call-input {
 	width: 150px;
 	display: inline;
-}
+	}
+	
+.mybtn{float:right;margin-right:20px;}
 </style>
 </head>
 <body class="skin-3">
@@ -81,7 +81,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>단기차입금코드</h4></td>
 									<td>
-										<input type="text" name="code" />
+										<input type="text" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
 									</td>
 								</tr>
 								<tr >
@@ -92,13 +92,13 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="amount" /></td>
+									<td><input type="text" name="debtAmount" /></td>
 								</tr>
 								<tr>
-									<td><h4>차입일자 ~ 만기일자</h4></td>
+									<td style="width:170px;"><h4>차입일자 ~ 만기일자</h4></td>
 									<td>
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="date-range-picker" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input type="text" name="debtExpDate" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -110,20 +110,20 @@ tr td:first-child {
 									<td>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="Y"/>
 												<span class="lbl">년</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="M"/>
 												<span class="lbl">월</span>
 											</label>
 										</div>
-										<div class="radio">
+										<div class="radio" style="width:15%;">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
-												<span class="lbl">만기</span>
+												<input name="intPayWay" type="radio" class="ace" value="E"/>
+												<span class="lbl">해당없음</span>
 											</label>
 										</div>
 									</td>
@@ -133,7 +133,7 @@ tr td:first-child {
 									<td>
 										<input type="text" class="search-input-width-first" name="bankCode"/>
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="bankName"/>
+										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
 									</td>
 								</tr>
 							</table>
@@ -149,7 +149,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>차입금대분류</h4></td>
 									<td>
-										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류">
+										<select class="chosen-select form-control" name="deptClassification" id="form-field-select-3" data-placeholder="차입금대분류">
 											<option value=""></option>
 											<option value="008001">국내은행</option>
 											<option value="008002">저축은행</option>
@@ -165,19 +165,19 @@ tr td:first-child {
 									<td>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace"  value="Y" />
 													<span class="lbl">년</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace"  value="M"/>
 													<span class="lbl">월</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace"  value="E"/>
 													<span class="lbl">만기</span>
 												</label>
 											</div>
@@ -200,29 +200,29 @@ tr td:first-child {
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td>
-										<input type="text" class="search-input-width-first" name="cardAccountDepno"/>
+										<input type="text" class="search-input-width-first" name="depositNo"/>
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="cardAccountBankName"/>
+										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
 									</td>
 								</tr>
-							</table>
+							</table>	
 						</div>
 
 					</div>
 				</div>
 				<hr>
 				<div>
-					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">입력</button>
+					<button type="submit" class="btn btn-success btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/initializet">초기화</button>
 					&nbsp;
-					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">수정</button>
+					<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
 					&nbsp;
-					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">삭제</button>
+					<button type="reset" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
 					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;">조회</button>
+					<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 					&nbsp;
-					<button type="button" class="btn">상환</button>
+					<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 					&nbsp;
-					<button type="button" class="btn ">초기화</button>
+					<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
 				</div>
 				<hr>
 			</form>					
@@ -247,30 +247,32 @@ tr td:first-child {
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
-							<th class="center">담당자전화번호</th>
+							<th class="center">담당자전화번호</th>	
 							<th class="center">은행코드</th>
 							<th class="center">계좌</th>
 						</tr>
 					</thead>
 
 					<tbody>
-						<tr>
-							<td class="center"><label class="pos-rel"> <input
-									type="checkbox" class="ace" /> <span class="lbl"></span>
-							</label></td>
-							<td class="center">2019112701</td>
-							<td>GS칼텍스는...</td>
-							<td class="center">008-국내은행</td>
-							<td class="center">70,000,000,000</td>
-							<td class="center">월</td>
-							<td class="center">2019-10-29 ~ 2029-10-29</td>
-							<td class="center">1.99%</td>
-							<td class="center">월</td>
-							<td class="center">홍길동</td>
-							<td class="center">010-1234-5678</td>
-							<td class="center">0010987</td>
-							<td class="center">한국은행</td>
-						</tr>
+						<c:forEach items="${list }" var="vo" varStatus="status">
+							<tr>
+								<td class="center">
+									<label class="pos-rel"> <input type="checkbox" class="ace" /> <span class="lbl"></span></label>
+								</td>
+								<td class="center">${vo.code }</td>
+							<td>${vo.name }</td>
+							<td class="center">${vo.name }</td>
+							<td class="center">${vo.debtAmount }</td>
+							<td class="center">${vo.repayWay }</td>
+							<td class="center">${vo.debtDate } ~ ${vo.expDate }</td>
+							<td class="center">${vo.intRate }</td>
+							<td class="center">${vo.intPayWay }</td>
+							<td class="center">${vo.mgr }</td>
+							<td class="center">${vo.mgrCall }</td>
+							<td class="center">${vo.bankCode }</td>
+							<td class="center">${vo.depositNo }</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div><!-- /.page-content -->

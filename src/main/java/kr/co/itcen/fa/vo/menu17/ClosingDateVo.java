@@ -13,7 +13,7 @@ import org.apache.ibatis.type.Alias;
  * 
  */
 @Alias("closingDate19Vo")
-public class ClosingDate {
+public class ClosingDateVo {
 	private Long no;						// 번호
 	private String closingYearMonth;		// 마감년월
 	private Date closingDate;				// 최종마감일

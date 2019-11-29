@@ -9,7 +9,7 @@
 <style>
 .radio {
 	float: left;
-	width: 10%;
+	width: 17%;
 }
 
 .prod-list-opts {
@@ -100,7 +100,7 @@ form {
 										<div class="radio">
 											<label>
 												<input name="form-field-radio" type="radio" class="ace" />
-												<span class="lbl">만기</span>
+												<span class="lbl">해당없음</span>
 											</label>
 										</div>
 									</td>
@@ -109,7 +109,7 @@ form {
 										<input type="text" name="bankName"/>
 									</td>
 									<td class="sixth-column">
-										<button type="button" class="btn">조회</button>
+										<button class="btn btn-small btn-info">조회</button>
 									</td>
 								</tr>
 								</tbody>
@@ -194,6 +194,17 @@ form {
 						</tr>
 					</tbody>
 				</table>	
+				<div class="pagination">
+					<ul>
+						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					</ul>
+				</div>
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->

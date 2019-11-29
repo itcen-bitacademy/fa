@@ -66,4 +66,28 @@
 		 order	by closing_year_month desc
 		;
 	</select>
+	
+	<update id="updateClosingDate" parameterType="closingDate19Vo">
+		update	tb_closing_date
+		   set	closing_year_month = #{closingYearMonth }
+				, closing_date = #{closingDate }
+		        , closing_statement_date = #{closingStatementDate }
+		        , closing_purchase_date = #{closingPurchaseDate }
+		        , closing_sales_date = #{closingSalesDate }
+		        , closing_assets_date = #{closingAssetsDate }
+		        , closing_debt_date = #{closingDebtDate }
+		        , closing_settlement_date = #{closingSettlementDate }
+		        , update_userid = #{updateUserid}
+		        , update_day = now()
+		 where	no = #{no }
+		   and	closing_yn = false
+		;
+	</update>
+	
+	<delete id="deleteClosingDate" parameterType="closingDate19Vo">
+		delete	from tb_closing_date
+		 where	no = #{no }
+		   and	closing_yn = false
+		;
+	</delete>
 </mapper>

@@ -1,14 +1,84 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
+<!-- 
+<script src="${pageContext.servletContext.contextPath }/assets/ace/js/uncompressed/jquery-2.0.3.js" type="text/javascript"></script>
+<script>
+$(function(){
+	
+	$("#account-add-btn").click(function(){
+		
+		var AccountManagement = {
+				"account_order" : $("#account_order").val(),                   //계정과목 순서
+				"account_no" : $("#account_no").val(),                         //계정과목 코드
+				"account_statement_type" : $("#account_statement_type option:selected").val(), //제무재표 구분
+				"account_usedyear" : $("#account_usedyear").val()              //계정과목 사용년도
+		};
+		
+		if(AccountManagement == ''){
+			alert("항목을 모두 입력해주세요.");
+			return;
+		}
+		
+		
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add",
+			type: "post",
+			dataType: "json",	
+			contentType: 'application/json',
+			data: JSON.stringify(AccountManagement),
+
+         	error : function(xhr, error) {
+	        	console.error("error : " + error);
+	        }
+
+		});
+				
+	});
+	
+	
+	
+	$(document).on("click", ".delete-category", function(event) {
+		  event.preventDefault();      
+			
+		  var con_test = confirm("정말 삭제하시겠습니까?");
+		  if(con_test == true){
+			  var no = $(this).attr('id');
+		      let clikedRow = $(this);
+		      
+		      $.ajax({
+		         url : "${pageContext.servletContext.contextPath }/api/blog/delete?no=" + no,
+		         type : "post",
+		         dataType : "json",
+		         success : function(data) {
+		         	$(clikedRow).parent().parent().remove();
+		         },
+		         error : function(xhr, error) {
+		            console.error("error : " + error);
+		         }
+		      });
+		  }
+		  else if(con_test == false){
+		    return;
+		  }
+		  
+	     
+	   
+	   });
+	
+	
+});
+</script>
+ -->
+    
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -23,34 +93,32 @@
 				<div class="row">
 					<div class="span10">
 						<!-- PAGE CONTENT BEGINS -->
-						<form class="form-horizontal" method="post"
-							action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+						<form id="form-babo" class="form-horizontal" method="post" action="">	
+											
 							<!-- 회계연도  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">회계연도</label>
 								<div class="controls">
-									<input type="number" min="1900" max="2099" step="1"
-										value="2019" id="form-field-1" name="financial_usedyear"
-										placeholder="회계연도" />
+									<input type="number" min="1900" max="2099" step="1" value="2019" id="accountUsedyear" name="accountUsedyear" placeholder="회계연도" />
 								</div>
 							</div>
+							 
 							<!-- 구분  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">구분</label>
 								<div class="controls">
-									<select class="select" id="form-field-select-1" name="menuNo"
-										data-placeholder="메뉴선택">
-										<option value="대차대조표">대차대조표</option>
-										<option value="손익계산서">손익계산서</option>
+									<select id="accountStatementType" name="accountStatementType" >
+										<option value="B">대차대조표</option>
+										<option value="I">손익계산서</option>
 									</select>
 								</div>
 							</div>
+							
 							<!-- 순번  -->
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">순번</label>
+								<label class="control-label" for="accountOrder">순번</label>
 								<div class="controls">
-									<input type="number" min="0001" max="1000" step="1" value="1"
-										id="form-field-1" name="financial_usedyear" placeholder="회계연도" />
+									<input type="number" min="0001" max="1000" step="1" value="1" id="accountOrder" name="accountOrder" placeholder="순번" />
 								</div>
 							</div>
 							<!-- 계정과목  -->
@@ -59,27 +127,22 @@
 								<div class="controls">
 									<select class="chosen-select" id="form-field-select-1"
 										name="menuNo" data-placeholder="메뉴선택">
-										<c:forEach items="${listMainMenu }" var="menuVo">
-											<option value="${menuVo.no }">${menuVo.name }</option>
+										<c:forEach items="${accountList }" var="vo">
+											<option value="${vo.accountNo }">${vo.accountNo }</option>
 										</c:forEach>
-									</select> <input type="text" id="form-field-1" name="financial_usedyear"
-										placeholder="계정과목"
-										style="text-align: center; width: 300px; height: 18px;"
-										disabled />
+									</select> 
+									<input type="text" id="accountName" name="accountName" placeholder="계정과목" style="text-align: center; width: 300px; height: 18px;" disabled />
+										
 								</div>
 							</div>
 							&nbsp; &nbsp; &nbsp;
-							<button class="btn btn-info btn-small">조회</button>
+							<button class="btn btn-info btn-small" type="submit" name="action"  value="getList" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 							&nbsp;
-							<button class="btn btn-danger btn-small">삭제</button>
+							<button class="btn btn-danger btn-small" type="submit" name="action"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 							&nbsp;
-							<button class="btn btn-warning btn-small">
-								<i class=""></i>수정
-							</button>
+							<button class="btn btn-warning btn-small" type="submit" name="action"  value="update" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							&nbsp;
-							<button class="btn btn-primary btn-small">
-								<i class=""></i>입력
-							</button>
+							<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="action" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
 							&nbsp;
 							<button class="btn btn-default btn-small" type="reset">취소</button>
 
@@ -95,7 +158,7 @@
 				<div class="span12">
 				<!-- 선 -->
 				<div class="hr hr-18 dotted"></div>
-					<table id="sample-table-1"
+					<table id="tb_account_management"
 						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
@@ -113,21 +176,22 @@
 							</tr>
 						</thead>
 
-						<tbody>
-							<tr>
-								<td class="center"><label> <input type="checkbox"
-										class="ace"> <span class="lbl"></span>
-								</label></td>
-								<td>0010</td>
-								<td>1000001</td>
-								<td>자산</td>
-								<td>차변</td>
-								<td>2019.11.27</td>
-								<td>이성훈</td>
-								<td>2019.11.27</td>
-								<td>이성훈</td>
-							</tr>
-						</tbody>
+					<c:set var="count" value="${fn:length(tableList) }" />
+						<c:forEach items="${tableList }" var="vo" varStatus="status">
+							<tbody>
+								<tr>
+									<td class="center"><label> <input type="checkbox" class="ace"> <span class="lbl"></span></label></td>
+									<td>${vo.accountOrder }</td>
+									<td>${vo.accountNo }</td>
+									<td>${vo.accountName }</td>
+									<td>${vo.balanceType }</td>
+									<td>${vo.insertUserid }</td>
+									<td>${vo.insertDay }</td>
+									<td>${vo.updateUserid }</td>
+									<td>${vo.updateDay }</td>
+								</tr>
+							</tbody>
+						</c:forEach>
 					</table>
 				</div>
 			</div>
@@ -155,7 +219,46 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
+			
+
+			
 		});
 	</script>
+	
+	<script>
+
+    // 테이블의 Row 클릭시 값 가져오기
+    $("#tb_account_management tr").click(function(){     
+
+        var str = "";
+        var tdArr = new Array();    // 배열 선언
+        
+        // 현재 클릭된 Row(<tr>)
+        var tr = $(this);
+        var td = tr.children();
+        
+        // tr.text()는 클릭된 Row 즉 tr에 있는 모든 값을 가져온다.
+        //console.log("클릭한 Row의 모든 데이터 : "+tr.text());
+        
+        // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
+        td.each(function(i){
+            tdArr.push(td.eq(i).text());
+        });
+        
+        //console.log("배열에 담긴 값 : "+tdArr);
+        
+        var accountOrder = td.eq(1).text();
+        var accountNo = td.eq(2).text();
+        var accountName = td.eq(3).text();
+        
+        $("#accountOrder").val(accountOrder);
+        $("#accountNo").val(accountNo);
+        $("#accountName").val(accountName);
+        
+        console.log("accountOrder : "+ accountOrder + "  accountNo : " + accountNo + "  accountName : " + accountName);
+    });
+
+
+</script>
 </body>
 </html>
