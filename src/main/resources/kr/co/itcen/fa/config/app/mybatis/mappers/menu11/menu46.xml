@@ -44,7 +44,7 @@
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
-			update_date from tb_p_debt
+			update_date from tb_s_term_debt
 		]]>
 	</select>
 </mapper>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
@@ -33,5 +34,10 @@ public class Menu46Controller {
 		List<STermDebtVo> list = menu46Service.getList();
 		model.addAttribute("list", list);
 		return MAINMENU + "/" + SUBMENU + "/add";
+	}
+	
+	@RequestMapping("/" + SUBMENU + "/insert")
+	public String insert(@RequestParam STermDebtVo sTermDebtVo) {
+		return null;
 	}
 }

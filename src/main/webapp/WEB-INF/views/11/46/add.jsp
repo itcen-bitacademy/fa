@@ -79,7 +79,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>단기차입금코드</h4></td>
 									<td>
-										<input type="text" name="code" />
+										<input type="text" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
 									</td>
 								</tr>
 								<tr >
@@ -90,13 +90,13 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="amount" /></td>
+									<td><input type="text" name="debtAmount" /></td>
 								</tr>
 								<tr>
 									<td style="width:170px;"><h4>차입일자 ~ 만기일자</h4></td>
 									<td>
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="date-range-picker" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input type="text" name="debtExpDate" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -108,19 +108,19 @@ tr td:first-child {
 									<td>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" />
 												<span class="lbl">년</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" />
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio" style="width:15%;">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" />
 												<span class="lbl">해당없음</span>
 											</label>
 										</div>
@@ -131,7 +131,7 @@ tr td:first-child {
 									<td>
 										<input type="text" class="search-input-width-first" name="bankCode"/>
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="bankName"/>
+										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
 									</td>
 								</tr>
 							</table>
@@ -147,7 +147,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>차입금대분류</h4></td>
 									<td>
-										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류">
+										<select class="chosen-select form-control" name="deptClassification" id="form-field-select-3" data-placeholder="차입금대분류">
 											<option value=""></option>
 											<option value="008001">국내은행</option>
 											<option value="008002">저축은행</option>
@@ -163,19 +163,19 @@ tr td:first-child {
 									<td>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace" />
 													<span class="lbl">년</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace" />
 													<span class="lbl">월</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace" />
 													<span class="lbl">만기</span>
 												</label>
 											</div>
@@ -198,9 +198,9 @@ tr td:first-child {
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td>
-										<input type="text" class="search-input-width-first" name="cardAccountDepno"/>
+										<input type="text" class="search-input-width-first" name="accountNo"/>
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="cardAccountBankName"/>
+										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
 									</td>
 								</tr>
 							</table>
@@ -210,11 +210,11 @@ tr td:first-child {
 				</div>
 				<hr>
 				<div>
-					<button class="btn btn-success btn-small" style="float:right;margin-right:20px;">초기화</button>
+					<button type="submit" class="btn btn-success btn-small" style="float:right;margin-right:20px;">초기화</button>
 					&nbsp;
-					<button class="btn btn-pink btn-small" style="float:right;margin-right:20px;">상환</button>
+					<button type="submit" class="btn btn-pink btn-small" style="float:right;margin-right:20px;">상환</button>
 					&nbsp;
-					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">조회</button>
+					<button type="submit" class="btn btn-info btn-small" style="float:right;margin-right:20px;">조회</button>
 					&nbsp;
 					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">삭제</button>
 					&nbsp;
