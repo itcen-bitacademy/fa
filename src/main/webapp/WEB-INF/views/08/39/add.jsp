@@ -34,7 +34,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물 코드</label>
 										<div class="controls">
-											<input type="text" id="land_code" name="landCode"
+											<input type="text" id="land_code" name="id"
 												placeholder="10자로 입력하세요" />
 										</div>
 									</div>
@@ -85,8 +85,7 @@
 											<label class="control-label" for="id-date-picker-1">매입일자</label>
 											<div class="controls">
 												<input style="width: 174px" class="cl-date-picker" readonly
-													type="text" id="id-date-picker-1" name="payDate"
-													data-date-format="yyyy-mm-dd" placeholder="날짜를 선택하세요" />
+													type="text" id="id-date-picker-1" name="payDate" placeholder="날짜를 선택하세요" />
 												<div class="input-append">
 													<span class="add-on"> <i class="icon-calendar"></i>
 													</span>
@@ -212,7 +211,7 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small"
+												<button type="submit" class="btn btn-primary btn-small" 
 													style="float: left; margin-right: 20px;">등록</button>
 												<button class="btn btn-warning btn-small"
 													style="float: left; margin-right: 20px;">수정</button>
@@ -357,7 +356,7 @@ $(function(){
 			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
 			weekStart: 0
 			};
-	
+			
 			$('#cl-ym-date-picker').datepicker({
 				maxViewMode: 4,
 				minViewMode: 1,

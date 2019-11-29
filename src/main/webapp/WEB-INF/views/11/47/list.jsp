@@ -97,7 +97,7 @@ form {
 												<span class="lbl">월</span>
 											</label>
 										</div>
-										<div class="radio">
+										<div class="radio" style="width:15%;">
 											<label>
 												<input name="form-field-radio" type="radio" class="ace" />
 												<span class="lbl">만기</span>
