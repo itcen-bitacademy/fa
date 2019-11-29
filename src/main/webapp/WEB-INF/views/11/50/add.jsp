@@ -102,9 +102,9 @@ tr td:first-child {
 									<td><h4>차입일자 ~ 만기일자</h4></td>
 									<td colspan="2">
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="debtExpDate" id="id-date-range-picker-1" />
+				                           <input type="text" name="debtExpDate" name="date-range-picker" id="id-date-range-picker-1" />
 				                           <span class="add-on">
-				                              <i class="icon-calendar"></i>
+				                              <i class="icon-calendar" ></i>
 				                           </span>
 				                           </div>
 									</td>
@@ -253,7 +253,7 @@ tr td:first-child {
 						<tr>
 							<th class="center">
 								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
+									<input type="checkbox" class="ace"  id="selectAll"/>
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -369,20 +369,42 @@ tr td:first-child {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script>
-$(function(){
-	$(".chosen-select").chosen();
-	$('#id-date-range-picker-1').daterangepicker({
+	$(function() {
+		$(".chosen-select").chosen();
+
+		$('#id-date-range-picker-1').daterangepicker({
 			format : 'YYYY-MM-DD'
 		}).next().on(ace.click_event, function() {
 			$(this).next().focus();
 		});
-
-		$('.icon-calendar').daterangepicker({
-			format : 'YYYY-MM-DD'
-		}).next().on(ace.click_event, function() {
+		
+		//to translate the daterange picker, please copy the "examples/daterange-fr.js" contents here before initialization
+		$('input[name=date-range-picker]').daterangepicker({
+			'applyClass' : 'btn-sm btn-success',
+			'cancelClass' : 'btn-sm btn-default',
+			format : 'YYYY-MM-DD',
+			locale: {
+				applyLabel: 'Apply',
+				cancelLabel: 'Cancel',
+			}
+		})
+		.next().on(ace.click_event, function(){
 			$(this).next().focus();
 		});
 	});
+	
+	// checkbox로 데이터 모든 데이터 선택하거나 낱개로 선택
+	$(document).ready(function() {
+		$('body').on('click', '#selectAll', function() {
+			if ($(this).hasClass('allChecked')) {
+				$('input[type="checkbox"]', '#simple-table').prop('checked', false);
+			} else {
+				$('input[type="checkbox"]', '#simple-table').prop('checked', true);
+			}
+			$(this).toggleClass('allChecked');
+		})
+	});
+	
 </script>
 </body>
 </html>
