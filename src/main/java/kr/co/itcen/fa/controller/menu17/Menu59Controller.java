@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.controller.menu17;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,11 @@ public class Menu59Controller {
 	public String getList(@ModelAttribute AccountManagement vo,
 						  Model model) {
 		
+		List<AccountManagement> tableList = menu59Service.getAllList();
+		List<AccountManagement> accountList = menu59Service.getAllAccountList();
 		
+		model.addAttribute("tableList", tableList);
+		model.addAttribute("accountList", accountList);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}

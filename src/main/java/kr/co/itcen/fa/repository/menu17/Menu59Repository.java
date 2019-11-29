@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.repository.menu17;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,4 +25,13 @@ public class Menu59Repository {
 		return count == 1;	
 	}
 	
+	public List<AccountManagement> getAllList(){
+				
+		return sqlSession.selectList("menu59.getAllList");
+	}
+	
+	public List<AccountManagement> getAllAccountList(){
+		
+		return sqlSession.selectList("menu59.getAllAccountList");
+	}
 }
