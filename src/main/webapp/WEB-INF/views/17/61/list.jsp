@@ -30,26 +30,26 @@
 				<div class="span12">
 					<%-- <h1>!!! 결산작업[61] test !!!</h1> --%>
 					<%-- 조회 영역 --%>
-					<form class="form-horizontal">
+					<form class="form-horizontal" id="closing-year-form" method="post">
 						<%-- 년 월 select --%>
 						<div class="control-group">
-							<label class="control-label" for="year-month" style="text-align:left;width:60px;">년 월:</label>
+							<label class="control-label" for="closing-year" style="text-align:left;width:60px;">년도:</label>
 							<div class="controls" style="margin-left:60px;">
-								<select class="chosen-select" id="year-month" name="yearMonth" data-placeholder="년 월 선택">
-									<option value="2019-12">2019-12</option>
-									<option value="2019-12">2019-11</option>
-									<option value="2019-12">2019-10</option>
-									<option value="2019-12">2019-9</option>
-									<option value="2019-12">2019-8</option>
-									<option value="2019-12">2019-7</option>
-									<option value="2019-12">2019-6</option>
-									<option value="2019-12">2019-5</option>
-									<option value="2019-12">2019-4</option>
-									<option value="2019-12">2019-3</option>
+								<select class="chosen-select" id="closing-year" name="year" data-placeholder="년도 선택">
+									<c:forEach var="closingYear" items="${closingYearList }">
+										<c:choose>
+											<c:when test="${closingYear eq year }">
+												<option value="${closingYear }" selected>${closingYear }</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${closingYear }">${closingYear }</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
 								</select>
 
 								<%-- 조회버튼 --%>
-								<button class="btn btn-small btn-info">조회</button>
+								<button class="btn btn-small btn-info" id="search-btn">조회</button>
 							</div>
 						</div>
 					</form>
@@ -76,36 +76,40 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>2019-12</td>
-										<td>2020-01-03</td>
-										<td>2020-01-02</td>
-										<td>2019-12-30</td>
-										<td>2019-12-31</td>
-										<td>2019-12-30</td>
-										<td>2019-12-31</td>
-										<td>2020-01-03</td>
-										<td>미결산</td>
-										<td>-</td>
-										<td>-</td>
-										<td>
-											<button class="btn btn-info btn-small">결산</button>
-										</td>
-									</tr>
-									<tr>
-										<td>2019-11</td>
-										<td>2019-12-03</td>
-										<td>2019-12-02</td>
-										<td>2019-11-29</td>
-										<td>2019-11-30</td>
-										<td>2019-11-29</td>
-										<td>2019-11-30</td>
-										<td>2019-12-03</td>
-										<td>완료</td>
-										<td>2019-12-03</td>
-										<td>최웅</td>
-										<td></td>
-									</tr>
+									<c:forEach var="cdt" items="${closingDateList }">
+										<tr class="cdt-tr" no="${cdt.no }" closing-yn="${cdt.closingYn }">
+											<td class="closing-year-month">${cdt.closingYearMonth }</td>
+											<td class="closing-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingDate }"></fmt:formatDate></td>
+											<td class="closing-statement-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingStatementDate }"></fmt:formatDate></td>
+											<td class="closing-assets-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingAssetsDate }"></fmt:formatDate></td>
+											<td class="closing-debt-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingDebtDate }"></fmt:formatDate></td>
+											<td class="closing-purchase-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingPurchaseDate }"></fmt:formatDate></td>
+											<td class="closing-sales-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingSalesDate }"></fmt:formatDate></td>
+											<td class="closing-settlement-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingSettlementDate }"></fmt:formatDate></td>
+											<td class="closing-yn">
+												<c:choose>
+													<c:when test="${cdt.closingYn }">
+														완료
+													</c:when>
+													<c:otherwise>
+														미결산
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.updateDay }"></fmt:formatDate></td>
+											<td>${cdt.updateUserid}</td>
+											<td class="closing-yn">
+												<c:choose>
+													<c:when test="${cdt.closingYn }">
+														-
+													</c:when>
+													<c:otherwise>
+														<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div>
@@ -137,9 +141,43 @@
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
-$(function(){
-	$(".chosen-select").chosen();
-});
+	$(function(){
+		$(".chosen-select").chosen();
+
+		// 버튼 prevent default 설정
+		$('button').on('click', disableFormSubmit)
+
+		// 년도 조회 버튼 이벤트 연결
+		$('#search-btn').on('click', searchClosingState)
+
+		// 마감버튼 이벤트 연결
+		$('.settlement-btn').on('click', executeSettlement)
+	});
+
+	// 버튼 prevent default 설정
+	function disableFormSubmit(event) {
+		event.preventDefault();
+	}
+
+	// 년도별 마감 현황 조회
+	function searchClosingState(event) {
+		var form = $('#closing-year-form')[0]
+		$(form).attr('action', '${pageContext.request.contextPath }/17/61/list')
+		form.submit();
+	}
+
+	// 해당마감일 결산 실행
+	function executeSettlement(event) {
+		var form = $('<form/>')
+		form.attr('action', '${pageContext.request.contextPath }/17/61/settlement').attr('method', 'post')
+
+		var no = $('<input type="hidden"/>').attr('name', 'no').val($(event.target).attr('no'))
+		console.log($(no));
+		$(form).append(no)
+
+		$(document.body).append(form)
+		form.submit()
+	}
 </script>
 </body>
 </html>

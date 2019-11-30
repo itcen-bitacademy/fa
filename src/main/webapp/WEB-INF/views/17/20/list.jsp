@@ -33,7 +33,7 @@
 					<form class="form-horizontal" id="closing-year-form" method="post">
 						<%-- 년 월 select --%>
 						<div class="control-group">
-							<label class="control-label" for="year-month" style="text-align:left;width:60px;">년도:</label>
+							<label class="control-label" for="closing-year" style="text-align:left;width:60px;">년도:</label>
 							<div class="controls" style="margin-left:60px;">
 								<select class="chosen-select" id="closing-year" name="year" data-placeholder="년도를 선택하세요">
 									<c:forEach var="closingYear" items="${closingYearList }">
@@ -87,7 +87,7 @@
 											<td class="closing-yn">
 												<c:choose>
 													<c:when test="${cdt.closingYn }">
-														결산완료
+														완료
 													</c:when>
 													<c:otherwise>
 														미결산
