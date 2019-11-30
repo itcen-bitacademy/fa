@@ -14,5 +14,37 @@
 			]]>
 		</selectKey>
 	</insert>
-
+	<!-- insert -->
+	<insert id="insert" parameterType="ldebtvo">
+		<![CDATA[
+		insert
+		  into tb_l_term_debt
+		values (null, #{code},#{name},#{debtAmount}, 0, #{repayWay}, #{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall},#{majorCode}, #{bankCode},#{deposiNo},'2401101',null,'N','u009',now(),null,null)
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	<select id="selectAll" resultType="ldebtvo">
+	<![CDATA[
+		select no,
+			code,
+   			name,
+    		major_code as majorCode,
+    		debt_amount as debtAmount,
+    		repay_bal as repayBal,
+    		repay_way as repayWay,
+    		concat(date_format(dept_date,'%Y/%m/%d'),'~',
+    		date_format(exp_date,'%Y/%m/%d')) as debtExpDate,
+    		int_rate as intRate,
+    		int_pay_way as intPayWay,
+   			mgr,
+    		mgr_call as mgrCall,
+		    bank_code as bankCode,
+		    deposit_no as depositNo
+		    from tb_l_term_debt
+	]]>
+	</select>
 </mapper>
