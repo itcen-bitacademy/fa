@@ -19,7 +19,8 @@
 	<!--  재무제표 계정과목 현황조회 -->
 	<select id="getAllList" resultType="AccountManagement">
 		<![CDATA[
-	  select m.account_order           					   as accountOrder
+	  select m.no                                          as no
+	       , m.account_order           					   as accountOrder
 		   , m.account_no              					   as accountNo
 		   , a.balance_type            					   as balanceType
 	       , a.name              					   	   as accountName
@@ -32,11 +33,13 @@
 		   , date_format(m.update_day,'%Y-%m-%d %h:%i:%s') as updateDay 
 	    from tb_account_management m, tb_account a
 	   where a.no = m.account_no
+	     and m.use_yn = 1
+	     and m.account_statement_type = 'B'
 	   order by account_order
 		]]>
 	</select>
 
-	<!--  재무제표 계정과목 조회 -->
+	<!--  재무제표 계정과목, 계정명 조회 -->
 	<select id="getAllAccountList" resultType="AccountManagement">
 		<![CDATA[
 	  select no   as accountNo  
@@ -44,6 +47,27 @@
  		from tb_account
 		]]>
 	</select>
+
+	<!-- 재무제표 계정과목 수정 -->
+	<update id="accountUpdate" parameterType="AccountManagement">
+		<![CDATA[
+		update tb_account_management 
+		   set account_order    = #{accountOrder}
+		     , account_no       = #{accountNo}
+			 , account_usedyear = #{accountUsedyear}  
+			 , update_userid    = #{updateUserid} 
+			 , update_day       = now()
+		 where no= #{no}
+		]]>
+	</update>
 	
+	<!-- 재무제표 계정과목 삭제 -->
+	<update id="accountDelete" parameterType="long">
+		<![CDATA[
+		update tb_account_management 
+		   set use_yn = 0 
+		 where no= #{no}
+		]]>
+	</update>
 
 </mapper> 

@@ -35,4 +35,14 @@ public class Menu59Service {
 		
 		return menu59Repository.getAllAccountList();
 	}
+
+	public Boolean update(AccountManagement vo) {
+		Boolean count = menu59Repository.update(vo);
+		return count;	
+	}	
+	
+	public Boolean delete(Long no) {
+		Boolean count = menu59Repository.delete(no);
+		return count;	
+	}
 }

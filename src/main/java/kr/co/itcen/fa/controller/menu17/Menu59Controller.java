@@ -36,8 +36,8 @@ public class Menu59Controller {
 	private Menu59Service menu59Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String getList(@ModelAttribute AccountManagement vo,
-						  Model model) {
+	public String getAllList(@ModelAttribute AccountManagement vo,
+						     Model model) {
 		
 		List<AccountManagement> tableList = menu59Service.getAllList();
 		List<AccountManagement> accountList = menu59Service.getAllAccountList();
@@ -61,10 +61,7 @@ public class Menu59Controller {
 		if(authUser == null) {
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}
-		
 
-		
- 
 		//저장할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
@@ -76,20 +73,47 @@ public class Menu59Controller {
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
+	
+	//재무제표 계정관리 수정
 	@RequestMapping(value="/" + SUBMENU + "/update", method=RequestMethod.POST)
-	public String update(AccountManagement accountManagement) {
-		System.out.println(accountManagement);
+	public String update(@ModelAttribute AccountManagement accountManagement,
+						 @RequestParam("selectedAccountStatementType") String type,
+						 @RequestParam("selectedAccount") Long accountNo,
+						 HttpSession session) {
 		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser == null) {
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		}
+
+		//수정할 값들 셋팅
+		accountManagement.setAccountStatementType(type);
+		accountManagement.setAccountNo(accountNo);
+		accountManagement.setUpdateUserid(authUser.getName());
+		
+		System.out.println(accountManagement);	
+		menu59Service.update(accountManagement);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
+	
+	
+	//재무제표 계정관리 삭제
 	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
-	public String delete(AccountManagement accountManagement) {
-		System.out.println(accountManagement);
-		
+	public String delete(@ModelAttribute AccountManagement accountManagement,
+					  	 HttpSession session) {
 
+	UserVo authUser = (UserVo)session.getAttribute("authUser");
+	
+	if(authUser == null) {
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+	
+	System.out.println(accountManagement);
+	menu59Service.delete(accountManagement.getNo());
+	return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
 	

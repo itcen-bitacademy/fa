@@ -20,18 +20,35 @@ public class Menu59Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	//계정과목 저장
 	public Boolean insert(AccountManagement vo) {
 		int count = sqlSession.insert("menu59.insert",vo);
 		return count == 1;	
 	}
 	
+	//계정과목 처음 출력(대차대조표 출력)
 	public List<AccountManagement> getAllList(){
 				
 		return sqlSession.selectList("menu59.getAllList");
 	}
 	
+	//계정과목 셀렉트 박스에 대한 데이터 출력
 	public List<AccountManagement> getAllAccountList(){
 		
 		return sqlSession.selectList("menu59.getAllAccountList");
 	}
+
+	//계정과목 수정
+	public Boolean update(AccountManagement vo) {
+		int count = sqlSession.update("menu59.accountUpdate",vo);
+		return count == 1;	
+	}		
+	
+	//계정과목 삭제
+	public Boolean delete(Long no) {
+		int count = sqlSession.update("menu59.accountDelete",no);
+		return count == 1;	
+	}	
+	
+	
 }

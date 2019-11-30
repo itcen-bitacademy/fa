@@ -119,6 +119,7 @@ $(function(){
 								<label class="control-label" for="accountOrder">순번</label>
 								<div class="controls">
 									<input type="number" min="0001" max="1000" step="1" value="1" id="accountOrder" name="accountOrder" placeholder="순번" />
+									<input type="hidden" id="no" name="no" value="" >
 								</div>
 							</div>
 							 
@@ -135,6 +136,7 @@ $(function(){
 								
 								</div>
 							</div>
+							
 							&nbsp; &nbsp; &nbsp;
 							<button class="btn btn-info btn-small" type="submit" name="action"  value="getList" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 							&nbsp;
@@ -162,9 +164,6 @@ $(function(){
 						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th class="center"><label> <input type="checkbox"
-										class="ace"> <span class="lbl"></span>
-								</label></th>
 								<th>순번</th>
 								<th>계정과목</th>
 								<th>계정명칭</th>
@@ -180,17 +179,23 @@ $(function(){
 						<c:forEach items="${tableList }" var="vo" varStatus="status">
 							<tbody>
 								<tr>
-									<td class="center"><label> <input type="checkbox" class="ace"> <span class="lbl"></span></label></td>
 									<td>${vo.accountOrder }</td>
 									<td>${vo.accountNo }</td>
 									<td>${vo.accountName }</td>
-									<td>${vo.balanceType }</td>
+									<c:if test="${vo.balanceType eq 'D' }">	
+									<td>차변</td>
+									</c:if>
+									<c:if test="${vo.balanceType eq 'C' }">	
+									<td>대변</td>
+									</c:if>
 									<td>${vo.insertUserid }</td>
 									<td>${vo.insertDay }</td>
 									<td>${vo.updateUserid }</td>
 									<td>${vo.updateDay }</td>
+									<td id="no" style="display:none;">${vo.no }</td>
 								</tr>
 							</tbody>
+									
 						</c:forEach>
 					</table>
 				</div>
@@ -227,28 +232,44 @@ $(function(){
     // 테이블의 Row 클릭시 값 가져오기
     $("#tb_account_management tr").dblclick(function(){     
         var str = "";
+        var tdArr = new Array();    // 배열 선언
         
         // 현재 클릭된 Row(<tr>)
         var tr = $(this);
         var td = tr.children();
         
+        // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
+        td.each(function(i){
+            tdArr.push(td.eq(i).text());
+        });
         
-        var accountOrder = td.eq(1).text();
-        var accountNo = td.eq(2).text();
-        var accountName = td.eq(3).text();
+        console.log("배열에 담긴 값 : "+tdArr);
         
+        var accountOrder = td.eq(0).text();
+        var accountNo = td.eq(1).text();
+        var accountName = td.eq(2).text();
+        var hiddenNo = td.eq(8).text();
+        
+        console.log(hiddenNo);
+        
+        //$(".selectedAccount").val(accountNo).trigger('change'); 
+        //$("#selectedAccount").val(accountNo).prop("selected", true);
+        //$("#selectedAccount").val("10230123").attr("selected", "selected");                       
+       	//$("#selectedAccount").val(accountNo);
+        //$("#selectedAccount  option:contains(" + accountNo + ")").text(accountNo);
+     
         $("#accountOrder").val(accountOrder);
-        $("#accountNo").val(accountNo);
         $("#accountName").val(accountName);
+        $("#no").val(hiddenNo);
+     
     });
     
     //계정과목에 따른 계정명 불러오기
     $('#selectedAccount').change(function () {
     	var accountName =$(this).find('option:selected').attr('data-accountName');
     	$('#accountName').val(accountName);
-
    	});
     
-</script>
+	</script>
 </body>
 </html>
