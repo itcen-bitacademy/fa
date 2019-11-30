@@ -6,7 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.itcen.fa.vo.menu17.ClosingDate;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.TestVo;
 
 /**
@@ -32,7 +32,7 @@ public class Menu19Repository {
 	 * 
 	 * 마감일 등록
 	 */
-	public int insertClosingDate(ClosingDate closingDate) {
+	public int insertClosingDate(ClosingDateVo closingDate) {
 		return sqlSession.insert("menu19.insertClosingDate", closingDate);
 	}
 	
@@ -40,8 +40,26 @@ public class Menu19Repository {
 	 * 
 	 * 마감일 전체 조회(마감일 순 내림차순)
 	 */
-	public List<ClosingDate> selectAllClosingDate() {
-		// TODO: 페이징 추가
+	public List<ClosingDateVo> selectAllClosingDate() {
+		// TODO: 페이징, 검색조건 추가
 		return sqlSession.selectList("menu19.selectAllClosingDate");
+	}
+	
+	
+	/**
+	 * 
+	 * 마감일 수정(미결산 마감일만 수정 가능)
+	 */
+	public int updateClosingDate(ClosingDateVo closingDate) {
+		return sqlSession.update("menu19.updateClosingDate", closingDate);
+	}
+	
+	
+	/**
+	 * 
+	 * 마감일 삭제(미결산 마감일만 삭제 가능)
+	 */
+	public int deleteClosingDate(ClosingDateVo closingDate) {
+		return sqlSession.delete("menu19.deleteClosingDate", closingDate);
 	}
 }

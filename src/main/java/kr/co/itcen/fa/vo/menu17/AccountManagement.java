@@ -19,6 +19,10 @@ public class AccountManagement {
 	private String insertDay;            //등록일                 
 	private String updateUserid;         //수정자
 	private String updateDay;            //수정일 
+	
+	private String balanceType;          //잔액구분
+	private String accountName;          //계정명
+	
 	public Long getNo() {
 		return no;
 	}
@@ -79,13 +83,27 @@ public class AccountManagement {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
+	public String getBalanceType() {
+		return balanceType;
+	}
+	public void setBalanceType(String balanceType) {
+		this.balanceType = balanceType;
+	}
+	public String getAccountName() {
+		return accountName;
+	}
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
 	
 	@Override
 	public String toString() {
 		return "AccountManagement [no=" + no + ", accountOrder=" + accountOrder + ", accountNo=" + accountNo
 				+ ", accountUsedyear=" + accountUsedyear + ", accountStatementType=" + accountStatementType + ", useYn="
 				+ useYn + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + "]";
+				+ updateUserid + ", updateDay=" + updateDay + ", balanceType=" + balanceType + ", accountName=" + accountName + "]";
 	}
+	
+	
 	
 }

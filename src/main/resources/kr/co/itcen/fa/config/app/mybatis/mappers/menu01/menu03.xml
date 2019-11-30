@@ -14,5 +14,69 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<!-- 전표테이블 입력 -->
+	<insert id="insertVoucher" parameterType="1vouchervo">
+		<![CDATA[
+		insert
+		  into tb_voucher(null,
+		  			   reg_date,
+		  			   amount,
+		  			   amount_flag,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   use_yn
+		  			   card_no,
+		  			   diposite_no,
+		  			   customer_no,)
+		values (null,
+				#{regDate },
+				#{amount },
+		  		#{amountFlag },
+		  		#{insertUserid },
+		  		#{insertDay },
+		  		true,
+		  		#{cardNo },
+		  		#{dipositeNo },
+		  		#{customerNo }
+		]]>
+	</insert>
+	
+	<!-- 매핑테이블 입력 -->
+	<insert id="insertMapping" parameterType="1mappingvo">
+		<![CDATA[
+		insert
+		  into tb_mapping(no,
+		  			   systemNo,
+		  			   voucher_use,
+		  			   tax,
+		  			   insert_team,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   use_yn,
+		  			   voucher_no,
+		  			   manage_no
+		values (null,
+				#{systemNo },
+				#{voucherUse },
+		  		#{tax },
+		  		#{insertTeam },
+		  		#{insertUserid }
+		  		now(),
+		  		true,
+		  		#{voucherNo },
+		  		#{manageNo },
+		]]>
+	</insert>
+	
+	<select id="viewVoucher" parameterType="1vouchervo" resultType="1vouchervo">
+		<![CDATA[
+		select g_no as groupNo,
+		       o_no as orderNo,
+		       depth
+		  from board
+		 where no = #{no };
+		]]>
+	</select>
 
 </mapper>
