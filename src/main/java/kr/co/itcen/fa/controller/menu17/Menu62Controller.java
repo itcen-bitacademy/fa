@@ -26,7 +26,7 @@ public class Menu62Controller {
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test() {
-		menu62Service.test();
+//		menu62Service.test();
 
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

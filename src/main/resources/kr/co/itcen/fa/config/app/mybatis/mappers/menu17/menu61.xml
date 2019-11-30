@@ -11,4 +11,27 @@
 		;
 	</update>
 	
+	<insert id="insertTrialBalance" parameterType="trialBalance17Vo">
+		insert	into tb_trial_balance(
+		    closing_date_no
+		    , account_no
+		    , debtor_total
+		    , credit_total
+		    , debtor_spot_month
+		    , credit_spot_month
+		    , insert_userid
+		) values (
+			#{closingDateNo }
+		    , #{accountNo }
+		    , #{debtorTotal }
+		    , #{creditTotal }
+		    , #{debtorSpotMonth }
+		    , #{creditSpotMonth }
+		    , #{insertUserid }
+		);
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
 </mapper>
