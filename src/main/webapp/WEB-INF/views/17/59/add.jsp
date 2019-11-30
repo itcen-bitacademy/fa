@@ -107,7 +107,7 @@ $(function(){
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">구분</label>
 								<div class="controls">
-									<select id="accountStatementType" name="accountStatementType" >
+									<select id="selectedAccountStatementType" name="selectedAccountStatementType" >
 										<option value="B">대차대조표</option>
 										<option value="I">손익계산서</option>
 									</select>
@@ -121,18 +121,18 @@ $(function(){
 									<input type="number" min="0001" max="1000" step="1" value="1" id="accountOrder" name="accountOrder" placeholder="순번" />
 								</div>
 							</div>
+							
 							<!-- 계정과목  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">계정과목</label>
 								<div class="controls">
-									<select class="chosen-select" id="form-field-select-1"
-										name="menuNo" data-placeholder="메뉴선택">
+									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="메뉴선택">
 										<c:forEach items="${accountList }" var="vo">
-											<option value="${vo.accountNo }">${vo.accountNo }</option>
+											<option value="${vo.accountNo}" data-accountName="${vo.accountName }">${vo.accountNo }</option>
 										</c:forEach>
 									</select> 
-									<input type="text" id="accountName" name="accountName" placeholder="계정과목" style="text-align: center; width: 300px; height: 18px;" disabled />
-										
+									<input type="text" id="accountName" name="accountName" placeholder="자산" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
+								
 								</div>
 							</div>
 							&nbsp; &nbsp; &nbsp;
@@ -219,33 +219,19 @@ $(function(){
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
-			
-
-			
 		});
 	</script>
 	
 	<script>
 
     // 테이블의 Row 클릭시 값 가져오기
-    $("#tb_account_management tr").click(function(){     
-
+    $("#tb_account_management tr").dblclick(function(){     
         var str = "";
-        var tdArr = new Array();    // 배열 선언
         
         // 현재 클릭된 Row(<tr>)
         var tr = $(this);
         var td = tr.children();
         
-        // tr.text()는 클릭된 Row 즉 tr에 있는 모든 값을 가져온다.
-        //console.log("클릭한 Row의 모든 데이터 : "+tr.text());
-        
-        // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
-        td.each(function(i){
-            tdArr.push(td.eq(i).text());
-        });
-        
-        //console.log("배열에 담긴 값 : "+tdArr);
         
         var accountOrder = td.eq(1).text();
         var accountNo = td.eq(2).text();
@@ -254,11 +240,15 @@ $(function(){
         $("#accountOrder").val(accountOrder);
         $("#accountNo").val(accountNo);
         $("#accountName").val(accountName);
-        
-        console.log("accountOrder : "+ accountOrder + "  accountNo : " + accountNo + "  accountName : " + accountName);
     });
+    
+    //계정과목에 따른 계정명 불러오기
+    $('#selectedAccount').change(function () {
+    	var accountName =$(this).find('option:selected').attr('data-accountName');
+    	$('#accountName').val(accountName);
 
-
+   	});
+    
 </script>
 </body>
 </html>

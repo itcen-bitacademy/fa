@@ -52,7 +52,8 @@ public class Menu59Controller {
 	//재무제표 계정관리 저장
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
 	public String add(@ModelAttribute AccountManagement accountManagement,
-					  @RequestParam("accountStatementType") String type,
+					  @RequestParam("selectedAccountStatementType") String type,
+					  @RequestParam("selectedAccount") Long accountNo,
 					  HttpSession session) {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -61,9 +62,12 @@ public class Menu59Controller {
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}
 		
-	
-		accountManagement.setAccountNo(1000000L); //우선 코드값 임의로  줌
+
+		
+
+		//저장할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
+		accountManagement.setAccountNo(accountNo);
 		accountManagement.setInsertUserid(authUser.getName());
 		
 		System.out.println(accountManagement);
