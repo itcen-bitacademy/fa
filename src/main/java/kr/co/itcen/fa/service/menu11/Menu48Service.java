@@ -31,4 +31,9 @@ public class Menu48Service {
 	public List<LTermdebtVo> list() {
 		return menu48Repository.list();
 	}
+
+	public List<LTermdebtVo> select(LTermdebtVo vo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

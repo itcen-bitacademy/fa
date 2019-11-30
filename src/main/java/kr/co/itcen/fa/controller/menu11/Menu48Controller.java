@@ -30,7 +30,7 @@ public class Menu48Controller {
 	
 	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
-	public String test(Model model) {
+	public String list(Model model) {
 		List<LTermdebtVo> list = menu48Service.list();
 		
 		model.addAttribute("list",list);
@@ -46,4 +46,5 @@ public class Menu48Controller {
 		menu48Service.insert(vo);
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
+	
 }

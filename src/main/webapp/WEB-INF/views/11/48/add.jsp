@@ -210,7 +210,7 @@ tr td:first-child {
 					&nbsp;
 					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">삭제</button>
 					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="">조회</button>
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
 					&nbsp;
 					<button type="button" class="btn">상환</button>
 					&nbsp;
@@ -254,7 +254,14 @@ tr td:first-child {
 							</label></td>
 							<td class="center">${ltermvo.code}</td>
 							<td>${ltermvo.name}</td>
-							<td class="center">${ltermvo.majorCode}</td>
+					        <c:choose>
+										<c:when test="${ltermvo.majorCode eq '008001'}"><td class="center">국내은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '008002'}"><td class="center">저축은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '008003'}"><td class="center">신용금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '008004'}"><td class="center">새마을금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '008005'}"><td class="center">외국계은행</td></c:when>
+										<c:otherwise><td class="center">증권</td></c:otherwise>
+							</c:choose>	
 							<td class="center">${ltermvo.debtAmount}</td>
 							<td class="center">${ltermvo.repayBal}</td>
 							<c:choose>
@@ -289,10 +296,7 @@ tr td:first-child {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 
-
-
 <script>
-	
 $(function(){
 	
 	$('#id-date-range-picker-1').daterangepicker({
@@ -303,10 +307,26 @@ $(function(){
 	
 	
 	$(".chosen-select").chosen();
+	$("#simple-table tr").click(function(){ 
+		
+		
+		var tr = $(this);
+		var td = tr.children();
+		
+		$("input[name=code]").val(td.eq(1).text());
+		$("input[name=name]").val(td.eq(2).text());
+	
+	
+		
+		console.log($('.chosen-select').data());
+		$('.chosen-select').data({
+			placeholder :{ 
+				text:td.eq(3).text()
+			}
+		});
+		
+	});
 });
-
 </script>
-
-
 </body>
 </html>
