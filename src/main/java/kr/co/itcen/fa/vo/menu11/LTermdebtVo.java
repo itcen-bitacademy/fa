@@ -13,13 +13,14 @@ public class LTermdebtVo {
 	private String debtExpDate;//차입-만기일자
 	private String debtDate;//차입일자
 	private String expDate;//만기일자
-	private int intRate;//이율
+	private double intRate;//이율
 	private String intPayWay;//이자지급방식
 	private int intAmount;//이자금액
 	private String mgr;//담당자명
 	private String mgrCall;//담당자 번호
+	private String majorCode;//차입금대분류
 	private String bankCode;//은행코드
-	private String deposiNo;//계좌번호
+	private String depositNo;//계좌번호
 	private String accountNo;//계정코드
 	private int voucherNo;//전표번호
 	private String deleteFlag;//삭제여부
@@ -81,10 +82,10 @@ public class LTermdebtVo {
 	public void setExpDate(String expDate) {
 		this.expDate = expDate;
 	}
-	public int getIntRate() {
+	public double getIntRate() {
 		return intRate;
 	}
-	public void setIntRate(int intRate) {
+	public void setIntRate(double intRate) {
 		this.intRate = intRate;
 	}
 	public String getIntPayWay() {
@@ -111,17 +112,23 @@ public class LTermdebtVo {
 	public void setMgrCall(String mgrCall) {
 		this.mgrCall = mgrCall;
 	}
+	public String getMajorCode() {
+		return majorCode;
+	}
+	public void setMajorCode(String majorCode) {
+		this.majorCode = majorCode;
+	}
 	public String getBankCode() {
 		return bankCode;
 	}
 	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
 	}
-	public String getDeposiNo() {
-		return deposiNo;
+	public String getDepositNo() {
+		return depositNo;
 	}
-	public void setDeposiNo(String deposiNo) {
-		this.deposiNo = deposiNo;
+	public void setDepositNo(String depositNo) {
+		this.depositNo = depositNo;
 	}
 	public String getAccountNo() {
 		return accountNo;
@@ -170,11 +177,12 @@ public class LTermdebtVo {
 		return "LTermdebtVo [no=" + no + ", code=" + code + ", name=" + name + ", debtAmount=" + debtAmount
 				+ ", repayBal=" + repayBal + ", repayWay=" + repayWay + ", debtExpDate=" + debtExpDate + ", debtDate="
 				+ debtDate + ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay
-				+ ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", bankCode=" + bankCode
-				+ ", deposiNo=" + deposiNo + ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag="
-				+ deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate + ", updateId=" + updateId
-				+ ", updateDate=" + updateDate + "]";
+				+ ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", majorCode=" + majorCode
+				+ ", bankCode=" + bankCode + ", depositNo=" + depositNo + ", accountNo=" + accountNo + ", voucherNo="
+				+ voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate
+				+ ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
 	}
+	
 	
 	
 }

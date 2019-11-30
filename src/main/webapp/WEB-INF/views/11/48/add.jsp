@@ -81,14 +81,14 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="amount" /></td>
+									<td><input type="text" name="debtAmount" /></td>
 								</tr>
 								<tr>
 									<td><h4>차입일자 ~ 만기일자</h4></td>
 									<td colspan="2">
 									<div class="control-group">
 				                        <div class="row-fluid input-prepend">			                        	
-				                           <input type="text" name="date-range-picker" id ="id-date-range-picker-1" />
+				                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -101,19 +101,19 @@ tr td:first-child {
 									<td colspan="2">
 										<div class="radio">
 											<label>
-												<input name="repay_way" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="Y"/>
 												<span class="lbl">년</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="repay_way" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="M"/>
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="repay_way" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="E"/>
 												<span class="lbl">만기</span>
 											</label>
 										</div>
@@ -140,7 +140,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>차입금대분류</h4></td>
 									<td colspan="2">
-										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류">
+										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
 											<option value=""></option>
 											<option value="008001">국내은행</option>
 											<option value="008002">저축은행</option>
@@ -149,6 +149,7 @@ tr td:first-child {
 											<option value="008005">외국계은행</option>
 											<option value="008006">증권</option>
 										</select>
+									
 									</td>
 								</tr>
 								<tr>
@@ -156,19 +157,19 @@ tr td:first-child {
 									<td colspan="2">
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace" value="Y"/>
 													<span class="lbl">년</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace"  value="M"/>
 													<span class="lbl">월</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="form-field-radio" type="radio" class="ace" />
+													<input name="repayWay" type="radio" class="ace"  value="E"/>
 													<span class="lbl">만기</span>
 												</label>
 											</div>
@@ -191,7 +192,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td colspan="2">
-										<input type="text" class="search-input-width-first" name="cardAccountDepno"/>
+										<input type="text" class="search-input-width-first" name="depositNo"/>
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
 										<input type="text" class="search-input-width-second" name="cardAccountBankName"/>
 									</td>
@@ -203,13 +204,13 @@ tr td:first-child {
 				</div>
 				<hr>
 				<div>
-					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;">입력</button>
+					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;" type="submit">입력</button>
 					&nbsp;
 					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">수정</button>
 					&nbsp;
 					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">삭제</button>
 					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;">조회</button>
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="">조회</button>
 					&nbsp;
 					<button type="button" class="btn">상환</button>
 					&nbsp;
@@ -233,6 +234,7 @@ tr td:first-child {
 							<th class="center">장기차입금명</th>
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
+							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
 							<th class="center">차입일자 ~ 만기일자</th>
 							<th class="center">이율</th>
@@ -245,23 +247,34 @@ tr td:first-child {
 					</thead>
 
 					<tbody>
+						<c:forEach items="${list }" var="ltermvo">
 						<tr>
 							<td class="center"><label class="pos-rel"> <input
 									type="checkbox" class="ace" /> <span class="lbl"></span>
 							</label></td>
-							<td class="center">2019112701</td>
-							<td>GS칼텍스는...</td>
-							<td class="center">008-국내은행</td>
-							<td class="center">70,000,000,000</td>
-							<td class="center">월</td>
-							<td class="center">2019-10-29 ~ 2029-10-29</td>
-							<td class="center">1.99%</td>
-							<td class="center">월</td>
-							<td class="center">홍길동</td>
-							<td class="center">010-1234-5678</td>
-							<td class="center">0010987</td>
-							<td class="center">한국은행</td>
+							<td class="center">${ltermvo.code}</td>
+							<td>${ltermvo.name}</td>
+							<td class="center">${ltermvo.majorCode}</td>
+							<td class="center">${ltermvo.debtAmount}</td>
+							<td class="center">${ltermvo.repayBal}</td>
+							<c:choose>
+										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
+										<c:otherwise><td class="center">만기</td></c:otherwise>
+							</c:choose>		
+							<td class="center">${ltermvo.debtExpDate}</td>
+							<td class="center">${ltermvo.intRate}%</td>
+							<c:choose>
+										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
+										<c:otherwise><td class="center">만기</td></c:otherwise>
+							</c:choose>	
+							<td class="center">${ltermvo.mgr}</td>
+							<td class="center">${ltermvo.mgrCall}</td>
+							<td class="center">${ltermvo.bankCode}</td>
+							<td class="center">${ltermvo.depositNo}</td>
 						</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				
@@ -283,7 +296,7 @@ tr td:first-child {
 $(function(){
 	
 	$('#id-date-range-picker-1').daterangepicker({
-	    format: 'YYYY-MM-DD'
+	    format: 'YYYY/MM/DD'
 	  }).next().on(ace.click_event, function(){
 		$(this).prev().focus();
 	});
@@ -293,5 +306,7 @@ $(function(){
 });
 
 </script>
+
+
 </body>
 </html>
