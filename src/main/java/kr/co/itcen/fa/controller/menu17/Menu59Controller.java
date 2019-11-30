@@ -64,7 +64,7 @@ public class Menu59Controller {
 		
 
 		
-
+ 
 		//저장할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);

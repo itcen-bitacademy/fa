@@ -121,7 +121,7 @@ $(function(){
 									<input type="number" min="0001" max="1000" step="1" value="1" id="accountOrder" name="accountOrder" placeholder="순번" />
 								</div>
 							</div>
-							
+							 
 							<!-- 계정과목  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">계정과목</label>
