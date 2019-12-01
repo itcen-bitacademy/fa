@@ -54,6 +54,9 @@ tr td:first-child {
 </style>
 </head>
 <body class="skin-3">
+<input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
+<input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
+<input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -66,12 +69,12 @@ tr td:first-child {
 			
 			<!-- PAGE CONTENT BEGINS -->
 				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<input type="hidden" name="no"/>
 				<div class="container-fluid">
 					<!-- Example row of columns -->
 					<div class="row">
 						<div class="span8">
 							<table>
-								<input type="hidden" name="no"/>
 								<tr>
 									<td><h4>단기차입금코드</h4></td>
 									<td>
@@ -212,7 +215,7 @@ tr td:first-child {
 					&nbsp;
 					<button type="reset" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
 					&nbsp;
-					<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+					<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 					&nbsp;
 					<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 					&nbsp;
@@ -223,7 +226,7 @@ tr td:first-child {
 			<!-- PAGE CONTENT ENDS -->
 			
 			<!-- list -->
-				<table id="simple-table" class="table  table-bordered table-hover">
+				<table  class="table table-bordered table-hover">
 					<thead>
 						<tr>
 							<th class="center">
@@ -247,7 +250,7 @@ tr td:first-child {
 							<th class="center">계좌</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="tbody-list">
 						<c:forEach items="${list }" var="vo" varStatus="status">
 								<tr onclick="selectRow(this)" id="${vo.no }">
 									<form id="form${vo.no}">
@@ -256,7 +259,6 @@ tr td:first-child {
 											<span class="lbl"></span>
 											</label>
 										</td>
-										<input type="hidden" name="code" value="${vo.code }">
 										<td class="center"><input type="hidden" name="code" value="${vo.code }">${vo.code }</td>
 										<td class="center"><input type="hidden" name="name" value="${vo.name }">${vo.name }</td>
 										<td class="center"><input type="hidden" name="majorCode" value="${vo.majorCode }">${vo.majorCode }</td>
@@ -344,6 +346,28 @@ function selectRow(thisTr){
 	//$("#bankName").val(dataForm.elements[].value);
 }
 
+function deleteChecked(){
+	var sendData = [];
+	var checkedList = $("#tbody-list input[type=checkbox]:checked");
+	checkedList.each(function(i, e){
+		sendData.push($(this).val());
+	});
+	
+	$.ajax({
+		url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val + "/deleteChecked",
+		type : "POST",
+		dataType : "json",
+		data : {"sendData" : sendData},
+		success: function(response){
+			checkedList.each(function(i, e){
+				$(this).remove();
+			})
+		},
+		error : function(xhr, error){
+			
+		}
+	})
+}
 
 </script>
 </body>

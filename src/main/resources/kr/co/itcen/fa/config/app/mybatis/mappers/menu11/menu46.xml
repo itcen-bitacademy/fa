@@ -69,9 +69,9 @@
 		<![CDATA[
 			update tb_s_term_debt 
 			set code=#{code}, name=#{name}, major_code=#{majorCode}, debt_amount=${debtAmount}, repay_bal=${repayBal}, repay_way=#{repayWay}, 
-			    debt_date=#{debtDate}, exp_date=#{expDate}, int_rate=#{intRate}, int_pay_way=#{intPayWay}, int_amount=${intAmount},
+			    debt_date=now(), exp_date=now(), int_rate=#{intRate}, int_pay_way=#{intPayWay}, int_amount=${intAmount},
 			    mgr=#{mgr }, mgr_call=#{mgrCall}, bank_code=${bankCode}, deposit_no=#{depositNo}, update_id=#{updateId}, update_date=now()
-			where no=1
+			where no=${no }
 		]]>
 	</update>
 </mapper>
