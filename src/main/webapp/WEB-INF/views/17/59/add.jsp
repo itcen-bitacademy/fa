@@ -256,8 +256,10 @@ $(function(){
         //$("#selectedAccount").val(accountNo).prop("selected", true);
         //$("#selectedAccount").val("10230123").attr("selected", "selected");                       
        	//$("#selectedAccount").val(accountNo);
-        //$("#selectedAccount  option:contains(" + accountNo + ")").text(accountNo);
-     
+        //$("#selectedAccount  option:contains(" + accountNo + ")").text(accountNo);  
+     	//$('#selectedAccount').chosen().val(accountNo);
+     	
+     	$('#selectedAccount').val(accountNo).trigger('chosen:updated');    	
         $("#accountOrder").val(accountOrder);
         $("#accountName").val(accountName);
         $("#no").val(hiddenNo);
