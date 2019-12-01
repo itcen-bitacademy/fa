@@ -71,6 +71,7 @@ tr td:first-child {
 					<div class="row">
 						<div class="span8">
 							<table>
+								<input type="hidden" name="no"/>
 								<tr>
 									<td><h4>단기차입금코드</h4></td>
 									<td>
@@ -251,13 +252,14 @@ tr td:first-child {
 								<tr onclick="selectRow(this)" id="${vo.no }">
 									<form id="form${vo.no}">
 										<td class="center"><label class="pos-rel"> 
-											<input type="checkbox" value="no" class="ace" /> 
+											<input type="checkbox" name="no" value="${vo.no }" class="ace" /> 
 											<span class="lbl"></span>
 											</label>
 										</td>
+										<input type="hidden" name="code" value="${vo.code }">
 										<td class="center"><input type="hidden" name="code" value="${vo.code }">${vo.code }</td>
 										<td class="center"><input type="hidden" name="name" value="${vo.name }">${vo.name }</td>
-										<td class="center"><input type="hidden" name="name" value="${vo.majorCode }">${vo.majorCode }</td>
+										<td class="center"><input type="hidden" name="majorCode" value="${vo.majorCode }">${vo.majorCode }</td>
 										<td class="center"><input type="hidden" name="debtAmount" value="${vo.debtAmount }">${vo.debtAmount }</td>
 										<td class="center"><input type="hidden" name="repayWay" value="${vo.repayWay }">${vo.repayWay }</td>
 										<td class="center"><input type="hidden" name="debtDate" value="${vo.debtDate }"> 
@@ -308,27 +310,40 @@ $(function(){
 function selectRow(thisTr){
 	var dataForm = $("#form" + $(thisTr).attr('id'))[0];
 	var inputForm = $("#input-form")[0];
-	inputForm.elements["code"].value = dataForm.elements["code"].value;
-	inputForm.elements["name"].value = dataForm.elements["name"].value;
-	inputForm.elements["debtAmount"].value = dataForm.elements["debtAmount"].value;
+	
+	inputForm.no.value = dataForm.no.value;
+	inputForm.code.value = dataForm.code.value;
+	inputForm.name.value = dataForm.name.value;
+	inputForm.debtAmount.value = dataForm.debtAmount.value;
 	//inputForm.elements["debtExpDate"].value = dataForm.elements["debtExpDate"].value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
 	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
-		if($(this).val() == dataForm.elements["intPayWay"].value){
+		if($(this).val() == dataForm.intPayWay.value){
 			$(this).attr("checked", true);
 		}
 	});	
-	inputForm.elements["bankCode"].value = dataForm.elements["bankCode"].value;		//bank name도 채워야함
-	//inputForm.elements["mgrCode"].value = dataForm.elements["majorCode"].value;		//major code 로 바꾸기
-	$("$inputForm").find("input[name='repayWay']").each(function(i, e){
-		if($(this).val == dataForm.elements["repayWay"].value)
+	inputForm.bankCode.value = dataForm.bankCode.value;		//bank name도 채워야함
+	
+	var options = inputForm.majorCode.options;					//SelectBox Options
+	for(var i=0 ; i < options.length; ++i){
+		if(options[i].value == dataForm.majorCode.value){
+			options[i].selected = "selected";
+			$("#majorCode_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+		}
+	}
+	
+	$(inputForm).find("input[name='repayWay']").each(function(i, e){
+		if($(this).val() == dataForm.repayWay.value){
 			$(this).attr("checked", true);
-	});		//radi button
-	inputForm.elements["intRate"].value = dataForm.elements["intRate"].value;
-	inputForm.elements["mgr"].value = dataForm.elements["mgr"].value;
-	inputForm.elements["mgrCall"].value = dataForm.elements["mgrCall"].value;
-	inputForm.elements["accountNo"].value = dataForm.elements["accountNo"].value;		//bank name도 채워야함
+		}
+			
+	});		
+	inputForm.intRate.value = dataForm.intRate.value;
+	inputForm.mgr.value = dataForm.mgr.value;
+	inputForm.mgrCall.value = dataForm.mgrCall.value;
+	inputForm.depositNo.value = dataForm.depositNo.value;		//bank name도 채워야함
 	//$("#bankName").val(dataForm.elements[].value);
 }
+
 
 </script>
 </body>

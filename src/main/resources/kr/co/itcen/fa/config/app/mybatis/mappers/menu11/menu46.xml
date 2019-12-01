@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu46">
 	<resultMap type="stermdebtvo" id="stermdebtResult">
+		<result column="major_code" property="majorCode"/>
 		<result column="debt_amount" property="debtAmount" />
 		<result column="repay_bal" property="repayBal" />
 		<result column="repay_way" property="repayWay" />
@@ -37,24 +38,25 @@
 	<select id="getList" resultType="stermdebtvo" resultMap="stermdebtResult">
 		<![CDATA[
 			select 
-			no, code, name,
+			no, code, major_code, name,
 			debt_amount, repay_bal, repay_way,
 			debt_date, exp_date, int_rate,
 			int_pay_way, int_amount, mgr,
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
-			update_date from tb_s_term_debt
+			update_date 
+			from tb_s_term_debt
 		]]>
 	</select>
 	
 	<insert id="insert" parameterType="stermdebtvo">
 		<![CDATA[
-			insert into tb_s_term_debt(no, code, name, debt_amount, repay_bal, repay_way,
+			insert into tb_s_term_debt(no, code, name, major_code, debt_amount, repay_bal, repay_way,
 			debt_date, exp_date, int_rate, int_pay_way, int_amount, mgr,
 			mgr_call, bank_code, deposit_no, account_no, voucher_no, 
 			delete_flag,insert_id, insert_date, update_id, update_date)
-			values (null, #{code }, #{name }, ${debtAmount }, 
+			values (null, #{code }, #{name }, #{majorCode}, ${debtAmount }, 
 			${debtAmount }, #{repayWay }, now(), now(),
 			${intRate }, #{intPayWay }, ${intAmount }, #{mgr }, 
 			#{mgrCall }, ${bankCode },
@@ -66,10 +68,10 @@
 	<update id="update" parameterType="Long">
 		<![CDATA[
 			update tb_s_term_debt 
-			set code=#{code}, name=#{name}, debt_amount=${debtAmount}, reapy_bal=${repayBal}, repay_way=#{repayWay}, 
-			    debt_date=#{debtDate}, exp_date=#{expDate}, int_rate=#{intRate}, int_pay_way=#{intPayWay}, $int_amount={intAmount},
+			set code=#{code}, name=#{name}, major_code=#{majorCode}, debt_amount=${debtAmount}, repay_bal=${repayBal}, repay_way=#{repayWay}, 
+			    debt_date=#{debtDate}, exp_date=#{expDate}, int_rate=#{intRate}, int_pay_way=#{intPayWay}, int_amount=${intAmount},
 			    mgr=#{mgr }, mgr_call=#{mgrCall}, bank_code=${bankCode}, deposit_no=#{depositNo}, update_id=#{updateId}, update_date=now()
-			where no=${no}
+			where no=1
 		]]>
 	</update>
 </mapper>
