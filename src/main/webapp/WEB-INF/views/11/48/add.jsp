@@ -215,7 +215,7 @@ tr td:first-child {
 					&nbsp;
 					<button type="button" class="btn">상환</button>
 					&nbsp;
-					<button type="button" class="btn ">초기화</button>
+					<button type="button" class="btn" id="clear">초기화</button>
 				</div>
 				<hr>
 			</form>					
@@ -383,6 +383,11 @@ $(function(){
 		$("input[name=depositNo]").val(td.eq(13).text());
 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
 	});
+	$("#clear").click(function(){ 
+		 $('#majorcode-field-select').val('초기값').trigger('chosen:updated');
+         $('#dangercode-field-select').val('초기값').trigger('chosen:updated');
+	});
+	
 });
 </script>
 </body>
