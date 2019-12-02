@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.vo.menu01;
 
+
 import org.apache.ibatis.type.Alias;
 
 /**
@@ -15,7 +16,7 @@ public class CardVo {
 	private String cardNo;			// 카드번호
 	private String validity;		// 유효기간
 	private boolean transportation;	// 교통카드 유무
-	private int limitation;			// 한도
+	private Integer limitation;			// 한도
 	private String cvc;				// cvc
 	private String issuer;			// 발급자
 	private String user;			// 사용자
@@ -28,10 +29,19 @@ public class CardVo {
 	private String updateUserId;
 	private String updateDay;
 	private String deleteFlag;
+	private String cardNoOld;
 	
 	private String depositHost; 
 	private String bankCode;
 	private String bankName;
+	
+
+	public String getCardNoOld() {
+		return cardNoOld;
+	}
+	public void setCardNoOld(String cardNoOld) {
+		this.cardNoOld = cardNoOld;
+	}
 	public String getCardNo() {
 		return cardNo;
 	}
@@ -50,12 +60,7 @@ public class CardVo {
 	public void setTransportation(boolean transportation) {
 		this.transportation = transportation;
 	}
-	public int getLimitation() {
-		return limitation;
-	}
-	public void setLimitation(int limitation) {
-		this.limitation = limitation;
-	}
+
 	public String getCvc() {
 		return cvc;
 	}
@@ -146,16 +151,22 @@ public class CardVo {
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
 	}
+	public Integer getLimitation() {
+		return limitation;
+	}
+	public void setLimitation(Integer limitation) {
+		this.limitation = limitation;
+	}
 	@Override
 	public String toString() {
 		return "CardVo [cardNo=" + cardNo + ", validity=" + validity + ", transportation=" + transportation
 				+ ", limitation=" + limitation + ", cvc=" + cvc + ", issuer=" + issuer + ", user=" + user + ", company="
 				+ company + ", abroad=" + abroad + ", password=" + password + ", depositNo=" + depositNo
 				+ ", insertUserId=" + insertUserId + ", insertDay=" + insertDay + ", updateUserId=" + updateUserId
-				+ ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + ", depositHost=" + depositHost
-				+ ", bankCode=" + bankCode + ", bankName=" + bankName + "]";
+				+ ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + ", cardNoOld=" + cardNoOld
+				+ ", depositHost=" + depositHost + ", bankCode=" + bankCode + ", bankName=" + bankName + "]";
 	}
-	
+
 }
 
 
