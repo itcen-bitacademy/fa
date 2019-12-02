@@ -73,7 +73,7 @@
 									<label class="control-label" for="insert_date">입력일자</label>
 										<div class="controls">
 											<div class="row-fluid input-append">
-											<input class="span9 date-picker" id="id-date-picker-1" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
+											<input class="cl-date-picker" id="id-date-picker-1" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
 												<span class="add-on">
 												<i class="icon-calendar"></i>
 												</span>
@@ -88,23 +88,14 @@
 									</div>
 								</div>
 							</div>
-							
+						</form>
+						
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="control-group">
-										<button class="btn btn-default">조회</button>
-									</div>
-								</div>
-							</div>
-							
-							<div class="row-fluid">
-								<div class="span12">
-									<div class="control-group">
-										<button class="btn btn-default">입력</button>
-										<button class="btn btn-default">수정</button>
-										<button class="btn btn-default">삭제</button>
-										<button class="btn btn-default">조회</button>
-										<button class="btn btn-default">초기화</button>
+										<div class="hr hr-18 dotted"></div>
+											<button class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button><br>
+										<div class="hr hr-18 dotted"></div>
 									</div>
 								</div>
 							</div>
@@ -222,7 +213,7 @@
 									</table>
 								</div>
 							</div>
-						</form>
+						
 						<!-- PAGE CONTENT ENDS -->
 
 					</div>
@@ -244,12 +235,41 @@
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 	<script>
-	$(function(){
-		$(".chosen-select").chosen(); 
-		$('.date-picker').datepicker().next().on(ace.click_event, function(){
-			$(this).prev().focus();
-		});
+	$(function() {
+		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
+		$(".chosen-select").chosen();
 	});
+	</script>
+	
+	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		})
 	</script>
 </body>
 </html>

@@ -31,46 +31,46 @@
 					<div class="span12">
 
 						<!-- PAGE CONTENT BEGINS -->
-						<form class="form-horizontal">
+						<form class="form-horizontal" id="form-customer" action='${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert'>
 							<div class="span6">
 								<div class="control-group">
 									<label class="control-label" for="no">사업자번호</label>
 									<div class="controls">
-										<input type="text" id="no" style="width: 200px;">
+										<input type="text" id="no" name="no" style="width: 200px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="ceo">대표자</label>
 									<div class="controls">
-										<input type="text" id="ceo" style="width: 150px;">
+										<input type="text" id="ceo" name="ceo" style="width: 150px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="address">주소</label>
 									<div class="controls">
-										<input type="text" id="postcode" readonly style="width: 60px;"> 
-										<input type="text" id="roadAddress" readonly style="width: 200px;"> 
+										<input type="text" id="zipCode" name="zipCode" readonly style="width: 60px;"> 
+										<input type="text" id="address" name="address" readonly style="width: 200px;"> 
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon" onclick="execDaumPostcode()"></i></span>
 										<br>
 										<br> 
-										<input type="text" id="detailAddress" style="width: 330px;">
+										<input type="text" id="detailAddress" name="detailAddress" style="width: 330px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="condition">업태</label>
+									<label class="control-label" for="conditions">업태</label>
 									<div class="controls">
-										<input type="text" id="condition" style="width: 150px;">
+										<input type="text" id="conditions" name="conditions" style="width: 150px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="open_date">개설일자</label>
+									<label class="control-label" for="openDate">개설일자</label>
 										<div class="controls">
 											<div class="row-fluid input-append">
-											<input class="span9 date-picker" id="id-date-picker-1" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
+											<input class="cl-date-picker" id="openDate" name="openDate" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
 												<span class="add-on">
 												<i class="icon-calendar"></i>
 												</span>
@@ -79,16 +79,16 @@
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="manager_name">담당자명</label>
+									<label class="control-label" for="managerName">담당자명</label>
 									<div class="controls">
-										<input type="text" id="manager_name" style="width: 150px;">
+										<input type="text" id="managerName" name="managerName" style="width: 150px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="deposit_no">입금계좌번호</label>
+									<label class="control-label" for="depositNo">입금계좌번호</label>
 									<div class="controls">
-										<input type="text" id="deposit_no" style="width: 200px;"> 
+										<input type="text" id="depositNo" name="depositNo" style="width: 200px;"> 
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
 									</div>
 								</div>
@@ -98,21 +98,21 @@
 								<div class="control-group">
 									<label class="control-label" for="name">상호</label>
 									<div class="controls">
-										<input type="text" id="name" style="width: 250px;">
+										<input type="text" id="name" name="name" style="width: 250px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="corporation_no">법인번호</label>
+									<label class="control-label" for="corporationNo">법인번호</label>
 									<div class="controls">
-										<input type="text" id="corporation_no" style="width: 200px;">
+										<input type="text" id="corporationNo" name="corporationNo" style="width: 200px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="phone">전화번호</label>
 									<div class="controls">
-										<input type="text" id="phone" style="width: 200px;">
+										<input type="text" id="phone" name="phone" style="width: 200px;">
 										<br>
 										<br> 
 										<input type="text" id="" style="visibility: hidden;">
@@ -122,52 +122,55 @@
 								<div class="control-group">
 									<label class="control-label" for="item">종목</label>
 									<div class="controls">
-										<input type="text" id="item" style="width: 150px;">
+										<input type="text" id="item" name="item" style="width: 150px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="jurisdiction_office">관할사무소</label>
+									<label class="control-label" for="jurisdictionOffice">관할사무소</label>
 									<div class="controls">
-										<input type="text" id="jurisdiction_office" style="width: 200px;">
+										<input type="text" id="jurisdictionOffice" name="jurisdictionOffice" style="width: 200px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="manager_email">메일</label>
+									<label class="control-label" for="managerEmail">메일</label>
 									<div class="controls">
-										<input type="text" id="manager_email" style="width: 250px;">
+										<input type="text" id="managerEmail" name="managerEmail" style="width: 250px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="deposit_host">예금주</label>
+									<label class="control-label" for="depositHost">예금주</label>
 									<div class="controls">
-										<input type="text" id="deposit_host" readonly style="width: 150px;">
+										<input type="text" id="depositHost" name="depositHost" readonly style="width: 150px;">
 									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="bank">은행</label>
+									<label class="control-label" for="Bank">은행</label>
 									<div class="controls">
-										<input type="text" id="bank_code" readonly style="width: 80px;"> 
-										<input type="text" id="bank_name" readonly style="width: 150px;">
+										<input type="text" id="bankCode" name="bankCode" readonly style="width: 80px;"> 
+										<input type="text" id="bankName" name="bankName" readonly style="width: 150px;">
 									</div>
 								</div>
 							</div>
-
+						</form>
+						
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="control-group">
-										<button class="btn btn-info btn-small" style="float:left;margin-left:20px;">조회</button>
-										<button class="btn btn-danger btn-small" style="float:left;margin-left:20px;">삭제</button>
-										<button class="btn btn-warning btn-small" style="float:left;margin-left:20px;">수정</button>
-										<button class="btn btn-primary btn-small" style="float:left;margin-left:20px;">입력</button>
-										<button class="btn btn-default btn-small" style="float:left;margin-left:20px;">취소</button>
+										<div class="hr hr-18 dotted"></div>
+											<button class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
+											<button class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
+											<button class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
+											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left; margin-left:20px;">입력</button>
+											<button class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button><br>
+										<div class="hr hr-18 dotted"></div>
 									</div>
 								</div>
 							</div>
-
+							
 							<div class="row-fluid">
 								<div class="span12">
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
@@ -204,84 +207,42 @@
 										</thead>
 
 										<tbody>
-											<tr>
-												<td class="center">
-													<label>
-														<input type="checkbox" class="ace">
-														<span class="lbl"></span>
-													</label>
-												</td>
-
-												<td>
-													<a href="#">ace.com</a>
-												</td>
-												<td>$45</td>
-												<td class="hidden-480">3,330</td>
-												<td class="hidden-phone">Feb 12</td>
-
-												<td class="hidden-480">
-													<span class="label label-warning">Expiring</span>
-												</td>
-
-												<td>
-													<div class="hidden-phone visible-desktop btn-group">
-														<button class="btn btn-mini btn-success">
-															<i class="icon-ok bigger-120"></i>
-														</button>
-
-														<button class="btn btn-mini btn-info">
-															<i class="icon-edit bigger-120"></i>
-														</button>
-
-														<button class="btn btn-mini btn-danger">
-															<i class="icon-trash bigger-120"></i>
-														</button>
-
-														<button class="btn btn-mini btn-warning">
-															<i class="icon-flag bigger-120" ></i>
-														</button>
-													</div>
-
-													<div class="hidden-desktop visible-phone">
-														<div class="inline position-relative">
-															<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
-																<i class="icon-cog icon-only bigger-110"></i>
-															</button>
-
-															<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
-																<li>
-																	<a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View">
-																		<span class="blue">
-																			<i class="icon-zoom-in bigger-120"></i>
-																		</span>
-																	</a>
-																</li>
-
-																<li>
-																	<a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
-																		<span class="green">
-																			<i class="icon-edit bigger-120"></i>
-																		</span>
-																	</a>
-																</li>
-
-																<li>
-																	<a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
-																		<span class="red">
-																			<i class="icon-trash bigger-120"></i>
-																		</span>
-																	</a>
-																</li>
-															</ul>
-														</div>
-													</div>
-												</td>
-											</tr>
+											<c:forEach items="${customerVo }" var="customerVo" varStatus="status">
+												<tr>
+													<td class="center">
+														<label>
+															<input type="checkbox" class="ace">
+															<span class="lbl"></span>
+														</label>
+													</td>
+													<td>${customerVo.no }</td>
+													<td>${customerVo.name }</td>
+													<td>${customerVo.ceo }</td>
+													<td>${customerVo.corporationNo }</td>
+													<td>${customerVo.detailAddress }</td>
+													<td>${customerVo.phone }</td>
+													<td>${customerVo.conditions }</td>
+													<td>${customerVo.item }</td>
+													<td>${customerVo.openDate }</td>
+													<td>${customerVo.jurisdictionOffice }</td>
+													<td>${customerVo.managerName }</td>
+													<td>${customerVo.managerEmail }</td>
+													<td>${customerVo.depositNo }</td>
+													<td>${customerVo.depositHost }</td>
+													<td>은행코드</td>
+													<td>은행명</td>
+													<td>${customerVo.insertUserid }</td>
+													<td>${customerVo.insertDay }</td>
+													<td>${customerVo.updateUserid }</td>
+													<td>${customerVo.updateDay }</td>
+													<td>${customerVo.deleteFlag }</td>
+												</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>
 							</div>
-						</form>
+						
 
 						<!-- PAGE CONTENT ENDS -->
 
@@ -298,18 +259,54 @@
 		<!-- /.main-content -->
 	</div>
 	<!-- /.main-container -->
+	
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 	<script>
-	$(function(){
-		$(".chosen-select").chosen(); 
-		$('.date-picker').datepicker().next().on(ace.click_event, function(){
-			$(this).prev().focus();
-		});
+	$(function() {
+		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
+		$(".chosen-select").chosen();
 	});
+	
+	$("#btn_insert").click(function javascript_onclikc(){
+		alert('Jquery button를 클릭하셨습니다.');
+		document.getElementById('form-customer').submit();
+        return false;
+	});
+	</script>
+	
+	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		})
 	</script>
 	
 	
@@ -352,9 +349,9 @@
                             }
  
                             // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                            document.getElementById('postcode').value = data.zonecode; //5자리 새우편번호 사용
-                            document.getElementById('roadAddress').value = fullRoadAddr;
-                            document.getElementById('jibunAddress').value = data.jibunAddress;
+                            document.getElementById('zipCode').value = data.zonecode; //5자리 새우편번호 사용
+                            document.getElementById('address').value = fullRoadAddr;
+                            document.getElementById('detailAddress').value = data.jibunAddress;
  
                             // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
                             if (data.autoRoadAddress) {
