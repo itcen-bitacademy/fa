@@ -82,7 +82,7 @@
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('zip-number').value = data.zonecode;
+                document.getElementById('zip-code').value = data.zonecode;
                 document.getElementById("address").value = addr;
                 // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("detail-address").focus();
@@ -125,7 +125,7 @@
 										<label class="control-label form-field-1">주소</label>
 										<div class="controls">
 											<span class="btn btn-small btn-info" onclick="execDaumPostcode()"><i class="icon-search nav-search-icon"></i></span>
-											<input class="span2" type="text" id="zip-number" readonly>
+											<input class="span2" type="text" id="zip-code" readonly>
 											<input class="span6" type="text" id="address" readonly>
 											<input class="span9" type="text" id="detail-address">
 										</div>
