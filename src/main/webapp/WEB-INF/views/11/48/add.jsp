@@ -211,7 +211,7 @@ tr td:first-child {
 					&nbsp;
 					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" type="submit" >삭제</button>
 					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					&nbsp;
 					<button type="button" class="btn">상환</button>
 					&nbsp;
@@ -309,6 +309,8 @@ $(function(){
 	
 	$(".chosen-select").chosen();
 	$("#simple-table tr").click(function(){ 
+		
+		
 		var tr = $(this);
 		var td = tr.children();
 		
