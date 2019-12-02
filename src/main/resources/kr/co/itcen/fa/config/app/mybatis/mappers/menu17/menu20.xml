@@ -10,7 +10,7 @@
 		;
 	</select>
 	
-	<select id="selectClosingDateByYear" resultType="closingDate19Vo" parameterType="string">
+	<select id="selectClosingDateByYear" resultType="closingDate17Vo" parameterType="string">
 		select	
 			no
 		    , closing_year_month as closingYearMonth
