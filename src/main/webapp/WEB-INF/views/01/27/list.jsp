@@ -78,13 +78,13 @@ function execDaumPostcode() {
 								<div class="form-group" style="float: left">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 사업자 등록번호:&nbsp; </label> <input
-										type="text" id="no" placeholder="사업자등록번호"
+										type="text" id="no" name="no" placeholder="사업자등록번호"
 										class="col-xs-10 col-sm-5" />
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 상호명:&nbsp; </label> <input type="text"
-										id="name" placeholder="상호명" class="col-xs-10 col-sm-5" />
+										id="name" name="name" placeholder="상호명" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br />
@@ -92,7 +92,7 @@ function execDaumPostcode() {
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 대표자:&nbsp; </label> <input type="text"
-										id="ceo" placeholder="대표자" class="col-xs-10 col-sm-5" />
+										id="ceo" name="ceo" placeholder="대표자" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br />
@@ -101,7 +101,7 @@ function execDaumPostcode() {
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 주소:&nbsp; </label>
 									<div class="input-append">
-										<input type="text" id="address" placeholder="주소"
+										<input type="text" id="address" name="address" placeholder="주소"
 											class="col-xs-10 col-sm-5" readonly/>
 										<button type="button" class="addressSearch" onclick="execDaumPostcode()">
 											<i class="icon-search bigger-110">
@@ -110,7 +110,7 @@ function execDaumPostcode() {
 									</div>
 
 									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소: <input type="text"
-										id="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"
+										id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"
 										 />
 								</div>
 
@@ -120,19 +120,19 @@ function execDaumPostcode() {
 								<div class="form-group" style="float: left">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 업태:&nbsp; </label> <input type="text"
-										id="conditions" placeholder="업태" class="col-xs-10 col-sm-5" />
+										id="conditions" name="conditions" placeholder="업태" class="col-xs-10 col-sm-5" />
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 종목:&nbsp; </label> <input type="text"
-										id="item" placeholder="종목" class="col-xs-10 col-sm-5" />
+										id="item" name="item" placeholder="종목" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br />
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 법인번호:&nbsp; </label> <input type="text"
-										id="corporationno" placeholder="법인번호"
+										id="corporationNo" name="corporationNo" placeholder="법인번호"
 										class="col-xs-10 col-sm-5" />
 								</div>
 
@@ -146,7 +146,7 @@ function execDaumPostcode() {
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 관할 영업소:&nbsp; </label> <input type="text"
-										id="jurisdictionOffice" placeholder="관할 영업소"
+										id="jurisdictionOffice" name="jurisdictionOffice" placeholder="관할 영업소"
 										class="col-xs-10 col-sm-5" />
 								</div>
 
@@ -155,14 +155,14 @@ function execDaumPostcode() {
 								<div class="form-group" style="float: left">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 거래처 전화번호:&nbsp; </label> <input
-										type="text" id="phone" placeholder="거래처 전화번호"
+										type="text" id="phone" name="phone" placeholder="거래처 전화번호"
 										class="col-xs-10 col-sm-5" />
 								</div>
 
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> E-mail:&nbsp; </label> <input type="text"
-										id="managerEmail" placeholder="E-mail"
+										id="managerEmail" name="managerEmail" placeholder="E-mail"
 										class="col-xs-10 col-sm-5" />
 								</div>
 
@@ -172,14 +172,14 @@ function execDaumPostcode() {
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 계좌번호:&nbsp; </label>
 									<div class="input-append">
-										<input type="text" id="depositNo" placeholder="계좌번호"
+										<input type="text" id="depositNo" name="depositNo" placeholder="계좌번호"
 											class="col-xs-10 col-sm-5" />
 										<button type="button" class="search_account">
 											<i class="icon-search bigger-110"></i> 조회
 										</button>
 									</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드: <input type="text"
-										id="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5"
+										id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5"
 										readonly />
 								</div>
 
@@ -188,13 +188,13 @@ function execDaumPostcode() {
 								<div class="form-group" style="float: left">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 은행명:&nbsp; </label> <input type="text"
-										id="bankName" placeholder="자동입력" class="col-xs-10 col-sm-5"
+										id="bankName" name="bankName" placeholder="자동입력" class="col-xs-10 col-sm-5"
 										readonly />
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 예금주:&nbsp; </label> <input type="text"
-										id="depositHost" placeholder="자동입력" class="col-xs-10 col-sm-5"
+										id="depositHost" name="depositHost" placeholder="자동입력" class="col-xs-10 col-sm-5"
 										readonly />
 								</div>
 
@@ -202,7 +202,7 @@ function execDaumPostcode() {
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="form-field-1"> 거래처 담당자 성명:&nbsp; </label> <input
-										type="text" id="managername" placeholder="거래처 담당자"
+										type="text" id="managerName" name="managerName" placeholder="거래처 담당자"
 										class="col-xs-10 col-sm-5" />
 								</div>
 							
