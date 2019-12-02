@@ -7,11 +7,10 @@
 <html lang="ko">
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
-<style>
-input:focus {
-	outline: none;
-}
 
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+
+<style>
 #sample-table-1 tr td {
 	padding: 0;
 }
@@ -28,8 +27,59 @@ input:focus {
 	border: 0
 }
 </style>
+<script>
+	
+</script>
+<script>
+	cnt = 2;
+	ctg_cnt = 3;
+	function add_row() {
+		var table = document.getElementById("sample-table-1");
+		var row = table.insertRow(table.rows.length); // 하단에 추가       
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);
+		var cell5 = row.insertCell(4);
+		var cell6 = row.insertCell(5);
+		cell1.innerHTML = '<td><p>' + cnt + '</p></td>';
+		cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" ></td>';
+		cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" ></td>';
+		cell4.innerHTML = '<td><input type="text" id="amount'+cnt+'" ></td>';
+		cell5.innerHTML = '<td><input type="text" id="supply-value'+cnt+'" onkeyup="sum_allsupply_alltax();"></td>';
+		cell6.innerHTML = '<td><input type="text" id="tax-value'+cnt+'" ></td>';
+		cnt++;
+	
+	}
+
+	function delete_row() {
+		var table = document.getElementById('sample-table-1');
+		if (table.rows.length < 3) {
+			return;
+		} else {
+			cnt--
+			table.deleteRow(table.rows.length - 1); // 하단부터 삭제
+		}
+	}
+	
+	function sum_allsupply_alltax(){
+		var total_sum = 0;
+		for(var i = 1 ; i < cnt ; i++){
+			var sum = 0;
+			var supply_value = document.getElementById('supply-value'+i).value;
+			var amount = document.getElementById('amount'+i).value;
+			sum = supply_value*amount;
+			document.getElementById('tax-value'+i).value = sum * 0.1;
+			total_sum = total_sum + supply_value*amount;
+		}
+		document.getElementById('form-field-14').value = total_sum;
+		document.getElementById('form-field-15').value = total_sum * 0.1;
+		
+		
+	}
+</script>
 </head>
-<body class="skin-3" style="min-width: 1280px">
+<body class="skin-3" style="min-width: 1920px">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -53,12 +103,12 @@ input:focus {
 								<label class="control-label span1" for="form-field-1">승인번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="form-field-1"
-										name="id" placeholder="승인번호" />
+										name="no" placeholder="승인번호" />
 								</div>
 								<label class="control-label span1" for="form-field-2">관리번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="form-field-2"
-										name="id" placeholder="관리번호" />
+										name="manageNo" placeholder="관리번호" />
 								</div>
 							</div>
 
@@ -78,8 +128,12 @@ input:focus {
 							<div class="control-group">
 								<label class="control-label span1" for="form-field-5">거래처명</label>
 								<div class="controls span2">
-									<input style="width: 100%" type="text" id="form-field-5"
-										name="id" placeholder="거래처명" />
+									<div style="width: 100%" class="input-append">
+										<input class="date-picker" id="form-field-3" type="text"
+											data-date-format="dd-mm-yyyy"> <span class="add-on">
+											<i class="icon-search"></i>
+										</span>
+									</div>
 								</div>
 								<label class="control-label span1" for="form-field-6">성명</label>
 								<div class="controls span2">
@@ -126,10 +180,10 @@ input:focus {
 								<label class="control-label span1" for="form-field-12">과세구분</label>
 								<div class="controls span5">
 									<label style="display: inline"> <input
-										name="form-field-radio-1" type="radio" class="ace"> <span
+										name="taxType" type="radio" value="tax" class="ace"> <span
 										class="lbl">과세</span>
 									</label> <label style="display: inline"> <input
-										name="form-field-radio-2" type="radio" class="ace"> <span
+										name="taxType" type="radio" value="zero" class="ace" checked> <span
 										class="lbl">영세</span>
 									</label>
 								</div>
@@ -141,103 +195,76 @@ input:focus {
 							<div class="control-group">
 								<label class="control-label span1" for="form-field-13">일자</label>
 								<div class="controls span2">
-									<input style="width: 100%" type="text" id="form-field-13"
-										name="id" placeholder="일자" />
+									<div class="input-append"  style="width: 100%">
+										<input id="id-date-picker-1" class="cl-date-picker" name="writeDate" type="text"> <span
+											class="add-on"> <i class="icon-calendar"></i>
+										</span>
+									</div>
 								</div>
 								<label class="control-label span1" for="form-field-14">총
 									공급가액</label>
 								<div class="controls span4">
 									<input style="width: 100%" type="text" id="form-field-14"
-										name="id" placeholder="총 공급가액" />
+										name="totalSupplyValue" placeholder="총 공급가액" />
 								</div>
 								<label class="control-label span1" for="form-field-15">총
 									세액</label>
 								<div class="controls span3">
 									<input style="width: 100%" type="text" id="form-field-15"
-										name="id" placeholder="총 세액" />
+										name="totalTaxValue" placeholder="총 세액" />
 								</div>
 							</div>
 						</div>
 					</div>
+					<div class="hr hr-10 dotted"></div>
 					<div class="row-fluid">
 						<div class="span12">
-							<table id="sample-table-1"
-								class="table table-striped table-bordered table-hover">
-								<tr>
-									<th>매입일자</th>
-									<th>품목명</th>
-									<th>수량</th>
-									<th>공급가액</th>
-									<th>부가세</th>
-								</tr>
-								<tr>
-									<td><input type="text" id="form-field-tr1-td1"
-										name="form-field-tr1-td1" /></td>
-									<td><input type="text" id="form-field-tr1-td2"
-										name="form-field-tr1-td2" /></td>
-									<td><input type="text" id="form-field-tr1-td3"
-										name="form-field-tr1-td3" /></td>
-									<td><input type="text" id="form-field-tr1-td4"
-										name="form-field-tr1-td4" /></td>
-									<td><input type="text" id="form-field-tr1-td5"
-										name="form-field-tr1-td5" /></td>
-								</tr>
-								<tr>
-									<td><input type="text" id="form-field-tr2-td1"
-										name="form-field-tr2-td1" /></td>
-									<td><input type="text" id="form-field-tr2-td2"
-										name="form-field-tr2-td2" /></td>
-									<td><input type="text" id="form-field-tr2-td3"
-										name="form-field-tr2-td3" /></td>
-									<td><input type="text" id="form-field-tr2-td4"
-										name="form-field-tr2-td4" /></td>
-									<td><input type="text" id="form-field-tr2-td5"
-										name="form-field-tr2-td5" /></td>
-								</tr>
-								<tr>
-									<td><input type="text" id="form-field-tr3-td1"
-										name="form-field-tr3-td1" /></td>
-									<td><input type="text" id="form-field-tr3-td2"
-										name="form-field-tr3-td2" /></td>
-									<td><input type="text" id="form-field-tr3-td3"
-										name="form-field-tr3-td3" /></td>
-									<td><input type="text" id="form-field-tr3-td4"
-										name="form-field-tr3-td4" /></td>
-									<td><input type="text" id="form-field-tr3-td5"
-										name="form-field-tr3-td5" /></td>
-								</tr>
-								<tr>
-									<td><input type="text" id="form-field-tr4-td1"
-										name="form-field-tr4-td1" /></td>
-									<td><input type="text" id="form-field-tr4-td2"
-										name="form-field-tr4-td2" /></td>
-									<td><input type="text" id="form-field-tr4-td3"
-										name="form-field-tr4-td3" /></td>
-									<td><input type="text" id="form-field-tr4-td4"
-										name="form-field-tr4-td4" /></td>
-									<td><input type="text" id="form-field-tr4-td5"
-										name="form-field-tr4-td5" /></td>
-								</tr>
-							</table>
-
-
+							<div class="control-group">
+								<div class="btn-group">
+									<button class="btn btn-small" type="button"
+										onclick="add_row();">품목추가</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-small" type="button"
+										onclick="delete_row();">품목삭제</button>
+								</div>
+							</div>
+							<div class="control-group">
+								<table id="sample-table-1"
+									class="table table-striped table-bordered table-hover">
+									<tr>
+										<th>순번</th>
+										<th>매입일자</th>
+										<th>품목명</th>
+										<th>수량</th>
+										<th>공급가액</th>
+										<th>부가세</th>
+									</tr>
+									<tr>
+										<td><p>1</p></td>
+										<td><input type="text" id="date1"></td>
+										<td><input type="text" id="item1"></td>
+										<td><input type="text" id="amount1" onkeyup="sum_allsupply_alltax();"></td>
+										<td><input type="text" id="supply-value1" onkeyup="sum_allsupply_alltax();"></td>
+										<td><input type="text" id="tax-value1"></td>
+									</tr>
+								</table>
+							</div>
 							<div class="control-group">
 								<button class="btn btn-danger btn-small"
 									style="float: left; margin-left: 20px;">입력</button>
-								<button class="btn btn-warning btn-small"
+								<button class="btn btn-warning btn-small" type="button"
 									style="float: left; margin-left: 20px;">수정</button>
-								<button class="btn btn-primary btn-small"
+								<button class="btn btn-primary btn-small" type="button"
 									style="float: left; margin-left: 20px;">삭제</button>
-								<button class="btn btn-default btn-small"
+								<button class="btn btn-default btn-small" type="button"
 									style="float: left; margin-left: 20px;">조회</button>
+
 							</div>
+							<!-- PAGE CONTENT ENDS -->
 						</div>
 					</div>
 				</form>
-
-
-
-
 			</div>
 			<!-- PAGE CONTENT ENDS -->
 
@@ -253,5 +280,38 @@ input:focus {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script>
+	$(function() {
+		$.fn.datepicker.dates['ko'] = {
+			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
+			daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
+			daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
+			months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월",
+					"10월", "11월", "12월" ],
+			monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+					"9월", "10월", "11월", "12월" ],
+			today : "Today",
+			clear : "Clear",
+			format : "yyyy-mm-dd",
+			titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart : 0
+		};
+
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode : 4,
+			minViewMode : 1,
+			language : 'ko'
+		}).next().on(ace.click_event, function() {
+			$(this).prev().focus();
+		});
+
+		$('.cl-date-picker').datepicker({
+			language : 'ko'
+		}).next().on(ace.click_event, function() {
+			$(this).prev().focus();
+		});
+	})
+</script>
 </body>
 </html>
