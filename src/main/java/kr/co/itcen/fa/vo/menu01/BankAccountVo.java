@@ -20,6 +20,7 @@ public class BankAccountVo {
 	private String deleteFlag;
 		
 	//take from others (FK)
+	private String bankName;
 	private String bankCode;
 	private String banker; 
 	private String bankLocation;
@@ -132,6 +133,12 @@ public class BankAccountVo {
 	}
 	public void setDepositOld(String depositOld) {
 		this.depositOld = depositOld;
+	}	
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 	@Override
 	public String toString() {
