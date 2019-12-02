@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu15">
-	<!-- Team -->
+	
 	<insert id="save" parameterType="salescustomervo">
 		<![CDATA[
 		insert
@@ -14,5 +14,15 @@
 			]]>
 		</selectKey>
 	</insert>
-
+	
+	<select id="findAll" resultType="salescustomervo">
+		<![CDATA[
+		select no, name, ceo, coporation_no as coporationNo, address, phone, conditions, item, open_date as openDate,
+		       jurisdiction_office as jurisdictionOffice, manager_name as managerName, manager_email as managerEmail,
+		       deposit_no as depositNo, delete_flag as deleteFlag, insert_userid as insertUserid, insert_day as insertDay,
+		       update_userid as updateUserid, update_day as updateDay
+		from tb_salescustomer
+		order by no
+		]]>
+	</select>
 </mapper>

@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.repository.menu12;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,8 +21,11 @@ public class Menu15Repository {
 	private SqlSession sqlSession;
 
 	public void saveCustomer(CustomerVo customerVo) {
-		
 		sqlSession.insert("menu15.save", customerVo);
+	}
+
+	public List<CustomerVo> findAllCustomer() {
+		return sqlSession.selectList("menu15.findAll");
 	}
 	
 	

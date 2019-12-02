@@ -28,7 +28,7 @@ public class Menu15Controller {
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
-		//menu15Service.list();
+		model.addAttribute("customerList", menu15Service.getAllCustomer());
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

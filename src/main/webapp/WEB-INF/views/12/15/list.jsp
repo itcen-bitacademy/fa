@@ -62,7 +62,7 @@
 				<div class="span12">
 					<div class="row-fluid">
 						<div class="span12">
-							<form class="form-horizontal" action="">
+							<form class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label form-field-1">사업자번호</label>
