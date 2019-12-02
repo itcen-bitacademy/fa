@@ -24,6 +24,11 @@ public class Menu53Controller {
 	public static final String MAINMENU = "12";
 	public static final String SUBMENU = "53";
 
+	// 작업순서
+	// 1. 매출조회 누르면 리스트 출력
+	// 2. insert
+	// 3. 테이블 리스트 출력
+	
 	@Autowired
 	private MenuService menuService;
 
@@ -40,5 +45,7 @@ public class Menu53Controller {
 		 */
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
+	
 
 }
