@@ -23,18 +23,8 @@ public class ItemVo {
 	private Date updateDay; 	 // 수정일
 	private boolean useYn;		 // 사용여부
 	private Long voucherNo; 	 // 전표번호
-	private int orderNo; 		 // 전표순번
 	private Long accountNo; 	 // 계정과목코드
 	
-	@Override
-	public String toString() {
-		return "ItemVo [no=" + no + ", amount=" + amount + ", amountFlag=" + amountFlag + ", insertTeam=" + insertTeam
-				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
-				+ ", updateDay=" + updateDay + ", useYn=" + useYn + ", voucherNo=" + voucherNo + ", orderNo=" + orderNo
-				+ ", accountNo=" + accountNo + "]";
-	}
-	
-	// getter, setter
 	public Long getNo() {
 		return no;
 	}
@@ -95,18 +85,21 @@ public class ItemVo {
 	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
-	public int getOrderNo() {
-		return orderNo;
-	}
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
-	}
 	public Long getAccountNo() {
 		return accountNo;
 	}
 	public void setAccountNo(Long accountNo) {
 		this.accountNo = accountNo;
 	}
+	
+	@Override
+	public String toString() {
+		return "ItemVo [no=" + no + ", amount=" + amount + ", amountFlag=" + amountFlag + ", insertTeam=" + insertTeam
+				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
+				+ ", updateDay=" + updateDay + ", useYn=" + useYn + ", voucherNo=" + voucherNo + ", accountNo="
+				+ accountNo + "]";
+	}
+	
 	
 	
 }
