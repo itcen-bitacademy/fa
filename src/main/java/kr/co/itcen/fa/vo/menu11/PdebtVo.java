@@ -33,6 +33,7 @@ public class PdebtVo {
 	private Date insertDate; // 등록일
 	private int updateId; // 수정자
 	private Date updateDate; // 수정일
+	private int financialYear; // 회계연도 - 데이터 조회할 때, 필요
 
 	public Long getNo() {
 		return no;
@@ -242,6 +243,14 @@ public class PdebtVo {
 		this.updateDate = updateDate;
 	}
 
+	public int getFinancialYear() {
+		return financialYear;
+	}
+
+	public void setFinancialYear(int financialYear) {
+		this.financialYear = financialYear;
+	}
+
 	@Override
 	public String toString() {
 		return "PdebtVo [no=" + no + ", code=" + code + ", name=" + name + ", debtAmount=" + debtAmount + ", repayBal="
@@ -251,7 +260,7 @@ public class PdebtVo {
 				+ dangerName + ", majorCode=" + majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo
 				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
 				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate
-				+ "]";
+				+ ", financialYear=" + financialYear + "]";
 	}
 
 }
