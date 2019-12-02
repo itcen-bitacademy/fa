@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu48Service;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
@@ -32,17 +33,24 @@ public class Menu48Controller {
 	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year) {
-		List<LTermdebtVo> list = menu48Service.list(year,code);
+			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year,
+			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
 		
-		model.addAttribute("list",list);
+		DataResult<LTermdebtVo> dataResult = menu48Service.list(page, year,code);
+		
+		
+		
+		model.addAttribute("dataResult",dataResult);
+		
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
 	public String list(@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") int year) {
+			@RequestParam(value="financialYear",required = false, defaultValue = "2019") int year,
+			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
 		
-		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code;
+		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code+"&page"+page;
 	}
 	@RequestMapping(value = "/"+SUBMENU+"/add", method = RequestMethod.POST)
 	public String add(LTermdebtVo vo) {
@@ -51,6 +59,7 @@ public class Menu48Controller {
 		vo.setDebtDate(dates[0]);
 		vo.setExpDate(dates[1]);
 		System.out.println(vo);
+		
 		menu48Service.insert(vo);
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}

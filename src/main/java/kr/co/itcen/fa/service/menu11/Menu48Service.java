@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu48Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
 /**
@@ -28,8 +30,17 @@ public class Menu48Service {
 		return menu48Repository.insert(vo);
 	}
 
-	public List<LTermdebtVo> list(String year, String code) {
-		return menu48Repository.list(year,code);
+	public DataResult<LTermdebtVo> list(int page, String year, String code) {
+		
+		DataResult<LTermdebtVo> dataResult = new DataResult<LTermdebtVo>();
+		
+		int totalCnt = menu48Repository.listCount(year, code);
+		
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		dataResult.setPagination(pagination);
+		List<LTermdebtVo> list = menu48Repository.list(year,code, pagination);
+		dataResult.setDatas(list);
+		return dataResult;
 	}
 
 	public Boolean update(LTermdebtVo vo) {

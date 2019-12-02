@@ -27,6 +27,25 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<select id="selectAllCount" resultType="int" parameterType="map">
+	<![CDATA[
+		select count(*)
+		    from tb_l_term_debt
+		    where delete_flag= "N"
+	]]>
+	<if test="year.length()>0 ">
+	<![CDATA[
+	and 	date_format(dept_date,'%Y') like concat('%',#{year},'%') 
+	]]>
+	</if>
+	<if test="code.length()>0 ">
+	<![CDATA[
+	and 	code like concat('%',#{code},'%') 
+	]]>
+	</if>
+	</select>
+	
 	<!-- select list -->
 	<select id="selectAll" resultType="ldebtvo" parameterType="map">
 	<![CDATA[
@@ -58,6 +77,7 @@
 	and 	code like concat('%',#{code},'%') 
 	]]>
 	</if>
+	limit	#{pagination.pageIndex }, #{pagination.listSize }
 	</select>
 	
 	<!-- update -->
