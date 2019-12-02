@@ -28,8 +28,8 @@ public class Menu48Service {
 		return menu48Repository.insert(vo);
 	}
 
-	public List<LTermdebtVo> list() {
-		return menu48Repository.list();
+	public List<LTermdebtVo> list(String year, String code) {
+		return menu48Repository.list(year,code);
 	}
 
 	public Boolean update(LTermdebtVo vo) {
