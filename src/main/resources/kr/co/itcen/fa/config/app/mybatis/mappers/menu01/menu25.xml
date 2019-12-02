@@ -2,11 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu25">
 	<!-- Test -->
-	<insert id="save" parameterType="test1vo">
+	<insert id="create" parameterType="bankaccountvo">
 		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
+		insert into 
+		tb_bank_account 
+		values(#{depositNo}, #{depositHost}, #{bankCode}, #{makeDate}, 
+			   #{balance}, #{enDate}, #{depositLimit}, #{profit}, #{banker},
+			   #{accountNo}, #{insertUserId}, #{insertDay}, 
+			   #{updateUserId}, #{updateDay}, #{deleteFlag});
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
