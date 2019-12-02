@@ -35,6 +35,9 @@
             width: 50%;
             min-width: 200px
         }
+        .chosen-single{
+       		margin-top: 4px;
+       	}
     </style>
     <script>
 
@@ -95,9 +98,9 @@
 
 <body class="skin-3">
     <c:import url="/WEB-INF/views/common/navbar.jsp" />
-    <div class="main-container container-fluid" style="height:100%">
+    <div class="main-container container-fluid">
         <c:import url="/WEB-INF/views/common/sidebar.jsp" />
-        <div class="main-content" style="overflow-x:auto;height:calc(100% - 80px);">
+        <div class="main-content" >
             <div class="page-content" style="min-width:1280px;">
 
 
@@ -129,16 +132,17 @@
                                     <label class="control-label" for="customerCode">거래처코드</label>
                                     <div class="controls">
                                         <select class="chosen-select" id="customerCode" name="role" data-placeholder="거래처코드" name="customerCode">
-                                            <option value="">&nbsp;</option>
-                                            <option value="1234567890">1234567890</option>
-                                            <option value="4567890123">4567890123</option>
+                                        <option value="">&nbsp;</option>
+                                            <c:forEach items="${customerlist }" var="list" varStatus="status">
+                                            <option id="${status }" value="${list.no }">${list.name }(${list.no })</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="empManager">거래처담당자</label>
                                     <div class="controls">
-                                        <input type="text" id="empManager" name="empManager" placeholder="거래처담당자">
+                                        <input type="text" id="empManager" name="empManager" placeholder="거래처담당자" disabled>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -178,13 +182,13 @@
                                 <div class="control-group">
                                     <label class="control-label" for="customerName">거래처명</label>
                                     <div class="controls">
-                                        <input type="text" id="customerName" name="customerName" placeholder="거래처명">
+                                        <input type="text" id="customerName" name="customerName" placeholder="거래처명" disabled>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="customerName">거래처연락처</label>
                                     <div class="controls">
-                                        <input type="text" id="customerName" name="customerPhone" placeholder="거래처연락처">
+                                        <input type="text" id="customerName" name="customerPhone" placeholder="거래처연락처" disabled>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -245,8 +249,15 @@
                                         <p>1</p>
                                         <input type="hidden" value="1" name="number">
                                     </td>
-                                    <td><input type="text" id="itemCode1" name="itemCode" placeholder="품목코드"></td>
-                                    <td><input type="text" id="itemName1" name="itemName" placeholder="품목명"></td>
+                                    <td>
+                                    	<select class="chosen-select" id="customerCode" name="role" data-placeholder="거래처코드" name="customerCode">
+                                            <option value="">&nbsp;</option>
+                                            <c:forEach items="${itemlist }" var="list" varStatus="status">
+                                            <option value="${list.no }">${list.no }(${list.name })</option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" id="itemName1" name="itemName" placeholder="품목명" disabled></td>
                                     <td><input type="text" id="quantity1" name="quantity" placeholder="수량" onfocusout="sumData.addQuantity()"></td>
                                     <td><input type="text" id="supplyValue1" name="supplyValue" placeholder="공급가액" onfocusout="sumData.addSupplyValue()"></td>
                                     <td><input type="text" id="taxValue1" name="taxValue" placeholder="부가세" onfocusout="sumData.addTaxValue()"></td>
