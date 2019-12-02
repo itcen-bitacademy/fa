@@ -44,7 +44,13 @@
 		</selectKey>
 	</insert>
 	
-	<select id="selectAllClosingDate" resultType="closingDate17Vo">
+	<select id="selectAllClosingDateCount" resultType="int">
+		select	count(*) as cnt
+		  from	tb_closing_date
+		;
+	</select>
+	
+	<select id="selectAllClosingDate" resultType="closingDate17Vo" parameterType="menu17SearchForm">
 		select	
 			no
 		    , closing_year_month as closingYearMonth
@@ -64,6 +70,7 @@
 		  from	tb_closing_date
 		 where	use_yn = true
 		 order	by closing_year_month desc
+		 limit	#{pagination.pageIndex }, #{pagination.listSize }
 		;
 	</select>
 	
@@ -241,4 +248,5 @@
 		;
 		]]>
 	</select>
+	
 </mapper>

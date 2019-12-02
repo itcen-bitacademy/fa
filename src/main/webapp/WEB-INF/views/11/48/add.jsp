@@ -211,11 +211,11 @@ tr td:first-child {
 					&nbsp;
 					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" type="submit" >삭제</button>
 					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					&nbsp;
 					<button type="button" class="btn">상환</button>
 					&nbsp;
-					<button type="button" class="btn ">초기화</button>
+					<button type="button" class="btn" id="clear">초기화</button>
 				</div>
 				<hr>
 			</form>					
@@ -309,6 +309,8 @@ $(function(){
 	
 	$(".chosen-select").chosen();
 	$("#simple-table tr").click(function(){ 
+		
+		
 		var tr = $(this);
 		var td = tr.children();
 		
@@ -381,6 +383,14 @@ $(function(){
 		$("input[name=depositNo]").val(td.eq(13).text());
 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
 	});
+	
+	
+	
+	$("#clear").click(function(){ 
+		 $('#majorcode-field-select').val('초기값').trigger('chosen:updated');
+         $('#dangercode-field-select').val('초기값').trigger('chosen:updated');
+	});
+	
 });
 </script>
 </body>

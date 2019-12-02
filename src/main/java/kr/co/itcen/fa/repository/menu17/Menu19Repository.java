@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.TestVo;
 
 /**
@@ -39,11 +40,19 @@ public class Menu19Repository {
 	
 	/**
 	 * 
+	 * 마감일 전체 갯수 조회
+	 */
+	public int selectAllClosingDateCount() {
+		return sqlSession.selectOne("menu19.selectAllClosingDateCount");
+	}
+	
+	/**
+	 * 
 	 * 마감일 전체 조회(마감일 순 내림차순)
 	 */
-	public List<ClosingDateVo> selectAllClosingDate() {
-		// TODO: 페이징, 검색조건 추가
-		return sqlSession.selectList("menu19.selectAllClosingDate");
+	public List<ClosingDateVo> selectAllClosingDate(Menu17SearchForm menu17SearchForm) {
+		// TODO: 페이징 추가
+		return sqlSession.selectList("menu19.selectAllClosingDate", menu17SearchForm);
 	}
 	
 	

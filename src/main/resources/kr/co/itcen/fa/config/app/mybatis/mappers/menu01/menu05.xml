@@ -2,17 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu05">
 	<!-- Test -->
-	<insert id="save" parameterType="test1vo">
+
+	<insert id="create" parameterType="1cardvo">
 		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
+		insert into tb_cardmanager values (#{cardNo }, #{validity }, #{transportation }, #{limitation}, #{cvc }, 
+		#{issuer }, #{user },  #{company },  #{abroad },  #{password },  #{depositNo },  
+		#{insertUserId }, now(), null, null, "Y")
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
 	</insert>
 
+	<select id="list" resultType="1cardvo">
+		<![CDATA[
+		select	card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
+				company, abroad, password, deposit_no as depositNo,
+				insert_userid as insertUserId, insert_day as insertDay, 
+				update_userid as updateUserId, update_day as updateDay, 
+				delete_flag as deleteFlag
+		 from	tb_cardmanager
+		 where	delete_flag = "Y"
+		]]>
+	</select>
+	
+	<update id = "remove" parameterType="1cardvo">
+		<![CDATA[
+			update 	tb_cardmanager 
+			   set 	delete_flag='N' 
+			 where 	card_no = #{cardNo }
+		]]>
+	</update>
 </mapper>

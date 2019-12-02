@@ -58,6 +58,9 @@
 		}).next().on(ace.click_event, function() {
 			$(this).prev().focus();
 		});
+		
+		
+		
 
 		$(".chosen-select").chosen();
 	})
@@ -113,8 +116,6 @@
 						</select>
 
 						<button class="btn btn-small btn-info">조회</button>
-
-
 
 					</form>
 					<div class="hr hr-18 dotted"></div>
@@ -201,10 +202,6 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-
-
-
-
 
 </body>
 </html>
