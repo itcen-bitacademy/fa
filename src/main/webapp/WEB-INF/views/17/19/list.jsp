@@ -184,7 +184,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="cdt" items="${closingDateList }">
+									<c:forEach var="cdt" items="${dataResult.datas }">
 										<tr class="cdt-tr" no="${cdt.no }" closing-yn="${cdt.closingYn }">
 											<td class="closing-year-month">${cdt.closingYearMonth }</td>
 											<td class="closing-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.closingDate }"></fmt:formatDate></td>
@@ -215,13 +215,34 @@
 					<%-- 페이징 --%>
 					<div class="pagination">
 						<ul>
-							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							<c:choose>
+								<c:when test="${dataResult.pagination.prev }">
+									<li><a href="#"><i class="icon-double-angle-left"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+								</c:otherwise>
+							</c:choose>
+
+							<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+								<c:choose>
+									<c:when test="${pg eq dataResult.pagination.page }">
+										<li class="active"><a href="#">${pg }</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="#">${pg }</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+
+							<c:choose>
+								<c:when test="${dataResult.pagination.next }">
+									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
 						</ul>
 					</div>
 					<!-- PAGE CONTENT ENDS -->

@@ -8,9 +8,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu19Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
 
 /**
@@ -37,12 +40,25 @@ public class Menu19Service {
 		return menu19Repository.insertClosingDate(closingDate);
 	}
 	
+	
 	/**
 	 * 
 	 * 마감일 전체 조회(마감일순 내림차순)
 	 */
-	public List<ClosingDateVo> selectAllClosingDate() {
-		return menu19Repository.selectAllClosingDate();
+	public DataResult<ClosingDateVo> selectAllClosingDate(int page) {
+		DataResult<ClosingDateVo> dataResult = new DataResult<>();
+		
+		int totalCount = menu19Repository.selectAllClosingDateCount();
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(paginationUtil);
+		
+		Menu17SearchForm menu17SearchForm = new Menu17SearchForm();
+		menu17SearchForm.setPagination(paginationUtil);
+		
+		List<ClosingDateVo> list = menu19Repository.selectAllClosingDate(menu17SearchForm);
+		dataResult.setDatas(list);
+		
+		return dataResult;
 	}
 	
 	
