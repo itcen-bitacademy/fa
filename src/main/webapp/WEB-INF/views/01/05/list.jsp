@@ -36,7 +36,7 @@
 			$("input[name=cardNo]").val(td.eq(1).text());
 			$("input[name=cardNoOld]").val(td.eq(1).text());
 			var month= td.eq(2).text().substring(0,2);
-			var year= td.eq(2).text().substring(2,4);
+			var year= td.eq(2).text().substring(3,5);
 			$("input[name=validityMM]").val(month);
 			$("input[name=validityYY]").val(year);
 			$("input[name=cvc]").val(td.eq(3).text());
@@ -221,7 +221,8 @@
 							
 							<button type="submit" class="btn btn-primary btn-small"
 								formaction="${pageContext.request.contextPath }/01/05/create">입력</button>
-							<button class="btn btn-default btn-small">취소</button>
+							<button class="btn btn-default btn-small"
+								type="reset">취소</button>
 						</div>
 
 					</div>

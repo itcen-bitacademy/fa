@@ -20,7 +20,7 @@ public class Menu05Service {
 	@Autowired
 	private Menu05Repository menu05Repository;
 	
-	public Boolean create(CardVo vo) {
+	public boolean create(CardVo vo) {
 		return menu05Repository.create(vo);
 	}
 
@@ -29,13 +29,18 @@ public class Menu05Service {
 		
 	}
 
-	public Boolean remove(CardVo vo) {
+	public boolean remove(CardVo vo) {
 		return menu05Repository.remove(vo);
 		
 	}
 
-	public Boolean update(CardVo vo) {
+	public boolean update(CardVo vo) {
 		return menu05Repository.update(vo);
+		
+	}
+
+	public boolean exist(CardVo vo) {
+		return menu05Repository.exist(vo)!=null;
 		
 	}
 }

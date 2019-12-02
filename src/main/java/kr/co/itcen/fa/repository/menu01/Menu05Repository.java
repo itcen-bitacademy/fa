@@ -20,7 +20,8 @@ public class Menu05Repository {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public Boolean create(CardVo vo) {
+	public boolean create(CardVo vo) {
+		
 		int count = sqlSession.insert("menu05.create", vo);
 		return (count==1);	
 	}
@@ -29,13 +30,18 @@ public class Menu05Repository {
 		return sqlSession.selectList("menu05.list");
 	}
 
-	public Boolean remove(CardVo vo) {
+	public boolean remove(CardVo vo) {
 		int count = sqlSession.update("menu05.remove", vo);
 		return (count==1);
 	}
 
-	public Boolean update(CardVo vo) {
+	public boolean update(CardVo vo) {
 		int count = sqlSession.update("menu05.update", vo);
 		return (count==1);
+	}
+
+	public CardVo exist(CardVo vo) {
+		CardVo exist = sqlSession.selectOne("menu05.exist", vo);
+		return exist;
 	}
 }
