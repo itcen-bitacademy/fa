@@ -12,6 +12,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 	jQuery(function($) {
 		
@@ -43,7 +44,51 @@
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
+		
+		$("#btn-add").on("click", function(){
+			$("#form-customer").submit();
+		});
+		
+		$("#btn-select").on("click", function(){
+			location.href("")
+		});
 	})
+	
+	function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('zip-number').value = data.zonecode;
+                document.getElementById("address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detail-address").focus();
+            }
+        }).open();
+    }
 </script>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -62,7 +107,7 @@
 				<div class="span12">
 					<div class="row-fluid">
 						<div class="span12">
-							<form class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+							<form id="form-customer" class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label form-field-1">사업자번호</label>
@@ -79,10 +124,10 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">주소</label>
 										<div class="controls">
-											<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-											<input class="span2" type="text" id="form-field-1" readonly>
-											<input class="span6" type="text" id="form-field-1" readonly>
-											<input class="span9" type="text" id="form-field-1">
+											<span class="btn btn-small btn-info" onclick="execDaumPostcode()"><i class="icon-search nav-search-icon"></i></span>
+											<input class="span2" type="text" id="zip-number" readonly>
+											<input class="span6" type="text" id="address" readonly>
+											<input class="span9" type="text" id="detail-address">
 										</div>
 									</div>
 									<div class="control-group">
@@ -178,11 +223,11 @@
 								<div class="hr hr-18 dotted"></div>
 								<div class="row-fluid" style="background-color:white">
 									<div id="sample-table-2_length" class="dataTables_length">
-										<button class="btn btn-info btn-small">조회</button>
-										<button class="btn btn-primary btn-small">입력</button>
-										<button class="btn btn-warning btn-small">수정</button>
-										<button class="btn btn-danger btn-small">삭제</button>
-										<button class="btn btn-default btn-small">초기화</button>
+										<button id="btn-select" class="btn btn-info btn-small" onclick="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
+										<button id="btn-add" class="btn btn-primary btn-small">입력</button>
+										<button id="btn-update" class="btn btn-warning btn-small">수정</button>
+										<button id="btn-delete" class="btn btn-danger btn-small">삭제</button>
+										<button id="btn-clear" class="btn btn-default btn-small">초기화</button>
 									</div>
 								</div>
 								<div class="hr hr-18 dotted"></div>

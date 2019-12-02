@@ -8,7 +8,9 @@ public class CustomerVo {
 	private String name;
 	private String ceo;
 	private String corporationNo;
+	private String zipCode;
 	private String address;
+	private String detailAddress;
 	private String phone;
 	private String conditions;
 	private String item;
@@ -17,12 +19,12 @@ public class CustomerVo {
 	private String managerName;
 	private String managerEmail;
 	private String depositNo;
+	private String depositHost;
 	private String deleteFlag;
 	private String insertUserid;
 	private String insertDay;
 	private String updateUserid;
 	private String updateDay;
-	
 	public String getNo() {
 		return no;
 	}
@@ -47,11 +49,23 @@ public class CustomerVo {
 	public void setCorporationNo(String corporationNo) {
 		this.corporationNo = corporationNo;
 	}
+	public String getZipCode() {
+		return zipCode;
+	}
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
 	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public String getDetailAddress() {
+		return detailAddress;
+	}
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
 	}
 	public String getPhone() {
 		return phone;
@@ -101,6 +115,12 @@ public class CustomerVo {
 	public void setDepositNo(String depositNo) {
 		this.depositNo = depositNo;
 	}
+	public String getDepositHost() {
+		return depositHost;
+	}
+	public void setDepositHost(String depositHost) {
+		this.depositHost = depositHost;
+	}
 	public String getDeleteFlag() {
 		return deleteFlag;
 	}
@@ -131,4 +151,5 @@ public class CustomerVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
+	
 }

@@ -20,8 +20,8 @@ public class Menu15Service {
 	@Autowired
 	private Menu15Repository menu15Repository;
 	
-	public List<CustomerVo> getAllCustomer() {
-		return menu15Repository.findAllCustomer();
+	public List<CustomerVo> getAllCustomer(String no) {
+		return menu15Repository.findAllCustomer(no);
 	}
 
 	public void addCustomer(CustomerVo customerVo) {
