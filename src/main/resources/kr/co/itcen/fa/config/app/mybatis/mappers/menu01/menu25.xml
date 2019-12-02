@@ -17,5 +17,30 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<update id="update" parameterType="bankaccountvo">
+		<![CDATA[
+		update tb_bank_account
+		set deposit_no = #{depositNo},
+			deposit_host = #{depositHost}, 
+			bank_code = #{bankCode},
+			makedate = #{makeDate},
+			balance =  #{balance},
+			endate = #{enDate},
+			deposit_limit = #{depositLimit},
+			profit = #{profit},
+			banker = #{banker},
+			account_no = #{accountNo},
+			update_userid = #{updateUserId},
+			update_day = now()
+		where deposit_no = #{depositOld};
+		]]>
+	</update>
+	<delete id="delete" parameterType="bankaccountvo">
+		<![CDATA[
+		delete from tb_bank_account
+		where deposit_no = #{depositNo};
+		]]>
+	</delete>
 
 </mapper>
