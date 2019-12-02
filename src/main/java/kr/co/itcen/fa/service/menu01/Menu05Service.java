@@ -33,4 +33,9 @@ public class Menu05Service {
 		return menu05Repository.remove(vo);
 		
 	}
+
+	public Boolean update(CardVo vo) {
+		return menu05Repository.update(vo);
+		
+	}
 }

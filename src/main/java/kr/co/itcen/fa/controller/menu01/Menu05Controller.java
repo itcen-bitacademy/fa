@@ -2,8 +2,7 @@ package kr.co.itcen.fa.controller.menu01;
 
 
 import java.util.List;
-
-import javax.validation.Valid;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,11 +45,14 @@ public class Menu05Controller {
 	
 	
 	@RequestMapping(value="/" + SUBMENU + "/create", method=RequestMethod.POST)
-	public String create(@ModelAttribute @Valid CardVo vo, @AuthUser UserVo uvo
-			, @RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY) {
+	public String create(@ModelAttribute CardVo vo, @AuthUser UserVo uvo
+			, @RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY,
+			@RequestParam("limitation") Optional<Integer> limitation) {
 		String validity = validityMM + "/"+ validityYY ;
 		vo.setValidity(validity);
 		vo.setInsertUserId(uvo.getName());
+		vo.setLimitation(limitation.get());
+		System.out.println(vo);
 		menu05Service.create(vo);
 		
 		return "redirect:/"+MAINMENU + "/" + SUBMENU + "/list";
@@ -61,5 +63,24 @@ public class Menu05Controller {
 		menu05Service.remove(vo);
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
+	@RequestMapping(value="/" + SUBMENU + "/update", method=RequestMethod.POST)
+	public String update(@ModelAttribute CardVo vo, @AuthUser UserVo uvo, 
+			@RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY,
+			@RequestParam("limitation") Optional<Integer> limitation, @RequestParam("cardNoOld") String cardNoOld
+			) {
+		String validity = validityMM + "/"+ validityYY ;
+		vo.setValidity(validity);
+		vo.setUpdateUserId(uvo.getName());
+		vo.setLimitation(limitation.get());
+		vo.setCardNoOld(cardNoOld);
+		System.out.println(vo);
+		menu05Service.update(vo);
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	
+	
+	
 	
 }

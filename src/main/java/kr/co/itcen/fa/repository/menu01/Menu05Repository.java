@@ -30,8 +30,12 @@ public class Menu05Repository {
 	}
 
 	public Boolean remove(CardVo vo) {
-		vo.setCardNo("d"+vo.getCardNo());
 		int count = sqlSession.update("menu05.remove", vo);
+		return (count==1);
+	}
+
+	public Boolean update(CardVo vo) {
+		int count = sqlSession.update("menu05.update", vo);
 		return (count==1);
 	}
 }
