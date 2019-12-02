@@ -47,6 +47,7 @@
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
+			where delete_flag="N"
 		]]>
 	</select>
 	

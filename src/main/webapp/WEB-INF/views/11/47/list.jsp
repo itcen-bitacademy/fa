@@ -153,12 +153,6 @@ form {
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
-							<th class="center">
-								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
-									<span class="lbl"></span>
-								</label>
-							</th>
 							<th class="center">단기차입금코드</th>
 							<th class="center">단기차입금명</th>
 							<th class="center">차입금대분류</th>
@@ -175,10 +169,8 @@ form {
 					</thead>
 
 					<tbody>
-						<tr>
-							<td class="center"><label class="pos-rel">
-							<input type="checkbox" class="ace" /> <span class="lbl"></span>
-							</label></td>
+						<c:forEach items="${list }" var="vo" varStatus="status">
+							<tr>
 							<td class="center">2019112701</td>
 							<td>GS칼텍스는...</td>
 							<td class="center">008-국내은행</td>
@@ -192,6 +184,7 @@ form {
 							<td class="center">0010987</td>
 							<td class="center">한국은행</td>
 						</tr>
+						</c:forEach>
 					</tbody>
 				</table>	
 		</div><!-- /.page-content -->

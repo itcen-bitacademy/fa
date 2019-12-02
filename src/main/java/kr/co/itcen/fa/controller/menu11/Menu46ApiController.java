@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,6 +25,6 @@ public class Menu46ApiController {
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
 	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
 		menu46Service.deleteChecked(noList);
-		return null;
+		return JSONResult.success("success");
 	}
 }
