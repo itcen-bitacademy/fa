@@ -16,7 +16,7 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .p-debt-code-input {
-	width: 420px;
+	width: 270px;
 }
 
 .p-debt-name-input {
@@ -87,13 +87,14 @@ tr td:first-child {
 								<table>
 									<tr>
 										<td><h4>사채코드</h4></td>
-										<td><input type="text" class="p-debt-code-input" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" /></td>
+										<td colspan="2">
+										<input type="text" class="p-debt-code-input" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
+										<button type="button" class="btn btn-info btn-small" id="selectone">조회</button>
+										</td>
 									</tr>
 									<tr>
 										<td><h4>사채명</h4></td>
-										<td colspan="2"><input type="text"
-											class="p-debt-name-input" name="name"
-											placeholder="육하원칙으로 입력해주세요." /></td>
+										<td colspan="2"><input type="text" class="p-debt-name-input" name="name" placeholder="육하원칙으로 입력해주세요." /></td>
 									</tr>
 									<tr>
 										<td><h4>차입금액</h4></td>
@@ -132,10 +133,11 @@ tr td:first-child {
 									</tr>
 									<tr>
 										<td><h4>은행코드</h4></td>
-										<td colspan="2"><input type="text"
-											class="search-input-width-first" name="bankCode" /> <span
-											class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> <input type="text"
-											class="search-input-width-second" name="bankName" /></td>
+										<td colspan="2">
+											<input type="text" class="search-input-width-first" name="bankCode" />
+											<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+											<input type="text" class="search-input-width-second" name="bankName" />
+										</td>
 									</tr>
 									<tr>
 										<td><h4>위험등급</h4></td>
@@ -155,7 +157,7 @@ tr td:first-child {
 								<table>
 									<tr>
 										<td><h4>회계연도</h4></td>
-										<td><input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도" /></td>
+										<td><input type="number" min="1900" max="2099" step="1" value="2019" id="p-debt-financialyear-input" name="financialYear" placeholder="회계연도" /></td>
 									</tr>
 									<tr>
 										<td><h4>차입금대분류</h4></td>
@@ -192,23 +194,25 @@ tr td:first-child {
 									</tr>
 									<tr>
 										<td><h4>이율</h4></td>
-										<td colspan="2"><input type="text" name="intRate"
-											placeholder="(%) 정수로 입력하세요." /></td>
+										<td colspan="2">
+											<input type="text" name="intRate" placeholder="(%) 정수로 입력하세요." />
+										</td>
 									</tr>
 									<tr>
 										<td><h4>담당자</h4></td>
 										<td><input type="text" class="mgr-input" name="mgr" />
-											<h4 class="mgr-number-input-h4">담당자전화번호</h4> <input
-											type="text" class="mgr-call-input" name="mgrCall" /></td>
+											<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+											<input type="text" class="mgr-call-input" name="mgrCall" /></td>
 									</tr>
 									<tr>
 										<td><h4>계좌</h4></td>
-										<td colspan="2"><input type="text"
-											class="search-input-width-first" name="depositNo" /> <span
-											class="btn btn-small btn-info"> <i
-												class="icon-search nav-search-icon"></i>
-										</span> <input type="text" class="search-input-width-second"
-											name="bankName" /></td>
+										<td colspan="2">
+											<input type="text" class="search-input-width-first" name="depositNo" />
+											<span class="btn btn-small btn-info">
+											<i class="icon-search nav-search-icon"></i>
+											</span>
+											<input type="text" class="search-input-width-second" name="bankName" />
+										</td>
 									</tr>
 								</table>
 							</div>
@@ -221,7 +225,7 @@ tr td:first-child {
 						&nbsp;
 						<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
 						&nbsp;
-						<button class="btn btn-info btn-small mybtn" id="selectone">조회</button>
+						<button type="button" class="btn btn-info btn-small mybtn" id="selectFinancialYearList">조회</button>
 						&nbsp;
 						<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 						&nbsp;
@@ -304,8 +308,7 @@ tr td:first-child {
 							<c:when test="${pageInfo.totalRows != 0}">
 								<c:choose>
 									<c:when test="${pageInfo.currentBlock eq 1}">
-										<li class="disabled"><a><i
-												class="icon-double-angle-left"></i></a></li>
+										<li class="disabled"><a><i class="icon-double-angle-left"></i></a></li>
 									</c:when>
 									<c:otherwise>
 										<li><a
@@ -501,9 +504,154 @@ tr td:first-child {
 		
 		// Button으로 사채코드를 받아서 해당 사채 데이터 조회하기
 		$("#selectone").click(function(){
-			    var getDebtcodeVal = $(".p-debt-code-input").val();
-			    console.log(getDebtCodeVal);
+			var debtcodeVal = $(".p-debt-code-input").val();
+			console.log(debtcodeVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/selectone/getpdebtInfo?debtcodeVal=" + debtcodeVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					// 부채코드
+					$("input[name=code]").val(response.code);
+					
+					// 차입금명
+					$("input[name=name]").val(response.name);
+					
+					// 차입금액
+					$("input[name=debtAmount]").val(response.debtAmount);
+					
+					// 차입일자 - 만기일자
+					$("input[name=debtExpDate]").val(response.debtExpDate);
+					
+					// 이자지급방식
+					var intPayWay='';
+					switch (response.intPayWay){
+				    case 'Y' :
+				    	intPayWay='Y';
+				        break;
+				    case 'M' :
+				    	intPayWay='M';
+					    break;
+				    case 'E' :
+				    	intPayWay='E';
+				        break;
+					}
+					$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
+					
+					// 은행코드
+					$("input[name=bankCode]").val(response.bankCode);
+					
+					// 위험등급 분류
+					var dangerName='';
+					switch (response.dangerName){
+				    case '초고위험' :
+				    	dangerName='RED1-초고위험';
+				        break;
+				    case '고위험' :
+				    	dangerName='ORANGE2-고위험';
+					    break;
+				    case '중위험' :
+				    	dangerName='YELLOW3-중위험';
+				        break;
+				    case '저위험' :
+				    	dangerName='GREEN4-저위험';
+				        break;
+				    case '초저위험' :
+				    	dangerName='BLUE5-초저위험';
+				        break;
+					}
+					$('#dangercode-field-select').val(dangerName).trigger('chosen:updated');
+					
+					// 회계연도
+					$("input[name=financialYear]").val(response.financialYear);
+					
+					// 차입금대분류
+					var major='';
+					switch (response.majorCode){
+				    case '008001' :
+				    	major='008001';
+				        break;
+				    case '008002' :
+				    	major='008002';
+					    break;
+				    case '008003' :
+				    	major='008003';
+				        break;
+				    case '008004' :
+				    	major='008004';
+				        break;
+				    case '008005' :
+				    	major='008005';
+				    	break;
+				    case '008006' :
+				    	major='008006';
+				    	break;
+					}
+					$('#majorcode-field-select').val(major).trigger('chosen:updated'); 
+					
+					// 상환방법
+					var repayWay='';
+					switch (response.repayWay){
+				    case 'Y' :
+				    	repayWay='Y';
+				        break;
+				    case 'M' :
+				    	repayWay='M';
+					    break;
+				    case 'E' :
+				    	repayWay='E';
+				        break;
+					}
+					$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
+					
+					// 이율
+					$("input[name=intRate]").val(response.intRate);
+					
+					// 담당자
+					$("input[name=mgr]").val(response.mgr);
+					// 담당자전화번호
+					$("input[name=mgrCall]").val(response.mgrCall);
+					// 계좌번호
+					$("input[name=depositNo]").val(response.depositNo);
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
 			});
+		});
+		
+		
+		// Button으로 사채코드를 받아서 해당 사채 데이터 조회하기
+		$("#selectFinancialYearList").click(function(){
+			var debtcodeVal = $(".p-debt-code-input").val();
+			console.log(debtcodeVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/selectone/getpdebtInfo?debtcodeVal=" + debtcodeVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
 		
 		// form에 입력한 모든 데이터 초기화
 		// 출처 : https://stackoverflow.com/questions/11365212/how-do-i-reset-a-jquery-chosen-select-option-with-jquery
@@ -515,6 +663,8 @@ tr td:first-child {
 			$('#majorcode-field-select').val('초기값').trigger('chosen:updated');
 			$('#dangercode-field-select').val('초기값').trigger('chosen:updated');
         });
+		
+		
 		
 	});
 
