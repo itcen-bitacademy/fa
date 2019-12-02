@@ -78,7 +78,7 @@ $(function(){
 });
 </script>
  -->
-
+    
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -103,11 +103,11 @@ $(function(){
 								</div>
 							</div>
 							 
-							<!-- 구분d  -->
+							<!-- 구분  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">구분</label>
 								<div class="controls">
-									<select id="accountStatementType" name="accountStatementType" >
+									<select id="selectedAccountStatementType" name="selectedAccountStatementType" >
 										<option value="B">대차대조표</option>
 										<option value="I">손익계산서</option>
 									</select>
@@ -119,23 +119,24 @@ $(function(){
 								<label class="control-label" for="accountOrder">순번</label>
 								<div class="controls">
 									<input type="number" min="0001" max="1000" step="1" value="1" id="accountOrder" name="accountOrder" placeholder="순번" />
+									<input type="hidden" id="no" name="no" value="" >
 								</div>
 							</div>
+							 
 							<!-- 계정과목  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">계정과목</label>
 								<div class="controls">
-									<select class="chosen-select" id="form-field-select-1"
-										name="menuNo" data-placeholder="메뉴선택">
-										<c:forEach items="${listMainMenu }" var="menuVo">
-											<option value="${menuVo.no }">${menuVo.name }</option>
+									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="메뉴선택">
+										<c:forEach items="${accountList }" var="vo">
+											<option value="${vo.accountNo}" data-accountName="${vo.accountName }">${vo.accountNo }</option>
 										</c:forEach>
-									</select> <input type="text" id="form-field-1" name="financial_usedyear"
-										placeholder="계정과목"
-										style="text-align: center; width: 300px; height: 18px;"
-										disabled />
+									</select> 
+									<input type="text" id="accountName" name="accountName" placeholder="자산" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
+								
 								</div>
 							</div>
+							
 							&nbsp; &nbsp; &nbsp;
 							<button class="btn btn-info btn-small" type="submit" name="action"  value="getList" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 							&nbsp;
@@ -159,13 +160,10 @@ $(function(){
 				<div class="span12">
 				<!-- 선 -->
 				<div class="hr hr-18 dotted"></div>
-					<table id="sample-table-1"
+					<table id="tb_account_management"
 						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th class="center"><label> <input type="checkbox"
-										class="ace"> <span class="lbl"></span>
-								</label></th>
 								<th>순번</th>
 								<th>계정과목</th>
 								<th>계정명칭</th>
@@ -177,21 +175,28 @@ $(function(){
 							</tr>
 						</thead>
 
-						<tbody>
-							<tr>
-								<td class="center"><label> <input type="checkbox"
-										class="ace"> <span class="lbl"></span>
-								</label></td>
-								<td>0010</td>
-								<td>1000001</td>
-								<td>자산</td>
-								<td>차변</td>
-								<td>2019.11.27</td>
-								<td>이성훈</td>
-								<td>2019.11.27</td>
-								<td>이성훈</td>
-							</tr>
-						</tbody>
+					<c:set var="count" value="${fn:length(tableList) }" />
+						<c:forEach items="${tableList }" var="vo" varStatus="status">
+							<tbody>
+								<tr>
+									<td>${vo.accountOrder }</td>
+									<td>${vo.accountNo }</td>
+									<td>${vo.accountName }</td>
+									<c:if test="${vo.balanceType eq 'D' }">	
+									<td>차변</td>
+									</c:if>
+									<c:if test="${vo.balanceType eq 'C' }">	
+									<td>대변</td>
+									</c:if>
+									<td>${vo.insertUserid }</td>
+									<td>${vo.insertDay }</td>
+									<td>${vo.updateUserid }</td>
+									<td>${vo.updateDay }</td>
+									<td id="no" style="display:none;">${vo.no }</td>
+								</tr>
+							</tbody>
+									
+						</c:forEach>
 					</table>
 				</div>
 			</div>
@@ -219,10 +224,54 @@ $(function(){
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
-			
-
-			
 		});
+	</script>
+	
+	<script>
+
+    // 테이블의 Row 클릭시 값 가져오기
+    $("#tb_account_management tr").dblclick(function(){     
+        var str = "";
+        var tdArr = new Array();    // 배열 선언
+        
+        // 현재 클릭된 Row(<tr>)
+        var tr = $(this);
+        var td = tr.children();
+        
+        // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
+        td.each(function(i){
+            tdArr.push(td.eq(i).text());
+        });
+        
+        console.log("배열에 담긴 값 : "+tdArr);
+        
+        var accountOrder = td.eq(0).text();
+        var accountNo = td.eq(1).text();
+        var accountName = td.eq(2).text();
+        var hiddenNo = td.eq(8).text();
+        
+        console.log(hiddenNo);
+        
+        //$(".selectedAccount").val(accountNo).trigger('change'); 
+        //$("#selectedAccount").val(accountNo).prop("selected", true);
+        //$("#selectedAccount").val("10230123").attr("selected", "selected");                       
+       	//$("#selectedAccount").val(accountNo);
+        //$("#selectedAccount  option:contains(" + accountNo + ")").text(accountNo);  
+     	//$('#selectedAccount').chosen().val(accountNo);
+     	
+     	$('#selectedAccount').val(accountNo).trigger('chosen:updated');    	
+        $("#accountOrder").val(accountOrder);
+        $("#accountName").val(accountName);
+        $("#no").val(hiddenNo);
+     
+    });
+    
+    //계정과목에 따른 계정명 불러오기
+    $('#selectedAccount').change(function () {
+    	var accountName =$(this).find('option:selected').attr('data-accountName');
+    	$('#accountName').val(accountName);
+   	});
+    
 	</script>
 </body>
 </html>

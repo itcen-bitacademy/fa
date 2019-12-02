@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu62">
+	
+	<select id="selectTrialBalanceByClosingDateNo" parameterType="trialBalance17Vo">
+		select	*
+		  from	tb_trial_balance
+		 where	closing_date_no = #{closingDateNo }
+		 order	by account_no asc
+		;
+	</select>
+	
+	<delete id="deleteTrialBalanceByClosingDateNo" parameterType="trialBalance17Vo">
+		delete	from tb_trial_balance
+		 where	closing_date_no = #{closingDateNo }
+	</delete>
+	
+</mapper>

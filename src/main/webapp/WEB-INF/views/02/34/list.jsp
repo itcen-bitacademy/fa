@@ -34,7 +34,7 @@
 </script>
 
 </head>
-<body class="skin-3">
+<body class="skin-3" style="min-width:1500px">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -47,9 +47,10 @@
 			
 			<div class="row-fluid">
 				<!-- PAGE CONTENT BEGINS -->
+				<div class="span12">
 				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 						
-						<div class="span4">
+						<div class="span6">
 							<div class="control-group">
 								<label class="control-label" for="form-field-item-id">품목코드</label>
 								<div class="controls">
@@ -61,9 +62,9 @@
 								<label class="control-label" for="form-field-section-name">품목 대분류명</label>
 								<div class="controls">
 									<div class="row-fluid input-append">
-										<input class="span7" id="form-field-section-name" name="section-name" type="text" readonly="true"/>
+										<input class="span5" id="form-field-section-name" name="section-name" type="text" readonly/>
 										<span class="add-on">
-											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+											<a href="#" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 										</span>
 									</div>
 								</div>
@@ -73,9 +74,9 @@
 								<label class="control-label" for="form-field-factory-name">생산공장명</label>
 								<div class="controls">
 									<div class="row-fluid input-append">
-										<input class="span7" id="form-field-factory-name" name="factory-name" type="text" readonly="true"/>
+										<input class="span5" id="form-field-factory-name" name="factory-name" type="text" readonly/>
 										<span class="add-on">
-											<a href="#"><i class="icon-search icon-on-right bigger-110"></i></a>
+											<a href="#" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 										</span>
 									</div>
 								</div>
@@ -91,11 +92,11 @@
 							</div>
 						</div>
 						
-						<div class="span8">
+						<div class="span6">
 							<div class="control-group">
 								<label class="control-label" for="form-field-item-name">품목명</label>
 								<div class="controls">
-									<input type="text" id="form-field-item-name" name="item-name" placeholder="품목명" style="display:inline"/>&nbsp;&nbsp;&nbsp;
+									<input class="span5" type="text" id="form-field-item-name" name="item-name" placeholder="품목명" style="display:inline"/>&nbsp;&nbsp;&nbsp;
 									<input class="ace" type="checkbox" id="id-disable-check" style="display:inline">
 									<label class="lbl" for="id-disable-check" style="display:inline"> 삭제 품목 포함</label>
 								</div>
@@ -103,14 +104,14 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-section-code">품목 대분류코드</label>
 								<div class="controls">
-									<input class="span2" type="text" id="form-field-section-code" name="section-code" readonly="true"/>
+									<input class="span4" type="text" id="form-field-section-code" name="section-code" readonly/>
 								</div>
 							</div>
 							
 							<div class="control-group">
 								<label class="control-label" for="form-field-standard">규격</label>
 								<div class="controls">
-									<input type="text" id="form-field-standard" name="factory-standard" placeholder="ex) 20 x 35 cm"/>
+									<input class="span5" type="text" id="form-field-standard" name="factory-standard" placeholder="ex) 20 x 35 cm"/>
 								</div>
 							</div>
 							
@@ -194,10 +195,22 @@
 								</tbody>
 							</table>
 						</div><!-- /span -->
-						<div class="dataTables_paginate paging_bootstrap pagination"><ul><li class="prev disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li class="next"><a href="#"><i class="icon-double-angle-right"></i></a></li></ul></div>
+						
+						<div class="pagination">
+							<ul>
+								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+								<li class="active">
+								<a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</ul>
+						</div>
 					</div>
-				
 				<!-- PAGE CONTENT ENDS -->
+			</div>
 			</div>
 			<!-- /.row-fluid -->
 			

@@ -56,41 +56,49 @@ $(function() {
 						class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div>
 				<div class="row-fluid">
-					<div class="span9 center">
+					<div class="span12">
 							<div class="control-group">
-								<div class="row-fluid">
-										<div class="span4">
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label class="control-label" for="cl-ym-date-picker" style="text-align:left;width:120px;">년 월</label>
-													<div class="controls" style="margin-left:120px;">
-														<div class="row-fluid input-append">
-															<input class="span11 date-picker" id="cl-ym-date-picker" name="closingYearMonth" type="text" data-date-format="yyyy-mm" />
-															<span class="add-on">
-																<i class="icon-calendar"></i>
-															</span>
-														</div>
-													</div>
+							<div class="row-fluid">
+								<div class="span4">
+									<form class="form-horizontal">
+										<div class="control-group">
+											<label class="control-label" for="cl-ym-date-picker"
+												style="text-align: left; width: 120px;"> 년 월</label>
+											<div class="controls" style="margin-left: 120px;">
+												<div class="row-fluid input-append">
+													<input class="span11 date-picker" id="cl-ym-date-picker"
+														name="closingYearMonth" type="text"
+														data-date-format="yyyy-mm" /> <span class="add-on">
+														<i class="icon-calendar"></i>
+													</span>
 												</div>
-											</form>
+											</div>
 										</div>
-										<div class="span4">
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label class="control-label" for="form-field-select-2" style="text-align:left;width:120px;">품목 코드</label>
-													<div class="controls" style="margin-left:120px;">
-														<select class="chosen-select" id="form-field-select-2" name="client_code" data-placeholder="거래처코드 선택">
-															<option value="1">품목코드11111</option>
-															<option value="2">품목코드22222</option>
-														</select>														
-														<button class="btn btn-small btn-info">조회</button>
-													</div>
-												</div>
-											</form>
+									</form>
+								</div>
+								<div class="span4">
+									<form class="form-horizontal">
+										<div class="control-group">
+											<label class="control-label" for="form-field-select-2"
+												style="text-align: left; width: 120px;">품목 코드</label>
+											<div class="controls" style="margin-left: 120px;">
+												<select class="chosen-select" id="form-field-select-2"
+													name="client_code" data-placeholder="거래처코드 선택">
+													<option value="1">품목코드11111</option>
+													<option value="2">품목코드22222</option>
+												</select>
+											</div>
 										</div>
-									</div>
-								
-								<div class="hr hr-18 dotted"></div>
+									</form>
+								</div>
+
+								<div class="span1">
+									<button class="btn btn-small btn-info">조회</button>
+
+								</div>
+							</div>
+
+							<div class="hr hr-18 dotted"></div>
 								
 								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 									<thead>

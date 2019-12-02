@@ -9,6 +9,7 @@ public class STermDebtVo {
 	private Long no; // 단기차입금번호
 	private String code; // 단기차입금코드
 	private String name; // 차입금명(사채명)
+	private String majorCode; //차입금 대분류
 	private int debtAmount; // 차입금액
 	private int repayBal; // 상환잔액 - 초기값으로 차입금액 삽입
 	private String repayWay; // 상환방법
@@ -30,7 +31,8 @@ public class STermDebtVo {
 	private Date insertDate; // 등록일
 	private String updateId; // 수정자
 	private Date updateDate; // 수정일
-	
+
+
 	public Long getNo() {
 		return no;
 	}
@@ -48,6 +50,12 @@ public class STermDebtVo {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getMajorCode() {
+		return majorCode;
+	}
+	public void setMajorCode(String majorCode) {
+		this.majorCode = majorCode;
 	}
 	public int getDebtAmount() {
 		return debtAmount;
@@ -185,5 +193,5 @@ public class STermDebtVo {
 				+ accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId
 				+ ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
 	}
-	
+
 }

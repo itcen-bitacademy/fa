@@ -9,14 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
-<script>
-$(function(){
-   $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
-      $(this).next().focus();
-   });
-   $(".chosen-select").chosen(); 
-});
-</script>
+
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
@@ -61,6 +54,9 @@ tr td:first-child {
 </style>
 </head>
 <body class="skin-3">
+<input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
+<input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
+<input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -72,7 +68,8 @@ tr td:first-child {
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<input type="hidden" name="no"/>
 				<div class="container-fluid">
 					<!-- Example row of columns -->
 					<div class="row">
@@ -81,24 +78,24 @@ tr td:first-child {
 								<tr>
 									<td><h4>단기차입금코드</h4></td>
 									<td>
-										<input type="text" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
+										<input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
 									</td>
 								</tr>
 								<tr >
 									<td><h4>단기차입금명</h4></td>
 									<td>
-										<input type="text" name="name"/>
+										<input type="text" id="name" name="name"/>
 									</td>
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="debtAmount" /></td>
+									<td><input type="text" id="debtAmount" name="debtAmount" /></td>
 								</tr>
 								<tr>
 									<td style="width:170px;"><h4>차입일자 ~ 만기일자</h4></td>
 									<td>
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="debtExpDate" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input type="text" name="debtExpDate" id="debtExpDate"  data-date-format="yyyy-mm-dd" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -131,7 +128,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>은행코드</h4></td>
 									<td>
-										<input type="text" class="search-input-width-first" name="bankCode"/>
+										<input type="text" class="search-input-width-first" name="bankCode" id="bankCode"/>
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
 										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
 									</td>
@@ -149,7 +146,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>차입금대분류</h4></td>
 									<td>
-										<select class="chosen-select form-control" name="deptClassification" id="form-field-select-3" data-placeholder="차입금대분류">
+										<select class="chosen-select form-control" name="majorCode" id="majorCode" data-placeholder="차입금대분류">
 											<option value=""></option>
 											<option value="008001">국내은행</option>
 											<option value="008002">저축은행</option>
@@ -186,21 +183,21 @@ tr td:first-child {
 								<tr>
 									<td><h4>이율</h4></td>
 									<td>
-										<input type="text" name="intRate" placeholder="(%)"/>
+										<input type="text" name="intRate" id="intRate" placeholder="(%)"/>
 									</td>
 								</tr>
 								<tr>
 									<td><h4>담당자</h4></td>
 									<td>
-										<input type="text" class="mgr-input" name="mgr" />
+										<input type="text" class="mgr-input" name="mgr" id="mgr"/>
 										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
-										<input type="text" class="mgr-call-input" name="mgrCall" />
+										<input type="text" class="mgr-call-input" name="mgrCall" id="mgrCall"/>
 									</td>
 								</tr>
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td>
-										<input type="text" class="search-input-width-first" name="depositNo"/>
+										<input type="text" class="search-input-width-first" name="depositNo" id="depositNo"/>
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
 										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
 									</td>
@@ -218,7 +215,7 @@ tr td:first-child {
 					&nbsp;
 					<button type="reset" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
 					&nbsp;
-					<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+					<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 					&nbsp;
 					<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 					&nbsp;
@@ -229,7 +226,7 @@ tr td:first-child {
 			<!-- PAGE CONTENT ENDS -->
 			
 			<!-- list -->
-				<table id="simple-table" class="table  table-bordered table-hover">
+				<table  class="table table-bordered table-hover">
 					<thead>
 						<tr>
 							<th class="center">
@@ -243,7 +240,8 @@ tr td:first-child {
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자</th>
+							<th class="center">만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -252,26 +250,32 @@ tr td:first-child {
 							<th class="center">계좌</th>
 						</tr>
 					</thead>
-
-					<tbody>
+					<tbody id="tbody-list">
 						<c:forEach items="${list }" var="vo" varStatus="status">
-							<tr>
-								<td class="center">
-									<label class="pos-rel"> <input type="checkbox" class="ace" /> <span class="lbl"></span></label>
-								</td>
-								<td class="center">${vo.code }</td>
-							<td>${vo.name }</td>
-							<td class="center">${vo.name }</td>
-							<td class="center">${vo.debtAmount }</td>
-							<td class="center">${vo.repayWay }</td>
-							<td class="center">${vo.debtDate } ~ ${vo.expDate }</td>
-							<td class="center">${vo.intRate }</td>
-							<td class="center">${vo.intPayWay }</td>
-							<td class="center">${vo.mgr }</td>
-							<td class="center">${vo.mgrCall }</td>
-							<td class="center">${vo.bankCode }</td>
-							<td class="center">${vo.depositNo }</td>
-							</tr>
+								<tr onclick="selectRow(this)" id="${vo.no }">
+									<form id="form${vo.no}">
+										<td class="center"><label class="pos-rel"> 
+											<input type="checkbox" name="no" value="${vo.no }" class="ace" /> 
+											<span class="lbl"></span>
+											</label>
+										</td>
+										<td class="center"><input type="hidden" name="code" value="${vo.code }">${vo.code }</td>
+										<td class="center"><input type="hidden" name="name" value="${vo.name }">${vo.name }</td>
+										<td class="center"><input type="hidden" name="majorCode" value="${vo.majorCode }">${vo.majorCode }</td>
+										<td class="center"><input type="hidden" name="debtAmount" value="${vo.debtAmount }">${vo.debtAmount }</td>
+										<td class="center"><input type="hidden" name="repayWay" value="${vo.repayWay }">${vo.repayWay }</td>
+										<td class="center"><input type="hidden" name="debtDate" value="${vo.debtDate }"> 
+										<fmt:formatDate value="${vo.debtDate }" pattern="yyyy-MM-dd" /></td>
+										<td class="center"><input type="hidden" name="expDate" value="${vo.expDate }">
+										<fmt:formatDate value="${vo.expDate }" pattern="yyyy-MM-dd" /></td>
+										<td class="center"><input type="hidden" name="intRate" value="${vo.intRate }">${vo.intRate }</td>
+										<td class="center"><input type="hidden" name="intPayWay" value="${vo.intPayWay }">${vo.intPayWay }</td>
+										<td class="center"><input type="hidden" name="mgr" value="${vo.mgr }">${vo.mgr }</td>
+										<td class="center"><input type="hidden" name="mgrCall" value="${vo.mgrCall }">${vo.mgrCall }</td>
+										<td class="center"><input type="hidden" name="bankCode" value="${vo.bankCode }">${vo.bankCode }</td>
+										<td class="center"><input type="hidden" name="depositNo" value="${vo.depositNo }">${vo.depositNo }</td>
+									</form>
+								</tr>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -280,15 +284,14 @@ tr td:first-child {
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
-
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
 $(function(){
-	 $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
+	 $('#debtExpDate').daterangepicker().prev().on(ace.click_event, function(){
 	      $(this).next().focus();
 	   });
 	 $('.icon-calendar').daterangepicker().prev().on(ace.click_event, function(){
@@ -296,6 +299,76 @@ $(function(){
 	   });
 	$(".chosen-select").chosen();
 });
+</script>
+<script>
+$(function(){
+   $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
+      $(this).next().focus();
+   });
+   $(".chosen-select").chosen(); 
+}
+);
+
+function selectRow(thisTr){
+	var dataForm = $("#form" + $(thisTr).attr('id'))[0];
+	var inputForm = $("#input-form")[0];
+	
+	inputForm.no.value = dataForm.no.value;
+	inputForm.code.value = dataForm.code.value;
+	inputForm.name.value = dataForm.name.value;
+	inputForm.debtAmount.value = dataForm.debtAmount.value;
+	//inputForm.elements["debtExpDate"].value = dataForm.elements["debtExpDate"].value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
+	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
+		if($(this).val() == dataForm.intPayWay.value){
+			$(this).attr("checked", true);
+		}
+	});	
+	inputForm.bankCode.value = dataForm.bankCode.value;		//bank name도 채워야함
+	
+	var options = inputForm.majorCode.options;					//SelectBox Options
+	for(var i=0 ; i < options.length; ++i){
+		if(options[i].value == dataForm.majorCode.value){
+			options[i].selected = "selected";
+			$("#majorCode_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+		}
+	}
+	
+	$(inputForm).find("input[name='repayWay']").each(function(i, e){
+		if($(this).val() == dataForm.repayWay.value){
+			$(this).attr("checked", true);
+		}
+			
+	});		
+	inputForm.intRate.value = dataForm.intRate.value;
+	inputForm.mgr.value = dataForm.mgr.value;
+	inputForm.mgrCall.value = dataForm.mgrCall.value;
+	inputForm.depositNo.value = dataForm.depositNo.value;		//bank name도 채워야함
+	//$("#bankName").val(dataForm.elements[].value);
+}
+
+function deleteChecked(){
+	var sendData = [];
+	var checkedList = $("#tbody-list input[type=checkbox]:checked");
+	checkedList.each(function(i, e){
+		sendData.push($(this).val());
+	});
+	
+	$.ajax({
+		url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val + "/deleteChecked",
+		type : "POST",
+		dataType : "json",
+		data : {"sendData" : sendData},
+		success: function(response){
+			checkedList.each(function(i, e){
+				$(this).remove();
+			})
+		},
+		error : function(xhr, error){
+			
+		}
+	})
+}
+
 </script>
 </body>
 </html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu61">
+
+	<update id="updateClosingYnByNo" parameterType="closingDate19Vo">
+		update	tb_closing_date
+		   set	update_userid = #{updateUserid }
+				, update_day = now()
+		        , closing_yn = true
+		 where	no = #{no }
+		;
+	</update>
+	
+	<insert id="insertTrialBalance" parameterType="trialBalance17Vo">
+		insert	into tb_trial_balance(
+		    closing_date_no
+		    , account_no
+		    , debtor_total
+		    , credit_total
+		    , debtor_spot_month
+		    , credit_spot_month
+		    , insert_userid
+		) values (
+			#{closingDateNo }
+		    , #{accountNo }
+		    , #{debtorTotal }
+		    , #{creditTotal }
+		    , #{debtorSpotMonth }
+		    , #{creditSpotMonth }
+		    , #{insertUserid }
+		);
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+</mapper>

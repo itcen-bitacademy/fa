@@ -50,4 +50,10 @@ public class Menu46Controller {
 		menu46Service.update(sTermDebtVo);
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
+	
+	@RequestMapping("/" + SUBMENU + "/delete")
+	public String delete(STermDebtVo sTermDebtVo) {
+		
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
 }
