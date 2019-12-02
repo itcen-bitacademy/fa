@@ -46,5 +46,22 @@ public class Menu48Controller {
 		menu48Service.insert(vo);
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
-	
+	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
+	public String update(LTermdebtVo vo) {
+		String[] dates=vo.getDebtExpDate().split("-");
+		
+		vo.setDebtDate(dates[0]);
+		vo.setExpDate(dates[1]);
+		
+		menu48Service.update(vo);
+		
+		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+	}
+	@RequestMapping(value = "/"+SUBMENU+"/delete", method = RequestMethod.POST)
+	public String delete(LTermdebtVo vo) {
+		System.out.println(vo.getNo());
+		menu48Service.delete(vo.getNo());
+		
+		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+	}
 }

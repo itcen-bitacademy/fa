@@ -118,7 +118,7 @@ $(function(){
 							<div class="control-group">
 								<label class="control-label" for="accountOrder">순번</label>
 								<div class="controls">
-									<input type="number" min="0001" max="1000" step="1" value="1" id="accountOrder" name="accountOrder" placeholder="순번" />
+									<input type="number" min="0001" max="1000" step="1" value="" id="accountOrder" name="accountOrder" placeholder="순번입력" />
 									<input type="hidden" id="no" name="no" value="" >
 								</div>
 							</div>
@@ -127,18 +127,19 @@ $(function(){
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">계정과목</label>
 								<div class="controls">
-									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="메뉴선택">
-										<c:forEach items="${accountList }" var="vo">
+									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목">
+											<option value="" data-accountName=""></option>
+										<c:forEach items="${accountList }" var="vo">											
 											<option value="${vo.accountNo}" data-accountName="${vo.accountName }">${vo.accountNo }</option>
 										</c:forEach>
 									</select> 
-									<input type="text" id="accountName" name="accountName" placeholder="자산" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
+									<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
 								
 								</div>
 							</div>
 							
 							&nbsp; &nbsp; &nbsp;
-							<button class="btn btn-info btn-small" type="submit" name="action"  value="getList" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
+							<button class="btn btn-info btn-small" type="submit" name="action"  value="getList" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/getList">조회</button>
 							&nbsp;
 							<button class="btn btn-danger btn-small" type="submit" name="action"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 							&nbsp;
@@ -146,7 +147,7 @@ $(function(){
 							&nbsp;
 							<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="action" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
 							&nbsp;
-							<button class="btn btn-default btn-small" type="reset">취소</button>
+							<button class="btn btn-default btn-small" type="reset" id="account-reset-btn" name="account-reset-btn" >취소</button>
 
 						</form>
 						<!-- PAGE CONTENT ENDS -->
@@ -194,8 +195,7 @@ $(function(){
 									<td>${vo.updateDay }</td>
 									<td id="no" style="display:none;">${vo.no }</td>
 								</tr>
-							</tbody>
-									
+							</tbody>				
 						</c:forEach>
 					</table>
 				</div>
@@ -249,9 +249,7 @@ $(function(){
         var accountNo = td.eq(1).text();
         var accountName = td.eq(2).text();
         var hiddenNo = td.eq(8).text();
-        
-        console.log(hiddenNo);
-        
+             
         //$(".selectedAccount").val(accountNo).trigger('change'); 
         //$("#selectedAccount").val(accountNo).prop("selected", true);
         //$("#selectedAccount").val("10230123").attr("selected", "selected");                       
@@ -266,11 +264,18 @@ $(function(){
      
     });
     
+    
     //계정과목에 따른 계정명 불러오기
     $('#selectedAccount').change(function () {
     	var accountName =$(this).find('option:selected').attr('data-accountName');
     	$('#accountName').val(accountName);
    	});
+    
+    
+    //리셋버튼 누를 시 초기화
+    $("#account-reset-btn").click(function() {
+    	$('#selectedAccount').val(null).trigger('chosen:updated');
+    });
     
 	</script>
 </body>

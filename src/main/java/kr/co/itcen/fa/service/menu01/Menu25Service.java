@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu01.Menu25Repository;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 
 /**
  * 
@@ -19,5 +20,9 @@ public class Menu25Service {
 	
 	public void test() {
 		menu25Repository.test();
+	}
+	
+	public void create(BankAccountVo bavo) {
+		menu25Repository.create(bavo);
 	}
 }

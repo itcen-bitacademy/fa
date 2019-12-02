@@ -26,10 +26,16 @@ public class Menu59Repository {
 		return count == 1;	
 	}
 	
-	//계정과목 처음 출력(대차대조표 출력)
+	//계정과목 처음 조회(대차대조표 출력)
 	public List<AccountManagement> getAllList(){
 				
 		return sqlSession.selectList("menu59.getAllList");
+	}
+
+	//계정과목 선택조회
+	public List<AccountManagement> getList(AccountManagement vo){
+				
+		return sqlSession.selectList("menu59.getList",vo);
 	}
 	
 	//계정과목 셀렉트 박스에 대한 데이터 출력
