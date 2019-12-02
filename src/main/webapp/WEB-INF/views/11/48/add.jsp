@@ -70,6 +70,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>장기차입금코드</h4></td>
 									<td>
+										<input type="hidden" name="no" />
 										<input type="text" name="code" />
 									</td>
 								</tr>
@@ -140,7 +141,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>차입금대분류</h4></td>
 									<td colspan="2">
-										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
+										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="form-field-select-3" >
 											<option value=""></option>
 											<option value="008001">국내은행</option>
 											<option value="008002">저축은행</option>
@@ -150,7 +151,7 @@ tr td:first-child {
 											<option value="008006">증권</option>
 										</select>
 									
-									</td>
+									</td>	
 								</tr>
 								<tr>
 								<td><h4>상환방법</h4></td>
@@ -206,9 +207,9 @@ tr td:first-child {
 				<div>
 					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;" type="submit">입력</button>
 					&nbsp;
-					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;">수정</button>
+					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 					&nbsp;
-					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;">삭제</button>
+					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" type="submit" >삭제</button>
 					&nbsp;
 					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
 					&nbsp;
@@ -236,7 +237,7 @@ tr td:first-child {
 							<th class="center">차입금액</th>
 							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자 - 만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -249,7 +250,7 @@ tr td:first-child {
 					<tbody>
 						<c:forEach items="${list }" var="ltermvo">
 						<tr>
-							<td class="center"><label class="pos-rel"> <input
+							<td class="center" lterm-no ="${ltermvo.no}"><label class="pos-rel"> <input
 									type="checkbox" class="ace" /> <span class="lbl"></span>
 							</label></td>
 							<td class="center">${ltermvo.code}</td>
@@ -315,16 +316,72 @@ $(function(){
 		
 		$("input[name=code]").val(td.eq(1).text());
 		$("input[name=name]").val(td.eq(2).text());
-	
-	
+		var major='';
+		switch (td.eq(3).text()){
+	    case '국내은행' :
+	    	major='008001';
+	        break;
+	    case '저축은행' :
+	    	major='008002';
+		    break;
+	    case '신용금고' :
+	    	major='008003';
+	        break;
+	    case '새마을금고' :
+	    	major='008004';
+	        break;
+	    case '외국계은행' :
+	    	major='008005';
+	    	break;
+	    case '증권' :
+	    	major='008006';
+	    	break;
+		}
+
+		$('#form-field-select-3').val(major).trigger('chosen:updated');  
 		
-		console.log($('.chosen-select').data());
-		$('.chosen-select').data({
-			placeholder :{ 
-				text:td.eq(3).text()
-			}
-		});
+		$("input[name=debtAmount]").val(td.eq(4).text());
+		$("input[name=debtExpDate]").val(td.eq(7).text());
+		var repayWay='';
+		switch (td.eq(6).text()){
+	    case '년' :
+	    	repayWay='Y';
+	        break;
+	    case '월' :
+	    	repayWay='M';
+		    break;
+	    case '만기' :
+	    	repayWay='E';
+	        break;
+		}
 		
+		$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
+		
+		
+		var rate = td.eq(8).text().split('%');
+		
+		
+		$("input[name=intRate]").val(rate[0]);
+		
+		var intPayWay='';
+		switch (td.eq(9).text()){
+	    case '년' :
+	    	intPayWay='Y';
+	        break;
+	    case '월' :
+	    	intPayWay='M';
+		    break;
+	    case '만기' :
+	    	intPayWay='E';
+	        break;
+		}
+		
+		$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
+		$("input[name=mgr]").val(td.eq(10).text());
+		$("input[name=mgrCall]").val(td.eq(11).text());
+		$("input[name=bankCode]").val(td.eq(12).text());
+		$("input[name=depositNo]").val(td.eq(13).text());
+		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
 	});
 });
 </script>

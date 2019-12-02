@@ -27,6 +27,7 @@
 			]]>
 		</selectKey>
 	</insert>
+	<!-- select list -->
 	<select id="selectAll" resultType="ldebtvo">
 	<![CDATA[
 		select no,
@@ -36,7 +37,7 @@
     		debt_amount as debtAmount,
     		repay_bal as repayBal,
     		repay_way as repayWay,
-    		concat(date_format(dept_date,'%Y/%m/%d'),'~',
+    		concat(date_format(dept_date,'%Y/%m/%d'),'-',
     		date_format(exp_date,'%Y/%m/%d')) as debtExpDate,
     		int_rate as intRate,
     		int_pay_way as intPayWay,
@@ -47,4 +48,37 @@
 		    from tb_l_term_debt
 	]]>
 	</select>
+	
+	<!-- update -->
+	<update id="update" parameterType="ldebtvo">
+	<![CDATA[
+		update tb_l_term_debt 
+		set name = #{name},
+			major_code = #{majorCode},
+			debt_amount = #{debtAmount},
+			repay_way=#{repayWay},
+			dept_date=#{debtDate},
+			exp_date=#{expDate},
+			int_rate=#{intRate},
+			int_pay_way=#{intPayWay},
+			int_amount=#{intAmount},
+			mgr=#{mgr},
+			mgr_call=#{mgrCall},
+			bank_code=#{bankCode},
+			deposit_no=#{depositNo},
+			update_id='u009',
+			update_date=now()
+		where no=#{no}
+	
+	]]>
+	</update>
+	<!-- delete -->
+	<update id="delete" parameterType="long">
+	<![CDATA[
+		update tb_l_term_debt 
+		set delete_flag='Y'
+		where no=#{no}
+	
+	]]>
+	</update>
 </mapper>
