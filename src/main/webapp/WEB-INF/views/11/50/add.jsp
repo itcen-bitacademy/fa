@@ -260,9 +260,9 @@ tr td:first-child {
 							<th class="center">위험등급</th>
 						</tr>
 					</thead>
-						<tbody>
+						<tbody id="tbody-list">
 						<c:forEach items="${list}" var="vo" varStatus="status">
-							<tr>
+							<tr onclick="selectRow(this)">
 								<td class="center" data-no ="${vo.no}"><label class="pos-rel">
 								<input type="checkbox" class="ace" /> <span class="lbl"></span>
 								</label></td>
@@ -681,7 +681,68 @@ tr td:first-child {
 			})
 		});
 	});
-	
+
+
+	function selectRow(thisTr){
+		var dataForm = $("#form" + $(thisTr).attr('id'))[0];
+		var inputForm = $("#input-form")[0];
+		
+		inputForm.no.value = dataForm.no.value;
+		inputForm.code.value = dataForm.code.value;
+		inputForm.name.value = dataForm.name.value;
+		inputForm.debtAmount.value = dataForm.debtAmount.value;
+		//inputForm.elements["debtExpDate"].value = dataForm.elements["debtExpDate"].value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
+		$(inputForm).find("input[name='intPayWay']").each(function(i, e){
+			if($(this).val() == dataForm.intPayWay.value){
+				$(this).attr("checked", true);
+			}
+		});	
+		inputForm.bankCode.value = dataForm.bankCode.value;		//bank name도 채워야함
+		
+		var options = inputForm.majorCode.options;					//SelectBox Options
+		for(var i=0 ; i < options.length; ++i){
+			if(options[i].value == dataForm.majorCode.value){
+				options[i].selected = "selected";
+				$("#majorCode_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+			}
+		}
+		
+		$(inputForm).find("input[name='repayWay']").each(function(i, e){
+			if($(this).val() == dataForm.repayWay.value){
+				$(this).attr("checked", true);
+			}
+				
+		});		
+		inputForm.intRate.value = dataForm.intRate.value;
+		inputForm.mgr.value = dataForm.mgr.value;
+		inputForm.mgrCall.value = dataForm.mgrCall.value;
+		inputForm.depositNo.value = dataForm.depositNo.value;		//bank name도 채워야함
+		//$("#bankName").val(dataForm.elements[].value);
+	}
+
+	function deleteChecked(){
+		var sendData = [];
+		var checkedList = $("#tbody-list input[type=checkbox]:checked");
+		checkedList.each(function(i, e){
+			sendData.push($(this).val());
+		});
+		
+		$.ajax({
+			url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val + "/deleteChecked",
+			type : "POST",
+			dataType : "json",
+			data : {"sendData" : sendData},
+			success: function(response){
+				checkedList.each(function(i, e){
+					$(this).remove();
+				})
+			},
+			error : function(xhr, error){
+				
+			}
+		})
+	}
+
 </script>
 </body>
 </html>
