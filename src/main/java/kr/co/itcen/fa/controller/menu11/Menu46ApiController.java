@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,12 +21,11 @@ public class Menu46ApiController {
 	@Autowired
 	Menu46Service menu46Service;
 	
+	//배열로 넘어온거는 '[]' 붙여줘야한다.
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
-	public JSONResult deleteChecked(@RequestParam List<String>sendData) {
-		sendData.forEach((item) -> {
-			System.out.println("item :" + item);
-		});
-		return null;
+	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
+		menu46Service.deleteChecked(noList);
+		return JSONResult.success("success");
 	}
 }

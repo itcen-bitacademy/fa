@@ -419,11 +419,12 @@ tr td:first-child {
 	
 	// Button으로 사채코드를 받아서 해당 사채 데이터 조회하기
 	$(function(){
+		
 		$(document).ready(function(){
 			$("#selectone").click(function(){
 			    var getDebtcodeVal = $("#debtcode").val();
 			    alert(getDebtCodeVal);
-			     $.ajax({
+			    /* $.ajax({
 		            url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/selectone",
 		            type : "get",
 		            data : {'debtcode' : getDebtcodeVal}, //보낼 데이터
@@ -434,7 +435,7 @@ tr td:first-child {
 		            error : function(jqXHR, status, e){
 						console.error(status + " : " + e);
 					}
-		        });
+		        }); */
 			});
 		});
 	});

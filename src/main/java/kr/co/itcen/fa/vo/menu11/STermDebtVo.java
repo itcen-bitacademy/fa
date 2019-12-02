@@ -1,5 +1,8 @@
 package kr.co.itcen.fa.vo.menu11;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
@@ -81,7 +84,7 @@ public class STermDebtVo {
 	public void setDebtExpDate(String debtExpDate) {
 		this.debtExpDate = debtExpDate;
 	}
-	public Date getDebtDate() {
+	public Date getDebtDate() throws ParseException {
 		return debtDate;
 	}
 	public void setDebtDate(Date debtDate) {
