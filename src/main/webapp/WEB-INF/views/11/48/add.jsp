@@ -383,6 +383,7 @@ $(function(){
 		$("input[name=depositNo]").val(td.eq(13).text());
 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
 	});
+	
 	$("#clear").click(function(){ 
 		 $('#majorcode-field-select').val('초기값').trigger('chosen:updated');
          $('#dangercode-field-select').val('초기값').trigger('chosen:updated');
