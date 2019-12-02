@@ -11,6 +11,7 @@ public class CustomerVo {
 	private String zipCode;
 	private String address;
 	private String detailAddress;
+	private String addressAll;
 	private String phone;
 	private String conditions;
 	private String item;
@@ -20,6 +21,8 @@ public class CustomerVo {
 	private String managerEmail;
 	private String depositNo;
 	private String depositHost;
+	private String bankCode;
+	private String bankName;
 	private String deleteFlag;
 	private String insertUserid;
 	private String insertDay;
@@ -66,6 +69,12 @@ public class CustomerVo {
 	}
 	public void setDetailAddress(String detailAddress) {
 		this.detailAddress = detailAddress;
+	}
+	public String getAddressAll() {
+		return addressAll;
+	}
+	public void setAddressAll(String addressAll) {
+		this.addressAll = addressAll;
 	}
 	public String getPhone() {
 		return phone;
@@ -121,6 +130,18 @@ public class CustomerVo {
 	public void setDepositHost(String depositHost) {
 		this.depositHost = depositHost;
 	}
+	public String getBankCode() {
+		return bankCode;
+	}
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
 	public String getDeleteFlag() {
 		return deleteFlag;
 	}
@@ -151,5 +172,17 @@ public class CustomerVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
+	@Override
+	public String toString() {
+		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", corporationNo=" + corporationNo
+				+ ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress + ", addressAll="
+				+ addressAll + ", phone=" + phone + ", conditions=" + conditions + ", item=" + item + ", openDate="
+				+ openDate + ", jurisdictionOffice=" + jurisdictionOffice + ", managerName=" + managerName
+				+ ", managerEmail=" + managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost
+				+ ", bankCode=" + bankCode + ", bankName=" + bankName + ", deleteFlag=" + deleteFlag + ", insertUserid="
+				+ insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay="
+				+ updateDay + "]";
+	}
+	
 	
 }
