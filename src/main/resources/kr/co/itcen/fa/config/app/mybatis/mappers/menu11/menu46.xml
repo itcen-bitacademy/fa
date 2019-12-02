@@ -47,6 +47,23 @@
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
+			where delete_flag="N"
+		]]>
+	</select>
+	
+	<select id="getSearchedList" parameterType="Map" resultType="stermdebtvo" resultMap="stermdebtResult">
+		<![CDATA[
+			select 
+			no, code, major_code, name,
+			debt_amount, repay_bal, repay_way,
+			debt_date, exp_date, int_rate,
+			int_pay_way, int_amount, mgr,
+			mgr_call, bank_code, deposit_no, 
+			account_no, voucher_no, delete_flag,
+			insert_id, insert_date, update_id,
+			update_date 
+			from tb_s_term_debt
+			where code LIKE CONCAT(#{code}, "%") and debt_date LIKE CONCAT(#{financialYear}, "%")
 		]]>
 	</select>
 	
@@ -57,11 +74,11 @@
 			mgr_call, bank_code, deposit_no, account_no, voucher_no, 
 			delete_flag,insert_id, insert_date, update_id, update_date)
 			values (null, #{code }, #{name }, #{majorCode}, ${debtAmount }, 
-			${debtAmount }, #{repayWay }, now(), now(),
+			${debtAmount }, #{repayWay }, #{debtDate}, #{expDate},
 			${intRate }, #{intPayWay }, ${intAmount }, #{mgr }, 
 			#{mgrCall }, ${bankCode },
 			#{depositNo }, 123, 123, 
-			'N', #{insertId }, now(), null, now()) 
+			'N', #{insertId }, now(), null, null) 
 		]]>
 	</insert>
 	
@@ -74,4 +91,16 @@
 			where no=${no }
 		]]>
 	</update>
+	
+	<update id="updateDeleteFlag" parameterType="List">
+		<![CDATA[
+			update tb_s_term_debt
+			set delete_flag = "Y"
+			where no IN 	
+		]]>
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			${item}
+		</foreach>
+	</update>
+	
 </mapper>

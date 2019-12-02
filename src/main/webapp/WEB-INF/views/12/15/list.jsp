@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -50,7 +50,50 @@
 		});
 		
 		$("#btn-select").on("click", function(){
-			location.href("")
+			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?no="+$("#no").val();
+		});
+		
+		$("#customer-table tr.rows").on("click", function(event){
+			if (event.target.type == 'checkbox') return;
+			
+			var td = $(this).children();
+			var no = td.eq(1).text();
+			var name = td.eq(2).text();
+			var ceo = td.eq(3).text();
+			var corporationNo = td.eq(4).text();
+			var zipCode = td.eq(5).text();
+			var address = td.eq(6).text();
+			var detailAddress = td.eq(7).text();
+			var phone = td.eq(8).text();
+			var conditions = td.eq(9).text();
+			var item = td.eq(10).text();
+			var openDate = td.eq(11).text();
+			var jurisdictionOffice = td.eq(12).text();
+			var managerName = td.eq(13).text();
+			var managerEmail = td.eq(14).text();
+			var depositNo = td.eq(15).text();
+			var depositHost = td.eq(16).text();
+			var bankCode = td.eq(17).text();
+			var bankName = td.eq(18).text();
+			
+			$("#no").val(no);
+			$("#name").val(name);
+			$("#ceo").val(ceo);
+			$("#corporationNo").val(corporationNo);
+			$("#zipCode").val(zipCode);
+			$("#address").val(address);
+			$("#detailAddress").val(detailAddress);
+			$("#phone").val(phone);
+			$("#conditions").val(conditions);
+			$("#item").val(item);
+			$("#openDate").val(openDate);
+			$("#jurisdictionOffice").val(jurisdictionOffice);
+			$("#managerName").val(managerName);
+			$("#managerEmail").val(managerEmail);
+			$("#depositNo").val(depositNo);
+			$("#depositHost").val(depositHost);
+			$("#bankCode").val(bankCode);
+			$("#bankName").val(bankName);
 		});
 	})
 	
@@ -107,39 +150,39 @@
 				<div class="span12">
 					<div class="row-fluid">
 						<div class="span12">
-							<form id="form-customer" class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+							<form id="form-customer" class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add" method="post">
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label form-field-1">사업자번호</label>
 										<div class="controls">
-											<input class="span6" type="text" id="form-field-1">
+											<input class="span6" type="text" id="no" name="no">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">대표자</label>
 										<div class="controls">
-											<input type="text" id="form-field-1">
+											<input type="text" id="ceo" name="ceo">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">주소</label>
 										<div class="controls">
 											<span class="btn btn-small btn-info" onclick="execDaumPostcode()"><i class="icon-search nav-search-icon"></i></span>
-											<input class="span2" type="text" id="zip-code" readonly>
-											<input class="span6" type="text" id="address" readonly>
-											<input class="span9" type="text" id="detail-address">
+											<input class="span2" type="text" id="zipCode" readonly name="zipCode">
+											<input class="span6" type="text" id="address" readonly name="address">
+											<input class="span9" type="text" id="detailAddress" name="detailAddress">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">업태</label>
 										<div class="controls">
-											<input type="text" id="form-field-1">
+											<input type="text" id="conditions" name="conditions">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">개설일자</label>
 										<div class="row-fluid input-append span2">
-											<input class="cl-date-picker" type="text" data-date-format="yyyy-mm-dd">
+											<input class="cl-date-picker" type="text" id="openDate" data-date-format="yyyy-mm-dd" name="openDate">
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -148,14 +191,14 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">담당자명</label>
 										<div class="controls">
-											<input type="text" id="form-field-1">
+											<input type="text" id="managerName" name="managerName">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">입금계좌번호</label>
 										<div class="controls">
 											<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-											<input class="span6" type="text" id="form-field-1">
+											<input class="span6" type="text" id="depositNo" name="depositNo">
 										</div>
 									</div>
 								</div>
@@ -163,19 +206,19 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">상호</label>
 										<div class="controls">
-											<input class="span7" type="text" id="form-field-1">
+											<input class="span7" type="text" id="name" name="name">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">법인번호</label>
 										<div class="controls">
-											<input class="span5" type="text" id="form-field-1">
+											<input class="span5" type="text" id="corporationNo" name="corporationNo">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">전화번호</label>
 										<div class="controls">
-											<input class="span5" type="text" id="form-field-1">
+											<input class="span5" type="text" id="phone" name="phone">
 										</div>
 									</div>
 									<div class="control-group">
@@ -183,32 +226,32 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">종목</label>
 										<div class="controls">
-											<input type="text" id="form-field-1">
+											<input type="text" id="item" name="item">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">관할사무소</label>
 										<div class="controls">
-											<input type="text" id="form-field-1">
+											<input type="text" id="jurisdictionOffice" name="jurisdictionOffice">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">메일</label>
 										<div class="controls">
-											<input class="span7" type="text" id="form-field-1">
+											<input class="span7" type="text" id="managerEmail" name="managerEmail">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">예금주</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" readonly>
+											<input type="text" id="depositHost" readonly name="depositHost">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label form-field-1">은행</label>
 										<div class="controls">
-											<input class="span2" type="text" id="form-field-1" readonly>
-											<input class="span6" type="text" id="form-field-1" readonly>
+											<input class="span2" type="text" id="form-field-1" readonly name="bankCode">
+											<input class="span6" type="text" id="form-field-1" readonly name="bankName">
 										</div>
 									</div>
 								</div>
@@ -223,7 +266,7 @@
 								<div class="hr hr-18 dotted"></div>
 								<div class="row-fluid" style="background-color:white">
 									<div id="sample-table-2_length" class="dataTables_length">
-										<button id="btn-select" class="btn btn-info btn-small" onclick="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
+										<button id="btn-select" class="btn btn-info btn-small">조회</button>
 										<button id="btn-add" class="btn btn-primary btn-small">입력</button>
 										<button id="btn-update" class="btn btn-warning btn-small">수정</button>
 										<button id="btn-delete" class="btn btn-danger btn-small">삭제</button>
@@ -264,64 +307,37 @@
 										</tr>
 									</thead>
 									<tbody role="alert" aria-live="polite" aria-relevant="all">
-										<tr class="odd">
-											<td class="center">
+										<c:forEach items="${customerList }" var="customer">
+											<tr class="rows">
+												<td class="center">
 												<label>
 													<input type="checkbox" class="ace">
 													<span class="lbl"></span>
 												</label>
-											</td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-										<tr class="even">
-											<td class="center">
-												<label>
-													<input type="checkbox" class="ace">
-													<span class="lbl"></span>
-												</label>
-											</td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
+												</td>
+												<td>${customer.no }</td>
+												<td>${customer.name }</td>
+												<td>${customer.ceo }</td>
+												<td>${customer.corporationNo }</td>
+												<td>${customer.addressAll }</td>
+												<td>${customer.phone }</td>
+												<td>${customer.conditions }</td>
+												<td>${customer.item }</td>
+												<td>${customer.openDate }</td>
+												<td>${customer.jurisdictionOffice }</td>
+												<td>${customer.managerName }</td>
+												<td>${customer.managerEmail }</td>
+												<td>${customer.depositNo }</td>
+												<td>${customer.depositHost }</td>
+												<td>${customer.bankCode }</td>
+												<td>${customer.bankName }</td>
+												<td>${customer.insertDay }</td>
+												<td>${customer.insertUserid }</td>
+												<td>${customer.updateDay }</td>
+												<td>${customer.updateUserid }</td>
+												<td>${customer.deleteFlag }</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

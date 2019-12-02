@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.repository.menu11;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,11 @@ public class Menu48Repository {
 		return count==1;
 	}
 
-	public List<LTermdebtVo> list() {
-		List<LTermdebtVo> list= sqlSession.selectList("menu48.selectAll");
+	public List<LTermdebtVo> list(String year, String code) {
+		Map<String,String> map = new HashMap<String, String>();
+		map.put("year", year);
+		map.put("code",code);
+		List<LTermdebtVo> list= sqlSession.selectList("menu48.selectAll",map);
 		return list;
 	}
 	public Boolean update(LTermdebtVo vo) {

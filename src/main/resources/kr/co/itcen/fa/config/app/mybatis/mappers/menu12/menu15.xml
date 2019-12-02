@@ -6,26 +6,25 @@
 		<![CDATA[
 		insert
 		  into tb_salescustomer
-		values (#{name })
+		values (#{no }, #{name }, #{ceo }, #{corporationNo }, #{zipCode }, #{address }, #{detailAddress }, #{phone }, #{conditions }, #{item }, 
+				#{openDate }, #{jurisdictionOffice }, #{managerName }, #{managerEmail }, #{depositNo }, #{depositHost }, 
+				#{insertUserid }, now(), null, null, 'N')
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
 	</insert>
 	
 	<select id="findAll" parameterType="string" resultType="salescustomervo">
 		<![CDATA[
-		select no, name, ceo, coporation_no as coporationNo, address, phone, conditions, item, open_date as openDate,
+		select no, name, ceo, corporation_no as corporationNo, zip_code as zipCode, address, detail_address as detailAddress, 
+			   concat(address, " (", zip_code, ")", " ", detail_address) as addressAll, phone, conditions, item, date_format(open_date, "%Y-%m-%d") as openDate,
 		       jurisdiction_office as jurisdictionOffice, manager_name as managerName, manager_email as managerEmail,
-		       deposit_no as depositNo, delete_flag as deleteFlag, insert_userid as insertUserid, insert_day as insertDay,
-		       update_userid as updateUserid, update_day as updateDay
+		       deposit_no as depositNo, case when delete_flag = 'Y' then '삭제' when delete_flag = 'N' then '' end as deleteFlag, 
+		       insert_userid as insertUserid, date_format(insert_day, "%Y-%m-%d %T") as insertDay,
+		       update_userid as updateUserid, date_format(update_day, "%Y-%m-%d %T") as updateDay
 		from tb_salescustomer
 		]]>
-		<if test="kwd != '%%' ">
+		<if test="_parameter != '%%' ">
 			<![CDATA[
-			where no like #{no }
+			where no like #{_parameter }
 			]]>	
 		</if>
 		<![CDATA[

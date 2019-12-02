@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu48Service;
@@ -30,11 +31,18 @@ public class Menu48Controller {
 	
 	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
-	public String list(Model model) {
-		List<LTermdebtVo> list = menu48Service.list();
+	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
+			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year) {
+		List<LTermdebtVo> list = menu48Service.list(year,code);
 		
 		model.addAttribute("list",list);
 		return MAINMENU + "/" + SUBMENU + "/add";
+	}
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
+	public String list(@RequestParam(value="code",required = false, defaultValue = "") String code,
+			@RequestParam(value="financialYear",required = false, defaultValue = "2019") int year) {
+		
+		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code;
 	}
 	@RequestMapping(value = "/"+SUBMENU+"/add", method = RequestMethod.POST)
 	public String add(LTermdebtVo vo) {

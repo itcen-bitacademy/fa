@@ -1,33 +1,38 @@
-package kr.co.itcen.fa.vo.menu12;
+package kr.co.itcen.fa.vo.menu02;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("salescustomervo")
+/**
+ * 
+ * @author 이지은 
+ * 매입거래처 테이블
+ *
+ */
+
+@Alias("purchasecustomer35vo")
 public class CustomerVo {
-	private String no;
-	private String name;
-	private String ceo;
-	private String corporationNo;
-	private String zipCode;
-	private String address;
-	private String detailAddress;
-	private String addressAll;
-	private String phone;
-	private String conditions;
-	private String item;
-	private String openDate;
-	private String jurisdictionOffice;
-	private String managerName;
-	private String managerEmail;
-	private String depositNo;
-	private String depositHost;
-	private String bankCode;
-	private String bankName;
-	private String deleteFlag;
-	private String insertUserid;
-	private String insertDay;
-	private String updateUserid;
-	private String updateDay;
+	private String no;						//사업자등록번호
+	private String name;					//상호
+	private String ceo;						//대표자
+	private String corporationNo;			//법인번호
+	private String zipCode;					//우편번호
+	private String address;					//도로명주소
+	private String detailAddress;			//상세주소
+	private String phone;					//전화번호
+	private String conditions;				//업태
+	private String item;					//종목
+	private String openDate;				//개설일자
+	private String jurisdictionOffice;		//관할사무소
+	private String managerName;				//거래처 담당자 성명
+	private String managerEmail;			//담당자 Email
+	private String depositNo;				//계좌번호
+	private String depositHost;				//예금주
+	private String insertUserid;			//입력자
+	private String insertDay;				//입력일자
+	private String updateUserid;			//수정자
+	private String updateDay;				//수정일자
+	private String deleteFlag;				//삭제 Flag
+	
 	public String getNo() {
 		return no;
 	}
@@ -69,12 +74,6 @@ public class CustomerVo {
 	}
 	public void setDetailAddress(String detailAddress) {
 		this.detailAddress = detailAddress;
-	}
-	public String getAddressAll() {
-		return addressAll;
-	}
-	public void setAddressAll(String addressAll) {
-		this.addressAll = addressAll;
 	}
 	public String getPhone() {
 		return phone;
@@ -130,24 +129,6 @@ public class CustomerVo {
 	public void setDepositHost(String depositHost) {
 		this.depositHost = depositHost;
 	}
-	public String getBankCode() {
-		return bankCode;
-	}
-	public void setBankCode(String bankCode) {
-		this.bankCode = bankCode;
-	}
-	public String getBankName() {
-		return bankName;
-	}
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
-	}
-	public String getDeleteFlag() {
-		return deleteFlag;
-	}
-	public void setDeleteFlag(String deleteFlag) {
-		this.deleteFlag = deleteFlag;
-	}
 	public String getInsertUserid() {
 		return insertUserid;
 	}
@@ -172,17 +153,21 @@ public class CustomerVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
+	public String getDeleteFlag() {
+		return deleteFlag;
+	}
+	public void setDeleteFlag(String deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+	
 	@Override
 	public String toString() {
 		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", corporationNo=" + corporationNo
-				+ ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress + ", addressAll="
-				+ addressAll + ", phone=" + phone + ", conditions=" + conditions + ", item=" + item + ", openDate="
-				+ openDate + ", jurisdictionOffice=" + jurisdictionOffice + ", managerName=" + managerName
-				+ ", managerEmail=" + managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost
-				+ ", bankCode=" + bankCode + ", bankName=" + bankName + ", deleteFlag=" + deleteFlag + ", insertUserid="
+				+ ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress + ", phone="
+				+ phone + ", conditions=" + conditions + ", item=" + item + ", openDate=" + openDate
+				+ ", jurisdictionOffice=" + jurisdictionOffice + ", managerName=" + managerName + ", managerEmail="
+				+ managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost + ", insertUserid="
 				+ insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay="
-				+ updateDay + "]";
+				+ updateDay + ", deleteFlag=" + deleteFlag + "]";
 	}
-	
-	
 }

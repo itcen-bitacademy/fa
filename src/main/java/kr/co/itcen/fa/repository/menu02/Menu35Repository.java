@@ -1,10 +1,12 @@
 package kr.co.itcen.fa.repository.menu02;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.itcen.fa.vo.menu02.TestVo;
+import kr.co.itcen.fa.vo.menu02.CustomerVo;
 
 /**
  * 
@@ -18,10 +20,20 @@ public class Menu35Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public void test() {
-		TestVo testVo = new TestVo();
-		testVo.setName("이름넣기"); // 이름
-		
-		sqlSession.insert("menu35.save", testVo);
+//	public void test() {
+//		CustomerVo customerVo = new CustomerVo();
+//		customerVo.setName("purchasecustomer35vo"); // 이름
+//		
+//		sqlSession.insert("menu35.getList", customerVo);
+//	}
+	
+	public List<CustomerVo> getList(){
+		List<CustomerVo> result = sqlSession.selectList("menu35.getList");
+		return result;
+	}
+	
+	public Boolean insert(CustomerVo vo) {
+		int count = sqlSession.insert("menu35.insert", vo);
+		return count == 1;
 	}
 }

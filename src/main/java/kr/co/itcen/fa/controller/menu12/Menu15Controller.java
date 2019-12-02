@@ -1,13 +1,17 @@
 package kr.co.itcen.fa.controller.menu12;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu15Service;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
 
 /**
@@ -32,14 +36,18 @@ public class Menu15Controller {
 	}
 	
 	@RequestMapping("/" + SUBMENU + "/list")
-	public String list(Model model, String no) {
+	public String list(Model model, @RequestParam(value = "no", required = false) String no) {
+		System.out.println(no);
 		model.addAttribute("customerList", menu15Service.getAllCustomer(no));
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String add(CustomerVo customerVo) {
+	public String add(CustomerVo customerVo, HttpSession session) {
+		UserVo userVo = (UserVo)session.getAttribute("authUser");
+		customerVo.setInsertUserid(userVo.getId());
+		System.out.println(customerVo);
 		menu15Service.addCustomer(customerVo);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?no=" + customerVo.getNo();
 	}
 }

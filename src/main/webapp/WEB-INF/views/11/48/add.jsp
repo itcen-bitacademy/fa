@@ -387,8 +387,9 @@ $(function(){
 	
 	
 	$("#clear").click(function(){ 
-		 $('#majorcode-field-select').val('초기값').trigger('chosen:updated');
-         $('#dangercode-field-select').val('초기값').trigger('chosen:updated');
+		 $('input').val('');
+		 $('#form-field-select-3').val('초기값').trigger('chosen:updated');
+		 
 	});
 	
 });

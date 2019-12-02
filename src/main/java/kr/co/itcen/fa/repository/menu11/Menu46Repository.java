@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.repository.menu11;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,13 @@ public class Menu46Repository {
 	public Boolean update(STermDebtVo sTermDebtVo) {
 		int count = sqlSession.update("menu46.update", sTermDebtVo);
 		return (count==1);
+	}
+	
+	public void updateDeleteFlag(List<Long> noList) {
+		sqlSession.update("menu46.updateDeleteFlag", noList);
+	}
+	
+	public List<STermDebtVo> getSearchedList(Map map){
+		return sqlSession.selectList("menu46.getSearchedList", map);
 	}
 }
