@@ -17,7 +17,46 @@
 </style>
 
 <script
-	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js">
+	$(function() {
+		$("#simple-table-1 tr").click(function(){ 
+			var tr = $(this);
+			var td = tr.children();
+			
+			$("input[name=cardNo]").val(td.eq(1).text());
+			$("input[name=cardNoOld]").val(td.eq(1).text());
+			$("input[name=validity]").val(td.eq(2).text());
+			$("input[name=cvc]").val(td.eq(3).text());
+			$("input[name=user]").val(td.eq(4).text());
+			$("input[name=issuer]").val(td.eq(5).text());
+			$("input[name=depositNo]").val(td.eq(6).text());
+			$("input[name=depositHost]").val(td.eq(7).text());
+			$("input[name=password]").val(td.eq(8).text());	
+			$("input[name=bankCode]").val(td.eq(9).text());
+			$("input[name=bankName]").val(td.eq(10).text());
+			$("input[name=company]").val(td.eq(11).text());
+			$("input[name=limitation]").val(td.eq(12).text());
+			
+			
+			
+		});
+		
+		
+		$('#selectAll').click(function(event) {   
+		    if(this.checked) {
+		        // Iterate each checkbox
+		        $(':checkbox').each(function() {
+		            this.checked = true;                        
+		        });
+		    } else {
+		        $(':checkbox').each(function() {
+		            this.checked = false;                       
+		        });
+		    }
+		})
+		
+	
+</script>
 
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -32,19 +71,22 @@
 
 
 
+
 				<div class="page-header position-relative">
 					<h1 class="pull-left">카드 관리</h1>
 				</div>
 
-				<div class="row-fluid">
-					<div class="span6">
-						<div class="tabbable">
-							<form class="form-horizontal">
+
+				<form class="form-horizontal" method="post">
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="tabbable">
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">카드 번호</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="카드 번호" />
+										<input type="text" id="form-field-1" name="cardNo"
+											placeholder="카드 번호" />
 									</div>
 								</div>
 
@@ -52,7 +94,8 @@
 									<label class="control-label" for="form-field-1">사용자</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="사용자" />
+										<input type="text" id="form-field-1" name="user"
+											placeholder="사용자" />
 									</div>
 								</div>
 
@@ -62,14 +105,15 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="카드발급자" />
+										<input type="text" id="form-field-1" name="issuer"
+											placeholder="카드발급자" />
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">계좌 번호 </label>
-									<input type="text" id="form-field-1" placeholder="계좌번호" /> <input
-										type="text" value="예금주" readonly />
+									<input type="text" id="form-field-1" name="depositNo"
+										placeholder="계좌번호" /> <input type="text" value="예금주" readonly />
 
 								</div>
 
@@ -85,44 +129,43 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="한도" />
+										<input type="number"  id="form-field-1" name="limitation"
+											placeholder="한도"  />
 									</div>
 								</div>
 
-
-
-							</form>
+							</div>
 						</div>
-					</div>
 
-					<div class="span6">
-						<form class="form-horizontal">
+						<div class="span6">
 							<div class="control-group">
 								<div>
 									<label class="control-label" for="form-field-1">유효기간 </label> <input
-										type="text" id="form-field-1" placeholder="MM" /> / <input
-										type="text" id="form-field-1" placeholder="YY" />
+										type="text" id="form-field-1" name="validityMM"
+										placeholder="MM" /> / <input type="text" id="form-field-1"
+										name="validityYY" placeholder="YY" />
 								</div>
 								<div>
 									<label class="control-label" for="form-field-1">CVC </label> <input
-										type="text" id="form-field-1" placeholder="CVC" />
+										type="text" id="form-field-1" name="cvc" placeholder="CVC" />
 								</div>
 							</div>
 
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">교통카드 유무
-								</label> <input name="form-field-radio" type="radio" class="ace" checked />
-								<span class="lbl"> Yes</span> <input name="form-field-radio"
-									type="radio" class="ace" /> <span class="lbl"> No</span>
+								</label> <input name="transportation" type="radio" class="ace"
+									value="true" checked /> <span class="lbl"> Yes</span> <input
+									name="transportation" type="radio" class="ace" value="false" />
+								<span class="lbl"> No</span>
 
 							</div>
 
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">해외사용 여부
-								</label> <input name="form-field-radio2" type="radio" class="ace"
-									checked /> <span class="lbl"> Yes</span> <input
-									name="form-field-radio2" type="radio" class="ace" /> <span
-									class="lbl"> No</span>
+								</label> <input name="abroad" type="radio" class="ace" value="true"
+									checked /> <span class="lbl"> Yes</span> <input name="abroad"
+									type="radio" class="ace" value="false" /> <span class="lbl">
+									No</span>
 
 							</div>
 
@@ -130,7 +173,8 @@
 								<label class="control-label" for="form-field-1">비밀번호 </label>
 
 								<div class="controls">
-									<input type="text" id="form-field-1" placeholder="비밀번호" />
+									<input type="text" id="form-field-1" name="password"
+										placeholder="비밀번호" />
 								</div>
 							</div>
 
@@ -138,32 +182,35 @@
 								<label class="control-label" for="form-field-1">카드사 </label>
 
 								<div class="controls">
-									<input type="text" id="form-field-1" placeholder="카드사" />
+									<input type="text" id="form-field-1" name="company"
+										placeholder="카드사" />
 								</div>
 							</div>
 
 
-						</form>
+						</div>
+						<!-- /.span -->
 					</div>
-					<!-- /.span -->
-				</div>
-				<!-- /row -->
-				<!-- /.row-fluid -->
+					<!-- /row -->
+					<!-- /.row-fluid -->
 
-				<div class="hr hr-18 dotted"></div>
-				<!-- buttons -->
-				<div class="row-fluid">
-					<div class="span8">
-						<button class="btn btn-info btn-small">조회</button>
-						<button class="btn btn-danger btn-small">삭제</button>
-						<button class="btn btn-warning btn-small">수정</button>
-						<button class="btn btn-primary btn-small">입력</button>
-						<button class="btn btn-default btn-small">취소</button>
+					<div class="hr hr-18 dotted"></div>
+					<!-- buttons -->
+					<div class="row-fluid">
+						<div class="span8">
+							<button class="btn btn-info btn-small">조회</button>
+							<button class="btn btn-danger btn-small"
+								formaction="${pageContext.request.contextPath }/01/05/remove">삭제</button>
+							<button class="btn btn-warning btn-small">수정</button>
+							
+							<button type="submit" class="btn btn-primary btn-small"
+								formaction="${pageContext.request.contextPath }/01/05/create">입력</button>
+							<button class="btn btn-default btn-small">취소</button>
+						</div>
+
 					</div>
-
-				</div>
-				<div class="hr hr-18 dotted"></div>
-
+					<div class="hr hr-18 dotted"></div>
+				</form>
 
 				<!-- Tables -->
 				<div class="row-fluid">
@@ -198,33 +245,35 @@
 							</thead>
 
 							<tbody>
-								<tr>
-									<td class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></td>
 
+								<c:forEach items='${list }' var='vo' varStatus='status'>
+									<tr>
+										<td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td>
 
-									<td>1111-1111-1111-1111</td>
-									<td>12/23</td>
-									<td>111</td>
-									<td>김승곤</td>
-									<td>안대혁</td>
-									<td>111-11-11111</td>
-									<td>김승곤</td>
-									<td>****</td>
-									<td>11111111</td>
-									<td>국민은행</td>
-									<td>삼성</td>
-									<td>100,000</td>
-									<td>가능</td>
-									<td>가능</td>
-									<td>2019-11-18</td>
-									<td>김승곤</td>
-									<td>2019-11-27</td>
-									<td>승곤</td>
+										<td>${vo.cardNo }</td>
+										<td>${vo.validity }</td>
+										<td>${vo.cvc}</td>
+										<td>${vo.user}</td>
+										<td>${vo.issuer}</td>
+										<td>${vo.depositNo }</td>
+										<td>${vo.depositHost}</td>
+										<td>${vo.password }</td>
+										<td>${vo.bankCode }</td>
+										<td>${vo.bankName }</td>
+										<td>${vo.company }</td>
+										<td>${vo.limitation }</td>
+										<td>${vo.transportation }</td>
+										<td>${vo.abroad }</td>
+										<td>${vo.insertDay }</td>
+										<td>${vo.insertUserId }</td>
+										<td>${vo.updateDay }</td>
+										<td>${vo.updateUserId }</td>
 
+									</tr>
 
-								</tr>
+								</c:forEach>
 
 							</tbody>
 						</table>
