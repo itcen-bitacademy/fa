@@ -38,7 +38,7 @@ public class Menu05Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
 		List<CardVo> list = menu05Service.list();
-		System.out.println(list);
+		
 		model.addAttribute("list", list);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
@@ -52,17 +52,16 @@ public class Menu05Controller {
 		vo.setValidity(validity);
 		vo.setInsertUserId(uvo.getName());
 		vo.setLimitation(limitation.get());
-		System.out.println(vo);
-		menu05Service.create(vo);
+		
+		
+		if(!menu05Service.exist(vo)) {
+			menu05Service.create(vo);
+		}
+		
 		
 		return "redirect:/"+MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	@RequestMapping(value="/" + SUBMENU + "/remove", method=RequestMethod.POST)
-	public String remove(@ModelAttribute CardVo vo) {
-		menu05Service.remove(vo);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
-	}
 	
 	@RequestMapping(value="/" + SUBMENU + "/update", method=RequestMethod.POST)
 	public String update(@ModelAttribute CardVo vo, @AuthUser UserVo uvo, 
@@ -74,12 +73,19 @@ public class Menu05Controller {
 		vo.setUpdateUserId(uvo.getName());
 		vo.setLimitation(limitation.get());
 		vo.setCardNoOld(cardNoOld);
-		System.out.println(vo);
+
 		menu05Service.update(vo);
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	
+	@RequestMapping(value="/" + SUBMENU + "/remove", method=RequestMethod.POST)
+	public String remove(@ModelAttribute CardVo vo) {
+		
+		menu05Service.remove(vo);
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+	}
+		
 	
 	
 	
