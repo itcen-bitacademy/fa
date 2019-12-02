@@ -51,8 +51,8 @@ public class Menu61Controller {
 		
 		model.addAttribute("year", year);
 
-		List<ClosingDateVo> closingDateList = menu20Service.selectClosingDateByYear(year);
-		model.addAttribute("closingDateList", closingDateList);
+//		List<ClosingDateVo> closingDateList = menu20Service.selectClosingDateByYear(year);
+//		model.addAttribute("closingDateList", closingDateList);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
