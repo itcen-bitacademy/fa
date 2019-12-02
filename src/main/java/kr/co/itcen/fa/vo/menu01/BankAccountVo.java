@@ -5,6 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("bankaccountvo")
 public class BankAccountVo {
 	private String depositNo;
+	private String depositOld;
 	private String depositHost;
 	private String makeDate;
 	private int balance;
@@ -125,6 +126,12 @@ public class BankAccountVo {
 	}
 	public void setBankPhoneCall(String bankPhoneCall) {
 		this.bankPhoneCall = bankPhoneCall;
+	}	
+	public String getDepositOld() {
+		return depositOld;
+	}
+	public void setDepositOld(String depositOld) {
+		this.depositOld = depositOld;
 	}
 	@Override
 	public String toString() {

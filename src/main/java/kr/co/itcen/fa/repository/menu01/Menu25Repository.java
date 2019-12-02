@@ -1,5 +1,8 @@
 package kr.co.itcen.fa.repository.menu01;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,5 +33,18 @@ public class Menu25Repository {
 		bavo.setAccountNo("12348");
 		// 191202 sql문 구현 필요함
 		sqlSession.insert("menu25.create", bavo);
+	}
+
+	public void update(BankAccountVo bavo) {
+		// 다른 조와 데이터 통합 전 임의의 Test data insert
+		bavo.setAccountNo("12348");
+				
+		// TODO Auto-generated method stub		
+		sqlSession.update("menu25.update", bavo);
+	}
+
+	public void delete(BankAccountVo bavo) {
+		// TODO Auto-generated method stub
+		sqlSession.delete("menu25.delete", bavo);
 	}
 }
