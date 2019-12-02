@@ -15,20 +15,14 @@
 <script src="/fa/ace/assets/js/ace.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
 <script type="text/javascript">
-	jQuery(function($) {
-		$("#id-date-picker-1").datepicker({
-			showOtherMonths : true,
-			selectOtherMonths : false,
-		});
-	});
-	
 	$(function(){
 		$(".chosen-select").chosen(); 
 	});
 	
-	jQuery(function($) {
+	$(function($) {
 		$("#delete").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 		});
@@ -75,7 +69,7 @@
 									<label class="control-label" for="form-field-section-name">품목 대분류명</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
-											<input class="span5" id="form-field-section-name" name="section-name" type="text" readonly/>
+											<input class="span5" id="form-field-section-name" name="section_name" type="text" readonly/>
 											<span class="add-on">
 												<a href="#" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 											</span>
@@ -86,7 +80,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-name">생산공장명</label>
 									<div class="controls">
-										<input class="span5" type="text" id="form-field-factory-name" name="factory-name" placeholder="생산공장명"/>
+										<input class="span5" type="text" id="form-field-factory-name" name="factory_name" placeholder="생산공장명"/>
 									</div>
 								</div>
 								
@@ -94,13 +88,13 @@
 									<label class="control-label" for="form-field-factory-address">생산공장 주소</label>
 									<div class="controls">
 										<div class="row-fluid input-append" style="margin:0 0 5px 0">
-											<input class="span6" id="form-field-factory-address" name="factory-address" type="text" readonly/>
+											<input class="span6" id="form-field-factory-address" name="factory-address1" type="text" readonly/>
 											<span class="add-on">
 												<a href="#" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 											</span>
 										</div>
 										
-										<input class="span6" type="text" id="form-field-factory-address" name="factory-address" placeholder="상세 주소"/>
+										<input class="span6" type="text" id="form-field-factory-address" name="factory_address2" placeholder="상세 주소"/>
 									</div>
 									
 								</div>
@@ -133,7 +127,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-section-code">품목 대분류코드</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-section-code" name="section-code" readonly/>
+										<input class="span4" type="text" id="form-field-section-code" name="section_code" readonly/>
 									</div>
 								</div>
 								
@@ -149,7 +143,7 @@
 									<div class="controls">
 										<div class="control-group">
 											<div class="row-fluid input-append">
-												<input class="span3 date-picker" id="id-date-picker-1" type="text" name="produce_date" data-date-format="yyyy-mm-dd" style="margin:0 0 16px 0">
+												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="produce_date" data-date-format="yyyy-mm-dd" style="margin:0 0 16px 0">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
@@ -246,5 +240,38 @@
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		})
+</script>
+
 </body>
 </html>

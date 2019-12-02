@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu13">
+	<!-- Team -->
+<!-- 	<insert id="insert" parameterType="List">
+		insert into
+		tb_sales_test
+			(sales_no, number, sales_date, emp_manager, 
+			 customer_code, customer_name, item_code, 
+			 item_name, quantity, supply_value, 
+			 tax_value, taxbill_no, release_date, insert_day)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager},
+			 #{item.customerCode},#{item.customerName},#{item.itemCode}
+			 #{item.itemName},#{item.quantity},#{item.supplyValue}
+			 #{item.taxValue},#{item.taxbillNo},#{item.releaseDate}, now())
+		</foreach>
+	</insert> -->
+
+	<insert id="insert" parameterType="List">
+	insert into
+		tb_sales_test
+			(sales_no, number, sales_date, emp_manager, 
+			 customer_code, customer_name, item_code, 
+			 item_name, quantity, supply_value, 
+			 tax_value, taxbill_no, release_date, insert_day)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager}, #{item.customerCode}, #{item.customerName}, #{item.itemCode}, #{item.itemName}, #{item.quantity}, #{item.supplyValue}, #{item.taxValue}, #{item.taxbillNo}, #{item.releaseDate}, now())
+		</foreach>
+	</insert>
+</mapper>

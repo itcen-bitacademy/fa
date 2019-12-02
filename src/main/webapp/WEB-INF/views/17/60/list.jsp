@@ -21,6 +21,7 @@
 				</div>
 				<!-- /.page-headerr -->
 				<div class="row-fluid">
+				
 					<div class="span16">
 						<!-- PAGE CONTENT BEGINS -->
 						<form class="form-horizontal" method="post"
@@ -30,36 +31,45 @@
 								<label class="control-label" for="form-field-1">회계연도</label>
 								<div class="controls">
 									<input type="number" min="1900" max="2099" step="1"
-										value="2019" id="form-field-1" name="financial_usedyear"
+										value="2019" id="accountUsedyear" name="accountUsedyear"
 										placeholder="회계연도"
 										style="text-align: center; width: 100px; height: 18px;" />
 								</div>
 							</div>
-							<div class="span3">
+							
+							<div class="span2">
 								<!-- 구분  -->
 								<label class="control-label" for="form-field-select-1">구분</label>
 								<div class="controls">
-									<select class="select" id="form-field-select-1" name="menuNo"
-										data-placeholder="메뉴선택">
-										<option value="대차대조표">대차대조표</option>
-										<option value="손익계산서">손익계산서</option>
+									<select id="selectedAccountStatementType" name="selectedAccountStatementType"
+										data-placeholder="메뉴선택"
+										style="text-align: center; width: 120px;">
+										<option value="B">대차대조표</option>
+										<option value="I">손익계산서</option>
 									</select>
 								</div>
 							</div>
-							<div class="span4">
+							
+							<div class="span5">
 								<!-- 계정명칭  -->
-								<label class="control-label" for="form-field-select-1">계정명칭</label>
+								<div class="control-group">
+								<label class="control-label" for="form-field-select-1">계정과목</label>
 								<div class="controls">
-									<!-- 계정명칭 -->
-									<input type="text" id="form-field-1" name="financial_usedyear"
-										placeholder="계정과목"
-										style="text-align: center; width: 300px; height: 18px;" />
+									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목" style="text-align: center; width: 150px; height: 18px;">
+											<option value="" data-accountName=""></option>
+										<c:forEach items="${accountList }" var="vo">											
+											<option value="${vo.accountNo}" data-accountName="${vo.accountName }">${vo.accountNo }</option>
+										</c:forEach>
+									</select> 
+									<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 200px; height: 18px;" disabled />
+								
+								</div>
 								</div>
 							</div>
 
 							<div class="span3">
 								&nbsp;
-								<button class="btn btn-info btn-small">조회</button>
+								<button class="btn btn-info btn-small" type="submit" name="action"  value="getList" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/getList">조회</button>
 								&nbsp;
 								<button class="btn btn-default btn-small" type="reset">취소</button>
 							</div>
@@ -72,15 +82,14 @@
 				<!-- /.span -->
 
 				<!-- /.row-fluid -->
-				<!-- 제무재표 계정과목 리스트  -->
+				<!-- 제무재표 계정과목 테이블  -->
 				<div class="span12">
-					<table id="sample-table-1"
+				<!-- 선 -->
+				<div class="hr hr-18 dotted"></div>
+					<table id="tb_account_management"
 						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th class="center"><label> <input type="checkbox"
-										class="ace"> <span class="lbl"></span>
-								</label></th>
 								<th>순번</th>
 								<th>계정과목</th>
 								<th>계정명칭</th>
@@ -92,21 +101,27 @@
 							</tr>
 						</thead>
 
-						<tbody>
-							<tr>
-								<td class="center"><label> <input type="checkbox"
-										class="ace"> <span class="lbl"></span>
-								</label></td>
-								<td>0010</td>
-								<td>1000001</td>
-								<td>자산</td>
-								<td>차변</td>
-								<td>2019.11.27</td>
-								<td>이성훈</td>
-								<td>2019.11.27</td>
-								<td>이성훈</td>
-							</tr>
-						</tbody>
+					<c:set var="count" value="${fn:length(tableList) }" />
+						<c:forEach items="${tableList }" var="vo" varStatus="status">
+							<tbody>
+								<tr>
+									<td>${vo.accountOrder }</td>
+									<td>${vo.accountNo }</td>
+									<td>${vo.accountName }</td>
+									<c:if test="${vo.balanceType eq 'D' }">	
+									<td>차변</td>
+									</c:if>
+									<c:if test="${vo.balanceType eq 'C' }">	
+									<td>대변</td>
+									</c:if>
+									<td>${vo.insertUserid }</td>
+									<td>${vo.insertDay }</td>
+									<td>${vo.updateUserid }</td>
+									<td>${vo.updateDay }</td>
+									<td id="no" style="display:none;">${vo.no }</td>
+								</tr>
+							</tbody>				
+						</c:forEach>
 					</table>
 				</div>
 			</div>

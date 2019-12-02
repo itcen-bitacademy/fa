@@ -25,7 +25,7 @@ public class SalesVo {
 	private String itemName; //품목명
 	private int quantity; // 수량
 	private Long supplyValue; // 공급가액
-	private Long taxVale; // 부가세
+	private Long taxValue; // 부가세
 	private Long totalPrice; // 합계금액
 	private String taxType; // 과세구분
 	private Long taxbillNo; // 세금계산서번호
@@ -115,12 +115,6 @@ public class SalesVo {
 	public void setSupplyValue(Long supplyValue) {
 		this.supplyValue = supplyValue;
 	}
-	public Long getTaxVale() {
-		return taxVale;
-	}
-	public void setTaxVale(Long taxVale) {
-		this.taxVale = taxVale;
-	}
 	public Long getTotalPrice() {
 		return totalPrice;
 	}
@@ -160,6 +154,12 @@ public class SalesVo {
 	public String getInsertUserid() {
 		return insertUserid;
 	}
+	public Long getTaxValue() {
+		return taxValue;
+	}
+	public void setTaxValue(Long taxValue) {
+		this.taxValue = taxValue;
+	}
 	public void setInsertUserid(String insertUserid) {
 		this.insertUserid = insertUserid;
 	}
@@ -187,10 +187,11 @@ public class SalesVo {
 		return "SalesVo [idx=" + idx + ", salesNo=" + salesNo + ", number=" + number + ", salesDate=" + salesDate
 				+ ", empManager=" + empManager + ", customerCode=" + customerCode + ", customerName=" + customerName
 				+ ", sectionCode=" + sectionCode + ", sectionName=" + sectionName + ", itemCode=" + itemCode
-				+ ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue=" + supplyValue + ", taxVale="
-				+ taxVale + ", totalPrice=" + totalPrice + ", taxType=" + taxType + ", taxbillNo=" + taxbillNo
+				+ ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue=" + supplyValue + ", taxValue="
+				+ taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType + ", taxbillNo=" + taxbillNo
 				+ ", releaseDate=" + releaseDate + ", deleteFlag=" + deleteFlag + ", sellPrice=" + sellPrice
 				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
 				+ ", updateDay=" + updateDay + "]";
 	}
+	
 }

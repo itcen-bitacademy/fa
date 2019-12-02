@@ -24,8 +24,9 @@ public class Menu15Repository {
 		sqlSession.insert("menu15.save", customerVo);
 	}
 
-	public List<CustomerVo> findAllCustomer() {
-		return sqlSession.selectList("menu15.findAll");
+	public List<CustomerVo> findAllCustomer(String no) {
+		no = "%" + no + "%";
+		return sqlSession.selectList("menu15.findAll", no);
 	}
 	
 	

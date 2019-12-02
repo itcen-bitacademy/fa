@@ -17,7 +17,7 @@ import kr.co.itcen.fa.service.menu12.Menu14Service;
  */
 @Auth
 @Controller
-@RequestMapping("/" + Menu15Controller.MAINMENU)
+@RequestMapping("/" + Menu13Controller.MAINMENU)
 public class Menu14Controller {
 	public static final String MAINMENU = "12";
 	public static final String SUBMENU = "14";

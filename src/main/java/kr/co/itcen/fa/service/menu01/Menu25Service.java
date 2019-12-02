@@ -25,4 +25,14 @@ public class Menu25Service {
 	public void create(BankAccountVo bavo) {
 		menu25Repository.create(bavo);
 	}
+
+	public void update(BankAccountVo bavo) {
+		// TODO Auto-generated method stub
+		menu25Repository.update(bavo);
+	}
+
+	public void delete(BankAccountVo bavo) {
+		// TODO Auto-generated method stub
+		menu25Repository.delete(bavo);
+	}
 }

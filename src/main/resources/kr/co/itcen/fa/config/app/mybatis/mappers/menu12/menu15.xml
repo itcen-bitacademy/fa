@@ -15,13 +15,20 @@
 		</selectKey>
 	</insert>
 	
-	<select id="findAll" resultType="salescustomervo">
+	<select id="findAll" parameterType="string" resultType="salescustomervo">
 		<![CDATA[
 		select no, name, ceo, coporation_no as coporationNo, address, phone, conditions, item, open_date as openDate,
 		       jurisdiction_office as jurisdictionOffice, manager_name as managerName, manager_email as managerEmail,
 		       deposit_no as depositNo, delete_flag as deleteFlag, insert_userid as insertUserid, insert_day as insertDay,
 		       update_userid as updateUserid, update_day as updateDay
 		from tb_salescustomer
+		]]>
+		<if test="kwd != '%%' ">
+			<![CDATA[
+			where no like #{no }
+			]]>	
+		</if>
+		<![CDATA[
 		order by no
 		]]>
 	</select>

@@ -10,7 +10,7 @@ import kr.co.itcen.fa.service.menu11.Menu50Service;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
 @RestController("Menu50ApiController")
-@RequestMapping("/" + Menu50Controller.MAINMENU + "/" + Menu50Controller.SUBMENU + "api/selectone")
+@RequestMapping("api/selectone")
 public class Menu50ApiController {
 	public static final String MAINMENU = "11";
 	public static final String SUBMENU = "50";
@@ -21,8 +21,9 @@ public class Menu50ApiController {
 	@ResponseBody
 	@RequestMapping("/getpdebtInfo")
 	public PdebtVo adminCategoryInsert(
-			@RequestParam("debtcode") String debtcode) {
+			@RequestParam("debtcodeVal") String debtcode) {
 		PdebtVo pdebtVo = menu50Service.selectOnePdebtInfo(debtcode);
+		System.out.println("pdebtVo : " + pdebtVo.toString());
         return pdebtVo;
 	}
 }

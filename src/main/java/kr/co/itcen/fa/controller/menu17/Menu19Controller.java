@@ -1,7 +1,5 @@
 package kr.co.itcen.fa.controller.menu17;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
@@ -37,10 +36,8 @@ public class Menu19Controller {
 	 * 마감일자관리 페이지
 	 */
 	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
-	public String closingDateListPage(Model model) {
-		List<ClosingDateVo> list = menu19Service.selectAllClosingDate();
-		
-		model.addAttribute("closingDateList", list);
+	public String closingDateListPage(Model model, @RequestParam(defaultValue = "1") int page) {
+		model.addAttribute("dataResult", menu19Service.selectAllClosingDate(page));
 
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
@@ -84,4 +81,5 @@ public class Menu19Controller {
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
@@ -72,16 +73,27 @@ public class Menu25Controller {
 	}
 
 	@RequestMapping("/" + SUBMENU + "/update")
-	public String update(@ModelAttribute BankAccountVo bavo) {
+	public String update(@ModelAttribute BankAccountVo bavo,
+			@AuthUser UserVo uvo) {
 		System.out.println("update");
-		menu25Service.test();
+		
+		// InsertDay Data 삽입
+		SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+		Date currentTime = new Date ( );
+		String dTime = formatter.format ( currentTime );
+
+		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
+		bavo.setUpdateUserId(uvo.getName());
+		bavo.setUpdateDay(dTime);
+				
+		menu25Service.update(bavo);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 
 	@RequestMapping("/" + SUBMENU + "/delete")
 	public String delete(@ModelAttribute BankAccountVo bavo) {
 		System.out.println("delete");
-		menu25Service.test();
+		menu25Service.delete(bavo);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

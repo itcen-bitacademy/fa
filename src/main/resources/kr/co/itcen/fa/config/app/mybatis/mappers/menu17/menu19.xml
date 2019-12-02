@@ -17,7 +17,7 @@
    </insert>
 
 
-	<insert id="insertClosingDate" parameterType="closingDate19Vo">
+	<insert id="insertClosingDate" parameterType="closingDate17Vo">
 		insert	into tb_closing_date (
 			closing_year_month
 		    , closing_date
@@ -44,7 +44,13 @@
 		</selectKey>
 	</insert>
 	
-	<select id="selectAllClosingDate" resultType="closingDate19Vo">
+	<select id="selectAllClosingDateCount" resultType="int">
+		select	count(*) as cnt
+		  from	tb_closing_date
+		;
+	</select>
+	
+	<select id="selectAllClosingDate" resultType="closingDate17Vo" parameterType="menu17SearchForm">
 		select	
 			no
 		    , closing_year_month as closingYearMonth
@@ -64,10 +70,11 @@
 		  from	tb_closing_date
 		 where	use_yn = true
 		 order	by closing_year_month desc
+		 limit	#{pagination.pageIndex }, #{pagination.listSize }
 		;
 	</select>
 	
-	<update id="updateClosingDate" parameterType="closingDate19Vo">
+	<update id="updateClosingDate" parameterType="closingDate17Vo">
 		update	tb_closing_date
 		   set	closing_year_month = #{closingYearMonth }
 				, closing_date = #{closingDate }
@@ -84,10 +91,162 @@
 		;
 	</update>
 	
-	<delete id="deleteClosingDate" parameterType="closingDate19Vo">
+	<delete id="deleteClosingDate" parameterType="closingDate17Vo">
 		delete	from tb_closing_date
 		 where	no = #{no }
 		   and	closing_yn = false
 		;
 	</delete>
+	
+	
+	<select id="selectStatementClosingDateByBusinessDate" parameterType="java.util.Date" resultType="closingDate17Vo">
+		<![CDATA[
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
+		   and	now() < closing_statement_date
+		;
+		]]>
+	</select>
+	
+	<select id="selectAssetsClosingDateByBusinessDate" parameterType="java.util.Date" resultType="closingDate17Vo">
+		<![CDATA[
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
+		   and	now() < closing_assets_date
+		;
+		]]>
+	</select>
+	
+	<select id="selectDebtClosingDateByBusinessDate" parameterType="java.util.Date" resultType="closingDate17Vo">
+		<![CDATA[
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
+		   and	now() < closing_debt_date
+		;
+		]]>
+	</select>
+	
+	<select id="selectPurchaseClosingDateByBusinessDate" parameterType="java.util.Date" resultType="closingDate17Vo">
+		<![CDATA[
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
+		   and	now() < closing_purchase_date
+		;
+		]]>
+	</select>
+	
+	<select id="selectSalesClosingDateByBusinessDate" parameterType="java.util.Date" resultType="closingDate17Vo">
+		<![CDATA[
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
+		   and	now() < closing_sales_date
+		;
+		]]>
+	</select>
+	
+	<select id="selectSettlementClosingDate" resultType="closingDate17Vo">
+		<![CDATA[
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	closing_year_month = date_format(now(), '%Y-%m')
+		   and	now() < closing_settlement_date
+		;
+		]]>
+	</select>
+	
 </mapper>

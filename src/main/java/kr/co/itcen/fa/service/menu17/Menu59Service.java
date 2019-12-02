@@ -30,6 +30,11 @@ public class Menu59Service {
 		
 		return menu59Repository.getAllList();
 	}
+
+	public List<AccountManagement> getList(AccountManagement vo){
+		
+		return menu59Repository.getList(vo);
+	}
 	
 	public List<AccountManagement> getAllAccountList(){
 		

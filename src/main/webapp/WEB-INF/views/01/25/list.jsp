@@ -35,23 +35,30 @@
 
 <script>
 	$(function() {
-		$(document).ready(function(){
-			$("#selectone").click(function(){
-			    var getDebtcodeVal = $("#debtcode").val();
-			    alert(getDebtCodeVal);
-			    /* $.ajax({
-		            url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/selectone",
-		            type : "get",
-		            data : {'debtcode' : getDebtcodeVal}, //보낼 데이터
-		            success : function (data) {
-		            	//서버로부터 정상적으로 응답이 왔을 때 실행
-		                alert(data);
-		            },
-		            error : function(jqXHR, status, e){
-						console.error(status + " : " + e);
-					}
-		        }); */
-			});
+		$("#simple-table-1 tr").click(function(){ 
+			var tr = $(this);
+			var td = tr.children();
+			
+			$("input[name=depositNo]").val(td.eq(1).text());
+			$("input[name=depositOld]").val(td.eq(1).text());
+			$("input[name=bankCode]").val(td.eq(2).text());
+			$("input[name=bankCode]").disabled = true;
+			$("input[name=depositHost]").val(td.eq(3).text());
+			$("input[name=makeDate]").val(td.eq(4).text());
+			$("input[name=enDate]").val(td.eq(5).text());
+			$("input[name=balance]").val(td.eq(6).text());
+			$("input[name=depositLimit]").val(td.eq(7).text());
+			$("input[name=profit]").val(td.eq(8).text());	
+			$("input[name=bankName]").val(td.eq(9).text());
+			$("input[name=bankLocation]").val(td.eq(10).text());
+			$("input[name=banker]").val(td.eq(11).text());
+			$("input[name=bankPhoneCall]").val(td.eq(12).text());
+			
+			$("input[name=bankName]").prop("readonly", true);
+			$("input[name='bankLocation']").prop("readonly", true);
+			$("input[name='banker']").prop("readonly", true);
+			$("input[name='bankPhoneCall']").prop("readonly", true);
+			
 		});
 		
 		
@@ -134,6 +141,7 @@
 									<div class="controls">
 										<input type="text" id="form-field-1" name="depositNo"
 											placeholder="계좌 번호" />
+										<input type="hidden" name="depositOld" />
 									</div>
 								</div>
 
@@ -178,7 +186,7 @@
 									<label class="control-label" for="form-field-1">이 율 </label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="이율(%)" />
+										<input type="text" id="form-field-1" placeholder="이율(%)" name="profit"/>
 										&nbsp; &nbsp; 예금 한도 &nbsp; 
 										<input type="text" id="form-field-1" name="depositLimit" placeholder="예금한도(만원)" />
 									</div>
@@ -194,26 +202,28 @@
 								<div class="controls">
 									<input type="text" id="form-field-1" name="bankCode"
 										placeholder="Username" />
+									<input type="text" id="form-field-1" name="bankName"
+										placeholder="Username" />	
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">개설 지점 </label>
 								<div class="controls">
-									<input type="text" id="form-field-1" name="bankLocation"
+									<input type="text" id="form-field-2" name="bankLocation"
 										placeholder="Username" />
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은행담당자 </label>
 								<div class="controls">
-									<input type="text" id="form-field-1" name="banker"
+									<input type="text" id="form-field-2" name="banker"
 										placeholder="Username" />
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은행전화번호 </label>
 								<div class="controls">
-									<input type="text" id="form-field-1" name="bankPhoneCall"
+									<input type="text" id="form-field-2" name="bankPhoneCall"
 										placeholder="Username" />
 								</div>
 							</div>
@@ -241,7 +251,7 @@
 				<!-- Tables -->
 				<div class="row-fluid">
 					<div class="span12">
-						<table id="sample-table-1"
+						<table id="simple-table-1"
 							class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
@@ -253,10 +263,11 @@
 									<th>예금주</th>
 									<th>개설일자</th>
 									<th>만기일자</th>
+									<th>잔액</th>
 									<th>예금한도(만원)</th>
 									<th>이율(%)</th>
-									<th>개설지점</th>
 									<th>은행</th>
+									<th>개설지점</th>									
 									<th>담당자</th>
 									<th>은행전화번호</th>
 									<th>입력일자</th>
@@ -278,10 +289,11 @@
 									<td>이고니</td>
 									<td>2018-01-12</td>
 									<td>2023-01-11</td>
-									<td>5,000</td>
+									<td>1234567</td>
+									<td>5000</td>
 									<td>0.09</td>
-									<td>가로수길</td>
 									<td>국민</td>
+									<td>가로수길</td>									
 									<td>김길동</td>
 									<td>02)442-2213</td>
 									<td>20119-11-12</td>
@@ -300,12 +312,13 @@
 									<td>201911150001</td>
 									<td>1234567</td>
 									<td>곽철용</td>
-									<td>20189-05-11</td>
+									<td>2019-05-11</td>
 									<td>2024-05-10</td>
-									<td>10,000</td>
+									<td>11234567</td>
+									<td>10000</td>
 									<td>0.05</td>
-									<td>강남(서)</td>
 									<td>우리</td>
+									<td>강남(서)</td>									
 									<td>잔나비</td>
 									<td>02)4512-5532</td>
 									<td>20119-11-12</td>

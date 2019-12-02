@@ -1,12 +1,19 @@
 package kr.co.itcen.fa.service.menu17;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu19Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
 
 /**
@@ -33,12 +40,25 @@ public class Menu19Service {
 		return menu19Repository.insertClosingDate(closingDate);
 	}
 	
+	
 	/**
 	 * 
 	 * 마감일 전체 조회(마감일순 내림차순)
 	 */
-	public List<ClosingDateVo> selectAllClosingDate() {
-		return menu19Repository.selectAllClosingDate();
+	public DataResult<ClosingDateVo> selectAllClosingDate(int page) {
+		DataResult<ClosingDateVo> dataResult = new DataResult<>();
+		
+		int totalCount = menu19Repository.selectAllClosingDateCount();
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(paginationUtil);
+		
+		Menu17SearchForm menu17SearchForm = new Menu17SearchForm();
+		menu17SearchForm.setPagination(paginationUtil);
+		
+		List<ClosingDateVo> list = menu19Repository.selectAllClosingDate(menu17SearchForm);
+		dataResult.setDatas(list);
+		
+		return dataResult;
 	}
 	
 	
@@ -57,5 +77,49 @@ public class Menu19Service {
 	 */
 	public int deleteClosingDate(ClosingDateVo closingDate) {
 		return menu19Repository.deleteClosingDate(closingDate);
+	}
+	
+	
+	/**
+	 * 
+	 * 팀별 데이터 입력 가부 조회
+	 * @param session		- controller의 HttpSession
+	 * @param businessDate	- 거래일자
+	 * @return boolean
+	 * 		true	: 입력 가능
+	 * 		false	: 입력 불가능
+	 */
+	public boolean checkClosingDate(HttpSession session, Date businessDate) {
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		
+		ClosingDateVo closingDateVo = null;
+		
+		switch(authUser.getTeamNo()) {
+		case "1":		// 전표팀 마감일 조회
+			closingDateVo = menu19Repository.selectStatementClosingDateByBusinessDate(businessDate);
+			break;
+			
+		case "2":		// 매입팀 마감일 조회
+			closingDateVo = menu19Repository.selectPurchaseClosingDateByBusinessDate(businessDate);
+			break;
+			
+		case "3":		// 자산팀 마감일 조회
+			closingDateVo = menu19Repository.selectAssetsClosingDateByBusinessDate(businessDate);
+			break;
+			
+		case "4":		// 부채팀 마감이 조회
+			closingDateVo = menu19Repository.selectDebtClosingDateByBusinessDate(businessDate);
+			break;
+			
+		case "5":		// 매출팀 마감일 조회
+			closingDateVo = menu19Repository.selectSalesClosingDateByBusinessDate(businessDate);
+			break;
+			
+		case "6":		// 결산팀 마감일 조회
+			closingDateVo = menu19Repository.selectSettlementClosingDate();
+			break;
+		}
+		
+		return (closingDateVo == null) ? false : true;
 	}
 }

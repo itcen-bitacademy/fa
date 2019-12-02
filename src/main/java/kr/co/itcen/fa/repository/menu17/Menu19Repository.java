@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.repository.menu17;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.TestVo;
 
 /**
@@ -38,11 +40,19 @@ public class Menu19Repository {
 	
 	/**
 	 * 
+	 * 마감일 전체 갯수 조회
+	 */
+	public int selectAllClosingDateCount() {
+		return sqlSession.selectOne("menu19.selectAllClosingDateCount");
+	}
+	
+	/**
+	 * 
 	 * 마감일 전체 조회(마감일 순 내림차순)
 	 */
-	public List<ClosingDateVo> selectAllClosingDate() {
-		// TODO: 페이징, 검색조건 추가
-		return sqlSession.selectList("menu19.selectAllClosingDate");
+	public List<ClosingDateVo> selectAllClosingDate(Menu17SearchForm menu17SearchForm) {
+		// TODO: 페이징 추가
+		return sqlSession.selectList("menu19.selectAllClosingDate", menu17SearchForm);
 	}
 	
 	
@@ -61,5 +71,59 @@ public class Menu19Repository {
 	 */
 	public int deleteClosingDate(ClosingDateVo closingDate) {
 		return sqlSession.delete("menu19.deleteClosingDate", closingDate);
+	}
+	
+	
+	/**
+	 * 
+	 * 전표팀 마감일 조회(거래일 기준 조회)
+	 */
+	public ClosingDateVo selectStatementClosingDateByBusinessDate(Date businessDate) {
+		return sqlSession.selectOne("menu19.selectStatementClosingDateByBusinessDate", businessDate);
+	}
+	
+
+	/**
+	 * 
+	 * 자산팀 마감일 조회(거래일 기준 조회)
+	 */
+	public ClosingDateVo selectAssetsClosingDateByBusinessDate(Date businessDate) {
+		return sqlSession.selectOne("menu19.selectAssetsClosingDateByBusinessDate", businessDate);
+	}
+	
+	
+	/**
+	 *
+	 * 부채팀 마감일 조회(거래일 기준 조회)
+	 */
+	public ClosingDateVo selectDebtClosingDateByBusinessDate(Date businessDate) {
+		return sqlSession.selectOne("menu19.selectDebtClosingDateByBusinessDate", businessDate);
+	}
+	
+	
+	/**
+	 * 
+	 * 매입팀 마감일 조회(거래일 기준 조회)
+	 */
+	public ClosingDateVo selectPurchaseClosingDateByBusinessDate(Date businessDate) {
+		return sqlSession.selectOne("menu19.selectPurchaseClosingDateByBusinessDate", businessDate);
+	}
+	
+	
+	/**
+	 * 
+	 * 매출팀 마감일 조회(거래일 기준 조회)
+	 */
+	public ClosingDateVo selectSalesClosingDateByBusinessDate(Date businessDate) {
+		return sqlSession.selectOne("menu19.selectSalesClosingDateByBusinessDate", businessDate);
+	}
+	
+	
+	/**
+	 * 
+	 * 결산팀 마감일 조회(결산실행일-현재 기준 조회)
+	 */
+	public ClosingDateVo selectSettlementClosingDate() {
+		return sqlSession.selectOne("menu19.selectSettlementClosingDate");
 	}
 }

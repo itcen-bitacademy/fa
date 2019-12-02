@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu61">
 
-	<update id="updateClosingYnByNo" parameterType="closingDate19Vo">
+	<update id="updateClosingYnByNo" parameterType="closingDate17Vo">
 		update	tb_closing_date
 		   set	update_userid = #{updateUserid }
 				, update_day = now()
