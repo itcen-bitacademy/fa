@@ -117,12 +117,34 @@ public class Menu59Controller {
 	}
 	
 	
-//	@ResponseBody
-//	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
-//	public String view(@ModelAttribute AccountManagement vo) {
-//		
-//		menu59Service.insert(vo);
-//		return MAINMENU + "/" + SUBMENU + "/add";
-//	}
+	//재무제표 계정관리 조회
+	@RequestMapping(value="/" + SUBMENU + "/getList", method=RequestMethod.POST)
+	public String getList(@ModelAttribute AccountManagement accountManagement,
+					  @RequestParam("selectedAccountStatementType") String type,
+					  @RequestParam("selectedAccount") Long accountNo,
+					  Model model,
+					  HttpSession session) {
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser == null) {
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		}
+
+		//조회할 값들 셋팅
+		accountManagement.setAccountStatementType(type);
+		accountManagement.setAccountNo(accountNo);
+		accountManagement.setInsertUserid(authUser.getName());
+			
+		System.out.println(accountManagement);
+		
+		List<AccountManagement> tableList =  menu59Service.getList(accountManagement);
+		List<AccountManagement> accountList = menu59Service.getAllAccountList();
+
+		model.addAttribute("tableList", tableList);
+		model.addAttribute("accountList", accountList);
+		
+		return MAINMENU + "/" + SUBMENU + "/add";
+	}
 	
 }
