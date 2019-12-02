@@ -1,11 +1,22 @@
 package kr.co.itcen.fa.controller.menu17;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.service.menu17.Menu59Service;
 import kr.co.itcen.fa.service.menu17.Menu60Service;
+import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu17.AccountManagement;
 
 /**
  * 
@@ -24,10 +35,49 @@ public class Menu60Controller {
 	@Autowired
 	private Menu60Service menu60Service;
 	
+	@Autowired
+	private Menu59Service menu59Service;
+	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test() {
-		menu60Service.test();
+	public String getAllList(@ModelAttribute AccountManagement vo,
+						     Model model) {
+		
+		List<AccountManagement> tableList = menu59Service.getAllList();
+		List<AccountManagement> accountList = menu59Service.getAllAccountList();
+		
+		model.addAttribute("tableList", tableList);
+		model.addAttribute("accountList", accountList);
+		
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
 
+	//재무제표 계정관리 조회
+	@RequestMapping(value="/" + SUBMENU + "/getList", method=RequestMethod.POST)
+	public String getList(@ModelAttribute AccountManagement accountManagement,
+					  @RequestParam("selectedAccountStatementType") String type,
+					  @RequestParam("selectedAccount") Long accountNo,
+					  Model model,
+					  HttpSession session) {
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser == null) {
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		}
+
+		//조회할 값들 셋팅
+		accountManagement.setAccountStatementType(type);
+		accountManagement.setAccountNo(accountNo);
+		accountManagement.setInsertUserid(authUser.getName());
+			
+		System.out.println(accountManagement);
+		
+		List<AccountManagement> tableList =  menu59Service.getList(accountManagement);
+		List<AccountManagement> accountList = menu59Service.getAllAccountList();
+
+		model.addAttribute("tableList", tableList);
+		model.addAttribute("accountList", accountList);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

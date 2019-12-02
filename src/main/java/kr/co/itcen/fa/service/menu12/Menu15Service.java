@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.service.menu12;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,14 @@ public class Menu15Service {
 	@Autowired
 	private Menu15Repository menu15Repository;
 	
+	public List<CustomerVo> getAllCustomer(String no) {
+		return menu15Repository.findAllCustomer(no);
+	}
+
 	public void addCustomer(CustomerVo customerVo) {
 		menu15Repository.saveCustomer(customerVo);
 	}
+
+	
 
 }

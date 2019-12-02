@@ -32,8 +32,11 @@ public class Menu48Service {
 		return menu48Repository.list();
 	}
 
-	public List<LTermdebtVo> select(LTermdebtVo vo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean update(LTermdebtVo vo) {
+		return menu48Repository.update(vo);
+	}
+
+	public Boolean delete(Long no) {
+		return  menu48Repository.delete(no);
 	}
 }

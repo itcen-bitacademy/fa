@@ -23,7 +23,7 @@ public class PdebtVo {
 	private String mgrCall; // 차입금담당자전화
 	private String dangerCode; // 위험등급
 	private String dangerName; // 위험등급명
-	private String deptClassification; // 차입금대분류
+	private String majorCode;// 차입금대분류
 	private int bankCode; // 은행코드
 	private String depositNo; // 계좌번호
 	private String accountNo; // 계정코드
@@ -162,12 +162,12 @@ public class PdebtVo {
 		this.dangerName = dangerName;
 	}
 
-	public String getDeptClassification() {
-		return deptClassification;
+	public String getMajorCode() {
+		return majorCode;
 	}
 
-	public void setDeptClassification(String deptClassification) {
-		this.deptClassification = deptClassification;
+	public void setMajorCode(String majorCode) {
+		this.majorCode = majorCode;
 	}
 
 	public int getBankCode() {
@@ -248,10 +248,10 @@ public class PdebtVo {
 				+ repayBal + ", repayWay=" + repayWay + ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate
 				+ ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay + ", intAmount="
 				+ intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", dangerCode=" + dangerCode + ", dangerName="
-				+ dangerName + ", deptClassification=" + deptClassification + ", bankCode=" + bankCode + ", depositNo="
-				+ depositNo + ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag
-				+ ", insertId=" + insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate="
-				+ updateDate + "]";
+				+ dangerName + ", majorCode=" + majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo
+				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
+				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate
+				+ "]";
 	}
 
 }

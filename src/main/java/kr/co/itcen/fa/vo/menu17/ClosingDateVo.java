@@ -12,7 +12,7 @@ import org.apache.ibatis.type.Alias;
  * @이메일:	kbetter3@gmail.com
  * 
  */
-@Alias("closingDate19Vo")
+@Alias("closingDate17Vo")
 public class ClosingDateVo {
 	private Long no;						// 번호
 	private String closingYearMonth;		// 마감년월

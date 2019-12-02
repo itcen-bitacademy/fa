@@ -84,4 +84,5 @@ public class Menu19Controller {
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
+	
 }

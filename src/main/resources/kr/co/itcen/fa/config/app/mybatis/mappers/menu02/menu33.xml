@@ -2,16 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu33">
 	<!-- Team -->
-	<insert id="save" parameterType="test2vo">
+	<insert id="purchaseitemadd" parameterType="purchaseitem33vo">
 		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
+		insert into tb_purchaseitem(no, name, price, produce_date, purpose, standard, section_code, factory_code, insert_userid, insert_day)
+							 values(#{no }, #{name }, #{price }, #{produce_date }, #{purpose }, #{standard }, "001", #{factory_code }, "aaa", now())
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
 	</insert>
+	
+	<select id="factorycodeselect" resultType="int">
+		<![CDATA[
+		select count(*) from tb_factory
+		]]>
+	</select>
+	
+	<insert id="factoryadd" parameterType="factory33vo">
+		<![CDATA[
+		insert into tb_factory(no, name, address, manager_name, insert_userid, insert_day)
+						values(#{no }, #{name }, #{address }, #{manager_name }, "001", now())
+		]]>
+	</insert>
+	
+	<update id="purchaseitemupdate" parameterType="purchaseitem33vo">
+		<![CDATA[
+		
+		]]>
+	</update>
+	
+	<update id="factoryupdate" parameterType="factory33vo">
+		<![CDATA[
+		
+		]]>
+	</update>
 </mapper>

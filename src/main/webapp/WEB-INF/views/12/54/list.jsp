@@ -42,12 +42,10 @@
 														<button class="btn btn-small btn-info">조회</button>
 													</div>
 											</div>
-											
 											<div class="span6">
 												<div class="controls">
 												</div>
 											</div>
-										
 									</div>
 						</div>
 						<br>

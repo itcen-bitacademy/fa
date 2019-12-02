@@ -169,7 +169,12 @@ $(function(){
 	$(".chosen-select").chosen(); 
 });
 
-$('input[name="dates"]').daterangepicker();
+$('input[name="dates"]').daterangepicker({
+	locale: {
+	    format: 'YYYY-MM-DD'
+	}
+});
+
 
 </script>
 </body>

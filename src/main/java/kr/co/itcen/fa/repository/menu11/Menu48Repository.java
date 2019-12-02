@@ -37,5 +37,13 @@ public class Menu48Repository {
 		List<LTermdebtVo> list= sqlSession.selectList("menu48.selectAll");
 		return list;
 	}
-	
+	public Boolean update(LTermdebtVo vo) {
+		int count = sqlSession.update("menu48.update",vo);
+		return count==1;
+	}
+
+	public Boolean delete(Long no) {
+		int count = sqlSession.update("menu48.delete",no);
+		return count==1;
+	}
 }
