@@ -13,7 +13,28 @@ import kr.co.itcen.fa.util.PaginationUtil;
  */
 @Alias("menu17SearchForm")
 public class Menu17SearchForm {
+	private String year;
+
+	private int page = 1;
 	private PaginationUtil pagination;
+	
+	
+	// Getter & Setter
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+	
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
 
 	public PaginationUtil getPagination() {
 		return pagination;

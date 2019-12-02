@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu17.Menu20Service;
-import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
 /**
  * 
@@ -32,18 +32,17 @@ public class Menu20Controller {
 	 * 년도별 마감현황 관리 페이지
 	 */
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String closinStateManagementPage(Model model, String year) {
+	public String closinStateManagementPage(Model model, Menu17SearchForm menu17SearchForm) {
 		List<String> closingYearList = menu20Service.selectClosingYear();
 		model.addAttribute("closingYearList", closingYearList);
 		
-		if (year == null && closingYearList != null && closingYearList.size() > 0) {
-			year = closingYearList.get(0);
+		if (menu17SearchForm.getYear() == null && closingYearList != null && closingYearList.size() > 0) {
+			menu17SearchForm.setYear(closingYearList.get(0));
 		}
 		
-		model.addAttribute("year", year);
+		model.addAttribute("year", menu17SearchForm.getYear());
 
-		List<ClosingDateVo> closingDateList = menu20Service.selectClosingDateByYear(year);
-		model.addAttribute("closingDateList", closingDateList);
+		model.addAttribute("dataResult", menu20Service.selectClosingDateByYear(menu17SearchForm));
 
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
