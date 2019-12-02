@@ -33,26 +33,23 @@
 							
 								<div class="form-horizontal">
 									<div class="span6">
-										<label class="control-label" for="form-field-1">매 출 일
-											자</label>
+										<label class="control-label" for="form-field-1">매 출 일 자</label>
 										<div class="row-fluid input-append span2">
 												<input class="cl-date-picker" id="cl-total-date-picker" 
-												type="text" data-date-format="yyyy-mm-dd"> <span
-												class="add-on"> <i class="icon-calendar"></i>
+												type="text" data-date-format="yyyy-mm-dd"> 
+												<span class="add-on"> <i class="icon-calendar"></i>
 											</span>
 										</div>
 									</div>
 
 									<div class="span6">
-										<label class="control-label" for="form-field-1">매 출 번
-											호 </label>
+										<label class="control-label" for="form-field-1">매 출 번 호 </label>
 										<div class="controls">
 											<input class="span5" type="text" id="form-field-1">
 											<button class="btn btn-small btn-info">조회</button>
 										</div>
 									</div>
 								</div>
-							
 						</div>
 						<!-- Line -->
 						<div class="hr hr-18 dotted"></div>
@@ -63,21 +60,20 @@
 					<div class="row-fluid">
 					
 						<div class="span12">
-							
 								<div class="form-horizontal">
 								<div class="control-group">
 									<div class="span6">
 										<label class="control-label span2" for="form-field-1">거래처코드</label>
 										<div class="controls">
-											<input class="span5" type="text" id="form-field-1"> <input
-												class="span5" type="text" id="form-field-1">
+											<input class="span5" type="text" readonly id="customerName; "> 
+											<input class="span5" type="text" readonly id="customerCode; ">
 										</div>
 									</div>
 		
 									<div class="span6">
-										<label class="control-label span6" for="form-field-1">대표자</label>
+										<label class="control-label span6" for="ceo">대표자</label>
 										<div class="controls">
-											<input class="span5" type="text" id="form-field-1">
+											<input class="span5" type="text" readonly id="empManager">
 										</div>
 									</div>
 								</div>
@@ -85,12 +81,11 @@
 								<div class="form-horizontal">
 									<div class="control-group">
 									<div class="span6">
-										<label class="control-label span2" for="form-field-1">주소</label>
-										<div class="controls">
-											<span class="btn btn-small btn-info"><i
-												class="icon-search nav-search-icon"></i></span> <input
-												class="span5" type="text" id="form-field-1"> <input
-												class="span5" type="text" id="form-field-1">
+										<label class="span1 control-label" for="form-field-1">주소</label>
+										<div class="controls">								 
+												<input class="span3" type="text" readonly id="address-number">
+												<input class="span5" type="text" readonly id="address">
+												<input class="span" type="text" readonly id="address-detail">
 										</div>
 									</div>
 
@@ -98,7 +93,7 @@
 										<div class="span5">
 											<label class="control-label span1" for="form-field-1">담당자</label>
 											<div class="controls">
-												<input class="span12" type="text" id="form-field-1">
+												<input class="span12" type="text" id="managerName">
 											</div>
 										</div>
 
@@ -106,7 +101,7 @@
 										<div class="span7">
 											<label class="control-label span1" for="form-field-1">메일</label>
 											<div class="controls">
-												<input class="span12" type="text" id="form-field-1">
+												<input class="span12" type="text" id="managerEmail">
 											</div>
 										</div>
 									</div>
@@ -118,14 +113,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">수량합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="form-field-1">
+												<input class="span5" type="text" id="quantity">
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">공급가액합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="form-field-1">
+												<input class="span5" type="text" id="supplyValue">
 											</div>
 										</div>
 									</div>
@@ -136,14 +131,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서번호</label>
 											<div class="controls">
-												<input class="span5" type="text" id="form-field-1">
+												<input class="span5" type="text" id="taxbill_no">
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">부가세합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="form-field-1">
+												<input class="span5" type="text" id="taxVale">
 											</div>
 										</div>
 									</div>
@@ -155,14 +150,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서발행일</label>
 											<div class="controls">
-												<input class="span5" type="text" id="form-field-1" data-date-format="yyyy-mm-dd">
+												<input class="span5" type="text" id="write_date" data-date-format="yyyy-mm-dd">
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">영세</label>
 												<div class="span4">
-														<select class="chosen-select" id="zero" name="zero" data-placeholder="영세/비영세">
+														<select class="chosen-select" id="tax_type" name="tax_type" data-placeholder="영세/비영세">
 															<option value="yes">yes</option>
 															<option value="no">no</option>
 														</select>
@@ -177,7 +172,7 @@
 											<label class="control-label" for="form-field-1">입금계좌번호</label>
 											<div class="controls">
 											<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-											<input class="span9" type="text" id="form-field-1">
+											<input class="span9" type="text" readonly id="depositNo">
 										</div>
 											
 										</div>
@@ -185,7 +180,7 @@
 										<div class="span6">
 												<label class="control-label" for="form-field-1">출고일자</label>
 												<div class="controls">
-													<input class="span5" type="text" id="form-field-1">
+													<input class="span5" type="text" readonly id="releaseDate">
 												</div>
 										</div>
 									</div>
@@ -196,7 +191,7 @@
 											<div class="span6">
 													<label class="control-label form-field-1">예금주</label>
 													<div class="controls">
-													<input type="text" id="form-field-1" readonly="">
+													<input type="text" id="form-field-1" readonly>
 													</div>
 											</div>
 												
