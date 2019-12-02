@@ -309,8 +309,6 @@ $(function(){
 	
 	$(".chosen-select").chosen();
 	$("#simple-table tr").click(function(){ 
-		
-		
 		var tr = $(this);
 		var td = tr.children();
 		
