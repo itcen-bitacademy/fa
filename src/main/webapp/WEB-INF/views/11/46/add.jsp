@@ -95,7 +95,7 @@ tr td:first-child {
 									<td style="width:170px;"><h4>차입일자 ~ 만기일자</h4></td>
 									<td>
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="debtExpDate" id="debtExpDate"  data-date-format="yyyy-mm-dd" />
+				                           <input type="text" name="debtExpDate" id="debtExpDate"/>
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -209,11 +209,11 @@ tr td:first-child {
 				</div>
 				<hr>
 				<div>
-					<button type="submit" class="btn btn-success btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/initializet">초기화</button>
+					<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
 					&nbsp;
 					<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
 					&nbsp;
-					<button type="reset" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/select">조회</button>
+					<button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
 					&nbsp;
 					<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 					&nbsp;
@@ -231,7 +231,7 @@ tr td:first-child {
 						<tr>
 							<th class="center">
 								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
+									<input type="checkbox" class="ace" id="chkbox-select-all"/>
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -290,25 +290,31 @@ tr td:first-child {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
-$(function(){
-	 $('#debtExpDate').daterangepicker().prev().on(ace.click_event, function(){
-	      $(this).next().focus();
-	   });
-	 $('.icon-calendar').daterangepicker().prev().on(ace.click_event, function(){
-	      $(this).next().focus();
-	   });
+$(function() {
+	//1.Range Picker
 	$(".chosen-select").chosen();
+	//to translate the daterange picker, please copy the "examples/daterange-fr.js" contents here before initialization
+	$('input[name=debtExpDate]').daterangepicker({
+		'applyClass' : 'btn-sm btn-success',
+		'cancelClass' : 'btn-sm btn-default',
+		format : 'YYYY-MM-DD',
+		locale: {
+			applyLabel: 'Apply',
+			cancelLabel: 'Cancel',
+		}
+	})
+	.next().on(ace.click_event, function(){
+		$(this).next().focus();
+	});
+	
+	//Checkbox All Check
+	$("#chkbox-select-all").click(function(){
+		$('input[type=checkbox]').prop('checked', this.checked);	//All Checkbox 버튼의 check여부에 따라 바뀐다.
+	});
 });
+
 </script>
 <script>
-$(function(){
-   $('#id-date-range-picker-1').daterangepicker().prev().on(ace.click_event, function(){
-      $(this).next().focus();
-   });
-   $(".chosen-select").chosen(); 
-}
-);
-
 function selectRow(thisTr){
 	var dataForm = $("#form" + $(thisTr).attr('id'))[0];
 	var inputForm = $("#input-form")[0];
@@ -317,7 +323,7 @@ function selectRow(thisTr){
 	inputForm.code.value = dataForm.code.value;
 	inputForm.name.value = dataForm.name.value;
 	inputForm.debtAmount.value = dataForm.debtAmount.value;
-	//inputForm.elements["debtExpDate"].value = dataForm.elements["debtExpDate"].value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
+	inputForm.debtExpDate.value = dataForm.debtDate.value + " ~ " + dataForm.expDate.value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
 	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
 		if($(this).val() == dataForm.intPayWay.value){
 			$(this).attr("checked", true);
@@ -351,20 +357,22 @@ function deleteChecked(){
 	var checkedList = $("#tbody-list input[type=checkbox]:checked");
 	checkedList.each(function(i, e){
 		sendData.push($(this).val());
+		console.log($(this).val());
 	});
-	
+	console.log(sendData);
+	console.log($("#main-menu-code").val());
 	$.ajax({
-		url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val + "/deleteChecked",
+		url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
 		type : "POST",
 		dataType : "json",
 		data : {"sendData" : sendData},
 		success: function(response){
 			checkedList.each(function(i, e){
-				$(this).remove();
+				$("#" + $(this).val()).remove();
+				
 			})
 		},
 		error : function(xhr, error){
-			
 		}
 	})
 }
