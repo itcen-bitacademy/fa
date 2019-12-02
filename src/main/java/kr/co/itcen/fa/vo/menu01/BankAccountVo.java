@@ -5,6 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("bankaccountvo")
 public class BankAccountVo {
 	private String depositNo;
+	private String depositOld;
 	private String depositHost;
 	private String makeDate;
 	private int balance;
@@ -19,6 +20,7 @@ public class BankAccountVo {
 	private String deleteFlag;
 		
 	//take from others (FK)
+	private String bankName;
 	private String bankCode;
 	private String banker; 
 	private String bankLocation;
@@ -125,6 +127,18 @@ public class BankAccountVo {
 	}
 	public void setBankPhoneCall(String bankPhoneCall) {
 		this.bankPhoneCall = bankPhoneCall;
+	}	
+	public String getDepositOld() {
+		return depositOld;
+	}
+	public void setDepositOld(String depositOld) {
+		this.depositOld = depositOld;
+	}	
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 	@Override
 	public String toString() {

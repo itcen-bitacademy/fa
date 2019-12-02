@@ -79,7 +79,7 @@ tr td:first-child {
 				</div>
 
 				<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" method="post" action="" id="deptForm">
+				<form class="form-horizontal" method="post" action="" id="debtForm">
 					<div class="container-fluid">
 						<!-- Example row of columns -->
 						<div class="row">
@@ -134,16 +134,14 @@ tr td:first-child {
 										<td><h4>은행코드</h4></td>
 										<td colspan="2"><input type="text"
 											class="search-input-width-first" name="bankCode" /> <span
-											class="btn btn-small btn-info"><i
-												class="icon-search nav-search-icon"></i></span> <input type="text"
+											class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> <input type="text"
 											class="search-input-width-second" name="bankName" /></td>
 									</tr>
 									<tr>
 										<td><h4>위험등급</h4></td>
-										<td colspan="2"><select
-											class="chosen-select form-control" name="dangerCode"
-											id="dangercode-field-select" data-placeholder="위험등급">
-												<option value=""></option>
+										<td colspan="2">
+										<select class="chosen-select form-control" name="dangerCode" id="dangercode-field-select" >
+												<option value="초기값">선택해주세요.</option>
 												<option value="RED1-초고위험">초고위험</option>
 												<option value="ORANGE2-고위험">고위험</option>
 												<option value="YELLOW3-중위험">중위험</option>
@@ -157,16 +155,13 @@ tr td:first-child {
 								<table>
 									<tr>
 										<td><h4>회계연도</h4></td>
-										<td><input type="number" min="1900" max="2099" step="1"
-											value="2019" id="form-field-1" name="financialYear"
-											placeholder="회계연도" /></td>
+										<td><input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도" /></td>
 									</tr>
 									<tr>
 										<td><h4>차입금대분류</h4></td>
-										<td colspan="2"><select
-											class="chosen-select form-control" name="deptClassification"
-											id="form-field-select-3" data-placeholder="차입금대분류">
-												<option value="" selected="selected"></option>
+										<td colspan="2">
+										<select class="chosen-select form-control" name="majorCode" id="majorcode-field-select">
+												<option value="초기값">선택해주세요.</option>
 												<option value="008001">국내은행</option>
 												<option value="008002">저축은행</option>
 												<option value="008003">신용금고</option>
@@ -433,7 +428,7 @@ tr td:first-child {
 		    	break;
 			}
 	
-			$('#form-field-select-3').val(major).trigger('chosen:updated');  
+			$('#majorcode-field-select').val(major).trigger('chosen:updated');  
 			
 			// 차입금액
 			$("input[name=debtAmount]").val(td.eq(4).text());
@@ -509,6 +504,18 @@ tr td:first-child {
 			    var getDebtcodeVal = $(".p-debt-code-input").val();
 			    console.log(getDebtCodeVal);
 			});
+		
+		// form에 입력한 모든 데이터 초기화
+		// 출처 : https://stackoverflow.com/questions/11365212/how-do-i-reset-a-jquery-chosen-select-option-with-jquery
+		$("#formReset").bind("click", function () {
+			// form의 모든 데이터 초기화
+			$('#debtForm')[0].reset();
+			
+			// value 값으로 선택
+			$('#majorcode-field-select').val('초기값').trigger('chosen:updated');
+			$('#dangercode-field-select').val('초기값').trigger('chosen:updated');
+        });
+		
 	});
 
 	$(function(){

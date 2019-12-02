@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu02.Menu33Service;
+import kr.co.itcen.fa.vo.menu02.FactoryVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
 /**
@@ -30,18 +31,53 @@ public class Menu33Controller {
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list"})
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo) {
-		System.out.println(purchaseitemVo.getNo());
-		System.out.println(purchaseitemVo.getName());
+		
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String input(@RequestParam(value = "item-id", required = false) String section_name) {
-		System.out.println(section_name);
+	public String add(@ModelAttribute PurchaseitemVo purchaseitemVo,
+					  @ModelAttribute FactoryVo factoryVo,
+					  @RequestParam(value="section_name", required=false) String section_name,
+					  @RequestParam(value="section_code", required=false) String section_code,
+					  @RequestParam(value="factory_name", required=false) String factory_name,
+					  @RequestParam(value="factory_address1", required=false) String factory_address1,
+					  @RequestParam(value="factory_address2", required=false) String factory_address2) {
+
+		if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
+			factoryVo.setName(factory_name);
+			factoryVo.setAddress(factory_address1 + " " + factory_address2);
+			
+			menu33Service.add(purchaseitemVo, factoryVo);
+		}
 		
-		System.out.println("gdgd");
+		return MAINMENU + "/" + SUBMENU + "/add";
+	}
+	
+	@RequestMapping(value="/" + SUBMENU + "/update", method=RequestMethod.POST)
+	public String update(@ModelAttribute PurchaseitemVo purchaseitemVo,
+						 @ModelAttribute FactoryVo factoryVo,
+						 @RequestParam(value="section_name", required=false) String section_name,
+						 @RequestParam(value="section_code", required=false) String section_code,
+						 @RequestParam(value="factory_name", required=false) String factory_name,
+						 @RequestParam(value="factory_address1", required=false) String factory_address1,
+						 @RequestParam(value="factory_address2", required=false) String factory_address2) {
+		
+		if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
+			factoryVo.setName(factory_name);
+			factoryVo.setAddress(factory_address1 + " " + factory_address2);
+			
+			menu33Service.update(purchaseitemVo, factoryVo);
+		}
+		
+		return MAINMENU + "/" + SUBMENU + "/add";
+	}
+	
+	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
+	public String delete() {
+		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
