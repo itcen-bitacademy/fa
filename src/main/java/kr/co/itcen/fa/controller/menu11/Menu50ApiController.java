@@ -28,26 +28,24 @@ public class Menu50ApiController {
 	public PdebtVo getPdebtInfo(
 			@RequestParam("debtcodeVal") String debtcode) {
 		PdebtVo pdebtVo = menu50Service.selectOnePdebtInfo(debtcode);
-		System.out.println("pdebtVo : " + pdebtVo.toString());
         return pdebtVo;
 	}
 	
+	// 은행 팝업창에서 은행코드로 조회
 	@ResponseBody
 	@RequestMapping("/getbankcode")
 	public BankVo getBankcodeInfo(
 			@RequestParam("bankcodeVal") String bankcode) {
 		BankVo bankVo = menu50Service.selectOneBankcodeInfo(bankcode);
-		System.out.println("bankVo : " + bankVo.toString());
         return bankVo;
 	}
 	
-	
+	// 은행 팝업창에서 은행명으로 데이터 리스트형식으로 조회
 	@ResponseBody
 	@RequestMapping("/getbankname")
 	public List<BankVo> getBanknameInfo(
 			@RequestParam("banknameVal") String bankname) {
 		List<BankVo> banknameList = menu50Service.selectOneBanknameInfo(bankname);
-		System.out.println("banknameList : " + banknameList.toString());
         return banknameList;
 	}
 	
@@ -55,7 +53,6 @@ public class Menu50ApiController {
 	@ResponseBody
 	@RequestMapping(value = "/deleteChecked", method = RequestMethod.POST)
 	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
-		System.out.println("noList : " + noList.toString());
 		menu50Service.deleteChecked(noList);
 		return JSONResult.success(noList);
 	}

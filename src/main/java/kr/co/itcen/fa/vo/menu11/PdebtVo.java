@@ -32,7 +32,7 @@ public class PdebtVo {
 	private String deleteFlag; // 삭제여부
 	private String insertId; // 등록자
 	private Date insertDate; // 등록일
-	private int updateId; // 수정자
+	private String updateId; // 수정자
 	private Date updateDate; // 수정일
 	private int financialYear; // 회계연도 - 데이터 조회할 때, 필요
 
@@ -83,7 +83,7 @@ public class PdebtVo {
 	public void setRepayWay(String repayWay) {
 		this.repayWay = repayWay;
 	}
-	
+
 	public String getRepayCompleFlag() {
 		return repayCompleFlag;
 	}
@@ -91,6 +91,7 @@ public class PdebtVo {
 	public void setRepayCompleFlag(String repayCompleFlag) {
 		this.repayCompleFlag = repayCompleFlag;
 	}
+
 	public String getDebtExpDate() {
 		return debtExpDate;
 	}
@@ -235,11 +236,11 @@ public class PdebtVo {
 		this.insertDate = insertDate;
 	}
 
-	public int getUpdateId() {
+	public String getUpdateId() {
 		return updateId;
 	}
 
-	public void setUpdateId(int updateId) {
+	public void setUpdateId(String updateId) {
 		this.updateId = updateId;
 	}
 
@@ -262,13 +263,13 @@ public class PdebtVo {
 	@Override
 	public String toString() {
 		return "PdebtVo [no=" + no + ", code=" + code + ", name=" + name + ", debtAmount=" + debtAmount + ", repayBal="
-				+ repayBal + ", repayWay=" + repayWay + ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate
-				+ ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay + ", intAmount="
-				+ intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", dangerCode=" + dangerCode + ", dangerName="
-				+ dangerName + ", majorCode=" + majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo
-				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
-				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate
-				+ ", financialYear=" + financialYear + "]";
+				+ repayBal + ", repayWay=" + repayWay + ", repayCompleFlag=" + repayCompleFlag + ", debtExpDate="
+				+ debtExpDate + ", debtDate=" + debtDate + ", expDate=" + expDate + ", intRate=" + intRate
+				+ ", intPayWay=" + intPayWay + ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall
+				+ ", dangerCode=" + dangerCode + ", dangerName=" + dangerName + ", majorCode=" + majorCode
+				+ ", bankCode=" + bankCode + ", depositNo=" + depositNo + ", accountNo=" + accountNo + ", voucherNo="
+				+ voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate
+				+ ", updateId=" + updateId + ", updateDate=" + updateDate + ", financialYear=" + financialYear + "]";
 	}
 
 }
