@@ -19,7 +19,7 @@
 		<![CDATA[
 		insert
 		  into tb_l_term_debt
-		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, #{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',null,'N','u009',now(),null,null)
+		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, #{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',null,'N',#{insertId},now(),null,null,'N')
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
@@ -97,7 +97,7 @@
 			mgr_call=#{mgrCall},
 			bank_code=#{bankCode},
 			deposit_no=#{depositNo},
-			update_id='u009',
+			update_id=#{updateId},
 			update_date=now()
 		where no=#{no}
 	
@@ -105,12 +105,15 @@
 	
 	</update>
 	<!-- delete -->
-	<update id="delete" parameterType="long">
+	<update id="delete" parameterType="list">
 	<![CDATA[
 		update tb_l_term_debt 
 		set delete_flag='Y'
-		where no=#{no}
-	
+		where no in 
 	]]>
+	<foreach item="item" index="index" collection="list" close=")" open="(" separator=",">
+		#{item }
+	</foreach>
+	
 	</update>
 </mapper>

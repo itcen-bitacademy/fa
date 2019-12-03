@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu49Service;
@@ -26,12 +27,13 @@ public class Menu49Controller {
 	
 	                                   //   /11/49, /11/49/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
+	public String test(Model model,
+			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year) {
 		menu49Service.test();
-		/*
-		 *    JSP
-		 *    11/49/list.jsp
-		 */
+		
+		
+		
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

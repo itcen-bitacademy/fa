@@ -48,7 +48,7 @@ public class Menu48Service {
 		return menu48Repository.update(vo);
 	}
 
-	public Boolean delete(Long no) {
+	public Boolean delete(Long[] no) {
 		return  menu48Repository.delete(no);
 	}
 }

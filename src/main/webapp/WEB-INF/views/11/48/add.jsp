@@ -209,7 +209,7 @@ tr td:first-child {
 					&nbsp;
 					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 					&nbsp;
-					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" type="submit" >삭제</button>
+					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()" type="submit" >삭제</button>
 					&nbsp;
 					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					&nbsp;
@@ -247,11 +247,11 @@ tr td:first-child {
 						</tr>
 					</thead>
 
-					<tbody>
+					<tbody id= "tbody-list">
 						<c:forEach items="${dataResult.datas }" var="ltermvo">
 						<tr>
-							<td class="center" lterm-no ="${ltermvo.no}"><label class="pos-rel"> <input
-									type="checkbox" class="ace" /> <span class="lbl"></span>
+							<td class="center" lterm-no ="${ltermvo.no}" ><label class="pos-rel" > <input
+								type="checkbox" class="ace" lterm-no ="${ltermvo.no}" /> <span class="lbl"></span>
 							</label></td>
 							<td class="center">${ltermvo.code}</td>
 							<td>${ltermvo.name}</td>
@@ -430,6 +430,17 @@ $(function(){
 	});
 	
 });
+function deleteChecked(){
+	var sendData = [];
+	var checkedList = $("#tbody-list input[type=checkbox]:checked");
+	checkedList.each(function(i, e){
+		sendData.push($(this).attr('lterm-no'));
+	
+	});
+	
+	$("input[name=no]").val(sendData);
+	console.log(sendData);
+}
 </script>
 </body>
 </html>
