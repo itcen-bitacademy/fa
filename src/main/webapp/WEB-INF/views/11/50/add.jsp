@@ -6,12 +6,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
@@ -65,6 +65,7 @@ tr td:first-child {
 	float: right;
 	margin-right: 20px;
 }
+
 </style>
 </head>
 <body class="skin-3">
@@ -79,7 +80,7 @@ tr td:first-child {
 				</div>
 
 				<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" method="post" action="" id="debtForm">
+				<form class="form-horizontal" method="post" action="" id="input-form">
 					<div class="container-fluid">
 						<!-- Example row of columns -->
 						<div class="row">
@@ -135,7 +136,81 @@ tr td:first-child {
 										<td><h4>은행코드</h4></td>
 										<td colspan="2">
 											<input type="text" class="search-input-width-first" name="bankCode" />
-											<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+												<a href="#" id="id-btn-dialog1">
+													<span class="btn btn-small btn-info">
+														<i class="icon-search nav-search-icon"></i>
+													</span>
+												</a>
+												
+												
+												
+												
+												
+												<div id="dialog-message" title="은행코드" hidden="hidden">
+														<div class="row">
+															<table id ="dialog-message-table">
+																<tr>
+																	<td><label>은행코드</label><input type="text"  id="input-dialog-bankcode"/></td>
+																	<td>
+																		<a href="#" id="btn-dialog-bankcode">
+																			<span class="btn btn-small btn-info">
+																				<i class="icon-search nav-search-icon"></i>
+																			</span>
+																		</a>
+																	</td>
+																	<td><label>은행명</label><input type="text"  id="input-dialog-bankname"/></td>
+																	<td>
+																		<a href="#" id="btn-dialog-bankname">
+																			<span class="btn btn-small btn-info">
+																				<i class="icon-search nav-search-icon"></i>
+																			</span>
+																		</a>
+																	</td>
+																</tr>
+															</table>
+															<!-- <div class="span6">
+																<div class="span2">
+																	<input type="text"  />
+																	<a href="#" id="id-btn-dialog1">
+																		<span class="btn btn-small btn-info">
+																			<i class="icon-search nav-search-icon"></i>
+																		</span>
+																	</a>					
+																</div>
+																<div class="span2">
+																	<input type="text"  />
+																	<a href="#" id="id-btn-dialog1">
+																		<span class="btn btn-small btn-info">
+																			<i class="icon-search nav-search-icon"></i>
+																		</span>
+																	</a>	
+																</div>
+															</div> -->
+														</div>
+														<table id="bank-table" class="table  table-bordered table-hover">
+															<thead>
+																<tr>
+																	<th class="center">은행코드</th>
+																	<th class="center">은행명</th>
+																	<th class="center">지점명</th>
+																</tr>
+															</thead>
+																<tbody id="tbody-list">
+																<c:forEach items="${bankList}" var="bank" varStatus="status">
+																	<tr>
+																		<td class="center">${bank.code}</td>
+																		<td class="center">${bank.name}</td>
+																		<td class="center">${bank.store}</td>
+																	</tr>
+																</c:forEach>
+																</tbody>
+														</table>
+												</div>
+												
+												
+												
+												
+												
 											<input type="text" class="search-input-width-second" name="bankName" />
 										</td>
 									</tr>
@@ -227,7 +302,7 @@ tr td:first-child {
 						&nbsp;
 						<button type="button" class="btn btn-info btn-small mybtn" id="selectFinancialYearList">조회</button>
 						&nbsp;
-						<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+						<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 						&nbsp;
 						<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 						&nbsp;
@@ -262,10 +337,12 @@ tr td:first-child {
 					</thead>
 						<tbody id="tbody-list">
 						<c:forEach items="${list}" var="vo" varStatus="status">
-							<tr onclick="selectRow(this)">
-								<td class="center" data-no ="${vo.no}"><label class="pos-rel">
-								<input type="checkbox" class="ace" /> <span class="lbl"></span>
-								</label></td>
+							<tr id="${vo.no }">
+								<td id="select-checkbox" class="center">
+									<label class="pos-rel"></label>
+									<input type="checkbox" class="ace" name="no"  value="${vo.no }"/><span class="lbl"></span>
+									
+								</td>
 								<td class="center">${vo.code}</td>
 								<td>${vo.name}</td>
 						        <c:choose>
@@ -311,8 +388,7 @@ tr td:first-child {
 										<li class="disabled"><a><i class="icon-double-angle-left"></i></a></li>
 									</c:when>
 									<c:otherwise>
-										<li><a
-											href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock-1)*pageInfo.pagesPerBlock}"><i
+										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock-1)*pageInfo.pagesPerBlock}"><i
 												class="icon-double-angle-left"></i></a></li>
 									</c:otherwise>
 								</c:choose>
@@ -380,19 +456,17 @@ tr td:first-child {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 	<script>
 	$(function() {
-		$(".chosen-select").chosen();
+		$(document).ready(function(){
+            $(".chosen-select").chosen()
+        });
+		//$(".chosen-select").chosen();
 
 		$('#id-date-range-picker-1').daterangepicker({
 			format : 'YYYY-MM-DD'
@@ -406,7 +480,7 @@ tr td:first-child {
 			var tr = $(this);
 			var td = tr.children();
 			
-			$("input[name=no]").val(td.eq(0).attr('data-no'));
+// 			$("input[name=no]").val(td.eq(0).attr('data-no'));
 			$("input[name=code]").val(td.eq(1).text());
 			$("input[name=name]").val(td.eq(2).text());
 			var major='';
@@ -501,6 +575,18 @@ tr td:first-child {
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
 			
 		});
+		
+		
+		
+		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		$("#bank-table tr").click(function(){ 
+			var tr = $(this);
+			var td = tr.children();
+			$("input[name=bankCode]").val(td.eq(0).text());
+			$("input[name=bankName]").val(td.eq(1).text());
+		});
+		
+		
 		
 		// Button으로 사채코드를 받아서 해당 사채 데이터 조회하기
 		$("#selectone").click(function(){
@@ -657,12 +743,66 @@ tr td:first-child {
 		// 출처 : https://stackoverflow.com/questions/11365212/how-do-i-reset-a-jquery-chosen-select-option-with-jquery
 		$("#formReset").bind("click", function () {
 			// form의 모든 데이터 초기화
-			$('#debtForm')[0].reset();
+			$('#input-form')[0].reset();
 			
 			// value 값으로 선택
 			$('#majorcode-field-select').val('초기값').trigger('chosen:updated');
 			$('#dangercode-field-select').val('초기값').trigger('chosen:updated');
         });
+		
+		// 은행코드 및 은행명 검색
+		$("#btn-dialog-bankcode").click(function(){
+			var bankcodeVal = $("#input-dialog-bankcode").val();
+			console.log(bankcodeVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					console.log(response.code);
+					console.log(response.name);
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		$("#btn-dialog-bankname").click(function(){
+			var banknameVal = $("#input-dialog-bankname").val();
+			console.log(banknameVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					console.log(response.code);
+					console.log(response.name);
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		
+		
 		
 		
 		
@@ -682,67 +822,57 @@ tr td:first-child {
 		});
 	});
 
-
-	function selectRow(thisTr){
-		var dataForm = $("#form" + $(thisTr).attr('id'))[0];
-		var inputForm = $("#input-form")[0];
-		
-		inputForm.no.value = dataForm.no.value;
-		inputForm.code.value = dataForm.code.value;
-		inputForm.name.value = dataForm.name.value;
-		inputForm.debtAmount.value = dataForm.debtAmount.value;
-		//inputForm.elements["debtExpDate"].value = dataForm.elements["debtExpDate"].value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
-		$(inputForm).find("input[name='intPayWay']").each(function(i, e){
-			if($(this).val() == dataForm.intPayWay.value){
-				$(this).attr("checked", true);
-			}
-		});	
-		inputForm.bankCode.value = dataForm.bankCode.value;		//bank name도 채워야함
-		
-		var options = inputForm.majorCode.options;					//SelectBox Options
-		for(var i=0 ; i < options.length; ++i){
-			if(options[i].value == dataForm.majorCode.value){
-				options[i].selected = "selected";
-				$("#majorCode_chosen").find("span")[0].innerHTML = options[i].innerHTML;
-			}
-		}
-		
-		$(inputForm).find("input[name='repayWay']").each(function(i, e){
-			if($(this).val() == dataForm.repayWay.value){
-				$(this).attr("checked", true);
-			}
-				
-		});		
-		inputForm.intRate.value = dataForm.intRate.value;
-		inputForm.mgr.value = dataForm.mgr.value;
-		inputForm.mgrCall.value = dataForm.mgrCall.value;
-		inputForm.depositNo.value = dataForm.depositNo.value;		//bank name도 채워야함
-		//$("#bankName").val(dataForm.elements[].value);
-	}
-
+	// 데이터 삭제
 	function deleteChecked(){
 		var sendData = [];
 		var checkedList = $("#tbody-list input[type=checkbox]:checked");
 		checkedList.each(function(i, e){
-			sendData.push($(this).val());
+			sendData.push($(this).val())
 		});
-		
+		console.log(sendData);
 		$.ajax({
-			url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val + "/deleteChecked",
+			url : "${pageContext.request.contextPath }/api/selectone/deleteChecked",
 			type : "POST",
 			dataType : "json",
 			data : {"sendData" : sendData},
 			success: function(response){
+				console.log("success");
 				checkedList.each(function(i, e){
-					$(this).remove();
+					console.log($("#" + $(this).val()));
+					$("#" + $(this).val()).remove();
 				})
 			},
 			error : function(xhr, error){
-				
+				console.error("error : " + error);
 			}
 		})
 	}
+</script>
+<script>
+	$(function() {
+		$("#dialog-message").dialog({
+			autoOpen : false
+		});
 
+		$("#id-btn-dialog1").click(function() {
+			$("#dialog-message").dialog('open');
+			$("#dialog-message").dialog({
+			      resizable: false,
+			      height: 400,
+			      width: 400,
+			      modal: true,
+			      buttons: {
+			        "Delete all items": function() {
+			          $( this ).dialog( "close" );
+			        },
+			        Cancel: function() {
+			          $( this ).dialog( "close" );
+			        }
+			      }
+			    });
+		});
+
+	});
 </script>
 </body>
 </html>

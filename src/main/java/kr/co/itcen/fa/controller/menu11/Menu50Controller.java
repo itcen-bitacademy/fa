@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PageVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
@@ -51,8 +52,14 @@ public class Menu50Controller {
 			pageInfo = pagingProcess(1);
 		}
 		List<PdebtVo> list = menu50Service.list(pageInfo.getStartRow() - 1, pageInfo.getRowsPerPage());
+		
+		// 은행정보 불러오기
+		List<BankVo> bankList = menu50Service.bankInfoList();
+		
 		model.addAttribute("list", list);
+		model.addAttribute("bankList", bankList);
 		model.addAttribute("pageInfo", pageInfo);
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
