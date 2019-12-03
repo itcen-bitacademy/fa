@@ -21,7 +21,7 @@
 		<![CDATA[
 			insert 
 			  into tb_customer 
-			values (#{no}, #{name }, #{ceo }, #{address }, #{detailAddress }, #{conditions }, #{item }, #{corporationNo }, now(), #{jurisdictionOffice }, 
+			values (concat('A' ,#{no}), #{name }, #{ceo }, #{address }, #{detailAddress }, #{conditions }, #{item }, #{corporationNo }, now(), #{jurisdictionOffice }, 
 					#{phone }, #{managerName }, #{managerEmail }, #{depositNo}, 'N', #{insertUserid }, now(), null, null)
 		]]>
 	</insert>

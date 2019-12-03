@@ -30,19 +30,21 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">차량 코드</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="id" placeholder="10자로 입력하세요"/>
+										<input type="text" id="form-field-1" name="id" placeholder="9자로 입력하세요"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1">대분류 코드</label>
 									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="sectionNo" data-placeholder="전체">
-											<c:forEach items="${listMainMenu }" var="sectionVo">
-												<option value="${sectionVo.no }">${sectionVo.name }</option>
+										<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="전체">
+											<c:forEach items="${sectionList }" var="sectionVo">
+												<option vehiclecode="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 											</c:forEach>
 										</select>
-										<input readonly type="text" class="span6" id="form-input-readonly" value="코드를 지정하면 대분류명이 등록됩니다">
+										<!-- <input readonly type="text" class="span6" id="form-input-readonly"  value="코드를 지정하면 대분류명이 등록됩니다"> -->
+									<!-- 	<input readonly type="text" class="span6" id="classification"  value="코드를 지정하면 대분류명이 등록됩니다"> -->
+									  <input readonly type="text" class="span6" id="classification" name="classification" value="001" placeholder="코드를 지정하면 대분류명이 등록됩니다">
 									</div>
 								</div>
 								
@@ -85,33 +87,33 @@
 									<div style="float:left;width:50%">											
 										<label class="control-label" for="form-field-1">매입일자</label>
 										<div class="controls">
-											<input class="cl-date-picker" style="width:150px" type="text" id="form-field-1" name="acqPrice" placeholder=""/> <i class="icon-calendar"></i>
+											<input class="cl-date-picker" style="width:150px" type="text" id="form-field-1" name="payDate" placeholder=""/> <i class="icon-calendar"></i>
 										</div>
 									</div>	
 									<div style="float:left;width:50%">											
 										<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">출시가</label>
-										<input style="width:200px" type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
+										<input style="width:200px" type="text" id="form-field-1" name="publicValue" placeholder="금액을 입력하세요"/>
 									</div>	
 								</div>
                        		
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">부대비용</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="addiFee" placeholder="금액을 입력하세요"/>
+										<input type="text" id="form-field-1" name="etcCost" placeholder="금액을 입력하세요"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">보증금</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="addiFee" placeholder="금액을 입력하세요"/>
+										<input type="text" id="form-field-1" name="deposit" placeholder="금액을 입력하세요"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">월 사용료</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="addiFee" placeholder="금액을 입력하세요"/>
+										<input type="text" id="form-field-1" name="monthlyFee" placeholder="금액을 입력하세요"/>
 									</div>
 								</div>
 								
@@ -134,11 +136,11 @@
 							
 								
 			
-								<div class="control-group">
+								<div class="control-group" style="margin-top:50px">
 									<div style="float:left;width:50%">											
 										<label class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width:90%">
-												<select class="chosen-select-1" name="staffName" data-placeholder="전체">
+												<select class="chosen-select-1" name="staffNo" data-placeholder="전체">
 												<!-- <select class="chosen-select-1" id="form-field-select-1" name="staffName" data-placeholder="전체"> -->
 													<c:forEach items="${jikNameList}" var="StaffVo">
 														<option value="${StaffVo.no }">${StaffVo.staffName }</option>
@@ -147,8 +149,8 @@
 											</div>
 										</div>	
 										<div style="float:left;width:50%">											
-											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">사용자</label>
-											<input type="text" id="form-field-1" name="ownerName" placeholder=""/>
+											<label style="width:80px; margin-right:10px;" class="control-label" for="form-field-1">사용자</label>
+											<input type="text" id="form-field-1" name="ownerName" placeholder="차량 사용자를 입력하세요"/>
 										</div>	
 								</div>
 								
@@ -181,12 +183,12 @@
 									<div style="float:left;width:50%">											
 										<label class="control-label" for="form-field-1">등록세</label>
 										<div class="controls" style="width:90%">
-											<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
+											<input type="text" id="form-field-1" name="regTax" placeholder="금액을 입력하세요"/>
 										</div>
 									</div>	
 									<div style="float:left;width:50%">											
-										<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">취득세</label>
-										<input type="text" id="form-field-1" name="acqPrice" placeholder="금액을 입력하세요"/>
+										<label style="width:80px; margin-right:10px;" class="control-label" for="form-field-1">취득세</label>
+										<input type="text" id="form-field-1" name="acqTax" placeholder="금액을 입력하세요"/>
 									</div>	
 								</div>
 								
@@ -201,7 +203,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">보증금 납부일자</label>
 									<div class="controls">
-										<input class="cl-date-picker" type="text" style="width:150px" id="form-field-1" name="depositeDate" placeholder=""/>	
+										<input class="cl-date-picker" type="text" style="width:150px" id="form-field-1" name="depositDate" placeholder=""/>	
 										<i class="icon-calendar"></i>
 									</div>
 								</div>
@@ -210,14 +212,14 @@
 									<div style="float:left;width:50%">	
 										<label class="control-label" for="form-field-1">사용료 납부일</label>
 										<div class="controls">
-											<input type="text" class="span10" id="form-field-1" name="name" placeholder=""/>
+											<input type="text" class="span10" id="form-field-1" name="feeDate" placeholder="일자 2자리를 입력하세요"/>
 										</div>
 									</div>
-									<div style="float:left;width:50%">											
-										<label class="control-label" for="form-field-1">구분</label>
+									<div style="float:left;width:50%" >											
+										<label class="control-label" for="form-field-1" >구분</label>
 										<div class="controls">
-											<input type="radio" name="tax" value="과세">과세
-											<input type="radio" name="zeroTax" value="영세">영세
+											<input type="radio" name="taxKind" value="과세">과세
+											<input type="radio" name="taxKind" value="영세">영세
 										</div>
 									</div>	
 								</div>
@@ -230,11 +232,11 @@
 								<div class="hr hr-18 dotted"></div>
 								<div class="controls" style="margin-left: 0px;">
 									<div class="controls" style="margin-left: 0px;">
-										   <button class="btn btn-primary btn-small" style="float:left; margin-right:20px;">등록</button>
-			                               <button class="btn btn-warning btn-small" style="float:left;margin-right:20px;">수정</button>
-			                               <button class="btn btn-danger btn-small" style="float:left;margin-right:20px;">삭제</button>
-			                               <button class="btn btn-info btn-small" style="float:left;margin-right:20px;">조회</button>
-			                               <button class="btn btn-default btn-small" style="float:left;margin-right:20px;">초기화</button>
+										   <button type="submit" class="btn btn-primary btn-small" id="insert" style="float:left; margin-right:20px;">등록</button>
+			                               <button type="submit" class="btn btn-warning btn-small" id="modify" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+			                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;">삭제</button>
+			                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;"formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
+			                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;" type="reset">초기화</button>
 									</div>
 								</div>
 								</div>
@@ -253,7 +255,7 @@
 											<tr>
 												<th class="center">
 													<label>
-														<input type="checkbox" class="ace">
+														<input type="checkbox" name="checkAll" id="th_checkAll" class="ace" onclick="checkAll();"/>
 														<span class="lbl"></span>
 													</label>
 												</th>
@@ -277,10 +279,9 @@
 												<th>보증금(원)</th>
 												<th>월 사용료(원)</th>
 												<th>보증금 납부일자</th>
-												<th>월 사용료 납부일자(원)</th>
+												<th>사용료 납부일</th>
 												<th>과세/영세</th>
 												<th>사용개월</th>
-												<th>사용료 납부일자</th>
 												<th>세금계산서번호</th>
 												<th>작성자</th>
 												<th>작성일자</th>
@@ -288,45 +289,47 @@
 										</thead>
 
 										<tbody>
-											<tr>
+											<c:forEach items="${list }" var = "VehicleVo" varStatus="status">
+										
+											<tr id="ㄷ">
 												<td class="center">
 													<label>
-														<input type="checkbox" class="ace">
+														<input type="checkbox" class="ace" name="checkRow" value="${content.IDX}"  />
 														<span class="lbl"></span>
 													</label>
 												</td>
 
-												<td>1</td>
-												<td>차량코드</td>
-												<td>차량대분류</td>
-												<td>차량배기량</td>
-												<td>직급</td>
-												<td>소유자</td>
+											 	<td>${status.count }</td> 
+												<td>${VehicleVo.id}</td>
+												<td>${VehicleVo.sectionNo}</td>
+												<td>${VehicleVo.classification}</td>
+												<td>${VehicleVo.staffName}</td>
+												<td>${VehicleVo.ownerName}</td>
 												<td>주소(광역)</td>
 												<td>주소(기초)</td>
 												<td>주소(지번)</td>
 												<td>주소(상세)</td>
-												<td>매입일자</td>
+												<td>${VehicleVo.payDate}</td>
 												<td>매입거래처코드</td>
 												<td>매입거래처담당자</td>
-												<td>출시가(원)</td>
-												<td>등록세(원)</td>
-												<td>취득세(원)</td>
-												<td>부대비용(원)</td>
-												<td>보증금(원)</td>
-												<td>월 사용료(원)</td>
-												<td>보증금 납부일자</td>
-												<td>월 사용료 납부일자(원)</td>
-												<td>과세/영세</td>
+												<td>${VehicleVo.publicValue}</td>
+												<td>${VehicleVo.regTax}</td>
+												<td>${VehicleVo.acqTax}</td>
+												<td>${VehicleVo.etcCost}</td>
+												<td>${VehicleVo.deposit}</td>
+												<td>${VehicleVo.monthlyFee}</td>
+												<td>${VehicleVo.depositDate}</td>
+												<td>${VehicleVo.feeDate}</td>
+												<td>${VehicleVo.taxKind}</td>
 												<td>사용개월</td>
-												<td>사용료 납부일자</td>
 												<td>세금계산서번호</td>
 												<td>작성자</td>
 												<td>작성일자</td>
 											</tr>
-										</tbody>
-									</table>
-									
+										</c:forEach>
+									</tbody>
+								</table>
+								
 										<div class="pagination">
 											<ul>
 												<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -386,5 +389,71 @@ $(function(){
 		})
 	</script>
 	
+<script>
+function checkAll(){
+    if( $("#th_checkAll").is(':checked') ){
+      $("input[name=checkRow]").prop("checked", true);
+    }else{
+      $("input[name=checkRow]").prop("checked", false);
+    }
+}
+</script>
+
+<script>
+function deleteAction(){
+	var checkRow = "";
+	 $( "input[name='checkRow']:checked" ).each (function (){
+		    checkRow = checkRow + $(this).val()+"," ;
+		  });
+	 checkRow = checkRow.substring(0,checkRow.lastIndexOf( ",")); //맨끝 콤마 지우기
+	 
+	  if(checkRow == ''){
+	    alert("삭제할 대상을 선택하세요.");
+	    return false;
+	  }
+	  console.log("### checkRow => {}"+checkRow);
+}
+</script>
+
+
+<script>
+/* //대분류코드 select box 변경시 이벤트
+$('#form-field-section').change(
+	function() { 
+      var sectionCode = $('#form-field-section option:selected').val(); //1000CC
+      alert("첫번째" + sectionCode)
+      var classification = $('#classification').val(); //1000cc
+      alert("두번째" + classification)
+}); */
+
+$('#form-field-section').change(
+		function() { 
+	      var classification = $('#form-field-section option:selected').attr('vehiclecode'); //1000CC
+	    
+	     $('#classification').val(classification); //val안에 classification안에 넣어야 한다.
+	   
+	});
+</script>
+
+<script>
+//버튼 구현
+$(function(){
+   $("#insert").click(function() {
+      alert("등록");
+   });
+   
+   $("#modify").click(function() {
+      alert("수정");
+   }); 
+   
+   $("#delete").click(function() {
+      alert("삭제");
+   }); 
+   
+   $("#search").click(function() {
+      alert("조회");
+   }); 
+});
+</script>
 </body>
 </html>
