@@ -11,8 +11,8 @@ public class VehicleVo {
 	private String voucherNo;
 	private String sectionNo;
 	private String classification;
-	private int staffNo;
-	private String staffName;
+	private int staffNo; //직급번호
+	private String staffName; //직급명
 	private String ownerName;
 	private String wideAddress;
 	private String cityAddress;

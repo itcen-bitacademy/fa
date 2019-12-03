@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu08.Menu41Service;
-import kr.co.itcen.fa.vo.menu08.StaffVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
 
@@ -49,27 +48,27 @@ public class Menu41Controller {
 		 */
 		
 		System.out.println(vehicleVo.getId());
+		
 		//조회기능
-		
-			Map<String, Object> map = new HashMap<>();
-			map.putAll(menu41Service.selectList(vehicleVo));
-			model.addAllAttributes(map);
-		
-			//대분류 select box
-			map.putAll(menu41Service.getSection());
-			model.addAllAttributes(map);
-					
-			//직급 select box
-			map.putAll(menu41Service.getName());
-			model.addAllAttributes(map);
-		
+		Map<String, Object> map = new HashMap<>();
+		map.putAll(menu41Service.selectList(vehicleVo));
+		model.addAllAttributes(map);
+	
+		//대분류 select box
+		map.putAll(menu41Service.getSection());
+		model.addAllAttributes(map);
+				
+		//직급 select box
+		map.putAll(menu41Service.getName());
+		model.addAllAttributes(map);
+	
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 
 	//등록기능
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/add" }, method = RequestMethod.POST)
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/insert" }, method = RequestMethod.POST)
 	public String insert(@ModelAttribute VehicleVo vehicleVo){
 		vehicleVo.setId("e"+vehicleVo.getId());
 		menu41Service.insert(vehicleVo);
@@ -82,17 +81,17 @@ public class Menu41Controller {
 	 @RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/update" }, method =RequestMethod.POST) 
 	 public String update(@ModelAttribute VehicleVo vehicleVo ){ 
 		menu41Service.update(vehicleVo); 
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/update"; 
+		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
 	  }
 	
 	//삭제기능
-//	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/add" }, method = RequestMethod.POST)
-//	public String delete(@ModelAttribute VehicleVo vehicleVo ) {
-//		menu41Service.delete(vehicleVo);
-//		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
-//	}
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
+	public String delete(@RequestParam(value="id") String id ) {
+		menu41Service.delete(id);
+		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
+	}
 	  
-	//조회기능
+	//검색기능
 	 @RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/search" }, method =RequestMethod.POST) 
 	 public String search(@ModelAttribute VehicleVo vehicleVo ){ 
 		menu41Service.search(vehicleVo); 

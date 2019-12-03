@@ -72,12 +72,12 @@
 		from tb_vehicle v 
 				 left outer join tb_staff st on v.staff_no = st.no
 				 left outer join tb_section s on v.section_no = s.code 
-		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY);
+		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag="s";
 		]]>
 	</select>
 	
 	
-	<!-- 수정 TEST --><!-- where 조건절에 체크박스가 선택되어있을경우 set flag="d"로 바꾸고 -->
+	<!-- 수정 TEST --><!-- where 조건절에 행이 선택되어있을경우 set flag="d"로 바꾸고 -->
 	<update id="update" parameterType="vehicle08vo">
 		<![CDATA[
 		update tb_vehicle
@@ -88,42 +88,40 @@
 		  	  section_no = null,
 		  	  staff_no = #{staffNo},
 	  	  	  staff_name = #{staffName},
-		  	  owner_name = null,
+		  	  owner_name = #{ownerName},
 		  	  wide_address = null,
 		  	  city_address = null,
 		  	  local_address = null,
 		  	  detail_address = null,
-		  	  public_value = null,
-		  	  reg_tax = null,
-		  	  acq_tax = null,
-		  	  etc_cost = null,
+		  	  public_value = #{publicValue},
+		  	  reg_tax = #{regTax},
+		  	  acq_tax = #{acqTax},
+		  	  etc_cost = #{etcCost},
 		  	  pay_date = #{payDate},
 		  	  deposit =  #{deposit},
 			  deposit_date = #{depositDate},
 			  monthly_fee = #{monthlyFee},
 			  fee_date = #{feeDate},
-			  tax_kind = null,
+			  tax_kind = #{taxKind},
 			  flag = "o",
-			  insert_userid = null, 
-			  insert_day = null,
 			  update_userid = null,
-			  update_day = null
+			  update_day = curdate()
 	    where flag="s"
 	    	and id = #{id }; 
 		]]>
 	</update>
  
 	
-	<!-- 삭제 TEST --><!--  체크박스가 선택되어있을경우-->
-<!-- 
-	<update id="delete" parameterType="vehicle08vo">
+	<!-- 삭제 TEST --><!--  삭제버튼 클릭시 flag="s"를 flag="d"로 바꾸면서 삭제-->
+
+	<update id="delete" parameterType="string">
 		<![CDATA[
 		update tb_vehicle
 		  set flag="d"
-	    where flag="s"; 
+	    where id=#{id}; 
 		]]>
 	</update>
- -->
+ 
  
  	<!-- 검색  TEST -->
 	<select id="search"  resultType="vehicle08vo">
