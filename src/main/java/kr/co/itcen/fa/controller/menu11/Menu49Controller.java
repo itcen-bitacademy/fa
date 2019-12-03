@@ -35,7 +35,7 @@ public class Menu49Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
-			@RequestParam(required=false) LTermdebtVo vo) {
+		LTermdebtVo vo) {
 		System.out.println(vo);
 		
 		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo);
