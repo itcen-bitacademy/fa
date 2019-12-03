@@ -22,7 +22,6 @@ public class CurrentSituationVo {
 	private Long stockquantity;
 	private Long stocktaxvalue;
 	private Long stocktotalprice;
-	
 	public String getSectioncode() {
 		return sectioncode;
 	}
@@ -113,6 +112,8 @@ public class CurrentSituationVo {
 	public void setStocktotalprice(Long stocktotalprice) {
 		this.stocktotalprice = stocktotalprice;
 	}
+	
+	
 	
 	
 }

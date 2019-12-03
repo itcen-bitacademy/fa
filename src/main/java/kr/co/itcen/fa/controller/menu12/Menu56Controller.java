@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu56Service;
@@ -39,9 +38,8 @@ public class Menu56Controller {
 		 * JSP
 		 * 12/56/list.jsp
 		 */
-		List<CurrentSituationVo> list = menu56Service.getlist();
+		List<CurrentSituationVo> list = menu56Service.getList();
 		model.addAttribute("list",list);
-		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
