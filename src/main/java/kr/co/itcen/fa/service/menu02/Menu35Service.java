@@ -31,4 +31,12 @@ public class Menu35Service {
 	public void insert(CustomerVo vo) {
 		menu35Repository.insert(vo);
 	}
+	
+	public void update(CustomerVo vo) {
+		menu35Repository.update(vo);
+	}
+	
+	public List<CustomerVo> search(String no) {
+		return menu35Repository.search(no);
+	}
 }

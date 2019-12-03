@@ -2,16 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu36">
 	<!-- Team -->
-	<insert id="save" parameterType="test2vo">
+	<select id="getList" resultType="purchasecustomer35vo">
 		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
+		     select 
+			      no, 
+			      name, 
+			      ceo, 
+			      corporation_no as corporationNo, 
+			      concat(zip_code, " ", address, " ", detail_address) as address, 
+			      phone, 
+			      conditions, 
+			      item, 
+			      date_format(open_date, '%Y-%m-%d') as openDate, 
+			      jurisdiction_office as jurisdictionOffice, 
+			      manager_name as managerName, 
+			      manager_email as managerEmail, 
+			      deposit_no as depositNo, 
+				  insert_userid as insertUserid, 
+				  insert_day as insertDay, 
+				  update_userid as updateUserid, 
+				  update_day as updateDay, 
+				  delete_flag as deleteFlag 
+			 from tb_purchasecustomer;
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
-	</insert>
+	</select>
 </mapper>

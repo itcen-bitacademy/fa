@@ -36,4 +36,14 @@ public class Menu35Repository {
 		int count = sqlSession.insert("menu35.insert", vo);
 		return count == 1;
 	}
+	
+	public Boolean update(CustomerVo vo) {
+		int count = sqlSession.update("menu35.update", vo);
+		return count == 1;
+	}
+	
+	public List<CustomerVo> search(String no) {
+		List<CustomerVo> result = sqlSession.selectList("menu35.search", no);
+		return result;
+	}
 }

@@ -5,11 +5,51 @@
 	<select id="getList" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-		      no, name, ceo, corporation_no as corporationNo, address, phone, conditions, item, 
-		      open_date as openDate, jurisdiction_office as jurisdictionOffice, 
-		      manager_name as managerName, manager_email as managerEmail, deposit_no as depositNo, 
-			  insert_userid as insertUserid, insert_day as insertDay, update_userid as updateUserid, update_day as updateDay, delete_flag as deleteFlag 
+			      no, 
+			      name, 
+			      ceo, 
+			      corporation_no as corporationNo, 
+			      concat(zip_code, " ", address, " ", detail_address) as address, 
+			      phone, 
+			      conditions, 
+			      item, 
+			      open_date as openDate, 
+			      jurisdiction_office as jurisdictionOffice, 
+			      manager_name as managerName, 
+			      manager_email as managerEmail, 
+			      deposit_no as depositNo, 
+				  insert_userid as insertUserid, 
+				  insert_day as insertDay, 
+				  update_userid as updateUserid, 
+				  update_day as updateDay, 
+				  delete_flag as deleteFlag 
 			 from tb_purchasecustomer;
+		]]>
+	</select>
+	
+	<select id="search" parameterType="string" resultType="purchasecustomer35vo">
+		<![CDATA[
+		     select 
+			      no, 
+			      name, 
+			      ceo, 
+			      corporation_no as corporationNo, 
+			      concat(zip_code, " ", address, " ", detail_address) as address, 
+			      phone, 
+			      conditions, 
+			      item, 
+			      date_format(open_date, '%Y-%m-%d') as openDate, 
+			      jurisdiction_office as jurisdictionOffice, 
+			      manager_name as managerName, 
+			      manager_email as managerEmail, 
+			      deposit_no as depositNo, 
+				  insert_userid as insertUserid, 
+				  insert_day as insertDay, 
+				  update_userid as updateUserid, 
+				  update_day as updateDay, 
+				  delete_flag as deleteFlag 
+			 from tb_purchasecustomer
+			where no like CONCAT('%',#{no},'%');
 		]]>
 	</select>
 	
@@ -17,9 +57,59 @@
 		<![CDATA[
 		insert
 		  into tb_purchasecustomer
-		values (#{no}, #{name}, #{ceo}, #{corporationNo}, #{zipCode}, #{address}, #{detailAddress}, 
-		#{phone}, #{conditions}, #{item}, #{openDate}, #{jurisdictionOffice}, #{managerName}, 
-		#{managerEmail}, #{depositNo}, #{depositHost}, #{insertUserid}, now(), null, null, 'N')
+		values (#{no}, 
+				#{name}, 
+				#{ceo}, 
+				#{corporationNo}, 
+				#{zipCode}, 
+				#{address}, 
+				#{detailAddress}, 
+				#{phone}, 
+				#{conditions}, 
+				#{item}, 
+				#{openDate}, 
+				#{jurisdictionOffice}, 
+				#{managerName}, 
+				#{managerEmail}, 
+				#{depositNo}, 
+				#{depositHost}, 
+				#{insertUserid}, 
+				now(), 
+				null, 
+				null, 
+				'N')
 		]]>
 	</insert>
+	
+	<update id="update" parameterType="purchasecustomer35vo">
+		<![CDATA[
+			update tb_purchasecustomer 
+			   set no = #{no }, 
+			       name = #{name },
+			       ceo = #{ceo },
+			       corporation_no = #{corporationNo },
+			       zip_code = #{zipCode },
+			       address = #{address },
+			       detail_address = #{detailAddress },
+			       phone = #{phone },
+			       conditions = #{conditions },
+			       item = #{item },
+			       open_date = #{openDate },
+			       jurisdiction_office = #{jurisdictionOffice },
+			       manager_name = #{managerName },
+			       manager_email = #{managerEmail },
+			       deposit_no = #{depositNo },
+			       deposit_host = #{depositHost },
+			       update_userid = #{updateUserid },
+			       update_day = now()			       
+			 where no = #{no }
+		]]>
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		<![CDATA[
+			delete from board where no = #{no }
+		]]>
+	</delete>
+	
 </mapper>
