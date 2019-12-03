@@ -9,7 +9,7 @@
 <style>
 .radio {
 	float: left;
-	width: 10%;
+	width: 20%;
 }
 
 .prod-list-opts {
@@ -43,13 +43,16 @@ form {
 }
 
 /* table columns  */
-.first-column {width:170px; padding-left:20px;}
-.second-column {width:400px;}
-.third-column {width:120px;}
+td{display: inline-block;}
+.first-column {width:60px; padding-left:20px;}
+.second-column {width:180px;}
+.third-column {width:60px;}
 .fourth-column {width:70px;}
-.fifth-column {width:200px;}
-.sixth-column {padding-left:20px;}
-
+.fifth-column {width:90px;}
+.sixth-column {width:180px;}
+.seventh-column{width:50px;}
+.eighth-column{width:80px;}
+.nineth-column{width:120px;}
 /* second row */
 .span2 {padding-left:40px; padding-top:20px;}
 
@@ -74,17 +77,20 @@ form {
 							<table style="width:100%;">
 								<tbody>
 								<tr>
-									<td class="first-column"><h4>차입일자 ~ 만기일자</h4></td>
+									<td class="first-column"><h4>차입일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="date-range-picker" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
-				                           <span class="add-on">
-				                              <i class="icon-calendar"></i>
-				                           </span>
-				                           </div>
+				                           <input type="date" name="debtDate" id="debtDate"  data-date-format="yyyy-mm-dd" />
+				                         </div>
 									</td>
-									<td class="third-column"><h4>이자지급방식</h4></td>
-									<td>
+									<td class="third-column"><h4>만기일자</h4></td>
+									<td class="fourth-column">
+				                        <div class="row-fluid input-prepend">
+				                           <input type="date" name="expDate" id="expDate"  data-date-format="yyyy-mm-dd" />
+				                         </div>
+									</td>
+									<td class="fifth-column"><h4>이자지급방식</h4></td>
+									<td class="sixth-column">
 										<div class="radio">
 											<label>
 												<input name="form-field-radio" type="radio" class="ace" />
@@ -104,11 +110,11 @@ form {
 											</label>
 										</div>
 									</td>
-									<td class="fourth-column"><h4>은행명</h4></td>
-									<td class="fifth-column">
+									<td class="seventh-column"><h4>은행명</h4></td>
+									<td class=eighth-column>
 										<input type="text" name="bankName"/>
 									</td>
-									<td class="sixth-column">
+									<td class="nineth-column">
 										<button type="button" class="btn">조회</button>
 									</td>
 								</tr>

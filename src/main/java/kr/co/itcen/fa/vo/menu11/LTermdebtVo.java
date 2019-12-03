@@ -10,6 +10,7 @@ public class LTermdebtVo {
 	private Long debtAmount;//차입금액
 	private Long repayBal;//상환잔액
 	private String repayWay;//상환방법
+	private String repayCompleFlag; // 상환완료여부
 	private String debtExpDate;//차입-만기일자
 	private String debtDate;//차입일자
 	private String expDate;//만기일자
@@ -63,6 +64,12 @@ public class LTermdebtVo {
 	}
 	public void setRepayWay(String repayWay) {
 		this.repayWay = repayWay;
+	}
+	public String getRepayCompleFlag() {
+		return repayCompleFlag;
+	}
+	public void setRepayCompleFlag(String repayCompleFlag) {
+		this.repayCompleFlag = repayCompleFlag;
 	}
 	public String getDebtExpDate() {
 		return debtExpDate;

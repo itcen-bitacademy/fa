@@ -13,6 +13,7 @@ public class PdebtVo {
 	private int debtAmount; // 차입금액
 	private int repayBal; // 상환잔액 - 초기값으로 차입금액 삽입
 	private String repayWay; // 상환방법
+	private String repayCompleFlag; // 상환완료여부
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
 	private Date debtDate; // 차입일자
 	private Date expDate; // 만기일자
@@ -82,7 +83,14 @@ public class PdebtVo {
 	public void setRepayWay(String repayWay) {
 		this.repayWay = repayWay;
 	}
+	
+	public String getRepayCompleFlag() {
+		return repayCompleFlag;
+	}
 
+	public void setRepayCompleFlag(String repayCompleFlag) {
+		this.repayCompleFlag = repayCompleFlag;
+	}
 	public String getDebtExpDate() {
 		return debtExpDate;
 	}
