@@ -148,6 +148,7 @@
 	        }
 	        location.href = "/fa/12/13/"+code;
 	     }
+        
         function checkFlag(){
             if($("#flag").val()=="true"){
             	sumData.addQuantity();

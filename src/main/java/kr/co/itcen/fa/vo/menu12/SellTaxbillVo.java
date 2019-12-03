@@ -7,22 +7,44 @@ import org.apache.ibatis.type.Alias;
  * @author 안태영 - 매출세금계산서 Vo 객체 - DB 테이블명 : tb_sell_taxbill
  * 
  **/
-@Alias("selltaxbillvo")
-public class SellTaxbillVo {            // 논리명
-	private long idx;					// 번호    - pk - Auto Increment
-	private long taxbill_no;			// 승인번호
-	private String manage_no;			// 관리번호
-	private String tax_type;			// 과세구분
-	private long total_supply_value;	// 총급가액
-	private long total_tax_value;		// 총세액
-	private boolean delete_flag;		// 삭제
-	private String write_date;			// 작성일
-	private String voucher_no;			// 전표번호
-	private String sales_no;			// 매출번호
-	private String insert_userid;		// 입력자 
-	private String insert_day;			// 입력자 날
-	private String update_userid;		// 수정자
-	private String update_day;			// 수정날
+@Alias("selltaxbill12vo")
+public class SellTaxbillVo { // 논리명
+
+	// DB 속성
+	private long idx; // 번호 - pk - Auto Increment
+	private long taxbillNo; // 승인번호 - 국세청 - 세금계산서 번호
+	private String salesNo; // 관리번호 - 매출번호
+	private String customerCode; // 거래처코드
+	private String customerName; // 거래처명
+	private String ceo; // 대표자
+	private String zipCode; // 우편번호
+	private String address; // 주소
+	private String detailAddress; // 상세주소
+	private String managerName; // 거래처 담당자 이름
+	private String managerEmail; // 거래처 담당자 메일
+	private long totalQuantity; // 총수량
+	private long totalSupplyValue; // 총공급가액
+	private long totalTaxValue; // 총세액
+	private String writeDate; // 발행일
+	private String taxType; // 과세구분
+	private String depositNo; // 계좌번호
+	private String releaseDate; // 출고일
+	private String depositHost; // 예금주
+	private String bankName; // 은행명
+	private String bankCode; // 은행코드
+	private String deleteFlag; // 삭제
+	private String voucherNo; // 전표번호
+	private String insertUserid; // 입력자
+	private String insertDay; // 입력일
+	private String updateUserid; // 수정자
+	private String updateDay; // 수정일
+
+	//// Vo 객체로써 사용하기 위해 필요한 인스턴스 변수
+	private long itemCode; // 품목코드
+	private String itemName; // 품목명
+	private long quantity; // 수량
+	private long supplyValue; // 공급가액
+	private long taxValue; // 부가세
 
 	public long getIdx() {
 		return idx;
@@ -32,117 +54,266 @@ public class SellTaxbillVo {            // 논리명
 		this.idx = idx;
 	}
 
-	public long getTaxbill_no() {
-		return taxbill_no;
+	public long getTaxbillNo() {
+		return taxbillNo;
 	}
 
-	public void setTaxbill_no(long taxbill_no) {
-		this.taxbill_no = taxbill_no;
+	public void setTaxbillNo(long taxbillNo) {
+		this.taxbillNo = taxbillNo;
 	}
 
-	public String getManage_no() {
-		return manage_no;
+	public String getSalesNo() {
+		return salesNo;
 	}
 
-	public void setManage_no(String manage_no) {
-		this.manage_no = manage_no;
+	public void setSalesNo(String salesNo) {
+		this.salesNo = salesNo;
 	}
 
-	public String getTax_type() {
-		return tax_type;
+	public String getCustomerCode() {
+		return customerCode;
 	}
 
-	public void setTax_type(String tax_type) {
-		this.tax_type = tax_type;
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
 	}
 
-	public long getTotal_supply_value() {
-		return total_supply_value;
+	public String getCustomerName() {
+		return customerName;
 	}
 
-	public void setTotal_supply_value(long total_supply_value) {
-		this.total_supply_value = total_supply_value;
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
-	public long getTotal_tax_value() {
-		return total_tax_value;
+	public String getCeo() {
+		return ceo;
 	}
 
-	public void setTotal_tax_value(long total_tax_value) {
-		this.total_tax_value = total_tax_value;
+	public void setCeo(String ceo) {
+		this.ceo = ceo;
 	}
 
-	public boolean isDelete_flag() {
-		return delete_flag;
+	public String getZipCode() {
+		return zipCode;
 	}
 
-	public void setDelete_flag(boolean delete_flag) {
-		this.delete_flag = delete_flag;
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 
-	public String getWrite_date() {
-		return write_date;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setWrite_date(String write_date) {
-		this.write_date = write_date;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getVoucher_no() {
-		return voucher_no;
+	public String getDetailAddress() {
+		return detailAddress;
 	}
 
-	public void setVoucher_no(String voucher_no) {
-		this.voucher_no = voucher_no;
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
 	}
 
-	public String getSales_no() {
-		return sales_no;
+	public String getManagerName() {
+		return managerName;
 	}
 
-	public void setSales_no(String sales_no) {
-		this.sales_no = sales_no;
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
 
-	public String getInsert_userid() {
-		return insert_userid;
+	public String getManagerEmail() {
+		return managerEmail;
 	}
 
-	public void setInsert_userid(String insert_userid) {
-		this.insert_userid = insert_userid;
+	public void setManagerEmail(String managerEmail) {
+		this.managerEmail = managerEmail;
 	}
 
-	public String getInsert_day() {
-		return insert_day;
+	public long getTotalQuantity() {
+		return totalQuantity;
 	}
 
-	public void setInsert_day(String insert_day) {
-		this.insert_day = insert_day;
+	public void setTotalQuantity(long totalQuantity) {
+		this.totalQuantity = totalQuantity;
 	}
 
-	public String getUpdate_userid() {
-		return update_userid;
+	public long getTotalSupplyValue() {
+		return totalSupplyValue;
 	}
 
-	public void setUpdate_userid(String update_userid) {
-		this.update_userid = update_userid;
+	public void setTotalSupplyValue(long totalSupplyValue) {
+		this.totalSupplyValue = totalSupplyValue;
 	}
 
-	public String getUpdate_day() {
-		return update_day;
+	public long getTotalTaxValue() {
+		return totalTaxValue;
 	}
 
-	public void setUpdate_day(String update_day) {
-		this.update_day = update_day;
+	public void setTotalTaxValue(long totalTaxValue) {
+		this.totalTaxValue = totalTaxValue;
+	}
+
+	public String getWriteDate() {
+		return writeDate;
+	}
+
+	public void setWriteDate(String writeDate) {
+		this.writeDate = writeDate;
+	}
+
+	public String getTaxType() {
+		return taxType;
+	}
+
+	public void setTaxType(String taxType) {
+		this.taxType = taxType;
+	}
+
+	public String getDepositNo() {
+		return depositNo;
+	}
+
+	public void setDepositNo(String depositNo) {
+		this.depositNo = depositNo;
+	}
+
+	public String getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	public String getDepositHost() {
+		return depositHost;
+	}
+
+	public void setDepositHost(String depositHost) {
+		this.depositHost = depositHost;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getBankCode() {
+		return bankCode;
+	}
+
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+
+	public String getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(String deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
+	public String getVoucherNo() {
+		return voucherNo;
+	}
+
+	public void setVoucherNo(String voucherNo) {
+		this.voucherNo = voucherNo;
+	}
+
+	public String getInsertUserid() {
+		return insertUserid;
+	}
+
+	public void setInsertUserid(String insertUserid) {
+		this.insertUserid = insertUserid;
+	}
+
+	public String getInsertDay() {
+		return insertDay;
+	}
+
+	public void setInsertDay(String insertDay) {
+		this.insertDay = insertDay;
+	}
+
+	public String getUpdateUserid() {
+		return updateUserid;
+	}
+
+	public void setUpdateUserid(String updateUserid) {
+		this.updateUserid = updateUserid;
+	}
+
+	public String getUpdateDay() {
+		return updateDay;
+	}
+
+	public void setUpdateDay(String updateDay) {
+		this.updateDay = updateDay;
+	}
+
+	public long getItemCode() {
+		return itemCode;
+	}
+
+	public void setItemCode(long itemCode) {
+		this.itemCode = itemCode;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public long getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(long quantity) {
+		this.quantity = quantity;
+	}
+
+	public long getSupplyValue() {
+		return supplyValue;
+	}
+
+	public void setSupplyValue(long supplyValue) {
+		this.supplyValue = supplyValue;
+	}
+
+	public long getTaxValue() {
+		return taxValue;
+	}
+
+	public void setTaxValue(long taxValue) {
+		this.taxValue = taxValue;
 	}
 
 	@Override
 	public String toString() {
-		return "SellTaxbillVo [idx=" + idx + ", taxbill_no=" + taxbill_no + ", manage_no=" + manage_no + ", tax_type="
-				+ tax_type + ", total_supply_value=" + total_supply_value + ", total_tax_value=" + total_tax_value
-				+ ", delete_flag=" + delete_flag + ", write_date=" + write_date + ", voucher_no=" + voucher_no
-				+ ", sales_no=" + sales_no + ", insert_userid=" + insert_userid + ", insert_day=" + insert_day
-				+ ", update_userid=" + update_userid + ", update_day=" + update_day + "]";
+		return "SellTaxbillVo [idx=" + idx + ", taxbillNo=" + taxbillNo + ", salesNo=" + salesNo + ", customerCode="
+				+ customerCode + ", customerName=" + customerName + ", ceo=" + ceo + ", zipCode=" + zipCode
+				+ ", address=" + address + ", detailAddress=" + detailAddress + ", managerName=" + managerName
+				+ ", managerEmail=" + managerEmail + ", totalQuantity=" + totalQuantity + ", totalSupplyValue="
+				+ totalSupplyValue + ", totalTaxValue=" + totalTaxValue + ", writeDate=" + writeDate + ", taxType="
+				+ taxType + ", depositNo=" + depositNo + ", releaseDate=" + releaseDate + ", depositHost=" + depositHost
+				+ ", bankName=" + bankName + ", bankCode=" + bankCode + ", deleteFlag=" + deleteFlag + ", voucherNo="
+				+ voucherNo + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
+				+ updateUserid + ", updateDay=" + updateDay + ", itemCode=" + itemCode + ", itemName=" + itemName
+				+ ", quantity=" + quantity + ", supplyValue=" + supplyValue + ", taxValue=" + taxValue + "]";
 	}
 
 }
