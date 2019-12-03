@@ -102,6 +102,7 @@
 		where no=#{no}
 	
 	]]>
+	
 	</update>
 	<!-- delete -->
 	<update id="delete" parameterType="long">
