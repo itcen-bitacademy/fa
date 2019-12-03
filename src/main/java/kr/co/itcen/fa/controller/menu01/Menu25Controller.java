@@ -1,6 +1,5 @@
 package kr.co.itcen.fa.controller.menu01;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,14 +49,15 @@ public class Menu25Controller {
 				
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setInsertUserId(uvo.getName());
+		bavo.setDepositOld(null);
 		
 		Map<String, Object> result = menu25Service.create(bavo);
-		result.put("success", true);
 		
 		return result;
 	}
 	
 	// R
+	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/read")
 	public String read(@ModelAttribute BankAccountVo bavo	) {
 		System.out.println("read");
@@ -66,24 +66,34 @@ public class Menu25Controller {
 	}
 	
 	// Update
+	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/update")
-	public String update(@ModelAttribute BankAccountVo bavo,
+	public Map<String, Object> update(@ModelAttribute BankAccountVo bavo,
 			@AuthUser UserVo uvo) {
 		System.out.println("update");
 		
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setUpdateUserId(uvo.getName());
 				
-		menu25Service.update(bavo);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		Map<String, Object> result = menu25Service.update(bavo);
+		
+//		if((boolean) result.get("fail")) {
+//			result.put("fail", true);
+//		}else {
+//			result.put("success", true);
+//		}
+		
+		return result;
 	}
 	
 	// Delete
+	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
-	public String delete(@ModelAttribute BankAccountVo bavo) {
+	public Map<String, Object> delete(@ModelAttribute BankAccountVo bavo) {
 		System.out.println("delete");
 		
-		menu25Service.delete(bavo);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		Map<String, Object> result = menu25Service.delete(bavo);
+		result.put("success", true);
+		return result;
 	}
 }

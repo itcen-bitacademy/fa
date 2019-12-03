@@ -14,5 +14,35 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<select id="getalllist" resultType="selltaxbill12vo" parameterType="map">
+		<![CDATA[
+		select
+			tbc.name as customerName, 
+			tbs.customer_code as customerCode, 
+			tbc.ceo, 
+			tbc.zip_code as zipCode, 
+ 			tbc.address as address, 
+ 			tbc.detail_address as detailAddress,
+ 			tbc.manager_name as managerName, 
+ 			tbc.manager_email as managerEmail,
+ 			tba.deposit_no as depositNo, 
+ 			tbs.release_date as releaseDate, 
+ 			tba.deposit_host as depositHost, 
+ 			tba.bank_name as bankName, 
+ 			tba.bank_code as bankCode,
+ 			tbs.item_code as itemCode, 
+ 			tbs.item_name as itemName, 
+ 			tbs.quantity as quantity, 
+ 			tbs.supply_value as supplyValue, 
+ 			tbs.tax_value
+			from tb_sales tbs, tb_salescustomer tbc, tb_bank_account tba
+			where 
+			tbs.customer_code = tbc.no and tbc.deposit_no = tba.deposit_no
+			and 
+			date(tbs.sales_date) = #{salesDate } and tbs.sales_no = #{salesNo }
+			order by tbs.number;
+		]]>
+	</select>
 
 </mapper>

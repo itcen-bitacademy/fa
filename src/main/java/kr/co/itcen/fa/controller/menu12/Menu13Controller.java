@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu13Service;
@@ -35,22 +35,19 @@ public class Menu13Controller {
 	@Autowired
 	private Menu13Service menu13Service;
 	
-	@RequestMapping(value = {"", "/" + SUBMENU, "/" + SUBMENU}, method=RequestMethod.GET )
+	@RequestMapping(value = {"", "/" + SUBMENU}, method=RequestMethod.GET )
 	public String index(@ModelAttribute UserVo authUser, Model model) {
 		List<CustomerVo> customerlist = menu13Service.getCustomerList();
 		List<PurchaseitemVo> itemlist = menu13Service.getItemList();
-		
-		System.out.println(customerlist.toString());
-		System.out.println(itemlist.toString());
 		
 		model.addAttribute("customerlist", customerlist);
 		model.addAttribute("itemlist", itemlist);
 		
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU}, method=RequestMethod.POST)
+	@RequestMapping(value = {"/" + SUBMENU}, method=RequestMethod.POST)
 	public String index(SalesVo salesVo, 
-			int quantity[], Long itemCode[], String itemName[], Long supplyValue[], Long taxValue[]) {
+			int quantity[], String itemCode[], String itemName[], Long supplyValue[], Long taxValue[], int number[]) {
 		
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		
@@ -62,11 +59,27 @@ public class Menu13Controller {
 			vo.setItemName(itemName[i]);
 			vo.setSupplyValue(supplyValue[i]);
 			vo.setTaxValue(taxValue[i]);
-			
+			vo.setNumber(number[i]);
 			list.add(vo);
 		}
 		
 		menu13Service.insert(list);
+		
+		return MAINMENU + "/" + SUBMENU + "/index";
+	}
+	
+	@RequestMapping(value= {"/" + SUBMENU + "/{salesNo}"}, method=RequestMethod.GET )
+	public String getSales(@PathVariable("salesNo")String salesNo, Model model) {
+		System.out.println(salesNo);
+		
+		List<CustomerVo> customerlist = menu13Service.getCustomerList();
+		List<PurchaseitemVo> itemlist = menu13Service.getItemList();
+		List<SalesVo> sales = menu13Service.getSalesNo(salesNo);
+		
+		model.addAttribute("flag", "true");
+		model.addAttribute("customerlist", customerlist);
+		model.addAttribute("itemlist", itemlist);
+		model.addAttribute("saleslist", sales);	
 		
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}

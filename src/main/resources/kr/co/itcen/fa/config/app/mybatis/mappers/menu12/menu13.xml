@@ -7,13 +7,16 @@
 			tb_sales_test
 				(sales_no, number, sales_date, emp_manager, 
 				 customer_code, customer_name, item_code, 
-				 item_name, quantity, supply_value, 
+				 item_name, quantity, supply_value, total_price,
 				 tax_value, taxbill_no, release_date, insert_day)
 			values
 		]]>
 		<foreach collection="list" item="item" separator=",">
 			<![CDATA[
-				(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager}, #{item.customerCode}, #{item.customerName}, #{item.itemCode}, #{item.itemName}, #{item.quantity}, #{item.supplyValue}, #{item.taxValue}, #{item.taxbillNo}, #{item.releaseDate}, now())
+				(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager},
+				#{item.customerCode}, #{item.customerName}, #{item.itemCode},
+				#{item.itemName}, #{item.quantity}, #{item.supplyValue}, #{item.totalPrice},
+				#{item.taxValue}, #{item.taxbillNo}, #{item.releaseDate}, now())
 			]]>
 		</foreach>
 	</insert>
@@ -27,6 +30,28 @@
 	<select id="itemlist" resultType="purchaseitem33vo">
 		<![CDATA[
 			select no, name from tb_purchaseitem;
+		]]>
+	</select>
+	
+	<select id="getsalesno" parameterType="String" resultType="salesvo">
+		<![CDATA[
+			select  sales_no as salesNo, 
+					date_format(sales_date, '%Y-%m-%d') as salesDate, 
+					customer_code as customerCode, 
+					customer_name as customerName,
+					date_format(release_date, '%Y-%m-%d') as releaseDate, 
+					taxbill_no as taxbillNo, 
+					item_code as itemCode, 
+					emp_manager as empManager, 
+					item_name as itemName, 
+					total_price as totalPrice, 
+					quantity, 
+					supply_value as supplyValue, 
+					tax_value as taxValue, 
+					number
+			from	tb_sales_test
+			where	sales_no = #{salesNo}
+			order by number asc
 		]]>
 	</select>
 </mapper>

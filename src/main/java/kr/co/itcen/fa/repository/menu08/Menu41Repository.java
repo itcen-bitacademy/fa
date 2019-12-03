@@ -71,10 +71,10 @@ public class Menu41Repository {
 	}
 	
 	//삭제 리스트 
-//	public boolean delete(VehicleVo vehicleVo) {
-//		int count = sqlSession.delete("menu41.delete", vehicleVo);
-//		return count == 1;
-//	}
+	public boolean delete(String id) {
+		int count = sqlSession.delete("menu41.delete", id);
+		return count == 1;
+	}
 
 	
 		

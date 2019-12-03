@@ -23,6 +23,7 @@ public class SalesVo {
 		this.empManager = vo.getEmpManager();
 		this.releaseDate = vo.getReleaseDate();
 		this.taxbillNo = vo.getTaxbillNo();
+		this.totalPrice = vo.getTotalPrice();
 	}
 	
 	private Long idx; // 번호
@@ -35,7 +36,7 @@ public class SalesVo {
 	private String customerName; // 거래처명
 	private String sectionCode; // 대분류코드
 	private String sectionName; // 대분류명
-	private Long itemCode; // 품목코드
+	private String itemCode; // 품목코드
 	private String itemName; //품목명
 	private int quantity; // 수량
 	private Long supplyValue; // 공급가액
@@ -111,10 +112,10 @@ public class SalesVo {
 	public void setSectionName(String sectionName) {
 		this.sectionName = sectionName;
 	}
-	public Long getItemCode() {
+	public String getItemCode() {
 		return itemCode;
 	}
-	public void setItemCode(Long itemCode) {
+	public void setItemCode(String itemCode) {
 		this.itemCode = itemCode;
 	}
 	public String getItemName() {

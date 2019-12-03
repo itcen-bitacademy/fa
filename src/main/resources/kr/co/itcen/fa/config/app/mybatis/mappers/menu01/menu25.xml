@@ -54,9 +54,40 @@
 	<update id = "delete" parameterType="bankaccountvo">
 		<![CDATA[
 			update 	tb_bank_account 
-			   set 	delete_flag='Y', deposit_no = concat("d",#{depositNo })
+			   set 	delete_flag='Y'
 			 where 	deposit_no = #{depositNo };
 		]]>
 	</update>
+	
+	<select id="nexist" parameterType="bankaccountvo" resultType="int">
+		<![CDATA[
+		select	count(*)
+		  from	tb_bank_account		  
+		 where  deposit_no = concat("ddd",#{depositNo })
+		]]>
+		<if test="depositNo!=depositOld ">
+		<![CDATA[
+		or	 (deposit_no = #{depositNo}
+		and  delete_flag = "N")
+		]]>
+		</if>
+	</select>
+
+	<select id="yexist" parameterType="bankaccountvo" resultType="int">
+		<![CDATA[
+		select	count(*)
+		 from	tb_bank_account
+		 where	deposit_no = #{depositNo}
+		 and  delete_flag = "Y"
+		]]>
+	</select>
+	
+	<delete id = "deleteAll" parameterType="bankaccountvo">
+		<![CDATA[
+			delete from tb_bank_account
+			 where 	deposit_no = #{depositNo }
+			 	and delete_flag="Y";
+		]]>
+	</delete>
 
 </mapper>

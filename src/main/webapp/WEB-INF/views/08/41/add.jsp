@@ -44,7 +44,7 @@
 										</select>
 										<!-- <input readonly type="text" class="span6" id="form-input-readonly"  value="코드를 지정하면 대분류명이 등록됩니다"> -->
 									<!-- 	<input readonly type="text" class="span6" id="classification"  value="코드를 지정하면 대분류명이 등록됩니다"> -->
-									  <input readonly type="text" class="span6" id="classification" name="classification" value="001" placeholder="코드를 지정하면 대분류명이 등록됩니다">
+									  <input readonly type="text" class="span6" id="classification" name="classification" value="1000CC" placeholder="코드를 지정하면 대분류명이 등록됩니다">
 									</div>
 								</div>
 								
@@ -218,8 +218,8 @@
 									<div style="float:left;width:50%" >											
 										<label class="control-label" for="form-field-1" >구분</label>
 										<div class="controls">
-											<input type="radio" name="taxKind" value="과세">과세
-											<input type="radio" name="taxKind" value="영세">영세
+											<input type="radio" name="taxKind" id="tax" value="과세">과세
+											<input type="radio" name="taxKind" id="zeroTax" value="영세">영세
 										</div>
 									</div>	
 								</div>
@@ -232,10 +232,10 @@
 								<div class="hr hr-18 dotted"></div>
 								<div class="controls" style="margin-left: 0px;">
 									<div class="controls" style="margin-left: 0px;">
-										   <button type="submit" class="btn btn-primary btn-small" id="insert" style="float:left; margin-right:20px;">등록</button>
+										   <button type="submit" class="btn btn-primary btn-small" id="insert" style="float:left; margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">등록</button>
 			                               <button type="submit" class="btn btn-warning btn-small" id="modify" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-			                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;">삭제</button>
-			                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;"formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
+			                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}/delete">삭제</button>
+			                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
 			                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;" type="reset">초기화</button>
 									</div>
 								</div>
@@ -264,25 +264,26 @@
 												<th>차량대분류</th>
 												<th>차량배기량</th>
 												<th>직급</th>
-												<th>소유자</th>
+												<th>사용자</th>
 												<th>주소(광역)</th>
 												<th>주소(기초)</th>
 												<th>주소(지번)</th>
 												<th>주소(상세)</th>
-												<th>매입일자</th>
 												<th>매입거래처코드</th>
+												<th>매입거래처명</th>
 												<th>매입거래처담당자</th>
+												<th>매입일자</th>
 												<th>출시가(원)</th>
 												<th>등록세(원)</th>
 												<th>취득세(원)</th>
 												<th>부대비용(원)</th>
+												<th>세금계산서번호</th>
 												<th>보증금(원)</th>
-												<th>월 사용료(원)</th>
 												<th>보증금 납부일자</th>
+												<th>월 사용료(원)</th>
 												<th>사용료 납부일</th>
 												<th>과세/영세</th>
 												<th>사용개월</th>
-												<th>세금계산서번호</th>
 												<th>작성자</th>
 												<th>작성일자</th>
 											</tr>
@@ -309,20 +310,21 @@
 												<td>주소(기초)</td>
 												<td>주소(지번)</td>
 												<td>주소(상세)</td>
-												<td>${VehicleVo.payDate}</td>
 												<td>매입거래처코드</td>
+												<td>매입거래처명</td>
 												<td>매입거래처담당자</td>
+												<td>${VehicleVo.payDate}</td>
 												<td>${VehicleVo.publicValue}</td>
 												<td>${VehicleVo.regTax}</td>
 												<td>${VehicleVo.acqTax}</td>
 												<td>${VehicleVo.etcCost}</td>
+												<td>세금계산서번호</td>
 												<td>${VehicleVo.deposit}</td>
-												<td>${VehicleVo.monthlyFee}</td>
 												<td>${VehicleVo.depositDate}</td>
+												<td>${VehicleVo.monthlyFee}</td>
 												<td>${VehicleVo.feeDate}</td>
 												<td>${VehicleVo.taxKind}</td>
 												<td>사용개월</td>
-												<td>세금계산서번호</td>
 												<td>작성자</td>
 												<td>작성일자</td>
 											</tr>
@@ -453,6 +455,54 @@ $(function(){
    $("#search").click(function() {
       alert("조회");
    }); 
+});
+</script>
+
+<script>
+// 테이블의 Row 클릭시 값 가져오기
+$("#sample-table-1 tr").click(function(){ 	
+
+	var str = ""
+	var tdArr = new Array();	// 배열 선언
+	
+	// 현재 클릭된 Row(<tr>)
+	var tr = $(this);
+	var td = tr.children();
+	
+	// tr.text()는 클릭된 Row 즉 tr에 있는 모든 값을 가져온다.
+	console.log("클릭한 Row의 모든 데이터 : "+tr.text());
+	
+	// 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
+
+	
+/* 	console.log("배열에 담긴 값 : "+tdArr); */
+	
+	// td.eq(index)를 통해 값을 가져올 수도 있다.
+	$("input[name=id]").val(td.eq(2).text());
+    $("input[name=sectionNo]").val(td.eq(3).text());
+    $("input[name=classification]").val(td.eq(4).text());
+    $("input[name=staffNo]").val(td.eq(5).text()); 
+    $("input[name=ownerName]").val(td.eq(6).text());
+/*  $("input[name=wideAddress]").val(td.eq(13).text());
+    $("input[name=cityAddress]").val(td.eq(8).text());
+    $("input[name=localAddress]").val(td.eq(9).text());
+    $("input[name=detailAddress]").val(td.eq(10).text()); */
+    $("input[name=payDate]").val(td.eq(14).text());
+    $("input[name=publicValue]").val(td.eq(15).text());
+    $("input[name=regTax]").val(td.eq(16).text());
+    $("input[name=acqTax]").val(td.eq(17).text());
+    $("input[name=etcCost]").val(td.eq(18).text());
+    $("input[name=taxbillNo]").val(td.eq(19).text());
+    $ ("input[name=deposit]").val(td.eq(20).text()); 
+    $("input[name=depositDate]").val(td.eq(21).text());
+    $("input[name=monthlyFee]").val(td.eq(22).text());
+    $("input[name=feeDate]").val(td.eq(23).text());
+    if(td.eq(24).text() == "과세"){
+   	   $("input[id=tax]").prop('checked', true);
+     }
+    else if(td.eq(24).text() == "영세"){
+   	   $("input[id=zeroTax]").prop('checked', true);
+     } 
 });
 </script>
 </body>
