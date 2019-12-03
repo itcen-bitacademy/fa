@@ -80,6 +80,21 @@
 	limit	#{pagination.pageIndex }, #{pagination.listSize }
 	</select>
 	
+	
+	<select id="selectsection" resultType="sectionvo">
+	<![CDATA[
+		select no,
+			classification,
+			code,
+			last_update as lastUpdate,
+			parent_no as parentNo
+		    from tb_section
+		    where parent_no= 6
+	]]>
+	
+	</select>
+	
+	
 	<!-- update -->
 	<update id="update" parameterType="ldebtvo">
 	<![CDATA[
