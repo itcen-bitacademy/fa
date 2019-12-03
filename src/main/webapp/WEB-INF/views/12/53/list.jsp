@@ -25,8 +25,11 @@
 					<h1 class="pull-left">매출세금계산서</h1>
 				</div>
 				<!-- /.page-header -->
+				
+				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 				<div class="row-fluid">
 					<!-- head  -->
+					
 					<div class="span12">
 						<!-- PAGE CONTENT BEGINS -->
 						<div class="row-fluid">
@@ -35,8 +38,7 @@
 									<div class="span6">
 										<label class="control-label" for="form-field-1">매 출 일 자</label>
 										<div class="row-fluid input-append span2">
-												<input class="cl-date-picker" id="cl-total-date-picker" 
-												type="text" data-date-format="yyyy-mm-dd"> 
+												<input class="cl-date-picker" id="sales-date" type="text" data-date-format="yyyy-mm-dd"> 
 												<span class="add-on"> <i class="icon-calendar"></i>
 											</span>
 										</div>
@@ -45,7 +47,7 @@
 									<div class="span6">
 										<label class="control-label" for="form-field-1">매 출 번 호 </label>
 										<div class="controls">
-											<input class="span5" type="text" id="form-field-1">
+											<input class="span5" type="text" id="sales-number">
 											<button class="btn btn-small btn-info">조회</button>
 										</div>
 									</div>
@@ -79,21 +81,22 @@
 								</div>
 								</div>
 								<div class="form-horizontal">
-									<div class="control-group">
 									<div class="span6">
-										<label class="span1 control-label" for="form-field-1">주소</label>
-										<div class="controls">								 
-												<input class="span3" type="text" readonly id="address-number">
-												<input class="span5" type="text" readonly id="address">
-												<input class="span" type="text" readonly id="address-detail">
-										</div>
+									<div class="control-group">
+			                              <label class="control-label form-field-1">주소</label>
+				                              <div class="controls">
+				                                 <input class="span2" type="text" id="zip-code" readonly>
+				                                 <input class="span6" type="text" id="address" readonly>
+				                                 <input class="span9" type="text" id="detail-address">
+				                              </div>
+			                           </div>
 									</div>
 
 									<div class="span6">
 										<div class="span5">
 											<label class="control-label span1" for="form-field-1">담당자</label>
 											<div class="controls">
-												<input class="span12" type="text" id="managerName">
+												<input class="span12" type="text" id="managerName" readonly>
 											</div>
 										</div>
 
@@ -101,7 +104,7 @@
 										<div class="span7">
 											<label class="control-label span1" for="form-field-1">메일</label>
 											<div class="controls">
-												<input class="span12" type="text" id="managerEmail">
+												<input class="span12" type="text" id="managerEmail" readonly>
 											</div>
 										</div>
 									</div>
@@ -113,14 +116,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">수량합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="quantity">
+												<input class="span5" type="text" id="quantity" readonly>
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">공급가액합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="supplyValue">
+												<input class="span5" type="text" id="supplyValue" readonly>
 											</div>
 										</div>
 									</div>
@@ -138,7 +141,7 @@
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">부가세합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="taxVale">
+												<input class="span5" type="text" id="taxVale" readonly>
 											</div>
 										</div>
 									</div>
@@ -150,7 +153,7 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서발행일</label>
 											<div class="controls">
-												<input class="span5" type="text" id="write_date" data-date-format="yyyy-mm-dd">
+												<input class="span5" type="text" id="write_date" data-date-format="yyyy-mm-dd" readonly>
 											</div>
 										</div>
 	
@@ -171,7 +174,6 @@
 										<div class="span6">
 											<label class="control-label" for="form-field-1">입금계좌번호</label>
 											<div class="controls">
-											<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
 											<input class="span9" type="text" readonly id="depositNo">
 										</div>
 											
@@ -191,7 +193,7 @@
 											<div class="span6">
 													<label class="control-label form-field-1">예금주</label>
 													<div class="controls">
-													<input type="text" id="form-field-1" readonly>
+													<input type="text" id="banker" readonly>
 													</div>
 											</div>
 												
@@ -200,8 +202,8 @@
 											<div class="span6">
 													<label class="control-label form-field-1">은행</label>
 													<div class="controls">
-														<input class="span2" type="text" id="form-field-1" readonly="">
-														<input class="span6" type="text" id="form-field-1" readonly="">
+														<input class="span2" type="text" id="bankName" readonly>
+														<input class="span6" type="text" id="bankCode" readonly>
 													</div>
 											</div>
 										</div>
@@ -212,15 +214,16 @@
 							<!-- /.row-fluid -->
 						</div>
 					</div>
-						<div class="hr hr-18 dotted"></div>
+					<div class="hr hr-18 dotted"></div>
 					<div class="span6">
 						<div id="sample-table-2_length" class="dataTables_length">
-									<button class="btn btn-info btn-small">발행</button>
+									<button class="btn btn-info btn-small" type="submit">발행</button>
 									<button class="btn btn-default btn-small">발행취소</button>
 									<button class="btn btn-warning btn-small">발행수정</button>
 						</div>
 					</div>
 					<!-- /.page-content -->
+				</form>
 				
 				<div class="row-fluid">
 				<div class="span12">

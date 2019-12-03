@@ -7,7 +7,7 @@
 		<![CDATA[
 		insert into tb_cardmanager values (#{cardNo }, #{validity }, #{transportation }, #{limitation}, #{cvc }, 
 		#{issuer }, #{user },  #{company },  #{abroad },  #{password },  #{depositNo },  
-		#{insertUserId }, now(), null, null, "Y")
+		#{insertUserId }, now(), null, null, "N")
 		]]>
 	</insert>
 
@@ -19,15 +19,46 @@
 				update_userid as updateUserId, update_day as updateDay, 
 				delete_flag as deleteFlag
 		 from	tb_cardmanager
-		 where	delete_flag = "Y"
+		 where	delete_flag = "N"
 		]]>
 	</select>
 	
 	<update id = "remove" parameterType="1cardvo">
 		<![CDATA[
 			update 	tb_cardmanager 
-			   set 	delete_flag='N' 
-			 where 	card_no = #{cardNo }
+			   set 	delete_flag='Y', card_no = concat("d",#{cardNo })
+			 where 	card_no = #{cardNo };
+			
 		]]>
 	</update>
+	
+	<update id="update" parameterType="1cardvo">
+		<![CDATA[
+		 update tb_cardmanager
+	    	set card_no = #{cardNo },
+	    		validity = #{validity },
+	    		transportation = #{transportation },
+	    		limitation = #{limitation},
+	    		cvc = #{cvc }, 
+	    		issuer = #{issuer },
+	    		user = #{user },
+	    		company =  #{company },
+	    		abroad = #{abroad }, 	
+	    		password =  #{password }, 
+	    		deposit_no =  #{depositNo }, 
+				update_userid = #{updateUserId},
+				update_day = now()
+		  where card_no = #{cardNoOld};
+		]]>
+	</update>
+	
+	<select id="exist" resultType="1cardvo">
+		<![CDATA[
+		select	card_no
+		 from	tb_cardmanager
+		 where	card_no = #{cardNo}
+		 or		card_no = concat("d",#{cardNo })
+		]]>
+	</select>
+	
 </mapper>

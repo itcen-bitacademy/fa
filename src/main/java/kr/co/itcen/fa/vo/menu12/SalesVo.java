@@ -11,8 +11,22 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("salesvo")
 public class SalesVo {
+	SalesVo() {
+	}
+	
+	// 객체 다중생성을 위한 생성자
+	public SalesVo(SalesVo vo){
+		this.salesNo = vo.getSalesNo();
+		this.salesDate = vo.getSalesDate();		
+		this.customerCode = vo.getCustomerCode();
+		this.customerName = vo.getCustomerName();
+		this.empManager = vo.getEmpManager();
+		this.releaseDate = vo.getReleaseDate();
+		this.taxbillNo = vo.getTaxbillNo();
+	}
 	
 	private Long idx; // 번호
+	private String userId; // 입력자
 	private String salesNo; // 매출번호
 	private int number; // 품목순번
 	private String salesDate; // 매출일자
@@ -42,6 +56,12 @@ public class SalesVo {
 	}
 	public void setIdx(Long idx) {
 		this.idx = idx;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getSalesNo() {
 		return salesNo;
@@ -184,14 +204,14 @@ public class SalesVo {
 	
 	@Override
 	public String toString() {
-		return "SalesVo [idx=" + idx + ", salesNo=" + salesNo + ", number=" + number + ", salesDate=" + salesDate
-				+ ", empManager=" + empManager + ", customerCode=" + customerCode + ", customerName=" + customerName
-				+ ", sectionCode=" + sectionCode + ", sectionName=" + sectionName + ", itemCode=" + itemCode
-				+ ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue=" + supplyValue + ", taxValue="
-				+ taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType + ", taxbillNo=" + taxbillNo
-				+ ", releaseDate=" + releaseDate + ", deleteFlag=" + deleteFlag + ", sellPrice=" + sellPrice
-				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
-				+ ", updateDay=" + updateDay + "]";
+		return "SalesVo [idx=" + idx + ", userId=" + userId + ", salesNo=" + salesNo + ", number=" + number
+				+ ", salesDate=" + salesDate + ", empManager=" + empManager + ", customerCode=" + customerCode
+				+ ", customerName=" + customerName + ", sectionCode=" + sectionCode + ", sectionName=" + sectionName
+				+ ", itemCode=" + itemCode + ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue="
+				+ supplyValue + ", taxValue=" + taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType
+				+ ", taxbillNo=" + taxbillNo + ", releaseDate=" + releaseDate + ", deleteFlag=" + deleteFlag
+				+ ", sellPrice=" + sellPrice + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}
 	
 }

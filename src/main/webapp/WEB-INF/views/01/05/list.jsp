@@ -15,9 +15,19 @@
 	display: none;
 }
 </style>
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+
+<link
+	href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+	type="text/css" rel="stylesheet" />
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
 <script
-	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js">
+	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	
+<script>
 	$(function() {
 		$("#simple-table-1 tr").click(function(){ 
 			var tr = $(this);
@@ -25,7 +35,10 @@
 			
 			$("input[name=cardNo]").val(td.eq(1).text());
 			$("input[name=cardNoOld]").val(td.eq(1).text());
-			$("input[name=validity]").val(td.eq(2).text());
+			var month= td.eq(2).text().substring(0,2);
+			var year= td.eq(2).text().substring(3,5);
+			$("input[name=validityMM]").val(month);
+			$("input[name=validityYY]").val(year);
 			$("input[name=cvc]").val(td.eq(3).text());
 			$("input[name=user]").val(td.eq(4).text());
 			$("input[name=issuer]").val(td.eq(5).text());
@@ -36,11 +49,12 @@
 			$("input[name=bankName]").val(td.eq(10).text());
 			$("input[name=company]").val(td.eq(11).text());
 			$("input[name=limitation]").val(td.eq(12).text());
+			$("input[name=transportation]").val(td.eq(13).text());
+			$("input[name=abroad]").val(td.eq(14).text());
 			
 			
 			
 		});
-		
 		
 		$('#selectAll').click(function(event) {   
 		    if(this.checked) {
@@ -53,9 +67,9 @@
 		            this.checked = false;                       
 		        });
 		    }
-		})
+		});
+	})
 		
-	
 </script>
 
 
@@ -87,6 +101,7 @@
 									<div class="controls">
 										<input type="text" id="form-field-1" name="cardNo"
 											placeholder="카드 번호" />
+										<input type="hidden" name="cardNoOld" />
 									</div>
 								</div>
 
@@ -129,8 +144,8 @@
 									</label>
 
 									<div class="controls">
-										<input type="number"  id="form-field-1" name="limitation"
-											placeholder="한도"  />
+										<input type="text"  id="form-field-1" name="limitation"
+											placeholder="한도"  value=""/>
 									</div>
 								</div>
 
@@ -201,11 +216,13 @@
 							<button class="btn btn-info btn-small">조회</button>
 							<button class="btn btn-danger btn-small"
 								formaction="${pageContext.request.contextPath }/01/05/remove">삭제</button>
-							<button class="btn btn-warning btn-small">수정</button>
+							<button class="btn btn-warning btn-small"
+								formaction="${pageContext.request.contextPath }/01/05/update">수정</button>
 							
 							<button type="submit" class="btn btn-primary btn-small"
 								formaction="${pageContext.request.contextPath }/01/05/create">입력</button>
-							<button class="btn btn-default btn-small">취소</button>
+							<button class="btn btn-default btn-small"
+								type="reset">취소</button>
 						</div>
 
 					</div>
@@ -215,12 +232,12 @@
 				<!-- Tables -->
 				<div class="row-fluid">
 					<div class="span12">
-						<table id="sample-table-1"
+						<table id="simple-table-1"
 							class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
 									<th class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
+											class="ace" id="selectAll" /> <span class="lbl"></span>
 									</label></th>
 									<th>카드번호</th>
 									<th>유효기간</th>
