@@ -28,6 +28,18 @@ public class Menu15Service {
 		menu15Repository.saveCustomer(customerVo);
 	}
 
+	public void modifyCustomer(CustomerVo customerVo) {
+		menu15Repository.updateCustomer(customerVo);
+	}
+
+	public Boolean existCustomer(String no) {
+		return menu15Repository.getCustomer(no) != null;
+	}
+
+	public void deleteCustomer(List<String> checkNoList) {
+		menu15Repository.deleteCustomer(checkNoList);
+	}
+
 	
 
 }
