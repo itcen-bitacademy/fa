@@ -38,6 +38,25 @@ function execDaumPostcode() {
         }
     }).open();
 }
+
+/*체크박스 모두선택*/
+function allChk(obj){
+    var chkObj = document.getElementsByName("RowCheck");
+    var rowCnt = chkObj.length - 1;
+    var check = obj.checked;
+    if (check) {﻿
+        for (var i=0; i<=rowCnt; i++){
+         if(chkObj[i].type == "checkbox")
+             chkObj[i].checked = true;
+        }
+    } else {
+        for (var i=0; i<=rowCnt; i++) {
+         if(chkObj[i].type == "checkbox"){
+             chkObj[i].checked = false;
+         }
+        }
+    }
+}
 </script>
 <script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 
@@ -233,14 +252,18 @@ function execDaumPostcode() {
 									class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
-											<th class="center"><label class="pos-rel"> <input
-													type="checkbox" class="ace" /> <span class="lbl"></span>
-											</label></th>
-											<th>사업자등록번호</th>
-											<th>상호</th>
-											<th>대표자</th>
-											<th>주소</th>
-											<th>업태/종목</th>
+											<th scope="col" class="center">
+												<label class="pos-rel">
+													<input id="allCheck" type="checkbox" class="ace" onclick="allChk(this);"/>
+													<span class="lbl">
+													</span>
+												</label>
+											</th>
+											<th scope="col">사업자등록번호</th>
+											<th scope="col">상호</th>
+											<th scope="col">대표자</th>
+											<th scope="col">주소</th>
+											<th scope="col">업태/종목</th>
 											<th>관할영업소</th>
 											<th>거래처 전화번호</th>
 											<th>거래처 담당자 성명</th>
@@ -256,12 +279,15 @@ function execDaumPostcode() {
 									</thead>
 									<tbody>
 										
-
 										<c:forEach items="${list }" var="vo" varStatus="status">
 											<tr>
-												<td class="center"><label class="pos-rel"> <input
-														type="checkbox" class="ace" /> <span class="lbl"></span>
-												</label></td>
+												<td class="center">
+													<label class="pos-rel"> 
+														<input name="RowCheck" type="checkbox" class="ace" />
+														<span class="lbl">
+														</span>
+													</label>
+												</td>
 												<td>${vo.no }</td>
 												<td>${vo.name }</td>
 												<td>${vo.ceo }</td>
