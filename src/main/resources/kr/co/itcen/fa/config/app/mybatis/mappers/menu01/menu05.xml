@@ -61,7 +61,7 @@
 
 
 
-	<select id="Nexist" resultType="1cardvo">
+	<select id="nexist" resultType="1cardvo">
 		<![CDATA[
 		select	card_no
 		  from	tb_cardmanager 		  
@@ -77,7 +77,7 @@
 		
 	</select>
 
-	<select id="Yexist" resultType="1cardvo">
+	<select id="yexist" resultType="1cardvo">
 		<![CDATA[
 		select	card_no
 		 from	tb_cardmanager

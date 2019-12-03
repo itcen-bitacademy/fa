@@ -215,12 +215,12 @@
 						<div class="span8">
 							<button class="btn btn-info btn-small">조회</button>
 							<button class="btn btn-danger btn-small"
-								formaction="${pageContext.request.contextPath }/01/05/remove">삭제</button>
+								formaction="${pageContext.request.contextPath }//${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/remove">삭제</button>
 							<button class="btn btn-warning btn-small"
-								formaction="${pageContext.request.contextPath }/01/05/update">수정</button>
+								formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							
 							<button type="submit" class="btn btn-primary btn-small"
-								formaction="${pageContext.request.contextPath }/01/05/create">입력</button>
+								formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">입력</button>
 							<button class="btn btn-default btn-small"
 								type="reset">취소</button>
 						</div>

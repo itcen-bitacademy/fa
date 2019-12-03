@@ -42,12 +42,12 @@ public class Menu05Repository {
 	}
 
 	public CardVo Nexist(CardVo vo) {
-		CardVo exist = sqlSession.selectOne("menu05.Nexist", vo);
+		CardVo exist = sqlSession.selectOne("menu05.nexist", vo);
 		return exist;
 	}
 	
 	public CardVo Yexist(CardVo vo) {
-		CardVo exist = sqlSession.selectOne("menu05.Yexist", vo);
+		CardVo exist = sqlSession.selectOne("menu05.yexist", vo);
 		return exist;
 	}
 
