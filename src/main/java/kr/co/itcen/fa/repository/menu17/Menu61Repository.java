@@ -1,10 +1,13 @@
 package kr.co.itcen.fa.repository.menu17;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.TestStatementDataVo;
 import kr.co.itcen.fa.vo.menu17.TrialBalanceVo;
 
 /**
@@ -36,4 +39,21 @@ public class Menu61Repository {
 		return sqlSession.insert("menu61.insertTrialBalance", trialBalanceVo);
 	}
 	
+	
+	/**
+	 * 
+	 * 계정명만 존재하는 빈 시산표 생성
+	 */
+	public List<TrialBalanceVo> selectEmptyTrialBalance() {
+		return sqlSession.selectList("menu61.selectEmptyTrialBalance");
+	}
+	
+	
+	/**
+	 * 
+	 * 테스트 전표 데이터 
+	 */
+	public List<TestStatementDataVo> testStatementData() {
+		return sqlSession.selectList("menu61.testStatementData");
+	}
 }

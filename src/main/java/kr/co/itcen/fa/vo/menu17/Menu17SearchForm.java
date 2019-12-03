@@ -15,11 +15,25 @@ import kr.co.itcen.fa.util.PaginationUtil;
 public class Menu17SearchForm {
 	private String year;
 
+	private Long accountOrder;           //계정과목 순서
+	private Long accountNo;			     //계정과목 코드
+	private String accountStatementType; //제무재표 구분
+	
+	private Long closingDateNo;			// 마감일 번호 
+
 	private int page = 1;
 	private PaginationUtil pagination;
 	
 	
 	// Getter & Setter
+	public Long getClosingDateNo() {
+		return closingDateNo;
+	}
+
+	public void setClosingDateNo(Long closingDateNo) {
+		this.closingDateNo = closingDateNo;
+	}
+	
 	public String getYear() {
 		return year;
 	}
@@ -43,4 +57,29 @@ public class Menu17SearchForm {
 	public void setPagination(PaginationUtil pagination) {
 		this.pagination = pagination;
 	}
+
+	public Long getAccountOrder() {
+		return accountOrder;
+	}
+
+	public void setAccountOrder(Long accountOrder) {
+		this.accountOrder = accountOrder;
+	}
+
+	public Long getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(Long accountNo) {
+		this.accountNo = accountNo;
+	}
+
+	public String getAccountStatementType() {
+		return accountStatementType;
+	}
+
+	public void setAccountStatementType(String accountStatementType) {
+		this.accountStatementType = accountStatementType;
+	}
+
 }

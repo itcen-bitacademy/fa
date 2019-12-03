@@ -30,6 +30,15 @@ public class CustomerVo {
 	private String insertDay;
 	private String updateUserid;
 	private String updateDay;
+	private String customerDiv;
+
+	public String getCustomerDiv() {
+		return customerDiv;
+	}
+
+	public void setCustomerDiv(String customerDiv) {
+		this.customerDiv = customerDiv;
+	}
 
 	public String getNo() {
 		return no;
@@ -190,7 +199,7 @@ public class CustomerVo {
 				+ ", openDate=" + openDate + ", jurisdictionOffice=" + jurisdictionOffice + ", phone=" + phone
 				+ ", managerName=" + managerName + ", managerEmail=" + managerEmail + ", depositNo=" + depositNo
 				+ ", deleteFlag=" + deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", customerDiv=" + customerDiv + "]";
 	}
-
+	
 }

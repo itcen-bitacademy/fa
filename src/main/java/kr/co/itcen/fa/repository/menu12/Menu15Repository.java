@@ -28,6 +28,18 @@ public class Menu15Repository {
 		no = "%" + no + "%";
 		return sqlSession.selectList("menu15.findAll", no);
 	}
+
+	public void updateCustomer(CustomerVo customerVo) {
+		sqlSession.update("menu15.update", customerVo);
+	}
+
+	public CustomerVo getCustomer(String no) {
+		return sqlSession.selectOne("menu15.findByNo", no);
+	}
+
+	public void deleteCustomer(List<String> checkNoList) {
+		sqlSession.update("menu15.deleteByNo", checkNoList);
+	}
 	
 	
 }

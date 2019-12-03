@@ -90,8 +90,10 @@
 					var sum = 0;
 					for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
 						sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val());
+						$("#taxValue"+i).val(Math.round($("#supplyValue"+i).val()*0.1));
 						$("#totalSupplyValue").val(sum);
 					}
+					this.addTaxValue();
 					this.totalPrice();
 				},
 				addTaxValue: function(){
@@ -148,11 +150,17 @@
 	        }
 	        location.href = "/fa/12/13/"+code;
 	     }
+        
         function checkFlag(){
             if($("#flag").val()=="true"){
+            	$("#btnSubmit").attr('disabled', true);
             	sumData.addQuantity();
             	sumData.addSupplyValue();
             	sumData.addTaxValue();
+            } else {
+            	$("#btnModify").attr('disabled', true);
+            	$("#btnDelete").attr('disabled', true);
+            	add_row(); // 조회화면이 아니면 기본행 삽입
             }
         }
     </script>
@@ -183,7 +191,7 @@
                                     <label class="control-label" for="cl-total-date-picker">매출일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].salesDate }"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].salesDate }"> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -192,9 +200,16 @@
                                     <label class="control-label" for="customerCode">거래처코드</label>
                                     <div class="controls">
                                         <select class="chosen-select" id="customerCode" data-placeholder="거래처코드" name="customerCode" onchange="setData.customer();">
-                                        <option value="${saleslist[0].customerCode }">${saleslist[0].customerCode }(${saleslist[0].customerName })</option>
+	                                        <c:choose>
+		                                        <c:when test="${flag == 'true'}">
+										           <option value="${saleslist[0].customerCode }" selected style="display:none">${saleslist[0].customerCode }(${saleslist[0].customerName })</option>
+										       </c:when>
+	                                       		<c:otherwise>
+										           <option value="">&nbsp;</option>
+										       </c:otherwise>
+	                                        </c:choose>
                                             <c:forEach items="${customerlist }" var="list" varStatus="status">
-                                            <option id="${status }" value="${list.no }">${list.no }(${list.name })</option>
+										        <option id="${status }" value="${list.no }">${list.no }(${list.name })</option>
                                             </c:forEach>
                                         </select>
                                         <input type="hidden" id="setCustomer" value="">
@@ -210,7 +225,7 @@
                                     <label class="control-label" for="cl-total-date-picker">출고일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].releaseDate }"name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].releaseDate }"name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -279,13 +294,13 @@
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="btn-group">
-                                <button class="btn btn-success btn-small" type="submit">입력</button>
+                                <button class="btn btn-success btn-small" type="submit" id="btnSubmit">입력</button>
                             </div>
                             <div class="btn-group">
-                                <button class="btn btn-info btn-small" type="button">수정</button>
+                                <button class="btn btn-info btn-small" type="button" id="btnModify">수정</button>
                             </div>
                             <div class="btn-group">
-                                <button class="btn btn-danger btn-small" type="button">삭제</button>
+                                <button class="btn btn-danger btn-small" type="button" id="btnDelete">삭제</button>
                             </div>
                             <div class="btn-group">
                                 <button class="btn btn-small" type="button" onclick="add_row();">행추가</button>
@@ -315,11 +330,12 @@
                                     <td>
                                         <p>${sales.number }</p>
                                         <input type="hidden" value="${sales.number }" name="number">
-                                    </td>                                    <td>
+                                    </td>                                    
+                                    <td>
                                     	<select class="chosen-select" id="itemCode${sales.number }" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id);">
-                                            <option value="${sales.itemCode }">${sales.itemCode }</option>
+                                    		<option value="${sales.itemCode }" selected style="display:none">${sales.itemCode }(${sales.itemName })</option>
                                             <c:forEach items="${itemlist }" var="list" varStatus="status">
-                                            <option value="${list.no }">${list.no }(${list.name })</option>
+                                            	<option value="${list.no }">${list.no }(${list.name })</option>
                                             </c:forEach>
                                         </select>
                                     </td>
@@ -371,8 +387,8 @@
                 $(this).prev().focus();
             });
             
-            setData.customer();
-            checkFlag();
+            setData.customer(); // 거래처 목록 세팅
+            checkFlag(); // 조회 확인 플래그  + 기본행 삽입
         })
     </script>
 </body>

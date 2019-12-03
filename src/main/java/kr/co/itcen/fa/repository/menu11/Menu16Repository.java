@@ -30,9 +30,9 @@ public class Menu16Repository {
 		sqlSession.insert("menu16.save", testVo);
 	}
 
-	public List<BankVo> list(PaginationUtil pagination) {
+	public List<BankVo> list(String code, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+		map.put("code", code);
 		map.put("pagination", pagination);
 		List<BankVo> list = sqlSession.selectList("menu16.list",map);
 		return list;
@@ -54,9 +54,8 @@ public class Menu16Repository {
 		
 	}
 
-	public int selectBankListCount() {
-		
-		int count = sqlSession.selectOne("menu16.selectBankListCount");
+	public int selectBankListCount(String code) {
+		int count = sqlSession.selectOne("menu16.selectBankListCount",code);
 		return count;
 	}
 

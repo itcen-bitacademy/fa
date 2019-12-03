@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu48Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
 /**
@@ -51,5 +52,10 @@ public class Menu48Service {
 
 	public Boolean delete(Long[] no) {
 		return  menu48Repository.delete(no);
+	}
+
+	public List<SectionVo> selectSection() {
+		// TODO Auto-generated method stub
+		return menu48Repository.selectSection();
 	}
 }

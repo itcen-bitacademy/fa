@@ -8,6 +8,7 @@
 <head>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -54,13 +55,13 @@
 										<label class="control-label" for="form-field-select-1">대분류
 											코드</label>
 										<div class="controls">
-											<select class="span1 chosen-select" id="form-field-select-1"
-												name="sectionNo" data-placeholder="전체">
-												<c:forEach items="${listMainMenu }" var="sectionVo">
-													<option value="${sectionVo.no }">${sectionVo.name }</option>
+											<select class="span1 chosen-select" id="form-field-section"
+												name="classification" data-placeholder="전체">
+												<c:forEach items="${sectionList }" var="sectionVo">
+													<option value="${sectionVo.code }">${sectionVo.classification }</option>
 												</c:forEach>
-											</select> <input readonly type="text" class="span6"
-												id="form-input-readonly" value="코드를 지정하면 대분류명이 등록됩니다">
+											</select> <input readonly type="text" class="span6" name="code"
+												value="001" placeholder="${sectionVo.code }">
 										</div>
 									</div>
 									<div class="control-group">
@@ -73,7 +74,8 @@
 													<option value="${customerVo.no }">${customerVo.name }</option>
 												</c:forEach>
 											</select> <input readonly type="text" class="span6"
-												id="form-input-readonly" value="코드를 지정하면 거래처명이 등록됩니다">
+												name="customerName" id="form-input-readonly"
+												value="코드를 지정하면 거래처명이 등록됩니다">
 										</div>
 									</div>
 									<div class="control-group">
@@ -128,21 +130,22 @@
 										<label class="control-label" for="form-field-1">담당자</label>
 										<div class="controls">
 											<input readonly type="text" class="span7"
-												id="form-input-readonly" value="코드를 지정하면 담당자가 등록됩니다" />
+												name="customerManager" id="form-input-readonly"
+												value="코드를 지정하면 담당자가 등록됩니다" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">용도</label>
 										<div class="controls">
 											<input type="text" class="span11" id="form-field-1"
-												name="using" placeholder="용도를 입력하세요" />
+												name="purpose" placeholder="용도를 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="id-date-picker-1">매입일자</label>
 										<div class="controls">
 											<input class="cl-date-picker" id="id-date-picker-1"
-												type="text">
+												type="text" name="payDate">
 											<div class="input-append">
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
@@ -154,13 +157,13 @@
 										<div class="controls">
 											<div class="span2">
 												<label> <input name="form-field-radio" type="radio"
-													value="tax" class="ace"> <span class="lbl">
+													value="tax" class="ace" checked> <span class="lbl">
 														과세</span>
 												</label>
 											</div>
 											<div class="span2">
 												<label> <input name="form-field-radio" type="radio"
-													value="zeroTax" class="ace"> <span class="lbl">
+													value="zero" class="ace"> <span class="lbl">
 														영세</span>
 												</label>
 											</div>
@@ -174,14 +177,14 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="control-group" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small"
-													style="float: left; margin-right: 20px;">등록</button>
-												<button class="btn btn-warning btn-small"
-													style="float: left; margin-right: 20px;">수정</button>
-												<button class="btn btn-danger btn-small"
-													style="float: left; margin-right: 20px;">삭제</button>
+												<button class="btn btn-primary btn-small" type="submit"
+													id="add" style="float: left; margin-right: 20px;">등록</button>
+												<button class="btn btn-warning btn-small" type="submit"
+													id="update" style="float: left; margin-right: 20px;">수정</button>
+												<button class="btn btn-danger btn-small" type="submit"
+													id="delete" style="float: left; margin-right: 20px;">삭제</button>
 												<button class="btn btn-info btn-small" type="submit"
-													style="float: left; margin-right: 20px;">조회</button>
+													id="search" style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-default btn-small" type="reset"
 													style="float: left; margin-right: 20px;">
 													<i class="icon-undo bigger-110"></i>초기화
@@ -206,25 +209,22 @@
 					class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
-							<th class="center"><label> <input type="checkbox"
-									class="ace"> <span class="lbl"></span>
-							</label></th>
-							<th>No</th>
+							<th>NO</th>
 							<th>무형자산코드</th>
-							<th>무형자산명</th>
 							<th>설치주소</th>
-							<th>사용담당자</th>
-							<th>대분류코드</th>
 							<th>대분류명</th>
-							<th>수량</th>
+							<th>대분류코드</th>
 							<th>거래처코드</th>
 							<th>거래처명</th>
-							<th>담당자</th>
 							<th>취득금액(원)</th>
-							<th>용도</th>
 							<th>부대비용(원)</th>
-							<th>매입일자</th>
 							<th>세금계산서번호</th>
+							<th>무형자산명</th>
+							<th>사용담당자</th>
+							<th>수량</th>
+							<th>담당자</th>
+							<th>용도</th>
+							<th>매입일자</th>
 							<th>구분</th>
 							<th>작성자</th>
 							<th>작성일</th>
@@ -232,30 +232,29 @@
 					</thead>
 
 					<tbody>
-						<tr>
-							<td class="center"><label> <input type="checkbox"
-									class="ace"> <span class="lbl"></span>
-							</label></td>
-							<td>1</td>
-							<td>무형자산코드</td>
-							<td>무형자산명</td>
-							<td>설치주소</td>
-							<td>사용담당자</td>
-							<td>대분류코드</td>
-							<td>대분류명</td>
-							<td>수량</td>
-							<td>거래처코드</td>
-							<td>거래처명</td>
-							<td>담당자</td>
-							<td>취득금액(원)</td>
-							<td>용도</td>
-							<td>부대비용(원)</td>
-							<td>매입일자</td>
-							<td>세금계산서번호</td>
-							<td>구분</td>
-							<td>작성자</td>
-							<td>작성일</td>
-						</tr>
+						<c:forEach items="${list }" var="vo" varStatus="status">
+							<tr>
+								<td>${status.count }</td>
+								<td>${vo.id }</td>
+								<td>${vo.address }</td>
+								<td>${vo.classification }</td>
+								<td>${vo.code }</td>
+								<td>${vo.customerNo }</td>
+								<td>vo.customerName</td>
+								<td>${vo.acqPrice }</td>
+								<td>${vo.addiFee }</td>
+								<td>${vo.taxbillNo }</td>
+								<td>${vo.name }</td>
+								<td>${vo.user }</td>
+								<td>${vo.copyCount }</td>
+								<td>vo.customerManager</td>
+								<td>${vo.purpose }</td>
+								<td>${vo.payDate }</td>
+								<td>${vo.taxKind }</td>
+								<td>${vo.insertUserId }</td>
+								<td>${vo.insertDay }</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 
@@ -264,32 +263,69 @@
 		</div>
 		<!-- /.main-content -->
 
-		<div class="pagination">
-			<ul>
-				<li class="disabled"><a href="#"><i
-						class="icon-double-angle-left"></i></a></li>
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-			</ul>
-		</div>
-
 	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
+	
+			$('#form-field-section').change(function() {
+				var sectionCode = $('#form-field-section option:selected').val();
+				var code = $('#code').val(sectionCode);
+				alert(code)
+			});
+	
+			$('#add').click(function() {
+				$("form").attr("action",
+								"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+			});
+	
+			$("#update").click(function() {
+				$("form").attr("action",
+							   "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
+			});
+	
+			$("#delete").click(function() {
+				$("form").attr("action",
+						       "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
+			});
+	
+			$("#sample-table-1 tr").click(function() {
+				var str = ""
+				var tdArr = new Array(); // 배열 선언
+	
+				// 현재 클릭된 Row(<tr>)
+				var tr = $(this);
+				var td = tr.children();
+	
+				console.log(tr.text());
+	
+				$("input[name=id]").val(td.eq(1).text());
+				$("input[name=address]").val(td.eq(2).text());
+				$("input[name=classification]").val(td.eq(3).text());
+				$("input[name=code]").val(td.eq(4).text());
+				$("input[name=customerNo]").val(td.eq(5).text());
+				$("input[name=customerName]").val(td.eq(6).text());
+				$("input[name=acqPrice]").val(td.eq(7).text());
+				$("input[name=addiFee]").val(td.eq(8).text());
+				$("input[name=taxbillNo]").val(td.eq(9).text());
+				$("input[name=name]").val(td.eq(10).text());
+				$("input[name=user]").val(td.eq(11).text());
+				$("input[name=copyCount]").val(td.eq(12).text());
+				$("input[name=customerManager]").val(td.eq(13).text());
+				$("input[name=purpose]").val(td.eq(14).text());
+				$("input[name=payDate]").val(td.eq(15).text());
+				$("input[name=taxKind]").val(td.eq(16).text());
+	
+			});
+	
+			var taxKind = $("input[type=radio][name=form-field-radio]:checked").val();
 		});
 	</script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
 		$(function() {
 			$.fn.datepicker.dates['ko'] = {
@@ -297,16 +333,16 @@
 				daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
 				daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
 				months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-						"9월", "10월", "11월", "12월" ],
+							"9월", "10월", "11월", "12월" ],
 				monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-						"9월", "10월", "11월", "12월" ],
+							"9월", "10월", "11월", "12월" ],
 				today : "Today",
 				clear : "Clear",
 				format : "yyyy-mm-dd",
 				titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
 				weekStart : 0
 			};
-
+	
 			$('#cl-ym-date-picker').datepicker({
 				maxViewMode : 4,
 				minViewMode : 1,
@@ -314,13 +350,13 @@
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
-
+	
 			$('.cl-date-picker').datepicker({
 				language : 'ko'
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
-		})
+		});
 	</script>
 </body>
 </html>

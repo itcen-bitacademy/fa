@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu59Repository;
-import kr.co.itcen.fa.vo.menu17.AccountManagement;
+import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
 
 /**
@@ -21,27 +24,44 @@ public class Menu59Service {
 	@Autowired
 	private Menu59Repository menu59Repository;
 	
-	public Boolean insert(AccountManagement vo) {
+	public Boolean insert(AccountManagementVo vo) {
 		Boolean count = menu59Repository.insert(vo);
 		return count;	
 	}
 	
-	public List<AccountManagement> getAllList(){
+	public DataResult<AccountManagementVo> getList(AccountManagementVo vo, int page){
+		DataResult<AccountManagementVo> dataResult = new DataResult<>();
 		
-		return menu59Repository.getAllList();
-	}
-
-	public List<AccountManagement> getList(AccountManagement vo){
+		int totalCount = menu59Repository.selectCount(vo);
+		System.out.println(totalCount);
 		
-		return menu59Repository.getList(vo);
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);	
+		if(totalCount == 0) {
+			paginationUtil.setListSize(0);
+			paginationUtil.setPageSize(0);
+		}
+		
+		dataResult.setPagination(paginationUtil);
+		
+		Menu17SearchForm menu17SearchForm = new Menu17SearchForm();
+		menu17SearchForm.setPagination(paginationUtil);		
+		menu17SearchForm.setYear(vo.getAccountUsedyear());
+		menu17SearchForm.setAccountNo(vo.getAccountNo());
+		menu17SearchForm.setAccountOrder(vo.getAccountOrder());
+		menu17SearchForm.setAccountStatementType(vo.getAccountStatementType());
+		
+		List<AccountManagementVo> list = menu59Repository.getList(menu17SearchForm);
+		dataResult.setDatas(list);		
+		
+		return dataResult;
 	}
 	
-	public List<AccountManagement> getAllAccountList(){
+	public List<AccountManagementVo> getAllAccountList(){
 		
 		return menu59Repository.getAllAccountList();
 	}
 
-	public Boolean update(AccountManagement vo) {
+	public Boolean update(AccountManagementVo vo) {
 		Boolean count = menu59Repository.update(vo);
 		return count;	
 	}	

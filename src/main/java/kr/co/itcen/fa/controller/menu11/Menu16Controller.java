@@ -33,13 +33,22 @@ public class Menu16Controller {
 	
 	// /11  /11/16, /11/16/add
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
-	public String test(Model model,
-			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
-		DataResult<BankVo> dataResult = menu16Service.list(page);
+		public String list(Model model,	
+				@RequestParam(value="page", required=false,defaultValue = "1") int page,
+				@RequestParam(value="code", required=false,defaultValue = "") String code) {
+		System.out.println(code);
+		DataResult<BankVo> dataResult = menu16Service.list(code, page);
 		model.addAttribute("dataResult",dataResult);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.POST)
+	public String list(@RequestParam(value="page", required=false,defaultValue = "1") int page,	
+	@RequestParam(value="code", required=false,defaultValue = "") String code ) {
+
+	return "redirect:/" + MAINMENU + "/" + SUBMENU + "?page=" + page + "&code=" + code;
+}
 	
 	@RequestMapping(value= "/" + SUBMENU + "/add" , method = RequestMethod.POST)
 	public String add(BankVo vo) {

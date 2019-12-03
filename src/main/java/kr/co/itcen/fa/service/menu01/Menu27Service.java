@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.service.menu01;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,12 @@ public class Menu27Service {
 
 	public List<CustomerVo> list() {
 		return menu27Repository.list();
+	}
+
+	public Map<String, Object> create(CustomerVo customervo) {
+		// 중복성 검사 Query 만들어야함 (삭제후 똑같은것 재생성시 처리)
+		Map<String, Object> map = menu27Repository.create(customervo);
+		return map;
 	}
 
 }

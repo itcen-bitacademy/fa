@@ -3,7 +3,7 @@
 <mapper namespace="menu59">
 
 	<!--  계정과목 저장 -->
-	<insert id="insert" parameterType="AccountManagement">
+	<insert id="insert" parameterType="accountManagement17Vo">
 	   <![CDATA[
 	   insert 
 	     into tb_account_management(account_order,account_no,account_usedyear,account_statement_type,use_yn,insert_userid,insert_day) 
@@ -16,31 +16,9 @@
 	   </selectKey>
 	</insert>
 	
-	<!--  재무제표 계정과목 현황 전체조회 -->
-	<select id="getAllList" resultType="AccountManagement">
-		<![CDATA[
-	  select m.no                                          as no
-	       , m.account_order           					   as accountOrder
-		   , m.account_no              					   as accountNo
-		   , a.balance_type            					   as balanceType
-	       , a.name              					   	   as accountName
-		   , m.account_usedyear        					   as accountUsedyear
-		   , m.account_statement_type                      as accountStatementType
-		   , m.use_yn                 					   as useYn
-		   , m.insert_userid           					   as insertUserid
-		   , date_format(m.insert_day,'%Y-%m-%d %h:%i:%s') as insertDay 
-		   , m.update_userid 						       as updateUserid 
-		   , date_format(m.update_day,'%Y-%m-%d %h:%i:%s') as updateDay 
-	    from tb_account_management m, tb_account a
-	   where a.no = m.account_no
-	     and m.use_yn = 1
-	     and m.account_statement_type = 'B'
-	   order by account_order
-		]]>
-	</select>
 
-	<!--  재무제표 계정과목 현황 선택조회 -->
-	<select id="getList" parameterType="AccountManagement" resultType="AccountManagement">
+	<!--  재무제표 계정과목 현황 조회 -->
+	<select id="getList" parameterType="menu17SearchForm" resultType="accountManagement17Vo">
 	<![CDATA[
 	  select m.no                                          as no
 	       , m.account_order           					   as accountOrder
@@ -67,15 +45,40 @@
 	 <if test="accountStatementType != null">
          and m.account_statement_type = #{accountStatementType }
      </if>
+	 <if test="year != null">
+         and m.account_usedyear = #{year }
+     </if>
+     <![CDATA[
+	   order by m.account_order
+	   limit #{pagination.pageIndex }, #{pagination.listSize }	
+	 ]]>
+	</select>
+
+	<!-- 재무제표 계정과목 테이블 조회 카운트 가져오기 -->
+	<select id="selectCount" parameterType="accountManagement17Vo" resultType="int">
+	<![CDATA[
+	  select count(m.no) as cnt
+	    from tb_account_management m, tb_account a
+	   where a.no = m.account_no
+	     and m.use_yn = 1
+	 ]]>
+	 <if test="accountOrder != null">
+         and m.account_order = #{accountOrder }
+     </if>
+	 <if test="accountNo != null">
+         and m.account_no = #{accountNo }
+     </if>
+	 <if test="accountStatementType != null">
+         and m.account_statement_type = #{accountStatementType }
+     </if>
 	 <if test="accountUsedyear != null">
          and m.account_usedyear = #{accountUsedyear }
      </if>
-	   order by account_order
-		
+	   order by account_order	
 	</select>
 
 	<!--  재무제표 계정과목, 계정명 불러오기 -->
-	<select id="getAllAccountList" resultType="AccountManagement">
+	<select id="getAllAccountList" resultType="accountManagement17Vo">
 		<![CDATA[
 	  select no   as accountNo  
 	       , name as accountName
@@ -84,7 +87,7 @@
 	</select>
 
 	<!-- 재무제표 계정과목 수정 -->
-	<update id="accountUpdate" parameterType="AccountManagement">
+	<update id="accountUpdate" parameterType="accountManagement17Vo">
 		<![CDATA[
 		update tb_account_management 
 		   set account_order    = #{accountOrder}
