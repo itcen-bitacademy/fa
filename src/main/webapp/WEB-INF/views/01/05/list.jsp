@@ -35,7 +35,7 @@
 			
 			$("input[name=cardNo]").val(td.eq(1).text());
 			$("input[name=cardNoOld]").val(td.eq(1).text());
-			var month= td.eq(2).text().substring(0,2);
+			var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
 			var year= td.eq(2).text().substring(3,5);
 			$("input[name=validityMM]").val(month);
 			$("input[name=validityYY]").val(year);

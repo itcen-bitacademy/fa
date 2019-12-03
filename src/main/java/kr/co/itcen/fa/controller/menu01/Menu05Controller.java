@@ -54,9 +54,8 @@ public class Menu05Controller {
 		vo.setLimitation(limitation.get());
 		
 		
-		if(!menu05Service.exist(vo)) {
-			menu05Service.create(vo);
-		}
+		menu05Service.create(vo);
+		
 		
 		
 		return "redirect:/"+MAINMENU + "/" + SUBMENU + "/list";
@@ -68,13 +67,14 @@ public class Menu05Controller {
 			@RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY,
 			@RequestParam("limitation") Optional<Integer> limitation, @RequestParam("cardNoOld") String cardNoOld
 			) {
-		String validity = validityMM + "/"+ validityYY ;
+		String validity = validityMM + "/"+ validityYY ;				//두자 고정으로
 		vo.setValidity(validity);
 		vo.setUpdateUserId(uvo.getName());
 		vo.setLimitation(limitation.get());
 		vo.setCardNoOld(cardNoOld);
-
+		
 		menu05Service.update(vo);
+		
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
