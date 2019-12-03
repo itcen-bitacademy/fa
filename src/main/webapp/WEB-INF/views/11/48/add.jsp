@@ -142,15 +142,11 @@ tr td:first-child {
 									<td><h4>차입금대분류</h4></td>
 									<td colspan="2">
 										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="form-field-select-3" >
-											<option value=""></option>
-											<option value="008001">국내은행</option>
-											<option value="008002">저축은행</option>
-											<option value="008003">신용금고</option>
-											<option value="008004">새마을금고</option>
-											<option value="008005">외국계은행</option>
-											<option value="008006">증권</option>
+										<option value=""></option>
+										<c:forEach items="${sectionlist}" var="sectionvo">
+											<option value="${sectionvo.code}">${sectionvo.classification }</option>
+										</c:forEach>
 										</select>
-									
 									</td>	
 								</tr>
 								<tr>
@@ -255,12 +251,13 @@ tr td:first-child {
 							</label></td>
 							<td class="center">${ltermvo.code}</td>
 							<td>${ltermvo.name}</td>
+							
 					        <c:choose>
-										<c:when test="${ltermvo.majorCode eq '008001'}"><td class="center">국내은행</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '008002'}"><td class="center">저축은행</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '008003'}"><td class="center">신용금고</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '008004'}"><td class="center">새마을금고</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '008005'}"><td class="center">외국계은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '001'}"><td class="center">국내은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '002'}"><td class="center">저축은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '003'}"><td class="center">신용금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '004'}"><td class="center">새마을금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
 							<td class="center">${ltermvo.debtAmount}</td>
@@ -356,22 +353,22 @@ $(function(){
 		var major='';
 		switch (td.eq(3).text()){
 	    case '국내은행' :
-	    	major='008001';
+	    	major='001';
 	        break;
 	    case '저축은행' :
-	    	major='008002';
+	    	major='002';
 		    break;
 	    case '신용금고' :
-	    	major='008003';
+	    	major='003';
 	        break;
 	    case '새마을금고' :
-	    	major='008004';
+	    	major='004';
 	        break;
 	    case '외국계은행' :
-	    	major='008005';
+	    	major='005';
 	    	break;
 	    case '증권' :
-	    	major='008006';
+	    	major='006';
 	    	break;
 		}
 

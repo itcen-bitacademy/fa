@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu11.Menu48Service;
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
@@ -38,10 +41,11 @@ public class Menu48Controller {
 			) {
 		
 		DataResult<LTermdebtVo> dataResult = menu48Service.list(page, year,code);
-		
+		List<SectionVo> sectionlist = menu48Service.selectSection();
 		
 		
 		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("sectionlist",sectionlist);
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";

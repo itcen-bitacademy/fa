@@ -1,12 +1,14 @@
 package kr.co.itcen.fa.controller.menu01;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
@@ -39,37 +41,49 @@ public class Menu27Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}	
 
-	// C	
-	@RequestMapping("/" + SUBMENU + "/insert" )//({"/" + SUBMENU, "/" + SUBMENU + "/insert" })
-	public String insert(@ModelAttribute CustomerVo customerVo, @AuthUser UserVo authUser) {
-		customerVo.setInsertUserid(authUser.getId());
-		System.out.println(authUser.getId());//입력자 id
-		menu27Service.insert(customerVo);
-		System.out.println("input");
-		return MAINMENU + "/" + SUBMENU + "/list";
+	// Create
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/create")
+	public Map<String, Object> create(@ModelAttribute CustomerVo customervo,
+			@AuthUser UserVo authUser) {
+		System.out.println("create");
+		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
+		customervo.setInsertUserid(authUser.getName());
+		
+		Map<String, Object> result = menu27Service.create(customervo);
+		result.put("success", true);
+		
+		return result;
 	}
 	
-	// R	
-//	@RequestMapping("/" + SUBMENU + "/read" )
-//	public String read(Model model, String no) {
-//		model.addAttribute("customerList", menu27Service.list(no));
-//		System.out.println(no);
-//		return MAINMENU + "/" + SUBMENU + "/list";
-//	}
+	// Read
+	@RequestMapping("/" + SUBMENU + "/read")
+	public String read(@ModelAttribute CustomerVo customerVo) {
+		System.out.println("read");
+		menu27Service.test();
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+	}
 	
 	// U
-	@RequestMapping("/" + SUBMENU + "/update" )
-	public String update(@ModelAttribute CustomerVo customerVo, @AuthUser UserVo authUSer) {
-		customerVo.setUpdateUserid(authUSer.getId());//수정자 id
-		menu27Service.update(customerVo);
-		return MAINMENU + "/" + SUBMENU + "/list";
+	@RequestMapping("/" + SUBMENU + "/update")
+	public String update(@ModelAttribute CustomerVo CustomerVo,
+			@AuthUser UserVo authUser) {
+		System.out.println("update");
+		
+		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
+		CustomerVo.setUpdateUserid(authUser.getName());
+				
+		menu27Service.update(CustomerVo);
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	// D
-	@RequestMapping("/" + SUBMENU + "/delete" )
+	@RequestMapping("/" + SUBMENU + "/delete")
 	public String delete(@ModelAttribute CustomerVo customerVo) {
+		System.out.println("delete");
+		
 		menu27Service.delete(customerVo);
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 
