@@ -19,11 +19,21 @@ public class Menu17SearchForm {
 	private Long accountNo;			     //계정과목 코드
 	private String accountStatementType; //제무재표 구분
 	
+	private Long closingDateNo;			// 마감일 번호 
+
 	private int page = 1;
 	private PaginationUtil pagination;
 	
 	
 	// Getter & Setter
+	public Long getClosingDateNo() {
+		return closingDateNo;
+	}
+
+	public void setClosingDateNo(Long closingDateNo) {
+		this.closingDateNo = closingDateNo;
+	}
+	
 	public String getYear() {
 		return year;
 	}

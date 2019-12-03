@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu17.Menu20Service;
@@ -69,5 +70,14 @@ public class Menu61Controller {
 		menu61Service.executeSettlement(closingDateVo);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	
+	@PostMapping("/" + SUBMENU + "/test")
+	@ResponseBody
+	public String testSettlement() {
+		menu61Service.testSettlement();
+		
+		return "abc";
 	}
 }
