@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.repository.menu01;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -28,11 +29,16 @@ public class Menu25Repository {
 	//	sqlSession.insert("menu25.save", testVo);
 	}
 
-	public void create(BankAccountVo bavo) {
+	public Map<String, Object> create(BankAccountVo bavo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
 		// 다른 조와 데이터 통합 전 임의의 Test data insert
 		bavo.setAccountNo("12348");
 		// 191202 sql문 구현 필요함
 		sqlSession.insert("menu25.create", bavo);
+		
+		map.put("bankList", sqlSession.selectList("menu25.list"));
+		return map;
 	}
 
 	public void update(BankAccountVo bavo) {
@@ -45,6 +51,11 @@ public class Menu25Repository {
 
 	public void delete(BankAccountVo bavo) {
 		// TODO Auto-generated method stub
-		sqlSession.delete("menu25.delete", bavo);
+		sqlSession.update("menu25.delete", bavo);
+	}
+
+	public List<BankAccountVo> list() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("menu25.list");
 	}
 }

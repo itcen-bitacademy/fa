@@ -35,6 +35,28 @@
 
 <script>
 	$(function() {
+		$("#input-form").submit(function(event) {
+	        event.preventDefault();
+			var queryString = $("form[name=input-form]").serialize() ;
+			$.ajax({
+			    url: "${pageContext.request.contextPath}/01/25/create",
+			    type: "POST",
+			    data: queryString,
+			    dataType: "json",
+			    success: function(result){
+			    	if(result.success) {
+			    		alert("계좌 생성이 완료되었습니다."); 
+			    		
+			    		removeTable();
+			    		createNewTable(result.bankList);
+			    	}
+			    },
+			    error: function( err ){
+			      	console.log(err)
+			    }
+			  })
+		});
+		
 		$("#simple-table-1 tr").click(function(){ 
 			var tr = $(this);
 			var td = tr.children();
@@ -42,7 +64,6 @@
 			$("input[name=depositNo]").val(td.eq(1).text());
 			$("input[name=depositOld]").val(td.eq(1).text());
 			$("input[name=bankCode]").val(td.eq(2).text());
-			$("input[name=bankCode]").disabled = true;
 			$("input[name=depositHost]").val(td.eq(3).text());
 			$("input[name=makeDate]").val(td.eq(4).text());
 			$("input[name=enDate]").val(td.eq(5).text());
@@ -105,7 +126,45 @@
 		}).next().on(ace.click_event, function() {
 			$(this).prev().focus();
 		});
+
+		function removeTable(){
+			  // 원래 테이블 제거
+			  $(".origin-tbody").remove();
+			  // ajax로 추가했던 테이블 제거
+			  $(".new-tbody").remove();
+		}
+		function createNewTable(bankList){
+			  var $newTbody = $("<tbody class='new-tbody'>")
+			  $(".table table-striped table-bordered table-hover").append($newTbody)
+				
+			  for(let bankdeposit in bankList){
+				  $newTbody.append(
+				   	"<tr>" +
+			        "<td class='center'><label> <input type='checkbox' class='ace' /> <span class='lbl'></span>"+"</label></td>" +
+			        "<td>" + bankList[bankdeposit].depositNo + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankCode + "</td>" +
+			        "<td>" + bankList[bankdeposit].depositHost + "</td>" +
+			        "<td>" + bankList[bankdeposit].makeDate + "</td>" +
+			        "<td>" + bankList[bankdeposit].enDate + "</td>" +
+			        "<td>" + bankList[bankdeposit].balance + "</td>" +	
+			        "<td>" + bankList[bankdeposit].depositLimit + "</td>" +
+			        "<td>" + bankList[bankdeposit].profit + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankName + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankLocation + "</td>" +
+			        "<td>" + bankList[bankdeposit].banker + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankPhoneCall + "</td>" +
+			        "<td>" + bankList[bankdeposit].insertUserId + "</td>" +
+			        "<td>" + bankList[bankdeposit].insertDay + "</td>" +
+			        "<td>" + bankList[bankdeposit].updateUserId + "</td>" +
+			        "<td>" + bankList[bankdeposit].updateDay + "</td>" +
+			        "</tr>");
+			  }
+			  $newTbody.append("</tbody>");
+			  $(".chosen-select").chosen();
+		}
 	})
+	
+	
 </script>
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -130,7 +189,7 @@
 				<!-- PAGE CONTENT BEGINS -->
 				<!-- PAGE CONTENT BEGINS -->
 
-				<form class="form-horizontal" method="post">
+				<form class="form-horizontal" id="input-form" name="input-form" method="post">
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="tabbable">
@@ -235,14 +294,13 @@
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="hr hr-18 dotted"></div>
-								<button type="submit" class="btn btn-info btn"
+								<button type="submit" class="btn btn-info btn" 
 									formaction="${pageContext.request.contextPath}/01/25/read">조회</button>
 								<button type="submit" class="btn btn-danger btn"
 									formaction="${pageContext.request.contextPath}/01/25/delete">삭제</button>
-								<button type="submit" class="btn btn-warning btn"
+								<button type="submit" class="btn btn-warning btn" 
 									formaction="${pageContext.request.contextPath}/01/25/update">수정</button>
-								<button type="submit" class="btn btn-primary btn"
-									formaction="${pageContext.request.contextPath}/01/25/create">입력</button>
+								<button type="submit" class="btn btn-primary btn" id="btn-create" name="btn-create">입력</button>
 								<button type="submit" class="btn btn-default btn" formaction="#">취소</button>
 							<div class="hr hr-18 dotted"></div>
 						</div>	<!-- /.span -->
@@ -277,55 +335,34 @@
 								</tr>
 							</thead>
 
-							<tbody>
-								<tr>
-									<td class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></td>
+							<tbody class = "origin-tbody">
 
+								<c:forEach items='${list }' var='vo' varStatus='status'>
+									<tr>
+										<td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td>
 
-									<td>201911150001</td>
-									<td>1234567</td>
-									<td>이고니</td>
-									<td>2018-01-12</td>
-									<td>2023-01-11</td>
-									<td>1234567</td>
-									<td>5000</td>
-									<td>0.09</td>
-									<td>국민</td>
-									<td>가로수길</td>									
-									<td>김길동</td>
-									<td>02)442-2213</td>
-									<td>20119-11-12</td>
-									<td>신동주</td>
-									<td>-</td>
-									<td>-</td>
+										<td>${vo.depositNo }</td>
+										<td>${vo.bankCode }</td>
+										<td>${vo.depositHost }</td>
+										<td>${vo.makeDate}</td>
+										<td>${vo.enDate}</td>
+										<td>${vo.balance}</td>
+										<td>${vo.depositLimit }</td>
+										<td>${vo.profit}</td>
+										<td>${vo.bankName }</td>
+										<td>${vo.bankLocation }</td>
+										<td>${vo.banker }</td>
+										<td>${vo.bankPhoneCall }</td>
+										<td>${vo.insertUserId }</td>
+										<td>${vo.insertDay }</td>
+										<td>${vo.updateUserId }</td>
+										<td>${vo.updateDay }</td>
+									</tr>
 
+								</c:forEach>
 
-								</tr>
-								<tr>
-									<td class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></td>
-
-
-									<td>201911150001</td>
-									<td>1234567</td>
-									<td>곽철용</td>
-									<td>2019-05-11</td>
-									<td>2024-05-10</td>
-									<td>11234567</td>
-									<td>10000</td>
-									<td>0.05</td>
-									<td>우리</td>
-									<td>강남(서)</td>									
-									<td>잔나비</td>
-									<td>02)4512-5532</td>
-									<td>20119-11-12</td>
-									<td>신동주</td>
-									<td>-</td>
-									<td>-</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
