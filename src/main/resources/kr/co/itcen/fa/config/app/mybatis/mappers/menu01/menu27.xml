@@ -57,6 +57,7 @@
 		<![CDATA[
 			update tb_customer
 			   set delete_flag = 'Y'
+			 where no = concat('A', #{no})
 		]]>
 	</update>
 	
@@ -72,14 +73,22 @@
 				   conditions = #{conditions },
 				   item = #{item },
 				   corporation_no = #{corporationNo },
-				   open_date = #{openDate },
 				   jurisdiction_office = #{jurisdictionOffice},
 				   phone = #{phone },
 				   manager_name = #{managerName },
 				   manager_email = #{managerEmail },
 				   deposit_no = #{depositNo },
-				   update_userid = #{updateUserid }.
+				   update_userid = #{updateUserid },
 				   update_day = now()
+			 where no = concat('A', #{no})
 		]]>
 	</update>
+	
+	<delete id = "deleteAll" parameterType="bankaccountvo">
+		<![CDATA[
+			delete from tb_customer
+			 where deposit_no = concat('A', #{no})
+			   and delete_flag = "Y";
+		]]>
+	</delete>
 </mapper>

@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.service.menu01;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,28 +26,33 @@ public class Menu27Service {
 	public void test() {
 		menu27Repository.test();
 	}
+
+	public Map<String, Object> create(CustomerVo customervo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// 중복성 검사 Query 만들어야함 (삭제후 똑같은것 재생성시 처리)
+		map = menu27Repository.create(customervo);
+		map.put("success", true);
+		return map;
+	}
 	
-	public void insert(CustomerVo customerVo) {
-		menu27Repository.insert(customerVo);
-	}
-
-	public void update(CustomerVo customerVo) {
-		menu27Repository.update(customerVo);
-	}
-
-	public void delete(CustomerVo customerVo) {
-		menu27Repository.delete(customerVo);
-		// TODO Auto-generated method stub
+	public Map<String, Object> update(CustomerVo customerVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		
+		// 중복성 검사 Query 만들어야함 (삭제후 똑같은것 재생성시 처리)
+		
+		map = menu27Repository.update(customerVo);
+		map.put("success", true);
+		return map;
+	}
+
+	public Map<String, Object> delete(CustomerVo customerVo) {
+		Map<String, Object> map = menu27Repository.delete(customerVo);
+		return map;
 	}
 
 	public List<CustomerVo> list() {
-		return menu27Repository.list();
-	}
-
-	public Map<String, Object> create(CustomerVo customervo) {
-		// 중복성 검사 Query 만들어야함 (삭제후 똑같은것 재생성시 처리)
-		Map<String, Object> map = menu27Repository.create(customervo);
+		// TODO Auto-generated method stub
+		List<CustomerVo> map = menu27Repository.list();
 		return map;
 	}
 
