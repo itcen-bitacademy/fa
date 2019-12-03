@@ -31,4 +31,32 @@
 		order by no
 		]]>
 	</select>
+	
+	<update id="update" parameterType="salescustomervo">
+		<![CDATA[
+		update tb_salescustomer
+		set no=#{no }, name=#{name }, ceo=#{ceo }, corporation_no=#{corporationNo }, zip_code=#{zipCode }, address=#{address }, 
+			detail_address=#{detailAddress }, phone=#{phone }, conditions=#{conditions }, item=#{item },
+			open_date=#{openDate }, jurisdiction_office=#{jurisdictionOffice }, manager_name=#{managerName }, manager_email=#{managerEmail }, 
+			deposit_no=#{depositNo }, deposit_host=#{depositHost }, update_userid=#{updateUserid }, update_day=now()
+		where no = #{preNo }
+		]]>
+	</update>
+	
+	<select id="findByNo" parameterType="string" resultType="salescustomervo">
+		select no
+		from tb_salescustomer
+		where no = #{_parameter }
+	</select>
+	
+	<update id="deleteByNo" parameterType="list">
+		<![CDATA[
+		update tb_salescustomer 
+		set delete_flag = 'Y'
+		where no in
+		]]>
+		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >
+	        #{item}
+	  </foreach>
+	</update>
 </mapper>

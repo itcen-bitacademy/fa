@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.repository.menu01;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,18 @@ public class Menu27Repository {
 
 	public List<CustomerVo> list() {
 		return sqlSession.selectList("menu27.getList");
+	}
+
+	public Map<String, Object> create(CustomerVo customervo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		// 다른 조와 데이터 통합 전 임의의 Test data insert
+		//customervo.setAccountNo("12348");
+		// 191202 sql문 구현 필요함
+		sqlSession.insert("menu27.create", customervo);
+		
+		map.put("customerList", sqlSession.selectList("menu25.list"));
+		return map;
 	}
 
 }

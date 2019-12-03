@@ -5,16 +5,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<c:import url="/WEB-INF/views/common/head.jsp" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-<style>
-.chosen-search {
-	display: none;
-}
-</style>
-</head>
+<c:import url="/WEB-INF/views/common/head.jsp" />
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
@@ -46,6 +42,12 @@
 		$(".chosen-select").chosen();
 	})
 </script>
+<style>
+.chosen-search {
+	display: none;
+}
+</style>
+</head>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
@@ -141,7 +143,7 @@
 			
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
-</div><!-- /.main-container -->
+<!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

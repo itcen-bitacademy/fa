@@ -106,31 +106,35 @@ $(function() {
 										<th>품목코드</th>
 										<th>품목명</th>
 										<th>입고수량</th>
-										<th>입고금액</th>
+										<th>입고공급가액</th>
 										<th>입고부가세</th>
+										<th>입고금액</th>
 										<th>출고수량</th>
-										<th>출고금액</th>
+										<th>출고공급가액</th>
 										<th>출고부가세</th>
+										<th>출고금액</th>
 										<th>재고수량</th>
 										<th>재고금액</th>
 										<th>재고부가세</th>
 									</tr>
 									</thead>
-									<tbody>
+									<c:forEach items='${list }' var='vo' varStatus='status'>
 									<tr>
-										<td>품목코드123456</td>
-										<td>IBM서버</td>
-										<td>10</td>
-										<td>10000</td>
-										<td>1000</td>
-										<td>5</td>
-										<td>5000</td>
-										<td>500</td>
-										<td>5</td>
-										<td>5000</td>
-										<td>500</td>
+										<td>${vo.itemcode }</td>
+										<td>${vo.itemname }</td>
+										<td>${vo.purchasemanagementquantity }</td>
+										<td>${vo.purchasemanagementsupplyvalue }</td>
+										<td>${vo.purchasemanagementtaxvalue }</td>
+										<td>${vo.purchasemanagementtotalprice }</td>
+										<td>${vo.salesquantity }</td>
+										<td>${vo.salessupplyvalue }</td>
+										<td>${vo.salestaxvalue }</td>
+										<td>${vo.salestotalprice }</td>
+										<td>${vo.stockquantity }</td>
+										<td>${vo.stocktotalprice }</td>
+										<td>${vo.stocktaxvalue }</td>
 									</tr>
-									</tbody>
+									</c:forEach>
 								</table>
 								</div>
 								<div class="pagination">

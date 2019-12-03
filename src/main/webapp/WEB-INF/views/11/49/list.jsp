@@ -173,7 +173,6 @@ form {
 							<th class="center">계좌</th>
 						</tr>
 					</thead>
-
 					<tbody>
 						<tr>
 							<td class="center"><label class="pos-rel">
@@ -212,5 +211,13 @@ form {
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+
+
+
 </body>
 </html>

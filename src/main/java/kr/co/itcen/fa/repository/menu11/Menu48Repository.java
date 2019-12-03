@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.repository.menu11;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,12 @@ public class Menu48Repository {
 		return count==1;
 	}
 
-	public Boolean delete(Long no) {
-		int count = sqlSession.update("menu48.delete",no);
-		return count==1;
+	public Boolean delete(Long[] no) {
+		List<Long>list = new ArrayList<Long>();
+		for(Long no1: no) {
+			list.add(no1);
+		}
+		int count = sqlSession.update("menu48.delete",list);
+		return count>=1;
 	}
 }

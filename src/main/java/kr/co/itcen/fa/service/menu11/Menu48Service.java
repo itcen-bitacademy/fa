@@ -28,6 +28,7 @@ public class Menu48Service {
 
 	public Boolean insert(LTermdebtVo vo) {
 		return menu48Repository.insert(vo);
+		
 	}
 
 	public DataResult<LTermdebtVo> list(int page, String year, String code) {
@@ -48,7 +49,7 @@ public class Menu48Service {
 		return menu48Repository.update(vo);
 	}
 
-	public Boolean delete(Long no) {
+	public Boolean delete(Long[] no) {
 		return  menu48Repository.delete(no);
 	}
 }

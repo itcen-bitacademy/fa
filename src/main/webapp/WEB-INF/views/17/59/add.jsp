@@ -99,7 +99,7 @@ $(function(){
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">회계연도</label>
 								<div class="controls">
-									<input type="number" min="1900" max="2099" step="1" value="2019" id="accountUsedyear" name="accountUsedyear" placeholder="회계연도" />
+									<input type="number" min="1900" max="2099" step="1" value="${accountUsedyear }" id="accountUsedyear" name="accountUsedyear" placeholder="회계연도" />
 								</div>
 							</div>
 							 
@@ -108,8 +108,14 @@ $(function(){
 								<label class="control-label" for="form-field-select-1">구분</label>
 								<div class="controls">
 									<select id="selectedAccountStatementType" name="selectedAccountStatementType" >
-										<option value="B">대차대조표</option>
-										<option value="I">손익계산서</option>
+										<c:if test="${selectedAccountStatementType eq 'B' }">
+											<option value="B" selected="selected">대차대조표</option>
+											<option value="I">손익계산서</option>
+										</c:if>
+										<c:if test="${selectedAccountStatementType eq 'I' }">
+											<option value="B">대차대조표</option>
+											<option value="I" selected="selected">손익계산서</option>
+										</c:if>
 									</select>
 								</div>
 							</div>
@@ -118,7 +124,7 @@ $(function(){
 							<div class="control-group">
 								<label class="control-label" for="accountOrder">순번</label>
 								<div class="controls">
-									<input type="number" min="0001" max="1000" step="1" value="" id="accountOrder" name="accountOrder" placeholder="순번입력" />
+									<input type="number" min="0001" max="1000" step="1" value="${accountOrder }" id="accountOrder" name="accountOrder" placeholder="순번입력" />
 									<input type="hidden" id="no" name="no" value="" >
 								</div>
 							</div>
@@ -127,10 +133,15 @@ $(function(){
 							<div class="control-group">
 								<label class="control-label" for="form-field-select-1">계정과목</label>
 								<div class="controls">
-									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목">
-											<option value="" data-accountName=""></option>
-										<c:forEach items="${accountList }" var="vo">											
-											<option value="${vo.accountNo}" data-accountName="${vo.accountName }">${vo.accountNo }</option>
+									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목">		
+										<option value="" data-accountName=""></option>		
+										<c:choose>
+											<c:when test="${selectedAccount eq selectedAccount }">
+												<option value="${selectedAccount}" data-accountName="${selectedAccount }" selected>${selectedAccount }</option>
+											</c:when>										
+										</c:choose>				
+										<c:forEach items="${accountList }" var="vo">									
+												<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>
 										</c:forEach>
 									</select> 
 									<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
@@ -139,7 +150,7 @@ $(function(){
 							</div>
 							
 							&nbsp; &nbsp; &nbsp;
-							<button class="btn btn-info btn-small" type="submit" name="action"  value="getList" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/getList">조회</button>
+							<button class="btn btn-info btn-small" type="submit" id="account-list-btn" name="account-list-btn"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 							&nbsp;
 							<button class="btn btn-danger btn-small" type="submit" name="action"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 							&nbsp;
@@ -147,14 +158,11 @@ $(function(){
 							&nbsp;
 							<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="action" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
 							&nbsp;
-							<button class="btn btn-default btn-small" type="reset" id="account-reset-btn" name="account-reset-btn" >취소</button>
+							<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >취소</button>
 
 						</form>
-						<!-- PAGE CONTENT ENDS -->
-
 					</div>
 				</div>
-
 
 				<!-- /.row-fluid -->
 				<!-- 제무재표 계정과목 테이블  -->
@@ -176,8 +184,7 @@ $(function(){
 							</tr>
 						</thead>
 
-					<c:set var="count" value="${fn:length(tableList) }" />
-						<c:forEach items="${tableList }" var="vo" varStatus="status">
+						<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 							<tbody>
 								<tr>
 									<td>${vo.accountOrder }</td>
@@ -202,20 +209,44 @@ $(function(){
 			</div>
 
 		</div>
-		<!-- /.page-content -->
 	</div>
-	<!-- /.main-content -->			
+	
+		
+	<%-- 페이징 --%>
 	<div class="pagination">
 		<ul>
-			<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-			<li class="active"><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+			<c:choose>
+				<c:when test="${dataResult.pagination.prev }">
+					<li><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+				</c:otherwise>
+			</c:choose>
+
+			<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+				<c:choose>
+					<c:when test="${pg eq dataResult.pagination.page }">
+						<li class="active"><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${pg }">${pg }</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${pg }">${pg }</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+
+			<c:choose>
+				<c:when test="${dataResult.pagination.next }">
+					<li><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+				</c:otherwise>
+			</c:choose>
 		</ul>
 	</div>
+	<!-- PAGE CONTENT ENDS -->
+	
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
@@ -274,7 +305,16 @@ $(function(){
     
     //리셋버튼 누를 시 초기화
     $("#account-reset-btn").click(function() {
+    	$('#selectedAccountStatementType').val("B");
+    	$('#accountOrder').val("");
+    	$('#accountUsedyear').val("2019");
     	$('#selectedAccount').val(null).trigger('chosen:updated');
+    });
+    
+    //조회버튼 누를 시 초기화
+    $("#account-list-btn").click(function() {
+    	console.log($('#selectedAccount').val());
+    	//$('#selectedAccount').val($('#selectedAccount').val()).trigger('chosen:updated');
     });
     
 	</script>

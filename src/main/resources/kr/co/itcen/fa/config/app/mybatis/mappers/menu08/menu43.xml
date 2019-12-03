@@ -15,5 +15,80 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<insert id="insert" parameterType="intangibleAssetsVo">
+		<![CDATA[
+		insert 
+		  into tb_intangible_assets
+		values (#{id }, #{customerNo }, #{taxbillNo }, #{voucherNo }, '007', #{code }, #{name }, #{copyCount },
+				#{purpose }, #{address }, #{user }, #{acqPrice }, #{addiFee }, #{payDate }, #{taxKind},
+				's', 'u007', now(), #{updateUserId }, #{updateDay })
+		]]>
+	</insert>
+	
+	<select id="getList2" resultType="intangibleAssetsVo">
+	<![CDATA[
+	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
+		   tb.section_no as sectionNo, tb.code, s.classification, tb.name, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
+		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind,
+		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
+		   tb.update_day as updateDay
+	  from tb_intangible_assets tb
+left outer join tb_section s
+	    on tb.code = s.code
+	 where tb.insert_day > (now() - interval 3 day)
+	   and s.parent_no = 5
+	   and flag = 's'
+  order by tb.insert_day desc
+	]]>
+	</select>
+	
+	<select id="getList" resultType="intangibleAssetsVo">
+	<![CDATA[
+	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
+		   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
+		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind,
+		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
+		   tb.update_day as updateDay
+	  from tb_intangible_assets tb
+left outer join tb_section s
+	    on tb.section_no = s.code
+	 where tb.insert_day > (now() - interval 3 day)
+	   and flag = 's'
+	    or flag = 'o'
+  order by tb.insert_day desc
+  	]]>
+	</select>
+	
+	<update id="update" parameterType="intangibleAssetsVo">
+		<![CDATA[
+		update tb_intangible_assets 
+		   set customer_no = #{customerNo }, 
+		   	   taxbill_no = #{taxbillNo }, 
+		   	   voucher_no = #{voucherNo },  
+		   	   code = #{code }, 
+		   	   name = #{name }, 
+		   	   copy_count = #{copyCount },
+			   purpose = #{purpose }, 
+			   address = #{address }, 
+			   user = #{user }, 
+			   acq_price = #{acqPrice }, 
+			   addi_fee = #{addiFee }, 
+			   pay_date = #{payDate }, 
+			   tax_kind = #{taxKind },
+			   flag = 'o',
+			   update_userid = 'u007',
+			   update_day = now()
+		 where id = #{id }
+		]]>
+	</update>
+	
+	<delete id="delete" parameterType="string">
+	<![CDATA[
+	update tb_intangible_assets 
+		  set flag = 'd'
+		where id = #{id }
+	]]>
+	</delete>
 
 </mapper>

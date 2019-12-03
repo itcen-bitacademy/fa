@@ -61,17 +61,17 @@ public class Menu41Service {
 		menu41Repository.update(vehicleVo);
 	}
 
-	//리스트 조회
+	//리스트 검색
 	public void search(VehicleVo vehicleVo) {
 		menu41Repository.search(vehicleVo);
 		
 	}
 
 	//리스트 삭제
-//	public void delete(VehicleVo vehicleVo) {
-//		menu41Repository.delete(vehicleVo);
-//		
-//	}
+	public void delete(String id) {
+		menu41Repository.delete(id);
+		
+	}
 
 
 	

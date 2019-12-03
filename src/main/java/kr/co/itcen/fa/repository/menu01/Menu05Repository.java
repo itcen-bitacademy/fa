@@ -36,12 +36,23 @@ public class Menu05Repository {
 	}
 
 	public boolean update(CardVo vo) {
+		
 		int count = sqlSession.update("menu05.update", vo);
 		return (count==1);
 	}
 
-	public CardVo exist(CardVo vo) {
-		CardVo exist = sqlSession.selectOne("menu05.exist", vo);
+	public CardVo Nexist(CardVo vo) {
+		CardVo exist = sqlSession.selectOne("menu05.nexist", vo);
 		return exist;
+	}
+	
+	public CardVo Yexist(CardVo vo) {
+		CardVo exist = sqlSession.selectOne("menu05.yexist", vo);
+		return exist;
+	}
+
+	public boolean delete(CardVo vo) {
+		int count = sqlSession.update("menu05.delete", vo);
+		return (count==1);
 	}
 }

@@ -35,69 +35,117 @@
 
 <script>
 	$(function() {
+		var a;
+		$("#btn-create").click(function(){
+			a = "create";
+		});
+		$("#btn-read").click(function(){
+			a = "read";
+		});
+		$("#btn-update").click(function(){
+			a = "update";
+		});
+		$("#btn-delete").click(function(){
+			a = "delete";
+		});
+		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
-			var queryString = $("form[name=input-form]").serialize() ;
-			$.ajax({
-			    url: "${pageContext.request.contextPath}/01/25/create",
-			    type: "POST",
-			    data: queryString,
-			    dataType: "json",
-			    success: function(result){
-			    	if(result.success) {
-			    		alert("계좌 생성이 완료되었습니다."); 
-			    		
-			    		removeTable();
-			    		createNewTable(result.bankList);
-			    	}
-			    },
-			    error: function( err ){
-			      	console.log(err)
-			    }
-			  })
+			var queryString = $("form[name=input-form]").serialize();
+			if(a == "create") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/25/create",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.fail) {
+				    		alert("다시 입력해주세요.");
+				    	}
+				    	if(result.success) {
+				    		alert("계좌 생성이 완료되었습니다."); 
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
+				    		
+				    		removeTable();
+				    		var bankList = result.bankList;
+				    		createNewTable(bankList);
+				    	}
+				    },
+				    error: function( err ){
+				    	
+				    }
+				 })
+			} else if(a == "read") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/25/list",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.success) {
+				    		alert("계좌 검색이 완료되었습니다."); 
+				    		removeTable();
+				    		
+				    		var bankList = result.bankList;
+				    		createNewTable(bankList);
+				    	}
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			} else if(a == "update") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/25/update",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.success) {
+				    		alert("계좌 수정이 완료되었습니다."); 
+				    		removeTable();
+				    		
+				    		var bankList = result.bankList;
+				    		createNewTable(bankList);
+				    	}
+				    	if(result.fail) {
+				    		alert("다시 입력해주세요.");
+				    	}
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			} else if(a == "delete") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/25/delete",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.success) {
+				    		alert("계좌 삭제가 완료되었습니다."); 
+				    		removeTable();
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
+				    		
+				    		var bankList = result.bankList;
+				    		createNewTable(bankList);
+				    	}
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			} else {
+				alert("장비를 정지합니다");
+			}
+			
 		});
 		
-		$("#simple-table-1 tr").click(function(){ 
-			var tr = $(this);
-			var td = tr.children();
-			
-			$("input[name=depositNo]").val(td.eq(1).text());
-			$("input[name=depositOld]").val(td.eq(1).text());
-			$("input[name=bankCode]").val(td.eq(2).text());
-			$("input[name=depositHost]").val(td.eq(3).text());
-			$("input[name=makeDate]").val(td.eq(4).text());
-			$("input[name=enDate]").val(td.eq(5).text());
-			$("input[name=balance]").val(td.eq(6).text());
-			$("input[name=depositLimit]").val(td.eq(7).text());
-			$("input[name=profit]").val(td.eq(8).text());	
-			$("input[name=bankName]").val(td.eq(9).text());
-			$("input[name=bankLocation]").val(td.eq(10).text());
-			$("input[name=banker]").val(td.eq(11).text());
-			$("input[name=bankPhoneCall]").val(td.eq(12).text());
-			
-			$("input[name=bankName]").prop("readonly", true);
-			$("input[name='bankLocation']").prop("readonly", true);
-			$("input[name='banker']").prop("readonly", true);
-			$("input[name='bankPhoneCall']").prop("readonly", true);
-			
-		});
-		
-		
-		$('#selectAll').click(function(event) {   
-		    if(this.checked) {
-		        // Iterate each checkbox
-		        $(':checkbox').each(function() {
-		            this.checked = true;                        
-		        });
-		    } else {
-		        $(':checkbox').each(function() {
-		            this.checked = false;                       
-		        });
-		    }
-		});
-		
-		$(".chosen-select").chosen();
-
 		$.fn.datepicker.dates['ko'] = {
 			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
 			daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
@@ -135,12 +183,12 @@
 		}
 		function createNewTable(bankList){
 			  var $newTbody = $("<tbody class='new-tbody'>")
-			  $(".table table-striped table-bordered table-hover").append($newTbody)
+			  $("#simple-table-1").append($newTbody)
 				
 			  for(let bankdeposit in bankList){
 				  $newTbody.append(
 				   	"<tr>" +
-			        "<td class='center'><label> <input type='checkbox' class='ace' /> <span class='lbl'></span>"+"</label></td>" +
+			        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
 			        "<td>" + bankList[bankdeposit].depositNo + "</td>" +
 			        "<td>" + bankList[bankdeposit].bankCode + "</td>" +
 			        "<td>" + bankList[bankdeposit].depositHost + "</td>" +
@@ -162,6 +210,45 @@
 			  $newTbody.append("</tbody>");
 			  $(".chosen-select").chosen();
 		}
+		
+		$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+			var tr = $(this);
+			var td = tr.children();
+			
+			$("input[name=depositNo]").val(td.eq(1).text());
+			$("input[name=depositOld]").val(td.eq(1).text());
+			$("input[name=bankCode]").val(td.eq(2).text());
+			$("input[name=depositHost]").val(td.eq(3).text());
+			$("input[name=makeDate]").val(td.eq(4).text());
+			$("input[name=enDate]").val(td.eq(5).text());
+			$("input[name=balance]").val(td.eq(6).text());
+			$("input[name=depositLimit]").val(td.eq(7).text());
+			$("input[name=profit]").val(td.eq(8).text());	
+			$("input[name=bankName]").val(td.eq(9).text());
+			$("input[name=bankLocation]").val(td.eq(10).text());
+			$("input[name=banker]").val(td.eq(11).text());
+			$("input[name=bankPhoneCall]").val(td.eq(12).text());
+			
+			$("input[name=bankName]").prop("readonly", true);
+			$("input[name='bankLocation']").prop("readonly", true);
+			$("input[name='banker']").prop("readonly", true);
+			$("input[name='bankPhoneCall']").prop("readonly", true);  
+		});
+		
+		$(document.body).delegate('#selectAll', 'click', function() {
+			if(this.checked) {
+		        // Iterate each checkbox
+		        $(':checkbox').each(function() {
+		            this.checked = true;                        
+		        });
+		    } else {
+		        $(':checkbox').each(function() {
+		            this.checked = false;                       
+		        });
+		    }
+		});
+		
+		$(".chosen-select").chosen();
 	})
 	
 	
@@ -295,13 +382,13 @@
 						<div class="span12">
 							<div class="hr hr-18 dotted"></div>
 								<button type="submit" class="btn btn-info btn" 
-									formaction="${pageContext.request.contextPath}/01/25/read">조회</button>
+									formaction="${pageContext.request.contextPath}/01/25/read" id="btn-read" name="btn-read">조회</button>
 								<button type="submit" class="btn btn-danger btn"
-									formaction="${pageContext.request.contextPath}/01/25/delete">삭제</button>
+									formaction="${pageContext.request.contextPath}/01/25/delete" id="btn-delete" name="btn-delete">삭제</button>
 								<button type="submit" class="btn btn-warning btn" 
-									formaction="${pageContext.request.contextPath}/01/25/update">수정</button>
+									formaction="${pageContext.request.contextPath}/01/25/update" id="btn-update" name="btn-update">수정</button>
 								<button type="submit" class="btn btn-primary btn" id="btn-create" name="btn-create">입력</button>
-								<button type="submit" class="btn btn-default btn" formaction="#">취소</button>
+								<button type="reset" class="btn btn-default btn">취소</button>
 							<div class="hr hr-18 dotted"></div>
 						</div>	<!-- /.span -->
 					</div>	<!-- /.row-fluid -->

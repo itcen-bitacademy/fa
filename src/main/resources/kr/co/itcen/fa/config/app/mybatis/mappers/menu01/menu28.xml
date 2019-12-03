@@ -14,5 +14,388 @@
 			]]>
 		</selectKey>
 	</insert>
-
+	
+	<!-- 리스트 뽑기 -->
+	<select id="getList" resultType="1customervo">
+		<![CDATA[
+		select replace(left(no, 1), "A", "자산거래처") as customerDiv,
+		       (right(no, 12)) as no,
+               name as name, 
+               ceo as ceo, 
+               address as address,
+               detail_address as detailAddress,
+               conditions as conditions, 
+               item as item, 
+               corporation_no as corporationNo, 
+               open_date as openDate, 
+               jurisdiction_office as jurisdictionOffice, 
+               phone as phone, 
+               manager_name as managerName, 
+               manager_email as managerEmail,
+               deposit_no as depositNo,
+               insert_userid as insertUserid, 
+               insert_day as insertDay, 
+               update_userid as updateUserid, 
+               update_day as updateDay
+	      from tb_customer
+         where delete_flag = 'N'
+	      union
+        select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
+		       (right(no, 12)) as no,
+               name as name, 
+               ceo as ceo, 
+               address as address,
+               detail_address as detailAddress,
+               conditions as conditions, 
+               item as item, 
+               corporation_no as corporationNo, 
+               open_date as openDate, 
+               jurisdiction_office as jurisdictionOffice, 
+               phone as phone, 
+               manager_name as managerName, 
+               manager_email as managerEmail,
+               deposit_no as depositNo,
+               insert_userid as insertUserid, 
+               insert_day as insertDay, 
+               update_userid as updateUserid, 
+               update_day as updateDay
+	      from tb_purchasecustomer
+         where delete_flag = 'N'
+	     union
+        select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
+		       (right(no, 12)) as no,
+               name as name, 
+               ceo as ceo, 
+               address as address,
+               detail_address as detailAddress,
+               conditions as conditions, 
+               item as item, 
+               corporation_no as corporationNo, 
+               open_date as openDate, 
+               jurisdiction_office as jurisdictionOffice, 
+               phone as phone, 
+               manager_name as managerName, 
+               manager_email as managerEmail,
+               deposit_no as depositNo,
+               insert_userid as insertUserid, 
+               insert_day as insertDay, 
+               update_userid as updateUserid, 
+               update_day as updateDay
+	      from tb_salescustomer
+         where delete_flag = 'N'
+	  order by corporationNo desc;
+		]]>
+	</select>
+	
+	<select id="searchList" parameterType="map" resultType="1customervo">  
+		<choose>
+			<when test="customerDiv == All">
+				<![CDATA[
+					select replace(left(no, 1), "A", "자산거래처") as customerDiv,
+					       (right(no, 12)) as no,
+			               name as name, 
+			               ceo as ceo, 
+			               address as address,
+			               detail_address as detailAddress,
+			               conditions as conditions, 
+			               item as item, 
+			               corporation_no as corporationNo, 
+			               open_date as openDate, 
+			               jurisdiction_office as jurisdictionOffice, 
+			               phone as phone, 
+			               manager_name as managerName, 
+			               manager_email as managerEmail,
+			               deposit_no as depositNo,
+			               insert_userid as insertUserid, 
+			               insert_day as insertDay, 
+			               update_userid as updateUserid, 
+			               update_day as updateDay
+				      from tb_customer
+				]]>
+			         
+			    <if test="deleteFlag = 'N'">     
+				<![CDATA[
+			         where delete_flag = 'N'
+				]]>
+				</if>
+			         
+			    <if test="deleteFlag = 'Y'">     
+				<![CDATA[
+			         where delete_flag = 'Y'
+				]]>
+				</if>
+				
+				<if test="datepicker1!=null">
+			    	<![CDATA[
+			    	,  and insert_day between #{datepicker1 } and #{datepicker2 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test="customerNo!=null">
+			    	<![CDATA[
+			        ,  and customerNo like '%${customerNo }%'
+			        ]]>
+			    </if>
+			         
+				<![CDATA[
+				     union
+			        select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
+					       (right(no, 12)) as no,
+			               name as name, 
+			               ceo as ceo, 
+			               address as address,
+			               detail_address as detailAddress,
+			               conditions as conditions, 
+			               item as item, 
+			               corporation_no as corporationNo, 
+			               open_date as openDate, 
+			               jurisdiction_office as jurisdictionOffice, 
+			               phone as phone, 
+			               manager_name as managerName, 
+			               manager_email as managerEmail,
+			               deposit_no as depositNo,
+			               insert_userid as insertUserid, 
+			               insert_day as insertDay, 
+			               update_userid as updateUserid, 
+			               update_day as updateDay
+				      from tb_purchasecustomer
+				]]>
+			         
+			    <if test="deleteFlag = 'N'">     
+				<![CDATA[
+			         where delete_flag = 'N'
+				]]>
+				</if>
+			         
+			    <if test="deleteFlag = 'Y'">     
+				<![CDATA[
+			         where delete_flag = 'Y'
+				]]>
+				</if>
+				
+				<if test="datepicker1!=null">
+			    	<![CDATA[
+			    	,  and insert_day between #{datepicker1 } and #{datepicker2 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test="customerNo!=null">
+			    	<![CDATA[
+			        ,  and customerNo like '%${customerNo }%'
+			        ]]>
+			    </if>
+			         
+				<![CDATA[
+				     union
+			        select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
+					       (right(no, 12)) as no,
+			               name as name, 
+			               ceo as ceo, 
+			               address as address,
+			               detail_address as detailAddress,
+			               conditions as conditions, 
+			               item as item, 
+			               corporation_no as corporationNo, 
+			               open_date as openDate, 
+			               jurisdiction_office as jurisdictionOffice, 
+			               phone as phone, 
+			               manager_name as managerName, 
+			               manager_email as managerEmail,
+			               deposit_no as depositNo,
+			               insert_userid as insertUserid, 
+			               insert_day as insertDay, 
+			               update_userid as updateUserid, 
+			               update_day as updateDay
+				      from tb_salescustomer
+				]]>
+			         
+			    <if test="deleteFlag = 'N'">     
+				<![CDATA[
+			         where delete_flag = 'N'
+				]]>
+				</if>
+			         
+			    <if test="deleteFlag = 'Y'">     
+				<![CDATA[
+			         where delete_flag = 'Y'
+				]]>
+				</if>
+				
+				<if test="datepicker1!=null">
+			    	<![CDATA[
+			    	,  and insert_day between #{datepicker1 } and #{datepicker2 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test="customerNo!=null">
+			    	<![CDATA[
+			         '%${customerNo }%'
+			        ]]>
+			    </if>
+			         
+				<![CDATA[
+				  order by corporationNo desc;
+				]]>
+			</when>
+			
+			<when test="customerDiv == Assets">
+				<![CDATA[
+					select replace(left(no, 1), "A", "자산거래처") as customerDiv,
+					       (right(no, 12)) as no,
+			               name as name, 
+			               ceo as ceo, 
+			               address as address,
+			               detail_address as detailAddress,
+			               conditions as conditions, 
+			               item as item, 
+			               corporation_no as corporationNo, 
+			               open_date as openDate, 
+			               jurisdiction_office as jurisdictionOffice, 
+			               phone as phone, 
+			               manager_name as managerName, 
+			               manager_email as managerEmail,
+			               deposit_no as depositNo,
+			               insert_userid as insertUserid, 
+			               insert_day as insertDay, 
+			               update_userid as updateUserid, 
+			               update_day as updateDay
+				      from tb_customer
+				]]>
+			         
+			    <if test="deleteFlag = 'N'">     
+				<![CDATA[
+			         where delete_flag = 'N'
+				]]>
+				</if>
+			         
+			    <if test="deleteFlag = 'Y'">     
+				<![CDATA[
+			         where delete_flag = 'Y'
+				]]>
+				</if>
+				
+				<if test="datepicker1!=null">
+			    	<![CDATA[
+			    	 , and insert_day between #{datepicker1 } and #{datepicker2 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test="customerNo!=null">
+			    	<![CDATA[
+			         , and customerNo like '%${customerNo }%'
+			        ]]>
+			    </if>
+			
+			</when>
+			
+			<when test="customerDiv == Purchase">
+				<![CDATA[
+					select replace(left(no, 1), "P", "매입거래처") as customerDiv,
+					       (right(no, 12)) as no,
+			               name as name, 
+			               ceo as ceo, 
+			               address as address,
+			               detail_address as detailAddress,
+			               conditions as conditions, 
+			               item as item, 
+			               corporation_no as corporationNo, 
+			               open_date as openDate, 
+			               jurisdiction_office as jurisdictionOffice, 
+			               phone as phone, 
+			               manager_name as managerName, 
+			               manager_email as managerEmail,
+			               deposit_no as depositNo,
+			               insert_userid as insertUserid, 
+			               insert_day as insertDay, 
+			               update_userid as updateUserid, 
+			               update_day as updateDay
+				      from tb_customer
+				]]>
+			         
+			    <if test="deleteFlag = 'N'">     
+				<![CDATA[
+			         where delete_flag = 'N'
+				]]>
+				</if>
+			         
+			    <if test="deleteFlag = 'Y'">     
+				<![CDATA[
+			         where delete_flag = 'Y'
+				]]>
+				</if>
+				
+				<if test="datepicker1!=null">
+			    	<![CDATA[
+			    	 , and insert_day between #{datepicker1 } and #{datepicker2 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test="customerNo!=null">
+			    	<![CDATA[
+			         , and customerNo like '%${customerNo }%'
+			        ]]>
+			    </if>
+			
+			</when>
+			
+			<when test="customerDiv == Sales">
+				<![CDATA[
+					select replace(left(no, 1), "S", "매출거래처") as customerDiv,
+					       (right(no, 12)) as no,
+			               name as name, 
+			               ceo as ceo, 
+			               address as address,
+			               detail_address as detailAddress,
+			               conditions as conditions, 
+			               item as item, 
+			               corporation_no as corporationNo, 
+			               open_date as openDate, 
+			               jurisdiction_office as jurisdictionOffice, 
+			               phone as phone, 
+			               manager_name as managerName, 
+			               manager_email as managerEmail,
+			               deposit_no as depositNo,
+			               insert_userid as insertUserid, 
+			               insert_day as insertDay, 
+			               update_userid as updateUserid, 
+			               update_day as updateDay
+				      from tb_customer
+				]]>
+			         
+			    <if test="deleteFlag = 'N'">     
+				<![CDATA[
+			         where delete_flag = 'N'
+				]]>
+				</if>
+			         
+			    <if test="deleteFlag = 'Y'">     
+				<![CDATA[
+			         where delete_flag = 'Y'
+				]]>
+				</if>
+				
+				<if test="datepicker1!=null">
+			    	<![CDATA[
+			    	 , and insert_day between #{datepicker1 } and #{datepicker2 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test="customerNo!=null">
+			    	<![CDATA[
+			         , and customerNo like '%${customerNo }%'
+			        ]]>
+			    </if>
+			
+			</when>
+		</choose>
+		
+		   
+    </select>
+ 
 </mapper>

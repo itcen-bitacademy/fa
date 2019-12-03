@@ -54,59 +54,51 @@
 	<div class="main-content">
 		<div class="page-content">
 		
-			<div class="page-header position-relative">
+<div class="page-header position-relative">
 				<h1 class="pull-left">월별 거래처 매출 현황</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
-					<div class="span12">
-							<div class="control-group">
-
-									<div class="row-fluid">
-										<div class="span4">
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label class="control-label" for="cl-ym-date-picker" style="text-align:left;width:120px;"> 년 월</label>
-													<div class="controls" style="margin-left:120px;">
-														<div class="row-fluid input-append">
-															<input class="span11 date-picker" id="cl-ym-date-picker" name="closingYearMonth" type="text" data-date-format="yyyy-mm" />
-															<span class="add-on">
-																<i class="icon-calendar"></i>
-															</span>
-														</div>
-													</div>
-												</div>
-											</form>
+				<div class="span12">
+					<div class="row-fluid">
+						<div class="span10">
+							<form class="form-horizontal">
+								<div class="span4">
+									<div class="control-group">
+										<label class="control-label form-field-1">년 월</label>
+										<div class="row-fluid input-append span2">
+											<input class="date-picker" id="cl-ym-date-picker" type="text" data-date-format="yyyy-mm">
+											<span class="add-on">
+												<i class="icon-calendar"></i>
+											</span>
 										</div>
-										<div class="span4">
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label class="control-label" for="form-field-select-2" style="text-align:left;width:120px;">거래처코드</label>
-													<div class="controls" style="margin-left:120px;">
-														<select class="chosen-select" id="form-field-select-2" name="client_code" data-placeholder="거래처코드 선택">
-															<option value="1">거래처코드11111</option>
-															<option value="2">거래처코드22222</option>
-														</select>														
-													</div>
-												</div>
-											</form>
-										</div>
-								<div class="span1">
-									<button class="btn btn-small btn-info">조회</button>
-
+									</div>
 								</div>
-							</div>
-									
-								
-								<div class="hr hr-18 dotted"></div>
+								<div class="span4">
+									<div class="control-group">
+										<label class="control-label span2" for="form-field-1">거래처</label>
+										<div class="span4">
+											<select class="chosen-select" id="zero" name="zero" data-placeholder="선택">
+												<option value="1234567890">비트컴퓨터</option>
+												<option value="1234567891">비트교육센터</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="span2">
+									<button class="btn btn-small btn-info">조회</button>
+								</div>
+			        		</form>
+			        	</div>
+			        </div>
+			        <div class="hr hr-18 dotted"></div>
 								
 								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 																		<thead>
 									<tr>
 										<th>메출일자</th>
-										<th>거래처코드</th>
-										<th>거래처명</th>
-										<th>담당자</th>
+										<th>사업자번호</th>
+										<th>상호명</th>
+										<th>담당자명</th>
 										<th>담당자 이메일</th>
 										<th>품목</th>
 										<th>수량</th>
@@ -117,8 +109,8 @@
 									<tbody>
 									<tr>
 										<td>2019.11.25</td>
-										<td>거래처코드1234567</td>
-										<td>거래처명</td>
+										<td>1234567890</td>
+										<td>비트컴퓨터</td>
 										<td>김승곤</td>
 										<td>kkk@kkk</td>
 										<td>IBM서버</td>

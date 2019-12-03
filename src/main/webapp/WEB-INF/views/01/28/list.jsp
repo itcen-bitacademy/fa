@@ -12,24 +12,14 @@
 	display: none;
 }
 </style>
-
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
-
-
-
-	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
-
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 <link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-
 <script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
-
-
 <script	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
 <script type="text/javascript">
-	
 	$(function() {
 		$(".chosen-select").chosen();
 	})
@@ -84,57 +74,82 @@
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid"> <!-- 검색조건 start -->
-					<form class="form-horizontal; center">
-					거래처 구분 : &nbsp;<select class="chosen-select" id="form-field-select-1" name="customer_kind" data-placeholder="거래처 종류" style="width:70px">
-							<option value="All">전체</option>
-							<option value="Purchase">매입</option>
-							<option value="Sale">매출</option>
-							<option value="Assets">자산</option>
-
+					<form class="form-horizontal; center" name="searchOption" action="28" method="post"><!--  -->
+					거래처 구분 : &nbsp;
+						<select class="chosen-select" id="customerDiv" name="customerDiv" data-placeholder="거래처 종류" style="width:70px">
+							<option value="All" id="All"
+								<c:if test="${customerDiv == 'All'}">
+								selected</c:if>
+							>
+								전체
+							</option>
+							<option value="Purchase" id="Purchase"
+								<c:if test="${customerDiv == 'Purchase'}">
+								selected</c:if>
+							>
+								매입
+							</option>
+							<option value="Sales" id="Sales"
+								<c:if test="${customerDiv == 'Sales'}">
+								selected</c:if>
+							>
+								매출
+							</option>
+							<option value="Assets" id="Assets"
+								<c:if test="${customerDiv == 'Assets'}">
+								selected</c:if>
+							>
+								자산
+							</option>
 						</select>
+						
 						&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker"  style="width:100px"/> <span
-								class="add-on"> <i class="icon-calendar"></i>
+							<input type="text" id="datepicker1" name="datepicker1" value="${datepicker1 }" class="cl-date-picker"  style="width:100px"/>
+							<span class="add-on">
+								<i class="icon-calendar"></i>
 							</span>
 						</div>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" class="cl-date-picker"  style="width:100px"/> <span
-								class="add-on"> <i class="icon-calendar"></i>
+							<input type="text" id="datepicker2" name="datepicker2" value="${datepicker2 }" class="cl-date-picker" style="width:100px"/>
+								<span class="add-on">
+								<i class="icon-calendar"></i>
 							</span>
 						</div>
-						&nbsp; &nbsp;&nbsp; &nbsp;사업자등록번호 :&nbsp; 
 						
-						<input type="text" id="form-field-1" placeholder="사업자등록번호" size=4 style="width:150px"/>
+						
+						&nbsp; &nbsp;&nbsp; &nbsp;사업자등록번호 :&nbsp; 
+						<input type="text" id="customerNo" name="customerNo" value="${customerNo }" placeholder="ex)000-00-00000" size=4 style="width:150px"/>
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;삭제여부 : &nbsp;
-						<select class="chosen-select" id="form-field-select-1" name="delete_flag" data-placeholder="삭제여부" style="width:50px">
-							<option value="false">N</option>
-							<option value="true">Y</option>
+						<select class="chosen-select" id="deleteFlag" name="deleteFlag" data-placeholder="삭제여부" style="width:50px">
+							<option value="N" id="N"
+								<c:if test="${deleteFlag == 'N'}">
+								selected</c:if>
+							>
+								N
+							</option>
+							
+							<option value="Y" id="Y"
+								<c:if test="${deleteFlag == 'Y'}">
+								selected</c:if>
+							>
+								Y
+							</option>
 						</select>
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btn btn-small btn-info">조회</button>
-
-
-
+						<button class="btn btn-small btn-info" type="submit" >조회</button>
 					</form>
+					
 					<div class="hr hr-18 dotted"></div>
-				</div><!-- 검색조건 end -->
 				
 				<div class="row-fluid">
 						<div class="span12">
-						<div style="width:100%; overflow-x:auto">
 
-							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+							<table id="customer" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th class="center">
-											<label class="pos-rel">
-											<input type="checkbox" class="ace" />
-											<span class="lbl"></span>
-											</label>
-										</th>
 										<th class="center">거래처 구분</th>
 										<th class="center">사업자등록번호</th>
 										<th class="center">상호</th>
@@ -154,36 +169,35 @@
 										<th class="center">수정담당자</th>
 									</tr>
 								</thead>
+								
 								<tbody>
-										<tr >
-											<td class="center">
-												<label class="pos-rel">
-													<input type="checkbox" class="ace" />
-													<span class="lbl"></span>
-												</label>
-											</td>
-											<td class="center">자산</td>
-											<td class="center">120-86-81451</td>
-											<td class="center">아이티센</td>
-											<td class="center">박진국</td>
-											<td class="center">서울특별시 서초구 반포대로 13</td>
-											<td class="center">컴퓨터시스템 통합 자문 및 구축 서비스업</td>
-											<td class="center">본사</td>
-											<td class="center">02-3497-8300</td>
-											<td class="center">이종윤</td>
-											<td class="center">leejy3653@naver.com</td>
-											<td class="center">국민은행</td>
-											<td class="center">367802-01-110999</td>
-											<td class="center">이종윤</td>
-											<td class="center">2019-11-27</td>
-											<td class="center">-</td>
-											<td class="center">yoon3653</td>
-											<td class="center">-</td>
-										</tr>
-								</tbody>
+								
+										<c:forEach items="${list }" var="vo" varStatus="status">
+											<tr>
+												<td>${vo.customerDiv }</td>
+												<td>${vo.no }</td>
+												<td>${vo.name }</td>
+												<td>${vo.ceo }</td>
+												<td>${vo.address } ${vo.detailAddress }</td>
+												<td>${vo.conditions }/${vo.item }</td>
+												<td>${vo.jurisdictionOffice }</td>
+												<td>${vo.phone }</td>
+												<td>${vo.managerName }</td>
+												<td>${vo.managerEmail }</td>
+												<td></td>
+												<td>${vo.depositNo }</td>
+												<td></td>
+												<td>${vo.insertDay }</td>
+												<td>${vo.insertUserid }</td>
+												<td>${vo.updateDay }</td>
+												<td>${vo.updateUserid }</td>
+											</tr>
+									</c:forEach>
+								 		
+									</tbody>
 							</table>
-						</div><!-- /span -->
 						</div>
+					</div>
 					</div>
 						<div class="pagination"><!-- 페이징 공통 -->
 							<ul>

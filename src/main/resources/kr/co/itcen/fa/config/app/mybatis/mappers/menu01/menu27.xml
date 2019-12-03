@@ -17,7 +17,7 @@
 	</insert>
 	
 	<!-- 거래처 입력 -->
-	<insert id="insert" parameterType="1customervo">
+	<insert id="create" parameterType="1customervo">
 		<![CDATA[
 			insert 
 			  into tb_customer 
@@ -55,26 +55,31 @@
 	<!-- 거래처 삭제 (flag N->Y)-->
 	<update id="delete" parameterType="1customervo">
 		<![CDATA[
-			update tb_customer delete_flag = 'Y'
+			update tb_customer
+			   set delete_flag = 'Y'
 		]]>
 	</update>
 	
 	<!-- 거래처 수정 -->
 	<update id="update" parameterType="1customervo">
 		<![CDATA[
-			update tb_customer ceo = #{ceo },
-							   address = #{address },
-							   detail_address = #{detailAddress },
-							   conditions = #{conditions },
-							   item = #{item },
-							   corporation_no = #{corporationNo },
-							   jurisdiction_office = #{jurisdictionOffice},
-							   phone = #{phone },
-							   manager_name = #{managerName },
-							   manager_email = #{managerEmail },
-							   deposit_no = #{depositNo },
-							   update_userid = #{updateUserid }.
-							   update_day = now()
+			update tb_customer
+			   set no = #{no },
+				   name = #{name },
+				   ceo = #{ceo },
+				   address = #{address },
+				   detail_address = #{detailAddress },
+				   conditions = #{conditions },
+				   item = #{item },
+				   corporation_no = #{corporationNo },
+				   open_date = #{openDate },
+				   jurisdiction_office = #{jurisdictionOffice},
+				   phone = #{phone },
+				   manager_name = #{managerName },
+				   manager_email = #{managerEmail },
+				   deposit_no = #{depositNo },
+				   update_userid = #{updateUserid }.
+				   update_day = now()
 		]]>
 	</update>
 </mapper>

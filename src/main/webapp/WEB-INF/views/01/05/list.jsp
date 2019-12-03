@@ -35,7 +35,7 @@
 			
 			$("input[name=cardNo]").val(td.eq(1).text());
 			$("input[name=cardNoOld]").val(td.eq(1).text());
-			var month= td.eq(2).text().substring(0,2);
+			var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
 			var year= td.eq(2).text().substring(3,5);
 			$("input[name=validityMM]").val(month);
 			$("input[name=validityYY]").val(year);
@@ -215,12 +215,12 @@
 						<div class="span8">
 							<button class="btn btn-info btn-small">조회</button>
 							<button class="btn btn-danger btn-small"
-								formaction="${pageContext.request.contextPath }/01/05/remove">삭제</button>
+								formaction="${pageContext.request.contextPath }//${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/remove">삭제</button>
 							<button class="btn btn-warning btn-small"
-								formaction="${pageContext.request.contextPath }/01/05/update">수정</button>
+								formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							
 							<button type="submit" class="btn btn-primary btn-small"
-								formaction="${pageContext.request.contextPath }/01/05/create">입력</button>
+								formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">입력</button>
 							<button class="btn btn-default btn-small"
 								type="reset">취소</button>
 						</div>

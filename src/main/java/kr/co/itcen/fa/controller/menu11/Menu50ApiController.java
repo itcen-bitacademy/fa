@@ -1,12 +1,17 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
 @RestController("Menu50ApiController")
@@ -20,10 +25,38 @@ public class Menu50ApiController {
 	
 	@ResponseBody
 	@RequestMapping("/getpdebtInfo")
-	public PdebtVo adminCategoryInsert(
+	public PdebtVo getPdebtInfo(
 			@RequestParam("debtcodeVal") String debtcode) {
 		PdebtVo pdebtVo = menu50Service.selectOnePdebtInfo(debtcode);
 		System.out.println("pdebtVo : " + pdebtVo.toString());
         return pdebtVo;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getbankcode")
+	public BankVo getBankcodeInfo(
+			@RequestParam("bankcodeVal") String bankcode) {
+		BankVo bankVo = menu50Service.selectOneBankcodeInfo(bankcode);
+		System.out.println("bankVo : " + bankVo.toString());
+        return bankVo;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/getbankname")
+	public List<BankVo> getBanknameInfo(
+			@RequestParam("banknameVal") String bankname) {
+		List<BankVo> banknameList = menu50Service.selectOneBanknameInfo(bankname);
+		System.out.println("banknameList : " + banknameList.toString());
+        return banknameList;
+	}
+	
+	//배열로 넘어온거는 '[]' 붙여줘야한다.
+	@ResponseBody
+	@RequestMapping(value = "/deleteChecked", method = RequestMethod.POST)
+	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
+		System.out.println("noList : " + noList.toString());
+		menu50Service.deleteChecked(noList);
+		return JSONResult.success(noList);
 	}
 }

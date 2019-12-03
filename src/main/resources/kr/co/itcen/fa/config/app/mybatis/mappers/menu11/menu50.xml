@@ -31,8 +31,7 @@
 			voucher_no as voucherNo, delete_flag as deleteFlag, 
 			insert_id as insertId, insert_date as insertDate, update_id as updateId,
 			update_date as updateDate 
-			from tb_p_debt 
-			limit #{startNum}, #{lastNum}
+			from tb_p_debt where delete_flag = 'N' limit #{startNum}, #{lastNum}
 		]]>
 	</select>
 	
@@ -63,6 +62,33 @@
 			update_date as updateDate, 
 			date_format(debt_date, '%Y') as financialYear
 			from tb_p_debt where code = #{debtcode } 
+		]]>
+	</select>
+	
+	<update id="updateDeleteFlag" parameterType="List">
+		<![CDATA[
+			update tb_p_debt set delete_flag = "Y" where no IN 	
+		]]>
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			${item}
+		</foreach>
+	</update>
+	
+	<select id="bankList" resultType="bankvo">
+		<![CDATA[
+			select code, name, store from tb_bank limit 10
+		]]>
+	</select>
+	
+	<select id="getBankcodeInfo" resultType="bankvo">
+		<![CDATA[
+			select code, name, store from tb_bank where code = #{bankcode }
+		]]>
+	</select>
+	
+	<select id="getBanknameList" resultType="bankvo">
+		<![CDATA[
+			select code, name, store from tb_bank where name = #{bankname }
 		]]>
 	</select>
 
