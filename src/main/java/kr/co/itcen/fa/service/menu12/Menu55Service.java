@@ -1,9 +1,12 @@
 package kr.co.itcen.fa.service.menu12;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu12.Menu55Repository;
+import kr.co.itcen.fa.vo.menu12.CurrentSituationVo;
 
 /**
  * 
@@ -19,6 +22,10 @@ public class Menu55Service {
 	
 	public void test() {
 		menu55Repository.test();
+	}
+	
+	public List<CurrentSituationVo> getList(){
+		return menu55Repository.getList();
 	}
 
 }

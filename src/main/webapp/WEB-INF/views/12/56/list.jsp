@@ -90,7 +90,7 @@ $(function() {
 												<div class="control-group">
 													<label class="control-label" for="form-field-select-2" style="text-align:left;width:120px;">품목코드</label>
 													<div class="controls" style="margin-left:120px;">
-														<select class="chosen-select" id="form-field-select-2" name="itemcode" data-placeholder="품목코드 선택">
+														<select class="chosen-select" id="form-field-select-2" name="client_code" data-placeholder="품목코드 선택">
 															<option value="1">품목코드11111</option>
 															<option value="2">품목코드22222</option>
 														</select>														
@@ -123,8 +123,8 @@ $(function() {
 										<th>출고부가세</th>
 										<th>출고금액</th>
 										<th>재고수량</th>
-										<th>재고부가세</th>
 										<th>재고금액</th>
+										<th>재고부가세</th>
 									</tr>
 									</thead>
 									<c:forEach items='${list }' var='vo' varStatus='status'>
@@ -142,8 +142,8 @@ $(function() {
 										<td>${vo.salestaxvalue }</td>
 										<td>${vo.salestotalprice }</td>
 										<td>${vo.stockquantity }</td>
-										<td>${vo.stocktaxvalue }</td>
 										<td>${vo.stocktotalprice }</td>
+										<td>${vo.stocktaxvalue }</td>
 									</tr>
 									</c:forEach>
 								</table>

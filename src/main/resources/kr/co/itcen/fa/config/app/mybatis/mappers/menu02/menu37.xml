@@ -23,4 +23,14 @@
 		]]>
 	</insert>
 
+	<select id="customerList" resultType="purchasecustomer35vo">
+		select *
+		  from tb_purchasecustomer;
+	</select>
+	
+	<select id="customerBankList" resultType="bankaccountvo">
+		select *
+		  from tb_bank_account;
+	</select>
+	
 </mapper>

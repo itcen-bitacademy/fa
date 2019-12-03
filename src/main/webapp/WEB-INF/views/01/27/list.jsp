@@ -7,7 +7,8 @@
 <html lang="ko">
 <head>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript">
+
+<script>
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -37,37 +38,215 @@ function execDaumPostcode() {
             document.getElementById("detailAddress").focus();
         }
     }).open();
-}
-
-/*체크박스 모두선택*/
-function allChk(obj){
-    var chkObj = document.getElementsByName("RowCheck");
-    var rowCnt = chkObj.length - 1;
-    var check = obj.checked;
-    if (check) {﻿
-        for (var i=0; i<=rowCnt; i++){
-         if(chkObj[i].type == "checkbox")
-             chkObj[i].checked = true;
-        }
-    } else {
-        for (var i=0; i<=rowCnt; i++) {
-         if(chkObj[i].type == "checkbox"){
-             chkObj[i].checked = false;
-         }
-        }
-    }
-}
+};
 </script>
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+
+<link
+	href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css"
 	type="text/css" rel="stylesheet" />
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
-<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-<script src="/fa/ace/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
-<script src="/fa/ace/assets/js/ace-elements.min.js"></script>
-<script src="/fa/ace/assets/js/ace.min.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+
+<script>
+	$(function() {
+		var a;
+		$("#btn-create").click(function(){
+			a = "create";
+		});
+		$("#btn-read").click(function(){
+			a = "read";
+		});
+		$("#btn-update").click(function(){
+			a = "update";
+		});
+		$("#btn-delete").click(function(){
+			a = "delete";
+		});
+		
+		$("#input-form").submit(function(event) {
+	        event.preventDefault();
+			var queryString = $("form[name=input-form]").serialize();
+			if(a == "create") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/27/create",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.fail) {
+				    		alert("다시 입력해주세요.");
+				    	}
+				    	if(result.success) {
+				    		alert("거래처 등록이 완료되었습니다."); 
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
+				    		
+				    		removeTable();
+				    		var customerList = result.customerList;
+				    		createNewTable(customerList);
+				    	}
+				    },
+				    error: function( err ){
+				    	
+				    }
+				 })
+			} else if(a == "read") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/27/list",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.success) {
+				    		alert("거래처 조회가 완료되었습니다."); 
+				    		removeTable();
+				    		
+				    		var customerList = result.customerList;
+				    		createNewTable(customerList);
+				    	}
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			} else if(a == "update") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/27/update",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.success) {
+				    		alert("거래처 수정이 완료되었습니다."); 
+				    		removeTable();
+				    		
+				    		var customerList = result.customerList;
+				    		createNewTable(customerList);
+				    	}
+				    	if(result.fail) {
+				    		alert("다시 입력해주세요.");
+				    	}
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			} else if(a == "delete") {
+				$.ajax({
+				    url: "${pageContext.request.contextPath}/01/27/delete",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(result){
+				    	if(result.success) {
+				    		alert("거래처 삭제가 완료되었습니다."); 
+				    		removeTable();
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
+				    		
+				    		var customerList = result.customerList;
+				    		createNewTable(customerList);
+				    	}
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			} else {
+				alert("끝");
+			}
+		
+	});
+
+	function removeTable(){
+		  // 원래 테이블 제거
+		  $(".origin-tbody").remove();
+		  // ajax로 추가했던 테이블 제거
+		  $(".new-tbody").remove();
+	}
+	function createNewTable(customerList){
+		  var $newTbody = $("<tbody class='new-tbody'>")
+		  $("#simple-table-1").append($newTbody)
+			
+		  for(let customer in customerList){
+			  $newTbody.append(
+			   	"<tr>" +
+		        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
+		        "<td>" + customerList[customer].no + "</td>" +
+		        "<td>" + customerList[customer].name + "</td>" +
+		        "<td>" + customerList[customer].ceo + "</td>" +
+		        "<td>" + customerList[customer].address + "" + customerList[customer].detailAddress + "</td>" +
+		        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+		        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
+		        "<td>" + customerList[customer].phone + "</td>" +
+		        "<td>" + customerList[customer].managerName + "</td>" +
+		        "<td>" + customerList[customer].managerEmail + "</td>" +
+		        "<td>" + " " + "</td>" +
+		        "<td>" + customerList[customer].depositNo + "</td>" +
+		        "<td>" + " " + "</td>" +
+		        "<td>" + customerList[customer].insertDay + "</td>" +
+		        "<td>" + customerList[customer].insertUserid + "</td>" +
+		        "<td>" + customerList[customer].updateDay + "</td>" +
+		        "<td>" + customerList[customer].updateUserid + "</td>" +
+		        "</tr>");
+		  }
+		  $newTbody.append("</tbody>");
+		  $(".chosen-select").chosen();
+	}
+	
+	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		
+		$("input[name=no]").val(td.eq(1).text());
+		$("input[name=name]").val(td.eq(2).text());
+		$("input[name=ceo]").val(td.eq(3).text());
+		$("input[name=address]").val(td.eq(4).text());
+		$("input[name=detailAddress]").val(td.eq(5).text());
+		$("input[name=conditions]").val(td.eq(6).text());
+		$("input[name=item]").val(td.eq(7).text());
+		$("input[name=jurisdictionOffice]").val(td.eq(8).text());
+		$("input[name=phone]").val(td.eq(9).text());
+		$("input[name=managerEmail]").val(td.eq(10).text());
+		$("input[name=depositNo]").val(td.eq(11).text());
+		$("input[name=bankCode]").val(td.eq(12).text());
+		$("input[name=bankName").val(td.eq(13).text());
+		$("input[name=depositHost]").val(td.eq(14).text());	
+		$("input[name=managerName]").val(td.eq(15).text());
+		$("input[name=address]").prop("readonly", true);
+		$("input[name='bankCode']").prop("readonly", true);
+		$("input[name='bankName']").prop("readonly", true);
+		$("input[name='depositHost']").prop("readonly", true);  
+	});
+	
+	$(document.body).delegate('#selectAll', 'click', function() {
+		if(this.checked) {
+	        // Iterate each checkbox
+	        $(':checkbox').each(function() {
+	            this.checked = true;                        
+	        });
+	    } else {
+	        $(':checkbox').each(function() {
+	            this.checked = false;                       
+	        });
+	    }
+	});
+	
+	$(".chosen-select").chosen();
+});
+</script>
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -90,7 +269,7 @@ function allChk(obj){
 				<div class="row-fluid">
 
 					<!-- PAGE CONTENT BEGINS -->
-					<form class="form-horizontal" method="post">
+					<form class="form-horizontal" id="input-form" name="input-form" method="post">
 						<div class="row-fluid" style="float: left">
 							<div class="span6">
 								<div class="form-group" style="float: left">
@@ -227,17 +406,20 @@ function allChk(obj){
 							</div>
 						</div>
 							<!-- span -->
-							<div class="row-fluid">
-								<div class="span8">
-									<button class="btn btn-info btn-small">조회</button>
-									<button class="btn btn-danger btn-small" id="delete">삭제</button>
-									<button class="btn btn-warning btn-small" id="update">수정</button>
-									<button type="submit" class="btn btn-primary btn-small"
-										formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
-									<button class="btn btn-default btn-small" id="re">취소</button>
-								</div>
-								<!-- /.span -->
-							</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="hr hr-18 dotted"></div>
+								<button type="submit" class="btn btn-info btn" 
+									formaction="${pageContext.request.contextPath}/01/27/read" id="btn-read" name="btn-read">조회</button>
+								<button type="submit" class="btn btn-danger btn"
+									formaction="${pageContext.request.contextPath}/01/27/delete" id="btn-delete" name="btn-delete">삭제</button>
+								<button type="submit" class="btn btn-warning btn" 
+									formaction="${pageContext.request.contextPath}/01/27/update" id="btn-update" name="btn-update">수정</button>
+								<button type="submit" class="btn btn-primary btn" id="btn-create" name="btn-create">입력</button>
+								<button type="reset" class="btn btn-default btn">취소</button>
+							<div class="hr hr-18 dotted"></div>
+						</div>	<!-- /.span -->
+					</div>
 
 							<br />
 					</form>
@@ -248,22 +430,18 @@ function allChk(obj){
 						<div class="span12">
 
 							<div style="width: 100%; overflow-x: auto">
-								<table id="sample-table-1"
+								<table id="simple-table-1"
 									class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
-											<th scope="col" class="center">
-												<label class="pos-rel">
-													<input id="allCheck" type="checkbox" class="ace" onclick="allChk(this);"/>
-													<span class="lbl">
-													</span>
-												</label>
-											</th>
-											<th scope="col">사업자등록번호</th>
-											<th scope="col">상호</th>
-											<th scope="col">대표자</th>
-											<th scope="col">주소</th>
-											<th scope="col">업태/종목</th>
+											<th class="center"><label> <input type="checkbox" 
+											class="ace" id="selectAll" /> <span class="lbl"></span>
+											</label></th>
+											<th>사업자등록번호</th>
+											<th>상호</th>
+											<th>대표자</th>
+											<th>주소</th>
+											<th>업태/종목</th>
 											<th>관할영업소</th>
 											<th>거래처 전화번호</th>
 											<th>거래처 담당자 성명</th>
@@ -277,17 +455,13 @@ function allChk(obj){
 											<th>수정담당자</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody class = "origin-tbody">
 										
 										<c:forEach items="${list }" var="vo" varStatus="status">
 											<tr>
-												<td class="center">
-													<label class="pos-rel"> 
-														<input name="RowCheck" type="checkbox" class="ace" />
-														<span class="lbl">
-														</span>
-													</label>
-												</td>
+											<td class="center"><label> <input type="checkbox"
+													class="ace" /> <span class="lbl"></span>
+											</label></td>
 												<td>${vo.no }</td>
 												<td>${vo.name }</td>
 												<td>${vo.ceo }</td>

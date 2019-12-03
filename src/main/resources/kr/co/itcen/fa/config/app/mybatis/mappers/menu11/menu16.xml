@@ -30,8 +30,16 @@
 				mgr_phone as mgrPhone,
 				mgr_email as mgrEmail
 			from tb_bank
-			limit	#{pagination.pageIndex }, #{pagination.listSize }
-		]]>
+			where delete_flag = 'N'
+			
+			]]>
+			<if test="code.length()>0 ">
+ 			  <![CDATA[
+  			 and code like concat('%',#{code},'%') 
+   			]]>
+   			</if>
+			limit #{pagination.pageIndex }, #{pagination.listSize }
+			
 	</select>
 	
 	<insert id="insert" parameterType="bankvo">
@@ -67,10 +75,16 @@
 			where code = #{code }
 	</update>
 	
-	<select id="selectBankListCount" resultType="int">
+	<select id="selectBankListCount" resultType="int" parameterType="String">
 		select	count(*)
-		  from	tb_bank
-		
+			from tb_bank
+			where delete_flag = 'N'
+			<if test="_parameter.length()>0 "> 
+			<!-- code.length()>0 하면 에러남  -->
+ 			  <![CDATA[
+  			 and code like concat('%',#{_parameter},'%') 
+   			]]>
+   			</if>
 	</select>
 	
 </mapper>

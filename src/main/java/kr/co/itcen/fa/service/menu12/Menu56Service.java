@@ -23,9 +23,7 @@ public class Menu56Service {
 	public void test() {
 		menu56Repository.test();
 	}
-	
-	public List<CurrentSituationVo> getlist() {
-		return menu56Repository.getlist();
+	public List<CurrentSituationVo> getList(){
+		return menu56Repository.getList();
 	}
-
 }

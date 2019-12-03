@@ -23,10 +23,11 @@
 			<div class="page-content">
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매출세금계산서</h1>
+					<input type="hidden" value="${flag }" id="flag">
 				</div>
 				<!-- /.page-header -->
 				
-				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 				<div class="row-fluid">
 					<!-- head  -->
 					
@@ -38,7 +39,7 @@
 									<div class="span6">
 										<label class="control-label" for="form-field-1">매 출 일 자</label>
 										<div class="row-fluid input-append span2">
-												<input class="cl-date-picker" id="sales-date" type="text" data-date-format="yyyy-mm-dd"> 
+												<input class="cl-date-picker" id="sales-date" name="sales-date" type="text" data-date-format="yyyy-mm-dd"> 
 												<span class="add-on"> <i class="icon-calendar"></i>
 											</span>
 										</div>
@@ -47,8 +48,8 @@
 									<div class="span6">
 										<label class="control-label" for="form-field-1">매 출 번 호 </label>
 										<div class="controls">
-											<input class="span5" type="text" id="sales-number">
-											<button class="btn btn-small btn-info">조회</button>
+											<input class="span5" type="text" id="sales-no" name="sales-no">
+											<button class="btn btn-small btn-info" type="submit">조회</button>
 										</div>
 									</div>
 								</div>
@@ -60,22 +61,21 @@
 					
 					<!-- middle  -->
 					<div class="row-fluid">
-					
 						<div class="span12">
 								<div class="form-horizontal">
 								<div class="control-group">
 									<div class="span6">
 										<label class="control-label span2" for="form-field-1">거래처코드</label>
 										<div class="controls">
-											<input class="span5" type="text" readonly id="customerName; "> 
-											<input class="span5" type="text" readonly id="customerCode; ">
+											<input class="span5" type="text" readonly id="customerName" name="customerName" value="${list[0].customerName }"> 
+											<input class="span5" type="text" readonly id="customerCode" name="customerCode" value="${list[0].customerCode }">
 										</div>
 									</div>
 		
 									<div class="span6">
 										<label class="control-label span6" for="ceo">대표자</label>
 										<div class="controls">
-											<input class="span5" type="text" readonly id="empManager">
+											<input class="span5" type="text" readonly id="empManager" name="ceo" value="${list[0].ceo }">
 										</div>
 									</div>
 								</div>
@@ -85,9 +85,9 @@
 									<div class="control-group">
 			                              <label class="control-label form-field-1">주소</label>
 				                              <div class="controls">
-				                                 <input class="span2" type="text" id="zip-code" readonly>
-				                                 <input class="span6" type="text" id="address" readonly>
-				                                 <input class="span9" type="text" id="detail-address">
+				                                 <input class="span2" type="text" id="zip-code" readonly value="${list[0].zipCode }">
+				                                 <input class="span6" type="text" id="address" readonly value="${list[0].address }">
+				                                 <input class="span9" type="text" id="detail-address" value="${list[0].detailAddress }">
 				                              </div>
 			                           </div>
 									</div>
@@ -96,15 +96,13 @@
 										<div class="span5">
 											<label class="control-label span1" for="form-field-1">담당자</label>
 											<div class="controls">
-												<input class="span12" type="text" id="managerName" readonly>
+												<input class="span12" type="text" id="managerName" readonly value="${list[0].managerName }">
 											</div>
 										</div>
-
-
 										<div class="span7">
 											<label class="control-label span1" for="form-field-1">메일</label>
 											<div class="controls">
-												<input class="span12" type="text" id="managerEmail" readonly>
+												<input class="span12" type="text" id="managerEmail" readonly value="${list[0].managerEmail }">
 											</div>
 										</div>
 									</div>
@@ -116,14 +114,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">수량합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="quantity" readonly>
+												<input class="span5" type="text" id="totalQuantity" name="totalQuantity" readonly>
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">공급가액합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="supplyValue" readonly>
+												<input class="span5" type="text" id="totalSupplyValue" name="totalSupplyValue" readonly>
 											</div>
 										</div>
 									</div>
@@ -134,14 +132,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서번호</label>
 											<div class="controls">
-												<input class="span5" type="text" id="taxbill_no">
+												<input class="span5" type="text" id="taxbill_no" name="taxbill_no">
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">부가세합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="taxVale" readonly>
+												<input class="span5" type="text" id="totaltaxValue" name="totaltaxValue" readonly>
 											</div>
 										</div>
 									</div>
@@ -153,7 +151,7 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서발행일</label>
 											<div class="controls">
-												<input class="span5" type="text" id="write_date" data-date-format="yyyy-mm-dd" readonly>
+												<input class="span5" type="text" id="write_date" name="write_date" data-date-format="yyyy-mm-dd" readonly>
 											</div>
 										</div>
 	
@@ -161,8 +159,8 @@
 											<label class="control-label span2" for="form-field-1">영세</label>
 												<div class="span4">
 														<select class="chosen-select" id="tax_type" name="tax_type" data-placeholder="영세/비영세">
-															<option value="yes">yes</option>
-															<option value="no">no</option>
+															<option value="tax">yes</option>
+															<option value="zero">no</option>
 														</select>
 											</div>
 										</div>
@@ -174,7 +172,7 @@
 										<div class="span6">
 											<label class="control-label" for="form-field-1">입금계좌번호</label>
 											<div class="controls">
-											<input class="span9" type="text" readonly id="depositNo">
+											<input class="span9" type="text" readonly id="depositNo" name="depositNo" value="${list[0].depositNo }">
 										</div>
 											
 										</div>
@@ -182,7 +180,7 @@
 										<div class="span6">
 												<label class="control-label" for="form-field-1">출고일자</label>
 												<div class="controls">
-													<input class="span5" type="text" readonly id="releaseDate">
+													<input class="span5" type="text" readonly id="releaseDate" name="releaseDate" value="${list[0].releaseDate }">
 												</div>
 										</div>
 									</div>
@@ -193,17 +191,15 @@
 											<div class="span6">
 													<label class="control-label form-field-1">예금주</label>
 													<div class="controls">
-													<input type="text" id="banker" readonly>
+													<input type="text" id="banker" name="banker" readonly value="${list[0].depositHost }">
 													</div>
 											</div>
-												
-											
-		
+
 											<div class="span6">
 													<label class="control-label form-field-1">은행</label>
 													<div class="controls">
-														<input class="span2" type="text" id="bankName" readonly>
-														<input class="span6" type="text" id="bankCode" readonly>
+														<input class="span2" type="text" id="bankName" name="bankName" readonly value="${list[0].bankName }">
+														<input class="span6" type="text" id="bankCode" name="bankCode" readonly value="${list[0].bankCode }">
 													</div>
 											</div>
 										</div>
@@ -212,6 +208,7 @@
 								<!-- /.span -->
 							
 							<!-- /.row-fluid -->
+			
 						</div>
 					</div>
 					<div class="hr hr-18 dotted"></div>
@@ -232,7 +229,7 @@
 					
 					<div class="row-fluid">
 						<div class="span12">
-							<table class="table table-striped table-bordered table-hover">
+							<table id="item-table" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>번 호</th>
@@ -243,27 +240,23 @@
 										<th>부가세</th>
 									</tr>
 								</thead>
+								
 								<tbody>
+									<c:forEach items="${list}" var="list" varStatus="status">
 									<tr>
-										<td>1</td>
-										<td>20134597</td>
-										<td>64G메모리</td>
-										<td>10</td>
-										<td>35000</td>
-										<td>3500</td>
+										<td>${status.count}</td>
+										<td>${list.itemCode}</td>
+										<td>${list.itemName}</td>
+										<td id="quantity" >${list.quantity}</td>
+										<td id="supplyValue"  >${list.supplyValue}</td>
+										<td id="taxValue" >${list.taxValue}</td>
 									</tr>
-									<tr>
-										<td>2</td>
-										<td>00154597</td>
-										<td>메인보드</td>
-										<td>1</td>
-										<td>85000</td>
-										<td>8500</td>
-									</tr>
+								</c:forEach>
 								</tbody>
 							</table>
 						</div><!-- /span -->
 					</div><!-- /row -->
+					
 					<div class="pagination">
 						<ul>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -275,6 +268,7 @@
 							<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
 						</ul>
 					</div>
+					
 					<!-- PAGE CONTENT ENDS --><!-- /.span -->
 				</div>
 			</div>
@@ -320,6 +314,39 @@
 			
 			$(".chosen-select").chosen();
 		})
+		
+		function checkFlag(){
+            if($("#flag").val()=="true"){
+            	sumData.addQuantity();
+            	sumData.addSupplyValue();
+            	sumData.addTaxValue();
+            }
+        }
+		
+		var sumData = {
+        	addQuantity: function(){
+        		var sum = 0;
+        		for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
+        			sum = sum + Number($("#quantity"+i).val());
+        			$("#totalQuantity").val(sum);
+        		}
+        	},
+        	
+        	addSupplyValue: function(){
+				var sum = 0;
+				for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
+					sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val());
+					$("#totalSupplyValue").val(sum);
+				}
+			},
+			addTaxValue: function(){
+        		var sum = 0;
+        		for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
+        			sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val());
+        			$("#totaltaxValue").val(sum);
+        		}
+        	}
+        }
 	</script>
 </body>
 </html>

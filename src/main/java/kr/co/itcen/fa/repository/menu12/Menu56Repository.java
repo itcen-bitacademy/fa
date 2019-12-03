@@ -27,11 +27,12 @@ public class Menu56Repository {
 		sqlSession.insert("menu56.save", testVo);
 	}
 	
-	public List<CurrentSituationVo> getlist() {
-		List<CurrentSituationVo> list = sqlSession.selectList("getlist");
+	public List<CurrentSituationVo> getList() {
+		List<CurrentSituationVo> list = sqlSession.selectList("menu56.getList");
 		return list;
 		
 	}
+
 	
 	
 	

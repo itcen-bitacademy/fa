@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.vo.menu17;
 
+import org.apache.ibatis.type.Alias;
+
 /**
  * @작성자:	이성훈
  * @작성일:	Nov 27, 2019
@@ -7,7 +9,8 @@ package kr.co.itcen.fa.vo.menu17;
  * 
  */
 
-public class AccountManagement {
+@Alias("accountManagement17Vo")
+public class AccountManagementVo {
 
 	private Long no;                     //번호
 	private Long accountOrder;           //계정과목 순서
@@ -22,7 +25,7 @@ public class AccountManagement {
 	
 	private String balanceType;          //잔액구분
 	private String accountName;          //계정명
-	
+	 
 	public Long getNo() {
 		return no;
 	}
@@ -98,12 +101,11 @@ public class AccountManagement {
 	
 	@Override
 	public String toString() {
-		return "AccountManagement [no=" + no + ", accountOrder=" + accountOrder + ", accountNo=" + accountNo
+		return "AccountManagementVo [no=" + no + ", accountOrder=" + accountOrder + ", accountNo=" + accountNo
 				+ ", accountUsedyear=" + accountUsedyear + ", accountStatementType=" + accountStatementType + ", useYn="
 				+ useYn + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + ", balanceType=" + balanceType + ", accountName=" + accountName + "]";
+				+ updateUserid + ", updateDay=" + updateDay + ", balanceType=" + balanceType + ", accountName="
+				+ accountName + "]";
 	}
-	
-	
-	
+
 }

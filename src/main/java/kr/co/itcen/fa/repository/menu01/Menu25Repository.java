@@ -41,21 +41,44 @@ public class Menu25Repository {
 		return map;
 	}
 
-	public void update(BankAccountVo bavo) {
+	public Map<String, Object> update(BankAccountVo bavo) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		// 다른 조와 데이터 통합 전 임의의 Test data insert
 		bavo.setAccountNo("12348");
 				
 		// TODO Auto-generated method stub		
 		sqlSession.update("menu25.update", bavo);
+		
+		map.put("bankList", sqlSession.selectList("menu25.list"));
+		return map;
 	}
 
-	public void delete(BankAccountVo bavo) {
+	public Map<String, Object> delete(BankAccountVo bavo) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		// TODO Auto-generated method stub
 		sqlSession.update("menu25.delete", bavo);
+		
+		map.put("bankList", sqlSession.selectList("menu25.list"));
+		return map;
+	}
+	
+	public boolean Nexist(BankAccountVo vo) {
+		int exist = sqlSession.selectOne("menu25.nexist", vo);
+		return exist == 1;
+	}
+	
+	public boolean Yexist(BankAccountVo vo) {
+		int exist = sqlSession.selectOne("menu25.yexist", vo);
+		return exist == 1;
 	}
 
 	public List<BankAccountVo> list() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("menu25.list");
+	}
+
+	public void deleteAll(BankAccountVo bavo) {
+		// TODO Auto-generated method stub
+		sqlSession.delete("menu25.deleteAll", bavo);
 	}
 }

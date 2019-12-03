@@ -36,20 +36,22 @@
 							<label class="control-label" for="form-field-codename">은행코드 / 은행명</label>
 							<div class="controls">
 								<input class="span2" type="text" id="form-field-code" name="code" placeholder="은행코드"/>
-								<input class="span8" type="text" id="form-field-name" name="name" placeholder="은행명"/>
+								<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+								<input class="span6" type="text" id="form-field-name" name="name" placeholder="은행명"/>
+								
 							</div>
 						</div>
 						<div class="control-group">
 								<label class="control-label" for="form-field-phoe">은행 전화번호</label>
 								<div class="controls">
-									<input class="span10" type="text" id="form-field-phone" name="phone" placeholder="phone"/>
+									<input class="span9" type="text" id="form-field-phone" name="phone" placeholder="phone"/>
 								</div>
 							</div>
 						<div class="control-group">
 							<label class="control-label" for="form-field-codename">거래시작일</label>
 								<div class="controls">
 									<div class="row-fluid input-append">
-									<input class="span9 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
+									<input class="span8 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
@@ -59,13 +61,13 @@
 						<div class="control-group">
 							<label class="control-label" for="form-field-mgr">담당자</label>
 							<div class="controls">
-								<input class="span10" type="text" id="form-field-mgr" name="mgr" placeholder="담당자"/>
+								<input class="span8" type="text" id="form-field-mgr" name="mgr" placeholder="담당자"/>
 							</div>
 						</div>
 						<div class="control-group">
 							<label class="control-label" for="form-field-mgrphone">담당자전화번호</label>
 							<div class="controls">
-								<input class="span10" type="text" id="form-field-mgrphone" name="mgrPhone" placeholder="담당자전화번호"/>
+								<input class="span9" type="text" id="form-field-mgrphone" name="mgrPhone" placeholder="담당자전화번호"/>
 							</div>
 						</div>
 						
@@ -106,11 +108,7 @@
 			                        <input class="span7" type="text" name="roadAddress" class="box"
 			                            id="roadAddress" placeholder="도로명주소" required>
 			                    </div>
-			                    <label class="control-label" for="form-field-address"></label>
-			                    <div class="controls">
-			                        <input class="span7" type="text" name="jibunAddress" class="box"
-			                            id="jibunAddress" placeholder="지번주소" required>
-			                    </div>
+			                  
 			                    <label class="control-label" for="form-field-address"></label>
 			                    <div class="controls">
 									<input class="span7" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
@@ -122,11 +120,11 @@
 						
 						
 						<div class="span8">
-							<button class="btn btn-info btn-small">조회</button>
+						
 							<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 							<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							<button class="btn btn-primary btn-small">입력</button>
-							<button class="btn btn-default btn-small">취소</button>
+							<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
 						</div>
 						
 						<div class="span8">
@@ -150,14 +148,9 @@
                                  </thead>
 
                                  <tbody>
-                                 	<c:forEach items="${list }" var="bankvo">
+                                 	<c:forEach items="${dataResult.datas }" var="bankvo">
                                     <tr>
-                                       <td class="center">
-                                          <label class="pos-rel">
-                                             <input type="checkbox" class="ace" />
-                                             <span class="lbl"></span>
-                                          </label>
-                                       </td>
+                                       
                                        <td class="center">${bankvo.code }</td>
                                        <td class="center">${bankvo.name }</td>
                                        <td class="center">${bankvo.store }</td>
@@ -193,17 +186,18 @@
 				<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 					<c:choose>
 						<c:when test="${pg eq dataResult.pagination.page }">
-						<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
-									</c:when>
-									<c:otherwise>
-										<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
+							<li class="active">
+								<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
 
-							<c:choose>
-								<c:when test="${dataResult.pagination.next }">
-									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -292,19 +286,27 @@
 				var tr = $(this);
 				var td = tr.children();
 				
-				$("input[name=code]").val(td.eq(1).text());
-			    $("input[name=name]").val(td.eq(2).text());
-			    $("input[name=store]").val(td.eq(3).text());
-			    $("input[name=dealDate]").val(td.eq(4).text());
-			    $("input[name=phone]").val(td.eq(5).text());
-			    $("input[name=fax]").val(td.eq(6).text());
-			    $("input[name=post]").val(td.eq(7).text());
-			    $("input[name=roadAddress]").val(td.eq(8).text());
-			    $("input[name=mgr]").val(td.eq(9).text());
-			    $("input[name=mgrPhone]").val(td.eq(10).text());
-			    $("input[name=mgrEmail]").val(td.eq(11).text());
+				$("input[name=code]").val(td.eq(0).text());
+			    $("input[name=name]").val(td.eq(1).text());
+			    $("input[name=store]").val(td.eq(2).text());
+			    $("input[name=dealDate]").val(td.eq(3).text());
+			    $("input[name=phone]").val(td.eq(4).text());
+			    $("input[name=fax]").val(td.eq(5).text());
+			    $("input[name=post]").val(td.eq(6).text());
+			    $("input[name=roadAddress]").val(td.eq(7).text());
+			    $("input[name=mgr]").val(td.eq(8).text());
+			    $("input[name=mgrPhone]").val(td.eq(9).text());
+			    $("input[name=mgrEmail]").val(td.eq(10).text());
 			});
-	        });
+			
+		/////////////////////////////////////////////////////////////////
+		//조회시 필요없는 정보 입력 X
+			$("#search").click(function(){
+				$("#postcode").attr("disabled",true);
+				$("#roadAddress").attr("disabled",true);
+				$("#detailAddress").attr("disabled",true);
+				});
+	  		});
 	    </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("salescustomervo")
 public class CustomerVo {
 	private String no;
+	private String preNo;
 	private String name;
 	private String ceo;
 	private String corporationNo;
@@ -28,11 +29,18 @@ public class CustomerVo {
 	private String insertDay;
 	private String updateUserid;
 	private String updateDay;
+	
 	public String getNo() {
 		return no;
 	}
 	public void setNo(String no) {
 		this.no = no;
+	}
+	public String getPreNo() {
+		return preNo;
+	}
+	public void setPreNo(String preNo) {
+		this.preNo = preNo;
 	}
 	public String getName() {
 		return name;

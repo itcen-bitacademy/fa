@@ -23,10 +23,11 @@ public class SalesVo {
 		this.empManager = vo.getEmpManager();
 		this.releaseDate = vo.getReleaseDate();
 		this.taxbillNo = vo.getTaxbillNo();
+		this.totalPrice = vo.getTotalPrice();
+		this.insertUserid = vo.getInsertUserid();
 	}
 	
 	private Long idx; // 번호
-	private String userId; // 입력자
 	private String salesNo; // 매출번호
 	private int number; // 품목순번
 	private String salesDate; // 매출일자
@@ -56,12 +57,6 @@ public class SalesVo {
 	}
 	public void setIdx(Long idx) {
 		this.idx = idx;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 	public String getSalesNo() {
 		return salesNo;
@@ -114,7 +109,6 @@ public class SalesVo {
 	public String getItemCode() {
 		return itemCode;
 	}
-
 	public void setItemCode(String itemCode) {
 		this.itemCode = itemCode;
 	}
@@ -205,7 +199,7 @@ public class SalesVo {
 	
 	@Override
 	public String toString() {
-		return "SalesVo [idx=" + idx + ", userId=" + userId + ", salesNo=" + salesNo + ", number=" + number
+		return "SalesVo [idx=" + idx + ", salesNo=" + salesNo + ", number=" + number
 				+ ", salesDate=" + salesDate + ", empManager=" + empManager + ", customerCode=" + customerCode
 				+ ", customerName=" + customerName + ", sectionCode=" + sectionCode + ", sectionName=" + sectionName
 				+ ", itemCode=" + itemCode + ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue="

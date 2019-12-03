@@ -4,20 +4,31 @@
 	<insert id="insert" parameterType="List">
 		<![CDATA[
 			insert into
-			tb_sales_test
+			tb_sales
 				(sales_no, number, sales_date, emp_manager, 
 				 customer_code, customer_name, item_code, 
-				 item_name, quantity, supply_value,
-				 tax_value, taxbill_no, release_date, insert_day)
+				 item_name, quantity, supply_value, total_price, sell_price,
+				 tax_value, taxbill_no, release_date, insert_userid, 
+				 insert_day, section_code, section_name)
 			values
 		]]>
 		<foreach collection="list" item="item" separator=",">
 			<![CDATA[
-				(#{item.salesNo}, #{item.number}, #{item.salesDate}, 
-				#{item.empManager}, #{item.customerCode}, #{item.customerName}, 
-				#{item.itemCode}, #{item.itemName}, #{item.quantity}, 
-				#{item.supplyValue}, #{item.taxValue}, #{item.taxbillNo}, 
-				#{item.releaseDate}, now())
+				(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager},
+				#{item.customerCode}, #{item.customerName}, #{item.itemCode},
+				#{item.itemName}, #{item.quantity}, #{item.supplyValue}, #{item.totalPrice}, #{item.sellPrice},
+				#{item.taxValue}, #{item.taxbillNo}, #{item.releaseDate}, #{item.insertUserid}, now(),
+				(select b.code 
+				 from 	tb_purchaseitem a, tb_section b 
+				 where 	a.no = #{item.itemCode}
+				 and	a.section_code = b.code
+				 and	b.parent_no = 1),
+				(select b.classification 
+				 from 	tb_purchaseitem a, tb_section b 
+				 where 	a.no = #{item.itemCode}
+				 and	a.section_code = b.code
+				 and	b.parent_no = 1)				
+				)
 			]]>
 		</foreach>
 	</insert>
@@ -36,14 +47,23 @@
 	
 	<select id="getsalesno" parameterType="String" resultType="salesvo">
 		<![CDATA[
-			select  sales_no, sales_date, customer_code, 
-					customer_name, release_date, taxbill_no, 
-					item_code, emp_manager, item_name, 
-					total_price, quantity, supply_value, 
-					tax_value, number
-			from	tb_sales_test
+			select  sales_no as salesNo, 
+					date_format(sales_date, '%Y-%m-%d') as salesDate, 
+					customer_code as customerCode, 
+					customer_name as customerName,
+					date_format(release_date, '%Y-%m-%d') as releaseDate, 
+					taxbill_no as taxbillNo, 
+					item_code as itemCode, 
+					emp_manager as empManager, 
+					item_name as itemName, 
+					total_price as totalPrice, 
+					quantity, 
+					supply_value as supplyValue, 
+					tax_value as taxValue, 
+					number
+			from	tb_sales
 			where	sales_no = #{salesNo}
-			order by number desc
+			order by number asc
 		]]>
 	</select>
 </mapper>
