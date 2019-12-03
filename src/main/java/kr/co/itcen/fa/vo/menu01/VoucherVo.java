@@ -13,37 +13,36 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("1vouchervo")
 public class VoucherVo {
-	private Long no; 				 // 전표번호
-	private int orderNo; 			 // 전표순번
+	private Long no; 				 // 번호
 	private Date regDate; 			 // 전표일자
 	private String insertTeam; 		 // 등록팀
 	private String insertUserid;	 // 등록자
 	private Date insertDay;			 // 등록일
 	private String updateUserid;	 // 수정자
 	private Date updateDay;			 // 수정일
-	private boolean useYn;			 // 사용여부
+	private Boolean useYn;			 // 사용여부
 	private String voucherUse; 		 // 전표사용목적
-	private int tax; 				 // 부가세
 	private Long systemNo; 		 	 // 시스템번호
-	private Long cardNo; 			 // 카드번호
-	private Long dipositeNo; 		 // 계좌번호
-	private Long customerNo; 		 // 거래처번호
+	private String cardNo;		 	 // 카드번호
+	private String cardUser;		 // 카드사용자
+	private String dipositNo; 		 // 계좌번호
+	private String depositHost;	 // 예금주
+	private String bankCode;		 // 은행코드
+	private String bankName;		 // 은행명
+	private String customerNo; 		 // 거래처번호
+	private String customerName;	 // 거래처명
 	private String manageNo; 		 // 증빙코드(세금계산서)
 	private Long amount; 		 	 // 금액
 	private String amountFlag;   	 // 금액플래그
 	private Long accountNo; 	 	 // 계정과목코드
+	private String accountName;		 // 계정과목명
+	private Long mappingNo;			 // 매핑번호
 	
 	public Long getNo() {
 		return no;
 	}
 	public void setNo(Long no) {
 		this.no = no;
-	}
-	public int getOrderNo() {
-		return orderNo;
-	}
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
 	}
 	public Date getRegDate() {
 		return regDate;
@@ -81,10 +80,10 @@ public class VoucherVo {
 	public void setUpdateDay(Date updateDay) {
 		this.updateDay = updateDay;
 	}
-	public boolean isUseYn() {
+	public Boolean getUseYn() {
 		return useYn;
 	}
-	public void setUseYn(boolean useYn) {
+	public void setUseYn(Boolean useYn) {
 		this.useYn = useYn;
 	}
 	public String getVoucherUse() {
@@ -93,35 +92,59 @@ public class VoucherVo {
 	public void setVoucherUse(String voucherUse) {
 		this.voucherUse = voucherUse;
 	}
-	public int getTax() {
-		return tax;
-	}
-	public void setTax(int tax) {
-		this.tax = tax;
-	}
 	public Long getSystemNo() {
 		return systemNo;
 	}
 	public void setSystemNo(Long systemNo) {
 		this.systemNo = systemNo;
 	}
-	public Long getCardNo() {
+	public String getCardNo() {
 		return cardNo;
 	}
-	public void setCardNo(Long cardNo) {
+	public void setCardNo(String cardNo) {
 		this.cardNo = cardNo;
 	}
-	public Long getDipositeNo() {
-		return dipositeNo;
+	public String getCardUser() {
+		return cardUser;
 	}
-	public void setDipositeNo(Long dipositeNo) {
-		this.dipositeNo = dipositeNo;
+	public void setCardUser(String cardUser) {
+		this.cardUser = cardUser;
 	}
-	public Long getCustomerNo() {
+	public String getDipositNo() {
+		return dipositNo;
+	}
+	public void setDipositNo(String dipositNo) {
+		this.dipositNo = dipositNo;
+	}
+	public String getDepositHost() {
+		return depositHost;
+	}
+	public void setDepositeHost(String depositHost) {
+		this.depositHost = depositHost;
+	}
+	public String getBankCode() {
+		return bankCode;
+	}
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public String getCustomerNo() {
 		return customerNo;
 	}
-	public void setCustomerNo(Long customerNo) {
+	public void setCustomerNo(String customerNo) {
 		this.customerNo = customerNo;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 	public String getManageNo() {
 		return manageNo;
@@ -147,17 +170,29 @@ public class VoucherVo {
 	public void setAccountNo(Long accountNo) {
 		this.accountNo = accountNo;
 	}
+	public String getAccountName() {
+		return accountName;
+	}
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+	public Long getMappingNo() {
+		return mappingNo;
+	}
+	public void setMappingNo(Long mappingNo) {
+		this.mappingNo = mappingNo;
+	}
 	
 	@Override
 	public String toString() {
-		return "VoucherVo [no=" + no + ", orderNo=" + orderNo + ", regDate=" + regDate + ", insertTeam=" + insertTeam
-				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
-				+ ", updateDay=" + updateDay + ", useYn=" + useYn + ", voucherUse=" + voucherUse + ", tax=" + tax
-				+ ", systemNo=" + systemNo + ", cardNo=" + cardNo + ", dipositeNo=" + dipositeNo + ", customerNo="
-				+ customerNo + ", manageNo=" + manageNo + ", amount=" + amount + ", amountFlag=" + amountFlag
-				+ ", accountNo=" + accountNo + "]";
+		return "VoucherVo [no=" + no + ", regDate=" + regDate + ", insertTeam=" + insertTeam + ", insertUserid="
+				+ insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay="
+				+ updateDay + ", useYn=" + useYn + ", voucherUse=" + voucherUse + ", systemNo=" + systemNo + ", cardNo="
+				+ cardNo + ", cardUser=" + cardUser + ", dipositNo=" + dipositNo + ", depositHost=" + depositHost
+				+ ", bankCode=" + bankCode + ", bankName=" + bankName + ", customerNo=" + customerNo + ", customerName="
+				+ customerName + ", manageNo=" + manageNo + ", amount=" + amount + ", amountFlag=" + amountFlag
+				+ ", accountNo=" + accountNo + ", accountName=" + accountName + ", mappingNo=" + mappingNo + "]";
 	}
-	
 	
 	
 	

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu02.Menu37Repository;
+import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 
 /**
  * 
@@ -17,7 +18,13 @@ public class Menu37Service {
 	@Autowired
 	private Menu37Repository menu37Repository;
 	
-	public void test() {
-		menu37Repository.test();
+	public void customerRead() {
+		menu37Repository.customerRead();
+	}
+
+	public void insert(BuyTaxbillVo vo) {
+	
+		menu37Repository.insert(vo);
+		
 	}
 }

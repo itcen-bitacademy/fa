@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu37">
 	<!-- Team -->
-	<insert id="save" parameterType="test2vo">
+	<insert id="save" parameterType="buytaxbillvo">
 		<![CDATA[
 		insert
 		  into test
@@ -14,4 +14,13 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<insert id="insert" parameterType="buytaxbillvo">
+		<![CDATA[
+			insert 
+			  into tb_buy_taxbill(no, manage_no, write_date, total_supply_value, total_tax_value, tax_type, insert_userid, insert_day)
+			values (#{no },#{manageNo },#{writeDate },#{totalSupplyValue },#{totalTaxValue },#{taxType },#{insertUserid },now())
+		]]>
+	</insert>
+
 </mapper>

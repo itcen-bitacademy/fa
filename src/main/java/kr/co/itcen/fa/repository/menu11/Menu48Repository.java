@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
 
@@ -34,11 +34,20 @@ public class Menu48Repository {
 		int count = sqlSession.insert("menu48.insert",vo);
 		return count==1;
 	}
-
-	public List<LTermdebtVo> list(String year, String code) {
+	
+	public int listCount(String year, String code) {
 		Map<String,String> map = new HashMap<String, String>();
 		map.put("year", year);
 		map.put("code",code);
+		
+		return sqlSession.selectOne("menu48.selectAllCount", map);
+	}
+
+	public List<LTermdebtVo> list(String year, String code, PaginationUtil pagination) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("code",code);
+		map.put("pagination", pagination);
 		List<LTermdebtVo> list= sqlSession.selectList("menu48.selectAll",map);
 		return list;
 	}

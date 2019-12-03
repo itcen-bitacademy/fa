@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu27">
+
 	<!-- Test -->
 	<insert id="save" parameterType="test1vo">
 		<![CDATA[
@@ -14,5 +15,66 @@
 			]]>
 		</selectKey>
 	</insert>
-
+	
+	<!-- 거래처 입력 -->
+	<insert id="insert" parameterType="1customervo">
+		<![CDATA[
+			insert 
+			  into tb_customer 
+			values (#{no}, #{name }, #{ceo }, #{address }, #{detailAddress }, #{conditions }, #{item }, #{corporationNo }, now(), #{jurisdictionOffice }, 
+					#{phone }, #{managerName }, #{managerEmail }, #{depositNo}, 'N', #{insertUserid }, now(), null, null)
+		]]>
+	</insert>
+	
+	<!-- 리스트 뽑기 -->
+	<select id="getList" resultType="1customervo">
+		<![CDATA[
+			select (right(no, 12)) as no,
+     			   name as name, 
+       			   ceo as ceo, 
+			       address as address,
+			       detail_address as detailAddress,
+			       conditions as conditions, 
+			       item as item, 
+			       corporation_no as corporationNo, 
+			       open_date as openDate, 
+			       jurisdiction_office as jurisdictionOffice, 
+			       phone as phone, 
+			       manager_name as managerName, 
+			       manager_email as managerEmail,
+			       deposit_no as depositNo,
+			       insert_userid as insertUserid, 
+			       insert_day as insertDay, 
+			       update_userid as updateUserid, 
+			       update_day as updateDay
+			  from tb_customer
+			 where delete_flag = 'N';
+		]]>
+	</select>
+	
+	<!-- 거래처 삭제 (flag N->Y)-->
+	<update id="delete" parameterType="1customervo">
+		<![CDATA[
+			update tb_customer delete_flag = 'Y'
+		]]>
+	</update>
+	
+	<!-- 거래처 수정 -->
+	<update id="update" parameterType="1customervo">
+		<![CDATA[
+			update tb_customer ceo = #{ceo },
+							   address = #{address },
+							   detail_address = #{detailAddress },
+							   conditions = #{conditions },
+							   item = #{item },
+							   corporation_no = #{corporationNo },
+							   jurisdiction_office = #{jurisdictionOffice},
+							   phone = #{phone },
+							   manager_name = #{managerName },
+							   manager_email = #{managerEmail },
+							   deposit_no = #{depositNo },
+							   update_userid = #{updateUserid }.
+							   update_day = now()
+		]]>
+	</update>
 </mapper>

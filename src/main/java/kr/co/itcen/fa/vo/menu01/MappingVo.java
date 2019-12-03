@@ -14,9 +14,8 @@ import org.apache.ibatis.type.Alias;
 @Alias("1mappingvo")
 public class MappingVo {
 	private Long no; 			 // 매핑번호
-	private Long systemNo; 		 // 시스템번호
+	private Long systemCode; 	 // 시스템코드
 	private String voucherUse;   // 전표사용목적
-	private int tax; 			 // 부가세
 	private String insertTeam;   // 등록팀
 	private String insertUserid; // 등록자
 	private Date insertDay; 	 // 등록일
@@ -24,6 +23,10 @@ public class MappingVo {
 	private Date updateDay; 	 // 수정일
 	private boolean useYn;		 // 사용여부
 	private Long voucherNo; 	 // 전표번호
+	private String cardNo;	 	 // 카드번호
+	private String cardUser;	 // 카드사용자
+	private String depositeNo; 	 // 계좌번호
+	private String depositeHost; // 예금주
 	private String manageNo; 	 // 증빙코드(세금계산서)
 	
 	public Long getNo() {
@@ -32,23 +35,17 @@ public class MappingVo {
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public Long getSystemNo() {
-		return systemNo;
+	public Long getSystemCode() {
+		return systemCode;
 	}
-	public void setSystemNo(Long systemNo) {
-		this.systemNo = systemNo;
+	public void setSystemCode(Long systemCode) {
+		this.systemCode = systemCode;
 	}
 	public String getVoucherUse() {
 		return voucherUse;
 	}
 	public void setVoucherUse(String voucherUse) {
 		this.voucherUse = voucherUse;
-	}
-	public int getTax() {
-		return tax;
-	}
-	public void setTax(int tax) {
-		this.tax = tax;
 	}
 	public String getInsertTeam() {
 		return insertTeam;
@@ -92,6 +89,30 @@ public class MappingVo {
 	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
+	public String getCardNo() {
+		return cardNo;
+	}
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+	public String getCardUser() {
+		return cardUser;
+	}
+	public void setCardUser(String cardUser) {
+		this.cardUser = cardUser;
+	}
+	public String getDipositeNo() {
+		return depositeNo;
+	}
+	public void setDipositeNo(String depositeNo) {
+		this.depositeNo = depositeNo;
+	}
+	public String getDepositeHost() {
+		return depositeHost;
+	}
+	public void setDepositeHost(String depositeHost) {
+		this.depositeHost = depositeHost;
+	}
 	public String getManageNo() {
 		return manageNo;
 	}
@@ -101,10 +122,11 @@ public class MappingVo {
 	
 	@Override
 	public String toString() {
-		return "MappingVo [no=" + no + ", systemNo=" + systemNo + ", voucherUse=" + voucherUse + ", tax=" + tax
-				+ ", insertTeam=" + insertTeam + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", useYn=" + useYn + ", voucherNo="
-				+ voucherNo + ", manageNo=" + manageNo + "]";
+		return "MappingVo [no=" + no + ", systemCode=" + systemCode + ", voucherUse=" + voucherUse + ", insertTeam="
+				+ insertTeam + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
+				+ updateUserid + ", updateDay=" + updateDay + ", useYn=" + useYn + ", voucherNo=" + voucherNo
+				+ ", cardNo=" + cardNo + ", cardUser=" + cardUser + ", depositeNo=" + depositeNo + ", depositeHost="
+				+ depositeHost + ", manageNo=" + manageNo + "]";
 	}
 	
 }

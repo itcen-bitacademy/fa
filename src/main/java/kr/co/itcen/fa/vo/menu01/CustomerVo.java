@@ -4,7 +4,7 @@ import org.apache.ibatis.type.Alias;
 
 /**
  * 
- * @author 이종윤
+ * @author 이종윤 
  * 거래처관리
  *
  */
@@ -15,20 +15,21 @@ public class CustomerVo {
 	private String name;
 	private String ceo;
 	private String address;
+	private String detailAddress;
 	private String conditions;
 	private String item;
-	private String corporation_no;
-	private String open_date;
-	private String jurisdiction_office;
+	private String corporationNo;
+	private String openDate;
+	private String jurisdictionOffice;
 	private String phone;
-	private String manager_name;
-	private String manager_email;
-	private String deposit_no;
-	private String delete_flag;
-	private String insert_userid;
-	private String insert_day;
-	private String update_userid;
-	private String update_day;
+	private String managerName;
+	private String managerEmail;
+	private String depositNo;
+	private String deleteFlag;
+	private String insertUserid;
+	private String insertDay;
+	private String updateUserid;
+	private String updateDay;
 
 	public String getNo() {
 		return no;
@@ -62,6 +63,14 @@ public class CustomerVo {
 		this.address = address;
 	}
 
+	public String getDetailAddress() {
+		return detailAddress;
+	}
+
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
+	}
+
 	public String getConditions() {
 		return conditions;
 	}
@@ -78,28 +87,28 @@ public class CustomerVo {
 		this.item = item;
 	}
 
-	public String getCorporation_no() {
-		return corporation_no;
+	public String getCorporationNo() {
+		return corporationNo;
 	}
 
-	public void setCorporation_no(String corporation_no) {
-		this.corporation_no = corporation_no;
+	public void setCorporationNo(String corporationNo) {
+		this.corporationNo = corporationNo;
 	}
 
-	public String getOpen_date() {
-		return open_date;
+	public String getOpenDate() {
+		return openDate;
 	}
 
-	public void setOpen_date(String open_date) {
-		this.open_date = open_date;
+	public void setOpenDate(String openDate) {
+		this.openDate = openDate;
 	}
 
-	public String getJurisdiction_office() {
-		return jurisdiction_office;
+	public String getJurisdictionOffice() {
+		return jurisdictionOffice;
 	}
 
-	public void setJurisdiction_office(String jurisdiction_office) {
-		this.jurisdiction_office = jurisdiction_office;
+	public void setJurisdictionOffice(String jurisdictionOffice) {
+		this.jurisdictionOffice = jurisdictionOffice;
 	}
 
 	public String getPhone() {
@@ -110,78 +119,78 @@ public class CustomerVo {
 		this.phone = phone;
 	}
 
-	public String getManager_name() {
-		return manager_name;
+	public String getManagerName() {
+		return managerName;
 	}
 
-	public void setManager_name(String manager_name) {
-		this.manager_name = manager_name;
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
 
-	public String getManager_email() {
-		return manager_email;
+	public String getManagerEmail() {
+		return managerEmail;
 	}
 
-	public void setManager_email(String manager_email) {
-		this.manager_email = manager_email;
+	public void setManagerEmail(String managerEmail) {
+		this.managerEmail = managerEmail;
 	}
 
-	public String getDeposit_no() {
-		return deposit_no;
+	public String getDepositNo() {
+		return depositNo;
 	}
 
-	public void setDeposit_no(String deposit_no) {
-		this.deposit_no = deposit_no;
+	public void setDepositNo(String depositNo) {
+		this.depositNo = depositNo;
 	}
 
-	public String getDelete_flag() {
-		return delete_flag;
+	public String getDeleteFlag() {
+		return deleteFlag;
 	}
 
-	public void setDelete_flag(String delete_flag) {
-		this.delete_flag = delete_flag;
+	public void setDeleteFlag(String deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 
-	public String getInsert_userid() {
-		return insert_userid;
+	public String getInsertUserid() {
+		return insertUserid;
 	}
 
-	public void setInsert_userid(String insert_userid) {
-		this.insert_userid = insert_userid;
+	public void setInsertUserid(String insertUserid) {
+		this.insertUserid = insertUserid;
 	}
 
-	public String getInsert_day() {
-		return insert_day;
+	public String getInsertDay() {
+		return insertDay;
 	}
 
-	public void setInsert_day(String insert_day) {
-		this.insert_day = insert_day;
+	public void setInsertDay(String insertDay) {
+		this.insertDay = insertDay;
 	}
 
-	public String getUpdate_userid() {
-		return update_userid;
+	public String getUpdateUserid() {
+		return updateUserid;
 	}
 
-	public void setUpdate_userid(String update_userid) {
-		this.update_userid = update_userid;
+	public void setUpdateUserid(String updateUserid) {
+		this.updateUserid = updateUserid;
 	}
 
-	public String getUpdate_day() {
-		return update_day;
+	public String getUpdateDay() {
+		return updateDay;
 	}
 
-	public void setUpdate_day(String update_day) {
-		this.update_day = update_day;
+	public void setUpdateDay(String updateDay) {
+		this.updateDay = updateDay;
 	}
 
 	@Override
 	public String toString() {
-		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", address=" + address + ", conditions="
-				+ conditions + ", item=" + item + ", corporation_no=" + corporation_no + ", open_date=" + open_date
-				+ ", jurisdiction_office=" + jurisdiction_office + ", phone=" + phone + ", manager_name=" + manager_name
-				+ ", manager_email=" + manager_email + ", deposit_no=" + deposit_no + ", delete_flag=" + delete_flag
-				+ ", insert_userid=" + insert_userid + ", insert_day=" + insert_day + ", update_userid=" + update_userid
-				+ ", update_day=" + update_day + "]";
+		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", address=" + address + ", detailAddress="
+				+ detailAddress + ", conditions=" + conditions + ", item=" + item + ", corporationNo=" + corporationNo
+				+ ", openDate=" + openDate + ", jurisdictionOffice=" + jurisdictionOffice + ", phone=" + phone
+				+ ", managerName=" + managerName + ", managerEmail=" + managerEmail + ", depositNo=" + depositNo
+				+ ", deleteFlag=" + deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}
 
 }

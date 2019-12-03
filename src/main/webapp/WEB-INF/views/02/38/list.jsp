@@ -15,6 +15,9 @@
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <style>
 .table-responsive {
 	width: 100%;
@@ -42,7 +45,7 @@ input:focus {
 	});
 </script>
 </head>
-<body class="skin-3" style="min-width: 1280px">
+<body class="skin-3" style="min-width: 1920px">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -64,16 +67,16 @@ input:focus {
 								<label class="control-label span1" for="form-field-date">작성일자</label>
 								<div class="controls span5">
 									<div class="input-append">
-										<input class="date-picker" id="id-date-picker-1" type="text"
-											data-date-format="dd-mm-yyyy" style="width: 70%"> <span
-											class="add-on"> <i class="icon-calendar"></i>
+										<input class="cl-date-picker" id="id-date-picker-1"
+											type="text" style="width: 70%">
+										<span class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
 									~ &nbsp;
 									<div class="input-append">
-										<input class="date-picker" id="id-date-picker-2" type="text"
-											data-date-format="dd-mm-yyyy" style="width: 70%"> <span
-											class="add-on"> <i class="icon-calendar"></i>
+										<input class="cl-date-picker" id="id-date-picker-1"
+											type="text" style="width: 70%">
+										<span class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
@@ -210,5 +213,39 @@ input:focus {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	<script
+		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+				days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
+				daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
+				daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
+				months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+						"9월", "10월", "11월", "12월" ],
+				monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+						"9월", "10월", "11월", "12월" ],
+				today : "Today",
+				clear : "Clear",
+				format : "yyyy-mm-dd",
+				titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
+				weekStart : 0
+			};
+
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode : 4,
+				minViewMode : 1,
+				language : 'ko'
+			}).next().on(ace.click_event, function() {
+				$(this).prev().focus();
+			});
+
+			$('.cl-date-picker').datepicker({
+				language : 'ko'
+			}).next().on(ace.click_event, function() {
+				$(this).prev().focus();
+			});
+		})
+	</script>
 </body>
 </html>
