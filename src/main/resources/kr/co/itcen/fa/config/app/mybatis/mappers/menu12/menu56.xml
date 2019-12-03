@@ -14,5 +14,32 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<select id="getlist" resultType="currentsituationvo">
+	<![CDATA[
+	select sales.section_code as sectioncode,sales.section_name as sectionname,
+			sales.item_code as itemcode,sales.item_name as itemname,
+		purchasemanagement.quantity as purchasemanagementquantity, purchasemanagement.sum_supply_value as purchasemanagementsupplyvalue,
+		purchasemanagement.sum_tax_value as purchasemanagementtaxvalue,purchasemanagement.total_price as purchasemanagementtotalprice,
+        sales.quantity as salesquantity,sales.sum_supply_value as salessupplyvalue,sales.sum_tax_value as salestaxvalue,sales.total_price as salestotalprice,
+        purchasemanagement.quantity - sales.quantity as stockquantity,
+        (purchasemanagement.quantity - sales.quantity)*(purchasemanagement.tax_value+purchasemanagement.supply_value) as stocktotalprice,
+        (purchasemanagement.quantity-sales.quantity)*purchasemanagement.tax_value as stocktaxvalue
+	from (select section_code,section_name,item_code,item_name,
+			sum(quantity)as quantity,sum(total_price)as total_price,
+            sum(tax_value)as sum_tax_value,tax_value,
+            sum(supply_value) as sum_supply_value, supply_value
+		 from tb_purchasemanagement_test
+		 group by item_code)as purchasemanagement,
+	 	(select section_code,section_name,item_code,item_name,
+			sum(quantity)as quantity,sum(total_price)as total_price,
+            sum(tax_value)as sum_tax_value,tax_value,
+            sum(supply_value) as sum_supply_value, supply_value
+		from tb_sales_test
+		group by item_code)as sales
+	where purchasemanagement.item_code=sales.item_code;
+	
+	]]>
+	</select>
 
 </mapper>
