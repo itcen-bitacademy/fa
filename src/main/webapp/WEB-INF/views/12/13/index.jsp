@@ -52,12 +52,19 @@
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
             cell1.innerHTML = '<td><p>' +cnt+ '</p><input type="hidden" value="'+cnt+'" name="number"></td>';
-            cell2.innerHTML = '<td><input type="text" id="itemCode'+cnt+'" name="itemCode" placeholder="품목코드"></td>';
-            cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명"></td>';
-            cell4.innerHTML = '<td><input type="text" id="quantity'+cnt+'" name="quantity" placeholder="수량" onfocusout="sumData.addQuantity()"></td>';
-            cell5.innerHTML = '<td><input type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onfocusout="sumData.addSupplyValue()"></td>';
-            cell6.innerHTML = '<td><input type="text" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onfocusout="sumData.addTaxValue()"></td>';
+            cell2.innerHTML = '<td><select class="chosen-select" id="itemCode'+cnt+'" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id)">'
+					            +'<option value="">&nbsp;</option>'
+					            +'<c:forEach items="${itemlist }" var="list" varStatus="status">'
+					            +'<option value="${list.no }" id="">${list.no }(${list.name })</option>'
+					            +'</c:forEach>'
+					        	+'</select><td>';
+            cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명" value="" readonly></td>';
+            cell4.innerHTML = '<td><input type="text" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()"></td>';
+            cell5.innerHTML = '<td><input type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()"></td>';
+            cell6.innerHTML = '<td><input type="text" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()"></td>';
             document.getElementById("rowCnt").value = cnt;
+            
+            $(".chosen-select").chosen();
         }
 
         function delete_row() {
@@ -76,6 +83,8 @@
         				sum = sum + Number($("#quantity"+i).val());
         				$("#totalQuantity").val(sum);
         			}
+  					this.addSupplyValue();
+  					this.addTaxValue();
         		},
         		addSupplyValue: function(){
 					var sum = 0;
@@ -83,6 +92,7 @@
 						sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val());
 						$("#totalSupplyValue").val(sum);
 					}
+					this.totalValue();
 				},
 				addTaxValue: function(){
         			var sum = 0;
@@ -90,8 +100,54 @@
         				sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val());
         				$("#totaltaxValue").val(sum);
         			}
+        			this.totalValue();
+        		},
+        		totalValue: function(){
+        			var tax = Number($("#totaltaxValue").val());
+        			var supply = Number($("#totalSupplyValue").val());
+        			$("#totalValue").val(tax+supply);
         		}
         }
+        
+       var setData = {
+        	customer: function(){
+        		var code = $("#customerCode").val();
+        		if(code==""){
+        			$("#empManager").val("");
+    				$("#customerName").val("");
+    				$("#customerPhone").val("");
+        		}
+        		<c:forEach items="${customerlist }" var="item" varStatus="status">
+        			if(code=="${item.no }"){
+        				$("#empManager").val("${item.ceo}");
+        				$("#customerName").val("${item.name}");
+        				$("#customerPhone").val("${item.phone}");
+        			}
+                </c:forEach>                
+        	},
+        	item : function(selectid){
+        		var rownum = selectid.substring(selectid.length-1, selectid.length);
+        		var code = $("#"+selectid).val();
+        		if(code==""){
+        			$("#itemName"+rownum).val("");
+        		}
+        		<c:forEach items="${itemlist }" var="item" varStatus="status">
+	    			if(code=="${item.no }"){
+	    				$("#itemName"+rownum).val("${item.name}");
+	    			}
+            	</c:forEach>  
+        	}
+        }
+        
+
+        function checkNo(){  
+	        var code = $("#salesNo").val();
+	        if(code==""){
+	        	alert("매출번호를 입력하세요.");
+	        	return;
+	        }
+	        location.href = "/fa/12/13/"+code;
+	     }
         
     </script>
 </head>
@@ -109,10 +165,7 @@
                 </div>
                 <!-- /.page-header -->
 
-
-
                 <!-- PAGE CONTENT BEGINS -->
-
                 <form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/12/13">
                     <div class="row-fluid">
                         <div class="span12">
@@ -123,7 +176,7 @@
                                     <label class="control-label" for="cl-total-date-picker">매출일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" id="cl-total-date-picker" name="salesDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -131,25 +184,26 @@
                                 <div class="control-group">
                                     <label class="control-label" for="customerCode">거래처코드</label>
                                     <div class="controls">
-                                        <select class="chosen-select" id="customerCode" name="role" data-placeholder="거래처코드" name="customerCode">
+                                        <select class="chosen-select" id="customerCode" name="role" data-placeholder="거래처코드" name="customerCode" onchange="setData.customer();">
                                         <option value="">&nbsp;</option>
                                             <c:forEach items="${customerlist }" var="list" varStatus="status">
                                             <option id="${status }" value="${list.no }">${list.name }(${list.no })</option>
                                             </c:forEach>
                                         </select>
+                                        <input type="hidden" id="setCustomer" value="">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="empManager">거래처담당자</label>
                                     <div class="controls">
-                                        <input type="text" id="empManager" name="empManager" placeholder="거래처담당자" disabled>
+                                        <input type="text" id="empManager" name="empManager" placeholder="거래처담당자" readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="cl-total-date-picker">출고일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" id="cl-total-date-picker" type="text" data-date-format="yyyy-mm-dd" name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -157,13 +211,13 @@
                                 <div class="control-group">
                                     <label class="control-label" for="totalQuantity">수량합계</label>
                                     <div class="controls">
-                                        <input type="text" id="totalQuantity" name="totalQuantity" placeholder="수량합계" value="0" disabled>
+                                        <input type="text" id="totalQuantity" name="totalQuantity" placeholder="수량합계" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="totalTax">부가세합계</label>
                                     <div class="controls">
-                                        <input type="text" id="totaltaxValue" placeholder="부가세합계" value="0" disabled>
+                                        <input type="text" id="totaltaxValue" placeholder="부가세합계" value="0" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -175,20 +229,20 @@
                                     <div class="controls">
                                         <input type="text" id="salesNo" name="salesNo" placeholder="매출번호">
                                         <div class="btn-group">
-                                            <button class="btn btn-info btn-small">조회</button>
+                                            <button class="btn btn-info btn-small" type="button" onclick="javascript:checkNo();">조회</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="customerName">거래처명</label>
                                     <div class="controls">
-                                        <input type="text" id="customerName" name="customerName" placeholder="거래처명" disabled>
+                                        <input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label" for="customerName">거래처연락처</label>
+                                    <label class="control-label" for="customerPhone">거래처연락처</label>
                                     <div class="controls">
-                                        <input type="text" id="customerName" name="customerPhone" placeholder="거래처연락처" disabled>
+                                        <input type="text" id="customerPhone" name="customerPhone" placeholder="거래처연락처" readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -200,10 +254,15 @@
                                 <div class="control-group">
                                     <label class="control-label" for="totalSupplyValue">공급가액합계</label>
                                     <div class="controls">
-                                        <input type="text" id="totalSupplyValue" placeholder="공급가액합계" value="0" disabled>
+                                        <input type="text" id="totalSupplyValue" placeholder="공급가액합계" value="0" readonly>
+                                    </div>
+                                </div>                                
+                                <div class="control-group">
+                                    <label class="control-label" for="totalValue">합계금액</label>
+                                    <div class="controls">
+                                        <input type="text" id="totalValue" name="totalPrice" placeholder="합계금액" value="0" readonly>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -250,17 +309,17 @@
                                         <input type="hidden" value="1" name="number">
                                     </td>
                                     <td>
-                                    	<select class="chosen-select" id="customerCode" name="role" data-placeholder="거래처코드" name="customerCode">
+                                    	<select class="chosen-select" id="itemCode1" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id);">
                                             <option value="">&nbsp;</option>
                                             <c:forEach items="${itemlist }" var="list" varStatus="status">
                                             <option value="${list.no }">${list.no }(${list.name })</option>
                                             </c:forEach>
                                         </select>
                                     </td>
-                                    <td><input type="text" id="itemName1" name="itemName" placeholder="품목명" disabled></td>
-                                    <td><input type="text" id="quantity1" name="quantity" placeholder="수량" onfocusout="sumData.addQuantity()"></td>
-                                    <td><input type="text" id="supplyValue1" name="supplyValue" placeholder="공급가액" onfocusout="sumData.addSupplyValue()"></td>
-                                    <td><input type="text" id="taxValue1" name="taxValue" placeholder="부가세" onfocusout="sumData.addTaxValue()"></td>
+                                    <td><input type="text" id="itemName1" name="itemName" placeholder="품목명"  readonly></td>
+                                    <td><input type="text" id="quantity1" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()"></td>
+                                    <td><input type="text" id="supplyValue1" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()"></td>
+                                    <td><input type="text" id="taxValue1" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()"></td>
                                 </tr>
                             </table>
                             <!-- PAGE CONTENT ENDS -->
@@ -297,21 +356,12 @@
                 /* Leverages same syntax as 'format' */
                 weekStart: 0
             };
-
-            $('#cl-ym-date-picker').datepicker({
-                maxViewMode: 4,
-                minViewMode: 1,
-                language: 'ko'
-            }).next().on(ace.click_event, function() {
-                $(this).prev().focus();
-            });
-
             $('.cl-date-picker').datepicker({
-                language: 'ko'
+                language: 'ko',
+                "setDate": new Date()
             }).next().on(ace.click_event, function() {
                 $(this).prev().focus();
             });
-
         })
     </script>
 </body>

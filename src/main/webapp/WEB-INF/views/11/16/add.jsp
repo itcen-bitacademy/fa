@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+.chosen-search {
+	display: none;
+}
+</style>
 </head>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -15,9 +20,6 @@
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-		
-		
-		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">은행코드관리</h1>
 			</div><!-- /.page-header -->
@@ -38,25 +40,21 @@
 							</div>
 						</div>
 						<div class="control-group">
+								<label class="control-label" for="form-field-phoe">은행 전화번호</label>
+								<div class="controls">
+									<input class="span10" type="text" id="form-field-phone" name="phone" placeholder="phone"/>
+								</div>
+							</div>
+						<div class="control-group">
 							<label class="control-label" for="form-field-codename">거래시작일</label>
 								<div class="controls">
 									<div class="row-fluid input-append">
-									<input class="span9 date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" />
+									<input class="span9 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="form-field-select-financetype">금융권 종류</label>
-							<div class="controls">
-								<select class="chosen-select" id="form-field-select-financetype" name="finance_type" data-placeholder="금융권종류">
-									<c:forEach items="${listMainMenu }" var="menuVo">
-										<option value="${menuVo.no }">${menuVo.name }</option>
-									</c:forEach>
-								</select>
-							</div>
 						</div>
 						<div class="control-group">
 							<label class="control-label" for="form-field-mgr">담당자</label>
@@ -67,7 +65,7 @@
 						<div class="control-group">
 							<label class="control-label" for="form-field-mgrphone">담당자전화번호</label>
 							<div class="controls">
-								<input class="span10" type="text" id="form-field-mgrphone" name="mgr_phone" placeholder="담당자전화번호"/>
+								<input class="span10" type="text" id="form-field-mgrphone" name="mgrPhone" placeholder="담당자전화번호"/>
 							</div>
 						</div>
 						
@@ -89,7 +87,7 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-mgremail">담당자이메일</label>
 								<div class="controls">
-									<input class="span10" type="text" id="form-field-mgremail" name="mgr_email" placeholder="담당자이메일"/>
+									<input class="span10" type="text" id="form-field-mgremail" name="mgrEmail" placeholder="담당자이메일"/>
 								</div>
 							</div>
 							<div class="control-group">
@@ -119,42 +117,40 @@
 								</div>
 							</div>
 						</div>
-							
-						<div>	
-								
-								<button class="btn btn-info" type="submit"><i class="icon-ok bigger-110"></i>입력</button>
-								<button class="btn btn-info" type="modify"><i class="icon-ok bigger-110"></i>수정</button>
-								<button class="btn btn-info" type="delete"><i class="icon-ok bigger-110"></i>삭제</button>
-								<button class="btn btn-info" type="refer"><i class="icon-ok bigger-110"></i>조회</button>
-								&nbsp; &nbsp; &nbsp;
-								<button class="btn" type="reset"><i class="icon-undo bigger-110"></i>초기화</button>
-							
+						
+						<div class="hr hr-18 dotted"></div>
+						
+						
+						<div class="span8">
+							<button class="btn btn-info btn-small">조회</button>
+							<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+							<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+							<button class="btn btn-primary btn-small">입력</button>
+							<button class="btn btn-default btn-small">취소</button>
 						</div>
-						<br>
+						
+						<div class="span8">
+						</div>
 						
 					<table id="simple-table" class="table  table-bordered table-hover">
                           <thead>
                               <tr>
-                                 <th class="center">
-                                    <label class="pos-rel">
-                                     <input type="checkbox" class="ace" />
-                                             <span class="lbl"></span>
-                                          </label>
-                                       </th>
-                                       <th class="center">은행코드</th>
-                                       <th class="center">은행명</th>
-                                       <th class="center">지점명</th>
-                                       <th class="center">거래시작일</th>
-                                       <th class="center">전화번호</th>
-                                       <th class="center">은행주소</th>
-                                       <th class="center">금융권종류</th>
-                                       <th class="center">담당자</th>
-                                       <th class="center">담당자전화번호</th>
-                                       <th class="center">담당자이메일</th>
+                                  <th class="center">은행코드</th>
+                                  <th class="center">은행명</th>
+                                  <th class="center">지점명</th>
+                                  <th class="center">거래시작일</th>
+                                  <th class="center">전화번호</th>
+                                  <th class="center">FAX</th>
+                                  <th class="center">우편번호</th>
+                                  <th class="center">은행주소</th>
+                                  <th class="center">담당자</th>
+                                  <th class="center">담당자전화번호</th>
+                                  <th class="center">담당자이메일</th>
                                     </tr>
                                  </thead>
 
                                  <tbody>
+                                 	<c:forEach items="${list }" var="bankvo">
                                     <tr>
                                        <td class="center">
                                           <label class="pos-rel">
@@ -162,23 +158,69 @@
                                              <span class="lbl"></span>
                                           </label>
                                        </td>
-                                       <td class="center">0010100</td>
-                                       <td class="center">한국은행</td>
-                                       <td class="center">기획협력국</td>
-                                       <td class="center">2019-10-29</td>
-                                       <td class="center">02-759-4114</td>
-                                       <td class="center">서울특별시 중구 남대문로 39</td>
-                                       <td class="center">제1금융</td>
-                                       <td class="center">배준석</td>
-                                       <td class="center">02-759-4041</td>
-                                       <td class="center">bokdplp@bok.or.kr</td>
+                                       <td class="center">${bankvo.code }</td>
+                                       <td class="center">${bankvo.name }</td>
+                                       <td class="center">${bankvo.store }</td>
+                                       <td class="center">${bankvo.dealDate }</td>
+                                       <td class="center">${bankvo.phone }</td>
+                                       <td class="center">${bankvo.fax }</td>
+                                       <td class="center">${bankvo.post }</td>
+                                       <td class="center">${bankvo.address }</td>
+                                       <td class="center">${bankvo.mgr }</td>
+                                       <td class="center">${bankvo.mgrPhone }</td>
+                                       <td class="center">${bankvo.mgrEmail }</td>
                                     </tr>
+                                    </c:forEach>
                                  </tbody>
                               </table>
-                              
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+		</form>					
+			<!-- PAGE CONTENT ENDS -->
+	</div><!-- /.span -->
+   </div><!-- /.row-fluid -->
+  </div><!-- /.page-content -->
+  
+  <div class="pagination">
+				<ul>
+				<c:choose>
+					<c:when test="${dataResult.pagination.prev }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+						<i class="icon-double-angle-left"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+					<c:choose>
+						<c:when test="${pg eq dataResult.pagination.page }">
+						<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 
-    <script>
+							<c:choose>
+								<c:when test="${dataResult.pagination.next }">
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
+				</ul>
+			</div>
+  
+  </div><!-- /.main-content -->
+</div><!-- /.main-container -->
+<!-- basic scripts -->
+<c:import url="/WEB-INF/views/common/footer.jsp" />
+  <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+  <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>	
+  <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+  <script>
         //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
         function execDaumPostcode() {
             new daum.Postcode(
@@ -236,34 +278,33 @@
                             }
                         }
                     }).open();
-   		     }
-     
-	    </script>
-									
-					</form>					
-					<!-- PAGE CONTENT ENDS -->
-
-				</div><!-- /.span -->
+   		    };
+   	
+	        $(function() {
+	        	  $(".chosen-select").chosen();
+					
+					$('.date-picker').datepicker().next().on(ace.click_event, function(){
+						$(this).prev().focus();
+					});
+					
+			$("#simple-table tr").click(function(){ 
 				
-			</div><!-- /.row-fluid -->
-
-
-
-		</div><!-- /.page-content -->
-	</div><!-- /.main-content -->
-</div><!-- /.main-container -->
-<!-- basic scripts -->
-<c:import url="/WEB-INF/views/common/footer.jsp" />
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
-<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
-<script>
-$(function(){
-	$(".chosen-select").chosen(); 
-	$('.date-picker').datepicker().next().on(ace.click_event, function(){
-		$(this).prev().focus();
-	});
-});
-</script>
+				var tr = $(this);
+				var td = tr.children();
+				
+				$("input[name=code]").val(td.eq(1).text());
+			    $("input[name=name]").val(td.eq(2).text());
+			    $("input[name=store]").val(td.eq(3).text());
+			    $("input[name=dealDate]").val(td.eq(4).text());
+			    $("input[name=phone]").val(td.eq(5).text());
+			    $("input[name=fax]").val(td.eq(6).text());
+			    $("input[name=post]").val(td.eq(7).text());
+			    $("input[name=roadAddress]").val(td.eq(8).text());
+			    $("input[name=mgr]").val(td.eq(9).text());
+			    $("input[name=mgrPhone]").val(td.eq(10).text());
+			    $("input[name=mgrEmail]").val(td.eq(11).text());
+			});
+	        });
+	    </script>
 </body>
 </html>
