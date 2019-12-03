@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu13Service;
@@ -50,7 +50,7 @@ public class Menu13Controller {
 	}
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU}, method=RequestMethod.POST)
 	public String index(SalesVo salesVo, 
-			int quantity[], Long itemCode[], String itemName[], Long supplyValue[], Long taxValue[]) {
+			int quantity[], String itemCode[], String itemName[], Long supplyValue[], Long taxValue[]) {
 		
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		
@@ -68,6 +68,14 @@ public class Menu13Controller {
 		
 		menu13Service.insert(list);
 		
+		return MAINMENU + "/" + SUBMENU + "/index";
+	}
+	
+	@RequestMapping(value= {"/" + SUBMENU, "/" + SUBMENU + "/{salesNo}"}, method=RequestMethod.GET )
+	public String getSales(@PathVariable("salesNo")String salesNo) {
+		System.out.println(salesNo);
+		List<SalesVo> sales = menu13Service.getSalesNo(salesNo);
+		System.out.println(sales);
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}
 }
