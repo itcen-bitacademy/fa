@@ -54,7 +54,7 @@
 			var queryString = $("form[name=input-form]").serialize();
 			if(a == "create") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/25/create",
+				    url: "${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/create",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",

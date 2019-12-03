@@ -1,12 +1,14 @@
 package kr.co.itcen.fa.repository.menu02;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu02.FactoryVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
@@ -37,12 +39,40 @@ public class Menu33Repository {
 		purchaseitemVo.setFactory_code(fa_code);
 		
 		sqlSession.insert("menu33.purchaseitemadd", purchaseitemVo);
+		
 		sqlSession.insert("menu33.factoryadd", factoryVo);
 	}
 
 	public void update(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
+		factoryVo.setNo(purchaseitemVo.getFactory_code());
+		
 		sqlSession.update("menu33.purchaseitemupdate", purchaseitemVo);
 		sqlSession.update("menu33.factoryupdate", factoryVo);
+	}
+
+	public void delete(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
+		sqlSession.update("menu33.purchaseitemdelete", purchaseitemVo);
+		sqlSession.update("menu33.factorydelete", factoryVo);
+	}
+
+	public PurchaseitemVo searchpurchaseitem(String no) {
+		PurchaseitemVo purchaseitemVo = sqlSession.selectOne("menu33.searchpurchaseitem", no);
+		
+		return purchaseitemVo;
+	}
+
+	public List<SectionVo> getSectionList() {
+		List<SectionVo> sectionList = sqlSession.selectList("menu33.getsectionlist");
+		
+		return sectionList;
+	}
+
+	public List<SectionVo> getsearchSectionList(String sectionname) {
+		sectionname = "%" + sectionname + "%";
+		
+		List<SectionVo> searchsectionList = sqlSession.selectList("menu33.getsearchsectionlist", sectionname);
+		
+		return searchsectionList;
 	}
 }
 
