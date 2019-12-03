@@ -41,21 +41,21 @@
 						<div class="control-group">
 							<label class="control-label" for="year-month" style="text-align:left;width:60px;">년 월:</label>
 							<div class="controls" style="margin-left:60px;">
-								<select class="chosen-select" id="year-month" name="yearMonth" data-placeholder="년 월 선택">
-									<option value="2019-12">2019-12</option>
-									<option value="2019-12">2019-11</option>
-									<option value="2019-12">2019-10</option>
-									<option value="2019-12">2019-9</option>
-									<option value="2019-12">2019-8</option>
-									<option value="2019-12">2019-7</option>
-									<option value="2019-12">2019-6</option>
-									<option value="2019-12">2019-5</option>
-									<option value="2019-12">2019-4</option>
-									<option value="2019-12">2019-3</option>
+								<select class="chosen-select" id="year-month" name="closingDateNo" data-placeholder="년 월 선택">
+									<c:forEach var="cd" items="${closingDateList }">
+										<c:choose>
+											<c:when test="${cd.no eq closingDateNo }">
+												<option value="${cd.no }" selected>${cd.closingYearMonth }</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${cd.no }">${cd.closingYearMonth }</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
 								</select>
 
 								<%-- 조회버튼 --%>
-								<button class="btn btn-small btn-info">조회</button>
+								<button class="btn btn-small btn-info" id="search-btn">조회</button>
 							</div>
 						</div>
 					</form>
@@ -64,7 +64,7 @@
 				<div class="span6">
 					<form class="form-horizontal">
 						<div class="control-group">
-							<label class="control-label" for="year-month" style="float:right;">(단위: 원)</label>
+							<label class="control-label" for="" style="float:right;">(단위: 원)</label>
 						</div>
 					</form>
 				</div>
@@ -90,15 +90,22 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td style="text-align:right;">80,000,000</td>
-								<td style="text-align:right;">350,000,000</td>
-								<td style="text-align:right;">150,000,000</td>
-								<td class="center">자산</td>
-								<td style="text-align:right;"></td>
-								<td style="text-align:right;">200,000,000</td>
-								<td style="text-align:right;">70,000,000</td>
-							</tr>
+							<c:forEach var="tb" items="${trialBalanceList }">
+								<tr>
+									<td style="text-align:right;">${tb.debtorSpotMonth }</td>
+									<td style="text-align:right;">${tb.debtorTotal }</td>
+									<td style="text-align:right;">
+										<c:if test="${tb.balanceType eq 'D'}">${tb.debtorTotal - tb.creditTotal}</c:if>
+									</td>
+									<td class="center">${tb.accountName }</td>
+									<td style="text-align:right;">
+										<c:if test="${tb.balanceType eq 'C'}">${tb.creditTotal - tb.debtorTotal}</c:if>
+									</td>
+									<td style="text-align:right;">${tb.creditTotal }</td>
+									<td style="text-align:right;">${tb.creditSpotMonth }</td>
+								</tr>
+							</c:forEach>
+
 							<tr>
 								<td style="text-align:right;">80,000,000</td>
 								<td style="text-align:right;">320,000,000</td>
@@ -131,9 +138,15 @@
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
-$(function(){
-	$(".chosen-select").chosen();
-});
+	$(function(){
+		$(".chosen-select").chosen();
+
+		$('#search-btn').on('click', trialBalanceSearch)
+	});
+
+	function trialBalanceSearch(event) {
+		console.log('hahaha');
+	}
 </script>
 </body>
 </html>

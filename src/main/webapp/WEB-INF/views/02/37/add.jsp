@@ -7,8 +7,8 @@
 <html lang="ko">
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
-
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
 <style>
 #sample-table-1 tr td {
@@ -28,9 +28,6 @@
 }
 </style>
 <script>
-	
-</script>
-<script>
 	cnt = 2;
 	ctg_cnt = 3;
 	function add_row() {
@@ -46,10 +43,11 @@
 		cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" ></td>';
 		cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" ></td>';
 		cell4.innerHTML = '<td><input type="text" id="amount'+cnt+'" ></td>';
-		cell5.innerHTML = '<td><input type="text" id="supply-value'+cnt+'" onkeyup="sum_allsupply_alltax();"></td>';
+		cell5.innerHTML = '<td><input type="text" id="supply-value' + cnt
+				+ '" onkeyup="sum_allsupply_alltax();"></td>';
 		cell6.innerHTML = '<td><input type="text" id="tax-value'+cnt+'" ></td>';
 		cnt++;
-	
+
 	}
 
 	function delete_row() {
@@ -58,24 +56,61 @@
 			return;
 		} else {
 			cnt--
-			table.deleteRow(table.rows.length - 1); // 하단부터 삭제
+			table.deleteRow(table.rows.length - 1);
 		}
 	}
-	
-	function sum_allsupply_alltax(){
+
+	function sum_allsupply_alltax() {
 		var total_sum = 0;
-		for(var i = 1 ; i < cnt ; i++){
+		for (var i = 1; i < cnt; i++) {
 			var sum = 0;
-			var supply_value = document.getElementById('supply-value'+i).value;
-			var amount = document.getElementById('amount'+i).value;
-			sum = supply_value*amount;
-			document.getElementById('tax-value'+i).value = sum * 0.1;
-			total_sum = total_sum + supply_value*amount;
+			var supply_value = document.getElementById('supply-value' + i).value;
+			var amount = document.getElementById('amount' + i).value;
+			sum = supply_value * amount;
+			document.getElementById('tax-value' + i).value = sum * 0.1;
+			total_sum = total_sum + supply_value * amount;
 		}
 		document.getElementById('form-field-14').value = total_sum;
 		document.getElementById('form-field-15').value = total_sum * 0.1;
-		
-		
+
+	}
+
+	function load_customer_imfo() {
+		var customer_code = document.getElementById("company-name").value;
+		var deposit_no;
+		alert(customer_code);
+		if (customer_code == "") {
+			$("#customer-name").val("");
+			$("#customer-address").val("");
+			$("#conditions").val("");
+			$("#items").val("");
+			$("#customer-no").val("");
+			$("#deposit-no").val("");
+			$("#deposit-host").val("");
+			$("#bank-code").val("");
+			$("#bank-name").val("");
+		} else {
+			<c:forEach items="${customerList }" var="list" varStatus="status">
+			if (customer_code == "${list.no }") {
+				$("#customer-name").val("${list.ceo}");
+				$("#customer-address").val("${list.address}");
+				$("#conditions").val("${list.conditions}");
+				$("#items").val("${list.item}");
+				$("#customer-no").val("${list.no}");
+
+				deposit_no = "${list.depositNo }";
+				alert(deposit_no);
+			}
+			</c:forEach>
+			<c:forEach items="${customerBankList }" var="list" varStatus="status">
+			if (deposit_no == "${list.depositNo}") {
+				$("#deposit-no").val("${list.depositNo}");
+				$("#deposit-host").val("${list.depositHost}");
+				$("#bank-code").val("${list.bankCode}");
+				$("#bank-name").val("${list.bankName}");
+			}
+			</c:forEach>
+		}
 	}
 </script>
 </head>
@@ -100,90 +135,95 @@
 							<!-- PAGE CONTENT BEGINS -->
 
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-1">승인번호</label>
+								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="form-field-1"
-										name="no" placeholder="승인번호" />
+									<input style="width: 100%" type="text" id="no" name="no"
+										placeholder="승인번호" />
 								</div>
-								<label class="control-label span1" for="form-field-2">관리번호</label>
+								<label class="control-label span1" for="manage-no">관리번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="form-field-2"
+									<input style="width: 100%" type="text" id="manage-no"
 										name="manageNo" placeholder="관리번호" />
 								</div>
 							</div>
 
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-3">등록번호</label>
+								<label class="control-label span1" for="customer-no">등록번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="form-field-3"
+									<input style="width: 100%" type="text" id="customer-no"
 										name="id" placeholder="등록번호" />
 								</div>
-								<label class="control-label span1" for="form-field-4">입금계좌번호</label>
+								<label class="control-label span1" for="deposit-no">입금계좌번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="form-field-4"
+									<input style="width: 100%" type="text" id="deposit-no"
 										name="id" placeholder="입금계좌번호" />
 								</div>
 							</div>
 
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-5">거래처명</label>
+								<label class="control-label span1" for="company-name">거래처명</label>
 								<div class="controls span2">
-									<div style="width: 100%" class="input-append">
-										<input class="date-picker" id="form-field-3" type="text"
-											data-date-format="dd-mm-yyyy"> <span class="add-on">
-											<i class="icon-search"></i>
-										</span>
-									</div>
+									<select id="company-name" style="width: 100%;"
+										onchange="load_customer_imfo();">
+										<option value="">&nbsp;</option>
+
+										<c:forEach items="${customerList }" var="list"
+											varStatus="status">
+											<option id="${status }" value="${list.no }">${list.name }</option>
+
+										</c:forEach>
+
+									</select>
 								</div>
-								<label class="control-label span1" for="form-field-6">성명</label>
+								<label class="control-label span1" for="customer-name">성명</label>
 								<div class="controls span2">
-									<input style="width: 100%" type="text" id="form-field-6"
+									<input style="width: 100%" type="text" id="customer-name"
 										name="id" placeholder="성명" />
 								</div>
-								<label class="control-label span1" for="form-field-7">예금주</label>
+								<label class="control-label span1" for="deposit-host">예금주</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="form-field-7"
+									<input style="width: 100%" type="text" id="deposit-host"
 										name="id" placeholder="예금주" />
 								</div>
 							</div>
 
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-8">주소</label>
+								<label class="control-label span1" for="customer-address">주소</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="form-field-8"
+									<input style="width: 100%" type="text" id="customer-address"
 										name="id" placeholder="주소" />
 								</div>
-								<label class="control-label span1" for="form-field-9">은행</label>
+								<label class="control-label span1" for="bank">은행</label>
 								<div class="controls span5">
 									<div class="controls span1">
-										<input style="width: 100%" type="text" id="form-field-9-1"
+										<input style="width: 100%" type="text" id="bank-code"
 											name="id" placeholder="은행" />
 									</div>
 									<div class="controls span4">
-										<input style="width: 100%" type="text" id="form-field-9-2"
+										<input style="width: 100%" type="text" id="bank-name"
 											name="id" placeholder="은행" />
 									</div>
 
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-10">업태</label>
+								<label class="control-label span1" for="conditions">업태</label>
 								<div class="controls span2">
-									<input style="width: 100%;" type="text" id="form-field-10"
+									<input style="width: 94%;" type="text" id="conditions"
 										name="id" placeholder="업태" />
 								</div>
-								<label class="control-label span1" for="form-field-11">종목</label>
+								<label class="control-label span1" for="items">종목</label>
 								<div class="controls span2">
-									<input style="width: 100%" type="text" id="form-field-11"
-										name="id" placeholder="종목" />
+									<input style="width: 100%" type="text" id="items" name="id"
+										placeholder="종목" />
 								</div>
-								<label class="control-label span1" for="form-field-12">과세구분</label>
+								<label class="control-label span1" for="taxType">과세구분</label>
 								<div class="controls span5">
-									<label style="display: inline"> <input
-										name="taxType" type="radio" value="tax" class="ace"> <span
+									<label style="display: inline"> <input name="taxType"
+										type="radio" value="tax" class="ace"> <span
 										class="lbl">과세</span>
-									</label> <label style="display: inline"> <input
-										name="taxType" type="radio" value="zero" class="ace" checked> <span
+									</label> <label style="display: inline"> <input name="taxType"
+										type="radio" value="zero" class="ace" checked> <span
 										class="lbl">영세</span>
 									</label>
 								</div>
@@ -195,9 +235,10 @@
 							<div class="control-group">
 								<label class="control-label span1" for="form-field-13">일자</label>
 								<div class="controls span2">
-									<div class="input-append"  style="width: 100%">
-										<input id="id-date-picker-1" class="cl-date-picker" name="writeDate" type="text"> <span
-											class="add-on"> <i class="icon-calendar"></i>
+									<div class="input-append" style="width: 100%">
+										<input id="id-date-picker-1" class="cl-date-picker"
+											name="writeDate" type="text"> <span class="add-on">
+											<i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
@@ -244,8 +285,10 @@
 										<td><p>1</p></td>
 										<td><input type="text" id="date1"></td>
 										<td><input type="text" id="item1"></td>
-										<td><input type="text" id="amount1" onkeyup="sum_allsupply_alltax();"></td>
-										<td><input type="text" id="supply-value1" onkeyup="sum_allsupply_alltax();"></td>
+										<td><input type="text" id="amount1"
+											onkeyup="sum_allsupply_alltax();"></td>
+										<td><input type="text" id="supply-value1"
+											onkeyup="sum_allsupply_alltax();"></td>
 										<td><input type="text" id="tax-value1"></td>
 									</tr>
 								</table>
@@ -280,38 +323,39 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
-	$(function() {
-		$.fn.datepicker.dates['ko'] = {
-			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
-			daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
-			daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
-			months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월",
-					"10월", "11월", "12월" ],
-			monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-					"9월", "10월", "11월", "12월" ],
-			today : "Today",
-			clear : "Clear",
-			format : "yyyy-mm-dd",
-			titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart : 0
-		};
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+				days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
+				daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
+				daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
+				months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+						"9월", "10월", "11월", "12월" ],
+				monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+						"9월", "10월", "11월", "12월" ],
+				today : "Today",
+				clear : "Clear",
+				format : "yyyy-mm-dd",
+				titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
+				weekStart : 0
+			};
 
-		$('#cl-ym-date-picker').datepicker({
-			maxViewMode : 4,
-			minViewMode : 1,
-			language : 'ko'
-		}).next().on(ace.click_event, function() {
-			$(this).prev().focus();
-		});
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode : 4,
+				minViewMode : 1,
+				language : 'ko'
+			}).next().on(ace.click_event, function() {
+				$(this).prev().focus();
+			});
 
-		$('.cl-date-picker').datepicker({
-			language : 'ko'
-		}).next().on(ace.click_event, function() {
-			$(this).prev().focus();
-		});
-	})
-</script>
+			$('.cl-date-picker').datepicker({
+				language : 'ko'
+			}).next().on(ace.click_event, function() {
+				$(this).prev().focus();
+			});
+		})
+	</script>
 </body>
 </html>

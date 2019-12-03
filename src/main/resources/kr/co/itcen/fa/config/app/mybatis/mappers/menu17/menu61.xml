@@ -11,6 +11,13 @@
 		;
 	</update>
 	
+	<select id="selectEmptyTrialBalance" resultType="trialBalance17Vo">
+		select	no as account_no
+		  from	tb_account
+		 order	by no
+		;
+	</select>
+	
 	<insert id="insertTrialBalance" parameterType="trialBalance17Vo">
 		insert	into tb_trial_balance(
 		    closing_date_no
@@ -33,5 +40,25 @@
 			select last_insert_id()
 		</selectKey>
 	</insert>
+	
+	
+	<select id="testStatementData" resultType="ts17Vo">
+		select	
+			v.no as no
+		    , a.no as account_no
+		    , a.name as account_name
+		    , v.reg_date as reg_date
+		    , i.amount as amount
+		    , i.amount_flag as amount_flag
+		    , a.parent1 as parent1
+		    , a.parent2 as parent2
+		    , a.parent3 as parent3
+		    , a.parent4 as parent4
+		    , a.parent5 as parent5
+		  from	tb_vouchermanager_test as v
+		  join	tb_item_test as i on v.no = i.voucher_no
+		  join	tb_account as a on a.no = i.account_no
+		;
+	</select>
 	
 </mapper>

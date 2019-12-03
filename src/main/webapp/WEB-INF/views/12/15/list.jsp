@@ -8,6 +8,9 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+	div#invalid {display: none;}
+</style>
 </head>
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -46,11 +49,17 @@
 		});
 		
 		$("#btn-add").on("click", function(){
-			$("#form-customer").submit();
+			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+			checkNo();
 		});
 		
 		$("#btn-select").on("click", function(){
 			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?no="+$("#no").val();
+		});
+		
+		$("#btn-update").on("click", function(){
+			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/modify");
+			checkNo();
 		});
 		
 		$("#customer-table tr.rows").on("click", function(event){
@@ -61,22 +70,24 @@
 			var name = td.eq(2).text();
 			var ceo = td.eq(3).text();
 			var corporationNo = td.eq(4).text();
-			var zipCode = td.eq(5).text();
-			var address = td.eq(6).text();
-			var detailAddress = td.eq(7).text();
-			var phone = td.eq(8).text();
-			var conditions = td.eq(9).text();
-			var item = td.eq(10).text();
-			var openDate = td.eq(11).text();
-			var jurisdictionOffice = td.eq(12).text();
-			var managerName = td.eq(13).text();
-			var managerEmail = td.eq(14).text();
-			var depositNo = td.eq(15).text();
-			var depositHost = td.eq(16).text();
-			var bankCode = td.eq(17).text();
-			var bankName = td.eq(18).text();
+			var addressAll = td.eq(5).text();
+			var zipCode = addressAll.substring(addressAll.indexOf("(")+1, addressAll.indexOf(")"));
+			var address = addressAll.substring(0, addressAll.indexOf("(")-1);
+			var detailAddress = addressAll.substring(addressAll.indexOf(")")+2);
+			var phone = td.eq(6).text();
+			var conditions = td.eq(7).text();
+			var item = td.eq(8).text();
+			var openDate = td.eq(9).text();
+			var jurisdictionOffice = td.eq(10).text();
+			var managerName = td.eq(11).text();
+			var managerEmail = td.eq(12).text();
+			var depositNo = td.eq(13).text();
+			var depositHost = td.eq(14).text();
+			var bankCode = td.eq(15).text();
+			var bankName = td.eq(16).text();
 			
 			$("#no").val(no);
+			$("#preNo").val(no);
 			$("#name").val(name);
 			$("#ceo").val(ceo);
 			$("#corporationNo").val(corporationNo);
@@ -95,7 +106,55 @@
 			$("#bankCode").val(bankCode);
 			$("#bankName").val(bankName);
 		});
+		
+		$("#btn-delete").on("click", function(){
+			var checkArr = [];
+			$("#customer-table input[type=checkbox]:checked").each(function(i) {
+		        checkArr.push($(this).closest("td").next().text());
+		    });
+			$.ajax({
+				url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+				type: "post",
+				data: {
+		            checkNoArr: checkArr
+		        },
+		        success: function(response) {
+		        	//location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
+				},
+				error: function(xhr, error) {
+					console.error("error:"+error);
+				}
+			});	
+		});
 	})
+	
+	function checkNo() {
+		if($("#no").val() == $("#preNo").val()) {
+			$("#form-customer").submit();
+			return;
+		}
+		$.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo?no="+$("#no").val(),
+			type: "get",
+			dataType: "json",
+			contentType:"application/json;charset=UTF-8",
+			success: function(response) {
+				if(response.result == "fail") {
+					console.error(response.message);
+					return;
+				}
+				if(response.data == true) {
+					$("#invalid").show();
+				} else {
+					$("#form-customer").submit();
+				}
+			},
+			error: function(xhr, error) {
+				console.error("error:"+error);
+			}
+		});	
+		
+	}
 	
 	function execDaumPostcode() {
         new daum.Postcode({
@@ -125,10 +184,11 @@
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('zip-code').value = data.zonecode;
+                document.getElementById('zipCode').value = data.zonecode;
                 document.getElementById("address").value = addr;
                 // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("detail-address").focus();
+                document.getElementById("detailAddress").focus();
+                document.getElementById("detailAddress").value = "";
             }
         }).open();
     }
@@ -156,6 +216,10 @@
 										<label class="control-label form-field-1">사업자번호</label>
 										<div class="controls">
 											<input class="span6" type="text" id="no" name="no">
+											<input class="span6" type="hidden" id="preNo" name="preNo">
+											<div id="invalid">
+												중복된 사업자번호 입니다.
+											</div>
 										</div>
 									</div>
 									<div class="control-group">

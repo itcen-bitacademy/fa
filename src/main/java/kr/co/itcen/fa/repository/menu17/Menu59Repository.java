@@ -6,7 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.itcen.fa.vo.menu17.AccountManagement;
+import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
 /**
  * @작성자:	이성훈
@@ -21,31 +22,30 @@ public class Menu59Repository {
 	private SqlSession sqlSession;
 	
 	//계정과목 저장
-	public Boolean insert(AccountManagement vo) {
+	public Boolean insert(AccountManagementVo vo) {
 		int count = sqlSession.insert("menu59.insert",vo);
 		return count == 1;	
 	}
 	
-	//계정과목 처음 조회(대차대조표 출력)
-	public List<AccountManagement> getAllList(){
-				
-		return sqlSession.selectList("menu59.getAllList");
+
+	//계정과목 조회
+	public List<AccountManagementVo> getList(Menu17SearchForm menu17SearchForm){
+	
+		return sqlSession.selectList("menu59.getList",menu17SearchForm);
 	}
 
-	//계정과목 선택조회
-	public List<AccountManagement> getList(AccountManagement vo){
-				
-		return sqlSession.selectList("menu59.getList",vo);
-	}
-	
+	//계정과목 조회 개수
+	public int selectCount(AccountManagementVo vo) {
+		return sqlSession.selectOne("menu59.selectCount",vo);
+	}	
 	//계정과목 셀렉트 박스에 대한 데이터 출력
-	public List<AccountManagement> getAllAccountList(){
+	public List<AccountManagementVo> getAllAccountList(){
 		
 		return sqlSession.selectList("menu59.getAllAccountList");
 	}
 
 	//계정과목 수정
-	public Boolean update(AccountManagement vo) {
+	public Boolean update(AccountManagementVo vo) {
 		int count = sqlSession.update("menu59.accountUpdate",vo);
 		return count == 1;	
 	}		

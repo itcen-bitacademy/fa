@@ -9,6 +9,8 @@ public class TrialBalanceVo {
 	private Long no;				// 번호
 	private Long closingDateNo;		// 마감일 번호
 	private Long accountNo;			// 계정코드
+	private String accountName;		// 계정명
+	private String balanceType;		// 차변대변 구분
 	private Long debtorTotal;		// 차변 합계
 	private Long creditTotal;		// 대변 합계
 	private Long debtorSpotMonth;	// 당월 차변 합계
@@ -17,7 +19,6 @@ public class TrialBalanceVo {
 	private Date insertDay;			// 등록일
 	private String updateUserid;	// 수정자
 	private Date updateDay;			// 수정일
-	
 	
 	@Override
 	public String toString() {
@@ -28,6 +29,18 @@ public class TrialBalanceVo {
 	}
 	
 	
+	public String getAccountName() {
+		return accountName;
+	}
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+	public String getBalanceType() {
+		return balanceType;
+	}
+	public void setBalanceType(String balanceType) {
+		this.balanceType = balanceType;
+	}
 	public Long getNo() {
 		return no;
 	}

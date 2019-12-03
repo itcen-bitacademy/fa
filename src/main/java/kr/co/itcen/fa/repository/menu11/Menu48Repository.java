@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
 
@@ -64,5 +65,10 @@ public class Menu48Repository {
 		}
 		int count = sqlSession.update("menu48.delete",list);
 		return count>=1;
+	}
+
+	public List<SectionVo> selectSection() {
+		
+		return sqlSession.selectList("menu48.selectsection");
 	}
 }

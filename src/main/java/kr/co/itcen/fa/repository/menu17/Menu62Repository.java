@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.TrialBalanceVo;
 
 /**
@@ -25,8 +27,8 @@ public class Menu62Repository {
 	 * 
 	 * 결산일별 시산표 데이터 조회
 	 */
-	public List<TrialBalanceVo> selectTrialBalanceByClosingDateNo(TrialBalanceVo trialBalanceVo) {
-		return sqlSession.selectList("menu62.selectTrialBalanceByClosingDateNo", trialBalanceVo);
+	public List<TrialBalanceVo> selectTrialBalanceByClosingDateNo(Menu17SearchForm menu17SearchForm) {
+		return sqlSession.selectList("menu62.selectTrialBalanceByClosingDateNo", menu17SearchForm);
 	}
 	
 	
@@ -36,5 +38,14 @@ public class Menu62Repository {
 	 */
 	public int deleteTrialBalanceByClosingDateNo(TrialBalanceVo trialBalanceVo) {
 		return sqlSession.delete("menu62.deleteTrialBalanceByClosingDateNo", trialBalanceVo);
+	}
+	
+	
+	/**
+	 * 
+	 * 결산완료된 마감일자 조회
+	 */
+	public List<ClosingDateVo> selectAllClosedDate() {
+		return sqlSession.selectList("menu62.selectAllClosedDate");
 	}
 }

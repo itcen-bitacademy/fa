@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu17.Menu59Service;
-import kr.co.itcen.fa.vo.menu17.AccountManagement;
+import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 import kr.co.itcen.fa.vo.UserVo;
 
 /**
@@ -35,23 +35,51 @@ public class Menu59Controller {
 	@Autowired
 	private Menu59Service menu59Service;
 	
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String getAllList(@ModelAttribute AccountManagement vo,
-						     Model model) {
+	
+	//재무제표 계정관리 조회
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" })
+	public String list(@ModelAttribute AccountManagementVo accountManagement,
+					  @RequestParam(value = "accountUsedyear", defaultValue = "2019") String accountUsedyear,
+					  @RequestParam(value = "accountOrder", defaultValue = "") Long accountOrder,
+					  @RequestParam(value = "selectedAccountStatementType", defaultValue = "B") String type,
+					  @RequestParam(value = "selectedAccount", defaultValue = "") Long accountNo,
+					  @RequestParam(defaultValue = "1") int page,
+					  Model model,
+					  HttpSession session) {
 		
-		List<AccountManagement> tableList = menu59Service.getAllList();
-		List<AccountManagement> accountList = menu59Service.getAllAccountList();
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
-		model.addAttribute("tableList", tableList);
-		model.addAttribute("accountList", accountList);
+		if(authUser == null) {
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		}
+
+		//조회할 값들 셋팅
+		accountManagement.setAccountUsedyear(accountUsedyear);
+		accountManagement.setAccountStatementType(type);
+		accountManagement.setInsertUserid(authUser.getName());		
+		if(accountNo != null) {
+			accountManagement.setAccountNo(accountNo);
+		}
+
+		System.out.println(accountManagement);
+
+		//input부분 셋팅
+		model.addAttribute("accountUsedyear", accountUsedyear);
+		model.addAttribute("accountOrder", accountOrder);
+		model.addAttribute("selectedAccountStatementType", type);
+		model.addAttribute("selectedAccount", accountNo);
+		model.addAttribute("accountList", menu59Service.getAllAccountList());
+		
+		//테이블부분 셋팅
+		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page));
+		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
-
 	//재무제표 계정관리 저장
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String add(@ModelAttribute AccountManagement accountManagement,
+	public String add(@ModelAttribute AccountManagementVo accountManagement,
 					  @RequestParam("selectedAccountStatementType") String type,
 					  @RequestParam("selectedAccount") Long accountNo,
 					  HttpSession session) {
@@ -76,7 +104,7 @@ public class Menu59Controller {
 	
 	//재무제표 계정관리 수정
 	@RequestMapping(value="/" + SUBMENU + "/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute AccountManagement accountManagement,
+	public String update(@ModelAttribute AccountManagementVo accountManagement,
 						 @RequestParam("selectedAccountStatementType") String type,
 						 @RequestParam("selectedAccount") Long accountNo,
 						 HttpSession session) {
@@ -102,7 +130,7 @@ public class Menu59Controller {
 	
 	//재무제표 계정관리 삭제
 	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
-	public String delete(@ModelAttribute AccountManagement accountManagement,
+	public String delete(@ModelAttribute AccountManagementVo accountManagement,
 					  	 HttpSession session) {
 
 	UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -116,35 +144,6 @@ public class Menu59Controller {
 	return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
-	
-	//재무제표 계정관리 조회
-	@RequestMapping(value="/" + SUBMENU + "/getList", method=RequestMethod.POST)
-	public String getList(@ModelAttribute AccountManagement accountManagement,
-					  @RequestParam("selectedAccountStatementType") String type,
-					  @RequestParam("selectedAccount") Long accountNo,
-					  Model model,
-					  HttpSession session) {
-		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser == null) {
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
 
-		//조회할 값들 셋팅
-		accountManagement.setAccountStatementType(type);
-		accountManagement.setAccountNo(accountNo);
-		accountManagement.setInsertUserid(authUser.getName());
-			
-		System.out.println(accountManagement);
-		
-		List<AccountManagement> tableList =  menu59Service.getList(accountManagement);
-		List<AccountManagement> accountList = menu59Service.getAllAccountList();
-
-		model.addAttribute("tableList", tableList);
-		model.addAttribute("accountList", accountList);
-		
-		return MAINMENU + "/" + SUBMENU + "/add";
-	}
 	
 }

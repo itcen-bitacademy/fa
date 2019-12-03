@@ -27,14 +27,16 @@ public class Menu16Service {
 		menu16Repository.test();
 	}
 
-	public DataResult<BankVo> list(int page) {
+	public DataResult<BankVo> list(String code, int page) {
 		DataResult<BankVo> dataResult = new DataResult<BankVo>();
-		int totalCnt = menu16Repository.selectBankListCount();
-	
+		
+		int totalCnt = menu16Repository.selectBankListCount(code);
+		System.out.println(totalCnt);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		dataResult.setPagination(pagination);
-		List<BankVo> list = menu16Repository.list(pagination);
+		List<BankVo> list = menu16Repository.list(code, pagination);
 		dataResult.setDatas(list);
+		
 		return dataResult;
 	}
 
@@ -52,11 +54,11 @@ public class Menu16Service {
 		
 	}
 
-	public DataResult<BankVo> selectBankList(int page) {
-		DataResult<BankVo> dataResult = new DataResult<>();
+	public DataResult<BankVo> selectBankList(int page, String code) {
+		DataResult<BankVo> dataResult = new DataResult<BankVo>();
 		
 		// 전체 게시글을 읽어서 그 수를 totalCount라는 변수에 넣어주게됨.
-		int totalCount = menu16Repository.selectBankListCount();
+		int totalCount = menu16Repository.selectBankListCount(code);
 		
 		// PaginationUtil 객체를 생성한후 그 인자로써, page <- Controller에 있는 default 값 = 1
 		//파라미터로 받은 page 
@@ -73,4 +75,6 @@ public class Menu16Service {
 		
 		return dataResult;
 	}
+
+	
 }

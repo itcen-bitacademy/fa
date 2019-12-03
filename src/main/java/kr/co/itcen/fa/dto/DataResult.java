@@ -13,7 +13,7 @@ import kr.co.itcen.fa.util.PaginationUtil;
  */
 public class DataResult<T> {
 	private List<T> datas;
-	private T data;
+	private T data; 
 	
 	PaginationUtil pagination;
 	

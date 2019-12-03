@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu17.Menu62Repository;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.TrialBalanceVo;
 
 
@@ -25,8 +27,8 @@ public class Menu62Service {
 	 * 
 	 * 결산일별 시산표 데이터 조회
 	 */
-	public List<TrialBalanceVo> selectTrialBalanceByClosingDateNo(TrialBalanceVo trialBalanceVo) {
-		return menu62Repository.selectTrialBalanceByClosingDateNo(trialBalanceVo);
+	public List<TrialBalanceVo> selectTrialBalanceByClosingDateNo(Menu17SearchForm menu17SearchForm) {
+		return menu62Repository.selectTrialBalanceByClosingDateNo(menu17SearchForm);
 	}
 	
 	
@@ -37,5 +39,13 @@ public class Menu62Service {
 	public int deleteTrialBalanceByClosingDateNo(TrialBalanceVo trialBalanceVo) {
 		return menu62Repository.deleteTrialBalanceByClosingDateNo(trialBalanceVo);
 	}
+
 	
+	/**
+	 * 
+	 * 결산완료된 마감일자 조회
+	 */
+	public List<ClosingDateVo> selectAllClosedDate() {
+		return menu62Repository.selectAllClosedDate();
+	}
 }

@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu13Service;
@@ -35,8 +35,9 @@ public class Menu13Controller {
 	@Autowired
 	private Menu13Service menu13Service;
 	
+	
 	@RequestMapping(value = {"", "/" + SUBMENU}, method=RequestMethod.GET )
-	public String index(@ModelAttribute UserVo authUser, Model model) {
+	public String index(@SessionAttribute("authUser") UserVo authUser, Model model) {
 		List<CustomerVo> customerlist = menu13Service.getCustomerList();
 		List<PurchaseitemVo> itemlist = menu13Service.getItemList();
 		
@@ -45,9 +46,14 @@ public class Menu13Controller {
 		
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}
+	
 	@RequestMapping(value = {"/" + SUBMENU}, method=RequestMethod.POST)
-	public String index(SalesVo salesVo, 
-			int quantity[], String itemCode[], String itemName[], Long supplyValue[], Long taxValue[], int number[]) {
+	public String index(@SessionAttribute("authUser") UserVo authUser, 
+							SalesVo salesVo, 
+							int quantity[], String itemCode[], String itemName[], 
+							Long supplyValue[], Long taxValue[], int number[]) {
+		
+		salesVo.setInsertUserid(authUser.getId()); //세션 ID vo set
 		
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		
@@ -60,6 +66,7 @@ public class Menu13Controller {
 			vo.setSupplyValue(supplyValue[i]);
 			vo.setTaxValue(taxValue[i]);
 			vo.setNumber(number[i]);
+			vo.setSellPrice(supplyValue[i]+taxValue[i]);
 			list.add(vo);
 		}
 		

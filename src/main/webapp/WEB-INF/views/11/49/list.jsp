@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .radio {
@@ -70,36 +72,39 @@ form {
 					<!-- PAGE CONTENT BEGINS -->
 					<div>
 						<div>
-						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+						<form class="form-horizontal">
 							<table style="width:100%;">
 								<tbody>
 								<tr>
-									<td class="first-column"><h4>차입일자 ~ 만기일자</h4></td>
+									<td class="first-column"><h4>차입일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="date-range-picker" id="id-date-range-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
-				                           </div>
+				                           
+				                         
+				                         </div>
 									</td>
+									
 									<td class="third-column"><h4>이자지급방식</h4></td>
 									<td>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="Y"/>
 												<span class="lbl">년</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="M"/>
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
+												<input name="intPayWay" type="radio" class="ace" value="E"/>
 												<span class="lbl">만기</span>
 											</label>
 										</div>
@@ -109,7 +114,20 @@ form {
 										<input type="text" name="bankName"/>
 									</td>
 									<td class="sixth-column">
-										<button type="button" class="btn">조회</button>
+										<button type="submit" class="btn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+				
+									</td>
+								</tr>
+								<tr>
+								<td class="first-column"><h4>만기일자</h4></td>
+									<td class="second-column">
+				                        <div class="row-fluid input-prepend">
+				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <span class="add-on">
+				                              <i class="icon-calendar"></i>
+				                           </span>
+				                         
+				                         </div>
 									</td>
 								</tr>
 								</tbody>
@@ -174,49 +192,97 @@ form {
 						</tr>
 					</thead>
 					<tbody>
+					<c:forEach items="${dataResult.datas }" var="ltermvo">
 						<tr>
 							<td class="center"><label class="pos-rel">
 							<input type="checkbox" class="ace" /> <span class="lbl"></span>
 							</label></td>
-							<td class="center">2019112701</td>
-							<td>GS칼텍스는...</td>
-							<td class="center">008-국내은행</td>
-							<td class="center">70,000,000,000</td>
-							<td class="center">월</td>
-							<td class="center">2019-10-29 ~ 2029-10-29</td>
-							<td class="center">1.99%</td>
-							<td class="center">월</td>
-							<td class="center">홍길동</td>
-							<td class="center">010-1234-5678</td>
-							<td class="center">0010987</td>
-							<td class="center">한국은행</td>
+							<td class="center">${ltermvo.code}</td>
+							<td>${ltermvo.name}</td>
+							 <c:choose>
+										<c:when test="${ltermvo.majorCode eq '001'}"><td class="center">국내은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '002'}"><td class="center">저축은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '003'}"><td class="center">신용금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '004'}"><td class="center">새마을금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
+										<c:otherwise><td class="center">증권</td></c:otherwise>
+							</c:choose>	
+							<td class="center">${ltermvo.debtAmount}</td>
+							<c:choose>
+										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
+										<c:otherwise><td class="center">만기</td></c:otherwise>
+							</c:choose>		
+							<td class="center">${ltermvo.debtExpDate}</td>
+							<td class="center">${ltermvo.intRate}%</td>
+							<c:choose>
+										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
+										<c:otherwise><td class="center">만기</td></c:otherwise>
+							</c:choose>	
+							<td class="center">${ltermvo.mgr}</td>
+							<td class="center">${ltermvo.mgrCall}</td>
+							<td class="center">${ltermvo.bankCode}</td>
+							<td class="center">${ltermvo.depositNo}</td>
 						</tr>
+					</c:forEach>
 					</tbody>
 				</table>	
 				
 				<div class="pagination">
-					<ul>
+				<ul>
+				<c:choose>
+					<c:when test="${dataResult.pagination.prev }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
+						<i class="icon-double-angle-left"></i></a></li>
+					</c:when>
+					<c:otherwise>
 						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-					</ul>
-				</div>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+					<c:choose>
+						<c:when test="${pg eq dataResult.pagination.page }">
+						<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg }</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg }</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+
+							<c:choose>
+								<c:when test="${dataResult.pagination.next }">
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
+				</ul>
+			</div>
 				
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+  <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+  <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
+<script>
 
+$(function() {
+	  $(".chosen-select").chosen();
+		
+		$('.date-picker').datepicker().next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+});
+
+
+
+</script>
 
 
 </body>
