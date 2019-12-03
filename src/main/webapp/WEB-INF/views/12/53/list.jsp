@@ -27,8 +27,8 @@
 				</div>
 				<!-- /.page-header -->
 				
-				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 				<div class="row-fluid">
+				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 					<!-- head  -->
 					
 					<div class="span12">
@@ -57,9 +57,12 @@
 						<!-- Line -->
 						<div class="hr hr-18 dotted"></div>
 					</div>
+					</form>
+				</div>
 					<!-- head end  -->
 					
 					<!-- middle  -->
+				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 					<div class="row-fluid">
 						<div class="span12">
 								<div class="form-horizontal">
@@ -114,14 +117,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">수량합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="totalQuantity" name="totalQuantity" readonly>
+												<input class="span5" type="text" id="totalQuantity" value="0" name="totalQuantity" readonly>
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">공급가액합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="totalSupplyValue" name="totalSupplyValue" readonly>
+												<input class="span5" type="text" id="totalSupplyValue" value="0" name="totalSupplyValue" readonly>
 											</div>
 										</div>
 									</div>
@@ -139,7 +142,7 @@
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">부가세합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="totaltaxValue" name="totaltaxValue" readonly>
+												<input class="span5" type="text" id="totaltaxValue" name="totaltaxValue" value="0" readonly>
 											</div>
 										</div>
 									</div>
@@ -151,7 +154,7 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서발행일</label>
 											<div class="controls">
-												<input class="span5" type="text" id="write_date" name="write_date" data-date-format="yyyy-mm-dd" readonly>
+												<input class="span9" type="text" id="write_date" name="write_date" readonly>
 											</div>
 										</div>
 	
@@ -180,8 +183,8 @@
 										<div class="span6">
 												<label class="control-label" for="form-field-1">출고일자</label>
 												<div class="controls">
-													<input class="span5" type="text" readonly id="releaseDate" name="releaseDate" value="${list[0].releaseDate }">
-												</div>
+													<input class="span8" type="text" readonly id="releaseDate" name="releaseDate" value="${list[0].releaseDate }">
+										</div>
 										</div>
 									</div>
 								</div>
@@ -204,12 +207,20 @@
 											</div>
 										</div>
 									</div>
+									<div class="form-horizontal">
+									<div class="span6">
+										<div class="control-group">
+											<label class="control-label form-field-1">비고</label>
+										<div class="controls">
+											<input class="span9" type="text" id="voucherUse" name="voucherUse" value="비고">
+										</div>
+										</div>
+									</div>
+									</div>
+									
 								<!-- PAGE CONTENT ENDS -->
 								<!-- /.span -->
-							
 							<!-- /.row-fluid -->
-			
-						</div>
 					</div>
 					<div class="hr hr-18 dotted"></div>
 					<div class="span6">
@@ -247,9 +258,9 @@
 										<td>${status.count}</td>
 										<td>${list.itemCode}</td>
 										<td>${list.itemName}</td>
-										<td id="quantity" >${list.quantity}</td>
-										<td id="supplyValue"  >${list.supplyValue}</td>
-										<td id="taxValue" >${list.taxValue}</td>
+										<td><input id="quantity" readonly value="${list.quantity}" style="text-align: center;"></td>
+										<td><input id="supplyValue" readonly value="${list.supplyValue}" style="text-align: center;"></td>
+										<td><input id="taxValue" readonly value="${list.taxValue}" style="text-align: center;"></td>
 									</tr>
 								</c:forEach>
 								</tbody>
@@ -276,7 +287,7 @@
 				<!-- /.main-content -->
 			</div>
 		</div>
-	</div>
+	
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
@@ -313,7 +324,20 @@
 			});
 			
 			$(".chosen-select").chosen();
+			
+			checkFlag();
+			showTime();
 		})
+		
+		function showTime(){
+			var currentDate = new Date();
+
+			var msg = currentDate.getFullYear()+ "-" + (currentDate.getMonth()+1) + "-" +
+			currentDate.getDate() + " " + currentDate.getHours() + ":" + currentDate.getMinutes() +":"+
+			currentDate.getSeconds();
+			
+			$("#write_date").val(msg);
+		}
 		
 		function checkFlag(){
             if($("#flag").val()=="true"){
@@ -324,10 +348,11 @@
         }
 		
 		var sumData = {
+				
         	addQuantity: function(){
         		var sum = 0;
         		for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-        			sum = sum + Number($("#quantity"+i).val());
+        			sum = sum + Number($("#quantity").val());
         			$("#totalQuantity").val(sum);
         		}
         	},
@@ -335,14 +360,14 @@
         	addSupplyValue: function(){
 				var sum = 0;
 				for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-					sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val());
+					sum = sum + Number($("#quantity").val())*Number($("#supplyValue").val());
 					$("#totalSupplyValue").val(sum);
 				}
 			},
 			addTaxValue: function(){
         		var sum = 0;
         		for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-        			sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val());
+        			sum = sum + Number($("#quantity").val())*Number($("#taxValue").val());
         			$("#totaltaxValue").val(sum);
         		}
         	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +62,13 @@ public class Menu53Controller {
 		
 		System.out.println(list.toString());
 		System.out.println("이벤트 발생");
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
+	public String add(SellTaxbillVo selltaxbillvo) {
+		System.out.println("추가 이벤트 발생");
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
