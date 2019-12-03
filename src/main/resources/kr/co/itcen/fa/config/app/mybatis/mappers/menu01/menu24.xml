@@ -3,56 +3,24 @@
 <mapper namespace="menu24">
 	<!-- Test -->
 	
-	<select id="selectAllCount" resultType="int" parameterType="cardvo">
+	<select id="selectAllCount" resultType="int" parameterType="1cardvo">
 		select count(*)
-		  from tb_cardmanagement
-		 <if  test="deleteFlag!=null and deleteFlag.equals('N')">		    
-			<![CDATA[
-				where delete_flag= "N"
-			]]>
-		</if>
-		 <if  test="deleteFlag!=null and deleteFlag.equals('Y')">		    
-			<![CDATA[
-				where delete_flag= "Y"
-			]]>
-		</if>
-		 <if  test="inputperiodstart!=null and !inputperiodstart.equals('')">		    
-			<![CDATA[
-				and insert_day > #{inputperiodstart }
-			]]>
-		</if>
-		<if  test="inputperiodend!=null and !inputperiodend.equals('')">		    
-			<![CDATA[
-				and insert_day > #{inputperiodend }
-			]]>
-		</if>
-		
+		 from	tb_cardmanager
 		
 		
 	</select>
 	
 	
-	<select id="selectAll" resultType="ldebtvo" parameterType="map">
+	<select id="selectAll" resultType="1cardvo" parameterType="map">
 	<![CDATA[
 		select  card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
 				company, abroad, password, deposit_no as depositNo,
 				insert_userid as insertUserId, insert_day as insertDay, 
 				update_userid as updateUserId, update_day as updateDay, 
 				delete_flag as deleteFlag
-		    from tb_l_term_debt
+		   from	tb_cardmanager
 		    where delete_flag= "N"
 	]]>
-	<if test="year.length()>0 ">
-	<![CDATA[
-	and 	date_format(dept_date,'%Y') like concat('%',#{year},'%') 
-	]]>
-	</if>
-	<if test="code.length()>0 ">
-	<![CDATA[
-	and 	code like concat('%',#{code},'%') 
-	]]>
-	</if>
-	limit	#{pagination.pageIndex }, #{pagination.listSize }
 	</select>
 
 </mapper>
