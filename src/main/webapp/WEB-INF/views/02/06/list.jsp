@@ -36,14 +36,14 @@
 					<div class="row-fluid">
 						<div class="span12">
 						
-							<form class="form-horizontal">
+							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">
 							<div class="span4">
 							
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 일 자</label>
 									<div class="controls">
 									<div class="input-append">
-										<input class="cl-date-picker1 input-small" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd">
+										<input class="cl-date-picker1 input-small" id="purchaseDate" type="text" data-date-format="yyyy-mm-dd" name="purchaseDate" value="">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -54,39 +54,37 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">거래처코드</label>
 										<div class=" controls">
-										<select class="chosen-select span1" id="p_code" name="p_code">
-										<option value="10" selected="selected">A123456789</option>
-										<option value="25">B123456789</option>
-										<option value="50">C123456789</option>
-										<option value="100">D123456789</option>
+										<select class="chosen-select span1" id="customerCode" name="customerCode" onchange="setData.customer();">
+										<c:forEach items='${customerList }' var='vo' varStatus='status'>
+											<option value="${vo.no }">${vo.no }</option>
+										</c:forEach>
 										</select>
 										</div>
 							</div>
 					
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">거래처 담당자</label>
-
 									<div class="controls">
-										<input class="input-small" type="text" id="form-field-1" placeholder="" readonly>
+										<input class="input-small" type="text" id="purchaseManager" placeholder="" readonly name="purchaseManager">
 									</div>
 							</div>
-							
+							 
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">세금계산서번호</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="">
+										<input type="text" id="taxbillNo" placeholder="" name="taxbillNo">
 										
 									</div>
 									<div class="controls">
 									<label class="span3">
-											<input name="form-field-radio" type="radio" class="ace">
-											<span class="lbl"> 과세</span>
-										</label>
-										<label class="span3">
-											<input name="form-field-radio" type="radio" class="ace">
-											<span class="lbl"> 비과세</span>
-										</label>
+										<input name="taxType" type="radio" class="ace" value="tax">
+										<span class="lbl"> 과세</span>
+									</label>
+									<label class="span3">
+										<input name="taxType" type="radio" class="ace" value="zero">
+										<span class="lbl"> 비과세</span>
+									</label>
 									</div>
 							</div>
 							</div>
@@ -95,7 +93,7 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 번 호</label>
 									<div class="controls">
-										<input class="input-mini" type="text" id="form-field-1" placeholder="">
+										<input class="input-mini" type="text" id="no" placeholder="" name="no">
 										<span class="btn btn-small">조회</span>
 									</div>
 							</div>
@@ -103,7 +101,7 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">거 래 처 명</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="" readonly>
+										<input type="text" id="customerName" name="customerName" placeholder="" readonly>
 									</div>
 							</div>
 							
@@ -111,7 +109,7 @@
 									<label class="control-label" for="form-field-1">입 고 일 자</label>
 									<div class="controls">
 									<div class="input-append">
-										<input class="cl-date-picker2 input-small" id="id-date-picker-2" type="text" data-date-format="yyyy-mm-dd">
+										<input class="cl-date-picker2 input-small" id="receiptDate" type="text" data-date-format="yyyy-mm-dd" name="receiptDate" value="">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -123,7 +121,7 @@
 									<label class="control-label" for="form-field-1">출 고 일 자</label>
 									<div class="controls">
 									<div class="input-append">
-										<input class="cl-date-picker3 input-small" id="id-date-picker-3" type="text" data-date-format="yyyy-mm-dd">
+										<input class="cl-date-picker3 input-small" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate" value="">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -132,18 +130,19 @@
 							</div>
 							</div>
 							
-							<div class="span1">
+							<div class="span12">
 							<div class="hr hr-18 dotted"></div>
-								<button class="btn btn-info btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
+								<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
 								<button class="btn btn-danger btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
-								<button class="btn btn-warning btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
-								<button class="btn btn-primary btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
-								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">행추가</button>
-								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">행삭제</button>				
+								<button class="btn btn-warning btn-small" type="submit" id="update" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
+								<button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
+								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
+								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
 							</div>
-							</form>
-							<table id="sample-table-1" class="table table-striped table-bordered table-hover">							
-							<thead>
+							
+							<input type="hidden" id="rowCnt" name="rowCnt" value="1">
+							<table id="item-table" class="table table-striped table-bordered table-hover">							
+						
 									<tr>
 										<th class="center">
 											<label>
@@ -158,31 +157,31 @@
 										<th class="center">공급가액</th>
 										<th class="center">부가세</th>
 									</tr>
-								</thead>
-								<tbody>
+								
 								<tr>
 								<td class="center">
 								<label>
-								<input type="checkbox" class="ace">
+								<input type="checkbox" class="ace" value="1" name='check' id="check1">
 								<span class="lbl"></span>
 								</label>
 								</td>
-								<td class="center"><input class="input-mini" type="text" id="form-field-4" placeholder=""></td>
+								<td class="center"><input class="input-mini" type="number" id="number1" placeholder="" name="number"></td>								
+								
 								<td class="center">
-									<select class="chosen-select span1" id="itemCode" name="itemCode">
-									<option value="10" selected="selected">A123456789</option>
-									<option value="25">B123456789</option>
-									<option value="50">C123456789</option>
-									<option value="100">D123456789</option>
+									<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
+									<c:forEach items='${itemList }' var='vo' varStatus='status'>
+										<option value="${vo.no }">${vo.no }</option>
+									</c:forEach>
 									</select>
 								</td>
-								<td class="center"><input class="input-large" type="text" id="form-field-4" placeholder="" readonly></td>	
-								<td class="center"><input class="input-mini" type="text" id="form-field-4" placeholder=""></td>
-								<td class="center"><input class="input-medium" type="text" id="form-field-4" placeholder="" readonly></td>
-								<td class="center"><input class="input-medium" type="text" id="form-field-4" placeholder="" readonly></td>								
-								</tr>
-								</tbody>
+								<td class="center"><input class="input-large" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
+								<td class="center"><input class="input-mini" type="text" id="quantity1" placeholder="" name="quantity" value="0"></td>
+								<td class="center"><input class="input-medium" type="text" id="supplyValue1" placeholder="" name="supplyValue" value="0" readonly></td>
+								<td class="center"><input class="input-medium" type="text" id="taxValue1" placeholder="" name="taxValue" value="0" readonly ></td>															
+								</tr>	
+														
 							</table>
+							</form>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
@@ -238,7 +237,131 @@
 			});
 			
 			$(".chosen-select").chosen();
+			
 		})
+		function add_row() {
+			var table = document.getElementById("item-table");
+			 var row = table.insertRow(table.rows.length); // 하단에 추가
+				var cnt = ((table.rows.length)/2)+0.5;
+				        $("#item-table").append(
+				            		"<tr>" +
+				      		        "<td class='center'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" +
+				      		        "<td class='center'><input class='input-mini' type='number' id='number"+cnt+"' placeholder='' name='number'></td>" +
+				      		        "<td class='center'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
+				      		        
+					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +
+				      		      		"<option value='" + '${vo.no }' + "'> " + '${vo.no }' + "</option>" + 
+				            			"</c:forEach>"+
+				      		      		
+									"</select></td>" + 
+				      		        "<td class='center'><input class='input-large' type='text' id='itemName"+cnt+"' name='itemName' placeholder='' readonly value=''></td>" +
+				      		        "<td class='center'><input class='input-mini' type='text' id='quantity"+cnt+"' name='quantity' placeholder=''  value='0'></td>" +
+				      		        "<td class='center'><input class='input-medium' type='text' id='supplyValue"+cnt+"' name='supplyValue' placeholder='' value='0'readonly></td>" +
+				      			    "<td class='center'><input class='input-medium' type='text' id='taxValue"+cnt+"' name='taxValue' placeholder='' value='0'readonly></td>" +
+				      		       "</tr>"
+				      	);
+				        
+				        document.getElementById("rowCnt").value = cnt;
+				        $(".chosen-select").chosen();
+				        
+				        
+			 }
+		
+		/* function delete_row() {
+            var table = document.getElementById('item-table');
+            var check = document.getElementsByName('check');
+            console.log(check);
+            for(var i=0 ; i<check.length ; i++){
+	            if (check[i].checked==true) {
+	            	console.log($('input:checkbox[name='+check[i]+']:checked').val());
+	            	table.deleteRow($('input:checkbox[name='+check[i]+']:checked').val());
+	            } 
+            }
+        }   */       
+       function delete_row() {
+            var table = document.getElementById('item-table');
+            if (table.rows.length < 3) {
+                return;
+            } else {
+                table.deleteRow(table.rows.length-1); // 하단부터 삭제
+            }
+        }
+		 
+		 var setData = {
+		        	customer: function(){
+		        		var code = $("#customerCode").val();
+		        		<c:forEach items="${customerList }" var="item" varStatus="status">
+		        			if(code=="${item.no }"){
+		        				$("#purchaseManager").val("${item.managerName}");
+		        				$("#customerName").val("${item.name}");
+		        			}
+		                </c:forEach>                
+		        	},
+		        	item : function(selectid){
+		        		var rownum = selectid.substring(selectid.length-1, selectid.length);
+		        		
+		        		var code = $("#"+selectid).val();
+		        		<c:forEach items="${itemList }" var="item" varStatus="status">
+			    			if(code=="${item.no }"){
+			    				$("#itemName"+rownum).val("${item.name}");
+			    				$("#supplyValue"+rownum).val("${item.price}");
+			    				$("#taxValue"+rownum).val(Math.round("${item.price}"*0.1));
+			    			}
+		            	</c:forEach>  
+		        	}
+		        }
+		
+		jQuery(function($) {
+		$("#delete").click(function() {
+			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
+		});
+		
+		$("#update").click(function() {
+			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
+		});
+		
+		$("#input").click(function() {
+			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
+		});
+		});
+		 
+		 $(function() {
+				var $search = $("#search");
+				$search.click(function(event) {
+					
+					var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), number : $("#number1").val() };
+					console.log(vo);
+					event.preventDefault();
+					// ajax 통신
+					$.ajax({
+						url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search",
+						type: "post",
+						dataType: 'json',
+						contentType: 'application/json;charset=utf-8',
+						data: JSON.stringify(vo),
+						success: function(result) {
+							$("#purchaseDate").val(result.purchaseDate);
+							$("#customerCode").val(result.customerCode);
+							$("#purchaseManager").val(result.purchaseManager);
+							$("#customerName").val(result.customerName);
+							$("#receiptDate").val(result.receiptDate);
+							$("#releaseDate").val(result.releaseDate);
+							$("#number").val(result.number);
+							$("#itemCode1").val(result.itemCode);
+							$("#itemName1").val(result.itemName);
+							$("#quantity1").val(result.quantity);
+							$("#supplyValue1").val(result.supplyValue);
+							$("#taxValue1").val(result.taxValue);
+							$("#no").val(result.no);
+						},
+						error: function(xhr, error){
+							console.error("error:"+error);
+						}
+					});
+				});
+		});
+		
+		
 	</script>
 </body>
 </html>
