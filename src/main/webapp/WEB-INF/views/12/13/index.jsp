@@ -92,7 +92,7 @@
 						sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val());
 						$("#totalSupplyValue").val(sum);
 					}
-					this.totalValue();
+					this.totalPrice();
 				},
 				addTaxValue: function(){
         			var sum = 0;
@@ -100,12 +100,12 @@
         				sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val());
         				$("#totaltaxValue").val(sum);
         			}
-        			this.totalValue();
+        			this.totalPrice();
         		},
-        		totalValue: function(){
+        		totalPrice: function(){
         			var tax = Number($("#totaltaxValue").val());
         			var supply = Number($("#totalSupplyValue").val());
-        			$("#totalValue").val(tax+supply);
+        			$("#totalPrice").val(tax+supply);
         		}
         }
         
@@ -148,7 +148,13 @@
 	        }
 	        location.href = "/fa/12/13/"+code;
 	     }
-        
+        function checkFlag(){
+            if($("#flag").val()=="true"){
+            	sumData.addQuantity();
+            	sumData.addSupplyValue();
+            	sumData.addTaxValue();
+            }
+        }
     </script>
 </head>
 
@@ -162,6 +168,7 @@
 
                 <div class="page-header position-relative">
                     <h1 class="pull-left">매출관리</h1>
+                    <input type="hidden" value="${flag }" id="flag">
                 </div>
                 <!-- /.page-header -->
 
@@ -176,7 +183,7 @@
                                     <label class="control-label" for="cl-total-date-picker">매출일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].salesDate }"> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -184,10 +191,10 @@
                                 <div class="control-group">
                                     <label class="control-label" for="customerCode">거래처코드</label>
                                     <div class="controls">
-                                        <select class="chosen-select" id="customerCode" name="role" data-placeholder="거래처코드" name="customerCode" onchange="setData.customer();">
-                                        <option value="">&nbsp;</option>
+                                        <select class="chosen-select" id="customerCode" data-placeholder="거래처코드" name="customerCode" onchange="setData.customer();">
+                                        <option value="${saleslist[0].customerCode }">${saleslist[0].customerCode }(${saleslist[0].customerName })</option>
                                             <c:forEach items="${customerlist }" var="list" varStatus="status">
-                                            <option id="${status }" value="${list.no }">${list.name }(${list.no })</option>
+                                            <option id="${status }" value="${list.no }">${list.no }(${list.name })</option>
                                             </c:forEach>
                                         </select>
                                         <input type="hidden" id="setCustomer" value="">
@@ -196,14 +203,14 @@
                                 <div class="control-group">
                                     <label class="control-label" for="empManager">거래처담당자</label>
                                     <div class="controls">
-                                        <input type="text" id="empManager" name="empManager" placeholder="거래처담당자" readonly>
+                                        <input type="text" id="empManager" name="empManager" placeholder="거래처담당자" value="${saleslist[0].empManager }"readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="cl-total-date-picker">출고일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].releaseDate }"name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -227,7 +234,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="salesNo">매출번호</label>
                                     <div class="controls">
-                                        <input type="text" id="salesNo" name="salesNo" placeholder="매출번호">
+                                        <input type="text" id="salesNo" name="salesNo" value="${saleslist[0].salesNo }"placeholder="매출번호">
                                         <div class="btn-group">
                                             <button class="btn btn-info btn-small" type="button" onclick="javascript:checkNo();">조회</button>
                                         </div>
@@ -236,7 +243,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="customerName">거래처명</label>
                                     <div class="controls">
-                                        <input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly>
+                                        <input type="text" id="customerName" name="customerName" placeholder="거래처명" value="${saleslist[0].customerName }" readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -248,7 +255,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="taxbillNo">세금계산서번호</label>
                                     <div class="controls">
-                                        <input type="text" id="taxbillNo" name="taxbillNo" placeholder="세금계산서번호">
+                                        <input type="text" id="taxbillNo" name="taxbillNo" placeholder="세금계산서번호" value="${saleslist[0].taxbillNo }">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -258,9 +265,9 @@
                                     </div>
                                 </div>                                
                                 <div class="control-group">
-                                    <label class="control-label" for="totalValue">합계금액</label>
+                                    <label class="control-label" for="totalPrice">합계금액</label>
                                     <div class="controls">
-                                        <input type="text" id="totalValue" name="totalPrice" placeholder="합계금액" value="0" readonly>
+                                        <input type="text" id="totalPrice" name="totalPrice" placeholder="합계금액" value="${saleslist[0].totalPrice }" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -303,24 +310,25 @@
                                     <th>공급가액</th>
                                     <th>부가세</th>
                                 </tr>
+                                <c:forEach items="${saleslist }" var="sales" varStatus="status">
                                 <tr>
                                     <td>
-                                        <p>1</p>
-                                        <input type="hidden" value="1" name="number">
-                                    </td>
-                                    <td>
-                                    	<select class="chosen-select" id="itemCode1" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id);">
-                                            <option value="">&nbsp;</option>
+                                        <p>${sales.number }</p>
+                                        <input type="hidden" value="${sales.number }" name="number">
+                                    </td>                                    <td>
+                                    	<select class="chosen-select" id="itemCode${sales.number }" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id);">
+                                            <option value="${sales.itemCode }">${sales.itemCode }</option>
                                             <c:forEach items="${itemlist }" var="list" varStatus="status">
                                             <option value="${list.no }">${list.no }(${list.name })</option>
                                             </c:forEach>
                                         </select>
                                     </td>
-                                    <td><input type="text" id="itemName1" name="itemName" placeholder="품목명"  readonly></td>
-                                    <td><input type="text" id="quantity1" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()"></td>
-                                    <td><input type="text" id="supplyValue1" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()"></td>
-                                    <td><input type="text" id="taxValue1" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()"></td>
+                                    <td><input type="text" id="itemName${sales.number }" name="itemName" placeholder="품목명" value="${sales.itemName }" readonly></td>
+                                    <td><input type="text" id="quantity${sales.number }" name="quantity" placeholder="수량" value="${sales.quantity }" onkeyup="sumData.addQuantity()"></td>
+                                    <td><input type="text" id="supplyValue${sales.number }" name="supplyValue" placeholder="공급가액" value="${sales.supplyValue }" onkeyup="sumData.addSupplyValue()"></td>
+                                    <td><input type="text" id="taxValue${sales.number }" name="taxValue" placeholder="부가세" value="${sales.taxValue }" onkeyup="sumData.addTaxValue()"></td>
                                 </tr>
+                                </c:forEach>
                             </table>
                             <!-- PAGE CONTENT ENDS -->
                         </div>
@@ -362,6 +370,9 @@
             }).next().on(ace.click_event, function() {
                 $(this).prev().focus();
             });
+            
+            setData.customer();
+            checkFlag();
         })
     </script>
 </body>

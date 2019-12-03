@@ -23,6 +23,7 @@ public class SalesVo {
 		this.empManager = vo.getEmpManager();
 		this.releaseDate = vo.getReleaseDate();
 		this.taxbillNo = vo.getTaxbillNo();
+		this.totalPrice = vo.getTotalPrice();
 	}
 	
 	private Long idx; // 번호
@@ -114,7 +115,6 @@ public class SalesVo {
 	public String getItemCode() {
 		return itemCode;
 	}
-
 	public void setItemCode(String itemCode) {
 		this.itemCode = itemCode;
 	}
