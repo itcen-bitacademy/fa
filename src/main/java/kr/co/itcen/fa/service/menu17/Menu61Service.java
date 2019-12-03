@@ -33,7 +33,7 @@ public class Menu61Service {
 		// TODO: 결산처리 비즈니스(시산표, 재무제표)
 		// 빈 시산표 생성
 		List<TrialBalanceVo> emptyTrialBalance = menu61Repository.selectEmptyTrialBalance();
-		// 시산표 맵으로 변
+		// 시산표 맵으로 변경
 		Map<Long, TrialBalanceVo> trialBalanceMap = emptyTrialBalance.stream().collect(Collectors.toMap(TrialBalanceVo::getAccountNo, trialBalance -> trialBalance));
 		
 		// 테스전표 데이터 조회
@@ -79,7 +79,13 @@ public class Menu61Service {
 		
 		// 시산표 값 적산
 		for (TestStatementDataVo vo : testList) {
-			TrialBalanceVo tbVo = trialBalanceMap.get(vo.getParent1());
+			TrialBalanceVo tbVo = null;
+			if (vo.getAccountNo() >= 5000000) {
+				tbVo = trialBalanceMap.get(vo.getAccountNo());
+				addAccountAmount(tbVo, vo, vo.getAmountFlag());
+			}
+			
+			tbVo = trialBalanceMap.get(vo.getParent1());
 			addAccountAmount(tbVo, vo, vo.getAmountFlag());
 			
 			if (vo.getParent2() == null || vo.getParent2().longValue() == 0) { continue; }
