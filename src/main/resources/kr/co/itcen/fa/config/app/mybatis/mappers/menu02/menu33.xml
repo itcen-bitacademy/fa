@@ -5,7 +5,7 @@
 	<insert id="purchaseitemadd" parameterType="purchaseitem33vo">
 		<![CDATA[
 		insert into tb_purchaseitem(no, name, price, produce_date, purpose, standard, section_code, factory_code, insert_userid, insert_day)
-							 values(#{no }, #{name }, #{price }, #{produce_date }, #{purpose }, #{standard }, "001", #{factory_code }, "aaa", now())
+							 values(#{no }, #{name }, #{price }, #{produce_date }, #{purpose }, #{standard }, #{section_code }, #{factory_code }, #{insert_userid }, now())
 		]]>
 	</insert>
 	
@@ -18,19 +18,57 @@
 	<insert id="factoryadd" parameterType="factory33vo">
 		<![CDATA[
 		insert into tb_factory(no, name, address, manager_name, insert_userid, insert_day)
-						values(#{no }, #{name }, #{address }, #{manager_name }, "001", now())
+					   	select #{no }, #{name }, #{address }, #{manager_name }, #{insert_userid }, now()
+							from dual where not exists
+							(select * from tb_factory where name = #{name } and delete_flag = "N")
 		]]>
 	</insert>
 	
 	<update id="purchaseitemupdate" parameterType="purchaseitem33vo">
 		<![CDATA[
-		
+		update tb_purchaseitem set name = #{name }, price = #{price }, produce_date = #{produce_date }, purpose = #{purpose }, standard = #{standard }, section_code = "001", factory_code = #{factory_code }, update_userid = "bbb", update_day = now()
+							 where no = #{no }
 		]]>
 	</update>
 	
 	<update id="factoryupdate" parameterType="factory33vo">
 		<![CDATA[
-		
+		update tb_factory set name = #{name }, address = #{address }, manager_name = #{manager_name }, update_userid = "bbb", update_day = now()
+						where no = #{no }
 		]]>
 	</update>
+	
+	<update id="purchaseitemdelete" parameterType="purchaseitem33vo">
+		<![CDATA[
+		update tb_purchaseitem set delete_flag = "Y" where no = #{no }
+		]]>
+	</update>
+	
+	<update id="factorydelete" parameterType="factory33vo">
+		<![CDATA[
+		update tb_factory set delete_flag = "Y" where no = #{no }
+		]]>
+	</update>
+	
+	<select id="searchpurchaseitem" parameterType="int" resultType="purchaseitem33vo">
+		<![CDATA[
+		select no, name, price, produce_date, purpose, standard, section_code, factory_code from tb_purchaseitem where no = #{no }
+		]]>
+	</select>
+	
+	<select id="getsectionlist" resultType="sectionvo">
+		<![CDATA[
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1
+		]]>
+	</select>
+	
+	<select id="getsearchsectionlist" parameterType="String" resultType="sectionvo">
+		<![CDATA[
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1 and classification like #{sectionname }
+		]]>
+	</select>
 </mapper>
+
+
+
+
