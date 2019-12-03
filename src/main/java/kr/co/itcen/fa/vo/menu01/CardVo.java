@@ -34,14 +34,9 @@ public class CardVo {
 	private String depositHost; 
 	private String bankCode;
 	private String bankName;
+	private String inputperiodstart;	// 입력기간 시작
+	private String inputperiodend;		// 입력기간 끝
 	
-
-	public String getCardNoOld() {
-		return cardNoOld;
-	}
-	public void setCardNoOld(String cardNoOld) {
-		this.cardNoOld = cardNoOld;
-	}
 	public String getCardNo() {
 		return cardNo;
 	}
@@ -60,7 +55,12 @@ public class CardVo {
 	public void setTransportation(boolean transportation) {
 		this.transportation = transportation;
 	}
-
+	public Integer getLimitation() {
+		return limitation;
+	}
+	public void setLimitation(Integer limitation) {
+		this.limitation = limitation;
+	}
 	public String getCvc() {
 		return cvc;
 	}
@@ -133,6 +133,12 @@ public class CardVo {
 	public void setDeleteFlag(String deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
+	public String getCardNoOld() {
+		return cardNoOld;
+	}
+	public void setCardNoOld(String cardNoOld) {
+		this.cardNoOld = cardNoOld;
+	}
 	public String getDepositHost() {
 		return depositHost;
 	}
@@ -151,11 +157,17 @@ public class CardVo {
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
 	}
-	public Integer getLimitation() {
-		return limitation;
+	public String getInputperiodstart() {
+		return inputperiodstart;
 	}
-	public void setLimitation(Integer limitation) {
-		this.limitation = limitation;
+	public void setInputperiodstart(String inputperiodstart) {
+		this.inputperiodstart = inputperiodstart;
+	}
+	public String getInputperiodend() {
+		return inputperiodend;
+	}
+	public void setInputperiodend(String inputperiodend) {
+		this.inputperiodend = inputperiodend;
 	}
 	@Override
 	public String toString() {
@@ -164,8 +176,10 @@ public class CardVo {
 				+ company + ", abroad=" + abroad + ", password=" + password + ", depositNo=" + depositNo
 				+ ", insertUserId=" + insertUserId + ", insertDay=" + insertDay + ", updateUserId=" + updateUserId
 				+ ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + ", cardNoOld=" + cardNoOld
-				+ ", depositHost=" + depositHost + ", bankCode=" + bankCode + ", bankName=" + bankName + "]";
+				+ ", depositHost=" + depositHost + ", bankCode=" + bankCode + ", bankName=" + bankName
+				+ ", inputperiodstart=" + inputperiodstart + ", inputperiodend=" + inputperiodend + "]";
 	}
+	
 
 }
 

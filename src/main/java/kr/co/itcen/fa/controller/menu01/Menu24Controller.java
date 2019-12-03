@@ -1,13 +1,18 @@
 package kr.co.itcen.fa.controller.menu01;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu24Service;
+import kr.co.itcen.fa.vo.menu01.CardVo;
+import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
 
 /**
@@ -27,8 +32,16 @@ public class Menu24Controller {
 	private Menu24Service menu24Service;
 
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
-		menu24Service.test();
+	public String test(Model model,
+			@RequestParam(value="page", required=false,defaultValue = "1") int page,
+			@RequestParam(required=false) CardVo vo) {
+		System.out.println(vo);
+		
+		DataResult<LTermdebtVo> dataResult = menu24Service.list(page,vo);
+		
+		model.addAttribute("dataResult",dataResult);
+		
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

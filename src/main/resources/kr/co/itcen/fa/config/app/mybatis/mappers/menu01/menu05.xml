@@ -11,7 +11,7 @@
 		]]>
 	</insert>
 
-	<select id="list" resultType="1cardvo">
+	<select id="read" parameterType="1cardvo" resultType="1cardvo">
 		<![CDATA[
 		select	card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
 				company, abroad, password, deposit_no as depositNo,
@@ -20,17 +20,11 @@
 				delete_flag as deleteFlag
 		 from	tb_cardmanager
 		 where	delete_flag = "N"
+		 and    card_no = #{cardNo}
 		]]>
 	</select>
+	
 
-	<update id="remove" parameterType="1cardvo">
-		<![CDATA[
-			update 	tb_cardmanager 
-			   set 	delete_flag='Y', card_no = concat("d",#{cardNo })
-			 where 	card_no = #{cardNo };
-			
-		]]>
-	</update>
 
 	<update id="update" parameterType="1cardvo">
 		<![CDATA[
@@ -54,36 +48,60 @@
 
 	<update id="delete" parameterType="1cardvo">
 		<![CDATA[
-			delete from tb_cardmanager where card_no = #{cardNo}
+			update 	tb_cardmanager 
+			   set 	delete_flag='Y'
+			 where 	card_no = #{cardNo };
+			
 		]]>
 	</update>
 
 
-
-
-	<select id="nexist" resultType="1cardvo">
+	<select id="nexist" parameterType="1cardvo" resultType="int">
 		<![CDATA[
-		select	card_no
+		select	count(*)
 		  from	tb_cardmanager 		  
 		 where  card_no = concat("ddd",#{cardNo })
 		]]>
 		<if test="cardNo!=cardNoOld ">
 		<![CDATA[
-		or	 card_no = #{cardNo}
+			or	(card_no = #{cardNo }
+		   and 	delete_flag = "N")
 		]]>
 		</if>
 		
-		
-		
 	</select>
 
-	<select id="yexist" resultType="1cardvo">
+
+	<select id="yexist" parameterType="1cardvo" resultType="int">
 		<![CDATA[
-		select	card_no
+		select	count(*)
 		 from	tb_cardmanager
-		 where	card_no = concat("d",#{cardNo })
+		 where	card_no = #{cardNo }
+		 and 	delete_flag = "Y"
 		]]>
 	</select>
+
+	<delete id="deleteAll" parameterType="1cardvo">
+		<![CDATA[
+			delete from tb_cardmanager where card_no = #{cardNo} and delete_flag ="Y"
+		]]>
+	</delete>
+	
+	
+	<select id="list" resultType="1cardvo">
+		<![CDATA[
+		select	card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
+				company, abroad, password, deposit_no as depositNo,
+				insert_userid as insertUserId, insert_day as insertDay, 
+				update_userid as updateUserId, update_day as updateDay, 
+				delete_flag as deleteFlag
+		 from	tb_cardmanager
+		 where	delete_flag = "N"
+		
+		]]>
+	</select>
+
+	
 
 
 </mapper>

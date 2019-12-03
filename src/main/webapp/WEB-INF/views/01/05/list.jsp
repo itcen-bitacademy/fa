@@ -26,49 +26,208 @@
 
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	
+
 <script>
-	$(function() {
-		$("#simple-table-1 tr").click(function(){ 
-			var tr = $(this);
-			var td = tr.children();
-			
-			$("input[name=cardNo]").val(td.eq(1).text());
-			$("input[name=cardNoOld]").val(td.eq(1).text());
-			var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
-			var year= td.eq(2).text().substring(3,5);
-			$("input[name=validityMM]").val(month);
-			$("input[name=validityYY]").val(year);
-			$("input[name=cvc]").val(td.eq(3).text());
-			$("input[name=user]").val(td.eq(4).text());
-			$("input[name=issuer]").val(td.eq(5).text());
-			$("input[name=depositNo]").val(td.eq(6).text());
-			$("input[name=depositHost]").val(td.eq(7).text());
-			$("input[name=password]").val(td.eq(8).text());	
-			$("input[name=bankCode]").val(td.eq(9).text());
-			$("input[name=bankName]").val(td.eq(10).text());
-			$("input[name=company]").val(td.eq(11).text());
-			$("input[name=limitation]").val(td.eq(12).text());
-			$("input[name=transportation]").val(td.eq(13).text());
-			$("input[name=abroad]").val(td.eq(14).text());
-			
-			
-			
-		});
+$(function() {
+	var a;
+	$("#btn-create").click(function(){
+		a = "create";
+	});
+	$("#btn-read").click(function(){
+		a = "read";
+	});
+	$("#btn-update").click(function(){
+		a = "update";
+	});
+	$("#btn-delete").click(function(){
+		a = "delete";
+	});
+	$("#btn-delete").click(function(){
+		a = "delete";
+	});
+
+	
+	$("#input-form").submit(function(event) {
+        event.preventDefault();
+		var queryString = $("form[name=input-form]").serialize();
+		if(a == "create") {
+			$.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
+			    type: "POST",
+			    data: queryString,
+			    dataType: "json",
+			    success: function(result){
+			    	if(result.fail) {
+			    		alert("다시 입력해주세요.");
+			    	}
+			    	if(result.success) {
+			    		alert("계좌 생성이 완료되었습니다."); 
+			    		$('#input-form').each(function(){
+			    		    this.reset();
+			    		});
+			    		
+			    		removeTable();
+			    		var cardList = result.cardList;
+			    		createNewTable(cardList);
+			    	}
+			    },
+			    error: function( err ){
+			    	
+			    }
+			 })
+		} else if(a == "read") {
+			$.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read",
+			    type: "POST",
+			    data: queryString,
+			    dataType: "json",
+			    success: function(result){
+			    	if(result.success) {
+			    		alert("계좌 검색이 완료되었습니다."); 
+			    		removeTable();
+			    		
+			    		var cardList = result.cardList;
+			    		createNewTable(cardList);
+			    	}
+			    },
+			    error: function( err ){
+			      	console.log(err)
+			    }
+			 })
+		} else if(a == "update") {
+			$.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
+			    type: "POST",
+			    data: queryString,
+			    dataType: "json",
+			    success: function(result){
+			    	if(result.success) {
+			    		alert("계좌 수정이 완료되었습니다."); 
+			    		removeTable();
+			    	
+			    		var cardList = result.cardList;
+			    		createNewTable(cardList);
+			    	}
+			    	if(result.fail) {
+			    		alert("다시 입력해주세요.");
+			    	}
+			    },
+			    error: function( err ){
+			      	console.log(err)
+			    }
+			 })
+		} else if(a == "delete") {
+			$.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+			    type: "POST",
+			    data: queryString,
+			    dataType: "json",
+			    success: function(result){
+			    	if(result.success) {
+			    		alert("계좌 삭제가 완료되었습니다."); 
+			    		removeTable();
+			    		$('#input-form').each(function(){
+			    		    this.reset();
+			    		});
+			    		
+			    		var cardList = result.cardList;
+			    		createNewTable(cardList);
+			    	}
+			    },
+			    error: function( err ){
+			      	console.log(err)
+			    }
+			 })
+		}
+		else {
+			alert("그외");
+		}
 		
-		$('#selectAll').click(function(event) {   
-		    if(this.checked) {
-		        // Iterate each checkbox
-		        $(':checkbox').each(function() {
-		            this.checked = true;                        
-		        });
-		    } else {
-		        $(':checkbox').each(function() {
-		            this.checked = false;                       
-		        });
-		    }
-		});
-	})
+	});
+	
+
+	function removeTable(){
+		  // 원래 테이블 제거
+		  $(".origin-tbody").remove();
+		  // ajax로 추가했던 테이블 제거
+		  $(".new-tbody").remove();
+	}
+	function createNewTable(cardList){
+		  var $newTbody = $("<tbody class='new-tbody'>")
+		  $("#simple-table-1").append($newTbody)
+			
+		  for(let card in cardList){
+			  $newTbody.append(
+			   	"<tr>" +
+		        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
+		        "<td>" + cardList[card].cardNo + "</td>" +
+		        "<td>" + cardList[card].validity+ "</td>" +
+		        "<td>" + cardList[card].cvc+ "</td>" +
+		        "<td>" + cardList[card].user+ "</td>" +	
+		        "<td>" + cardList[card].issuer+ "</td>" +
+		        "<td>" + cardList[card].depositNo+ "</td>" +
+		        "<td>" + cardList[card].depositHost+ "</td>" +
+		        "<td>" + cardList[card].password+ "</td>" +
+		        "<td>" + cardList[card].bankCode+ "</td>" +
+		        "<td>" + cardList[card].bankName+ "</td>" +
+		        "<td>" + cardList[card].company+ "</td>" +
+		        "<td>" + cardList[card].limitation+ "</td>" +
+		        "<td>" + cardList[card].transportation+ "</td>" +
+		        "<td>" + cardList[card].abroad+ "</td>" +
+		        "<td>" + cardList[card].insertUserId + "</td>" +
+		        "<td>" + cardList[card].insertDay + "</td>" +
+		        "<td>" + cardList[card].updateUserId + "</td>" +
+		        "<td>" + cardList[card].updateDay + "</td>" +
+		        "</tr>");
+			  
+		  }
+		  $newTbody.append("</tbody>");
+		  $(".chosen-select").chosen();
+	}
+	
+	
+	
+	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		
+		$("input[name=cardNo]").val(td.eq(1).text());
+		$("input[name=cardNoOld]").val(td.eq(1).text());
+		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
+		var year= td.eq(2).text().substring(3,5);
+		$("input[name=validityMM]").val(month);
+		$("input[name=validityYY]").val(year);
+		$("input[name=cvc]").val(td.eq(3).text());
+		$("input[name=user]").val(td.eq(4).text());
+		$("input[name=issuer]").val(td.eq(5).text());
+		$("input[name=depositNo]").val(td.eq(6).text());
+		$("input[name=depositHost]").val(td.eq(7).text());
+		$("input[name=password]").val(td.eq(8).text());	
+		$("input[name=bankCode]").val(td.eq(9).text());
+		$("input[name=bankName]").val(td.eq(10).text());
+		$("input[name=company]").val(td.eq(11).text());
+		$("input[name=limitation]").val(td.eq(12).text());
+		$("input[name=transportation]").val(td.eq(13).text());
+		$("input[name=abroad]").val(td.eq(14).text());
+		
+	});
+	
+	$(document.body).delegate('#selectAll', 'click', function() {
+		if(this.checked) {
+	        // Iterate each checkbox
+	        $(':checkbox').each(function() {
+	            this.checked = true;                        
+	        });
+	    } else {
+	        $(':checkbox').each(function() {
+	            this.checked = false;                       
+	        });
+	    }
+	});
+	
+	$(".chosen-select").chosen();
+})
+	
 		
 </script>
 
@@ -91,7 +250,8 @@
 				</div>
 
 
-				<form class="form-horizontal" method="post">
+				<form class="form-horizontal" id="input-form" name="input-form"
+					method="post">
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="tabbable">
@@ -100,8 +260,7 @@
 
 									<div class="controls">
 										<input type="text" id="form-field-1" name="cardNo"
-											placeholder="카드 번호" />
-										<input type="hidden" name="cardNoOld" />
+											placeholder="카드 번호" /> <input type="hidden" name="cardNoOld" />
 									</div>
 								</div>
 
@@ -144,8 +303,8 @@
 									</label>
 
 									<div class="controls">
-										<input type="text"  id="form-field-1" name="limitation"
-											placeholder="한도"  value=""/>
+										<input type="text" id="form-field-1" name="limitation"
+											placeholder="한도" value="" />
 									</div>
 								</div>
 
@@ -213,20 +372,17 @@
 					<!-- buttons -->
 					<div class="row-fluid">
 						<div class="span8">
-							<button class="btn btn-info btn-small">조회</button>
-							<button class="btn btn-danger btn-small"
-								formaction="${pageContext.request.contextPath }//${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/remove">삭제</button>
-							<button class="btn btn-warning btn-small"
-								formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-							
-							<button type="submit" class="btn btn-primary btn-small"
-								formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">입력</button>
-							<button class="btn btn-default btn-small"
-								type="reset">취소</button>
+							<button class="btn btn-info btn-small" id="btn-read">조회</button>
+							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
+							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
+							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
+							<button class="btn btn-default btn-small" id="btn-reset" 
+								type = "reset">취소</button>
 						</div>
 
 					</div>
 					<div class="hr hr-18 dotted"></div>
+				
 				</form>
 
 				<!-- Tables -->
@@ -261,7 +417,7 @@
 								</tr>
 							</thead>
 
-							<tbody>
+							<tbody class="origin-tbody">
 
 								<c:forEach items='${list }' var='vo' varStatus='status'>
 									<tr>

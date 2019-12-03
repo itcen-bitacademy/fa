@@ -2,6 +2,7 @@ package kr.co.itcen.fa.controller.menu01;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
@@ -43,27 +44,37 @@ public class Menu05Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	
-	@RequestMapping(value="/" + SUBMENU + "/create", method=RequestMethod.POST)
-	public String create(@ModelAttribute CardVo vo, @AuthUser UserVo uvo
+	// Create
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/create")
+	public Map<String, Object> create(@ModelAttribute CardVo vo, @AuthUser UserVo uvo
 			, @RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY,
 			@RequestParam("limitation") Optional<Integer> limitation) {
 		String validity = validityMM + "/"+ validityYY ;
 		vo.setValidity(validity);
 		vo.setInsertUserId(uvo.getName());
+		vo.setCardNoOld(null);
 		vo.setLimitation(limitation.get());
 		
 		
-		menu05Service.create(vo);
+		Map<String, Object> result = menu05Service.create(vo);
 		
-		
-		
-		return "redirect:/"+MAINMENU + "/" + SUBMENU + "/list";
+		return result;
 	}
 	
+	// Read
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/read")
+	public Map<String, Object> read(@ModelAttribute CardVo vo) {
+		
+		Map<String, Object> result = menu05Service.read(vo);
+		return result;
+	}
 	
-	@RequestMapping(value="/" + SUBMENU + "/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute CardVo vo, @AuthUser UserVo uvo, 
+	// Update
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/update")
+	public Map<String, Object> update(@ModelAttribute CardVo vo, @AuthUser UserVo uvo, 
 			@RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY,
 			@RequestParam("limitation") Optional<Integer> limitation, @RequestParam("cardNoOld") String cardNoOld
 			) {
@@ -71,19 +82,20 @@ public class Menu05Controller {
 		vo.setValidity(validity);
 		vo.setUpdateUserId(uvo.getName());
 		vo.setLimitation(limitation.get());
-		vo.setCardNoOld(cardNoOld);
 		
-		menu05Service.update(vo);
+		Map<String, Object> result = menu05Service.update(vo);
 		
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		return result;
 	}
 	
-	
-	@RequestMapping(value="/" + SUBMENU + "/remove", method=RequestMethod.POST)
-	public String remove(@ModelAttribute CardVo vo) {
+	// Delete
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/delete")
+	public Map<String, Object> remove(@ModelAttribute CardVo vo) {
 		
-		menu05Service.remove(vo);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		Map<String, Object> result =menu05Service.delete(vo);
+		result.put("success", true);
+		return result;
 	}
 		
 	
