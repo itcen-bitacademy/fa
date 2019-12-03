@@ -1,9 +1,12 @@
 package kr.co.itcen.fa.service.menu02;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu02.Menu33Repository;
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu02.FactoryVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
@@ -28,4 +31,27 @@ public class Menu33Service {
 	public void update(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
 		menu33Repository.update(purchaseitemVo, factoryVo);
 	}
+
+	public void delete(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
+		menu33Repository.delete(purchaseitemVo, factoryVo);
+	}
+
+	public PurchaseitemVo searchpurchaseitem(String no) {
+		PurchaseitemVo purchaseitemVo = menu33Repository.searchpurchaseitem(no);
+		
+		return purchaseitemVo;
+	}
+
+	public List<SectionVo> getSectionList() {
+		List<SectionVo> sectionList = menu33Repository.getSectionList();
+		
+		return sectionList;
+	}
+
+	public List<SectionVo> getsearchSectionList(String sectionname) {
+		List<SectionVo> searchsectionList = menu33Repository.getsearchSectionList(sectionname);
+		
+		return searchsectionList;
+	}
+	
 }

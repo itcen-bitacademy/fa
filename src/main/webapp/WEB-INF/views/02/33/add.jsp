@@ -22,20 +22,100 @@
 		$(".chosen-select").chosen(); 
 	});
 	
-	$(function($) {
+	$(function() {
+		$("#search").click(function(event) {
+			var itemcode = $("#form-field-item-id").val();
+			console.log(itemcode);
+			
+			if(itemcode != null && itemcode.length > 0) {
+				event.preventDefault();
+				
+				$.ajax({
+					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search",
+					type:"get",
+					dataType:"json",
+					data:{"itemcode" : itemcode},
+					success:function(data) {
+						$("#form-field-item-name").val(data.name);
+						
+					}, error:function(error) {
+						alert("찾을 수 없는 품목입니다.");
+					}
+				});
+			}
+		});
+		
 		$("#delete").click(function() {
-			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
+			var itemcode = $("#form-field-item-id").val();
+			var factorycode = $("")
+			console.log(itemcode);
+			
+			if(itemcode != null && itemcode.length > 0) {
+				$.ajax({
+					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+					type:"get",
+					dataType:"json",
+					data:{"itemcode" : itemcode},
+					success:function(data) {
+						alert("삭제 완료");
+					}, error:function(error) {
+						alert("찾을 수 없는 품목입니다.");
+					}
+				});
+			}
 		});
 		
 		$("#update").click(function() {
-			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
+			$("#form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
 		});
 		
 		$("#add").click(function() {
-			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+			$("#form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+		});
+		
+		
+		$("#btn-search-section").click(function() {
+			var sectionname = $("#search-section-name").val();
+			
+			if(sectionname != null && sectionname.length > 0) {
+				
+				console.log(sectionname);
+				$.ajax({
+					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/searchsection",
+					type:"get",
+					dataType:"json",
+					data:{"sectionname" : sectionname},
+					success:function(data) {
+						
+					}, error:function(error) {
+						alert("찾을 수 없는 품목입니다.");
+					}
+				});
+			}
+		});
+		
+		
+		
+		
+		$("#search-dialog").click(function(event) {
+			$("#dialog-main").dialog({
+				autoOpen : false
+			});
+			
+			$("#dialog-main").dialog('open');
+			$("#dialog-main").dialog({
+				resizable: false,
+			    height: 400,
+			      width: 400,
+			      modal: true,
+			      buttons: {
+			        "확인": function() {
+			          $(this).dialog("close");
+			        }
+			      }
+			});
 		});
 	});
-	
 	
 </script>
 
@@ -55,13 +135,13 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
-						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+						<form id="form" class="form-horizontal" method="post">
 						<div style="height:330px">
 							<div class="span6">
 								<div class="control-group">
 									<label class="control-label" for="form-field-item-id">품목코드</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드"/>
+										<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드" maxlength="10"/>
 									</div>
 								</div>
 								
@@ -71,11 +151,56 @@
 										<div class="row-fluid input-append">
 											<input class="span5" id="form-field-section-name" name="section_name" type="text" readonly/>
 											<span class="add-on">
-												<a href="#" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
+												<a href="#" id="search-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 											</span>
 										</div>
 									</div>
 								</div>
+								
+								
+								
+								
+								
+								
+								
+								<div id="dialog-main" title="품목 대분류명 조회" hidden="hidden">
+									<table id ="dialog-message-table">
+										<tr>
+											<td>
+												&nbsp;품목 대분류명 &nbsp;&nbsp;
+												<input type="text" id="search-section-name" style="width:170px; margin: 0 0 0 0;"/>
+												
+												<a href="#" id="btn-search-section">
+													<span class="btn btn-small btn-info">
+														<i class="icon-search nav-search-icon"></i>
+													</span>
+												</a>
+											</td>
+										</tr>
+									</table>
+									
+									<table id="section-table" class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">대분류명</th>
+												<th class="center">대분류코드</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-list">
+										<c:forEach items="${sectionList}" var="sl" varStatus="status">
+											<tr>
+												<td class="center">${sl.classification}</td>
+												<td class="center">${sl.code}</td>
+											</tr>
+										</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								
+								
+								
+								
+								
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-name">생산공장명</label>
@@ -85,16 +210,15 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-address">생산공장 주소</label>
+									<label class="control-label" for="form-field-factory-address1">생산공장 주소</label>
 									<div class="controls">
 										<div class="row-fluid input-append" style="margin:0 0 5px 0">
-											<input class="span6" id="form-field-factory-address" name="factory-address1" type="text" readonly/>
-											<span class="add-on">
-												<a href="#" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
-											</span>
+											<input class="span3" id="form-field-factory-address1" name="factory_address1" type="text" style="margin:0 10px 0 0;" placeholder="우편번호" readonly/>
+											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 										</div>
 										
-										<input class="span6" type="text" id="form-field-factory-address" name="factory_address2" placeholder="상세 주소"/>
+										<input class="span5" type="text" id="form-field-factory-address2" name="factory_address2" placeholder="도로명 주소" readonly/>
+										<input class="span6" type="text" id="form-field-factory-address3" name="factory_address3" placeholder="상세 주소"/>
 									</div>
 									
 								</div>
@@ -113,8 +237,6 @@
 									</div>
 								</div>
 							</div>
-							
-							
 							
 							<div class="span6">
 								<div class="control-group">
@@ -139,7 +261,7 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-date">생산 일자</label>
+									<label class="control-label" for="id-date-picker-1">생산 일자</label>
 									<div class="controls">
 										<div class="control-group">
 											<div class="row-fluid input-append">
@@ -171,7 +293,7 @@
 							<button class="btn btn-danger btn-small" type="submit" id="delete">삭제</button>
 							<button class="btn btn-warning btn-small" type="submit" id="update">수정</button>
 							<button class="btn btn-primary btn-small" type="submit" id="add">입력</button>
-							<button class="btn btn-default btn-small" type="reset">초기화</button>
+							<button class="btn btn-default btn-small" type="reset" id="reset">초기화</button>
 						</div>
 											
 						<div class="hr hr-18 dotted"></div>
@@ -240,11 +362,11 @@
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
+<script>
+	$(function() {
+		$.fn.datepicker.dates['ko'] = {
 			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
 			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
 			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
@@ -253,24 +375,77 @@
 			today: "Today",
 			clear: "Clear",
 			format: "yyyy-mm-dd",
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			titleFormat: "yyyy MM",
 			weekStart: 0
-			};
+		};
+
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode: 4,
+			minViewMode: 1,
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+		$('.cl-date-picker').datepicker({
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	})
 	
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
+	$("#section-table tr").click(function(){ 
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=section_name]").val(td.eq(0).text());
+		$("input[name=section_code]").val(td.eq(1).text());
+	});
 	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
+	function execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete : function(data) {
+				var fullRoadAddr = data.roadAddress;
+				var extraRoadAddr = '';
+				
+				if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+					extraRoadAddr += data.bname;
+				}
+				
+				if (data.buildingName !== '' && data.apartment === 'Y') {
+					extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				}
+				
+				if (extraRoadAddr !== '') {
+					extraRoadAddr = ' (' + extraRoadAddr + ')';
+				}
+				
+				if (fullRoadAddr !== '') {
+					fullRoadAddr += extraRoadAddr;
+				}
+				
+				document.getElementById('form-field-factory-address1').value = data.zonecode;
+				document.getElementById('form-field-factory-address2').value = fullRoadAddr;
+				
+				if (data.autoRoadAddress) {
+					var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+					document.getElementById('guide').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+				} else if (data.autoJibunAddress) {
+					var expJibunAddr = data.autoJibunAddress;
+					document.getElementById('guide').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+				} else {
+					document.getElementById('guide').innerHTML = '';
+				}
+			}
+		}).open();
+	};
+	
+	$(function() {
+		$(".chosen-select").chosen();
+		
+		$('.date-picker').datepicker().next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	});
 </script>
 
 </body>

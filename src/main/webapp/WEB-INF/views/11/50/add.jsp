@@ -90,7 +90,6 @@ tr td:first-child {
 										<td><h4>사채코드</h4></td>
 										<td colspan="2">
 										<input type="text" class="p-debt-code-input" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
-										<button type="button" class="btn btn-info btn-small" id="selectone">조회</button>
 										</td>
 									</tr>
 									<tr>
@@ -142,52 +141,32 @@ tr td:first-child {
 													</span>
 												</a>
 												
-												
-												
-												
-												
+												<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
 												<div id="dialog-message" title="은행코드" hidden="hidden">
-														<div class="row">
-															<table id ="dialog-message-table">
+															<table id ="dialog-message-table" align="center">
 																<tr>
-																	<td><label>은행코드</label><input type="text"  id="input-dialog-bankcode"/></td>
 																	<td>
-																		<a href="#" id="btn-dialog-bankcode">
-																			<span class="btn btn-small btn-info">
+																	<label>은행코드</label>
+																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
+																		<a href="#" id="a-dialog-bankcode">
+																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
 																				<i class="icon-search nav-search-icon"></i>
 																			</span>
 																		</a>
 																	</td>
-																	<td><label>은행명</label><input type="text"  id="input-dialog-bankname"/></td>
 																	<td>
-																		<a href="#" id="btn-dialog-bankname">
-																			<span class="btn btn-small btn-info">
+																	<label>은행명</label>
+																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
+																		<a href="#" id="a-dialog-bankname">
+																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
 																				<i class="icon-search nav-search-icon"></i>
 																			</span>
 																		</a>
 																	</td>
 																</tr>
 															</table>
-															<!-- <div class="span6">
-																<div class="span2">
-																	<input type="text"  />
-																	<a href="#" id="id-btn-dialog1">
-																		<span class="btn btn-small btn-info">
-																			<i class="icon-search nav-search-icon"></i>
-																		</span>
-																	</a>					
-																</div>
-																<div class="span2">
-																	<input type="text"  />
-																	<a href="#" id="id-btn-dialog1">
-																		<span class="btn btn-small btn-info">
-																			<i class="icon-search nav-search-icon"></i>
-																		</span>
-																	</a>	
-																</div>
-															</div> -->
-														</div>
-														<table id="bank-table" class="table  table-bordered table-hover">
+														<!-- 은행코드 및 은행명 데이터 리스트 -->
+														<table id="modal-bank-table" class="table  table-bordered table-hover">
 															<thead>
 																<tr>
 																	<th class="center">은행코드</th>
@@ -195,21 +174,18 @@ tr td:first-child {
 																	<th class="center">지점명</th>
 																</tr>
 															</thead>
-																<tbody id="tbody-list">
-																<c:forEach items="${bankList}" var="bank" varStatus="status">
-																	<tr>
-																		<td class="center">${bank.code}</td>
-																		<td class="center">${bank.name}</td>
-																		<td class="center">${bank.store}</td>
-																	</tr>
-																</c:forEach>
-																</tbody>
+															<tbody id="tbody-bankList">
+															<c:forEach items="${bankList}" var="bank" varStatus="status">
+																<tr>
+																	<td class="center">${bank.code}</td>
+																	<td class="center">${bank.name}</td>
+																	<td class="center">${bank.store}</td>
+																</tr>
+															</c:forEach>
+															</tbody>
 														</table>
 												</div>
-												
-												
-												
-												
+												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 												
 											<input type="text" class="search-input-width-second" name="bankName" />
 										</td>
@@ -245,7 +221,8 @@ tr td:first-child {
 												<option value="008004">새마을금고</option>
 												<option value="008005">외국계은행</option>
 												<option value="008006">증권</option>
-										</select></td>
+										</select>
+										</td>
 									</tr>
 									<tr>
 										<td><h4>상환방법</h4></td>
@@ -284,9 +261,9 @@ tr td:first-child {
 										<td colspan="2">
 											<input type="text" class="search-input-width-first" name="depositNo" />
 											<span class="btn btn-small btn-info">
-											<i class="icon-search nav-search-icon"></i>
+												<i class="icon-search nav-search-icon"></i>
 											</span>
-											<input type="text" class="search-input-width-second" name="bankName" />
+											<input type="text" class="search-input-width-second" name="depositBankName" />
 										</td>
 									</tr>
 								</table>
@@ -300,11 +277,11 @@ tr td:first-child {
 						&nbsp;
 						<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
 						&nbsp;
-						<button type="button" class="btn btn-info btn-small mybtn" id="selectFinancialYearList">조회</button>
+						<button class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;
 						<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 						&nbsp;
-						<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+						<button class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 						&nbsp;
 						<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
 					</div>
@@ -336,12 +313,11 @@ tr td:first-child {
 						</tr>
 					</thead>
 						<tbody id="tbody-list">
-						<c:forEach items="${list}" var="vo" varStatus="status">
+						<c:forEach items="${dataResult.datas}" var="vo" varStatus="status">
 							<tr id="${vo.no }">
 								<td id="select-checkbox" class="center">
 									<label class="pos-rel"></label>
 									<input type="checkbox" class="ace" name="no"  value="${vo.no }"/><span class="lbl"></span>
-									
 								</td>
 								<td class="center">${vo.code}</td>
 								<td>${vo.name}</td>
@@ -376,80 +352,54 @@ tr td:first-child {
 							</c:forEach>
 						</tbody>
 				</table>
-
-				<div class="pagination">
-					<%--Page 이전 페이지 구현 --%>
-					<ul>
-						<c:choose>
-							<%-- all data list pagination --%>
-							<c:when test="${pageInfo.totalRows != 0}">
-								<c:choose>
-									<c:when test="${pageInfo.currentBlock eq 1}">
-										<li class="disabled"><a><i class="icon-double-angle-left"></i></a></li>
-									</c:when>
-									<c:otherwise>
-										<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock-1)*pageInfo.pagesPerBlock}"><i
-												class="icon-double-angle-left"></i></a></li>
-									</c:otherwise>
-								</c:choose>
-								<%--Page  페이지 구현 --%>
-								<c:choose>
-									<%-- 첫 페이지 출력 ex) 1 2 3 4 5
-									currentBlock : 현재 전체 블럭 --%>
-									<c:when test="${pageInfo.currentBlock ne pageInfo.totalBlocks}">
-										<c:forEach begin="1" end="${pageInfo.pagesPerBlock}"
-											varStatus="num">
-											<c:choose>
-												<c:when test="${num.count == pageInfo.currentPage}">
-													<li class="active"><a
-														href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
-												</c:when>
-												<c:otherwise>
-													<li><a
-														href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</c:when>
-									<%-- 첫 페이지 이후의 모든 페이지 출력 ex) 6 7 8 9 10 
-																									  11 12 13 14 15 
-																									  16 17 18 19 20  totalBlocks : 모두 출력되어야 하는 블럭의 수 --%>
-									<c:otherwise>
-										<c:forEach
-											begin="${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + 1}"
-											end="${pageInfo.totalPages}" varStatus="num" var="i">
-											<c:choose>
-												<c:when test="${i == pageInfo.currentPage}">
-													<li class="active"><a
-														href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
-												</c:when>
-												<c:otherwise>
-													<li><a
-														href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${(pageInfo.currentBlock - 1) * pageInfo.pagesPerBlock + num.count}">${(pageInfo.currentBlock- 1) * pageInfo.pagesPerBlock + num.count}</a></li>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</c:otherwise>
-								</c:choose>
-								<%--Page 다음 페이지 구현 --%>
-								<c:choose>
-									<c:when test="${pageInfo.currentBlock eq pageInfo.totalBlocks}">
-										<li class="disabled"><a><i class="icon-double-angle-right"></i></a></li>
-									</c:when>
-									<c:otherwise>
-										<li><a
-											href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pageInfo.currentBlock * pageInfo.pagesPerBlock + 1 }"><i
-												class="icon-double-angle-right"></i></a></li>
-									</c:otherwise>
-								</c:choose>
-							</c:when>
-						</c:choose>
-					</ul>
-				</div>
-
-
 			</div>
 			<!-- /.page-content -->
+			
+			<!-- 페이징 처리 알고리즘 start -->
+			<div class="pagination">
+			    <ul>
+			        <c:choose>
+			            <c:when test="${dataResult.pagination.prev }">
+			                <li>
+			                    <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
+			                        <i class="icon-double-angle-left"></i>
+			                    </a>
+			                </li>
+			            </c:when>
+			            <c:otherwise>
+			                <li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+			            </c:otherwise>
+			        </c:choose>
+			        <c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+			            <c:choose>
+			                <c:when test="${pg eq dataResult.pagination.page }">
+			                    <li class="active">
+			                        <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg}</a>
+			                    </li>
+			                </c:when>
+			                <c:otherwise>
+			                    <li>
+			                        <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg}</a>
+			                    </li>
+			                </c:otherwise>
+			            </c:choose>
+			        </c:forEach>
+			        <c:choose>
+			            <c:when test="${dataResult.pagination.next }">
+			                <li>
+			                    <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }">
+			                        <i class="icon-double-angle-right"></i>
+			                    </a>
+			                </li>
+			            </c:when>
+			            <c:otherwise>
+			                <li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+			            </c:otherwise>
+			        </c:choose>
+			    </ul>
+			</div>
+			<!-- 페이징 처리 알고리즘 end -->
+			
 		</div>
 		<!-- /.main-content -->
 	</div>
@@ -576,171 +526,7 @@ tr td:first-child {
 			
 		});
 		
-		
-		
-		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
-		$("#bank-table tr").click(function(){ 
-			var tr = $(this);
-			var td = tr.children();
-			$("input[name=bankCode]").val(td.eq(0).text());
-			$("input[name=bankName]").val(td.eq(1).text());
-		});
-		
-		
-		
-		// Button으로 사채코드를 받아서 해당 사채 데이터 조회하기
-		$("#selectone").click(function(){
-			var debtcodeVal = $(".p-debt-code-input").val();
-			console.log(debtcodeVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/selectone/getpdebtInfo?debtcodeVal=" + debtcodeVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					// 부채코드
-					$("input[name=code]").val(response.code);
-					
-					// 차입금명
-					$("input[name=name]").val(response.name);
-					
-					// 차입금액
-					$("input[name=debtAmount]").val(response.debtAmount);
-					
-					// 차입일자 - 만기일자
-					$("input[name=debtExpDate]").val(response.debtExpDate);
-					
-					// 이자지급방식
-					var intPayWay='';
-					switch (response.intPayWay){
-				    case 'Y' :
-				    	intPayWay='Y';
-				        break;
-				    case 'M' :
-				    	intPayWay='M';
-					    break;
-				    case 'E' :
-				    	intPayWay='E';
-				        break;
-					}
-					$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
-					
-					// 은행코드
-					$("input[name=bankCode]").val(response.bankCode);
-					
-					// 위험등급 분류
-					var dangerName='';
-					switch (response.dangerName){
-				    case '초고위험' :
-				    	dangerName='RED1-초고위험';
-				        break;
-				    case '고위험' :
-				    	dangerName='ORANGE2-고위험';
-					    break;
-				    case '중위험' :
-				    	dangerName='YELLOW3-중위험';
-				        break;
-				    case '저위험' :
-				    	dangerName='GREEN4-저위험';
-				        break;
-				    case '초저위험' :
-				    	dangerName='BLUE5-초저위험';
-				        break;
-					}
-					$('#dangercode-field-select').val(dangerName).trigger('chosen:updated');
-					
-					// 회계연도
-					$("input[name=financialYear]").val(response.financialYear);
-					
-					// 차입금대분류
-					var major='';
-					switch (response.majorCode){
-				    case '008001' :
-				    	major='008001';
-				        break;
-				    case '008002' :
-				    	major='008002';
-					    break;
-				    case '008003' :
-				    	major='008003';
-				        break;
-				    case '008004' :
-				    	major='008004';
-				        break;
-				    case '008005' :
-				    	major='008005';
-				    	break;
-				    case '008006' :
-				    	major='008006';
-				    	break;
-					}
-					$('#majorcode-field-select').val(major).trigger('chosen:updated'); 
-					
-					// 상환방법
-					var repayWay='';
-					switch (response.repayWay){
-				    case 'Y' :
-				    	repayWay='Y';
-				        break;
-				    case 'M' :
-				    	repayWay='M';
-					    break;
-				    case 'E' :
-				    	repayWay='E';
-				        break;
-					}
-					$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
-					
-					// 이율
-					$("input[name=intRate]").val(response.intRate);
-					
-					// 담당자
-					$("input[name=mgr]").val(response.mgr);
-					// 담당자전화번호
-					$("input[name=mgrCall]").val(response.mgrCall);
-					// 계좌번호
-					$("input[name=depositNo]").val(response.depositNo);
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
-		
-		// Button으로 사채코드를 받아서 해당 사채 데이터 조회하기
-		$("#selectFinancialYearList").click(function(){
-			var debtcodeVal = $(".p-debt-code-input").val();
-			console.log(debtcodeVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/selectone/getpdebtInfo?debtcodeVal=" + debtcodeVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
 		// form에 입력한 모든 데이터 초기화
-		// 출처 : https://stackoverflow.com/questions/11365212/how-do-i-reset-a-jquery-chosen-select-option-with-jquery
 		$("#formReset").bind("click", function () {
 			// form의 모든 데이터 초기화
 			$('#input-form')[0].reset();
@@ -751,7 +537,10 @@ tr td:first-child {
         });
 		
 		// 은행코드 및 은행명 검색
-		$("#btn-dialog-bankcode").click(function(){
+		$("#a-dialog-bankcode").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
 			var bankcodeVal = $("#input-dialog-bankcode").val();
 			console.log(bankcodeVal);
 			// ajax 통신
@@ -767,8 +556,12 @@ tr td:first-child {
 				    }
 				},
 				success: function(response){
-					console.log(response.code);
-					console.log(response.name);
+					$("#input-dialog-bankcode").val('');
+					$("#tbody-bankList").append("<tr>" +
+					        "<td class='center'>" + response.code + "</td>" +
+					        "<td class='center'>" + response.name + "</td>" +
+					        "<td class='center'>" + response.store + "</td>" +
+					        "</tr>");
 				},
 				error: function(xhr, error){
 					console.error("error : " + error);
@@ -776,7 +569,11 @@ tr td:first-child {
 			});
 		});
 		
-		$("#btn-dialog-bankname").click(function(){
+		// 은행명 검색 : 은행목록 리스트로 가져오기
+		$("#a-dialog-bankname").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
 			var banknameVal = $("#input-dialog-bankname").val();
 			console.log(banknameVal);
 			// ajax 통신
@@ -791,9 +588,15 @@ tr td:first-child {
 				      alert("page not found");
 				    }
 				},
-				success: function(response){
-					console.log(response.code);
-					console.log(response.name);
+				success: function(data){
+					$("#input-dialog-bankname").val('');
+					 $.each(data,function(index, item){
+			                $("#tbody-bankList").append("<tr>" +
+			                		"<td class='center'>" + item.code + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "<td class='center'>" + item.store + "</td>" +
+							        "</tr>");
+			         })
 				},
 				error: function(xhr, error){
 					console.error("error : " + error);
@@ -801,9 +604,13 @@ tr td:first-child {
 			});
 		});
 		
-		
-		
-		
+		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		$("#modal-bank-table tr").click(function(){ 
+			var tr = $(this);
+			var td = tr.children();
+			$("input[name=bankCode]").val(td.eq(0).text());
+			$("input[name=bankName]").val(td.eq(1).text());
+		});
 		
 		
 	});
@@ -857,19 +664,18 @@ tr td:first-child {
 		$("#id-btn-dialog1").click(function() {
 			$("#dialog-message").dialog('open');
 			$("#dialog-message").dialog({
-			      resizable: false,
-			      height: 400,
-			      width: 400,
-			      modal: true,
-			      buttons: {
-			        "Delete all items": function() {
-			          $( this ).dialog( "close" );
-			        },
-			        Cancel: function() {
+				title: "은행정보",
+				title_html: true,
+			   	resizable: false,
+			    height: 500,
+			    width: 400,
+			    modal: true,
+			    buttons: {
+			    "닫기" : function() {
 			          $( this ).dialog( "close" );
 			        }
-			      }
-			    });
+			    }
+			});
 		});
 
 	});

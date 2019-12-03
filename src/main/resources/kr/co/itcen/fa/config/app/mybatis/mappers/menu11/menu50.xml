@@ -13,7 +13,7 @@
 		]]>
 	</insert>
 		
-	<select id="list" resultType="pdebtvo">
+	<select id="selectAll" resultType="pdebtvo">
 		<![CDATA[
 			select 
 			no as no, 
@@ -31,7 +31,21 @@
 			voucher_no as voucherNo, delete_flag as deleteFlag, 
 			insert_id as insertId, insert_date as insertDate, update_id as updateId,
 			update_date as updateDate 
-			from tb_p_debt where delete_flag = 'N' limit #{startNum}, #{lastNum}
+			from tb_p_debt 
+			where delete_flag = 'N'
+		]]>
+			<if test="year.length()>0 ">
+				<![CDATA[
+				and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
+				]]>
+			</if>
+			<if test="code.length()>0 ">
+				<![CDATA[
+				and 	code like concat('%',#{code},'%') 
+				]]>
+			</if>
+		<![CDATA[
+		limit	#{pagination.pageIndex }, #{pagination.listSize }
 		]]>
 	</select>
 	
@@ -61,7 +75,8 @@
 			insert_id as insertId, insert_date as insertDate, update_id as updateId,
 			update_date as updateDate, 
 			date_format(debt_date, '%Y') as financialYear
-			from tb_p_debt where code = #{debtcode } 
+			from tb_p_debt 
+			where code = #{debtcode } 
 		]]>
 	</select>
 	
@@ -76,20 +91,62 @@
 	
 	<select id="bankList" resultType="bankvo">
 		<![CDATA[
-			select code, name, store from tb_bank limit 10
+			select code, name, store from tb_bank
 		]]>
 	</select>
 	
-	<select id="getBankcodeInfo" resultType="bankvo">
+	<select id="getBankcodeInfo" parameterType="String" resultType="bankvo">
 		<![CDATA[
 			select code, name, store from tb_bank where code = #{bankcode }
 		]]>
 	</select>
 	
-	<select id="getBanknameList" resultType="bankvo">
+	<select id="getBanknameList" parameterType="String" resultType="bankvo">
 		<![CDATA[
 			select code, name, store from tb_bank where name = #{bankname }
 		]]>
 	</select>
+	
+	<select id="selectAllCount" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(*)
+			    from tb_p_debt
+			    where delete_flag= "N"
+		]]>
+			<if test="year.length() > 0 ">
+			<![CDATA[
+			and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
+			]]>
+			</if>
+			<if test="code.length() > 0 ">
+			<![CDATA[
+			and 	code like concat('%',#{code},'%') 
+			]]>
+			</if>
+	</select>
+	
+	
+	<!-- update -->
+	<update id="update" parameterType="ldebtvo">
+		<![CDATA[
+			update tb_p_debt 
+			set name = #{name},
+				major_code = #{majorCode},
+				debt_amount = #{debtAmount},
+				repay_way=#{repayWay},
+				dept_date=#{debtDate},
+				exp_date=#{expDate},
+				int_rate=#{intRate},
+				int_pay_way=#{intPayWay},
+				int_amount=#{intAmount},
+				mgr=#{mgr},
+				mgr_call=#{mgrCall},
+				bank_code=#{bankCode},
+				deposit_no=#{depositNo},
+				update_id='u009',
+				update_date=now()
+			where no=#{no}
+		]]>
+	</update>
 
 </mapper>
