@@ -24,4 +24,7 @@ public class Menu13Repository {
 	public List<PurchaseitemVo> getItemList() {
 		return sqlSession.selectList("menu13.itemlist");
 	}
+	public List<SalesVo> getSalesNo(String salesNo) {		
+		return sqlSession.selectList("menu13.getsalesno", salesNo);
+	}
 }
