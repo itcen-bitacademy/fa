@@ -40,6 +40,7 @@ public class Menu48Service {
 		dataResult.setPagination(pagination);
 		List<LTermdebtVo> list = menu48Repository.list(year,code, pagination);
 		dataResult.setDatas(list);
+		
 		return dataResult;
 	}
 
