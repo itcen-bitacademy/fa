@@ -186,8 +186,9 @@ function execDaumPostcode() {
 		        "<td>" + customerList[customer].no + "</td>" +
 		        "<td>" + customerList[customer].name + "</td>" +
 		        "<td>" + customerList[customer].ceo + "</td>" +
-		        "<td>" + customerList[customer].address + "" + customerList[customer].detailAddress + "</td>" +
-		        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+		        "<td>" + customerList[customer].address + " " + customerList[customer].detailAddress + "</td>" +
+		        "<td>" + customerList[customer].conditions + "</td>" +
+		        "<td>" + customerList[customer].item + "</td>" +
 		        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
 		        "<td>" + customerList[customer].phone + "</td>" +
 		        "<td>" + customerList[customer].managerName + "</td>" +
@@ -213,17 +214,15 @@ function execDaumPostcode() {
 		$("input[name=name]").val(td.eq(2).text());
 		$("input[name=ceo]").val(td.eq(3).text());
 		$("input[name=address]").val(td.eq(4).text());
-		$("input[name=detailAddress]").val(td.eq(5).text());
-		$("input[name=conditions]").val(td.eq(6).text());
-		$("input[name=item]").val(td.eq(7).text());
-		$("input[name=jurisdictionOffice]").val(td.eq(8).text());
-		$("input[name=phone]").val(td.eq(9).text());
+		//$("input[name=detailAddress]").val(td.eq(4).text());
+		$("input[name=conditions]").val(td.eq(5).text());
+		$("input[name=item]").val(td.eq(6).text());
+		$("input[name=corporationNo]").val(td.eq(1).text());
+		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
+		$("input[name=phone]").val(td.eq(8).text());
 		$("input[name=managerEmail]").val(td.eq(10).text());
-		$("input[name=depositNo]").val(td.eq(11).text());
-		$("input[name=bankCode]").val(td.eq(12).text());
-		$("input[name=bankName").val(td.eq(13).text());
-		$("input[name=depositHost]").val(td.eq(14).text());	
-		$("input[name=managerName]").val(td.eq(15).text());
+		$("input[name=depositNo]").val(td.eq(12).text());
+		$("input[name=managerName]").val(td.eq(9).text());
 		$("input[name=address]").prop("readonly", true);
 		$("input[name='bankCode']").prop("readonly", true);
 		$("input[name='bankName']").prop("readonly", true);
@@ -441,7 +440,8 @@ function execDaumPostcode() {
 											<th>상호</th>
 											<th>대표자</th>
 											<th>주소</th>
-											<th>업태/종목</th>
+											<th>업태<th>
+											<th>종목</th>
 											<th>관할영업소</th>
 											<th>거래처 전화번호</th>
 											<th>거래처 담당자 성명</th>
@@ -466,7 +466,8 @@ function execDaumPostcode() {
 												<td>${vo.name }</td>
 												<td>${vo.ceo }</td>
 												<td>${vo.address } ${vo.detailAddress }</td>
-												<td>${vo.conditions }/${vo.item }</td>
+												<td>${vo.conditions }</td>
+												<td>${vo.item }</td>
 												<td>${vo.jurisdictionOffice }</td>
 												<td>${vo.phone }</td>
 												<td>${vo.managerName }</td>

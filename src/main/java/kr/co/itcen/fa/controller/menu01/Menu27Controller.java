@@ -37,7 +37,7 @@ public class Menu27Controller {
 	public String test(Model model) {
 		List<CustomerVo> list = menu27Service.list();
 		model.addAttribute("list", list);
-		menu27Service.test();
+		//menu27Service.test();
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}	
 
@@ -47,12 +47,11 @@ public class Menu27Controller {
 	public Map<String, Object> create(@ModelAttribute CustomerVo customervo,
 			@AuthUser UserVo authUser) {
 		System.out.println("create");
+				
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		customervo.setInsertUserid(authUser.getName());
 		
 		Map<String, Object> result = menu27Service.create(customervo);
-		result.put("success", true);
-		
 		return result;
 	}
 	
@@ -65,25 +64,24 @@ public class Menu27Controller {
 	}
 	
 	// U
+	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/update")
-	public String update(@ModelAttribute CustomerVo CustomerVo,
+	public Map<String, Object> update(@ModelAttribute CustomerVo CustomerVo,
 			@AuthUser UserVo authUser) {
 		System.out.println("update");
-		
-		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		CustomerVo.setUpdateUserid(authUser.getName());
-				
-		menu27Service.update(CustomerVo);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		Map<String, Object> result = menu27Service.update(CustomerVo);
+		return result;
 	}
 	
 	// D
+	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
-	public String delete(@ModelAttribute CustomerVo customerVo) {
+	public Map<String, Object> delete(@ModelAttribute CustomerVo customerVo) {
 		System.out.println("delete");
-		
-		menu27Service.delete(customerVo);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		Map<String, Object> result = menu27Service.delete(customerVo);
+		result.put("success", true);
+		return result;
 	}
 	
 

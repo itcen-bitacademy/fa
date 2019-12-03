@@ -29,35 +29,44 @@ public class Menu27Repository {
 		sqlSession.insert("menu27.save", testVo);
 	}
 
-	public Boolean insert(CustomerVo customerVo) {
-		int count = sqlSession.insert("menu27.insert", customerVo);
-		return count==1;
-			
-	}
-
-	public void update(CustomerVo customerVo) {
-		sqlSession.update("menu27.update", customerVo);
-	}
-
-	public void delete(CustomerVo customerVo) {
-		sqlSession.delete("menu27.delete", customerVo);
-		
-	}
-
-	public List<CustomerVo> list() {
-		return sqlSession.selectList("menu27.getList");
-	}
 
 	public Map<String, Object> create(CustomerVo customervo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		// 다른 조와 데이터 통합 전 임의의 Test data insert
-		//customervo.setAccountNo("12348");
 		// 191202 sql문 구현 필요함
 		sqlSession.insert("menu27.create", customervo);
 		
-		map.put("customerList", sqlSession.selectList("menu25.list"));
+		map.put("customerList", sqlSession.selectList("menu27.getList"));
 		return map;
+	}
+
+	public Map<String, Object> update(CustomerVo customerVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+				
+		// TODO Auto-generated method stub		
+		sqlSession.update("menu27.update", customerVo);
+		
+		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		return map;
+	}
+
+	public Map<String, Object> delete(CustomerVo customerVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// TODO Auto-generated method stub
+		sqlSession.update("menu27.delete", customerVo);
+		
+		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		return map;
+	}
+
+	public List<CustomerVo> list() {
+		return sqlSession.selectList("menu27.getList");
+	}
+	
+	public void deleteAll(CustomerVo customervo) {
+		// TODO Auto-generated method stub
+		sqlSession.delete("menu27.deleteAll", customervo);
 	}
 
 }
