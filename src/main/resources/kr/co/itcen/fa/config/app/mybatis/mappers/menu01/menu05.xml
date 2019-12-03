@@ -22,8 +22,8 @@
 		 where	delete_flag = "N"
 		]]>
 	</select>
-	
-	<update id = "remove" parameterType="1cardvo">
+
+	<update id="remove" parameterType="1cardvo">
 		<![CDATA[
 			update 	tb_cardmanager 
 			   set 	delete_flag='Y', card_no = concat("d",#{cardNo })
@@ -31,7 +31,7 @@
 			
 		]]>
 	</update>
-	
+
 	<update id="update" parameterType="1cardvo">
 		<![CDATA[
 		 update tb_cardmanager
@@ -51,14 +51,39 @@
 		  where card_no = #{cardNoOld};
 		]]>
 	</update>
-	
-	<select id="exist" resultType="1cardvo">
+
+	<update id="delete" parameterType="1cardvo">
+		<![CDATA[
+			delete from tb_cardmanager where card_no = #{cardNo}
+		]]>
+	</update>
+
+
+
+
+	<select id="nexist" resultType="1cardvo">
+		<![CDATA[
+		select	card_no
+		  from	tb_cardmanager 		  
+		 where  card_no = concat("ddd",#{cardNo })
+		]]>
+		<if test="cardNo!=cardNoOld ">
+		<![CDATA[
+		or	 card_no = #{cardNo}
+		]]>
+		</if>
+		
+		
+		
+	</select>
+
+	<select id="yexist" resultType="1cardvo">
 		<![CDATA[
 		select	card_no
 		 from	tb_cardmanager
-		 where	card_no = #{cardNo}
-		 or		card_no = concat("d",#{cardNo })
+		 where	card_no = concat("d",#{cardNo })
 		]]>
 	</select>
-	
+
+
 </mapper>

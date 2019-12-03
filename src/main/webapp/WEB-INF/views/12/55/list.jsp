@@ -106,14 +106,17 @@ $(function() {
 										<th>품목코드</th>
 										<th>품목명</th>
 										<th>입고수량</th>
-										<th>입고금액</th>
+										<th>입고공급가액</th>
 										<th>입고부가세</th>
+										<th>입고금액</th>
 										<th>출고수량</th>
-										<th>출고금액</th>
+										<th>출고공급가액</th>
 										<th>출고부가세</th>
+										<th>출고금액</th>
 										<th>재고수량</th>
-										<th>재고금액</th>
+										<th>재고공급가액</th>
 										<th>재고부가세</th>
+										<th>재고금액</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -123,12 +126,15 @@ $(function() {
 										<td>10</td>
 										<td>10000</td>
 										<td>1000</td>
+										<td>110000</td>
 										<td>5</td>
 										<td>5000</td>
 										<td>500</td>
+										<td>27500</td>
 										<td>5</td>
-										<td>5000</td>
-										<td>500</td>
+										<td>10000</td>
+										<td>1000</td>
+										<td>55000</td>
 									</tr>
 									</tbody>
 								</table>

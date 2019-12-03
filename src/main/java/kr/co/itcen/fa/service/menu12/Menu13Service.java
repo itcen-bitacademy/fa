@@ -31,5 +31,8 @@ public class Menu13Service {
 	public List<PurchaseitemVo> getItemList() {
 		return menu13Repository.getItemList();
 	}
+	public List<SalesVo> getSalesNo(String salesNo) {
+		return menu13Repository.getSalesNo(salesNo);
+	}
 
 }

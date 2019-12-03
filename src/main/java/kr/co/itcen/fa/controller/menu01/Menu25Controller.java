@@ -1,23 +1,21 @@
 package kr.co.itcen.fa.controller.menu01;
 
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu25Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
-
 
 /**
  * 
@@ -37,63 +35,55 @@ public class Menu25Controller {
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model) {
-		System.out.println("list");
-		menu25Service.test();
+		List<BankAccountVo> list = menu25Service.list();
+		
+		model.addAttribute("list", list);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	// CRUD
+	// Create
+	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/create")
-	public String create(@ModelAttribute BankAccountVo bavo,
+	public Map<String, Object> create(@ModelAttribute BankAccountVo bavo,
 			@AuthUser UserVo uvo) {
 		System.out.println("create");
-		
-		// InsertDay Data 삽입
-		SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-		Date currentTime = new Date ( );
-		String dTime = formatter.format ( currentTime );
-		
+				
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setInsertUserId(uvo.getName());
-		bavo.setInsertDay(dTime);
 		
-		System.out.println(uvo.getName());
-		System.out.println(uvo.getLastUpdate());
-		System.out.println(bavo.toString());
+		Map<String, Object> result = menu25Service.create(bavo);
+		result.put("success", true);
 		
-		menu25Service.create(bavo);
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return result;
 	}
 	
+	// R
 	@RequestMapping("/" + SUBMENU + "/read")
 	public String read(@ModelAttribute BankAccountVo bavo	) {
 		System.out.println("read");
 		menu25Service.test();
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
-
+	
+	// Update
 	@RequestMapping("/" + SUBMENU + "/update")
 	public String update(@ModelAttribute BankAccountVo bavo,
 			@AuthUser UserVo uvo) {
 		System.out.println("update");
 		
-		// InsertDay Data 삽입
-		SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-		Date currentTime = new Date ( );
-		String dTime = formatter.format ( currentTime );
-
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setUpdateUserId(uvo.getName());
-		bavo.setUpdateDay(dTime);
 				
 		menu25Service.update(bavo);
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
-
+	
+	// Delete
 	@RequestMapping("/" + SUBMENU + "/delete")
 	public String delete(@ModelAttribute BankAccountVo bavo) {
 		System.out.println("delete");
+		
 		menu25Service.delete(bavo);
-		return MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

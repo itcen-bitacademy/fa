@@ -1,12 +1,19 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu16Service;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 
 /**
  * 
@@ -24,14 +31,39 @@ public class Menu16Controller {
 	@Autowired
 	private Menu16Service menu16Service;
 	
-	                                   // /11  /11/16, /11/16/add
+	// /11  /11/16, /11/16/add
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
-	public String test(Model model) {
-		menu16Service.test();
-		/*
-		 *    JSP
-		 *    11/16/add.jsp
-		 */
+	public String test(Model model,
+			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
+		DataResult<BankVo> dataResult = menu16Service.list(page);
+		model.addAttribute("dataResult",dataResult);
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
+	@RequestMapping(value= "/" + SUBMENU + "/add" , method = RequestMethod.POST)
+	public String add(BankVo vo) {
+		System.out.println(vo);
+		vo.setAddress(vo.getRoadAddress() + vo.getDetailAddress());
+		menu16Service.insert(vo);
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+	
+	@RequestMapping(value= "/" + SUBMENU + "/update" , method = RequestMethod.POST)
+	public String update(BankVo vo) {
+		System.out.println(vo);
+		vo.setAddress(vo.getRoadAddress() + vo.getDetailAddress());
+		menu16Service.update(vo);
+		return"redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+	
+	@RequestMapping(value= "/" + SUBMENU + "/delete" , method = RequestMethod.POST)
+	public String delete(BankVo vo) {
+		System.out.println(vo);
+		vo.setAddress(vo.getRoadAddress() + vo.getDetailAddress());
+		menu16Service.delete(vo);
+		return"redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+	
+	
 }

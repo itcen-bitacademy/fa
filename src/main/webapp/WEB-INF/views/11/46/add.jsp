@@ -354,13 +354,14 @@ function selectRow(thisTr){
 
 function deleteChecked(){
 	var sendData = [];
+	
+	//넘어갈 no 배열을 생성한다.
 	var checkedList = $("#tbody-list input[type=checkbox]:checked");
 	checkedList.each(function(i, e){
 		sendData.push($(this).val());
-		console.log($(this).val());
 	});
-	console.log(sendData);
-	console.log($("#main-menu-code").val());
+	
+	//no 배열을 넘겨준다.
 	$.ajax({
 		url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
 		type : "POST",
