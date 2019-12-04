@@ -68,7 +68,7 @@
 													<option sectionList="${sectionVo.code }" value="${sectionVo.classification }">${sectionVo.classification }</option>
 												</c:forEach>
 											</select> <input readonly type="text" class="span6" name="code" id="code"
-												placeholder="001">
+												placeholder="대분류명을 지정하면 코드가 등록됩니다">
 										</div>
 									</div>
 									<div class="control-group">
@@ -78,7 +78,7 @@
 											<select class="chosen-select" id="form-field-customer"
 												name="customerNo" data-placeholder="전체">
 												<c:forEach items="${customerList }" var="customerVo">
-													<option customerList="${customerVo.name }" value="${customerVo.no }">${customerVo.no }</option>
+													<option customerName="${customerVo.name }" customerManager="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
 												</c:forEach>
 											</select> <input readonly type="text" class="span6"
 												name="customerName" id="customerName"
@@ -286,9 +286,11 @@
 			
 			// 거래처 코드 선택시 거래처 명 가져오기
 			$('#form-field-customer').change(function() {
-				var customerName = $('#form-field-customer option:selected').attr('customerList');
+				var customerName = $('#form-field-customer option:selected').attr('customerName');
+				var customerManager = $('#form-field-customer option:selected').attr('customerManager');
+				
 				$('#customerName').val(customerName);
-				//$('#customerManager').val(customerManager);
+				$('#customerManager').val(customerManager);
 			});
 			
 			// 품목코드 중복 체크
