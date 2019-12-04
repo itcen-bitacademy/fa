@@ -44,9 +44,11 @@
 				and 	code like concat('%',#{code},'%') 
 				]]>
 			</if>
-		<![CDATA[
-		limit	#{pagination.pageIndex }, #{pagination.listSize }
-		]]>
+			<if test="pagination.pageIndex >= 0">
+				<![CDATA[
+			    	limit	 #{pagination.pageIndex }, #{pagination.listSize }
+			    ]]>
+		    </if>
 	</select>
 	
 	<select id="pdebtTotalcount" parameterType="String" resultType="int">
