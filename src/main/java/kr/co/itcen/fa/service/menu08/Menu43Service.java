@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.service.menu08;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,8 @@ public class Menu43Service {
 		menu43Repository.insert(intangibleAssetsVo);
 	}
 
-	public List<IntangibleAssetsVo> getList() {
-		return menu43Repository.getList();
+	public List<IntangibleAssetsVo> getList(String kwd) {
+		return menu43Repository.getList(kwd);
 	}
 
 	public void update(IntangibleAssetsVo intangibleAssetsVo) {
@@ -39,5 +41,21 @@ public class Menu43Service {
 
 	public void delete(String id) {
 		menu43Repository.delete(id);
+	}
+
+	public Map<? extends String, ? extends Object> getSection() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("sectionList",menu43Repository.getSection());
+		return map;
+	}
+
+	public Boolean checkId(String id) {
+		return menu43Repository.get(id) != null;
+	}
+
+	public Map<? extends String, ? extends Object> getCustomer() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("customerList",menu43Repository.getCustomer());
+		return map;
 	}
 }
