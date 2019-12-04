@@ -11,16 +11,16 @@ import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu11.Menu16Service;
 
 @RestController("Menu16ApiController")
-@RequestMapping("/api/checkcode")
+@RequestMapping("/" + Menu16Controller.MAINMENU)
 public class Menu16ApiController {
 	public static final String MAINMENU = "11";
-	public static final String SUBMENU = "50";
+	public static final String SUBMENU = "16";
 	
 	@Autowired
 	private Menu16Service menu16Service;
 	
 	@ResponseBody
-	@RequestMapping("/checkcode")
+	@RequestMapping("/"+SUBMENU+"/api/checkcode")
 	public JSONResult checkCode(@RequestParam(value="code", required=true, defaultValue="") String code) {
 		Boolean exist = menu16Service.existCode(code);
         return JSONResult.success(exist);
