@@ -337,6 +337,7 @@
 		
 	});
 	
+	// Popup
 	$(function() {
 		$("#dialog-message").dialog({
 			autoOpen : false

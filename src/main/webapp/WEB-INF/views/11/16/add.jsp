@@ -39,14 +39,9 @@
 							<div class="controls">
 								<input class="span5" type="text" id="form-field-code" name="code" placeholder="은행코드"/>
 <%-- 								<form:input path="code" /> --%>
+
 								<input id="btn-check-code" type="button" value="중복확인">
-								<spring:hasBindErrors name="userVo"><!-- Controller에서 Error가 있으면 값이 셋팅, 없으면 다음 줄 실행 -->
-									<c:if test='${errors.hasFieldErrors("id") }'> <!-- name 변수에 Error가 있는지 확인 -->
-										<p style="font-wigth:bold; color:red; text-align:left; padding:2px 0 0 0">
-										<spring:message code='${errors.getFieldError("id").codes[0] }' text='${errors.getFieldError("id").defaultMessage }' /> <!-- spring:message는 messages.properties의 값을 출력해주는 기능 -->
-										</p>
-									</c:if>
-								</spring:hasBindErrors>
+								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 								
 								<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							</div>
@@ -327,7 +322,7 @@
 		//은행코드 중복체크
 			$("#input-code").change(function(){
 				$("#btn-check-code").show();
-				$("#img-checked").hide();
+				$("#img-checkcode").hide();
 			});	
 			
 			$("#btn-check-code").click(function(){
@@ -338,7 +333,7 @@
 			
 				// ajax 통신
 				$.ajax({
-					url: "${pageContext.servletContext.contextPath }/api/checkcode/code?code=" + code,
+					url: "${pageContext.servletContext.contextPath }/api/checkcode/checkcode?code=" + code,
 					type: "get",
 					dataType: "json",
 					data: "",
@@ -356,7 +351,7 @@
 						}
 						
 						$("#btn-check-code").hide();
-						$("#img-checked").show();
+						$("#img-checkcode").show();
 						}
 					});
 				});	

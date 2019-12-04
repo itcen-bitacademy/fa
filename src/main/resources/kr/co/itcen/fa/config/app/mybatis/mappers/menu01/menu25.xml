@@ -92,5 +92,15 @@
 			 	and delete_flag="Y";
 		]]>
 	</delete>
+	
+	<select id="gets" parameterType="String" resultType="bankaccountvo">
+		<![CDATA[
+		select	deposit_no as depositNo, deposit_host as depositHost, 
+				bank_code as bankCode, bank_name as bankName
+		 from	tb_bank_account
+		 where	deposit_no = #{bankAccountNo}
+		 and  delete_flag = "N"
+		]]>
+	</select>
 
 </mapper>

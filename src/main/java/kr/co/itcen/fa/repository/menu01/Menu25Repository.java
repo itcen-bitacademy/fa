@@ -81,4 +81,11 @@ public class Menu25Repository {
 		// TODO Auto-generated method stub
 		sqlSession.delete("menu25.deleteAll", bavo);
 	}
+
+	public Map<String, Object> gets(String bankAccountNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// TODO Auto-generated method stub		
+		map.put("bankAccountList", sqlSession.selectList("menu25.gets", bankAccountNo));
+		return map;
+	}
 }
