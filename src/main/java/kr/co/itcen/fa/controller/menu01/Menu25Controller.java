@@ -96,7 +96,7 @@ public class Menu25Controller {
 	// PopUp
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/gets")
-	public Map<String, Object> gets(@PathVariable String bankAccountNo) {
+	public Map<String, Object> gets(@PathVariable("bankAccountNo") String bankAccountNo) {
 		System.out.println("gets");
 		
 		Map<String, Object> result = menu25Service.gets(bankAccountNo);
