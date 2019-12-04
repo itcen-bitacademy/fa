@@ -27,14 +27,14 @@ public class Menu49Service {
 		menu49Repository.test();
 	}
 
-	public DataResult<LTermdebtVo> list(int page,LTermdebtVo vo) {
-DataResult<LTermdebtVo> dataResult = new DataResult<LTermdebtVo>();
+	public DataResult<LTermdebtVo> list(int page,LTermdebtVo vo,String sort) {
+		DataResult<LTermdebtVo> dataResult = new DataResult<LTermdebtVo>();
 		
 		int totalCnt = menu49Repository.listCount(vo);
 		
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		dataResult.setPagination(pagination);
-		List<LTermdebtVo> list = menu49Repository.list(pagination,vo);
+		List<LTermdebtVo> list = menu49Repository.list(pagination,vo,sort);
 		dataResult.setDatas(list);
 		
 		return dataResult;
