@@ -2,15 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu24">
 	<!-- Test -->
-	
+
 	<select id="selectAllCount" resultType="int" parameterType="1cardvo">
 		select count(*)
-		 from	tb_cardmanager
-		
-		
+		from tb_cardmanager
+
+		<if test="deleteFlag!=null">		    
+			<![CDATA[
+				where delete_flag= #{deleteFlag }
+			]]>
+		</if>
+		 <if  test="inputperiodStart!=null and !inputperiodStart.equals('')">		    
+			<![CDATA[
+				and insert_day >= #{inputperiodStart }
+			]]>
+		</if>
+		<if  test="inputperiodEnd!=null and !inputperiodEnd.equals('')">		    
+			<![CDATA[
+				and insert_day <= #{inputperiodEnd }
+			]]>
+		</if>
+		<if  test="cardStartNo!=null and !cardStartNo.equals('')">		    
+			<![CDATA[
+				and card_no like concat(#{cardStartNo }, "%")
+			]]>
+		</if>
+		<if  test="cardEndNo!=null and !cardEndNo.equals('')">		    
+			<![CDATA[
+				and card_no like concat("%", #{cardEndNo })
+			]]>
+		</if>
+
 	</select>
-	
-	
+
+
 	<select id="selectAll" resultType="1cardvo" parameterType="map">
 	<![CDATA[
 		select  card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
@@ -19,8 +44,34 @@
 				update_userid as updateUserId, update_day as updateDay, 
 				delete_flag as deleteFlag
 		   from	tb_cardmanager
-		    where delete_flag= "N"
+		   
 	]]>
+		<if test="vo.deleteFlag!=null">		    
+			<![CDATA[
+				where delete_flag= #{vo.deleteFlag }
+			]]>
+		</if>
+		 <if  test="vo.inputperiodStart!=null and !vo.inputperiodStart.equals('')">		    
+			<![CDATA[
+				and insert_day >= #{vo.inputperiodStart }
+			]]>
+		</if>
+		<if  test="vo.inputperiodEnd!=null and !vo.inputperiodEnd.equals('')">		    
+			<![CDATA[
+				and insert_day <= #{vo.inputperiodEnd }
+			]]>
+		</if>
+		<if  test="vo.cardStartNo!=null and !vo.cardStartNo.equals('')">		    
+			<![CDATA[
+				and card_no like concat(#{vo.cardStartNo }, "%")
+			]]>
+		</if>
+		<if  test="vo.cardEndNo!=null and !vo.cardEndNo.equals('')">		    
+			<![CDATA[
+				and card_no like concat("%", #{vo.cardEndNo })
+			]]>
+		</if>
+		
 	</select>
 
 </mapper>

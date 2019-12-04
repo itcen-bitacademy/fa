@@ -7,10 +7,82 @@
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-.radio {
-	float: left;
-	width: 20%;
-}
+	label, h4{display: inline-block}
+	
+	#filter-area{
+		display: grid;
+		grid-template-columns: 845px 845px;
+		grid-template-rows: 70px 30px;
+	}
+	
+	.filter-top{
+		grid-column: 1 / 3;
+		grid-row: 1;
+		
+		display: grid;
+	}
+	
+	.input-area-wrapper{
+		display: grid;
+		grid-template-columns: repeat(4, 420px);
+		grid-template-rows: 80px 80px;
+		gap: 10px;
+		
+		margin: auto 0;
+	}
+	
+	.input-area{
+		grid-column: auto;
+		margin: auto 0;
+	}
+	
+	.input-area>*, .input-area>input{
+		margin: auto;
+	}
+	
+	.input-area-radio{
+		display: grid;
+		grid-template-columns: 120px 50px 50px 80px;
+	}
+	.radio-label{
+		margin-right: 5px;
+	}
+	.filter-left{
+		grid-column: 1;
+		grid-row: 2;
+		
+		display: grid;
+	}
+	
+	.filter-right{
+		grid-column: 2;
+		grid-row: 2;
+		
+		display: grid;
+	}
+	
+	.order-list{
+		height: 80px;
+		margin: auto 0;
+		
+		display: grid;
+		grid-template-columns: repeat(4,80px);
+		gap: 10px;
+	}
+	
+	.order-list>li{
+		display: inline-block;
+		float: left;
+	}
+	
+	.chkbox-list-area{
+		margin: auto 0;		/** **/
+	}
+	
+	.chkbox-list{
+		float: right;
+		margin-left: 10px;
+	}
 
 .prod-list-opts {
 	padding: 10px 15px 9px 11px;
@@ -23,11 +95,6 @@
     overflow: hidden;
 }
 
-.prod-list-opts .order-item {
-    float: left;
-    padding: 0 9px 0 8px;
-    
-}
 
 .prod-list-opts li {
     list-style: none;
@@ -37,25 +104,6 @@
 .checkbox {
 	float: left;
 }
-
-form {
-	margin-bottom: 0px;
-}
-
-/* table columns  */
-td{display: inline-block;}
-.first-column {width:60px; padding-left:20px;}
-.second-column {width:180px;}
-.third-column {width:60px;}
-.fourth-column {width:70px;}
-.fifth-column {width:90px;}
-.sixth-column {width:180px;}
-.seventh-column{width:50px;}
-.eighth-column{width:80px;}
-.nineth-column{width:120px;}
-/* second row */
-.span2 {padding-left:40px; padding-top:20px;}
-
 </style>
 </head>
 <body class="skin-3">
@@ -69,93 +117,53 @@ td{display: inline-block;}
 				<h1 class="pull-left">단기차입금현황조회</h1>
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
-				
-					<!-- PAGE CONTENT BEGINS -->
-					<div>
-						<div>
-						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-							<table style="width:100%;">
-								<tbody>
-								<tr>
-									<td class="first-column"><h4>차입일자</h4></td>
-									<td class="second-column">
-				                        <div class="row-fluid input-prepend">
-				                           <input type="date" name="debtDate" id="debtDate"  data-date-format="yyyy-mm-dd" />
-				                         </div>
-									</td>
-									<td class="third-column"><h4>만기일자</h4></td>
-									<td class="fourth-column">
-				                        <div class="row-fluid input-prepend">
-				                           <input type="date" name="expDate" id="expDate"  data-date-format="yyyy-mm-dd" />
-				                         </div>
-									</td>
-									<td class="fifth-column"><h4>이자지급방식</h4></td>
-									<td class="sixth-column">
-										<div class="radio">
-											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
-												<span class="lbl">년</span>
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
-												<span class="lbl">월</span>
-											</label>
-										</div>
-										<div class="radio" style="width:15%;">
-											<label>
-												<input name="form-field-radio" type="radio" class="ace" />
-												<span class="lbl">만기</span>
-											</label>
-										</div>
-									</td>
-									<td class="seventh-column"><h4>은행명</h4></td>
-									<td class=eighth-column>
-										<input type="text" name="bankName"/>
-									</td>
-									<td class="nineth-column">
-										<button type="button" class="btn">조회</button>
-									</td>
-								</tr>
-								</tbody>
-							</table>	
-							</form>
-							
-							<div class="row-fluid">
-								<div class="span9">
-									<div class="prod-list-opts">
-										<div class="order-opt">
-											<ul class="order-list">
-												<li class="order-item"><h4><a href="#">차입일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">만기일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">등록일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">차입금액</a></h4></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="span2">
-									<div class="checkbox">
-										<label>
-											<input name="form-field-checkbox" type="checkbox" class="ace" />
-											<span class="lbl">삭제포함</span>
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											<input name="form-field-checkbox" type="checkbox" class="ace" />
-											<span class="lbl">상환완료포함</span>
-										</label>
-									</div>
-								</div>
-							</div>
-															
-						</div><!-- /span -->
-					</div><!-- /row -->
-					<!-- PAGE CONTENT ENDS -->
-			
-		<!-- list -->
+			<!-- PAGE CONTENT BEGINS -->
+			<form id="filter-area">
+				<section class="filter-top">
+					<div class="input-area-wrapper">
+						<div class="input-area">
+							<label><h4>차입일자</h4></label> 
+							<input type="date">
+						</div>
+						<div class="input-area">
+							<label><h4>만기일자</h4></label> 
+							<input type="date">
+						</div>
+						<div class="input-area input-area-radio">
+							<label><h4>이자지급방식</h4></label> 
+							<div class="radio-input"><label class="radio-label">년</label><input type="radio" name="intRate"></div>
+							<div class="radio-input"><label class="radio-label">월</label><input type="radio" name="intRate"></div>
+							<div class="radio-input"><label class="radio-label">해당없음</label><input type="radio" name="intRate"></div>
+						</div>
+						<div class="input-area">
+							<label><h4>은행명</h4></label> 
+							<input type="text">
+							<input type="submit" value="조회">
+						</div>
+					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
+				<section class="filter-left">
+					<ul class="order-list">
+						<li><h4>차입일자</h4></li>
+						<li><h4>만기일자</h4></li>
+						<li><h4>등록일자</h4></li>
+						<li><h4>차입금액</h4></li>
+					</ul>
+				</section> <!-- filter-left end -->
+				<section class="filter-right">
+					<div class="chkbox-list-area">
+						<div class="chkbox-list">
+							<label>삭제포함</label>
+							<input type="checkbox" name="deleteFlag">
+						</div>
+						<div class="chkbox-list">
+							<label>상환완료포함</label>
+							<input type="checkbox" name="repayComplFlag">
+						</div>
+					</div>
+				</section> <!-- filter-right end -->
+			</form>
+			<!-- PAGE CONTENT ENDS -->
+			<!-- list -->
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
@@ -177,19 +185,19 @@ td{display: inline-block;}
 					<tbody>
 						<c:forEach items="${list }" var="vo" varStatus="status">
 							<tr>
-							<td class="center">2019112701</td>
-							<td>GS칼텍스는...</td>
-							<td class="center">008-국내은행</td>
-							<td class="center">70,000,000,000</td>
-							<td class="center">월</td>
-							<td class="center">2019-10-29 ~ 2029-10-29</td>
-							<td class="center">1.99%</td>
-							<td class="center">월</td>
-							<td class="center">홍길동</td>
-							<td class="center">010-1234-5678</td>
-							<td class="center">0010987</td>
-							<td class="center">한국은행</td>
-						</tr>
+								<td class="center">2019112701</td>
+								<td>GS칼텍스는...</td>
+								<td class="center">008-국내은행</td>
+								<td class="center">70,000,000,000</td>
+								<td class="center">월</td>
+								<td class="center">2019-10-29 ~ 2029-10-29</td>
+								<td class="center">1.99%</td>
+								<td class="center">월</td>
+								<td class="center">홍길동</td>
+								<td class="center">010-1234-5678</td>
+								<td class="center">0010987</td>
+								<td class="center">한국은행</td>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>	

@@ -1,18 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu51">
-	<!-- Team -->
-	<insert id="save" parameterType="test4vo">
-		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
-		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
+	
+	<select id="selectAllCount" resultType="int" parameterType="pdebtvo">
+	<![CDATA[
+		select count(*)
+		    from tb_p_debt
+		    	where delete_flag= "N"
+	]]>
+			<if  test="debtDate!=null and !debtDate.equals('')">		    
 			<![CDATA[
-			select last_insert_id()
+				and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
 			]]>
-		</selectKey>
-	</insert>
+			</if>
+			<if test="intPayWay != null and !intPayWay.equals('')">
+			<![CDATA[
+				and 	intPayWay = '#{intPayWay}' 
+			]]>
+			</if>
+		     <if test="bankCode != null and !bankCode.equals('')">		    
+			<![CDATA[
+				and 	bank_code like concat('%',#{bankCode},'%') 
+			]]>
+			</if>
+			<if test="expDate != null and !expDate.equals('')">
+			<![CDATA[
+				and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
+			]]>
+			</if>
+	</select>
+	
+	<!-- select list -->
+	<select id="selectAll" resultType="pdebtvo" parameterType="map">
+	<![CDATA[
+		select no,
+			code,
+   			name,
+    		major_code as majorCode,
+    		debt_amount as debtAmount,
+    		repay_bal as repayBal,
+    		repay_way as repayWay,
+    		concat(date_format(debt_date,'%Y-%m-%d'),'-',
+    		date_format(exp_date,'%Y-%m-%d')) as debtExpDate,
+    		int_rate as intRate,
+    		int_pay_way as intPayWay,
+   			mgr,
+    		mgr_call as mgrCall,
+		    bank_code as bankCode,
+		    deposit_no as depositNo
+		    	from tb_p_debt
+		    		where delete_flag= "N"
+		    ]]>
+		  <if  test="debtDate!=null and !debtDate.equals('')">		    
+			<![CDATA[
+				and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
+			]]>
+			</if>
+			<if test="intPayWay != null and !intPayWay.equals('')">
+			<![CDATA[
+				and 	intPayWay = #{vo.intPayWay}
+			]]>
+			</if>
+		     <if test="bankCode != null and !bankCode.equals('')">		    
+			<![CDATA[
+				and 	bank_code like concat('%',#{vo.bankCode},'%') 
+			]]>
+			</if>
+			<if test="expDate != null and !expDate.equals('')">
+			<![CDATA[
+				and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
+			]]>
+			</if>
+		    	limit	 1, #{pagination.listSize }
+	</select>
+	
+	<select id="selectsection" resultType="sectionvo">
+	<![CDATA[
+		select no,
+			classification,
+			code,
+			last_update as lastUpdate,
+			parent_no as parentNo
+		    	from tb_section
+		    		where parent_no = 6
+	]]>
+	</select>
 
 </mapper>

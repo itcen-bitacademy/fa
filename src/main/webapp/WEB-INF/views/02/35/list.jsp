@@ -31,7 +31,7 @@
 					<div class="span12">
 
 						<!-- PAGE CONTENT BEGINS -->
-						<form class="form-horizontal" id="form-customer" action='${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert'>
+						<form class="form-horizontal" id="form-customer" method="post">
 							<div class="span6">
 								<div class="control-group">
 									<label class="control-label" for="no">사업자번호</label>
@@ -98,7 +98,7 @@
 								<div class="control-group">
 									<label class="control-label" for="name">상호</label>
 									<div class="controls">
-										<input type="text" id="name" name="name" style="width: 250px;">
+										<input type="text" id="bsname" name="name" style="width: 250px;">
 									</div>
 								</div>
 
@@ -161,11 +161,11 @@
 								<div class="span12">
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
-											<button class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
-											<button class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
-											<button class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
+											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
+											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
+											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
 											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left; margin-left:20px;">입력</button>
-											<button class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button><br>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button><br>
 										<div class="hr hr-18 dotted"></div>
 									</div>
 								</div>
@@ -173,7 +173,7 @@
 							
 							<div class="row-fluid">
 								<div class="span12">
-									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<table id="customer-table" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
 												<th class="center">
@@ -208,7 +208,7 @@
 
 										<tbody>
 											<c:forEach items="${customerVo }" var="customerVo" varStatus="status">
-												<tr>
+												<tr id="${customerVo.no }" >
 													<td class="center">
 														<label>
 															<input type="checkbox" class="ace">
@@ -219,7 +219,7 @@
 													<td>${customerVo.name }</td>
 													<td>${customerVo.ceo }</td>
 													<td>${customerVo.corporationNo }</td>
-													<td>${customerVo.detailAddress }</td>
+													<td>${customerVo.address }</td>
 													<td>${customerVo.phone }</td>
 													<td>${customerVo.conditions }</td>
 													<td>${customerVo.item }</td>
@@ -231,10 +231,10 @@
 													<td>${customerVo.depositHost }</td>
 													<td>은행코드</td>
 													<td>은행명</td>
-													<td>${customerVo.insertUserid }</td>
 													<td>${customerVo.insertDay }</td>
-													<td>${customerVo.updateUserid }</td>
+													<td>${customerVo.insertUserid }</td>
 													<td>${customerVo.updateDay }</td>
+													<td>${customerVo.updateUserid }</td>
 													<td>${customerVo.deleteFlag }</td>
 												</tr>
 											</c:forEach>
@@ -271,11 +271,115 @@
 		$(".chosen-select").chosen();
 	});
 	
-	$("#btn_insert").click(function javascript_onclikc(){
-		alert('Jquery button를 클릭하셨습니다.');
+	// 사업자번호로 조회 select
+	$("#btn_select").click(function(){
+		alert($("#no").val()+'번호로 조회');
+/* 		console.log($("#no").val());
+		var no = $("#no").val(); */
+		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list");
+		document.getElementById('form-customer').submit();
+		
+        return false;
+	});
+	
+	// 삭제 delete 
+	$("#btn_delete").click(function(){
+		alert('삭제');
+		
+		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 		document.getElementById('form-customer').submit();
         return false;
 	});
+	
+	// 수정 update
+	$("#btn_update").click(function(){
+		alert('수정');
+		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
+		document.getElementById('form-customer').submit();
+        return false;
+	});
+	
+	// 입력 insert
+	$("#btn_insert").click(function(){
+		alert('입력');
+		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
+		document.getElementById('form-customer').submit();
+        return false;
+	});
+	
+	// 취소 cancel
+	$("#btn_cancel").click(function(){
+		alert('초기화');
+		$("#no").val('');					//사업자번호
+		$("#bsname").val('');				//상호
+		$("#ceo").val('');					//대표자
+		$("#corporationNo").val('');		//법인번호
+		$("#address").val('');				//주소
+		$("#phone").val('');				//전화번호
+		$("#conditions").val('');			//업태
+		$("#item").val('');					//종목
+		$("#openDate").val('');				//개설일자
+		$("#jurisdictionOffice").val('');	//관할사무소
+		$("#managerName").val('');			//거래처담당자성명
+		$("#managerEmail").val('');			//담당자이메일
+		$("#depositNo").val('');			//계좌번호
+		$("#depositHost").val('');			//예금주
+		$("#bankCode").val('');				//은행코드
+		$("#bankName").val('');				//은행명
+	});
+	
+	
+	// table-tr 클릭시 input에 데이터 뿌리기	
+	$("#customer-table tr").click(function(){ 	
+
+		var str = ""
+		var tdArr = new Array();	// 배열 선언
+		
+		// 현재 클릭된 Row(<tr>)
+		var tr = $(this);
+		var td = tr.children();
+		
+		var address = td.eq(5).text();
+		$("#no").val(td.eq(1).text());					//사업자번호
+		$("#bsname").val(td.eq(2).text());				//상호
+		$("#ceo").val(td.eq(3).text());					//대표자
+		$("#corporationNo").val(td.eq(4).text());		//법인번호
+		$("#zipCode").val(address.substr(0,5));			//우편번호
+		$("#address").val(address.substr(6, address.indexOf(")")));	//도로명주소
+		$("#detailAddress").val(address.substr(address.indexOf(")")+1, address.length));		//상세주소
+		$("#phone").val(td.eq(6).text());				//전화번호
+		$("#conditions").val(td.eq(7).text());			//업태
+		$("#item").val(td.eq(8).text());				//종목
+		$("#openDate").val(td.eq(9).text());			//개설일자
+		$("#jurisdictionOffice").val(td.eq(10).text());	//관할사무소
+		$("#managerName").val(td.eq(11).text());		//거래처담당자성명
+		$("#managerEmail").val(td.eq(12).text());		//담당자이메일
+		$("#depositNo").val(td.eq(13).text());			//계좌번호
+		$("#depositHost").val(td.eq(14).text());		//예금주
+		$("#bankCode").val(td.eq(15).text());			//은행코드
+		$("#bankName").val(td.eq(16).text());			//은행명
+		
+	});
+	
+	// 사업자번호 중복체크
+	$(function(){
+		$.ajax({
+            type: 'POST',
+            url: '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/check',
+            data: {
+                "no" : $('#no').val()
+            },
+            success: function(data){
+                if($.trim(data) == 0){
+                    $('#checkMsg').html('<p style="color:blue">사용가능</p>');
+                }
+                else{
+                    $('#checkMsg').html('<p style="color:red">사용불가능</p>');
+                }
+            }
+        });
+	});
+	
 	</script>
 	
 	<script>
