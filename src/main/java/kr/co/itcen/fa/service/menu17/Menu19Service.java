@@ -82,7 +82,7 @@ public class Menu19Service {
 	
 	/**
 	 * 
-	 * 팀별 데이터 입력 가부 조회
+	 * 팀별 마감일(데이터 입력 가부) 조회
 	 * @param session		- controller의 HttpSession
 	 * @param businessDate	- 거래일자
 	 * @return boolean

@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu17;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.service.menu17.Menu20Service;
 import kr.co.itcen.fa.service.menu17.Menu61Service;
 import kr.co.itcen.fa.vo.UserVo;
@@ -29,6 +31,9 @@ public class Menu61Controller {
 	
 	public static final String MAINMENU = "17";
 	public static final String SUBMENU = "61";
+	
+	@Autowired
+	private Menu19Service menu19Service;
 	
 	@Autowired
 	private Menu20Service menu20Service;
@@ -61,10 +66,14 @@ public class Menu61Controller {
 	 */
 	@PostMapping("/" + SUBMENU + "/settlement")
 	public String executeSettlement(HttpSession session, Menu17SearchForm menu17SearchForm) {
+		// 마감일 체크 
+		menu19Service.checkClosingDate(session, Calendar.getInstance().getTime());
 		UserVo userVo = (UserVo) session.getAttribute("authUser");
 		
+		// 등록자 설정 
 		menu17SearchForm.setInsertUserid(userVo.getId());
 		
+		// 결산작업 실행 
 		menu61Service.executeSettlement(menu17SearchForm);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
