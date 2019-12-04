@@ -183,7 +183,7 @@
 			});
 		});
 		
-		$("#select-purchaseitem-list tr").click(function() {
+		$("body").on("click","#select-purchaseitem-list tr",function(e){	
 			var tr = $(this);
 			var td = tr.children();
 			var itemcode = td.eq(1).text().trim();
