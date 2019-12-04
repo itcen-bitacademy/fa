@@ -63,6 +63,10 @@ public class Menu39Controller {
 		map.putAll(menu39Service.getSection());
 		model.addAllAttributes(map);
 		
+		//대분류
+		map.putAll(menu39Service.getCustomer());
+		model.addAllAttributes(map);
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	

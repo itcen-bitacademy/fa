@@ -15,5 +15,18 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<!-- 대분류 -->
+	<select id="getSection" resultType="sectionvo">
+		<![CDATA[
+		select no,
+			classification,
+			code,
+			last_update as lastUpdate,
+			parent_no as parentNo
+		from tb_section
+		where parent_no = 3
+		]]>
+	</select>
 
 </mapper>
