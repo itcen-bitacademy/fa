@@ -27,7 +27,7 @@
 			select 
 			no, code, major_code, name,
 			debt_amount, repay_bal, repay_way,
-			debt_date, exp_date, int_rate,
+			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d"), int_rate,
 			int_pay_way, int_amount, mgr,
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
@@ -43,7 +43,7 @@
 			select 
 			no, code, major_code, name,
 			debt_amount, repay_bal, repay_way,
-			debt_date, exp_date, int_rate,
+			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
 			int_pay_way, int_amount, mgr,
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
@@ -55,7 +55,7 @@
 			<if test="debtDate != null or !debtDate.isEmpty()">
 				and debt_date = debtDate
 			</if>
-			<if test="exoDate != null or !debtDate.isEmpty()">
+			<if test="expDate != null or !exptDate.isEmpty()">
 				and exp_date = expDate
 			</if>
 			<if test="intPayWay != null or !intPayWay.isEmpty()">

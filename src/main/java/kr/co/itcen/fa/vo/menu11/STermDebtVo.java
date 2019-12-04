@@ -16,8 +16,8 @@ public class STermDebtVo {
 	private String repayWay; // 상환방법
 	private String repayCompleFlag; // 상환완료여부
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
-	private Date debtDate; // 차입일자
-	private Date expDate; // 만기일자
+	private String debtDate; // 차입일자
+	private String expDate; // 만기일자
 	private Long intRate; // 이율
 	private String intPayWay; // 이자지급방식
 	private Long intAmount; // 이자금액
@@ -25,14 +25,15 @@ public class STermDebtVo {
 	private String mgrCall; // 차입금담당자전화
 	private String deptClassification; // 차입금대분류
 	private Long bankCode; // 은행코드
+	private String bankName;
 	private String depositNo; // 계좌번호
 	private String accountNo; // 계정코드
 	private Long voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
 	private String insertId; // 등록자
-	private Date insertDate; // 등록일
+	private String insertDate; // 등록일
 	private String updateId; // 수정자
-	private Date updateDate; // 수정일
+	private String updateDate; // 수정일
 
 
 	public Long getNo() {
@@ -89,16 +90,16 @@ public class STermDebtVo {
 	public void setDebtExpDate(String debtExpDate) {
 		this.debtExpDate = debtExpDate;
 	}
-	public Date getDebtDate() {
+	public String getDebtDate() {
 		return debtDate;
 	}
-	public void setDebtDate(Date debtDate) {
+	public void setDebtDate(String debtDate) {
 		this.debtDate = debtDate;
 	}
-	public Date getExpDate() {
+	public String getExpDate() {
 		return expDate;
 	}
-	public void setExpDate(Date expDate) {
+	public void setExpDate(String expDate) {
 		this.expDate = expDate;
 	}
 	public Long getIntRate() {
@@ -167,16 +168,16 @@ public class STermDebtVo {
 	public void setDeleteFlag(String deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
-	public Date getInsertDate() {
+	public String getInsertDate() {
 		return insertDate;
 	}
-	public void setInsertDate(Date insertDate) {
+	public void setInsertDate(String insertDate) {
 		this.insertDate = insertDate;
 	}
-	public Date getUpdateDate() {
+	public String getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
 	public String getInsertId() {

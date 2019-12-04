@@ -25,7 +25,6 @@ public class Menu47Service {
 	}
 	
 	public List<STermDebtVo> search(STermDebtVo sTermDebtVo){
-		"A".is
 		return menu47Repository.getSearchedList(sTermDebtVo);
 	}
 }

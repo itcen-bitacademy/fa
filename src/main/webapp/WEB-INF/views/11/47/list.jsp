@@ -195,8 +195,8 @@
 								<td class="center">${vo.majorCode }</td>
 								<td class="center">${vo.debtAmount }</td>
 								<td class="center">${vo.repayWay }</td>
-								<td class="center"><fmt:formatDate value="${vo.debtDate }" pattern="yyyy-MM-dd" /></td>
-								<td class="center"><fmt:formatDate value="${vo.expDate }" pattern="yyyy-MM-dd"/></td>
+								<td class="center">${vo.debtDate }</td>
+								<td class="center">${vo.expDate }</td>
 								<td class="center">${vo.intRate }</td>
 								<td class="center">${vo.intPayWay }</td>
 								<td class="center">${vo.mgr }</td>
