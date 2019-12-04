@@ -32,8 +32,6 @@ public class Menu25Repository {
 	public Map<String, Object> create(BankAccountVo bavo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		// 다른 조와 데이터 통합 전 임의의 Test data insert
-		bavo.setAccountNo("12348");
 		// 191202 sql문 구현 필요함
 		sqlSession.insert("menu25.create", bavo);
 		
@@ -43,9 +41,7 @@ public class Menu25Repository {
 
 	public Map<String, Object> update(BankAccountVo bavo) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		// 다른 조와 데이터 통합 전 임의의 Test data insert
-		bavo.setAccountNo("12348");
-				
+						
 		// TODO Auto-generated method stub		
 		sqlSession.update("menu25.update", bavo);
 		
@@ -80,5 +76,12 @@ public class Menu25Repository {
 	public void deleteAll(BankAccountVo bavo) {
 		// TODO Auto-generated method stub
 		sqlSession.delete("menu25.deleteAll", bavo);
+	}
+
+	public Map<String, Object> gets(String depositNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// TODO Auto-generated method stub		
+		map.put("bankAccountList", sqlSession.selectList("menu25.gets", depositNo));
+		return map;
 	}
 }

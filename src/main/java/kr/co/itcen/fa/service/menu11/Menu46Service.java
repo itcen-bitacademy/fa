@@ -32,8 +32,8 @@ public class Menu46Service {
 		DateFormat convertDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
 		String deptExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-		sTermDebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10))); // 차입일자 date format으로 변경
-		sTermDebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13))); // 만기일자 date format으로 변경
+		sTermDebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10)).toString()); // 차입일자 date format으로 변경
+		sTermDebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13)).toString()); // 만기일자 date format으로 변경
 		menu46Repository.insert(sTermDebtVo);
 	}
 	

@@ -72,4 +72,10 @@ public class Menu25Service {
 		List<BankAccountVo> map = menu25Repository.list();
 		return map;
 	}
+
+	public Map<String, Object> gets(String depositNo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = menu25Repository.gets(depositNo);
+		return map;
+	}
 }

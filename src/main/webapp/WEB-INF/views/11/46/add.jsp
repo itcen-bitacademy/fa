@@ -264,10 +264,8 @@ tr td:first-child {
 										<td class="center"><input type="hidden" name="majorCode" value="${vo.majorCode }">${vo.majorCode }</td>
 										<td class="center"><input type="hidden" name="debtAmount" value="${vo.debtAmount }">${vo.debtAmount }</td>
 										<td class="center"><input type="hidden" name="repayWay" value="${vo.repayWay }">${vo.repayWay }</td>
-										<td class="center"><input type="hidden" name="debtDate" value="${vo.debtDate }"> 
-										<fmt:formatDate value="${vo.debtDate }" pattern="yyyy-MM-dd" /></td>
-										<td class="center"><input type="hidden" name="expDate" value="${vo.expDate }">
-										<fmt:formatDate value="${vo.expDate }" pattern="yyyy-MM-dd" /></td>
+										<td class="center"><input type="hidden" name="debtDate" value="${vo.debtDate }">${vo.debtDate }</td> 
+										<td class="center"><input type="hidden" name="expDate" value="${vo.expDate }">${vo.expDate }</td>
 										<td class="center"><input type="hidden" name="intRate" value="${vo.intRate }">${vo.intRate }</td>
 										<td class="center"><input type="hidden" name="intPayWay" value="${vo.intPayWay }">${vo.intPayWay }</td>
 										<td class="center"><input type="hidden" name="mgr" value="${vo.mgr }">${vo.mgr }</td>

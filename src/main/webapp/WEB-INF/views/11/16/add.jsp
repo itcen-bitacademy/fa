@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %> <!-- spring에서 제공하는 태그 라이브러리 -->
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %> <!-- form태그 라이브러리 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,25 +35,37 @@
 						<div class="span6">
 						
 						<div class="control-group">
-							<label class="control-label" for="form-field-codename">은행코드 / 은행명</label>
+							<label class="control-label" for="form-field-codename">은행코드</label>
 							<div class="controls">
-								<input class="span2" type="text" id="form-field-code" name="code" placeholder="은행코드"/>
-								<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-								<input class="span6" type="text" id="form-field-name" name="name" placeholder="은행명"/>
+								<input class="span5" type="text" id="form-field-code" name="code" placeholder="은행코드"/>
+<%-- 								<form:input path="code" /> --%>
+
+								<input id="btn-check-code" type="button" value="중복확인">
+								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+								
 								
 							</div>
 						</div>
+							
+							<div class="control-group">	
+								<label class="control-label" for="form-field-codename">은행명</label>
+								<div class="controls">
+									<input class="span8" type="text" id="form-field-name" name="name" placeholder="은행명"/>
+							</div>	
+							
+							</div>
+						
 						<div class="control-group">
 								<label class="control-label" for="form-field-phoe">은행 전화번호</label>
 								<div class="controls">
-									<input class="span9" type="text" id="form-field-phone" name="phone" placeholder="phone"/>
+									<input class="span8" type="text" id="form-field-phone" name="phone" placeholder="phone"/>
 								</div>
 							</div>
 						<div class="control-group">
 							<label class="control-label" for="form-field-codename">거래시작일</label>
 								<div class="controls">
 									<div class="row-fluid input-append">
-									<input class="span8 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
+									<input class="span7 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
@@ -67,9 +81,9 @@
 						<div class="control-group">
 							<label class="control-label" for="form-field-mgrphone">담당자전화번호</label>
 							<div class="controls">
-								<input class="span9" type="text" id="form-field-mgrphone" name="mgrPhone" placeholder="담당자전화번호"/>
+								<input class="span8" type="text" id="form-field-mgrphone" name="mgrPhone" placeholder="담당자전화번호"/>
+								</div>
 							</div>
-						</div>
 						
 						</div>
 						
@@ -100,18 +114,15 @@
 			                   	 </div>
 			                   	 
 			                   	 <div class="controls">
-			                        <input class="span7" type="text" name="post" class="box" id="postcode"
+			                        <input class="span2" type="text" name="post" class="box" id="postcode"
 			                            placeholder="우편번호" required>
-			                    </div>
-			 					<label class="control-label" for="form-field-address"></label>
-			                    <div class="controls">
-			                        <input class="span7" type="text" name="roadAddress" class="box"
+			                        <input class="span6" type="text" name="roadAddress" class="box"
 			                            id="roadAddress" placeholder="도로명주소" required>
 			                    </div>
 			                  
 			                    <label class="control-label" for="form-field-address"></label>
 			                    <div class="controls">
-									<input class="span7" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
+									<input class="span8" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
 								</div>
 							</div>
 						</div>
@@ -120,7 +131,7 @@
 						
 						
 						<div class="span8">
-						
+							<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 							<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							<button class="btn btn-primary btn-small">입력</button>
@@ -306,6 +317,45 @@
 				$("#roadAddress").attr("disabled",true);
 				$("#detailAddress").attr("disabled",true);
 				});
+		
+		/////////////////////////////////////////////////////////////////
+		//은행코드 중복체크
+			$("#form-field-code").change(function(){
+				$("#btn-check-code").show();
+				$("#img-checkcode").hide();
+			});	
+			
+			$("#btn-check-code").click(function(){
+				var code = $("#form-field-code").val();
+				if(code == ""){
+					return;
+				}
+			
+				// ajax 통신
+				$.ajax({
+					url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/checkcode?code=" + code,
+					type: "get",
+					dataType: "json",
+					data: "",
+					success: function(response){
+						if(response.result == "fail"){
+							console.error(response.message);
+							return;
+						}
+						console.log(response);
+						if(response.data == true){
+							alert("이미 존재하는 은행코드입니다.");
+							$("#input-code").val("");
+							$("#input-code").focus();
+							return;
+						}
+						
+						$("#btn-check-code").hide();
+						$("#img-checkcode").show();
+						}
+					});
+				});	
+		
 	  		});
 	    </script>
 </body>

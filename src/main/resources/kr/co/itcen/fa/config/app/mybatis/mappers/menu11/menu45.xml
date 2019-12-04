@@ -1,18 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu45">
-	<!-- Team -->
-	<insert id="save" parameterType="test4vo">
+	
+	<!-- 은행테이블의 데이터 갯수 조회 -->
+	<select id="selectBankListCount" resultType="int" parameterType="string">
 		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
+			select	count(*)
+				from tb_bank
+				where delete_flag = 'N'
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
+			<if test="_parameter.length()>0 "> 
+			<!-- code.length()>0 하면 에러남  -->
+ 			  <![CDATA[
+  			 and code like concat('%',#{_parameter},'%') 
+   			]]>
+   			</if>
+	</select>
+	
+	<!-- select list -->
+	<select id="list" resultType="bankvo" parameterType="map">
+		<![CDATA[
+			select 
+				code,
+				name ,
+				store,
+				date_format(deal_date,'%Y/%m/%d') as dealDate,
+				phone, 
+				fax,
+				post, 
+				address,
+				mgr, 
+				mgr_phone as mgrPhone,
+				mgr_email as mgrEmail
+			from tb_bank
+			where delete_flag = 'N' 
 			]]>
-		</selectKey>
-	</insert>
+			<if test="code.length()>0 ">
+ 			  <![CDATA[
+	  			 	and code like concat('%',#{code},'%') 
+	   			]]>
+   			</if>
+   			<if test="bankname != null">
+				<![CDATA[
+					and name = #{bankname }
+				]]>
+			</if>
+			<if test="pagination.pageIndex >= 0">
+				<![CDATA[
+			    	limit	 #{pagination.pageIndex }, #{pagination.listSize }
+			    ]]>
+		    </if>
+	</select>
 
 </mapper>

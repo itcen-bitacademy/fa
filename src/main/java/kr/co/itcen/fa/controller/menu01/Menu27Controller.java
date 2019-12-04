@@ -47,34 +47,31 @@ public class Menu27Controller {
 	public Map<String, Object> create(@ModelAttribute CustomerVo customervo,
 			@AuthUser UserVo authUser) {
 		System.out.println("create");
-				
-		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
-		customervo.setInsertUserid(authUser.getName());
-		
+		customervo.setInsertUserid(authUser.getName()); //insertUserid
 		Map<String, Object> result = menu27Service.create(customervo);
 		return result;
 	}
 	
 	// Read
-	@RequestMapping("/" + SUBMENU + "/read")
-	public String read(@ModelAttribute CustomerVo customerVo) {
-		System.out.println("read");
-		menu27Service.test();
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
-	}
-	
-	// U
 	@ResponseBody
-	@RequestMapping("/" + SUBMENU + "/update")
-	public Map<String, Object> update(@ModelAttribute CustomerVo CustomerVo,
-			@AuthUser UserVo authUser) {
-		System.out.println("update");
-		CustomerVo.setUpdateUserid(authUser.getName());
-		Map<String, Object> result = menu27Service.update(CustomerVo);
+	@RequestMapping("/" + SUBMENU + "/read")
+	public Map<String, Object> read(@ModelAttribute CustomerVo customerVo) {
+		Map<String, Object> result = menu27Service.read(customerVo);
 		return result;
 	}
 	
-	// D
+	// Update
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/update")
+	public Map<String, Object> update(@ModelAttribute CustomerVo customerVo,
+			@AuthUser UserVo authUser) {
+		System.out.println("update");
+		customerVo.setUpdateUserid(authUser.getName()); //updateUserid
+		Map<String, Object> result = menu27Service.update(customerVo);
+		return result;
+	}
+	
+	// Delete
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
 	public Map<String, Object> delete(@ModelAttribute CustomerVo customerVo) {
@@ -83,6 +80,5 @@ public class Menu27Controller {
 		result.put("success", true);
 		return result;
 	}
-	
 
 }

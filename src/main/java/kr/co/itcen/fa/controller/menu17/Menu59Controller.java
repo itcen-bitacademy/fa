@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu17.Menu59Service;
 import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 import kr.co.itcen.fa.vo.UserVo;
@@ -45,13 +46,7 @@ public class Menu59Controller {
 					  @RequestParam(value = "selectedAccount", defaultValue = "") Long accountNo,
 					  @RequestParam(defaultValue = "1") int page,
 					  Model model,
-					  HttpSession session) {
-		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser == null) {
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
+					  @AuthUser UserVo authUser) {
 
 		//조회할 값들 셋팅
 		accountManagement.setAccountUsedyear(accountUsedyear);
@@ -71,7 +66,7 @@ public class Menu59Controller {
 		model.addAttribute("accountList", menu59Service.getAllAccountList());
 		
 		//테이블부분 셋팅
-		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page));
+		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page,3));
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -82,21 +77,31 @@ public class Menu59Controller {
 	public String add(@ModelAttribute AccountManagementVo accountManagement,
 					  @RequestParam("selectedAccountStatementType") String type,
 					  @RequestParam("selectedAccount") Long accountNo,
-					  HttpSession session) {
+					  Model model,
+					  @AuthUser UserVo authUser) {
 		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser == null) {
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
-
 		//저장할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
 		accountManagement.setInsertUserid(authUser.getName());
 		
 		System.out.println(accountManagement);
-		menu59Service.insert(accountManagement);
+		
+		model.addAttribute("selectedAccountStatementType", type);
+		
+		if(menu59Service.chechedAccount(accountManagement).size() < 1) {	
+			String overlap = "nono";
+			model.addAttribute("overlap", overlap);
+		
+			menu59Service.insert(accountManagement);
+		
+			//return "redirect:/" + MAINMENU + "/" + SUBMENU;			
+		}else {
+			String overlap = "overlap";
+			model.addAttribute("overlap", overlap);
+			
+			//return MAINMENU + "/" + SUBMENU + "/add";
+		}
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
@@ -107,21 +112,65 @@ public class Menu59Controller {
 	public String update(@ModelAttribute AccountManagementVo accountManagement,
 						 @RequestParam("selectedAccountStatementType") String type,
 						 @RequestParam("selectedAccount") Long accountNo,
-						 HttpSession session) {
-		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser == null) {
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
+						 Model model,
+						 @AuthUser UserVo authUser) {
 
 		//수정할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
-		accountManagement.setUpdateUserid(authUser.getName());
+
+		List<AccountManagementVo> list = menu59Service.chechedAccount(accountManagement);
+		String overlap = "nono";
 		
-		System.out.println(accountManagement);	
-		menu59Service.update(accountManagement);
+		if(list.size() >= 1) {
+			if(list.get(0).getAccountOrder() != accountManagement.getAccountOrder()) {		
+				if(list.get(0).getAccountNo().equals(accountManagement.getAccountNo())) {
+					if(menu59Service.chechedAccount3(accountManagement).size() < 1) {
+
+					overlap = "nono";
+					model.addAttribute("overlap", overlap);
+					
+					accountManagement.setUpdateUserid(authUser.getName());
+					
+					System.out.println(accountManagement);	
+					menu59Service.update(accountManagement);
+					} else {
+						overlap = "overlap";
+						model.addAttribute("overlap", overlap);
+					}
+				}else {				
+					if(menu59Service.chechedAccount2(accountManagement).size() < 1) {
+						overlap = "nono";
+						model.addAttribute("overlap", overlap);
+						
+						accountManagement.setUpdateUserid(authUser.getName());
+						
+						System.out.println(accountManagement);	
+						menu59Service.update(accountManagement);
+					}else {
+						overlap = "overlap";
+						model.addAttribute("overlap", overlap);
+					}
+				}
+			}else {
+
+				overlap = "overlap";
+				model.addAttribute("overlap", overlap);
+
+			}
+			
+		}else {
+			
+		overlap = "nullData";
+		model.addAttribute("overlap", overlap);
+		
+		accountManagement.setInsertUserid(authUser.getName());
+		
+		menu59Service.insert(accountManagement);
+
+		}
+		
+		model.addAttribute("selectedAccountStatementType", type);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
@@ -131,16 +180,15 @@ public class Menu59Controller {
 	//재무제표 계정관리 삭제
 	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
 	public String delete(@ModelAttribute AccountManagementVo accountManagement,
-					  	 HttpSession session) {
-
-	UserVo authUser = (UserVo)session.getAttribute("authUser");
-	
-	if(authUser == null) {
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
-	}
+						 @RequestParam("selectedAccountStatementType") String type,
+						 Model model,
+						 @AuthUser UserVo authUser) {
 	
 	System.out.println(accountManagement);
 	menu59Service.delete(accountManagement.getNo());
+	
+	model.addAttribute("selectedAccountStatementType", type);
+	
 	return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
