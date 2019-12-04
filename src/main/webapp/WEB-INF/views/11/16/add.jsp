@@ -134,7 +134,7 @@
 							<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 							<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-							<button class="btn btn-primary btn-small">입력</button>
+							<button class="btn btn-primary btn-small" id="inputbtn" >입력</button>
 							<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
 						</div>
 						
@@ -321,11 +321,14 @@
 		/////////////////////////////////////////////////////////////////
 		//은행코드 중복체크
 			$("#form-field-code").change(function(){
+
 				$("#btn-check-code").show();
 				$("#img-checkcode").hide();
 			});	
 			
+			$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
 			$("#btn-check-code").click(function(){
+				
 				var code = $("#form-field-code").val();
 				if(code == ""){
 					return;
@@ -343,15 +346,22 @@
 							return;
 						}
 						console.log(response);
+						
 						if(response.data == true){
 							alert("이미 존재하는 은행코드입니다.");
 							$("#input-code").val("");
+							//$("#inputbtn").hide();
 							$("#input-code").focus();
 							return;
-						}
+						}else{
+							$("#inputbtn").show();
 						
-						$("#btn-check-code").hide();
-						$("#img-checkcode").show();
+							$("#btn-check-code").hide();
+							$("#img-checkcode").show();
+						}
+						},
+						error:function(xhr,error) {
+							console.err("error" + error);
 						}
 					});
 				});	
