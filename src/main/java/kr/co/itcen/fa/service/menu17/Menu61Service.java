@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu17.Menu61Repository;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.TestStatementDataVo;
 import kr.co.itcen.fa.vo.menu17.TrialBalanceVo;
 
@@ -29,47 +30,20 @@ public class Menu61Service {
 	 * 
 	 * 해당 마감일 결산처리
 	 */
-	public int executeSettlement(ClosingDateVo closingDateVo) {
-		// TODO: 결산처리 비즈니스(시산표, 재무제표)
-		// 빈 시산표 생성
-		List<TrialBalanceVo> emptyTrialBalance = menu61Repository.selectEmptyTrialBalance();
-		// 시산표 맵으로 변경
-		Map<Long, TrialBalanceVo> trialBalanceMap = emptyTrialBalance.stream().collect(Collectors.toMap(TrialBalanceVo::getAccountNo, trialBalance -> trialBalance));
-		
-		// 테스전표 데이터 조회
-		// TODO: 실제 데이터로 변경
-		// TODO: 조회기간 추가
-		List<TestStatementDataVo> testList = menu61Repository.testStatementData();
-		
-		for (TestStatementDataVo vo : testList) {
-			TrialBalanceVo tbVo = trialBalanceMap.get(vo.getAccountNo());
-			if (vo.getAmountFlag().equalsIgnoreCase("c")) {
-				tbVo.setCreditSpotMonth(vo.getAmount());
-			} else {
-				tbVo.setDebtorSpotMonth(vo.getAmount());
-			}
+	public int executeSettlement(Menu17SearchForm menu17SearchForm) {
+		// 시산표 작성 
+		// 해당년도 전월 결산완료일 조회 - 1월일 경우 전월데이터값은 없는것으로 간주 
+		ClosingDateVo lastestClosingDateVo = menu61Repository.selectLastestClosedDateByClosingDateNoPerYear(menu17SearchForm);
+		if (lastestClosingDateVo == null) {
+			lastestClosingDateVo = new ClosingDateVo();
+			lastestClosingDateVo.setNo(0L);
 		}
+		menu17SearchForm.setLastestClosingDateNo(lastestClosingDateVo.getNo());
 		
-		return menu61Repository.executeSettlement(closingDateVo);
-	}
-	
-	
-	/**
-	 * 
-	 * 시산표 데이터 입력
-	 */
-	public int insertTrialBalance(TrialBalanceVo trialBalanceVo) {
-		return menu61Repository.insertTrialBalance(trialBalanceVo);
-	}
-	
-	/**
-	 * 
-	 * 결산 테스트 작업
-	 */
-	public int testSettlement() {
-		// 빈 시산표 생성
-		List<TrialBalanceVo> emptyTrialBalance = menu61Repository.selectEmptyTrialBalance();
-		// 시산표 맵으로 변
+		// 전월 데이터 포함 시산값 조회
+		List<TrialBalanceVo> emptyTrialBalance = menu61Repository.selectEmptyTrialBalance(menu17SearchForm);
+		
+		// 시산표 맵으로 변경 
 		Map<Long, TrialBalanceVo> trialBalanceMap = emptyTrialBalance.stream().collect(Collectors.toMap(TrialBalanceVo::getAccountNo, trialBalance -> trialBalance));
 		
 		// 테스전표 데이터 조회
@@ -105,26 +79,36 @@ public class Menu61Service {
 			addAccountAmount(tbVo, vo, vo.getAmountFlag());
 		}
 		
-		
-		
-		// null값 제거
+		// 빈값 계정 제거 
 		List<TrialBalanceVo> insertTrialBalanceList = emptyTrialBalance.stream().filter(t -> t.getCreditTotal() != null || t.getCreditSpotMonth() != null || t.getDebtorTotal() != null || t.getDebtorSpotMonth() != null).collect(Collectors.toList());
-		
-//		for (TrialBalanceVo tbVo : emptyTrialBalance) {
-//			tbVo.setCloSingDateNo(52L);
-//			tbVo.setInsertUserid("u024");
-//			menu61Repository.insertTrialBalance(tbVo);
-//		}
-		
+
+		// 시산표 저장 
+//		for (TrialBalanceVo tbVo : emptyTrialBalance) {			// null포함 시산표 전체 저장 
 		for (TrialBalanceVo tbVo : insertTrialBalanceList) {
-			tbVo.setCloSingDateNo(51L);
-			tbVo.setInsertUserid("u024");
+			tbVo.setCloSingDateNo(menu17SearchForm.getClosingDateNo());
+			tbVo.setInsertUserid(menu17SearchForm.getInsertUserid());
 			menu61Repository.insertTrialBalance(tbVo);
 		}
 		
-		return 1;
+		// TODO: 재무제표 작성 
+
+		return menu61Repository.executeSettlement(menu17SearchForm);
 	}
 	
+	
+	/**
+	 * 
+	 * 시산표 데이터 입력
+	 */
+	public int insertTrialBalance(TrialBalanceVo trialBalanceVo) {
+		return menu61Repository.insertTrialBalance(trialBalanceVo);
+	}
+	
+	
+	/**
+	 * 
+	 * 시산표 데이터 적산
+	 */
 	private void addAccountAmount(TrialBalanceVo tbVo, TestStatementDataVo vo, String type) {
 		if (type.equalsIgnoreCase("C")) {	// 차변 계산
 			// 당월 차변 계산

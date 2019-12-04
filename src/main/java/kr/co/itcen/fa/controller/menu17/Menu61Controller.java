@@ -9,13 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu17.Menu20Service;
 import kr.co.itcen.fa.service.menu17.Menu61Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
 /**
@@ -62,22 +60,13 @@ public class Menu61Controller {
 	 * 결산작업 실행
 	 */
 	@PostMapping("/" + SUBMENU + "/settlement")
-	public String executeSettlement(HttpSession session, ClosingDateVo closingDateVo) {
+	public String executeSettlement(HttpSession session, Menu17SearchForm menu17SearchForm) {
 		UserVo userVo = (UserVo) session.getAttribute("authUser");
 		
-		closingDateVo.setUpdateUserid(userVo.getId());
+		menu17SearchForm.setInsertUserid(userVo.getId());
 		
-		menu61Service.executeSettlement(closingDateVo);
+		menu61Service.executeSettlement(menu17SearchForm);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
-	}
-	
-	
-	@PostMapping("/" + SUBMENU + "/test")
-	@ResponseBody
-	public String testSettlement() {
-		menu61Service.testSettlement();
-		
-		return "abc";
 	}
 }

@@ -192,8 +192,7 @@
 		var form = $('<form/>')
 		form.attr('action', '${pageContext.request.contextPath }/17/61/settlement').attr('method', 'post')
 
-		var no = $('<input type="hidden"/>').attr('name', 'no').val($(event.target).attr('no'))
-		console.log($(no));
+		var no = $('<input type="hidden"/>').attr('name', 'closingDateNo').val($(event.target).attr('no'))
 		$(form).append(no)
 
 		$(document.body).append(form)

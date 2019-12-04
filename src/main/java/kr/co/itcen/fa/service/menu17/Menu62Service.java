@@ -31,6 +31,13 @@ public class Menu62Service {
 		return menu62Repository.selectTrialBalanceByClosingDateNo(menu17SearchForm);
 	}
 	
+	/**
+	 * 
+	 * 결산일별 시산표 합계 데이터 조회
+	 */
+	public TrialBalanceVo selectSummaryTrialBalanceByClosingDateNo(Menu17SearchForm menu17SearchForm) {
+		return menu62Repository.selectSummaryTrialBalanceByClosingDateNo(menu17SearchForm);
+	}
 	
 	/**
 	 * 
