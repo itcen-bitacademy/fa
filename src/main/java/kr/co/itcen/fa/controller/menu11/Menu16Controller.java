@@ -64,11 +64,11 @@ public class Menu16Controller {
 			model.addAllAttributes(result.getModel());
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}
-		menu16Service.insert(vo);
 		
 		System.out.println(vo);
 		vo.setAddress(vo.getRoadAddress() + vo.getDetailAddress());
 		menu16Service.insert(vo);
+		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	

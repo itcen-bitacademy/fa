@@ -43,7 +43,7 @@
 								<input id="btn-check-code" type="button" value="중복확인">
 								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 								
-								<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+								
 							</div>
 						</div>
 							
@@ -114,15 +114,15 @@
 			                   	 </div>
 			                   	 
 			                   	 <div class="controls">
-			                        <input class="span3" type="text" name="post" class="box" id="postcode"
+			                        <input class="span2" type="text" name="post" class="box" id="postcode"
 			                            placeholder="우편번호" required>
-			                        <input class="span4" type="text" name="roadAddress" class="box"
+			                        <input class="span6" type="text" name="roadAddress" class="box"
 			                            id="roadAddress" placeholder="도로명주소" required>
 			                    </div>
 			                  
 			                    <label class="control-label" for="form-field-address"></label>
 			                    <div class="controls">
-									<input class="span7" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
+									<input class="span8" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
 								</div>
 							</div>
 						</div>
@@ -131,7 +131,7 @@
 						
 						
 						<div class="span8">
-						
+							<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 							<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							<button class="btn btn-primary btn-small">입력</button>
@@ -320,20 +320,20 @@
 		
 		/////////////////////////////////////////////////////////////////
 		//은행코드 중복체크
-			$("#input-code").change(function(){
+			$("#form-field-code").change(function(){
 				$("#btn-check-code").show();
 				$("#img-checkcode").hide();
 			});	
 			
 			$("#btn-check-code").click(function(){
-				var code = $("#input-code").val();
+				var code = $("#form-field-code").val();
 				if(code == ""){
 					return;
 				}
 			
 				// ajax 통신
 				$.ajax({
-					url: "${pageContext.servletContext.contextPath }/api/checkcode/checkcode?code=" + code,
+					url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/checkcode?code=" + code,
 					type: "get",
 					dataType: "json",
 					data: "",
@@ -342,7 +342,7 @@
 							console.error(response.message);
 							return;
 						}
-						
+						console.log(response);
 						if(response.data == true){
 							alert("이미 존재하는 은행코드입니다.");
 							$("#input-code").val("");
