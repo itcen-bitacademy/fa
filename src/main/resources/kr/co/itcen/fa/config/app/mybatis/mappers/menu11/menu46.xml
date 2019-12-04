@@ -6,6 +6,7 @@
 		<result column="debt_amount" property="debtAmount" />
 		<result column="repay_bal" property="repayBal" />
 		<result column="repay_way" property="repayWay" />
+		<result column="repay_compl_flag" property="repayComplFlag" />
 		<result column="debt_date" property="debtDate" />
 		<result column="exp_date" property="expDate" />
 		<result column="int_rate" property="intRate" />
@@ -47,7 +48,7 @@
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
-			where delete_flag="N"
+			where delete_flag="N" and repay_comple_flag="N"
 		]]>
 	</select>
 	
@@ -64,6 +65,7 @@
 			update_date 
 			from tb_s_term_debt
 			where code LIKE CONCAT(#{code}, "%") and debt_date LIKE CONCAT(#{financialYear}, "%")
+			      and delete_flag="N" and repay_comple_flag="N"
 		]]>
 	</select>
 	

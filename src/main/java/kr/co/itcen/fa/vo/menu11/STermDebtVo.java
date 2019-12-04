@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.vo.menu11;
 
 import java.util.Date;
+import java.util.OptionalInt;
 
 import org.apache.ibatis.type.Alias;
 
@@ -10,23 +11,23 @@ public class STermDebtVo {
 	private String code; // 단기차입금코드
 	private String name; // 차입금명(사채명)
 	private String majorCode; //차입금 대분류
-	private int debtAmount; // 차입금액
-	private int repayBal; // 상환잔액 - 초기값으로 차입금액 삽입
+	private Long debtAmount; // 차입금액
+	private Long repayBal; // 상환잔액 - 초기값으로 차입금액 삽입
 	private String repayWay; // 상환방법
 	private String repayCompleFlag; // 상환완료여부
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
 	private Date debtDate; // 차입일자
 	private Date expDate; // 만기일자
-	private int intRate; // 이율
+	private Long intRate; // 이율
 	private String intPayWay; // 이자지급방식
-	private int intAmount; // 이자금액
+	private Long intAmount; // 이자금액
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
 	private String deptClassification; // 차입금대분류
-	private int bankCode; // 은행코드
+	private Long bankCode; // 은행코드
 	private String depositNo; // 계좌번호
 	private String accountNo; // 계정코드
-	private int voucherNo; // 전표번호
+	private Long voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
 	private String insertId; // 등록자
 	private Date insertDate; // 등록일
@@ -58,16 +59,16 @@ public class STermDebtVo {
 	public void setMajorCode(String majorCode) {
 		this.majorCode = majorCode;
 	}
-	public int getDebtAmount() {
+	public Long getDebtAmount() {
 		return debtAmount;
 	}
-	public void setDebtAmount(int debtAmount) {
+	public void setDebtAmount(Long debtAmount) {
 		this.debtAmount = debtAmount;
 	}
-	public int getRepayBal() {
+	public Long getRepayBal() {
 		return repayBal;
 	}
-	public void setRepayBal(int repayBal) {
+	public void setRepayBal(Long repayBal) {
 		this.repayBal = repayBal;
 	}
 	public String getRepayWay() {
@@ -100,10 +101,10 @@ public class STermDebtVo {
 	public void setExpDate(Date expDate) {
 		this.expDate = expDate;
 	}
-	public int getIntRate() {
+	public Long getIntRate() {
 		return intRate;
 	}
-	public void setIntRate(int intRate) {
+	public void setIntRate(Long intRate) {
 		this.intRate = intRate;
 	}
 	public String getIntPayWay() {
@@ -112,10 +113,10 @@ public class STermDebtVo {
 	public void setIntPayWay(String intPayWay) {
 		this.intPayWay = intPayWay;
 	}
-	public int getIntAmount() {
+	public Long getIntAmount() {
 		return intAmount;
 	}
-	public void setIntAmount(int intAmount) {
+	public void setIntAmount(Long intAmount) {
 		this.intAmount = intAmount;
 	}
 	public String getMgr() {
@@ -136,10 +137,10 @@ public class STermDebtVo {
 	public void setDeptClassification(String deptClassification) {
 		this.deptClassification = deptClassification;
 	}
-	public int getBankCode() {
+	public Long getBankCode() {
 		return bankCode;
 	}
-	public void setBankCode(int bankCode) {
+	public void setBankCode(Long bankCode) {
 		this.bankCode = bankCode;
 	}
 	public String getDepositNo() {
@@ -154,10 +155,10 @@ public class STermDebtVo {
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
 	}
-	public int getVoucherNo() {
+	public Long getVoucherNo() {
 		return voucherNo;
 	}
-	public void setVoucherNo(int voucherNo) {
+	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 	public String getDeleteFlag() {

@@ -12,7 +12,7 @@
 	#filter-area{
 		display: grid;
 		grid-template-columns: 845px 845px;
-		grid-template-rows: 70px 30px;
+		grid-template-rows: 70px 35px;
 	}
 	
 	.filter-top{
@@ -24,8 +24,7 @@
 	
 	.input-area-wrapper{
 		display: grid;
-		grid-template-columns: repeat(4, 420px);
-		grid-template-rows: 80px 80px;
+		grid-template-columns: repeat(4, 415px);
 		gap: 10px;
 		
 		margin: auto 0;
@@ -36,6 +35,9 @@
 		margin: auto 0;
 	}
 	
+	.input-area-last{
+		float: right;
+	}
 	.input-area>*, .input-area>input{
 		margin: auto;
 	}
@@ -115,30 +117,32 @@
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">단기차입금현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
+				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<!-- PAGE CONTENT BEGINS -->
-			<form id="filter-area">
+			<form id="filter-area" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">
 				<section class="filter-top">
 					<div class="input-area-wrapper">
 						<div class="input-area">
-							<label><h4>차입일자</h4></label> 
-							<input type="date">
+							<label for="debtDate"><h4>차입일자</h4></label> 
+							<input type="date" id="debtDate" name="debtDate">
 						</div>
 						<div class="input-area">
-							<label><h4>만기일자</h4></label> 
-							<input type="date">
+							<label for="expDate"><h4>만기일자</h4></label> 
+							<input type="date" id="expDate" name="expDate">
 						</div>
 						<div class="input-area input-area-radio">
 							<label><h4>이자지급방식</h4></label> 
-							<div class="radio-input"><label class="radio-label">년</label><input type="radio" name="intRate"></div>
-							<div class="radio-input"><label class="radio-label">월</label><input type="radio" name="intRate"></div>
-							<div class="radio-input"><label class="radio-label">해당없음</label><input type="radio" name="intRate"></div>
+							<div class="radio-input"><label class="radio-label">년</label><input type="radio" name="intPayWay" value="Y"></div>
+							<div class="radio-input"><label class="radio-label">월</label><input type="radio" name="intPayWay" value="M"></div>
+							<div class="radio-input"><label class="radio-label">해당없음</label><input type="radio" name="intPayWay" value="E"></div>
 						</div>
 						<div class="input-area">
-							<label><h4>은행명</h4></label> 
-							<input type="text">
-							<input type="submit" value="조회">
+							<div class="input-area-last">
+								<label for="bankName"><h4>은행명</h4></label> 
+								<input type="text" name="bankName" id="bankName">
+								<input type="submit" value="조회">
+							</div>
 						</div>
 					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
 				<section class="filter-left">
@@ -172,7 +176,8 @@
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자</th>
+							<th class="center">만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -184,19 +189,20 @@
 
 					<tbody>
 						<c:forEach items="${list }" var="vo" varStatus="status">
-							<tr>
-								<td class="center">2019112701</td>
-								<td>GS칼텍스는...</td>
-								<td class="center">008-국내은행</td>
-								<td class="center">70,000,000,000</td>
-								<td class="center">월</td>
-								<td class="center">2019-10-29 ~ 2029-10-29</td>
-								<td class="center">1.99%</td>
-								<td class="center">월</td>
-								<td class="center">홍길동</td>
-								<td class="center">010-1234-5678</td>
-								<td class="center">0010987</td>
-								<td class="center">한국은행</td>
+							<tr id="${vo.no }">
+								<td class="center">${vo.code }</td>
+								<td class="center">${vo.name }</td>
+								<td class="center">${vo.majorCode }</td>
+								<td class="center">${vo.debtAmount }</td>
+								<td class="center">${vo.repayWay }</td>
+								<td class="center"><fmt:formatDate value="${vo.debtDate }" pattern="yyyy-MM-dd" /></td>
+								<td class="center"><fmt:formatDate value="${vo.expDate }" pattern="yyyy-MM-dd"/></td>
+								<td class="center">${vo.intRate }</td>
+								<td class="center">${vo.intPayWay }</td>
+								<td class="center">${vo.mgr }</td>
+								<td class="center">${vo.mgrCall }</td>
+								<td class="center">${vo.bankCode }</td>
+								<td class="center">${vo.depositNo }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
