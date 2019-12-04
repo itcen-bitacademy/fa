@@ -3,30 +3,28 @@
 <mapper namespace="menu51">
 	
 	<select id="selectAllCount" resultType="int" parameterType="pdebtvo">
-	<![CDATA[
-		select count(*)
-		    from tb_p_debt
-		    	where delete_flag= "N"
-	]]>
+		<![CDATA[
+			select count(*) from tb_p_debt where delete_flag = 'N'
+		]]>
 			<if  test="debtDate!=null and !debtDate.equals('')">		    
-			<![CDATA[
-				and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
-			]]>
+				<![CDATA[
+					and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
+				]]>
 			</if>
 			<if test="intPayWay != null and !intPayWay.equals('')">
-			<![CDATA[
-				and 	intPayWay = '#{intPayWay}' 
-			]]>
+				<![CDATA[
+					and 	int_pay_way = #{intPayWay} 
+				]]>
 			</if>
-		     <if test="bankCode != null and !bankCode.equals('')">		    
-			<![CDATA[
-				and 	bank_code like concat('%',#{bankCode},'%') 
-			]]>
+		    <if test="bankCode != null and !bankCode.equals('')">		    
+				<![CDATA[
+					and 	bank_code like concat('%',#{bankCode},'%') 
+				]]>
 			</if>
 			<if test="expDate != null and !expDate.equals('')">
-			<![CDATA[
-				and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
-			]]>
+				<![CDATA[
+					and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
+				]]>
 			</if>
 	</select>
 	
@@ -47,43 +45,45 @@
    			mgr,
     		mgr_call as mgrCall,
 		    bank_code as bankCode,
-		    deposit_no as depositNo
-		    	from tb_p_debt
-		    		where delete_flag= "N"
+		    deposit_no as depositNo from tb_p_debt where delete_flag= "N"
 		    ]]>
 		  <if  test="debtDate!=null and !debtDate.equals('')">		    
-			<![CDATA[
-				and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
-			]]>
+				<![CDATA[
+					and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
+				]]>
 			</if>
 			<if test="intPayWay != null and !intPayWay.equals('')">
-			<![CDATA[
-				and 	intPayWay = #{vo.intPayWay}
-			]]>
+				<![CDATA[
+					and 	intPayWay = #{vo.intPayWay}
+				]]>
 			</if>
 		     <if test="bankCode != null and !bankCode.equals('')">		    
-			<![CDATA[
-				and 	bank_code like concat('%',#{vo.bankCode},'%') 
-			]]>
+				<![CDATA[
+					and 	bank_code like concat('%',#{vo.bankCode},'%') 
+				]]>
 			</if>
 			<if test="expDate != null and !expDate.equals('')">
-			<![CDATA[
-				and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
-			]]>
+				<![CDATA[
+					and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
+				]]>
 			</if>
-		    	limit	 1, #{pagination.listSize }
+			<if test="pagination.pageIndex >= 0">
+				<![CDATA[
+			    	limit	 #{pagination.pageIndex }, #{pagination.listSize }
+			    ]]>
+		    </if>
 	</select>
 	
 	<select id="selectsection" resultType="sectionvo">
-	<![CDATA[
-		select no,
-			classification,
-			code,
-			last_update as lastUpdate,
-			parent_no as parentNo
-		    	from tb_section
-		    		where parent_no = 6
-	]]>
+		<![CDATA[
+			select no,
+				classification,
+				code,
+				last_update as lastUpdate,
+				parent_no as parentNo
+			    	from tb_section
+			    		where parent_no = 6
+		]]>
 	</select>
 
 </mapper>

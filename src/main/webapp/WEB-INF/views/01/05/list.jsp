@@ -14,6 +14,15 @@
 .chosen-search {
 	display: none;
 }
+
+.validity{
+	width: 35px;
+}
+
+.cvc{
+	width: 35px;
+}
+
 </style>
 <script
 	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -207,10 +216,14 @@ $(function() {
 		$("input[name=bankName]").val(td.eq(10).text());
 		$("input[name=company]").val(td.eq(11).text());
 		$("input[name=limitation]").val(td.eq(12).text());
-		$("input[name=transportation]").val(td.eq(13).text());
-		$("input[name=abroad]").val(td.eq(14).text());
+		var td13 = td.eq(13).text();
+		var td14 = td.eq(14).text();
+		console.log(td13);
+		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
+		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
 		
 	});
+	
 	
 	$(document.body).delegate('#selectAll', 'click', function() {
 		if(this.checked) {
@@ -224,6 +237,91 @@ $(function() {
 	        });
 	    }
 	});
+	
+
+	$(function() {
+	      $("#dialog-message").dialog({
+	         autoOpen : false
+	      });
+
+	      $("#a-bankaccountinfo-dialog").click(function() {
+	         $("#dialog-message").dialog('open');
+	         $("#dialog-message").dialog({
+	            title: "계좌정보",
+	            title_html: true,
+	               resizable: false,
+	             height: 500,
+	             width: 400,
+	             modal: true,
+	             close: function() {
+	                $('#tbody-bankacoountList tr').remove();
+	             },
+	             buttons: {
+	             "닫기" : function() {
+	                      $(this).dialog('close');
+	                      $('#tbody-bankaccountList tr').remove();
+	                 }
+	             }
+	         });
+	      });
+	  });
+	
+	
+    $('#dialog-message-table').on('click', '#a-dialog-depositNo', function(event) {
+       event.preventDefault();
+       $("#tbody-bankaccountList").find("tr").remove();
+       
+       var depositNo = $("#input-dialog-depositNo").val();
+       
+       // ajax 통신
+       $.ajax({
+          url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
+          contentType : "application/json; charset=utf-8",
+          type: "get",
+          dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+          data : "",
+          statusCode: {
+              404: function() {
+                alert("page not found");
+              }
+          },
+          success: function(data){
+        	  if(data.success) {
+        	  	$("#input-dialog-depositNo").val('');
+        	  	var baccountList = data.bankAccountList;
+        	  	console.log(data.bankAccountList);
+        	  	for(let a in baccountList) {
+        	  		$("#tbody-bankaccountList").append("<tr>" +
+                          "<td class='center'>" + baccountList[a].depositNo + "</td>" +
+                          "<td class='center'>" + baccountList[a].depositHost + "</td>" +
+                          "<td class='center'>" + baccountList[a].bankCode + "</td>" +
+                          "<td class='center'>" + baccountList[a].bankName + "</td>" +
+                          "</tr>");
+
+        	  	}
+        	  }
+          },
+          error: function(xhr, error){
+             console.error("error : " + error);
+          }
+       });
+    });
+    
+    // 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+    $(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
+       var tr = $(this);
+       var td = tr.children();
+       $("input[name=depositNo]").val(td.eq(0).text());
+       $("input[name=depositHost]").val(td.eq(1).text());
+       $("input[name=bankCode]").val(td.eq(2).text());
+       $("input[name=bankName]").val(td.eq(3).text());
+       $("#dialog-message").dialog('close');
+    });
+    
+	
+	
+	
+	
 	
 	$(".chosen-select").chosen();
 })
@@ -275,7 +373,7 @@ $(function() {
 
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">카드 발급 자
+									<label class="control-label" for="form-field-1">카드 발급자
 									</label>
 
 									<div class="controls">
@@ -284,22 +382,76 @@ $(function() {
 									</div>
 								</div>
 
+
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">계좌 번호 </label>
-									<input type="text" id="form-field-1" name="depositNo"
-										placeholder="계좌번호" /> <input type="text" value="예금주" readonly />
+									<div class="controls">
 
+										<span class="btn btn-small btn-info"> <a href="#"
+											id="a-bankaccountinfo-dialog"> <i
+												class="icon-search nav-search-icon"></i> <input type="text"
+												class="search-input-width-first" name="depositNo" />
+										</a>
+										</span> <input type="text" id="form-field-1" name="depositHost"
+											placeholder="예금주" readonly/>
+										
+									</div>
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">은행 </label> <input
-										type="text" value="은행코드" readonly /> <input type="text"
-										value="은행명" readonly />
-
+									<label class="control-label" for="form-field-1">은행 </label> 
+									
+									<div class="controls">
+										<div class="input-append">
+											<input type="text" name = "bankCode" value="" placeholder="은행코드" readonly /> 
+										</div>
+										&nbsp; &nbsp;
+										<div class="input-append">
+											<input type="text" name ="bankName" value="" placeholder="은행명" readonly />
+										</div>
+									</div>
 								</div>
 
+			
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<div id="dialog-message" title="계좌" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>계좌번호</label> <input type="text"
+												id="input-dialog-depositNo" style="width: 100px;" /> <a
+												href="#" id="a-dialog-depositNo"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-deposit-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">계좌번호</th>
+												<th class="center">예금주</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-bankaccountList">
+											
+										</tbody>
+									</table>
+								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+
+
+
+
+
+
+
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">카드한도(만원)
+									<label class="control-label" for="form-field-1">카드 한도(만원)
 									</label>
 
 									<div class="controls">
@@ -314,39 +466,51 @@ $(function() {
 						<div class="span6">
 							<div class="control-group">
 								<div>
-									<label class="control-label" for="form-field-1">유효기간 </label> <input
-										type="text" id="form-field-1" name="validityMM"
-										placeholder="MM" /> / <input type="text" id="form-field-1"
-										name="validityYY" placeholder="YY" />
+									<label class="control-label" for="form-field-1">유효기간 </label> 
+									<div class="controls">
+										<div class="input-append">
+									
+											<input type="text" class="validity" id="form-field-1" name="validityMM" placeholder="MM" /> 
+										</div>
+										/ 
+										
+										<div class="input-append">
+											<input type="text" class="validity" id="validityYY" name="validityYY" placeholder="YY" />
+										</div>
+									</div>
 								</div>
+								
+							</div>
+							
+							<div class="control-group">
 								<div>
-									<label class="control-label" for="form-field-1">CVC </label> <input
-										type="text" id="form-field-1" name="cvc" placeholder="CVC" />
+									<label class="control-label" for="form-field-1">CVC </label> 
+									<div class="controls">
+									<input type="text" class="cvc" id="form-field-1" name="cvc" placeholder="CVC" />
+									</div>
 								</div>
 							</div>
-
+							
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">교통카드 유무
-								</label> 
-								
-									<input name="transportation" type="radio" class="ace" value="Y" checked /> 
+								<label class="control-label" for="form-field-1">교통카드 유무 </label> 
+								<div class="controls">
+									<input name="transportation" type="radio" class="ace" value="true" checked  /> 
 									<span class="lbl"> Yes</span> 
 									
-									<input name="transportation" type="radio" class="ace" value="N" />
+									<input name="transportation" type="radio" class="ace" value="false"  />
 									<span class="lbl"> No</span>
-
+								</div>
 							</div>
-
+					
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">해외사용 여부
-								</label> 
-									<input name="abroad" type="radio" class="ace" value="Y"
-									checked /> <span class="lbl"> Yes</span> 
-									
-									<input name="abroad"
-									type="radio" class="ace" value="N" /> <span class="lbl">
-									No</span>
-
+								<label class="control-label" for="form-field-1">해외사용 여부</label> 
+								<div class="controls">
+										<input name="abroad" type="radio" class="ace" value="true" checked /> 
+										<span class="lbl"> Yes</span> 
+										
+										<input name="abroad" type="radio" class="ace" value="false" /> 
+										<span class="lbl">No</span>
+								</div>
 							</div>
 
 							<div class="control-group">
@@ -460,20 +624,7 @@ $(function() {
 					<!-- /span -->
 				</div>
 				<!-- /row -->
-				<div class="pagination">
-					<ul>
-						<li class="disabled"><a href="#"><i
-								class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-					</ul>
-				</div>
-
-
+			
 
 
 

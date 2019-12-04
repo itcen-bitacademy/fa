@@ -164,8 +164,8 @@
 										<th class="center">계좌번호</th>
 										<th class="center">예금주</th>
 										<th class="center">입력일자</th>
-										<th class="center">수정일자</th>
 										<th class="center">입력담당자</th>
+										<th class="center">수정일자</th>
 										<th class="center">수정담당자</th>
 									</tr>
 								</thead>

@@ -44,9 +44,30 @@
 		</selectKey>
 	</insert>
 	
+	<select id="selectLastestClosedDateByClosingDateNoPerYear" parameterType="closingDate17Vo" resultType="closingDate17Vo">
+		select	
+			no
+		  from	tb_closing_date
+		 where	substr(closing_year_month, 1, 4) = substr(#{closingYearMonth }, 1, 4)
+		   and	use_yn = true
+		   and	closing_yn = true
+		 order	by closing_year_month desc
+		 limit	1
+		;
+	</select>
+	
+	<select id="selectCountByYearMonth" parameterType="closingDate17Vo" resultType="int">
+		select	count(*) as count
+		  from	tb_closing_date
+		 where	closing_year_month = #{closingYearMonth }
+		   and	use_yn = true
+		;
+	</select>
+	
 	<select id="selectAllClosingDateCount" resultType="int">
 		select	count(*) as cnt
 		  from	tb_closing_date
+		 where	use_yn = true
 		;
 	</select>
 	
@@ -84,19 +105,23 @@
 		        , closing_assets_date = #{closingAssetsDate }
 		        , closing_debt_date = #{closingDebtDate }
 		        , closing_settlement_date = #{closingSettlementDate }
+		        , closing_yn = false
 		        , update_userid = #{updateUserid}
 		        , update_day = now()
 		 where	no = #{no }
-		   and	closing_yn = false
+		   and	use_yn = true
 		;
 	</update>
 	
-	<delete id="deleteClosingDate" parameterType="closingDate17Vo">
-		delete	from tb_closing_date
+	<update id="deleteClosingDate" parameterType="closingDate17Vo">
+		update	tb_closing_date
+		   set	use_yn = false
+		   		, update_userId = #{updateUserid }
+		   		, update_day = now()
 		 where	no = #{no }
-		   and	closing_yn = false
+		   and	use_yn = true
 		;
-	</delete>
+	</update>
 	
 	
 	<select id="selectStatementClosingDateByBusinessDate" parameterType="java.util.Date" resultType="closingDate17Vo">
@@ -120,6 +145,7 @@
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
 		   and	now() < closing_statement_date
+		   and	use_yn = true
 		;
 		]]>
 	</select>
@@ -145,6 +171,7 @@
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
 		   and	now() < closing_assets_date
+		   and	use_yn = true
 		;
 		]]>
 	</select>
@@ -170,6 +197,7 @@
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
 		   and	now() < closing_debt_date
+		   and	use_yn = true
 		;
 		]]>
 	</select>
@@ -220,6 +248,7 @@
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
 		   and	now() < closing_sales_date
+		   and	use_yn = true
 		;
 		]]>
 	</select>
@@ -245,6 +274,7 @@
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(now(), '%Y-%m')
 		   and	now() < closing_settlement_date
+		   and	use_yn = true
 		;
 		]]>
 	</select>

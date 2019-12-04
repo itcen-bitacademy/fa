@@ -55,7 +55,7 @@ public class Menu05Controller {
 		vo.setInsertUserId(uvo.getName());
 		vo.setCardNoOld(null);
 		vo.setLimitation(limitation.get());
-		
+		System.out.println(vo);
 		
 		Map<String, Object> result = menu05Service.create(vo);
 		

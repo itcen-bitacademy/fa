@@ -181,8 +181,6 @@
 	// 합계 계산
 	function summaryAmmount(index, item) {
 		var c = $(item).text().trim().replace(/,/gi, '')
-		console.log(typeof c);
-		console.log(c);
 		totalAmount += Number(c)
 	}
 

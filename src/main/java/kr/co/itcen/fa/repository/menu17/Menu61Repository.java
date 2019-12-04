@@ -43,6 +43,14 @@ public class Menu61Repository {
 	
 	/**
 	 * 
+	 * 해당년도의 미결산 마감일중 다음순서의 마감일정보 조회 - 결산작업 실행시 해당 마감일의 결산순서 유효성 검사 
+	 */
+	public ClosingDateVo selectLastestUnclosingDatePerYear(Menu17SearchForm menu17SearchForm) {
+		return sqlSession.selectOne("menu61.selectLastestUnclosingDatePerYear", menu17SearchForm);
+	}
+	
+	/**
+	 * 
 	 * 시산표 데이터 입력
 	 */
 	public int insertTrialBalance(TrialBalanceVo trialBalanceVo) {
@@ -65,5 +73,13 @@ public class Menu61Repository {
 	 */
 	public List<TestStatementDataVo> testStatementData() {
 		return sqlSession.selectList("menu61.testStatementData");
+	}
+	
+	/**
+	 * 
+	 * 해당 마감일의 시산표 삭제 
+	 */
+	public int deleteTrialBalanceByClosingDateNo(ClosingDateVo closingDateVo) {
+		return sqlSession.delete("menu61.deleteTrialBalanceByClosingDateNo", closingDateVo);
 	}
 }

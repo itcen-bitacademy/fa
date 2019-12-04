@@ -73,9 +73,9 @@ public class Menu25Service {
 		return map;
 	}
 
-	public Map<String, Object> gets(BankAccountVo bavo) {
+	public Map<String, Object> gets(String depositNo) {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = menu25Repository.gets(bavo);
+		Map<String, Object> map = menu25Repository.gets(depositNo);
 		return map;
 	}
 }

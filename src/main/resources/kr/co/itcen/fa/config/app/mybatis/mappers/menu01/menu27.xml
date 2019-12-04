@@ -16,16 +16,6 @@
 		</selectKey>
 	</insert>
 	
-	<!-- 거래처 입력 -->
-	<insert id="create" parameterType="1customervo">
-		<![CDATA[
-			insert 
-			  into tb_customer 
-			values (concat('A' ,#{no}), #{name }, #{ceo }, #{address }, #{detailAddress }, #{conditions }, #{item }, #{corporationNo }, now(), #{jurisdictionOffice }, 
-					#{phone }, #{managerName }, #{managerEmail }, #{depositNo}, 'N', #{insertUserid }, now(), null, null)
-		]]>
-	</insert>
-	
 	<!-- 리스트 뽑기 -->
 	<select id="getList" resultType="1customervo">
 		<![CDATA[
@@ -42,6 +32,7 @@
 			       phone as phone, 
 			       manager_name as managerName, 
 			       manager_email as managerEmail,
+			       assets_flag as assetsFlag,
 			       deposit_no as depositNo,
 			       insert_userid as insertUserid, 
 			       insert_day as insertDay, 
@@ -52,20 +43,66 @@
 		]]>
 	</select>
 	
-	<!-- 거래처 삭제 (flag N->Y)-->
-	<update id="delete" parameterType="1customervo">
+	<!-- 거래처 입력 -->
+	<insert id="create" parameterType="1customervo">
 		<![CDATA[
-			update tb_customer
-			   set delete_flag = 'Y'
-			 where no = concat('A', #{no})
+			insert 
+			  into tb_customer 
+			values (concat('A' ,#{no}),
+				   #{name },
+				   #{ceo }, 
+				   #{address }, 
+				   #{detailAddress }, 
+				   #{conditions }, 
+				   #{item }, 
+				   #{corporationNo }, 
+				   now(), 
+				   #{jurisdictionOffice }, 
+				   #{phone }, 
+				   #{managerName }, 
+				   #{managerEmail }, 
+				   #{depositNo}, 
+				   'N', 
+				   #{assetsFlag }, 
+				   #{insertUserid }, 
+				   now(), 
+				   null, 
+				   null)
 		]]>
-	</update>
+	</insert>
+	
+	<!-- 거래처 검색(사업자등록번호로) -->
+	<select id="read" parameterType="1customervo" resultType="1customervo">
+		<![CDATA[
+			select (right(no, 12)) as no,
+     			   name as name, 
+       			   ceo as ceo, 
+			       address as address,
+			       detail_address as detailAddress,
+			       conditions as conditions, 
+			       item as item, 
+			       corporation_no as corporationNo, 
+			       open_date as openDate, 
+			       jurisdiction_office as jurisdictionOffice, 
+			       phone as phone, 
+			       manager_name as managerName, 
+			       manager_email as managerEmail,
+			       deposit_no as depositNo,
+			       assets_flag as assetsFlag,
+			       insert_userid as insertUserid,
+			       insert_day as insertDay, 
+			       update_userid as updateUserid
+			  from tb_customer
+			 where delete_flag = "N"
+			   and no like '%${no }%'
+		]]>
+	</select>
 	
 	<!-- 거래처 수정 -->
 	<update id="update" parameterType="1customervo">
 		<![CDATA[
 			update tb_customer
-			   set no = #{no },
+			   set no = concat('A' ,#{no }),
 				   name = #{name },
 				   ceo = #{ceo },
 				   address = #{address },
@@ -78,17 +115,29 @@
 				   manager_name = #{managerName },
 				   manager_email = #{managerEmail },
 				   deposit_no = #{depositNo },
+				   assets_flag = #{assetsFlag },
 				   update_userid = #{updateUserid },
 				   update_day = now()
 			 where no = concat('A', #{no})
 		]]>
 	</update>
 	
-	<delete id = "deleteAll" parameterType="bankaccountvo">
+	<!-- 거래처 삭제 (flag N->Y)-->
+	<update id="delete" parameterType="1customervo">
+		<![CDATA[
+			update tb_customer
+			   set delete_flag = 'Y'
+			 where name =  #{name }
+		]]>
+	</update>
+	
+	<!-- 거래처 전체삭제 -->
+	<delete id = "deleteAll" parameterType="1customervo">
 		<![CDATA[
 			delete from tb_customer
-			 where deposit_no = concat('A', #{no})
+			 where no = concat('A', #{no})
 			   and delete_flag = "Y";
 		]]>
 	</delete>
+	
 </mapper>

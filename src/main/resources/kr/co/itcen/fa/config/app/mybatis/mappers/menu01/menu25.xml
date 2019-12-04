@@ -8,13 +8,12 @@
 		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
 			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
 			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
-			   account_no as accountNo, insert_userid as insertUserId, insert_day as insertDay, 
+			   insert_userid as insertUserId, insert_day as insertDay, 
 			   update_userid as updateUserId, update_day as updateDay, delete_flag as deleteFlag
 		 from	tb_bank_account 
 		 where	delete_flag = "N"
 		]]>
 	</select>
-	
 	
 	<insert id="create" parameterType="bankaccountvo">
 		<![CDATA[
@@ -22,15 +21,11 @@
 		tb_bank_account 
 		values(#{depositNo}, #{depositHost}, #{bankCode}, #{makeDate}, 
 			   #{balance}, #{enDate}, #{depositLimit}, #{profit}, #{bankName}, #{banker},
-			   #{accountNo}, #{insertUserId}, now(), 
+			   #{bankLocation}, #{bankPhoneCall}, #{insertUserId}, now(), 
 			   #{updateUserId}, #{updateDay}, "N");
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
 	</insert>
+
 	
 	<update id="update" parameterType="bankaccountvo">
 		<![CDATA[
@@ -47,7 +42,6 @@
 			banker = #{banker},
 			bank_location = #{bankLocation},
 			bank_phonecall = #{bankPhoneCall},
-			account_no = #{accountNo},
 			update_userid = #{updateUserId},
 			update_day = now()
 		where deposit_no = #{depositOld};
@@ -93,12 +87,12 @@
 		]]>
 	</delete>
 	
-	<select id="gets" parameterType="bankaccountvo" resultType="bankaccountvo">
+	<select id="gets" parameterType="string" resultType="bankaccountvo">
 		<![CDATA[
 		select	deposit_no as depositNo, deposit_host as depositHost, 
 				bank_code as bankCode, bank_name as bankName
 		 from	tb_bank_account
-		 where	deposit_no = #{depositNo}
+		 where	deposit_no like concat(#{depositNo}, "%")
 		 and  delete_flag = "N"
 		]]>
 	</select>

@@ -4,7 +4,7 @@ import org.apache.ibatis.type.Alias;
 
 /**
  * 
- * @author 이종윤 
+ * @author 이종윤
  * 거래처관리
  *
  */
@@ -31,6 +31,15 @@ public class CustomerVo {
 	private String updateUserid;
 	private String updateDay;
 	private String customerDiv;
+	private String assetsFlag;
+
+	public String getAssetsFlag() {
+		return assetsFlag;
+	}
+
+	public void setAssetsFlag(String assetsFlag) {
+		this.assetsFlag = assetsFlag;
+	}
 
 	public String getCustomerDiv() {
 		return customerDiv;
@@ -199,7 +208,8 @@ public class CustomerVo {
 				+ ", openDate=" + openDate + ", jurisdictionOffice=" + jurisdictionOffice + ", phone=" + phone
 				+ ", managerName=" + managerName + ", managerEmail=" + managerEmail + ", depositNo=" + depositNo
 				+ ", deleteFlag=" + deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", customerDiv=" + customerDiv + "]";
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", customerDiv=" + customerDiv
+				+ ", assetsFlag=" + assetsFlag + "]";
 	}
-	
+
 }

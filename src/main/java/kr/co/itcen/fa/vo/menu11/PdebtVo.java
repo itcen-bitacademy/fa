@@ -25,7 +25,7 @@ public class PdebtVo {
 	private String dangerCode; // 위험등급
 	private String dangerName; // 위험등급명
 	private String majorCode;// 차입금대분류
-	private int bankCode; // 은행코드
+	private String bankCode; // 은행코드
 	private String depositNo; // 계좌번호
 	private String accountNo; // 계정코드
 	private int voucherNo; // 전표번호
@@ -180,11 +180,11 @@ public class PdebtVo {
 		this.majorCode = majorCode;
 	}
 
-	public int getBankCode() {
+	public String getBankCode() {
 		return bankCode;
 	}
 
-	public void setBankCode(int bankCode) {
+	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
 	}
 

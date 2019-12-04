@@ -28,6 +28,9 @@ public class Menu19Service {
 	@Autowired
 	private Menu19Repository menu19Repository;
 	
+	@Autowired
+	private Menu61Service menu61Service;
+	
 	public void test() {
 		menu19Repository.test();
 	}
@@ -36,8 +39,18 @@ public class Menu19Service {
 	 * 
 	 * 마감일 등록
 	 */
-	public int insertClosingDate(ClosingDateVo closingDate) {
-		return menu19Repository.insertClosingDate(closingDate);
+	public DataResult<Object> insertClosingDate(ClosingDateVo closingDate) {
+		DataResult<Object> dataResult = new DataResult<>();
+		
+		// 마감일자 중복검사 
+		if (menu19Repository.selectCountByYearMonth(closingDate) < 1) {
+			menu19Repository.insertClosingDate(closingDate);
+		} else {
+			dataResult.setStatus(false);
+			dataResult.setError("해당월의 마감일자 데이터가 이미 존재합니다.");
+		}
+		
+		return dataResult;
 	}
 	
 	
@@ -64,25 +77,65 @@ public class Menu19Service {
 	
 	/**
 	 * 
-	 * 마감일 수정(미결산 마감일만 수정 가능)
+	 * 마감일 수정(미결산 마감일 및 가장 최근의 마감일만 수정 가능)
 	 */
-	public int updateClosingDate(ClosingDateVo closingDate) {
-		return menu19Repository.updateClosingDate(closingDate);
+	public DataResult<Object> updateClosingDate(ClosingDateVo closingDate) {
+		DataResult<Object> dataResult = new DataResult<>();
+		
+		// 결산여부 검사 
+		if (closingDate.isClosingYn()) {		// 결산완료 마감일을 수정할 경우 
+			// 최근 마감일 조회 후 검사 
+			ClosingDateVo lastestClosingDate = menu19Repository.selectLastestClosedDateByClosingDateNoPerYear(closingDate);
+			if (lastestClosingDate == null || lastestClosingDate.getNo().longValue() != closingDate.getNo().longValue()) {
+				dataResult.setStatus(false);
+				dataResult.setError("가장 최근의 마감일만 수정할 수 있습니다.");
+				
+				return dataResult;
+			}
+		}
+		
+		// 시산표 및 재무제표 데이터 삭제
+		// TODO: 서비스 안에서 재무제표 데이터도 삭제해야함 
+		menu61Service.deleteTrialBalanceByClosingDateNo(closingDate);
+		
+		menu19Repository.updateClosingDate(closingDate);
+		
+		return dataResult;
 	}
 	
 	
 	/**
 	 * 
-	 * 마감일 삭제(미결산 마감일만 삭제 가능)
+	 * 마감일 삭제(미결산 마감일 및 가장 최근의 마감일만 삭제 가능)
 	 */
-	public int deleteClosingDate(ClosingDateVo closingDate) {
-		return menu19Repository.deleteClosingDate(closingDate);
+	public DataResult<Object> deleteClosingDate(ClosingDateVo closingDate) {
+		DataResult<Object> dataResult = new DataResult<>();
+		
+		// 결산여부 검사 
+		if (closingDate.isClosingYn()) {		// 결산완료 마감일을 수정할 경우 
+			// 최근 마감일 조회 후 검사 
+			ClosingDateVo lastestClosingDate = menu19Repository.selectLastestClosedDateByClosingDateNoPerYear(closingDate);
+			if (lastestClosingDate == null || lastestClosingDate.getNo().longValue() != closingDate.getNo().longValue()) {
+				dataResult.setStatus(false);
+				dataResult.setError("가장 최근의 마감일만 삭제할 수 있습니다.");
+				
+				return dataResult;
+			}
+		}
+		
+		// 시산표 및 재무제표 데이터 삭제
+		// TODO: 서비스 안에서 재무제표 데이터도 삭제해야함 
+		menu61Service.deleteTrialBalanceByClosingDateNo(closingDate);
+		
+		menu19Repository.deleteClosingDate(closingDate);
+		
+		return dataResult;
 	}
 	
 	
 	/**
 	 * 
-	 * 팀별 데이터 입력 가부 조회
+	 * 팀별 마감일(데이터 입력 가부) 조회
 	 * @param session		- controller의 HttpSession
 	 * @param businessDate	- 거래일자
 	 * @return boolean
@@ -121,5 +174,25 @@ public class Menu19Service {
 		}
 		
 		return (closingDateVo == null) ? false : true;
+	}
+	
+	
+	/**
+	 * 
+	 * 해당마감일의 수정삭제 가능여부 조회 
+	 */
+	public DataResult<ClosingDateVo> isChangable(ClosingDateVo closingDateVo) {
+		DataResult<ClosingDateVo> dataResult = null;
+		
+		ClosingDateVo lastestClosedDate = menu19Repository.selectLastestClosedDateByClosingDateNoPerYear(closingDateVo);
+		
+		if (lastestClosedDate != null && lastestClosedDate.getNo() == closingDateVo.getNo()) {
+			dataResult = new DataResult<>(lastestClosedDate);
+		} else {
+			dataResult = new DataResult<>();
+			dataResult.setStatus(false);
+		}
+		
+		return dataResult;
 	}
 }

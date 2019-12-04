@@ -15,22 +15,45 @@ public class DataResult<T> {
 	private List<T> datas;
 	private T data; 
 	
+	private boolean status;
+	private String error;
+	
 	PaginationUtil pagination;
 	
 	
 	// Constructor
 	public DataResult(List<T> datas) {
+		this();
 		this.datas = datas;
 	}
 	
 	public DataResult(T data) {
+		this();
 		this.data = data;
 	}
 	
 	public DataResult() {
+		this.status = true;
 	}
 	
+	
 	// Setter & Getter
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+	
 	public List<T> getDatas() {
 		return datas;
 	}

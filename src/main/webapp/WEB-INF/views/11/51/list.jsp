@@ -83,8 +83,6 @@ form {
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
-				                           
-				                         
 				                         </div>
 									</td>
 									
@@ -137,10 +135,10 @@ form {
 									<div class="prod-list-opts">
 										<div class="order-opt">
 											<ul class="order-list">
-												<li class="order-item"><h4><a href="#">차입일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">만기일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">등록일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">차입금액</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=d">차입일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=e">만기일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=i">등록일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=m">차입금액</a></h4></li>
 											</ul>
 										</div>
 									</div>
@@ -168,12 +166,6 @@ form {
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
-							<th class="center">
-								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
-									<span class="lbl"></span>
-								</label>
-							</th>
 							<th class="center">사채코드</th>
 							<th class="center">사채명</th>
 							<th class="center">차입금대분류</th>
@@ -191,11 +183,6 @@ form {
 					<tbody>
 					<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 						<tr>
-							<td class="center">
-								<label class="pos-rel"></label>
-								<input type="checkbox" class="ace" />
-								<span class="lbl"></span>
-							</td>
 							<td class="center">${vo.code}</td>
 							<td>${vo.name}</td>
 							 <c:choose>
@@ -242,16 +229,13 @@ form {
 								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
 							</c:otherwise>
 						</c:choose>
-						<c:forEach begin="${dataResult.pagination.startPage }"
-							end="${dataResult.pagination.endPage }" var="pg">
+						<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 							<c:choose>
 								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>

@@ -16,8 +16,7 @@ import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
  * 
- * @author 박준호
- * 사채현황조회
+ * @author 박준호 사채현황조회
  *
  */
 @Repository
@@ -25,21 +24,21 @@ public class Menu51Repository {
 
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	public int listCount(PdebtVo vo) {
-		return sqlSession.selectOne("menu51.selectAllCount",vo);
+		return sqlSession.selectOne("menu51.selectAllCount", vo);
 	}
-	
+
 	public List<PdebtVo> list(PaginationUtil pagination, PdebtVo vo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
 		map.put("vo", vo);
-		List<PdebtVo> list= sqlSession.selectList("menu51.selectAll",map);
+		List<PdebtVo> list = sqlSession.selectList("menu51.selectAll", map);
 		return list;
 	}
 
 	public List<SectionVo> selectSection() {
 		return sqlSession.selectList("menu51.selectsection");
 	}
-	
+
 }
