@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu02.Menu37Repository;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
+import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 
@@ -22,11 +23,11 @@ public class Menu37Service {
 	@Autowired
 	private Menu37Repository menu37Repository;
 	
-	
-	public void insert(BuyTaxbillVo vo) {
-	
-		menu37Repository.insert(vo);
-		
+	public void insertTax(BuyTaxbillVo vo) {
+		menu37Repository.insertTax(vo);
+	}
+	public void insertItem(BuyTaxbillItemsVo vo) {
+		menu37Repository.insertItem(vo);
 	}
 
 	public List<CustomerVo> customerList() {
@@ -38,4 +39,18 @@ public class Menu37Service {
 		List<BankAccountVo> customerBankList = menu37Repository.customerBankList();
 		return customerBankList;
 	}
+	public BuyTaxbillVo getAboutNoData(String no) {
+		BuyTaxbillVo getAboutNoData = menu37Repository.getAboutNoData(no);
+		return getAboutNoData;
+	}
+	public CustomerVo getAboutNoCustomerData(String companyName) {
+		CustomerVo getAboutNoCustomerData = menu37Repository.getAboutNoCustomerData(companyName);
+		return getAboutNoCustomerData;
+	}
+	public BankAccountVo getAboutNoBankData(String depositNo) {
+		BankAccountVo getAboutNoBankData = menu37Repository.getAboutNoBankData(depositNo);
+		return getAboutNoBankData;
+	}
+
+	
 }

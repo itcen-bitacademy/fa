@@ -40,12 +40,13 @@
 		var cell5 = row.insertCell(4);
 		var cell6 = row.insertCell(5);
 		cell1.innerHTML = '<td><p>' + cnt + '</p></td>';
-		cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" ></td>';
-		cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" ></td>';
-		cell4.innerHTML = '<td><input type="text" id="amount'+cnt+'" ></td>';
-		cell5.innerHTML = '<td><input type="text" id="supply-value' + cnt
-				+ '" onkeyup="sum_allsupply_alltax();"></td>';
-		cell6.innerHTML = '<td><input type="text" id="tax-value'+cnt+'" ></td>';
+		cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" name="purchaseDate"></td>';
+		cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName"></td>';
+		cell4.innerHTML = '<td><input type="text" id="amount'+cnt+'" name="amount"></td>';
+		cell5.innerHTML = '<td><input type="text" id="supply-value'
+				+ cnt
+				+ '" name="supplyValue" onkeyup="sum_allsupply_alltax();"></td>';
+		cell6.innerHTML = '<td><input type="text" id="tax-value'+cnt+'" name="taxValue"></td>';
 		cnt++;
 
 	}
@@ -61,25 +62,22 @@
 	}
 
 	function sum_allsupply_alltax() {
-		var total_sum = 0;
+		var sum = 0;
 		for (var i = 1; i < cnt; i++) {
-			var sum = 0;
 			var supply_value = document.getElementById('supply-value' + i).value;
 			var amount = document.getElementById('amount' + i).value;
-			sum = supply_value * amount;
-			document.getElementById('tax-value' + i).value = sum * 0.1;
-			total_sum = total_sum + supply_value * amount;
+			sum = sum + (supply_value * amount);
 		}
-		document.getElementById('form-field-14').value = total_sum;
-		document.getElementById('form-field-15').value = total_sum * 0.1;
+		document.getElementById('form-field-14').value = sum;
+		document.getElementById('form-field-15').value = sum * 0.1;
 
 	}
 
 	function load_customer_imfo() {
-		var customer_code = document.getElementById("company-name").value;
+		var company_name = document.getElementById("company-name").value;
 		var deposit_no;
-		alert(customer_code);
-		if (customer_code == "") {
+		alert(company_name);
+		if (company_name == "") {
 			$("#customer-name").val("");
 			$("#customer-address").val("");
 			$("#conditions").val("");
@@ -91,13 +89,12 @@
 			$("#bank-name").val("");
 		} else {
 			<c:forEach items="${customerList }" var="list" varStatus="status">
-			if (customer_code == "${list.no }") {
+			if (company_name == "${list.name }") {
 				$("#customer-name").val("${list.ceo}");
 				$("#customer-address").val("${list.address}");
 				$("#conditions").val("${list.conditions}");
 				$("#items").val("${list.item}");
 				$("#customer-no").val("${list.no}");
-
 				deposit_no = "${list.depositNo }";
 				alert(deposit_no);
 			}
@@ -111,6 +108,16 @@
 			}
 			</c:forEach>
 		}
+	}
+
+	function update_button() {
+		$("#manage-form").attr("action","${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update").submit();
+	}
+	function delete_button() {
+		$("#manage-form").attr("action","${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete").submit();
+	}
+	function lookup_button() {
+		$("#manage-form").attr("action","${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/lookUp").submit();
 	}
 </script>
 </head>
@@ -126,7 +133,7 @@
 						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
 						class="icon-plus-sign bigger-120 green"></i>메뉴 추가</a>
 				</div>
-				<form method="post"
+				<form id="manage-form"method="post"
 					action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 					<!-- /.page-header -->
 					<div class="row-fluid">
@@ -137,12 +144,12 @@
 							<div class="control-group">
 								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="no" name="no"
+									<input style="width: 100%" type="text" id="no" name="no" value="${getAboutNoData.no }"
 										placeholder="승인번호" />
 								</div>
-								<label class="control-label span1" for="manage-no">관리번호</label>
+								<label class="control-label span1" for="manage-no" >관리번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="manage-no"
+									<input style="width: 100%" type="text" id="manage-no" value="${getAboutNoData.manageNo }"
 										name="manageNo" placeholder="관리번호" />
 								</div>
 							</div>
@@ -150,12 +157,12 @@
 							<div class="control-group">
 								<label class="control-label span1" for="customer-no">등록번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="customer-no"
+									<input style="width: 100%" type="text" id="customer-no" value="${getAboutNoCustomerData.no }"
 										name="id" placeholder="등록번호" />
 								</div>
 								<label class="control-label span1" for="deposit-no">입금계좌번호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="deposit-no"
+									<input style="width: 100%" type="text" id="deposit-no" value="${getAboutNoBankData.depositNo }"
 										name="id" placeholder="입금계좌번호" />
 								</div>
 							</div>
@@ -163,13 +170,13 @@
 							<div class="control-group">
 								<label class="control-label span1" for="company-name">거래처명</label>
 								<div class="controls span2">
-									<select id="company-name" style="width: 100%;"
-										onchange="load_customer_imfo();">
+									<select id="company-name" name="companyName" value="${getAboutNoCustomerData.name }"
+										style="width: 100%;" onchange="load_customer_imfo();">
 										<option value="">&nbsp;</option>
 
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
-											<option id="${status }" value="${list.no }">${list.name }</option>
+											<option id="${status }" value="${list.name }">${list.name }</option>
 
 										</c:forEach>
 
@@ -177,31 +184,31 @@
 								</div>
 								<label class="control-label span1" for="customer-name">성명</label>
 								<div class="controls span2">
-									<input style="width: 100%" type="text" id="customer-name"
+									<input style="width: 100%" type="text" id="customer-name" value="${getAboutNoCustomerData.ceo }"
 										name="id" placeholder="성명" />
 								</div>
 								<label class="control-label span1" for="deposit-host">예금주</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="deposit-host"
-										name="id" placeholder="예금주" />
+									<input style="width: 100%" type="text" id="deposit-host" value="${getAboutNoCustomerData.depositHost }"
+										 placeholder="예금주" />
 								</div>
 							</div>
 
 							<div class="control-group">
 								<label class="control-label span1" for="customer-address">주소</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="customer-address"
+									<input style="width: 100%" type="text" id="customer-address" value="${getAboutNoCustomerData.address }"
 										name="id" placeholder="주소" />
 								</div>
 								<label class="control-label span1" for="bank">은행</label>
 								<div class="controls span5">
 									<div class="controls span1">
-										<input style="width: 100%" type="text" id="bank-code"
+										<input style="width: 100%" type="text" id="bank-code" value="${getAboutNoBankData.bankCode }"
 											name="id" placeholder="은행" />
 									</div>
 									<div class="controls span4">
-										<input style="width: 100%" type="text" id="bank-name"
-											name="id" placeholder="은행" />
+										<input style="width: 100%" type="text" id="bank-name" value="${getAboutNoBankData.bankName }"
+											name="id" placeholder="은행" /> 
 									</div>
 
 								</div>
@@ -209,12 +216,12 @@
 							<div class="control-group">
 								<label class="control-label span1" for="conditions">업태</label>
 								<div class="controls span2">
-									<input style="width: 94%;" type="text" id="conditions"
+									<input style="width: 94%;" type="text" id="conditions" value="${getAboutNoCustomerData.conditions }"
 										name="id" placeholder="업태" />
 								</div>
 								<label class="control-label span1" for="items">종목</label>
 								<div class="controls span2">
-									<input style="width: 100%" type="text" id="items" name="id"
+									<input style="width: 100%" type="text" id="items" name="id" value="${getAboutNoCustomerData.item }"
 										placeholder="종목" />
 								</div>
 								<label class="control-label span1" for="taxType">과세구분</label>
@@ -236,7 +243,7 @@
 								<label class="control-label span1" for="form-field-13">일자</label>
 								<div class="controls span2">
 									<div class="input-append" style="width: 100%">
-										<input id="id-date-picker-1" class="cl-date-picker"
+										<input id="id-date-picker-1" class="cl-date-picker" value="${getAboutNoData.writeDate }"
 											name="writeDate" type="text"> <span class="add-on">
 											<i class="icon-calendar"></i>
 										</span>
@@ -245,13 +252,13 @@
 								<label class="control-label span1" for="form-field-14">총
 									공급가액</label>
 								<div class="controls span4">
-									<input style="width: 100%" type="text" id="form-field-14"
+									<input style="width: 100%" type="text" id="form-field-14" value="${getAboutNoData.totalSupplyValue }"
 										name="totalSupplyValue" placeholder="총 공급가액" />
 								</div>
 								<label class="control-label span1" for="form-field-15">총
 									세액</label>
 								<div class="controls span3">
-									<input style="width: 100%" type="text" id="form-field-15"
+									<input style="width: 100%" type="text" id="form-field-15" value="${getAboutNoData.totalTaxValue }"
 										name="totalTaxValue" placeholder="총 세액" />
 								</div>
 							</div>
@@ -283,13 +290,13 @@
 									</tr>
 									<tr>
 										<td><p>1</p></td>
-										<td><input type="text" id="date1"></td>
-										<td><input type="text" id="item1"></td>
+										<td><input type="text" id="date1" name="purchaseDate"></td>
+										<td><input type="text" id="item1" name="itemName"></td>
 										<td><input type="text" id="amount1"
-											onkeyup="sum_allsupply_alltax();"></td>
+											onkeyup="sum_allsupply_alltax();" name="amount"></td>
 										<td><input type="text" id="supply-value1"
-											onkeyup="sum_allsupply_alltax();"></td>
-										<td><input type="text" id="tax-value1"></td>
+											onkeyup="sum_allsupply_alltax();" name="supplyValue"></td>
+										<td><input type="text" id="tax-value1" name="taxValue"></td>
 									</tr>
 								</table>
 							</div>
@@ -297,11 +304,14 @@
 								<button class="btn btn-danger btn-small"
 									style="float: left; margin-left: 20px;">입력</button>
 								<button class="btn btn-warning btn-small" type="button"
-									style="float: left; margin-left: 20px;">수정</button>
+									style="float: left; margin-left: 20px;"
+									onclick="update_button();">수정</button>
 								<button class="btn btn-primary btn-small" type="button"
-									style="float: left; margin-left: 20px;">삭제</button>
+									style="float: left; margin-left: 20px;"
+									onclick="delete_button();">삭제</button>
 								<button class="btn btn-default btn-small" type="button"
-									style="float: left; margin-left: 20px;">조회</button>
+									style="float: left; margin-left: 20px;"
+									onclick="lookup_button();">조회</button>
 
 							</div>
 							<!-- PAGE CONTENT ENDS -->
