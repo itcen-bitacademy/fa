@@ -97,13 +97,13 @@
 	
 	<select id="getBankcodeInfo" parameterType="String" resultType="bankvo">
 		<![CDATA[
-			select code, name, store, mgr, mgr_call as mgrCall from tb_bank where code = #{bankcode }
+			select code, name, store, mgr, mgr_phone as mgrPhone from tb_bank where code = #{bankcode }
 		]]>
 	</select>
 	
 	<select id="getBanknameList" parameterType="String" resultType="bankvo">
 		<![CDATA[
-			select code, name, store, mgr, mgr_call as mgrCall from tb_bank where name = #{bankname }
+			select code, name, store, mgr, mgr_phone as mgrPhone from tb_bank where name = #{bankname }
 		]]>
 	</select>
 	
