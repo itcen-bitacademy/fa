@@ -12,12 +12,12 @@ import org.apache.ibatis.type.Alias;
 @Alias("1vouchervo")
 public class VoucherVo {
 	private Long no; 				 // 번호
-	private String regDate; 			 // 전표일자
+	private String regDate; 		 // 전표일자
 	private String insertTeam; 		 // 등록팀
 	private String insertUserid;	 // 등록자
-	private String insertDay;			 // 등록일
+	private String insertDay;		 // 등록일
 	private String updateUserid;	 // 수정자
-	private String updateDay;			 // 수정일
+	private String updateDay;		 // 수정일
 	private Boolean useYn;			 // 사용여부
 	private String voucherUse; 		 // 전표사용목적
 	private String systemCode; 		 // 시스템번호
@@ -190,7 +190,5 @@ public class VoucherVo {
 				+ amountFlag + ", accountNo=" + accountNo + ", accountName=" + accountName + ", mappingNo=" + mappingNo
 				+ "]";
 	}
-	
-	
 	
 }

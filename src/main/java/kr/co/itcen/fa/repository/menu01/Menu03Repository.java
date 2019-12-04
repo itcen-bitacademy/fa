@@ -1,14 +1,17 @@
 package kr.co.itcen.fa.repository.menu01;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
-import kr.co.itcen.fa.vo.menu01.Menu03SearchForm;
 import kr.co.itcen.fa.vo.menu01.TestVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
@@ -30,8 +33,9 @@ public class Menu03Repository {
 		sqlSession.insert("menu03.save", testVo);
 	}
 	
-	// 전표생성
+	// 전표생성 (다른팀)
 	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo) {
+		System.out.println("#################" + voucherVo.getRegDate());
 		sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
 		System.out.println("222233333333" + voucherVo.getNo());
 		for(int i = 0; i < itemVo.size(); i++) {
@@ -45,15 +49,30 @@ public class Menu03Repository {
 		
 		return voucherVo.getNo();	// 전표번호
 	}
+
+	// 전표생성 (1팀)
+	public Map<String, Object> createVoucher(VoucherVo voucherVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("voucherVo1", sqlSession.insert("menu03.insertVoucher2", voucherVo));
+		map.put("voucherVo2", sqlSession.insert("menu03.insertItem2", voucherVo));
+		map.put("voucherVo3", sqlSession.insert("menu03.insertMapping2", voucherVo));
+		map.put("voucherLength", sqlSession.selectOne("menu03.selectAllVoucherCount"));
+		
+		return map;
+	}
 	
 	// 전표 전체 갯수 조회
 	public int selectAllVoucherCount() {
 		return sqlSession.selectOne("menu03.selectAllVoucherCount");
 	}
 	
-	public List<VoucherVo> selectAllVoucher(Menu03SearchForm menu03SearchForm) {
+	public List<VoucherVo> selectAllVoucher(PaginationUtil paginationUtil) {
 		// TODO: 페이징 추가
-		return sqlSession.selectList("menu03.selectAllVoucher", menu03SearchForm);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("paginationUtil", paginationUtil);
+		List<VoucherVo> list = sqlSession.selectList("menu03.selectAllVoucher", map);
+		return list;
 	}
 	
 }

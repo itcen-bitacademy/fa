@@ -75,10 +75,10 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">증빙코드 / 증빙종류 :</label>
+									<label class="control-label" for="form-field-codename">증빙종류 / 증빙코드 :</label>
 									<div class="controls">
-										<input class="span3" type="text" id="form-field-code" name="code1" placeholder="증빙코드"/>
 										<input class="span5" type="text" id="manageNo" name="manageNo" placeholder="증빙종류"/>
+										<input class="span3" type="text" id="form-field-code" name="manageName" placeholder="증빙코드"/>
 									</div>
 								</div>
 								
@@ -157,7 +157,8 @@
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
 				<div class="span12">
-					<table class="table table-striped table-bordered table-hover">
+					<table id="simple-table-1"
+						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>일자</th>
@@ -167,27 +168,24 @@
 								<th>계정과목명</th>
 								<th>차변</th>
 								<th>대변</th>
+								<th>거래처번호</th>
 								<th>거래처</th>
 								<th>증빙종류</th>
 								<th>증빙코드</th>
+								<th>은행코드</th>
 								<th>은행명</th>
 								<th>카드번호</th>
 								<th>계좌번호</th>
 								<th>소유자</th>
-								<th>담당자</th>
 								<th>사용목적</th>
 							</tr>
 						</thead>
 						
-						<tbody id="voucher_list">
-							<c:forEach items='${list }' var='voucherVo' varStatus='status'>
+						<tbody id="origin_voucher_list">
+							<c:forEach items='${dataResult.datas }' var='voucherVo' varStatus='status'>
 								<tr>
-									<td class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></td>
-
 									<td>${voucherVo.regDate }</td>
-									<td>${voucherVo.voucherNo }</td>
+									<td id="voucherNo" name="voucherNo">${voucherVo.no }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
 								            <td>차변</td>
@@ -208,6 +206,7 @@
 								            <td>${voucherVo.amount }</td>
 								        </c:otherwise>
 								    </c:choose>
+								    <td>${voucherVo.customerNo }</td>
 									<td>${voucherVo.customerName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.manageNo != null }">
@@ -218,6 +217,7 @@
 								        </c:otherwise>
 								    </c:choose>
 									<td>${voucherVo.manageNo }</td>
+									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.cardNo != null }">
@@ -231,7 +231,6 @@
 								            <td>${voucherVo.depositHost }</td>
 								        </c:otherwise>
 								    </c:choose>
-								    <td></td>
 									<td>${voucherVo.voucherUse }</td>
 								</tr>
 							</c:forEach>
@@ -290,7 +289,7 @@ $(function(){
 	});
 	
 	// 전표 추가 & 리스트
-	$('#btn-create').click(function(){
+	$(document.body).delegate('#btn-create', 'click', function() {	
 		var regDate = $('#regDate').val();
 		var accountNo = $('#accountNo').val();
 		var accountName = $('#accountName').val();
@@ -331,37 +330,47 @@ $(function(){
 					console.error(response.message);
 					return;
 				}
-				$("#voucher_list").empty(); // 태그는 남기고 내용 지우기
+				removeTable();
 				
-				let voucherList = response.data
+				var voucherVo1 = response.voucherVo1;
+				var voucherVo2 = response.voucherVo2;
+				var voucherVo3 = response.voucherVo3;
+				var voucherLength = response.voucherLength;
 				
-				for(var i in voucherList) {
+				
+				var $newTbody = $("<tbody class = 'new_voucher_list'>");
+				$("#simple-table-1").append($newTbody);
+				
+				
+				for(var i in voucherVo2) {
 					var a = "";
-					if(voucherList[i].amountFlag == 'd') {
+					if(voucherVo2[i].amountFlag == 'd') {
 						a = "차변"
 					}
-					if(voucherList[i].amountFlag == 'c') {
+					if(voucherVo2[i].amountFlag == 'c') {
 						a = "대변"
 					}
 					
 					var b = "";
 					var c = "";
-					if(voucherList[i].amountFlag == 'd') {
-						b = voucherList[i].amount;
+					if(voucherVo2[i].amountFlag == 'd') {
+						b = voucherVo2[i].amount;
 						c = "";
 					}
-					if(voucherList[i].amountFlag == 'c') {
+					if(voucherVo2[i].amountFlag == 'c') {
 						b = "";
-						c = voucherList[i].amount;
+						c = voucherVo2[i].amount;
 					}
-					
+				}
+				
+				for(var i in voucherVo3) {
 					var d = "";
 					var e = "";
-					if(voucherList[i].manageNo != null) {
+					if(voucherVo3[i].manageNo != null) {
 						d = "세금계산서";
-						e = voucherList[i].manageNo;
+						e = voucherVo3[i].manageNo;
 					}
-					if(voucherList[i].manageNo == null) {
+					if(voucherVo3[i].manageNo == null) {
 						d = "";
 						e = "";
 					}
@@ -369,17 +378,57 @@ $(function(){
 					var f = "";
 					var g = "";
 					var h = "";
-					if(voucherList[i].cardNo != null) {
-						f = voucherList[i].cardNo;
+					if(voucherVo3[i].cardNo != null) {
+						f = voucherVo3[i].cardNo;
 						g = "";
-						h = voucherList[i].cardUser;
+						h = voucherVo3[i].cardUser;
 					}
-					if(voucherList[i].depositNo != null) {
+					if(voucherVo3[i].depositNo != null) {
 						f = "";
-						g = voucherList[i].depositNo;
-						h = voucherList[i].depositHost;
+						g = voucherVo3[i].depositNo;
+						h = voucherVo3[i].depositHost;
 					}
-					$('#voucher_list').append($('<tr/>').append($('<td/>').text(voucherList[i].regDate))
+				
+				for(var i = 0; i < voucherLength; i++) {
+					$newTbody.append(
+						"<tr>" +
+						"<td>" + voucherVo1[i].regDate + "</td>" + 									// 일자
+				        "<td>" + voucherVo1[i].no + "</td>" + 									// 전표번호
+				        "<td>" + a + "</td>" +						  									// 차대구분
+				        "<td>" + voucherVo2[i].accountNo + "</td>" + 									// 계정코드
+				        "<td>" + voucherVo2[i].accountName + "</td>" + 								// 계정명
+				        "<td>" + b + "</td>" +															// 차변
+				        "<td>" + c + "</td>" +															// 대변
+				        "<td>" + voucherVo3[i].customerNo + "</td>" +									// 거래처코드
+				        "<td>" + voucherVo3[i].customerName + "</td>" +								// 거래처명
+				        "<td>" + d + "</td>" +															// 증빙종류
+				        "<td>" + e + "</td>" +															// 증빙코드
+				        "<td>" + voucherVo3[i].bankCode + "</td>" +									// 은행코드
+				        "<td>" + voucherVo3[i].bankName + "</td>" +									// 은행명
+				        "<td>" + f + "</td>" +															// 카드번호
+				        "<td>" + g + "</td>" +															// 계좌번호
+				        "<td>" + h + "</td>" +															// 소유주
+				        "<td>" + voucherVo3[i].voucherUse + "</td>" +									// 사용목적
+				        "</tr>");
+					
+					$('#regDate').val();
+					$('#accountNo').val();
+					$('#accountName').val();
+					$('#amount').val();
+					$('#amountFlag').val();
+					$('#manageNo').val();
+					$('#customerNo').val();
+					$('#customerName').val();
+					$('#bankCode').val();
+					$('#bankName').val();
+					$('#cardNo').val();
+					$('#cardName').val();
+					$('#depositNo').val();
+					$('#depositHost').val();
+					$('#voucherUse').val();
+					
+					/* 
+					.append($('<tr/>').append($('<td/>').text(voucherList[i].regDate))
 							.append($('<td/>').text(voucherList[i].voucherNo)) // 전표번호
 							.append($('<td/>').text(a)) // 차대구분
 							.append($('<td/>').text(voucherList[i].accountNo)) // 계정코드
@@ -394,26 +443,63 @@ $(function(){
 							.append($('<td/>').text(g)) // 계좌번호
 							.append($('<td/>').text(h)) // 소유주
 							.append($('<td/>').text("")) // 담당자
-							.append($('<td/>').text(voucherList[i].voucherUse))) // 사용목적
+							.append($('<td/>').text(voucherList[i].voucherUse))) // 사용목적 */
 				}
-				$('#regDate').val();
-				$('#accountNo').val();
-				$('#accountName').val();
-				$('#amount').val();
-				$('#amountFlag').val();
-				$('#manageNo').val();
-				$('#customerNo').val();
-				$('#customerName').val();
-				$('#bankCode').val();
-				$('#bankName').val();
-				$('#cardNo').val();
-				$('#cardName').val();
-				$('#depositNo').val();
-				$('#depositHost').val();
-				$('#voucherUse').val();
+				$newTbody.append("</tbody>");
+			}	
 			}
 		}); // ajax
 	}); // .click
+	
+	function removeTable() {
+		$("#origin_voucher_list").remove()
+		
+		$("#new_voucher_list").remove()
+	}
+	
+	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		
+		$("input[name=regDate]").val(td.eq(0).text());
+		$("input[name=voucherNo]").val(td.eq(1).text());
+		$("input[name=amountFlag]").val(td.eq(2).text());
+		$("input[name=accountNo]").val(td.eq(3).text());
+		$("input[name=accountName]").val(td.eq(4).text());
+		
+		if(td.eq(5).text()== "") {
+			$("input[name=amount]").val(td.eq(6).text());	
+		} else {
+			$("input[name=amount]").val(td.eq(5).text());	
+		}
+		$("input[name=customerNo]").val(td.eq(7).text());
+		$("input[name=customerName]").val(td.eq(8).text());
+		$("input[name=manageName]").val(td.eq(9).text());
+		$("input[name=manageNo]").val(td.eq(10).text());
+		$("input[name=bankCode]").val(td.eq(11).text());
+		$("input[name=bankName]").val(td.eq(12).text());
+		
+		if(td.eq(13).text()== "") {
+			$("input[name=depositHost]").val(td.eq(13).text());
+		} else {
+			$("input[name=cardUser]").val(td.eq(15).text());	
+		}
+		
+		$("input[name=cardNo]").val(td.eq(16).text());
+		$("input[name=depositNo]").val(td.eq(17).text());
+		$("input[name=voucherUse]").val(td.eq(18).text());
+		
+		$("input[name=bankName]").prop("readonly", true);
+		$("input[name='bankLocation']").prop("readonly", true);
+		$("input[name='banker']").prop("readonly", true);
+		$("input[name='bankPhoneCall']").prop("readonly", true);  
+	});
+	
+	// 전표삭제
+	$(document).on('click', '#btn-delete', (function(event){
+		var insertTeam = "${authUser.id }";
+		var voucherNo = $('#')
+	}));
 }); // $(function
 
 </script>

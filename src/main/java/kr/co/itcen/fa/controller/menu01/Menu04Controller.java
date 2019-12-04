@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.controller.menu01;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +41,9 @@ public class Menu04Controller {
 		model.addAttribute("dataResult", menu03Service.selectAllVoucherCount(page));
 		
 		// 전표 조회
-		VoucherVo voucherVo = menu04Service.viewVoucher();
+		List<VoucherVo> voucherVo = menu04Service.viewVoucher();
+		
+		model.addAttribute("voucherVo", voucherVo);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

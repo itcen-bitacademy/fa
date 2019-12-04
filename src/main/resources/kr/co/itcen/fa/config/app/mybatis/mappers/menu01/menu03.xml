@@ -97,6 +97,88 @@
 		]]>
 	</insert>
 	
+	<!-- 전표테이블 입력 -->
+	<insert id="insertVoucher2" parameterType="1vouchervo">
+		<![CDATA[
+		insert
+		  into tb_voucher_manager(no,
+		  			   reg_date,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   use_yn
+		  )
+		values (null,
+				#{regDate },
+		  		#{insertUserid },
+		  		now(),
+		  		true
+		  		)
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<!-- 항목테이블 입력 -->
+	<insert id="insertItem2" parameterType="1vouchervo">
+		<![CDATA[
+		insert
+		  into tb_voucher_item(no,
+		  			amount,
+		  			amount_flag,
+		  			insert_userid,
+		  			insert_day,
+		  			use_yn,
+		  			voucher_no,
+		  			account_no
+		)
+		values (null,
+				#{amount },
+				#{amountFlag },
+				#{insertUserid },
+				now(),
+				true,
+				#{no },
+				#{accountNo }
+		)
+		]]>
+	</insert>
+	
+	<!-- 매핑테이블 입력 -->
+	<insert id="insertMapping2" parameterType="1vouchervo">
+		<![CDATA[
+		insert
+		  into tb_voucher_system_mapping(no,
+		  			   voucher_use,
+		  			   insert_team,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   use_yn,
+		  			   voucher_no,
+		  			   system_code,
+		  			   manage_no,
+		  			   card_no,
+		  			   deposit_no,
+		  			   customer_no
+		)
+		values (null,
+				#{voucherUse },
+				#{insertTeam },
+		  		#{insertUserid },
+		  		now(),
+		  		true,
+		  		#{no },
+		  		#{systemCode },
+		  		#{manageNo },
+		  		#{cardNo },
+		  		#{depositNo },
+		  		#{customerNo }
+		)
+		]]>
+	</insert>
+	
 	<!-- 전표 전체 갯수 -->
 	<select id="selectAllVoucherCount" resultType="int">
 		select	count(*) as cnt
@@ -104,31 +186,45 @@
 	</select>
 	
 	<!-- 전표조회 페이징 -->
-	<select id="selectAllVoucher" parameterType="menu03SearchForm" resultType="1vouchervo">
+	<select id="selectAllVoucher" parameterType="map" resultType="1vouchervo">
 		<![CDATA[
 		select reg_date as regDate,
+			   v.no as no,
 			   i.amount_flag as amountFlag,
+			   m.insert_team as insertTeam,
+			   m.insert_userid as insertUserid,
+			   m.insert_day as insertDay,
+			   m.system_code as systemCode,
 			   a.no as accountNo,
 			   a.name as accountName,
 			   i.amount as amount,
-			   cu.name as customerName,
+			   cu.no as customerNo,
+		   	   cu.name as customerName,
 			   m.manage_no as manageNo,
-			   ba.bank_name as bankName,
-			   c.card_no as cardNo,
+		   	   c.card_no as cardNo,
 			   c.user as cardUser,
-			   ba.deposit_no as depositNo,
+		   	   ba.deposit_no as depositNo,
 			   ba.deposit_host as depositHost,
-			   ifnull(v.update_userid, v.insert_userid) as userId,
+			   ba.bank_code as bankCode,
+			   ba.bank_name as bankName,
 		   	   m.voucher_use as voucherUse
-          from tb_voucher_manager v, tb_voucher_item i, tb_voucher_system_mapping m, tb_cardmanager c, tb_bank_account ba, tb_customer cu, tb_account a
-	     where v.no = i.voucher_no
-           and v.no = m.voucher_no
-           and i.account_no = a.no
-           and m.card_no = c.card_no
-           and m.deposit_no = ba.deposit_no
-      order by i.amount_flag desc
-      limit	#{pagination.pageIndex }, #{pagination.listSize };
-		   ]]>
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+          join tb_voucher_system_mapping m
+            on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join tb_customer cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+      order by v.no asc,
+               i.amount_flag asc
+      limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
+	  ]]>
 	</select>
 	
 </mapper>
