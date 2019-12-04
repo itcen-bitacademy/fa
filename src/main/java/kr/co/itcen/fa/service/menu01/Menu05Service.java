@@ -31,7 +31,7 @@ public class Menu05Service {
 		}
 		if(menu05Repository.Yexist(vo)){				// 삭제된 내용 중 중복된 카드넘버		
 		
-			menu05Repository.delete(vo);					// 삭제된 vo 삭제
+			menu05Repository.deleteAll(vo);					// 삭제된 vo 삭제
 		}
 		map = menu05Repository.create(vo);
 		map.put("success", true);

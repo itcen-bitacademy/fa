@@ -37,14 +37,13 @@ public class Menu49Controller {
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
 		LTermdebtVo vo,
 		@RequestParam(value="sort", required=false) String sort) {
-		System.out.println(vo);
 		
-		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo);
+		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo,sort);
 		List<SectionVo> sectionlist = menu49Service.selectSection();
 		
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
-		
+		model.addAttribute("sort", sort);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

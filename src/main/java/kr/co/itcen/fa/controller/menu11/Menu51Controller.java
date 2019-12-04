@@ -34,10 +34,15 @@ public class Menu51Controller {
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(
 			Model model, 
-			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page, 
+			@RequestParam(value="sort", required=false) String sort,
 			PdebtVo pdebtVo) {
 		System.out.println("사채현황조회 page : " + page);
+		
 		DataResult<PdebtVo> dataResult = menu51Service.list(page, pdebtVo);
+//		if(dataResult.getPagination().getPageIndex() < 1) {
+//			dataResult.getPagination().set;
+//		}
 		List<SectionVo> sectionlist = menu51Service.selectSection();
 		System.out.println("dataResult : " + dataResult);
 		System.out.println("sectionlist : " + sectionlist);

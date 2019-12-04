@@ -47,6 +47,7 @@ public class Menu25Controller {
 	public Map<String, Object> create(@ModelAttribute BankAccountVo bavo,
 			@AuthUser UserVo uvo) {
 		System.out.println("create");
+		System.out.println(bavo.toString());
 				
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setInsertUserId(uvo.getName());
@@ -96,10 +97,10 @@ public class Menu25Controller {
 	// PopUp
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/gets")
-	public Map<String, Object> gets(@PathVariable String bankAccountNo) {
+	public Map<String, Object> gets(@ModelAttribute BankAccountVo bavo) {
 		System.out.println("gets");
 		
-		Map<String, Object> result = menu25Service.gets(bankAccountNo);
+		Map<String, Object> result = menu25Service.gets(bavo);
 		result.put("success", true);
 		return result;
 	}

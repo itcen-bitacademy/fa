@@ -40,7 +40,7 @@ public class Menu39Repository {
 		return list;
 	}
 	
-	public Boolean modify(BuildingVo vo) {
+	public Boolean update(BuildingVo vo) {
 		int count = sqlSession.update("menu39.modify", vo);
 		return count == 1;
 	}
