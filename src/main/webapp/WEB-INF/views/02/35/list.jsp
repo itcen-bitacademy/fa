@@ -37,6 +37,10 @@
 									<label class="control-label" for="no">사업자번호</label>
 									<div class="controls">
 										<input type="text" id="no" name="no" style="width: 200px;">
+										<input class="span6" type="hidden" id="preNo" name="preNo">
+										<div id="invalid" style="display:none">
+											중복된 사업자번호 입니다.
+										</div>
 									</div>
 								</div>
 
@@ -271,11 +275,18 @@
 		$(".chosen-select").chosen();
 	});
 	
+	// 체크박스 전체선택
+	$('table th input:checkbox').on('click' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+	
 	// 사업자번호로 조회 select
 	$("#btn_select").click(function(){
-		alert($("#no").val()+'번호로 조회');
-/* 		console.log($("#no").val());
-		var no = $("#no").val(); */
 		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list");
 		document.getElementById('form-customer').submit();
 		
@@ -284,37 +295,54 @@
 	
 	// 삭제 delete 
 	$("#btn_delete").click(function(){
-		alert('삭제');
-		
-		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
+/* 		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 		document.getElementById('form-customer').submit();
         return false;
+         */
+        var checkedArr = [];
+        $("#customer-table input[type=checkbox]:checked").each(function(i) {
+        	checkedArr.push($(this).closest("td").next().text());
+	    });
+        
+        $.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+			type: "post",
+			data: {
+	            checkNoArr: checkedArr
+	        },
+	        success: function(response) {
+	        	location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
+			},
+			error: function(xhr, error) {
+				console.error("error:"+error);
+			}
+		});	
 	});
 	
 	// 수정 update
 	$("#btn_update").click(function(){
-		alert('수정');
 		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
-		document.getElementById('form-customer').submit();
+		checkNo();
         return false;
 	});
 	
 	// 입력 insert
 	$("#btn_insert").click(function(){
-		alert('입력');
 		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
-		document.getElementById('form-customer').submit();
+		checkNo();
         return false;
 	});
 	
 	// 취소 cancel
 	$("#btn_cancel").click(function(){
-		alert('초기화');
 		$("#no").val('');					//사업자번호
+		$("#preNo").val('');				//사업자번호
 		$("#bsname").val('');				//상호
 		$("#ceo").val('');					//대표자
 		$("#corporationNo").val('');		//법인번호
-		$("#address").val('');				//주소
+		$("#zipCode").val('');				//우편번호
+		$("#address").val('');				//도로명주소
+		$("#detailAddress").val('');		//상세주소
 		$("#phone").val('');				//전화번호
 		$("#conditions").val('');			//업태
 		$("#item").val('');					//종목
@@ -339,14 +367,17 @@
 		var tr = $(this);
 		var td = tr.children();
 		
-		var address = td.eq(5).text();
+		var fullAddress = td.eq(5).text();
+		var address = fullAddress.split(')');
+		
 		$("#no").val(td.eq(1).text());					//사업자번호
+		$("#preNo").val(td.eq(1).text());				//사업자번호
 		$("#bsname").val(td.eq(2).text());				//상호
 		$("#ceo").val(td.eq(3).text());					//대표자
 		$("#corporationNo").val(td.eq(4).text());		//법인번호
-		$("#zipCode").val(address.substr(0,5));			//우편번호
-		$("#address").val(address.substr(6, address.indexOf(")")));	//도로명주소
-		$("#detailAddress").val(address.substr(address.indexOf(")")+1, address.length));		//상세주소
+		$("#zipCode").val(fullAddress.substr(0,5));			//우편번호
+		$("#address").val(address[0].substr(6, address[0].length)+')');	//도로명주소
+		$("#detailAddress").val(address[1].substr(0, address[1].length));		//상세주소
 		$("#phone").val(td.eq(6).text());				//전화번호
 		$("#conditions").val(td.eq(7).text());			//업태
 		$("#item").val(td.eq(8).text());				//종목
@@ -362,23 +393,36 @@
 	});
 	
 	// 사업자번호 중복체크
-	$(function(){
+	function checkNo() {
+		if($("#no").val() == $("#preNo").val()) {
+			$("#form-customer").submit();
+			return;
+		}
 		$.ajax({
-            type: 'POST',
-            url: '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/check',
-            data: {
-                "no" : $('#no').val()
-            },
-            success: function(data){
-                if($.trim(data) == 0){
-                    $('#checkMsg').html('<p style="color:blue">사용가능</p>');
-                }
-                else{
-                    $('#checkMsg').html('<p style="color:red">사용불가능</p>');
-                }
-            }
-        });
-	});
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo?no="+$("#no").val(),
+			type: "get",
+			dataType: "json",
+			contentType:"application/json;charset=UTF-8",
+			success: function(response) {
+				if(response.result == "fail") {
+					console.error(response.message);
+					return;
+				}
+				if(response.data == true) {
+					document.getElementById("invalid").style.display="block";
+					$("#no").val("");
+					$("#no").focus();
+					return;
+				} else {
+					$("#form-customer").submit();
+				}
+			},
+			error: function(xhr, error) {
+				console.error("error:"+error);
+			}
+		});	
+		
+	}
 	
 	</script>
 	
