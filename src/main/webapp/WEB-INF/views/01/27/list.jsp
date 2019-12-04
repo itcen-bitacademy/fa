@@ -70,7 +70,7 @@ function execDaumPostcode() {
 			var queryString = $("form[name=input-form]").serialize();
 			if(a == "create") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/create",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -95,7 +95,7 @@ function execDaumPostcode() {
 				 })
 			} else if(a == "read") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/read",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -114,7 +114,7 @@ function execDaumPostcode() {
 				 })
 			} else if(a == "update") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/update",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -136,7 +136,7 @@ function execDaumPostcode() {
 				 })
 			} else if(a == "delete") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/delete",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -424,21 +424,18 @@ function execDaumPostcode() {
 							</div><!-- ./span6 -->
 						</div>
 							<!-- span -->
+						<div class="hr hr-18 dotted"></div>
 						<div class="row-fluid">
-							<div class="span12">
-								<div class="hr hr-18 dotted"></div>
-									<button type="submit" class="btn btn-info btn" 
-										formaction="${pageContext.request.contextPath}/01/27/read" id="btn-read" name="btn-read">조회</button>
-									<button type="submit" class="btn btn-danger btn"
-										formaction="${pageContext.request.contextPath}/01/27/delete" id="btn-delete" name="btn-delete">삭제</button>
-									<button type="submit" class="btn btn-warning btn" 
-										formaction="${pageContext.request.contextPath}/01/27/update" id="btn-update" name="btn-update">수정</button>
-									<button type="submit" class="btn btn-primary btn" id="btn-create" name="btn-create">입력</button>
-									<button type="reset" class="btn btn-default btn">취소</button>
-								<div class="hr hr-18 dotted"></div>
-							</div>	<!-- /.span -->
-						</div>
+							<div class="span8">
+							<button class="btn btn-info btn-small" id="btn-read">조회</button>
+							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
+							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
+							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
+							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
+						</div>	<!-- /.span -->
 						
+						</div>
+						<div class="hr hr-18 dotted"></div>
 						<br/>
 					
 						</form>

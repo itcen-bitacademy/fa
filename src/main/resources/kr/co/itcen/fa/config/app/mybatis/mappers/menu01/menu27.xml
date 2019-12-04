@@ -102,7 +102,7 @@
 	<update id="update" parameterType="1customervo">
 		<![CDATA[
 			update tb_customer
-			   set no = #{no },
+			   set no = concat('A' ,#{no }),
 				   name = #{name },
 				   ceo = #{ceo },
 				   address = #{address },
