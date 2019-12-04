@@ -52,7 +52,7 @@
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
 			var queryString = $("form[name=input-form]").serializeArray();
-			queryString.push({name: 'page', value: ${param.page});
+			queryString.push({name: 'page', value: '${param.page}'});
 			
 			alert(page);
 			if(a == "create") {
