@@ -379,14 +379,13 @@ function execDaumPostcode() {
 										주소:&nbsp;
 									</label>
 									<div class="input-append">
-										<input type="text" id="address" name="address" placeholder="주소" class="col-xs-10 col-sm-5" readonly/>
-										<button type="button" class="addressSearch" onclick="execDaumPostcode()">
-											<i class="icon-search bigger-110">
-											</i>
-											검색
-										</button>
+										<span class="btn btn-small btn-info">
+											<a href="#" onclick="execDaumPostcode()">
+												<i class="icon-search nav-search-icon"></i>
+												<input type="text" id="address" name="address" placeholder="주소" class="col-xs-10 col-sm-5" readonly />
+											</a>
+										</span>
 									</div>
-
 									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
 									<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"/>
 								</div>
