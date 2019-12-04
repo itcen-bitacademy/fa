@@ -440,7 +440,7 @@ function execDaumPostcode() {
 											<th>상호</th>
 											<th>대표자</th>
 											<th>주소</th>
-											<th>업태<th>
+											<th>업태</th>
 											<th>종목</th>
 											<th>관할영업소</th>
 											<th>거래처 전화번호</th>
