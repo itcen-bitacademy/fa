@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu52">
+	
+	<select id="count" resultType="int">
+		<![CDATA[
+		select count(*)
+		from tb_salescustomer
+		]]>
+	</select>
+	
+	<select id="findAllCustomer" parameterType="map" resultType="salescustomervo">
+		<![CDATA[
+		select no, name, ceo, corporation_no as corporationNo, zip_code as zipCode, address, detail_address as detailAddress, 
+			   concat(address, " (", zip_code, ")", " ", detail_address) as addressAll, phone, conditions, item, date_format(open_date, "%Y-%m-%d") as openDate,
+		       jurisdiction_office as jurisdictionOffice, manager_name as managerName, manager_email as managerEmail,
+		       deposit_no as depositNo, case when delete_flag = 'Y' then '삭제' when delete_flag = 'N' then '' end as deleteFlag, 
+		       insert_userid as insertUserid, date_format(insert_day, "%Y-%m-%d %T") as insertDay,
+		       update_userid as updateUserid, date_format(update_day, "%Y-%m-%d %T") as updateDay
+		from tb_salescustomer
+		where 1=1
+		]]>
+		<if test='customer.deleteFlag == "N" '>
+			<![CDATA[
+			and delete_flag = #{customer.deleteFlag }
+			]]>	
+		</if>
+		<if test="customer.item != null and !customer.item.equals('')">
+			<![CDATA[
+			and item = #{customer.item }
+			]]>	
+		</if>
+		<if test="customer.insertDay != null and !customer.insertDay.equals('') ">
+			<![CDATA[
+			and insert_day = #{customer.insertDay }
+			]]>	
+		</if>
+		<if test="customer.managerName != null and !customer.managerName.equals('') ">
+			<![CDATA[
+			and manager_name = #{customer.managerName }
+			]]>	
+		</if>
+		<if test="customer.no != null and !customer.no.equals('') ">
+			<![CDATA[
+			and no >= #{customer.no }
+			]]>	
+		</if>
+		<if test="customer.preNo != null and !customer.preNo.equals('') ">
+			<![CDATA[
+			and no <= #{customer.preNo }
+			]]>	
+		</if>
+		<![CDATA[
+		order by no
+		limit #{pagination.pageIndex }, #{pagination.listSize }
+		]]>
+	</select>
+	
+</mapper>

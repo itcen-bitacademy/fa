@@ -26,6 +26,21 @@
             width: 94%;
             border: 0
         }
+        
+        #item-table tr td div input {
+            padding: 4px 20px 4px 5px;
+            margin: 1px 0;
+            width: 94%;
+            border: 1px solid #aaa;
+            width:100%
+        }
+        
+        #item-table tr td input {
+            padding: 8px;
+            margin: 0;
+            width: 94%;
+            border: 0
+        }
 
         .form-horizontal .control-label {
             text-align: left
@@ -59,9 +74,9 @@
 					            +'</c:forEach>'
 					        	+'</select><td>';
             cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명" value="" readonly></td>';
-            cell4.innerHTML = '<td><input type="text" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()"></td>';
-            cell5.innerHTML = '<td><input type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()"></td>';
-            cell6.innerHTML = '<td><input type="text" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()"></td>';
+            cell4.innerHTML = '<td><input type="text" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()" required></td>';
+            cell5.innerHTML = '<td><input type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()" required></td>';
+            cell6.innerHTML = '<td><input type="text" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()" required></td>';
             document.getElementById("rowCnt").value = cnt;
             
             $(".chosen-select").chosen();
@@ -148,7 +163,7 @@
 	        	alert("매출번호를 입력하세요.");
 	        	return;
 	        }
-	        location.href = "/fa/12/13/"+code;
+	        location.href = "${pageContext.request.contextPath }/12/13/"+code;
 	     }
         
         function checkFlag(){
@@ -163,6 +178,30 @@
             	add_row(); // 조회화면이 아니면 기본행 삽입
             }
         }
+        
+        function deleteData(){
+        	var code = $("#checkSalesNo").val();
+        	if($("#flag").val()=="true"&&code!=""){
+        		location.href = "${pageContext.request.contextPath }/12/13/delete/"+code;
+        	}
+        }
+        
+        function update(){
+        	var code = $("#checkSalesNo").val();
+        	var url = "${pageContext.request.contextPath }/12/13/update/"+code;
+        	if($("#flag").val()=="true"&&code!=""){
+        		$("#insert-form").attr("action",url).submit();
+        	}
+        }
+        
+        function deleteCheck(){
+        	var salesNo = $("#checkSalesNo").val();
+        	if($("#flag").val()=="true"&&salesNo==""){
+        		alert("삭제됐거나 없는 데이터 입니다.");
+        		location.href = "${pageContext.request.contextPath }/12/13";
+        	}
+        }
+        
     </script>
 </head>
 
@@ -181,7 +220,7 @@
                 <!-- /.page-header -->
 
                 <!-- PAGE CONTENT BEGINS -->
-                <form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/12/13">
+                <form class="form-horizontal" id="insert-form" method="post" action="${pageContext.request.contextPath }/12/13">
                     <div class="row-fluid">
                         <div class="span12">
                         
@@ -191,7 +230,7 @@
                                     <label class="control-label" for="cl-total-date-picker">매출일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" autocomplete="off" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].salesDate }"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].salesDate }" required><span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -225,7 +264,7 @@
                                     <label class="control-label" for="cl-total-date-picker">출고일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" autocomplete="off" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].releaseDate }"name="releaseDate"> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].releaseDate }" name="releaseDate" required> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -249,9 +288,10 @@
                                 <div class="control-group">
                                     <label class="control-label" for="salesNo">매출번호</label>
                                     <div class="controls">
-                                        <input type="text" id="salesNo" name="salesNo" value="${saleslist[0].salesNo }"placeholder="매출번호">
+                                    	<input type="hidden" id="checkSalesNo" value="${saleslist[0].salesNo }">
+                                        <input type="text" id="salesNo" name="salesNo" value="${saleslist[0].salesNo }" placeholder="매출번호" required>
                                         <div class="btn-group">
-                                            <button class="btn btn-info btn-small" type="button" onclick="javascript:checkNo();">조회</button>
+                                            <button class="btn btn-info btn-small" type="button" onclick="checkNo();">조회</button>
                                         </div>
                                     </div>
                                 </div>
@@ -297,10 +337,10 @@
                                 <button class="btn btn-success btn-small" type="submit" id="btnSubmit">입력</button>
                             </div>
                             <div class="btn-group">
-                                <button class="btn btn-info btn-small" type="button" id="btnModify">수정</button>
+                                <button class="btn btn-info btn-small" type="button" id="btnModify" onclick="update();">수정</button>
                             </div>
                             <div class="btn-group">
-                                <button class="btn btn-danger btn-small" type="button" id="btnDelete">삭제</button>
+                                <button class="btn btn-danger btn-small" type="button" id="btnDelete" onclick="deleteData();">삭제</button>
                             </div>
                             <div class="btn-group">
                                 <button class="btn btn-small" type="button" onclick="add_row();">행추가</button>
@@ -349,6 +389,8 @@
                             <!-- PAGE CONTENT ENDS -->
                         </div>
                     </div>
+                    <input type="hidden" value="${saleslist[0].insertUserid }" name="insertUserid">
+                    <input type="hidden" value="${saleslist[0].insertDay }" name="insertDay">
                 </form>
                 <!-- /.span -->
 
@@ -382,13 +424,17 @@
             };
             $('.cl-date-picker').datepicker({
                 language: 'ko',
-                "setDate": new Date()
+                setDate: new Date()
             }).next().on(ace.click_event, function() {
                 $(this).prev().focus();
             });
-            
+            $('.cl-date-picker').on('changeDate', function(ev){
+                $(this).datepicker('hide');
+            });
+            $(".cl-date-picker").datepicker( "setDate" , new Date());
             setData.customer(); // 거래처 목록 세팅
             checkFlag(); // 조회 확인 플래그  + 기본행 삽입
+            deleteCheck();
         })
     </script>
 </body>

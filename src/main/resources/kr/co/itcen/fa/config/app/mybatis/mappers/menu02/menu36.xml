@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu36">
 	<!-- Team -->
-	<select id="getList" resultType="purchasecustomer35vo">
+	<select id="getList" parameterType="purchasecustomer35vo" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
 			      no, 
@@ -23,7 +23,52 @@
 				  update_userid as updateUserid, 
 				  update_day as updateDay, 
 				  delete_flag as deleteFlag 
-			 from tb_purchasecustomer;
+			 from tb_purchasecustomer
+			where delete_flag = #{deleteFlag}
+		]]>
+		
+		<if test="item!=null and !item.equals('')">
+			<![CDATA[
+				  and item like CONCAT('%',#{item},'%')
+			]]>
+		</if>	
+		<if test="insertDay!=null and !insertDay.equals('')">
+			<![CDATA[
+				  and date_format(insert_day, '%Y-%m-%d') = #{insertDay}
+			]]>
+		</if>	
+		<if test="managerName!=null and !managerName.equals('')">
+			<![CDATA[
+				  and manager_name like CONCAT('%',#{managerName},'%') 
+			]]>
+		</if> 
+		    limit #{pagination.pageIndex }, #{pagination.listSize };
+	</select>
+	
+	<select id="selectAllCount" parameterType="purchasecustomer35vo" resultType="int">
+		<![CDATA[
+			select	count(*)
+			  from	tb_purchasecustomer
+			  where delete_flag = #{deleteFlag}
+		]]>
+		<if test="item!=null and !item.equals('')">
+			<![CDATA[
+				  and item like CONCAT('%',#{item},'%')
+			]]>
+		</if>	
+		<if test="insertDay!=null and !insertDay.equals('')">
+			<![CDATA[
+				  and date_format(insert_day, '%Y-%m-%d') = #{insertDay}
+			]]>
+		</if>	
+		<if test="managerName!=null and !managerName.equals('')">
+			<![CDATA[
+				  and manager_name like CONCAT('%',#{managerName},'%')
+			]]>
+		</if> 
+		<![CDATA[
+			;
 		]]>
 	</select>
+
 </mapper>

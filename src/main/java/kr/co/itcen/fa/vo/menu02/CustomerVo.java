@@ -2,6 +2,8 @@ package kr.co.itcen.fa.vo.menu02;
 
 import org.apache.ibatis.type.Alias;
 
+import kr.co.itcen.fa.util.PaginationUtil;
+
 /**
  * 
  * @author 이지은 
@@ -32,6 +34,14 @@ public class CustomerVo {
 	private String updateUserid;			//수정자
 	private String updateDay;				//수정일자
 	private String deleteFlag;				//삭제 Flag
+	
+	// 페이징
+	private int page = 1;
+	private PaginationUtil pagination;
+	
+	// 조건검색용
+	private String firstNo;						//첫번째 사업자등록번호
+	private String secondNo;					//두번째 사업자등록번호
 	
 	public String getNo() {
 		return no;
@@ -159,6 +169,35 @@ public class CustomerVo {
 	public void setDeleteFlag(String deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
+	
+	// 페이징
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public PaginationUtil getPagination() {
+		return pagination;
+	}
+	public void setPagination(PaginationUtil pagination) {
+		this.pagination = pagination;
+	}
+	
+	// 검색용 사업자번호
+	public String getFirstNo() {
+		return firstNo;
+	}
+	public void setFirstNo(String firstNo) {
+		this.firstNo = firstNo;
+	}
+	public String getSecondNo() {
+		return secondNo;
+	}
+	public void setSecondNo(String secondNo) {
+		this.secondNo = secondNo;
+	}
+	
 	
 	@Override
 	public String toString() {

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu02.Menu35Service;
 import kr.co.itcen.fa.vo.UserVo;
@@ -62,8 +64,11 @@ public class Menu35Controller {
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
-	public String delete(List<String> deleteno) {
+	public String delete(@RequestParam(value="checkNoArr[]") List<String> checkNoArr) {
+		System.out.println(checkNoArr);
+		menu35Service.delete(checkNoArr);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
 	}
@@ -75,5 +80,15 @@ public class Menu35Controller {
 		model.addAttribute("customerVo", customerVo);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	// 사업자번호 중복체크
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/checkNo")
+	public JSONResult checkNo(@RequestParam(value = "no", required = true, defaultValue = "") String no) {
+		Boolean exist = menu35Service.existCustomer(no);
+		
+		System.out.println(exist);
+		return JSONResult.success(exist);
 	}
 }

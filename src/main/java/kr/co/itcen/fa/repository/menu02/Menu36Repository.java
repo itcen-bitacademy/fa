@@ -28,8 +28,17 @@ public class Menu36Repository {
 		sqlSession.insert("menu36.save", testVo);
 	}
 	
+	public int selectAllCount(CustomerVo customerVo) {
+		return sqlSession.selectOne("menu36.selectAllCount", customerVo);
+	}
+	
 	public List<CustomerVo> getList(){
 		List<CustomerVo> result = sqlSession.selectList("menu36.getList");
+		return result;
+	}
+	
+	public List<CustomerVo> getList(CustomerVo customerVo){
+		List<CustomerVo> result = sqlSession.selectList("menu36.getList", customerVo);
 		return result;
 	}
 

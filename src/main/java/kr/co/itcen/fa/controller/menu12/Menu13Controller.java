@@ -24,6 +24,7 @@ import kr.co.itcen.fa.vo.menu12.SalesVo;
  * 매출관리
  *
  */
+
 @Auth
 @Controller
 @RequestMapping("/" + Menu13Controller.MAINMENU)
@@ -89,5 +90,45 @@ public class Menu13Controller {
 		model.addAttribute("saleslist", sales);	
 		
 		return MAINMENU + "/" + SUBMENU + "/index";
+	}
+	
+	@RequestMapping(value= {"/"+ SUBMENU + "/delete/{salesNo}"}, method=RequestMethod.GET)
+	public String deleteData(@PathVariable("salesNo")String salesNo) {
+		menu13Service.deleteData(salesNo);
+		
+		return MAINMENU + "/" + SUBMENU + "/index"; 
+	}
+	
+	@RequestMapping(value= {"/"+ SUBMENU + "/update/{pathSalesNo}"}, method=RequestMethod.POST)
+	public String update(@SessionAttribute("authUser") UserVo authUser, 
+						 @PathVariable("pathSalesNo")String pathSalesNo, SalesVo salesVo, 
+						 int quantity[], String itemCode[], String itemName[], 
+						 Long supplyValue[], Long taxValue[], int number[]) {
+		
+		salesVo.setUpdateUserid(authUser.getId());
+		
+		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
+		
+		System.out.println(salesVo);
+		
+		// 배열로 넘어온 테이블 데이터 리스트에 담기
+		for(int i=0; i<itemCode.length; i++) {
+			SalesVo vo = new SalesVo(salesVo);
+			vo.setQuantity(quantity[i]);
+			vo.setItemCode(itemCode[i]);
+			vo.setItemName(itemName[i]);
+			vo.setSupplyValue(supplyValue[i]);
+			vo.setTaxValue(taxValue[i]);
+			vo.setNumber(number[i]);
+			vo.setSellPrice(supplyValue[i]+taxValue[i]);
+			list.add(vo);
+		}
+		System.out.println(list);
+		if(salesVo.getSalesNo() != pathSalesNo) {
+			menu13Service.updateDelete(pathSalesNo);
+			menu13Service.updateInsert(list);
+		}
+		
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/" + pathSalesNo; 
 	}
 }

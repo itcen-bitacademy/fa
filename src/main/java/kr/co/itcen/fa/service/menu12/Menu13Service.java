@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.service.menu12;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,16 @@ public class Menu13Service {
 	}
 	public List<SalesVo> getSalesNo(String salesNo) {
 		return menu13Repository.getSalesNo(salesNo);
+	}
+	public void deleteData(String salesNo) {
+		menu13Repository.deleteData(salesNo);
+	}
+	public void updateDelete(String pathSalesNo) {
+		menu13Repository.updateDelete(pathSalesNo);		
+	}
+	public void updateInsert(ArrayList<SalesVo> list) {
+		menu13Repository.updateInsert(list);
+		
 	}
 
 }

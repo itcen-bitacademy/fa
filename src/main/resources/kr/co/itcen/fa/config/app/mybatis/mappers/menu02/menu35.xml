@@ -49,8 +49,41 @@
 				  update_day as updateDay, 
 				  delete_flag as deleteFlag 
 			 from tb_purchasecustomer
-			where no like CONCAT('%',#{no},'%');
+			where no like CONCAT('%',#{no},'%')
+		 order by no;
 		]]>
+	</select>
+	
+	<select id="afterDelete" parameterType="list" resultType="purchasecustomer35vo">
+		<![CDATA[
+		     select 
+			      no, 
+			      name, 
+			      ceo, 
+			      corporation_no as corporationNo, 
+			      concat(zip_code, " ", address, " ", detail_address) as address, 
+			      phone, 
+			      conditions, 
+			      item, 
+			      date_format(open_date, '%Y-%m-%d') as openDate, 
+			      jurisdiction_office as jurisdictionOffice, 
+			      manager_name as managerName, 
+			      manager_email as managerEmail, 
+			      deposit_no as depositNo, 
+				  insert_userid as insertUserid, 
+				  insert_day as insertDay, 
+				  update_userid as updateUserid, 
+				  update_day as updateDay, 
+				  delete_flag as deleteFlag 
+			 from tb_purchasecustomer
+			where no in
+		]]>
+		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >
+	        #{item}
+	  	</foreach>
+	  	<![CDATA[
+	  	 order by no
+	  	]]>
 	</select>
 	
 	<insert id="insert" parameterType="purchasecustomer35vo">
@@ -106,10 +139,21 @@
 		]]>
 	</update>
 	
-	<delete id="delete" parameterType="String">
+	<select id="findByNo" parameterType="string" resultType="purchasecustomer35vo">
+		select no
+		from tb_purchasecustomer
+		where no = #{_parameter }
+	</select>
+	
+	<update id="delete" parameterType="list">
 		<![CDATA[
-			delete from board where no = #{no }
+			update tb_purchasecustomer
+			set delete_flag = 'Y'
+			where no in
 		]]>
-	</delete>
+		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >
+	        #{item}
+	  	</foreach>
+	</update>
 	
 </mapper>
