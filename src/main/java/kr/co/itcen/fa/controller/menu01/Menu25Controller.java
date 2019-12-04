@@ -96,10 +96,10 @@ public class Menu25Controller {
 	// PopUp
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/gets")
-	public Map<String, Object> gets(@PathVariable("bankAccountNo") String bankAccountNo) {
+	public Map<String, Object> gets(@ModelAttribute BankAccountVo bavo) {
 		System.out.println("gets");
 		
-		Map<String, Object> result = menu25Service.gets(bankAccountNo);
+		Map<String, Object> result = menu25Service.gets(bavo);
 		result.put("success", true);
 		return result;
 	}

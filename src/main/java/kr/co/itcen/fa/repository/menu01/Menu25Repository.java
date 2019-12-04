@@ -82,10 +82,10 @@ public class Menu25Repository {
 		sqlSession.delete("menu25.deleteAll", bavo);
 	}
 
-	public Map<String, Object> gets(String bankAccountNo) {
+	public Map<String, Object> gets(BankAccountVo bavo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// TODO Auto-generated method stub		
-		map.put("bankAccountList", sqlSession.selectList("menu25.gets", bankAccountNo));
+		map.put("bankAccountList", sqlSession.selectList("menu25.gets", bavo));
 		return map;
 	}
 }
