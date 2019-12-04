@@ -476,9 +476,9 @@ function execDaumPostcode() {
 													<td>${vo.phone }</td>
 													<td>${vo.managerName }</td>
 													<td>${vo.managerEmail }</td>
-													<td></td>
+													<td></td><!-- 은행명 -->
 													<td>${vo.depositNo }</td>
-													<td></td>
+													<td></td><!-- 예금주 -->
 													<td>${vo.insertDay }</td>
 													<td>${vo.insertUserid }</td>
 													<td>${vo.updateDay }</td>
