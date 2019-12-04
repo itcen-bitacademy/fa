@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu45Service;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 
 /**
  * 
@@ -24,14 +28,13 @@ public class Menu45Controller {
 	@Autowired
 	private Menu45Service menu45Service;
 	
-	                                   //   /11/45, /11/45/list
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
-		menu45Service.test();
-		/*
-		 *    JSP
-		 *    11/45/list.jsp
-		 */
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method=RequestMethod.GET)
+	public String list(
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "code", required = false, defaultValue = "") String code, Model model) {
+		System.out.println(code);
+		DataResult<BankVo> dataResult = menu45Service.list(code, page);
+		model.addAttribute("dataResult", dataResult);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

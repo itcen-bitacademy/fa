@@ -10,170 +10,195 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
-<c:import url="/WEB-INF/views/common/navbar.jsp" />
-<div class="main-container container-fluid">
-	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
-	<div class="main-content">
-		<div class="page-content">
-		
-		
-		
-		
-			<div class="page-header position-relative">
-				<h1 class="pull-left">은행코드 현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
-			</div><!-- /.page-header -->
-		
+	<c:import url="/WEB-INF/views/common/navbar.jsp" />
+	<div class="main-container container-fluid">
+		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-header position-relative">
+					<h1 class="pull-left">은행코드 현황조회</h1>
+				</div>
+				<!-- /.page-header -->
 
-					<div class="row-fluid">
-						<div class="span4">
-							<form class="form-inline">
-								<div class="control-group">
-									<label class="control-label" for="form-field-codename">은행코드 / 은행명</label>
-									<div class="controls">
-			
-									<input class="span2" type="text" id="form-field-code" name="code" placeholder="은행코드"/>
-			
-									<button onclick="return false;" class="btn btn-blue btn-small">
-										<i class="icon-search icon-on-medium"></i>
-									</button>
-			
-									<input class="span6" type="text" id="form-field-name" name="name" placeholder="은행명"/>
-
-									<button onclick="return false;" class="btn btn-blue btn-small">
-										조회
-									</button>
-									
-									</div>
+				<div class="row-fluid">
+					<div class="span4">
+						<form class="form-inline">
+							<div class="control-group">
+								<label class="control-label" for="form-field-codename">은행명</label>
+								<div class="controls">
+									<input class="span6" type="text" id="input-bankname"
+										name="name" placeholder="은행명" />
+									<button id="btn-send-bankname" class="btn btn-blue btn-small">조회</button>
 								</div>
-							</form>
-						</div>
-						
+							</div>
+						</form>
+					</div>
+
 					<div class="span4">
 						<form class="form-inline">
 							<div class="control-group">
 								<label class="control-label" for="form-field-codename">지점명</label>
 								<div class="controls">
 									<input class="span5" type="text" id="form-field-store" name="store" placeholder="지점명"/>
-									
-									<button onclick="return false;" class="btn btn-blue btn-small">
-										조회
-									</button>
-									
+									<button onclick="return false;" class="btn btn-blue btn-small">조회</button>
 								</div>
 							</div>
 						</form>
 					</div>
-						
-				<div class="span4">
-					<form class="form-inline">
-						<div class="control-group">
-							<label class="control-label" for="form-field-codename">거래시작일</label>
+
+					<div class="span4">
+						<form class="form-inline">
+							<div class="control-group">
+								<label class="control-label" for="form-field-codename">거래시작일</label>
 								<div class="controls">
 									<div class="row-fluid input-append">
-									<input class="span5 date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" />
-										<span class="add-on">
-											<i class="icon-calendar"></i>
-										</span>
-										<button onclick="return false;" class="btn btn-blue btn-small">
-											조회
-										</button>
+										<input class="span5 date-picker" id="id-date-picker-1"
+											type="text" data-date-format="yyyy-mm-dd" /> <span
+											class="add-on"><i class="icon-calendar"></i></span>
+										<button onclick="return false;" class="btn btn-blue btn-small">조회</button>
 									</div>
 								</div>
 							</div>
-						</form>	
-					</div>	
-				<br>
-					<div class="pull-right">
-						<label class="pos-rel"></label>
-						<input type="checkbox"/>
-							<span>삭제포함</span>
-						</div>	
+						</form>
 					</div>
-					
-						
+					<br>
+					<div class="pull-right">
+						<label class="pos-rel"></label> <input type="checkbox" /> <span>삭제포함</span>
+					</div>
+				</div>
+
 				<!-- PAGE CONTENT BEGINS -->
-					<div class="row-fluid">
-						<div class="span12">
-							<br>
-							<table id="simple-table" class="table  table-bordered table-hover">
+				<div class="row-fluid">
+					<div class="span12">
+						<br>
+						<table id="simple-table" class="table  table-bordered table-hover">
                           <thead>
                               <tr>
-                                 <th class="center">
-                                    <label class="pos-rel">
-                                     <input type="checkbox" class="ace" />
-                                             <span class="lbl"></span>
-                                          </label>
-                                       </th>
-                                       <th class="center">은행코드</th>
-                                       <th class="center">은행명</th>
-                                       <th class="center">지점명</th>
-                                       <th class="center">거래시작일</th>
-                                       <th class="center">전화번호</th>
-                                       <th class="center">은행주소</th>
-                                       <th class="center">금융권종류</th>
-                                       <th class="center">담당자</th>
-                                       <th class="center">담당자전화번호</th>
-                                       <th class="center">담당자이메일</th>
+                                  <th class="center">은행코드</th>
+                                  <th class="center">은행명</th>
+                                  <th class="center">지점명</th>
+                                  <th class="center">거래시작일</th>
+                                  <th class="center">전화번호</th>
+                                  <th class="center">FAX</th>
+                                  <th class="center">우편번호</th>
+                                  <th class="center">은행주소</th>
+                                  <th class="center">담당자</th>
+                                  <th class="center">담당자전화번호</th>
+                                  <th class="center">담당자이메일</th>
                                     </tr>
                                  </thead>
-
                                  <tbody>
+                                 	<c:forEach items="${dataResult.datas }" var="bankvo">
                                     <tr>
-                                       <td class="center">
-                                          <label class="pos-rel">
-                                             <input type="checkbox" class="ace" />
-                                             <span class="lbl"></span>
-                                          </label>
-                                       </td>
-                                       <td class="center">0010100</td>
-                                       <td class="center">한국은행</td>
-                                       <td class="center">기획협력국</td>
-                                       <td class="center">2019-10-29</td>
-                                       <td class="center">02-759-4114</td>
-                                       <td class="center">서울특별시 중구 남대문로 39</td>
-                                       <td class="center">제1금융</td>
-                                       <td class="center">배준석</td>
-                                       <td class="center">02-759-4041</td>
-                                       <td class="center">bokdplp@bok.or.kr</td>
+                                       <td class="center">${bankvo.code }</td>
+                                       <td class="center">${bankvo.name }</td>
+                                       <td class="center">${bankvo.store }</td>
+                                       <td class="center">${bankvo.dealDate }</td>
+                                       <td class="center">${bankvo.phone }</td>
+                                       <td class="center">${bankvo.fax }</td>
+                                       <td class="center">${bankvo.post }</td>
+                                       <td class="center">${bankvo.address }</td>
+                                       <td class="center">${bankvo.mgr }</td>
+                                       <td class="center">${bankvo.mgrPhone }</td>
+                                       <td class="center">${bankvo.mgrEmail }</td>
                                     </tr>
+                                    </c:forEach>
                                  </tbody>
                               </table>
-							
-							<div class="pagination">
-								<ul>
-									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-									<li class="active"><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-								</ul>
-							</div>
-										
-						</div><!-- /span -->
-					</div><!-- /row -->
-					<!-- PAGE CONTENT ENDS -->
-					
-			</div><!-- /.row-fluid -->
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- PAGE CONTENT ENDS -->
+			</div><!-- /.page-content -->
 			
-			
-		</div><!-- /.page-content -->
-	</div><!-- /.main-content -->
-</div><!-- /.main-container -->
+			<div class="pagination">
+				<ul>
+				<c:choose>
+					<c:when test="${dataResult.pagination.prev }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+						<i class="icon-double-angle-left"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+					<c:choose>
+						<c:when test="${pg eq dataResult.pagination.page }">
+							<li class="active">
+								<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
+				</ul>
+			</div>
+		</div><!-- /.main-content -->
+	</div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 <script>
-$(function(){
-	$(".chosen-select").chosen(); 
-	$('.date-picker').datepicker().next().on(ace.click_event, function(){
-		$(this).prev().focus();
+	$(function() {
+		$(".chosen-select").chosen();
+		$('.date-picker').datepicker().next().on(ace.click_event, function() {
+			$(this).prev().focus();
+		});
+
+		// 은행명으로 검색 : 은행목록 리스트로 가져오기
+		$("#btn-send-bankname").click(function() {
+							$("#tbody-banklist").find("tr").remove();
+
+							var banknameVal = $("#input-bankname").val();
+							console.log(banknameVal);
+							// ajax 통신
+							$.ajax({
+										url : "${pageContext.request.contextPath }/api/menu45/get-bankinfo-list?banknameVal=" + banknameVal,
+										contentType : "application/json; charset=utf-8",
+										type : "get",
+										dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
+										data : "",
+										statusCode : {
+											404 : function() {
+												alert("page not found");
+											}
+										},
+										success : function(data) {
+											$("#input-bankname").val('');
+											$.each(data, function(index, item) {
+																$("#tbody-bankList").append("<tr>"
+																						+ "<td class='center'>"+ item.name + "</td>"
+																						+ "<td class='center'>"+ item.store + "</td>"
+																						+ "<td class='center'>"+ item.dealDate + "</td>"
+																						+ "<td class='center'>" + item.phone + "</td>"
+																						+ "<td class='center'>" + item.fax + "</td>"
+																						+ "<td class='center'>" + item.post + "</td>"
+																						+ "<td class='center'>" + item.address + "</td>"
+																						+ "<td class='center'>" + item.mgr + "</td>"
+																						+ "<td class='center'>" + item.mgrPhone + "</td>"
+																						+ "<td class='center'>" + item.mgrEmail + "</td>"
+																						+ "</tr>");
+															})
+										},
+										error : function(xhr, error) {
+											console.error("error : " + error);
+										}
+									});
+						});
 	});
-});
 </script>
 </body>
 </html>
