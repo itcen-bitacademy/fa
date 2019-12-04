@@ -135,7 +135,7 @@
 	<delete id = "deleteAll" parameterType="1customervo">
 		<![CDATA[
 			delete from tb_customer
-			 where deposit_no = concat('A', #{no})
+			 where no = concat('A', #{no})
 			   and delete_flag = "Y";
 		]]>
 	</delete>
