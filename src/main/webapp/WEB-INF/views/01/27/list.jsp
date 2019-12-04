@@ -186,6 +186,7 @@ function execDaumPostcode() {
 		        "<td>" + customerList[customer].phone + "</td>" +
 		        "<td>" + customerList[customer].managerName + "</td>" +
 		        "<td>" + customerList[customer].managerEmail + "</td>" +
+		        "<td>" + customerList[customer].bankCode + "</td>" +
 		        "<td>" + customerList[customer].bankName + "</td>" +
 		        "<td>" + customerList[customer].depositNo + "</td>" +
 		        "<td>" + customerList[customer].depositHost + "</td>" +
