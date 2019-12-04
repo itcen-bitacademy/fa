@@ -39,8 +39,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">대분류코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="전체">
-													<option data-placeholder="전체"></option>
+											<select class="chosen-select" id="form-field-section" name="sectionNo">
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
@@ -220,10 +219,10 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small" id="insert"
-													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">등록</button>
-												<button class="btn btn-warning btn-small" id="modify"
-													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/modify">수정</button>
+												<button class="btn btn-primary btn-small" id="add"
+													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">등록</button>
+												<button class="btn btn-warning btn-small" id="update"
+													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 												<button class="btn btn-info btn-small" id="search" 
