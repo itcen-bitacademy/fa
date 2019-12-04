@@ -101,14 +101,12 @@
 	<insert id="insertVoucher2" parameterType="1vouchervo">
 		<![CDATA[
 		insert
-		  into tb_voucher_manager(no,
-		  			   reg_date,
+		  into tb_voucher_manager(reg_date,
 		  			   insert_userid,
 		  			   insert_day,
 		  			   use_yn
 		  )
-		values (null,
-				#{regDate },
+		values (#{regDate },
 		  		#{insertUserid },
 		  		now(),
 		  		true
@@ -221,10 +219,37 @@
             on c.card_no = m.card_no
 	 left join tb_bank_account ba
             on ba.deposit_no = m.deposit_no
-      order by v.no asc,
-               i.amount_flag asc
+      order by v.no desc,
+               i.amount_flag
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
+	
+	<!-- delete 1팀 -->
+	<update id="deleteVoucher2" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_manager
+		set use_yn='n'
+		where no = #{no };
+	]]>
+	</update>
+	
+	<!-- delete 1팀 -->
+	<update id="deleteItem2" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_item
+		set use_yn='n'
+		where no = #{no };
+	]]>
+	</update>
+	
+	<!-- delete 1팀 -->
+	<update id="deleteMapping2" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_system_mapping
+		set use_yn='n'
+		where no = #{no };
+	]]>
+	</update>
 	
 </mapper>

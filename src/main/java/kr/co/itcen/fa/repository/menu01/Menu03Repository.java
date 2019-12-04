@@ -1,6 +1,5 @@
 package kr.co.itcen.fa.repository.menu01;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,15 +50,11 @@ public class Menu03Repository {
 	}
 
 	// 전표생성 (1팀)
-	public Map<String, Object> createVoucher(VoucherVo voucherVo) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public void createVoucher(VoucherVo voucherVo) {
+		sqlSession.insert("menu03.insertVoucher2", voucherVo);
+		sqlSession.insert("menu03.insertItem2", voucherVo);
+		sqlSession.insert("menu03.insertMapping2", voucherVo);
 		
-		map.put("voucherVo1", sqlSession.insert("menu03.insertVoucher2", voucherVo));
-		map.put("voucherVo2", sqlSession.insert("menu03.insertItem2", voucherVo));
-		map.put("voucherVo3", sqlSession.insert("menu03.insertMapping2", voucherVo));
-		map.put("voucherLength", sqlSession.selectOne("menu03.selectAllVoucherCount"));
-		
-		return map;
 	}
 	
 	// 전표 전체 갯수 조회
@@ -73,6 +68,14 @@ public class Menu03Repository {
 		map.put("paginationUtil", paginationUtil);
 		List<VoucherVo> list = sqlSession.selectList("menu03.selectAllVoucher", map);
 		return list;
+	}
+	
+	// 전표 1팀 삭제
+	public Boolean deleteVoucher(VoucherVo voucherVo) {
+		int count = sqlSession.update("menu03.deleteVoucher2", voucherVo);
+		count += sqlSession.update("menu03.deleteItem2", voucherVo);
+		count += sqlSession.update("menu03.deleteMapping2", voucherVo);
+		return count == 3;
 	}
 	
 }

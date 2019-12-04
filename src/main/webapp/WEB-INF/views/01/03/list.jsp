@@ -141,10 +141,10 @@
 						<button class="btn btn-primary" type="submit" id="btn-create" name="btn-create"
 							formaction="${pageContext.request.contextPath }/01/03/add">입 력</button>
 						&nbsp; &nbsp; &nbsp;
-						<button class="btn btn-warning" id="btn-update" name="btn-update"
+						<button class="btn btn-warning" type="submit" id="btn-update" name="btn-update"
 							formaction="${pageContext.request.contextPath }/01/03/update">수 정</button>
 						&nbsp; &nbsp; &nbsp;
-						<button class="btn btn-danger" id="btn-delete" name="btn-delete"
+						<button class="btn btn-danger" type="submit" id="btn-delete" name="btn-delete"
 							formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 						&nbsp; &nbsp; &nbsp;
 						<button class="btn btn-default" type="reset">취 소</button>
@@ -178,11 +178,14 @@
 								<th>계좌번호</th>
 								<th>소유자</th>
 								<th>사용목적</th>
+								<th>관리팀</th>
 							</tr>
 						</thead>
 						
-						<tbody id="origin_voucher_list">
+						<tbody id="voucher_list">
 							<c:forEach items='${dataResult.datas }' var='voucherVo' varStatus='status'>
+								<%-- <c:if test="${voucherVo.useYn != 'n'}"> --%>
+
 								<tr>
 									<td>${voucherVo.regDate }</td>
 									<td id="voucherNo" name="voucherNo">${voucherVo.no }</td>
@@ -232,7 +235,9 @@
 								        </c:otherwise>
 								    </c:choose>
 									<td>${voucherVo.voucherUse }</td>
+									<td id="insertTeam">${voucherVo.insertTeam }</td>
 								</tr>
+								<%-- </c:if> --%>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -289,7 +294,7 @@ $(function(){
 	});
 	
 	// 전표 추가 & 리스트
-	$(document.body).delegate('#btn-create', 'click', function() {	
+	$('#btn-create').click(function(){
 		var regDate = $('#regDate').val();
 		var accountNo = $('#accountNo').val();
 		var accountName = $('#accountName').val();
@@ -330,47 +335,45 @@ $(function(){
 					console.error(response.message);
 					return;
 				}
-				removeTable();
-				
-				var voucherVo1 = response.voucherVo1;
-				var voucherVo2 = response.voucherVo2;
-				var voucherVo3 = response.voucherVo3;
-				var voucherLength = response.voucherLength;
+				// 전표 입력시 list로 이동
+				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
 				
 				
-				var $newTbody = $("<tbody class = 'new_voucher_list'>");
-				$("#simple-table-1").append($newTbody);
+				/* console.log(response);
+				let dataResult = response.datas;
 				
-				
-				for(var i in voucherVo2) {
+				$("#voucher_list").empty(); // 태그는 남기고 내용 지우기
+				console.log(dataResult);
+				for(var i in dataResult) {
 					var a = "";
-					if(voucherVo2[i].amountFlag == 'd') {
+					
+					console.log("temp : " + dataResult[i]);
+					
+					if(dataResult[i].amountFlag == 'd') {
 						a = "차변"
 					}
-					if(voucherVo2[i].amountFlag == 'c') {
+					if(dataResult[i].amountFlag == 'c') {
 						a = "대변"
 					}
 					
 					var b = "";
 					var c = "";
-					if(voucherVo2[i].amountFlag == 'd') {
-						b = voucherVo2[i].amount;
+					if(dataResult[i].amountFlag == 'd') {
+						b = dataResult[i].amount;
 						c = "";
 					}
-					if(voucherVo2[i].amountFlag == 'c') {
+					if(dataResult[i].amountFlag == 'c') {
 						b = "";
-						c = voucherVo2[i].amount;
+						c = dataResult[i].amount;
 					}
-				}
 				
-				for(var i in voucherVo3) {
 					var d = "";
 					var e = "";
-					if(voucherVo3[i].manageNo != null) {
+					if(dataResult[i].manageNo != null) {
 						d = "세금계산서";
-						e = voucherVo3[i].manageNo;
+						e = dataResult[i].manageNo;
 					}
-					if(voucherVo3[i].manageNo == null) {
+					if(dataResult[i].manageNo == null) {
 						d = "";
 						e = "";
 					}
@@ -378,37 +381,50 @@ $(function(){
 					var f = "";
 					var g = "";
 					var h = "";
-					if(voucherVo3[i].cardNo != null) {
-						f = voucherVo3[i].cardNo;
+					if(dataResult[i].cardNo != null) {
+						f = dataResult[i].cardNo;
 						g = "";
-						h = voucherVo3[i].cardUser;
+						h = dataResult[i].cardUser;
 					}
-					if(voucherVo3[i].depositNo != null) {
+					if(dataResult[i].depositNo != null) {
 						f = "";
-						g = voucherVo3[i].depositNo;
-						h = voucherVo3[i].depositHost;
+						g = dataResult[i].depositNo;
+						h = dataResult[i].depositHost;
+					}
+					
+					var j = "";
+					var k = "";
+					if(dataResult[i].customerNo != null) {
+						j = dataResult[i].customerNo;
+						k = dataResult[i].customerName;
+					}
+					
+					var l = dataResult[i].bankCode;
+					var m = dataResult[i].bankName;
+					if(dataResult[i].bankCode == null) {
+						l = "";
+						m = "";
 					}
 				
-				for(var i = 0; i < voucherLength; i++) {
-					$newTbody.append(
+					$('#voucher_list').append(
 						"<tr>" +
-						"<td>" + voucherVo1[i].regDate + "</td>" + 									// 일자
-				        "<td>" + voucherVo1[i].no + "</td>" + 									// 전표번호
+						"<td>" + dataResult[i].regDate + "</td>" + 										// 일자
+				        "<td>" + dataResult[i].no + "</td>" + 											// 전표번호
 				        "<td>" + a + "</td>" +						  									// 차대구분
-				        "<td>" + voucherVo2[i].accountNo + "</td>" + 									// 계정코드
-				        "<td>" + voucherVo2[i].accountName + "</td>" + 								// 계정명
+				        "<td>" + dataResult[i].accountNo + "</td>" + 									// 계정코드
+				        "<td>" + dataResult[i].accountName + "</td>" + 									// 계정명
 				        "<td>" + b + "</td>" +															// 차변
 				        "<td>" + c + "</td>" +															// 대변
-				        "<td>" + voucherVo3[i].customerNo + "</td>" +									// 거래처코드
-				        "<td>" + voucherVo3[i].customerName + "</td>" +								// 거래처명
+				        "<td>" + j + "</td>" +															// 거래처코드
+				        "<td>" + k + "</td>" +															// 거래처명
 				        "<td>" + d + "</td>" +															// 증빙종류
 				        "<td>" + e + "</td>" +															// 증빙코드
-				        "<td>" + voucherVo3[i].bankCode + "</td>" +									// 은행코드
-				        "<td>" + voucherVo3[i].bankName + "</td>" +									// 은행명
+				        "<td>" + l + "</td>" +															// 은행코드
+				        "<td>" + m + "</td>" +															// 은행명
 				        "<td>" + f + "</td>" +															// 카드번호
 				        "<td>" + g + "</td>" +															// 계좌번호
 				        "<td>" + h + "</td>" +															// 소유주
-				        "<td>" + voucherVo3[i].voucherUse + "</td>" +									// 사용목적
+				        "<td>" + dataResult[i].voucherUse + "</td>" +									// 사용목적
 				        "</tr>");
 					
 					$('#regDate').val();
@@ -425,7 +441,7 @@ $(function(){
 					$('#cardName').val();
 					$('#depositNo').val();
 					$('#depositHost').val();
-					$('#voucherUse').val();
+					$('#voucherUse').val(); */
 					
 					/* 
 					.append($('<tr/>').append($('<td/>').text(voucherList[i].regDate))
@@ -443,19 +459,12 @@ $(function(){
 							.append($('<td/>').text(g)) // 계좌번호
 							.append($('<td/>').text(h)) // 소유주
 							.append($('<td/>').text("")) // 담당자
-							.append($('<td/>').text(voucherList[i].voucherUse))) // 사용목적 */
+							.append($('<td/>').text(voucherList[i].voucherUse))) // 사용목적 
 				}
-				$newTbody.append("</tbody>");
-			}	
+				*/
 			}
 		}); // ajax
 	}); // .click
-	
-	function removeTable() {
-		$("#origin_voucher_list").remove()
-		
-		$("#new_voucher_list").remove()
-	}
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 		var tr = $(this);
@@ -495,11 +504,23 @@ $(function(){
 		$("input[name='bankPhoneCall']").prop("readonly", true);  
 	});
 	
-	// 전표삭제
-	$(document).on('click', '#btn-delete', (function(event){
-		var insertTeam = "${authUser.id }";
-		var voucherNo = $('#')
-	}));
+	/* // 전표삭제
+	$('#btn-delete').click(function() {
+		$.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete", 
+			type: "post",
+			dataType: "json",
+			data: queryString,
+			success: function(response){
+				if(response.result == "fail") {
+					console.error(response.message);
+					return;
+				}
+				// 전표 입력시 list로 이동
+				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
+			}
+		});
+	}); */
 }); // $(function
 
 </script>

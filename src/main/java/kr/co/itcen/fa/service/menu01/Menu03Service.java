@@ -1,8 +1,6 @@
 package kr.co.itcen.fa.service.menu01;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +12,6 @@ import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
-import kr.co.itcen.fa.vo.menu01.Menu03SearchForm;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
 /**
@@ -68,13 +65,18 @@ public class Menu03Service {
 		}
 		
 		// 전표생성 (1팀)
-		public Map<String, Object> createVoucher(VoucherVo voucherVo, @AuthUser UserVo userVo) {
+		public void createVoucher(VoucherVo voucherVo, @AuthUser UserVo userVo) {
+			System.out.println("a : " + userVo.getTeamName());
+			System.out.println("b : " + userVo.getId());
 			voucherVo.setInsertTeam(userVo.getTeamName());
 			voucherVo.setInsertUserid(userVo.getId());
 			
-			Map<String, Object> voucherList = menu03Repository.createVoucher(voucherVo);
-			
-			return voucherList;
+			menu03Repository.createVoucher(voucherVo);
+		}
+		
+		// 전표삭제
+		public Boolean deleteVoucher(VoucherVo voucherVo) {
+			return menu03Repository.deleteVoucher(voucherVo);
 		}
 		
 	}

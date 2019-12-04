@@ -1,11 +1,6 @@
 package kr.co.itcen.fa.controller.menu01;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +15,7 @@ import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
-import kr.co.itcen.fa.service.menu01.Menu04Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.ItemVo;
-import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
 
@@ -43,9 +35,6 @@ public class Menu03Controller {
 	@Autowired
 	private Menu03Service menu03Service;
 	
-	@Autowired
-	private Menu04Service menu04Service;
-	
 	// 전표관리 페이지
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String view(@RequestParam(defaultValue = "1") int page, Model model) {
@@ -62,8 +51,7 @@ public class Menu03Controller {
 	// 전표 작성 & 리스트 반환
 	@ResponseBody
 	@RequestMapping(value= "/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public Map<String, Object> categoryWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
-		
+	public JSONResult categoryWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, @RequestParam(defaultValue = "1") int page) {
 		String systemCode = "A000";
 		int count = 0;
 		count += 1;
@@ -77,13 +65,29 @@ public class Menu03Controller {
 			systemCode = "A";
 		}
 		voucherVo.setSystemCode(systemCode + count);
+		System.out.println("c : " + voucherVo.getSystemCode());
+		
+		menu03Service.createVoucher(voucherVo, userVo);
 		
 		// 카테고리 작성, 리스트
-		Map<String, Object> voucherList = menu03Service.createVoucher(voucherVo, userVo);
-		return voucherList;
+		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
+		System.out.println("d : " + dataResult.getDatas());
+		return JSONResult.success(dataResult);
 	}
 	
-	
-	
+	// 전표 삭제
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
+	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, Model model) {
+		System.out.println("222222222 : " + voucherVo.getNo());
+		System.out.println("33333333 : " + userVo.getTeamName());
+//		if(voucherVo.getInsertTeam() != userVo.getTeamName()) {
+//			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+//		}
+		
+		menu03Service.deleteVoucher(voucherVo);
+		
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+	}
 	
 }
