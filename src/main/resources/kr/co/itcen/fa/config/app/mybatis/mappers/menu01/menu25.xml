@@ -87,12 +87,12 @@
 		]]>
 	</delete>
 	
-	<select id="gets" parameterType="bankaccountvo" resultType="bankaccountvo">
+	<select id="gets" parameterType="string" resultType="bankaccountvo">
 		<![CDATA[
 		select	deposit_no as depositNo, deposit_host as depositHost, 
 				bank_code as bankCode, bank_name as bankName
 		 from	tb_bank_account
-		 where	deposit_no = #{depositNo}
+		 where	deposit_no like concat(#{depositNo}, "%")
 		 and  delete_flag = "N"
 		]]>
 	</select>

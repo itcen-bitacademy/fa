@@ -272,14 +272,14 @@ $(function() {
        $("#tbody-bankaccountList").find("tr").remove();
        
        var depositNo = $("#input-dialog-depositNo").val();
-       console.log(depositNo);
+       
        // ajax 통신
        $.ajax({
-          url: "${pageContext.request.contextPath }/01/25/gets",
+          url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
           contentType : "application/json; charset=utf-8",
-          type: "post",
+          type: "get",
           dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-          data : depositNo,
+          data : "",
           statusCode: {
               404: function() {
                 alert("page not found");
@@ -287,13 +287,12 @@ $(function() {
           },
           success: function(data){
         	  if(data.success) {
-        	  	alert('asdf');
         	  	$("#input-dialog-depositNo").val('');
         	  	var baccountList = data.bankAccountList;
         	  	console.log(data.bankAccountList);
         	  	for(let a in baccountList) {
         	  		$("#tbody-bankaccountList").append("<tr>" +
-                            "<td class='center'>" + baccountList[a].depositNo + "</td>" +
+                          "<td class='center'>" + baccountList[a].depositNo + "</td>" +
                           "<td class='center'>" + baccountList[a].depositHost + "</td>" +
                           "<td class='center'>" + baccountList[a].bankCode + "</td>" +
                           "<td class='center'>" + baccountList[a].bankName + "</td>" +
@@ -312,11 +311,10 @@ $(function() {
     $(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
        var tr = $(this);
        var td = tr.children();
-       $("input[name=bankCode]").val(td.eq(0).text());
-       $("input[name=bankName]").val(td.eq(1).text());
-       $("input[name=bankLocation]").val(td.eq(2).text());
-       $("input[name=banker]").val(td.eq(3).text());
-       $("input[name=bankPhoneCall]").val(td.eq(4).text());
+       $("input[name=depositNo]").val(td.eq(0).text());
+       $("input[name=depositHost]").val(td.eq(1).text());
+       $("input[name=bankCode]").val(td.eq(2).text());
+       $("input[name=bankName]").val(td.eq(3).text());
        $("#dialog-message").dialog('close');
     });
     
@@ -409,17 +407,12 @@ $(function() {
 										</div>
 										&nbsp; &nbsp;
 										<div class="input-append">
-											<input type="text" value="bankName" value="" placeholder="은행명" readonly />
+											<input type="text" name ="bankName" value="" placeholder="은행명" readonly />
 										</div>
 									</div>
 								</div>
 
-								
-
-
-								
-								
-								
+			
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
 								<div id="dialog-message" title="계좌" hidden="hidden">
 									<table id="dialog-message-table">
