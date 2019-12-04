@@ -14,9 +14,9 @@ public class LTermdebtVo {
 	private String debtExpDate;//차입-만기일자
 	private String debtDate;//차입일자
 	private String expDate;//만기일자
-	private double intRate;//이율
+	private int intRate;//이율
 	private String intPayWay;//이자지급방식
-	private int intAmount;//이자금액
+	private Long intAmount;//이자금액
 	private String mgr;//담당자명
 	private String mgrCall;//담당자 번호
 	private String majorCode;//차입금대분류
@@ -92,7 +92,7 @@ public class LTermdebtVo {
 	public double getIntRate() {
 		return intRate;
 	}
-	public void setIntRate(double intRate) {
+	public void setIntRate(int intRate) {
 		this.intRate = intRate;
 	}
 	public String getIntPayWay() {
@@ -101,10 +101,11 @@ public class LTermdebtVo {
 	public void setIntPayWay(String intPayWay) {
 		this.intPayWay = intPayWay;
 	}
-	public int getIntAmount() {
+	
+	public Long getIntAmount() {
 		return intAmount;
 	}
-	public void setIntAmount(int intAmount) {
+	public void setIntAmount(Long intAmount) {
 		this.intAmount = intAmount;
 	}
 	public String getMgr() {

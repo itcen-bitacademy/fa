@@ -5,19 +5,46 @@
 		<![CDATA[
 			insert into
 			tb_sales
-				(sales_no, number, sales_date, emp_manager, 
-				 customer_code, customer_name, item_code, 
-				 item_name, quantity, supply_value, total_price, sell_price,
-				 tax_value, taxbill_no, release_date, insert_userid, 
-				 insert_day, section_code, section_name)
+				(sales_no, 
+				 number, 
+				 sales_date, 
+				 emp_manager, 
+				 customer_code, 
+				 customer_name, 
+				 item_code, 
+				 item_name, 
+				 quantity, 
+				 supply_value, 
+				 total_price, 
+				 sell_price,
+				 tax_value, 
+				 taxbill_no, 
+				 release_date, 
+				 insert_userid, 
+				 insert_day, 
+				 section_code, 
+				 section_name)
 			values
 		]]>
 		<foreach collection="list" item="item" separator=",">
 			<![CDATA[
-				(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager},
-				#{item.customerCode}, #{item.customerName}, #{item.itemCode},
-				#{item.itemName}, #{item.quantity}, #{item.supplyValue}, #{item.totalPrice}, #{item.sellPrice},
-				#{item.taxValue}, #{item.taxbillNo}, #{item.releaseDate}, #{item.insertUserid}, now(),
+				(#{item.salesNo}, 
+				 #{item.number}, 
+				 #{item.salesDate}, 
+				 #{item.empManager},
+				 #{item.customerCode}, 
+				 #{item.customerName}, 
+				 #{item.itemCode},
+				 #{item.itemName}, 
+				 #{item.quantity}, 
+				 #{item.supplyValue}, 
+				 #{item.totalPrice}, 
+				 #{item.sellPrice},
+				 #{item.taxValue}, 
+				 #{item.taxbillNo}, 
+				 #{item.releaseDate}, 
+				 #{item.insertUserid}, 
+				 now(),
 				(select b.code 
 				 from 	tb_purchaseitem a, tb_section b 
 				 where 	a.no = #{item.itemCode}
@@ -60,10 +87,88 @@
 					quantity, 
 					supply_value as supplyValue, 
 					tax_value as taxValue, 
+					insert_day as insertDay,
+					insert_userid as insertUserid,
 					number
 			from	tb_sales
 			where	sales_no = #{salesNo}
+			and		delete_flag = 'N'
 			order by number asc
 		]]>
 	</select>
+	
+	<update id="delete" parameterType="String">
+		<![CDATA[
+			update tb_sales set delete_flag='Y' where sales_no = #{salesNo};	
+		]]>
+	</update>
+	
+	<delete id="updatedelete" parameterType="String">
+		<![CDATA[
+			delete from tb_sales where sales_no = #{salesNo }
+		]]>
+	</delete>
+	
+	<insert id="updateinsert" parameterType="List">
+		<![CDATA[
+			insert into
+			tb_sales
+				(sales_no, 
+				 number, 
+				 sales_date, 
+				 emp_manager, 
+				 customer_code, 
+				 customer_name,
+				 item_code, 
+				 item_name, 
+				 quantity, 
+				 supply_value, 
+				 total_price, 
+				 sell_price,
+				 tax_value, 
+				 taxbill_no, 
+				 release_date, 
+				 insert_userid, 
+				 insert_day, 
+				 update_userid, 
+				 update_day, 
+				 section_code, 
+				 section_name)
+			values
+		]]>
+		<foreach collection="list" item="item" separator=",">
+			<![CDATA[
+				(#{item.salesNo}, 
+				 #{item.number}, 
+				 #{item.salesDate}, 
+				 #{item.empManager},
+				 #{item.customerCode}, 
+				 #{item.customerName}, 
+				 #{item.itemCode},
+				 #{item.itemName}, 
+				 #{item.quantity}, 
+				 #{item.supplyValue}, 
+				 #{item.totalPrice}, 
+				 #{item.sellPrice},
+				 #{item.taxValue}, 
+				 #{item.taxbillNo}, 
+				 #{item.releaseDate}, 
+				 #{item.insertUserid},
+				 #{item.insertDay}, 
+				 #{item.updateUserid}, 
+				 now(),
+				(select b.code 
+				 from 	tb_purchaseitem a, tb_section b 
+				 where 	a.no = #{item.itemCode}
+				 and	a.section_code = b.code
+				 and	b.parent_no = 1),
+				(select b.classification 
+				 from 	tb_purchaseitem a, tb_section b 
+				 where 	a.no = #{item.itemCode}
+				 and	a.section_code = b.code
+				 and	b.parent_no = 1)				
+				)
+			]]>
+		</foreach>
+	</insert>
 </mapper>

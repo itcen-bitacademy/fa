@@ -6,6 +6,7 @@
 		<result column="debt_amount" property="debtAmount" />
 		<result column="repay_bal" property="repayBal" />
 		<result column="repay_way" property="repayWay" />
+		<result column="repay_compl_flag" property="repayComplFlag" />
 		<result column="debt_date" property="debtDate" />
 		<result column="exp_date" property="expDate" />
 		<result column="int_rate" property="intRate" />
@@ -40,14 +41,14 @@
 			select 
 			no, code, major_code, name,
 			debt_amount, repay_bal, repay_way,
-			debt_date, exp_date, int_rate,
+			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
 			int_pay_way, int_amount, mgr,
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
-			where delete_flag="N"
+			where delete_flag="N" and repay_comple_flag="N"
 		]]>
 	</select>
 	
@@ -56,7 +57,7 @@
 			select 
 			no, code, major_code, name,
 			debt_amount, repay_bal, repay_way,
-			debt_date, exp_date, int_rate,
+			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
 			int_pay_way, int_amount, mgr,
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
@@ -64,6 +65,7 @@
 			update_date 
 			from tb_s_term_debt
 			where code LIKE CONCAT(#{code}, "%") and debt_date LIKE CONCAT(#{financialYear}, "%")
+			      and delete_flag="N" and repay_comple_flag="N"
 		]]>
 	</select>
 	

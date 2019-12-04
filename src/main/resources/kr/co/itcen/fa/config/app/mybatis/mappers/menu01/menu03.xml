@@ -19,26 +19,48 @@
 	<insert id="insertVoucher" parameterType="1vouchervo">
 		<![CDATA[
 		insert
-		  into tb_voucher(null,
+		  into tb_voucher_manager(no,
 		  			   reg_date,
-		  			   amount,
-		  			   amount_flag,
 		  			   insert_userid,
 		  			   insert_day,
 		  			   use_yn
-		  			   card_no,
-		  			   diposite_no,
-		  			   customer_no,)
+		  )
 		values (null,
 				#{regDate },
-				#{amount },
-		  		#{amountFlag },
 		  		#{insertUserid },
-		  		#{insertDay },
-		  		true,
-		  		#{cardNo },
-		  		#{dipositeNo },
-		  		#{customerNo }
+		  		now(),
+		  		true
+		  		)
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<!-- 항목테이블 입력 -->
+	<insert id="insertItem" parameterType="1itemvo">
+		<![CDATA[
+		insert
+		  into tb_voucher_item(no,
+		  			amount,
+		  			amount_flag,
+		  			insert_userid,
+		  			insert_day,
+		  			use_yn,
+		  			voucher_no,
+		  			account_no
+		)
+		values (null,
+				#{amount },
+				#{amountFlag },
+				#{insertUserid },
+				now(),
+				#{useYn },
+				#{voucherNo },
+				#{accountNo }
+		)
 		]]>
 	</insert>
 	
@@ -46,37 +68,67 @@
 	<insert id="insertMapping" parameterType="1mappingvo">
 		<![CDATA[
 		insert
-		  into tb_mapping(no,
-		  			   systemNo,
+		  into tb_voucher_system_mapping(no,
 		  			   voucher_use,
-		  			   tax,
 		  			   insert_team,
 		  			   insert_userid,
 		  			   insert_day,
 		  			   use_yn,
 		  			   voucher_no,
-		  			   manage_no
+		  			   system_code,
+		  			   manage_no,
+		  			   card_no,
+		  			   deposit_no,
+		  			   customer_no
+		)
 		values (null,
-				#{systemNo },
 				#{voucherUse },
-		  		#{tax },
-		  		#{insertTeam },
-		  		#{insertUserid }
+				#{insertTeam },
+		  		#{insertUserid },
 		  		now(),
-		  		true,
+		  		#{useYn },
 		  		#{voucherNo },
+		  		#{systemCode },
 		  		#{manageNo },
+		  		#{cardNo },
+		  		#{depositNo },
+		  		#{customerNo }
+		)
 		]]>
 	</insert>
 	
-	<select id="viewVoucher" parameterType="1vouchervo" resultType="1vouchervo">
-		<![CDATA[
-		select g_no as groupNo,
-		       o_no as orderNo,
-		       depth
-		  from board
-		 where no = #{no };
-		]]>
+	<!-- 전표 전체 갯수 -->
+	<select id="selectAllVoucherCount" resultType="int">
+		select	count(*) as cnt
+		  from	tb_voucher_manager;
 	</select>
-
+	
+	<!-- 전표조회 페이징 -->
+	<select id="selectAllVoucher" parameterType="menu03SearchForm" resultType="1vouchervo">
+		<![CDATA[
+		select reg_date as regDate,
+			   i.amount_flag as amountFlag,
+			   a.no as accountNo,
+			   a.name as accountName,
+			   i.amount as amount,
+			   cu.name as customerName,
+			   m.manage_no as manageNo,
+			   ba.bank_name as bankName,
+			   c.card_no as cardNo,
+			   c.user as cardUser,
+			   ba.deposit_no as depositNo,
+			   ba.deposit_host as depositHost,
+			   ifnull(v.update_userid, v.insert_userid) as userId,
+		   	   m.voucher_use as voucherUse
+          from tb_voucher_manager v, tb_voucher_item i, tb_voucher_system_mapping m, tb_cardmanager c, tb_bank_account ba, tb_customer cu, tb_account a
+	     where v.no = i.voucher_no
+           and v.no = m.voucher_no
+           and i.account_no = a.no
+           and m.card_no = c.card_no
+           and m.deposit_no = ba.deposit_no
+      order by i.amount_flag desc
+      limit	#{pagination.pageIndex }, #{pagination.listSize };
+		   ]]>
+	</select>
+	
 </mapper>

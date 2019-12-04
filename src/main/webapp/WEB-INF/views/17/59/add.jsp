@@ -217,7 +217,7 @@ $(function(){
 		<ul>
 			<c:choose>
 				<c:when test="${dataResult.pagination.prev }">
-					<li><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/17/59/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
 				</c:when>
 				<c:otherwise>
 					<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -227,17 +227,17 @@ $(function(){
 			<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 				<c:choose>
 					<c:when test="${pg eq dataResult.pagination.page }">
-						<li class="active"><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${pg }">${pg }</a></li>
+						<li class="active"><a href="${pageContext.servletContext.contextPath }/17/59/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${pg }">${pg }</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${pg }">${pg }</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/17/59/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${pg }">${pg }</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 
 			<c:choose>
 				<c:when test="${dataResult.pagination.next }">
-					<li><a href="${pageContext.servletContext.contextPath }/17/59/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/17/59/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 				</c:when>
 				<c:otherwise>
 					<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -308,7 +308,8 @@ $(function(){
     	$('#selectedAccountStatementType').val("B");
     	$('#accountOrder').val("");
     	$('#accountUsedyear').val("2019");
-    	$('#selectedAccount').val(null).trigger('chosen:updated');
+    	$('#accountName').val("");
+    	$('#selectedAccount').val(null).trigger('chosen:updated'); 
     });
     
     //조회버튼 누를 시 초기화
@@ -316,6 +317,23 @@ $(function(){
     	console.log($('#selectedAccount').val());
     	//$('#selectedAccount').val($('#selectedAccount').val()).trigger('chosen:updated');
     });
+    
+	$(function(){
+		
+		var result = "${param.overlap}";
+		
+		if('overlap' == result ){			
+			alert("이미 있는 데이터입니다.");
+			
+			result = "";
+			return;
+		} else if('nullData' == result){
+			alert("데이터가 없어서 저장하겠습니다.");
+			
+			result = "";
+			return;
+		}
+	});
     
 	</script>
 </body>

@@ -35,15 +35,15 @@ public class Menu49Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
-		LTermdebtVo vo) {
-		System.out.println(vo);
+		LTermdebtVo vo,
+		@RequestParam(value="sort", required=false) String sort) {
 		
-		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo);
+		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo,sort);
 		List<SectionVo> sectionlist = menu49Service.selectSection();
 		
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
-		
+		model.addAttribute("sort", sort);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

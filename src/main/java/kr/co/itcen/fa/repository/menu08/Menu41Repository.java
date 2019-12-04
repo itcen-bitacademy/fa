@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.repository.menu08;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,7 @@ public class Menu41Repository {
 	}
 
 	//등록 리스트 테이블에 조회
-	public List<VehicleVo> selectList(VehicleVo vehicleVo) {
+	public List<VehicleVo> selectList() {
 		List<VehicleVo> list = sqlSession.selectList("menu41.select");
 		System.out.println(list);
 		return list;
@@ -64,9 +66,9 @@ public class Menu41Repository {
 	}
 
 	//검색 리스트
-	public boolean search(VehicleVo vehicleVo) {
-		int count = sqlSession.update("menu41.search", vehicleVo);
-		return count == 1;
+	public List<VehicleVo> search(String id) {
+		List<VehicleVo> list = sqlSession.selectList("menu41.search",id);
+		return list;
 		
 	}
 	

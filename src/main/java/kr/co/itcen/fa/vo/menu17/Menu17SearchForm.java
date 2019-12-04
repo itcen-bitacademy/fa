@@ -19,13 +19,37 @@ public class Menu17SearchForm {
 	private Long accountNo;			     //계정과목 코드
 	private String accountStatementType; //제무재표 구분
 	
-	private Long closingDateNo;			// 마감일 번호 
+	private Long closingDateNo;			// 마감일 번호
+	private Long lastestClosingDateNo;	// 최신 마감일 번호
 
 	private int page = 1;
 	private PaginationUtil pagination;
 	
+	private String insertUserid;		// 등록자
+	private String updateUserid;		// 수정자
+	
 	
 	// Getter & Setter
+	public Long getLastestClosingDateNo() {
+		return lastestClosingDateNo;
+	}
+	public void setLastestClosingDateNo(Long lastestClosingDateNo) {
+		this.lastestClosingDateNo = lastestClosingDateNo;
+	}
+	
+	public String getInsertUserid() {
+		return insertUserid;
+	}
+	public void setInsertUserid(String insertUserid) {
+		this.insertUserid = insertUserid;
+	}
+	public String getUpdateUserid() {
+		return updateUserid;
+	}
+	public void setUpdateUserid(String updateUserid) {
+		this.updateUserid = updateUserid;
+	}
+	
 	public Long getClosingDateNo() {
 		return closingDateNo;
 	}

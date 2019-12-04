@@ -13,13 +13,15 @@ import org.apache.ibatis.type.Alias;
 public class FactoryVo {
 	private String no;					//공장코드
 	private String name;				//공장명
-	private String address;				//공장주소
-	private String manager_name;		//담당자명
-	private String delete_flag;			//삭제여부
-	private String insert_userid;		//입력자
-	private String insert_day;			//입력날짜
-	private String update_userid;		//수정자
-	private String update_day;			//수정날짜
+	private String postaddress;			//우편번호
+	private String roadaddress;			//도로명주소
+	private String detailaddress;		//상세주소
+	private String managername;			//담당자명
+	private String deleteflag;			//삭제여부
+	private String insertuserid;		//입력자
+	private String insertday;			//입력날짜
+	private String updateuserid;		//수정자
+	private String updateday;			//수정날짜
 	
 	public String getNo() {
 		return no;
@@ -33,52 +35,65 @@ public class FactoryVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getAddress() {
-		return address;
+	public String getPostaddress() {
+		return postaddress;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setPostaddress(String postaddress) {
+		this.postaddress = postaddress;
 	}
-	public String getManager_name() {
-		return manager_name;
+	public String getRoadaddress() {
+		return roadaddress;
 	}
-	public void setManager_name(String manager_name) {
-		this.manager_name = manager_name;
+	public void setRoadaddress(String roadaddress) {
+		this.roadaddress = roadaddress;
 	}
-	public String getDelete_flag() {
-		return delete_flag;
+	public String getDetailaddress() {
+		return detailaddress;
 	}
-	public void setDelete_flag(String delete_flag) {
-		this.delete_flag = delete_flag;
+	public void setDetailaddress(String detailaddress) {
+		this.detailaddress = detailaddress;
 	}
-	public String getInsert_userid() {
-		return insert_userid;
+	public String getManagername() {
+		return managername;
 	}
-	public void setInsert_userid(String insert_userid) {
-		this.insert_userid = insert_userid;
+	public void setManagername(String managername) {
+		this.managername = managername;
 	}
-	public String getInsert_day() {
-		return insert_day;
+	public String getDeleteflag() {
+		return deleteflag;
 	}
-	public void setInsert_day(String insert_day) {
-		this.insert_day = insert_day;
+	public void setDeleteflag(String deleteflag) {
+		this.deleteflag = deleteflag;
 	}
-	public String getUpdate_userid() {
-		return update_userid;
+	public String getInsertuserid() {
+		return insertuserid;
 	}
-	public void setUpdate_userid(String update_userid) {
-		this.update_userid = update_userid;
+	public void setInsertuserid(String insertuserid) {
+		this.insertuserid = insertuserid;
 	}
-	public String getUpdate_day() {
-		return update_day;
+	public String getInsertday() {
+		return insertday;
 	}
-	public void setUpdate_day(String update_day) {
-		this.update_day = update_day;
+	public void setInsertday(String insertday) {
+		this.insertday = insertday;
+	}
+	public String getUpdateuserid() {
+		return updateuserid;
+	}
+	public void setUpdateuserid(String updateuserid) {
+		this.updateuserid = updateuserid;
+	}
+	public String getUpdateday() {
+		return updateday;
+	}
+	public void setUpdateday(String updateday) {
+		this.updateday = updateday;
 	}
 	@Override
 	public String toString() {
-		return "FactoryVo [no=" + no + ", name=" + name + ", address=" + address + ", manager_name=" + manager_name
-				+ ", delete_flag=" + delete_flag + ", insert_userid=" + insert_userid + ", insert_day=" + insert_day
-				+ ", update_userid=" + update_userid + ", update_day=" + update_day + "]";
+		return "FactoryVo [no=" + no + ", name=" + name + ", postaddress=" + postaddress + ", roadaddress="
+				+ roadaddress + ", detailaddress=" + detailaddress + ", managername=" + managername + ", deleteflag="
+				+ deleteflag + ", insertuserid=" + insertuserid + ", insertday=" + insertday + ", updateuserid="
+				+ updateuserid + ", updateday=" + updateday + "]";
 	}
 }

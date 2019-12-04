@@ -76,5 +76,11 @@ public class Menu16Service {
 		return dataResult;
 	}
 
+	public Boolean existCode(String code) {
+		
+		return menu16Repository.getCode(code) != null;
+	}
+
 	
+		
 }

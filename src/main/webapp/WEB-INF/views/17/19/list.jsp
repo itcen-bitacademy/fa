@@ -316,8 +316,6 @@
 
 	// 마감일 신규 등록
 	function saveClosingDate(event) {
-		console.log(getClosingDates());
-
 		var form = $('#test-form')[0]
 		$(form).attr('action', '${pageContext.request.contextPath }/17/19/add')
 		form.submit()
@@ -342,6 +340,22 @@
 		return closingDates
 	}
 
+	// 선택한 마감일이 수정 가능한 마감일인지 조회
+	function isChangable(closingDate) {
+		$.ajax({
+			url: '${pageContext.request.contextPath }/17/19/api/changable',
+			data: closingDate,
+			method: 'post',
+			success: function(response) {
+				if (response.status == true) {
+					updateAndDeleteAndResetButton()
+				} else {
+					hideAllButton()
+				}
+			}
+		})
+	}
+
 	// 마감일 선택시 - 입력롬에 선택된 마감일 정보 등록
 	function setClosingDate(event) {
 		$('#cl-no').val($(this).attr('no'))
@@ -355,8 +369,17 @@
 		$('#cl-debt-date-picker').val($(this).find('.closing-debt-date').text()),
 		$('#cl-settlement-date-picker').val($(this).find('.closing-settlement-date').text())
 
-		// 입력상태 변경
-		changeStatus()
+		if ($(this).attr('closing-yn') == 'true') {
+			// api 호출
+			var closingDate = {
+				no: $(this).attr('no'),
+				closingYearMonth: $(this).find('.closing-year-month').text()
+			}
+			isChangable(closingDate)
+		} else {
+			// 미결산 마감일 수정 가능
+			updateAndDeleteAndResetButton()
+		}
 	}
 
 	// 입력폼 데이터 리셋
@@ -373,7 +396,8 @@
 		$('#cl-settlement-date-picker').val('')
 
 		// 입력상태 변경
-		changeStatus()
+		// changeStatus()
+		submitAndResetButton()
 	}
 
 	// 마감일 수정
@@ -393,19 +417,27 @@
 		form.submit()
 	}
 
-	// 마감일 신규등록, 수정상태 변경 - 상태에 따른 버튼 출력
-	function changeStatus(event) {
-		if ($('#cl-no').val()) {			// 마감일 번호 존재시
-			$('#submit-btn').hide()
-			if ($('#cl-yn').val() == 'false') {		// 결산 미완료시 수정, 삭제 버튼 노출
-				$('#update-btn').show()
-				$('#delete-btn').show()
-			}
-		} else {											// 마감일 번호 미존재시
-			$('#update-btn').hide()
-			$('#delete-btn').hide()
-			$('#submit-btn').show()
-		}
+
+	// 마감일 상태에 따른 버튼 변경
+	// 수정, 삭제, 리셋 버튼
+	function updateAndDeleteAndResetButton() {
+		$('#update-btn').show()
+		$('#delete-btn').show()
+		$('#submit-btn').hide()
+	}
+
+	// 리셋 버튼
+	function hideAllButton() {
+		$('#update-btn').hide()
+		$('#delete-btn').hide()
+		$('#submit-btn').hide()
+	}
+
+	// 등록, 리셋 버튼
+	function submitAndResetButton() {
+		$('#update-btn').hide()
+		$('#delete-btn').hide()
+		$('#submit-btn').show()
 	}
 </script>
 </body>

@@ -249,8 +249,122 @@
 		});
 		
 		$(".chosen-select").chosen();
-	})
+		
+		
+		// 4조 - 은행코드 검색
+		$("#a-dialog-bankcode").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
+			var bankcodeVal = $("#input-dialog-bankcode").val();
+			console.log(bankcodeVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-bankcode").val('');
+					$("#tbody-bankList").append("<tr>" +
+							"<td class='center'>" + item.code + "</td>" +
+					        "<td class='center'>" + item.name + "</td>" +
+					        "<td class='center'>" + item.store + "</td>" +
+					        "<td style='visibility:hidden;position:absolute;'>" + item.mgr + "</td>" +
+					        "<td style='visibility:hidden;position:absolute;'>" + item.mgrPhone + "</td>" +
+					        "</tr>");
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		// 은행명 검색 : 은행목록 리스트로 가져오기
+		$('#dialog-message-table').on('click', '#a-dialog-bankname', function(event) {
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
+			var banknameVal = $("#input-dialog-bankname").val();
+			console.log(banknameVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(data){
+					$("#input-dialog-bankname").val('');
+					 $.each(data,function(index, item){
+			                $("#tbody-bankList").append("<tr>" +
+			                		"<td class='center'>" + item.code + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "<td class='center'>" + item.store + "</td>" +
+							        "<td style='visibility:hidden;position:absolute;'>" + item.mgr + "</td>" +
+							        "<td style='visibility:hidden;position:absolute;'>" + item.mgrPhone + "</td>" +
+							        "</tr>");
+			         })
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		$(document.body).delegate('#tbody-bankList tr', 'click', function() {
+			var tr = $(this);
+			var td = tr.children();
+			$("input[name=bankCode]").val(td.eq(0).text());
+			$("input[name=bankName]").val(td.eq(1).text());
+			$("input[name=bankLocation]").val(td.eq(2).text());
+			$("input[name=banker]").val(td.eq(3).text());
+			$("input[name=bankPhoneCall]").val(td.eq(4).text());
+			$("#dialog-message").dialog('close');
+		});
+		
+	});
 	
+	// Popup
+	$(function() {
+		$("#dialog-message").dialog({
+			autoOpen : false
+		});
+
+		$("#a-bankinfo-dialog").click(function() {
+			$("#dialog-message").dialog('open');
+			$("#dialog-message").dialog({
+				title: "은행정보",
+				title_html: true,
+			   	resizable: false,
+			    height: 500,
+			    width: 400,
+			    modal: true,
+			    close: function() {
+			    	$('#tbody-bankList tr').remove();
+			    },
+			    buttons: {
+			    "닫기" : function() {
+			          	$(this).dialog('close');
+			          	$('#tbody-bankList tr').remove();
+			        }
+			    }
+			});
+		});
+
+	});
 	
 </script>
 
@@ -346,12 +460,55 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은행 코드 </label>
 								<div class="controls">
-									<input type="text" id="form-field-1" name="bankCode"
-										placeholder="Username" />
-									<input type="text" id="form-field-1" name="bankName"
-										placeholder="Username" />	
+									
+								<span class="btn btn-small btn-info">
+									<a href="#" id="a-bankinfo-dialog">
+										<i class="icon-search nav-search-icon"></i>
+										<input type="text" class="search-input-width-first"
+								name="bankCode" /> </a>
+								</span>
+								<input type="text" id="form-field-1" name="bankName"
+                              placeholder="" />  
+								
 								</div>
 							</div>
+						
+							<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+							<div id="dialog-message" title="은행코드" hidden="hidden">
+								<table id="dialog-message-table">
+									<tr>
+										<td><label>은행코드</label> <input type="text"
+											id="input-dialog-bankcode" style="width: 100px;" /> <a
+											href="#" id="a-dialog-bankcode"> <span
+												class="btn btn-small btn-info" style="margin-bottom: 10px;">
+													<i class="icon-search nav-search-icon"></i>
+											</span>
+										</a></td>
+										<td><label>은행명</label> <input type="text"
+											id="input-dialog-bankname" style="width: 100px;" /> <a
+											href="#" id="a-dialog-bankname"> <span
+												class="btn btn-small btn-info" style="margin-bottom: 10px;">
+													<i class="icon-search nav-search-icon"></i>
+											</span>
+										</a></td>
+									</tr>
+								</table>
+								<!-- 은행코드 및 은행명 데이터 리스트 -->
+								<table id="modal-bank-table"
+									class="table  table-bordered table-hover">
+									<thead>
+										<tr>
+											<th class="center">은행코드</th>
+											<th class="center">은행명</th>
+											<th class="center">지점명</th>
+										</tr>
+									</thead>
+									<tbody id="tbody-bankList">
+									</tbody>
+								</table>
+							</div>
+							<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+							
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">개설 지점 </label>
 								<div class="controls">
@@ -373,7 +530,8 @@
 										placeholder="Username" />
 								</div>
 							</div>
-						</div>	<!-- /.span -->
+						</div>
+						<!-- /.span -->
 					</div>	<!-- /row -->
 
 

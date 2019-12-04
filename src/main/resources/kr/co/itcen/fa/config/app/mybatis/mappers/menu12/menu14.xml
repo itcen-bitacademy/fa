@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu14">
+	
+	<select id="defaultlist" parameterType="pageutil" resultType="salesvo">
+		<![CDATA[
+			select 		a.sales_no as salesNo,
+						date_format(a.sales_date, '%Y-%m-%d') as salesDate,
+						date_format(a.release_date, '%Y-%m-%d') as releaseDate,
+						a.emp_manager as empManager,
+						a.customer_code as customerCode,
+						a.customer_name as customerName,						
+						b.phone as customerPhone,
+						a.taxbill_no as taxbillNo,
+						a.number as number,
+						a.item_code as itemCode,
+						a.item_name as itemName,
+						a.quantity as quantity,
+						a.supply_value as supplyValue,
+						a.tax_value as taxValue
+			from 		tb_sales a, 
+						tb_salescustomer b 
+			where 		a.customer_code = b.no
+			order by 	a.sales_date desc
+			limit		#{pagination.pageIndex }, #{pagination.listSize } 
+		]]>
+	</select>
+	
+	<select id="searchlist" parameterType="salesvo" resultType="salesvo">
+		<![CDATA[
+			select 		a.sales_no as salesNo,
+						date_format(a.sales_date, '%Y-%m-%d') as salesDate,
+						date_format(a.release_date, '%Y-%m-%d') as releaseDate,
+						a.emp_manager as empManager,
+						a.customer_code as customerCode,
+						a.customer_name as customerName,						
+						b.phone as customerPhone,
+						a.taxbill_no as taxbillNo,
+						a.number as number,
+						a.item_code as itemCode,
+						a.item_name as itemName,
+						a.quantity as quantity,
+						a.supply_value as supplyValue,
+						a.tax_value as taxValue
+			from 		tb_sales a, 
+						tb_salescustomer b 
+			where 		a.customer_code = b.no
+			]]>
+				<if test='startDate!=null'>
+				<![CDATA[
+					 and a.sales_date >= '${startDate } 00:00:00' and a.sales_date <= '${endDate } 23:59:59'
+				]]>
+				</if>
+				<if test='salesNo!=""'>
+				<![CDATA[
+					 and a.sales_no = #{salesNo }
+				]]>
+				</if>	
+				<if test='customerCode!=""'>
+				<![CDATA[
+					 and a.customer_code = #{customerCode }
+				]]>
+				</if>
+				<if test='insertUserid!=""'>
+				<![CDATA[
+					 and a.insert_userid = #{insertUserid }
+				]]>
+				</if>
+				<if test='itemCode!=""'>
+				<![CDATA[
+					 and a.item_code = #{itemCode }
+				]]>
+				</if>
+				<if test='deleteFlag!=""'>
+				<![CDATA[
+					 and a.delete_flag = #{deleteFlag }
+				]]>
+				</if>
+				<if test='orderData!=""'>
+				<![CDATA[
+					 order by ${orderData} asc;
+				]]>
+				</if>
+	</select>
+	<select id="selectCount" resultType="int">
+		select	count(*) as cnt
+		  from	tb_sales
+		;
+	</select>
+</mapper>

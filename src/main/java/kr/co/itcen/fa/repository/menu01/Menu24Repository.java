@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CardVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
-
 /**
  * 
  * @author 김승곤
@@ -25,15 +23,19 @@ public class Menu24Repository {
 	private SqlSession sqlSession;
 	
 	public int listCount(CardVo vo) {
+		System.out.println(vo.getDeleteFlag());
+		int i = sqlSession.selectOne("menu24.selectAllCount",vo);
+		System.out.println(i);
 		return sqlSession.selectOne("menu24.selectAllCount",vo);
 		
+		
 	}
-
-	public List<LTermdebtVo> list(PaginationUtil pagination, CardVo vo) {
+	
+	public List<CardVo> list(PaginationUtil pagination, CardVo vo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
 		map.put("vo", vo);
-		List<LTermdebtVo> list= sqlSession.selectList("menu24.selectAll",map);
+		List<CardVo> list= sqlSession.selectList("menu24.selectAll",map);
 		return list;
 		
 	}

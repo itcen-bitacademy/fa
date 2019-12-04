@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
@@ -46,6 +48,7 @@ public class Menu25Controller {
 	public Map<String, Object> create(@ModelAttribute BankAccountVo bavo,
 			@AuthUser UserVo uvo) {
 		System.out.println("create");
+		System.out.println(bavo.toString());
 				
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setInsertUserId(uvo.getName());
@@ -56,7 +59,7 @@ public class Menu25Controller {
 		return result;
 	}
 	
-	// R
+	// Read
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/read")
 	public String read(@ModelAttribute BankAccountVo bavo	) {
@@ -74,8 +77,10 @@ public class Menu25Controller {
 		
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setUpdateUserId(uvo.getName());
+		
+		System.out.println(bavo.toString());
+		
 		Map<String, Object> result = menu25Service.update(bavo);
-	
 		return result;
 	}
 	
@@ -89,4 +94,17 @@ public class Menu25Controller {
 		result.put("success", true);
 		return result;
 	}
+	
+	// PopUp
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/gets")
+	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
+		System.out.println("gets");
+		System.out.println(depositNo.toString());
+		
+		Map<String, Object> result = menu25Service.gets(depositNo);
+		result.put("success", true);
+		return result;
+	}
+		
 }

@@ -9,6 +9,7 @@
 		    , t.account_no as account_no
 		    , a.name as account_name
             , a.balance_type as balance_type
+           	, a.statement_yn as statement_yn
 		    , t.debtor_total as debtor_total
 		    , t.credit_total as credit_total
 		    , t.debtor_spot_month as debtor_spot_month

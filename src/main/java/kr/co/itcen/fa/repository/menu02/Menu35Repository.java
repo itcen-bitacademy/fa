@@ -42,8 +42,16 @@ public class Menu35Repository {
 		return count == 1;
 	}
 	
+	public void delete(List<String> checkNoArr) {
+		sqlSession.delete("menu35.delete", checkNoArr);	
+	}
+	
 	public List<CustomerVo> search(String no) {
 		List<CustomerVo> result = sqlSession.selectList("menu35.search", no);
 		return result;
+	}
+	
+	public CustomerVo getCustomer(String no) {
+		return sqlSession.selectOne("menu35.findByNo", no);
 	}
 }

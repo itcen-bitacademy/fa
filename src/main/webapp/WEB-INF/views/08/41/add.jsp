@@ -140,7 +140,7 @@
 									<div style="float:left;width:50%">											
 										<label class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width:90%">
-												<select class="chosen-select-1" name="staffNo" data-placeholder="전체">
+												<select class="chosen-select" id="form_field_classification" name="staffNo" data-placeholder="전체">
 												<!-- <select class="chosen-select-1" id="form-field-select-1" name="staffName" data-placeholder="전체"> -->
 													<c:forEach items="${jikNameList}" var="StaffVo">
 														<option value="${StaffVo.no }">${StaffVo.staffName }</option>
@@ -235,7 +235,7 @@
 										   <button type="submit" class="btn btn-primary btn-small" id="insert" style="float:left; margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">등록</button>
 			                               <button type="submit" class="btn btn-warning btn-small" id="modify" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 			                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}/delete">삭제</button>
-			                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
+			                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">조회</button>
 			                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;" type="reset">초기화</button>
 									</div>
 								</div>
@@ -479,9 +479,11 @@ $("#sample-table-1 tr").click(function(){
 	
 	// td.eq(index)를 통해 값을 가져올 수도 있다.
 	$("input[name=id]").val(td.eq(2).text());
-    $("input[name=sectionNo]").val(td.eq(3).text());
+    $('#form_field_section_chosen').find('span').text(td.eq(3).text());
+/*     $('#form_field_classification_chosen').find('span').text(td.eq(4).text()); */
     $("input[name=classification]").val(td.eq(4).text());
-    $("input[name=staffNo]").val(td.eq(5).text()); 
+    $('#form_field_classification_chosen').find('span').text(td.eq(5).text());
+	$("input[id=form_field_classification]").val(td.eq(5).text());
     $("input[name=ownerName]").val(td.eq(6).text());
 /*  $("input[name=wideAddress]").val(td.eq(13).text());
     $("input[name=cityAddress]").val(td.eq(8).text());
@@ -493,7 +495,7 @@ $("#sample-table-1 tr").click(function(){
     $("input[name=acqTax]").val(td.eq(17).text());
     $("input[name=etcCost]").val(td.eq(18).text());
     $("input[name=taxbillNo]").val(td.eq(19).text());
-    $ ("input[name=deposit]").val(td.eq(20).text()); 
+    $("input[name=deposit]").val(td.eq(20).text()); 
     $("input[name=depositDate]").val(td.eq(21).text());
     $("input[name=monthlyFee]").val(td.eq(22).text());
     $("input[name=feeDate]").val(td.eq(23).text());

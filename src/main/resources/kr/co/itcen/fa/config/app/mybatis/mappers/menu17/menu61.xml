@@ -2,19 +2,85 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu61">
 
-	<update id="updateClosingYnByNo" parameterType="closingDate17Vo">
+	<update id="updateClosingYnByNo" parameterType="menu17SearchForm">
 		update	tb_closing_date
 		   set	update_userid = #{updateUserid }
 				, update_day = now()
 		        , closing_yn = true
-		 where	no = #{no }
+		 where	no = #{closingDateNo }
 		;
 	</update>
 	
-	<select id="selectEmptyTrialBalance" resultType="trialBalance17Vo">
-		select	no as account_no
-		  from	tb_account
-		 order	by no
+	<select id="selectLastestClosedDateByClosingDateNoPerYear" parameterType="menu17SearchForm" resultType="closingDate17Vo">
+		select	
+			c1.no as no
+		    , c1.closing_year_month
+		  from	tb_closing_date as c1
+		  left	join (
+			select
+				substr(c3.closing_year_month, 1, 4) as year
+		      from	tb_closing_date as c3
+			 where	c3.no = #{closingDateNo }
+			   and	c3.use_yn = true
+				) as c2 on 1 = 1
+		 where	substr(closing_year_month, 1, 4) = c2.year
+		   and	c1.closing_yn = true
+		   and	c1.use_yn = true
+		 order	by c1.closing_year_month desc
+		 limit	1
+		;
+	</select>
+	
+	<select id="selectLastestUnclosingDatePerYear" parameterType="closingDate17Vo" resultType="closingDate17Vo">
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date as c1
+		  left	join (
+			select
+				substr(c3.closing_year_month, 1, 4) as year
+			  from	tb_closing_date as c3
+			 where	c3.no = #{closingDateNo }
+			   and	c3.use_yn = true
+				) as c2 on 1 = 1
+		 where	substr(c1.closing_year_month, 1, 4) = c2.year
+		   and	c1.use_yn = true
+		   and	c1.closing_yn = false
+		 order	by c1.closing_year_month asc
+		 limit	1
+		;
+	</select>
+	
+	<select id="selectEmptyTrialBalance" resultType="trialBalance17Vo" parameterType="menu17SearchForm">
+		select	
+			a.no as account_no
+		    , t.debtor_total as debtor_total
+		    , t.credit_total as credit_total
+		  from	tb_account as a
+		  left	join (
+			select	
+				t1.account_no
+		        , t1.debtor_total
+				, t1.credit_total
+		        , t1.debtor_spot_month
+		        , t1.credit_spot_month
+			  from	tb_trial_balance as t1
+			 where	t1.closing_date_no = #{lastestClosingDateNo }
+				) as t on t.account_no = a.no
+		 order	by a.no
 		;
 	</select>
 	
@@ -61,4 +127,9 @@
 		;
 	</select>
 	
+	<delete id="deleteTrialBalanceByClosingDateNo" parameterType="closingDate17Vo">
+		delete	from tb_trial_balance
+		 where	closing_date_no = #{no }
+		;
+	</delete>
 </mapper>

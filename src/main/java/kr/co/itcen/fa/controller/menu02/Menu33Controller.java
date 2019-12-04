@@ -42,11 +42,16 @@ public class Menu33Controller {
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list"})
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
+					   @RequestParam(value="page", required=false, defaultValue="1") String page,
 					   Model model) {
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList();
+		int cur_page = Integer.parseInt(page);
+		
 		List<SectionVo> sectionList = menu33Service.getSectionList();
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(cur_page);
 		
-		System.out.println(sectionList);
-		
+		model.addAttribute("purchaseitemList", purchaseitemList);
+		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList);
 		model.addAttribute("sectionList", sectionList);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -63,78 +68,110 @@ public class Menu33Controller {
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/search", method=RequestMethod.GET)
 	public Map<String, Object> search(@RequestParam(value="itemcode", required=false) String no) {
+		System.out.println(no);
+		
 		PurchaseitemVo searchpurchaseitemVo = menu33Service.searchpurchaseitem(no);
-		//FactoryVo searchfactoryVo = menu33Service.searchfactory(purchaseitemVo.getFactory_code());
+		FactoryVo searchfactoryVo = menu33Service.searchfactory(searchpurchaseitemVo.getFactorycode());
+		SectionVo searchsectionVo = menu33Service.searchsection(searchpurchaseitemVo.getSectioncode());
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("name", searchpurchaseitemVo.getName());
+		map.put("no", searchpurchaseitemVo.getNo());
+		map.put("section_name", searchsectionVo.getClassification());
+		map.put("factory_name", searchfactoryVo.getName());
+		map.put("postaddress", searchfactoryVo.getPostaddress());
+		map.put("roadaddress", searchfactoryVo.getRoadaddress());
+		map.put("detailaddress", searchfactoryVo.getDetailaddress());
+		map.put("standard", searchpurchaseitemVo.getStandard());
+		map.put("price", searchpurchaseitemVo.getPrice());
 		
-		String name = searchpurchaseitemVo.getName();
-		System.out.println(name);
+		map.put("name", searchpurchaseitemVo.getName());
+		map.put("section_code", searchpurchaseitemVo.getSectioncode());
+		map.put("manager_name", searchfactoryVo.getManagername());
+		map.put("produce_date", searchpurchaseitemVo.getProducedate());
+		map.put("purpose", searchpurchaseitemVo.getPurpose());
 		
 		return map;
 	}
 	
-	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/add")
 	public String add(@ModelAttribute PurchaseitemVo purchaseitemVo,
 					  @ModelAttribute FactoryVo factoryVo,
-					  @RequestParam(value="factory_name", required=false) String factory_name,
-					  @RequestParam(value="factory_address1", required=false) String factory_address1,
-					  @RequestParam(value="factory_address2", required=false) String factory_address2,
-					  @RequestParam(value="factory_address3", required=false) String factory_address3,
+					  @RequestParam(value="factoryname", required=false) String factory_name,
 					  HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		System.out.println(purchaseitemVo);
+		System.out.println(factoryVo);
+		
+		if(session != null && session.getAttribute("authUser") != null) {
+			UserVo userVo = (UserVo)session.getAttribute("authUser");
+			
+			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "" && purchaseitemVo.getProducedate() != "") {
+				System.out.println(purchaseitemVo.getSectioncode());
+				factoryVo.setName(factory_name);
+				purchaseitemVo.setInsertuserid(userVo.getId());
+				factoryVo.setInsertuserid(userVo.getId());
+				
+				menu33Service.add(purchaseitemVo, factoryVo);
+			}
+		}
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/update")
+	public List<PurchaseitemVo> update(@ModelAttribute PurchaseitemVo purchaseitemVo,
+			  			 @ModelAttribute FactoryVo factoryVo,
+			  			 @RequestParam(value="factoryname", required=false) String factory_name,
+			  			 HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");
 			
-			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "" && purchaseitemVo.getProduce_date() != "") {
-				System.out.println(purchaseitemVo.getSection_code());
+			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "" && purchaseitemVo.getProducedate() != "") {
 				factoryVo.setName(factory_name);
-				factoryVo.setAddress(factory_address1 + " " + factory_address2 + " " + factory_address3);
-				purchaseitemVo.setInsert_userid(userVo.getId());
-				factoryVo.setInsert_userid(userVo.getId());
+				purchaseitemVo.setUpdateuserid(userVo.getId());
+				factoryVo.setUpdateuserid(userVo.getId());
 				
-				menu33Service.add(purchaseitemVo, factoryVo);
+				menu33Service.update(purchaseitemVo, factoryVo);
 			}
 		}
 		
-		return MAINMENU + "/" + SUBMENU + "/add";
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList();
+		
+		return purchaseitemList;
 	}
 	
-	@RequestMapping(value="/" + SUBMENU + "/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute PurchaseitemVo purchaseitemVo,
-						 @ModelAttribute FactoryVo factoryVo,
-						 @RequestParam(value="section_name", required=false) String section_name,
-						 @RequestParam(value="section_code", required=false) String section_code,
-						 @RequestParam(value="factory_name", required=false) String factory_name,
-						 @RequestParam(value="factory_address1", required=false) String factory_address1,
-						 @RequestParam(value="factory_address2", required=false) String factory_address2) {
-		
-		if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
-			factoryVo.setName(factory_name);
-			factoryVo.setAddress(factory_address1 + " " + factory_address2);
-			
-			menu33Service.update(purchaseitemVo, factoryVo);
-		}
-		
-		return MAINMENU + "/" + SUBMENU + "/add";
-	}
-	
-	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/delete")
 	public String delete(@ModelAttribute PurchaseitemVo purchaseitemVo,
-						 @ModelAttribute FactoryVo factoryVo) {
+ 			 			 @ModelAttribute FactoryVo factoryVo,
+ 			 			 @RequestParam(value="factoryname", required=false) String factory_name,
+ 			 			 HttpServletRequest request) {
 		
-		if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
+		HttpSession session = request.getSession();
+		
+		if(session != null && session.getAttribute("authUser") != null) {
+			UserVo userVo = (UserVo)session.getAttribute("authUser");
 			
-			menu33Service.delete(purchaseitemVo, factoryVo);
+			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
+				factoryVo.setName(factory_name);
+				purchaseitemVo.setUpdateuserid(userVo.getId());
+				factoryVo.setUpdateuserid(userVo.getId());
+				
+				System.out.println(purchaseitemVo);
+				
+				menu33Service.delete(purchaseitemVo, factoryVo);
+			}
 		}
 		
-		return MAINMENU + "/" + SUBMENU + "/add";
+		return "success";
 	}
-	
 }
 
 

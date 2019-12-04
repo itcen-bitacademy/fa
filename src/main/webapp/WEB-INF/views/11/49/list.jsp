@@ -139,10 +139,10 @@ form {
 									<div class="prod-list-opts">
 										<div class="order-opt">
 											<ul class="order-list">
-												<li class="order-item"><h4><a href="#">차입일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">만기일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">등록일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">차입금액</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=d">차입일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=e">만기일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=i">등록일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=m">차입금액</a></h4></li>
 											</ul>
 										</div>
 									</div>
@@ -233,7 +233,7 @@ form {
 				<ul>
 				<c:choose>
 					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${dataResult.pagination.startPage - 1 }">
 						<i class="icon-double-angle-left"></i></a></li>
 					</c:when>
 					<c:otherwise>
@@ -243,17 +243,17 @@ form {
 				<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 					<c:choose>
 						<c:when test="${pg eq dataResult.pagination.page }">
-						<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg }</a></li>
+						<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${pg }">${pg }</a></li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg }</a></li>
+										<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${pg}">${pg }</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 
 							<c:choose>
 								<c:when test="${dataResult.pagination.next }">
-									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>

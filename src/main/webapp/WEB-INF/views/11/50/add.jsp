@@ -135,7 +135,7 @@ tr td:first-child {
 										<td><h4>은행코드</h4></td>
 										<td colspan="2">
 											<input type="text" class="search-input-width-first" name="bankCode" />
-												<a href="#" id="id-btn-dialog1">
+												<a href="#" id="a-bankinfo-dialog">
 													<span class="btn btn-small btn-info">
 														<i class="icon-search nav-search-icon"></i>
 													</span>
@@ -175,13 +175,6 @@ tr td:first-child {
 																</tr>
 															</thead>
 															<tbody id="tbody-bankList">
-															<c:forEach items="${bankList}" var="bank" varStatus="status">
-																<tr>
-																	<td class="center">${bank.code}</td>
-																	<td class="center">${bank.name}</td>
-																	<td class="center">${bank.store}</td>
-																</tr>
-															</c:forEach>
 															</tbody>
 														</table>
 												</div>
@@ -536,8 +529,9 @@ tr td:first-child {
 			$('#dangercode-field-select').val('초기값').trigger('chosen:updated');
         });
 		
-		// 은행코드 및 은행명 검색
+		// 은행코드 검색
 		$("#a-dialog-bankcode").click(function(event){
+			alert("click dialog bankcode");
 			event.preventDefault();
 			$("#tbody-bankList").find("tr").remove();
 			
@@ -556,6 +550,7 @@ tr td:first-child {
 				    }
 				},
 				success: function(response){
+					alert(response);
 					$("#input-dialog-bankcode").val('');
 					$("#tbody-bankList").append("<tr>" +
 					        "<td class='center'>" + response.code + "</td>" +
@@ -571,6 +566,7 @@ tr td:first-child {
 		
 		// 은행명 검색 : 은행목록 리스트로 가져오기
 		$("#a-dialog-bankname").click(function(event){
+			alert("click dialog bankname");
 			event.preventDefault();
 			$("#tbody-bankList").find("tr").remove();
 			
@@ -589,6 +585,7 @@ tr td:first-child {
 				    }
 				},
 				success: function(data){
+					alert(data);
 					$("#input-dialog-bankname").val('');
 					 $.each(data,function(index, item){
 			                $("#tbody-bankList").append("<tr>" +
@@ -604,14 +601,14 @@ tr td:first-child {
 			});
 		});
 		
-		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
-		$("#modal-bank-table tr").click(function(){ 
+		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 input form에 추가
+		$(document.body).delegate('#tbody-bankList tr', 'click', function() {
 			var tr = $(this);
 			var td = tr.children();
 			$("input[name=bankCode]").val(td.eq(0).text());
 			$("input[name=bankName]").val(td.eq(1).text());
+			$("#dialog-message").dialog('close');
 		});
-		
 		
 	});
 
@@ -661,7 +658,7 @@ tr td:first-child {
 			autoOpen : false
 		});
 
-		$("#id-btn-dialog1").click(function() {
+		$("#a-bankinfo-dialog").click(function() {
 			$("#dialog-message").dialog('open');
 			$("#dialog-message").dialog({
 				title: "은행정보",
@@ -670,9 +667,13 @@ tr td:first-child {
 			    height: 500,
 			    width: 400,
 			    modal: true,
+			    close: function() {
+			    	$('#tbody-bankList tr').remove();
+			    },
 			    buttons: {
 			    "닫기" : function() {
-			          $( this ).dialog( "close" );
+			          	$(this).dialog('close');
+			          	$('#tbody-bankList tr').remove();
 			        }
 			    }
 			});

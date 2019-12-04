@@ -3,9 +3,13 @@ package kr.co.itcen.fa.controller.menu11;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,9 +37,10 @@ public class Menu16Controller {
 	
 	// /11  /11/16, /11/16/add
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
-		public String list(Model model,	
+		public String list(  
 				@RequestParam(value="page", required=false,defaultValue = "1") int page,
-				@RequestParam(value="code", required=false,defaultValue = "") String code) {
+				@RequestParam(value="code", required=false,defaultValue = "") String code,
+				Model model) {
 		System.out.println(code);
 		DataResult<BankVo> dataResult = menu16Service.list(code, page);
 		model.addAttribute("dataResult",dataResult);
@@ -51,10 +56,18 @@ public class Menu16Controller {
 }
 	
 	@RequestMapping(value= "/" + SUBMENU + "/add" , method = RequestMethod.POST)
-	public String add(BankVo vo) {
+	public String add(@ModelAttribute @Valid BankVo vo,
+					BindingResult result,
+					Model model) {
+		
+		if(result.hasErrors()) {
+			model.addAllAttributes(result.getModel());
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		}
 		System.out.println(vo);
 		vo.setAddress(vo.getRoadAddress() + vo.getDetailAddress());
 		menu16Service.insert(vo);
+		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	

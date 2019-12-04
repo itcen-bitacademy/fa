@@ -69,9 +69,9 @@ public class Menu50Controller {
 			@RequestParam(value="page", required=false, defaultValue = "1") int page) {
 		DataResult<PdebtVo> dataResult = menu50Service.list(page, year, code);
 		// 은행정보 불러오기
-		List<BankVo> bankList = menu50Service.bankInfoList();
+		//List<BankVo> bankList = menu50Service.bankInfoList();
 		System.out.println("dataResult : " + dataResult.toString());
-		model.addAttribute("bankList", bankList);
+		//model.addAttribute("bankList", bankList);
 		model.addAttribute("dataResult", dataResult);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}

@@ -182,15 +182,13 @@ public class CustomerVo {
 	}
 	@Override
 	public String toString() {
-		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", corporationNo=" + corporationNo
-				+ ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress + ", addressAll="
-				+ addressAll + ", phone=" + phone + ", conditions=" + conditions + ", item=" + item + ", openDate="
-				+ openDate + ", jurisdictionOffice=" + jurisdictionOffice + ", managerName=" + managerName
-				+ ", managerEmail=" + managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost
-				+ ", bankCode=" + bankCode + ", bankName=" + bankName + ", deleteFlag=" + deleteFlag + ", insertUserid="
-				+ insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay="
-				+ updateDay + "]";
+		return "CustomerVo [no=" + no + ", preNo=" + preNo + ", name=" + name + ", ceo=" + ceo + ", corporationNo="
+				+ corporationNo + ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress
+				+ ", addressAll=" + addressAll + ", phone=" + phone + ", conditions=" + conditions + ", item=" + item
+				+ ", openDate=" + openDate + ", jurisdictionOffice=" + jurisdictionOffice + ", managerName="
+				+ managerName + ", managerEmail=" + managerEmail + ", depositNo=" + depositNo + ", depositHost="
+				+ depositHost + ", bankCode=" + bankCode + ", bankName=" + bankName + ", deleteFlag=" + deleteFlag
+				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
+				+ ", updateDay=" + updateDay + "]";
 	}
-	
-	
 }

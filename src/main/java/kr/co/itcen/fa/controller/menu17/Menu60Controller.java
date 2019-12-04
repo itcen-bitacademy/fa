@@ -72,7 +72,7 @@ public class Menu60Controller {
 		model.addAttribute("accountList", menu59Service.getAllAccountList());
 		
 		//테이블부분 셋팅
-		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page));
+		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page, 11));
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/list";

@@ -12,7 +12,6 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu24Service;
 import kr.co.itcen.fa.vo.menu01.CardVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
 
 /**
@@ -34,10 +33,12 @@ public class Menu24Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
-			@RequestParam(required=false) CardVo vo) {
-		System.out.println(vo);
+			CardVo vo) {
+		if(vo.getDeleteFlag()==null) {
+			vo.setDeleteFlag("N");
+		}
 		
-		DataResult<LTermdebtVo> dataResult = menu24Service.list(page,vo);
+		DataResult<CardVo> dataResult = menu24Service.list(page,vo);
 		
 		model.addAttribute("dataResult",dataResult);
 		

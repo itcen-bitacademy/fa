@@ -37,8 +37,8 @@ public class Menu15Repository {
 		return sqlSession.selectOne("menu15.findByNo", no);
 	}
 
-	public void deleteCustomer(List<String> checkNoList) {
-		sqlSession.update("menu15.deleteByNo", checkNoList);
+	public int deleteCustomer(List<String> checkNoList) {
+		return sqlSession.update("menu15.deleteByNo", checkNoList);
 	}
 	
 	

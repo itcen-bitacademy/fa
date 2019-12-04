@@ -31,38 +31,36 @@
 					<div class="span12">
 
 						<!-- PAGE CONTENT BEGINS -->
-						<form class="form-horizontal">
+						<form class="form-horizontal" id="form-customer" method="post">
 							<div class="span12">
 								<div class="control-group">
 									<label class="control-label" for="customer">거래처</label>
 									<div class="controls">
-										<input type="text" id="no1" style="width: 150px;">
-										<input type="text" id="name1" readonly style="width: 200px;">
+										<input type="text" name="firstNo" style="width: 150px;">
+										<input type="text" name="name1" readonly style="width: 200px;">
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> ~ 
-										<input type="text" id="no2" style="width: 150px;">
-										<input type="text" id="name2" readonly style="width: 200px;">
+										<input type="text" name="secondNo" style="width: 150px;">
+										<input type="text" name="name2" readonly style="width: 200px;">
 										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
 									</div>
 								</div>
 							</div>
-						</form>
-						
-						<form class="form-horizontal">
+
 							<div class="span6">
 								<div class="control-group">
 									<label class="control-label" for="item">종목</label>
 									<div class="controls">
-										<input type="text" id="item" style="width: 150px;">
+										<input type="text" id="item" name="item" style="width: 150px;">
 									</div>
 								</div>
 							
 								<div class="control-group">
-									<label class="control-label" for="delete_flag">삭제포함여부</label>
+									<label class="control-label" for="deleteFlag">삭제포함여부</label>
 
 									<div class="controls">
-										<input name="delete_flag" type="radio" class="ace" value="N" checked="checked">
+										<input id="deleteFlag" name="deleteFlag" type="radio" class="ace" value="N" checked="checked">
 										<span class="lbl">미포함</span>
-										<input name="delete_flag" type="radio" class="ace" value="Y">
+										<input name="deleteFlag" type="radio" class="ace" value="Y">
 										<span class="lbl">포함</span>
 									</div>
 								</div>
@@ -73,7 +71,7 @@
 									<label class="control-label" for="insert_date">입력일자</label>
 										<div class="controls">
 											<div class="row-fluid input-append">
-											<input class="cl-date-picker" id="id-date-picker-1" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
+											<input class="cl-date-picker" id="id-date-picker-1" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
 												<span class="add-on">
 												<i class="icon-calendar"></i>
 												</span>
@@ -84,7 +82,7 @@
 								<div class="control-group">
 									<label class="control-label" for="manager_name">거래처 담당자</label>
 									<div class="controls">
-										<input type="text" id="manager_name" style="width: 150px;">
+										<input type="text" name="managerName" style="width: 150px;">
 									</div>
 								</div>
 							</div>
@@ -160,8 +158,43 @@
 								</div>
 							</div>
 						
-						<!-- PAGE CONTENT ENDS -->
+						
+						
+						
+						<%-- 페이징 --%>
+						<div class="pagination">
+							<ul>
+								<c:choose>
+								<c:when test="${dataResult.pagination.prev }">
+									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+								</c:otherwise>
+								</c:choose>
+								<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+								<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${pg }">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${pg }">${pg }</a></li>
+								</c:otherwise>
+								</c:choose>
+								</c:forEach>
+								<c:choose>
+									<c:when test="${dataResult.pagination.next }">
+									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+								</c:choose>
+									</ul>
+								</div>
 
+						<!-- PAGE CONTENT ENDS -->
+						
 					</div>
 					<!-- /.span -->
 				</div>
@@ -185,6 +218,15 @@
 		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
 		$(".chosen-select").chosen();
 	});
+	
+	//조회
+	$("#btn_select").click(function(){
+		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list");
+		document.getElementById('form-customer').submit();
+		
+        return false;
+	});
+	
 	</script>
 	
 	<script>

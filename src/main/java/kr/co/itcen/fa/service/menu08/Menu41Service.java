@@ -2,6 +2,7 @@ package kr.co.itcen.fa.service.menu08;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,12 @@ public class Menu41Service {
 	//리스트 등록
 	public void insert(VehicleVo vehicleVo) {
 		menu41Repository.insert(vehicleVo);
-		
 	}
 
 	//리스트 출력
-	public Map<String, Object> selectList(VehicleVo vehicleVo) {
+	public Map<String, Object> selectList() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", menu41Repository.selectList(vehicleVo));
+		map.put("list", menu41Repository.selectList());
 		return map;
 		
 	}
@@ -62,15 +62,15 @@ public class Menu41Service {
 	}
 
 	//리스트 검색
-	public void search(VehicleVo vehicleVo) {
-		menu41Repository.search(vehicleVo);
-		
+	public Map<String, Object> search(String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", menu41Repository.search(id));
+		return map;
 	}
 
 	//리스트 삭제
 	public void delete(String id) {
 		menu41Repository.delete(id);
-		
 	}
 
 

@@ -36,7 +36,7 @@ public class Menu33Repository {
 		}
 		
 		factoryVo.setNo(fa_code);
-		purchaseitemVo.setFactory_code(fa_code);
+		purchaseitemVo.setFactorycode(fa_code);
 		
 		sqlSession.insert("menu33.purchaseitemadd", purchaseitemVo);
 		
@@ -44,15 +44,20 @@ public class Menu33Repository {
 	}
 
 	public void update(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
-		factoryVo.setNo(purchaseitemVo.getFactory_code());
+		String factorycode = sqlSession.selectOne("menu33.searchfactorycode", purchaseitemVo.getNo());
+		
+		purchaseitemVo.setFactorycode(factorycode);
+		factoryVo.setNo(purchaseitemVo.getFactorycode());
 		
 		sqlSession.update("menu33.purchaseitemupdate", purchaseitemVo);
 		sqlSession.update("menu33.factoryupdate", factoryVo);
 	}
 
 	public void delete(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
+		purchaseitemVo.setDeleteflag("Y");
+		factoryVo.setDeleteflag("Y");
 		sqlSession.update("menu33.purchaseitemdelete", purchaseitemVo);
-		sqlSession.update("menu33.factorydelete", factoryVo);
+		//sqlSession.update("menu33.factorydelete", factoryVo);
 	}
 
 	public PurchaseitemVo searchpurchaseitem(String no) {
@@ -60,13 +65,31 @@ public class Menu33Repository {
 		
 		return purchaseitemVo;
 	}
-
+	
+	public FactoryVo searchfactory(String no) {
+		FactoryVo factoryVo = sqlSession.selectOne("menu33.searchfactory", no);
+		
+		return factoryVo;
+	}
+	
+	public SectionVo searchsection(String no) {
+		SectionVo sectionVo = sqlSession.selectOne("menu33.searchsection", no);
+		
+		return sectionVo;
+	}
+	
+	public List<PurchaseitemVo> getPurchaseitemList() {
+		List<PurchaseitemVo> purchaseitemList = sqlSession.selectList("menu33.getpurchaseitemlist");
+		
+		return purchaseitemList;
+	}
+	
 	public List<SectionVo> getSectionList() {
 		List<SectionVo> sectionList = sqlSession.selectList("menu33.getsectionlist");
 		
 		return sectionList;
 	}
-
+	
 	public List<SectionVo> getsearchSectionList(String sectionname) {
 		sectionname = "%" + sectionname + "%";
 		
@@ -74,6 +97,17 @@ public class Menu33Repository {
 		
 		return searchsectionList;
 	}
+
+	public List<PurchaseitemVo> getpagePurchaseitemList(int page) {
+		page = (page-1)*11;
+		
+		List<PurchaseitemVo> pagepurchaseitemList = sqlSession.selectList("menu33.getpagePurchaseitemList", page);
+		
+		return pagepurchaseitemList;
+	}
+
+	
+	
 }
 
 

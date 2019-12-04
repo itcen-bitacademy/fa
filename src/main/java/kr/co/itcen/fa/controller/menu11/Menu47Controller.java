@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu47Service;
+import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
  * 
@@ -26,12 +29,17 @@ public class Menu47Controller {
 	
 	                                   //   /11/47, /11/47/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
-		menu47Service.test();
-		/*
-		 *    JSP
-		 *    11/47/list.jsp
-		 */
+	public String list(Model model) {
+		List<STermDebtVo> list = menu47Service.getList();
+		model.addAttribute("list", list);
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	@RequestMapping("/" + SUBMENU + "/search")
+	public String search(STermDebtVo sTermDebtVo, Model model) {
+		List<STermDebtVo> list = menu47Service.search(sTermDebtVo);
+		model.addAttribute("list", list);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

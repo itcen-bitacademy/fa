@@ -36,7 +36,15 @@ public class Menu35Service {
 		menu35Repository.update(vo);
 	}
 	
+	public void delete(List<String> checkNoArr) {
+		menu35Repository.delete(checkNoArr);
+	}
+	
 	public List<CustomerVo> search(String no) {
 		return menu35Repository.search(no);
+	}
+	
+	public Boolean existCustomer(String no) {
+		return menu35Repository.getCustomer(no) != null;
 	}
 }

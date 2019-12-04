@@ -16,23 +16,23 @@
 	<select id="selectAll" resultType="pdebtvo">
 		<![CDATA[
 			select 
-			no as no, 
-			code as code, 
-			name as name, 
-			major_code as majorCode, 
-			debt_amount as debtAmount,
-			repay_bal as repayBal, repay_way as repayWay, 
-			concat(date_format(debt_date,'%Y-%m-%d'),' - ', date_format(exp_date,'%Y-%m-%d')) as debtExpDate, 
-			int_rate as intRate, 
-			int_pay_way as intPayWay, 
-			int_amount as intAmount, 
-			mgr as mgr, mgr_call as mgrCall, danger_code as dangerCode, danger_name as dangerName, 
-			bank_code as bankCode, deposit_no as depositNo, account_no as accountNo, 
-			voucher_no as voucherNo, delete_flag as deleteFlag, 
-			insert_id as insertId, insert_date as insertDate, update_id as updateId,
-			update_date as updateDate 
-			from tb_p_debt 
-			where delete_flag = 'N'
+				no as no, 
+				code as code, 
+				name as name, 
+				major_code as majorCode, 
+				debt_amount as debtAmount,
+				repay_bal as repayBal, repay_way as repayWay, 
+				concat(date_format(debt_date,'%Y-%m-%d'),' - ', date_format(exp_date,'%Y-%m-%d')) as debtExpDate, 
+				int_rate as intRate, 
+				int_pay_way as intPayWay, 
+				int_amount as intAmount, 
+				mgr as mgr, mgr_call as mgrCall, danger_code as dangerCode, danger_name as dangerName, 
+				bank_code as bankCode, deposit_no as depositNo, account_no as accountNo, 
+				voucher_no as voucherNo, delete_flag as deleteFlag, 
+				insert_id as insertId, insert_date as insertDate, update_id as updateId,
+				update_date as updateDate 
+					from tb_p_debt 
+						where delete_flag = 'N'
 		]]>
 			<if test="year.length()>0 ">
 				<![CDATA[
@@ -44,9 +44,11 @@
 				and 	code like concat('%',#{code},'%') 
 				]]>
 			</if>
-		<![CDATA[
-		limit	#{pagination.pageIndex }, #{pagination.listSize }
-		]]>
+			<if test="pagination.pageIndex >= 0">
+				<![CDATA[
+			    	limit	 #{pagination.pageIndex }, #{pagination.listSize }
+			    ]]>
+		    </if>
 	</select>
 	
 	<select id="pdebtTotalcount" parameterType="String" resultType="int">
@@ -97,13 +99,13 @@
 	
 	<select id="getBankcodeInfo" parameterType="String" resultType="bankvo">
 		<![CDATA[
-			select code, name, store from tb_bank where code = #{bankcode }
+			select code, name, store, mgr, mgr_phone as mgrPhone from tb_bank where code = #{bankcode }
 		]]>
 	</select>
 	
 	<select id="getBanknameList" parameterType="String" resultType="bankvo">
 		<![CDATA[
-			select code, name, store from tb_bank where name = #{bankname }
+			select code, name, store, mgr, mgr_phone as mgrPhone from tb_bank where name = #{bankname }
 		]]>
 	</select>
 	

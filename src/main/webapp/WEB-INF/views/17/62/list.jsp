@@ -91,38 +91,40 @@
 						</thead>
 						<tbody>
 							<c:forEach var="tb" items="${trialBalanceList }">
-								<tr>
-									<td style="text-align:right;">${tb.debtorSpotMonth }</td>
-									<td style="text-align:right;">${tb.debtorTotal }</td>
-									<td style="text-align:right;">
-										<c:if test="${tb.balanceType eq 'D'}">${tb.debtorTotal - tb.creditTotal}</c:if>
+								<tr class="statement-${tb.statementYn }">
+									<td class="debtor-spot-month" style="text-align:right;">
+										<fmt:formatNumber value="${tb.debtorSpotMonth }" pattern="#,###"></fmt:formatNumber>
+									</td>
+									<td class="debtor-total" style="text-align:right;">
+										<fmt:formatNumber value="${tb.debtorTotal }" pattern="#,###"></fmt:formatNumber>
+									</td>
+									<td class="debtor-balance" style="text-align:right;">
+										<c:if test="${tb.balanceType eq 'D'}">
+											<fmt:formatNumber value="${tb.debtorTotal - tb.creditTotal}" pattern="#,###"></fmt:formatNumber>
+										</c:if>
 									</td>
 									<td class="center">${tb.accountName }</td>
-									<td style="text-align:right;">
-										<c:if test="${tb.balanceType eq 'C'}">${tb.creditTotal - tb.debtorTotal}</c:if>
+									<td class="credit-balance" style="text-align:right;">
+										<c:if test="${tb.balanceType eq 'C'}">
+											<fmt:formatNumber value="${tb.creditTotal - tb.debtorTotal}" pattern="#,###"></fmt:formatNumber>
+										</c:if>
 									</td>
-									<td style="text-align:right;">${tb.creditTotal }</td>
-									<td style="text-align:right;">${tb.creditSpotMonth }</td>
+									<td class="credit-total" style="text-align:right;">
+										<fmt:formatNumber value="${tb.creditTotal }" pattern="#,###"></fmt:formatNumber>
+									</td>
+									<td class="credit-spot-month" style="text-align:right;">
+										<fmt:formatNumber value="${tb.creditSpotMonth }" pattern="#,###"></fmt:formatNumber>
+									</td>
 								</tr>
 							</c:forEach>
-
 							<tr>
-								<td style="text-align:right;">80,000,000</td>
-								<td style="text-align:right;">320,000,000</td>
-								<td style="text-align:right;">120,000,000</td>
-								<td class="center">유동자산</td>
-								<td style="text-align:right;"></td>
-								<td style="text-align:right;">200,000,000</td>
-								<td style="text-align:right;">60,000,000</td>
-							</tr>
-							<tr>
-								<td style="text-align:right;">100,200,000</td>
-								<td style="text-align:right;">413,230,000</td>
-								<td style="text-align:right;">376,450,000</td>
+								<td id="summary-debtor-spot-month" style="text-align:right;">0</td>
+								<td id="summary-debtor-total" style="text-align:right;">0</td>
+								<td id="summary-debtor-balance" style="text-align:right;">0</td>
 								<td class="center">합계</td>
-								<td style="text-align:right;">376,450,000</td>
-								<td style="text-align:right;">413,230,000</td>
-								<td style="text-align:right;">100,200,000</td>
+								<td id="summary-credit-balance" style="text-align:right;">0</td>
+								<td id="summary-credit-total" style="text-align:right;">0</td>
+								<td id="summary-credit-spot-month" style="text-align:right;">0</td>
 							</tr>
 						</tbody>
 					</table>
@@ -141,11 +143,51 @@
 	$(function(){
 		$(".chosen-select").chosen();
 
-		$('#search-btn').on('click', trialBalanceSearch)
+		// 합계 계산
+		calculateSummary()
 	});
 
-	function trialBalanceSearch(event) {
-		console.log('hahaha');
+	// 합계 저장용 변수
+	var totalAmount = 0
+
+	// 합계 계산
+	function calculateSummary() {
+		totalAmount = 0
+		$('.statement-true .debtor-spot-month').each(summaryAmmount)
+		$('#summary-debtor-spot-month').text(addComma(totalAmount))
+
+		totalAmount = 0
+		$('.statement-true .debtor-total').each(summaryAmmount)
+		$('#summary-debtor-total').text(addComma(totalAmount))
+
+		totalAmount = 0
+		$('.statement-true .debtor-balance').each(summaryAmmount)
+		$('#summary-debtor-balance').text(addComma(totalAmount))
+
+
+		totalAmount = 0
+		$('.statement-true .credit-spot-month').each(summaryAmmount)
+		$('#summary-credit-spot-month').text(addComma(totalAmount))
+
+		totalAmount = 0
+		$('.statement-true .credit-total').each(summaryAmmount)
+		$('#summary-credit-total').text(addComma(totalAmount))
+
+		totalAmount = 0
+		$('.statement-true .credit-balance').each(summaryAmmount)
+		$('#summary-credit-balance').text(addComma(totalAmount))
+	}
+
+	// 합계 계산
+	function summaryAmmount(index, item) {
+		var c = $(item).text().trim().replace(/,/gi, '')
+		totalAmount += Number(c)
+	}
+
+	// comma 추가
+	function addComma(num) {
+		var regexp = /\B(?=(\d{3})+(?!\d))/g;
+		return num.toString().replace(regexp, ',');
 	}
 </script>
 </body>
