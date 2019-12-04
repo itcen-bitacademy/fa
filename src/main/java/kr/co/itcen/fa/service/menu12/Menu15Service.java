@@ -36,8 +36,8 @@ public class Menu15Service {
 		return menu15Repository.getCustomer(no) != null;
 	}
 
-	public void deleteCustomer(List<String> checkNoList) {
-		menu15Repository.deleteCustomer(checkNoList);
+	public Boolean deleteCustomer(List<String> checkNoList) {
+		return menu15Repository.deleteCustomer(checkNoList) != 0;
 	}
 
 	

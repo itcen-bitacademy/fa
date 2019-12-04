@@ -67,14 +67,13 @@ public class Menu15Controller {
 	public JSONResult checkNo(@RequestParam(value = "no", required = true, defaultValue = "") String no) {
 		Boolean exist = menu15Service.existCustomer(no);
 		
-		System.out.println(exist);
 		return JSONResult.success(exist);
 	}
 	
+	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
-	public String delete(@RequestParam(value = "checkNoArr[]") List<String> checkNoList) {
-		System.out.println(checkNoList);
-		menu15Service.deleteCustomer(checkNoList);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+	public JSONResult delete(@RequestParam(value = "checkNoArr[]") List<String> checkNoList) {
+		Boolean exist = menu15Service.deleteCustomer(checkNoList);
+		return JSONResult.success(exist);
 	}
 }

@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.menu12.Menu15Service;
+import kr.co.itcen.fa.service.menu12.Menu52Service;
+import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu12.CustomerVo;
 
 /**
  * 
@@ -22,10 +26,25 @@ public class Menu52Controller {
 	public static final String SUBMENU = "52";
 
 	@Autowired
-	private Menu15Service menu15Service;
+	private Menu52Service menu52Service;
 	
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model) {
+	@RequestMapping("/" + SUBMENU)
+	public String list(Model model, @RequestParam(value="page", required=false, defaultValue="1") int page) {
+		int totalCnt = menu52Service.getTotalCnt();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		model.addAttribute("customerList", menu52Service.getAllCustomer(new CustomerVo(), pagination));
+		model.addAttribute("pagination", pagination);
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	@RequestMapping(value="/" + SUBMENU + "/list", method=RequestMethod.POST)
+	public String list(Model model, CustomerVo customerVo, @RequestParam(value="page", required=false, defaultValue="1") int page) {
+		System.out.println(customerVo);
+		int totalCnt = menu52Service.getTotalCnt();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		model.addAttribute("customerList", menu52Service.getAllCustomer(customerVo, pagination));
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("customerVo", customerVo);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

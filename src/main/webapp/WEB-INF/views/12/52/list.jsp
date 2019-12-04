@@ -43,6 +43,17 @@
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
+		
+		$("#btn-submit").on("click", function(){
+			$("#form-customer").submit();
+		});
+		
+		$(".pagination li a").on("click", function(event){
+			event.preventDefault();
+			var page = $(this).text();
+			$("#form-customer input[name=page]").val(page);
+			$("#form-customer").submit();
+		});
 	})
 </script>
 <body class="skin-3">
@@ -62,28 +73,27 @@
 				<div class="span12">
 					<div class="row-fluid">
 						<div class="span12">
-							<form class="form-horizontal">
+					<form class="form-horizontal" id="form-customer" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list" method="post">
+					<input type="hidden" name="page">
                      <div class="span12">
                         <div class="control-group">
                            <label class="control-label" for="customer">거래처</label>
                            <div class="controls">
-                              <input type="text" id="no1" style="width: 150px;">
-                              <input type="text" id="name1" readonly style="width: 200px;">
+                              <input type="text" id="no1" name="no" style="width: 150px;">
+                              <input type="text" id="name1" name="name1" readonly style="width: 200px;">
                               <span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> ~ 
-                              <input type="text" id="no2" style="width: 150px;">
-                              <input type="text" id="name2" readonly style="width: 200px;">
+                              <input type="text" id="no2" name="preNo" style="width: 150px;">
+                              <input type="text" id="name2" name="name2" readonly style="width: 200px;">
                               <span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
                            </div>
                         </div>
                      </div>
-                  </form>
                   
-                  <form class="form-horizontal">
                      <div class="span4">
                         <div class="control-group">
                            <label class="control-label" for="item">종목</label>
                            <div class="controls">
-                              <input type="text" id="item" style="width: 150px;">
+                              <input type="text" id="item" name="item" style="width: 150px;">
                            </div>
                         </div>
                      
@@ -91,9 +101,9 @@
                            <label class="control-label" for="delete_flag">삭제포함여부</label>
 
                            <div class="controls">
-                              <input name="delete_flag" type="radio" class="ace" value="N" checked="checked">
+                              <input name="deleteFlag" type="radio" class="ace" value="N" checked="checked">
                               <span class="lbl">미포함</span>
-                              <input name="delete_flag" type="radio" class="ace" value="Y">
+                              <input name="deleteFlag" type="radio" class="ace" value="Y">
                               <span class="lbl">포함</span>
                            </div>
                         </div>
@@ -104,7 +114,7 @@
                            <label class="control-label" for="insert_date">입력일자</label>
                               <div class="controls">
                                  <div class="row-fluid input-append">
-                                 <input class="cl-date-picker" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
+                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
                                     <span class="add-on">
                                     <i class="icon-calendar"></i>
                                     </span>
@@ -115,7 +125,7 @@
                         <div class="control-group">
                            <label class="control-label" for="manager_name">거래처 담당자</label>
                            <div class="controls">
-                              <input type="text" id="manager_name" style="width: 150px;">
+                              <input type="text" name="managerName" id="manager_name" style="width: 150px;">
                            </div>
                         </div>
                      </div>
@@ -124,7 +134,7 @@
                         <div class="span12">
                            <div class="control-group">
                               <div class="hr hr-18 dotted"></div>
-                                 <button class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
+                                 <button class="btn btn-info btn-small" id="btn-submit" style="float:left; margin-left:20px;">조회</button>
                            </div>
                            <div class="hr hr-18 dotted"></div>
                         </div>
@@ -161,66 +171,62 @@
 									</tr>
 								</thead>
 								<tbody role="alert" aria-live="polite" aria-relevant="all">
-									<tr class="odd">
-										<td>1</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-									</tr>
-									<tr class="even">
-										<td>2</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-									</tr>
-								</tbody>
+										<c:forEach items="${customerList }" var="customer">
+											<tr class="rows">
+												<td>${customer.no }</td>
+												<td>${customer.name }</td>
+												<td>${customer.ceo }</td>
+												<td>${customer.corporationNo }</td>
+												<td>${customer.addressAll }</td>
+												<td>${customer.phone }</td>
+												<td>${customer.conditions }</td>
+												<td>${customer.item }</td>
+												<td>${customer.openDate }</td>
+												<td>${customer.jurisdictionOffice }</td>
+												<td>${customer.managerName }</td>
+												<td>${customer.managerEmail }</td>
+												<td>${customer.depositNo }</td>
+												<td>${customer.depositHost }</td>
+												<td>${customer.bankCode }</td>
+												<td>${customer.bankName }</td>
+												<td>${customer.insertDay }</td>
+												<td>${customer.insertUserid }</td>
+												<td>${customer.updateDay }</td>
+												<td>${customer.updateUserid }</td>
+												<td>${customer.deleteFlag }</td>
+											</tr>
+										</c:forEach>
+									</tbody>
 							</table>
 						</div>
 					</div>
 					
 					<div class="pagination">
 						<ul>
-							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							<c:if test="${!pagination.prev }">
+								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+							</c:if>
+							<c:if test="${pagination.prev }">
+								<li><a href="#"><i class="icon-double-angle-left"></i></a></li>
+							</c:if>
+							
+							<c:forEach var="pageNum" begin="${pagination.startPage }" end="${pagination.endPage }">
+								<c:choose>
+									<c:when test="${pageNum eq  pagination.page}">
+										<li class="active"><a href="#">${pageNum }</a></li>		
+									</c:when>
+									<c:otherwise>
+										<li><a href="#">${pageNum }</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<c:if test="${!pagination.prev }">
+								<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</c:if>
+							<c:if test="${pagination.prev }">
+								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</c:if>
 						</ul>
 					</div>
 				</div><!-- /.span -->
