@@ -327,18 +327,24 @@ $(function() {
 
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">교통카드 유무
-								</label> <input name="transportation" type="radio" class="ace"
-									value="true" checked /> <span class="lbl"> Yes</span> <input
-									name="transportation" type="radio" class="ace" value="false" />
-								<span class="lbl"> No</span>
+								</label> 
+								
+									<input name="transportation" type="radio" class="ace" value="Y" checked /> 
+									<span class="lbl"> Yes</span> 
+									
+									<input name="transportation" type="radio" class="ace" value="N" />
+									<span class="lbl"> No</span>
 
 							</div>
 
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">해외사용 여부
-								</label> <input name="abroad" type="radio" class="ace" value="true"
-									checked /> <span class="lbl"> Yes</span> <input name="abroad"
-									type="radio" class="ace" value="false" /> <span class="lbl">
+								</label> 
+									<input name="abroad" type="radio" class="ace" value="Y"
+									checked /> <span class="lbl"> Yes</span> 
+									
+									<input name="abroad"
+									type="radio" class="ace" value="N" /> <span class="lbl">
 									No</span>
 
 							</div>
