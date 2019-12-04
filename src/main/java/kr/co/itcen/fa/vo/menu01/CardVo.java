@@ -34,9 +34,10 @@ public class CardVo {
 	private String depositHost; 
 	private String bankCode;
 	private String bankName;
-	private String inputperiodstart;	// 입력기간 시작
-	private String inputperiodend;		// 입력기간 끝
-	
+	private String inputperiodStart;	// 입력기간 시작
+	private String inputperiodEnd;		// 입력기간 끝
+	private String cardStartNo;			// 카드시작번호
+	private String cardEndNo;			// 카드종료번호
 	public String getCardNo() {
 		return cardNo;
 	}
@@ -157,17 +158,29 @@ public class CardVo {
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
 	}
-	public String getInputperiodstart() {
-		return inputperiodstart;
+	public String getInputperiodStart() {
+		return inputperiodStart;
 	}
-	public void setInputperiodstart(String inputperiodstart) {
-		this.inputperiodstart = inputperiodstart;
+	public void setInputperiodStart(String inputperiodStart) {
+		this.inputperiodStart = inputperiodStart;
 	}
-	public String getInputperiodend() {
-		return inputperiodend;
+	public String getInputperiodEnd() {
+		return inputperiodEnd;
 	}
-	public void setInputperiodend(String inputperiodend) {
-		this.inputperiodend = inputperiodend;
+	public void setInputperiodEnd(String inputperiodEnd) {
+		this.inputperiodEnd = inputperiodEnd;
+	}
+	public String getCardStartNo() {
+		return cardStartNo;
+	}
+	public void setCardStartNo(String cardStartNo) {
+		this.cardStartNo = cardStartNo;
+	}
+	public String getCardEndNo() {
+		return cardEndNo;
+	}
+	public void setCardEndNo(String cardEndNo) {
+		this.cardEndNo = cardEndNo;
 	}
 	@Override
 	public String toString() {
@@ -177,10 +190,10 @@ public class CardVo {
 				+ ", insertUserId=" + insertUserId + ", insertDay=" + insertDay + ", updateUserId=" + updateUserId
 				+ ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + ", cardNoOld=" + cardNoOld
 				+ ", depositHost=" + depositHost + ", bankCode=" + bankCode + ", bankName=" + bankName
-				+ ", inputperiodstart=" + inputperiodstart + ", inputperiodend=" + inputperiodend + "]";
+				+ ", inputperiodStart=" + inputperiodStart + ", inputperiodEnd=" + inputperiodEnd + ", cardStartNo="
+				+ cardStartNo + ", cardEndNo=" + cardEndNo + "]";
 	}
 	
-
 }
 
 
