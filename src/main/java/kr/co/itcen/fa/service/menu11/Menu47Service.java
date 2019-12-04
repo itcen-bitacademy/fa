@@ -1,9 +1,12 @@
 package kr.co.itcen.fa.service.menu11;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu11.Menu47Repository;
+import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
  * 
@@ -17,7 +20,11 @@ public class Menu47Service {
 	@Autowired
 	private Menu47Repository menu47Repository;
 	
-	public void test() {
-		menu47Repository.test();
+	public List<STermDebtVo> getList() {
+		return menu47Repository.getList();
+	}
+	
+	public List<STermDebtVo> search(STermDebtVo sTermDebtVo){
+		return menu47Repository.getSearchedList(sTermDebtVo);
 	}
 }

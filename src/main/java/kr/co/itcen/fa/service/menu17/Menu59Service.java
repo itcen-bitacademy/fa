@@ -24,18 +24,18 @@ public class Menu59Service {
 	@Autowired
 	private Menu59Repository menu59Repository;
 	
-	public Boolean insert(AccountManagementVo vo) {
-		Boolean count = menu59Repository.insert(vo);
-		return count;	
+	public Boolean insert(AccountManagementVo vo) {		
+
+		return menu59Repository.insert(vo);	
 	}
 	
-	public DataResult<AccountManagementVo> getList(AccountManagementVo vo, int page){
+	public DataResult<AccountManagementVo> getList(AccountManagementVo vo, int page ,int pagee ){
 		DataResult<AccountManagementVo> dataResult = new DataResult<>();
 		
 		int totalCount = menu59Repository.selectCount(vo);
 		System.out.println(totalCount);
 		
-		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);	
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, pagee, 5);	
 		if(totalCount == 0) {
 			paginationUtil.setListSize(0);
 			paginationUtil.setPageSize(0);
@@ -69,5 +69,13 @@ public class Menu59Service {
 	public Boolean delete(Long no) {
 		Boolean count = menu59Repository.delete(no);
 		return count;	
+	}
+	
+	public List<AccountManagementVo> chechedAccount(AccountManagementVo vo) {
+		return menu59Repository.chechedAccount(vo);	
+	}
+	
+	public List<AccountManagementVo> chechedAccount2(AccountManagementVo vo) {
+		return menu59Repository.chechedAccount2(vo);	
 	}
 }
