@@ -90,6 +90,7 @@
 		select no,
 			classification,
 			code,
+			
 			last_update as lastUpdate,
 			parent_no as parentNo
 		    from tb_section
