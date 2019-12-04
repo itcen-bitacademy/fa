@@ -36,6 +36,7 @@ public class Menu51Controller {
 			Model model, 
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			PdebtVo pdebtVo) {
+		System.out.println("사채현황조회 page : " + page);
 		DataResult<PdebtVo> dataResult = menu51Service.list(page, pdebtVo);
 		List<SectionVo> sectionlist = menu51Service.selectSection();
 		System.out.println("dataResult : " + dataResult);

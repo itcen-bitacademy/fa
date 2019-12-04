@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu51">
 	
-	<select id="selectAllCount" resultType="int" parameterType="ldebtvo">
+	<select id="selectAllCount" resultType="int" parameterType="pdebtvo">
 	<![CDATA[
 		select count(*)
 		    from tb_p_debt
@@ -31,7 +31,7 @@
 	</select>
 	
 	<!-- select list -->
-	<select id="selectAll" resultType="ldebtvo" parameterType="map">
+	<select id="selectAll" resultType="pdebtvo" parameterType="map">
 	<![CDATA[
 		select no,
 			code,
@@ -58,7 +58,7 @@
 			</if>
 			<if test="intPayWay != null and !intPayWay.equals('')">
 			<![CDATA[
-				and 	intPayWay = '#{vo.intPayWay}' 
+				and 	intPayWay = #{vo.intPayWay}
 			]]>
 			</if>
 		     <if test="bankCode != null and !bankCode.equals('')">		    
@@ -71,9 +71,7 @@
 				and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
 			]]>
 			</if>
-			<![CDATA[
-		    	limit	#{pagination.pageIndex }, #{pagination.listSize }
-		    ]]>
+		    	limit	 1, #{pagination.listSize }
 	</select>
 	
 	<select id="selectsection" resultType="sectionvo">
