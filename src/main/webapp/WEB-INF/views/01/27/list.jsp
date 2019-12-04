@@ -326,12 +326,32 @@ function execDaumPostcode() {
 
 								<br/>
 								
-								<div class="form-group">
+								<div class="form-group" style="float: left">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										법인번호:&nbsp;
 									</label>
 									<input type="text" id="corporationNo" name="corporationNo" placeholder="법인번호" class="col-xs-10 col-sm-5" />
 								</div>
+								
+								<div class="form-group">
+									<label class="control-label" for="form-field-1">
+										종류:&nbsp;&nbsp;
+									</label> 
+								
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="a" checked /> 
+									<span class="lbl">토지</span> 
+									&nbsp;
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="b" />
+									<span class="lbl">건물</span> 
+									&nbsp;
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="c" />
+									<span class="lbl">자산</span> 
+									&nbsp;
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="d" />
+									<span class="lbl">무형자산</span>
+
+								</div>
+								
 							</div><!-- /span6 -->
 
 							<div class="span6">
@@ -399,6 +419,8 @@ function execDaumPostcode() {
 									</label>
 									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" />
 								</div>
+
+								<br/>
 							</div><!-- ./span6 -->
 						</div>
 							<!-- span -->
