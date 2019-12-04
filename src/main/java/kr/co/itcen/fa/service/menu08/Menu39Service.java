@@ -34,7 +34,7 @@ public class Menu39Service {
 		menu39Repository.add(vo);
 	}
 	
-	//list
+	//조회
 	public List<BuildingVo> list(String id) {
 		List<BuildingVo> list = menu39Repository.getList(id);
 		return list;
@@ -42,7 +42,7 @@ public class Menu39Service {
 	
 	//수정
 	public void modify(BuildingVo vo) {
-		menu39Repository.modify(vo);
+		menu39Repository.update(vo);
 	}
 	
 	//삭제 flag
