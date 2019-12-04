@@ -142,7 +142,12 @@ public class Menu59Controller {
 		if(list.size() >= 1) {
 			if(list.get(0).getAccountOrder() != accountManagement.getAccountOrder()) {		
 				if(list.get(0).getAccountNo().equals(accountManagement.getAccountNo())) {
+					if(menu59Service.chechedAccount3(accountManagement).size() < 1) {
+					System.out.println("list.get(0).getAccountOrder() : " + list.get(0).getAccountOrder());
+					System.out.println("accountManagement.getAccountOrder() : " + accountManagement.getAccountOrder());
 					
+					
+					System.out.println("여기 들어오냐111111111111111111111111");
 					overlap = "nono";
 					model.addAttribute("overlap", overlap);
 					
@@ -150,10 +155,13 @@ public class Menu59Controller {
 					
 					System.out.println(accountManagement);	
 					menu59Service.update(accountManagement);
-							
+					} else {
+						overlap = "overlap";
+						model.addAttribute("overlap", overlap);
+					}
 				}else {				
 					if(menu59Service.chechedAccount2(accountManagement).size() < 1) {
-						
+						System.out.println("여기 들어오냐222222222222222222222");
 						overlap = "nono";
 						model.addAttribute("overlap", overlap);
 						

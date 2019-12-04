@@ -78,4 +78,9 @@ public class Menu59Service {
 	public List<AccountManagementVo> chechedAccount2(AccountManagementVo vo) {
 		return menu59Repository.chechedAccount2(vo);	
 	}
+	
+	public List<AccountManagementVo> chechedAccount3(AccountManagementVo vo) {
+		return menu59Repository.chechedAccount3(vo);	
+	}
+	
 }

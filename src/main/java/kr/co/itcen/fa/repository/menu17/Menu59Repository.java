@@ -48,6 +48,11 @@ public class Menu59Repository {
 	public List<AccountManagementVo> chechedAccount2(AccountManagementVo vo) {
 		return sqlSession.selectList("menu59.chechedAccount2",vo);
 	}	
+
+	//계정과목 순서 중복값 체크
+	public List<AccountManagementVo> chechedAccount3(AccountManagementVo vo) {
+		return sqlSession.selectList("menu59.chechedAccount3",vo);
+	}	
 	
 	//계정과목 셀렉트 박스에 대한 데이터 출력
 	public List<AccountManagementVo> getAllAccountList(){
