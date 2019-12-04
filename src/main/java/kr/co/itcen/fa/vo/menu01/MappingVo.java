@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.vo.menu01;
 
+import java.util.Date;
+
 import org.apache.ibatis.type.Alias;
 
 /**
@@ -12,23 +14,19 @@ import org.apache.ibatis.type.Alias;
 @Alias("1mappingvo")
 public class MappingVo {
 	private Long no; 			 // 매핑번호
-	private String systemCode; 	 // 시스템코드
+	private Long systemCode; 	 // 시스템코드
 	private String voucherUse;   // 전표사용목적
 	private String insertTeam;   // 등록팀
 	private String insertUserid; // 등록자
-	private String insertDay; 	 // 등록일
+	private Date insertDay; 	 // 등록일
 	private String updateUserid; // 수정자
-	private String updateDay; 	 // 수정일
+	private Date updateDay; 	 // 수정일
 	private boolean useYn;		 // 사용여부
 	private Long voucherNo; 	 // 전표번호
 	private String cardNo;	 	 // 카드번호
 	private String cardUser;	 // 카드사용자
-	private String depositNo; 	 // 계좌번호
-	private String depositHost;  // 예금주
-	private String customerNo;	 // 거래처번호
-	private String customerName; // 거래처명
-	private String bankCode;	 // 은행코드
-	private String bankName;	 // 은행명
+	private String depositeNo; 	 // 계좌번호
+	private String depositeHost; // 예금주
 	private String manageNo; 	 // 증빙코드(세금계산서)
 	
 	public Long getNo() {
@@ -37,10 +35,10 @@ public class MappingVo {
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public String getSystemCode() {
+	public Long getSystemCode() {
 		return systemCode;
 	}
-	public void setSystemCode(String systemCode) {
+	public void setSystemCode(Long systemCode) {
 		this.systemCode = systemCode;
 	}
 	public String getVoucherUse() {
@@ -61,10 +59,10 @@ public class MappingVo {
 	public void setInsertUserid(String insertUserid) {
 		this.insertUserid = insertUserid;
 	}
-	public String getInsertDay() {
+	public Date getInsertDay() {
 		return insertDay;
 	}
-	public void setInsertDay(String insertDay) {
+	public void setInsertDay(Date insertDay) {
 		this.insertDay = insertDay;
 	}
 	public String getUpdateUserid() {
@@ -73,10 +71,10 @@ public class MappingVo {
 	public void setUpdateUserid(String updateUserid) {
 		this.updateUserid = updateUserid;
 	}
-	public String getUpdateDay() {
+	public Date getUpdateDay() {
 		return updateDay;
 	}
-	public void setUpdateDay(String updateDay) {
+	public void setUpdateDay(Date updateDay) {
 		this.updateDay = updateDay;
 	}
 	public boolean isUseYn() {
@@ -103,41 +101,17 @@ public class MappingVo {
 	public void setCardUser(String cardUser) {
 		this.cardUser = cardUser;
 	}
-	public String getDepositNo() {
-		return depositNo;
+	public String getDipositeNo() {
+		return depositeNo;
 	}
-	public void setDepositNo(String depositNo) {
-		this.depositNo = depositNo;
+	public void setDipositeNo(String depositeNo) {
+		this.depositeNo = depositeNo;
 	}
-	public String getDepositHost() {
-		return depositHost;
+	public String getDepositeHost() {
+		return depositeHost;
 	}
-	public void setDepositHost(String depositHost) {
-		this.depositHost = depositHost;
-	}
-	public String getCustomerNo() {
-		return customerNo;
-	}
-	public void setCustomerNo(String customerNo) {
-		this.customerNo = customerNo;
-	}
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	public String getBankCode() {
-		return bankCode;
-	}
-	public void setBankCode(String bankCode) {
-		this.bankCode = bankCode;
-	}
-	public String getBankName() {
-		return bankName;
-	}
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
+	public void setDepositeHost(String depositeHost) {
+		this.depositeHost = depositeHost;
 	}
 	public String getManageNo() {
 		return manageNo;
@@ -151,9 +125,8 @@ public class MappingVo {
 		return "MappingVo [no=" + no + ", systemCode=" + systemCode + ", voucherUse=" + voucherUse + ", insertTeam="
 				+ insertTeam + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
 				+ updateUserid + ", updateDay=" + updateDay + ", useYn=" + useYn + ", voucherNo=" + voucherNo
-				+ ", cardNo=" + cardNo + ", cardUser=" + cardUser + ", depositNo=" + depositNo + ", depositHost="
-				+ depositHost + ", customerNo=" + customerNo + ", customerName=" + customerName + ", bankCode="
-				+ bankCode + ", bankName=" + bankName + ", manageNo=" + manageNo + "]";
+				+ ", cardNo=" + cardNo + ", cardUser=" + cardUser + ", depositeNo=" + depositeNo + ", depositeHost="
+				+ depositeHost + ", manageNo=" + manageNo + "]";
 	}
 	
 }

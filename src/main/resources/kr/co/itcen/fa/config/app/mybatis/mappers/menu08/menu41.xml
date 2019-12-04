@@ -30,7 +30,9 @@
 	<!-- 직급 리스트 TEST -->
 	<select id="name"  resultType="name">
 		<![CDATA[
-		select no, staff_name as staffName from tb_staff;
+		select no,
+			  staff_name as staffName 
+		from tb_staff;
 		]]>
 	</select>
 	
@@ -40,8 +42,33 @@
 		<![CDATA[
 		insert
 		  into tb_vehicle
-		values (#{id },null,null,null,#{sectionNo},#{staffNo},#{ownerName},null,null,null,null,#{publicValue},#{regTax},#{acqTax},#{etcCost}, #{payDate}, #{deposit},
-				#{depositDate}, #{monthlyFee}, #{feeDate}, #{taxKind}, "s", null, curdate(), null, null);
+		values (#{id },
+				null,
+				null,
+				null,
+				#{sectionNo},
+				#{staffNo},
+				#{ownerName},
+				null,
+				null,
+				null,
+				null,
+				#{publicValue},
+				#{regTax},
+				#{acqTax},
+				#{etcCost},
+				#{payDate},
+				#{deposit},
+				#{depositDate},
+				#{monthlyFee},
+				#{feeDate}, 
+				#{taxKind}, 
+				"s", 
+				null, 
+				curdate(), 
+				null, 
+				null
+				);
 		]]>
 		<selectKey keyProperty="id" resultType="string" order="AFTER">
 			<![CDATA[
@@ -72,22 +99,21 @@
 		from tb_vehicle v 
 				 left outer join tb_staff st on v.staff_no = st.no
 				 left outer join tb_section s on v.section_no = s.code 
-		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag="s";
+		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag IN('s','o');
 		]]>
 	</select>
 	
 	
-	<!-- 수정 TEST --><!-- where 조건절에 행이 선택되어있을경우 set flag="d"로 바꾸고 -->
+	<!-- 수정 TEST --><!-- where 조건절에 행이 선택되어있을경우 set flag="o"로 바꾸고 -->
 	<update id="update" parameterType="vehicle08vo">
 		<![CDATA[
 		update tb_vehicle
-		  set id = #{id },
+		  set 
 		  	  customer_no = null,
 		  	  taxbill_no = null,
 		  	  voucher_no = null,
-		  	  section_no = null,
+		  	  section_no = #{sectionNo},
 		  	  staff_no = #{staffNo},
-	  	  	  staff_name = #{staffName},
 		  	  owner_name = #{ownerName},
 		  	  wide_address = null,
 		  	  city_address = null,
@@ -106,8 +132,7 @@
 			  flag = "o",
 			  update_userid = null,
 			  update_day = curdate()
-	    where flag="s"
-	    	and id = #{id }; 
+	    where id = #{id }; 
 		]]>
 	</update>
  
@@ -118,24 +143,42 @@
 		<![CDATA[
 		update tb_vehicle
 		  set flag="d"
-	    where id=#{id}; 
+	    where id = #{id}; 
 		]]>
 	</update>
  
  
  	<!-- 검색  TEST -->
-	<select id="search"  resultType="vehicle08vo">
+	<select id="search" resultType="vehicle08vo">
 		<![CDATA[
-		select  v.id as id,
-				s.staff_name as staffName,
-				pay_date as payDate,
-				deposit as deposit,
-				deposit_date as depositDate,
-				monthly_fee as monthlyFee,
-				fee_date as feeDate 
-		from tb_vehicle v left outer join tb_staff s 
-	    on v.staff_no = s.no ;
+		select  	v.id as id,
+					v.section_no as sectionNo,
+					s.classification as classification,
+					st.staff_name as staffName,
+					v.owner_name as ownerName,
+					v.public_value as publicValue,
+					v.reg_tax as regTax,
+					v.acq_tax as acqTax,
+					v.etc_cost as etcCost,
+					v.pay_date as payDate,
+					v.deposit as deposit,
+					v.deposit_date as depositDate,
+					v.monthly_fee as monthlyFee,
+					v.fee_date as feeDate,
+					v.tax_kind as taxKind,
+					v.insert_day as insertDay
+		from tb_vehicle v 
+				 left outer join tb_staff st on v.staff_no = st.no
+				 left outer join tb_section s on v.section_no = s.code 
+		 ]]>
+		 <![CDATA[
+		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag IN('s','o')
 		]]>
+		<if test="_parameter.length()>0">
+            <![CDATA[
+              and id like concat('%',#{_parameter },'%') 
+            ]]>
+         </if>
 	</select>
 	
 </mapper>

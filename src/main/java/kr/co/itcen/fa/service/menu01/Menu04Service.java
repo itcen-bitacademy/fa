@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu01.Menu04Repository;
-import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
 /**
  * 
@@ -20,10 +19,5 @@ public class Menu04Service {
 	
 	public void test() {
 		menu04Repository.test();
-	}
-	
-	// 전표조회
-	public VoucherVo viewVoucher() {
-		return menu04Repository.viewVoucher();
 	}
 }

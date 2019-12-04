@@ -14,32 +14,5 @@
 			]]>
 		</selectKey>
 	</insert>
-	
-	<!-- 전표조회 -->
-	<select id="viewVoucher" parameterType="1vouchervo" resultType="1vouchervo">
-		<![CDATA[
-		select reg_date as regDate,
-			   v.no as voucherNo,
-			   i.amount_flag as amountFlag,
-			   a.no as accountNo,
-			   a.name as accountName,
-			   i.amount as amount,
-			   cu.name as customerName,
-			   m.manage_no as manageNo,
-			   ba.bank_name as bankName,
-			   c.card_no as cardNo,
-			   c.user as cardUser,
-			   ba.deposit_no as depositNo,
-			   ba.deposit_host as depositHost,
-			   ifnull(v.update_userid, v.insert_userid),
-		   	   m.voucher_use as voucherUse
-          from tb_voucher_manager v, tb_voucher_item i, tb_voucher_system_mapping m, tb_cardmanager c, tb_bank_account ba, tb_customer cu, tb_account a
-	     where v.no = i.voucher_no
-           and v.no = m.no
-           and i.account_no = a.no
-           and m.card_no = c.card_no
-           and m.deposit_no = ba.deposit_no
-      order by i.amount_flag desc
-		   ]]>
-	</select>
+
 </mapper>
