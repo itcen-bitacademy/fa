@@ -51,7 +51,10 @@
 		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
-			var queryString = $("form[name=input-form]").serialize();
+			var queryString = $("form[name=input-form]").serializeArray();
+			queryString.push({name: 'page', value: ${param.page});
+			
+			alert(page);
 			if(a == "create") {
 				$.ajax({
 				    url: "${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/create",
@@ -102,15 +105,15 @@
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				    success: function(dataResult){
+				    	if(dataResult.success) {
 				    		alert("계좌 수정이 완료되었습니다."); 
 				    		removeTable();
 				    		
-				    		var bankList = result.bankList;
+				    		var bankList = dataResult.bankList;
 				    		createNewTable(bankList);
 				    	}
-				    	if(result.fail) {
+				    	if(dataResult.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
 				    },
@@ -390,7 +393,8 @@
 				<!-- PAGE CONTENT BEGINS -->
 				<!-- PAGE CONTENT BEGINS -->
 
-				<form class="form-horizontal" id="input-form" name="input-form" method="post">
+				<form class="form-horizontal" id="input-form" name="input-form"
+					method="post">
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="tabbable">
@@ -400,8 +404,8 @@
 
 									<div class="controls">
 										<input type="text" id="form-field-1" name="depositNo"
-											placeholder="계좌 번호" />
-										<input type="hidden" name="depositOld" />
+											placeholder="계좌 번호" /> <input type="hidden"
+											name="depositOld" />
 									</div>
 								</div>
 
@@ -438,7 +442,8 @@
 									<label class="control-label" for="form-field-1">잔액 </label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="balance" placeholder="잔액" />
+										<input type="text" id="form-field-1" name="balance"
+											placeholder="잔액" />
 									</div>
 								</div>
 
@@ -446,33 +451,35 @@
 									<label class="control-label" for="form-field-1">이 율 </label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="이율(%)" name="profit"/>
-										&nbsp; &nbsp; 예금 한도 &nbsp; 
-										<input type="text" id="form-field-1" name="depositLimit" placeholder="예금한도(만원)" />
+										<input type="text" id="form-field-1" placeholder="이율(%)"
+											name="profit" /> &nbsp; &nbsp; 예금 한도 &nbsp; <input
+											type="text" id="form-field-1" name="depositLimit"
+											placeholder="예금한도(만원)" />
 									</div>
 								</div>
-								
-							</div>	<!-- /tabbable -->
-						</div>	<!-- /span -->
+
+							</div>
+							<!-- /tabbable -->
+						</div>
+						<!-- /span -->
 
 						<!-- 4조에서 데이터 가져오는 부분 -->
 						<div class="span6">
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은행 코드 </label>
 								<div class="controls">
-									
-								<span class="btn btn-small btn-info">
-									<a href="#" id="a-bankinfo-dialog">
-										<i class="icon-search nav-search-icon"></i>
-										<input type="text" class="search-input-width-first"
-								name="bankCode" /> </a>
-								</span>
-								<input type="text" id="form-field-1" name="bankName"
-                              placeholder="" />  
-								
+
+									<span class="btn btn-small btn-info"> <a href="#"
+										id="a-bankinfo-dialog"> <i
+											class="icon-search nav-search-icon"></i> <input type="text"
+											class="search-input-width-first" name="bankCode" />
+									</a>
+									</span> <input type="text" id="form-field-1" name="bankName"
+										placeholder="" />
+
 								</div>
 							</div>
-						
+
 							<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
 							<div id="dialog-message" title="은행코드" hidden="hidden">
 								<table id="dialog-message-table">
@@ -508,7 +515,7 @@
 								</table>
 							</div>
 							<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-							
+
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">개설 지점 </label>
 								<div class="controls">
@@ -532,107 +539,141 @@
 							</div>
 						</div>
 						<!-- /.span -->
-					</div>	<!-- /row -->
+					</div>
+					<!-- /row -->
 
 
 					<!-- buttons -->
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="hr hr-18 dotted"></div>
-								<button type="submit" class="btn btn-info btn" 
-									formaction="${pageContext.request.contextPath}/01/25/read" id="btn-read" name="btn-read">조회</button>
-								<button type="submit" class="btn btn-danger btn"
-									formaction="${pageContext.request.contextPath}/01/25/delete" id="btn-delete" name="btn-delete">삭제</button>
-								<button type="submit" class="btn btn-warning btn" 
-									formaction="${pageContext.request.contextPath}/01/25/update" id="btn-update" name="btn-update">수정</button>
-								<button type="submit" class="btn btn-primary btn" id="btn-create" name="btn-create">입력</button>
-								<button type="reset" class="btn btn-default btn">취소</button>
+							<button type="submit" class="btn btn-info btn"
+								formaction="${pageContext.request.contextPath}/01/25/read"
+								id="btn-read" name="btn-read">조회</button>
+							<button type="submit" class="btn btn-danger btn"
+								formaction="${pageContext.request.contextPath}/01/25/delete"
+								id="btn-delete" name="btn-delete">삭제</button>
+							<button type="submit" class="btn btn-warning btn"
+								formaction="${pageContext.request.contextPath}/01/25/update"
+								id="btn-update" name="btn-update">수정</button>
+							<button type="submit" class="btn btn-primary btn" id="btn-create"
+								name="btn-create">입력</button>
+							<button type="reset" class="btn btn-default btn">취소</button>
 							<div class="hr hr-18 dotted"></div>
-						</div>	<!-- /.span -->
-					</div>	<!-- /.row-fluid -->
-				
-				<!-- Tables -->
-				<div class="row-fluid">
-					<div class="span12">
-						<table id="simple-table-1"
-							class="table table-striped table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center"><label> <input type="checkbox" 
-									class="ace" id="selectAll" /> <span class="lbl"></span>
-									</label></th>
-									<th>계좌번호</th>
-									<th>은행번호</th>
-									<th>예금주</th>
-									<th>개설일자</th>
-									<th>만기일자</th>
-									<th>잔액</th>
-									<th>예금한도(만원)</th>
-									<th>이율(%)</th>
-									<th>은행</th>
-									<th>개설지점</th>									
-									<th>담당자</th>
-									<th>은행전화번호</th>
-									<th>입력일자</th>
-									<th>입력담당자</th>
-									<th>수정일자</th>
-									<th>수정담당자</th>
-								</tr>
-							</thead>
-
-							<tbody class = "origin-tbody">
-
-								<c:forEach items='${list }' var='vo' varStatus='status'>
-									<tr>
-										<td class="center"><label> <input type="checkbox"
-												class="ace" /> <span class="lbl"></span>
-										</label></td>
-
-										<td>${vo.depositNo }</td>
-										<td>${vo.bankCode }</td>
-										<td>${vo.depositHost }</td>
-										<td>${vo.makeDate}</td>
-										<td>${vo.enDate}</td>
-										<td>${vo.balance}</td>
-										<td>${vo.depositLimit }</td>
-										<td>${vo.profit}</td>
-										<td>${vo.bankName }</td>
-										<td>${vo.bankLocation }</td>
-										<td>${vo.banker }</td>
-										<td>${vo.bankPhoneCall }</td>
-										<td>${vo.insertUserId }</td>
-										<td>${vo.insertDay }</td>
-										<td>${vo.updateUserId }</td>
-										<td>${vo.updateDay }</td>
-									</tr>
-
-								</c:forEach>
-
-							</tbody>
-						</table>
+						</div>
+						<!-- /.span -->
 					</div>
-					<!-- /span -->
-				</div>
-				</form> <!-- /form -->
+					<!-- /.row-fluid -->
+
+					<!-- Tables -->
+					<div class="row-fluid">
+						<div class="span12">
+							<table id="simple-table-1"
+								class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center"><label> <input type="checkbox"
+												class="ace" id="selectAll" /> <span class="lbl"></span>
+										</label></th>
+										<th>계좌번호</th>
+										<th>은행번호</th>
+										<th>예금주</th>
+										<th>개설일자</th>
+										<th>만기일자</th>
+										<th>잔액</th>
+										<th>예금한도(만원)</th>
+										<th>이율(%)</th>
+										<th>은행</th>
+										<th>개설지점</th>
+										<th>담당자</th>
+										<th>은행전화번호</th>
+										<th>입력일자</th>
+										<th>입력담당자</th>
+										<th>수정일자</th>
+										<th>수정담당자</th>
+									</tr>
+								</thead>
+
+								<tbody class="origin-tbody">
+
+									<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
+										<tr>
+											<td class="center"><label> <input
+													type="checkbox" class="ace" /> <span class="lbl"></span>
+											</label></td>
+
+											<td>${vo.depositNo }</td>
+											<td>${vo.bankCode }</td>
+											<td>${vo.depositHost }</td>
+											<td>${vo.makeDate}</td>
+											<td>${vo.enDate}</td>
+											<td>${vo.balance}</td>
+											<td>${vo.depositLimit }</td>
+											<td>${vo.profit}</td>
+											<td>${vo.bankName }</td>
+											<td>${vo.bankLocation }</td>
+											<td>${vo.banker }</td>
+											<td>${vo.bankPhoneCall }</td>
+											<td>${vo.insertUserId }</td>
+											<td>${vo.insertDay }</td>
+											<td>${vo.updateUserId }</td>
+											<td>${vo.updateDay }</td>
+										</tr>
+
+									</c:forEach>
+
+								</tbody>
+							</table>
+						</div>
+						<!-- /span -->
+					</div>
+				</form>
+				<!-- /form -->
+
 				<!-- /row -->
-				<div class="pagination no-margin">
+				<div class="pagination">
 					<ul>
-						<li class="prev disabled"><a href="#"> <i
-								class="icon-double-angle-left"></i>
-						</a></li>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 
-						<li class="active"><a href="#">1</a></li>
-
-						<li><a href="#">2</a></li>
-
-						<li><a href="#">3</a></li>
-
-						<li class="next"><a href="#"> <i
-								class="icon-double-angle-right"></i>
-						</a></li>
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
-			</div>		<!-- /.page-content -->
+			</div>
+			<!-- /.page-content -->
 		</div>	<!-- /.main-content -->
 	</div>	<!-- /.main-container -->
 
