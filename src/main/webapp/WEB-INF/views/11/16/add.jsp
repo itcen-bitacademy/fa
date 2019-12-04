@@ -347,6 +347,7 @@
 						}
 						console.log(response);
 						
+						
 						if(response.data == true){
 							alert("이미 존재하는 은행코드입니다.");
 							$("#input-code").val("");
