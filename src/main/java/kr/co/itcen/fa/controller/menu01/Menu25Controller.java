@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -56,7 +57,7 @@ public class Menu25Controller {
 		return result;
 	}
 	
-	// R
+	// Read
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/read")
 	public String read(@ModelAttribute BankAccountVo bavo	) {
@@ -91,4 +92,16 @@ public class Menu25Controller {
 		result.put("success", true);
 		return result;
 	}
+	
+	// PopUp
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/gets")
+	public Map<String, Object> gets(@PathVariable String bankAccountNo) {
+		System.out.println("gets");
+		
+		Map<String, Object> result = menu25Service.gets(bankAccountNo);
+		result.put("success", true);
+		return result;
+	}
+		
 }
