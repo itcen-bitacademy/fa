@@ -25,6 +25,8 @@ public class SalesVo {
 		this.taxbillNo = vo.getTaxbillNo();
 		this.totalPrice = vo.getTotalPrice();
 		this.insertUserid = vo.getInsertUserid();
+		this.insertDay = vo.getInsertDay();
+		this.updateUserid = vo.getUpdateUserid();
 	}
 	
 	private Long idx; // 번호
@@ -34,6 +36,7 @@ public class SalesVo {
 	private String empManager; // 거래처담당자
 	private String customerCode; // 거래처코드
 	private String customerName; // 거래처명
+	private String customerPhone; // 거래처 연락처
 	private String sectionCode; // 대분류코드
 	private String sectionName; // 대분류명
 	private String itemCode; // 품목코드
@@ -43,7 +46,7 @@ public class SalesVo {
 	private Long taxValue; // 부가세
 	private Long totalPrice; // 합계금액
 	private String taxType; // 과세구분
-	private Long taxbillNo; // 세금계산서번호
+	private String taxbillNo; // 세금계산서번호
 	private String releaseDate; // 출고일
 	private String deleteFlag; // 삭제여부
 	private Long sellPrice; // 출고가
@@ -51,7 +54,35 @@ public class SalesVo {
 	private String insertDay; // 입력일
 	private String updateUserid; // 수정자
 	private String updateDay; // 수정일
+	private String orderData; // 정렬기준
+	private String startDate; // 검색날짜
+	private String endDate; // 검색날짜
 	
+	
+	public String getOrderData() {
+		return orderData;
+	}
+	public void setOrderData(String orderData) {
+		this.orderData = orderData;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getCustomerPhone() {
+		return customerPhone;
+	}
+	public void setCustomerPhone(String customerPhone) {
+		this.customerPhone = customerPhone;
+	}
 	public Long getIdx() {
 		return idx;
 	}
@@ -142,10 +173,10 @@ public class SalesVo {
 	public void setTaxType(String taxType) {
 		this.taxType = taxType;
 	}
-	public Long getTaxbillNo() {
+	public String getTaxbillNo() {
 		return taxbillNo;
 	}
-	public void setTaxbillNo(Long taxbillNo) {
+	public void setTaxbillNo(String taxbillNo) {
 		this.taxbillNo = taxbillNo;
 	}
 	public String getReleaseDate() {
@@ -196,17 +227,18 @@ public class SalesVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "SalesVo [idx=" + idx + ", salesNo=" + salesNo + ", number=" + number
-				+ ", salesDate=" + salesDate + ", empManager=" + empManager + ", customerCode=" + customerCode
-				+ ", customerName=" + customerName + ", sectionCode=" + sectionCode + ", sectionName=" + sectionName
+		return "SalesVo [idx=" + idx + ", salesNo=" + salesNo + ", number=" + number + ", salesDate=" + salesDate
+				+ ", empManager=" + empManager + ", customerCode=" + customerCode + ", customerName=" + customerName
+				+ ", customerPhone=" + customerPhone + ", sectionCode=" + sectionCode + ", sectionName=" + sectionName
 				+ ", itemCode=" + itemCode + ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue="
 				+ supplyValue + ", taxValue=" + taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType
 				+ ", taxbillNo=" + taxbillNo + ", releaseDate=" + releaseDate + ", deleteFlag=" + deleteFlag
 				+ ", sellPrice=" + sellPrice + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", orderData=" + orderData
+				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
-	
+
 }
