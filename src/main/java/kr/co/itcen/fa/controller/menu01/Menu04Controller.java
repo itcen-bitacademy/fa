@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu01.Menu04Service;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
 
 /**
@@ -22,13 +25,22 @@ import kr.co.itcen.fa.service.menu01.Menu04Service;
 public class Menu04Controller {
 	public static final String MAINMENU = "01";
 	public static final String SUBMENU = "04";
-
+	
+	@Autowired
+	private Menu03Service menu03Service;
+	
 	@Autowired
 	private Menu04Service menu04Service;
 
+	// 전표 조회하기
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
-		menu04Service.test();
+	public String VoucherMain(@RequestParam(defaultValue ="1") int page, Model model) {
+		// 페이징
+		model.addAttribute("dataResult", menu03Service.selectAllVoucherCount(page));
+		
+		// 전표 조회
+		VoucherVo voucherVo = menu04Service.viewVoucher();
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }
