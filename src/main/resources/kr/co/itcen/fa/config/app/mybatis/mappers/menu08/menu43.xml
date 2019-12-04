@@ -22,41 +22,55 @@
 		  into tb_intangible_assets
 		values (#{id }, #{customerNo }, #{taxbillNo }, #{voucherNo }, '007', #{code }, #{name }, #{copyCount },
 				#{purpose }, #{address }, #{user }, #{acqPrice }, #{addiFee }, #{payDate }, #{taxKind},
-				's', 'u007', now(), #{updateUserId }, #{updateDay })
+				's', #{insertUserId }, now(), #{updateUserId }, #{updateDay })
 		]]>
 	</insert>
 	
-	<select id="getList2" resultType="intangibleAssetsVo">
+	<select id="getSection" resultType="sectionvo">
 	<![CDATA[
-	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
-		   tb.section_no as sectionNo, tb.code, s.classification, tb.name, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
-		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind,
-		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
-		   tb.update_day as updateDay
-	  from tb_intangible_assets tb
-left outer join tb_section s
-	    on tb.code = s.code
-	 where tb.insert_day > (now() - interval 3 day)
-	   and s.parent_no = 5
-	   and flag = 's'
-  order by tb.insert_day desc
+	select s.no, s.classification, s.code
+	  from tb_section s
+	 where s.parent_no = 5
 	]]>
 	</select>
 	
-	<select id="getList" resultType="intangibleAssetsVo">
+	<select id="getCustomer" resultType="1customervo">
+	<![CDATA[
+	select no , name , manager_name
+	  from tb_customer
+	]]>
+	</select>
+	
+	<select id="getById" parameterType="string" resultType="string">
+		<![CDATA[
+		select id
+		  from tb_intangible_assets 
+		 where id = #{id }
+		]]>
+	</select>
+	
+	<select id="getList" parameterType="string" resultType="intangibleAssetsVo">
 	<![CDATA[
 	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
 		   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
-		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind,
+		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind, c.name as customerName, c.manager_name as customerManager,
 		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
 		   tb.update_day as updateDay
 	  from tb_intangible_assets tb
-left outer join tb_section s
-	    on tb.section_no = s.code
-	 where tb.insert_day > (now() - interval 3 day)
-	   and flag = 's'
-	    or flag = 'o'
+left outer join tb_section s on tb.code = s.code
+left outer join tb_customer c on tb.customer_no = c.no
+	 where s.parent_no = 5
+	   and tb.insert_day > (now() - interval 3 day)
+	   and flag ='s'
+	   ]]>
+	<if test=' _parameter != null '>
+		<![CDATA[
+		and tb.id like CONCAT('%', #{ _parameter }, '%')
+		]]>
+	</if>
+	<![CDATA[
   order by tb.insert_day desc
+     limit 0, 3
   	]]>
 	</select>
 	
@@ -76,8 +90,7 @@ left outer join tb_section s
 			   addi_fee = #{addiFee }, 
 			   pay_date = #{payDate }, 
 			   tax_kind = #{taxKind },
-			   flag = 'o',
-			   update_userid = 'u007',
+			   update_userid = #{updateUserId },
 			   update_day = now()
 		 where id = #{id }
 		]]>

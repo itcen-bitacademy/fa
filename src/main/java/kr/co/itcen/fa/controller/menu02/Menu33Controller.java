@@ -42,11 +42,16 @@ public class Menu33Controller {
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list"})
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
+					   @RequestParam(value="page", required=false, defaultValue="1") String page,
 					   Model model) {
 		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList();
+		int cur_page = Integer.parseInt(page);
+		
 		List<SectionVo> sectionList = menu33Service.getSectionList();
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(cur_page);
 		
 		model.addAttribute("purchaseitemList", purchaseitemList);
+		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList);
 		model.addAttribute("sectionList", sectionList);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";

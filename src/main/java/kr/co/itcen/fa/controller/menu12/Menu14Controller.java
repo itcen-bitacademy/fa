@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -30,15 +31,21 @@ public class Menu14Controller {
 	@Autowired
 	private Menu14Service menu14Service;
 	
-	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU }, method=RequestMethod.GET)
-	public String list(Model model) {
-		List<SalesVo> list = menu14Service.getList();
+	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}" }, method=RequestMethod.GET)
+	public String list(Model model,
+						@PathVariable(name="page", required=false) String page) {
+		int ipage = 1;
+		if(page!=null) {
+			ipage = Integer.parseInt(page);
+		} 
+		System.out.println(ipage);
 		List<CustomerVo> customerlist = menu14Service.getCustomerList();
 		List<PurchaseitemVo> itemlist = menu14Service.getItemList();
 		
-		model.addAttribute("list", list);
 		model.addAttribute("customerlist", customerlist);
 		model.addAttribute("itemlist", itemlist);
+		
+		model.addAttribute("dataResult", menu14Service.getList(ipage));
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

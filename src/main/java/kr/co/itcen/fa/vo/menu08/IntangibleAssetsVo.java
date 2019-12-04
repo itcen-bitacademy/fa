@@ -11,8 +11,8 @@ public class IntangibleAssetsVo {
 	private String customerManager;
 	private String taxbillNo;
 	private String voucherNo;
-	private Long sectionNo;
-	private Long code;
+	private String sectionNo;
+	private String code;
 	private String classification;
 	private String name;
 	private int copyCount;
@@ -77,19 +77,19 @@ public class IntangibleAssetsVo {
 		this.voucherNo = voucherNo;
 	}
 
-	public Long getSectionNo() {
+	public String getSectionNo() {
 		return sectionNo;
 	}
 
-	public void setSectionNo(Long sectionNo) {
+	public void setSectionNo(String sectionNo) {
 		this.sectionNo = sectionNo;
 	}
 
-	public Long getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(Long code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 	

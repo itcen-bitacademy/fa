@@ -125,6 +125,10 @@ input:focus {
 										</span>
 									</div>
 								</div>
+								<div class="controls span6">
+									<button class="btn btn-default btn-small span1"
+									style="float: left; margin-left: 20px;">조회</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -134,7 +138,7 @@ input:focus {
 								<label class="control-label span1" for="form-field-order">정렬</label>
 								<div class="controls span5">
 									<label style="display: inline;"> <input
-										name="form-field-radio" type="radio" class="ace"> <span
+										name="form-field-radio" type="radio" class="ace" checked> <span
 										class="lbl">최근 순</span>
 									</label> <label style="display: inline;"> <input
 										name="form-field-radio" type="radio" class="ace"> <span
@@ -148,8 +152,7 @@ input:focus {
 									</label>
 
 								</div>
-								<button class="btn btn-default btn-small span1"
-									style="float: left; margin-left: 20px;">조회</button>
+								
 							</div>
 						</div>
 					</div>
@@ -165,16 +168,11 @@ input:focus {
 							<th>번호</th>
 							<th>승인번호</th>
 							<th>작성일자</th>
-							<th>매입번호</th>
-							<th>매입일자</th>
 							<th>등록번호</th>
 							<th>거래처명</th>
 							<th>대표자명</th>
-							<th>품목명</th>
 							<th>업태</th>
 							<th>종목</th>
-							<th>수량</th>
-							<th>단가</th>
 							<th>총 공급가액</th>
 							<th>총 세액</th>
 							<th>과세유형</th>

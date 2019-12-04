@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.BuildingVo;
 
 
@@ -55,4 +56,8 @@ public class Menu39Repository {
 		return sectionList;
 	}
 
+	public List<CustomerVo> getCustomer() {
+		List<CustomerVo> customerList = sqlSession.selectList("menu39.getCustomer");
+		return customerList;
+	}
 }
