@@ -82,7 +82,7 @@
 								&nbsp;
 								<button class="btn btn-info btn-small" type="submit" name="action"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 								&nbsp;
-								<button class="btn btn-default btn-small" type="reset">취소</button>
+								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn">취소</button>
 							</div>
 						</form>
 						<!-- PAGE CONTENT ENDS -->
@@ -146,7 +146,7 @@
 		<ul>
 			<c:choose>
 				<c:when test="${dataResult.pagination.prev }">
-					<li><a href="${pageContext.servletContext.contextPath }/17/60/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/17/60/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
 				</c:when>
 				<c:otherwise>
 					<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -156,17 +156,17 @@
 			<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 				<c:choose>
 					<c:when test="${pg eq dataResult.pagination.page }">
-						<li class="active"><a href="${pageContext.servletContext.contextPath }/17/60/list?page=${pg }">${pg }</a></li>
+						<li class="active"><a href="${pageContext.servletContext.contextPath }/17/60/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${pg }">${pg }</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${pageContext.servletContext.contextPath }/17/60/list?page=${pg }">${pg }</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/17/60/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${pg }">${pg }</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 
 			<c:choose>
 				<c:when test="${dataResult.pagination.next }">
-					<li><a href="${pageContext.servletContext.contextPath }/17/60/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/17/60/list?accountUsedyear=${accountUsedyear }&selectedAccountStatementType=${selectedAccountStatementType }&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 				</c:when>
 				<c:otherwise>
 					<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -237,14 +237,10 @@
     	$('#selectedAccountStatementType').val("B");
     	$('#accountOrder').val("");
     	$('#accountUsedyear').val("2019");
-    	$('#selectedAccount').val(null).trigger('chosen:updated');
+    	$('#accountName').val("");
+    	$('#selectedAccount').val(null).trigger('chosen:updated'); 
     });
     
-    //조회버튼 누를 시 초기화
-    $("#account-list-btn").click(function() {
-    	console.log($('#selectedAccount').val());
-    	//$('#selectedAccount').val($('#selectedAccount').val()).trigger('chosen:updated');
-    });
     
 	</script>
 </body>

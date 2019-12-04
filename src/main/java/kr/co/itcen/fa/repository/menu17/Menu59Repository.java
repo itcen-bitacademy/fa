@@ -37,7 +37,18 @@ public class Menu59Repository {
 	//계정과목 조회 개수
 	public int selectCount(AccountManagementVo vo) {
 		return sqlSession.selectOne("menu59.selectCount",vo);
+	}
+	
+	//계정과목,순서 중복값 체크
+	public List<AccountManagementVo> chechedAccount(AccountManagementVo vo) {
+		return sqlSession.selectList("menu59.chechedAccount",vo);
 	}	
+
+	//계정과목 중복값 체크
+	public List<AccountManagementVo> chechedAccount2(AccountManagementVo vo) {
+		return sqlSession.selectList("menu59.chechedAccount2",vo);
+	}	
+	
 	//계정과목 셀렉트 박스에 대한 데이터 출력
 	public List<AccountManagementVo> getAllAccountList(){
 		

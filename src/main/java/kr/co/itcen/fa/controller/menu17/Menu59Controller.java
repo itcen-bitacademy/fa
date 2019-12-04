@@ -71,7 +71,7 @@ public class Menu59Controller {
 		model.addAttribute("accountList", menu59Service.getAllAccountList());
 		
 		//테이블부분 셋팅
-		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page));
+		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page,3));
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -82,6 +82,7 @@ public class Menu59Controller {
 	public String add(@ModelAttribute AccountManagementVo accountManagement,
 					  @RequestParam("selectedAccountStatementType") String type,
 					  @RequestParam("selectedAccount") Long accountNo,
+					  Model model,
 					  HttpSession session) {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -96,7 +97,22 @@ public class Menu59Controller {
 		accountManagement.setInsertUserid(authUser.getName());
 		
 		System.out.println(accountManagement);
-		menu59Service.insert(accountManagement);
+		
+		model.addAttribute("selectedAccountStatementType", type);
+		
+		if(menu59Service.chechedAccount(accountManagement).size() < 1) {	
+			String overlap = "nono";
+			model.addAttribute("overlap", overlap);
+		
+			menu59Service.insert(accountManagement);
+		
+			//return "redirect:/" + MAINMENU + "/" + SUBMENU;			
+		}else {
+			String overlap = "overlap";
+			model.addAttribute("overlap", overlap);
+			
+			//return MAINMENU + "/" + SUBMENU + "/add";
+		}
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
@@ -107,6 +123,7 @@ public class Menu59Controller {
 	public String update(@ModelAttribute AccountManagementVo accountManagement,
 						 @RequestParam("selectedAccountStatementType") String type,
 						 @RequestParam("selectedAccount") Long accountNo,
+						 Model model,
 						 HttpSession session) {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -118,10 +135,56 @@ public class Menu59Controller {
 		//수정할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
-		accountManagement.setUpdateUserid(authUser.getName());
+
+		List<AccountManagementVo> list = menu59Service.chechedAccount(accountManagement);
+		String overlap = "nono";
 		
-		System.out.println(accountManagement);	
-		menu59Service.update(accountManagement);
+		if(list.size() >= 1) {
+			if(list.get(0).getAccountOrder() != accountManagement.getAccountOrder()) {		
+				if(list.get(0).getAccountNo().equals(accountManagement.getAccountNo())) {
+					
+					overlap = "nono";
+					model.addAttribute("overlap", overlap);
+					
+					accountManagement.setUpdateUserid(authUser.getName());
+					
+					System.out.println(accountManagement);	
+					menu59Service.update(accountManagement);
+							
+				}else {				
+					if(menu59Service.chechedAccount2(accountManagement).size() < 1) {
+						
+						overlap = "nono";
+						model.addAttribute("overlap", overlap);
+						
+						accountManagement.setUpdateUserid(authUser.getName());
+						
+						System.out.println(accountManagement);	
+						menu59Service.update(accountManagement);
+					}else {
+						overlap = "overlap";
+						model.addAttribute("overlap", overlap);
+					}
+				}
+			}else {
+
+				overlap = "overlap";
+				model.addAttribute("overlap", overlap);
+
+			}
+			
+		}else {
+			
+		overlap = "nullData";
+		model.addAttribute("overlap", overlap);
+		
+		accountManagement.setInsertUserid(authUser.getName());
+		
+		menu59Service.insert(accountManagement);
+
+		}
+		
+		model.addAttribute("selectedAccountStatementType", type);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
@@ -131,6 +194,8 @@ public class Menu59Controller {
 	//재무제표 계정관리 삭제
 	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
 	public String delete(@ModelAttribute AccountManagementVo accountManagement,
+						 @RequestParam("selectedAccountStatementType") String type,
+						 Model model,
 					  	 HttpSession session) {
 
 	UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -141,6 +206,9 @@ public class Menu59Controller {
 	
 	System.out.println(accountManagement);
 	menu59Service.delete(accountManagement.getNo());
+	
+	model.addAttribute("selectedAccountStatementType", type);
+	
 	return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
