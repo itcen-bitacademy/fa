@@ -5,6 +5,7 @@
 	<select id="selectClosingYear" resultType="string">
 		select	substr(cd.closing_year_month, 1, 4) as closing_year
 		  from	tb_closing_date as cd
+		 where	use_yn = true
 		 group	by closing_year
 		 order	by closing_year desc
 		;

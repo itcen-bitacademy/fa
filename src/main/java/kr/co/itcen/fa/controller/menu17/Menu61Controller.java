@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.controller.menu17;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.service.menu17.Menu20Service;
@@ -65,17 +68,29 @@ public class Menu61Controller {
 	 * 결산작업 실행
 	 */
 	@PostMapping("/" + SUBMENU + "/settlement")
-	public String executeSettlement(HttpSession session, Menu17SearchForm menu17SearchForm) {
+	public String executeSettlement(HttpSession session, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException {
+		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+		
 		// 마감일 체크 
-		menu19Service.checkClosingDate(session, Calendar.getInstance().getTime());
-		UserVo userVo = (UserVo) session.getAttribute("authUser");
-		
-		// 등록자 설정 
-		menu17SearchForm.setInsertUserid(userVo.getId());
-		
-		// 결산작업 실행 
-		menu61Service.executeSettlement(menu17SearchForm);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+//		if (menu19Service.checkClosingDate(session, Calendar.getInstance().getTime())) {
+			UserVo userVo = (UserVo) session.getAttribute("authUser");
+			
+			// 등록자 설정 - 시산표 및 재무제표용 
+			menu17SearchForm.setInsertUserid(userVo.getId());
+			// 수저자 설정 - 마감일 업데이트용 
+			menu17SearchForm.setUpdateUserid(userVo.getId());
+			
+			// 결산작업 실행 
+			DataResult<Object> dataResult = menu61Service.executeSettlement(menu17SearchForm);
+			
+			if (!dataResult.isStatus()) {
+				uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
+			}
+//		} else {
+			// 마감일이 지났을 시 
+//			uri = uri + "?error=" + URLEncoder.encode("마감일이 지났습니다. 관리자에게 문의하세요.", "UTF-8");
+//		}
+				
+		return uri;
 	}
 }

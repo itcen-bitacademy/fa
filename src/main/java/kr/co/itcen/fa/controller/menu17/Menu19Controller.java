@@ -1,5 +1,8 @@
 package kr.co.itcen.fa.controller.menu17;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
@@ -46,40 +51,73 @@ public class Menu19Controller {
 	 * 마감일자 신규 등록
 	 */
 	@PostMapping("/" + SUBMENU + "/add")
-	public String addClosingDate(ClosingDateVo closingDate, HttpSession session) {
+	public String addClosingDate(ClosingDateVo closingDate, HttpSession session) throws UnsupportedEncodingException {
 		UserVo userVo = (UserVo) session.getAttribute("authUser");
 		
 		closingDate.setInsertUserid(userVo.getId());
 		
-		menu19Service.insertClosingDate(closingDate);
+		DataResult<Object> dataResult = menu19Service.insertClosingDate(closingDate);
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
+		
+		if (!dataResult.isStatus()) {
+			uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
+		}
+		
+		return uri;
 	}
 	
 	
 	/**
-	 * 마감일 수정(미결산 마감일만 수정가능)
+	 * 마감일 수정(미결산 마감일 및 가장 최근의 마감일만 수정가능)
 	 */
 	@PostMapping("/" + SUBMENU + "/update")
-	public String updateClosingDate(ClosingDateVo closingDate, HttpSession session) {
+	public String updateClosingDate(ClosingDateVo closingDate, HttpSession session) throws UnsupportedEncodingException {
 		UserVo userVo = (UserVo) session.getAttribute("authUser");
 		
 		closingDate.setUpdateUserid(userVo.getId());
 		
-		menu19Service.updateClosingDate(closingDate);
+		DataResult<Object> dataResult = menu19Service.updateClosingDate(closingDate);
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
+		
+		if (!dataResult.isStatus()) {
+			uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
+		}
+		
+		return uri;
 	}
 	
 	
 	/**
-	 * 마감일 삭제(미결산 마감일만 삭제가능)
+	 * 마감일 삭제(미결산 마감일 및 가장 최근의 마감일만 삭제가능)
+	 * @throws UnsupportedEncodingException 
 	 */
 	@PostMapping("/" + SUBMENU + "/delete")
-	public String deleteClosingDate(ClosingDateVo closingDate) {
-		menu19Service.deleteClosingDate(closingDate);
+	public String deleteClosingDate(ClosingDateVo closingDate, HttpSession session) throws UnsupportedEncodingException {
+		UserVo userVo = (UserVo) session.getAttribute("authUser");
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		closingDate.setUpdateUserid(userVo.getId());
+		
+		DataResult<Object> dataResult = menu19Service.deleteClosingDate(closingDate);
+		
+		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
+		
+		if (!dataResult.isStatus()) {
+			uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
+		}
+		
+		return uri;
+	}
+	
+	
+	/**
+	 * 해당 마감일의 수정, 삭제 가능여부 조회 
+	 */
+	@PostMapping("/" + SUBMENU + "/api/changable")
+	@ResponseBody
+	public DataResult<ClosingDateVo> checkChangable(ClosingDateVo closingDateVo) {
+		return menu19Service.isChangable(closingDateVo);
 	}
 	
 }

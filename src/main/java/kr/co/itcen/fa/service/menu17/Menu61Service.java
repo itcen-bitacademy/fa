@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu61Repository;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
@@ -30,7 +31,19 @@ public class Menu61Service {
 	 * 
 	 * 해당 마감일 결산처리
 	 */
-	public int executeSettlement(Menu17SearchForm menu17SearchForm) {
+	public DataResult<Object> executeSettlement(Menu17SearchForm menu17SearchForm) {
+		DataResult<Object> dataResult = new DataResult<>();
+		
+		// 결산 순서 유효성검사 
+		ClosingDateVo lastestUnclosingDateVo = menu61Repository.selectLastestUnclosingDatePerYear(menu17SearchForm);
+		if (lastestUnclosingDateVo.getNo() != menu17SearchForm.getClosingDateNo()) {
+			dataResult = new DataResult<>();
+			dataResult.setStatus(false);
+			dataResult.setError("이전월의 결산작업을 먼저 실행해주세요.");
+			
+			return dataResult;
+		}
+		
 		// 시산표 작성 
 		// 해당년도 전월 결산완료일 조회 - 1월일 경우 전월데이터값은 없는것으로 간주 
 		ClosingDateVo lastestClosingDateVo = menu61Repository.selectLastestClosedDateByClosingDateNoPerYear(menu17SearchForm);
@@ -92,7 +105,10 @@ public class Menu61Service {
 		
 		// TODO: 재무제표 작성 
 
-		return menu61Repository.executeSettlement(menu17SearchForm);
+		// 결산완료 마감일 업데이트 
+		menu61Repository.executeSettlement(menu17SearchForm);
+		
+		return dataResult;
 	}
 	
 	
@@ -128,5 +144,19 @@ public class Menu61Service {
 			tbVo.setDebtorTotal(debtorTotal + vo.getAmount());
 			
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * 해당 마감일의 시산표 및 재무제표 데이터 삭제 
+	 */
+	public DataResult<Object> deleteTrialBalanceByClosingDateNo(ClosingDateVo closingDateVo) {
+		// 시산표 데이터 삭제 
+		menu61Repository.deleteTrialBalanceByClosingDateNo(closingDateVo);
+		
+		// TODO: 재무제표 데이터 삭제 
+		
+		return new DataResult<Object>();
 	}
 }

@@ -46,15 +46,31 @@ public class Menu19Repository {
 		return sqlSession.selectOne("menu19.selectAllClosingDateCount");
 	}
 	
+	
+	/**
+	 * 
+	 * 마감일 중복검사 (1이상 == 중복됨) 
+	 */
+	public int selectCountByYearMonth(ClosingDateVo closingDateVo) {
+		return sqlSession.selectOne("menu19.selectCountByYearMonth", closingDateVo);
+	}
+	
 	/**
 	 * 
 	 * 마감일 전체 조회(마감일 순 내림차순)
 	 */
 	public List<ClosingDateVo> selectAllClosingDate(Menu17SearchForm menu17SearchForm) {
-		// TODO: 페이징 추가
 		return sqlSession.selectList("menu19.selectAllClosingDate", menu17SearchForm);
 	}
 	
+	
+	/**
+	 * 
+	 * 최신 결산완료 마감일 조회 - 결산된 마감일의 수정, 삭제시 유효성검사 
+	 */
+	public ClosingDateVo selectLastestClosedDateByClosingDateNoPerYear(ClosingDateVo closingDateVo) {
+		return sqlSession.selectOne("menu19.selectLastestClosedDateByClosingDateNoPerYear", closingDateVo);
+	}
 	
 	/**
 	 * 
@@ -72,6 +88,10 @@ public class Menu19Repository {
 	public int deleteClosingDate(ClosingDateVo closingDate) {
 		return sqlSession.delete("menu19.deleteClosingDate", closingDate);
 	}
+	
+	
+	
+	
 	
 	
 	/**
