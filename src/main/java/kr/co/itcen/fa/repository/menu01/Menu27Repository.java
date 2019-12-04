@@ -13,7 +13,7 @@ import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
  * 
- * @author 이종윤
+ * @author 이종윤 
  * 거래처관리
  *
  */
@@ -29,43 +29,44 @@ public class Menu27Repository {
 		sqlSession.insert("menu27.save", testVo);
 	}
 
-
-	public Map<String, Object> create(CustomerVo customervo) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		// 다른 조와 데이터 통합 전 임의의 Test data insert
-		// 191202 sql문 구현 필요함
-		sqlSession.insert("menu27.create", customervo);
-		
-		map.put("customerList", sqlSession.selectList("menu27.getList"));
-		return map;
-	}
-
-	public Map<String, Object> update(CustomerVo customerVo) {
-		Map<String, Object> map = new HashMap<String, Object>();
-				
-		// TODO Auto-generated method stub		
-		sqlSession.update("menu27.update", customerVo);
-		
-		map.put("customerList", sqlSession.selectList("menu27.getList"));
-		return map;
-	}
-
-	public Map<String, Object> delete(CustomerVo customerVo) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		// TODO Auto-generated method stub
-		sqlSession.update("menu27.delete", customerVo);
-		
-		map.put("customerList", sqlSession.selectList("menu27.getList"));
-		return map;
-	}
-
+	// GetList
 	public List<CustomerVo> list() {
 		return sqlSession.selectList("menu27.getList");
 	}
-	
+
+	// Create
+	public Map<String, Object> create(CustomerVo customervo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		sqlSession.insert("menu27.create", customervo);
+		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		return map;
+	}
+
+	// Read
+	public Map<String, Object> read(CustomerVo customerVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("customerList", sqlSession.selectList("menu27.read", customerVo));
+		return map;
+	}
+
+	// Update
+	public Map<String, Object> update(CustomerVo customerVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		sqlSession.update("menu27.update", customerVo);
+		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		return map;
+	}
+
+	// Delete
+	public Map<String, Object> delete(CustomerVo customerVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		sqlSession.update("menu27.delete", customerVo);
+		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		return map;
+	}
+
+	// Delete All
 	public void deleteAll(CustomerVo customervo) {
-		// TODO Auto-generated method stub
 		sqlSession.delete("menu27.deleteAll", customervo);
 	}
 

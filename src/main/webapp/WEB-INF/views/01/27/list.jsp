@@ -6,9 +6,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<!-- 다음 주소 api -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
+/*주소검색 api*/
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -41,20 +43,11 @@ function execDaumPostcode() {
 };
 </script>
 
-<script
-	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
-
-<link
-	href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css"
-	type="text/css" rel="stylesheet" />
-<script
-	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-
-<script
-	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
 <script>
 	$(function() {
@@ -77,7 +70,7 @@ function execDaumPostcode() {
 			var queryString = $("form[name=input-form]").serialize();
 			if(a == "create") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/create",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -102,7 +95,7 @@ function execDaumPostcode() {
 				 })
 			} else if(a == "read") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/list",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -121,7 +114,7 @@ function execDaumPostcode() {
 				 })
 			} else if(a == "update") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/update",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -143,7 +136,7 @@ function execDaumPostcode() {
 				 })
 			} else if(a == "delete") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/delete",
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
@@ -214,7 +207,6 @@ function execDaumPostcode() {
 		$("input[name=name]").val(td.eq(2).text());
 		$("input[name=ceo]").val(td.eq(3).text());
 		$("input[name=address]").val(td.eq(4).text());
-		//$("input[name=detailAddress]").val(td.eq(4).text());
 		$("input[name=conditions]").val(td.eq(5).text());
 		$("input[name=item]").val(td.eq(6).text());
 		$("input[name=corporationNo]").val(td.eq(1).text());
@@ -231,7 +223,6 @@ function execDaumPostcode() {
 	
 	$(document.body).delegate('#selectAll', 'click', function() {
 		if(this.checked) {
-	        // Iterate each checkbox
 	        $(':checkbox').each(function() {
 	            this.checked = true;                        
 	        });
@@ -245,9 +236,9 @@ function execDaumPostcode() {
 	$(".chosen-select").chosen();
 });
 </script>
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
+
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
@@ -261,9 +252,12 @@ function execDaumPostcode() {
 				<div class="page-header position-relative">
 					<h1 class="pull-left">거래처관리</h1>
 					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
+						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+						<i class="icon-plus-sign bigger-120 green"></i>
+							팀 추가
+					</a>
 				</div>
+				
 				<!-- /.page-header -->
 				<div class="row-fluid">
 
@@ -272,249 +266,282 @@ function execDaumPostcode() {
 						<div class="row-fluid" style="float: left">
 							<div class="span6">
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 사업자 등록번호:&nbsp; </label> <input
-										type="text" id="no" name="no" placeholder="사업자등록번호"
-										class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										사업자 등록번호:&nbsp;
+									</label>
+									
+									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" />
 								</div>
+								
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 상호명:&nbsp; </label> <input type="text"
-										id="name" name="name" placeholder="상호명" class="col-xs-10 col-sm-5" />
-								</div>
-
-								<br />
-
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 대표자:&nbsp; </label> <input type="text"
-										id="ceo" name="ceo" placeholder="대표자" class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										상호명:&nbsp;
+									</label>
+									<input type="text" id="name" name="name" placeholder="상호명" class="col-xs-10 col-sm-5" />
 								</div>
 
-								<br />
+								<br/>
 
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 주소:&nbsp; </label>
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										대표자:&nbsp;
+									</label>
+									<input type="text" id="ceo" name="ceo" placeholder="대표자" class="col-xs-10 col-sm-5" />
+								</div>
+
+								<br/>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										주소:&nbsp;
+									</label>
 									<div class="input-append">
-										<input type="text" id="address" name="address" placeholder="주소"
-											class="col-xs-10 col-sm-5" readonly/>
+										<input type="text" id="address" name="address" placeholder="주소" class="col-xs-10 col-sm-5" readonly/>
 										<button type="button" class="addressSearch" onclick="execDaumPostcode()">
 											<i class="icon-search bigger-110">
-											</i> 검색
+											</i>
+											검색
 										</button>
 									</div>
 
-									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소: <input type="text"
-										id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"
-										 />
+									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
+									<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"/>
 								</div>
 
-								<br />
-
+								<br/>
 
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 업태:&nbsp; </label> <input type="text"
-										id="conditions" name="conditions" placeholder="업태" class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										업태:&nbsp;
+									</label>
+									<input type="text" id="conditions" name="conditions" placeholder="업태" class="col-xs-10 col-sm-5" />
 								</div>
+								
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 종목:&nbsp; </label> <input type="text"
-										id="item" name="item" placeholder="종목" class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										종목:&nbsp;
+									</label>
+									<input type="text" id="item" name="item" placeholder="종목" class="col-xs-10 col-sm-5" />
 								</div>
 
-								<br />
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 법인번호:&nbsp; </label> <input type="text"
-										id="corporationNo" name="corporationNo" placeholder="법인번호"
-										class="col-xs-10 col-sm-5" />
+								<br/>
+								
+								<div class="form-group" style="float: left">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										법인번호:&nbsp;
+									</label>
+									<input type="text" id="corporationNo" name="corporationNo" placeholder="법인번호" class="col-xs-10 col-sm-5" />
 								</div>
+								
+								<div class="form-group">
+									<label class="control-label" for="form-field-1">
+										종류:&nbsp;&nbsp;
+									</label> 
+								
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="a" checked /> 
+									<span class="lbl">토지</span> 
+									&nbsp;
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="b" />
+									<span class="lbl">건물</span> 
+									&nbsp;
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="c" />
+									<span class="lbl">자산</span> 
+									&nbsp;
+									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="d" />
+									<span class="lbl">무형자산</span>
 
-					</div>
-				
-							<!-- /span -->
+								</div>
+								
+							</div><!-- /span6 -->
 
 							<div class="span6">
-
-
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 관할 영업소:&nbsp; </label> <input type="text"
-										id="jurisdictionOffice" name="jurisdictionOffice" placeholder="관할 영업소"
-										class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										관할 영업소:&nbsp;
+									</label>
+									<input type="text" id="jurisdictionOffice" name="jurisdictionOffice" placeholder="관할 영업소" class="col-xs-10 col-sm-5" />
 								</div>
 
-								<br />
+								<br/>
 
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 거래처 전화번호:&nbsp; </label> <input
-										type="text" id="phone" name="phone" placeholder="거래처 전화번호"
-										class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										거래처 전화번호:&nbsp;
+									</label>
+									<input type="text" id="phone" name="phone" placeholder="거래처 전화번호" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> E-mail:&nbsp; </label> <input type="text"
-										id="managerEmail" name="managerEmail" placeholder="E-mail"
-										class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										E-mail:&nbsp;
+									</label>
+									<input type="text" id="managerEmail" name="managerEmail" placeholder="E-mail" class="col-xs-10 col-sm-5" />
 								</div>
 
-								<br />
+								<br/>
 
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 계좌번호:&nbsp; </label>
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										계좌번호:&nbsp;
+									</label>
 									<div class="input-append">
-										<input type="text" id="depositNo" name="depositNo" placeholder="계좌번호"
-											class="col-xs-10 col-sm-5" />
+										<input type="text" id="depositNo" name="depositNo" placeholder="계좌번호" class="col-xs-10 col-sm-5" />
 										<button type="button" class="search_account">
-											<i class="icon-search bigger-110"></i> 조회
+											<i class="icon-search bigger-110"></i>
+											조회
 										</button>
 									</div>
-									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드: <input type="text"
-										id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5"
-										readonly />
+									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
+									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 
-								<br />
+								<br/>
 
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 은행명:&nbsp; </label> <input type="text"
-										id="bankName" name="bankName" placeholder="자동입력" class="col-xs-10 col-sm-5"
-										readonly />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+									은행명:&nbsp;
+									</label>
+									<input type="text" id="bankName" name="bankName" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
+								
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 예금주:&nbsp; </label> <input type="text"
-										id="depositHost" name="depositHost" placeholder="자동입력" class="col-xs-10 col-sm-5"
-										readonly />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										예금주:&nbsp;
+									</label>
+									<input type="text" id="depositHost" name="depositHost" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 
-								<br />
+								<br/>
+								
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"
-										for="form-field-1"> 거래처 담당자 성명:&nbsp; </label> <input
-										type="text" id="managerName" name="managerName" placeholder="거래처 담당자"
-										class="col-xs-10 col-sm-5" />
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+										거래처 담당자 성명:&nbsp;
+									</label>
+									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" />
 								</div>
-							
-							</div>
+
+								<br/>
+							</div><!-- ./span6 -->
 						</div>
 							<!-- span -->
-					<div class="row-fluid">
-						<div class="span12">
-							<div class="hr hr-18 dotted"></div>
-								<button type="submit" class="btn btn-info btn" 
-									formaction="${pageContext.request.contextPath}/01/27/read" id="btn-read" name="btn-read">조회</button>
-								<button type="submit" class="btn btn-danger btn"
-									formaction="${pageContext.request.contextPath}/01/27/delete" id="btn-delete" name="btn-delete">삭제</button>
-								<button type="submit" class="btn btn-warning btn" 
-									formaction="${pageContext.request.contextPath}/01/27/update" id="btn-update" name="btn-update">수정</button>
-								<button type="submit" class="btn btn-primary btn" id="btn-create" name="btn-create">입력</button>
-								<button type="reset" class="btn btn-default btn">취소</button>
-							<div class="hr hr-18 dotted"></div>
+						<div class="hr hr-18 dotted"></div>
+						<div class="row-fluid">
+							<div class="span8">
+							<button class="btn btn-info btn-small" id="btn-read">조회</button>
+							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
+							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
+							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
+							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
 						</div>	<!-- /.span -->
-					</div>
+						
+						</div>
+						<div class="hr hr-18 dotted"></div>
+						<br/>
+					
+						</form>
 
-							<br />
-					</form>
 
 
-
-					<div class="row-fluid">
-						<div class="span12">
-
-							<div style="width: 100%; overflow-x: auto">
-								<table id="simple-table-1"
-									class="table table-striped table-bordered table-hover">
-									<thead>
-										<tr>
-											<th class="center"><label> <input type="checkbox" 
-											class="ace" id="selectAll" /> <span class="lbl"></span>
-											</label></th>
-											<th>사업자등록번호</th>
-											<th>상호</th>
-											<th>대표자</th>
-											<th>주소</th>
-											<th>업태<th>
-											<th>종목</th>
-											<th>관할영업소</th>
-											<th>거래처 전화번호</th>
-											<th>거래처 담당자 성명</th>
-											<th>e-mail</th>
-											<th>은행명</th>
-											<th>계좌번호</th>
-											<th>예금주</th>
-											<th>입력일자</th>
-											<th>입력담당자</th>
-											<th>수정일자</th>
-											<th>수정담당자</th>
-										</tr>
-									</thead>
-									<tbody class = "origin-tbody">
-										
-										<c:forEach items="${list }" var="vo" varStatus="status">
+						<div class="row-fluid">
+							<div class="span12">
+								<div style="width: 100%; overflow-x: auto">
+									<table id="simple-table-1" class="table table-striped table-bordered table-hover">
+										<thead>
 											<tr>
-											<td class="center"><label> <input type="checkbox"
-													class="ace" /> <span class="lbl"></span>
-											</label></td>
-												<td>${vo.no }</td>
-												<td>${vo.name }</td>
-												<td>${vo.ceo }</td>
-												<td>${vo.address } ${vo.detailAddress }</td>
-												<td>${vo.conditions }</td>
-												<td>${vo.item }</td>
-												<td>${vo.jurisdictionOffice }</td>
-												<td>${vo.phone }</td>
-												<td>${vo.managerName }</td>
-												<td>${vo.managerEmail }</td>
-												<td></td>
-												<td>${vo.depositNo }</td>
-												<td></td>
-												<td>${vo.insertDay }</td>
-												<td>${vo.insertUserid }</td>
-												<td>${vo.updateDay }</td>
-												<td>${vo.updateUserid }</td>
+												<th class="center">
+													<label>
+														<input type="checkbox" class="ace" id="selectAll" />
+														<span class="lbl">
+														</span>
+													</label>
+												</th>
+												<th>사업자등록번호</th>
+												<th>상호</th>
+												<th>대표자</th>
+												<th>주소</th>
+												<th>업태</th>
+												<th>종목</th>
+												<th>관할영업소</th>
+												<th>거래처 전화번호</th>
+												<th>거래처 담당자 성명</th>
+												<th>e-mail</th>
+												<th>은행명</th>
+												<th>계좌번호</th>
+												<th>예금주</th>
+												<th>입력일자</th>
+												<th>입력담당자</th>
+												<th>수정일자</th>
+												<th>수정담당자</th>
 											</tr>
-										</c:forEach>
-									</tbody>
-
-								</table>
+										</thead>
+										
+										<tbody class = "origin-tbody">
+											<c:forEach items="${list }" var="vo" varStatus="status">
+												<tr>
+													<td class="center">
+														<label>
+															<input type="checkbox" class="ace" />
+															<span class="lbl">
+															</span>
+														</label>
+													</td>
+													<td>${vo.no }</td>
+													<td>${vo.name }</td>
+													<td>${vo.ceo }</td>
+													<td>${vo.address } ${vo.detailAddress }</td>
+													<td>${vo.conditions }</td>
+													<td>${vo.item }</td>
+													<td>${vo.jurisdictionOffice }</td>
+													<td>${vo.phone }</td>
+													<td>${vo.managerName }</td>
+													<td>${vo.managerEmail }</td>
+													<td></td><!-- 은행명 -->
+													<td>${vo.depositNo }</td>
+													<td></td><!-- 예금주 -->
+													<td>${vo.insertDay }</td>
+													<td>${vo.insertUserid }</td>
+													<td>${vo.updateDay }</td>
+													<td>${vo.updateUserid }</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+	
+									</table>
+								</div>
+								<!-- /span -->
 							</div>
-							<!-- /span -->
 						</div>
 					</div>
-				</div>
 
 
 				<!-- /row -->
 				<!-- PAGE CONTENT ENDS -->
 				<!-- PAGE CONTENT ENDS -->
-			</div>
+				</div>
 			<!-- /.col -->
+			</div>
+			<!-- /.row -->
+			<div class="pagination">
+				<!-- 페이징 공통 -->
+				<ul>
+					<li class="disabled">
+						<a href="#">
+							<i class="icon-double-angle-left">
+							</i>
+						</a>
+					</li>
+					<li class="active"><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+				</ul>
+			</div>
 		</div>
-		<!-- /.row -->
-		<div class="pagination">
-			<!-- 페이징 공통 -->
-			<ul>
-				<li class="disabled"><a href="#"><i
-						class="icon-double-angle-left"></i></a></li>
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-			</ul>
-		</div>
-	</div>
 	<!-- /.page-content -->
 	
 	<!-- basic scripts -->
-	<c:import url="/WEB-INF/views/common/footer.jsp" />
-</body>
+		<c:import url="/WEB-INF/views/common/footer.jsp" />
+	</body>
 </html>

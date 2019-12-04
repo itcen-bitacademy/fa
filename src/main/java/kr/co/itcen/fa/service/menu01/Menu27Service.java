@@ -19,12 +19,18 @@ import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
 @Service
 public class Menu27Service {
-	
+
 	@Autowired
 	private Menu27Repository menu27Repository;
 
 	public void test() {
 		menu27Repository.test();
+	}
+
+	public List<CustomerVo> list() {
+		// TODO Auto-generated method stub
+		List<CustomerVo> map = menu27Repository.list();
+		return map;
 	}
 
 	public Map<String, Object> create(CustomerVo customervo) {
@@ -34,12 +40,16 @@ public class Menu27Service {
 		map.put("success", true);
 		return map;
 	}
-	
-	public Map<String, Object> update(CustomerVo customerVo) {
+
+	public Map<String, Object> read(CustomerVo customerVo) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
-		// 중복성 검사 Query 만들어야함 (삭제후 똑같은것 재생성시 처리)
-		
+		map = menu27Repository.read(customerVo);
+		map.put("success", true);
+		return map;
+	}
+
+	public Map<String, Object> update(CustomerVo customerVo) { // 거래처는 중복성검사 안함..
+		Map<String, Object> map = new HashMap<String, Object>();
 		map = menu27Repository.update(customerVo);
 		map.put("success", true);
 		return map;
@@ -47,12 +57,6 @@ public class Menu27Service {
 
 	public Map<String, Object> delete(CustomerVo customerVo) {
 		Map<String, Object> map = menu27Repository.delete(customerVo);
-		return map;
-	}
-
-	public List<CustomerVo> list() {
-		// TODO Auto-generated method stub
-		List<CustomerVo> map = menu27Repository.list();
 		return map;
 	}
 
