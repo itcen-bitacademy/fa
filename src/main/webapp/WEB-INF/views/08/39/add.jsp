@@ -28,34 +28,31 @@
 							<!-- PAGE CONTENT BEGINS -->
 
 							<!-- 좌측 -->
-							<form class="form-horizontal" method="post"
-								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+							<form class="form-horizontal" method="post">
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물 코드</label>
 										<div class="controls">
-											<input type="text" id="land_code" name="id"
-												placeholder="10자로 입력하세요" />
+											<input type="text" id="land_code" name="id" placeholder="10자로 입력하세요"/>
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">대분류
-											코드</label>
+										<label class="control-label" for="form-field-select-1">대분류코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-select-1"
-												name="sectionNo" data-placeholder="전체">
-												<c:forEach items="${listMainMenu }" var="sectionVo">
-													<option value="${sectionVo.no }">${sectionVo.name }</option>
+											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="전체">
+													<option data-placeholder="전체"></option>
+												<c:forEach items="${sectionList }" var="sectionVo">
+													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
-											</select> <input readonly type="text" class="span6"
-												id="form-input-readonly" value="코드를 지정하면 대분류명이 등록됩니다">
+											</select> 
+											<input readonly type="text" class="span6" id="classification" name="sectionName" placeholder="코드를 지정하면 대분류명이 등록됩니다">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">주소(광역)</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-select-1"
-												name="wideAddr" data-placeholder="선택">
+												name="wideAddress" data-placeholder="선택">
 											</select>
 										</div>
 									</div>
@@ -63,7 +60,7 @@
 										<label class="control-label" for="form-field-1">주소(읍/면/동)</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-select-1"
-												name="localAddr" data-placeholder="선택">
+												name="localAddress" data-placeholder="선택">
 											</select>
 										</div>
 									</div>
@@ -71,13 +68,12 @@
 										<label class="control-label" for="form-field-select-1">거래처
 											코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-select-1"
-												name="customerNo" data-placeholder="선택">
+											<select class="chosen-select" id="form-field-select-3" name="customerNo" data-placeholder="선택">
 												<c:forEach items="${listMainMenu }" var="customerVo">
 													<option value="${customerVo.no }">${customerVo.name }</option>
 												</c:forEach>
-											</select> <input readonly type="text" class="span6"
-												id="form-input-readonly" value="코드를 지정하면 거래처명이 등록됩니다">
+											</select> <input readonly type="text" class="span6" name="customerName"
+												id="customerName" placeholder="코드를 지정하면 거래처명이 등록됩니다">
 										</div>
 									</div>
 									<div class="control-group">
@@ -134,9 +130,9 @@
 											</div>
 										</div>
 										<div style="float: left">
-											<label style="width: 60px; margin-right: 20px;"
+											<label style="width: 60px; margin-right: 30px;"
 												class="control-label" for="form-field-1">층수</label>
-											<div style="width: 205px; margin-left: 10px" class="controls">
+											<div style="width: 205px; margin-left:40px" class="controls">
 												<input style="width: 50px" type="text" id="form-field-1"
 													name="floor" placeholder="지상" /> <input
 													style="width: 50px" type="text" id="form-field-1"
@@ -145,9 +141,22 @@
 										</div>
 									</div>
 									<div class="control-group">
+										<div style="float: left; width: 50%">
+											<label class="control-label" for="form-field-1">용도</label>
+											<div class="controls">
+												<input type="text" id="form-field-1" name="purpose" placeholder="내용을 입력하세요" />
+											</div>
+										</div>
+										<div style="float: left; width: 50%">
+											<label style="width: 70px; margin-right: 10px;"
+												class="control-label" for="form-field-1">주 구조</label> 
+												<input type="text" id="form-field-1" name="material" placeholder="내용을 입력하세요" />
+										</div>
+									</div>
+									<div class="control-group">
 										<label class="control-label" for="form-field-1">주소(시/군/구)</label>
 										<div class="controls">
-											<select class="chosen-select" id="cityAddr" name="cityAddr"
+											<select class="chosen-select" id="cityAddress" name="cityAddress"
 												data-placeholder="선택">
 											</select>
 										</div>
@@ -155,8 +164,8 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">상세주소</label>
 										<div class="controls">
-											<input type="text" class="span7" id="detailAddr"
-												name="detailAddr" placeholder="내용을 입력하세요" />
+											<input type="text" class="span7" id="detailAddress"
+												name="detailAddress" placeholder="내용을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -170,7 +179,7 @@
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">건물소유자</label> <input
-												type="text" id="form-field-1" name="owner_name"
+												type="text" id="form-field-1" name="ownerName"
 												placeholder="내용을 입력하세요" />
 										</div>
 									</div>
@@ -192,18 +201,18 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">세금계산서번호</label>
 										<div class="controls">
-											<input type="text" class="span7" id="taxbillNo">
+											<input type="text" class="span7" name="taxbillNo">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-2">구분</label>
 										<div class="controls">
-											<input name="form-field-radio" type="radio" class="ace"
-												id="tax" name="tax"> <span class="lbl">과세</span> <input
-												name="form-field-radio" type="radio" class="ace"
-												id="zeroTax" name="zeroTax"> <span class="lbl">영세</span>
+											<input name="taxKind" type="radio" class="ace" id="tax" value="과세"> <span class="lbl">과세</span> 
+											<input name="taxKind" type="radio" class="ace" id="zeroTax" value="영세"> <span class="lbl">영세</span>
 										</div>
 									</div>
+									
+									
 								</div>
 								<!-- 우측 -->
 								<div class="row-fluid">
@@ -211,16 +220,16 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button type="submit" class="btn btn-primary btn-small" 
-													style="float: left; margin-right: 20px;">등록</button>
-												<button class="btn btn-warning btn-small"
-													style="float: left; margin-right: 20px;">수정</button>
-												<button class="btn btn-danger btn-small"
-													style="float: left; margin-right: 20px;">삭제</button>
-												<button class="btn btn-info btn-small"
-													style="float: left; margin-right: 20px;">조회</button>
-												<button class="btn btn-default btn-small"
-													style="float: left; margin-right: 20px;">취소</button>
+												<button class="btn btn-primary btn-small" id="insert"
+													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">등록</button>
+												<button class="btn btn-warning btn-small" id="modify"
+													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/modify">수정</button>
+												<button class="btn btn-danger btn-small" id="delete"
+													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+												<button class="btn btn-info btn-small" id="search" 
+													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+												<button class="btn btn-default btn-small" id="reset"
+													style="float: left; margin-right: 20px;" type="reset">취소</button>
 											</div>
 										</div>
 									</div>
@@ -231,116 +240,192 @@
 									</div>
 								</div>
 							</form>
-						</div>
-						<!-- 좌,우측  row-fluid -->
+						
 
 
-						<!-- 테이블 -->
-						<table id="sample-table-1"
-							class="table table-striped table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center"><label> <input type="checkbox"
-											class="ace"> <span class="lbl"></span>
-									</label></th>
-									<th>NO</th>
-									<th>건물코드</th>
-									<th>건물대분류코드</th>
-									<th>건물분류명</th>
-									<th>평수</th>
-									<th>층수(지상)</th>
-									<th>층수(지하)</th>
-									<th>주소(광역)</th>
-									<th>주소(시/군/구)</th>
-									<th>주소(읍/면/동)</th>
-									<th>주소(상세)</th>
-									<th>용도</th>
-									<th>주 구조</th>
-									<th>매입거래처코드</th>
-									<th>매입거래처명</th>
-									<th>세금계산서번호</th>
-									<th>건물소유자</th>
-									<th>매입일자</th>
-									<th>공시지가(원)</th>
-									<th>취득금액(원)</th>
-									<th>기타비용(원)</th>
-									<th>등록세(원)</th>
-									<th>취득세(원)</th>
-									<th>세금계산서번호</th>
-									<th>합병코드</th>
-									<th>구분</th>
-									<th>작성자</th>
-									<th>작성일</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th class="center"><label> <input type="checkbox"
-											class="ace"> <span class="lbl"></span>
-									</label></th>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="pagination">
-							<ul>
-								<li class="disabled"><a href="#"><i
-										class="icon-double-angle-left"></i></a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-							</ul>
-						</div>
-					</div>
-					<!-- PAGE CONTENT ENDS -->
-				</div>
-				<!-- /.span -->
-				</div>
-				<!-- /.row-fluid -->
+				<!-- 테이블 -->
+				<div class = "row-fluid">
+				<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>건물코드</th>
+							<th>건물대분류코드</th>
+							<th>건물분류명</th>
+							<th>평수</th>
+							<th>층수(지상)</th>
+							<th>층수(지하)</th>
+							<th>주소(광역)</th>
+							<th>주소(시/군/구)</th>
+							<th>주소(읍/면/동)</th>
+							<th>주소(상세)</th>
+							<th>용도</th>
+							<th>주 구조</th>
+							<th>매입거래처코드</th>
+							<th>매입거래처명</th>
+							<th>건물소유자</th>
+							<th>매입일자</th>
+							<th>공시지가(원)</th>
+							<th>취득금액(원)</th>
+							<th>기타비용(원)</th>
+							<th>등록세(원)</th>
+							<th>취득세(원)</th>
+							<th>합병코드</th>
+							<th>세금계산서번호</th>
+							<th>구분</th>
+							<th>작성자</th>
+							<th>작성일</th>
+							<th>수정자</th>
+							<th>수정일</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+					<c:forEach items="${list }" var="vo" varStatus="status">
+						<tr class="table-row" >
+							<td>${vo.id }</td>
+							<td>${vo.sectionNo }</td>
+							<td>${vo.sectionName }</td>
+							<td>${vo.area }</td>
+							<td>${vo.floor }</td>
+							<td>${vo.basement }</td>
+							<td>${vo.wideAddress }</td>
+							<td>${vo.cityAddress }</td>
+							<td>${vo.localAddress }</td>
+							<td>${vo.detailAddress }</td>
+							<td>${vo.purpose }</td>
+							<td>${vo.material }</td>
+							<td>${vo.customerNo }</td>
+							<td>${vo.customerName }</td>
+							<td>${vo.ownerName }</td>
+							<td>${vo.payDate }</td>
+							<td>${vo.publicValue }</td>
+							<td>${vo.acqPrice }</td>
+							<td>${vo.etcCost }</td>
+							<td>${vo.regTax }</td>
+							<td>${vo.acqTax }</td>
+							<td>${vo.combineNo }</td>
+							<td>${vo.taxbillNo }</td>
+							<td>${vo.taxKind }</td>
+							<td>${vo.insertUserid }</td>
+							<td>${vo.insertDay }</td>
+							<td>${vo.updateUserid }</td>
+							<td>${vo.updateDay }</td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
 			</div>
-			<!-- /.page-content -->
-		</div>
-		<!-- /.main-content -->
-	<!-- /.main-container -->
-	<!-- basic scripts -->
-	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	<script>
-$(function(){
-	$(".chosen-select").chosen(); 
-});
+					
+					</div><!-- (row-fluid) PAGE CONTENT ENDS -->
+					
+				</div><!-- /.span -->
+				
+				</div><!-- 좌,우측  row-fluid -->
+				
+			</div><!-- /.page-content -->
+			
+		</div><!-- /.main-content -->
+		
+	</div><!-- /.main-container -->
+		
+	
+	
+	
+<!-- basic scripts -->
+
+<c:import url="/WEB-INF/views/common/footer.jsp" />
+	
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+
+<script>
+	$(function(){
+		$(".chosen-select").chosen(); 
+	});
+	
+	//select box 선택 시 값 등록
+	$('#form-field-section').change(function() {
+  		var classification = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.classification}
+ 		$('#classification').val(classification); 
+	});
+	
+	//관리화면
+	$(function() {
+		//한행 클릭 >> 건물코드 가져오기
+		   $(".table-row").click(function() {
+		      var str = ""
+		      var tdArr = new Array();   // 배열 선언
+		      
+		      // 현재 클릭된 Row(<tr>)
+		      var tr = $(this);
+		      var td = tr.children();
+		      
+		      $("input[name=id]").val(td.eq(0).text());
+		      //sectionNo 에 대한 값(classification)을 select box에 표시
+		      $('#form-field-section').val(td.eq(1).text()).trigger('chosen:updated'); 
+		      $("input[name=sectionName]").val(td.eq(2).text()); 
+		      $("input[name=area]").val(td.eq(3).text());
+		      $("input[name=floor]").val(td.eq(4).text());
+		      $("input[name=basement]").val(td.eq(5).text());
+		      $("input[name=wideAddress]").val(td.eq(6).text());
+		      $("input[name=cityAddress]").val(td.eq(7).text());
+		      $("input[name=localAddress]").val(td.eq(8).text());
+		      $("input[name=detailAddress]").val(td.eq(9).text());
+		      $("input[name=purpose]").val(td.eq(10).text());
+		      $("input[name=material]").val(td.eq(11).text());
+		      $("input[name=customerNo]").val(td.eq(12).text());
+		      $("input[name=customerName]").val(td.eq(13).text());
+		      $("input[name=ownerName]").val(td.eq(14).text());
+		      $("input[name=payDate]").val(td.eq(15).text());
+		      $("input[name=publicValue]").val(td.eq(16).text());
+		      $("input[name=acqPrice]").val(td.eq(17).text());
+		      $("input[name=etcCost]").val(td.eq(18).text());
+		      $("input[name=regTax]").val(td.eq(19).text());
+		      $("input[name=acqTax]").val(td.eq(20).text());
+		      $("input[name=combineNo]").val(td.eq(21).text());
+		      $("input[name=taxbillNo]").val(td.eq(22).text());
+				
+		      // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
+		      /* td.each(function(i){
+		         tdArr.push(td.eq(i).text());
+		      });
+		      
+		      console.log("Array Stored Data : "+ tdArr);
+		       */
+		       
+		    //radio button
+		      if(td.eq(23).text() == "과세"){
+		          $("input[id=tax]").prop('checked', true);
+		      }
+		      else if(td.eq(23).text() == "영세"){
+		          $("input[id=zeroTax]").prop('checked', true);
+		      } 
+		      
+			});
+	});
+
+	//버튼 구현
+	$(function() {
+		/*
+		$("#insert").click(function() {
+			alert("등록");
+		});
+
+		$("#modify").click(function() {
+			alert("수정");
+		});
+
+		$("#search").click(function() {
+			alert("조회");
+		});
+		*/
+		
+		$("#delete").click(function() {
+		alert("삭제");
+	});
+	});
 </script>
+
+<!-- date picker -->
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
 		$(function() {
@@ -371,6 +456,8 @@ $(function(){
 				$(this).prev().focus();
 			});
 		})
+		
+		
 	</script>
 </body>
 </html>
