@@ -102,7 +102,7 @@ function execDaumPostcode() {
 				 })
 			} else if(a == "read") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/27/list",
+				    url: "${pageContext.request.contextPath}/01/27/read",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
