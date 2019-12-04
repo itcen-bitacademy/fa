@@ -36,8 +36,20 @@
 					dataType:"json",
 					data:{"itemcode" : itemcode},
 					success:function(data) {
-						$("#form-field-item-name").val(data.name);
+						$("#form-field-item-id").val(data.no);
+						$("#form-field-section-name").val(data.section_name);
+						$("#form-field-factory-name").val(data.factory_name);
+						$("#form-field-factory-postaddress").val(data.postaddress);
+						$("#form-field-factory-roadaddress").val(data.roadaddress);
+						$("#form-field-factory-detailaddress").val(data.detailaddress);
+						$("#form-field-standard").val(data.standard);
+						$("#form-field-price").val(data.price);
 						
+						$("#form-field-item-name").val(data.name);
+						$("#form-field-section-code").val(data.section_code);
+						$("#form-field-factory-manager").val(data.manager_name);
+						$("#id-date-picker-1").val(data.produce_date);
+						$("#form-field-purpose").val(data.purpose);
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
 					}
@@ -55,7 +67,7 @@
 					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
 					type:"get",
 					dataType:"json",
-					data:{"itemcode" : itemcode},
+					data:$("#form").serialize(),
 					success:function(data) {
 						alert("삭제 완료");
 					}, error:function(error) {
@@ -66,11 +78,44 @@
 		});
 		
 		$("#update").click(function() {
-			$("#form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
+			var itemcode = $("#form-field-item-id").val();
+			console.log(itemcode);
+			
+			if(itemcode != null && itemcode.length > 0) {
+				event.preventDefault();
+				$.ajax({
+					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
+					type:"get",
+					dataType:"json",
+					data:$("#form").serialize(),
+					success:function(purchaseitemList) {
+						alert("수정 완료");
+						
+						updateTable(purchaseitemList);
+					}, error:function(error) {
+						alert("찾을 수 없는 품목입니다.");
+					}
+				});
+			}
 		});
 		
 		$("#add").click(function() {
-			$("#form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+			var itemcode = $("#form-field-item-id").val();
+			console.log(itemcode);
+			
+			if(itemcode != null && itemcode.length > 0) {
+				$.ajax({
+					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add",
+					type:"get",
+					dataType:"json",
+					data:$("#form").serialize(),
+					success:function(data) {
+						alert("등록 완료");
+					}, error:function(error) {
+						alert("찾을 수 없는 품목입니다.");
+					}
+				});
+			}
 		});
 		
 		
@@ -94,8 +139,30 @@
 			}
 		});
 		
-		
-		
+		function updateTable(purchaseitemList) {
+			console.log(purchaseitemList);
+			
+			$("#select-purchaseitem-list").remove();
+			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>")
+			$("#sample-table-1").append($newTbody)
+			var i = 1;
+			for(var pur in purchaseitemList) {
+				$newTbody.append(
+					"<tr>" +
+					"<td>" + i + "</td>" +
+					"<td>" + purchaseitemList[pur].no + "</td>" +
+					"<td>" + purchaseitemList[pur].name + "</td>" +
+					"<td class='hidden-480'>" + purchaseitemList[pur].sectioncode + "</td>" +
+					"<td class='hidden-phone'>" + purchaseitemList[pur].sectionname + "</td>" +
+					"<td>" + purchaseitemList[pur].standard + "</td>" +
+					"<td>" + purchaseitemList[pur].price + "</td>" +
+					"<td>" + purchaseitemList[pur].managername + "</td>" +
+					"<td>" + purchaseitemList[pur].producedate + "</td>" +
+					"</tr>"
+				);
+				i++;
+			}
+		}
 		
 		$("#search-dialog").click(function(event) {
 			$("#dialog-main").dialog({
@@ -114,6 +181,41 @@
 			        }
 			      }
 			});
+		});
+		
+		$("#select-purchaseitem-list tr").click(function() {
+			var tr = $(this);
+			var td = tr.children();
+			var itemcode = td.eq(1).text().trim();
+			
+			if(itemcode != null && itemcode.length > 0) {
+				event.preventDefault();
+				
+				$.ajax({
+					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search",
+					type:"get",
+					dataType:"json",
+					data:{"itemcode" : itemcode},
+					success:function(data) {
+						$("#form-field-item-id").val(data.no);
+						$("#form-field-section-name").val(data.section_name);
+						$("#form-field-factory-name").val(data.factory_name);
+						$("#form-field-factory-postaddress").val(data.postaddress);
+						$("#form-field-factory-roadaddress").val(data.roadaddress);
+						$("#form-field-factory-detailaddress").val(data.detailaddress);
+						$("#form-field-standard").val(data.standard);
+						$("#form-field-price").val(data.price);
+						
+						$("#form-field-item-name").val(data.name);
+						$("#form-field-section-code").val(data.section_code);
+						$("#form-field-factory-manager").val(data.manager_name);
+						$("#id-date-picker-1").val(data.produce_date);
+						$("#form-field-purpose").val(data.purpose);
+					}, error:function(error) {
+						alert("찾을 수 없는 품목입니다.");
+					}
+				});
+			}
 		});
 	});
 	
@@ -149,7 +251,7 @@
 									<label class="control-label" for="form-field-section-name">품목 대분류명</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
-											<input class="span5" id="form-field-section-name" name="section_name" type="text" readonly/>
+											<input class="span5" id="form-field-section-name" name="sectionname" type="text" readonly/>
 											<span class="add-on">
 												<a href="#" id="search-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 											</span>
@@ -179,7 +281,7 @@
 										</tr>
 									</table>
 									
-									<table id="section-table" class="table  table-bordered table-hover">
+									<table id="section-table" class="table table-bordered table-hover">
 										<thead>
 											<tr>
 												<th class="center">대분류명</th>
@@ -205,20 +307,20 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-name">생산공장명</label>
 									<div class="controls">
-										<input class="span5" type="text" id="form-field-factory-name" name="factory_name" placeholder="생산공장명"/>
+										<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-address1">생산공장 주소</label>
+									<label class="control-label" for="form-field-factory-postaddress">생산공장 주소</label>
 									<div class="controls">
 										<div class="row-fluid input-append" style="margin:0 0 5px 0">
-											<input class="span3" id="form-field-factory-address1" name="factory_address1" type="text" style="margin:0 10px 0 0;" placeholder="우편번호" readonly/>
+											<input class="span3" id="form-field-factory-postaddress" name="postaddress" type="text" style="margin:0 10px 0 0;" placeholder="우편번호" readonly/>
 											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 										</div>
 										
-										<input class="span5" type="text" id="form-field-factory-address2" name="factory_address2" placeholder="도로명 주소" readonly/>
-										<input class="span6" type="text" id="form-field-factory-address3" name="factory_address3" placeholder="상세 주소"/>
+										<input class="span5" type="text" id="form-field-factory-roadaddress" name="roadaddress" placeholder="도로명 주소" readonly/>
+										<input class="span6" type="text" id="form-field-factory-detailaddress" name="detailaddress" placeholder="상세 주소"/>
 									</div>
 									
 								</div>
@@ -249,14 +351,14 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-section-code">품목 대분류코드</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-section-code" name="section_code" readonly/>
+										<input class="span4" type="text" id="form-field-section-code" name="sectioncode" readonly/>
 									</div>
 								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-manager">생산담당자</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-factory-manager" name="manager_name" placeholder="생산담당자"/>
+										<input class="span4" type="text" id="form-field-factory-manager" name="managername" placeholder="생산담당자"/>
 									</div>
 								</div>
 								
@@ -265,7 +367,7 @@
 									<div class="controls">
 										<div class="control-group">
 											<div class="row-fluid input-append">
-												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="produce_date" data-date-format="yyyy-mm-dd" style="margin:0 0 16px 0">
+												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="producedate" data-date-format="yyyy-mm-dd" style="margin:0 0 16px 0">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
@@ -305,38 +407,32 @@
 						<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
+									<th>번호</th>
 									<th>품목코드</th>
 									<th>품목명</th>
 									<th>대분류코드</th>
 									<th>대분류명</th>
 									<th>규격</th>
-									<th>단가</th>
+									<th>단가(원)</th>
 									<th>담당자</th>
 									<th>일자</th>
 								</tr>
 							</thead>
 
-							<tbody>
-								<tr>
-									<td>
-										<a href="#">1911180001</a>
-									</td>
-									<td>모니터</td>
-									<td class="hidden-480">001</td>
-									<td class="hidden-phone">사무용/컴퓨터장비</td>
-									<td>
-										30 x 25 cm
-									</td>
-									<td>
-										7,000
-									</td>
-									<td>
-										OOO
-									</td>
-									<td>
-										2019.11.18
-									</td>
-								</tr>
+							<tbody id="select-purchaseitem-list">
+								<c:forEach items="${purchaseitemList}" var="pl" varStatus="status">
+									<tr>
+										<td>${status.count }</td>
+										<td>${pl.no }</td>
+										<td>${pl.name }</td>
+										<td class="hidden-480">${pl.sectioncode }</td>
+										<td class="hidden-phone">${pl.sectionname }</td>
+										<td>${pl.standard }</td>
+										<td>${pl.price }</td>
+										<td>${pl.managername }</td>
+										<td>${pl.producedate }</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div><!-- /span -->
@@ -397,9 +493,11 @@
 	$("#section-table tr").click(function(){ 
 		var tr = $(this);
 		var td = tr.children();
-		$("input[name=section_name]").val(td.eq(0).text());
-		$("input[name=section_code]").val(td.eq(1).text());
+		$("input[name=sectionname]").val(td.eq(0).text());
+		$("input[name=sectioncode]").val(td.eq(1).text());
 	});
+	
+	
 	
 	function execDaumPostcode() {
 		new daum.Postcode({
@@ -423,8 +521,8 @@
 					fullRoadAddr += extraRoadAddr;
 				}
 				
-				document.getElementById('form-field-factory-address1').value = data.zonecode;
-				document.getElementById('form-field-factory-address2').value = fullRoadAddr;
+				document.getElementById('form-field-factory-postaddress').value = data.zonecode;
+				document.getElementById('form-field-factory-roadaddress').value = fullRoadAddr;
 				
 				if (data.autoRoadAddress) {
 					var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
