@@ -35,14 +35,14 @@ public class Menu49Repository {
 		return sqlSession.selectOne("menu49.selectAllCount",vo);
 	}
 
-	public List<LTermdebtVo> list(PaginationUtil pagination,LTermdebtVo vo) {
+	public List<LTermdebtVo> list(PaginationUtil pagination,LTermdebtVo vo,String sort) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
 		map.put("vo", vo);
+		map.put("sort",sort);
 		List<LTermdebtVo> list= sqlSession.selectList("menu49.selectAll",map);
 		return list;
 	}
-
 	public List<SectionVo> selectSection() {
 		
 		return sqlSession.selectList("menu49.selectsection");
