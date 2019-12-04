@@ -29,10 +29,10 @@ public class Menu45Service {
 	}
 
 	// 은행정보 리스트로 조회
-	public DataResult<BankVo> list(String code, int page) {
+	public DataResult<BankVo> list(BankVo vo, int page) {
 		DataResult<BankVo> dataResult = new DataResult<BankVo>();
 		
-		int totalCnt = menu45Repository.selectBankListCount(code);
+		int totalCnt = menu45Repository.selectBankListCount(vo);
 		System.out.println("totalCnt 토탈카운트 : " + totalCnt);
 
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
@@ -49,7 +49,7 @@ public class Menu45Service {
 		System.out.println("getPageIndex : " + pagination.getPageIndex());
 		
 		dataResult.setPagination(pagination);
-		List<BankVo> list = menu45Repository.list(code, pagination);
+		List<BankVo> list = menu45Repository.list(vo, pagination);
 		dataResult.setDatas(list);
 		
 		return dataResult;

@@ -32,17 +32,17 @@ public class Menu45Repository {
 	}
 
 	// 은행코드현황조회 데이터 리스트로 출력
-	public List<BankVo> list(String code, PaginationUtil pagination) {
+	public List<BankVo> list(BankVo vo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", code);
+		map.put("vo", vo);
 		map.put("pagination", pagination);
 		List<BankVo> list = sqlSession.selectList("menu45.list", map);
 		return list;
 	}
 
 	// 은행 테이블의 정보 갯수 
-	public int selectBankListCount(String code) {
-		int count = sqlSession.selectOne("menu45.selectBankListCount",code);
+	public int selectBankListCount(BankVo vo) {
+		int count = sqlSession.selectOne("menu45.selectBankListCount",vo);
 		return count;
 	}
 	

@@ -31,9 +31,10 @@ public class Menu45Controller {
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method=RequestMethod.GET)
 	public String list(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "code", required = false, defaultValue = "") String code, Model model) {
-		System.out.println(code);
-		DataResult<BankVo> dataResult = menu45Service.list(code, page);
+			BankVo vo, Model model) {
+		System.out.println(vo);
+		DataResult<BankVo> dataResult = menu45Service.list(vo, page);
+		
 		model.addAttribute("dataResult", dataResult);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
