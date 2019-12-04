@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu48Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.ItemVo;
+import kr.co.itcen.fa.vo.menu01.MappingVo;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
 /**
@@ -32,6 +37,9 @@ public class Menu48Controller {
 	
 	@Autowired
 	private Menu48Service menu48Service;
+	
+	@Autowired
+	private Menu03Service menu03Service;
 	
 	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
@@ -64,7 +72,40 @@ public class Menu48Controller {
 		vo.setDebtDate(dates[0]);
 		vo.setExpDate(dates[1]);
 		vo.setInsertId(user.getId());
+		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
+		vo.setIntAmount(money);
+		
+//		VoucherVo voucherVo = new VoucherVo();
+//		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+//		ItemVo itemVo = new ItemVo();
+//		ItemVo itemVo2 = new ItemVo();
+//		ItemVo itemVo3 = new ItemVo();
+//		
+//		MappingVo mappingVo = new MappingVo();
+//		voucherVo.setRegDate(vo.getDebtDate());
+//		itemVo.setAmount(vo.getDebtAmount());
+//		itemVo.setAmountFlag("c");
+//		itemVo.setAccountNo(2401000L);
+//		itemVoList.add(itemVo);
+//		
+//		itemVo2.setAmount(money);
+//		itemVo2.setAmountFlag("c");
+//		itemVo2.setAccountNo(9201000L);
+//		itemVoList.add(itemVo2);
+//		
+//		itemVo3.setAmount(vo.getDebtAmount()+money);
+//		itemVo3.setAmountFlag("d");
+//		itemVo3.setAccountNo(1110103L);
+//		itemVoList.add(itemVo3);
+//		
+//		mappingVo.setVoucherUse(vo.getName());
+//		mappingVo.setSystemCode(vo.getCode());
+//		mappingVo.setDepositNo(vo.getDepositNo());
+//		
+//		menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
+		
 		menu48Service.insert(vo);
+		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)

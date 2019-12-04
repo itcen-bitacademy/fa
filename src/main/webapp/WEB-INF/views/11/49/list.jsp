@@ -139,10 +139,10 @@ form {
 									<div class="prod-list-opts">
 										<div class="order-opt">
 											<ul class="order-list">
-												<li class="order-item"><h4><a href="#">차입일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">만기일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">등록일자</a></h4></li>
-												<li class="order-item"><h4><a href="#">차입금액</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=d">차입일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=e">만기일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=i">등록일자</a></h4></li>
+												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=m">차입금액</a></h4></li>
 											</ul>
 										</div>
 									</div>

@@ -69,7 +69,7 @@
 			</if>
 			<if test="intPayWay != null and !intPayWay.equals('')">
 			<![CDATA[
-			and 	intPayWay = '#{vo.intPayWay}' 
+			and 	intPayWay = #{vo.intPayWay}
 			]]>
 			</if>
 		     <if test="bankCode != null and !bankCode.equals('')">		    
