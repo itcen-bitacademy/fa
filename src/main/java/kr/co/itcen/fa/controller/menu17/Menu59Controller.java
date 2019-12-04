@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu17.Menu59Service;
 import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 import kr.co.itcen.fa.vo.UserVo;
@@ -45,13 +46,7 @@ public class Menu59Controller {
 					  @RequestParam(value = "selectedAccount", defaultValue = "") Long accountNo,
 					  @RequestParam(defaultValue = "1") int page,
 					  Model model,
-					  HttpSession session) {
-		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser == null) {
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
+					  @AuthUser UserVo authUser) {
 
 		//조회할 값들 셋팅
 		accountManagement.setAccountUsedyear(accountUsedyear);
@@ -83,14 +78,8 @@ public class Menu59Controller {
 					  @RequestParam("selectedAccountStatementType") String type,
 					  @RequestParam("selectedAccount") Long accountNo,
 					  Model model,
-					  HttpSession session) {
+					  @AuthUser UserVo authUser) {
 		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser == null) {
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
-
 		//저장할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
@@ -124,13 +113,7 @@ public class Menu59Controller {
 						 @RequestParam("selectedAccountStatementType") String type,
 						 @RequestParam("selectedAccount") Long accountNo,
 						 Model model,
-						 HttpSession session) {
-		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser == null) {
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
+						 @AuthUser UserVo authUser) {
 
 		//수정할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
@@ -143,11 +126,7 @@ public class Menu59Controller {
 			if(list.get(0).getAccountOrder() != accountManagement.getAccountOrder()) {		
 				if(list.get(0).getAccountNo().equals(accountManagement.getAccountNo())) {
 					if(menu59Service.chechedAccount3(accountManagement).size() < 1) {
-					System.out.println("list.get(0).getAccountOrder() : " + list.get(0).getAccountOrder());
-					System.out.println("accountManagement.getAccountOrder() : " + accountManagement.getAccountOrder());
-					
-					
-					System.out.println("여기 들어오냐111111111111111111111111");
+
 					overlap = "nono";
 					model.addAttribute("overlap", overlap);
 					
@@ -161,7 +140,6 @@ public class Menu59Controller {
 					}
 				}else {				
 					if(menu59Service.chechedAccount2(accountManagement).size() < 1) {
-						System.out.println("여기 들어오냐222222222222222222222");
 						overlap = "nono";
 						model.addAttribute("overlap", overlap);
 						
@@ -204,13 +182,7 @@ public class Menu59Controller {
 	public String delete(@ModelAttribute AccountManagementVo accountManagement,
 						 @RequestParam("selectedAccountStatementType") String type,
 						 Model model,
-					  	 HttpSession session) {
-
-	UserVo authUser = (UserVo)session.getAttribute("authUser");
-	
-	if(authUser == null) {
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
-	}
+						 @AuthUser UserVo authUser) {
 	
 	System.out.println(accountManagement);
 	menu59Service.delete(accountManagement.getNo());
