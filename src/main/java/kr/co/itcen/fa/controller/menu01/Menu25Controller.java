@@ -74,8 +74,10 @@ public class Menu25Controller {
 		
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setUpdateUserId(uvo.getName());
+		
+		System.out.println(bavo.toString());
+		
 		Map<String, Object> result = menu25Service.update(bavo);
-	
 		return result;
 	}
 	

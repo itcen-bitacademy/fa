@@ -75,7 +75,7 @@
 			where code = #{code }
 	</update>
 	
-	<select id="selectBankListCount" resultType="int" parameterType="String">
+	<select id="selectBankListCount" resultType="int" parameterType="string">
 		select	count(*)
 			from tb_bank
 			where delete_flag = 'N'
@@ -85,6 +85,15 @@
   			 and code like concat('%',#{_parameter},'%') 
    			]]>
    			</if>
+	</select>
+	
+	<select id="getByCode" parameterType="string" resultType="bankvo">
+		<![CDATA[
+			select code
+			from tb_bank
+			where code=#{code }
+		]]>
+		
 	</select>
 	
 </mapper>

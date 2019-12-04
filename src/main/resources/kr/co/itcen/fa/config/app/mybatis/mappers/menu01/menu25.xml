@@ -7,6 +7,7 @@
 		<![CDATA[
 		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
 			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
+			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
 			   account_no as accountNo, insert_userid as insertUserId, insert_day as insertDay, 
 			   update_userid as updateUserId, update_day as updateDay, delete_flag as deleteFlag
 		 from	tb_bank_account 
@@ -44,6 +45,8 @@
 			profit = #{profit},
 			bank_name = #{bankName},
 			banker = #{banker},
+			bank_location = #{bankLocation},
+			bank_phonecall = #{bankPhoneCall},
 			account_no = #{accountNo},
 			update_userid = #{updateUserId},
 			update_day = now()

@@ -16,18 +16,169 @@
 		</selectKey>
 	</insert>
 	
+	<select id="getSection" resultType="sectionvo">
+		<![CDATA[
+		select no,
+			classification,
+			code,
+			last_update as lastUpdate,
+			parent_no as parentNo
+		from tb_section
+		where parent_no = 3
+		]]>
+	</select>
+	
+	<select id="selectAllClosingDateCount" resultType="int">
+		select	count(*) as cnt
+		  from	tb_closing_date
+	</select>
+	
+	<!-- 
+	<select id="selectAllClosingDate" resultType="building08vo" parameterType="menu17SearchForm">
+		select	
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	use_yn = true
+		 order	by closing_year_month desc
+		 limit	#{pagination.pageIndex }, #{pagination.listSize }
+	</select>
+	-->
+	
+	<!-- 조회 -->
+	<select id="list" resultType="building08vo" parameterType="string">
+		<![CDATA[
+		select id,
+			customer_no as customerNo,
+			taxbill_no as taxbillNo,
+			voucher_no as voucherNo,
+			section_no as sectionNo,
+            classification as sectionName,
+			area,
+			combine_no as combineNo,
+			owner_name as ownerName,
+			wide_address as wideAddress,
+			city_address as cityAddress,
+			local_address as localAddress,
+			detail_address as detailAddress,
+			floor,
+			basement,
+			purpose,
+			material,
+			public_value as publicValue,
+			acq_price as acqPrice,
+			etc_cost as etcCost,
+			reg_tax as regTax,
+			acq_tax as acqTax,
+			pay_date as payDate,
+			tax_kind as taxKind,
+			flag,
+			insert_userid as insertUserid,
+			insert_day as insertDay,
+			update_userid as updateUserid,
+			update_day as updateDay
+		from tb_building left outer join tb_section on tb_building.section_no = tb_section.code
+        where tb_section.parent_no = 3 
+           and tb_building.insert_day> (NOW() - INTERVAL 3 DAY) 
+           and tb_building.flag = 's'
+		]]>
+		<if test="_parameter.length()>0 ">
+   			<![CDATA[
+  				and id like concat('%',#{_parameter },'%') 
+   			]]>
+   		</if>
+   		<![CDATA[	
+		order by insert_day desc
+			limit 0, 3
+		]]>
+	</select>
+	
 	<!--  등록 -->
 	<insert id="add" parameterType="building08vo">
 		<![CDATA[
 		insert
-		  into tb_building(id, area, payDate)
-		values (#{id }, #{area }, #{payDate })
+		  into tb_building
+		values (#{id },
+			'15151515',
+			#{taxbillNo }, 
+			'123',
+			#{sectionNo },
+			#{area },
+			#{combineNo },
+			#{ownerName },
+			#{wideAddress},
+			#{cityAddress},
+			#{localAddress},
+			#{detailAddress},
+			#{floor }, 
+			#{basement }, 
+			#{purpose },
+			#{material },
+			#{publicValue },
+			#{acqPrice },
+			#{etcCost },
+			#{regTax },
+			#{acqTax },
+			#{payDate },
+			#{taxKind },
+			's',
+			#{insertUserid},
+			now(),
+			null, 
+			null)
 		]]>
-		<selectKey keyProperty="id" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
 	</insert>
+	
+	<!-- 수정 -->
+	<update id="modify" parameterType="building08vo" >
+	<![CDATA[
+		update tb_building 
+		set taxbill_no = #{taxbillNo },
+			section_no = #{sectionNo },
+			area = #{area },
+			combine_no = #{combineNo },
+			owner_name = #{ownerName }, 
+			wide_address = #{wideAddress},
+			city_address = #{cityAddress},
+			local_address = #{localAddress},
+			detail_address = #{detailAddress},
+			floor = #{floor }, 
+			basement = #{basement }, 
+			purpose = #{purpose },
+			material = #{material },
+			public_value = #{publicValue },
+			acq_price = #{acqPrice },
+			etc_cost = #{ etcCost },
+			reg_tax = #{regTax },
+			acq_tax = #{acqTax },
+			pay_date = #{payDate },
+			tax_kind = #{taxKind },
+			update_userid = #{updateUserid},
+			update_day = now()
+		where id = #{id }
+	]]>
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="delete" parameterType="long">
+	<![CDATA[
+		update tb_building
+		set flag='d'
+		where id = #{id}
+	]]>
+	</update>
 
 </mapper>

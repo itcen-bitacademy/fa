@@ -85,7 +85,46 @@
  		from tb_account
 		]]>
 	</select>
+	
+	<!--  no, order 중복값 체크 -->
+	<select id="chechedAccount"  parameterType="accountManagement17Vo" resultType="accountManagement17Vo">
+		<![CDATA[
+	  select account_no    as accountNo  
+	       , account_order as accountOrder
+ 		from tb_account_management
+ 	   where 1 = 1
+ 	     and use_yn = 1
+ 	     and (account_order = #{accountOrder } or account_no = #{accountNo })
+         and account_statement_type = #{accountStatementType }
+		]]>
+	</select>
 
+	<!-- no 중복값 체크 -->
+	<select id="chechedAccount2"  parameterType="accountManagement17Vo" resultType="accountManagement17Vo">
+		<![CDATA[
+	  select account_no    as accountNo  
+	       , account_order as accountOrder
+ 		from tb_account_management
+ 	   where 1 = 1
+ 	     and use_yn = 1
+ 	     and account_no = #{accountNo }
+         and account_statement_type = #{accountStatementType }
+		]]>
+	</select>
+	
+	<!-- no 중복값 체크 -->
+	<select id="chechedAccount3"  parameterType="accountManagement17Vo" resultType="accountManagement17Vo">
+		<![CDATA[
+	  select account_no    as accountNo  
+	       , account_order as accountOrder
+ 		from tb_account_management
+ 	   where 1 = 1
+ 	     and use_yn = 1
+ 	     and account_order = #{accountOrder }
+         and account_statement_type = #{accountStatementType }
+		]]>
+	</select>
+		
 	<!-- 재무제표 계정과목 수정 -->
 	<update id="accountUpdate" parameterType="accountManagement17Vo">
 		<![CDATA[

@@ -531,6 +531,7 @@ tr td:first-child {
 		
 		// 은행코드 검색
 		$("#a-dialog-bankcode").click(function(event){
+			alert("click dialog bankcode");
 			event.preventDefault();
 			$("#tbody-bankList").find("tr").remove();
 			
@@ -549,6 +550,7 @@ tr td:first-child {
 				    }
 				},
 				success: function(response){
+					alert(response);
 					$("#input-dialog-bankcode").val('');
 					$("#tbody-bankList").append("<tr>" +
 					        "<td class='center'>" + response.code + "</td>" +
@@ -564,6 +566,7 @@ tr td:first-child {
 		
 		// 은행명 검색 : 은행목록 리스트로 가져오기
 		$("#a-dialog-bankname").click(function(event){
+			alert("click dialog bankname");
 			event.preventDefault();
 			$("#tbody-bankList").find("tr").remove();
 			
@@ -582,6 +585,7 @@ tr td:first-child {
 				    }
 				},
 				success: function(data){
+					alert(data);
 					$("#input-dialog-bankname").val('');
 					 $.each(data,function(index, item){
 			                $("#tbody-bankList").append("<tr>" +
@@ -597,7 +601,7 @@ tr td:first-child {
 			});
 		});
 		
-		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 input form에 추가
 		$(document.body).delegate('#tbody-bankList tr', 'click', function() {
 			var tr = $(this);
 			var td = tr.children();
@@ -664,12 +668,12 @@ tr td:first-child {
 			    width: 400,
 			    modal: true,
 			    close: function() {
-			    	$('#tbody-bankList').remove();
+			    	$('#tbody-bankList tr').remove();
 			    },
 			    buttons: {
 			    "닫기" : function() {
 			          	$(this).dialog('close');
-			          	$('#tbody-bankList').remove();
+			          	$('#tbody-bankList tr').remove();
 			        }
 			    }
 			});
