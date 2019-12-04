@@ -12,7 +12,6 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu24Service;
 import kr.co.itcen.fa.vo.menu01.CardVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
 
 /**
@@ -39,7 +38,7 @@ public class Menu24Controller {
 			vo.setDeleteFlag("N");
 		}
 		
-		DataResult<LTermdebtVo> dataResult = menu24Service.list(page,vo);
+		DataResult<CardVo> dataResult = menu24Service.list(page,vo);
 		
 		model.addAttribute("dataResult",dataResult);
 		

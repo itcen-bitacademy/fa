@@ -9,7 +9,6 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu24Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CardVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 
 /**
  * 
@@ -24,13 +23,13 @@ public class Menu24Service {
 	private Menu24Repository menu24Repository;
 	
 
-	public DataResult<LTermdebtVo> list(int page, CardVo vo) {
-		DataResult<LTermdebtVo> dataResult = new DataResult<LTermdebtVo>();
+	public DataResult<CardVo> list(int page, CardVo vo) {
+		DataResult<CardVo> dataResult = new DataResult<CardVo>();
 		int totalCnt = menu24Repository.listCount(vo);
 		
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		dataResult.setPagination(pagination);
-		List<LTermdebtVo> list = menu24Repository.list(pagination,vo);
+		List<CardVo> list = menu24Repository.list(pagination,vo);
 		dataResult.setDatas(list);
 		
 		return dataResult;
