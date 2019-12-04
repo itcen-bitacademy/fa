@@ -25,7 +25,7 @@ import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
 /**
  * 
- * @author 강민호
+ * @author 강민호 
  * 매입품목관리
  *
  */
