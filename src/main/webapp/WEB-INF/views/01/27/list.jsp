@@ -186,9 +186,9 @@ function execDaumPostcode() {
 		        "<td>" + customerList[customer].phone + "</td>" +
 		        "<td>" + customerList[customer].managerName + "</td>" +
 		        "<td>" + customerList[customer].managerEmail + "</td>" +
-		        "<td>" + " " + "</td>" +
+		        "<td>" + customerList[customer].bankName + "</td>" +
 		        "<td>" + customerList[customer].depositNo + "</td>" +
-		        "<td>" + " " + "</td>" +
+		        "<td>" + customerList[customer].depositHost + "</td>" +
 		        "<td>" + customerList[customer].insertDay + "</td>" +
 		        "<td>" + customerList[customer].insertUserid + "</td>" +
 		        "<td>" + customerList[customer].updateDay + "</td>" +
@@ -213,8 +213,11 @@ function execDaumPostcode() {
 		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
 		$("input[name=phone]").val(td.eq(8).text());
 		$("input[name=managerEmail]").val(td.eq(10).text());
-		$("input[name=depositNo]").val(td.eq(12).text());
+		$("input[name=bankName]").val(td.eq(12).text());
+		$("input[name=bankCode]").val(td.eq(11).text());
+		$("input[name=depositNo]").val(td.eq(13).text());
 		$("input[name=managerName]").val(td.eq(9).text());
+		$("input[name=depositHost]").val(td.eq(14).text());
 		$("input[name=address]").prop("readonly", true);
 		$("input[name='bankCode']").prop("readonly", true);
 		$("input[name='bankName']").prop("readonly", true);
@@ -232,6 +235,86 @@ function execDaumPostcode() {
 	        });
 	    }
 	});
+	
+
+	$(function() {
+	      $("#dialog-message").dialog({
+	         autoOpen : false
+	      });
+
+	      $("#a-bankaccountinfo-dialog").click(function() {
+	         $("#dialog-message").dialog('open');
+	         $("#dialog-message").dialog({
+	            title: "계좌정보",
+	            title_html: true,
+	               resizable: false,
+	             height: 500,
+	             width: 400,
+	             modal: true,
+	             close: function() {
+	                $('#tbody-bankacoountList tr').remove();
+	             },
+	             buttons: {
+	             "닫기" : function() {
+	                      $(this).dialog('close');
+	                      $('#tbody-bankaccountList tr').remove();
+	                 }
+	             }
+	         });
+	      });
+	  });
+	
+	
+    $('#dialog-message-table').on('click', '#a-dialog-depositNo', function(event) {
+       event.preventDefault();
+       $("#tbody-bankaccountList").find("tr").remove();
+       
+       var depositNo = $("#input-dialog-depositNo").val();
+       
+       // ajax 통신
+       $.ajax({
+          url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
+          contentType : "application/json; charset=utf-8",
+          type: "get",
+          dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+          data : "",
+          statusCode: {
+              404: function() {
+                alert("page not found");
+              }
+          },
+          success: function(data){
+        	  if(data.success) {
+        	  	$("#input-dialog-depositNo").val('');
+        	  	var baccountList = data.bankAccountList;
+        	  	console.log(data.bankAccountList);
+        	  	for(let a in baccountList) {
+        	  		$("#tbody-bankaccountList").append("<tr>" +
+                          "<td class='center'>" + baccountList[a].depositNo + "</td>" +
+                          "<td class='center'>" + baccountList[a].depositHost + "</td>" +
+                          "<td class='center'>" + baccountList[a].bankCode + "</td>" +
+                          "<td class='center'>" + baccountList[a].bankName + "</td>" +
+                          "</tr>");
+
+        	  	}
+        	  }
+          },
+          error: function(xhr, error){
+             console.error("error : " + error);
+          }
+       });
+    });
+    
+    // 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+    $(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
+       var tr = $(this);
+       var td = tr.children();
+       $("input[name=depositNo]").val(td.eq(0).text());
+       $("input[name=depositHost]").val(td.eq(1).text());
+       $("input[name=bankCode]").val(td.eq(2).text());
+       $("input[name=bankName]").val(td.eq(3).text());
+       $("#dialog-message").dialog('close');
+    });
 	
 	$(".chosen-select").chosen();
 });
@@ -385,11 +468,12 @@ function execDaumPostcode() {
 										계좌번호:&nbsp;
 									</label>
 									<div class="input-append">
-										<input type="text" id="depositNo" name="depositNo" placeholder="계좌번호" class="col-xs-10 col-sm-5" />
-										<button type="button" class="search_account">
-											<i class="icon-search bigger-110"></i>
-											조회
-										</button>
+										<span class="btn btn-small btn-info"> <a href="#"
+											id="a-bankaccountinfo-dialog"> <i
+												class="icon-search nav-search-icon"></i> <input type="text"
+												class="search-input-width-first" name="depositNo" />
+										</a>
+										</span>
 									</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
@@ -410,6 +494,38 @@ function execDaumPostcode() {
 									</label>
 									<input type="text" id="depositHost" name="depositHost" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
+
+			
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<div id="dialog-message" title="계좌" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>계좌번호</label> <input type="text"
+												id="input-dialog-depositNo" style="width: 100px;" /> <a
+												href="#" id="a-dialog-depositNo"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-deposit-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">계좌번호</th>
+												<th class="center">예금주</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-bankaccountList">
+											
+										</tbody>
+									</table>
+								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 
 								<br/>
 								
@@ -465,6 +581,7 @@ function execDaumPostcode() {
 												<th>거래처 전화번호</th>
 												<th>거래처 담당자 성명</th>
 												<th>e-mail</th>
+												<th>은행코드</th>
 												<th>은행명</th>
 												<th>계좌번호</th>
 												<th>예금주</th>
@@ -495,9 +612,10 @@ function execDaumPostcode() {
 													<td>${vo.phone }</td>
 													<td>${vo.managerName }</td>
 													<td>${vo.managerEmail }</td>
-													<td></td><!-- 은행명 -->
+													<td>${vo.bankCode }</td>
+													<td>${vo.bankName }</td><!-- 은행명 -->
 													<td>${vo.depositNo }</td>
-													<td></td><!-- 예금주 -->
+													<td>${vo.depositHost }</td><!-- 예금주 -->
 													<td>${vo.insertDay }</td>
 													<td>${vo.insertUserid }</td>
 													<td>${vo.updateDay }</td>

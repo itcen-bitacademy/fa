@@ -6,6 +6,7 @@ import org.apache.ibatis.type.Alias;
  * 
  * @author 이종윤
  * 거래처관리
+ * 최종수정 : 2019.12.04 19:18
  *
  */
 
@@ -32,22 +33,9 @@ public class CustomerVo {
 	private String updateDay;
 	private String customerDiv;
 	private String assetsFlag;
-
-	public String getAssetsFlag() {
-		return assetsFlag;
-	}
-
-	public void setAssetsFlag(String assetsFlag) {
-		this.assetsFlag = assetsFlag;
-	}
-
-	public String getCustomerDiv() {
-		return customerDiv;
-	}
-
-	public void setCustomerDiv(String customerDiv) {
-		this.customerDiv = customerDiv;
-	}
+	private String depositHost;
+	private String bankCode;
+	private String bankName;
 
 	public String getNo() {
 		return no;
@@ -201,6 +189,46 @@ public class CustomerVo {
 		this.updateDay = updateDay;
 	}
 
+	public String getCustomerDiv() {
+		return customerDiv;
+	}
+
+	public void setCustomerDiv(String customerDiv) {
+		this.customerDiv = customerDiv;
+	}
+
+	public String getAssetsFlag() {
+		return assetsFlag;
+	}
+
+	public void setAssetsFlag(String assetsFlag) {
+		this.assetsFlag = assetsFlag;
+	}
+
+	public String getDepositHost() {
+		return depositHost;
+	}
+
+	public void setDepositHost(String depositHost) {
+		this.depositHost = depositHost;
+	}
+
+	public String getBankCode() {
+		return bankCode;
+	}
+
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", address=" + address + ", detailAddress="
@@ -209,7 +237,8 @@ public class CustomerVo {
 				+ ", managerName=" + managerName + ", managerEmail=" + managerEmail + ", depositNo=" + depositNo
 				+ ", deleteFlag=" + deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
 				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", customerDiv=" + customerDiv
-				+ ", assetsFlag=" + assetsFlag + "]";
+				+ ", assetsFlag=" + assetsFlag + ", depositHost=" + depositHost + ", bankCode=" + bankCode
+				+ ", bankName=" + bankName + "]";
 	}
 
 }
