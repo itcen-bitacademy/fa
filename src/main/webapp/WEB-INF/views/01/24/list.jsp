@@ -93,29 +93,31 @@
 						입력 기간
 
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" /> <span
-								class="add-on"> <i class="icon-calendar"></i>
+							<input type="text" id="datepicker" class="cl-date-picker" name="inputperiodStart"/> <span
+								class="add-on" > <i class="icon-calendar"></i>
 							</span>
 						</div>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" class="cl-date-picker" /> <span
-								class="add-on"> <i class="icon-calendar"></i>
+							<input type="text" id="datepicker2" class="cl-date-picker" name="inputperiodEnd"/> <span
+								class="add-on" > <i class="icon-calendar"></i>
 							</span>
 						</div>
 
 
-						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호"
-							size=4 /> 카드종료번호 : <input type="text" id="form-field-1"
-							placeholder="종료번호" /> 삭제여부 : <select class="chosen-select"
-							id="form-field-select-1" name="parentNo"
+						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호" name = "cardStartNo"
+							size=4 /> 카드종료번호 : <input type="text" id="form-field-1" name = "cardEndNo"
+							placeholder="종료번호" /> 
+						
+						삭제여부 : <select class="chosen-select"
+							id="form-field-select-1" name="deleteFlag" 
 							data-placeholder="상위메뉴 선택">
-							<option value="false">N</option>
-							<option value="true">Y</option>
+							<option value="N">N</option>
+							<option value="Y">Y</option>
 
 						</select>
 
-						<button class="btn btn-small btn-info">조회</button>
+						<button type="submit" class="btn btn-small btn-info" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 
 					</form>
 					<div class="hr hr-18 dotted"></div>
@@ -151,27 +153,29 @@
 							</thead>
 
 							<tbody>
-								<tr>
-									<td>1111-1111-1111-1111</td>
-									<td>12/23</td>
-									<td>111</td>
-									<td>김승곤</td>
-									<td>안대혁</td>
-									<td>111-11-11111</td>
-									<td>김승곤</td>
-									<td>****</td>
-									<td>11111111</td>
-									<td>국민은행</td>
-									<td>삼성</td>
-									<td>100,000</td>
-									<td>가능</td>
-									<td>가능</td>
-									<td>2019-11-18</td>
-									<td>김승곤</td>
-									<td>2019-11-27</td>
-									<td>승곤</td>
+								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
+									<tr>
+										<td>${vo.cardNo }</td>
+										<td>${vo.validity }</td>
+										<td>${vo.cvc}</td>
+										<td>${vo.user}</td>
+										<td>${vo.issuer}</td>
+										<td>${vo.depositNo }</td>
+										<td>${vo.depositHost}</td>
+										<td>${vo.password }</td>
+										<td>${vo.bankCode }</td>
+										<td>${vo.bankName }</td>
+										<td>${vo.company }</td>
+										<td>${vo.limitation }</td>
+										<td>${vo.transportation }</td>
+										<td>${vo.abroad }</td>
+										<td>${vo.insertDay }</td>
+										<td>${vo.insertUserId }</td>
+										<td>${vo.updateDay }</td>
+										<td>${vo.updateUserId }</td>
 
-								</tr>
+									</tr>
+								</c:forEach>
 
 							</tbody>
 						</table>

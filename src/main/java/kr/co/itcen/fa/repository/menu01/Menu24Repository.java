@@ -25,10 +25,14 @@ public class Menu24Repository {
 	private SqlSession sqlSession;
 	
 	public int listCount(CardVo vo) {
+		System.out.println(vo.getDeleteFlag());
+		int i = sqlSession.selectOne("menu24.selectAllCount",vo);
+		System.out.println(i);
 		return sqlSession.selectOne("menu24.selectAllCount",vo);
 		
+		
 	}
-
+	
 	public List<LTermdebtVo> list(PaginationUtil pagination, CardVo vo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);

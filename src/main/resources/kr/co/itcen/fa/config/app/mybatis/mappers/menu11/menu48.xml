@@ -19,7 +19,7 @@
 		<![CDATA[
 		insert
 		  into tb_l_term_debt
-		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, #{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',null,'N',#{insertId},now(),null,null,'N')
+		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, 'N',#{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',null,'N',#{insertId},now(),null,null)
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[

@@ -34,8 +34,10 @@ public class Menu24Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
-			@RequestParam(required=false) CardVo vo) {
-		System.out.println(vo);
+			CardVo vo) {
+		if(vo.getDeleteFlag()==null) {
+			vo.setDeleteFlag("N");
+		}
 		
 		DataResult<LTermdebtVo> dataResult = menu24Service.list(page,vo);
 		
