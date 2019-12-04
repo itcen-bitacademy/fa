@@ -25,7 +25,6 @@ public class BankAccountVo {
 	private String banker; 
 	private String bankLocation;
 	private String bankPhoneCall;
-	private String accountNo;
 	public String getDepositNo() {
 		return depositNo;
 	}
@@ -110,12 +109,6 @@ public class BankAccountVo {
 	public void setBanker(String banker) {
 		this.banker = banker;
 	}
-	public String getAccountNo() {
-		return accountNo;
-	}
-	public void setAccountNo(String accountNo) {
-		this.accountNo = accountNo;
-	}
 	public String getBankLocation() {
 		return bankLocation;
 	}
@@ -142,20 +135,22 @@ public class BankAccountVo {
 	}
 	@Override
 	public String toString() {
-		return "BankAccountVo [depositNo=" + depositNo + ", depositHost=" + depositHost + ", makeDate=" + makeDate
-				+ ", balance=" + balance + ", enDate=" + enDate + ", depositLimit=" + depositLimit + ", profit="
-				+ profit + ", insertUserId=" + insertUserId + ", insertDay=" + insertDay + ", updateUserId="
-				+ updateUserId + ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + ", bankCode=" + bankCode
-				+ ", banker=" + banker + ", bankLocation=" + bankLocation + ", bankPhoneCall=" + bankPhoneCall
-				+ ", accountNo=" + accountNo + ", getDepositNo()=" + getDepositNo() + ", getDepositHost()="
-				+ getDepositHost() + ", getMakeDate()=" + getMakeDate() + ", getBalance()=" + getBalance()
-				+ ", getEnDate()=" + getEnDate() + ", getDepositLimit()=" + getDepositLimit() + ", getProfit()="
-				+ getProfit() + ", getInsertUserId()=" + getInsertUserId() + ", getInsertDay()=" + getInsertDay()
-				+ ", getUpdateUserId()=" + getUpdateUserId() + ", getUpdateDay()=" + getUpdateDay()
+		return "BankAccountVo [depositNo=" + depositNo + ", depositOld=" + depositOld + ", depositHost=" + depositHost
+				+ ", makeDate=" + makeDate + ", balance=" + balance + ", enDate=" + enDate + ", depositLimit="
+				+ depositLimit + ", profit=" + profit + ", insertUserId=" + insertUserId + ", insertDay=" + insertDay
+				+ ", updateUserId=" + updateUserId + ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag
+				+ ", bankName=" + bankName + ", bankCode=" + bankCode + ", banker=" + banker + ", bankLocation="
+				+ bankLocation + ", bankPhoneCall=" + bankPhoneCall + ", getDepositNo()=" + getDepositNo()
+				+ ", getDepositHost()=" + getDepositHost() + ", getMakeDate()=" + getMakeDate() + ", getBalance()="
+				+ getBalance() + ", getEnDate()=" + getEnDate() + ", getDepositLimit()=" + getDepositLimit()
+				+ ", getProfit()=" + getProfit() + ", getInsertUserId()=" + getInsertUserId() + ", getInsertDay()="
+				+ getInsertDay() + ", getUpdateUserId()=" + getUpdateUserId() + ", getUpdateDay()=" + getUpdateDay()
 				+ ", getDeleteFlag()=" + getDeleteFlag() + ", getBankCode()=" + getBankCode() + ", getBanker()="
-				+ getBanker() + ", getAccountNo()=" + getAccountNo() + ", getBankLocation()=" + getBankLocation()
-				+ ", getBankPhoneCall()=" + getBankPhoneCall() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
+				+ getBanker() + ", getBankLocation()=" + getBankLocation() + ", getBankPhoneCall()="
+				+ getBankPhoneCall() + ", getDepositOld()=" + getDepositOld() + ", getBankName()=" + getBankName()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
 	}
+	
 	
 }
