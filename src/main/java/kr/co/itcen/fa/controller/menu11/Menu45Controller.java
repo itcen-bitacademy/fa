@@ -41,6 +41,7 @@ public class Menu45Controller {
 				UriComponentsBuilder.newInstance().queryParam("name",vo.getName())
 									.queryParam("store", vo.getStore())
 									.queryParam("dealDate", vo.getDealDate())
+									.queryParam("deleteFlag", vo.getDeleteFlag())
 									.build();
 		String uri = uriComponents.toUriString();
 		model.addAttribute("dataResult", dataResult);

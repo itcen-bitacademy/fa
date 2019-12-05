@@ -7,24 +7,37 @@
 		<![CDATA[
 			select	count(*)
 				from tb_bank
-				where delete_flag = 'N'
 		]]>
-			<if test="name!=null and !name.equals('')"> 
+		<choose>
+				<when test='deleteFlag==null or ("").equals(deleteFlag)'>
+					<!-- code.length()>0 하면 에러남  -->
+		 			<![CDATA[
+		  				 where delete_flag = 'N'
+		   			]]>
+				
+				</when>  
+				<otherwise>
+					<![CDATA[
+						where delete_flag = #{deleteFlag}
+					]]>
+				</otherwise>	
+		</choose>
+			<if test='name!=null and !("").equals(name)'> 
 			<!-- code.length()>0 하면 에러남  -->
  			  <![CDATA[
   			 and name like concat('%',#{name},'%') 
    			]]>
    			</if>
-   			<if test="store!=null and !store.equals('')"> 
+   			<if test='store!=null and !("").equals(store)'> 
 			<!-- code.length()>0 하면 에러남  -->
  			  <![CDATA[
   			 and store like concat('%',#{store},'%') 
    			]]>
    			</if>
-   			<if test="dealDate!=null and !dealDate.equals('')"> 
+   			<if test='dealDate!=null and !("").equals(dealDate)'> 
 			<!-- code.length()>0 하면 에러남  -->
  			  <![CDATA[
-  			 and date_format(dealDate,'%Y-%m-%d') like concat('%',#{deal_date},'%') 
+  			 and date_format(deal_date,'%Y-%m-%d') like concat('%',#{dealDate},'%') 
    			]]>
    			</if>
 	</select>
@@ -45,8 +58,21 @@
 				mgr_phone as mgrPhone,
 				mgr_email as mgrEmail
 			from tb_bank
-			where delete_flag = 'N' 
 			]]>
+			<choose>
+				<when test='vo.deleteFlag==null or ("").equals(vo.deleteFlag)'>
+					<!-- code.length()>0 하면 에러남  -->
+		 			<![CDATA[
+		  				 where delete_flag = 'N'
+		   			]]>
+				
+					</when>  
+					<otherwise>
+						<![CDATA[
+							where delete_flag = #{vo.deleteFlag}
+						]]>
+					</otherwise>	
+			</choose>
 			
    			<if test='vo.name!=null and !("").equals(vo.name) '>
 				<![CDATA[
@@ -60,7 +86,7 @@
 			</if>
 			<if test='vo.dealDate!=null and !("").equals(vo.dealDate) '>
 				<![CDATA[
-					and date_format(dealDate,'%Y-%m-%d') like concat('%',#{vo.deal_date},'%')
+					and date_format(deal_date,'%Y-%m-%d') like concat('%',#{vo.dealDate},'%')
 				]]>
 			</if>
 			<if test="pagination.pageIndex >= 0">

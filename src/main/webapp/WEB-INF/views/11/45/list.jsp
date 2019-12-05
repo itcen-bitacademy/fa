@@ -55,10 +55,14 @@
 							</div>
 						</div>
 					</div>
+				
 					<br>
 					<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					<div class="pull-right">
-						<label class="pos-rel"></label> <input type="checkbox" /> <span>삭제포함</span>
+						<label >
+						<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
+						<span class="lbl">삭제포함</span>
+						</label>
 					</div>
 					</form>
 				</div>
@@ -147,6 +151,15 @@
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
-
+<script>
+   $(function() {
+	        	  $(".chosen-select").chosen();
+					
+					$('.date-picker').datepicker().next().on(ace.click_event, function(){
+						$(this).prev().focus();
+					});
+  		 });
+					
+</script>
 </body>
 </html>
