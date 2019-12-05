@@ -96,23 +96,30 @@ public class Menu03Repository {
 	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo) {
 		VoucherVo voucherVoTemp = new VoucherVo();
 		voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
-		
+		System.out.println("$$$$$$$$$" + voucherVo.getNo());
+		System.out.println("$$$$$$$$$" + mappingVo.getVoucherNo());
 		sqlSession.delete("menu03.deleteVoucher", voucherVo);
 		sqlSession.delete("menu03.deleteItem", itemVo);
 		sqlSession.delete("menu03.deleteMapping", mappingVo);
-		
+		System.out.println("$$$$$$$$$" + voucherVo.getNo());
+		System.out.println("$$$$$$$$$" + mappingVo.getVoucherNo());
 		sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
-		
+		System.out.println("repository : " + voucherVo.getNo());
 		for(int i = 0; i < itemVo.size(); i++) {
+			System.out.println("3" + voucherVo.getNo());
+			System.out.println("4" + mappingVo.getNo());
 			itemVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
 			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
+			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
 		}
-		
+		System.out.println("5" + voucherVo.getNo());
+		System.out.println("6" + mappingVo.getNo());
 		mappingVo.setInsertUserid(voucherVoTemp.getInsertUserid());
 		mappingVo.setInsertDay(voucherVoTemp.getInsertDay());
+		mappingVo.setVoucherNo(voucherVo.getNo());
 		sqlSession.insert("menu03.insertMapping", mappingVo); // 매핑테이블 입력
-		
+		System.out.println("repository2 : " + voucherVo.getNo());
 		return voucherVo.getNo();
 		
 	}

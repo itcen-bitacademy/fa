@@ -75,37 +75,38 @@ public class Menu48Controller {
 		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
 		vo.setIntAmount(money);
 		
-//		VoucherVo voucherVo = new VoucherVo();
-//		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-//		ItemVo itemVo = new ItemVo();
-//		ItemVo itemVo2 = new ItemVo();
-//		ItemVo itemVo3 = new ItemVo();
-//		
-//		MappingVo mappingVo = new MappingVo();
-//		voucherVo.setRegDate(vo.getDebtDate());
-//		itemVo.setAmount(vo.getDebtAmount());
-//		itemVo.setAmountFlag("c");
-//		itemVo.setAccountNo(2401000L);
-//		itemVoList.add(itemVo);
-//		
-//		itemVo2.setAmount(money);
-//		itemVo2.setAmountFlag("c");
-//		itemVo2.setAccountNo(9201000L);
-//		itemVoList.add(itemVo2);
-//		
-//		itemVo3.setAmount(vo.getDebtAmount()+money);
-//		itemVo3.setAmountFlag("d");
-//		itemVo3.setAccountNo(1110103L);
-//		itemVoList.add(itemVo3);
-//		
-//		mappingVo.setVoucherUse(vo.getName());//사용목적
-//		mappingVo.setSystemCode(vo.getCode());//제코드l190
-//		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
-//		
-//		menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-//		
+		VoucherVo voucherVo = new VoucherVo();
+		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+		ItemVo itemVo = new ItemVo();
+		ItemVo itemVo2 = new ItemVo();
+		ItemVo itemVo3 = new ItemVo();
+		
+		MappingVo mappingVo = new MappingVo();
+		voucherVo.setRegDate(vo.getDebtDate());
+		itemVo.setAmount(vo.getDebtAmount());
+		itemVo.setAmountFlag("c");
+		itemVo.setAccountNo(2401000L);
+		itemVoList.add(itemVo);
+		
+		itemVo2.setAmount(money);
+		itemVo2.setAmountFlag("c");
+		itemVo2.setAccountNo(9201000L);
+		itemVoList.add(itemVo2);
+		
+		itemVo3.setAmount(vo.getDebtAmount()+money);
+		itemVo3.setAmountFlag("d");
+		itemVo3.setAccountNo(1110103L);
+		itemVoList.add(itemVo3);
+		
+		mappingVo.setVoucherUse(vo.getName());//사용목적
+		mappingVo.setSystemCode(vo.getCode());//제코드l190
+		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
+		
+		Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
+		
 		
 		System.out.println(vo);
+		vo.setVoucherNo(no);
 		menu48Service.insert(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
@@ -121,6 +122,42 @@ public class Menu48Controller {
 		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
 		vo.setIntAmount(money);
 		menu48Service.update(vo);
+		
+		VoucherVo voucherVo = new VoucherVo();
+		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+		ItemVo itemVo = new ItemVo();
+		ItemVo itemVo2 = new ItemVo();
+		ItemVo itemVo3 = new ItemVo();
+		
+		MappingVo mappingVo = new MappingVo();
+		System.out.println("vNo : " + vo.getVoucherNo());
+		voucherVo.setNo(2L);
+		voucherVo.setRegDate(vo.getDebtDate());
+		itemVo.setAmount(vo.getDebtAmount());
+		itemVo.setAmountFlag("c");
+		itemVo.setAccountNo(2401000L);
+		itemVo.setVoucherNo(2L);
+		itemVoList.add(itemVo);
+		
+		itemVo2.setAmount(money);
+		itemVo2.setAmountFlag("c");
+		itemVo2.setAccountNo(9201000L);
+		itemVo2.setVoucherNo(2L);
+		itemVoList.add(itemVo2);
+		
+		itemVo3.setAmount(vo.getDebtAmount()+money);
+		itemVo3.setAmountFlag("d");
+		itemVo3.setAccountNo(1110103L);
+		itemVo3.setVoucherNo(2L);
+		itemVoList.add(itemVo3);
+		
+		mappingVo.setVoucherUse(vo.getName());//사용목적
+		mappingVo.setSystemCode(vo.getCode());//제코드l190
+		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
+		mappingVo.setVoucherNo(2L);
+		
+		
+		menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}

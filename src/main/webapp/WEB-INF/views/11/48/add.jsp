@@ -267,11 +267,14 @@ tr td:first-child {
 									<label>차입금코드</label>
 									<input type="text" id="code" />
 								</td>
+							</tr>
+							<tr>
 								<td>
 									<label>납입원금</label>
 									<input type="text" id="code" />
 								</td>
-				
+							</tr>
+							<tr>
 								<td>
 								<label>납입일자</label>
 								<div class="row-fluid input-prepend">
@@ -282,6 +285,8 @@ tr td:first-child {
 				                         
 				                </div>
 								</td>
+							</tr>
+							<tr>
 								<td>
 								<label>부채유형</label>
 									<div class="radio">
@@ -303,7 +308,6 @@ tr td:first-child {
 												</label>
 											</div>
 								</td>
-								
 							</tr>
 							</table>
 							
@@ -526,6 +530,43 @@ $(function(){
 		 $('#form-field-select-3').val('초기값').trigger('chosen:updated');
 		 
 	});
+	
+	
+	//상환버튼 클릭시
+	$("#a-dialog-bankcode").click(function(event){
+		alert("click dialog bankcode");
+		event.preventDefault();
+		$("#tbody-bankList").find("tr").remove();
+		
+		var bankcodeVal = $("#input-dialog-bankcode").val();
+		console.log(bankcodeVal);
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				alert(response);
+				$("#input-dialog-bankcode").val('');
+				$("#tbody-bankList").append("<tr>" +
+				        "<td class='center'>" + response.code + "</td>" +
+				        "<td class='center'>" + response.name + "</td>" +
+				        "<td class='center'>" + response.store + "</td>" +
+				        "</tr>");
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+	});
+	
 	
 	// 은행코드 검색
 	$("#a-dialog-bankcode").click(function(event){

@@ -53,15 +53,19 @@ public class Menu03Service {
 		// 전표수정 (다른 팀)
 		public Long updateVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 			voucherVo.setUpdateUserid(userVo.getId());
-			
+			System.out.println("###########" + voucherVo.getNo());
+			System.out.println("service" + mappingVo.getVoucherNo());
 			for(int i = 0; i < itemVo.size(); i++) {
+				System.out.println("@@@@@@@@@@" + voucherVo.getNo());
 				itemVo.get(i).setUpdateUserid(userVo.getId());
 			}
-			
+			System.out.println("^^^^^^^^^^" + voucherVo.getNo());
+			System.out.println("service" + mappingVo.getVoucherNo());
 			mappingVo.setInsertUserid(userVo.getId());
-			
-			menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo);
-			
+			System.out.println("***********" + voucherVo.getNo());
+			System.out.println("service" + mappingVo.getVoucherNo());
+			voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo));
+			System.out.println("service : " + voucherVo.getNo());
 			return voucherVo.getNo();
 		}
 		
