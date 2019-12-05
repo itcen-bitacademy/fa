@@ -320,7 +320,7 @@ $(function(){
     
 	$(function(){
 		
-		var result = "${param.overlap}";
+		var result = "${param.result}";
 		
 		if('overlap' == result ){			
 			alert("이미 있는 데이터입니다.");
@@ -329,6 +329,16 @@ $(function(){
 			return;
 		} else if('nullData' == result){
 			alert("데이터가 없어서 저장하겠습니다.");
+			
+			result = "";
+			return;
+		} else if('NPE' == result){
+			alert("데이터를 입력해주세요");
+			
+			result = "";
+			return;
+		} else if('NPE2' == result){
+			alert("삭제할 데이터를 선택해주세요");
 			
 			result = "";
 			return;
