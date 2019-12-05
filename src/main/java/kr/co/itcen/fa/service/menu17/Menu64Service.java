@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu17.Menu64Repository;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.FinancialStatementVo;
 
 
@@ -23,7 +24,7 @@ public class Menu64Service {
 	private Menu64Repository menu64Repository;
 	
 	//손익계산서(IncomeStatement) insert Service
-	public boolean insertIncomeStatement(Long no){
+	public boolean insertIncomeStatement(ClosingDateVo closingDate){
 
 		Long orderNum = 1L;
 		Long operatingRevenue = 0L;						//영업수익
@@ -45,8 +46,8 @@ public class Menu64Service {
 		Long corporationTax = 0L;						//법인세비용
 		Long monthCorporationTax = 0L;					//법인세비용(당월)
 		
-		List<FinancialStatementVo> list = menu64Repository.selectIncomeStatementDataList(no);
 		
+		List<FinancialStatementVo> list = menu64Repository.selectIncomeStatementDataList(closingDate);
 		FinancialStatementVo vo = new FinancialStatementVo();
 		vo.setAccountStatementType(list.get(0).getAccountStatementType());
 		vo.setClosingDateNo(list.get(0).getClosingDateNo());
@@ -54,76 +55,103 @@ public class Menu64Service {
 		vo.setInsertDay(list.get(0).getInsertDay());
 		
 		for(FinancialStatementVo dataVo : list) {
-			String voAccountNo = String.valueOf(dataVo.getAccountNo());
+			Long voAccountNo = dataVo.getAccountNo();
 			
-			if("5000000".equals(voAccountNo)){ //영업수익 값 저장
+			if(voAccountNo == 5000000){ //영업수익 값 저장
 				monthOperatingRevenue = dataVo.getMonthToAmount();
 				operatingRevenue = dataVo.getAmount();
 			}
-			if("6000000".equals(voAccountNo)){ //매출원가 값 저장
+			if(voAccountNo == 6000000){ //매출원가 값 저장
 				monthCostOfGoodsSold = dataVo.getMonthToAmount();
 				costOfGoodsSold = dataVo.getAmount();
 			}
-			if("8000000".equals(voAccountNo)) { //매출총이익 Data추가 및 판매비와일반관리비 값 저장
+			if(voAccountNo == 8000000) { // 판매비와일반관리비 값 저장
 				monthSellingAndAdministrativeExpenses = dataVo.getMonthToAmount();
 				sellingAndAdministrativeExpenses = dataVo.getAmount();
-
-				monthGrossMargin = (monthOperatingRevenue - monthCostOfGoodsSold);
-				grossMargin = (operatingRevenue - costOfGoodsSold);
-				
-				vo.setAccountOrder(orderNum++);
-				vo.setAccountName("매출총이익");
-				vo.setMonthToAmount(monthGrossMargin);
-				vo.setAmount(grossMargin);
-				
-				menu64Repository.insertIncomeStatementData(vo);
 			}
-			if("9100000".equals(voAccountNo)) { //영업손익 Data추가 및  영업외수익 값 저장
-				monthOperatingProfitAndLoss = (monthGrossMargin - monthSellingAndAdministrativeExpenses);
-				operatingProfitAndLoss = (grossMargin - sellingAndAdministrativeExpenses);
-
+			if(voAccountNo == 9100000) { // 영업외수익 값 저장
 				monthNonOperatingIncome = dataVo.getMonthToAmount();
 				nonOperatingIncome = dataVo.getAmount();
-				
-				vo.setAccountOrder(orderNum++);
-				vo.setAccountName("영업손익");
-				vo.setMonthToAmount(monthOperatingProfitAndLoss);
-				vo.setAmount(operatingProfitAndLoss);
-				
-				menu64Repository.insertIncomeStatementData(vo);
 			}
-			if("9200000".equals(voAccountNo)){ //영업외비용 값 저장
+			if(voAccountNo == 9200000) { // 영업외비용 값 저장
 				monthNonOperatingExpenses = dataVo.getMonthToAmount();
 				nonOperatingExpenses = dataVo.getAmount();
 			}
-			if("9500000".equals(voAccountNo)) { //법인세비용차감전손익 Data추가 및  법인세비용 값 저장
-				monthIncomeAndLossBeforeIncomeTaxes = (monthOperatingProfitAndLoss + monthNonOperatingIncome - monthNonOperatingExpenses);
-				incomeAndLossBeforeIncomeTaxes = (operatingProfitAndLoss + nonOperatingIncome - nonOperatingExpenses);
-				
+			if(voAccountNo == 9500000) { // 법인세비용 값 저장
 				monthCorporationTax = dataVo.getMonthToAmount();
 				corporationTax = dataVo.getAmount();
-				
-				vo.setAccountOrder(orderNum++);
-				vo.setAccountName("법인세비용차감전손익");
-				vo.setMonthToAmount(monthIncomeAndLossBeforeIncomeTaxes);
-				vo.setAmount(incomeAndLossBeforeIncomeTaxes);
-				
-				menu64Repository.insertIncomeStatementData(vo);
 			}
-			
-			dataVo.setAccountOrder(orderNum++);
-			menu64Repository.insertIncomeStatementData(dataVo);
-		}
+		}	
+		
+		vo.setAccountName("영업수익");
+		vo.setAccountOrder(orderNum++);
+		vo.setMonthToAmount(monthOperatingRevenue);
+		vo.setAmount(operatingRevenue);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountName("매출원가");
+		vo.setAccountOrder(orderNum++);
+		vo.setMonthToAmount(monthCostOfGoodsSold);
+		vo.setAmount(costOfGoodsSold);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountName("매출총이익");
+		vo.setAccountOrder(orderNum++);
+		monthGrossMargin = monthOperatingRevenue - monthCostOfGoodsSold;
+		grossMargin = operatingRevenue - costOfGoodsSold;
+		vo.setMonthToAmount(monthGrossMargin);
+		vo.setAmount(grossMargin);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountName("판매비와일반관리비");
+		vo.setAccountOrder(orderNum++);
+		vo.setMonthToAmount(monthSellingAndAdministrativeExpenses);
+		vo.setAmount(sellingAndAdministrativeExpenses);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountName("영업손익");
+		vo.setAccountOrder(orderNum++);
+		monthOperatingProfitAndLoss = monthGrossMargin - monthSellingAndAdministrativeExpenses;
+		operatingProfitAndLoss = grossMargin - sellingAndAdministrativeExpenses;
+		vo.setMonthToAmount(monthOperatingProfitAndLoss);
+		vo.setAmount(operatingProfitAndLoss);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountName("영업외수익");
+		vo.setAccountOrder(orderNum++);
+		vo.setMonthToAmount(monthNonOperatingIncome);
+		vo.setAmount(nonOperatingIncome);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountName("영업외비용");
+		vo.setAccountOrder(orderNum++);
+		vo.setMonthToAmount(monthNonOperatingExpenses);
+		vo.setAmount(nonOperatingExpenses);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountOrder(orderNum++);
+		vo.setAccountName("법인세비용차감전손익");
+		monthIncomeAndLossBeforeIncomeTaxes = monthOperatingProfitAndLoss + monthNonOperatingIncome - monthNonOperatingExpenses;
+		incomeAndLossBeforeIncomeTaxes = operatingProfitAndLoss + nonOperatingIncome - nonOperatingExpenses;
+		vo.setMonthToAmount(monthIncomeAndLossBeforeIncomeTaxes);
+		vo.setAmount(incomeAndLossBeforeIncomeTaxes);
+		menu64Repository.insertIncomeStatementData(vo);
+		
+		vo.setAccountOrder(orderNum++);
+		vo.setAccountName("법인세비용");
+		vo.setMonthToAmount(monthCorporationTax);
+		vo.setAmount(corporationTax);
+		menu64Repository.insertIncomeStatementData(vo);
 		
 		vo.setAccountOrder(orderNum);
 		vo.setAccountName("당기순손익");
 		vo.setMonthToAmount(monthIncomeAndLossBeforeIncomeTaxes - monthCorporationTax);
 		vo.setAmount(incomeAndLossBeforeIncomeTaxes - corporationTax);
-		
 		menu64Repository.insertIncomeStatementData(vo);
 		
 		return true;
 	}
+	
 	
 	//손익계산서(IncomeStatement) get Service
 	public Map<String,Object> get(Long no) {
