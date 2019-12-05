@@ -38,6 +38,15 @@ public class Menu19Repository {
 		return sqlSession.insert("menu19.insertClosingDate", closingDate);
 	}
 	
+	
+	/**
+	 * 
+	 * 마감일 단일 조회 
+	 */
+	public ClosingDateVo selectClosingDateByNo(Menu17SearchForm menu17SearchForm) {
+		return sqlSession.selectOne("menu19.selectClosingDateByNo", menu17SearchForm);
+	}
+	
 	/**
 	 * 
 	 * 마감일 전체 갯수 조회
@@ -143,7 +152,8 @@ public class Menu19Repository {
 	 * 
 	 * 결산팀 마감일 조회(결산실행일-현재 기준 조회)
 	 */
-	public ClosingDateVo selectSettlementClosingDate() {
-		return sqlSession.selectOne("menu19.selectSettlementClosingDate");
+	public ClosingDateVo selectSettlementClosingDate(Date businessDate) {
+		return sqlSession.selectOne("menu19.selectSettlementClosingDate", businessDate);
 	}
+	
 }

@@ -108,7 +108,7 @@
 	</insert>
 	
 	
-	<select id="testStatementData" resultType="ts17Vo" parameterType="closingDate17Vo">
+	<select id="testStatementData" resultType="statementData17Vo" parameterType="closingDate17Vo">
 		<![CDATA[
 		select	
 			v.no as no

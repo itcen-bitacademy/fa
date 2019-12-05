@@ -11,7 +11,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu61Repository;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
-import kr.co.itcen.fa.vo.menu17.TestStatementDataVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 import kr.co.itcen.fa.vo.menu17.TrialBalanceVo;
 
 
@@ -62,10 +62,10 @@ public class Menu61Service {
 		// 테스전표 데이터 조회
 		// TODO: 실제 데이터로 변경
 		// TODO: 조회기간 추가
-		List<TestStatementDataVo> testList = menu61Repository.testStatementData(lastestUnclosingDateVo);
+		List<StatementDataVo> testList = menu61Repository.testStatementData(lastestUnclosingDateVo);
 		
 		// 시산표 값 적산
-		for (TestStatementDataVo vo : testList) {
+		for (StatementDataVo vo : testList) {
 			TrialBalanceVo tbVo = null;
 			if (vo.getAccountNo() >= 5000000) {
 				tbVo = trialBalanceMap.get(vo.getAccountNo());
@@ -125,7 +125,7 @@ public class Menu61Service {
 	 * 
 	 * 시산표 데이터 적산
 	 */
-	private void addAccountAmount(TrialBalanceVo tbVo, TestStatementDataVo vo, String type) {
+	private void addAccountAmount(TrialBalanceVo tbVo, StatementDataVo vo, String type) {
 		if (type.equalsIgnoreCase("C")) {	// 차변 계산
 			// 당월 차변 계산
 			Long creditSpotMonth = (tbVo.getCreditSpotMonth() == null) ? 0 : tbVo.getCreditSpotMonth();

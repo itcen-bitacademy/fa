@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
-import kr.co.itcen.fa.vo.menu17.TestStatementDataVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 import kr.co.itcen.fa.vo.menu17.TrialBalanceVo;
 
 /**
@@ -71,7 +71,7 @@ public class Menu61Repository {
 	 * 
 	 * 테스트 전표 데이터 
 	 */
-	public List<TestStatementDataVo> testStatementData(ClosingDateVo closingDateVo) {
+	public List<StatementDataVo> testStatementData(ClosingDateVo closingDateVo) {
 		return sqlSession.selectList("menu61.testStatementData", closingDateVo);
 	}
 	
