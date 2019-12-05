@@ -677,10 +677,10 @@ $(function() {
 										<td>${vo.limitation }</td>
 										<td>${vo.transportation }</td>
 										<td>${vo.abroad }</td>
-										<td>${vo.insertUserId }</td>
 										<td>${vo.insertDay }</td>
-										<td>${vo.updateUserId }</td>
+										<td>${vo.insertUserId }</td>
 										<td>${vo.updateDay }</td>
+										<td>${vo.updateUserId }</td>
 
 									</tr>
 
