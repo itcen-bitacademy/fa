@@ -84,7 +84,7 @@
 				    		alert("계좌 생성이 완료되었습니다."); 
 				    		
 				    		removeTable();
-				    		var bankList = result.bankList;
+				    		var bankList = dataResult.bankList;
 				    		createNewTable(bankList);
 				    		$('#pagination').show();
 				    	}
