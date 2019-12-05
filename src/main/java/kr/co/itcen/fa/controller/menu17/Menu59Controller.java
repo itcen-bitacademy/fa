@@ -146,13 +146,14 @@ public class Menu59Controller {
 					if(menu59Service.chechedAccount3(accountManagement).size() < 1) {
 
 						result = "nono";
-					model.addAttribute("result", result);
-					
-					accountManagement.setUpdateUserid(authUser.getName());
-					
-					System.out.println(accountManagement);	
-					menu59Service.update(accountManagement);
+						model.addAttribute("result", result);
+						
+						accountManagement.setUpdateUserid(authUser.getName());
+						
+						System.out.println(accountManagement);	
+						menu59Service.update(accountManagement);
 					} else {
+						
 						result = "overlap";
 						model.addAttribute("result", result);
 					}
@@ -166,18 +167,20 @@ public class Menu59Controller {
 						System.out.println(accountManagement);	
 						menu59Service.update(accountManagement);
 					}else {
+						
 						result = "overlap";
 						model.addAttribute("result", result);
 					}
 				}
 			}else {
+				
 				result = "overlap";
-				model.addAttribute("overlap", result);
+				model.addAttribute("result", result);
 			}
 			
 		}else {			
 			result = "nullData";
-			model.addAttribute("overlap", result);
+			model.addAttribute("result", result);
 			
 			accountManagement.setInsertUserid(authUser.getName());
 			

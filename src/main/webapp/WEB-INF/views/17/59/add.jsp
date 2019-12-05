@@ -336,10 +336,12 @@ $(function(){
 			alert("데이터를 입력해주세요");
 			
 			result = "";
+			return;
 		} else if('NPE2' == result){
 			alert("삭제할 데이터를 선택해주세요");
 			
 			result = "";
+			return;
 		}
 	});
     
