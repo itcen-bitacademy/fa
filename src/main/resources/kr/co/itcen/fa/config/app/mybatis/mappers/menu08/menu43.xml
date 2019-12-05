@@ -96,6 +96,14 @@ left outer join tb_customer c on tb.customer_no = c.no
 		]]>
 	</update>
 	
+	<select id="getDepositNo" parameterType="string" resultType="string">
+      <![CDATA[
+      select deposit_no
+        from tb_customer
+       where no = #{ _parameter }
+      ]]>
+   </select>
+	
 	<delete id="delete" parameterType="string">
 	<![CDATA[
 	update tb_intangible_assets 
