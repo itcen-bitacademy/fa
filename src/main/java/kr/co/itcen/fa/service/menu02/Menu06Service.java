@@ -46,4 +46,9 @@ public class Menu06Service {
 	public void update(PurchasemanagementVo vo) {
 		menu06Repository.update(vo);
 	}
+
+	public void delete(PurchasemanagementVo vo) {
+		menu06Repository.delete(vo);
+		
+	}
 }

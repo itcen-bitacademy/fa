@@ -78,11 +78,11 @@
 									</div>
 									<div class="controls">
 									<label class="span3">
-										<input name="taxType" type="radio" class="ace" value="tax">
+										<input id="taxType1" name="taxType" type="radio" class="ace" value="tax">
 										<span class="lbl"> 과세</span>
 									</label>
 									<label class="span3">
-										<input name="taxType" type="radio" class="ace" value="zero">
+										<input id="taxType2" name="taxType" type="radio" class="ace" value="zero">
 										<span class="lbl"> 비과세</span>
 									</label>
 									</div>
@@ -133,7 +133,7 @@
 							<div class="span12">
 							<div class="hr hr-18 dotted"></div>
 								<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
-								<button class="btn btn-danger btn-small" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
+								<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
 								<button class="btn btn-warning btn-small" type="submit" id="update" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
 								<button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
 								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
@@ -341,21 +341,27 @@
 						data: JSON.stringify(vo),
 						success: function(result) {
 							$("#purchaseDate").val(result.purchaseDate);
-							$("#customerCode").val(result.customerCode);
+							$(".chosen-single span").text(result.customerCode);
 							$("#purchaseManager").val(result.purchaseManager);
 							$("#customerName").val(result.customerName);
 							$("#receiptDate").val(result.receiptDate);
 							$("#releaseDate").val(result.releaseDate);
 							$("#number").val(result.number);
-							$("#itemCode1").val(result.itemCode);
+							$("#itemCode1_chosen a span").text(result.itemCode);
 							$("#itemName1").val(result.itemName);
 							$("#quantity1").val(result.quantity);
 							$("#supplyValue1").val(result.supplyValue);
 							$("#taxValue1").val(result.taxValue);
+							if(result.taxType == 'tax'){
+								$("#taxType1").val(result.taxType).attr("checked", true);
+							} else{
+								$("#taxType2").val(result.taxType).attr("checked", true);
+							} 
 							$("#no").val(result.no);
+							$(".chosen-select").chosen();
 						},
 						error: function(xhr, error){
-							console.error("error:"+error);
+							alert("매입일자, 매입번호, 순번을 정확히 입력해 주세요.");
 						}
 					});
 				});

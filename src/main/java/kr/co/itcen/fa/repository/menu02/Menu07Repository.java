@@ -1,9 +1,13 @@
 package kr.co.itcen.fa.repository.menu02;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu02.PurchasemanagementVo;
 import kr.co.itcen.fa.vo.menu02.TestVo;
 
 /**
@@ -23,5 +27,32 @@ public class Menu07Repository {
 		testVo.setName("zxcvb321"); // 이름
 		
 		sqlSession.insert("menu07.save", testVo);
+	}
+
+	public List<PurchasemanagementVo> getList() {
+		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getlist");
+		return result;
+	}
+
+	public int getCount() {
+		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getcount");
+		return result.size();
+	}
+
+	public List<PurchasemanagementVo> getList(int page) {
+		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getList",page);
+		return result;
+	}
+
+	public List<PurchasemanagementVo> getList(Map<String, Object> map) {
+		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getSearchlist", map);
+		System.out.println("service : " + result);
+		return result;
+	}
+
+	public List<PurchasemanagementVo> getList(PurchasemanagementVo vo) {
+		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getSearchList", vo);
+		System.out.println("service : " + result);
+		return result;
 	}
 }

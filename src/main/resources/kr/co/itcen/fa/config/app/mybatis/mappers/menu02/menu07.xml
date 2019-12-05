@@ -14,4 +14,124 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<select id="getlist" resultType="purchasemanagement06vo">
+		<![CDATA[
+		  select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
+		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, taxbill_no as taxbillNo,
+		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate
+		  from tb_purchasemanagement
+		]]>
+	</select>
+	
+	<select id="getList" parameterType="int" resultType="purchasemanagement06vo">
+		<![CDATA[
+		  select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
+		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, taxbill_no as taxbillNo,
+		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate
+		  from tb_purchasemanagement
+		  order by purchase_no
+	      limit #{page},11
+		]]>
+	</select>
+	
+	<select id="getcount" resultType="purchasemanagement06vo">
+	<![CDATA[
+	select * from tb_purchasemanagement
+	]]>
+	</select>
+	
+	<select id="getSearchList"  parameterType="purchasemanagement06vo" resultType="purchasemanagement06vo">
+	<![CDATA[
+	select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
+		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, taxbill_no as taxbillNo,
+		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate 
+	from tb_purchasemanagement
+	where delete_flag = #{deleteFlag }
+	]]>
+		<choose>
+		<when test="purchaseDate != ''">
+		<![CDATA[
+	    	and purchase_date = #{purchaseDate }
+	    ]]>
+	    </when>
+	  	</choose>
+	  	<if test="no != ''">
+		<![CDATA[
+	    	and purchase_no = #{no }
+	    ]]>
+	  	</if>
+	  	<if test="customerCode != ''">
+		<![CDATA[
+	    	and customer_code = #{customerCode }
+	    ]]>
+	  	</if>
+	  	<if test="customerName != ''">
+		<![CDATA[
+	    	and customer_name = #{customerName }
+	    ]]>
+	  	</if>
+	  	<if test="itemCode != ''">
+		<![CDATA[
+	    	and item_code = #{itemCode }
+	    ]]>
+	  	</if>
+	  	<if test="itemName != ''">
+		<![CDATA[
+	    	and item_name = #{itemName }
+	    ]]>
+	  	</if>
+	  	<![CDATA[
+	  		order by #{orderStd }
+	  	
+	  		limit #{page},11
+	  	]]>
+	</select>
+	
+	<!-- <select id="getSearchlist"  parameterType="map" resultType="purchasemanagement06vo">
+	<![CDATA[
+	select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
+		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, taxbill_no as taxbillNo,
+		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate 
+	from tb_purchasemanagement
+	where delete_flag = #{vo.deleteFlag }
+	]]>
+		<choose>
+		<when test="purchaseDate != ''">
+		<![CDATA[
+	    	and purchase_date = #{vo.purchaseDate }
+	    ]]>
+	    </when>
+	  	</choose>
+	  	<if test="no != ''">
+		<![CDATA[
+	    	and purchase_no = #{vo.no }
+	    ]]>
+	  	</if>
+	  	<if test="customerCode != ''">
+		<![CDATA[
+	    	and customer_code = #{vo.customerCode }
+	    ]]>
+	  	</if>
+	  	<if test="customerName != ''">
+		<![CDATA[
+	    	and customer_name = #{vo.customerName }
+	    ]]>
+	  	</if>
+	  	<if test="itemCode != ''">
+		<![CDATA[
+	    	and item_code = #{vo.itemCode }
+	    ]]>
+	  	</if>
+	  	<if test="itemName != ''">
+		<![CDATA[
+	    	and item_name = #{vo.itemName }
+	    ]]>
+	  	</if>
+	  	<![CDATA[
+	  		order by #{vo.orderStd }
+	  		limit #{page},11 
+	  	]]>
+	</select> -->
+	
 </mapper>
