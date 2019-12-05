@@ -133,6 +133,7 @@ tr td:first-child {
 													</span>
 												</a>
 									
+									
 									<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
 												<div id="dialog-message" title="은행코드" hidden="hidden">
 															<table id ="dialog-message-table" align="center">
