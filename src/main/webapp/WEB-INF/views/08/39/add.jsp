@@ -56,17 +56,15 @@
 										<div class="controls">
 											<select class="chosen-select" id="form-field-select-1"
 												name="wideAddress" data-placeholder="선택">
-												
-												
 											</select>
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">주소(읍/면/동)</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-select-1"
-												name="localAddress" data-placeholder="선택">
+											<select class="chosen-select" id="localAddress" name="localAddress" data-placeholder="선택">
 											</select>
+											<input type="text" id="form-field-1" name="detailAddress" style="width: 302px;" placeholder="상세주소를 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -160,16 +158,9 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">주소(시/군/구)</label>
 										<div class="controls">
-											<select class="chosen-select" id="cityAddress" name="cityAddress"
-												data-placeholder="선택">
+											<select class="chosen-select" id="form-field-select-1"
+												name="cityAddress" data-placeholder="선택">
 											</select>
-										</div>
-									</div>
-									<div class="control-group">
-										<label class="control-label" for="form-field-1">상세주소</label>
-										<div class="controls">
-											<input type="text" class="span7" id="detailAddress"
-												name="detailAddress" placeholder="내용을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
