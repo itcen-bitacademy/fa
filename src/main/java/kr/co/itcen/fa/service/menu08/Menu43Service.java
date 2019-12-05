@@ -58,4 +58,9 @@ public class Menu43Service {
 		map.put("customerList",menu43Repository.getCustomer());
 		return map;
 	}
+
+	public String getDepositNo(String customerNo) {
+		String depositNo = menu43Repository.getDepositNo(customerNo);
+		return depositNo;
+	}
 }

@@ -59,4 +59,9 @@ public class Menu43Repository {
 		List<Object> result = sqlSession.selectList("menu43.getCustomer");
 		return result;
 	}
+
+	public String getDepositNo(String customerNo) {
+		String result = sqlSession.selectOne("menu43.getDepositNo", customerNo);
+		return result;
+	}
 }
