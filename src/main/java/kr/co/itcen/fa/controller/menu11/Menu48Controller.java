@@ -121,8 +121,7 @@ public class Menu48Controller {
 		vo.setUpdateId(user.getId());
 		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
 		vo.setIntAmount(money);
-		menu48Service.update(vo);
-		
+		vo.setVoucherNo(menu48Service.select(vo.getNo()));
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
 		ItemVo itemVo = new ItemVo();
@@ -131,33 +130,34 @@ public class Menu48Controller {
 		
 		MappingVo mappingVo = new MappingVo();
 		System.out.println("vNo : " + vo.getVoucherNo());
-		voucherVo.setNo(2L);
+		voucherVo.setNo(vo.getVoucherNo());
 		voucherVo.setRegDate(vo.getDebtDate());
 		itemVo.setAmount(vo.getDebtAmount());
 		itemVo.setAmountFlag("c");
 		itemVo.setAccountNo(2401000L);
-		itemVo.setVoucherNo(2L);
+		itemVo.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo);
 		
 		itemVo2.setAmount(money);
 		itemVo2.setAmountFlag("c");
 		itemVo2.setAccountNo(9201000L);
-		itemVo2.setVoucherNo(2L);
+		itemVo2.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo2);
 		
 		itemVo3.setAmount(vo.getDebtAmount()+money);
 		itemVo3.setAmountFlag("d");
 		itemVo3.setAccountNo(1110103L);
-		itemVo3.setVoucherNo(2L);
+		itemVo3.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo3);
 		
 		mappingVo.setVoucherUse(vo.getName());//사용목적
 		mappingVo.setSystemCode(vo.getCode());//제코드l190
 		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
-		mappingVo.setVoucherNo(2L);
+		mappingVo.setVoucherNo(vo.getVoucherNo());
 		
 		
 		menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
+		menu48Service.update(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}

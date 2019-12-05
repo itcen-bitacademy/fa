@@ -71,4 +71,11 @@ public class Menu48Repository {
 		
 		return sqlSession.selectList("menu48.selectsection");
 	}
+
+	public Long select(Long no) {
+		// TODO Auto-generated method stub
+		Long n=sqlSession.selectOne("menu48.selectno",no);
+		System.out.println(n);
+		return n;
+	}
 }
