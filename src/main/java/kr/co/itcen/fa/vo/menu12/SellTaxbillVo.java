@@ -34,11 +34,13 @@ public class SellTaxbillVo { // 논리명
 	private String bankCode; // 은행코드
 	private String deleteFlag; // 삭제
 	private String voucherNo; // 전표번호
-	
+
+	private String salesDate; // 매출일자
+
 	private String voucherUse; // 사용목적
 	private String amountFlag; // 금액 플래그 - 차변 / 대변
 	private long accountNo; // 계정코드
-	
+
 	private String insertUserid; // 입력자
 	private String insertDay; // 입력일
 	private String updateUserid; // 수정자
@@ -331,6 +333,14 @@ public class SellTaxbillVo { // 논리명
 		this.accountNo = accountNo;
 	}
 
+	public String getSalesDate() {
+		return salesDate;
+	}
+
+	public void setSalesDate(String salesDate) {
+		this.salesDate = salesDate;
+	}
+
 	@Override
 	public String toString() {
 		return "SellTaxbillVo [idx=" + idx + ", taxbillNo=" + taxbillNo + ", salesNo=" + salesNo + ", customerCode="
@@ -340,10 +350,11 @@ public class SellTaxbillVo { // 논리명
 				+ totalSupplyValue + ", totalTaxValue=" + totalTaxValue + ", writeDate=" + writeDate + ", taxType="
 				+ taxType + ", depositNo=" + depositNo + ", releaseDate=" + releaseDate + ", depositHost=" + depositHost
 				+ ", bankName=" + bankName + ", bankCode=" + bankCode + ", deleteFlag=" + deleteFlag + ", voucherNo="
-				+ voucherNo + ", voucherUse=" + voucherUse + ", amountFlag=" + amountFlag + ", accountNo=" + accountNo
-				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
-				+ ", updateDay=" + updateDay + ", itemCode=" + itemCode + ", itemName=" + itemName + ", quantity="
-				+ quantity + ", supplyValue=" + supplyValue + ", taxValue=" + taxValue + "]";
+				+ voucherNo + ", salesDate=" + salesDate + ", voucherUse=" + voucherUse + ", amountFlag=" + amountFlag
+				+ ", accountNo=" + accountNo + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", itemCode=" + itemCode
+				+ ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue=" + supplyValue + ", taxValue="
+				+ taxValue + "]";
 	}
 
 }

@@ -21,6 +21,7 @@
 			tbc.name as customerName, 
 			tbs.taxbill_no as taxbillNo,
 			tbs.customer_code as customerCode,
+			tbs.sales_date as salesDate,
 			tbs.write_date as writeDate,
 			tbs.voucher_use as voucherUse,
 			tbc.ceo,
@@ -55,7 +56,7 @@
 			tb_sell_taxbill 
 			values(
 			 null, #{taxbillNo },
-			 #{salesNo }, #{customerCode },
+			 #{salesNo }, #{salesDate}, #{customerCode },
 			 #{customerName }, #{ceo },
 			 #{zipCode }, #{address }, #{detailAddress },
 			 #{managerName }, #{managerEmail },
@@ -72,7 +73,7 @@
 	
 	<update id="salesupdate" parameterType="selltaxbill12vo">
 		<![CDATA[ 
-			update tb_sales set taxbill_no = #{taxbillNo}, voucher_use = #{voucherUse }  where sales_no = #{salesNo};
+			update tb_sales set taxbill_no = #{taxbillNo }, voucher_use = #{voucherUse }, write_date = now()  where sales_no = #{salesNo};
 		]]>
 	</update>
 	

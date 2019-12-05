@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu12;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.MenuService;
+import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu12.Menu53Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.ItemVo;
+import kr.co.itcen.fa.vo.menu01.MappingVo;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 
 /**
@@ -31,16 +37,14 @@ public class Menu53Controller {
 	public static final String MAINMENU = "12";
 	public static final String SUBMENU = "53";
 
-	// 작업순서
-	// 1. 매출조회 누르면 리스트 출력
-	// 2. insert
-	// 3. 테이블 리스트 출력
-	
 	@Autowired
 	private MenuService menuService;
 
 	@Autowired
 	private Menu53Service menu53Service;
+	
+	@Autowired
+	private Menu03Service menu03Service;
 	
 	//@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
@@ -72,15 +76,96 @@ public class Menu53Controller {
 	
 	// 추가사항 발생
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String add(@SessionAttribute("authUser") UserVo authUser, SellTaxbillVo selltaxbillvo) {
+	public String add(SellTaxbillVo selltaxbillvo, @AuthUser UserVo authUser) {
+		// @SessionAttribute("authUser") UserVo authUser, 
 		
 		selltaxbillvo.setInsertUserid(authUser.getId());
 		selltaxbillvo.setDeleteFlag("N");
-		selltaxbillvo.setAccountNo(1110101);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
+		
+		selltaxbillvo.setAccountNo(1110101L);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
 		selltaxbillvo.setAmountFlag("d");		// select * from 
 		
+		
 		menu53Service.salesUpdate(selltaxbillvo);
+		
+		
+		/////////////////////////////////////
+		// 전표등록
+		
+		// 객체 생성
+		VoucherVo voucherVo = new VoucherVo();
+		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+		MappingVo mappingVo = new MappingVo();
+		
+		ItemVo itemVo = new ItemVo();
+		ItemVo itemVo2 = new ItemVo();
+		ItemVo itemVo3 = new ItemVo();
+		
+		voucherVo.setRegDate(selltaxbillvo.getSalesDate());  // 매출일
+		itemVo.setAmount(selltaxbillvo.getTotalSupplyValue() + selltaxbillvo.getTotalTaxValue()); // 현금
+		itemVo.setAmountFlag("d");			// 차변 - d
+		itemVo.setAccountNo(1110101L);		// 계정과목코드 
+		itemVoList.add(itemVo);
+		
+		itemVo2.setAmount(selltaxbillvo.getTotalSupplyValue()); 	// 공급가액
+		itemVo2.setAmountFlag("c");                                 // 대변 - c
+		itemVo2.setAccountNo(5010101L);								// 상품매출
+		itemVoList.add(itemVo2);
+		
+		itemVo3.setAmount(selltaxbillvo.getTaxValue()); 			// 부가세금액
+		itemVo3.setAmountFlag("c");									// 대변
+		itemVo3.setAccountNo(2140101L);								// 부가세예수금
+		itemVoList.add(itemVo3);
+		
+		mappingVo.setVoucherUse(selltaxbillvo.getVoucherUse());     // 비고
+		mappingVo.setSystemCode(selltaxbillvo.getSalesNo());      // 매출번호
+		mappingVo.setDepositNo(selltaxbillvo.getDepositNo());       // 계좌번호
+		mappingVo.setCardNo(selltaxbillvo.getCustomerCode());       // 거래처 코드
+		
+		long voucherNo;
+		voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+		
+		selltaxbillvo.setVoucherNo(String.valueOf(voucherNo)); 
+		
+		// voucherVo.setRegDate(selltaxbillvo.gets);
+		//menu03Service.createVoucher(voucherVo, itemVo, mappingVo, authUser);
+		
+		
+		// VoucherVo voucherVo = new VoucherVo();
+		// List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+		// ItemVo itemVo = new ItemVo();
+		// ItemVo itemVo2 = new ItemVo();
+		// ItemVo itemVo3 = new ItemVo();
+		
+		// MappingVo mappingVo = new MappingVo();
+		
+		// voucherVo.setRegDate(vo.getDebtDate());	    // 등록일 - 매출일
+		// itemVo.setAmount(vo.getDebtAmount());	    // 판매 금액 - 현금 - 금액
+		// itemVo.setAmountFlag("c");				    // 차변 - d
+		// itemVo.setAccountNo(2401000L);			    // 계정과목코드 
+		// itemVoList.add(itemVo);					    // 항목리스트
+		
+		
+		// itemVo2.setAmount(money);				    // 금액 - 현금 - 부가세
+		// itemVo2.setAmountFlag("c");				    // 대변 - c
+		// itemVo2.setAccountNo(9201000L);			    // 계정과목코드
+		// itemVoList.add(itemVo2);					    // 항목리스트
+		
+		
+		// itemVo3.setAmount(vo.getDebtAmount()+money);	// 부가세금액
+		// itemVo3.setAmountFlag("d");					// 대변 - c
+		// itemVo3.setAccountNo(1110103L);				// 계정과목코드
+		// itemVoList.add(itemVo3);						// 항목리스트
+		
+		// mappingVo.setVoucherUse(vo.getName());		// 비고	
+		// mappingVo.setSystemCode(vo.getCode());		// 매출번호
+		// mappingVo.setDepositNo(vo.getDepositNo());	// 계좌번호
+		// mappingVo.거래처(vo.get) 						// 거래처
+		
+		// menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
+		
 		menu53Service.insert(selltaxbillvo);
+		
 		System.out.println("추가 이벤트 발생");
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
@@ -102,34 +187,4 @@ public class Menu53Controller {
 		return MAINMENU + "/" + SUBMENU + "/list"; 
 	}
 	
-//	VoucherVo voucherVo = new VoucherVo();
-//	List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-//	ItemVo itemVo = new ItemVo();
-//	ItemVo itemVo2 = new ItemVo();
-//	ItemVo itemVo3 = new ItemVo();
-//	
-//	MappingVo mappingVo = new MappingVo();
-//	voucherVo.setRegDate(vo.getDebtDate());
-//	itemVo.setAmount(vo.getDebtAmount());
-//	itemVo.setAmountFlag("c");
-//	itemVo.setAccountNo(2401000L);
-//	itemVoList.add(itemVo);
-//	
-//	itemVo2.setAmount(money);
-//	itemVo2.setAmountFlag("c");
-//	itemVo2.setAccountNo(9201000L);
-//	itemVoList.add(itemVo2);
-//	
-//	itemVo3.setAmount(vo.getDebtAmount()+money);
-//	itemVo3.setAmountFlag("d");
-//	itemVo3.setAccountNo(1110103L);
-//	itemVoList.add(itemVo3);
-//	
-//	mappingVo.setVoucherUse(vo.getName());
-//	mappingVo.setSystemCode(vo.getCode());
-//	mappingVo.setDepositNo(vo.getDepositNo());
-//	
-//	menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-	
-
 }
