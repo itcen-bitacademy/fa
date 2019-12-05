@@ -45,13 +45,13 @@
 
                     <!-- PAGE CONTENT BEGINS -->
                     <div class="span12">
-                        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/12/14">
+                        <form class="form-horizontal" method="post" id="searchForm" action="${pageContext.request.contextPath }/12/14">
                             <!-- left -->
                             <div class="span6">
                                 <div class="control-group">
                                     <label class="control-label" for="salesNo">매출번호</label>
                                     <div class="controls">
-                                        <input type="text" id="salesNo" name="salesNo" placeholder="매출번호">
+                                        <input type="text" id="salesNo" name="salesNo" value="${search.salesNo }" placeholder="매출번호">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -61,7 +61,7 @@
                                             <span class="add-on">
                                                 <i class="icon-calendar"></i>
                                             </span>
-                                            <input type="text" name="dates" id="salesDate" class="form-control pull-left">
+                                            <input type="text" name="dates" id="salesDate" value="" class="form-control pull-left">
                                         </div>
                                     </div>
                                 </div>
@@ -69,9 +69,16 @@
                                     <label class="control-label" for="itemCode">품목코드</label>
                                     <div class="controls">
                                         <select class="chosen-select" id="itemCode" data-placeholder="품목코드" name="itemCode">
-                                            <option value="">&nbsp;</option>
+                                        <option value="">&nbsp;</option>
                                             <c:forEach items="${itemlist }" var="list" varStatus="status">
-                                            <option value="${list.no }">${list.no }(${list.name })</option>
+                                            	<c:choose>
+                                            		<c:when test="${list.no eq search.itemCode }">
+                                            			<option id="" value="${list.no }" selected>${list.no }(${list.name })</option>
+                                            		</c:when>
+                                            		<c:otherwise>
+                                            			<option id="" value="${list.no }">${list.no }(${list.name })</option>
+                                            		</c:otherwise>
+                                            	</c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -80,7 +87,7 @@
                                     <label class="control-label" for="form-field-5">정렬기준</label>
                                     <div class="controls">
                                         <select class="chosen-select" id="form-field-select-1" name="orderData" data-placeholder="정렬기준">
-                                            <option value=""></option>
+                                        	<option value="">&nbsp;</option>
                                             <option value="sales_date">매출일</option>
                                             <option value="customer_code">거래처</option>
                                             <option value="supply_value">공급가액</option>
@@ -96,10 +103,18 @@
                                 <div class="control-group">
                                     <label class="control-label" for="customerCode">거래처코드</label>
                                     <div class="controls">
+                                    <input type="hidden" value="${search.customerCode }">
                                         <select class="chosen-select" id="customerCode" data-placeholder="거래처코드" name="customerCode">
-                                            <option value="">&nbsp;</option>
+                                        <option value="">&nbsp;</option>
                                             <c:forEach items="${customerlist }" var="list" varStatus="status">
-                                            <option id="${status }" value="${list.no }">${list.no }(${list.name })</option>
+                                            	<c:choose>
+                                            		<c:when test="${list.no eq search.customerCode }">
+                                            			<option id="" value="${list.no }" selected>${list.no }(${list.name })</option>
+                                            		</c:when>
+                                            		<c:otherwise>
+                                            			<option id="" value="${list.no }">${list.no }(${list.name })</option>
+                                            		</c:otherwise>
+                                            	</c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -107,16 +122,28 @@
                                 <div class="control-group">
                                     <label class="control-label" for="InsertUserid">매출담당자</label>
                                     <div class="controls">
-                                        <input type="text" id="InsertUserid" name="InsertUserid" placeholder="매출담당자">
+                                        <input type="text" id="InsertUserid" name="InsertUserid" value="${search.insertUserid }" placeholder="매출담당자">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="deleteFlag">삭제여부</label>
+                                    <input type="hidden" value="${search.deleteFlag }">
                                     <div class="controls">
                                         <select class="chosen-select" id="deleteFlag" name="deleteFlag" data-placeholder="팀선택">
-                                            <option value="">전체</option>
-                                            <option value="Y">삭제</option>
-                                            <option value="N">미삭제</option>
+                                        <c:choose>
+                                        	<c:when test="${search.deleteFlag == 'Y' }">
+                                        		<option value="Y" selected style="display:none">삭제</option>
+                                        	</c:when>
+                                        	<c:when test="${search.deleteFlag == 'N' }">
+                                        		<option value="N" selected style="display:none">미삭제</option>
+                                        	</c:when>
+                                        	<c:otherwise>
+                                        		<option value="" selected style="display:none">전체</option>
+                                        	</c:otherwise>                                        	
+                                        </c:choose>
+                                        		<option value="">전체</option>
+                                        		<option value="Y">삭제</option>
+                                        		<option value="N">미삭제</option>
                                         </select>
                                     </div>
                                 </div>
@@ -163,6 +190,10 @@
                             </tr>
                             </c:forEach>
                         </table>
+                        <input type="hidden" value="${search.searchFlag }" name="searchFlag" id="searchFlag">
+                        <input type="hidden" value="${search.startDate }" name="" id="startDate">
+                        <input type="hidden" value="${search.endDate }" name="" id="endDate">
+                        <input type="hidden" value="${pg }" name="" id="currentPage">
                         <!-- PAGE CONTENT ENDS -->
                     </div>
                     <!-- /.span -->
@@ -173,7 +204,7 @@
                         <ul>
                         <c:choose>
                             <c:when test="${dataResult.pagination.prev }">
-                            <li><a href="${pageContext.servletContext.contextPath }/12/14/${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+                            <li><a href="javascript:movePage(${dataResult.pagination.startPage - 1 });"><i class="icon-double-angle-left"></i></a></li>
                             </c:when>
                             <c:otherwise>
                             <li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -182,16 +213,16 @@
                         <c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
                             <c:choose>
                                 <c:when test="${pg eq dataResult.pagination.page }">
-                                <li class="active"><a href="${pageContext.servletContext.contextPath }/12/14/${pg }">${pg }</a></li>
+                                <li class="active"><a href="javascript:movePage(${pg });">${pg }</a></li>
                                 </c:when>
                                 <c:otherwise>
-                                <li><a href="${pageContext.servletContext.contextPath }/12/14/${pg }">${pg }</a></li>
+                                <li><a href="javascript:movePage(${pg });">${pg }</a></li>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
                         <c:choose>
                             <c:when test="${dataResult.pagination.next }">
-                            <li><a href="${pageContext.servletContext.contextPath }/12/14/${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+                            <li><a href="javascript:movePage(${dataResult.pagination.endPage + 1 });"><i class="icon-double-angle-right"></i></a></li>
                             </c:when>
                             <c:otherwise>
                             <li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -212,12 +243,40 @@
     <script>
         $(function() {
             $(".chosen-select").chosen();
-        });
-        $('input[name="dates"]').daterangepicker({
-            locale: {
-                format: 'YYYY-MM-DD'
-            }
-        });
+     
+       
+	        $("#salesDate").daterangepicker({
+	       		locale: {
+	               	format: 'YYYY-MM-DD'
+	            }
+	        });
+	        setDate();
+	    });
+        function movePage(page){
+        	var searchFlag = $("#searchFlag").val();
+        	var url = "${pageContext.request.contextPath }/12/14/"+page;
+        	if(searchFlag=="true"){
+        		$("#searchForm").attr("action", url).submit();
+        	} else {
+        		location.href = url;
+        	}
+        	
+        }
+        
+        function setDate(){
+        	if($("#searchFlag").val()=="true"){
+        		if($("#currentPage").val()==""||$("#currentPage").val()==null){
+        			history.pushState(null, null, "${pageContext.request.contextPath }/12/14/1");
+        		} else {
+        			history.pushState(null, null, "${pageContext.request.contextPath }/12/14/${pg}");
+        		}
+        		
+        		
+  	    	   	$('#salesDate').data('daterangepicker').setStartDate($("#startDate").val());
+  	    	   	$('#salesDate').data('daterangepicker').setEndDate($("#endDate").val());
+  	       }
+        }
+      
     </script>
 </body>
 

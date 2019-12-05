@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.controller.menu12;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu14Service;
-import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
-import kr.co.itcen.fa.vo.menu12.CustomerVo;
-import kr.co.itcen.fa.vo.menu12.SalesVo;
+import kr.co.itcen.fa.vo.menu12.SalesSearchVo;
 
 /**
  * 
@@ -38,33 +37,35 @@ public class Menu14Controller {
 		if(page!=null) {
 			ipage = Integer.parseInt(page);
 		} 
-		System.out.println(ipage);
-		List<CustomerVo> customerlist = menu14Service.getCustomerList();
-		List<PurchaseitemVo> itemlist = menu14Service.getItemList();
 		
-		model.addAttribute("customerlist", customerlist);
-		model.addAttribute("itemlist", itemlist);
+		System.out.println("check!!!!!!!!!!!!!!!!!!");
 		
+		model.addAttribute("customerlist", menu14Service.getCustomerList());
+		model.addAttribute("itemlist", menu14Service.getItemList());
 		model.addAttribute("dataResult", menu14Service.getList(ipage));
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
-	
-	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU }, method=RequestMethod.POST)
-	public String list(SalesVo vo, String dates, Model model) {
-		String[] date = dates.split(" - ");
 		
+	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}"}, method=RequestMethod.POST)
+	public String list(SalesSearchVo vo, String dates, Model model, String page) {	
+		int ipage = 1;
+		if(page!=null) {
+			ipage = Integer.parseInt(page);
+		}
+		
+		String[] date = dates.split(" - ");		
+		System.out.println(date[0]);
 		vo.setStartDate(date[0]);
 		vo.setEndDate(date[1]);
+		vo.setSearchFlag(true);
 		
-		List<SalesVo> list = menu14Service.getSerchList(vo);
-		List<CustomerVo> customerlist = menu14Service.getCustomerList();
-		List<PurchaseitemVo> itemlist = menu14Service.getItemList();
+		model.addAttribute("dataResult", menu14Service.getSerchList(vo, ipage));
+		model.addAttribute("customerlist", menu14Service.getCustomerList());
+		model.addAttribute("itemlist", menu14Service.getItemList());
 		
-		model.addAttribute("list", list);
-		model.addAttribute("customerlist", customerlist);
-		model.addAttribute("itemlist", itemlist);
+		model.addAttribute("search", vo);
 		
-		return MAINMENU + "/" + SUBMENU + "/list"; 
+		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }
