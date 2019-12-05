@@ -29,6 +29,14 @@ public class LTermdebtVo {
 	private String insertDate;//등록일
 	private String updateId;//수정자
 	private String updateDate;//수정일
+	private String bankName;
+	
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
 	public Long getNo() {
 		return no;
 	}
@@ -183,12 +191,13 @@ public class LTermdebtVo {
 	@Override
 	public String toString() {
 		return "LTermdebtVo [no=" + no + ", code=" + code + ", name=" + name + ", debtAmount=" + debtAmount
-				+ ", repayBal=" + repayBal + ", repayWay=" + repayWay + ", debtExpDate=" + debtExpDate + ", debtDate="
-				+ debtDate + ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay
-				+ ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", majorCode=" + majorCode
-				+ ", bankCode=" + bankCode + ", depositNo=" + depositNo + ", accountNo=" + accountNo + ", voucherNo="
-				+ voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate
-				+ ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
+				+ ", repayBal=" + repayBal + ", repayWay=" + repayWay + ", repayCompleFlag=" + repayCompleFlag
+				+ ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate + ", expDate=" + expDate + ", intRate="
+				+ intRate + ", intPayWay=" + intPayWay + ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall="
+				+ mgrCall + ", majorCode=" + majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo
+				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
+				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate
+				+ ", bankName=" + bankName + "]";
 	}
 	
 	

@@ -40,7 +40,9 @@ public class Menu49Repository {
 		map.put("pagination", pagination);
 		map.put("vo", vo);
 		map.put("sort",sort);
+		System.out.println(map.get("sort"));
 		List<LTermdebtVo> list= sqlSession.selectList("menu49.selectAll",map);
+		
 		return list;
 	}
 	public List<SectionVo> selectSection() {

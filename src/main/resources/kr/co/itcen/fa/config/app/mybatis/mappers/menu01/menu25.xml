@@ -3,7 +3,7 @@
 <mapper namespace="menu25">
 	<!-- Test -->
 	
-	<select id="list" resultType="bankaccountvo">
+	<select id="list" parameterType="map" resultType="bankaccountvo">
 		<![CDATA[
 		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
 			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
@@ -13,6 +13,12 @@
 		 from	tb_bank_account 
 		 where	delete_flag = "N"
 		]]>
+		<if test="pagination.pageIndex >= 0 ">
+		<![CDATA[
+			 limit #{pagination.pageIndex	}, #{pagination.listSize	}
+		]]>
+		</if>
+		
 	</select>
 	
 	<insert id="create" parameterType="bankaccountvo">
@@ -94,6 +100,14 @@
 		 from	tb_bank_account
 		 where	deposit_no like concat(#{depositNo}, "%")
 		 and  delete_flag = "N"
+		]]>
+	</select>
+	
+	<select id="getCount" resultType="int">
+		<![CDATA[
+		select	count(*)
+		 from	tb_bank_account 
+		 where	delete_flag = "N"
 		]]>
 	</select>
 

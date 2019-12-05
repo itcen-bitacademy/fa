@@ -72,6 +72,12 @@ public class Menu33Service {
 		return searchsectionList;
 	}
 
+	public List<PurchaseitemVo> getpagePurchaseitemList(int page) {
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Repository.getpagePurchaseitemList(page);
+		
+		return pagepurchaseitemList;
+	}
+
 	
 
 	

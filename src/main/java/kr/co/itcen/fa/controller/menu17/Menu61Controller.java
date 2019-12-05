@@ -2,7 +2,6 @@ package kr.co.itcen.fa.controller.menu17;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +18,7 @@ import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.service.menu17.Menu20Service;
 import kr.co.itcen.fa.service.menu17.Menu61Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
 /**
@@ -72,7 +72,8 @@ public class Menu61Controller {
 		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
 		
 		// 마감일 체크 
-//		if (menu19Service.checkClosingDate(session, Calendar.getInstance().getTime())) {
+		ClosingDateVo closingDateVo = menu19Service.selectClosingDateByNo(menu17SearchForm);
+		if (menu19Service.checkClosingDate(session, closingDateVo.getStartDate())) {
 			UserVo userVo = (UserVo) session.getAttribute("authUser");
 			
 			// 등록자 설정 - 시산표 및 재무제표용 
@@ -86,10 +87,10 @@ public class Menu61Controller {
 			if (!dataResult.isStatus()) {
 				uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
 			}
-//		} else {
+		} else {
 			// 마감일이 지났을 시 
-//			uri = uri + "?error=" + URLEncoder.encode("마감일이 지났습니다. 관리자에게 문의하세요.", "UTF-8");
-//		}
+			uri = uri + "?error=" + URLEncoder.encode("마감일이 지났습니다. 관리자에게 문의하세요.", "UTF-8");
+		}
 				
 		return uri;
 	}

@@ -4,8 +4,8 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("ts17Vo")
-public class TestStatementDataVo {
+@Alias("statementData17Vo")
+public class StatementDataVo {
     private Long no;
     private Long accountNo;
     private String accountName;

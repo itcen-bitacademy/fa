@@ -36,6 +36,24 @@ public class CustomerVo {
 	private String depositHost;
 	private String bankCode;
 	private String bankName;
+	private String datepicker1;
+	private String datepicker2;
+
+	public String getDatepicker1() {
+		return datepicker1;
+	}
+
+	public void setDatepicker1(String datepicker1) {
+		this.datepicker1 = datepicker1;
+	}
+
+	public String getDatepicker2() {
+		return datepicker2;
+	}
+
+	public void setDatepicker2(String datepicker2) {
+		this.datepicker2 = datepicker2;
+	}
 
 	public String getNo() {
 		return no;
@@ -238,7 +256,7 @@ public class CustomerVo {
 				+ ", deleteFlag=" + deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
 				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", customerDiv=" + customerDiv
 				+ ", assetsFlag=" + assetsFlag + ", depositHost=" + depositHost + ", bankCode=" + bankCode
-				+ ", bankName=" + bankName + "]";
+				+ ", bankName=" + bankName + ", datepicker1=" + datepicker1 + ", datepicker2=" + datepicker2 + "]";
 	}
-
+	
 }

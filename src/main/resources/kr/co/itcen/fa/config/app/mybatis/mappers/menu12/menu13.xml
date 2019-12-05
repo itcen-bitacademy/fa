@@ -5,19 +5,46 @@
 		<![CDATA[
 			insert into
 			tb_sales
-				(sales_no, number, sales_date, emp_manager, 
-				 customer_code, customer_name, item_code, 
-				 item_name, quantity, supply_value, total_price, sell_price,
-				 tax_value, taxbill_no, release_date, insert_userid, 
-				 insert_day, section_code, section_name)
+				(sales_no, 
+				 number, 
+				 sales_date, 
+				 emp_manager, 
+				 customer_code, 
+				 customer_name, 
+				 item_code, 
+				 item_name, 
+				 quantity, 
+				 supply_value, 
+				 total_price, 
+				 sell_price,
+				 tax_value, 
+				 taxbill_no, 
+				 release_date, 
+				 insert_userid, 
+				 insert_day, 
+				 section_code, 
+				 section_name)
 			values
 		]]>
 		<foreach collection="list" item="item" separator=",">
 			<![CDATA[
-				(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager},
-				#{item.customerCode}, #{item.customerName}, #{item.itemCode},
-				#{item.itemName}, #{item.quantity}, #{item.supplyValue}, #{item.totalPrice}, #{item.sellPrice},
-				#{item.taxValue}, #{item.taxbillNo}, #{item.releaseDate}, #{item.insertUserid}, now(),
+				(#{item.salesNo}, 
+				 #{item.number}, 
+				 #{item.salesDate}, 
+				 #{item.empManager},
+				 #{item.customerCode}, 
+				 #{item.customerName}, 
+				 #{item.itemCode},
+				 #{item.itemName}, 
+				 #{item.quantity}, 
+				 #{item.supplyValue}, 
+				 #{item.totalPrice}, 
+				 #{item.sellPrice},
+				 #{item.taxValue}, 
+				 #{item.taxbillNo}, 
+				 #{item.releaseDate}, 
+				 #{item.insertUserid}, 
+				 now(),
 				(select b.code 
 				 from 	tb_purchaseitem a, tb_section b 
 				 where 	a.no = #{item.itemCode}
@@ -86,20 +113,50 @@
 		<![CDATA[
 			insert into
 			tb_sales
-				(sales_no, number, sales_date, emp_manager, 
-				 customer_code, customer_name, item_code, 
-				 item_name, quantity, supply_value, total_price, sell_price,
-				 tax_value, taxbill_no, release_date, insert_userid, 
-				 insert_day, update_userid, update_day, section_code, section_name)
+				(sales_no, 
+				 number, 
+				 sales_date, 
+				 emp_manager, 
+				 customer_code, 
+				 customer_name,
+				 item_code, 
+				 item_name, 
+				 quantity, 
+				 supply_value, 
+				 total_price, 
+				 sell_price,
+				 tax_value, 
+				 taxbill_no, 
+				 release_date, 
+				 insert_userid, 
+				 insert_day, 
+				 update_userid, 
+				 update_day, 
+				 section_code, 
+				 section_name)
 			values
 		]]>
 		<foreach collection="list" item="item" separator=",">
 			<![CDATA[
-				(#{item.salesNo}, #{item.number}, #{item.salesDate}, #{item.empManager},
-				#{item.customerCode}, #{item.customerName}, #{item.itemCode},
-				#{item.itemName}, #{item.quantity}, #{item.supplyValue}, #{item.totalPrice}, #{item.sellPrice},
-				#{item.taxValue}, #{item.taxbillNo}, #{item.releaseDate}, #{item.insertUserid},
-				#{item.insertDay}, #{item.updateUserid}, now(),
+				(#{item.salesNo}, 
+				 #{item.number}, 
+				 #{item.salesDate}, 
+				 #{item.empManager},
+				 #{item.customerCode}, 
+				 #{item.customerName}, 
+				 #{item.itemCode},
+				 #{item.itemName}, 
+				 #{item.quantity}, 
+				 #{item.supplyValue}, 
+				 #{item.totalPrice}, 
+				 #{item.sellPrice},
+				 #{item.taxValue}, 
+				 #{item.taxbillNo}, 
+				 #{item.releaseDate}, 
+				 #{item.insertUserid},
+				 #{item.insertDay}, 
+				 #{item.updateUserid}, 
+				 now(),
 				(select b.code 
 				 from 	tb_purchaseitem a, tb_section b 
 				 where 	a.no = #{item.itemCode}

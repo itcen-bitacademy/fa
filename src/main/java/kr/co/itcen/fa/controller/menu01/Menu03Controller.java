@@ -1,9 +1,6 @@
 package kr.co.itcen.fa.controller.menu01;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
-import kr.co.itcen.fa.service.menu01.Menu04Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.ItemVo;
-import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
 
@@ -40,18 +35,15 @@ public class Menu03Controller {
 	@Autowired
 	private Menu03Service menu03Service;
 	
-	@Autowired
-	private Menu04Service menu04Service;
-	
 	// 전표관리 페이지
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
+	public String view(@RequestParam(defaultValue = "1") int page, Model model) {
 		// 페이징
-		model.addAttribute("dataResult", menu03Service.selectAllVoucherCount(page));
+		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
 		
-		voucherVo = menu04Service.viewVoucher();
+		model.addAttribute("dataResult", dataResult);
 		
-		model.addAttribute("voucherVo", voucherVo);
+		
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
@@ -59,17 +51,7 @@ public class Menu03Controller {
 	// 전표 작성 & 리스트 반환
 	@ResponseBody
 	@RequestMapping(value= "/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public JSONResult categoryWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-		ItemVo itemVo = new ItemVo();
-		MappingVo mappingVo = new MappingVo();
-		
-		itemVo.setAmount(voucherVo.getAmount());
-		itemVo.setAmountFlag(voucherVo.getAmountFlag());
-		itemVo.setAccountNo(voucherVo.getAccountNo());
-		
-		mappingVo.setVoucherUse(voucherVo.getVoucherUse());
-		
+	public JSONResult categoryWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, @RequestParam(defaultValue = "1") int page) {
 		String systemCode = "A000";
 		int count = 0;
 		count += 1;
@@ -82,26 +64,30 @@ public class Menu03Controller {
 		if(count > 999) {
 			systemCode = "A";
 		}
-		mappingVo.setSystemCode(systemCode + count);
-		mappingVo.setCardNo(voucherVo.getCardNo());
-		mappingVo.setDepositNo(voucherVo.getDepositNo());
-		mappingVo.setCustomerNo(voucherVo.getCustomerNo());
-		mappingVo.setBankCode(voucherVo.getBankCode());
+		voucherVo.setSystemCode(systemCode + count);
+		System.out.println("c : " + voucherVo.getSystemCode());
 		
-		itemVoList.add(itemVo);
-		
-		System.out.println("23232323" + voucherVo.getRegDate());
-		
-		menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
-		
-		System.out.println("1111111" + voucherVo.getRegDate());
+		menu03Service.createVoucher(voucherVo, userVo);
 		
 		// 카테고리 작성, 리스트
-		List<VoucherVo> voucherList = menu03Service.add(voucherVo);
-		return JSONResult.success(voucherList);
+		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
+		System.out.println("d : " + dataResult.getDatas());
+		return JSONResult.success(dataResult);
 	}
 	
-	
-	
+	// 전표 삭제
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
+	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, Model model) {
+		System.out.println("222222222 : " + voucherVo.getNo());
+		System.out.println("33333333 : " + userVo.getTeamName());
+//		if(voucherVo.getInsertTeam() != userVo.getTeamName()) {
+//			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+//		}
+		
+		menu03Service.deleteVoucher(voucherVo);
+		
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+	}
 	
 }

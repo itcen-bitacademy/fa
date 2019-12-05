@@ -2,6 +2,7 @@ package kr.co.itcen.fa.vo.menu17;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
@@ -163,5 +164,62 @@ public class ClosingDateVo {
 		this.updateDay = updateDay;
 	}
 	
+	public Date getStartDate() {
+		Calendar calendar = Calendar.getInstance();
+		
+		if (this.closingYearMonth == null || this.closingYearMonth.length() == 0) {
+			return calendar.getTime();
+		}
+		
+		String year = this.closingYearMonth.substring(0, 4);
+		String month = this.closingYearMonth.substring(5, 7);
+		
+        calendar.set(Calendar.YEAR, Integer.parseInt(year));
+        calendar.set(Calendar.MONTH, Integer.parseInt(month) - 1);
+
+        //set start date
+        calendar.set(Calendar.DAY_OF_MONTH,
+                     calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY,
+                     calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE,
+                     calendar.getActualMinimum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND,
+                     calendar.getActualMinimum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND,
+                     calendar.getActualMinimum(Calendar.MILLISECOND));
+        
+        Date startDate = calendar.getTime();
+        
+        return startDate;
+	}
 	
+	public Date getEndDate() {
+		Calendar calendar = Calendar.getInstance();
+		
+		if (this.closingYearMonth == null || this.closingYearMonth.length() == 0) {
+			return calendar.getTime();
+		}
+		
+		String year = this.closingYearMonth.substring(0, 4);
+		String month = this.closingYearMonth.substring(5, 7);
+		
+        calendar.set(Calendar.YEAR, Integer.parseInt(year));
+        calendar.set(Calendar.MONTH, Integer.parseInt(month) - 1);
+
+        calendar.set(Calendar.DAY_OF_MONTH,
+                     calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY,
+                     calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE,
+                     calendar.getActualMaximum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND,
+                     calendar.getActualMaximum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND,
+                     calendar.getActualMaximum(Calendar.MILLISECOND));
+        
+        Date endDate = calendar.getTime();
+        
+        return endDate;
+	}
 }

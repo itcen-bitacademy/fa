@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
+import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 import kr.co.itcen.fa.vo.menu02.TestVo;
@@ -40,6 +41,34 @@ public class Menu37Repository {
 	public List<BankAccountVo> customerBankList() {
 		List<BankAccountVo> customerBankList = sqlSession.selectList("menu37.customerBankList");
 		return customerBankList;
+	}
+
+	public void insertTax(BuyTaxbillVo vo) {
+		sqlSession.insert("menu37.insertTax",vo);	
+	}
+
+	public void insertItem(BuyTaxbillItemsVo vo) {
+		sqlSession.insert("menu37.insertItem", vo);
+	}
+
+	public BuyTaxbillVo getAboutNoData(String no) {
+		BuyTaxbillVo buyTaxbillVo = sqlSession.selectOne("menu37.getAboutNoData", no);
+		return buyTaxbillVo;
+	}
+
+	public CustomerVo getAboutNoCustomerData(String companyName) {
+		CustomerVo getAboutNoCustomerData = sqlSession.selectOne("menu37.getAboutNoCustomerData", companyName);
+		return getAboutNoCustomerData;
+	}
+
+	public BankAccountVo getAboutNoBankData(String depositNo) {
+		BankAccountVo getAboutNoBankData = sqlSession.selectOne("menu37.getAboutNoBankData", depositNo);
+		return getAboutNoBankData;
+	}
+
+	public List<BuyTaxbillItemsVo> getAboutItmes(String no) {
+		List<BuyTaxbillItemsVo> getAboutItmes = sqlSession.selectList("menu37.getAboutItmes",no);
+		return getAboutItmes;
 	}
 	
 	

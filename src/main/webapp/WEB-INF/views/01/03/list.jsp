@@ -75,10 +75,10 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">증빙코드 / 증빙종류 :</label>
+									<label class="control-label" for="form-field-codename">증빙종류 / 증빙코드 :</label>
 									<div class="controls">
-										<input class="span3" type="text" id="form-field-code" name="code1" placeholder="증빙코드"/>
 										<input class="span5" type="text" id="manageNo" name="manageNo" placeholder="증빙종류"/>
+										<input class="span3" type="text" id="form-field-code" name="manageName" placeholder="증빙코드"/>
 									</div>
 								</div>
 								
@@ -141,10 +141,10 @@
 						<button class="btn btn-primary" type="submit" id="btn-create" name="btn-create"
 							formaction="${pageContext.request.contextPath }/01/03/add">입 력</button>
 						&nbsp; &nbsp; &nbsp;
-						<button class="btn btn-warning" id="btn-update" name="btn-update"
+						<button class="btn btn-warning" type="submit" id="btn-update" name="btn-update"
 							formaction="${pageContext.request.contextPath }/01/03/update">수 정</button>
 						&nbsp; &nbsp; &nbsp;
-						<button class="btn btn-danger" id="btn-delete" name="btn-delete"
+						<button class="btn btn-danger" type="submit" id="btn-delete" name="btn-delete"
 							formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 						&nbsp; &nbsp; &nbsp;
 						<button class="btn btn-default" type="reset">취 소</button>
@@ -157,7 +157,8 @@
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
 				<div class="span12">
-					<table class="table table-striped table-bordered table-hover">
+					<table id="simple-table-1"
+						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>일자</th>
@@ -167,27 +168,27 @@
 								<th>계정과목명</th>
 								<th>차변</th>
 								<th>대변</th>
+								<th>거래처번호</th>
 								<th>거래처</th>
 								<th>증빙종류</th>
 								<th>증빙코드</th>
+								<th>은행코드</th>
 								<th>은행명</th>
 								<th>카드번호</th>
 								<th>계좌번호</th>
 								<th>소유자</th>
-								<th>담당자</th>
 								<th>사용목적</th>
+								<th>관리팀</th>
 							</tr>
 						</thead>
 						
 						<tbody id="voucher_list">
-							<c:forEach items='${list }' var='voucherVo' varStatus='status'>
-								<tr>
-									<td class="center"><label> <input type="checkbox"
-											class="ace" /> <span class="lbl"></span>
-									</label></td>
+							<c:forEach items='${dataResult.datas }' var='voucherVo' varStatus='status'>
+								<%-- <c:if test="${voucherVo.useYn != 'n'}"> --%>
 
+								<tr>
 									<td>${voucherVo.regDate }</td>
-									<td>${voucherVo.voucherNo }</td>
+									<td id="voucherNo" name="voucherNo">${voucherVo.no }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
 								            <td>차변</td>
@@ -208,6 +209,7 @@
 								            <td>${voucherVo.amount }</td>
 								        </c:otherwise>
 								    </c:choose>
+								    <td>${voucherVo.customerNo }</td>
 									<td>${voucherVo.customerName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.manageNo != null }">
@@ -218,6 +220,7 @@
 								        </c:otherwise>
 								    </c:choose>
 									<td>${voucherVo.manageNo }</td>
+									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.cardNo != null }">
@@ -231,9 +234,10 @@
 								            <td>${voucherVo.depositHost }</td>
 								        </c:otherwise>
 								    </c:choose>
-								    <td></td>
 									<td>${voucherVo.voucherUse }</td>
+									<td id="insertTeam">${voucherVo.insertTeam }</td>
 								</tr>
+								<%-- </c:if> --%>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -331,37 +335,45 @@ $(function(){
 					console.error(response.message);
 					return;
 				}
+				// 전표 입력시 list로 이동
+				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
+				
+				
+				/* console.log(response);
+				let dataResult = response.datas;
+				
 				$("#voucher_list").empty(); // 태그는 남기고 내용 지우기
-				
-				let voucherList = response.data
-				
-				for(var i in voucherList) {
+				console.log(dataResult);
+				for(var i in dataResult) {
 					var a = "";
-					if(voucherList[i].amountFlag == 'd') {
+					
+					console.log("temp : " + dataResult[i]);
+					
+					if(dataResult[i].amountFlag == 'd') {
 						a = "차변"
 					}
-					if(voucherList[i].amountFlag == 'c') {
+					if(dataResult[i].amountFlag == 'c') {
 						a = "대변"
 					}
 					
 					var b = "";
 					var c = "";
-					if(voucherList[i].amountFlag == 'd') {
-						b = voucherList[i].amount;
+					if(dataResult[i].amountFlag == 'd') {
+						b = dataResult[i].amount;
 						c = "";
 					}
-					if(voucherList[i].amountFlag == 'c') {
+					if(dataResult[i].amountFlag == 'c') {
 						b = "";
-						c = voucherList[i].amount;
+						c = dataResult[i].amount;
 					}
-					
+				
 					var d = "";
 					var e = "";
-					if(voucherList[i].manageNo != null) {
+					if(dataResult[i].manageNo != null) {
 						d = "세금계산서";
-						e = voucherList[i].manageNo;
+						e = dataResult[i].manageNo;
 					}
-					if(voucherList[i].manageNo == null) {
+					if(dataResult[i].manageNo == null) {
 						d = "";
 						e = "";
 					}
@@ -369,17 +381,70 @@ $(function(){
 					var f = "";
 					var g = "";
 					var h = "";
-					if(voucherList[i].cardNo != null) {
-						f = voucherList[i].cardNo;
+					if(dataResult[i].cardNo != null) {
+						f = dataResult[i].cardNo;
 						g = "";
-						h = voucherList[i].cardUser;
+						h = dataResult[i].cardUser;
 					}
-					if(voucherList[i].depositNo != null) {
+					if(dataResult[i].depositNo != null) {
 						f = "";
-						g = voucherList[i].depositNo;
-						h = voucherList[i].depositHost;
+						g = dataResult[i].depositNo;
+						h = dataResult[i].depositHost;
 					}
-					$('#voucher_list').append($('<tr/>').append($('<td/>').text(voucherList[i].regDate))
+					
+					var j = "";
+					var k = "";
+					if(dataResult[i].customerNo != null) {
+						j = dataResult[i].customerNo;
+						k = dataResult[i].customerName;
+					}
+					
+					var l = dataResult[i].bankCode;
+					var m = dataResult[i].bankName;
+					if(dataResult[i].bankCode == null) {
+						l = "";
+						m = "";
+					}
+				
+					$('#voucher_list').append(
+						"<tr>" +
+						"<td>" + dataResult[i].regDate + "</td>" + 										// 일자
+				        "<td>" + dataResult[i].no + "</td>" + 											// 전표번호
+				        "<td>" + a + "</td>" +						  									// 차대구분
+				        "<td>" + dataResult[i].accountNo + "</td>" + 									// 계정코드
+				        "<td>" + dataResult[i].accountName + "</td>" + 									// 계정명
+				        "<td>" + b + "</td>" +															// 차변
+				        "<td>" + c + "</td>" +															// 대변
+				        "<td>" + j + "</td>" +															// 거래처코드
+				        "<td>" + k + "</td>" +															// 거래처명
+				        "<td>" + d + "</td>" +															// 증빙종류
+				        "<td>" + e + "</td>" +															// 증빙코드
+				        "<td>" + l + "</td>" +															// 은행코드
+				        "<td>" + m + "</td>" +															// 은행명
+				        "<td>" + f + "</td>" +															// 카드번호
+				        "<td>" + g + "</td>" +															// 계좌번호
+				        "<td>" + h + "</td>" +															// 소유주
+				        "<td>" + dataResult[i].voucherUse + "</td>" +									// 사용목적
+				        "</tr>");
+					
+					$('#regDate').val();
+					$('#accountNo').val();
+					$('#accountName').val();
+					$('#amount').val();
+					$('#amountFlag').val();
+					$('#manageNo').val();
+					$('#customerNo').val();
+					$('#customerName').val();
+					$('#bankCode').val();
+					$('#bankName').val();
+					$('#cardNo').val();
+					$('#cardName').val();
+					$('#depositNo').val();
+					$('#depositHost').val();
+					$('#voucherUse').val(); */
+					
+					/* 
+					.append($('<tr/>').append($('<td/>').text(voucherList[i].regDate))
 							.append($('<td/>').text(voucherList[i].voucherNo)) // 전표번호
 							.append($('<td/>').text(a)) // 차대구분
 							.append($('<td/>').text(voucherList[i].accountNo)) // 계정코드
@@ -394,26 +459,68 @@ $(function(){
 							.append($('<td/>').text(g)) // 계좌번호
 							.append($('<td/>').text(h)) // 소유주
 							.append($('<td/>').text("")) // 담당자
-							.append($('<td/>').text(voucherList[i].voucherUse))) // 사용목적
+							.append($('<td/>').text(voucherList[i].voucherUse))) // 사용목적 
 				}
-				$('#regDate').val();
-				$('#accountNo').val();
-				$('#accountName').val();
-				$('#amount').val();
-				$('#amountFlag').val();
-				$('#manageNo').val();
-				$('#customerNo').val();
-				$('#customerName').val();
-				$('#bankCode').val();
-				$('#bankName').val();
-				$('#cardNo').val();
-				$('#cardName').val();
-				$('#depositNo').val();
-				$('#depositHost').val();
-				$('#voucherUse').val();
+				*/
 			}
 		}); // ajax
 	}); // .click
+	
+	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		
+		$("input[name=regDate]").val(td.eq(0).text());
+		$("input[name=voucherNo]").val(td.eq(1).text());
+		$("input[name=amountFlag]").val(td.eq(2).text());
+		$("input[name=accountNo]").val(td.eq(3).text());
+		$("input[name=accountName]").val(td.eq(4).text());
+		
+		if(td.eq(5).text()== "") {
+			$("input[name=amount]").val(td.eq(6).text());	
+		} else {
+			$("input[name=amount]").val(td.eq(5).text());	
+		}
+		$("input[name=customerNo]").val(td.eq(7).text());
+		$("input[name=customerName]").val(td.eq(8).text());
+		$("input[name=manageName]").val(td.eq(9).text());
+		$("input[name=manageNo]").val(td.eq(10).text());
+		$("input[name=bankCode]").val(td.eq(11).text());
+		$("input[name=bankName]").val(td.eq(12).text());
+		
+		if(td.eq(13).text()== "") {
+			$("input[name=depositHost]").val(td.eq(13).text());
+		} else {
+			$("input[name=cardUser]").val(td.eq(15).text());	
+		}
+		
+		$("input[name=cardNo]").val(td.eq(16).text());
+		$("input[name=depositNo]").val(td.eq(17).text());
+		$("input[name=voucherUse]").val(td.eq(18).text());
+		
+		$("input[name=bankName]").prop("readonly", true);
+		$("input[name='bankLocation']").prop("readonly", true);
+		$("input[name='banker']").prop("readonly", true);
+		$("input[name='bankPhoneCall']").prop("readonly", true);  
+	});
+	
+	/* // 전표삭제
+	$('#btn-delete').click(function() {
+		$.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete", 
+			type: "post",
+			dataType: "json",
+			data: queryString,
+			success: function(response){
+				if(response.result == "fail") {
+					console.error(response.message);
+					return;
+				}
+				// 전표 입력시 list로 이동
+				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
+			}
+		});
+	}); */
 }); // $(function
 
 </script>

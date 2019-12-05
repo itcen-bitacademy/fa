@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.service.menu01;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class Menu04Service {
 	}
 	
 	// 전표조회
-	public VoucherVo viewVoucher() {
+	public List<VoucherVo> viewVoucher() {
 		return menu04Repository.viewVoucher();
 	}
 }

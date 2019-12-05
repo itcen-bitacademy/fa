@@ -12,7 +12,6 @@ import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
-import kr.co.itcen.fa.vo.menu01.Menu03SearchForm;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
 /**
@@ -34,7 +33,7 @@ public class Menu03Service {
 			menu03Repository.test();
 		}
 		
-		// 전표생성
+		// 전표생성 (다른 팀)
 		public Long createVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 			voucherVo.setInsertUserid(userVo.getId());
 			
@@ -44,6 +43,8 @@ public class Menu03Service {
 			System.out.println("!!!!!!!!!!!!" + userVo.getTeamName());
 			mappingVo.setInsertTeam(userVo.getTeamName());
 			mappingVo.setInsertUserid(userVo.getId());
+			
+			System.out.println("22222222222222222" + voucherVo.getRegDate());
 			menu03Repository.createVoucher(voucherVo, itemVo, mappingVo);
 			
 			return voucherVo.getNo(); // 전표번호
@@ -51,27 +52,31 @@ public class Menu03Service {
 		
 		// 페이징 처리
 		public DataResult<VoucherVo> selectAllVoucherCount(int page) {
-			DataResult<VoucherVo> dataResult = new DataResult<>();
+			DataResult<VoucherVo> dataResult = new DataResult<VoucherVo>();
 			
 			int totalCount = menu03Repository.selectAllVoucherCount();
 			PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
 			dataResult.setPagination(paginationUtil);
 			
-			Menu03SearchForm menu03SearchForm = new Menu03SearchForm();
-			menu03SearchForm.setPagination(paginationUtil);
-			System.out.println(paginationUtil.getPage());
-			System.out.println(paginationUtil.getPageIndex());
-			List<VoucherVo> list = menu03Repository.selectAllVoucher(menu03SearchForm);
+			List<VoucherVo> list = menu03Repository.selectAllVoucher(paginationUtil);
 			dataResult.setDatas(list);
 			
 			return dataResult;
 		}
 		
-		// 전표 생성 & 리스트 반환
-		public List<VoucherVo> add(VoucherVo voucherVo) {
-			// TODO Auto-generated method stub
-			return null;
+		// 전표생성 (1팀)
+		public void createVoucher(VoucherVo voucherVo, @AuthUser UserVo userVo) {
+			System.out.println("a : " + userVo.getTeamName());
+			System.out.println("b : " + userVo.getId());
+			voucherVo.setInsertTeam(userVo.getTeamName());
+			voucherVo.setInsertUserid(userVo.getId());
+			
+			menu03Repository.createVoucher(voucherVo);
 		}
 		
+		// 전표삭제
+		public Boolean deleteVoucher(VoucherVo voucherVo) {
+			return menu03Repository.deleteVoucher(voucherVo);
+		}
 		
 	}

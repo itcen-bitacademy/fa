@@ -183,7 +183,7 @@
 			});
 		});
 		
-		$("#select-purchaseitem-list tr").click(function() {
+		$("body").on("click","#select-purchaseitem-list tr",function(e){	
 			var tr = $(this);
 			var td = tr.children();
 			var itemcode = td.eq(1).text().trim();
@@ -420,7 +420,7 @@
 							</thead>
 
 							<tbody id="select-purchaseitem-list">
-								<c:forEach items="${purchaseitemList}" var="pl" varStatus="status">
+								<c:forEach items="${pagepurchaseitemList }" var="pl" varStatus="status">
 									<tr>
 										<td>${status.count }</td>
 										<td>${pl.no }</td>
@@ -439,12 +439,14 @@
 					
 					<div class="pagination">
 						<ul>
+							<c:set var="page_count" value="${fn:length(purchaseitemList)}"></c:set>
+							
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
+							<c:forEach var="pur_size" begin="1" end="${((page_count-1)/11)+1 }" step="1">
+								<li><a href="#">${pur_size }</a></li>
+							</c:forEach>
+							
+							<!-- <li class="active"><a href="#">1</a></li> -->
 							<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
 						</ul>
 					</div>

@@ -14,6 +14,11 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
+	<input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
+	<input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
+	<input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
+	<input type="hidden" id="kwd" name="kwd" value="${kwd }">
+	
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -40,8 +45,10 @@
 										<label class="control-label" for="form-field-1">무형자산
 											코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id"
-												placeholder="10자로 입력하세요" />
+											<input type="text" class="span7" id="id" name="id"
+												placeholder="ex) f120400701 (f+월+일+007+번호)" />
+											<button class="btn btn-info btn-small" type="submit"
+													id="list" style="float: right; margin-right: 180px;">조회</button>
 										</div>
 									</div>
 									<div class="control-group">
@@ -55,26 +62,26 @@
 										<label class="control-label" for="form-field-select-1">대분류
 											코드</label>
 										<div class="controls">
-											<select class="span1 chosen-select" id="form-field-section"
+											<select class="span2 chosen-select" id="form-field-section"
 												name="classification" data-placeholder="전체">
 												<c:forEach items="${sectionList }" var="sectionVo">
-													<option value="${sectionVo.code }">${sectionVo.classification }</option>
+													<option sectionList="${sectionVo.code }" value="${sectionVo.classification }">${sectionVo.classification }</option>
 												</c:forEach>
-											</select> <input readonly type="text" class="span6" name="code"
-												value="001" placeholder="${sectionVo.code }">
+											</select> <input readonly type="text" class="span6" name="code" id="code"
+												placeholder="대분류명을 지정하면 코드가 등록됩니다">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">거래처
 											코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-select-1"
+											<select class="chosen-select" id="form-field-customer"
 												name="customerNo" data-placeholder="전체">
-												<c:forEach items="${listMainMenu }" var="customerVo">
-													<option value="${customerVo.no }">${customerVo.name }</option>
+												<c:forEach items="${customerList }" var="customerVo">
+													<option customerName="${customerVo.name }" customerManager="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
 												</c:forEach>
 											</select> <input readonly type="text" class="span6"
-												name="customerName" id="form-input-readonly"
+												name="customerName" id="customerName"
 												value="코드를 지정하면 거래처명이 등록됩니다">
 										</div>
 									</div>
@@ -130,7 +137,7 @@
 										<label class="control-label" for="form-field-1">담당자</label>
 										<div class="controls">
 											<input readonly type="text" class="span7"
-												name="customerManager" id="form-input-readonly"
+												name="customerManager" id="customerManager"
 												value="코드를 지정하면 담당자가 등록됩니다" />
 										</div>
 									</div>
@@ -156,14 +163,14 @@
 										<label class="control-label">구분</label>
 										<div class="controls">
 											<div class="span2">
-												<label> <input name="form-field-radio" type="radio"
-													value="tax" class="ace" checked> <span class="lbl">
+												<label> <input name="taxKind" type="radio" id="tax"
+													value="과세" class="ace" checked> <span class="lbl">
 														과세</span>
 												</label>
 											</div>
 											<div class="span2">
-												<label> <input name="form-field-radio" type="radio"
-													value="zero" class="ace"> <span class="lbl">
+												<label> <input name="taxKind" type="radio" id="zeroTax"
+													value="영세" class="ace"> <span class="lbl">
 														영세</span>
 												</label>
 											</div>
@@ -183,8 +190,6 @@
 													id="update" style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" type="submit"
 													id="delete" style="float: left; margin-right: 20px;">삭제</button>
-												<button class="btn btn-info btn-small" type="submit"
-													id="search" style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-default btn-small" type="reset"
 													style="float: left; margin-right: 20px;">
 													<i class="icon-undo bigger-110"></i>초기화
@@ -240,14 +245,14 @@
 								<td>${vo.classification }</td>
 								<td>${vo.code }</td>
 								<td>${vo.customerNo }</td>
-								<td>vo.customerName</td>
+								<td>${vo.customerName }</td>
 								<td>${vo.acqPrice }</td>
 								<td>${vo.addiFee }</td>
 								<td>${vo.taxbillNo }</td>
 								<td>${vo.name }</td>
 								<td>${vo.user }</td>
 								<td>${vo.copyCount }</td>
-								<td>vo.customerManager</td>
+								<td>${vo.customerManager }</td>
 								<td>${vo.purpose }</td>
 								<td>${vo.payDate }</td>
 								<td>${vo.taxKind }</td>
@@ -273,27 +278,83 @@
 		$(function() {
 			$(".chosen-select").chosen();
 	
+			// 대분류명 선택시 대분류 코드 가져오기
 			$('#form-field-section').change(function() {
-				var sectionCode = $('#form-field-section option:selected').val();
-				var code = $('#code').val(sectionCode);
-				alert(code)
+				var code = $('#form-field-section option:selected').attr('sectionList');
+				$('#code').val(code);
+			});
+			
+			// 거래처 코드 선택시 거래처 명 가져오기
+			$('#form-field-customer').change(function() {
+				var customerName = $('#form-field-customer option:selected').attr('customerName');
+				var customerManager = $('#form-field-customer option:selected').attr('customerManager');
+				
+				$('#customerName').val(customerName);
+				$('#customerManager').val(customerManager);
+			});
+			
+			// 품목코드 중복 체크
+			$("input[name=id]").on("change", function() {
+				var id = $("#id").val();
+				
+				$.ajax({
+					url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
+					type : "get",
+					dataType : "json",
+					data : "",
+					success: function(response){
+						if(response.result == "fail"){
+							console.error(response.message);
+							return;
+						}
+						
+						if(response.data == true){
+							alert("사용중인 품목코드입니다 :p");
+							$("#id").val("");
+							$("#id").focus();
+							return;
+						
+						} else if(id == "") {
+							alert("품목코드는 필수 입력 사항입니다!");
+							$("#id").focus();
+						}
+					},
+					error: function(xhr, error) {
+						console.error("error: " + error);
+					}
+				});
+				
 			});
 	
+			// 무형자산 등록 : C
 			$('#add').click(function() {
 				$("form").attr("action",
-								"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+				"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+
+			});
+			
+			// 무형자산 품목코드 조회 : R
+			$('#list').click(function() {
+				var kwd = $("#id").val();
+				
+				$("form").attr("action",
+				"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?kwd=" + kwd);
+
 			});
 	
+			// 무형자산 수정 : U
 			$("#update").click(function() {
 				$("form").attr("action",
 							   "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
 			});
 	
+			// 무형자산 삭제 : D
 			$("#delete").click(function() {
 				$("form").attr("action",
 						       "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 			});
 	
+			// 행 클릭시 수정, 삭제
 			$("#sample-table-1 tr").click(function() {
 				var str = ""
 				var tdArr = new Array(); // 배열 선언
@@ -306,9 +367,11 @@
 	
 				$("input[name=id]").val(td.eq(1).text());
 				$("input[name=address]").val(td.eq(2).text());
-				$("input[name=classification]").val(td.eq(3).text());
+				//$("input[name=classification]").val(td.eq(3).text());
+				$('#form_field_section_chosen').find('span').text(td.eq(3).text());
 				$("input[name=code]").val(td.eq(4).text());
-				$("input[name=customerNo]").val(td.eq(5).text());
+				//$("input[name=customerNo]").val(td.eq(5).text());
+				$('#form_field_customer_chosen').find('span').text(td.eq(5).text());
 				$("input[name=customerName]").val(td.eq(6).text());
 				$("input[name=acqPrice]").val(td.eq(7).text());
 				$("input[name=addiFee]").val(td.eq(8).text());
@@ -320,10 +383,18 @@
 				$("input[name=purpose]").val(td.eq(14).text());
 				$("input[name=payDate]").val(td.eq(15).text());
 				$("input[name=taxKind]").val(td.eq(16).text());
-	
+			    
+				if(td.eq(16).text() == "과세"){
+			         $("input[id=tax]").prop('checked', true);
+			     }
+			    
+				else if(td.eq(16).text() == "영세"){
+			         $("input[id=zeroTax]").prop('checked', true);
+			     } 
+				
 			});
+			
 	
-			var taxKind = $("input[type=radio][name=form-field-radio]:checked").val();
 		});
 	</script>
 	<script>

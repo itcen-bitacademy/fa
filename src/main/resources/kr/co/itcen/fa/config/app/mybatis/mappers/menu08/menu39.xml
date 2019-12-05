@@ -16,6 +16,7 @@
 		</selectKey>
 	</insert>
 	
+	<!-- 대분류 -->
 	<select id="getSection" resultType="sectionvo">
 		<![CDATA[
 		select no,
@@ -28,10 +29,37 @@
 		]]>
 	</select>
 	
-	<select id="selectAllClosingDateCount" resultType="int">
+	<!-- 거래처 -->
+	<select id="getCustomer" resultType="1customervo">
+		<![CDATA[
+		select no, 
+			name,
+			ceo,
+			address,
+			detail_address as detailAddress,
+			conditions,
+			item,
+			corporation_no as corporationNo,
+			open_date as openDate,
+			jurisdiction_office as jurisdictionOffice,
+			phone,
+			manager_name as managerName,
+			manager_email as managerEmail,
+			deposit_no as depositNo,
+			delete_flag as deleteFlag,
+			assets_flag as insertUserid,
+			insert_userid as insertUserid,
+			insert_day as insertDay,
+			update_userid as updateUserid,
+			update_day as updateDay
+		from tb_customer
+		]]>
+	</select>
+	
+	<!-- <select id="selectAllClosingDateCount" resultType="int">
 		select	count(*) as cnt
 		  from	tb_closing_date
-	</select>
+	</select> -->
 	
 	<!-- 
 	<select id="selectAllClosingDate" resultType="building08vo" parameterType="menu17SearchForm">
@@ -63,6 +91,8 @@
 		<![CDATA[
 		select id,
 			customer_no as customerNo,
+			name as customerName,
+			manager_name as managerName,
 			taxbill_no as taxbillNo,
 			voucher_no as voucherNo,
 			section_no as sectionNo,
@@ -73,7 +103,7 @@
 			wide_address as wideAddress,
 			city_address as cityAddress,
 			local_address as localAddress,
-			detail_address as detailAddress,
+			b.detail_address as detailAddress,
 			floor,
 			basement,
 			purpose,
@@ -85,15 +115,16 @@
 			acq_tax as acqTax,
 			pay_date as payDate,
 			tax_kind as taxKind,
-			flag,
-			insert_userid as insertUserid,
-			insert_day as insertDay,
-			update_userid as updateUserid,
-			update_day as updateDay
-		from tb_building left outer join tb_section on tb_building.section_no = tb_section.code
+			b.flag,
+			b.insert_userid as insertUserid,
+			b.insert_day as insertDay,
+			b.update_userid as updateUserid,
+			b.update_day as updateDay
+		from tb_building b left outer join tb_section on b.section_no = tb_section.code
+			               left outer join tb_customer on b.customer_no = tb_customer.no
         where tb_section.parent_no = 3 
-           and tb_building.insert_day> (NOW() - INTERVAL 3 DAY) 
-           and tb_building.flag = 's'
+           and b.insert_day > (NOW() - INTERVAL 3 DAY) 
+           and b.flag = 's'
 		]]>
 		<if test="_parameter.length()>0 ">
    			<![CDATA[
@@ -101,7 +132,7 @@
    			]]>
    		</if>
    		<![CDATA[	
-		order by insert_day desc
+		order by b.insert_day desc
 			limit 0, 3
 		]]>
 	</select>
@@ -112,7 +143,7 @@
 		insert
 		  into tb_building
 		values (#{id },
-			'15151515',
+			#{customerNo },
 			#{taxbillNo }, 
 			'123',
 			#{sectionNo },

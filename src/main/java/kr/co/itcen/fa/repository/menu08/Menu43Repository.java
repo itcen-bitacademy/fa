@@ -32,8 +32,8 @@ public class Menu43Repository {
 		sqlSession.insert("menu43.insert", intangibleAssetsVo);
 	}
 	
-	public List<IntangibleAssetsVo> getList() {
-		List<IntangibleAssetsVo> result = sqlSession.selectList("menu43.getList");
+	public List<IntangibleAssetsVo> getList(String kwd) {
+		List<IntangibleAssetsVo> result = sqlSession.selectList("menu43.getList", kwd);
 		return result;
 	}
 
@@ -43,5 +43,20 @@ public class Menu43Repository {
 
 	public void delete(String id) {
 		sqlSession.delete("menu43.delete", id);
+	}
+
+	public Object getSection() {
+		List<Object> result = sqlSession.selectList("menu43.getSection");
+		return result;
+	}
+
+	public String get(String id) {
+		String result = sqlSession.selectOne("menu43.getById", id);
+		return result;
+	}
+
+	public Object getCustomer() {
+		List<Object> result = sqlSession.selectList("menu43.getCustomer");
+		return result;
 	}
 }

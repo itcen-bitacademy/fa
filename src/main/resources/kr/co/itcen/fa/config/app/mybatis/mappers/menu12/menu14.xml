@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu14">
 	
-	<select id="defaultlist" resultType="salesvo">
+	<select id="defaultlist" parameterType="pageutil" resultType="salesvo">
 		<![CDATA[
 			select 		a.sales_no as salesNo,
 						date_format(a.sales_date, '%Y-%m-%d') as salesDate,
@@ -20,7 +20,9 @@
 						a.tax_value as taxValue
 			from 		tb_sales a, 
 						tb_salescustomer b 
-			where 		a.customer_code = b.no; 
+			where 		a.customer_code = b.no
+			order by 	a.sales_date desc
+			limit		#{pagination.pageIndex }, #{pagination.listSize } 
 		]]>
 	</select>
 	
@@ -79,5 +81,10 @@
 					 order by ${orderData} asc;
 				]]>
 				</if>
+	</select>
+	<select id="selectCount" resultType="int">
+		select	count(*) as cnt
+		  from	tb_sales
+		;
 	</select>
 </mapper>

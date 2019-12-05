@@ -56,6 +56,13 @@ public class Menu39Service {
 		map.put("sectionList", menu39Repository.getSection());
 		return map;
 	}
+	
+	//거래처 리스트
+	public Map<String, Object> getCustomer() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("customerList", menu39Repository.getCustomer());
+		return map;
+	}
 
 	
 }

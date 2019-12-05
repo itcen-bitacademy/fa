@@ -98,6 +98,14 @@ public class Menu33Repository {
 		return searchsectionList;
 	}
 
+	public List<PurchaseitemVo> getpagePurchaseitemList(int page) {
+		page = (page-1)*11;
+		
+		List<PurchaseitemVo> pagepurchaseitemList = sqlSession.selectList("menu33.getpagePurchaseitemList", page);
+		
+		return pagepurchaseitemList;
+	}
+
 	
 	
 }

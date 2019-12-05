@@ -6,22 +6,22 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("trialBalance17Vo")
 public class TrialBalanceVo {
-	private Long no;				// 번호
-	private Long closingDateNo;		// 마감일 번호
-	private Long accountNo;			// 계정코드
-	private String accountName;		// 계정명
-	private String balanceType;		// 차변대변 구분
-	private boolean statementYn;	// 전표입력 가능여부 
-	private Long debtorTotal;		// 차변 합계
-	private Long creditTotal;		// 대변 합계
-	private Long debtorSpotMonth;	// 당월 차변 합계
-	private Long creditSpotMonth;	// 당월 대변 합계
-//	private Long debtorBalance;		// 차변 잔액 
-//	private Long creditBalance;		// 대변 잔액 
-	private String insertUserid;	// 등록자
-	private Date insertDay;			// 등록일
-	private String updateUserid;	// 수정자
-	private Date updateDay;			// 수정일
+	private Long no;					// 번호
+	private Long closingDateNo;			// 마감일 번호
+	private Long accountNo;				// 계정코드
+	private String accountName;			// 계정명
+	private String balanceType;			// 차변대변 구분
+	private boolean statementYn;		// 전표입력 가능여부 
+	private Long debtorTotal;			// 차변 합계
+	private Long creditTotal;			// 대변 합계
+	private Long debtorSpotMonth;		// 당월 차변 합계
+	private Long creditSpotMonth;		// 당월 대변 합계
+//	private Long debtorBalance;			// 차변 잔액 
+//	private Long creditBalance;			// 대변 잔액 
+	private String insertUserid;		// 등록자
+	private Date insertDay;				// 등록일
+	private String updateUserid;		// 수정자
+	private Date updateDay;				// 수정일
 	
 	@Override
 	public String toString() {

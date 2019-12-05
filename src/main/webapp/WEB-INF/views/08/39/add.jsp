@@ -11,6 +11,10 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
+ <input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
+ <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
+ <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
+
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -44,7 +48,7 @@
 													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
 											</select> 
-											<input readonly type="text" class="span6" id="classification" name="sectionName" placeholder="코드를 지정하면 대분류명이 등록됩니다">
+											<input readonly type="text" class="span6" id="classification" name="sectionff" placeholder="코드를 지정하면 대분류명이 입력됩니다">
 										</div>
 									</div>
 									<div class="control-group">
@@ -66,15 +70,14 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">거래처
-											코드</label>
+										<label class="control-label" for="form-field-select-1">거래처코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-select-3" name="customerNo" data-placeholder="선택">
-												<c:forEach items="${listMainMenu }" var="customerVo">
-													<option value="${customerVo.no }">${customerVo.name }</option>
+											<select class="chosen-select" id="form-field-customer" name="customerNo">
+												<c:forEach items="${customerList }" var="customerVo">
+													<option customerName="${customerVo.name}" managerName="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
 												</c:forEach>
-											</select> <input readonly type="text" class="span6" name="customerName"
-												id="customerName" placeholder="코드를 지정하면 거래처명이 등록됩니다">
+											</select> 
+											<input readonly type="text" class="span6" name="classification" id="customerName" placeholder="코드를 지정하면 거래처명이 입력됩니다">
 										</div>
 									</div>
 									<div class="control-group">
@@ -172,10 +175,10 @@
 									<div class="control-group">
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">담당자</label>
-											<div class="controls">
-												<input readonly type="text" id="form-input-readonly"
-													name="customerManager" placeholder="" />
+											<div class="controls" id="form-input-customer">
+												<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" />
 											</div>
+											
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
@@ -261,8 +264,9 @@
 							<th>주소(상세)</th>
 							<th>용도</th>
 							<th>주 구조</th>
-							<th>매입거래처코드</th>
-							<th>매입거래처명</th>
+							<th>거래처코드</th>
+							<th>거래처명</th>
+							<th>담당자</th>
 							<th>건물소유자</th>
 							<th>매입일자</th>
 							<th>공시지가(원)</th>
@@ -297,6 +301,7 @@
 							<td>${vo.material }</td>
 							<td>${vo.customerNo }</td>
 							<td>${vo.customerName }</td>
+							<td>${vo.managerName }</td>
 							<td>${vo.ownerName }</td>
 							<td>${vo.payDate }</td>
 							<td>${vo.publicValue }</td>
@@ -339,6 +344,40 @@
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
 <script>
+$("input[name=id]").on("change", function() {
+    var id = $("#id").val();
+    
+    $.ajax({
+       url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
+       type : "get",
+       dataType : "json",
+       data : "",
+       success: function(response){
+          if(response.result == "fail"){
+             console.error(response.message);
+             return;
+          }
+          
+          if(response.data == true){
+             alert("사용중인 품목코드입니다");
+             $("#id").val("");
+             $("#id").focus();
+             return;
+          
+          } else if(id == "") {
+             alert("품목코드는 필수 입력 사항입니다");
+             $("#id").focus();
+          }
+       },
+       error: function(xhr, error) {
+          console.error("error: " + error);
+       }
+    });
+    
+ });
+</script>
+
+<script>
 	$(function(){
 		$(".chosen-select").chosen(); 
 	});
@@ -348,6 +387,14 @@
   		var classification = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.classification}
  		$('#classification').val(classification); 
 	});
+	
+	$('#form-field-customer').change(function() {
+  		var customername = $('#form-field-customer option:selected').attr('customerName'); // ${customerVo.name}
+  		$('#customerName').val(customername);
+ 		var managername = $('#form-field-customer option:selected').attr('managerName'); // ${customerVo.manager_name}
+ 		$('#managerName').val(managername);
+	});
+	
 	
 	//관리화면
 	$(function() {
@@ -373,17 +420,19 @@
 		      $("input[name=detailAddress]").val(td.eq(9).text());
 		      $("input[name=purpose]").val(td.eq(10).text());
 		      $("input[name=material]").val(td.eq(11).text());
-		      $("input[name=customerNo]").val(td.eq(12).text());
+		      //customerNo 에 대한 값(name)을 select box에 표시
+		      $('#form-field-customer').val(td.eq(12).text()).trigger('chosen:updated'); 
 		      $("input[name=customerName]").val(td.eq(13).text());
-		      $("input[name=ownerName]").val(td.eq(14).text());
-		      $("input[name=payDate]").val(td.eq(15).text());
-		      $("input[name=publicValue]").val(td.eq(16).text());
-		      $("input[name=acqPrice]").val(td.eq(17).text());
-		      $("input[name=etcCost]").val(td.eq(18).text());
-		      $("input[name=regTax]").val(td.eq(19).text());
-		      $("input[name=acqTax]").val(td.eq(20).text());
-		      $("input[name=combineNo]").val(td.eq(21).text());
-		      $("input[name=taxbillNo]").val(td.eq(22).text());
+		      $("input[name=managerName]").val(td.eq(14).text());
+		      $("input[name=ownerName]").val(td.eq(15).text());
+		      $("input[name=payDate]").val(td.eq(16).text());
+		      $("input[name=publicValue]").val(td.eq(17).text());
+		      $("input[name=acqPrice]").val(td.eq(18).text());
+		      $("input[name=etcCost]").val(td.eq(19).text());
+		      $("input[name=regTax]").val(td.eq(20).text());
+		      $("input[name=acqTax]").val(td.eq(21).text());
+		      $("input[name=combineNo]").val(td.eq(22).text());
+		      $("input[name=taxbillNo]").val(td.eq(23).text());
 				
 		      // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
 		      /* td.each(function(i){
@@ -394,10 +443,10 @@
 		       */
 		       
 		    //radio button
-		      if(td.eq(23).text() == "과세"){
+		      if(td.eq(24).text() == "과세"){
 		          $("input[id=tax]").prop('checked', true);
 		      }
-		      else if(td.eq(23).text() == "영세"){
+		      else if(td.eq(24).text() == "영세"){
 		          $("input[id=zeroTax]").prop('checked', true);
 		      } 
 		      

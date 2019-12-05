@@ -8,6 +8,7 @@ public class BuildingVo {
 	private String id;
 	private String customerNo;
 	private String customerName;
+	private String managerName;
 	private String taxbillNo;
 	private String voucherNo;
 	private String sectionNo;
@@ -48,6 +49,20 @@ public class BuildingVo {
 	}
 	public void setCustomerNo(String customerNo) {
 		this.customerNo = customerNo;
+	}
+	
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	
+	public String getManagerName() {
+		return managerName;
+	}
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
 	public String getTaxbillNo() {
 		return taxbillNo;
@@ -211,23 +226,17 @@ public class BuildingVo {
 	public void setSectionName(String sectionName) {
 		this.sectionName = sectionName;
 	}
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
 	@Override
 	public String toString() {
-		return "BuildingVo [id=" + id + ", customerNo=" + customerNo + ", customerName=" + customerName + ", taxbillNo="
-				+ taxbillNo + ", voucherNo=" + voucherNo + ", sectionNo=" + sectionNo + ", sectionName=" + sectionName
-				+ ", area=" + area + ", combineNo=" + combineNo + ", ownerName=" + ownerName + ", wideAddress="
-				+ wideAddress + ", cityAddress=" + cityAddress + ", localAddress=" + localAddress + ", detailAddress="
-				+ detailAddress + ", floor=" + floor + ", basement=" + basement + ", purpose=" + purpose + ", material="
-				+ material + ", publicValue=" + publicValue + ", acqPrice=" + acqPrice + ", etcCost=" + etcCost
-				+ ", regTax=" + regTax + ", acqTax=" + acqTax + ", payDate=" + payDate + ", taxKind=" + taxKind
-				+ ", flag=" + flag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + "]";
+		return "BuildingVo [id=" + id + ", customerNo=" + customerNo + ", customerName=" + customerName
+				+ ", managerName=" + managerName + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
+				+ ", sectionNo=" + sectionNo + ", sectionName=" + sectionName + ", area=" + area + ", combineNo="
+				+ combineNo + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress + ", cityAddress="
+				+ cityAddress + ", localAddress=" + localAddress + ", detailAddress=" + detailAddress + ", floor="
+				+ floor + ", basement=" + basement + ", purpose=" + purpose + ", material=" + material
+				+ ", publicValue=" + publicValue + ", acqPrice=" + acqPrice + ", etcCost=" + etcCost + ", regTax="
+				+ regTax + ", acqTax=" + acqTax + ", payDate=" + payDate + ", taxKind=" + taxKind + ", flag=" + flag
+				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
+				+ ", updateDay=" + updateDay + "]";
 	}
-	
 }
