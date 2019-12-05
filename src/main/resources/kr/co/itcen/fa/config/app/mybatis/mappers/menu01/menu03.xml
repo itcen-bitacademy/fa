@@ -346,7 +346,7 @@
 	<update id="updateVoucher3" parameterType="1vouchervo">
 	<![CDATA[
 		update tb_voucher_manager
-		   set insert_userid = #{insertUserid },
+		   set use_yn = 0
 		 where no = #{no };
 	]]>
 	</update>
@@ -355,7 +355,7 @@
 	<update id="updateItem3" parameterType="1vouchervo">
 	<![CDATA[
 		update tb_voucher_item
-		   set insert_userid = #{insertUserid },
+		   set use_yn = 0
 		 where voucher_no = #{no };
 	]]>
 	</update>
@@ -364,7 +364,7 @@
 	<update id="updateMapping3" parameterType="1vouchervo">
 	<![CDATA[
 		update tb_voucher_system_mapping
-		   set insert_userid = #{insertUserid },
+		   set use_yn = 0
 		 where voucher_no = #{no };
 	]]>
 	</update>
