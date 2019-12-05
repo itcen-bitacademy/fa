@@ -277,42 +277,41 @@ $(function() {
 	
 
 	function settingInput(cardList) {
+		var tr = $(".new-tbody tr");	
+		var td = tr.children();
 		
-		var cardNo1 = cardList[0].cardNo.substring(0,4);
-		var cardNo2 = cardList[0].cardNo.substring(5,9);
-		var cardNo3 = cardList[0].cardNo.substring(10,14);
-		var cardNo4 = cardList[0].cardNo.substring(15,20);
 		
+		var cardNo1 = td.eq(1).text().substring(0,4);
+		var cardNo2 = td.eq(1).text().substring(5,9);
+		var cardNo3 = td.eq(1).text().substring(10,14);
+		var cardNo4 = td.eq(1).text().substring(15,20);
+			
 		$("input[name=cardNo1]").val(cardNo1);
 		$("input[name=cardNo2]").val(cardNo2);
 		$("input[name=cardNo3]").val(cardNo3);
 		$("input[name=cardNo4]").val(cardNo4);
 		
-		$("input[name=cardOld]").val(cardList[0].cardNo);
 		
-		var month= cardList[0].validity.substring(0,2);		
-		var year= cardList[0].validity.substring(3,5);
+		$("input[name=cardNoOld]").val(td.eq(1).text());
 		
+		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
+		var year= td.eq(2).text().substring(3,5);
 		$("input[name=validityMM]").val(month);
 		$("input[name=validityYY]").val(year);
-		
-		$("input[name=cvc]").val(cardList[0].cvc);
-		$("input[name=user]").val(cardList[0].user);
-		$("input[name=issuer]").val(cardList[0].issuer);
-		$("input[name=depositNo]").val(cardList[0].depositNo);
-		$("input[name=depositHost]").val(cardList[0].depositHost);
-		$("input[name=password]").val(cardList[0].password);	
-		$("input[name=bankCode]").val(cardList[0].bankCode);
-		$("input[name=bankName]").val(cardList[0].bankName);
-		$("input[name=company]").val(cardList[0].company);
-		$("input[name=limitation]").val(cadList[0].limitation);
-		
-		var td13 = cardList[0].transportation;
-		var td14 = cardList[0].abroad;
-		
-		$('input:radio[name=transportation]:input[value=' +  td13 + ']').prop("checked", true);
+		$("input[name=cvc]").val(td.eq(3).text());
+		$("input[name=user]").val(td.eq(4).text());
+		$("input[name=issuer]").val(td.eq(5).text());
+		$("input[name=depositNo]").val(td.eq(6).text());
+		$("input[name=depositHost]").val(td.eq(7).text());
+		$("input[name=password]").val(td.eq(8).text());	
+		$("input[name=bankCode]").val(td.eq(9).text());
+		$("input[name=bankName]").val(td.eq(10).text());
+		$("input[name=company]").val(td.eq(11).text());
+		$("input[name=limitation]").val(td.eq(12).text());
+		var td13 = td.eq(13).text();
+		var td14 = td.eq(14).text();
+		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
-		
 	}
 	
 	
@@ -700,7 +699,7 @@ $(function() {
 								</tr>
 							</thead>
 
-							<tbody class="origin-tbody">
+							<tbody class="origin-tbody" >
 
 								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 									<tr>
