@@ -19,8 +19,11 @@
 		<![CDATA[
 		select
 			tbc.name as customerName, 
-			tbs.customer_code as customerCode, 
-			tbc.ceo, 
+			tbs.taxbill_no as taxbillNo,
+			tbs.customer_code as customerCode,
+			tbs.write_date as writeDate,
+			tbs.voucher_use as voucherUse,
+			tbc.ceo,
 			tbc.zip_code as zipCode, 
  			tbc.address as address, 
  			tbc.detail_address as detailAddress,
@@ -32,7 +35,8 @@
  			tba.bank_name as bankName, 
  			tba.bank_code as bankCode,
  			tbs.item_code as itemCode, 
- 			tbs.item_name as itemName, 
+ 			tbs.item_name as itemName,
+ 			tbs.sales_no as salesNo, 
  			tbs.quantity as quantity, 
  			tbs.supply_value as supplyValue, 
  			tbs.tax_value
@@ -44,24 +48,41 @@
 			order by tbs.number;
 		]]>
 	</select>
-	
-<!-- 	<insert id="save" parameterType="selltaxbill12vo">
+		
+	<insert id="taxinsert" parameterType="selltaxbill12vo">
 		<![CDATA[
 			insert into 
 			tb_sell_taxbill 
 			values(
-			null, 1000, 
-			'K1000', 'T1000',
-			'태영샵', '태영',
-			'12345', '서울시 강동구 천호동3동',
-			'래미안 강동 팰리스', 
-			'김현곤', 'kkk@gmail.com', 20, 3000, 300, '20191203', 'tax', '123456789', '20191105', '안태영', '국민', '1001000', 0, 'K10', 'u013', '20191203', null, null);
+			 null, #{taxbillNo },
+			 #{salesNo }, #{customerCode },
+			 #{customerName }, #{ceo },
+			 #{zipCode }, #{address }, #{detailAddress },
+			 #{managerName }, #{managerEmail },
+			 #{totalQuantity }, #{totalSupplyValue }, #{totalTaxValue }, now(), #{taxType },
+			 #{depositNo }, #{releaseDate }, #{depositHost }, #{bankName }, #{bankCode }, #{deleteFlag }, #{voucherNo },
+			 #{voucherUse }, #{amountFlag }, #{accountNo }, #{insertUserid }, now(), #{updateUserid }, #{updateDay });
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
 			select last_insert_id()
 			]]>
 		</selectKey>
-	</insert> -->
+	</insert>
+	
+	<update id="salesupdate" parameterType="selltaxbill12vo">
+		<![CDATA[ 
+			update tb_sales set taxbill_no = #{taxbillNo}, voucher_use = #{voucherUse }  where sales_no = #{salesNo};
+		]]>
+	</update>
+	
+	<update id="taxbillupdate" parameterType="selltaxbill12vo">
+		<![CDATA[
+			update tb_sell_taxbill set voucher_use = #{voucherUse } where sales_no = #{salesNo };
+		]]>
+	</update>
+	
+	
+	
 
 </mapper>

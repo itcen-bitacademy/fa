@@ -5,14 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.MenuService;
 import kr.co.itcen.fa.service.menu12.Menu53Service;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 
 /**
@@ -54,24 +56,80 @@ public class Menu53Controller {
 	// 매출일자와 매출번호로 검색한후, 출력되는 기능
 	// value="/" + SUBMENU + "/add", method=RequestMethod.GET
 	@RequestMapping(value="/" + SUBMENU + "/list", method=RequestMethod.POST)
-	public String list(@RequestParam("sales-date")String date, @RequestParam("sales-no")String no, Model model) {
+	public String list(@RequestParam("sales-date")String date, @RequestParam("sales-no")String no, @RequestParam("sales-no")String salesNo,
+			Model model) {
+		 
+			List<SellTaxbillVo> list = menu53Service.getAllList(date, no);
+			model.addAttribute("flag", "true");
+			model.addAttribute("list", list);
+			System.out.println(list.toString());
 		
-		List<SellTaxbillVo> list = menu53Service.getAllList(date, no);
-		model.addAttribute("flag", "true");
-		model.addAttribute("list", list);
-		
-		System.out.println(list.toString());
+		// model.addAttribute("flag", "true");
+		// model.addAttribute("list", list);
 		System.out.println("이벤트 발생");
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	// 추가사항 발생
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String add(SellTaxbillVo selltaxbillvo) {
+	public String add(@SessionAttribute("authUser") UserVo authUser, SellTaxbillVo selltaxbillvo) {
+		
+		selltaxbillvo.setInsertUserid(authUser.getId());
+		selltaxbillvo.setDeleteFlag("N");
+		selltaxbillvo.setAccountNo(1110101);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
+		selltaxbillvo.setAmountFlag("d");		// select * from 
+		
+		menu53Service.salesUpdate(selltaxbillvo);
+		menu53Service.insert(selltaxbillvo);
 		System.out.println("추가 이벤트 발생");
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	// 수정사항 발생
+	@RequestMapping(value= {"/"+ SUBMENU + "/update/{pathSalesNo}"}, method=RequestMethod.POST)
+	public String update(@SessionAttribute("authUser") UserVo authUser,
+			@PathVariable("pathSalesNo")String pathSalesNO, SellTaxbillVo selltaxbillvo) {
+		
+		selltaxbillvo.setSalesNo(pathSalesNO);
+		
+		System.out.println(selltaxbillvo.getVoucherUse());
+		
+		menu53Service.taxbillupdate(selltaxbillvo);
+		menu53Service.salesUpdate(selltaxbillvo);
+		System.out.println("업데이트 이벤트 발생");
+		
+		return MAINMENU + "/" + SUBMENU + "/list"; 
+	}
+	
+//	VoucherVo voucherVo = new VoucherVo();
+//	List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+//	ItemVo itemVo = new ItemVo();
+//	ItemVo itemVo2 = new ItemVo();
+//	ItemVo itemVo3 = new ItemVo();
+//	
+//	MappingVo mappingVo = new MappingVo();
+//	voucherVo.setRegDate(vo.getDebtDate());
+//	itemVo.setAmount(vo.getDebtAmount());
+//	itemVo.setAmountFlag("c");
+//	itemVo.setAccountNo(2401000L);
+//	itemVoList.add(itemVo);
+//	
+//	itemVo2.setAmount(money);
+//	itemVo2.setAmountFlag("c");
+//	itemVo2.setAccountNo(9201000L);
+//	itemVoList.add(itemVo2);
+//	
+//	itemVo3.setAmount(vo.getDebtAmount()+money);
+//	itemVo3.setAmountFlag("d");
+//	itemVo3.setAccountNo(1110103L);
+//	itemVoList.add(itemVo3);
+//	
+//	mappingVo.setVoucherUse(vo.getName());
+//	mappingVo.setSystemCode(vo.getCode());
+//	mappingVo.setDepositNo(vo.getDepositNo());
+//	
+//	menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
 	
 
 }
