@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu27Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
 /**
@@ -26,19 +28,19 @@ public class Menu27Service {
 	public void test() {
 		menu27Repository.test();
 	}
+	
 
-	public List<CustomerVo> list() {
-		// TODO Auto-generated method stub
-		List<CustomerVo> map = menu27Repository.list();
-		return map;
-	}
-
-	public Map<String, Object> create(CustomerVo customervo) {
+	public Map<String, Object> create(CustomerVo customervo, int page) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		// 중복성 검사 Query 만들어야함 (삭제후 똑같은것 재생성시 처리)
-		map = menu27Repository.create(customervo);
+		
+		int totalCnt = menu27Repository.selectCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		map = menu27Repository.create(customervo, pagination);
+		map.put("pagination", pagination);
 		map.put("success", true);
 		return map;
+		
 	}
 
 	public Map<String, Object> read(CustomerVo customerVo) {
@@ -48,16 +50,43 @@ public class Menu27Service {
 		return map;
 	}
 
-	public Map<String, Object> update(CustomerVo customerVo) { // 거래처는 중복성검사 안함..
+	public Map<String, Object> update(CustomerVo customerVo, int page) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map = menu27Repository.update(customerVo);
+		
+		int totalCnt = menu27Repository.selectCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		map = menu27Repository.update(customerVo, pagination);
+		map.put("pagination", pagination);
 		map.put("success", true);
 		return map;
 	}
 
-	public Map<String, Object> delete(CustomerVo customerVo) {
-		Map<String, Object> map = menu27Repository.delete(customerVo);
+	public Map<String, Object> delete(CustomerVo customerVo, int page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int totalCnt = menu27Repository.selectCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		map = menu27Repository.delete(customerVo, pagination);
+		map.put("pagination", pagination);
+		map.put("success", true);
 		return map;
+		
+	}
+
+	public DataResult<CustomerVo> list(int page) {
+		DataResult<CustomerVo> dataResult = new DataResult<CustomerVo>();
+		
+		int totalCnt = menu27Repository.selectCount();
+		System.out.println(totalCnt);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		List<CustomerVo> list = menu27Repository.list(pagination);
+		
+		dataResult.setPagination(pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
 	}
 
 }
