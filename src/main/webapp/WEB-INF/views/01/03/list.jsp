@@ -28,11 +28,10 @@
 				<div class="page-header position-relative">
 					<h1 class="pull-left">전표관리[1-03]</h1>
 				</div><!-- /.page-header -->
-				
+				<form class="form-horizontal" method="post">
 					<div class="row-fluid">
+					
 						<div class="span6">
-							<form class="form-horizontal">
-								
 								<!-- 전표 등록 영역 -->
 								
 								<!-- 전표 등록 날짜 -->
@@ -82,11 +81,9 @@
 									</div>
 								</div>
 								
-							</form>
 						</div>
 	
 						<div class="span6">
-							<form class="form-horizontal">
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-codename">거래처코드 / 거래처명 :</label>
@@ -124,11 +121,14 @@
 									<label class="control-label" for="form-field-1">전표사용목적 :</label>
 									<div class="controls">
 										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적"/>
+										<input class="span8" type="hidden" id="voucherNo" name="no" />
+										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
 								
-							</form>
+
 						</div>
+
 					</div><!-- /.row-fluid -->
 
 
@@ -152,7 +152,7 @@
 					<div class="hr"></div>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-
+						</form>
 
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
@@ -184,11 +184,10 @@
 						
 						<tbody id="voucher_list">
 							<c:forEach items='${dataResult.datas }' var='voucherVo' varStatus='status'>
-								<%-- <c:if test="${voucherVo.useYn != 'n'}"> --%>
 
 								<tr>
 									<td>${voucherVo.regDate }</td>
-									<td id="voucherNo" name="voucherNo">${voucherVo.no }</td>
+									<td>${voucherVo.no }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
 								            <td>차변</td>
@@ -235,9 +234,8 @@
 								        </c:otherwise>
 								    </c:choose>
 									<td>${voucherVo.voucherUse }</td>
-									<td id="insertTeam">${voucherVo.insertTeam }</td>
+									<td>${voucherVo.insertTeam }</td>
 								</tr>
-								<%-- </c:if> --%>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -293,7 +291,7 @@ $(function(){
 		$(this).prev().focus();
 	});
 	
-	// 전표 추가 & 리스트
+	/* // 전표 추가 & 리스트
 	$('#btn-create').click(function(){
 		var regDate = $('#regDate').val();
 		var accountNo = $('#accountNo').val();
@@ -306,7 +304,7 @@ $(function(){
 		var bankCode = $('#bankCode').val();
 		var bankName = $('#bankName').val();
 		var cardNo = $('#cardNo').val();
-		var cardName = $('#cardName').val();
+		var cardUser = $('#cardUser').val();
 		var depositNo = $('#depositNo').val();
 		var depositHost = $('#depositHost').val();
 		var voucherUse = $('#voucherUse').val();
@@ -322,7 +320,7 @@ $(function(){
 		
 		var voucherVo = {regDate:regDate, accountNo:accountNo, accountName:accountName, amount:amount, amountFlag:amountFlag,
 				manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
-				cardNo:cardNo, cardName:cardName, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
+				cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
 			}
 		
 		$.ajax({
@@ -337,7 +335,7 @@ $(function(){
 				}
 				// 전표 입력시 list로 이동
 				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
-				
+				 */
 				
 				/* console.log(response);
 				let dataResult = response.datas;
@@ -461,21 +459,22 @@ $(function(){
 							.append($('<td/>').text("")) // 담당자
 							.append($('<td/>').text(voucherList[i].voucherUse))) // 사용목적 
 				}
-				*/
+				
 			}
 		}); // ajax
 	}); // .click
+	*/
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
 		
 		$("input[name=regDate]").val(td.eq(0).text());
-		$("input[name=voucherNo]").val(td.eq(1).text());
+		$("input[name=no]").val(td.eq(1).text());
 		$("input[name=amountFlag]").val(td.eq(2).text());
 		$("input[name=accountNo]").val(td.eq(3).text());
 		$("input[name=accountName]").val(td.eq(4).text());
-		
+		console.log($("input[name=no]").val());
 		if(td.eq(5).text()== "") {
 			$("input[name=amount]").val(td.eq(6).text());	
 		} else {
@@ -487,40 +486,23 @@ $(function(){
 		$("input[name=manageNo]").val(td.eq(10).text());
 		$("input[name=bankCode]").val(td.eq(11).text());
 		$("input[name=bankName]").val(td.eq(12).text());
-		
+		$("input[name=cardNo]").val(td.eq(13).text());
+		$("input[name=depositNo]").val(td.eq(14).text());
 		if(td.eq(13).text()== "") {
-			$("input[name=depositHost]").val(td.eq(13).text());
+			$("input[name=depositHost]").val(td.eq(15).text());
 		} else {
-			$("input[name=cardUser]").val(td.eq(15).text());	
+			$("input[name=cardUser]").val(td.eq(15).text());
 		}
 		
-		$("input[name=cardNo]").val(td.eq(16).text());
-		$("input[name=depositNo]").val(td.eq(17).text());
-		$("input[name=voucherUse]").val(td.eq(18).text());
+		
+		$("input[name=voucherUse]").val(td.eq(16).text());
+		$("input[name=insertTeam]").val(td.eq(17).text());
 		
 		$("input[name=bankName]").prop("readonly", true);
 		$("input[name='bankLocation']").prop("readonly", true);
 		$("input[name='banker']").prop("readonly", true);
 		$("input[name='bankPhoneCall']").prop("readonly", true);  
 	});
-	
-	/* // 전표삭제
-	$('#btn-delete').click(function() {
-		$.ajax({
-			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete", 
-			type: "post",
-			dataType: "json",
-			data: queryString,
-			success: function(response){
-				if(response.result == "fail") {
-					console.error(response.message);
-					return;
-				}
-				// 전표 입력시 list로 이동
-				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
-			}
-		});
-	}); */
 }); // $(function
 
 </script>

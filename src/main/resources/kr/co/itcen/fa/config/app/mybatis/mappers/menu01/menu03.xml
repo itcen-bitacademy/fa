@@ -101,12 +101,14 @@
 	<insert id="insertVoucher2" parameterType="1vouchervo">
 		<![CDATA[
 		insert
-		  into tb_voucher_manager(reg_date,
+		  into tb_voucher_manager(no,
+		  			   reg_date,
 		  			   insert_userid,
 		  			   insert_day,
 		  			   use_yn
 		  )
-		values (#{regDate },
+		values (no,
+				#{regDate },
 		  		#{insertUserid },
 		  		now(),
 		  		true
@@ -179,8 +181,23 @@
 	
 	<!-- 전표 전체 갯수 -->
 	<select id="selectAllVoucherCount" resultType="int">
-		select	count(*) as cnt
-		  from	tb_voucher_manager;
+		select count(*) as cnt
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+          join tb_voucher_system_mapping m
+            on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join tb_customer cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
 	</select>
 	
 	<!-- 전표조회 페이징 -->
@@ -219,17 +236,41 @@
             on c.card_no = m.card_no
 	 left join tb_bank_account ba
             on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
       order by v.no desc,
                i.amount_flag
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
 	
+	<!-- delete 다른 팀 -->
+	<delete id="deleteVoucher" parameterType="1vouchervo">
+	<![CDATA[
+		delete from tb_voucher_manager where no = #{no };
+	]]>
+	</delete>
+	
+	<!-- delete 다른 팀 -->
+	<delete id="deleteItem" parameterType="1itemvo">
+	<![CDATA[
+		delete from tb_voucher_item where voucher_no = #{voucherNo };
+	]]>
+	</delete>
+	
+	<!-- delete 다른 팀 -->
+	<delete id="deleteMapping" parameterType="1mappingvo">
+	<![CDATA[
+		delete from tb_voucher_system_mapping where voucher_no = #{voucherNo };
+	]]>
+	</delete>
+	
 	<!-- delete 1팀 -->
 	<update id="deleteVoucher2" parameterType="1vouchervo">
 	<![CDATA[
 		update tb_voucher_manager
-		set use_yn='n'
+		set use_yn=0
 		where no = #{no };
 	]]>
 	</update>
@@ -238,8 +279,8 @@
 	<update id="deleteItem2" parameterType="1vouchervo">
 	<![CDATA[
 		update tb_voucher_item
-		set use_yn='n'
-		where no = #{no };
+		set use_yn=0
+		where voucher_no = #{no };
 	]]>
 	</update>
 	
@@ -247,8 +288,84 @@
 	<update id="deleteMapping2" parameterType="1vouchervo">
 	<![CDATA[
 		update tb_voucher_system_mapping
-		set use_yn='n'
+		set use_yn=0
+		where voucher_no = #{no };
+	]]>
+	</update>
+	
+	<!-- update 1팀 -->
+	<update id="updateVoucher2" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_manager
+		set reg_date = #{regDate },
+			update_userid = #{updateUserid },
+			update_day = now()
 		where no = #{no };
+	]]>
+	</update>
+	
+	<!-- update 1팀 -->
+	<update id="updateItem2" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_item
+		set amount = #{amount },
+			amount_flag = #{amountFlag },
+			update_userid = #{updateUserid },
+			update_day = now(),
+			account_no = #{accountNo }
+		where voucher_no = #{no };
+	]]>
+	</update>
+	
+	<!-- update 1팀 -->
+	<update id="updateMapping2" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_system_mapping
+		set voucher_use = #{voucherUse },
+			update_userid = #{updateUserid },
+			update_day = now(),
+			system_code = #{systemCode },
+			manage_no = #{manageNo },
+			card_no = #{cardNo },
+			deposit_no = #{depositNo },
+			customer_no = #{customerNo }
+		where voucher_no = #{no };
+	]]>
+	</update>
+	
+	<!-- update 다른 팀 -->
+	<select id="selectTemp" parameterType="1vouchervo" resultType="1vouchervo">
+	<![CDATA[
+		select insert_userid, insert_day
+		  from tb_voucher_manager
+		 where no = #{no };
+	]]>
+	</select>
+	
+	<!-- update 다른 팀 -->
+	<update id="updateVoucher3" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_manager
+		   set insert_userid = #{insertUserid },
+		 where no = #{no };
+	]]>
+	</update>
+	
+	<!-- update 다른 팀 -->
+	<update id="updateItem3" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_item
+		   set insert_userid = #{insertUserid },
+		 where voucher_no = #{no };
+	]]>
+	</update>
+	
+	<!-- update 다른 팀 -->
+	<update id="updateMapping3" parameterType="1vouchervo">
+	<![CDATA[
+		update tb_voucher_system_mapping
+		   set insert_userid = #{insertUserid },
+		 where voucher_no = #{no };
 	]]>
 	</update>
 	
