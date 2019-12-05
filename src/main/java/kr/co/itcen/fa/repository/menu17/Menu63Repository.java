@@ -16,8 +16,14 @@ public class Menu63Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// 대차대조표(BalanceSheet) insert
+	public int insertBalanceSheet(Long no) {
+		int check = sqlSession.insert("menu63.insertBalanceSheet", no);
+		return check;
+	}
+	
+	
 	public void test() {
-		
 	}
 	
 }

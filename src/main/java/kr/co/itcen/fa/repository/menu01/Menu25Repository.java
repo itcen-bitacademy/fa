@@ -30,14 +30,18 @@ public class Menu25Repository {
 	//	sqlSession.insert("menu25.save", testVo);
 	}
 
-	public Map<String, Object> create(BankAccountVo bavo) {
+	public Map<String, Object> create(BankAccountVo bavo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		// 191202 sql문 구현 필요함
 		sqlSession.insert("menu25.create", bavo);
 		
-		map.put("bankList", sqlSession.selectList("menu25.list"));
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		
+		map.put("bankList", sqlSession.selectList("menu25.list", s));
 		return map;
+		
 	}
 
 	public Map<String, Object> update(BankAccountVo bavo, PaginationUtil pagination) {
@@ -54,12 +58,15 @@ public class Menu25Repository {
 		return map;
 	}
 
-	public Map<String, Object> delete(BankAccountVo bavo) {
+	public Map<String, Object> delete(BankAccountVo bavo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// TODO Auto-generated method stub
 		sqlSession.update("menu25.delete", bavo);
 		
-		map.put("bankList", sqlSession.selectList("menu25.list"));
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		
+		map.put("bankList", sqlSession.selectList("menu25.list", s));
 		return map;
 	}
 	
@@ -93,13 +100,24 @@ public class Menu25Repository {
 
 	public Map<String, Object> gets(String depositNo) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		// TODO Auto-generated method stub		
-		map.put("bankAccountList", sqlSession.selectList("menu25.gets", depositNo));
+		
+		List<BankAccountVo> s = sqlSession.selectList("menu25.gets", depositNo);
+		map.put("bankAccountList", s);
+		
+		
 		return map;
 	}
 
 	public int selectCount() {
 		int res = sqlSession.selectOne("menu25.getCount");
 		return res;
+	}
+
+	public Map<String, Object> read(BankAccountVo bavo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		System.out.println(bavo.getDepositNo());
+		map.put("bankList", sqlSession.selectList("menu25.read", bavo));
+		return map;
 	}
 }

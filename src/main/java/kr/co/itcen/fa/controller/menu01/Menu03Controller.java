@@ -49,9 +49,9 @@ public class Menu03Controller {
 	}
 	
 	// 전표 작성 & 리스트 반환
-	@ResponseBody
 	@RequestMapping(value= "/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public JSONResult categoryWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, @RequestParam(defaultValue = "1") int page) {
+	public String categoryWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, @RequestParam(defaultValue = "1") int page
+			, Model model) {
 		String systemCode = "A000";
 		int count = 0;
 		count += 1;
@@ -72,20 +72,33 @@ public class Menu03Controller {
 		// 카테고리 작성, 리스트
 		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
 		System.out.println("d : " + dataResult.getDatas());
-		return JSONResult.success(dataResult);
+		model.addAttribute("dataResult", dataResult);
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	// 전표 삭제
-	@ResponseBody
+	// 전표 삭제 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
-	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, Model model) {
+	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
 		System.out.println("222222222 : " + voucherVo.getNo());
+		System.out.println("44444444 : " + voucherVo.getInsertTeam());
 		System.out.println("33333333 : " + userVo.getTeamName());
-//		if(voucherVo.getInsertTeam() != userVo.getTeamName()) {
-//			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
-//		}
-		
+		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
+			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		}
+		System.out.println("ㅇㅇㅇㅇㅇ");
 		menu03Service.deleteVoucher(voucherVo);
+		
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	// 전표 수정 1팀
+	@RequestMapping(value = "/" + SUBMENU + "/update", method=RequestMethod.POST)
+	public String update(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
+		voucherVo.setUpdateUserid(userVo.getId());
+		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
+			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		}
+		menu03Service.updateVoucher(voucherVo);
 		
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}

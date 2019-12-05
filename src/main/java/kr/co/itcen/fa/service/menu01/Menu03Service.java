@@ -50,6 +50,27 @@ public class Menu03Service {
 			return voucherVo.getNo(); // 전표번호
 		}
 		
+		// 전표수정 (다른 팀)
+		public Long updateVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
+			voucherVo.setUpdateUserid(userVo.getId());
+			
+			for(int i = 0; i < itemVo.size(); i++) {
+				itemVo.get(i).setUpdateUserid(userVo.getId());
+			}
+			
+			mappingVo.setInsertUserid(userVo.getId());
+			
+			menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo);
+			
+			return voucherVo.getNo();
+		}
+		
+		// 전표삭제 (다른 팀)
+		public void deleteVoucher(VoucherVo voucherVo, @AuthUser UserVo userVo) {
+			menu03Repository.deleteVoucher(voucherVo, userVo);
+		}
+		
+		
 		// 페이징 처리
 		public DataResult<VoucherVo> selectAllVoucherCount(int page) {
 			DataResult<VoucherVo> dataResult = new DataResult<VoucherVo>();
@@ -77,6 +98,12 @@ public class Menu03Service {
 		// 전표삭제
 		public Boolean deleteVoucher(VoucherVo voucherVo) {
 			return menu03Repository.deleteVoucher(voucherVo);
+		}
+		
+		// 전표수정
+		public Boolean updateVoucher(VoucherVo voucherVo) {
+			return menu03Repository.updateVoucher(voucherVo);
+			
 		}
 		
 	}

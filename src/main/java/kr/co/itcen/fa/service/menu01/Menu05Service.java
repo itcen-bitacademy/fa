@@ -7,7 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu05Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.CardVo;
 
 /**
@@ -23,7 +26,7 @@ public class Menu05Service {
 	private Menu05Repository menu05Repository;
 	
 	
-	public Map<String, Object> create(CardVo vo) {
+	public Map<String, Object> create(CardVo vo, int page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(menu05Repository.Nexist(vo)) {				// 삭제되지 않은 내용 중 중복된 카드넘버
 			map.put("fail", true);  					
@@ -33,7 +36,13 @@ public class Menu05Service {
 		
 			menu05Repository.deleteAll(vo);					// 삭제된 vo 삭제
 		}
-		map = menu05Repository.create(vo);
+		
+		int totalCnt = menu05Repository.listCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+
+		map = menu05Repository.create(vo, pagination);
+		map.put("pagination", pagination);
 		map.put("success", true);
 		return map;
 	}
@@ -45,7 +54,7 @@ public class Menu05Service {
 		return map;
 	}
 	
-	public Map<String, Object> update(CardVo vo) {
+	public Map<String, Object> update(CardVo vo, int page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(menu05Repository.Nexist(vo)) {			// 삭제되지 않은 내용 중 중복된 카드넘버
 			map.put("fail", true);  						
@@ -56,19 +65,39 @@ public class Menu05Service {
 			menu05Repository.deleteAll(vo);				// 삭제된 vo 삭제
 		}
 			
-		map = menu05Repository.update(vo);
+		int totalCnt = menu05Repository.listCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		
+		map = menu05Repository.update(vo, pagination);
+		map.put("pagination", pagination);
 		map.put("success", true);
 		return map;
 	}
 	
-	public Map<String, Object> delete(CardVo vo) {
-		Map<String, Object> map =menu05Repository.delete(vo);
+	public Map<String, Object> delete(CardVo vo, int page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int totalCnt = menu05Repository.listCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		map = menu05Repository.delete(vo, pagination);
+		map.put("pagination", pagination);
+		map.put("success", true);
+		
 		return map;					// 플래그 변화 및 카드 넘버에 d 추가
 		
 	}
 
-	public List<CardVo> list() {
-		return menu05Repository.list();
+	public DataResult<CardVo> list(int page) {
+		DataResult<CardVo> dataResult = new DataResult<CardVo>();
+		int totalCnt= menu05Repository.listCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		List<CardVo> list = menu05Repository.list(pagination);
+		dataResult.setPagination(pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
 		
 	}
 

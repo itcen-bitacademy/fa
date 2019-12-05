@@ -17,7 +17,7 @@
 	</insert>
 	
 	<!-- 리스트 뽑기 -->
-	<select id="getList" resultType="1customervo">
+	<select id="getList" parameterType="map" resultType="1customervo">
 		<![CDATA[
 			select (right(no, 12)) as no,
      			   name as name, 
@@ -42,8 +42,13 @@
 			       update_userid as updateUserid, 
 			       update_day as updateDay
 			  from tb_customer
-			 where delete_flag = 'N';
+			 where delete_flag = 'N'
 		]]>
+		<if test="pagination.pageIndex >= 0 ">
+			<![CDATA[
+				 limit #{pagination.pageIndex }, #{pagination.listSize }
+			]]>
+		</if>
 	</select>
 	
 	<!-- 거래처 입력 -->
@@ -151,5 +156,13 @@
 			   and delete_flag = "Y";
 		]]>
 	</delete>
+	
+	<select id="getCount" resultType="int">
+		<![CDATA[
+		select	count(*)
+		 from	tb_customer 
+		 where	delete_flag = "N"
+		]]>
+	</select>
 	
 </mapper>

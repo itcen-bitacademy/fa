@@ -3,6 +3,7 @@ package kr.co.itcen.fa.controller.menu01;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,6 +51,7 @@ public class Menu25Controller {
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/create")
 	public Map<String, Object> create(@ModelAttribute BankAccountVo bavo,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
 			@AuthUser UserVo uvo) {
 		System.out.println("create");
 		System.out.println(bavo.toString());
@@ -58,18 +60,20 @@ public class Menu25Controller {
 		bavo.setInsertUserId(uvo.getName());
 		bavo.setDepositOld(null);
 		
-		Map<String, Object> result = menu25Service.create(bavo);
+		page = 1;
+		Map<String, Object> dataResult =  menu25Service.create(bavo, page);
 		
-		return result;
+		return dataResult;
 	}
 	
 	// Read
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/read")
-	public String read(@ModelAttribute BankAccountVo bavo	) {
+	public Map<String, Object> read(@ModelAttribute BankAccountVo bavo) {
 		System.out.println("read");
-		menu25Service.test();
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		
+		Map<String, Object> dataResult = menu25Service.read(bavo);
+		return dataResult;
 	}
 	
 	// Update
@@ -78,7 +82,7 @@ public class Menu25Controller {
 	public Map<String, Object> update(@ModelAttribute BankAccountVo bavo,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
 			@AuthUser UserVo uvo) {
-		System.out.println(page);
+		System.out.println("update" );
 		
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setUpdateUserId(uvo.getName());
@@ -92,12 +96,15 @@ public class Menu25Controller {
 	// Delete
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
-	public Map<String, Object> delete(@ModelAttribute BankAccountVo bavo) {
+	public Map<String, Object> delete(@ModelAttribute BankAccountVo bavo,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
 		System.out.println("delete");
 		
-		Map<String, Object> result = menu25Service.delete(bavo);
-		result.put("success", true);
-		return result;
+		page = 1;
+		Map<String, Object> dataResult = menu25Service.delete(bavo, page);
+		dataResult.put("success", true);
+		
+		return dataResult;
 	}
 	
 	// PopUp
@@ -105,11 +112,10 @@ public class Menu25Controller {
 	@RequestMapping("/" + SUBMENU + "/gets")
 	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
 		System.out.println("gets");
-		System.out.println(depositNo.toString());
 		
-		Map<String, Object> result = menu25Service.gets(depositNo);
-		result.put("success", true);
-		return result;
+		Map<String, Object> data = menu25Service.gets(depositNo);
+		data.put("success", true);
+		return data;
 	}
 		
 }
