@@ -40,6 +40,7 @@ public class Menu05Repository {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("cardList", sqlSession.selectList("menu05.read", vo));
+		System.out.println(map.get("cardList"));
 		return map;
 	}
 	

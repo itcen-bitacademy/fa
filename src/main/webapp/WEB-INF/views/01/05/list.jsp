@@ -105,7 +105,7 @@ $(function() {
 			    		    this.reset();
 			    		});
 			    		
-			    		alert("계좌 생성이 완료되었습니다."); 
+			    		alert("카드 생성이 완료되었습니다."); 
 			    		
 			    		removeTable();
 			    		var cardList = dataResult.cardList;
@@ -125,14 +125,15 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("계좌 검색이 완료되었습니다."); 
+			    		alert("카드 검색이 완료되었습니다."); 
 			    		removeTable();
 			    		$('#input-form').each(function(){
 			    		    this.reset();
 			    		});
-			    		
+
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
+			    		settingInput(cardList);
 			    		$('#pagination').hide();
 			    	}
 			    },
@@ -148,15 +149,16 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("계좌 수정이 완료되었습니다."); 
+			    		alert("카드 수정이 완료되었습니다."); 
 			    		removeTable();
 			    	
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
 			    	}
-			    	if(result.fail) {
+			    	if(dataResult.fail) {
 			    		alert("다시 입력해주세요.");
 			    	}
+			    	$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -170,7 +172,7 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("계좌 삭제가 완료되었습니다."); 
+			    		alert("카드 삭제가 완료되었습니다."); 
 			    		removeTable();
 			    		$('#input-form').each(function(){
 			    		    this.reset();
@@ -179,6 +181,7 @@ $(function() {
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
 			    	}
+			    	$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -271,6 +274,48 @@ $(function() {
 		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
 		
 	});
+	
+
+	function settingInput(cardList) {
+		
+		var cardNo1 = cardList[0].cardNo.substring(0,4);
+		var cardNo2 = cardList[0].cardNo.substring(5,9);
+		var cardNo3 = cardList[0].cardNo.substring(10,14);
+		var cardNo4 = cardList[0].cardNo.substring(15,20);
+		
+		$("input[name=cardNo1]").val(cardNo1);
+		$("input[name=cardNo2]").val(cardNo2);
+		$("input[name=cardNo3]").val(cardNo3);
+		$("input[name=cardNo4]").val(cardNo4);
+		
+		$("input[name=cardOld]").val(cardList[0].cardNo);
+		
+		var month= cardList[0].validity.substring(0,2);		
+		var year= cardList[0].validity.substring(3,5);
+		
+		$("input[name=validityMM]").val(month);
+		$("input[name=validityYY]").val(year);
+		
+		$("input[name=cvc]").val(cardList[0].cvc);
+		$("input[name=user]").val(cardList[0].user);
+		$("input[name=issuer]").val(cardList[0].issuer);
+		$("input[name=depositNo]").val(cardList[0].depositNo);
+		$("input[name=depositHost]").val(cardList[0].depositHost);
+		$("input[name=password]").val(cardList[0].password);	
+		$("input[name=bankCode]").val(cardList[0].bankCode);
+		$("input[name=bankName]").val(cardList[0].bankName);
+		$("input[name=company]").val(cardList[0].company);
+		$("input[name=limitation]").val(cadList[0].limitation);
+		
+		var td13 = cardList[0].transportation;
+		var td14 = cardList[0].abroad;
+		
+		$('input:radio[name=transportation]:input[value=' +  td13 + ']').prop("checked", true);
+		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
+		
+	}
+	
+	
 	
 	
 	$(document.body).delegate('#selectAll', 'click', function() {

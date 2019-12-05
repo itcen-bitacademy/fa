@@ -40,9 +40,11 @@ public class Menu05Service {
 		int totalCnt = menu05Repository.listCount();
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		
+		
 
 		map = menu05Repository.create(vo, pagination);
 		map.put("pagination", pagination);
+		
 		map.put("success", true);
 		return map;
 	}
