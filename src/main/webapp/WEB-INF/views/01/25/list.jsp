@@ -86,7 +86,10 @@
 				    		removeTable();
 				    		var bankList = dataResult.bankList;
 				    		createNewTable(bankList);
-				    		$('#pagination').show();
+				    		
+				    		$('#pagination ul').remove();
+				    		${'dataResult.pagination.page' };
+				    		createNewPage(dataResult, a);
 				    	}
 				    },
 				    error: function( err ){
@@ -134,7 +137,9 @@
 				    	if(dataResult.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
-				    	$('#pagination').show();
+				    	
+				    	$('#pagination ul').remove();
+			    		createNewPage(dataResult, a);
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -146,18 +151,20 @@
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				    success: function(dataResult){
+				    	if(dataResult.success) {
 				    		alert("계좌 삭제가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
 				    		
-				    		var bankList = result.bankList;
+				    		var bankList = dataResult.bankList;
 				    		createNewTable(bankList);
 				    	}
-				    	$('#pagination').show();
+				    	
+				    	$('#pagination ul').remove();
+			    		createNewPage(dataResult, a);
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -381,6 +388,43 @@
 		
 	});
 	
+	function createNewPage(dataResult, a){
+		var inputString = "<ul>";
+		
+		console.log('${dataResult.pagination.page }');
+        
+        if('${dataResult.pagination.prev }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+        }
+        
+        if(a == "create" || a == "delete") {
+        	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+			for(var pg = 2; pg < 5; pg++) {
+				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+        	}
+    	} else {
+        	for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
+        		if("${dataResult.pagination.page }" == pg){
+            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+        		} else {
+	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	        	}
+        	}
+        }
+	            
+        if ('${dataResult.pagination.next }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+        }
+        inputString += "</ul>";
+        alert(inputString);
+        $("#pagination").append(inputString);
+        
+   };
+	
 	// Popup
 	$(function() {
 		$("#dialog-message").dialog({
@@ -409,6 +453,7 @@
 		});
 
 	});
+	  
 	
 </script>
 
