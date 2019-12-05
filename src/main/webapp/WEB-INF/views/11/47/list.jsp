@@ -146,10 +146,10 @@
 					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
 				<section class="filter-left">
 					<ul class="order-list">
-						<li><h4 class="list-order" id="orderDebtDate" onclick="order(this)">차입일자</h4></button></li>
-						<li><h4 class="list-order" id="orderExpDate" onclick="order(this)" >만기일자</h4></button></li>
-						<li><h4 class="list-order" id="orderExpDate" onclick="order(this)">등록일자</h4></button></li>
-						<li><h4 class="list-order" id="orderExpDate" onclick="order(this)">차입금액</h4></button></li>
+						<li><h4 class="list-order" id="debt_date" onclick="order(this)">차입일자</h4></button></li>
+						<li><h4 class="list-order" id="exp_date" onclick="order(this)" >만기일자</h4></button></li>
+						<li><h4 class="list-order" id="insert_date" onclick="order(this)">등록일자</h4></button></li>
+						<li><h4 class="list-order" id="debt_amount" onclick="order(this)">차입금액</h4></button></li>
 					</ul>
 				</section> <!-- filter-left end -->
 				<section class="filter-right">

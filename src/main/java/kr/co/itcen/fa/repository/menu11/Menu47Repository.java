@@ -30,6 +30,7 @@ public class Menu47Repository {
 	}
 	
 	public List<STermDebtVo> getList(Map map) {
+		System.out.println("getListWithOrder");
 		return sqlSession.selectList("menu47.getListWithOrder", map);
 	}
 	

@@ -25,7 +25,7 @@ public class STermDebtVo {
 	private String mgrCall; // 차입금담당자전화
 	private String deptClassification; // 차입금대분류
 	private Long bankCode; // 은행코드
-	private String bankName;
+	private String bankName;	//은행이름 , 은행코드를 통해 얻어온다
 	private String depositNo; // 계좌번호
 	private String accountNo; // 계정코드
 	private Long voucherNo; // 전표번호
@@ -34,8 +34,6 @@ public class STermDebtVo {
 	private String insertDate; // 등록일
 	private String updateId; // 수정자
 	private String updateDate; // 수정일
-
-
 	public Long getNo() {
 		return no;
 	}
@@ -77,6 +75,9 @@ public class STermDebtVo {
 	}
 	public void setRepayWay(String repayWay) {
 		this.repayWay = repayWay;
+	}
+	public void setRepayComplFlag(String repayComplFlag) {
+		this.repayComplFlag = repayComplFlag;
 	}
 	public String getRepayComplFlag() {
 		return repayComplFlag;
@@ -143,6 +144,12 @@ public class STermDebtVo {
 	}
 	public void setBankCode(Long bankCode) {
 		this.bankCode = bankCode;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 	public String getDepositNo() {
 		return depositNo;

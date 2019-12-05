@@ -34,7 +34,7 @@ public class Menu47ApiController {
 	public JSONResult order(STermDebtVo sTermDebtVo, @RequestParam(value="orderColumn", required=true) String orderColumn) {
 		System.out.println("orderColumn : " + orderColumn);
 		List<STermDebtVo> list = menu47Service.order(sTermDebtVo, orderColumn);
-		
+		System.out.println("list1 : " + list.get(0).getDebtDate());
 		return JSONResult.success(list);
 	}
 	
