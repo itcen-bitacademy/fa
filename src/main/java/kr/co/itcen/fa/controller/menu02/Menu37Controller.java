@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu02.Menu37Service;
@@ -103,7 +104,7 @@ public class Menu37Controller {
 
 	// 수정 post
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
-	public String update(@ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
+	public String update(@RequestParam(name = "originalNo") String originalNo, @ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
 			Long amount[], Long supplyValue[], Long taxValue[]) {
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		String updateUserid = authUser.getId();
@@ -114,8 +115,8 @@ public class Menu37Controller {
 		String getInsertUserid = vo.getInsertUserid();
 
 		// 세금계산서 테이블과 관련 항목들 삭제
-		menu37Service.taxbillUpdateDelete(vo.getNo());
-		menu37Service.taxbillItemsUpdateDelete(vo.getNo());
+		menu37Service.taxbillUpdateDelete(originalNo);
+		menu37Service.taxbillItemsUpdateDelete(originalNo);
 		
 		
 		// 입력폼 그대로 다시 저장하기 ( 입력자와 입력명은 그대로 유지 )
@@ -123,24 +124,24 @@ public class Menu37Controller {
 		vo.setInsertUserid(getInsertUserid);
 		ArrayList<BuyTaxbillItemsVo> list = new ArrayList<BuyTaxbillItemsVo>();
 
-//		for (int i = 0; i < purchaseDate.length; i++) {
-//			BuyTaxbillItemsVo buyTaxbillItemsVo = new BuyTaxbillItemsVo();
-//			buyTaxbillItemsVo.setTaxbillNo(vo.getNo());
-//			buyTaxbillItemsVo.setPurchaseDate(purchaseDate[i]);
-//			buyTaxbillItemsVo.setItemName(itemName[i]);
-//			buyTaxbillItemsVo.setAmount(amount[i]);
-//			buyTaxbillItemsVo.setSupplyValue(supplyValue[i]);
-//			buyTaxbillItemsVo.setTaxValue(taxValue[i]);
-//			buyTaxbillItemsVo.setInsertUserid(getInsertUserid);
-//			buyTaxbillItemsVo.setInsertDay(getInsertDay);
-//			buyTaxbillItemsVo.setUpdateUserid(updateUserid);
-//			list.add(buyTaxbillItemsVo);
-//		}
-//
-//		menu37Service.insertUpdatedTax(vo);
-//		for (int i = 0; i < purchaseDate.length; i++) {
-//			menu37Service.insertUpdatedItem(list.get(i));
-//		}
+		for (int i = 0; i < purchaseDate.length; i++) {
+			BuyTaxbillItemsVo buyTaxbillItemsVo = new BuyTaxbillItemsVo();
+			buyTaxbillItemsVo.setTaxbillNo(vo.getNo());
+			buyTaxbillItemsVo.setPurchaseDate(purchaseDate[i]);
+			buyTaxbillItemsVo.setItemName(itemName[i]);
+			buyTaxbillItemsVo.setAmount(amount[i]);
+			buyTaxbillItemsVo.setSupplyValue(supplyValue[i]);
+			buyTaxbillItemsVo.setTaxValue(taxValue[i]);
+			buyTaxbillItemsVo.setInsertUserid(getInsertUserid);
+			buyTaxbillItemsVo.setInsertDay(getInsertDay);
+			buyTaxbillItemsVo.setUpdateUserid(updateUserid);
+			list.add(buyTaxbillItemsVo);
+		}
+
+		menu37Service.insertUpdatedTax(vo);
+		for (int i = 0; i < purchaseDate.length; i++) {
+			menu37Service.insertUpdatedItem(list.get(i));
+		}
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
