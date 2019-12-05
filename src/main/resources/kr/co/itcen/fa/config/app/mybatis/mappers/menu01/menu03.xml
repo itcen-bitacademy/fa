@@ -450,7 +450,7 @@
 				#{voucherUse },
 				#{insertTeam },
 		  		#{insertUserid },
-		  		#{inserDay },
+		  		#{insertDay },
 		  		#{updateUserid },
 		  		now(),
 		  		true,
