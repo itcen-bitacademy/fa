@@ -2,41 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu64">
 
-	<select id="selectIncomeStatementDataList" parameterType="Long" resultType="financialStatementVo">
+	<select id="selectIncomeStatementDataList" parameterType="closingDate17Vo" resultType="financialStatementVo">
 		<![CDATA[
 			select	null as no, 
-					b.account_statement_type as accountStatementType, 
-					a.closing_date_no as closingDateNo, 
-					RPAD(substring(a.account_no, 1, 2), 7, 0) as accountNo, 
-					b.account_order as accountOrder, 
-					c.name as accountName, 
-					SUM(case 
-						when (ifnull(a.debtor_spot_month, 0) >= ifnull(a.credit_spot_month, 0)) 
-						then (ifnull(a.debtor_spot_month, 0) - ifnull(a.credit_spot_month, 0)) 
-						else (ifnull(a.credit_spot_month, 0) - ifnull(a.debtor_spot_month, 0)) 
-						end
-					)  as monthToAmount, 
-					SUM(case 
-						when (ifnull(a.debtor_total, 0) >= ifnull(a.credit_total, 0)) 
-						then (ifnull(a.debtor_total, 0) - ifnull(a.credit_total, 0)) 
-						else (ifnull(a.credit_total, 0) - ifnull(a.debtor_total, 0)) 
-						end
-					) as amount, 
-					a.insert_userid as insertUserid, 
-					a.insert_day as insertDay, 
-					null as updateUserid, 
-					null as updateDay
-			from	tb_trial_balance a, tb_account_management b, tb_account c 
-			where	a.account_no =  b.account_no 
-			  and	b.account_no = c.no 
-			  and	a.closing_date_no = #{no } 
-			  and	substring(a.account_no, 1, 1) >= 5 
-			group by (case 
-					  when substring(a.account_no, 1, 1) >= 9 
-					  then substring(a.account_no, 1, 2) 
-					  else substring(a.account_no, 1, 1) 
-					  end)
-			order by a.account_no desc;
+					am.account_statement_type as accountStatementType, 
+					t.closing_date_no as closingDateNo, 
+					am.account_no as accountNo, 
+					am.account_order as accountOrder, 
+					a.name as accountName,
+					(case 
+					 when a.balance_type = "C" 
+					 then (ifnull(t.credit_total, 0) - ifnull(t.debtor_total, 0)) 
+					 else (ifnull(t.debtor_total, 0) - ifnull(t.credit_total, 0)) 
+					 end) as monthToAmount, 
+					 (case 
+					 when a.balance_type = "C" 
+					 then (ifnull(t.credit_spot_month, 0) - ifnull(t.debtor_spot_month, 0)) 
+					 else (ifnull(t.debtor_spot_month, 0) - ifnull(t.credit_spot_month, 0)) 
+					 end) as amount, 
+					 t.insert_userid as insertUserid, 
+					 t.insert_day as insertDay, 
+					 null as updateUserid, 
+					 null as updateDay
+			 from	tb_account_management as am 
+			 left join	tb_account as a on a.no = am.account_no 
+			 left join	tb_trial_balance as t on t.account_no = am.account_no 
+			 where	am.account_statement_type = 'I' 
+			   and	am.account_usedyear = substr(#{closingYearMonth }, 1, 4)
+			   and	am.use_yn = true 
+			   and	t.closing_date_no = #{no };
 		]]>
 	</select>
 	
@@ -64,7 +58,7 @@
 		<![CDATA[
 			select	account_order as accountOrder, 
 					account_name as accountName, 
-					month_amount as monthAmount, 
+					month_amount as monthToAmount, 
 					amount 
 			from	tb_financial_statement
 			where	closing_date_no = #{no }

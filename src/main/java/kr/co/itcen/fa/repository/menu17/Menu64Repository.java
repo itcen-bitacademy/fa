@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.FinancialStatementVo;
 
 /**
@@ -24,8 +25,8 @@ public class Menu64Repository {
 	
 	
 	// 1. 손익계산서(IncomeStatement)에 필요한 Data select
-	public List<FinancialStatementVo> selectIncomeStatementDataList(Long no) {
-		return sqlSession.selectList("menu64.selectIncomeStatementDataList", no);
+	public List<FinancialStatementVo> selectIncomeStatementDataList(ClosingDateVo vo) {
+		return sqlSession.selectList("menu64.selectIncomeStatementDataList", vo);
 	}
 
 	// 2. 손익계산서(IncomeStatement) Data insert
