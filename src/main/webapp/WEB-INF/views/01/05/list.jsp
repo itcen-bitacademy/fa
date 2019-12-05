@@ -220,10 +220,10 @@ $(function() {
 		        "<td>" + cardList[card].limitation+ "</td>" +
 		        "<td>" + cardList[card].transportation+ "</td>" +
 		        "<td>" + cardList[card].abroad+ "</td>" +
-		        "<td>" + cardList[card].insertUserId + "</td>" +
 		        "<td>" + cardList[card].insertDay + "</td>" +
-		        "<td>" + cardList[card].updateUserId + "</td>" +
+		        "<td>" + cardList[card].insertUserId + "</td>" +
 		        "<td>" + cardList[card].updateDay + "</td>" +
+		        "<td>" + cardList[card].updateUserId + "</td>" +
 		        "</tr>");
 			  
 		  }
