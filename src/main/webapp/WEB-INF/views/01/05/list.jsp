@@ -110,7 +110,9 @@ $(function() {
 			    		removeTable();
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
-			    		$('#pagination').show();
+			    		
+				    	$('#pagination ul').remove();
+				    	createNewPage(dataResult, a);
 			    	}
 			    },
 			    error: function( err ){
@@ -158,7 +160,8 @@ $(function() {
 			    	if(dataResult.fail) {
 			    		alert("다시 입력해주세요.");
 			    	}
-			    	$('#pagination').show();
+			    	$('#pagination ul').remove();
+			    	createNewPage(dataResult, a);
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -181,7 +184,9 @@ $(function() {
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
 			    	}
-			    	$('#pagination').show();
+			    	
+			    	$('#pagination ul').remove();
+		    		createNewPage(dataResult, a);
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -202,21 +207,22 @@ $(function() {
 		  $(".new-tbody").remove();
 	}
 	function createNewTable(cardList){
-		  var $newTbody = $("<tbody class='new-tbody'>")
-		  $("#simple-table-1").append($newTbody)
+		  var $newTbody = $("<tbody class='new-tbody'>");
+		  
+		  $("#simple-table-1").append($newTbody);
 			
 		  for(let card in cardList){
 			  $newTbody.append(
-			   	"<tr>" +
-		        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
-		        "<td>" + cardList[card].cardNo + "</td>" +
-		        "<td>" + cardList[card].validity+ "</td>" +
-		        "<td>" + cardList[card].cvc+ "</td>" +
-		        "<td>" + cardList[card].user+ "</td>" +	
-		        "<td>" + cardList[card].issuer+ "</td>" +
-		        "<td>" + cardList[card].depositNo+ "</td>" +
-		        "<td>" + cardList[card].depositHost+ "</td>" +
-		        "<td>" + cardList[card].password+ "</td>" +
+				"<tr>" +
+				"<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
+				"<td>" + cardList[card].cardNo + "</td>" +
+				"<td>" + cardList[card].validity+ "</td>" +
+				"<td>" + cardList[card].cvc+ "</td>" +
+				"<td>" + cardList[card].user+ "</td>" +	
+				"<td>" + cardList[card].issuer+ "</td>" +
+				"<td>" + cardList[card].depositNo+ "</td>" +
+				"<td>" + cardList[card].depositHost+ "</td>" +
+				"<td>" + cardList[card].password+ "</td>" +
 		        "<td>" + cardList[card].bankCode+ "</td>" +
 		        "<td>" + cardList[card].bankName+ "</td>" +
 		        "<td>" + cardList[card].company+ "</td>" +
@@ -234,6 +240,41 @@ $(function() {
 		  $(".chosen-select").chosen();
 	}
 	
+	function createNewPage(dataResult, a){
+		var inputString = "<ul>";
+		
+        if('${dataResult.pagination.prev }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+        }
+        
+        if(a == "create" || a == "delete") {
+        	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+			for(var pg = 2; pg <= "${dataResult.pagination.endPage }"; pg++) {
+				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+        	}
+    	} else {
+        	for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
+        		if("${dataResult.pagination.page }" == pg){
+            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+        		} else {
+	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	        	}
+        	}
+        }
+	            
+        if ('${dataResult.pagination.next }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+        }
+        inputString += "</ul>";
+        $("#pagination").append(inputString);
+        
+   };
+		
+
 	
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
@@ -313,7 +354,6 @@ $(function() {
 		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
 	}
-	
 	
 	
 	
