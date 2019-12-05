@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu47Service;
+import kr.co.itcen.fa.util.Pagination;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
@@ -30,21 +31,14 @@ public class Menu47Controller {
 	                                   //   /11/47, /11/47/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
-		List<STermDebtVo> list = menu47Service.getList();
+		Pagination pagination = new Pagination(5, 5, 1);	//기본 페이지는 1로 설정
+		List<STermDebtVo> list = menu47Service.getList(pagination);
+		
+		pagination.processPaging(list.size());
 		
 		model.addAttribute("list", list);
-		return MAINMENU + "/" + SUBMENU + "/list";
-	}
-	
-	@RequestMapping("/" + SUBMENU + "/search")
-	public String search(STermDebtVo sTermDebtVo, Model model) {
-		List<STermDebtVo> list = menu47Service.search(sTermDebtVo);
-		System.out.println("debtDate " + sTermDebtVo.getDebtDate());
-		System.out.println("intPayWay : " + sTermDebtVo.getIntPayWay());
-		System.out.println("expDate" + sTermDebtVo.getExpDate());
-		model.addAttribute("list", list);
+		model.addAttribute("pagination", pagination);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
-	
 }

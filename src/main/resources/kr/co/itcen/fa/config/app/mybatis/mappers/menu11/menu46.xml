@@ -77,19 +77,19 @@
 			delete_flag,insert_id, insert_date, update_id, update_date)
 			values (null, #{code }, #{name }, #{majorCode}, ${debtAmount }, 
 			${debtAmount }, #{repayWay }, #{debtDate}, #{expDate},
-			${intRate }, #{intPayWay }, ${intAmount }, #{mgr }, 
+			${intRate }, #{intPayWay }, 0, #{mgr }, 
 			#{mgrCall }, ${bankCode },
 			#{depositNo }, 123, 123, 
 			'N', #{insertId }, now(), null, null) 
 		]]>
 	</insert>
 	
-	<update id="update" parameterType="Long">
+	<update id="update1" parameterType="stermdebtvo">
 		<![CDATA[
 			update tb_s_term_debt 
-			set code=#{code}, name=#{name}, major_code=#{majorCode}, debt_amount=${debtAmount}, repay_bal=${repayBal}, repay_way=#{repayWay}, 
-			    debt_date=now(), exp_date=now(), int_rate=#{intRate}, int_pay_way=#{intPayWay}, int_amount=${intAmount},
-			    mgr=#{mgr }, mgr_call=#{mgrCall}, bank_code=${bankCode}, deposit_no=#{depositNo}, update_id=#{updateId}, update_date=now()
+			set code=#{code}, name=#{name}, major_code=#{majorCode}, debt_amount=${debtAmount}, repay_way=#{repayWay}, 
+			    debt_date=now(), exp_date=now(), int_rate=${intRate}, int_pay_way=#{intPayWay},
+			    mgr=#{mgr }, mgr_call=#{mgrCall}, bank_code=#{bankCode}, deposit_no=#{depositNo}, update_id=#{updateId}, update_date=now()
 			where no=${no }
 		]]>
 	</update>

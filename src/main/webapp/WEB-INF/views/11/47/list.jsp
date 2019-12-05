@@ -108,6 +108,7 @@
 <input type="hidden" id="context-path" value="${pageContext.request.contextPath }">
 <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode}">
 <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }">
+<input type="hidden" id="page" value="${pagination.page }">		<!-- page값을 저장 -->
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -145,7 +146,7 @@
 						</div>
 					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
 				<section class="filter-left">
-					<ul class="order-list">
+					<ul class="order-list">	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
 						<li><h4 class="list-order" id="debt_date" onclick="order(this)">차입일자</h4></button></li>
 						<li><h4 class="list-order" id="exp_date" onclick="order(this)" >만기일자</h4></button></li>
 						<li><h4 class="list-order" id="insert_date" onclick="order(this)">등록일자</h4></button></li>
@@ -205,7 +206,46 @@
 							</tr>
 						</c:forEach>
 					</tbody>
-				</table>	
+				</table>
+				
+				<div class="pagination">
+					<ul>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li>
+									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+										<i class="icon-double-angle-left"></i>
+									</a>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${pagination.startPage }" end="${pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq pagination.page }">
+									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li onclick='pageClicked()' ><a>${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:choose>
+							<c:when test="${pagination.next }">
+								<li>
+									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+										<i class="icon-double-angle-right"></i>
+									</a>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -214,6 +254,28 @@
 </body>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
+
+//리스트를 받아서 Rendering 하는 함수
+function renderingList(list){
+	$("#tbody-list > *").remove();
+	for(var i=0; i < list.length; ++i){
+		$("#tbody-list").append("<tr>" +
+				 "<td class='center'>" + list[i].code + "</td>" +
+				 "<td class='center'>" + list[i].name + "</td>" +
+				 "<td class='center'>" + list[i].majorCode + "</td>" +
+				 "<td class='center'>" + list[i].debtAmount + "</td>" +
+				 "<td class='center'>" + list[i].repayWay + "</td>" +
+				 "<td class='center'>" + list[i].debtDate + "</td>" + 
+				 "<td class='center'>" + list[i].expDate + "</td>" +
+				 "<td class='center'>" + list[i].intRate + "</td>" +
+				 "<td class='center'>" + list[i].intPayWay + "</td>" +
+				 "<td class='center'>" + list[i].mgr + "</td>" +
+				 "<td class='center'>" + list[i].mgrCall + "</td>" +
+				 "<td class='center'>" + list[i].bankCode + "</td>" +
+				 "<td class='center'>" + list[i].depositNo + "</td>");
+	}
+}
+
  function search(){
 	 var sendData = $("#filter-area").serialize();
 	 $.ajax({
@@ -222,23 +284,7 @@
 		dataType : "json",
 		data : sendData,
 		success: function(response){
-			$("#tbody-list > *").remove();
-			for(var i=0; i < response.data.length; ++i){
-				$("#tbody-list").append("<tr>" +
-						"<td class='center'>" + response.data[i].code + "</td>" +
-						 "<td class='center'>" + response.data[i].name + "</td>" +
-						 "<td class='center'>" + response.data[i].majorCode + "</td>" +
-						 "<td class='center'>" + response.data[i].debtAmount + "</td>" +
-						 "<td class='center'>" + response.data[i].repayWay + "</td>" +
-						 "<td class='center'>" + response.data[i].debtDate + "</td>" + 
-						 "<td class='center'>" + response.data[i].expDate + "</td>" +
-						 "<td class='center'>" + response.data[i].intRate + "</td>" +
-						 "<td class='center'>" + response.data[i].intPayWay + "</td>" +
-						 "<td class='center'>" + response.data[i].mgr + "</td>" +
-						 "<td class='center'>" + response.data[i].mgrCall + "</td>" +
-						 "<td class='center'>" + response.data[i].bankCode + "</td>" +
-						 "<td class='center'>" + response.data[i].depositNo + "</td>");
-			}
+			renderingList(response.data);
 		}
 	 });
  }
@@ -246,34 +292,22 @@
  function order(thisObj){
 	 var sendData = $("#filter-area").serialize();
 	 var orderColumn = $(thisObj).attr('id'); 
-	 console.log("orderColumn : " + orderColumn);
 	 $.ajax({
 		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val()  + "/" + $("#sub-menu-code").val() + "/order",
 		type: "POST",
 		dataType : "json",
 		data : {"sendData" : sendData, "orderColumn" : orderColumn},
 		success : function(response){
-			$("#tbody-list > *").remove();
-			for(var i=0; i < response.data.length; ++i){
-				$("#tbody-list").append("<tr>" +
-						"<td class='center'>" + response.data[i].code + "</td>" +
-						 "<td class='center'>" + response.data[i].name + "</td>" +
-						 "<td class='center'>" + response.data[i].majorCode + "</td>" +
-						 "<td class='center'>" + response.data[i].debtAmount + "</td>" +
-						 "<td class='center'>" + response.data[i].repayWay + "</td>" +
-						 "<td class='center'>" + response.data[i].debtDate + "</td>" + 
-						 "<td class='center'>" + response.data[i].expDate + "</td>" +
-						 "<td class='center'>" + response.data[i].intRate + "</td>" +
-						 "<td class='center'>" + response.data[i].intPayWay + "</td>" +
-						 "<td class='center'>" + response.data[i].mgr + "</td>" +
-						 "<td class='center'>" + response.data[i].mgrCall + "</td>" +
-						 "<td class='center'>" + response.data[i].bankCode + "</td>" +
-						 "<td class='center'>" + response.data[i].depositNo + "</td>");
-		}},
+				renderingList(response.data);
+			},
 		error : function(xhr, error){
 			
 		}
 	 });
+	 
+	 function pageClicked(){
+		 
+	 }
  }
 </script>
 </html>

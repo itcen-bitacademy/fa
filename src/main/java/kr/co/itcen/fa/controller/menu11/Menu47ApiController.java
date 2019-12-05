@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu47Service;
+import kr.co.itcen.fa.util.Pagination;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 @Auth
@@ -23,18 +24,19 @@ public class Menu47ApiController {
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu47Controller.SUBMENU + "/search")
-	public JSONResult search(STermDebtVo sTermDebtVo) {
-		List<STermDebtVo> list = menu47Service.search(sTermDebtVo);
-		System.out.println("ajax 탔다 ");
+	public JSONResult search(STermDebtVo sTermDebtVo, @RequestParam(value="page", required=true) int page) {
+		Pagination pagination = new Pagination(5, 5, page);
+		List<STermDebtVo> list = menu47Service.search(sTermDebtVo, pagination);
 		return JSONResult.success(list);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu47Controller.SUBMENU + "/order")
-	public JSONResult order(STermDebtVo sTermDebtVo, @RequestParam(value="orderColumn", required=true) String orderColumn) {
-		System.out.println("orderColumn : " + orderColumn);
-		List<STermDebtVo> list = menu47Service.order(sTermDebtVo, orderColumn);
-		System.out.println("list1 : " + list.get(0).getDebtDate());
+	public JSONResult order(STermDebtVo sTermDebtVo, 
+			@RequestParam(value="orderColumn", required=true) String orderColumn,
+			@RequestParam(value="page", required=true) int page) {
+		Pagination pagination = new Pagination(5, 5, page);
+		List<STermDebtVo> list = menu47Service.order(sTermDebtVo, orderColumn, pagination);
 		return JSONResult.success(list);
 	}
 	

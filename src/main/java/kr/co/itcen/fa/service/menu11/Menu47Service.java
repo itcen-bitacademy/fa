@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu11.Menu47Repository;
+import kr.co.itcen.fa.util.Pagination;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
@@ -22,20 +23,24 @@ public class Menu47Service {
 	@Autowired
 	private Menu47Repository menu47Repository;
 	
-	public List<STermDebtVo> getList() {
-		return menu47Repository.getList();
+	public List<STermDebtVo> getList(Pagination pagination) {
+		Map map = pagination.getRowRangeMap();
+		
+		return menu47Repository.getList(map);
 	}
 	
-	public List<STermDebtVo> search(STermDebtVo sTermDebtVo){
-		return menu47Repository.getList(sTermDebtVo);
+	public List<STermDebtVo> search(STermDebtVo sTermDebtVo, Pagination pagination){
+		Map map = pagination.getRowRangeMap();
+		map.put("vo", sTermDebtVo);
+		
+		return menu47Repository.getList(map);
 	}
 	
-	public List<STermDebtVo> order(STermDebtVo sTermDebtVo, String orderColumn){
-		Map map = new HashMap<String, Object>();
+	public List<STermDebtVo> order(STermDebtVo sTermDebtVo, String orderColumn, Pagination pagination){
+		Map map = pagination.getRowRangeMap();
 		map.put("vo", sTermDebtVo);
 		map.put("orderColumn", orderColumn);
 		
-		List<STermDebtVo> list = menu47Repository.getList(map);
-		return list;
+		return menu47Repository.getList(map);
 	}
 }

@@ -321,7 +321,7 @@ function selectRow(thisTr){
 	inputForm.code.value = dataForm.code.value;
 	inputForm.name.value = dataForm.name.value;
 	inputForm.debtAmount.value = dataForm.debtAmount.value;
-	inputForm.debtExpDate.value = dataForm.debtDate.value + " ~ " + dataForm.expDate.value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
+	inputForm.debtExpDate.value = dataForm.debtDate.value + " - " + dataForm.expDate.value;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
 	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
 		if($(this).val() == dataForm.intPayWay.value){
 			$(this).attr("checked", true);
