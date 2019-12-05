@@ -110,7 +110,7 @@ public class Menu61Service {
 		// TODO: 대차대조표 작성
 		
 		// TODO: 손익계산서 작성
-//		menu64Service.insertIncomeStatement(lastestUnclosingDateVo);
+		menu64Service.insertIncomeStatement(lastestUnclosingDateVo);
 
 		// 결산완료 마감일 업데이트 
 		menu61Repository.executeSettlement(menu17SearchForm);
