@@ -66,5 +66,14 @@
 			order by account_order asc;
 		]]>
 	</select>
+	
+	<delete id="deleteByClosingDateNo" parameterType="closingDate17Vo">
+		<![CDATA[
+			delete from	tb_financial_statement
+			where  closing_date_no = #{no }
+			  and  no > 0;
+		]]>
+	</delete>
+	
 
 </mapper>
