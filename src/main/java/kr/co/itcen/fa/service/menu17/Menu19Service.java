@@ -141,7 +141,7 @@ public class Menu19Service {
 		// TODO: 대차대조표 데이터 삭제
 		
 		// 손익계산서 데이터 삭제
-		menu64Service.delete(closingDate);
+		menu64Service.deleteIncomeStatement(closingDate);
 
 		
 		menu19Repository.deleteClosingDate(closingDate);

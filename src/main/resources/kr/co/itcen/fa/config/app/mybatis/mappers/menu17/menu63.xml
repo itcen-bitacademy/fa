@@ -2,10 +2,62 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu63">
 	
-	<insert id="insertBalanceSheet" parameterType="Long">
+	<insert id="insertBalanceSheet" parameterType="closingDate17Vo">
 		<![CDATA[
-			
+			insert into tb_financial_statement
+			(select	null as no, 
+					am.account_statement_type as accountStatementType, 
+					t.closing_date_no as closingDateNo, 
+					am.account_no as accountNo, 
+					am.account_order as accountOrder, 
+					a.name as accountName,
+					(case 
+					 when a.balance_type = "C" 
+					 then (ifnull(t.credit_spot_month, 0) - ifnull(t.debtor_spot_month, 0)) 
+					 else (ifnull(t.debtor_spot_month, 0) - ifnull(t.credit_spot_month, 0)) 
+					 end) as monthToAmount, 
+					 (case 
+					 when a.balance_type = "C" 
+					 then (ifnull(t.credit_total, 0) - ifnull(t.debtor_total, 0)) 
+					 else (ifnull(t.debtor_total, 0) - ifnull(t.credit_total, 0)) 
+					 end) as amount, 
+					 t.insert_userid as insertUserid, 
+					 t.insert_day as insertDay, 
+					 null as updateUserid, 
+					 null as updateDay
+			 from	tb_account_management as am 
+			 left join	tb_account as a on a.no = am.account_no 
+			 left join	tb_trial_balance as t on t.account_no = am.account_no 
+			 where	am.account_statement_type = "B" 
+			   and	am.account_usedyear = substr(#{closingYearMonth }, 1, 4)
+			   and	am.use_yn = true 
+			   and	t.closing_date_no = #{no }
+			);
 		]]>
 	</insert>
+	
+	
+	<select id="getVoByClosingDateNo" parameterType="Long" resultType="financialStatementVo">
+		<![CDATA[
+			select	account_no as accountNo, 
+					account_name as accountName, 
+					month_amount as monthToAmount, 
+					amount 
+			from	tb_financial_statement
+			where	closing_date_no = #{no }
+			  and	account_statement_type = "B"
+			order by account_order asc;
+		]]>
+	</select>
+	
+	
+	<delete id="deleteByClosingDateNo" parameterType="closingDate17Vo">
+		<![CDATA[
+			delete from	tb_financial_statement
+			where  closing_date_no = #{no } 
+			  and  account_statement_type = "B" 
+			  and  no > 0;
+		]]>
+	</delete>
 	
 </mapper>

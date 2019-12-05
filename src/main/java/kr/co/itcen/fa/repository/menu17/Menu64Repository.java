@@ -43,8 +43,8 @@ public class Menu64Repository {
 	}
 	
 	// 손익계산서(IncomeStatement) Delete
-	public int delete(ClosingDateVo closingDate) {
-		return sqlSession.delete("menu64.deleteByClosingDateNo", closingDate);
+	public int deleteIncomeStatement(ClosingDateVo vo) {
+		return sqlSession.delete("menu64.deleteByClosingDateNo", vo);
 	}
 
 }

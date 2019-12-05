@@ -56,8 +56,7 @@
 
 	<select id="getVoByClosingDateNo" parameterType="Long" resultType="financialStatementVo">
 		<![CDATA[
-			select	account_order as accountOrder, 
-					account_name as accountName, 
+			select	account_name as accountName, 
 					month_amount as monthToAmount, 
 					amount 
 			from	tb_financial_statement
@@ -71,6 +70,7 @@
 		<![CDATA[
 			delete from	tb_financial_statement
 			where  closing_date_no = #{no }
+			  and  account_statement_type = "I"
 			  and  no > 0;
 		]]>
 	</delete>

@@ -23,7 +23,7 @@ public class Menu64Service {
 	@Autowired
 	private Menu64Repository menu64Repository;
 	
-	//손익계산서(IncomeStatement) insert Service
+	//손익계산서(IncomeStatement) Insert
 	public boolean insertIncomeStatement(ClosingDateVo closingDate){
 
 		Long orderNum = 1L;
@@ -153,15 +153,15 @@ public class Menu64Service {
 	}
 	
 	
-	//손익계산서(IncomeStatement) get Service
+	//손익계산서(IncomeStatement) Select
 	public Map<String,Object> get(Long no) {
 		return menu64Repository.get(no);
 	}
 	
 	
-	//손익계산서(IncomeStatement) delete Service
-	public boolean delete(ClosingDateVo closingDate) {
-		int result = menu64Repository.delete(closingDate);
+	//손익계산서(IncomeStatement) delete
+	public boolean deleteIncomeStatement(ClosingDateVo closingDate) {
+		int result = menu64Repository.deleteIncomeStatement(closingDate);
 		return result == 1;
 	}
 	
