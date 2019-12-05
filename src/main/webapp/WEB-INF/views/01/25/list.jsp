@@ -51,10 +51,21 @@
 		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
+			if($("input[name=balance]").val() == "") {
+				$("input[name=balance]").val(0);		
+			}
+			if($("input[name=depositLimit]").val() == "") {
+				$("input[name=depositLimit]").val(0);			
+			}
+			if($("input[name=profit]").val() == "") {
+				$("input[name=profit]").val(0);
+			}
 			var queryString = $("form[name=input-form]").serializeArray();
-			queryString.push({name: 'page', value: '${param.page}'});
 			
-			alert(page);
+			if("${param.page}") {
+				queryString.push({name: 'page', value: "${param.page}"});
+			}
+			
 			if(a == "create") {
 				$.ajax({
 				    url: "${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/create",
@@ -67,6 +78,7 @@
 				    	}
 				    	if(result.success) {
 				    		alert("계좌 생성이 완료되었습니다."); 
+				    		
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
@@ -82,16 +94,19 @@
 				 })
 			} else if(a == "read") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/25/list",
+				    url: "${pageContext.request.contextPath}/01/25/read",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				    success: function(dataResult){
+				    	if(dataResult.success) {
 				    		alert("계좌 검색이 완료되었습니다."); 
 				    		removeTable();
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
 				    		
-				    		var bankList = result.bankList;
+				    		var bankList = dataResult.bankList;
 				    		createNewTable(bankList);
 				    	}
 				    },
@@ -587,10 +602,10 @@
 										<th>개설지점</th>
 										<th>담당자</th>
 										<th>은행전화번호</th>
-										<th>입력일자</th>
 										<th>입력담당자</th>
-										<th>수정일자</th>
+										<th>입력일자</th>
 										<th>수정담당자</th>
+										<th>수정일자</th>
 									</tr>
 								</thead>
 
