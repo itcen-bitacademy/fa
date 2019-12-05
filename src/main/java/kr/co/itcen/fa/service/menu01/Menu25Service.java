@@ -28,7 +28,7 @@ public class Menu25Service {
 		menu25Repository.test();
 	}
 	
-	public Map<String, Object> create(BankAccountVo bavo) {
+	public Map<String, Object> create(BankAccountVo bavo, int page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(menu25Repository.Nexist(bavo)) {				// 삭제되지 않은 내용 중 중복된 카드넘버
 			map.put("fail", true);  // create 되지 않음	
@@ -39,10 +39,14 @@ public class Menu25Service {
 			menu25Repository.deleteAll(bavo);					// 삭제된 vo 삭제
 		}
 		
-		// 중복성 검사 Query 만들어야함 (삭제후 똑같은것 재생성시 처리)
-		map = menu25Repository.create(bavo);
+		int totalCnt = menu25Repository.selectCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		map = menu25Repository.create(bavo, pagination);
+		map.put("pagination", pagination);
 		map.put("success", true);
 		return map;
+		
 	}
 
 	public Map<String, Object> update(BankAccountVo bavo, int page) {
@@ -65,10 +69,17 @@ public class Menu25Service {
 		return map;
 	}
 
-	public Map<String, Object> delete(BankAccountVo bavo) {
+	public Map<String, Object> delete(BankAccountVo bavo, int page) {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = menu25Repository.delete(bavo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		int totalCnt = menu25Repository.selectCount();
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		map = menu25Repository.delete(bavo, pagination);
+		map.put("pagination", pagination);
+		map.put("success", true);
 		return map;
+		
 	}
 
 	public DataResult<BankAccountVo> list(int page) {
@@ -89,6 +100,14 @@ public class Menu25Service {
 	public Map<String, Object> gets(String depositNo) {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = menu25Repository.gets(depositNo);
+		return map;
+	}
+
+	public Map<String, Object> read(BankAccountVo bavo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = menu25Repository.read(bavo);
+		
+		map.put("success", true);
 		return map;
 	}
 }

@@ -44,6 +44,29 @@
 		</selectKey>
 	</insert>
 	
+	<select id="selectClosingDateByNo" parameterType="menu17SearchForm" resultType="closingDate17Vo">
+		select
+			no
+		    , closing_year_month as closingYearMonth
+		    , closing_date
+		    , closing_statement_date
+		    , closing_purchase_date
+		    , closing_sales_date
+		    , closing_assets_date
+		    , closing_debt_date
+		    , closing_settlement_date
+		    , closing_yn
+		    , use_yn
+		    , insert_userid
+		    , insert_day
+		    , update_userid
+		    , update_day
+		  from	tb_closing_date
+		 where	use_yn = true
+		   and	no = #{closingDateNo }
+		;
+	</select>
+	
 	<select id="selectLastestClosedDateByClosingDateNoPerYear" parameterType="closingDate17Vo" resultType="closingDate17Vo">
 		select	
 			no
@@ -253,7 +276,7 @@
 		]]>
 	</select>
 	
-	<select id="selectSettlementClosingDate" resultType="closingDate17Vo">
+	<select id="selectSettlementClosingDate" resultType="closingDate17Vo" parameterType="java.util.Date">
 		<![CDATA[
 		select	
 			no
@@ -272,9 +295,10 @@
 		    , update_userid
 		    , update_day
 		  from	tb_closing_date
-		 where	closing_year_month = date_format(now(), '%Y-%m')
-		   and	now() < closing_settlement_date
+		 where	now() < closing_settlement_date
+		   and	closing_year_month = date_format(#{businessDate }, '%Y-%m')
 		   and	use_yn = true
+		 limit	1
 		;
 		]]>
 	</select>

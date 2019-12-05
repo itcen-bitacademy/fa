@@ -56,6 +56,15 @@ public class Menu19Service {
 	
 	/**
 	 * 
+	 * 마감일 단일 조회 
+	 */
+	public ClosingDateVo selectClosingDateByNo(Menu17SearchForm menu17SearchForm) {
+		return menu19Repository.selectClosingDateByNo(menu17SearchForm);
+	}
+	
+	
+	/**
+	 * 
 	 * 마감일 전체 조회(마감일순 내림차순)
 	 */
 	public DataResult<ClosingDateVo> selectAllClosingDate(int page) {
@@ -169,7 +178,7 @@ public class Menu19Service {
 			break;
 			
 		case "6":		// 결산팀 마감일 조회
-			closingDateVo = menu19Repository.selectSettlementClosingDate();
+			closingDateVo = menu19Repository.selectSettlementClosingDate(businessDate);
 			break;
 		}
 		

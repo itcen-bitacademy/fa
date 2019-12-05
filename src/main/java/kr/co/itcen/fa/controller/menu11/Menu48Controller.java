@@ -104,6 +104,8 @@ public class Menu48Controller {
 //		
 //		menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
 //		
+		
+		System.out.println(vo);
 		menu48Service.insert(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;

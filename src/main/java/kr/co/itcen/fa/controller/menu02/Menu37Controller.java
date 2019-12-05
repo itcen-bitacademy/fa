@@ -36,6 +36,7 @@ public class Menu37Controller {
 	@Autowired
 	private Menu37Service menu37Service;
 
+	//처음 매입세금계산서관리 화면 접속할 때
 	@RequestMapping(value = { "/" + SUBMENU, "/" + SUBMENU + "/add" }, method = RequestMethod.GET)
 	public String add(@ModelAttribute UserVo authUser, Model model) {
 		List<CustomerVo> customerList = menu37Service.customerList();
@@ -46,6 +47,7 @@ public class Menu37Controller {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
+	//입력 post
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String write(@ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
 			Long amount[], Long supplyValue[], Long taxValue[]) {
@@ -74,22 +76,31 @@ public class Menu37Controller {
 
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
+	//조회 post
 	@RequestMapping(value = "/" + SUBMENU + "/lookUp", method = RequestMethod.POST)
 	public String lookUp(Model model, @ModelAttribute BuyTaxbillVo vo, HttpSession session) {
 		BuyTaxbillVo getAboutNoData = menu37Service.getAboutNoData(vo.getNo());
 		CustomerVo getAboutNoCustomerData = menu37Service.getAboutNoCustomerData(getAboutNoData.getCompanyName());
 		BankAccountVo getAboutNoBankData = menu37Service.getAboutNoBankData(getAboutNoCustomerData.getDepositNo());
+		List<BuyTaxbillItemsVo> getAboutItmes = menu37Service.getAboutItmes(vo.getNo());
 		
+		model.addAttribute("flag", "true");
 		model.addAttribute("getAboutNoData", getAboutNoData);
+		model.addAttribute("getAboutItmesList", getAboutItmes);
 		model.addAttribute("getAboutNoCustomerData", getAboutNoCustomerData);
 		model.addAttribute("getAboutNoBankData", getAboutNoBankData);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
+	//삭제 post
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
 	public String delete(@ModelAttribute BuyTaxbillVo vo, HttpSession session) {
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
+	//수정 post
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
 	public String update(@ModelAttribute BuyTaxbillVo vo, HttpSession session) {
 		

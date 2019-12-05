@@ -27,20 +27,16 @@
 		grid-template-columns: repeat(4, 415px);
 		gap: 10px;
 		
+		align-content: center;
 		margin: auto 0;
 	}
 	
 	.input-area{
 		grid-column: auto;
-		margin: auto 0;
 	}
 	
-	.input-area-last{
-		float: right;
-	}
-	.input-area>*, .input-area>input{
-		margin: auto;
-	}
+	.input-area-last{ float: right; }
+	.input-area>*, .input-area>input, .input-area-last>*, .input-area-last>input { margin: auto 0;}
 	
 	.input-area-radio{
 		display: grid;
@@ -109,6 +105,9 @@
 </style>
 </head>
 <body class="skin-3">
+<input type="hidden" id="context-path" value="${pageContext.request.contextPath }">
+<input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode}">
+<input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -141,16 +140,16 @@
 							<div class="input-area-last">
 								<label for="bankName"><h4>은행명</h4></label> 
 								<input type="text" name="bankName" id="bankName">
-								<input type="submit" value="조회">
+								<input type="button" value="조회" onclick="search()">
 							</div>
 						</div>
 					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
 				<section class="filter-left">
 					<ul class="order-list">
-						<li><h4>차입일자</h4></li>
-						<li><h4>만기일자</h4></li>
-						<li><h4>등록일자</h4></li>
-						<li><h4>차입금액</h4></li>
+						<li><h4 class="list-order" id="debt_date" onclick="order(this)">차입일자</h4></button></li>
+						<li><h4 class="list-order" id="exp_date" onclick="order(this)" >만기일자</h4></button></li>
+						<li><h4 class="list-order" id="insert_date" onclick="order(this)">등록일자</h4></button></li>
+						<li><h4 class="list-order" id="debt_amount" onclick="order(this)">차입금액</h4></button></li>
 					</ul>
 				</section> <!-- filter-left end -->
 				<section class="filter-right">
@@ -187,7 +186,7 @@
 						</tr>
 					</thead>
 
-					<tbody>
+					<tbody id="tbody-list">
 						<c:forEach items="${list }" var="vo" varStatus="status">
 							<tr id="${vo.no }">
 								<td class="center">${vo.code }</td>
@@ -213,4 +212,68 @@
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script>
+ function search(){
+	 var sendData = $("#filter-area").serialize();
+	 $.ajax({
+		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/search",
+		type : "POST",
+		dataType : "json",
+		data : sendData,
+		success: function(response){
+			$("#tbody-list > *").remove();
+			for(var i=0; i < response.data.length; ++i){
+				$("#tbody-list").append("<tr>" +
+						"<td class='center'>" + response.data[i].code + "</td>" +
+						 "<td class='center'>" + response.data[i].name + "</td>" +
+						 "<td class='center'>" + response.data[i].majorCode + "</td>" +
+						 "<td class='center'>" + response.data[i].debtAmount + "</td>" +
+						 "<td class='center'>" + response.data[i].repayWay + "</td>" +
+						 "<td class='center'>" + response.data[i].debtDate + "</td>" + 
+						 "<td class='center'>" + response.data[i].expDate + "</td>" +
+						 "<td class='center'>" + response.data[i].intRate + "</td>" +
+						 "<td class='center'>" + response.data[i].intPayWay + "</td>" +
+						 "<td class='center'>" + response.data[i].mgr + "</td>" +
+						 "<td class='center'>" + response.data[i].mgrCall + "</td>" +
+						 "<td class='center'>" + response.data[i].bankCode + "</td>" +
+						 "<td class='center'>" + response.data[i].depositNo + "</td>");
+			}
+		}
+	 });
+ }
+ 
+ function order(thisObj){
+	 var sendData = $("#filter-area").serialize();
+	 var orderColumn = $(thisObj).attr('id'); 
+	 console.log("orderColumn : " + orderColumn);
+	 $.ajax({
+		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val()  + "/" + $("#sub-menu-code").val() + "/order",
+		type: "POST",
+		dataType : "json",
+		data : {"sendData" : sendData, "orderColumn" : orderColumn},
+		success : function(response){
+			$("#tbody-list > *").remove();
+			for(var i=0; i < response.data.length; ++i){
+				$("#tbody-list").append("<tr>" +
+						"<td class='center'>" + response.data[i].code + "</td>" +
+						 "<td class='center'>" + response.data[i].name + "</td>" +
+						 "<td class='center'>" + response.data[i].majorCode + "</td>" +
+						 "<td class='center'>" + response.data[i].debtAmount + "</td>" +
+						 "<td class='center'>" + response.data[i].repayWay + "</td>" +
+						 "<td class='center'>" + response.data[i].debtDate + "</td>" + 
+						 "<td class='center'>" + response.data[i].expDate + "</td>" +
+						 "<td class='center'>" + response.data[i].intRate + "</td>" +
+						 "<td class='center'>" + response.data[i].intPayWay + "</td>" +
+						 "<td class='center'>" + response.data[i].mgr + "</td>" +
+						 "<td class='center'>" + response.data[i].mgrCall + "</td>" +
+						 "<td class='center'>" + response.data[i].bankCode + "</td>" +
+						 "<td class='center'>" + response.data[i].depositNo + "</td>");
+		}},
+		error : function(xhr, error){
+			
+		}
+	 });
+ }
+</script>
 </html>

@@ -51,29 +51,42 @@
 		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
+			if($("input[name=balance]").val() == "") {
+				$("input[name=balance]").val(0);		
+			}
+			if($("input[name=depositLimit]").val() == "") {
+				$("input[name=depositLimit]").val(0);			
+			}
+			if($("input[name=profit]").val() == "") {
+				$("input[name=profit]").val(0);
+			}
 			var queryString = $("form[name=input-form]").serializeArray();
-			queryString.push({name: 'page', value: '${param.page}'});
 			
-			alert(page);
+			if("${param.page}") {
+				queryString.push({name: 'page', value: "${param.page}"});
+			}
+			
 			if(a == "create") {
 				$.ajax({
 				    url: "${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/create",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.fail) {
+				    success: function(dataResult){
+				    	if(dataResult.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
-				    	if(result.success) {
-				    		alert("계좌 생성이 완료되었습니다."); 
+				    	if(dataResult.success) {
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
 				    		
+				    		alert("계좌 생성이 완료되었습니다."); 
+				    		
 				    		removeTable();
 				    		var bankList = result.bankList;
 				    		createNewTable(bankList);
+				    		$('#pagination').show();
 				    	}
 				    },
 				    error: function( err ){
@@ -82,17 +95,22 @@
 				 })
 			} else if(a == "read") {
 				$.ajax({
-				    url: "${pageContext.request.contextPath}/01/25/list",
+				    url: "${pageContext.request.contextPath}/01/25/read",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				    success: function(dataResult){
+				    	if(dataResult.success) {
 				    		alert("계좌 검색이 완료되었습니다."); 
 				    		removeTable();
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
 				    		
-				    		var bankList = result.bankList;
+				    		var bankList = dataResult.bankList;
+				    		settingInput(bankList);
 				    		createNewTable(bankList);
+				    		$('#pagination').hide();
 				    	}
 				    },
 				    error: function( err ){
@@ -116,6 +134,7 @@
 				    	if(dataResult.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
+				    	$('#pagination').show();
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -138,6 +157,7 @@
 				    		var bankList = result.bankList;
 				    		createNewTable(bankList);
 				    	}
+				    	$('#pagination').show();
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -237,6 +257,27 @@
 			$("input[name='banker']").prop("readonly", true);
 			$("input[name='bankPhoneCall']").prop("readonly", true);  
 		});
+		
+		function settingInput(bankList) {
+			$("input[name=depositNo]").val(bankList[0].depositNo);
+			$("input[name=depositOld]").val(bankList[0].depositNo);
+			$("input[name=bankCode]").val(bankList[0].bankCode);
+			$("input[name=depositHost]").val(bankList[0].depositHost);
+			$("input[name=makeDate]").val(bankList[0].makeDate);
+			$("input[name=enDate]").val(bankList[0].enDate);
+			$("input[name=balance]").val(bankList[0].balance);
+			$("input[name=depositLimit]").val(bankList[0].depositLimit);
+			$("input[name=profit]").val(bankList[0].profit);	
+			$("input[name=bankName]").val(bankList[0].bankName);
+			$("input[name=bankLocation]").val(bankList[0].bankLocation);
+			$("input[name=banker]").val(bankList[0].banker);
+			$("input[name=bankPhoneCall]").val(bankList[0].bankPhoneCall);
+			
+			$("input[name=bankName]").prop("readonly", true);
+			$("input[name='bankLocation']").prop("readonly", true);
+			$("input[name='banker']").prop("readonly", true);
+			$("input[name='bankPhoneCall']").prop("readonly", true);  
+		}
 		
 		$(document.body).delegate('#selectAll', 'click', function() {
 			if(this.checked) {
@@ -587,10 +628,10 @@
 										<th>개설지점</th>
 										<th>담당자</th>
 										<th>은행전화번호</th>
-										<th>입력일자</th>
 										<th>입력담당자</th>
-										<th>수정일자</th>
+										<th>입력일자</th>
 										<th>수정담당자</th>
+										<th>수정일자</th>
 									</tr>
 								</thead>
 
@@ -631,7 +672,7 @@
 				<!-- /form -->
 
 				<!-- /row -->
-				<div class="pagination">
+				<div class="pagination" id = "pagination">
 					<ul>
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">

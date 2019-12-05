@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu64">
+
+	<select id="selectIncomeStatementDataList" parameterType="Long" resultType="financialStatementVo">
+		<![CDATA[
+			select	null as no, 
+					b.account_statement_type as accountStatementType, 
+					a.closing_date_no as closingDateNo, 
+					RPAD(substring(a.account_no, 1, 2), 7, 0) as accountNo, 
+					b.account_order as accountOrder, 
+					c.name as accountName, 
+					SUM(case 
+						when (ifnull(a.debtor_spot_month, 0) >= ifnull(a.credit_spot_month, 0)) 
+						then (ifnull(a.debtor_spot_month, 0) - ifnull(a.credit_spot_month, 0)) 
+						else (ifnull(a.credit_spot_month, 0) - ifnull(a.debtor_spot_month, 0)) 
+						end
+					)  as monthToAmount, 
+					SUM(case 
+						when (ifnull(a.debtor_total, 0) >= ifnull(a.credit_total, 0)) 
+						then (ifnull(a.debtor_total, 0) - ifnull(a.credit_total, 0)) 
+						else (ifnull(a.credit_total, 0) - ifnull(a.debtor_total, 0)) 
+						end
+					) as amount, 
+					a.insert_userid as insertUserid, 
+					a.insert_day as insertDay, 
+					null as updateUserid, 
+					null as updateDay
+			from	tb_trial_balance a, tb_account_management b, tb_account c 
+			where	a.account_no =  b.account_no 
+			  and	b.account_no = c.no 
+			  and	a.closing_date_no = #{no } 
+			  and	substring(a.account_no, 1, 1) >= 5 
+			group by (case 
+					  when substring(a.account_no, 1, 1) >= 9 
+					  then substring(a.account_no, 1, 2) 
+					  else substring(a.account_no, 1, 1) 
+					  end)
+			order by a.account_no desc;
+		]]>
+	</select>
+	
+	<insert id="insertIncomeStatementData" parameterType="financialStatementVo">
+		<![CDATA[
+			insert into tb_financial_statement
+			values( #{no }, 
+					#{accountStatementType }, 
+					#{closingDateNo }, 
+					#{accountNo }, 
+					#{accountOrder }, 
+					#{accountName }, 
+					#{monthToAmount },
+					#{amount },
+					#{insertUserid},
+					#{insertDay},
+					#{updateUserid},
+					#{updateDay}
+				  );
+		]]>
+	</insert>
+
+
+	<select id="getVoByClosingDateNo" parameterType="Long" resultType="financialStatementVo">
+		<![CDATA[
+			select	account_order as accountOrder, 
+					account_name as accountName, 
+					month_amount as monthAmount, 
+					amount 
+			from	tb_financial_statement
+			where	closing_date_no = #{no }
+			  and	account_statement_type = "I"
+			order by account_order asc;
+		]]>
+	</select>
+
+</mapper>

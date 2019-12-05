@@ -9,9 +9,10 @@
 			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
 			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
 			   insert_userid as insertUserId, insert_day as insertDay, 
-			   update_userid as updateUserId, update_day as updateDay, delete_flag as deleteFlag
+			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
 		 from	tb_bank_account 
 		 where	delete_flag = "N"
+		 order by insert_day desc
 		]]>
 		<if test="pagination.pageIndex >= 0 ">
 		<![CDATA[
@@ -31,6 +32,19 @@
 			   #{updateUserId}, #{updateDay}, "N");
 		]]>
 	</insert>
+	
+	<select id="read" parameterType="bankaccountvo" resultType="bankaccountvo">
+		<![CDATA[
+		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
+			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
+			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
+			   insert_userid as insertUserId, insert_day as insertDay, 
+			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
+		 from	tb_bank_account 
+		 where	delete_flag = "N"
+		 and deposit_no = #{depositNo}
+		]]>
+	</select>
 
 	
 	<update id="update" parameterType="bankaccountvo">

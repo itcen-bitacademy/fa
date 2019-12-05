@@ -70,4 +70,13 @@
 		 ]]>
 	</select>
 
+	<!-- 승인번호에 맞는 품목리스트 select -->
+	<select id="getAboutItmes" parameterType="String"
+		resultType="buytaxbillitems">
+		<![CDATA[
+		  	select *
+		      from tb_buy_taxbill_items
+		     where taxbill_no = #{values }
+		 ]]>
+	</select>
 </mapper>

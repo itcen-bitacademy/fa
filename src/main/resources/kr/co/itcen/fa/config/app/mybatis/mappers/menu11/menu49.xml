@@ -20,66 +20,68 @@
 		    from tb_l_term_debt
 		    where delete_flag= "N"
 	]]>
-			 <if  test='vo.debtDate!=null and !"".equals(vo.debtDate)'>		    
+			 <if  test='debtDate!=null and !"".equals(debtDate)'>		    
 			<![CDATA[
-			and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
+			and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
 			]]>
 			</if>
-			<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>
+			<if test='intPayWay != null and !"".equals(intPayWay)'>
 			<![CDATA[
-			and 	int_pay_way = #{vo.intPayWay}
+			and 	int_pay_way = #{intPayWay}
 			]]>
 			</if>
-		     <if test='vo.bankCode != null and !"".equals(vo.bankCode)'>		    
+		     <if test='bankCode != null and !"".equals(bankCode)'>		    
 			<![CDATA[
-			and 	bank_code like concat('%',#{vo.bankCode},'%') 
+			and 	bank_code like concat('%',#{bankCode},'%') 
 			]]>
 			</if>
-			<if test='vo.expDate != null and !"".equals(vo.expDate)'>
+			<if test='expDate != null and !"".equals(expDate)'>
 			<![CDATA[
-			and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
+			and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
 			]]>
 			</if>
 	</select>
 	<!-- select list -->
 	<select id="selectAll" resultType="ldebtvo" parameterType="map">
 	<![CDATA[
-		select no,
-			code,
-   			name,
-    		major_code as majorCode,
-    		debt_amount as debtAmount,
-    		repay_bal as repayBal,
-    		repay_way as repayWay,
-    		concat(date_format(debt_date,'%Y/%m/%d'),'-',
-    		date_format(exp_date,'%Y/%m/%d')) as debtExpDate,
-    		int_rate as intRate,
-    		int_pay_way as intPayWay,
-   			mgr,
-    		mgr_call as mgrCall,
-		    bank_code as bankCode,
-		    deposit_no as depositNo
-		    from tb_l_term_debt
-		    where delete_flag= "N"
+		select a.no as no,
+			a.code as code,
+		    a.name as name,
+		    a.major_code as majorCode,
+		    a.debt_amount as debtAmount,
+		    a.repay_bal as repayBal,
+		    a.repay_way as repayWay,
+		    concat(date_format(a.debt_date,'%Y/%m/%d'),'-',
+		    date_format(a.exp_date,'%Y/%m/%d')) as debtExpDate,
+		    a.int_rate as intRate,
+		    a.int_pay_way as intPayWay,
+		    a.mgr,
+		    a.mgr_call as mgrCall,
+		    a.bank_code as bankCode,
+		    a.deposit_no as depositNo,
+		    b.name as bankName
+		    from tb_l_term_debt as a,tb_bank as b
+		    where a.bank_code=b.code
+		    		and a.delete_flag="N"
 		    ]]>
 		  <if  test='vo.debtDate!=null and !"".equals(vo.debtDate)'>		    
 			<![CDATA[
-			and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
+			and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
 			]]>
 			</if>
 			<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>
 			<![CDATA[
-			and 	int_pay_way = #{vo.intPayWay}
+			and 	a.int_pay_way = #{vo.intPayWay}
 			]]>
 			</if>
-		     <if test='vo.bankCode != null and !"".equals(vo.bankCode)'>		    
+		     <if test='vo.bankName != null and !"".equals(vo.bankName)'>		    
 			<![CDATA[
-			and 	bank_code like concat('%',#{vo.bankCode},'%') 
+			and 	b.name like concat('%',#{vo.bankName},'%') 
 			]]>
 			</if>
 			<if test='vo.expDate != null and !"".equals(vo.expDate)'>
 			<![CDATA[
-			and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
+			and 	a.date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
 			]]>
 			</if>
 			

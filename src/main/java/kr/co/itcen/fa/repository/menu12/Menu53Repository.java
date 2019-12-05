@@ -35,8 +35,25 @@ public class Menu53Repository {
 		map.put("salesDate", date);
 		map.put("salesNo", no);
 		
+		
 		return sqlSession.selectList("menu53.getalllist", map);
 	}
+		
+	// 매출세금계산서에서 발행되는 정보를 입력하는 기능
+	public void insert(SellTaxbillVo selltaxbillvo) {
+		sqlSession.insert("menu53.taxinsert", selltaxbillvo);
+	}
+	
+	// 매출세금계산서 발생했을시 매출관리에 세금계산서번호를 입력하는 기능
+	public void salesUpdate(SellTaxbillVo sellTaxbillVo) {
+		sqlSession.update("menu53.salesupdate", sellTaxbillVo);
+	}
+	
+	// 매출세금계산서 항목 중 비고를 업데이트 해주는 기능
+	public void taxbillupdate(SellTaxbillVo sellTaxbillVo) {
+		sqlSession.update("menu53.taxbillupdate", sellTaxbillVo);
+	}
+	
 	
 	
 

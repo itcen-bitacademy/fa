@@ -8,10 +8,10 @@ public class BankAccountVo {
 	private String depositOld;
 	private String depositHost;
 	private String makeDate;
-	private int balance;
+	private Integer balance;
 	private String enDate;
-	private int depositLimit;
-	private double profit;
+	private Integer depositLimit;
+	private Double profit;
 	
 	private String insertUserId;
 	private String insertDay;
