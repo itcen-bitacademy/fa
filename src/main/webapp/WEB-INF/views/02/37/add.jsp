@@ -158,7 +158,9 @@
 								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="no" name="no"
-										value="${getAboutNoData.no }" placeholder="승인번호" />
+										value="${getAboutNoData.no }" placeholder="승인번호" /> <input
+										style="width: 100%" type="hidden" id="no" name="originalNo"
+										value="${getAboutNoData.no }" />
 								</div>
 								<label class="control-label span1" for="manage-no">관리번호</label>
 								<div class="controls span5">
@@ -294,11 +296,10 @@
 									</c:choose>
 								</div>
 								<div class="controls span3">
-									<input style="width: 100%" type="hidden" id="insertUserid" name="insertUserid"
-										value="${getAboutNoData.insertUserid }"/>
-								    <input
-										style="width: 100%" type="hidden" id="insertDay" name="insertDay"
-										value="${getAboutNoData.insertDay }"/>
+									<input style="width: 100%" type="hidden" id="insertUserid"
+										name="insertUserid" value="${getAboutNoData.insertUserid }" />
+									<input style="width: 100%" type="hidden" id="insertDay"
+										name="insertDay" value="${getAboutNoData.insertDay }" />
 								</div>
 							</div>
 						</div>
