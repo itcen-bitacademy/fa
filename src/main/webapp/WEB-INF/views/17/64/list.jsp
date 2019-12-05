@@ -83,7 +83,7 @@
 							<c:forEach items="${incomeStatementDataList }" var="data" varStatus='status' >
 								<tr>
 								<td style="text-align:left;">${data.accountName }</td>
-								<td class="center">${data.monthAmount}</td>
+								<td class="center">${data.monthToAmount}</td>
 								<td class="center">${data.amount}</td>
 								</tr>
 							</c:forEach>

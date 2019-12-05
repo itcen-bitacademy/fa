@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -31,10 +33,19 @@ public class Menu45Controller {
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method=RequestMethod.GET)
 	public String list(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "code", required = false, defaultValue = "") String code, Model model) {
-		System.out.println(code);
-		DataResult<BankVo> dataResult = menu45Service.list(code, page);
+			BankVo vo, Model model) {
+		System.out.println(vo);
+		DataResult<BankVo> dataResult = menu45Service.list(vo, page);
+		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance().queryParam("name",vo.getName())
+									.queryParam("store", vo.getStore())
+									.queryParam("dealDate", vo.getDealDate())
+									.queryParam("deleteFlag", vo.getDeleteFlag())
+									.build();
+		String uri = uriComponents.toUriString();
 		model.addAttribute("dataResult", dataResult);
+		model.addAttribute("uri", uri);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

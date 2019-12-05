@@ -47,10 +47,10 @@ public class Menu64Controller {
 		}
 		model.addAttribute("closingDateNo", menu17SearchForm.getClosingDateNo());
 		
-		
 		// 선택된 ClosingDateNo로  손익계산서를 view로 전달 (처음에 열릴땐 가장 최근 마감일자의 손익계산서 조회)
 		model.addAllAttributes(menu64Service.get(menu17SearchForm.getClosingDateNo()));
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
 }

@@ -8,6 +8,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
@@ -124,9 +127,54 @@ tr td:first-child {
 									<td><h4>은행코드</h4></td>
 									<td colspan="2">
 										<input type="text" class="search-input-width-first" name="bankCode"/>
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="bankName"/>
-									</td>
+										<a href="#" id="a-bankinfo-dialog">
+													<span class="btn btn-small btn-info">
+														<i class="icon-search nav-search-icon"></i>
+													</span>
+												</a>
+									
+									
+									<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+												<div id="dialog-message" title="은행코드" hidden="hidden">
+															<table id ="dialog-message-table" align="center">
+																<tr>
+																	<td>
+																	<label>은행코드</label>
+																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
+																		<a href="#" id="a-dialog-bankcode">
+																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+																				<i class="icon-search nav-search-icon"></i>
+																			</span>
+																		</a>
+																	</td>
+																	<td>
+																	<label>은행명</label>
+																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
+																		<a href="#" id="a-dialog-bankname">
+																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+																				<i class="icon-search nav-search-icon"></i>
+																			</span>
+																		</a>
+																	</td>
+																</tr>
+																
+															</table>
+														<!-- 은행코드 및 은행명 데이터 리스트 -->
+														<table id="modal-bank-table" class="table  table-bordered table-hover">
+															<thead>
+																<tr>
+																	<th class="center">은행코드</th>
+																	<th class="center">은행명</th>
+																	<th class="center">지점명</th>
+																</tr>
+															</thead>
+															<tbody id="tbody-bankList">
+															</tbody>
+														</table>
+												</div>
+												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+								<input type="text" class="search-input-width-second" name="bankName" />
+								</td>
 								</tr>
 							</table>
 						</div>
@@ -211,6 +259,61 @@ tr td:first-child {
 					&nbsp;
 					<button type="button" class="btn">상환</button>
 					&nbsp;
+					<!-- 차입금코드,납입원금,납입이자,납입일자,부채유형 Modal pop-up : start -->
+					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
+						<table id ="dialog-repayment-table" align="center">
+							<tr>
+								<td>
+									<label>차입금코드</label>
+									<input type="text" id="code" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>납입원금</label>
+									<input type="text" id="code" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+								<label>납입일자</label>
+								<div class="row-fluid input-prepend">
+				                 <input class="date-picker" type="text" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                    <span class="add-on">
+				                     <i class="icon-calendar"></i>
+				              	</span>
+				                         
+				                </div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+								<label>부채유형</label>
+									<div class="radio">
+												<label>
+													<input name="debt-type" type="radio" class="ace" value="S"/>
+													<span class="lbl">단기차입금</span>
+												</label>
+											</div>
+											<div class="radio">
+												<label>
+													<input name="repayWay" type="radio" class="ace"  value="L"/>
+													<span class="lbl">장기차입금</span>
+												</label>
+											</div>
+											<div class="radio">
+												<label>
+													<input name="repayWay" type="radio" class="ace"  value="P"/>
+													<span class="lbl">사채</span>
+												</label>
+											</div>
+								</td>
+							</tr>
+							</table>
+							
+					</div>
+					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+					
 					<button type="button" class="btn" id="clear">초기화</button>
 				</div>
 				<hr>
@@ -339,7 +442,9 @@ $(function(){
 	  }).next().on(ace.click_event, function(){
 		$(this).prev().focus();
 	});
-	
+	$('.date-picker').datepicker().next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
 	
 	$(".chosen-select").chosen();
 	$("#simple-table tr").click(function(){ 
@@ -426,6 +531,122 @@ $(function(){
 		 
 	});
 	
+	
+	//상환버튼 클릭시
+	$("#a-dialog-bankcode").click(function(event){
+		alert("click dialog bankcode");
+		event.preventDefault();
+		$("#tbody-bankList").find("tr").remove();
+		
+		var bankcodeVal = $("#input-dialog-bankcode").val();
+		console.log(bankcodeVal);
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				alert(response);
+				$("#input-dialog-bankcode").val('');
+				$("#tbody-bankList").append("<tr>" +
+				        "<td class='center'>" + response.code + "</td>" +
+				        "<td class='center'>" + response.name + "</td>" +
+				        "<td class='center'>" + response.store + "</td>" +
+				        "</tr>");
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+	});
+	
+	
+	// 은행코드 검색
+	$("#a-dialog-bankcode").click(function(event){
+		alert("click dialog bankcode");
+		event.preventDefault();
+		$("#tbody-bankList").find("tr").remove();
+		
+		var bankcodeVal = $("#input-dialog-bankcode").val();
+		console.log(bankcodeVal);
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				alert(response);
+				$("#input-dialog-bankcode").val('');
+				$("#tbody-bankList").append("<tr>" +
+				        "<td class='center'>" + response.code + "</td>" +
+				        "<td class='center'>" + response.name + "</td>" +
+				        "<td class='center'>" + response.store + "</td>" +
+				        "</tr>");
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+	});
+	
+	// 은행명 검색 : 은행목록 리스트로 가져오기
+	$("#a-dialog-bankname").click(function(event){
+		alert("click dialog bankname");
+		event.preventDefault();
+		$("#tbody-bankList").find("tr").remove();
+		
+		var banknameVal = $("#input-dialog-bankname").val();
+		console.log(banknameVal);
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(data){
+				alert(data);
+				$("#input-dialog-bankname").val('');
+				 $.each(data,function(index, item){
+		                $("#tbody-bankList").append("<tr>" +
+		                		"<td class='center'>" + item.code + "</td>" +
+						        "<td class='center'>" + item.name + "</td>" +
+						        "<td class='center'>" + item.store + "</td>" +
+						        "</tr>");
+		         })
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+	
+	});
+	$(document.body).delegate('#tbody-bankList tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=bankCode]").val(td.eq(0).text());
+		$("input[name=bankName]").val(td.eq(1).text());
+		$("#dialog-message").dialog('close');
+	});
 });
 function deleteChecked(){
 	var sendData = [];
@@ -438,6 +659,34 @@ function deleteChecked(){
 	$("input[name=no]").val(sendData);
 	console.log(sendData);
 }
+	$(function() {
+		$("#dialog-message").dialog({
+			autoOpen : false
+		});
+	
+		$("#a-bankinfo-dialog").click(function() {
+			$("#dialog-message").dialog('open');
+			$("#dialog-message").dialog({
+				title: "은행정보",
+				title_html: true,
+			   	resizable: false,
+			    height: 500,
+			    width: 400,
+			    modal: true,
+			    close: function() {
+			    	$('#tbody-bankList tr').remove();
+			    },
+			    buttons: {
+			    "닫기" : function() {
+			          	$(this).dialog('close');
+			          	$('#tbody-bankList tr').remove();
+			        }
+			    }
+			});
+		});
+
+	});
+
 </script>
 </body>
 </html>

@@ -12,7 +12,7 @@ public class SellTaxbillVo { // 논리명
 
 	// DB 속성
 	private long idx; // 번호 - pk - Auto Increment
-	private long taxbillNo; // 승인번호 - 국세청 - 세금계산서 번호
+	private String taxbillNo; // 승인번호 - 국세청 - 세금계산서 번호
 	private String salesNo; // 관리번호 - 매출번호
 	private String customerCode; // 거래처코드
 	private String customerName; // 거래처명
@@ -34,13 +34,18 @@ public class SellTaxbillVo { // 논리명
 	private String bankCode; // 은행코드
 	private String deleteFlag; // 삭제
 	private String voucherNo; // 전표번호
+	
+	private String voucherUse; // 사용목적
+	private String amountFlag; // 금액 플래그 - 차변 / 대변
+	private long accountNo; // 계정코드
+	
 	private String insertUserid; // 입력자
 	private String insertDay; // 입력일
 	private String updateUserid; // 수정자
 	private String updateDay; // 수정일
 
 	//// Vo 객체로써 사용하기 위해 필요한 인스턴스 변수
-	private long itemCode; // 품목코드
+	private String itemCode; // 품목코드
 	private String itemName; // 품목명
 	private long quantity; // 수량
 	private long supplyValue; // 공급가액
@@ -54,11 +59,11 @@ public class SellTaxbillVo { // 논리명
 		this.idx = idx;
 	}
 
-	public long getTaxbillNo() {
+	public String getTaxbillNo() {
 		return taxbillNo;
 	}
 
-	public void setTaxbillNo(long taxbillNo) {
+	public void setTaxbillNo(String taxbillNo) {
 		this.taxbillNo = taxbillNo;
 	}
 
@@ -262,11 +267,11 @@ public class SellTaxbillVo { // 논리명
 		this.updateDay = updateDay;
 	}
 
-	public long getItemCode() {
+	public String getItemCode() {
 		return itemCode;
 	}
 
-	public void setItemCode(long itemCode) {
+	public void setItemCode(String itemCode) {
 		this.itemCode = itemCode;
 	}
 
@@ -302,6 +307,30 @@ public class SellTaxbillVo { // 논리명
 		this.taxValue = taxValue;
 	}
 
+	public String getVoucherUse() {
+		return voucherUse;
+	}
+
+	public void setVoucherUse(String voucherUse) {
+		this.voucherUse = voucherUse;
+	}
+
+	public String getAmountFlag() {
+		return amountFlag;
+	}
+
+	public void setAmountFlag(String amountFlag) {
+		this.amountFlag = amountFlag;
+	}
+
+	public long getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(long accountNo) {
+		this.accountNo = accountNo;
+	}
+
 	@Override
 	public String toString() {
 		return "SellTaxbillVo [idx=" + idx + ", taxbillNo=" + taxbillNo + ", salesNo=" + salesNo + ", customerCode="
@@ -311,9 +340,10 @@ public class SellTaxbillVo { // 논리명
 				+ totalSupplyValue + ", totalTaxValue=" + totalTaxValue + ", writeDate=" + writeDate + ", taxType="
 				+ taxType + ", depositNo=" + depositNo + ", releaseDate=" + releaseDate + ", depositHost=" + depositHost
 				+ ", bankName=" + bankName + ", bankCode=" + bankCode + ", deleteFlag=" + deleteFlag + ", voucherNo="
-				+ voucherNo + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + ", itemCode=" + itemCode + ", itemName=" + itemName
-				+ ", quantity=" + quantity + ", supplyValue=" + supplyValue + ", taxValue=" + taxValue + "]";
+				+ voucherNo + ", voucherUse=" + voucherUse + ", amountFlag=" + amountFlag + ", accountNo=" + accountNo
+				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
+				+ ", updateDay=" + updateDay + ", itemCode=" + itemCode + ", itemName=" + itemName + ", quantity="
+				+ quantity + ", supplyValue=" + supplyValue + ", taxValue=" + taxValue + "]";
 	}
 
 }

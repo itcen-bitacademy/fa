@@ -12,22 +12,22 @@
 				where delete_flag= #{deleteFlag }
 			]]>
 		</if>
-		 <if  test="inputperiodStart!=null and !inputperiodStart.equals('')">		    
+		 <if  test="inputperiodStart!=null ">		    
 			<![CDATA[
 				and insert_day >= #{inputperiodStart }
 			]]>
 		</if>
-		<if  test="inputperiodEnd!=null and !inputperiodEnd.equals('')">		    
+		<if  test='inputperiodEnd!=null and inputperiodEnd.equals("")' >		    
 			<![CDATA[
 				and insert_day <= #{inputperiodEnd }
 			]]>
 		</if>
-		<if  test="cardStartNo!=null and !cardStartNo.equals('')">		    
+		<if  test="cardStartNo!=null ">		    
 			<![CDATA[
 				and card_no like concat(#{cardStartNo }, "%")
 			]]>
 		</if>
-		<if  test="cardEndNo!=null and !cardEndNo.equals('')">		    
+		<if  test="cardEndNo!=null ">		    
 			<![CDATA[
 				and card_no like concat("%", #{cardEndNo })
 			]]>
@@ -51,22 +51,22 @@
 				where delete_flag= #{vo.deleteFlag }
 			]]>
 		</if>
-		 <if  test="vo.inputperiodStart!=null and !vo.inputperiodStart.equals('')">		    
+		 <if  test="vo.inputperiodStart!=null">		    
 			<![CDATA[
 				and insert_day >= #{vo.inputperiodStart }
 			]]>
 		</if>
-		<if  test="vo.inputperiodEnd!=null and !vo.inputperiodEnd.equals('')">		    
+		<if  test="vo.inputperiodEnd!=null ">		    
 			<![CDATA[
 				and insert_day <= #{vo.inputperiodEnd }
 			]]>
 		</if>
-		<if  test="vo.cardStartNo!=null and !vo.cardStartNo.equals('')">		    
+		<if  test="vo.cardStartNo!=null ">		    
 			<![CDATA[
 				and card_no like concat(#{vo.cardStartNo }, "%")
 			]]>
 		</if>
-		<if  test="vo.cardEndNo!=null and !vo.cardEndNo.equals('')">		    
+		<if  test="vo.cardEndNo!=null ">		    
 			<![CDATA[
 				and card_no like concat("%", #{vo.cardEndNo })
 			]]>

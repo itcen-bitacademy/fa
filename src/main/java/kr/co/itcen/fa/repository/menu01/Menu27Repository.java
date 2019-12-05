@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
 
@@ -30,16 +31,24 @@ public class Menu27Repository {
 	}
 
 	// GetList
-	public List<CustomerVo> list() {
-		return sqlSession.selectList("menu27.getList");
+	public List<CustomerVo> list(PaginationUtil pagination) {
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		System.out.println(pagination.getPageIndex());
+		System.out.println(pagination.getListSize());
+		List<CustomerVo> res = sqlSession.selectList("menu27.getList", s); 
+		return res;
 	}
 
 	// Create
-	public Map<String, Object> create(CustomerVo customervo) {
+	public Map<String, Object> create(CustomerVo customerVo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		sqlSession.insert("menu27.create", customervo);
-		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		sqlSession.insert("menu27.create", customerVo);
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		map.put("customerList", sqlSession.selectList("menu27.getList", s));
 		return map;
+		
 	}
 
 	// Read
@@ -50,24 +59,35 @@ public class Menu27Repository {
 	}
 
 	// Update
-	public Map<String, Object> update(CustomerVo customerVo) {
+	public Map<String, Object> update(CustomerVo customerVo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		sqlSession.update("menu27.update", customerVo);
-		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		map.put("customerList", sqlSession.selectList("menu27.getList", s));
 		return map;
 	}
 
 	// Delete
-	public Map<String, Object> delete(CustomerVo customerVo) {
+	public Map<String, Object> delete(CustomerVo customerVo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		sqlSession.update("menu27.delete", customerVo);
-		map.put("customerList", sqlSession.selectList("menu27.getList"));
+		
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		
+		map.put("customerList", sqlSession.selectList("menu27.getList", s));
 		return map;
 	}
 
 	// Delete All
 	public void deleteAll(CustomerVo customervo) {
 		sqlSession.delete("menu27.deleteAll", customervo);
+	}
+
+	public int selectCount() {
+		int res = sqlSession.selectOne("menu27.getCount");
+		return res;
 	}
 
 }

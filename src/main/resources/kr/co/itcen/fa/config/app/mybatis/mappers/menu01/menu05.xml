@@ -6,7 +6,7 @@
 	<insert id="create" parameterType="1cardvo">
 		<![CDATA[
 		insert into tb_cardmanager values (#{cardNo }, #{validity }, #{transportation }, #{limitation}, #{cvc }, 
-		#{issuer }, #{user },  #{company },  #{abroad },  #{password },  #{depositNo },  
+		#{issuer }, #{user },  #{company },  #{abroad },  #{password },  #{depositNo }, #{depositHost}, #{bankCode }, #{bankName },
 		#{insertUserId }, now(), null, null, "N")
 		]]>
 	</insert>
@@ -14,10 +14,10 @@
 	<select id="read" parameterType="1cardvo" resultType="1cardvo">
 		<![CDATA[
 		select	card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
-				company, abroad, password, deposit_no as depositNo,
+				company, abroad, password, deposit_no as depositNo, deposit_host as depositHost,
+				bank_code as bankCode , bank_Name as bankName,
 				insert_userid as insertUserId, insert_day as insertDay, 
-				update_userid as updateUserId, update_day as updateDay, 
-				delete_flag as deleteFlag
+			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
 		 from	tb_cardmanager
 		 where	delete_flag = "N"
 		 and    card_no = #{cardNo}
@@ -39,7 +39,10 @@
 	    		company =  #{company },
 	    		abroad = #{abroad }, 	
 	    		password =  #{password }, 
-	    		deposit_no =  #{depositNo }, 
+	    		deposit_no =  #{depositNo },
+	    		deposit_host = #{depositHost },
+	    		bank_code = #{bankCode },
+	    		bank_Name = #{bankName },
 				update_userid = #{updateUserId},
 				update_day = now()
 		  where card_no = #{cardNoOld};
@@ -88,20 +91,33 @@
 	</delete>
 	
 	
-	<select id="list" resultType="1cardvo">
+	<select id="list" parameterType="map" resultType="1cardvo">
 		<![CDATA[
 		select	card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
-				company, abroad, password, deposit_no as depositNo,
+				company, abroad, password, deposit_no as depositNo, deposit_host as depositHost,
+				bank_code as bankCode , bank_Name as bankName,
 				insert_userid as insertUserId, insert_day as insertDay, 
-				update_userid as updateUserId, update_day as updateDay, 
-				delete_flag as deleteFlag
+			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
+		 from	tb_cardmanager
+		 where	delete_flag = "N"
+	 order by   insert_day desc
+		]]>
+		
+		<if test="pagination.pageIndex >= 0 ">
+		<![CDATA[
+			 limit #{pagination.pageIndex	}, #{pagination.listSize	}
+		]]>
+		</if>
+	</select>
+
+	<select id="getCount" resultType="int">
+		<![CDATA[
+		select	count(*)
 		 from	tb_cardmanager
 		 where	delete_flag = "N"
 		
 		]]>
 	</select>
 
-	
-
-
+ 
 </mapper>

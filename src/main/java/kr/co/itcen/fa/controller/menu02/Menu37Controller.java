@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu02.Menu37Service;
@@ -36,7 +37,7 @@ public class Menu37Controller {
 	@Autowired
 	private Menu37Service menu37Service;
 
-	//처음 매입세금계산서관리 화면 접속할 때
+	// 처음 매입세금계산서관리 화면 접속할 때
 	@RequestMapping(value = { "/" + SUBMENU, "/" + SUBMENU + "/add" }, method = RequestMethod.GET)
 	public String add(@ModelAttribute UserVo authUser, Model model) {
 		List<CustomerVo> customerList = menu37Service.customerList();
@@ -47,7 +48,7 @@ public class Menu37Controller {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
-	//입력 post
+	// 입력 post
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String write(@ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
 			Long amount[], Long supplyValue[], Long taxValue[]) {
@@ -76,15 +77,15 @@ public class Menu37Controller {
 
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
-	
-	//조회 post
+
+	// 조회 post
 	@RequestMapping(value = "/" + SUBMENU + "/lookUp", method = RequestMethod.POST)
 	public String lookUp(Model model, @ModelAttribute BuyTaxbillVo vo, HttpSession session) {
 		BuyTaxbillVo getAboutNoData = menu37Service.getAboutNoData(vo.getNo());
 		CustomerVo getAboutNoCustomerData = menu37Service.getAboutNoCustomerData(getAboutNoData.getCompanyName());
 		BankAccountVo getAboutNoBankData = menu37Service.getAboutNoBankData(getAboutNoCustomerData.getDepositNo());
 		List<BuyTaxbillItemsVo> getAboutItmes = menu37Service.getAboutItmes(vo.getNo());
-		
+
 		model.addAttribute("flag", "true");
 		model.addAttribute("getAboutNoData", getAboutNoData);
 		model.addAttribute("getAboutItmesList", getAboutItmes);
@@ -92,20 +93,56 @@ public class Menu37Controller {
 		model.addAttribute("getAboutNoBankData", getAboutNoBankData);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
-	
-	//삭제 post
+
+	// 삭제 post
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
 	public String delete(@ModelAttribute BuyTaxbillVo vo, HttpSession session) {
-		
+		menu37Service.taxbillDelete(vo.getNo());
+		menu37Service.taxbillItemDelete(vo.getNo());
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
-	
-	//수정 post
+
+	// 수정 post
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
-	public String update(@ModelAttribute BuyTaxbillVo vo, HttpSession session) {
+	public String update(@RequestParam(name = "originalNo") String originalNo, @ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
+			Long amount[], Long supplyValue[], Long taxValue[]) {
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		String updateUserid = authUser.getId();
+		vo.setUpdateUserid(updateUserid);
+
+		// 삭제하기전 처음 입력한 아이디와 입력일 저장
+		String getInsertDay = vo.getInsertDay();
+		String getInsertUserid = vo.getInsertUserid();
+
+		// 세금계산서 테이블과 관련 항목들 삭제
+		menu37Service.taxbillUpdateDelete(originalNo);
+		menu37Service.taxbillItemsUpdateDelete(originalNo);
 		
+		
+		// 입력폼 그대로 다시 저장하기 ( 입력자와 입력명은 그대로 유지 )
+		vo.setInsertDay(getInsertDay);
+		vo.setInsertUserid(getInsertUserid);
+		ArrayList<BuyTaxbillItemsVo> list = new ArrayList<BuyTaxbillItemsVo>();
+
+		for (int i = 0; i < purchaseDate.length; i++) {
+			BuyTaxbillItemsVo buyTaxbillItemsVo = new BuyTaxbillItemsVo();
+			buyTaxbillItemsVo.setTaxbillNo(vo.getNo());
+			buyTaxbillItemsVo.setPurchaseDate(purchaseDate[i]);
+			buyTaxbillItemsVo.setItemName(itemName[i]);
+			buyTaxbillItemsVo.setAmount(amount[i]);
+			buyTaxbillItemsVo.setSupplyValue(supplyValue[i]);
+			buyTaxbillItemsVo.setTaxValue(taxValue[i]);
+			buyTaxbillItemsVo.setInsertUserid(getInsertUserid);
+			buyTaxbillItemsVo.setInsertDay(getInsertDay);
+			buyTaxbillItemsVo.setUpdateUserid(updateUserid);
+			list.add(buyTaxbillItemsVo);
+		}
+
+		menu37Service.insertUpdatedTax(vo);
+		for (int i = 0; i < purchaseDate.length; i++) {
+			menu37Service.insertUpdatedItem(list.get(i));
+		}
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
-	
-	
+
 }

@@ -158,7 +158,9 @@
 								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="no" name="no"
-										value="${getAboutNoData.no }" placeholder="승인번호" />
+										value="${getAboutNoData.no }" placeholder="승인번호" /> <input
+										style="width: 100%" type="hidden" id="no" name="originalNo"
+										value="${getAboutNoData.no }" />
 								</div>
 								<label class="control-label span1" for="manage-no">관리번호</label>
 								<div class="controls span5">
@@ -229,12 +231,12 @@
 								</div>
 								<label class="control-label span1" for="bank">은행</label>
 								<div class="controls span5">
-									<div class="controls span1">
-										<input style="width: 100%" type="text" id="bank-code"
+									<div class="controls span2">
+										<input style="width: 80%" type="text" id="bank-code"
 											value="${getAboutNoBankData.bankCode }" name="id"
 											placeholder="은행" />
 									</div>
-									<div class="controls span4">
+									<div class="controls span3">
 										<input style="width: 100%" type="text" id="bank-name"
 											value="${getAboutNoBankData.bankName }" name="id"
 											placeholder="은행" />
@@ -255,7 +257,7 @@
 										value="${getAboutNoCustomerData.item }" placeholder="종목" />
 								</div>
 								<label class="control-label span1" for="taxType">과세구분</label>
-								<div class="controls span5">
+								<div class="controls span2">
 									<c:choose>
 										<c:when test="${flag == 'true'}">
 											<c:choose>
@@ -292,6 +294,12 @@
 											</label>
 										</c:otherwise>
 									</c:choose>
+								</div>
+								<div class="controls span3">
+									<input style="width: 100%" type="hidden" id="insertUserid"
+										name="insertUserid" value="${getAboutNoData.insertUserid }" />
+									<input style="width: 100%" type="hidden" id="insertDay"
+										name="insertDay" value="${getAboutNoData.insertDay }" />
 								</div>
 							</div>
 						</div>

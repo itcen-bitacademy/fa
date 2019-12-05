@@ -15,7 +15,7 @@ import org.apache.ibatis.type.Alias;
 public class FinancialStatementVo {
 	
 	private Long no;						// 번호
-	private Long accountStatementType;		// 재무제표 구분
+	private String accountStatementType;	// 재무제표 구분
 	private Long closingDateNo;				// 마감일 번호
 	private Long accountNo;					// 계정과목 코드
 	private Long accountOrder;				// 계정과목 순서
@@ -33,10 +33,10 @@ public class FinancialStatementVo {
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public Long getAccountStatementType() {
+	public String getAccountStatementType() {
 		return accountStatementType;
 	}
-	public void setAccountStatementType(Long accountStatementType) {
+	public void setAccountStatementType(String accountStatementType) {
 		this.accountStatementType = accountStatementType;
 	}
 	public Long getClosingDateNo() {

@@ -19,8 +19,24 @@
 	width: 35px;
 }
 
-.cvc{
-	width: 35px;
+.name{
+	width: 80px;
+}
+
+.search-input-width-first {
+	width: 150px;
+}
+
+.bankcode{
+	width: 200px;
+}
+
+.bankname{
+	width: 200px;
+}
+
+.limit{
+	width:100px;
 }
 
 </style>
@@ -58,26 +74,43 @@ $(function() {
 	
 	$("#input-form").submit(function(event) {
         event.preventDefault();
-		var queryString = $("form[name=input-form]").serialize();
+        
+        if($("input[name=balance]").val() == "") {
+			$("input[name=balance]").val(0);		
+		}
+		if($("input[name=depositLimit]").val() == "") {
+			$("input[name=depositLimit]").val(0);			
+		}
+		if($("input[name=profit]").val() == "") {
+			$("input[name=profit]").val(0);
+		}
+		
+        var queryString = $("form[name=input-form]").serializeArray();
+		
+		if("${param.page}") {
+			queryString.push({name: 'page', value: "${param.page}"});
+		}
 		if(a == "create") {
 			$.ajax({
 			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
 			    type: "POST",
 			    data: queryString,
 			    dataType: "json",
-			    success: function(result){
-			    	if(result.fail) {
+			    success: function(dataResult){
+			    	if(dataResult.fail) {
 			    		alert("다시 입력해주세요.");
 			    	}
-			    	if(result.success) {
-			    		alert("계좌 생성이 완료되었습니다."); 
+			    	if(dataResult.success) {
 			    		$('#input-form').each(function(){
 			    		    this.reset();
 			    		});
 			    		
+			    		alert("카드 생성이 완료되었습니다."); 
+			    		
 			    		removeTable();
-			    		var cardList = result.cardList;
+			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
+			    		$('#pagination').show();
 			    	}
 			    },
 			    error: function( err ){
@@ -90,13 +123,18 @@ $(function() {
 			    type: "POST",
 			    data: queryString,
 			    dataType: "json",
-			    success: function(result){
-			    	if(result.success) {
-			    		alert("계좌 검색이 완료되었습니다."); 
+			    success: function(dataResult){
+			    	if(dataResult.success) {
+			    		alert("카드 검색이 완료되었습니다."); 
 			    		removeTable();
-			    		
-			    		var cardList = result.cardList;
+			    		$('#input-form').each(function(){
+			    		    this.reset();
+			    		});
+
+			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
+			    		settingInput(cardList);
+			    		$('#pagination').hide();
 			    	}
 			    },
 			    error: function( err ){
@@ -109,17 +147,18 @@ $(function() {
 			    type: "POST",
 			    data: queryString,
 			    dataType: "json",
-			    success: function(result){
-			    	if(result.success) {
-			    		alert("계좌 수정이 완료되었습니다."); 
+			    success: function(dataResult){
+			    	if(dataResult.success) {
+			    		alert("카드 수정이 완료되었습니다."); 
 			    		removeTable();
 			    	
-			    		var cardList = result.cardList;
+			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
 			    	}
-			    	if(result.fail) {
+			    	if(dataResult.fail) {
 			    		alert("다시 입력해주세요.");
 			    	}
+			    	$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -131,17 +170,18 @@ $(function() {
 			    type: "POST",
 			    data: queryString,
 			    dataType: "json",
-			    success: function(result){
-			    	if(result.success) {
-			    		alert("계좌 삭제가 완료되었습니다."); 
+			    success: function(dataResult){
+			    	if(dataResult.success) {
+			    		alert("카드 삭제가 완료되었습니다."); 
 			    		removeTable();
 			    		$('#input-form').each(function(){
 			    		    this.reset();
 			    		});
 			    		
-			    		var cardList = result.cardList;
+			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
 			    	}
+			    	$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -183,10 +223,10 @@ $(function() {
 		        "<td>" + cardList[card].limitation+ "</td>" +
 		        "<td>" + cardList[card].transportation+ "</td>" +
 		        "<td>" + cardList[card].abroad+ "</td>" +
-		        "<td>" + cardList[card].insertUserId + "</td>" +
 		        "<td>" + cardList[card].insertDay + "</td>" +
-		        "<td>" + cardList[card].updateUserId + "</td>" +
+		        "<td>" + cardList[card].insertUserId + "</td>" +
 		        "<td>" + cardList[card].updateDay + "</td>" +
+		        "<td>" + cardList[card].updateUserId + "</td>" +
 		        "</tr>");
 			  
 		  }
@@ -200,8 +240,20 @@ $(function() {
 		var tr = $(this);
 		var td = tr.children();
 		
-		$("input[name=cardNo]").val(td.eq(1).text());
+		
+		var cardNo1 = td.eq(1).text().substring(0,4);
+		var cardNo2 = td.eq(1).text().substring(5,9);
+		var cardNo3 = td.eq(1).text().substring(10,14);
+		var cardNo4 = td.eq(1).text().substring(15,20);
+			
+		$("input[name=cardNo1]").val(cardNo1);
+		$("input[name=cardNo2]").val(cardNo2);
+		$("input[name=cardNo3]").val(cardNo3);
+		$("input[name=cardNo4]").val(cardNo4);
+		
+		
 		$("input[name=cardNoOld]").val(td.eq(1).text());
+		
 		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
 		var year= td.eq(2).text().substring(3,5);
 		$("input[name=validityMM]").val(month);
@@ -218,11 +270,51 @@ $(function() {
 		$("input[name=limitation]").val(td.eq(12).text());
 		var td13 = td.eq(13).text();
 		var td14 = td.eq(14).text();
-		console.log(td13);
 		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
 		
 	});
+	
+
+	function settingInput(cardList) {
+		var tr = $(".new-tbody tr");	
+		var td = tr.children();
+		
+		
+		var cardNo1 = td.eq(1).text().substring(0,4);
+		var cardNo2 = td.eq(1).text().substring(5,9);
+		var cardNo3 = td.eq(1).text().substring(10,14);
+		var cardNo4 = td.eq(1).text().substring(15,20);
+			
+		$("input[name=cardNo1]").val(cardNo1);
+		$("input[name=cardNo2]").val(cardNo2);
+		$("input[name=cardNo3]").val(cardNo3);
+		$("input[name=cardNo4]").val(cardNo4);
+		
+		
+		$("input[name=cardNoOld]").val(td.eq(1).text());
+		
+		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
+		var year= td.eq(2).text().substring(3,5);
+		$("input[name=validityMM]").val(month);
+		$("input[name=validityYY]").val(year);
+		$("input[name=cvc]").val(td.eq(3).text());
+		$("input[name=user]").val(td.eq(4).text());
+		$("input[name=issuer]").val(td.eq(5).text());
+		$("input[name=depositNo]").val(td.eq(6).text());
+		$("input[name=depositHost]").val(td.eq(7).text());
+		$("input[name=password]").val(td.eq(8).text());	
+		$("input[name=bankCode]").val(td.eq(9).text());
+		$("input[name=bankName]").val(td.eq(10).text());
+		$("input[name=company]").val(td.eq(11).text());
+		$("input[name=limitation]").val(td.eq(12).text());
+		var td13 = td.eq(13).text();
+		var td14 = td.eq(14).text();
+		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
+		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
+	}
+	
+	
 	
 	
 	$(document.body).delegate('#selectAll', 'click', function() {
@@ -285,11 +377,11 @@ $(function() {
                 alert("page not found");
               }
           },
-          success: function(data){
-        	  if(data.success) {
+          success: function(result){
+        	  if(result.success) {
         	  	$("#input-dialog-depositNo").val('');
-        	  	var baccountList = data.bankAccountList;
-        	  	console.log(data.bankAccountList);
+        	  	var baccountList = result.bankAccountList;
+        	  	console.log(result.bankAccountList);
         	  	for(let a in baccountList) {
         	  		$("#tbody-bankaccountList").append("<tr>" +
                           "<td class='center'>" + baccountList[a].depositNo + "</td>" +
@@ -357,16 +449,33 @@ $(function() {
 									<label class="control-label" for="form-field-1">카드 번호</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="cardNo"
-											placeholder="카드 번호" /> <input type="hidden" name="cardNoOld" />
+										<div class="input-append">
+									
+											<input type="text" class="validity" id="form-field-1" name="cardNo1" maxlength=4 /> 
+										</div>
+										-
+										
+										<div class="input-append">
+											<input type="text" class="validity" id="form-field-1" name="cardNo2"  maxlength=4 />
+										</div>
+										-
+										<div class="input-append">
+											<input type="text" class="validity" id="form-field-1" name="cardNo3" maxlength=4  />
+										</div>
+										-
+										<div class="input-append">
+											<input type="text" class="validity" id="form-field-1" name="cardNo4" maxlength=4  />
+										</div>
 									</div>
+									<input type="hidden" name="cardNoOld" />
+									
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">사용자</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="user"
+										<input type="text" id="form-field-1" name="user" class="name"
 											placeholder="사용자" />
 									</div>
 								</div>
@@ -377,7 +486,7 @@ $(function() {
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="issuer"
+										<input type="text" id="form-field-1" name="issuer" class="name"
 											placeholder="카드발급자" />
 									</div>
 								</div>
@@ -391,8 +500,11 @@ $(function() {
 											id="a-bankaccountinfo-dialog"> <i
 												class="icon-search nav-search-icon"></i> <input type="text"
 												class="search-input-width-first" name="depositNo" />
-										</a>
-										</span> <input type="text" id="form-field-1" name="depositHost"
+										</a> 
+									
+										</span> 
+										&nbsp; &nbsp;
+										<input type="text" id="form-field-1" name="depositHost"
 											placeholder="예금주" readonly/>
 										
 									</div>
@@ -455,7 +567,7 @@ $(function() {
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="limitation"
+										<input type="text" id="form-field-1" name="limitation" class="limit"
 											placeholder="한도" value="" />
 									</div>
 								</div>
@@ -486,7 +598,7 @@ $(function() {
 								<div>
 									<label class="control-label" for="form-field-1">CVC </label> 
 									<div class="controls">
-									<input type="text" class="cvc" id="form-field-1" name="cvc" placeholder="CVC" />
+									<input type="text" class="validity" id="form-field-1" name="cvc" placeholder="CVC" />
 									</div>
 								</div>
 							</div>
@@ -517,7 +629,7 @@ $(function() {
 								<label class="control-label" for="form-field-1">비밀번호 </label>
 
 								<div class="controls">
-									<input type="text" id="form-field-1" name="password"
+									<input type="password" id="form-field-1" name="password" class="limit"
 										placeholder="비밀번호" />
 								</div>
 							</div>
@@ -526,7 +638,7 @@ $(function() {
 								<label class="control-label" for="form-field-1">카드사 </label>
 
 								<div class="controls">
-									<input type="text" id="form-field-1" name="company"
+									<input type="text" id="form-field-1" name="company" class="bankname"
 										placeholder="카드사" />
 								</div>
 							</div>
@@ -587,9 +699,9 @@ $(function() {
 								</tr>
 							</thead>
 
-							<tbody class="origin-tbody">
+							<tbody class="origin-tbody" >
 
-								<c:forEach items='${list }' var='vo' varStatus='status'>
+								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 									<tr>
 										<td class="center"><label> <input type="checkbox"
 												class="ace" /> <span class="lbl"></span>
@@ -624,9 +736,47 @@ $(function() {
 					<!-- /span -->
 				</div>
 				<!-- /row -->
-			
+			<div class="pagination" id = "pagination">
+					<ul>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 
-
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
 
 			</div>
 			<!-- /.page-content -->

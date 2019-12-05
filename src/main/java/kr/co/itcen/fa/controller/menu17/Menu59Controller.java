@@ -51,7 +51,8 @@ public class Menu59Controller {
 		//조회할 값들 셋팅
 		accountManagement.setAccountUsedyear(accountUsedyear);
 		accountManagement.setAccountStatementType(type);
-		accountManagement.setInsertUserid(authUser.getName());		
+		accountManagement.setInsertUserid(authUser.getId());		
+		
 		if(accountNo != null) {
 			accountManagement.setAccountNo(accountNo);
 		}
@@ -66,7 +67,7 @@ public class Menu59Controller {
 		model.addAttribute("accountList", menu59Service.getAllAccountList());
 		
 		//테이블부분 셋팅
-		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page,3));
+		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page,11));
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -80,25 +81,35 @@ public class Menu59Controller {
 					  Model model,
 					  @AuthUser UserVo authUser) {
 		
+		String result = "nono";
+		
+		if(accountNo == null || accountManagement.getAccountUsedyear() == null || accountManagement.getAccountOrder() == null) {
+			result = "NPE";
+			model.addAttribute("result", result);
+			
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		}
+		
 		//저장할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
-		accountManagement.setInsertUserid(authUser.getName());
+		accountManagement.setInsertUserid(authUser.getId());
 		
 		System.out.println(accountManagement);
 		
 		model.addAttribute("selectedAccountStatementType", type);
 		
+		
 		if(menu59Service.chechedAccount(accountManagement).size() < 1) {	
-			String overlap = "nono";
-			model.addAttribute("overlap", overlap);
+			result = "nono";
+			model.addAttribute("result", result);
 		
 			menu59Service.insert(accountManagement);
 		
 			//return "redirect:/" + MAINMENU + "/" + SUBMENU;			
 		}else {
-			String overlap = "overlap";
-			model.addAttribute("overlap", overlap);
+			result = "overlap";
+			model.addAttribute("result", result);
 			
 			//return MAINMENU + "/" + SUBMENU + "/add";
 		}
@@ -114,59 +125,66 @@ public class Menu59Controller {
 						 @RequestParam("selectedAccount") Long accountNo,
 						 Model model,
 						 @AuthUser UserVo authUser) {
-
+		
+		String result = "nono";
+		if(accountNo == null || accountManagement.getAccountUsedyear() == null || accountManagement.getAccountOrder() == null) {
+			result = "NPE";
+			model.addAttribute("result", result);
+			
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		}
+		
 		//수정할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
 
 		List<AccountManagementVo> list = menu59Service.chechedAccount(accountManagement);
-		String overlap = "nono";
-		
+			
 		if(list.size() >= 1) {
 			if(list.get(0).getAccountOrder() != accountManagement.getAccountOrder()) {		
 				if(list.get(0).getAccountNo().equals(accountManagement.getAccountNo())) {
 					if(menu59Service.chechedAccount3(accountManagement).size() < 1) {
 
-					overlap = "nono";
-					model.addAttribute("overlap", overlap);
-					
-					accountManagement.setUpdateUserid(authUser.getName());
-					
-					System.out.println(accountManagement);	
-					menu59Service.update(accountManagement);
+						result = "nono";
+						model.addAttribute("result", result);
+						
+						accountManagement.setUpdateUserid(authUser.getName());
+						
+						System.out.println(accountManagement);	
+						menu59Service.update(accountManagement);
 					} else {
-						overlap = "overlap";
-						model.addAttribute("overlap", overlap);
+						
+						result = "overlap";
+						model.addAttribute("result", result);
 					}
 				}else {				
 					if(menu59Service.chechedAccount2(accountManagement).size() < 1) {
-						overlap = "nono";
-						model.addAttribute("overlap", overlap);
+						result = "nono";
+						model.addAttribute("result", result);
 						
 						accountManagement.setUpdateUserid(authUser.getName());
 						
 						System.out.println(accountManagement);	
 						menu59Service.update(accountManagement);
 					}else {
-						overlap = "overlap";
-						model.addAttribute("overlap", overlap);
+						
+						result = "overlap";
+						model.addAttribute("result", result);
 					}
 				}
 			}else {
-
-				overlap = "overlap";
-				model.addAttribute("overlap", overlap);
-
+				
+				result = "overlap";
+				model.addAttribute("result", result);
 			}
 			
-		}else {
+		}else {			
+			result = "nullData";
+			model.addAttribute("result", result);
 			
-		overlap = "nullData";
-		model.addAttribute("overlap", overlap);
-		
-		accountManagement.setInsertUserid(authUser.getName());
-		
-		menu59Service.insert(accountManagement);
+			accountManagement.setInsertUserid(authUser.getName());
+			
+			menu59Service.insert(accountManagement);
 
 		}
 		
@@ -184,6 +202,14 @@ public class Menu59Controller {
 						 Model model,
 						 @AuthUser UserVo authUser) {
 	
+	String result = "nono";
+	if(accountManagement.getNo() == null || accountManagement.getAccountUsedyear() == null || accountManagement.getAccountOrder() == null) {
+		result = "NPE2";
+		model.addAttribute("result", result);
+		
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+		
 	System.out.println(accountManagement);
 	menu59Service.delete(accountManagement.getNo());
 	

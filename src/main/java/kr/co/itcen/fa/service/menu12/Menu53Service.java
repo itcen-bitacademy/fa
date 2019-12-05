@@ -31,5 +31,20 @@ public class Menu53Service {
 	}
 	
 	
+	// 매출세금계산서에서 발행되는 정보를 입력하는 기능
+	public void insert(SellTaxbillVo selltaxbillvo) {
+		menu53Repository.insert(selltaxbillvo);
+	}
+	
+	// 매출세금계산서 발생했을시 
+	public void salesUpdate(SellTaxbillVo selltaxbillvo) {
+		menu53Repository.salesUpdate(selltaxbillvo);
+	}
+	
+	// 매출세금계산서가 발행되고 비고를 수정할 때 사용
+	public void taxbillupdate(SellTaxbillVo selltaxbillvo) {
+		menu53Repository.taxbillupdate(selltaxbillvo);
+	}
+		
 }
 

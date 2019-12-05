@@ -82,7 +82,7 @@ public class Menu25Controller {
 	public Map<String, Object> update(@ModelAttribute BankAccountVo bavo,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
 			@AuthUser UserVo uvo) {
-		System.out.println("update : " + page);
+		System.out.println("update" );
 		
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setUpdateUserId(uvo.getName());
@@ -112,11 +112,10 @@ public class Menu25Controller {
 	@RequestMapping("/" + SUBMENU + "/gets")
 	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
 		System.out.println("gets");
-		System.out.println(depositNo.toString());
 		
-		Map<String, Object> result = menu25Service.gets(depositNo);
-		result.put("success", true);
-		return result;
+		Map<String, Object> data = menu25Service.gets(depositNo);
+		data.put("success", true);
+		return data;
 	}
 		
 }

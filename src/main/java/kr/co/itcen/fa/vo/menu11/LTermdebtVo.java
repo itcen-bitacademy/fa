@@ -23,7 +23,7 @@ public class LTermdebtVo {
 	private String bankCode;//은행코드
 	private String depositNo;//계좌번호
 	private String accountNo;//계정코드
-	private int voucherNo;//전표번호
+	private Long voucherNo;//전표번호
 	private String deleteFlag;//삭제여부
 	private String insertId;//등록자
 	private String insertDate;//등록일
@@ -152,10 +152,10 @@ public class LTermdebtVo {
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
 	}
-	public int getVoucherNo() {
+	public Long getVoucherNo() {
 		return voucherNo;
 	}
-	public void setVoucherNo(int voucherNo) {
+	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 	public String getDeleteFlag() {

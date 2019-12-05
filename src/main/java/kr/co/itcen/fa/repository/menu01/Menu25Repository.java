@@ -100,8 +100,11 @@ public class Menu25Repository {
 
 	public Map<String, Object> gets(String depositNo) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		// TODO Auto-generated method stub		
-		map.put("bankAccountList", sqlSession.selectList("menu25.gets", depositNo));
+		
+		List<BankAccountVo> s = sqlSession.selectList("menu25.gets", depositNo);
+		map.put("bankAccountList", s);
+		
+		
 		return map;
 	}
 
