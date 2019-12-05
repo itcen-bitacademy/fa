@@ -32,7 +32,10 @@ public class Menu52Controller {
 	public String list(Model model, @RequestParam(value="page", required=false, defaultValue="1") int page) {
 		int totalCnt = menu52Service.getTotalCnt();
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		model.addAttribute("customerList", menu52Service.getAllCustomer(new CustomerVo(), pagination));
+		CustomerVo customerVo = new CustomerVo();
+		customerVo.setDeleteFlag("N");
+		
+		model.addAttribute("customerList", menu52Service.getAllCustomer(customerVo, pagination));
 		model.addAttribute("pagination", pagination);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

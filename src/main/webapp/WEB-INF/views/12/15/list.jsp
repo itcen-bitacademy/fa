@@ -7,13 +7,16 @@
 <head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 	div#invalid {display: none;}
 </style>
 </head>
+
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
@@ -60,6 +63,10 @@
 		$("#btn-update").on("click", function(){
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/modify");
 			checkNo();
+		});
+		
+		$("#btn-clear").on("click", function(){
+			$("#form-customer input").val("");
 		});
 		
 		$("#customer-table tr.rows").on("click", function(event){
@@ -119,14 +126,94 @@
 		            checkNoArr: checkArr
 		        },
 		        success: function(response) {
-		        	//location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
+		        	location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
 				},
 				error: function(xhr, error) {
 					console.error("error:"+error);
 				}
 			});	
 		});
-	})
+		
+	    $('#dialog-message-table').on('click', '#a-dialog-depositNo', function(event) {
+	       event.preventDefault();
+	       $("#tbody-bankaccountList").find("tr").remove();
+	       
+	       var depositNo = $("#input-dialog-depositNo").val();
+	       console.log(depositNo);
+	       // ajax 통신
+	       $.ajax({
+	          url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/gets?depositNo=" + depositNo,
+	          contentType : "application/json; charset=utf-8",
+	          type: "get",
+	          dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+	          data : "",
+	          statusCode: {
+	              404: function() {
+	                alert("page not found");
+	              }
+	          },
+	          success: function(result){
+	        	  if(result.success) {
+	        		$("#input-dialog-depositNo").val('');
+	        	  	var baccountList = result.bankAccountList;
+	        	  	console.log(result.bankAccountList);
+	        	  	for(let a in baccountList) {
+	        	  		$("#tbody-bankaccountList").append("<tr>" +
+	                          "<td class='center'>" + baccountList[a].depositNo + "</td>" +
+	                          "<td class='center'>" + baccountList[a].depositHost + "</td>" +
+	                          "<td class='center'>" + baccountList[a].bankCode + "</td>" +
+	                          "<td class='center'>" + baccountList[a].bankName + "</td>" +
+	                          "</tr>");
+	
+	        	  	}
+	        	  }
+	        	  
+	          },
+	          error: function(xhr, error){
+	             console.error("error : " + error);
+	          }
+	       });
+	    });
+    
+	    // 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+	    $(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
+	       var tr = $(this);
+	       var td = tr.children();
+	       $("input[name=depositNo]").val(td.eq(0).text());
+	       $("input[name=depositHost]").val(td.eq(1).text());
+	       $("input[name=bankCode]").val(td.eq(2).text());
+	       $("input[name=bankName]").val(td.eq(3).text());
+	       $("#dialog-message").dialog('close');
+	   	});
+
+	});	
+	
+	$(function() {
+	      $("#dialog-message").dialog({
+	         autoOpen : false
+	      });
+	
+	      $("#a-bankaccountinfo-dialog").click(function() {
+	         $("#dialog-message").dialog('open');
+	         $("#dialog-message").dialog({
+	            title: "계좌정보",
+	            title_html: true,
+	               resizable: false,
+	             height: 500,
+	             width: 400,
+	             modal: true,
+	             close: function() {
+	                $('#tbody-bankacoountList tr').remove();
+	             },
+	             buttons: {
+	             "닫기" : function() {
+	                      $(this).dialog('close');
+	                      $('#tbody-bankaccountList tr').remove();
+	                 }
+	             }
+	         });
+	      });
+	  });
 	
 	function checkNo() {
 		if($("#no").val() == $("#preNo").val()) {
@@ -261,7 +348,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">입금계좌번호</label>
 										<div class="controls">
-											<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+											<a href="#" id="a-bankaccountinfo-dialog"><span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span></a>
 											<input class="span6" type="text" id="depositNo" name="depositNo">
 										</div>
 									</div>
@@ -319,6 +406,36 @@
 										</div>
 									</div>
 								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<div id="dialog-message" title="계좌" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>계좌번호</label> <input type="text"
+												id="input-dialog-depositNo" style="width: 100px;" /> <a
+												href="#" id="a-dialog-depositNo"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-deposit-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">계좌번호</th>
+												<th class="center">예금주</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-bankaccountList">
+											
+										</tbody>
+									</table>
+								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 							</form>
 						</div>
 					</div>
