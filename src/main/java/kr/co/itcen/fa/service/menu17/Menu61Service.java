@@ -27,6 +27,9 @@ public class Menu61Service {
 	@Autowired
 	private Menu61Repository menu61Repository;
 	
+	@Autowired
+	private Menu64Service menu64Service;
+	
 	/**
 	 * 
 	 * 해당 마감일 결산처리
@@ -104,6 +107,10 @@ public class Menu61Service {
 		}
 		
 		// TODO: 재무제표 작성 
+		// TODO: 대차대조표 작성
+		
+		// TODO: 손익계산서 작성
+//		menu64Service.insertIncomeStatement(lastestUnclosingDateVo);
 
 		// 결산완료 마감일 업데이트 
 		menu61Repository.executeSettlement(menu17SearchForm);

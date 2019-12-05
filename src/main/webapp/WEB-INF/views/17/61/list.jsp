@@ -153,6 +153,24 @@
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 
+			<%-- 에러 모달 --%>
+			<c:if test="${not empty param.error }">
+				<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="staticBackdropLabel">Error</h5>
+				      </div>
+				      <div class="modal-body">
+				        ${param.error }
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</c:if>
 
 
 		</div><!-- /.page-content -->
@@ -173,6 +191,16 @@
 
 		// 마감버튼 이벤트 연결
 		$('.settlement-btn').on('click', executeSettlement)
+
+		// 에러 모달 연결
+		var errorModal = $('#staticBackdrop')
+		if (errorModal) {
+			errorModal.modal({
+				keyboard: false
+			})
+
+			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/61/list')
+		}
 	});
 
 	// 버튼 prevent default 설정
