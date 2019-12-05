@@ -36,7 +36,8 @@ public class Menu45Service {
 		System.out.println("totalCnt 토탈카운트 : " + totalCnt);
 
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		System.out.println("Menu45Service page : " + page);
+		
+		/*System.out.println("Menu45Service page : " + page);
 		System.out.println("getPage : " + pagination.getPage());
 		System.out.println("getTotalCnt : " + pagination.getTotalCnt());
 		System.out.println("getTotalPageCnt : " + pagination.getTotalPageCnt());
@@ -46,7 +47,7 @@ public class Menu45Service {
 		System.out.println("getEndPage : " + pagination.getEndPage());
 		System.out.println("isPrev : " + pagination.isPrev());
 		System.out.println("isNext : " + pagination.isNext());
-		System.out.println("getPageIndex : " + pagination.getPageIndex());
+		System.out.println("getPageIndex : " + pagination.getPageIndex());*/
 		
 		dataResult.setPagination(pagination);
 		List<BankVo> list = menu45Repository.list(vo, pagination);

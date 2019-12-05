@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -35,7 +37,14 @@ public class Menu45Controller {
 		System.out.println(vo);
 		DataResult<BankVo> dataResult = menu45Service.list(vo, page);
 		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance().queryParam("name",vo.getName())
+									.queryParam("store", vo.getStore())
+									.queryParam("dealDate", vo.getDealDate())
+									.build();
+		String uri = uriComponents.toUriString();
 		model.addAttribute("dataResult", dataResult);
+		model.addAttribute("uri", uri);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

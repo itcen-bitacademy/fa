@@ -48,17 +48,17 @@
 			where delete_flag = 'N' 
 			]]>
 			
-   			<if test="vo.name!=null and !vo.name.equals('') ">
+   			<if test='vo.name!=null and !("").equals(vo.name) '>
 				<![CDATA[
 					and name like concat('%',#{vo.name },'%')
 				]]>
 			</if>
-			<if test="vo.store!=null and !vo.store.equals('') ">
+			<if test='vo.store!=null and !("").equals(vo.store) '>
 				<![CDATA[
 					and store like concat('%',#{vo.store },'%')
 				]]>
 			</if>
-			<if test="vo.dealDate!=null and !vo.dealDate.equals('') ">
+			<if test='vo.dealDate!=null and !("").equals(vo.dealDate) '>
 				<![CDATA[
 					and date_format(dealDate,'%Y-%m-%d') like concat('%',#{vo.deal_date},'%')
 				]]>
