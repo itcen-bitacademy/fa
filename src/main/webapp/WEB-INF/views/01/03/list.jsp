@@ -13,6 +13,10 @@
 .chosen-search {
 	display: none;
 }
+
+.search-input-width-first{
+	width: .span4;
+}
 </style>
 
 </head>
@@ -48,10 +52,16 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">계정과목코드 / 계정명 :</label>
+									<label class="control-label" for="form-field-1">계정 코드 :</label>
 									<div class="controls">
-										<input class="span3" type="text" id="accountNo" name="accountNo" placeholder="계정과목코드"/>
-										<input class="span5" type="text" id="accountName" name="accountName" placeholder="계정명"/>
+										<span class="btn btn-small btn-info"> <a href="#"
+											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
+										<input type="text" class="search-input-width-first" id="accountNo" name="accountNo" />
+										</a> 
+									
+										</span> 
+										&nbsp; &nbsp;
+										<input type="text" id="accountName" name="accountName" placeholder="계정명" readonly/>
 									</div>
 								</div>
 								
@@ -74,10 +84,16 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">증빙종류 / 증빙코드 :</label>
+									<label class="control-label" for="form-field-1">증빙코드 :</label> 
+									
 									<div class="controls">
-										<input class="span5" type="text" id="manageNo" name="manageNo" placeholder="증빙종류"/>
-										<input class="span3" type="text" id="form-field-code" name="manageName" placeholder="증빙코드"/>
+										<div class="input-append">
+											<input type="text" id="bankCode" name="manageNo" value="" placeholder="증빙코드" /> 
+										</div>
+										&nbsp; &nbsp;
+										<div class="input-append">
+											<input type="text" id="bankCode" name ="bankName" value="" placeholder="세금계산서" readonly />
+										</div>
 									</div>
 								</div>
 								
@@ -86,36 +102,96 @@
 						<div class="span6">
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">거래처코드 / 거래처명 :</label>
+									<label class="control-label" for="form-field-1">거래처 코드 :</label>
 									<div class="controls">
-										<input class="span3" type="text" id="customerNo" name="customerNo" placeholder="거래처코드"/>
-										<input class="span5" type="text" id="customerName" name="customerName" placeholder="거래처명"/>
+										<span class="btn btn-small btn-info"> <a href="#"
+											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
+										<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
+										</a> 
+									
+										</span> 
+										&nbsp; &nbsp;
+										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">은행코드 / 은행명 :</label>
+									<label class="control-label" for="form-field-1">은행 :</label> 
+									
 									<div class="controls">
-										<input class="span3" type="text" id="bankCode" name="bankCode" placeholder="은행코드"/>
-										<input class="span5" type="text" id="bankName" name="bankName" placeholder="은행명"/>
+										<div class="input-append">
+											<input type="text" id="bankCode" name="bankCode" value="" placeholder="은행코드" readonly /> 
+										</div>
+										&nbsp; &nbsp;
+										<div class="input-append">
+											<input type="text" id="bankCode" name ="bankName" value="" placeholder="은행명" readonly />
+										</div>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">카드번호 / 소유자 :</label>
+									<label class="control-label" for="form-field-1">계좌 번호 :</label>
 									<div class="controls">
-										<input class="span3" type="text" id="cardNo" name="cardNo" placeholder="카드번호"/>
-										<input class="span5" type="text" id="cardUser" name="cardUser" placeholder="소유자"/>
+										<span class="btn btn-small btn-info"> <a href="#"
+											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" />
+										</a> 
+									
+										</span> 
+										&nbsp; &nbsp;
+										<input type="text" id="depositHost" name="depositHost" placeholder="소유자" readonly/>
+									</div>
+								</div>
+								<!--  -->
+								
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<div id="dialog-message" title="계좌" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>계좌번호</label> <input type="text"
+												id="input-dialog-depositNo" style="width: 100px;" /> <a
+												href="#" id="a-dialog-depositNo"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-deposit-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">계좌번호</th>
+												<th class="center">예금주</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-bankaccountList">
+											
+										</tbody>
+									</table>
+								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+								<!--  -->
+								
+								
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">카드 번호 :</label>
+									<div class="controls">
+										<span class="btn btn-small btn-info"> <a href="#"
+											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
+										<input type="text" class="search-input-width-first" id="cardNo" name="cardNo" />
+										</a> 
+									
+										</span> 
+										&nbsp; &nbsp;
+										<input type="text" id="cardUser" name="cardUser" placeholder="소유자" readonly/>
 									</div>
 								</div>
 								
-								<div class="control-group">
-									<label class="control-label" for="form-field-codename">계좌번호 / 소유자 :</label>
-									<div class="controls">
-										<input class="span3" type="text" id="depositNo" name="depositNo" placeholder="계좌번호"/>
-										<input class="span5" type="text" id="depositHost" name="depositHost" placeholder="소유자"/>
-									</div>
-								</div>
+								
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">전표사용목적 :</label>
@@ -131,28 +207,24 @@
 
 					</div><!-- /.row-fluid -->
 
-
+			
+			<div class="hr hr-18 dotted"></div>
 			<!-- buttons -->
 			<div class="row-fluid">
-				<div class="span12">
-					<div class="form-actions">
+				<div class="span8">
 						<button type="submit" class="btn btn-info btn"  id="btn-read" name="btn-read"
 									formaction="${pageContext.request.contextPath}/01/25/read">조회</button>
 						<button class="btn btn-primary" type="submit" id="btn-create" name="btn-create"
 							formaction="${pageContext.request.contextPath }/01/03/add">입 력</button>
-						&nbsp; &nbsp; &nbsp;
 						<button class="btn btn-warning" type="submit" id="btn-update" name="btn-update"
 							formaction="${pageContext.request.contextPath }/01/03/update">수 정</button>
-						&nbsp; &nbsp; &nbsp;
 						<button class="btn btn-danger" type="submit" id="btn-delete" name="btn-delete"
 							formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
-						&nbsp; &nbsp; &nbsp;
 						<button class="btn btn-default" type="reset">취 소</button>
-					</div>
-					<div class="hr"></div>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-						</form>
+			<div class="hr hr-18 dotted"></div>
+			</form>
 
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">

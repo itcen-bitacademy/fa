@@ -57,7 +57,7 @@
 				#{amountFlag },
 				#{insertUserid },
 				now(),
-				#{useYn },
+				true,
 				#{voucherNo },
 				#{accountNo }
 		)
@@ -86,7 +86,7 @@
 				#{insertTeam },
 		  		#{insertUserid },
 		  		now(),
-		  		#{useYn },
+		  		true,
 		  		#{voucherNo },
 		  		#{systemCode },
 		  		#{manageNo },
