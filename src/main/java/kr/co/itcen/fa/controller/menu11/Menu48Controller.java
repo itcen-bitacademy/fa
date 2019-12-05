@@ -128,6 +128,7 @@ public class Menu48Controller {
 		ItemVo itemVo2 = new ItemVo();
 		ItemVo itemVo3 = new ItemVo();
 		
+		
 		MappingVo mappingVo = new MappingVo();
 		System.out.println("vNo : " + vo.getVoucherNo());
 		voucherVo.setNo(vo.getVoucherNo());
