@@ -55,6 +55,30 @@ public class Menu37Service {
 		List<BuyTaxbillItemsVo> getAboutItmes = menu37Repository.getAboutItmes(no);
 		return getAboutItmes;
 	}
+	public void taxbillDelete(String no) {
+		menu37Repository.taxbillDelete(no);
+	}
+	public void taxbillItemDelete(String no) {
+		menu37Repository.taxbillItemDelete(no);
+		
+	}
+	public void taxbillUpdateDelete(String no) {
+		menu37Repository.taxbillUpdateDelete(no);
+		
+	}
+	public void taxbillItemsUpdateDelete(String no) {
+		menu37Repository.taxbillItemsUpdateDelete(no);
+		
+	}
+	public void insertUpdatedTax(BuyTaxbillVo vo) {
+		menu37Repository.insertUpdatedTax(vo);
+		
+	}
+	public void insertUpdatedItem(BuyTaxbillItemsVo buyTaxbillItemsVo) {
+		menu37Repository.insertUpdatedItem(buyTaxbillItemsVo);
+		
+	}
+	
 
 	
 }
