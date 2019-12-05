@@ -114,9 +114,12 @@ public class Menu48Controller {
 	public String update(LTermdebtVo vo,@AuthUser UserVo user) {
 		String[] dates=vo.getDebtExpDate().split("-");
 		System.out.println(user);
+		System.out.println(vo);
 		vo.setDebtDate(dates[0]);
 		vo.setExpDate(dates[1]);
 		vo.setUpdateId(user.getId());
+		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
+		vo.setIntAmount(money);
 		menu48Service.update(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
