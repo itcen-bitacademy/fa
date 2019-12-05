@@ -61,7 +61,8 @@ public class Menu03Service {
 			}
 			System.out.println("^^^^^^^^^^" + voucherVo.getNo());
 			System.out.println("service" + mappingVo.getVoucherNo());
-			mappingVo.setInsertUserid(userVo.getId());
+			mappingVo.setInsertTeam(userVo.getTeamName());
+			mappingVo.setUpdateUserid(userVo.getId());
 			System.out.println("***********" + voucherVo.getNo());
 			System.out.println("service" + mappingVo.getVoucherNo());
 			voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo));

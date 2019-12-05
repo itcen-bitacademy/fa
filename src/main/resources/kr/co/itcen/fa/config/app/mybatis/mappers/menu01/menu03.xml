@@ -369,4 +369,98 @@
 	]]>
 	</update>
 	
+	
+	<!-- 전표테이블 새로 입력 -->
+	<insert id="newVoucher" parameterType="1vouchervo">
+		<![CDATA[
+		insert
+		  into tb_voucher_manager(no,
+		  			   reg_date,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   update_userid,
+		  			   update_day,
+		  			   use_yn
+		  )
+		values (null,
+				#{regDate },
+		  		#{insertUserid },
+		  		#{insertDay },
+		  		#{updateUserid },
+		  		now(),
+		  		true
+		  		)
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<!-- 항목테이블 새로 입력 -->
+	<insert id="newItem" parameterType="1itemvo">
+		<![CDATA[
+		insert
+		  into tb_voucher_item(no,
+		  			amount,
+		  			amount_flag,
+		  			insert_userid,
+		  			insert_day,
+		  			update_userid,
+		  			update_day,
+		  			use_yn,
+		  			voucher_no,
+		  			account_no
+		)
+		values (null,
+				#{amount },
+				#{amountFlag },
+				#{insertUserid },
+				#{insertDay },
+				#{updateUserid },
+				now(),
+				true,
+				#{voucherNo },
+				#{accountNo }
+		)
+		]]>
+	</insert>
+	
+	<!-- 매핑테이블 새로 입력 -->
+	<insert id="newMapping" parameterType="1mappingvo">
+		<![CDATA[
+		insert
+		  into tb_voucher_system_mapping(no,
+		  			   voucher_use,
+		  			   insert_team,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   update_userid,
+		  			   update_day,
+		  			   use_yn,
+		  			   voucher_no,
+		  			   system_code,
+		  			   manage_no,
+		  			   card_no,
+		  			   deposit_no,
+		  			   customer_no
+		)
+		values (null,
+				#{voucherUse },
+				#{insertTeam },
+		  		#{insertUserid },
+		  		#{inserDay },
+		  		#{updateUserid },
+		  		now(),
+		  		true,
+		  		#{voucherNo },
+		  		#{systemCode },
+		  		#{manageNo },
+		  		#{cardNo },
+		  		#{depositNo },
+		  		#{customerNo }
+		)
+		]]>
+	</insert>
 </mapper>
