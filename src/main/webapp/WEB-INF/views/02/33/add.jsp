@@ -91,7 +91,7 @@
 					success:function(purchaseitemList) {
 						alert("수정 완료");
 						
-						updateTable(purchaseitemList);
+						updateTable(purchaseitemList, 1);
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
 					}
@@ -139,28 +139,37 @@
 			}
 		});
 		
-		function updateTable(purchaseitemList) {
+		function updateTable(purchaseitemList, page_num) {
 			console.log(purchaseitemList);
 			
 			$("#select-purchaseitem-list").remove();
 			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>")
 			$("#sample-table-1").append($newTbody)
 			var i = 1;
+			
 			for(var pur in purchaseitemList) {
 				$newTbody.append(
 					"<tr>" +
-					"<td>" + i + "</td>" +
-					"<td>" + purchaseitemList[pur].no + "</td>" +
-					"<td>" + purchaseitemList[pur].name + "</td>" +
-					"<td class='hidden-480'>" + purchaseitemList[pur].sectioncode + "</td>" +
-					"<td class='hidden-phone'>" + purchaseitemList[pur].sectionname + "</td>" +
-					"<td>" + purchaseitemList[pur].standard + "</td>" +
-					"<td>" + purchaseitemList[pur].price + "</td>" +
-					"<td>" + purchaseitemList[pur].managername + "</td>" +
-					"<td>" + purchaseitemList[pur].producedate + "</td>" +
+					"<td>" + isEmpty((i + (page_num-1)*11)) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].no) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].name) + "</td>" +
+					"<td class='hidden-480'>" + isEmpty(purchaseitemList[pur].sectioncode) + "</td>" +
+					"<td class='hidden-phone'>" + isEmpty(purchaseitemList[pur].sectionname) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].standard) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].price) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].managername) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].producedate) + "</td>" +
 					"</tr>"
 				);
 				i++;
+			}
+		}
+		
+		function isEmpty(value) {
+			if(value == null || value.length === 0) {
+				return "";
+			} else {
+				return value;
 			}
 		}
 		
@@ -183,7 +192,7 @@
 			});
 		});
 		
-		$("body").on("click","#select-purchaseitem-list tr",function(e){	
+		$("body").on("click","#select-purchaseitem-list tr",function(e) {
 			var tr = $(this);
 			var td = tr.children();
 			var itemcode = td.eq(1).text().trim();
@@ -216,6 +225,23 @@
 					}
 				});
 			}
+		});
+		
+		$("body").on("click",".page_go",function(e) {
+			var page_num = $(this).text();
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+				type:"get",
+				dataType:"json",
+				data:{"page" : page_num},
+				success:function(data) {
+					console.log(page_num);
+					updateTable(data, page_num);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
 		});
 	});
 	
@@ -420,9 +446,10 @@
 							</thead>
 
 							<tbody id="select-purchaseitem-list">
+								<fmt:parseNumber var="pc" integerOnly="true" value="${fn:length(purchaseitemList) / 11 }" />
 								<c:forEach items="${pagepurchaseitemList }" var="pl" varStatus="status">
 									<tr>
-										<td>${status.count }</td>
+										<td>${status.count + (pc-1)*11 }</td>
 										<td>${pl.no }</td>
 										<td>${pl.name }</td>
 										<td class="hidden-480">${pl.sectioncode }</td>
@@ -441,13 +468,13 @@
 						<ul>
 							<c:set var="page_count" value="${fn:length(purchaseitemList)}"></c:set>
 							
-							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+							<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
 							<c:forEach var="pur_size" begin="1" end="${((page_count-1)/11)+1 }" step="1">
-								<li><a href="#">${pur_size }</a></li>
+								<li><a class="page_go" href="javascript:void(0);">${pur_size }</a></li>
 							</c:forEach>
 							
 							<!-- <li class="active"><a href="#">1</a></li> -->
-							<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							<li><a href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
 						</ul>
 					</div>
 				</div>

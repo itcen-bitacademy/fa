@@ -42,19 +42,27 @@ public class Menu33Controller {
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list"})
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
-					   @RequestParam(value="page", required=false, defaultValue="1") String page,
+					   @RequestParam(value="page", required=false, defaultValue="1") int page,
 					   Model model) {
 		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList();
-		int cur_page = Integer.parseInt(page);
 		
 		List<SectionVo> sectionList = menu33Service.getSectionList();
-		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(cur_page);
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
 		
 		model.addAttribute("purchaseitemList", purchaseitemList);
 		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList);
 		model.addAttribute("sectionList", sectionList);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/paging")
+	public List<PurchaseitemVo> paging(@RequestParam(value="page", required=false, defaultValue="1") int page) {
+		System.out.println(page);
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
+		
+		return pagepurchaseitemList;
 	}
 	
 	@ResponseBody
@@ -126,6 +134,7 @@ public class Menu33Controller {
 	public List<PurchaseitemVo> update(@ModelAttribute PurchaseitemVo purchaseitemVo,
 			  			 @ModelAttribute FactoryVo factoryVo,
 			  			 @RequestParam(value="factoryname", required=false) String factory_name,
+			  			 @RequestParam(value="page", required=false, defaultValue="1") int page,
 			  			 HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
@@ -142,9 +151,9 @@ public class Menu33Controller {
 			}
 		}
 		
-		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList();
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
 		
-		return purchaseitemList;
+		return pagepurchaseitemList;
 	}
 	
 	@ResponseBody
