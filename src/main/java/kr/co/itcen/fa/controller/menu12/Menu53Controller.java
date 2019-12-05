@@ -112,7 +112,7 @@ public class Menu53Controller {
 		itemVo2.setAccountNo(5010101L);								// 상품매출
 		itemVoList.add(itemVo2);
 		
-		itemVo3.setAmount(selltaxbillvo.getTaxValue()); 			// 부가세금액
+		itemVo3.setAmount(selltaxbillvo.getTotalTaxValue()); 			// 부가세금액
 		itemVo3.setAmountFlag("c");									// 대변
 		itemVo3.setAccountNo(2140101L);								// 부가세예수금
 		itemVoList.add(itemVo3);
@@ -120,7 +120,7 @@ public class Menu53Controller {
 		mappingVo.setVoucherUse(selltaxbillvo.getVoucherUse());     // 비고
 		mappingVo.setSystemCode(selltaxbillvo.getSalesNo());      // 매출번호
 		mappingVo.setDepositNo(selltaxbillvo.getDepositNo());       // 계좌번호
-		mappingVo.setCardNo(selltaxbillvo.getCustomerCode());       // 거래처 코드
+		mappingVo.setCustomerNo(selltaxbillvo.getCustomerCode());       // 거래처 코드
 		
 		long voucherNo;
 		voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
