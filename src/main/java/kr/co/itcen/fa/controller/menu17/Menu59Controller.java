@@ -51,7 +51,7 @@ public class Menu59Controller {
 		//조회할 값들 셋팅
 		accountManagement.setAccountUsedyear(accountUsedyear);
 		accountManagement.setAccountStatementType(type);
-		accountManagement.setInsertUserid(authUser.getName());		
+		accountManagement.setInsertUserid(authUser.getId());		
 		
 		if(accountNo != null) {
 			accountManagement.setAccountNo(accountNo);
@@ -93,7 +93,7 @@ public class Menu59Controller {
 		//저장할 값들 셋팅
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setAccountNo(accountNo);
-		accountManagement.setInsertUserid(authUser.getName());
+		accountManagement.setInsertUserid(authUser.getId());
 		
 		System.out.println(accountManagement);
 		
