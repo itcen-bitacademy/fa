@@ -20,24 +20,24 @@
 		    from tb_l_term_debt
 		    where delete_flag= "N"
 	]]>
-			 <if  test='vo.debtDate!=null and !"".equals(vo.debtDate)'>		    
+			 <if  test='debtDate!=null and !"".equals(debtDate)'>		    
 			<![CDATA[
-			and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
+			and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
 			]]>
 			</if>
-			<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>
+			<if test='intPayWay != null and !"".equals(intPayWay)'>
 			<![CDATA[
-			and 	int_pay_way = #{vo.intPayWay}
+			and 	int_pay_way = #{intPayWay}
 			]]>
 			</if>
-		     <if test='vo.bankCode != null and !"".equals(vo.bankCode)'>		    
+		     <if test='bankCode != null and !"".equals(bankCode)'>		    
 			<![CDATA[
-			and 	bank_code like concat('%',#{vo.bankCode},'%') 
+			and 	bank_code like concat('%',#{bankCode},'%') 
 			]]>
 			</if>
-			<if test='vo.expDate != null and !"".equals(vo.expDate)'>
+			<if test='expDate != null and !"".equals(expDate)'>
 			<![CDATA[
-			and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
+			and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
 			]]>
 			</if>
 	</select>

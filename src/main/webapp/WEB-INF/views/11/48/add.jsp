@@ -141,7 +141,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>차입금대분류</h4></td>
 									<td colspan="2">
-										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="form-field-select-3" >
+										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
 										<option value=""></option>
 										<c:forEach items="${sectionlist}" var="sectionvo">
 											<option value="${sectionvo.code}">${sectionvo.classification }</option>
@@ -392,7 +392,7 @@ $(function(){
 		$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
 		
 		
-		var rate = td.eq(8).text().split('%');
+		var rate = td.eq(8).text().split('.');
 		
 		
 		$("input[name=intRate]").val(rate[0]);
