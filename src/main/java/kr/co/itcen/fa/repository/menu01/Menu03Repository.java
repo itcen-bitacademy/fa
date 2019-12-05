@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.TestVo;
@@ -52,8 +53,11 @@ public class Menu03Repository {
 	// 전표생성 (1팀)
 	public void createVoucher(VoucherVo voucherVo) {
 		sqlSession.insert("menu03.insertVoucher2", voucherVo);
+		System.out.println("########1" + voucherVo.getNo());
 		sqlSession.insert("menu03.insertItem2", voucherVo);
+		System.out.println("########2" + voucherVo.getNo());
 		sqlSession.insert("menu03.insertMapping2", voucherVo);
+		System.out.println("########3" + voucherVo.getNo());
 		
 	}
 	
@@ -76,6 +80,54 @@ public class Menu03Repository {
 		count += sqlSession.update("menu03.deleteItem2", voucherVo);
 		count += sqlSession.update("menu03.deleteMapping2", voucherVo);
 		return count == 3;
+	}
+	
+	// 전표 1팀 수정
+	public Boolean updateVoucher(VoucherVo voucherVo) {
+		System.out.println("a : "  +voucherVo.getRegDate());
+		System.out.println("aa : "  +voucherVo.getUpdateUserid());
+		int count = sqlSession.update("menu03.updateVoucher2", voucherVo);
+		count += sqlSession.update("menu03.updateItem2", voucherVo);
+		count += sqlSession.update("menu03.updateMapping2", voucherVo);
+		return count == 3;
+	}
+	
+	// 전표 다른 팀 수정
+	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo) {
+		VoucherVo voucherVoTemp = new VoucherVo();
+		voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
+		
+		sqlSession.delete("menu03.deleteVoucher", voucherVo);
+		sqlSession.delete("menu03.deleteItem", itemVo);
+		sqlSession.delete("menu03.deleteMapping", mappingVo);
+		
+		sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
+		
+		for(int i = 0; i < itemVo.size(); i++) {
+			itemVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
+			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
+			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
+		}
+		
+		mappingVo.setInsertUserid(voucherVoTemp.getInsertUserid());
+		mappingVo.setInsertDay(voucherVoTemp.getInsertDay());
+		sqlSession.insert("menu03.insertMapping", mappingVo); // 매핑테이블 입력
+		
+		return voucherVo.getNo();
+		
+	}
+	
+	// 전표 다른 팀 삭제
+	public void deleteVoucher(VoucherVo voucherVo, UserVo userVo) {
+		VoucherVo voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
+		if (!userVo.getTeamName().equals(voucherVoTemp.getInsertTeam())) {
+			return;
+		}
+		
+		sqlSession.delete("menu03.deleteVoucher3", voucherVo);
+		sqlSession.delete("menu03.deleteItem3", voucherVo);
+		sqlSession.delete("menu03.deleteMapping3", voucherVo);
+		
 	}
 	
 }

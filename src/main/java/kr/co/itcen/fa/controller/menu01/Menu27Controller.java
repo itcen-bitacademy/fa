@@ -1,6 +1,5 @@
 package kr.co.itcen.fa.controller.menu01;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu27Service;
@@ -34,51 +35,69 @@ public class Menu27Controller {
 	private Menu27Service menu27Service;
 
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
-		List<CustomerVo> list = menu27Service.list();
-		model.addAttribute("list", list);
-		//menu27Service.test();
+	public String test(Model model,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
+		DataResult<CustomerVo> dataResult = menu27Service.list(page);
+		model.addAttribute("dataResult", dataResult);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}	
 
 	// Create
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/create")
-	public Map<String, Object> create(@ModelAttribute CustomerVo customervo,
+	public Map<String, Object> create(@ModelAttribute CustomerVo customerVo,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
 			@AuthUser UserVo authUser) {
 		System.out.println("create");
-		customervo.setInsertUserid(authUser.getName()); //insertUserid
-		Map<String, Object> result = menu27Service.create(customervo);
-		return result;
+		System.out.println(customerVo.toString());
+				
+		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
+		customerVo.setInsertUserid(authUser.getName());
+		
+		page = 1;
+		Map<String, Object> dataResult =  menu27Service.create(customerVo, page);
+		
+		return dataResult;
 	}
 	
 	// Read
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/read")
 	public Map<String, Object> read(@ModelAttribute CustomerVo customerVo) {
-		Map<String, Object> result = menu27Service.read(customerVo);
-		return result;
+		System.out.println("read");
+		
+		Map<String, Object> dataResult = menu27Service.read(customerVo);
+		return dataResult;
 	}
 	
 	// Update
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/update")
 	public Map<String, Object> update(@ModelAttribute CustomerVo customerVo,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
 			@AuthUser UserVo authUser) {
-		System.out.println("update");
-		customerVo.setUpdateUserid(authUser.getName()); //updateUserid
-		Map<String, Object> result = menu27Service.update(customerVo);
-		return result;
+		System.out.println("update : " + page);
+		
+		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
+		customerVo.setUpdateUserid(authUser.getName());
+		
+		System.out.println(customerVo.toString());
+		
+		Map<String, Object> dataResult = menu27Service.update(customerVo, page);
+		return dataResult;
 	}
 	
 	// Delete
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
-	public Map<String, Object> delete(@ModelAttribute CustomerVo customerVo) {
+	public Map<String, Object> delete(@ModelAttribute CustomerVo customerVo,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
 		System.out.println("delete");
-		Map<String, Object> result = menu27Service.delete(customerVo);
-		result.put("success", true);
-		return result;
+		page = 1;
+		Map<String, Object> dataResult = menu27Service.delete(customerVo, page);
+		dataResult.put("success", true);
+		
+		return dataResult;
 	}
 
 }
