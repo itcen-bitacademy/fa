@@ -55,4 +55,9 @@ public class Menu06Repository {
 		int count = sqlSession.insert("menu06.update", vo);
 		return count == 1;
 	}
+
+	public Boolean delete(PurchasemanagementVo vo) {
+		int count = sqlSession.insert("menu06.delete", vo);
+		return count == 1;
+	}
 }

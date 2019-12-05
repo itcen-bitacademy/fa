@@ -158,4 +158,11 @@ public class Menu64Service {
 		return menu64Repository.get(no);
 	}
 	
+	
+	//손익계산서(IncomeStatement) delete Service
+	public boolean delete(ClosingDateVo closingDate) {
+		int result = menu64Repository.delete(closingDate);
+		return result == 1;
+	}
+	
 }

@@ -12,13 +12,13 @@
 					a.name as accountName,
 					(case 
 					 when a.balance_type = "C" 
-					 then (ifnull(t.credit_total, 0) - ifnull(t.debtor_total, 0)) 
-					 else (ifnull(t.debtor_total, 0) - ifnull(t.credit_total, 0)) 
+					 then (ifnull(t.credit_spot_month, 0) - ifnull(t.debtor_spot_month, 0)) 
+					 else (ifnull(t.debtor_spot_month, 0) - ifnull(t.credit_spot_month, 0)) 
 					 end) as monthToAmount, 
 					 (case 
 					 when a.balance_type = "C" 
-					 then (ifnull(t.credit_spot_month, 0) - ifnull(t.debtor_spot_month, 0)) 
-					 else (ifnull(t.debtor_spot_month, 0) - ifnull(t.credit_spot_month, 0)) 
+					 then (ifnull(t.credit_total, 0) - ifnull(t.debtor_total, 0)) 
+					 else (ifnull(t.debtor_total, 0) - ifnull(t.credit_total, 0)) 
 					 end) as amount, 
 					 t.insert_userid as insertUserid, 
 					 t.insert_day as insertDay, 
@@ -66,5 +66,14 @@
 			order by account_order asc;
 		]]>
 	</select>
+	
+	<delete id="deleteByClosingDateNo" parameterType="closingDate17Vo">
+		<![CDATA[
+			delete from	tb_financial_statement
+			where  closing_date_no = #{no }
+			  and  no > 0;
+		]]>
+	</delete>
+	
 
 </mapper>

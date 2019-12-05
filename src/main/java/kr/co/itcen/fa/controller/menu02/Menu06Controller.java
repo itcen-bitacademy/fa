@@ -5,13 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu02.Menu06Service;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
@@ -47,10 +45,7 @@ public class Menu06Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public PurchasemanagementVo search(@RequestBody PurchasemanagementVo vo) {
 		PurchasemanagementVo result = menu06Service.getList(vo);
-		result.setPurchaseDate(result.getPurchaseDate().substring(0,10));
-		result.setReceiptDate(result.getReceiptDate().substring(0,10));
-		result.setReleaseDate(result.getReleaseDate().substring(0,10));
-		System.out.println(result);
+			System.out.println(result);
 		return result;
 	}
 	
@@ -60,7 +55,15 @@ public class Menu06Controller {
 		if("".equals(vo.getTaxbillNo())) {
 			vo.setTaxbillNo("0");
 		}
+		vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue())*vo.getQuantity());
+		System.out.println(vo.getTotalPrice());
 		menu06Service.update(vo);
+		return "redirect:/02";
+	}
+	
+	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
+	public String delete(PurchasemanagementVo vo) {
+		menu06Service.delete(vo);
 		return "redirect:/02";
 	}
 
@@ -96,6 +99,7 @@ public class Menu06Controller {
 				menu06Service.insert(vo);
 			}
 		} else {
+			purchasemanagementVo.setTotalPrice((purchasemanagementVo.getSupplyValue() + purchasemanagementVo.getTaxValue())*purchasemanagementVo.getQuantity());
 			menu06Service.insert(purchasemanagementVo);
 		}
 
