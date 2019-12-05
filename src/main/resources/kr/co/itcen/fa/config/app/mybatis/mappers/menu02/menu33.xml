@@ -9,18 +9,10 @@
 		]]>
 	</insert>
 	
-	<select id="factorycodeselect" resultType="int">
-		<![CDATA[
-		select count(*) from tb_factory
-		]]>
-	</select>
-	
 	<insert id="factoryadd" parameterType="factory33vo">
 		<![CDATA[
-		insert into tb_factory(no, name, postaddress, roadaddress, detailaddress, manager_name, insert_userid, insert_day)
-					   	select #{no }, #{name }, #{postaddress }, #{roadaddress }, #{detailaddress }, #{managername }, #{insertuserid }, now()
-							from dual where not exists
-							(select * from tb_factory where name = #{name } and delete_flag = "N")
+		insert into tb_factory(no, name, purchaseitem_code, postaddress, roadaddress, detailaddress, manager_name, insert_userid, insert_day)
+						values(#{no }, #{name }, #{purchaseitemcode }, #{postaddress }, #{roadaddress }, #{detailaddress }, #{managername }, #{insertuserid }, now())
 		]]>
 	</insert>
 	
@@ -31,10 +23,16 @@
 		]]>
 	</update>
 	
+	<select id="originfactorycode" parameterType="String" resultType="String">
+		<![CDATA[
+		select factory_code from tb_purchaseitem where no = #{no } and delete_flag = "N"
+		]]>
+	</select>
+	
 	<update id="factoryupdate" parameterType="factory33vo">
 		<![CDATA[
-		update tb_factory set name = #{name }, postaddress = #{postaddress }, roadaddress = #{roadaddress }, detailaddress = #{detailaddress }, manager_name = #{managername }, update_userid = #{updateuserid }, update_day = now()
-						where no = #{no }
+		update tb_factory set no = #{no }, name = #{name }, postaddress = #{postaddress }, roadaddress = #{roadaddress }, detailaddress = #{detailaddress }, manager_name = #{managername }, update_userid = #{updateuserid }, update_day = now()
+						where purchaseitem_code = #{purchaseitemcode } and no = #{originNo }
 		]]>
 	</update>
 	
@@ -46,7 +44,7 @@
 	
 	<update id="factorydelete" parameterType="factory33vo">
 		<![CDATA[
-		update tb_factory set delete_flag = "Y", update_userid = #{updateuserid }, update_day = now() where no = #{no }
+		update tb_factory set delete_flag = "Y", update_userid = #{updateuserid }, update_day = now() where no = #{no } and purchaseitem_code = #{purchaseitemcode }
 		]]>
 	</update>
 	
@@ -56,15 +54,9 @@
 		]]>
 	</select>
 	
-	<select id="searchfactory" parameterType="String" resultType="factory33vo">
+	<select id="searchfactory" parameterType="map" resultType="factory33vo">
 		<![CDATA[
-		select no, name, postaddress, roadaddress, detailaddress, manager_name as managername from tb_factory where no = #{no } and delete_flag = "N"
-		]]>
-	</select>
-	
-	<select id="searchfactorycode" parameterType="String" resultType="String">
-		<![CDATA[
-		select no from tb_factory where no = (select factory_code from tb_purchaseitem where no = #{no })
+		select no, name, postaddress, roadaddress, detailaddress, manager_name as managername from tb_factory where no = #{factorycode } and purchaseitem_code = #{purchaseitemcode } and delete_flag = "N"
 		]]>
 	</select>
 	
@@ -78,7 +70,7 @@
 		<![CDATA[
 		select p.no, p.name, p.price, date(p.produce_date) as producedate, p.section_code as sectioncode, p.standard, s.classification as sectionname, f.manager_name as managername
 		  from tb_purchaseitem p, tb_factory f, tb_section s
-		 where p.section_code = s.code and p.factory_code = f.no and s.parent_no = 1 and p.delete_flag = "N"
+		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
 		 order by p.idx asc
 		]]>
 	</select>
@@ -86,6 +78,12 @@
 	<select id="getsectionlist" resultType="sectionvo">
 		<![CDATA[
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1
+		]]>
+	</select>
+	
+	<select id="getFactorysectionList" resultType="sectionvo">
+		<![CDATA[
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 38
 		]]>
 	</select>
 	
@@ -99,7 +97,7 @@
 		<![CDATA[
 		select p.no, p.name, p.price, date(p.produce_date) as producedate, p.section_code as sectioncode, p.standard, s.classification as sectionname, f.manager_name as managername
 		  from tb_purchaseitem p, tb_factory f, tb_section s
-		 where p.section_code = s.code and p.factory_code = f.no and s.parent_no = 1 and p.delete_flag = "N"
+		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
 		 order by p.idx asc
 		 limit #{page }, 11
 		]]>

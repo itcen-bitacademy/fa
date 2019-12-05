@@ -24,30 +24,15 @@ public class Menu33Repository {
 	private SqlSession sqlSession;
 	
 	public void add(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
-		int count = sqlSession.selectOne("menu33.factorycodeselect");
-		String fa_code = "";
-		
-		if(count < 9) {
-			fa_code = "00" + (count+1);
-		} else if(count >= 9 && count < 99) {
-			fa_code = "0" + (count+1);
-		} else {
-			fa_code = "" + (count+1);
-		}
-		
-		factoryVo.setNo(fa_code);
-		purchaseitemVo.setFactorycode(fa_code);
-		
 		sqlSession.insert("menu33.purchaseitemadd", purchaseitemVo);
-		
 		sqlSession.insert("menu33.factoryadd", factoryVo);
 	}
 
 	public void update(PurchaseitemVo purchaseitemVo, FactoryVo factoryVo) {
-		String factorycode = sqlSession.selectOne("menu33.searchfactorycode", purchaseitemVo.getNo());
+		String purchaseNo = purchaseitemVo.getNo();
 		
-		purchaseitemVo.setFactorycode(factorycode);
-		factoryVo.setNo(purchaseitemVo.getFactorycode());
+		String origin_factorycode = sqlSession.selectOne("menu33.originfactorycode", purchaseNo);
+		factoryVo.setOriginNo(origin_factorycode);
 		
 		sqlSession.update("menu33.purchaseitemupdate", purchaseitemVo);
 		sqlSession.update("menu33.factoryupdate", factoryVo);
@@ -57,7 +42,7 @@ public class Menu33Repository {
 		purchaseitemVo.setDeleteflag("Y");
 		factoryVo.setDeleteflag("Y");
 		sqlSession.update("menu33.purchaseitemdelete", purchaseitemVo);
-		//sqlSession.update("menu33.factorydelete", factoryVo);
+		sqlSession.update("menu33.factorydelete", factoryVo);
 	}
 
 	public PurchaseitemVo searchpurchaseitem(String no) {
@@ -66,8 +51,11 @@ public class Menu33Repository {
 		return purchaseitemVo;
 	}
 	
-	public FactoryVo searchfactory(String no) {
-		FactoryVo factoryVo = sqlSession.selectOne("menu33.searchfactory", no);
+	public FactoryVo searchfactory(String purchaseitem_code, String factory_code) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("purchaseitemcode", purchaseitem_code);
+		map.put("factorycode", factory_code);
+		FactoryVo factoryVo = sqlSession.selectOne("menu33.searchfactory", map);
 		
 		return factoryVo;
 	}
@@ -90,6 +78,12 @@ public class Menu33Repository {
 		return sectionList;
 	}
 	
+	public List<SectionVo> getFactorysectionList() {
+		List<SectionVo> factoryList = sqlSession.selectList("menu33.getFactorysectionList");
+		
+		return factoryList;
+	}
+	
 	public List<SectionVo> getsearchSectionList(String sectionname) {
 		sectionname = "%" + sectionname + "%";
 		
@@ -105,9 +99,6 @@ public class Menu33Repository {
 		
 		return pagepurchaseitemList;
 	}
-
-	
-	
 }
 
 

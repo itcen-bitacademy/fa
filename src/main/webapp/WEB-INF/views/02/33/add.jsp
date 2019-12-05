@@ -47,6 +47,7 @@
 						
 						$("#form-field-item-name").val(data.name);
 						$("#form-field-section-code").val(data.section_code);
+						$("#form-field-factory-code").val(data.factory_code);
 						$("#form-field-factory-manager").val(data.manager_name);
 						$("#id-date-picker-1").val(data.produce_date);
 						$("#form-field-purpose").val(data.purpose);
@@ -102,6 +103,7 @@
 		$("#add").click(function() {
 			var itemcode = $("#form-field-item-id").val();
 			console.log(itemcode);
+			console.log();
 			
 			if(itemcode != null && itemcode.length > 0) {
 				$.ajax({
@@ -111,6 +113,7 @@
 					data:$("#form").serialize(),
 					success:function(data) {
 						alert("등록 완료");
+						location.reload();
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
 					}
@@ -131,12 +134,17 @@
 					dataType:"json",
 					data:{"sectionname" : sectionname},
 					success:function(data) {
-						
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
 					}
 				});
 			}
+		});
+		
+		$("#btn-search-factory").click(function() {
+			var factoryname = $("#search-factory-name").val();
+			
+			
 		});
 		
 		function updateTable(purchaseitemList, page_num) {
@@ -173,13 +181,32 @@
 			}
 		}
 		
-		$("#search-dialog").click(function(event) {
-			$("#dialog-main").dialog({
+		$("#search-section-dialog").click(function(event) {
+			$("#dialog-section-main").dialog({
 				autoOpen : false
 			});
 			
-			$("#dialog-main").dialog('open');
-			$("#dialog-main").dialog({
+			$("#dialog-section-main").dialog('open');
+			$("#dialog-section-main").dialog({
+				resizable: false,
+			    height: 400,
+			      width: 400,
+			      modal: true,
+			      buttons: {
+			        "확인": function() {
+			          $(this).dialog("close");
+			        }
+			      }
+			});
+		});
+		
+		$("#search-factory-dialog").click(function(event) {
+			$("#dialog-factory-main").dialog({
+				autoOpen : false
+			});
+			
+			$("#dialog-factory-main").dialog('open');
+			$("#dialog-factory-main").dialog({
 				resizable: false,
 			    height: 400,
 			      width: 400,
@@ -217,6 +244,7 @@
 						
 						$("#form-field-item-name").val(data.name);
 						$("#form-field-section-code").val(data.section_code);
+						$("#form-field-factory-code").val(data.factory_code);
 						$("#form-field-factory-manager").val(data.manager_name);
 						$("#id-date-picker-1").val(data.produce_date);
 						$("#form-field-purpose").val(data.purpose);
@@ -264,7 +292,7 @@
 				<div class="span12">
 					<div class="row-fluid">
 						<form id="form" class="form-horizontal" method="post">
-						<div style="height:330px">
+						<div style="height:335px">
 							<div class="span6">
 								<div class="control-group">
 									<label class="control-label" for="form-field-item-id">품목코드</label>
@@ -273,32 +301,29 @@
 									</div>
 								</div>
 								
+								
+								
+								
 								<div class="control-group">
 									<label class="control-label" for="form-field-section-name">품목 대분류명</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
-											<input class="span5" id="form-field-section-name" name="sectionname" type="text" readonly/>
+											<input class="span5" id="form-field-section-name" name="sectionname" type="text" placeholder="품목 대분류명" readonly/>
 											<span class="add-on">
-												<a href="#" id="search-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
+												<a href="javascript:void(0);" id="search-section-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 											</span>
 										</div>
 									</div>
 								</div>
 								
-								
-								
-								
-								
-								
-								
-								<div id="dialog-main" title="품목 대분류명 조회" hidden="hidden">
-									<table id ="dialog-message-table">
+								<div id="dialog-section-main" title="품목 대분류명 조회" hidden="hidden">
+									<table id ="dialog-message-section-table">
 										<tr>
 											<td>
 												&nbsp;품목 대분류명 &nbsp;&nbsp;
 												<input type="text" id="search-section-name" style="width:170px; margin: 0 0 0 0;"/>
 												
-												<a href="#" id="btn-search-section">
+												<a href="javascript:void(0);" id="btn-search-section">
 													<span class="btn btn-small btn-info">
 														<i class="icon-search nav-search-icon"></i>
 													</span>
@@ -314,7 +339,7 @@
 												<th class="center">대분류코드</th>
 											</tr>
 										</thead>
-										<tbody id="tbody-list">
+										<tbody id="tbody-section-list">
 										<c:forEach items="${sectionList}" var="sl" varStatus="status">
 											<tr>
 												<td class="center">${sl.classification}</td>
@@ -330,12 +355,64 @@
 								
 								
 								
+								
+								
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-name">생산공장명</label>
 									<div class="controls">
-										<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명"/>
+										<div class="row-fluid input-append">
+											<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명" readonly/>
+											<span class="add-on">
+												<a href="javascript:void(0);" id="search-factory-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
+											</span>
+										</div>
 									</div>
 								</div>
+								
+								<div id="dialog-factory-main" title="생산공장명 조회" hidden="hidden">
+									<table id ="dialog-message-factory-table">
+										<tr>
+											<td>
+												&nbsp;생산공장명 &nbsp;&nbsp;
+												<input type="text" id="search-factory-name" style="width:170px; margin: 0 0 0 0;"/>
+												
+												<a href="javascript:void(0);" id="btn-factory-factory">
+													<span class="btn btn-small btn-info">
+														<i class="icon-search nav-search-icon"></i>
+													</span>
+												</a>
+											</td>
+										</tr>
+									</table>
+									
+									<table id="factory-table" class="table table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">공장명</th>
+												<th class="center">공장코드</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-factory-list">
+										<c:forEach items="${factoryList}" var="fl" varStatus="status">
+											<tr>
+												<td class="center">${fl.classification}</td>
+												<td class="center">${fl.code}</td>
+											</tr>
+										</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-postaddress">생산공장 주소</label>
@@ -382,6 +459,13 @@
 								</div>
 								
 								<div class="control-group">
+									<label class="control-label" for="form-field-factory-code">생산공장코드</label>
+									<div class="controls">
+										<input class="span4" type="text" id="form-field-factory-code" name="factorycode" readonly/>
+									</div>
+								</div>
+								
+								<div class="control-group">
 									<label class="control-label" for="form-field-factory-manager">생산담당자</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-factory-manager" name="managername" placeholder="생산담당자"/>
@@ -391,21 +475,20 @@
 								<div class="control-group">
 									<label class="control-label" for="id-date-picker-1">생산 일자</label>
 									<div class="controls">
-										<div class="control-group">
-											<div class="row-fluid input-append">
-												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="producedate" data-date-format="yyyy-mm-dd" style="margin:0 0 16px 0">
+											<div class="row-fluid input-append" style="margin: 0 0 10px 0">
+												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="producedate" data-date-format="yyyy-mm-dd">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-										</div>
+										
 									</div>
 								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-purpose">사용용도</label>
 									<div class="controls">
-										<input class="span5" type="text" id="form-field-purpose" name="purpose" style="margin:0 0 20px 0"/>
+										<input class="span5" type="text" id="form-field-purpose" name="purpose"/>
 									</div>
 								</div>
 								<br>
@@ -446,10 +529,10 @@
 							</thead>
 
 							<tbody id="select-purchaseitem-list">
-								<fmt:parseNumber var="pc" integerOnly="true" value="${fn:length(purchaseitemList) / 11 }" />
+								<fmt:parseNumber var="pc" integerOnly="true" value="${(fn:length(purchaseitemList)-1) / 11 }" />
 								<c:forEach items="${pagepurchaseitemList }" var="pl" varStatus="status">
 									<tr>
-										<td>${status.count + (pc-1)*11 }</td>
+										<td>${status.count}</td>
 										<td>${pl.no }</td>
 										<td>${pl.name }</td>
 										<td class="hidden-480">${pl.sectioncode }</td>
@@ -526,7 +609,12 @@
 		$("input[name=sectioncode]").val(td.eq(1).text());
 	});
 	
-	
+	$("#factory-table tr").click(function(){ 
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=factoryname]").val(td.eq(0).text());
+		$("input[name=factorycode]").val(td.eq(1).text());
+	});
 	
 	function execDaumPostcode() {
 		new daum.Postcode({
