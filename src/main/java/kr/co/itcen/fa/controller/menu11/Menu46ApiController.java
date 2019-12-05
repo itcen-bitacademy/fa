@@ -14,7 +14,7 @@ import kr.co.itcen.fa.service.menu11.Menu46Service;
 
 @Auth
 @Controller
-@RequestMapping("/" + Menu46Controller.MAINMENU)
+@RequestMapping("/api/" + Menu46Controller.MAINMENU)
 public class Menu46ApiController {
 	
 	@Autowired

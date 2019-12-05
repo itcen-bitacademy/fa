@@ -361,7 +361,7 @@ function deleteChecked(){
 	
 	//no 배열을 넘겨준다.
 	$.ajax({
-		url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
+		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
 		type : "POST",
 		dataType : "json",
 		data : {"sendData" : sendData},
