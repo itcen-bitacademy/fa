@@ -62,7 +62,7 @@ public class Menu61Service {
 		// 테스전표 데이터 조회
 		// TODO: 실제 데이터로 변경
 		// TODO: 조회기간 추가
-		List<TestStatementDataVo> testList = menu61Repository.testStatementData();
+		List<TestStatementDataVo> testList = menu61Repository.testStatementData(lastestUnclosingDateVo);
 		
 		// 시산표 값 적산
 		for (TestStatementDataVo vo : testList) {

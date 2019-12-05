@@ -108,7 +108,8 @@
 	</insert>
 	
 	
-	<select id="testStatementData" resultType="ts17Vo">
+	<select id="testStatementData" resultType="ts17Vo" parameterType="closingDate17Vo">
+		<![CDATA[
 		select	
 			v.no as no
 		    , a.no as account_no
@@ -124,7 +125,10 @@
 		  from	tb_vouchermanager_test as v
 		  join	tb_item_test as i on v.no = i.voucher_no
 		  join	tb_account as a on a.no = i.account_no
+		 where	v.reg_date >= #{startDate }
+		   and	v.reg_date <= #{endDate }
 		;
+		]]>
 	</select>
 	
 	<delete id="deleteTrialBalanceByClosingDateNo" parameterType="closingDate17Vo">

@@ -71,8 +71,8 @@ public class Menu61Repository {
 	 * 
 	 * 테스트 전표 데이터 
 	 */
-	public List<TestStatementDataVo> testStatementData() {
-		return sqlSession.selectList("menu61.testStatementData");
+	public List<TestStatementDataVo> testStatementData(ClosingDateVo closingDateVo) {
+		return sqlSession.selectList("menu61.testStatementData", closingDateVo);
 	}
 	
 	/**
