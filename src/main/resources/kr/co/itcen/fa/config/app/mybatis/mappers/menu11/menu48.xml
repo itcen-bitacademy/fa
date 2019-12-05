@@ -77,7 +77,7 @@
 	and 	code like concat('%',#{code},'%') 
 	]]>
 	</if>
-	<if test="pagination.pageIndex > 0">
+	<if test="pagination.pageIndex >= 0">
             <![CDATA[
                 limit    #{pagination.pageIndex }, #{pagination.listSize }
              ]]>

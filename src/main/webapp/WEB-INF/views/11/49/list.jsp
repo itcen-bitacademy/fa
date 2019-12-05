@@ -187,7 +187,7 @@ form {
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
 							<th class="center">담당자전화번호</th>
-							<th class="center">은행코드</th>
+							<th class="center">은행명</th>
 							<th class="center">계좌</th>
 						</tr>
 					</thead>
@@ -222,7 +222,7 @@ form {
 							</c:choose>	
 							<td class="center">${ltermvo.mgr}</td>
 							<td class="center">${ltermvo.mgrCall}</td>
-							<td class="center">${ltermvo.bankCode}</td>
+							<td class="center">${ltermvo.bankName}</td>
 							<td class="center">${ltermvo.depositNo}</td>
 						</tr>
 					</c:forEach>
