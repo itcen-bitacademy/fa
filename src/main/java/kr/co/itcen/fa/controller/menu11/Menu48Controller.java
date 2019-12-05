@@ -98,12 +98,12 @@ public class Menu48Controller {
 //		itemVo3.setAccountNo(1110103L);
 //		itemVoList.add(itemVo3);
 //		
-//		mappingVo.setVoucherUse(vo.getName());
-//		mappingVo.setSystemCode(vo.getCode());
-//		mappingVo.setDepositNo(vo.getDepositNo());
+//		mappingVo.setVoucherUse(vo.getName());//사용목적
+//		mappingVo.setSystemCode(vo.getCode());//제코드l190
+//		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 //		
 //		menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-		
+//		
 		menu48Service.insert(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;

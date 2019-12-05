@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -40,7 +41,17 @@ public class Menu49Controller {
 		
 		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo,sort);
 		List<SectionVo> sectionlist = menu49Service.selectSection();
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance()
+				.queryParam("sort",sort)
+				.queryParam("debtDate",vo.getDebtDate())
+				.queryParam("expDate",vo.getExpDate())
+				.queryParam("intPayWay",vo.getIntPayWay())
+				.queryParam("bankCode",vo.getBankCode())
+				.build();
+		String uri=uriComponents.toUriString();
 		
+		model.addAttribute("uri",uri);
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("sort", sort);
