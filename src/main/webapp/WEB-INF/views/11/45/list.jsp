@@ -19,52 +19,52 @@
 					<h1 class="pull-left">은행코드 현황조회</h1>
 				</div>
 				<!-- /.page-header -->
-
+				
 				<div class="row-fluid">
-					<div class="span4">
-						<form class="form-inline">
-							<div class="control-group">
+			
+				<form class="form-horizontal">
+				
+				<div class="span4">
+					<div class="control-group">
 								<label class="control-label" for="form-field-codename">은행명</label>
 								<div class="controls">
-									<input class="span6" type="text" id="input-bankname"
+									<input class="span6" type="text" id="name"
 										name="name" placeholder="은행명" />
-									<button id="btn-send-bankname" class="btn btn-blue btn-small">조회</button>
-								</div>
 							</div>
-						</form>
+						</div>
 					</div>
-
+					
 					<div class="span4">
-						<form class="form-inline">
-							<div class="control-group">
-								<label class="control-label" for="form-field-codename">지점명</label>
-								<div class="controls">
-									<input class="span5" type="text" id="form-field-store" name="store" placeholder="지점명"/>
-									<button onclick="return false;" class="btn btn-blue btn-small">조회</button>
+						<div class="control-group">
+							<label class="control-label" for="form-field-codename">지점명</label>
+							<div class="controls">
+								<input class="span5" type="text" id="store" name="store" placeholder="지점명"/>
+							</div>
+						</div>
+					</div>
+					
+				<div class="span4">	
+					<div class="control-group">
+						<label class="control-label" for="form-field-codename">거래시작일</label>
+							<div class="controls">
+							<div class="row-fluid input-append">
+								<input class="span5 date-picker" id="id-date-picker-1"
+										name="dealDate" type="text" data-date-format="yyyy-mm-dd" /> <span
+										class="add-on"><i class="icon-calendar"></i></span>
 								</div>
 							</div>
-						</form>
+						</div>
 					</div>
-
-					<div class="span4">
-						<form class="form-inline">
-							<div class="control-group">
-								<label class="control-label" for="form-field-codename">거래시작일</label>
-								<div class="controls">
-									<div class="row-fluid input-append">
-										<input class="span5 date-picker" id="id-date-picker-1"
-											type="text" data-date-format="yyyy-mm-dd" /> <span
-											class="add-on"><i class="icon-calendar"></i></span>
-										<button onclick="return false;" class="btn btn-blue btn-small">조회</button>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
+				
 					<br>
+					<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					<div class="pull-right">
-						<label class="pos-rel"></label> <input type="checkbox" /> <span>삭제포함</span>
+						<label >
+						<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
+						<span class="lbl">삭제포함</span>
+						</label>
 					</div>
+					</form>
 				</div>
 
 				<!-- PAGE CONTENT BEGINS -->
@@ -115,7 +115,7 @@
 				<ul>
 				<c:choose>
 					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri} &page=${dataResult.pagination.startPage - 1 }">
 						<i class="icon-double-angle-left"></i></a></li>
 					</c:when>
 					<c:otherwise>
@@ -126,17 +126,17 @@
 					<c:choose>
 						<c:when test="${pg eq dataResult.pagination.page }">
 							<li class="active">
-								<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg}">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -152,53 +152,14 @@
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 <script>
-	$(function() {
-		$(".chosen-select").chosen();
-		$('.date-picker').datepicker().next().on(ace.click_event, function() {
-			$(this).prev().focus();
-		});
-
-		// 은행명으로 검색 : 은행목록 리스트로 가져오기
-		$("#btn-send-bankname").click(function() {
-							$("#tbody-banklist").find("tr").remove();
-
-							var banknameVal = $("#input-bankname").val();
-							console.log(banknameVal);
-							// ajax 통신
-							$.ajax({
-										url : "${pageContext.request.contextPath }/api/menu45/get-bankinfo-list?banknameVal=" + banknameVal,
-										contentType : "application/json; charset=utf-8",
-										type : "get",
-										dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
-										data : "",
-										statusCode : {
-											404 : function() {
-												alert("page not found");
-											}
-										},
-										success : function(data) {
-											$("#input-bankname").val('');
-											$.each(data, function(index, item) {
-																$("#tbody-bankList").append("<tr>"
-																						+ "<td class='center'>"+ item.name + "</td>"
-																						+ "<td class='center'>"+ item.store + "</td>"
-																						+ "<td class='center'>"+ item.dealDate + "</td>"
-																						+ "<td class='center'>" + item.phone + "</td>"
-																						+ "<td class='center'>" + item.fax + "</td>"
-																						+ "<td class='center'>" + item.post + "</td>"
-																						+ "<td class='center'>" + item.address + "</td>"
-																						+ "<td class='center'>" + item.mgr + "</td>"
-																						+ "<td class='center'>" + item.mgrPhone + "</td>"
-																						+ "<td class='center'>" + item.mgrEmail + "</td>"
-																						+ "</tr>");
-															})
-										},
-										error : function(xhr, error) {
-											console.error("error : " + error);
-										}
-									});
-						});
-	});
+   $(function() {
+	        	  $(".chosen-select").chosen();
+					
+					$('.date-picker').datepicker().next().on(ace.click_event, function(){
+						$(this).prev().focus();
+					});
+  		 });
+					
 </script>
 </body>
 </html>
