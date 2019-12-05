@@ -51,6 +51,10 @@ public class Menu37Service {
 		BankAccountVo getAboutNoBankData = menu37Repository.getAboutNoBankData(depositNo);
 		return getAboutNoBankData;
 	}
+	public List<BuyTaxbillItemsVo> getAboutItmes(String no) {
+		List<BuyTaxbillItemsVo> getAboutItmes = menu37Repository.getAboutItmes(no);
+		return getAboutItmes;
+	}
 
 	
 }

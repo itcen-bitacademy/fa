@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.TestVo;
 
@@ -39,13 +40,17 @@ public class Menu25Repository {
 		return map;
 	}
 
-	public Map<String, Object> update(BankAccountVo bavo) {
+	public Map<String, Object> update(BankAccountVo bavo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
 						
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub	
+		
 		sqlSession.update("menu25.update", bavo);
 		
-		map.put("bankList", sqlSession.selectList("menu25.list"));
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		
+		map.put("bankList", sqlSession.selectList("menu25.list", s));
 		return map;
 	}
 
@@ -68,9 +73,17 @@ public class Menu25Repository {
 		return exist == 1;
 	}
 
-	public List<BankAccountVo> list() {
+	public List<BankAccountVo> list(PaginationUtil pagination) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("menu25.list");
+		
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		System.out.println(pagination.getPageIndex());
+		System.out.println(pagination.getListSize());
+		
+		List<BankAccountVo> res = sqlSession.selectList("menu25.list", s); 
+		
+		return res;
 	}
 
 	public void deleteAll(BankAccountVo bavo) {
@@ -83,5 +96,10 @@ public class Menu25Repository {
 		// TODO Auto-generated method stub		
 		map.put("bankAccountList", sqlSession.selectList("menu25.gets", depositNo));
 		return map;
+	}
+
+	public int selectCount() {
+		int res = sqlSession.selectOne("menu25.getCount");
+		return res;
 	}
 }

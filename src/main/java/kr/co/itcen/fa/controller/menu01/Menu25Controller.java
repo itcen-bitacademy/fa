@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu01;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu25Service;
@@ -35,10 +37,12 @@ public class Menu25Controller {
 	private Menu25Service menu25Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
-		List<BankAccountVo> list = menu25Service.list();
+	public String test(Model model,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
 		
-		model.addAttribute("list", list);
+		DataResult<BankAccountVo> dataResult = menu25Service.list(page);
+		model.addAttribute("dataResult", dataResult);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
@@ -72,16 +76,17 @@ public class Menu25Controller {
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/update")
 	public Map<String, Object> update(@ModelAttribute BankAccountVo bavo,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
 			@AuthUser UserVo uvo) {
-		System.out.println("update");
+		System.out.println(page);
 		
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		bavo.setUpdateUserId(uvo.getName());
 		
 		System.out.println(bavo.toString());
 		
-		Map<String, Object> result = menu25Service.update(bavo);
-		return result;
+		Map<String, Object> dataResult = menu25Service.update(bavo, page);
+		return dataResult;
 	}
 	
 	// Delete

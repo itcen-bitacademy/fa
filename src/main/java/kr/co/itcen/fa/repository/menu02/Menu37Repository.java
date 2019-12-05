@@ -65,6 +65,11 @@ public class Menu37Repository {
 		BankAccountVo getAboutNoBankData = sqlSession.selectOne("menu37.getAboutNoBankData", depositNo);
 		return getAboutNoBankData;
 	}
+
+	public List<BuyTaxbillItemsVo> getAboutItmes(String no) {
+		List<BuyTaxbillItemsVo> getAboutItmes = sqlSession.selectList("menu37.getAboutItmes",no);
+		return getAboutItmes;
+	}
 	
 	
 

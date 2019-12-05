@@ -31,6 +31,7 @@ public class Menu47Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
 		List<STermDebtVo> list = menu47Service.getList();
+		
 		model.addAttribute("list", list);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
@@ -38,8 +39,12 @@ public class Menu47Controller {
 	@RequestMapping("/" + SUBMENU + "/search")
 	public String search(STermDebtVo sTermDebtVo, Model model) {
 		List<STermDebtVo> list = menu47Service.search(sTermDebtVo);
+		System.out.println("debtDate " + sTermDebtVo.getDebtDate());
+		System.out.println("intPayWay : " + sTermDebtVo.getIntPayWay());
+		System.out.println("expDate" + sTermDebtVo.getExpDate());
 		model.addAttribute("list", list);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
 }
