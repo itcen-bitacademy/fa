@@ -88,6 +88,7 @@
 													<span class="add-on"> <i class="icon-calendar"></i>
 													</span>
 												</div>
+												
 											</div>
 										</div>
 										<div style="float: left; width: 40%">
