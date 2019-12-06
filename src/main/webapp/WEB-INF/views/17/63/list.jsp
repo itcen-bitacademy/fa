@@ -83,13 +83,19 @@
 								<tr>
 									<c:choose>
 										<c:when test="${data.accountNo % 1000000 eq 0 }">
-											<td style="padding-left:1%;">${data.accountName }</td>
+											<td style="padding-left:1%;">
+												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
+											</td>
 										</c:when>
 										<c:when test="${data.accountNo % 1000000 >= 100000 and data.accountNo % 100000 eq 0}">
-											<td style="padding-left:3%;">${data.accountName }</td>
+											<td style="padding-left:3%;">
+												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
+											</td>
 										</c:when>
 										<c:otherwise>
-											<td style="padding-left:6%;">${data.accountName }</td>
+											<td style="padding-left:6%;">
+												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
+											</td>
 										</c:otherwise>
 									</c:choose>
 
