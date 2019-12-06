@@ -78,7 +78,6 @@ public class Menu27Controller {
 			@AuthUser UserVo authUser) {
 		System.out.println("update : " + page);
 		
-		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
 		customerVo.setUpdateUserid(authUser.getName());
 		
 		System.out.println(customerVo.toString());

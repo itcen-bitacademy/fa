@@ -67,26 +67,33 @@ function execDaumPostcode() {
 		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
-			var queryString = $("form[name=input-form]").serialize();
+			var queryString = $("form[name=input-form]").serializeArray();
+			if("${param.page}") {
+				queryString.push({name: 'page', value: "${param.page}"});
+			}
 			if(a == "create") {
 				$.ajax({
 				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.fail) {
+				    success: function(dataResult){
+				    	if(dataResult.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
-				    	if(result.success) {
-				    		alert("거래처 등록이 완료되었습니다."); 
+				    	if(dataResult.success) {
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
+				    		alert("거래처 등록이 완료되었습니다."); 
 				    		
 				    		removeTable();
-				    		var customerList = result.customerList;
+				    		var customerList = dataResult.customerList;
 				    		createNewTable(customerList);
+				    		
+				    		$('#pagination ul').remove();
+				    		${'dataResult.pagination.page' };
+				    		createNewPage(dataResult, a);
 				    	}
 				    },
 				    error: function( err ){
@@ -99,13 +106,18 @@ function execDaumPostcode() {
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				    success: function(dataResult){
+				    	if(dataResult.success) {
 				    		alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
 				    		
-				    		var customerList = result.customerList;
+				    		var customerList = dataResult.customerList;
+				    		settingInput(customerList);
 				    		createNewTable(customerList);
+				    		$('#pagination').hide();
 				    	}
 				    },
 				    error: function( err ){
@@ -118,17 +130,20 @@ function execDaumPostcode() {
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				    success: function(dataResult){
+				    	if(dataResult.success) {
 				    		alert("거래처 수정이 완료되었습니다."); 
 				    		removeTable();
 				    		
-				    		var customerList = result.customerList;
+				    		var customerList = dataResult.customerList;
 				    		createNewTable(customerList);
 				    	}
-				    	if(result.fail) {
+				    	if(dataResult.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
+				    	
+				    	$('#pagination ul').remove();
+			    		createNewPage(dataResult, a);
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -140,17 +155,20 @@ function execDaumPostcode() {
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				    success: function(dataResult){
+				    	if(dataResult.success) {
 				    		alert("거래처 삭제가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
 				    		
-				    		var customerList = result.customerList;
+				    		var customerList = dataResult.customerList;
 				    		createNewTable(customerList);
 				    	}
+				    	
+				    	$('#pagination ul').remove();
+			    		createNewPage(dataResult, a);
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -220,10 +238,34 @@ function execDaumPostcode() {
 		$("input[name=managerName]").val(td.eq(9).text());
 		$("input[name=depositHost]").val(td.eq(14).text());
 		$("input[name=address]").prop("readonly", true);
+		$("input[name=depositNo]").prop("readonly", true);
 		$("input[name='bankCode']").prop("readonly", true);
 		$("input[name='bankName']").prop("readonly", true);
 		$("input[name='depositHost']").prop("readonly", true);  
 	});
+	
+	function settingInput(customerList) {
+		$("input[name=no]").val(customerList[0].no);
+		$("input[name=name]").val(customerList[0].name);
+		$("input[name=ceo]").val(customerList[0].ceo);
+		$("input[name=address]").val(customerList[0].address);
+		$("input[name=conditions]").val(customerList[0].conditions);
+		$("input[name=item]").val(customerList[0].item);
+		$("input[name=corporationNo]").val(customerList[0].corporationNo);
+		$("input[name=jurisdictionOffice]").val(customerList[0].jurisdictionOffice);
+		$("input[name=phone]").val(customerList[0].phone);	
+		$("input[name=managerEmail]").val(customerList[0].managerEmail);
+		$("input[name=bankName]").val(customerList[0].bankName);
+		$("input[name=bankCode]").val(customerList[0].bankCode);
+		$("input[name=depositNo]").val(customerList[0].depositNo);
+		$("input[name=managerName]").val(customerList[0].managerName);
+		$("input[name=depositHost]").val(customerList[0].depositHost);
+		$("input[name=depositNo]").prop("readonly", true);
+		$("input[name=address]").prop("readonly", true);
+		$("input[name='bankCode']").prop("readonly", true);
+		$("input[name='bankName']").prop("readonly", true);
+		$("input[name='depositHost']").prop("readonly", true);  
+	}
 	
 	$(document.body).delegate('#selectAll', 'click', function() {
 		if(this.checked) {
@@ -318,6 +360,43 @@ function execDaumPostcode() {
     });
 	
 	$(".chosen-select").chosen();
+	
+	function createNewPage(dataResult, a){
+		var inputString = "<ul>";
+		
+		console.log('${dataResult.pagination.page }');
+        
+        if('${dataResult.pagination.prev }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+        }
+        
+        if(a == "create" || a == "delete") {
+        	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+			for(var pg = 2; pg < 5; pg++) {
+				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+        	}
+    	} else {
+        	for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
+        		if("${dataResult.pagination.page }" == pg){
+            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+        		} else {
+	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	        	}
+        	}
+        }
+	            
+        if ('${dataResult.pagination.next }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+        }
+        inputString += "</ul>";
+        alert(inputString);
+        $("#pagination").append(inputString);
+        
+   };
 });
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -471,7 +550,7 @@ function execDaumPostcode() {
 										<span class="btn btn-small btn-info"> <a href="#"
 											id="a-bankaccountinfo-dialog"> <i
 												class="icon-search nav-search-icon"></i> <input type="text"
-												class="search-input-width-first" name="depositNo" />
+												class="search-input-width-first" name="depositNo" placeholder="계좌번호" readonly/>
 										</a>
 										</span>
 									</div>
@@ -639,7 +718,7 @@ function execDaumPostcode() {
 			<!-- /.col -->
 			</div>
 			<!-- /.row -->
-				<div class="pagination">
+				<div class="pagination" id = "pagination">
 					<ul>
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
