@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.service.menu17;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -163,35 +164,60 @@ public class Menu19Service {
 	 * 		false	: 입력 불가능
 	 */
 	public boolean checkClosingDate(UserVo authUser, Date businessDate) {
-		ClosingDateVo closingDateVo = null;
+		// 마감일 정보 조회  
+		ClosingDateVo closingDateVo = menu19Repository.selectClosingDateByYearMonth(businessDate);
+		
+		if (closingDateVo == null) {
+			return true;
+		}
+		
+		Date closingDate = null;
 		
 		switch(authUser.getTeamNo()) {
-		case "1":		// 전표팀 마감일 조회
-			closingDateVo = menu19Repository.selectStatementClosingDateByBusinessDate(businessDate);
+		case "1":		// 전표팀 마감일
+			closingDate = closingDateVo.getClosingStatementDate();
 			break;
 			
-		case "2":		// 매입팀 마감일 조회
-			closingDateVo = menu19Repository.selectPurchaseClosingDateByBusinessDate(businessDate);
+		case "2":		// 매입팀 마감일
+			closingDate = closingDateVo.getClosingPurchaseDate();
 			break;
 			
-		case "3":		// 자산팀 마감일 조회
-			closingDateVo = menu19Repository.selectAssetsClosingDateByBusinessDate(businessDate);
+		case "3":		// 자산팀 마감일
+			closingDate = closingDateVo.getClosingAssetsDate();
 			break;
 			
-		case "4":		// 부채팀 마감이 조회
-			closingDateVo = menu19Repository.selectDebtClosingDateByBusinessDate(businessDate);
+		case "4":		// 부채팀 마감이
+			closingDate = closingDateVo.getClosingDebtDate();
 			break;
 			
-		case "5":		// 매출팀 마감일 조회
-			closingDateVo = menu19Repository.selectSalesClosingDateByBusinessDate(businessDate);
+		case "5":		// 매출팀 마감일
+			closingDate = closingDateVo.getClosingSalesDate();
 			break;
 			
-		case "6":		// 결산팀 마감일 조회
-			closingDateVo = menu19Repository.selectSettlementClosingDate(businessDate);
+		case "6":		// 결산팀 마감일
+			closingDate = closingDateVo.getClosingSettlementDate();
 			break;
 		}
 		
-		return (closingDateVo == null) ? false : true;
+		Calendar now = Calendar.getInstance();
+		
+		return (now.getTimeInMillis() <= getEndDate(closingDate)) ? true : false;
+	}
+	
+	private Long getEndDate(Date closingDate) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(closingDate);
+
+        calendar.set(Calendar.HOUR_OF_DAY,
+                     calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE,
+                     calendar.getActualMaximum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND,
+                     calendar.getActualMaximum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND,
+                     calendar.getActualMaximum(Calendar.MILLISECOND));
+        
+        return calendar.getTimeInMillis();
 	}
 	
 	

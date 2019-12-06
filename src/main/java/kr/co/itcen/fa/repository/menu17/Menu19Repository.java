@@ -49,6 +49,14 @@ public class Menu19Repository {
 	
 	/**
 	 * 
+	 * 마감년월을 이용한 마감일 단일 조회 
+	 */
+	public ClosingDateVo selectClosingDateByYearMonth(Date businessDate) {
+		return sqlSession.selectOne("menu19.selectClosingDateByYearMonth", businessDate);
+	}
+	
+	/**
+	 * 
 	 * 마감일 전체 갯수 조회
 	 */
 	public int selectAllClosingDateCount() {
@@ -98,62 +106,5 @@ public class Menu19Repository {
 		return sqlSession.delete("menu19.deleteClosingDate", closingDate);
 	}
 	
-	
-	
-	
-	
-	
-	/**
-	 * 
-	 * 전표팀 마감일 조회(거래일 기준 조회)
-	 */
-	public ClosingDateVo selectStatementClosingDateByBusinessDate(Date businessDate) {
-		return sqlSession.selectOne("menu19.selectStatementClosingDateByBusinessDate", businessDate);
-	}
-	
-
-	/**
-	 * 
-	 * 자산팀 마감일 조회(거래일 기준 조회)
-	 */
-	public ClosingDateVo selectAssetsClosingDateByBusinessDate(Date businessDate) {
-		return sqlSession.selectOne("menu19.selectAssetsClosingDateByBusinessDate", businessDate);
-	}
-	
-	
-	/**
-	 *
-	 * 부채팀 마감일 조회(거래일 기준 조회)
-	 */
-	public ClosingDateVo selectDebtClosingDateByBusinessDate(Date businessDate) {
-		return sqlSession.selectOne("menu19.selectDebtClosingDateByBusinessDate", businessDate);
-	}
-	
-	
-	/**
-	 * 
-	 * 매입팀 마감일 조회(거래일 기준 조회)
-	 */
-	public ClosingDateVo selectPurchaseClosingDateByBusinessDate(Date businessDate) {
-		return sqlSession.selectOne("menu19.selectPurchaseClosingDateByBusinessDate", businessDate);
-	}
-	
-	
-	/**
-	 * 
-	 * 매출팀 마감일 조회(거래일 기준 조회)
-	 */
-	public ClosingDateVo selectSalesClosingDateByBusinessDate(Date businessDate) {
-		return sqlSession.selectOne("menu19.selectSalesClosingDateByBusinessDate", businessDate);
-	}
-	
-	
-	/**
-	 * 
-	 * 결산팀 마감일 조회(결산실행일-현재 기준 조회)
-	 */
-	public ClosingDateVo selectSettlementClosingDate(Date businessDate) {
-		return sqlSession.selectOne("menu19.selectSettlementClosingDate", businessDate);
-	}
 	
 }
