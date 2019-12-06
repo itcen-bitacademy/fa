@@ -1,6 +1,9 @@
 package kr.co.itcen.fa.controller.menu12;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu13Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
@@ -36,6 +40,9 @@ public class Menu13Controller {
 	@Autowired
 	private Menu13Service menu13Service;
 	
+	@Autowired
+	private Menu19Service menu19Service;
+	
 	
 	@RequestMapping(value = {"", "/" + SUBMENU}, method=RequestMethod.GET )
 	public String index(@SessionAttribute("authUser") UserVo authUser, Model model) {
@@ -45,9 +52,12 @@ public class Menu13Controller {
 		model.addAttribute("customerlist", customerlist);
 		model.addAttribute("itemlist", itemlist);
 		
+		System.out.println("check : "+ customerlist.toString() + " : " + itemlist.toString());
+		
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}
 	
+	//매출 insert
 	@RequestMapping(value = {"/" + SUBMENU}, method=RequestMethod.POST)
 	public String index(@SessionAttribute("authUser") UserVo authUser, 
 							SalesVo salesVo, 
@@ -55,6 +65,21 @@ public class Menu13Controller {
 							Long supplyValue[], Long taxValue[], int number[]) {
 		
 		salesVo.setInsertUserid(authUser.getId()); //세션 ID vo set
+		
+		
+		// 마감일
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date businessDate = null;
+		try {
+			businessDate = sdf.parse(salesVo.getSalesDate());
+			System.out.println(businessDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		boolean result = menu19Service.checkClosingDate(authUser, businessDate);
+		System.out.println(result);
+		//
+		
 		
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		
@@ -73,9 +98,10 @@ public class Menu13Controller {
 		
 		menu13Service.insert(list);
 		
-		return MAINMENU + "/" + SUBMENU + "/index";
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
+	//매출번호로 조회
 	@RequestMapping(value= {"/" + SUBMENU + "/{salesNo}"}, method=RequestMethod.GET )
 	public String getSales(@PathVariable("salesNo")String salesNo, Model model) {
 		System.out.println(salesNo);
@@ -92,6 +118,7 @@ public class Menu13Controller {
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}
 	
+	//매출 삭제 (flag)
 	@RequestMapping(value= {"/"+ SUBMENU + "/delete/{salesNo}"}, method=RequestMethod.GET)
 	public String deleteData(@PathVariable("salesNo")String salesNo) {
 		menu13Service.deleteData(salesNo);
@@ -99,6 +126,7 @@ public class Menu13Controller {
 		return MAINMENU + "/" + SUBMENU + "/index"; 
 	}
 	
+	//매출 수정
 	@RequestMapping(value= {"/"+ SUBMENU + "/update/{pathSalesNo}"}, method=RequestMethod.POST)
 	public String update(@SessionAttribute("authUser") UserVo authUser, 
 						 @PathVariable("pathSalesNo")String pathSalesNo, SalesVo salesVo, 
