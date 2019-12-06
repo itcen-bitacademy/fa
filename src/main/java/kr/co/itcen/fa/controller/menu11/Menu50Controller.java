@@ -17,9 +17,8 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu11.BankVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
 /**
@@ -37,42 +36,17 @@ public class Menu50Controller {
 	@Autowired
 	private Menu50Service menu50Service;
 
-	// 사채현황관리 접속 - 사채현황 리스트 출력
-	// /11/50
-//	@RequestMapping(value = {"/" + SUBMENU })
-//	public String index(
-//			@RequestParam(value = "page") Optional<Integer> page,
-//			Model model) {
-//		PageVo pageInfo = null;
-//		if (page.isPresent()) {
-//			pageInfo = pagingProcess(page.get());
-//		} else {
-//			pageInfo = pagingProcess(1);
-//		}
-//		List<PdebtVo> list = menu50Service.list(pageInfo.getStartRow() - 1, pageInfo.getRowsPerPage());
-//		
-//		// 은행정보 불러오기
-//		List<BankVo> bankList = menu50Service.bankInfoList();
-//		
-//		model.addAttribute("list", list);
-//		model.addAttribute("bankList", bankList);
-//		model.addAttribute("pageInfo", pageInfo);
-//		
-//		return MAINMENU + "/" + SUBMENU + "/add";
-//	}
-	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(
 			Model model,
-			@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year,
-			@RequestParam(value="page", required=false, defaultValue = "1") int page) {
+			@RequestParam(value = "code", required = false, defaultValue = "") String code,
+			@RequestParam(value = "financialYear", required = false, defaultValue = "2019") String year,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 		DataResult<PdebtVo> dataResult = menu50Service.list(page, year, code);
-		// 은행정보 불러오기
-		//List<BankVo> bankList = menu50Service.bankInfoList();
-		System.out.println("dataResult : " + dataResult.toString());
-		//model.addAttribute("bankList", bankList);
+		List<SectionVo> sectionlist = menu50Service.selectSection();
+
 		model.addAttribute("dataResult", dataResult);
+		model.addAttribute("sectionlist", sectionlist);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
@@ -102,12 +76,17 @@ public class Menu50Controller {
 		String[] dangerArray = dangerCode.split("-");
 		pdebtVo.setDangerCode(dangerArray[0]);
 		pdebtVo.setDangerName(dangerArray[1]);
-
-		// 하드코딩으로 박은 값
+		
+		Long money = (long) (pdebtVo.getDebtAmount() * pdebtVo.getIntRate() / 100);
+		pdebtVo.setIntAmount(money);
+		
+		// 박은 값
 		pdebtVo.setRepayBal(pdebtVo.getDebtAmount()); // 상환잔액을 차입금액으로 초기화
 		pdebtVo.setDepositNo("123-123-1"); // 1팀값 참조
 		pdebtVo.setAccountNo("110-123-123123"); // 1팀값 참조
 		pdebtVo.setVoucherNo(1);
+		
+		System.out.println("pdebtVo : " + pdebtVo.toString());
 
 		menu50Service.insert(pdebtVo); // 데이터베이스에 데이터 삽입
 		
@@ -118,66 +97,26 @@ public class Menu50Controller {
 	public String update(
 			PdebtVo pdebtVo,
 			@AuthUser UserVo userVo) throws ParseException{
+		System.out.println("update pdebtVo.toString() : " + pdebtVo.toString());
+		
+		DateFormat convertDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String deptExpDate = pdebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
+		pdebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10))); // 차입일자 date format으로 변경
+		pdebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13))); // 만기일자 date format으로 변경
 		pdebtVo.setUpdateId(userVo.getId()); // 수정자 아이디 삽입
+		
+		Long money = (long) (pdebtVo.getDebtAmount() * pdebtVo.getIntRate() / 100);
+		pdebtVo.setIntAmount(money);
+		
 		menu50Service.update(pdebtVo);
-		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+		
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
-	// 페이징 처리 메소드
-//	public PageVo pagingProcess(Integer page) {
-//		int pageConvertToInt = 1;
-//
-//		if (page != 1) {
-//			pageConvertToInt = page;
-//		}
-//
-//		PageVo pageInfo = new PageVo();
-//
-//		int rowsPerPage = 11;
-//		int pagesPerBlock = 5;
-//		int currentPage = pageConvertToInt;
-//		int currentBlock = 0;
-//
-//		if (currentPage % pagesPerBlock == 0) {
-//			currentBlock = currentPage / pagesPerBlock;
-//		} else {
-//			currentBlock = (currentPage / pagesPerBlock) + 1;
-//		}
-//
-//		// 한 페이지에 ◀ 1 2 3 4 5 ▶ 다섯개의 블럭 출력
-//		// ◀ startRow 2 3 4 endRow ▶
-//		int startRow = (currentPage - 1) * rowsPerPage + 1;
-//		int endRow = currentPage * rowsPerPage;
-//
-//		// 현재 게시판에 있는 게시글의 총 갯수 출력
-//		int totalRows = menu50Service.pdebtTotalcount();
-//		System.out.println("totalRows : " + totalRows);
-//
-//		int totalPages = 0;
-//
-//		if (totalRows % rowsPerPage == 0) {
-//			totalPages = totalRows / rowsPerPage;
-//		} else {
-//			totalPages = totalRows / rowsPerPage + 1;
-//		}
-//
-//		int totalBlocks = 0;
-//		if (totalPages % pagesPerBlock == 0) {
-//			totalBlocks = totalPages / pagesPerBlock;
-//		} else {
-//			totalBlocks = totalPages / pagesPerBlock + 1;
-//		}
-//
-//		pageInfo.setCurrentPage(currentPage); // 현재 페이지 
-//		pageInfo.setCurrentBlock(currentBlock); // 현재 페이지를 가리키는 블럭
-//		pageInfo.setRowsPerPage(rowsPerPage); // 데이터 11개 출력
-//		pageInfo.setPagesPerBlock(pagesPerBlock);
-//		pageInfo.setStartRow(startRow); // 데이터 시작
-//		pageInfo.setEndRow(endRow); // 데이터 끝
-//		pageInfo.setTotalBlocks(totalBlocks); // 총 블럭 갯수
-//		pageInfo.setTotalPages(totalPages); // 총 페이지 수
-//		pageInfo.setTotalRows(totalRows);
-//
-//		return pageInfo;
-//	}
+	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
+	public String delete(@RequestParam Long[] no) {
+		menu50Service.delete(no);
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+
 }
