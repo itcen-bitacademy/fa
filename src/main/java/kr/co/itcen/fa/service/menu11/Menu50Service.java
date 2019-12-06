@@ -1,8 +1,6 @@
 package kr.co.itcen.fa.service.menu11;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,9 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu50Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
 /**
@@ -77,11 +76,22 @@ public class Menu50Service {
 
 	// 데이터 수정
 	public Boolean update(PdebtVo pdebtVo) throws ParseException {
-		DateFormat convertDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String deptExpDate = pdebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-		pdebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10))); // 차입일자 date format으로 변경
-		pdebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13))); // 만기일자 date format으로 변경
 		return menu50Repository.update(pdebtVo);
+	}
+	
+	// 계좌번호로 데이터 가져오기
+	public List<BankAccountVo> selectBankaccountInfo(String depositNo) {
+		// TODO Auto-generated method stub
+		List<BankAccountVo> bankaccountList = menu50Repository.selectBankaccountInfo(depositNo);
+		return bankaccountList;
+	}
+	
+	public Boolean delete(Long[] no) {
+		return  menu50Repository.delete(no);
+	}
+
+	public List<SectionVo> selectSection() {
+		return menu50Repository.selectSection();
 	}
 	
 }

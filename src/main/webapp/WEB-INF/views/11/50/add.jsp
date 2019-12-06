@@ -89,6 +89,7 @@ tr td:first-child {
 									<tr>
 										<td><h4>사채코드</h4></td>
 										<td colspan="2">
+										<input type="hidden" name="no" />
 										<input type="text" class="p-debt-code-input" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
 										</td>
 									</tr>
@@ -252,11 +253,44 @@ tr td:first-child {
 									<tr>
 										<td><h4>계좌</h4></td>
 										<td colspan="2">
-											<input type="text" class="search-input-width-first" name="depositNo" />
-											<span class="btn btn-small btn-info">
-												<i class="icon-search nav-search-icon"></i>
-											</span>
-											<input type="text" class="search-input-width-second" name="depositBankName" />
+											<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" />
+												<a href="#" id="a-bankaccountinfo-dialog">
+													<span class="btn btn-small btn-info">
+														<i class="icon-search nav-search-icon"></i>
+													</span>
+												</a>
+												
+												<!-- 계좌정보 Modal pop-up : start -->
+												<div id="dialog-account-message" title="계좌" hidden="hidden">
+													<table id="dialog-account-message-table">
+														<tr>
+															<td>
+																<label>계좌번호</label>
+																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+																<a href="#" id="a-dialog-depositNo">
+																<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+																		<i class="icon-search nav-search-icon"></i>
+																</span>
+															</a>
+															</td>
+														</tr>
+													</table>
+													<!-- 계좌정보 데이터 리스트 -->
+													<table id="modal-deposit-table" class="table  table-bordered table-hover">
+														<thead>
+															<tr>
+																<th class="center">계좌번호</th>
+																<th class="center">예금주</th>
+															</tr>
+														</thead>
+														<tbody id="tbody-bankaccountList">
+															
+														</tbody>
+													</table>
+												</div>
+												<!-- 계좌정보 Modal pop-up : end -->
+								
+											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주"/>
 										</td>
 									</tr>
 								</table>
@@ -272,7 +306,7 @@ tr td:first-child {
 						&nbsp;
 						<button class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;
-						<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
+						<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()">삭제</button>
 						&nbsp;
 						<button class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 						&nbsp;
@@ -294,13 +328,13 @@ tr td:first-child {
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자</th>
-							<th class="center">만기일자</th>
+							<th class="center">차입일자 ~ 만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
 							<th class="center">담당자전화번호</th>
 							<th class="center">은행코드</th>
+							<th class="center">은행명</th>
 							<th class="center">계좌</th>
 							<th class="center">위험등급</th>
 						</tr>
@@ -310,7 +344,7 @@ tr td:first-child {
 							<tr id="${vo.no }">
 								<td id="select-checkbox" class="center">
 									<label class="pos-rel"></label>
-									<input type="checkbox" class="ace" name="no"  value="${vo.no }"/><span class="lbl"></span>
+									<input type="checkbox" class="ace" name="no"  value="${vo.no }" data-no="${vo.no }" /><span class="lbl"></span>
 								</td>
 								<td class="center">${vo.code}</td>
 								<td>${vo.name}</td>
@@ -323,7 +357,6 @@ tr td:first-child {
 											<c:otherwise><td class="center">증권</td></c:otherwise>
 								</c:choose>	
 								<td class="center">${vo.debtAmount}</td>
-								<td class="center">${vo.repayBal}</td>
 								<c:choose>
 											<c:when test="${vo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
 											<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
@@ -334,11 +367,12 @@ tr td:first-child {
 								<c:choose>
 											<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
 											<c:when test="${vo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
-											<c:otherwise><td class="center">만기</td></c:otherwise>
+											<c:otherwise><td class="center">해당없음</td></c:otherwise>
 								</c:choose>	
 								<td class="center">${vo.mgr}</td>
 								<td class="center">${vo.mgrCall}</td>
 								<td class="center">${vo.bankCode}</td>
+								<td class="center">${vo.bankName}</td>
 								<td class="center">${vo.depositNo}</td>
 								<td class="center">${vo.dangerName}</td>
 							</tr>
@@ -423,7 +457,7 @@ tr td:first-child {
 			var tr = $(this);
 			var td = tr.children();
 			
-// 			$("input[name=no]").val(td.eq(0).attr('data-no'));
+ 			$("input[name=no]").val(td.eq(0).text());
 			$("input[name=code]").val(td.eq(1).text());
 			$("input[name=name]").val(td.eq(2).text());
 			var major='';
@@ -490,15 +524,15 @@ tr td:first-child {
 			}
 			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
 			
-			// 담당자, 담당자전화번호, 은행코드, 계좌번호
-			$("input[name=mgr]").val(td.eq(10).text());
-			$("input[name=mgrCall]").val(td.eq(11).text());
-			$("input[name=bankCode]").val(td.eq(12).text());
-			$("input[name=depositNo]").val(td.eq(13).text());
+			$("input[name=mgr]").val(td.eq(10).text()); // 담당자
+			$("input[name=mgrCall]").val(td.eq(11).text()); // 담당자전화번호
+			$("input[name=bankCode]").val(td.eq(12).text()); // 은행코드
+			$("input[name=bankName]").val(td.eq(13).text()); // 은행명
+			$("input[name=depositNo]").val(td.eq(14).text()); // 계좌
 			
 			// 위험등급 분류
 			var dangerCode='';
-			switch (td.eq(14).text()){
+			switch (td.eq(15).text()){
 		    case '초고위험' :
 		    	dangerCode='RED1-초고위험';
 		        break;
@@ -516,7 +550,7 @@ tr td:first-child {
 		        break;
 			}
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
-			
+			$("input[name=no]").val(td.eq(0).attr('data-no'));
 		});
 		
 		// form에 입력한 모든 데이터 초기화
@@ -531,7 +565,6 @@ tr td:first-child {
 		
 		// 은행코드 검색
 		$("#a-dialog-bankcode").click(function(event){
-			alert("click dialog bankcode");
 			event.preventDefault();
 			$("#tbody-bankList").find("tr").remove();
 			
@@ -550,7 +583,6 @@ tr td:first-child {
 				    }
 				},
 				success: function(response){
-					alert(response);
 					$("#input-dialog-bankcode").val('');
 					$("#tbody-bankList").append("<tr>" +
 					        "<td class='center'>" + response.code + "</td>" +
@@ -566,12 +598,10 @@ tr td:first-child {
 		
 		// 은행명 검색 : 은행목록 리스트로 가져오기
 		$("#a-dialog-bankname").click(function(event){
-			alert("click dialog bankname");
 			event.preventDefault();
 			$("#tbody-bankList").find("tr").remove();
 			
 			var banknameVal = $("#input-dialog-bankname").val();
-			console.log(banknameVal);
 			// ajax 통신
 			$.ajax({
 				url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
@@ -585,7 +615,6 @@ tr td:first-child {
 				    }
 				},
 				success: function(data){
-					alert(data);
 					$("#input-dialog-bankname").val('');
 					 $.each(data,function(index, item){
 			                $("#tbody-bankList").append("<tr>" +
@@ -631,26 +660,12 @@ tr td:first-child {
 		var sendData = [];
 		var checkedList = $("#tbody-list input[type=checkbox]:checked");
 		checkedList.each(function(i, e){
-			sendData.push($(this).val())
+			sendData.push($(this).attr('data-no'));
 		});
+		
+		$("input[name=no]").val(sendData);
 		console.log(sendData);
-		$.ajax({
-			url : "${pageContext.request.contextPath }/api/selectone/deleteChecked",
-			type : "POST",
-			dataType : "json",
-			data : {"sendData" : sendData},
-			success: function(response){
-				console.log("success");
-				checkedList.each(function(i, e){
-					console.log($("#" + $(this).val()));
-					$("#" + $(this).val()).remove();
-				})
-			},
-			error : function(xhr, error){
-				console.error("error : " + error);
-			}
-		})
-	}
+	}	
 </script>
 <script>
 	$(function() {
@@ -680,6 +695,80 @@ tr td:first-child {
 		});
 
 	});
+</script>
+<script>
+	
+$(function() {
+    $("#dialog-account-message").dialog({
+       autoOpen : false
+    });
+
+    $("#a-bankaccountinfo-dialog").click(function() {
+       $("#dialog-account-message").dialog('open');
+       $("#dialog-account-message").dialog({
+          title: "계좌정보",
+          title_html: true,
+             	resizable: false,
+	           height: 500,
+	           width: 400,
+	           modal: true,
+	           close: function() {
+              $('#tbody-bankacoountList tr').remove();
+           },
+           buttons: {
+           "닫기" : function() {
+                    $(this).dialog('close');
+                    $('#tbody-bankaccountList tr').remove();
+               }
+           }
+       });
+    });
+    
+    $('#dialog-account-message-table').on('click', '#a-dialog-depositNo', function(event) {
+        event.preventDefault();
+        $("#tbody-bankaccountList").find("tr").remove();
+        
+        var depositNo = $("#input-dialog-depositNo").val();
+        alert(depositNo);
+        
+        // ajax 통신
+        $.ajax({
+           url: "${pageContext.request.contextPath }/api/selectone/getbankaccount?depositNo=" + depositNo,
+           contentType : "application/json; charset=utf-8",
+           type: "get",
+           dataType : "json",
+           statusCode: {
+               404: function() {
+                 alert("page not found");
+               }
+           },
+           success: function(data){
+        	   $("#input-dialog-depositNo").val('');
+				 $.each(data,function(index, item){
+		                $("#tbody-bankaccountList").append("<tr>" +
+		                		"<td class='center'>" + item.depositNo + "</td>" +
+						        "<td class='center'>" + item.depositHost + "</td>" +
+						        "</tr>");
+		         })
+           },
+           error: function(xhr, error){
+        	   alert("fail");
+               console.error("error : " + error);
+           }
+        });
+     });
+
+	//은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+	$(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=depositNo]").val(td.eq(0).text());
+		$("input[name=depositHost]").val(td.eq(1).text());
+		$("#dialog-account-message").dialog('close');
+	});
+    
+});
+
 </script>
 </body>
 </html>

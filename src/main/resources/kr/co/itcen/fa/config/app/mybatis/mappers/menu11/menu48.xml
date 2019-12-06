@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="menu48">
+	<mapper namespace="menu48">
 	<!-- Team -->
-	<insert id="save" parameterType="test4vo">
-		<![CDATA[
+	<insert parameterType="test4vo" id="save">
+	<![CDATA[
 		insert
 		  into test
 		values (null, #{name })
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
+	<selectKey order="AFTER" resultType="long" keyProperty="no">
+	<![CDATA[
 			select last_insert_id()
 			]]>
-		</selectKey>
+	</selectKey>
 	</insert>
 	<!-- insert -->
-	<insert id="insert" parameterType="ldebtvo">
-		<![CDATA[
+	<insert parameterType="ldebtvo" id="insert">
+	<![CDATA[
 		insert
 		  into tb_l_term_debt
 		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, 'N',#{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',#{voucherNo},'N',#{insertId},now(),null,null)
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
+	<selectKey order="AFTER" resultType="long" keyProperty="no">
+	<![CDATA[
 			select last_insert_id()
 			]]>
-		</selectKey>
+	</selectKey>
 	</insert>
-	
-	<select id="selectAllCount" resultType="int" parameterType="map">
+	<select parameterType="map" id="selectAllCount" resultType="int">
 	<![CDATA[
 		select count(*)
 		    from tb_l_term_debt
@@ -41,13 +40,12 @@
 	</if>
 	<if test="code.length()>0 ">
 	<![CDATA[
-	and 	code like concat('%',#{code},'%') 
+		and 	code like concat('%',#{code},'%') 
 	]]>
 	</if>
 	</select>
-	
 	<!-- select list -->
-	<select id="selectAll" resultType="ldebtvo" parameterType="map">
+	<select parameterType="map" id="selectAll" resultType="ldebtvo">
 	<![CDATA[
 		select no,
 			code,
@@ -74,17 +72,15 @@
 	</if>
 	<if test="code.length()>0 ">
 	<![CDATA[
-	and 	code like concat('%',#{code},'%') 
-	]]>
+		and 	code like concat('%',#{code},'%') 
+		]]>
 	</if>
 	<if test="pagination.pageIndex >= 0">
-            <![CDATA[
+	<![CDATA[
                 limit    #{pagination.pageIndex }, #{pagination.listSize }
              ]]>
-    </if>
+	</if>
 	</select>
-	
-	
 	<select id="selectsection" resultType="sectionvo">
 	<![CDATA[
 		select no,
@@ -95,12 +91,9 @@
 		    from tb_section
 		    where parent_no= 6
 	]]>
-	
 	</select>
-	
-	
 	<!-- update -->
-	<update id="update" parameterType="ldebtvo">
+	<update parameterType="ldebtvo" id="update">
 	<![CDATA[
 		update tb_l_term_debt 
 		set name = #{name},
@@ -119,13 +112,10 @@
 			update_id=#{updateId},
 			update_date=now()
 		where no=#{no}
-	
 	]]>
-	
 	</update>
-	
-	<!-- select no -->
-	<select id="selectno" parameterType="long" resultType="long">
+	<!-- select no -->	
+	<select parameterType="long" id="selectno" resultType="long">
 	<![CDATA[
 		select voucher_no
 		from tb_l_term_debt
@@ -133,15 +123,14 @@
 	]]>
 	</select>
 	<!-- delete -->
-	<update id="delete" parameterType="list">
+	<update parameterType="list" id="delete">
 	<![CDATA[
 		update tb_l_term_debt 
 		set delete_flag='Y'
 		where no in 
 	]]>
-	<foreach item="item" index="index" collection="list" close=")" open="(" separator=",">
-		#{item }
+	<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+		#{item } 
 	</foreach>
-	
 	</update>
 </mapper>

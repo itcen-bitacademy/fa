@@ -73,8 +73,8 @@ tr td:first-child {
 								<tr>
 									<td><h4>장기차입금코드</h4></td>
 									<td>
-										<input type="hidden" name="no" />
-										<input type="text" name="code" />
+										<input type="hidden" name="no" id = "no"/>
+										<input type="text" name="code" id ="code2" />
 									</td>
 								</tr>
 								<tr >
@@ -257,7 +257,7 @@ tr td:first-child {
 					&nbsp;
 					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					&nbsp;
-					<button type="button" class="btn">상환</button>
+					<button id="dialog-repayment-button" type="button" class="btn">상환</button>
 					&nbsp;
 					<!-- 차입금코드,납입원금,납입이자,납입일자,부채유형 Modal pop-up : start -->
 					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
@@ -265,48 +265,25 @@ tr td:first-child {
 							<tr>
 								<td>
 									<label>차입금코드</label>
-									<input type="text" id="code" />
+									<input type="text" id="code" readonly= "readonly"/>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<label>납입원금</label>
-									<input type="text" id="code" />
+									<label>납입금</label>
+									<input type="text" name="repay_bal" id= "repay_bal"/>
 								</td>
 							</tr>
 							<tr>
 								<td>
 								<label>납입일자</label>
 								<div class="row-fluid input-prepend">
-				                 <input class="date-picker" type="text" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
 				                    <span class="add-on">
 				                     <i class="icon-calendar"></i>
 				              	</span>
 				                         
 				                </div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-								<label>부채유형</label>
-									<div class="radio">
-												<label>
-													<input name="debt-type" type="radio" class="ace" value="S"/>
-													<span class="lbl">단기차입금</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="L"/>
-													<span class="lbl">장기차입금</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="P"/>
-													<span class="lbl">사채</span>
-												</label>
-											</div>
 								</td>
 							</tr>
 							</table>
@@ -532,40 +509,6 @@ $(function(){
 	});
 	
 	
-	//상환버튼 클릭시
-	$("#a-dialog-bankcode").click(function(event){
-		alert("click dialog bankcode");
-		event.preventDefault();
-		$("#tbody-bankList").find("tr").remove();
-		
-		var bankcodeVal = $("#input-dialog-bankcode").val();
-		console.log(bankcodeVal);
-		// ajax 통신
-		$.ajax({
-			url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
-			contentType : "application/json; charset=utf-8",
-			type: "get",
-			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-			data: "",
-			statusCode: {
-			    404: function() {
-			      alert("page not found");
-			    }
-			},
-			success: function(response){
-				alert(response);
-				$("#input-dialog-bankcode").val('');
-				$("#tbody-bankList").append("<tr>" +
-				        "<td class='center'>" + response.code + "</td>" +
-				        "<td class='center'>" + response.name + "</td>" +
-				        "<td class='center'>" + response.store + "</td>" +
-				        "</tr>");
-			},
-			error: function(xhr, error){
-				console.error("error : " + error);
-			}
-		});
-	});
 	
 	
 	// 은행코드 검색
@@ -648,17 +591,17 @@ $(function(){
 		$("#dialog-message").dialog('close');
 	});
 });
-function deleteChecked(){
-	var sendData = [];
-	var checkedList = $("#tbody-list input[type=checkbox]:checked");
-	checkedList.each(function(i, e){
-		sendData.push($(this).attr('lterm-no'));
-	
-	});
-	
-	$("input[name=no]").val(sendData);
-	console.log(sendData);
-}
+	function deleteChecked(){
+		var sendData = [];
+		var checkedList = $("#tbody-list input[type=checkbox]:checked");
+		checkedList.each(function(i, e){
+			sendData.push($(this).attr('lterm-no'));
+		
+		});
+		
+		$("input[name=no]").val(sendData);
+		console.log(sendData);
+	}
 	$(function() {
 		$("#dialog-message").dialog({
 			autoOpen : false
@@ -684,7 +627,69 @@ function deleteChecked(){
 			    }
 			});
 		});
-
+	});
+		$(function() {
+			$("#dialog-repayment").dialog({
+				autoOpen : false
+			});
+			
+			$("#dialog-repayment-button").click(function() {
+				$("#code").val($("#code2").val());
+				$("#dialog-repayment").dialog('open');
+				$("#dialog-repayment").dialog({
+					title: "상환정보등록",
+					title_html: true,
+				   	resizable: false,
+				    height: 500,
+				    width: 400,
+				    modal: true,
+				    close: function() {
+				    	$('#code').val('');
+				    	$('#repay_bal').val('');
+				    	$('input[name=payDate]').val('');
+				    	
+				    },
+				    buttons: {
+				    	//상환버튼 클릭시
+				    "상환": function(){
+				    	event.preventDefault();
+						var vo = {
+								"no":$("#no").val(),
+								"repayBal":$("#repay_bal").val(),
+								"payDate":$('input[name=payDate]').val(),
+								"depositNo":$('input[name=depositNo]').val()
+						}
+						console.log(vo);
+						
+						// ajax 통신
+						$.ajax({
+							url: "${pageContext.request.contextPath }/11/48/repay",
+							contentType : "application/json; charset=utf-8",
+							type: "post",
+							dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+							data:JSON.stringify(vo),
+							success: function(response){
+								if(response.result =="fail"){
+									console.error(response.message);
+									return;
+								}
+								if(response.data==null){
+									alert("값을 정확히 입력하지 않았습니다.");
+									return;
+								}
+								
+							},
+							error: function(xhr, error){
+								console.error("error : " + error);
+							}
+						});
+				    },
+				    "닫기" : function() {
+				          	$(this).dialog('close');
+				        }
+				    }
+				});
+			});
 	});
 
 </script>

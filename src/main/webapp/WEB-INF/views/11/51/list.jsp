@@ -66,26 +66,24 @@ form {
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">사채현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 				
 					<!-- PAGE CONTENT BEGINS -->
 					<div>
 						<div>
-						<form class="form-horizontal">
+						<form class="form-horizontal" method="get" action="">
 							<table style="width:100%;">
 								<tbody>
 								<tr>
 									<td class="first-column"><h4>차입일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input class="date-picker" type="date" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
 				                         </div>
 									</td>
-									
 									<td class="third-column"><h4>이자지급방식</h4></td>
 									<td>
 										<div class="radio">
@@ -119,7 +117,7 @@ form {
 								<td class="first-column"><h4>만기일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input class="date-picker" type="date" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
