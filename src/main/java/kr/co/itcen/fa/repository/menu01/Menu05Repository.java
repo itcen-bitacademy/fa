@@ -102,4 +102,14 @@ public class Menu05Repository {
 	}
 
 
+	public Map<String, Object> gets(String cardNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<CardVo> s = sqlSession.selectList("menu25.gets", cardNo);
+		map.put("cardList", s);
+		
+		return map;
+	}
+
+
 }

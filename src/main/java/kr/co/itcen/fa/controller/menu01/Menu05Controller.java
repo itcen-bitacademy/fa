@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.controller.menu01;
 
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,7 +17,6 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu05Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.CardVo;
 
 
@@ -126,7 +124,16 @@ public class Menu05Controller {
 		return dataResult;
 	}
 		
-	
+	// PopUp
+		@ResponseBody
+		@RequestMapping("/" + SUBMENU + "/gets")
+		public Map<String, Object> gets(@RequestParam("cardNo") String cardNo) {
+			System.out.println("gets");
+			
+			Map<String, Object> data = menu05Service.gets(cardNo);
+			data.put("success", true);
+			return data;
+		}
 	
 	
 }

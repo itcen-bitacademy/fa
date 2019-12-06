@@ -113,6 +113,7 @@ $(function() {
 			    		
 				    	$('#pagination ul').remove();
 				    	createNewPage(dataResult, a);
+				    	$('#pagination').show();
 			    	}
 			    },
 			    error: function( err ){
@@ -162,6 +163,7 @@ $(function() {
 			    	}
 			    	$('#pagination ul').remove();
 			    	createNewPage(dataResult, a);
+			    	$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -187,6 +189,7 @@ $(function() {
 			    	
 			    	$('#pagination ul').remove();
 		    		createNewPage(dataResult, a);
+		    		$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -249,7 +252,7 @@ $(function() {
         		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
         }
         
-        if(a == "create" || a == "delete") {
+        if(a == "create") {
         	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
 			for(var pg = 2; pg <= "${dataResult.pagination.endPage }"; pg++) {
 				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
