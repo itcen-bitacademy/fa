@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -166,6 +168,13 @@ public class Menu48Controller {
 	public String delete(@RequestParam Long[] no) {
 	
 		menu48Service.delete(no);
+		
+		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+	}
+	@ResponseBody
+	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
+	public String repay(@RequestBody LTermdebtVo vo) {
+		System.out.println(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
