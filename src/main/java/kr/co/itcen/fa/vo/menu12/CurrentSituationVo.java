@@ -7,21 +7,50 @@ public class CurrentSituationVo {
 	//대분류번호,대분류명,품목번호,품목명,입고수량,입고공급가,입고부가세,입고금액
 	//출고수량,출고공급가,출고부가세,출고금액
 	
-	private String sectioncode;
-	private String sectionname;
-	private int itemcode;
-	private String itemname;
-	private Long purchasemanagementquantity;
-	private Long purchasemanagementsupplyvalue;
-	private Long purchasemanagementtaxvalue;
-	private Long purchasemanagementtotalprice;
-	private Long salesquantity;
-	private Long salessupplyvalue;
-	private Long salestaxvalue;
-	private Long salestotalprice;
-	private Long stockquantity;
-	private Long stocktaxvalue;
-	private Long stocktotalprice;
+	private String searchdate; //검색날짜
+
+	private String purchasedate;  //입고날짜
+	private String salesdate; //출고날짜
+	private Long parentno;
+	private String sectioncode; //대분류코드
+	private String sectionname; //대분류명
+	private String itemcode; //품목코드
+	private String itemname; //품목명
+	private Long purchasemanagementquantity; //입고수량
+	private Long purchasemanagementsupplyvalue; //입고공급가
+	private Long purchasemanagementtaxvalue; //입고부가세
+	private Long purchasemanagementtotalprice; //입고 금액
+	private Long salesquantity; //출고수량
+	private Long salessupplyvalue; //출고공급가
+	private Long salestaxvalue; //출고부가세
+	private Long salestotalprice; //출고금액
+	private Long stockquantity; //재고수량
+	private Long stocktaxvalue; //재고부가세
+	private Long stocktotalprice; //재고금액
+	public String getSearchdate() {
+		return searchdate;
+	}
+	public void setSearchdate(String searchdate) {
+		this.searchdate = searchdate;
+	}
+	public String getPurchasedate() {
+		return purchasedate;
+	}
+	public void setPurchasedate(String purchasedate) {
+		this.purchasedate = purchasedate;
+	}
+	public String getSalesdate() {
+		return salesdate;
+	}
+	public void setSalesdate(String salesdate) {
+		this.salesdate = salesdate;
+	}
+	public Long getParentno() {
+		return parentno;
+	}
+	public void setParentno(Long parentno) {
+		this.parentno = parentno;
+	}
 	public String getSectioncode() {
 		return sectioncode;
 	}
@@ -34,10 +63,10 @@ public class CurrentSituationVo {
 	public void setSectionname(String sectionname) {
 		this.sectionname = sectionname;
 	}
-	public int getItemcode() {
+	public String getItemcode() {
 		return itemcode;
 	}
-	public void setItemcode(int itemcode) {
+	public void setItemcode(String itemcode) {
 		this.itemcode = itemcode;
 	}
 	public String getItemname() {
@@ -112,8 +141,21 @@ public class CurrentSituationVo {
 	public void setStocktotalprice(Long stocktotalprice) {
 		this.stocktotalprice = stocktotalprice;
 	}
+	@Override
+	public String toString() {
+		return "CurrentSituationVo [searchdate=" + searchdate + ", purchasedate=" + purchasedate + ", salesdate="
+				+ salesdate + ", parentno=" + parentno + ", sectioncode=" + sectioncode + ", sectionname=" + sectionname
+				+ ", itemcode=" + itemcode + ", itemname=" + itemname + ", purchasemanagementquantity="
+				+ purchasemanagementquantity + ", purchasemanagementsupplyvalue=" + purchasemanagementsupplyvalue
+				+ ", purchasemanagementtaxvalue=" + purchasemanagementtaxvalue + ", purchasemanagementtotalprice="
+				+ purchasemanagementtotalprice + ", salesquantity=" + salesquantity + ", salessupplyvalue="
+				+ salessupplyvalue + ", salestaxvalue=" + salestaxvalue + ", salestotalprice=" + salestotalprice
+				+ ", stockquantity=" + stockquantity + ", stocktaxvalue=" + stocktaxvalue + ", stocktotalprice="
+				+ stocktotalprice + "]";
+	}
+
 	
 	
-	
+
 	
 }

@@ -34,8 +34,7 @@ public class Menu47Controller {
 		Pagination pagination = new Pagination(5, 5, 1);	//기본 페이지는 1로 설정
 		List<STermDebtVo> list = menu47Service.getList(pagination);
 		
-		pagination.processPaging(list.size());
-		
+		System.out.println("list size : " + list.size() + " startPage : " + pagination.getStartPage() + " endPage : " + pagination.getEndPage());
 		model.addAttribute("list", list);
 		model.addAttribute("pagination", pagination);
 		

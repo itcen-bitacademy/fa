@@ -265,13 +265,11 @@
         
         function setDate(){
         	if($("#searchFlag").val()=="true"){
-        		if($("#currentPage").val()==""||$("#currentPage").val()==null){
+        		/* if($("#currentPage").val()==""||$("#currentPage").val()==null){
         			history.pushState(null, null, "${pageContext.request.contextPath }/12/14/1");
         		} else {
         			history.pushState(null, null, "${pageContext.request.contextPath }/12/14/${pg}");
-        		}
-        		
-        		
+        		} */
   	    	   	$('#salesDate').data('daterangepicker').setStartDate($("#startDate").val());
   	    	   	$('#salesDate').data('daterangepicker').setEndDate($("#endDate").val());
   	       }

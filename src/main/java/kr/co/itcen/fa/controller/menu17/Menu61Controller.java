@@ -4,13 +4,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -68,18 +67,16 @@ public class Menu61Controller {
 	 * 결산작업 실행
 	 */
 	@PostMapping("/" + SUBMENU + "/settlement")
-	public String executeSettlement(HttpSession session, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException {
+	public String executeSettlement(@SessionAttribute("authUser") UserVo authUser, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException {
 		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
 		
 		// 마감일 체크 
 		ClosingDateVo closingDateVo = menu19Service.selectClosingDateByNo(menu17SearchForm);
-		if (menu19Service.checkClosingDate(session, closingDateVo.getStartDate())) {
-			UserVo userVo = (UserVo) session.getAttribute("authUser");
-			
+		if (menu19Service.checkClosingDate(authUser, closingDateVo.getStartDate())) {
 			// 등록자 설정 - 시산표 및 재무제표용 
-			menu17SearchForm.setInsertUserid(userVo.getId());
+			menu17SearchForm.setInsertUserid(authUser.getId());
 			// 수저자 설정 - 마감일 업데이트용 
-			menu17SearchForm.setUpdateUserid(userVo.getId());
+			menu17SearchForm.setUpdateUserid(authUser.getId());
 			
 			// 결산작업 실행 
 			DataResult<Object> dataResult = menu61Service.executeSettlement(menu17SearchForm);

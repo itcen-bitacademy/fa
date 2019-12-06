@@ -36,7 +36,7 @@
 			from tb_s_term_debt
 			where delete_flag="N" and repay_comple_flag="N"
 		]]>
-		<if test='bankName != null and !"".equals(bankName)'>
+			<if test='bankName != null and !"".equals(bankName)'>
 				and bank_code = #{vo.bankName}
 			</if>
 			<if test='debtDate != null and !"".equals(debtDate)'>
@@ -54,6 +54,7 @@
 			<if test='deleteFlag != null and !"".equals(deleteFlag)'>
 				and delete_flag = #{vo.repayCompleFlag}
 			</if>
+			
 			<if test='orderColumn != null'>
 				<![CDATA[
 					order by 
@@ -66,7 +67,7 @@
 				</choose>
 			</if>
 			<![CDATA[
-				limit ${startRow}, ${endRow}
+				limit 0, ${endRow}
 			]]>
 	</select>
 	
@@ -111,5 +112,10 @@
 				<when test='orderColumn eq "insert_date"'>insert_date</when>
 				<when test='orderColumn eq "debt_amount"'>debt_amount</when>
 			</choose>
+	</select>
+	<select id="getTotalCount" resultType="int">
+		<![CDATA[
+			select count(*) from tb_s_term_debt
+		]]>
 	</select>
 </mapper>

@@ -20,12 +20,15 @@ public class Menu55Service {
 	@Autowired
 	private Menu55Repository menu55Repository;
 	
-	public void test() {
-		menu55Repository.test();
-	}
+//	public void test() {
+//		menu55Repository.test();
+//	}
 	
-	public List<CurrentSituationVo> getList(){
-		return menu55Repository.getList();
+	public List<CurrentSituationVo> getList(CurrentSituationVo vo){
+		return menu55Repository.getList(vo);
+	}
+	public List<CurrentSituationVo> getitemcode(String itemname) {
+		return menu55Repository.getitemname(itemname);
 	}
 
 }

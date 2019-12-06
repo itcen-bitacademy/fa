@@ -13,7 +13,7 @@
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
-		<div class="page-content">
+		<div class="page-content" id="pg-content">
 
 
 
@@ -26,7 +26,7 @@
 
 					<%-- 마감일자 입력폼 --%>
 					<!-- PAGE CONTENT BEGINS -->
-					<form class="form-horizontal" id="test-form" action="${pageContext.request.contextPath }/17/19/add" method="post">
+					<form class="form-horizontal" id="closing-date-form" action="${pageContext.request.contextPath }/17/19/add" method="post">
 						<input type="hidden" type="text" name="no" id="cl-no"/>
 						<input type="hidden" type="text" id="cl-yn"/>
 						<div class="row-fluid">
@@ -257,7 +257,7 @@
 
 			<%-- 에러 모달  --%>
 			<c:if test="${not empty param.error }">
-				<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
+				<%-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
@@ -271,8 +271,23 @@
 				      </div>
 				    </div>
 				  </div>
-				</div>
+				</div> --%>
+				<input type="hidden" id="errorMessage" value="${param.error }"/>
 			</c:if>
+
+			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel"></h5>
+						</div>
+						<div class="modal-body" id="staticBackdropBody"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 		</div><!-- /.page-content -->
@@ -332,26 +347,166 @@
 		// 마감일 클릭 시 입력폼에 마감일 설정
 		$('.cdt-tr').on('click', setClosingDate)
 
-		// 에러 모달 연결
-		var errorModal = $('#staticBackdrop')
-		if (errorModal) {
-			errorModal.modal({
-				keyboard: false
-			})
+		// 모달 설정
+		backdrop = $('#staticBackdrop')
+		backdrop.modal({
+			keyboard: false,
+			show: false
+		})
+
+		// 에러 모달 설정
+		var errorMessage = $('#errorMessage')
+		if (errorMessage.val()) {
+			openModal('Error', errorMessage.val())
 
 			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/19/list')
 		}
 	})
+
+	// static backdrop modal
+	var backdrop
+
+	function openModal(title, message) {
+		$('#staticBackdropLabel').text('Error')
+		$('#staticBackdropBody').text(message)
+
+		backdrop.modal('show')
+	}
 
 	// 버튼 prevent default 설정
 	function disableFormSubmit(event) {
 		event.preventDefault();
 	}
 
+	// regex
+	var yearMonthRegex = /^(19|20)\d{2}-(0[1-9]|1[012])$/
+	var dateRegex = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/
+
+	var validationMessage = ''
+
+	// validation check
+	function saveValidation() {
+		// let no = $('#cl-no').val()
+		let yearMonth = $('#cl-ym-date-picker').val()
+		let totalDate = $('#cl-total-date-picker').val()
+		let statementDate = $('#cl-stmt-date-picker').val()
+		let purchaseDate = $('#cl-purchase-date-picker').val()
+		let salesDate = $('#cl-sales-date-picker').val()
+		let assetsDate = $('#cl-assets-date-picker').val()
+		let debtDate = $('#cl-debt-date-picker').val()
+		let settlementDate = $('#cl-settlement-date-picker').val()
+
+		if (!yearMonth) {
+			validationMessage = '년월을 입력해주세요.'
+			return false;
+		} else if (!totalDate) {
+			validationMessage = '최종 마감일을 입력해주세요.'
+			return false
+		} else if (!statementDate) {
+			validationMessage = '전표 마감일을 입력해주세요.'
+			return false
+		} else if (!purchaseDate) {
+			validationMessage = '매입 마감일을 입력해주세요.'
+			return false
+		} else if (!salesDate) {
+			validationMessage = '매출 마감일을 입력해주세요.'
+			return false
+		} else if (!assetsDate) {
+			validationMessage = '자산 마감일을 입력해주세요.'
+			return false
+		} else if (!debtDate) {
+			validationMessage = '부채 마감일을 입력해주세요.'
+			return false
+		} else if (!settlementDate) {
+			validationMessage = '결산 마감일을 입력해주세요.'
+			return false
+		}
+
+		// 최종마감일과 비교
+		var baseDateArr = totalDate.split('-')
+		var baseDate = new Date(baseDateArr[0], parseInt(baseDateArr[1])-1, baseDateArr[2]);
+
+		var compareDateArr
+		var compareDate
+
+		// 전표 마감일 비교
+		compareDateArr = statementDate.split('-')
+		compareDate = new Date(compareDateArr[0], parseInt(compareDateArr[1])-1, compareDateArr[2]);
+		if (compareDate.getTime() > baseDate.getTime()) {
+			validationMessage = '전표마감일이 최종마감일보다 늦을 수 없습니다.'
+			return false
+		}
+		// 매입 마감일 비교
+		compareDateArr = purchaseDate.split('-')
+		compareDate = new Date(compareDateArr[0], parseInt(compareDateArr[1])-1, compareDateArr[2]);
+		if (compareDate.getTime() > baseDate.getTime()) {
+			validationMessage = '매입마감일이 최종마감일보다 늦을 수 없습니다.'
+			return false
+		}
+		// 매출 마감일 비교
+		compareDateArr = salesDate.split('-')
+		compareDate = new Date(compareDateArr[0], parseInt(compareDateArr[1])-1, compareDateArr[2]);
+		if (compareDate.getTime() > baseDate.getTime()) {
+			validationMessage = '매출마감일이 최종마감일보다 늦을 수 없습니다.'
+			return false
+		}
+		// 자산 마감일 비교
+		compareDateArr = assetsDate.split('-')
+		compareDate = new Date(compareDateArr[0], parseInt(compareDateArr[1])-1, compareDateArr[2]);
+		if (compareDate.getTime() > baseDate.getTime()) {
+			validationMessage = '자산마감일이 최종마감일보다 늦을 수 없습니다.'
+			return false
+		}
+		// 부채 마감일 비교
+		compareDateArr = debtDate.split('-')
+		compareDate = new Date(compareDateArr[0], parseInt(compareDateArr[1])-1, compareDateArr[2]);
+		if (compareDate.getTime() > baseDate.getTime()) {
+			validationMessage = '부채마감일이 최종마감일보다 늦을 수 없습니다.'
+			return false
+		}
+		// 결산 마감일 비교
+		compareDateArr = settlementDate.split('-')
+		compareDate = new Date(compareDateArr[0], parseInt(compareDateArr[1])-1, compareDateArr[2]);
+		if (compareDate.getTime() > baseDate.getTime()) {
+			validationMessage = '결산마감일이 최종마감일보다 늦을 수 없습니다.'
+			return false
+		}
+
+		return true
+	}
+
+	// 수정 validation
+	function updateValidation() {
+		if (!deleteValidation() || !saveValidation()) {
+			return false
+		}
+
+		return true
+	}
+
+	// 삭제 validation
+	function deleteValidation() {
+		let no = $('#cl-no').val()
+		let noRegex = /^[0-9]{1,9}$/
+
+		if (!no || no.length > 9 || !noRegex.test(no)) {
+			validationMessage = '마감일 번호가 올바르지 않습니다.'
+			return false
+		}
+
+		return true
+	}
+
 	// 마감일 신규 등록
 	function saveClosingDate(event) {
-		var form = $('#test-form')[0]
+		var form = $('#closing-date-form')[0]
 		$(form).attr('action', '${pageContext.request.contextPath }/17/19/add')
+
+		if (!saveValidation()) {
+			openModal('Error', validationMessage)
+			return false
+		}
+
 		form.submit()
 	}
 
@@ -430,24 +585,32 @@
 		$('#cl-settlement-date-picker').val('')
 
 		// 입력상태 변경
-		// changeStatus()
 		submitAndResetButton()
 	}
 
 	// 마감일 수정
 	function updateClosingDate() {
-		console.log('updateClosingDate');
-
-		var form = $('#test-form')[0]
+		var form = $('#closing-date-form')[0]
 		$(form).attr('action', '${pageContext.request.contextPath }/17/19/update')
+
+		if (!updateValidation()) {
+			openModal('Error', validationMessage)
+			return false
+		}
+
 		form.submit()
 	}
 
 	// 마감일 삭제
 	function deleteClosingDate() {
-		console.log('deleteClosingDate');
-		var form = $('#test-form')[0]
+		var form = $('#closing-date-form')[0]
 		$(form).attr('action', '${pageContext.request.contextPath }/17/19/delete')
+
+		if (!deleteValidation()) {
+			openModal('Error', validationMessage)
+			return false
+		}
+
 		form.submit()
 	}
 
