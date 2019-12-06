@@ -209,7 +209,7 @@
 				</table>
 				
 				<div class="pagination" id="pagination">
-					<ul class="myul">
+					<ul>
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
 								<li>
@@ -277,30 +277,34 @@ function renderingList(list){
 }
 
 function renderingPage(pagination){
-	$("#pagination>ul").remove();
+	
+	$("#pagination>ul *").remove();
 	//이전버튼 Rendering
+	console.log($("#pagination>ul"));
 	if(pagination.prev){
-		$("#pagination>ul").append("<li onclick='pageClicked()'> id='" + (pagination.endPage + 1) + "'" + 
-										"<a><i class='icon-double-angle-left'></i>" +
-										"</a>"+
-									"</li>");
+		$("#pagination>ul").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" + 
+									"<a><i class='icon-double-angle-left'></i>" +
+									"</a>"+
+								"</li>");
 	}else{
 		$("#pagination>ul").append("<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>");
 	}
-	for(var i=pagination.startPage; i< pagination.endPage ; ++i){
+	//페이지 Rendering
+	for(var i=pagination.startPage; i<=pagination.endPage ; ++i){
 		if(i == pagination.page)
 			$("#pagination>ul").append("<li class='active' onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
-		$("#pagination>ul").append("<li onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
+		else
+			$("#pagination>ul").append("<li onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
 	}
-	
+	//다음 버튼 Rendering
 	if(pagination.prev){
-		$("#pagination>ul").append("<li onclick='pageClicked()'> id='" + (pagination.endPage + 1) + "'" +
+		$("#pagination>ul").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" +
 										"<a><i class='icon-double-angle-right'></i></a>"+
 									"</li>");
 	}else{
 		$("#pagination>ul").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
 	}
-		
+	
 }
 
  function search(){
@@ -313,7 +317,7 @@ function renderingPage(pagination){
 		data : {"sendData" : sendData, "page" : page},
 		success: function(response){
 			renderingList(response.data.list);
-			console.log("pagination : " + reponse.data.pagination);
+			renderingPage(response.data.pagination);
 		}
 	 });
  }
@@ -329,6 +333,7 @@ function renderingPage(pagination){
 		data : {"sendData" : sendData, "orderColumn" : orderColumn, "page" : page},
 		success : function(response){
 				renderingList(response.data.list);
+				renderingPage(response.data.pagination);
 			},
 		error : function(xhr, error){
 			
@@ -346,10 +351,16 @@ function renderingPage(pagination){
 		dataType : "json",
 		data : {"sendData" : sendData, "page" : page},
 		success: function(response){
+			console.log("length : " + response.data.list.length);
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
 			console.log("startPage : " + response.data.pagination.startPage);
 			console.log("endPage : " + response.data.pagination.endPage);
+			console.log("startRow : " + response.data.pagination.startRow);
+			console.log("endRow : " + response.data.pagination.endRow);
+		},
+		error: function(xhr, error){
+			
 		}
 	 });
  }

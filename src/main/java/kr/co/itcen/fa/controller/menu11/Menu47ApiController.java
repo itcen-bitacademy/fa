@@ -26,8 +26,8 @@ public class Menu47ApiController {
 	public Menu47Service menu47Service;
 	
 	@ResponseBody
-	@RequestMapping("/" + Menu47Controller.SUBMENU + "/{page}/search")
-	public JSONResult search(STermDebtVo sTermDebtVo, @PathVariable int page) {
+	@RequestMapping("/" + Menu47Controller.SUBMENU + "/search")
+	public JSONResult search(STermDebtVo sTermDebtVo, @RequestParam(value="page", required=true) int page) {
 		Pagination pagination = new Pagination(5, 5, page);
 		List<STermDebtVo> list = menu47Service.search(sTermDebtVo, pagination);
 		Map map = new HashMap<>();
@@ -39,12 +39,16 @@ public class Menu47ApiController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/" + Menu47Controller.SUBMENU + "/{page}/order")
-	public JSONResult order(STermDebtVo sTermDebtVo, @PathVariable int page,
+	@RequestMapping("/" + Menu47Controller.SUBMENU + "/order")
+	public JSONResult order(STermDebtVo sTermDebtVo, @RequestParam(value="page", required=true) int page,
 			@RequestParam(value="orderColumn", required=true) String orderColumn) {
 		Pagination pagination = new Pagination(5, 5, page);
 		List<STermDebtVo> list = menu47Service.order(sTermDebtVo, orderColumn, pagination);
-		return JSONResult.success(list);
+		Map map = new HashMap<>();
+		map.put("list", list);
+		map.put("pagination", pagination);
+		
+		return JSONResult.success(map);
 	}
 	
 }

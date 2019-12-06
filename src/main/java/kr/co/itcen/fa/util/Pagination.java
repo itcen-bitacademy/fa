@@ -70,8 +70,8 @@ public class Pagination {
 	
 	public Map getRowRangeMap() {
 		Map map = new HashMap<String, Object>();
-		map.put("startRow", getStartRow());
-		map.put("endRow", getEndRow());
+		map.put("startRow", startRow);
+		map.put("endRow", pageSize);
 		
 		return map;
 	}

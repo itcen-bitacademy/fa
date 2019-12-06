@@ -25,6 +25,7 @@ public class Menu47Service {
 	
 	public List<STermDebtVo> getList(Pagination pagination) {
 		Map map = pagination.getRowRangeMap();
+		
 		int totalCnt = menu47Repository.getTotalCount();
 		pagination.processPaging(totalCnt);
 		return menu47Repository.getList(map);
@@ -33,6 +34,7 @@ public class Menu47Service {
 	public List<STermDebtVo> search(STermDebtVo sTermDebtVo, Pagination pagination){
 		Map map = pagination.getRowRangeMap();
 		map.put("vo", sTermDebtVo);
+		
 		int totalCnt = menu47Repository.getTotalCount();
 		pagination.processPaging(totalCnt);
 		return menu47Repository.getList(map);
@@ -42,6 +44,7 @@ public class Menu47Service {
 		Map map = pagination.getRowRangeMap();
 		map.put("vo", sTermDebtVo);
 		map.put("orderColumn", orderColumn);
+		
 		int totalCnt = menu47Repository.getTotalCount();
 		pagination.processPaging(totalCnt);
 		return menu47Repository.getList(map);

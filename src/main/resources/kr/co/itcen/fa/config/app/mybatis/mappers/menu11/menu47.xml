@@ -67,7 +67,7 @@
 				</choose>
 			</if>
 			<![CDATA[
-				limit 0, ${endRow}
+				limit ${startRow}, ${endRow}
 			]]>
 	</select>
 	
