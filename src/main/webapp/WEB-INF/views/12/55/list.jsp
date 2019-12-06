@@ -59,43 +59,54 @@ $(function() {
 					<div class="span12">
 							<div class="control-group">
 							<div class="row-fluid">
+							<form class="form-horizontal">
 								<div class="span4">
-									<form class="form-horizontal">
 										<div class="control-group">
 											<label class="control-label" for="cl-ym-date-picker"
 												style="text-align: left; width: 120px;"> 년 월</label>
 											<div class="controls" style="margin-left: 120px;">
 												<div class="row-fluid input-append">
-													<input class="span11 date-picker" id="cl-ym-date-picker"
-														name="closingYearMonth" type="text"
+													<input class="span11 date-picker" id="searchdate"
+														name="searchdate" type="text"
 														data-date-format="yyyy-mm" /> <span class="add-on">
 														<i class="icon-calendar"></i>
 													</span>
 												</div>
+												
+													<!-- searchdate 상태 유지 -->
+													<script type="text/javascript">
+													var searchdate = "${param.searchdate}";
+													$("#searchdate").val(searchdate);
+													</script>
 											</div>
 										</div>
-									</form>
 								</div>
 								<div class="span4">
-									<form class="form-horizontal">
 										<div class="control-group">
 											<label class="control-label" for="form-field-select-2"
-												style="text-align: left; width: 120px;">품목 코드</label>
+												style="text-align: left; width: 120px;">품목명</label>
 											<div class="controls" style="margin-left: 120px;">
-												<select class="chosen-select" id="form-field-select-2"
-													name="client_code" data-placeholder="거래처코드 선택">
-													<option value="1">품목코드11111</option>
-													<option value="2">품목코드22222</option>
+												<select class="chosen-select" id="itemname"
+													name="itemname" data-placeholder="품목명 선택">
+													<c:forEach items='${itemname }' var='itemname' varStatus='status'>
+													<option value="${itemname.itemname }">${itemname.itemname }</option>
+													</c:forEach>
 												</select>
+													<!-- itemname 상태 유지 -->
+													<script type="text/javascript">
+													var itemname = "${param.itemname}";
+													$("#itemname").val(itemname);
+													</script>
 											</div>
 										</div>
-									</form>
 								</div>
 
 								<div class="span1">
-									<button class="btn btn-small btn-info">조회</button>
+									<button type="submit" class="btn btn-small btn-info"
+									formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 
 								</div>
+								</form>
 							</div>
 
 							<div class="hr hr-18 dotted"></div>
@@ -113,26 +124,29 @@ $(function() {
 										<th>출고공급가액</th>
 										<th>출고부가세</th>
 										<th>출고금액</th>
-										<th>재고수량</th>
-										<th>재고금액</th>
-										<th>재고부가세</th>
+<!-- 									<th>재고수량</th> -->
+<!-- 									<th>재고금액</th> -->
+<!-- 									<th>재고부가세</th> -->
 									</tr>
 									</thead>
 									<c:forEach items='${list }' var='vo' varStatus='status'>
 									<tr>
-										<td>${vo.itemcode }</td>
-										<td>${vo.itemname }</td>
-										<td>${vo.purchasemanagementquantity }</td>
-										<td>${vo.purchasemanagementsupplyvalue }</td>
-										<td>${vo.purchasemanagementtaxvalue }</td>
-										<td>${vo.purchasemanagementtotalprice }</td>
-										<td>${vo.salesquantity }</td>
-										<td>${vo.salessupplyvalue }</td>
-										<td>${vo.salestaxvalue }</td>
-										<td>${vo.salestotalprice }</td>
-										<td>${vo.stockquantity }</td>
-										<td>${vo.stocktotalprice }</td>
-										<td>${vo.stocktaxvalue }</td>
+										<c:if test='${vo.purchasemanagementquantity ne null ||vo.salesquantity ne null}'>
+											<td>${vo.itemcode }</td>
+											<td>${vo.itemname }</td>
+											<td>${vo.purchasemanagementquantity }</td>
+											<td>${vo.purchasemanagementsupplyvalue }</td>
+											<td>${vo.purchasemanagementtaxvalue }</td>
+											<td>${vo.purchasemanagementtotalprice }</td>
+											<td>${vo.salesquantity }</td>
+											<td>${vo.salessupplyvalue }</td>
+											<td>${vo.salestaxvalue }</td>
+											<td>${vo.salestotalprice }</td>
+										</c:if>
+										
+<%-- 										<td>${vo.stockquantity }</td> --%>
+<%-- 										<td>${vo.stocktotalprice }</td> --%>
+<%-- 										<td>${vo.stocktaxvalue }</td> --%>
 									</tr>
 									</c:forEach>
 								</table>
