@@ -27,6 +27,7 @@ public class Menu45Controller {
 	public static final String MAINMENU = "11";
 	public static final String SUBMENU = "45";
 	
+	
 	@Autowired
 	private Menu45Service menu45Service;
 	
