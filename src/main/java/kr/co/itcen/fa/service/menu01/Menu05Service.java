@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu05Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
-import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.CardVo;
 
 /**
@@ -40,9 +39,9 @@ public class Menu05Service {
 		int totalCnt = menu05Repository.listCount();
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		
-
 		map = menu05Repository.create(vo, pagination);
 		map.put("pagination", pagination);
+		
 		map.put("success", true);
 		return map;
 	}
@@ -66,6 +65,7 @@ public class Menu05Service {
 		}
 			
 		int totalCnt = menu05Repository.listCount();
+		System.out.println(totalCnt);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		
 		
@@ -99,6 +99,11 @@ public class Menu05Service {
 		
 		return dataResult;
 		
+	}
+
+	public Map<String, Object> gets(String cardNo) {
+		Map<String, Object> map = menu05Repository.gets(cardNo);
+		return map;
 	}
 
 

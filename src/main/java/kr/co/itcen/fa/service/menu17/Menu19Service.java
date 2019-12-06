@@ -31,6 +31,9 @@ public class Menu19Service {
 	@Autowired
 	private Menu61Service menu61Service;
 	
+	@Autowired
+	private Menu64Service menu64Service;
+	
 	public void test() {
 		menu19Repository.test();
 	}
@@ -135,6 +138,11 @@ public class Menu19Service {
 		// 시산표 및 재무제표 데이터 삭제
 		// TODO: 서비스 안에서 재무제표 데이터도 삭제해야함 
 		menu61Service.deleteTrialBalanceByClosingDateNo(closingDate);
+		// TODO: 대차대조표 데이터 삭제
+		
+		// 손익계산서 데이터 삭제
+		menu64Service.deleteIncomeStatement(closingDate);
+
 		
 		menu19Repository.deleteClosingDate(closingDate);
 		

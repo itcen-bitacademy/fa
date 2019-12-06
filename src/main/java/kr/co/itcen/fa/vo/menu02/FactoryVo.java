@@ -13,10 +13,12 @@ import org.apache.ibatis.type.Alias;
 public class FactoryVo {
 	private String no;					//공장코드
 	private String name;				//공장명
+	private String purchaseitemcode;	//매입품목코드
 	private String postaddress;			//우편번호
 	private String roadaddress;			//도로명주소
 	private String detailaddress;		//상세주소
 	private String managername;			//담당자명
+	private String originNo;			//기존 공장코드
 	private String deleteflag;			//삭제여부
 	private String insertuserid;		//입력자
 	private String insertday;			//입력날짜
@@ -34,6 +36,12 @@ public class FactoryVo {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getPurchaseitemcode() {
+		return purchaseitemcode;
+	}
+	public void setPurchaseitemcode(String purchaseitemcode) {
+		this.purchaseitemcode = purchaseitemcode;
 	}
 	public String getPostaddress() {
 		return postaddress;
@@ -58,6 +66,12 @@ public class FactoryVo {
 	}
 	public void setManagername(String managername) {
 		this.managername = managername;
+	}
+	public String getOriginNo() {
+		return originNo;
+	}
+	public void setOriginNo(String originNo) {
+		this.originNo = originNo;
 	}
 	public String getDeleteflag() {
 		return deleteflag;
@@ -91,9 +105,10 @@ public class FactoryVo {
 	}
 	@Override
 	public String toString() {
-		return "FactoryVo [no=" + no + ", name=" + name + ", postaddress=" + postaddress + ", roadaddress="
-				+ roadaddress + ", detailaddress=" + detailaddress + ", managername=" + managername + ", deleteflag="
-				+ deleteflag + ", insertuserid=" + insertuserid + ", insertday=" + insertday + ", updateuserid="
-				+ updateuserid + ", updateday=" + updateday + "]";
+		return "FactoryVo [no=" + no + ", name=" + name + ", purchaseitemcode=" + purchaseitemcode + ", postaddress="
+				+ postaddress + ", roadaddress=" + roadaddress + ", detailaddress=" + detailaddress + ", managername="
+				+ managername + ", originNo=" + originNo + ", deleteflag=" + deleteflag + ", insertuserid="
+				+ insertuserid + ", insertday=" + insertday + ", updateuserid=" + updateuserid + ", updateday="
+				+ updateday + "]";
 	}
 }

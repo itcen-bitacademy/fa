@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.controller.menu12;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.service.menu01.Menu25Service;
 import kr.co.itcen.fa.service.menu12.Menu15Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
@@ -34,6 +36,9 @@ public class Menu15Controller {
 
 	@Autowired
 	private Menu15Service menu15Service;
+	
+	@Autowired
+	private Menu25Service menu25Service;
 	
 	@RequestMapping("/" + SUBMENU)
 	public String list(Model model) {
@@ -75,5 +80,16 @@ public class Menu15Controller {
 	public JSONResult delete(@RequestParam(value = "checkNoArr[]") List<String> checkNoList) {
 		Boolean exist = menu15Service.deleteCustomer(checkNoList);
 		return JSONResult.success(exist);
+	}
+	
+	// PopUp
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/gets")
+	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
+		System.out.println("gets");
+		
+		Map<String, Object> data =  menu25Service.gets(depositNo);
+		data.put("success", true);
+		return data;
 	}
 }

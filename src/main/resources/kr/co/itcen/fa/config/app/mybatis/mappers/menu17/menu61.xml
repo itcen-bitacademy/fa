@@ -34,7 +34,7 @@
 	<select id="selectLastestUnclosingDatePerYear" parameterType="closingDate17Vo" resultType="closingDate17Vo">
 		select	
 			no
-		    , closing_year_month as closingYearMonth
+		    , closing_year_month
 		    , closing_date
 		    , closing_statement_date
 		    , closing_purchase_date

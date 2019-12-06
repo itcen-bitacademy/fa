@@ -19,7 +19,7 @@
 		<![CDATA[
 		insert
 		  into tb_l_term_debt
-		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, 'N',#{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',null,'N',#{insertId},now(),null,null)
+		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, 'N',#{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',#{voucherNo},'N',#{insertId},now(),null,null)
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
@@ -123,6 +123,15 @@
 	]]>
 	
 	</update>
+	
+	<!-- select no -->
+	<select id="selectno" parameterType="long" resultType="long">
+	<![CDATA[
+		select voucher_no
+		from tb_l_term_debt
+		where no=#{_parameter}
+	]]>
+	</select>
 	<!-- delete -->
 	<update id="delete" parameterType="list">
 	<![CDATA[

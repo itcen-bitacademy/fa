@@ -40,6 +40,7 @@ public class Menu05Repository {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("cardList", sqlSession.selectList("menu05.read", vo));
+		System.out.println(map.get("cardList"));
 		return map;
 	}
 	
@@ -98,6 +99,16 @@ public class Menu05Repository {
 	public int listCount() {
 		int res = sqlSession.selectOne("menu05.getCount");
 		return res;
+	}
+
+
+	public Map<String, Object> gets(String cardNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<CardVo> s = sqlSession.selectList("menu25.gets", cardNo);
+		map.put("cardList", s);
+		
+		return map;
 	}
 
 

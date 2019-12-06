@@ -42,8 +42,8 @@ public class Menu33Service {
 		return purchaseitemVo;
 	}
 	
-	public FactoryVo searchfactory(String factory_code) {
-		FactoryVo factoryVo = menu33Repository.searchfactory(factory_code);
+	public FactoryVo searchfactory(String purchaseitem_code, String factory_code) {
+		FactoryVo factoryVo = menu33Repository.searchfactory(purchaseitem_code, factory_code);
 		
 		return factoryVo;
 	}
@@ -65,7 +65,13 @@ public class Menu33Service {
 		
 		return sectionList;
 	}
-
+	
+	public List<SectionVo> getFactorysectionList() {
+		List<SectionVo> factoryList = menu33Repository.getFactorysectionList();
+		
+		return factoryList;
+	}
+	
 	public List<SectionVo> getsearchSectionList(String sectionname) {
 		List<SectionVo> searchsectionList = menu33Repository.getsearchSectionList(sectionname);
 		
@@ -77,6 +83,8 @@ public class Menu33Service {
 		
 		return pagepurchaseitemList;
 	}
+
+	
 
 	
 

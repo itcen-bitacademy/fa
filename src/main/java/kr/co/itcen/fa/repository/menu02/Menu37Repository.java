@@ -14,8 +14,7 @@ import kr.co.itcen.fa.vo.menu02.TestVo;
 
 /**
  * 
- * @author 이제구
- * 매입세금계산서관리
+ * @author 이제구 매입세금계산서관리
  *
  */
 
@@ -23,13 +22,11 @@ import kr.co.itcen.fa.vo.menu02.TestVo;
 public class Menu37Repository {
 	@Autowired
 	private SqlSession sqlSession;
-	
-	
 
-	//1. insert를 할때 if문으로 3팀인지 2팀인지 구별후 매입세금계산서번호를 넣는다.
-	//2. 내꺼에 넣는다.
+	// 1. insert를 할때 if문으로 3팀인지 2팀인지 구별후 매입세금계산서번호를 넣는다.
+	// 2. 내꺼에 넣는다.
 	public void insert(BuyTaxbillVo vo) {
-		
+
 		sqlSession.insert("menu37.insert", vo);
 	}
 
@@ -44,7 +41,7 @@ public class Menu37Repository {
 	}
 
 	public void insertTax(BuyTaxbillVo vo) {
-		sqlSession.insert("menu37.insertTax",vo);	
+		sqlSession.insert("menu37.insertTax", vo);
 	}
 
 	public void insertItem(BuyTaxbillItemsVo vo) {
@@ -67,11 +64,36 @@ public class Menu37Repository {
 	}
 
 	public List<BuyTaxbillItemsVo> getAboutItmes(String no) {
-		List<BuyTaxbillItemsVo> getAboutItmes = sqlSession.selectList("menu37.getAboutItmes",no);
+		List<BuyTaxbillItemsVo> getAboutItmes = sqlSession.selectList("menu37.getAboutItmes", no);
 		return getAboutItmes;
 	}
-	
-	
 
-	
+	public void taxbillDelete(String no) {
+		sqlSession.update("menu37.taxbillDelete", no);
+
+	}
+
+	public void taxbillItemDelete(String no) {
+		sqlSession.update("menu37.taxbillItemDelete", no);
+	}
+
+	public void taxbillUpdateDelete(String no) {
+		sqlSession.delete("menu37.taxbillUpdateDelete", no);
+
+	}
+
+	public void taxbillItemsUpdateDelete(String no) {
+		sqlSession.delete("menu37.taxbillItemsUpdateDelete", no);
+	}
+
+	public void insertUpdatedTax(BuyTaxbillVo vo) {
+		sqlSession.insert("menu37.insertUpdatedTax", vo);
+
+	}
+
+	public void insertUpdatedItem(BuyTaxbillItemsVo buyTaxbillItemsVo) {
+		sqlSession.insert("menu37.insertUpdatedItem", buyTaxbillItemsVo);
+
+	}
+
 }

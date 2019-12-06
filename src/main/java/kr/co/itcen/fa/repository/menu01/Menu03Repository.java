@@ -98,21 +98,28 @@ public class Menu03Repository {
 		voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
 		
 		sqlSession.delete("menu03.deleteVoucher", voucherVo);
-		sqlSession.delete("menu03.deleteItem", itemVo);
+		
+		for(int i = 0; i < itemVo.size(); i++) {
+			sqlSession.delete("menu03.deleteItem", itemVo.get(i));
+		}
 		sqlSession.delete("menu03.deleteMapping", mappingVo);
 		
-		sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
+		voucherVo.setInsertUserid(voucherVoTemp.getInsertUserid());
+		voucherVo.setInsertDay(voucherVoTemp.getInsertDay());
+		sqlSession.insert("menu03.newVoucher", voucherVo); // 전표테이블 입력
 		
 		for(int i = 0; i < itemVo.size(); i++) {
 			itemVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
 			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
-			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
+			itemVo.get(i).setVoucherNo(voucherVo.getNo());
+			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
 		}
 		
 		mappingVo.setInsertUserid(voucherVoTemp.getInsertUserid());
 		mappingVo.setInsertDay(voucherVoTemp.getInsertDay());
-		sqlSession.insert("menu03.insertMapping", mappingVo); // 매핑테이블 입력
-		
+		mappingVo.setVoucherNo(voucherVo.getNo());
+		sqlSession.insert("menu03.newMapping", mappingVo); // 매핑테이블 입력
+		System.out.println("repository2 : " + voucherVo.getNo());
 		return voucherVo.getNo();
 		
 	}

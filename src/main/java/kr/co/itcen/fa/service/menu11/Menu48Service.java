@@ -58,4 +58,9 @@ public class Menu48Service {
 		// TODO Auto-generated method stub
 		return menu48Repository.selectSection();
 	}
+
+	public Long select(Long no) {
+		// TODO Auto-generated method stub
+		return menu48Repository.select(no);
+	}
 }

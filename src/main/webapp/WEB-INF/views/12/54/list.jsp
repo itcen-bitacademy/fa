@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 	.chosen-search {
@@ -28,54 +29,48 @@
 					<div class="span12">
 						<div class="row-fluid">
 									<div class="form-horizontal">
-											<div class="span6">
-												<label class="control-label" for="form-field-date">작 성 일 자</label>
-													<div class="controls">
-															<input class="span6 date-picker hasDatepicker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy" style="width:130px">
-															<span class="add-on"><i class="icon-calendar"></i>
-															</span>
-														&nbsp; ~ &nbsp;
-															<input class="span6 date-picker hasDatepicker" id="id-date-picker-2" type="text" data-date-format="dd-mm-yyyy" style="width:130px">
-															<span class="add-on"><i class="icon-calendar"></i>
-															</span>
-														&nbsp;
-														<button class="btn btn-small btn-info">조회</button>
-													</div>
-											</div>
-											<div class="span6">
+										<div class="span6">
+											<label class="control-label" for="form-field-date">작 성 일 자</label>
 												<div class="controls">
+													<input class="span5 cl-date-picker" id="sales-date" name="sales-date1" type="text" data-date-format="yyyy-mm-dd"> 
+													<span class="add-on"><i class="icon-calendar"></i>
+													</span>
+													&nbsp; ~ &nbsp;															
+													<input class="span5 cl-date-picker" id="sales-date" name="sales-date2" type="text" data-date-format="yyyy-mm-dd"> 
+													<span class="add-on"><i class="icon-calendar"></i>
+													</span>
 												</div>
-											</div>
+										</div>
+									<div class="span6">
+										<div class="controls"></div>
 									</div>
+							</div>
 						</div>
 						<br>
-					</div>
-						
-					<div class="row-fluid">
+				</div>
+				<!-- <button type="button" onclick=""><i class="icon-search nav-search-icon"></i> -->
+				<div class="row-fluid">
 							<div class="span12">
-							
 									<div class="form-horizontal">
 										<div class="control-group">
-											
 											<div class="span6">
 												<label class="control-label span2" for="form-field-1">거래처</label>
 												<div class="controls">
-													 <input class="span5" type="text" id="form-field-1"> 
+													 <input class="span5" type="text" id="form-field-1" > 
 													 <input class="span5" type="text" id="form-field-1">
-													 <span class="btn btn-small btn-info"><i
-															class="icon-search nav-search-icon"></i></span>
+													 <span class="btn btn-small btn-info">
+													 <i class="icon-search nav-search-icon" onclick=""></i></span>
 												</div>
 											</div>
 											
 											<div class="span6">
 												<label class="control-label span1" for="form-field-1">세금계산서 번호</label>
 												<div class="controls">
-															<input class="span8" type="text" id="form-field-1">
-															<span class="btn btn-small btn-info"><i
-															class="icon-search nav-search-icon"></i></span>
+														<input class="span8" type="text" id="form-field-1">
+														 <span class="btn btn-small btn-info">
+														 <i class="icon-search nav-search-icon" onclick=""></i></span>
 												</div>
 											</div>
-											
 										</div>
 									</div>
 									
@@ -95,7 +90,7 @@
 											<label class="control-label span2" for="form-field-1">영세</label>
 												<div class="span4">
 													<select class="chosen-select" id="zero" name="zero" data-placeholder="영세/비영세">
-														<option value="yes">yes</option>
+														<option value="zero">yes</option>
 														<option value="no">no</option>
 													</select>
 												</div>
@@ -103,41 +98,39 @@
 										</div>
 									</div>
 									
-									<div class="form-horizontal">
-										<div class="control-group">
-												<div class="span6">
-													<div class="controls">
+								<!-- <div class="form-horizontal">
+											<div class="control-group">
+													<div class="span6">
+														<div class="controls">
+														</div>
 													</div>
-												</div>
-											
-											<div class="span6">	
-												<div class="control-group">
-			
-													<div class="controls">
-														<label>
-															<input name="form-field-radio" type="radio" class="ace">
-															<span class="lbl">&nbsp;전체조회&nbsp;&nbsp;&nbsp;</span>
-															
-															<input name="form-field-radio" type="radio" class="ace">
-															<span class="lbl">&nbsp;승인&nbsp;&nbsp;</span>
-															
-															<input name="form-field-radio" type="radio" class="ace">
-															<span class="lbl">&nbsp;미승인 </span>
-														</label>
+												
+												<div class="span6">	
+													<div class="control-group">
+				
+														<div class="controls">
+															<label>
+																<input name="form-field-radio" type="radio" class="ace">
+																<span class="lbl">&nbsp;전체조회&nbsp;&nbsp;&nbsp;</span>
+																
+																<input name="form-field-radio" type="radio" class="ace">
+																<span class="lbl">&nbsp;승인&nbsp;&nbsp;</span>
+																
+																<input name="form-field-radio" type="radio" class="ace">
+																<span class="lbl">&nbsp;미승인 </span>
+															</label>
+														</div>
+														
 													</div>
 												</div>
 											</div>
-										</div>
-									</div>
-									
+										</div> -->
 									<div class="hr hr-18 dotted"></div>
-									
 									<div class="form-horizontal">
 										<div class="control-group">
 											<div class="span6">	
 												<div class="control">
 													<label class="control-label">정렬순서</label>
-													
 													<div class="controls">
 														<label>
 															<input name="form-field-radio" type="radio" class="ace">
@@ -164,8 +157,7 @@
 										</div>
 									</div>
 									<div class="hr hr-18 dotted"></div>
-									
-									<div class="row-fluid">
+						<div class="row-fluid">
 						<div class="span12">
 							<table class="table table-striped table-bordered table-hover">
 								<thead>
@@ -235,11 +227,46 @@
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <!-- basic scripts -->
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
 		$(function() {
 			$(".chosen-select").chosen();
 		})
+		
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('.cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+			
+			$(".chosen-select").chosen();
+			
+		})
+		
+		
 	</script>
 </body>
 </html>

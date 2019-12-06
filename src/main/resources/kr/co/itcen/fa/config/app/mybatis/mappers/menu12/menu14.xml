@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu14">
 	
-	<select id="defaultlist" parameterType="pageutil" resultType="salesvo">
+	<select id="defaultlist" parameterType="serchvo" resultType="salesvo">
 		<![CDATA[
 			select 		a.sales_no as salesNo,
 						date_format(a.sales_date, '%Y-%m-%d') as salesDate,
@@ -21,12 +21,12 @@
 			from 		tb_sales a, 
 						tb_salescustomer b 
 			where 		a.customer_code = b.no
-			order by 	a.sales_date desc
+			order by 	a.sales_date desc, a.sales_no, a.number asc
 			limit		#{pagination.pageIndex }, #{pagination.listSize } 
 		]]>
 	</select>
 	
-	<select id="searchlist" parameterType="salesvo" resultType="salesvo">
+	<select id="searchlist" parameterType="serchvo" resultType="salesvo">
 		<![CDATA[
 			select 		a.sales_no as salesNo,
 						date_format(a.sales_date, '%Y-%m-%d') as salesDate,
@@ -78,13 +78,56 @@
 				</if>
 				<if test='orderData!=""'>
 				<![CDATA[
-					 order by ${orderData} asc;
+					 order by ${orderData} asc
 				]]>
 				</if>
+			<![CDATA[
+				limit	#{pagination.pageIndex }, #{pagination.listSize } 
+			]]>
 	</select>
+	
 	<select id="selectCount" resultType="int">
 		select	count(*) as cnt
 		  from	tb_sales
 		;
+	</select>
+	
+	<select id="searchCount" parameterType="serchvo" resultType="int">
+		<![CDATA[
+			select	count(*) as cnt
+			from 		tb_sales a, 
+						tb_salescustomer b 
+			where 		a.customer_code = b.no
+			]]>
+				<if test='startDate!=null'>
+				<![CDATA[
+					 and a.sales_date >= '${startDate } 00:00:00' and a.sales_date <= '${endDate } 23:59:59'
+				]]>
+				</if>
+				<if test='salesNo!=""'>
+				<![CDATA[
+					 and a.sales_no = #{salesNo }
+				]]>
+				</if>	
+				<if test='customerCode!=""'>
+				<![CDATA[
+					 and a.customer_code = #{customerCode }
+				]]>
+				</if>
+				<if test='insertUserid!=""'>
+				<![CDATA[
+					 and a.insert_userid = #{insertUserid }
+				]]>
+				</if>
+				<if test='itemCode!=""'>
+				<![CDATA[
+					 and a.item_code = #{itemCode }
+				]]>
+				</if>
+				<if test='deleteFlag!=""'>
+				<![CDATA[
+					 and a.delete_flag = #{deleteFlag }
+				]]>
+				</if>
 	</select>
 </mapper>

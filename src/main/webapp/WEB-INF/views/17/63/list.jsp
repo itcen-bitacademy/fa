@@ -36,17 +36,17 @@
 						<div class="control-group">
 							<label class="control-label" for="year-month" style="text-align:left;width:60px;">년 월:</label>
 							<div class="controls" style="margin-left:60px;">
-								<select class="chosen-select" id="year-month" name="yearMonth" data-placeholder="년 월 선택">
-									<option value="2019-12">2019-12</option>
-									<option value="2019-12">2019-11</option>
-									<option value="2019-12">2019-10</option>
-									<option value="2019-12">2019-9</option>
-									<option value="2019-12">2019-8</option>
-									<option value="2019-12">2019-7</option>
-									<option value="2019-12">2019-6</option>
-									<option value="2019-12">2019-5</option>
-									<option value="2019-12">2019-4</option>
-									<option value="2019-12">2019-3</option>
+								<select class="chosen-select" id="year-month" name="closingDateNo" data-placeholder="년 월 선택">
+									<c:forEach var="cd" items="${closingDateList }">
+										<c:choose>
+											<c:when test="${cd.no eq closingDateNo }">
+												<option value="${cd.no }" selected>${cd.closingYearMonth }</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${cd.no }">${cd.closingYearMonth }</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
 								</select>
 
 								<%-- 조회버튼 --%>
@@ -79,121 +79,30 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td style="padding-left:1%;">자산</td>
-								<td class="center"></td>
-								<td class="center"></td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">유동자산</td>
-								<td class="center">3,000,000,000</td>
-								<td class="center">14,232,193,418</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">현금및현금성자산</td>
-								<td class="center">135,000,000</td>
-								<td class="center">402,002,550</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">단기금융상품</td>
-								<td class="center">3,000,000</td>
-								<td class="center">10,000,000</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">매출채권</td>
-								<td class="center">500,000,000</td>
-								<td class="center">2,627,932,201</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">기타수취채권</td>
-								<td class="center">6,000,000,000</td>
-								<td class="center">10,411,727,832</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">재고자산</td>
-								<td class="center">11,000,000</td>
-								<td class="center">547,533,028</td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">비유동자산</td>
-								<td class="center">12,000,000,000</td>
-								<td class="center">95,503,595,920</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">장기금융상품</td>
-								<td class="center">4,000,000</td>
-								<td class="center">802,171,090</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">당기손익_공정가치측정금융자산</td>
-								<td class="center">60,000,000</td>
-								<td class="center">2,364,053,368</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">유형자산</td>
-								<td class="center">3,000,000,000</td>
-								<td class="center">18,028,674,331</td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">자산총계</td>
-								<td class="center">83,000,000,000</td>
-								<td class="center">109,735,789,338</td>
-							</tr>
-							<tr>
-								<td style="padding-left:1%;">부채</td>
-								<td class="center"></td>
-								<td class="center"></td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">유동부채</td>
-								<td class="center">3,000,000,000</td>
-								<td class="center">55,932,715,044</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">매입채무</td>
-								<td class="center">600,000,000</td>
-								<td class="center">5,040,061,614</td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">비유동부채</td>
-								<td class="center">8,000,000,000</td>
-								<td class="center">17,315,383,822</td>
-							</tr>
-							<tr>
-								<td style="padding-left:6%;">차입금</td>
-								<td class="center">20,000,000</td>
-								<td class="center">8,518,159,012</td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">부채총계</td>
-								<td class="center">12,000,000,000</td>
-								<td class="center">73,248,098,866</td>
-							</tr>
-							<tr>
-								<td style="padding-left:1%;">자본</td>
-								<td class="center"></td>
-								<td class="center"></td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">자본금</td>
-								<td class="center">500,000,000</td>
-								<td class="center">8,095,462,500</td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">주식발행초과금</td>
-								<td class="center">7,000,000,000</td>
-								<td class="center">23,618,508,786</td>
-							</tr>
-							<tr>
-								<td style="padding-left:3%;">자본총계</td>
-								<td class="center">11,000,000,000</td>
-								<td class="center">36,487,690,472</td>
-							</tr>
-							<tr>
-								<td style="padding-left:1%;">자본과부채총계</td>
-								<td class="center">40,000,000,000</td>
-								<td class="center">109,735,789,338</td>
-							</tr>
+							<c:forEach items="${balanceSheetDataList }" var="data" varStatus='status' >
+								<tr>
+									<c:choose>
+										<c:when test="${data.accountNo % 1000000 eq 0 }">
+											<td style="padding-left:1%;">
+												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
+											</td>
+										</c:when>
+										<c:when test="${data.accountNo % 1000000 >= 100000 and data.accountNo % 100000 eq 0}">
+											<td style="padding-left:3%;">
+												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
+											</td>
+										</c:when>
+										<c:otherwise>
+											<td style="padding-left:6%;">
+												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
+											</td>
+										</c:otherwise>
+									</c:choose>
+
+									<td class="center">${data.monthToAmount}</td>
+									<td class="center">${data.amount}</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

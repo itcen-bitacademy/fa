@@ -31,7 +31,8 @@ public class Menu46Repository {
 	}
 	
 	public Boolean update(STermDebtVo sTermDebtVo) {
-		int count = sqlSession.update("menu46.update", sTermDebtVo);
+		System.out.println("update 콜됨");
+		int count = sqlSession.update("menu46.update1", sTermDebtVo);
 		return (count==1);
 	}
 	

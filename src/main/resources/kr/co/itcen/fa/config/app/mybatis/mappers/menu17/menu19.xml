@@ -167,7 +167,7 @@
 		    , update_day
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
-		   and	now() < closing_statement_date
+		   and	date_format(now(), '%Y-%m-%d') <= closing_statement_date
 		   and	use_yn = true
 		;
 		]]>
@@ -193,7 +193,7 @@
 		    , update_day
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
-		   and	now() < closing_assets_date
+		   and	date_format(now(), '%Y-%m-%d') <= closing_assets_date
 		   and	use_yn = true
 		;
 		]]>
@@ -219,7 +219,7 @@
 		    , update_day
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
-		   and	now() < closing_debt_date
+		   and	date_format(now(), '%Y-%m-%d') <= closing_debt_date
 		   and	use_yn = true
 		;
 		]]>
@@ -245,7 +245,8 @@
 		    , update_day
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
-		   and	now() < closing_purchase_date
+		   and	date_format(now(), '%Y-%m-%d') <= closing_purchase_date
+		   and	use_yn = true
 		;
 		]]>
 	</select>
@@ -270,7 +271,7 @@
 		    , update_day
 		  from	tb_closing_date
 		 where	closing_year_month = date_format(#{businessDate }, '%Y-%m')
-		   and	now() < closing_sales_date
+		   and	date_format(now(), '%Y-%m-%d') <= closing_sales_date
 		   and	use_yn = true
 		;
 		]]>
@@ -295,10 +296,9 @@
 		    , update_userid
 		    , update_day
 		  from	tb_closing_date
-		 where	now() < closing_settlement_date
+		 where	date_format(now(), '%Y-%m-%d') <= closing_settlement_date
 		   and	closing_year_month = date_format(#{businessDate }, '%Y-%m')
 		   and	use_yn = true
-		 limit	1
 		;
 		]]>
 	</select>

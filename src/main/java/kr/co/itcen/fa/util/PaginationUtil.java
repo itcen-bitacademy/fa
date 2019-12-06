@@ -28,7 +28,7 @@ public class PaginationUtil {
 		this.totalPageCnt = (int) Math.ceil(this.totalCnt / (double)listSize);
 		
 		if (this.totalPageCnt < this.page) {
-			this.page = this.totalPageCnt;
+			this.page = (this.totalPageCnt < 1) ? 1 : this.totalPageCnt;
 		}
 		
 		this.startPage = ((this.page - 1) / this.pageSize) * this.pageSize + 1;

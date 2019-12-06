@@ -34,7 +34,6 @@
 					<div class="span12">
 						<!-- PAGE CONTENT BEGINS -->
 						<div class="row-fluid">
-							
 								<div class="form-horizontal">
 									<div class="span6">
 										<label class="control-label" for="form-field-1">매 출 일 자</label>
@@ -54,6 +53,7 @@
 									</div>
 								</div>
 						</div>
+						
 						<!-- Line -->
 						<div class="hr hr-18 dotted"></div>
 					</div>
@@ -72,6 +72,7 @@
 										<div class="controls">
 											<input class="span5" type="text" readonly id="customerName" name="customerName" value="${list[0].customerName }"> 
 											<input class="span5" type="text" readonly id="customerCode" name="customerCode" value="${list[0].customerCode }">
+											<input class="span5" type="hidden" readonly id="sales_date" name="salesDate" value="${list[0].salesDate }">
 										</div>
 									</div>
 		

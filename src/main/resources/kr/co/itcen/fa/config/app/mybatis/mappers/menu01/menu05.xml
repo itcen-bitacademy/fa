@@ -97,7 +97,7 @@
 				company, abroad, password, deposit_no as depositNo, deposit_host as depositHost,
 				bank_code as bankCode , bank_Name as bankName,
 				insert_userid as insertUserId, insert_day as insertDay, 
-			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
+			    ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
 		 from	tb_cardmanager
 		 where	delete_flag = "N"
 	 order by   insert_day desc
@@ -115,9 +115,16 @@
 		select	count(*)
 		 from	tb_cardmanager
 		 where	delete_flag = "N"
-		
 		]]>
 	</select>
-
+	
+	<select id="gets" parameterType="string" resultType="1cardvo">
+		<![CDATA[
+		select	card_no as cardNo, user, bank_code as bankCode, bank_name as bankName 
+		 from	tb_cardmanager
+		 where	card_no like concat(#{cardNo}, "%")
+		 and  delete_flag = "N"
+		]]>
+	</select>
  
 </mapper>

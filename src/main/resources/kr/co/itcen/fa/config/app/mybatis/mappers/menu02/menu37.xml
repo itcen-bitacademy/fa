@@ -15,7 +15,7 @@
 		<![CDATA[
 		insert
 		  into tb_buy_taxbill_items
-		values (null, #{taxbillNo }, #{purchaseDate }, #{itemName }, #{amount }, #{supplyValue }, #{taxValue }, #{insertUserid }, now(), null, null)
+		values (null, #{taxbillNo }, #{purchaseDate }, #{itemName }, #{amount }, #{supplyValue }, #{taxValue }, "n",#{insertUserid }, now(), null, null)
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
@@ -79,4 +79,57 @@
 		     where taxbill_no = #{values }
 		 ]]>
 	</select>
+
+	<!-- 승인번호에 맞는 세금계산서 행 update -->
+	<update id="taxbillDelete" parameterType="String">
+		<![CDATA[
+		update tb_buy_taxbill
+		   set delete_flag = 'y'
+		 where no = #{values }
+		 ]]>
+	</update>
+	<update id="taxbillItemDelete" parameterType="String">
+		<![CDATA[
+		update tb_buy_taxbill_items
+		   set delete_flag = 'y'
+		 where taxbill_no = #{values }
+		 ]]>
+	</update>
+
+	<!-- insert된 항목을 update할 때 기존의 데이터를 삭제하는 delete -->
+	<delete id="taxbillUpdateDelete" parameterType="String">
+		<![CDATA[
+		delete 
+		  from tb_buy_taxbill
+		 where no = #{values }
+		 ]]>
+	</delete>
+	<delete id="taxbillItemsUpdateDelete" parameterType="String">
+		<![CDATA[
+		delete 
+		  from tb_buy_taxbill_items
+		 where taxbill_no = #{values }
+		 ]]>
+	</delete>
+
+	<!-- insert된 항목을 update할 때 삭제하고 다시 입력하는 insert -->
+	<insert id="insertUpdatedTax" parameterType="buytaxbillvo">
+		<![CDATA[
+			insert 
+			  into tb_buy_taxbill
+			values (#{no },#{manageNo },#{companyName}, #{writeDate },#{totalSupplyValue },#{totalTaxValue },#{taxType },"n", #{insertUserid }, #{insertDay },#{updateUserid },now())
+		]]>
+	</insert>
+	<insert id="insertUpdatedItem" parameterType="buytaxbillitems">
+		<![CDATA[
+		insert
+		  into tb_buy_taxbill_items
+		values (null, #{taxbillNo }, #{purchaseDate }, #{itemName }, #{amount }, #{supplyValue }, #{taxValue },"n", #{insertUserid }, #{insertDay },#{updateUserid },now())
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
 </mapper>

@@ -47,11 +47,13 @@ public class Menu33Controller {
 		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList();
 		
 		List<SectionVo> sectionList = menu33Service.getSectionList();
+		List<SectionVo> factoryList = menu33Service.getFactorysectionList();
 		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
 		
 		model.addAttribute("purchaseitemList", purchaseitemList);
 		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList);
 		model.addAttribute("sectionList", sectionList);
+		model.addAttribute("factoryList", factoryList);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
@@ -79,7 +81,7 @@ public class Menu33Controller {
 		System.out.println(no);
 		
 		PurchaseitemVo searchpurchaseitemVo = menu33Service.searchpurchaseitem(no);
-		FactoryVo searchfactoryVo = menu33Service.searchfactory(searchpurchaseitemVo.getFactorycode());
+		FactoryVo searchfactoryVo = menu33Service.searchfactory(searchpurchaseitemVo.getNo(), searchpurchaseitemVo.getFactorycode());
 		SectionVo searchsectionVo = menu33Service.searchsection(searchpurchaseitemVo.getSectioncode());
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -95,6 +97,7 @@ public class Menu33Controller {
 		
 		map.put("name", searchpurchaseitemVo.getName());
 		map.put("section_code", searchpurchaseitemVo.getSectioncode());
+		map.put("factory_code", searchfactoryVo.getNo());
 		map.put("manager_name", searchfactoryVo.getManagername());
 		map.put("produce_date", searchpurchaseitemVo.getProducedate());
 		map.put("purpose", searchpurchaseitemVo.getPurpose());
@@ -110,17 +113,20 @@ public class Menu33Controller {
 					  HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
-		System.out.println(purchaseitemVo);
-		System.out.println(factoryVo);
+		
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");
 			
-			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "" && purchaseitemVo.getProducedate() != "") {
-				System.out.println(purchaseitemVo.getSectioncode());
+			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
 				factoryVo.setName(factory_name);
+				factoryVo.setNo(purchaseitemVo.getFactorycode());
+				factoryVo.setPurchaseitemcode(purchaseitemVo.getNo());
 				purchaseitemVo.setInsertuserid(userVo.getId());
 				factoryVo.setInsertuserid(userVo.getId());
+				
+				System.out.println(purchaseitemVo);
+				System.out.println(factoryVo);
 				
 				menu33Service.add(purchaseitemVo, factoryVo);
 			}
@@ -132,20 +138,25 @@ public class Menu33Controller {
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/update")
 	public List<PurchaseitemVo> update(@ModelAttribute PurchaseitemVo purchaseitemVo,
-			  			 @ModelAttribute FactoryVo factoryVo,
-			  			 @RequestParam(value="factoryname", required=false) String factory_name,
-			  			 @RequestParam(value="page", required=false, defaultValue="1") int page,
-			  			 HttpServletRequest request) {
+						  			   @ModelAttribute FactoryVo factoryVo,
+						  			   @RequestParam(value="factoryname", required=false) String factory_name,
+						  			   @RequestParam(value="page", required=false, defaultValue="1") int page,
+						  			   HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");
 			
-			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "" && purchaseitemVo.getProducedate() != "") {
+			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
 				factoryVo.setName(factory_name);
+				factoryVo.setNo(purchaseitemVo.getFactorycode());
+				factoryVo.setPurchaseitemcode(purchaseitemVo.getNo());
 				purchaseitemVo.setUpdateuserid(userVo.getId());
 				factoryVo.setUpdateuserid(userVo.getId());
+				
+				System.out.println(purchaseitemVo);
+				System.out.println(factoryVo);
 				
 				menu33Service.update(purchaseitemVo, factoryVo);
 			}
@@ -170,11 +181,13 @@ public class Menu33Controller {
 			
 			if(purchaseitemVo.getNo() != null && purchaseitemVo.getNo() != "") {
 				factoryVo.setName(factory_name);
+				factoryVo.setNo(purchaseitemVo.getFactorycode());
+				factoryVo.setPurchaseitemcode(purchaseitemVo.getNo());
 				purchaseitemVo.setUpdateuserid(userVo.getId());
 				factoryVo.setUpdateuserid(userVo.getId());
 				
 				System.out.println(purchaseitemVo);
-				
+				System.out.println(factoryVo);
 				menu33Service.delete(purchaseitemVo, factoryVo);
 			}
 		}

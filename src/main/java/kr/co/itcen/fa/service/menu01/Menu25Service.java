@@ -43,6 +43,7 @@ public class Menu25Service {
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		
 		map = menu25Repository.create(bavo, pagination);
+		
 		map.put("pagination", pagination);
 		map.put("success", true);
 		return map;

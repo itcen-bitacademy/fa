@@ -49,19 +49,14 @@ $(function() {
 			<div class="page-content">
 				<div class="page-header position-relative">
 					<h1 class="pull-left">품목 대분류별 매입매출 현황</h1>
-					<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div><!-- /.page-header -->
 				<div class="row-fluid">
-					<div class="span12">
-							
-							<div class="control-group">
-								
-									<div class="row-fluid">
+							<div class="span12">
+									<div class="form-horizontal">
 										<div class="span3">
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label class="control-label" for="cl-ym-date-picker" style="text-align:left;width:120px;"> 년 월</label>
-													<div class="controls" style="margin-left:120px;">
+											<div class="form-horizontal">
+													<label class="control-label" for="cl-ym-date-picker"> 년 월</label>
+													<div class="controls" >
 														<div class="row-fluid input-append">
 															<input class="span11 date-picker" id="cl-ym-date-picker" name="closingYearMonth" type="text" data-date-format="yyyy-mm" />
 															<span class="add-on">
@@ -69,86 +64,89 @@ $(function() {
 															</span>
 														</div>
 													</div>
-												</div>
-											</form>
+												
+											</div>
 										</div>
-										<div class="span4">
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label class="control-label" for="form-field-select-2" style="text-align:left;width:120px;">대분류 코드</label>
-													<div class="controls" style="margin-left:120px;">
+										
+										<div class="span3">
+											<div class="form-horizontal">
+													<label class="control-label" for="form-field-select-2" >대분류 코드</label>
+													<div class="controls">
 														<select class="chosen-select" id="form-field-select-2" name="client_code" data-placeholder="대분류코드 선택">
 															<option value="1">대분류코드11111</option>
 															<option value="2">대분류코드22222</option>
 														</select>														
 													</div>
-												</div>
-											</form>
+											</div>
 										</div>
-										<div class="span4">
-											<form class="form-horizontal">
-												<div class="control-group">
-													<label class="control-label" for="form-field-select-2" style="text-align:left;width:120px;">품목코드</label>
-													<div class="controls" style="margin-left:120px;">
-														<select class="chosen-select" id="form-field-select-2" name="client_code" data-placeholder="품목코드 선택">
+										
+										<div class="span3">
+											<div class="form-horizontal">
+													<label class="control-label" for="form-field-select-2">품목코드</label>
+													<div class="controls">
+														<select class="sapn3 chosen-select" id="form-field-select-2" name="client_code" data-placeholder="품목코드 선택">
 															<option value="1">품목코드11111</option>
 															<option value="2">품목코드22222</option>
-														</select>														
-														
+														</select>
+														<!-- <button class="btn btn-small btn-info" type="submit">조회</button>				 -->						
 													</div>
-												</div>
-											</form>
+											</div>
 										</div>
-										<div class="span1">
-										<button class="btn btn-small btn-info">조회</button>
 										
-										</div>
+										<div class="span2">
+												<button class="btn btn-small btn-info" type="submit" style="margin-left: 120px;">조회</button>
+										</div> 
 									</div>
-								
-								<div class="hr hr-18 dotted"></div>
-								
-								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
-									<thead>
-									<tr>
-										<th>대분류코드</th>
-										<th>대분류명</th>
-										<th>품목코드</th>
-										<th>품목명</th>
-										<th>입고수량</th>
-										<th>입고공급가액</th>
-										<th>입고부가세</th>
-										<th>입고금액</th>
-										<th>출고수량</th>
-										<th>출고공급가액</th>
-										<th>출고부가세</th>
-										<th>출고금액</th>
-										<th>재고수량</th>
-										<th>재고금액</th>
-										<th>재고부가세</th>
-									</tr>
-									</thead>
-									<c:forEach items='${list }' var='vo' varStatus='status'>
-									<tr>
-										<td>${vo.sectioncode }</td>
-										<td>${vo.sectionname }</td>
-										<td>${vo.itemcode }</td>
-										<td>${vo.itemname }</td>
-										<td>${vo.purchasemanagementquantity }</td>
-										<td>${vo.purchasemanagementsupplyvalue }</td>
-										<td>${vo.purchasemanagementtaxvalue }</td>
-										<td>${vo.purchasemanagementtotalprice }</td>
-										<td>${vo.salesquantity }</td>
-										<td>${vo.salessupplyvalue }</td>
-										<td>${vo.salestaxvalue }</td>
-										<td>${vo.salestotalprice }</td>
-										<td>${vo.stockquantity }</td>
-										<td>${vo.stocktotalprice }</td>
-										<td>${vo.stocktaxvalue }</td>
-									</tr>
-									</c:forEach>
-								</table>
-								
 								</div>
+							</div>
+								
+							<div class="hr hr-18 dotted"></div>
+								
+							<div class="row-fluid">
+								<div class="span12">
+									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+										<thead>
+										<tr>
+											<th>대분류코드</th>
+											<th>대분류명</th>
+											<th>품목코드</th>
+											<th>품목명</th>
+											<th>입고수량</th>
+											<th>입고공급가액</th>
+											<th>입고부가세</th>
+											<th>입고금액</th>
+											<th>출고수량</th>
+											<th>출고공급가액</th>
+											<th>출고부가세</th>
+											<th>출고금액</th>
+											<th>재고수량</th>
+											<th>재고금액</th>
+											<th>재고부가세</th>
+										</tr>
+										</thead>
+										<c:forEach items='${list }' var='vo' varStatus='status'>
+										<tr>
+											<td>${vo.sectioncode }</td>
+											<td>${vo.sectionname }</td>
+											<td>${vo.itemcode }</td>
+											<td>${vo.itemname }</td>
+											<td>${vo.purchasemanagementquantity }</td>
+											<td>${vo.purchasemanagementsupplyvalue }</td>
+											<td>${vo.purchasemanagementtaxvalue }</td>
+											<td>${vo.purchasemanagementtotalprice }</td>
+											<td>${vo.salesquantity }</td>
+											<td>${vo.salessupplyvalue }</td>
+											<td>${vo.salestaxvalue }</td>
+											<td>${vo.salestotalprice }</td>
+											<td>${vo.stockquantity }</td>
+											<td>${vo.stocktotalprice }</td>
+											<td>${vo.stocktaxvalue }</td>
+										</tr>
+										</c:forEach>
+									</table>
+								</div>
+								
+								<div class="span12">
 								<div class="pagination">
 									<ul>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -160,12 +158,9 @@ $(function() {
 									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
 									</ul>
 								</div>
+								</div>
+							</div>
 						
-						</div>
-					</div>
-			
-			
-			
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->

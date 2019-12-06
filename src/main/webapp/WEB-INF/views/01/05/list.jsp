@@ -105,12 +105,15 @@ $(function() {
 			    		    this.reset();
 			    		});
 			    		
-			    		alert("계좌 생성이 완료되었습니다."); 
+			    		alert("카드 생성이 완료되었습니다."); 
 			    		
 			    		removeTable();
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
-			    		$('#pagination').show();
+			    		
+				    	$('#pagination ul').remove();
+				    	createNewPage(dataResult, a);
+				    	$('#pagination').show();
 			    	}
 			    },
 			    error: function( err ){
@@ -125,14 +128,15 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("계좌 검색이 완료되었습니다."); 
+			    		alert("카드 검색이 완료되었습니다."); 
 			    		removeTable();
 			    		$('#input-form').each(function(){
 			    		    this.reset();
 			    		});
-			    		
+
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
+			    		settingInput(cardList);
 			    		$('#pagination').hide();
 			    	}
 			    },
@@ -148,15 +152,18 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("계좌 수정이 완료되었습니다."); 
+			    		alert("카드 수정이 완료되었습니다."); 
 			    		removeTable();
 			    	
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
 			    	}
-			    	if(result.fail) {
+			    	if(dataResult.fail) {
 			    		alert("다시 입력해주세요.");
 			    	}
+			    	$('#pagination ul').remove();
+			    	createNewPage(dataResult, a);
+			    	$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -170,7 +177,7 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("계좌 삭제가 완료되었습니다."); 
+			    		alert("카드 삭제가 완료되었습니다."); 
 			    		removeTable();
 			    		$('#input-form').each(function(){
 			    		    this.reset();
@@ -179,6 +186,10 @@ $(function() {
 			    		var cardList = dataResult.cardList;
 			    		createNewTable(cardList);
 			    	}
+			    	
+			    	$('#pagination ul').remove();
+		    		createNewPage(dataResult, a);
+		    		$('#pagination').show();
 			    },
 			    error: function( err ){
 			      	console.log(err)
@@ -199,21 +210,22 @@ $(function() {
 		  $(".new-tbody").remove();
 	}
 	function createNewTable(cardList){
-		  var $newTbody = $("<tbody class='new-tbody'>")
-		  $("#simple-table-1").append($newTbody)
+		  var $newTbody = $("<tbody class='new-tbody'>");
+		  
+		  $("#simple-table-1").append($newTbody);
 			
 		  for(let card in cardList){
 			  $newTbody.append(
-			   	"<tr>" +
-		        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
-		        "<td>" + cardList[card].cardNo + "</td>" +
-		        "<td>" + cardList[card].validity+ "</td>" +
-		        "<td>" + cardList[card].cvc+ "</td>" +
-		        "<td>" + cardList[card].user+ "</td>" +	
-		        "<td>" + cardList[card].issuer+ "</td>" +
-		        "<td>" + cardList[card].depositNo+ "</td>" +
-		        "<td>" + cardList[card].depositHost+ "</td>" +
-		        "<td>" + cardList[card].password+ "</td>" +
+				"<tr>" +
+				"<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
+				"<td>" + cardList[card].cardNo + "</td>" +
+				"<td>" + cardList[card].validity+ "</td>" +
+				"<td>" + cardList[card].cvc+ "</td>" +
+				"<td>" + cardList[card].user+ "</td>" +	
+				"<td>" + cardList[card].issuer+ "</td>" +
+				"<td>" + cardList[card].depositNo+ "</td>" +
+				"<td>" + cardList[card].depositHost+ "</td>" +
+				"<td>" + cardList[card].password+ "</td>" +
 		        "<td>" + cardList[card].bankCode+ "</td>" +
 		        "<td>" + cardList[card].bankName+ "</td>" +
 		        "<td>" + cardList[card].company+ "</td>" +
@@ -231,6 +243,41 @@ $(function() {
 		  $(".chosen-select").chosen();
 	}
 	
+	function createNewPage(dataResult, a){
+		var inputString = "<ul>";
+		
+        if('${dataResult.pagination.prev }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+        }
+        
+        if(a == "create") {
+        	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+			for(var pg = 2; pg <= "${dataResult.pagination.endPage }"; pg++) {
+				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+        	}
+    	} else {
+        	for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
+        		if("${dataResult.pagination.page }" == pg){
+            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+        		} else {
+	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	        	}
+        	}
+        }
+	            
+        if ('${dataResult.pagination.next }') {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
+        } else {
+        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+        }
+        inputString += "</ul>";
+        $("#pagination").append(inputString);
+        
+   };
+		
+
 	
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
@@ -271,6 +318,46 @@ $(function() {
 		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
 		
 	});
+	
+
+	function settingInput(cardList) {
+		var tr = $(".new-tbody tr");	
+		var td = tr.children();
+		
+		
+		var cardNo1 = td.eq(1).text().substring(0,4);
+		var cardNo2 = td.eq(1).text().substring(5,9);
+		var cardNo3 = td.eq(1).text().substring(10,14);
+		var cardNo4 = td.eq(1).text().substring(15,20);
+			
+		$("input[name=cardNo1]").val(cardNo1);
+		$("input[name=cardNo2]").val(cardNo2);
+		$("input[name=cardNo3]").val(cardNo3);
+		$("input[name=cardNo4]").val(cardNo4);
+		
+		
+		$("input[name=cardNoOld]").val(td.eq(1).text());
+		
+		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
+		var year= td.eq(2).text().substring(3,5);
+		$("input[name=validityMM]").val(month);
+		$("input[name=validityYY]").val(year);
+		$("input[name=cvc]").val(td.eq(3).text());
+		$("input[name=user]").val(td.eq(4).text());
+		$("input[name=issuer]").val(td.eq(5).text());
+		$("input[name=depositNo]").val(td.eq(6).text());
+		$("input[name=depositHost]").val(td.eq(7).text());
+		$("input[name=password]").val(td.eq(8).text());	
+		$("input[name=bankCode]").val(td.eq(9).text());
+		$("input[name=bankName]").val(td.eq(10).text());
+		$("input[name=company]").val(td.eq(11).text());
+		$("input[name=limitation]").val(td.eq(12).text());
+		var td13 = td.eq(13).text();
+		var td14 = td.eq(14).text();
+		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
+		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
+	}
+	
 	
 	
 	$(document.body).delegate('#selectAll', 'click', function() {
@@ -655,7 +742,7 @@ $(function() {
 								</tr>
 							</thead>
 
-							<tbody class="origin-tbody">
+							<tbody class="origin-tbody" >
 
 								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 									<tr>

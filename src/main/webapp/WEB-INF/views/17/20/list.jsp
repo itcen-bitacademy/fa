@@ -74,6 +74,11 @@
 									</tr>
 								</thead>
 								<tbody>
+									<c:if test="${empty dataResult.datas }">
+										<tr>
+											<td colspan="9" class="center">등록된 마감일이 존재하지 않습니다.</td>
+										</tr>
+									</c:if>
 									<c:forEach var="cdt" items="${dataResult.datas }">
 										<tr class="cdt-tr" no="${cdt.no }" closing-yn="${cdt.closingYn }">
 											<td class="closing-year-month">${cdt.closingYearMonth }</td>

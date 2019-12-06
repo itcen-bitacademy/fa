@@ -53,7 +53,25 @@ public class PurchasemanagementVo {
 	private String insertDay;			//입력날짜
 	private String updateUserid;		//수정자
 	private String updateDay;			//수정날짜
+	private String orderStd;			//정렬기준
+	private int page;					//페이지
 	
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public String getOrderStd() {
+		return orderStd;
+	}
+
+	public void setOrderStd(String orderStd) {
+		this.orderStd = orderStd;
+	}
+
 	public String getNo() {
 		return no;
 	}
@@ -192,6 +210,7 @@ public class PurchasemanagementVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
+
 	@Override
 	public String toString() {
 		return "PurchasemanagementVo [no=" + no + ", number=" + number + ", purchaseDate=" + purchaseDate
@@ -201,8 +220,9 @@ public class PurchasemanagementVo {
 				+ ", taxValue=" + taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType + ", taxbillNo="
 				+ taxbillNo + ", receiptDate=" + receiptDate + ", releaseDate=" + releaseDate + ", deleteFlag="
 				+ deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + "]";
+				+ updateUserid + ", updateDay=" + updateDay + ", orderStd=" + orderStd + ", page=" + page + "]";
 	}
+
 	
 	
 	

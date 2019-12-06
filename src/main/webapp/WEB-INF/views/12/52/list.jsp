@@ -79,10 +79,10 @@
                         <div class="control-group">
                            <label class="control-label" for="customer">거래처</label>
                            <div class="controls">
-                              <input type="text" id="no1" name="no" style="width: 150px;">
+                              <input type="text" id="no1" name="no" style="width: 150px;" value="${customerVo.no }">
                               <input type="text" id="name1" name="name1" readonly style="width: 200px;">
                               <span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> ~ 
-                              <input type="text" id="no2" name="preNo" style="width: 150px;">
+                              <input type="text" id="no2" name="preNo" style="width: 150px;" value="${customerVo.preNo }">
                               <input type="text" id="name2" name="name2" readonly style="width: 200px;">
                               <span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
                            </div>
@@ -114,7 +114,7 @@
                            <label class="control-label" for="insert_date">입력일자</label>
                               <div class="controls">
                                  <div class="row-fluid input-append">
-                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
+                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${customerVo.insertDay }"/>
                                     <span class="add-on">
                                     <i class="icon-calendar"></i>
                                     </span>
@@ -125,7 +125,7 @@
                         <div class="control-group">
                            <label class="control-label" for="manager_name">거래처 담당자</label>
                            <div class="controls">
-                              <input type="text" name="managerName" id="manager_name" style="width: 150px;">
+                              <input type="text" name="managerName" id="manager_name" style="width: 150px;" value="${customerVo.managerName }">
                            </div>
                         </div>
                      </div>

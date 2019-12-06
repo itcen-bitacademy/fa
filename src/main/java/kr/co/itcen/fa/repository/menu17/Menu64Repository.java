@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.FinancialStatementVo;
 
 /**
@@ -23,22 +24,27 @@ public class Menu64Repository {
 	private SqlSession sqlSession;
 	
 	
-	// 1. 손익계산서(IncomeStatement)에 필요한 Data select
-	public List<FinancialStatementVo> selectIncomeStatementDataList(Long no) {
-		return sqlSession.selectList("menu64.selectIncomeStatementDataList", no);
+	// 1. 손익계산서(IncomeStatement)에 필요한 Data Select
+	public List<FinancialStatementVo> selectIncomeStatementDataList(ClosingDateVo vo) {
+		return sqlSession.selectList("menu64.selectIncomeStatementDataList", vo);
 	}
 
-	// 2. 손익계산서(IncomeStatement) Data insert
+	// 2. 손익계산서(IncomeStatement) Data Insert
 	public int insertIncomeStatementData(FinancialStatementVo vo) {
 		int result = sqlSession.insert("menu64.insertIncomeStatementData", vo);
 		return result;
 	}
 	
-	// 손익계산서(IncomeStatement) 조회
+	// 손익계산서(IncomeStatement) SelectList
 	public Map<String,Object> get(Long no) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("incomeStatementDataList", sqlSession.selectList("menu64.getVoByClosingDateNo", no));
 		return map;
+	}
+	
+	// 손익계산서(IncomeStatement) Delete
+	public int deleteIncomeStatement(ClosingDateVo vo) {
+		return sqlSession.delete("menu64.deleteByClosingDateNo", vo);
 	}
 
 }

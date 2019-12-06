@@ -54,29 +54,8 @@ public class SalesVo {
 	private String insertDay; // 입력일
 	private String updateUserid; // 수정자
 	private String updateDay; // 수정일
-	private String orderData; // 정렬기준
-	private String startDate; // 검색날짜
-	private String endDate; // 검색날짜
 	
-	
-	public String getOrderData() {
-		return orderData;
-	}
-	public void setOrderData(String orderData) {
-		this.orderData = orderData;
-	}
-	public String getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-	public String getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
+
 	public String getCustomerPhone() {
 		return customerPhone;
 	}
@@ -237,8 +216,9 @@ public class SalesVo {
 				+ supplyValue + ", taxValue=" + taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType
 				+ ", taxbillNo=" + taxbillNo + ", releaseDate=" + releaseDate + ", deleteFlag=" + deleteFlag
 				+ ", sellPrice=" + sellPrice + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", orderData=" + orderData
-				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}
+
+
 
 }
