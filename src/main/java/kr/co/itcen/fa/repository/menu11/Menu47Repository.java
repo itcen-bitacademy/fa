@@ -22,6 +22,11 @@ public class Menu47Repository {
 	private SqlSession sqlSession;
 	
 	public List<STermDebtVo> getList(Map map) {
+		System.out.println("startRow : " + map.get("startRow") + " endRow : " + map.get("endRow"));
 		return sqlSession.selectList("menu47.getList", map);
+	}
+	
+	public int getTotalCount() {
+		return sqlSession.selectOne("menu47.getTotalCount");
 	}
 }

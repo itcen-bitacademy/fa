@@ -208,8 +208,8 @@
 					</tbody>
 				</table>
 				
-				<div class="pagination">
-					<ul>
+				<div class="pagination" id="pagination">
+					<ul class="myul">
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
 								<li>
@@ -225,10 +225,10 @@
 						<c:forEach begin="${pagination.startPage }" end="${pagination.endPage }" var="pg">
 							<c:choose>
 								<c:when test="${pg eq pagination.page }">
-									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+									<li class="active" onclick='pageClicked(this)' id="${pg }"><a>${pg }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li onclick='pageClicked()' ><a>${pg }</a></li>
+									<li onclick='pageClicked(this)' id="${pg }"><a>${pg }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -276,15 +276,44 @@ function renderingList(list){
 	}
 }
 
+function renderingPage(pagination){
+	$("#pagination>ul").remove();
+	//이전버튼 Rendering
+	if(pagination.prev){
+		$("#pagination>ul").append("<li onclick='pageClicked()'> id='" + (pagination.endPage + 1) + "'" + 
+										"<a><i class='icon-double-angle-left'></i>" +
+										"</a>"+
+									"</li>");
+	}else{
+		$("#pagination>ul").append("<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>");
+	}
+	for(var i=pagination.startPage; i< pagination.endPage ; ++i){
+		if(i == pagination.page)
+			$("#pagination>ul").append("<li class='active' onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
+		$("#pagination>ul").append("<li onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
+	}
+	
+	if(pagination.prev){
+		$("#pagination>ul").append("<li onclick='pageClicked()'> id='" + (pagination.endPage + 1) + "'" +
+										"<a><i class='icon-double-angle-right'></i></a>"+
+									"</li>");
+	}else{
+		$("#pagination>ul").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
+	}
+		
+}
+
  function search(){
 	 var sendData = $("#filter-area").serialize();
+	 var page = 1;
 	 $.ajax({
-		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/search",
+		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/search",
 		type : "POST",
 		dataType : "json",
-		data : sendData,
+		data : {"sendData" : sendData, "page" : page},
 		success: function(response){
-			renderingList(response.data);
+			renderingList(response.data.list);
+			console.log("pagination : " + reponse.data.pagination);
 		}
 	 });
  }
@@ -292,22 +321,37 @@ function renderingList(list){
  function order(thisObj){
 	 var sendData = $("#filter-area").serialize();
 	 var orderColumn = $(thisObj).attr('id'); 
+	 var page = 1
 	 $.ajax({
 		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val()  + "/" + $("#sub-menu-code").val() + "/order",
 		type: "POST",
 		dataType : "json",
-		data : {"sendData" : sendData, "orderColumn" : orderColumn},
+		data : {"sendData" : sendData, "orderColumn" : orderColumn, "page" : page},
 		success : function(response){
-				renderingList(response.data);
+				renderingList(response.data.list);
 			},
 		error : function(xhr, error){
 			
 		}
 	 });
-	 
-	 function pageClicked(){
-		 
-	 }
+ }
+ 
+ function pageClicked(thisObj){
+	 var sendData = $("#filter-area").serialize();
+	 var page = $(thisObj).attr('id');
+	 console.log($(thisObj).attr('id'));
+	 $.ajax({
+		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/search",
+		type : "POST",
+		dataType : "json",
+		data : {"sendData" : sendData, "page" : page},
+		success: function(response){
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
+			console.log("startPage : " + response.data.pagination.startPage);
+			console.log("endPage : " + response.data.pagination.endPage);
+		}
+	 });
  }
 </script>
 </html>
