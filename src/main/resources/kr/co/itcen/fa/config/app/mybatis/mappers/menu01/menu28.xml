@@ -14,388 +14,500 @@
 			]]>
 		</selectKey>
 	</insert>
-	
-	<!-- 리스트 뽑기 -->
-	<select id="getList" resultType="1customervo">
-		<![CDATA[
-		select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-		       (right(no, 12)) as no,
-               name as name, 
-               ceo as ceo, 
-               address as address,
-               detail_address as detailAddress,
-               conditions as conditions, 
-               item as item, 
-               corporation_no as corporationNo, 
-               open_date as openDate, 
-               jurisdiction_office as jurisdictionOffice, 
-               phone as phone, 
-               manager_name as managerName, 
-               manager_email as managerEmail,
-               deposit_no as depositNo,
-               insert_userid as insertUserid, 
-               insert_day as insertDay, 
-               update_userid as updateUserid, 
-               update_day as updateDay
-	      from tb_customer
-         where delete_flag = 'N'
-	      union
-        select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
-		       (right(no, 12)) as no,
-               name as name, 
-               ceo as ceo, 
-               address as address,
-               detail_address as detailAddress,
-               conditions as conditions, 
-               item as item, 
-               corporation_no as corporationNo, 
-               open_date as openDate, 
-               jurisdiction_office as jurisdictionOffice, 
-               phone as phone, 
-               manager_name as managerName, 
-               manager_email as managerEmail,
-               deposit_no as depositNo,
-               insert_userid as insertUserid, 
-               insert_day as insertDay, 
-               update_userid as updateUserid, 
-               update_day as updateDay
-	      from tb_purchasecustomer
-         where delete_flag = 'N'
-	     union
-        select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
-		       (right(no, 12)) as no,
-               name as name, 
-               ceo as ceo, 
-               address as address,
-               detail_address as detailAddress,
-               conditions as conditions, 
-               item as item, 
-               corporation_no as corporationNo, 
-               open_date as openDate, 
-               jurisdiction_office as jurisdictionOffice, 
-               phone as phone, 
-               manager_name as managerName, 
-               manager_email as managerEmail,
-               deposit_no as depositNo,
-               insert_userid as insertUserid, 
-               insert_day as insertDay, 
-               update_userid as updateUserid, 
-               update_day as updateDay
-	      from tb_salescustomer
-         where delete_flag = 'N'
-	  order by corporationNo desc;
-		]]>
-	</select>
-	
-	<select id="searchList" parameterType="map" resultType="1customervo">  
-		<choose>
-			<when test="customerDiv == All">
-				<![CDATA[
-					select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-					       (right(no, 12)) as no,
-			               name as name, 
-			               ceo as ceo, 
-			               address as address,
-			               detail_address as detailAddress,
-			               conditions as conditions, 
-			               item as item, 
-			               corporation_no as corporationNo, 
-			               open_date as openDate, 
-			               jurisdiction_office as jurisdictionOffice, 
-			               phone as phone, 
-			               manager_name as managerName, 
-			               manager_email as managerEmail,
-			               deposit_no as depositNo,
-			               insert_userid as insertUserid, 
-			               insert_day as insertDay, 
-			               update_userid as updateUserid, 
-			               update_day as updateDay
-				      from tb_customer
-				]]>
-			         
-			    <if test="deleteFlag = 'N'">     
-				<![CDATA[
-			         where delete_flag = 'N'
-				]]>
+
+	<select id="selectAllCount" resultType="int" parameterType="1customervo">
+		<if test='customerDiv == "All"'>
+			<![CDATA[
+				select ((select count(*) as count
+						   from tb_customer
+			]]>	
+
+				<if test="deleteFlag!=null">		    
+					<![CDATA[
+						where delete_flag= #{deleteFlag }
+					]]>
 				</if>
-			         
-			    <if test="deleteFlag = 'Y'">     
-				<![CDATA[
-			         where delete_flag = 'Y'
-				]]>
+				 <if test="datepicker1=null and !datepicker1.equals('')">		    
+					<![CDATA[
+						and insert_day >= #{datepicker1 }
+					]]>
 				</if>
-				
-				<if test="datepicker1!=null">
-			    	<![CDATA[
-			    	,  and insert_day between #{datepicker1 } and #{datepicker2 }
-			    	
-			    	]]>
-			    </if>
-				
-			    <if test="customerNo!=null">
-			    	<![CDATA[
-			        ,  and customerNo like '%${customerNo }%'
-			        ]]>
-			    </if>
-			         
-				<![CDATA[
-				     union
-			        select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
-					       (right(no, 12)) as no,
-			               name as name, 
-			               ceo as ceo, 
-			               address as address,
-			               detail_address as detailAddress,
-			               conditions as conditions, 
-			               item as item, 
-			               corporation_no as corporationNo, 
-			               open_date as openDate, 
-			               jurisdiction_office as jurisdictionOffice, 
-			               phone as phone, 
-			               manager_name as managerName, 
-			               manager_email as managerEmail,
-			               deposit_no as depositNo,
-			               insert_userid as insertUserid, 
-			               insert_day as insertDay, 
-			               update_userid as updateUserid, 
-			               update_day as updateDay
-				      from tb_purchasecustomer
-				]]>
-			         
-			    <if test="deleteFlag = 'N'">     
-				<![CDATA[
-			         where delete_flag = 'N'
-				]]>
+				<if test="datepicker2!=null and !datepicker2.equals('')">		    
+					<![CDATA[
+						and insert_day <= #{datepicker2 }
+					]]>
 				</if>
-			         
-			    <if test="deleteFlag = 'Y'">     
-				<![CDATA[
-			         where delete_flag = 'Y'
-				]]>
+				<if test='no!=null and !no.equals("")'>
+					<![CDATA[
+						and no like '%${no }%'
+					]]>	   
 				</if>
-				
-				<if test="datepicker1!=null">
-			    	<![CDATA[
-			    	,  and insert_day between #{datepicker1 } and #{datepicker2 }
-			    	
-			    	]]>
-			    </if>
-				
-			    <if test="customerNo!=null">
-			    	<![CDATA[
-			        ,  and customerNo like '%${customerNo }%'
-			        ]]>
-			    </if>
-			         
-				<![CDATA[
-				     union
-			        select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
-					       (right(no, 12)) as no,
-			               name as name, 
-			               ceo as ceo, 
-			               address as address,
-			               detail_address as detailAddress,
-			               conditions as conditions, 
-			               item as item, 
-			               corporation_no as corporationNo, 
-			               open_date as openDate, 
-			               jurisdiction_office as jurisdictionOffice, 
-			               phone as phone, 
-			               manager_name as managerName, 
-			               manager_email as managerEmail,
-			               deposit_no as depositNo,
-			               insert_userid as insertUserid, 
-			               insert_day as insertDay, 
-			               update_userid as updateUserid, 
-			               update_day as updateDay
-				      from tb_salescustomer
-				]]>
-			         
-			    <if test="deleteFlag = 'N'">     
-				<![CDATA[
-			         where delete_flag = 'N'
-				]]>
+						  
+			<![CDATA[
+						   ) +
+					    (select count(*) as count
+				    	   from tb_purchasecustomer
+			]]>	
+
+				<if test="deleteFlag!=null">		    
+					<![CDATA[
+						where delete_flag= #{deleteFlag }
+					]]>
 				</if>
-			         
-			    <if test="deleteFlag = 'Y'">     
-				<![CDATA[
-			         where delete_flag = 'Y'
-				]]>
+				 <if test="datepicker1=null and !datepicker1.equals('')">		    
+					<![CDATA[
+						and insert_day >= #{datepicker1 }
+					]]>
 				</if>
-				
-				<if test="datepicker1!=null">
-			    	<![CDATA[
-			    	,  and insert_day between #{datepicker1 } and #{datepicker2 }
-			    	
-			    	]]>
-			    </if>
-				
-			    <if test="customerNo!=null">
-			    	<![CDATA[
-			         '%${customerNo }%'
-			        ]]>
-			    </if>
-			         
-				<![CDATA[
-				  order by corporationNo desc;
-				]]>
-			</when>
+				<if test="datepicker2!=null and !datepicker2.equals('')">		    
+					<![CDATA[
+						and insert_day <= #{datepicker2 }
+					]]>
+				</if>
+				<if test='no!=null and !no.equals("")'>
+					<![CDATA[
+						and no like '%${no }%'
+					]]>	   
+				</if>
 			
-			<when test="customerDiv == Assets">
-				<![CDATA[
-					select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-					       (right(no, 12)) as no,
-			               name as name, 
-			               ceo as ceo, 
-			               address as address,
-			               detail_address as detailAddress,
-			               conditions as conditions, 
-			               item as item, 
-			               corporation_no as corporationNo, 
-			               open_date as openDate, 
-			               jurisdiction_office as jurisdictionOffice, 
-			               phone as phone, 
-			               manager_name as managerName, 
-			               manager_email as managerEmail,
-			               deposit_no as depositNo,
-			               insert_userid as insertUserid, 
-			               insert_day as insertDay, 
-			               update_userid as updateUserid, 
-			               update_day as updateDay
-				      from tb_customer
-				]]>
-			         
-			    <if test="deleteFlag = 'N'">     
-				<![CDATA[
-			         where delete_flag = 'N'
-				]]>
+			<![CDATA[
+				    	   ) +
+					    (select count(*) as count
+				    	   from tb_salescustomer
+			]]>	
+
+				<if test="deleteFlag!=null">		    
+					<![CDATA[
+						where delete_flag= #{deleteFlag }
+					]]>
 				</if>
-			         
-			    <if test="deleteFlag = 'Y'">     
-				<![CDATA[
-			         where delete_flag = 'Y'
-				]]>
+				 <if test="datepicker1=null and !datepicker1.equals('')">		    
+					<![CDATA[
+						and insert_day >= #{datepicker1 }
+					]]>
 				</if>
-				
-				<if test="datepicker1!=null">
-			    	<![CDATA[
-			    	 , and insert_day between #{datepicker1 } and #{datepicker2 }
-			    	
-			    	]]>
-			    </if>
-				
-			    <if test="customerNo!=null">
-			    	<![CDATA[
-			         , and customerNo like '%${customerNo }%'
-			        ]]>
-			    </if>
+				<if test="datepicker2!=null and !datepicker2.equals('')">		    
+					<![CDATA[
+						and insert_day <= #{datepicker2 }
+					]]>
+				</if>
+				<if test='no!=null and !no.equals("")'>
+					<![CDATA[
+						and no like '%${no }%'
+					]]>	   
+				</if>
 			
-			</when>
-			
-			<when test="customerDiv == Purchase">
-				<![CDATA[
-					select replace(left(no, 1), "P", "매입거래처") as customerDiv,
-					       (right(no, 12)) as no,
-			               name as name, 
-			               ceo as ceo, 
-			               address as address,
-			               detail_address as detailAddress,
-			               conditions as conditions, 
-			               item as item, 
-			               corporation_no as corporationNo, 
-			               open_date as openDate, 
-			               jurisdiction_office as jurisdictionOffice, 
-			               phone as phone, 
-			               manager_name as managerName, 
-			               manager_email as managerEmail,
-			               deposit_no as depositNo,
-			               insert_userid as insertUserid, 
-			               insert_day as insertDay, 
-			               update_userid as updateUserid, 
-			               update_day as updateDay
-				      from tb_customer
-				]]>
-			         
-			    <if test="deleteFlag = 'N'">     
-				<![CDATA[
-			         where delete_flag = 'N'
-				]]>
-				</if>
-			         
-			    <if test="deleteFlag = 'Y'">     
-				<![CDATA[
-			         where delete_flag = 'Y'
-				]]>
-				</if>
-				
-				<if test="datepicker1!=null">
-			    	<![CDATA[
-			    	 , and insert_day between #{datepicker1 } and #{datepicker2 }
-			    	
-			    	]]>
-			    </if>
-				
-			    <if test="customerNo!=null">
-			    	<![CDATA[
-			         , and customerNo like '%${customerNo }%'
-			        ]]>
-			    </if>
-			
-			</when>
-			
-			<when test="customerDiv == Sales">
-				<![CDATA[
-					select replace(left(no, 1), "S", "매출거래처") as customerDiv,
-					       (right(no, 12)) as no,
-			               name as name, 
-			               ceo as ceo, 
-			               address as address,
-			               detail_address as detailAddress,
-			               conditions as conditions, 
-			               item as item, 
-			               corporation_no as corporationNo, 
-			               open_date as openDate, 
-			               jurisdiction_office as jurisdictionOffice, 
-			               phone as phone, 
-			               manager_name as managerName, 
-			               manager_email as managerEmail,
-			               deposit_no as depositNo,
-			               insert_userid as insertUserid, 
-			               insert_day as insertDay, 
-			               update_userid as updateUserid, 
-			               update_day as updateDay
-				      from tb_customer
-				]]>
-			         
-			    <if test="deleteFlag = 'N'">     
-				<![CDATA[
-			         where delete_flag = 'N'
-				]]>
-				</if>
-			         
-			    <if test="deleteFlag = 'Y'">     
-				<![CDATA[
-			         where delete_flag = 'Y'
-				]]>
-				</if>
-				
-				<if test="datepicker1!=null">
-			    	<![CDATA[
-			    	 , and insert_day between #{datepicker1 } and #{datepicker2 }
-			    	
-			    	]]>
-			    </if>
-				
-			    <if test="customerNo!=null">
-			    	<![CDATA[
-			         , and customerNo like '%${customerNo }%'
-			        ]]>
-			    </if>
-			
-			</when>
-		</choose>
+			<![CDATA[
+				    	   
+				    	   )) as count
+			 	  from dual
+			]]>
+		</if>
 		
-		   
+	<if test='customerDiv == "Assets"'>
+		<![CDATA[
+			select count(*) as count
+			  from tb_customer
+		]]>
+		
+			<if test="deleteFlag!=null">		    
+				<![CDATA[
+					where delete_flag= #{deleteFlag }
+				]]>
+			</if>
+			<if test="datepicker1=null and !datepicker1.equals('')">		    
+				<![CDATA[
+					and insert_day >= #{datepicker1 }
+				]]>
+			</if>
+			<if test="datepicker2!=null and !datepicker2.equals('')">		    
+				<![CDATA[
+					and insert_day <= #{datepicker2 }
+				]]>
+			</if>
+			<if test='no!=null and !no.equals("")'>
+				<![CDATA[
+					and no like '%${no }%'
+				]]>	   
+			</if>
+	</if>
+		
+	<if test='customerDiv == "Purchase"'>
+		<![CDATA[
+			select count(*) as count
+			  from tb_purchasecustomer
+		]]>
+		
+			<if test="deleteFlag!=null">		    
+				<![CDATA[
+					where delete_flag= #{deleteFlag }
+				]]>
+			</if>
+			<if test="datepicker1=null and !datepicker1.equals('')">		    
+				<![CDATA[
+					and insert_day >= #{datepicker1 }
+				]]>
+			</if>
+			<if test="datepicker2!=null and !datepicker2.equals('')">		    
+				<![CDATA[
+					and insert_day <= #{datepicker2 }
+				]]>
+			</if>
+			<if test='no!=null and !no.equals("")'>
+				<![CDATA[
+					and no like '%${no }%'
+				]]>	   
+			</if>
+	</if>
+		
+	<if test='customerDiv == "Sales"'>
+		<![CDATA[
+			select count(*) as count
+			  from tb_salescustomer
+		]]>
+		
+			<if test="deleteFlag!=null">		    
+				<![CDATA[
+					where delete_flag= #{deleteFlag }
+				]]>
+			</if>
+			<if test="datepicker1=null and !datepicker1.equals('')">		    
+				<![CDATA[
+					and insert_day >= #{datepicker1 }
+				]]>
+			</if>
+			<if test="datepicker2!=null and !datepicker2.equals('')">		    
+				<![CDATA[
+					and insert_day <= #{datepicker2 }
+				]]>
+			</if>
+			<if test='no!=null and !no.equals("")'>
+				<![CDATA[
+					and no like '%${no }%'
+				]]>	   
+			</if>
+		</if>
+	</select><!-- 리스트 뽑기 -->
+	
+	<select id="optionSearch" parameterType="map" resultType="1customervo">
+	<if test='vo.customerDiv == "All"'>
+	    <![CDATA[
+	    	select replace(left(no, 1), "A", "자산거래처") as customerDiv,
+			       (right(no, 12)) as no,
+	               name as name, 
+	               ceo as ceo, 
+	               address as address,
+	               detail_address as detailAddress,
+	               conditions as conditions, 
+	               item as item, 
+	               corporation_no as corporationNo, 
+	               open_date as openDate, 
+	               jurisdiction_office as jurisdictionOffice, 
+	               phone as phone, 
+	               manager_name as managerName, 
+	               manager_email as managerEmail,
+	               deposit_no as depositNo,
+	               deposit_host as depositHost,
+	               insert_userid as insertUserid, 
+	               insert_day as insertDay, 
+	               update_userid as updateUserid, 
+	               update_day as updateDay
+		      from tb_customer
+		]]>
+			<if test="vo.deleteFlag!=null">
+				<![CDATA[
+					where delete_flag = #{vo.deleteFlag }
+				]]>
+			</if>
+				
+			<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    <![CDATA[
+			    	and insert_day >= #{vo.datepicker1 }
+			    ]]>
+			</if>
+				
+			<if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+				<![CDATA[
+					and insert_day <= #{vo.datepicker2 }
+				]]>
+			</if>
+			    
+			<if test='vo.no!=null and !vo.no.equals("")'>
+				<![CDATA[
+					and no like '%${vo.no }%'
+				]]>
+				
+			</if>
+			
+			<![CDATA[
+				union
+			   select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
+			       	  (right(no, 12)) as no,
+	               	  name as name, 
+	               	  ceo as ceo, 
+	               	  address as address,
+	               	  detail_address as detailAddress,
+	               	  conditions as conditions, 
+	               	  item as item, 
+	               	  corporation_no as corporationNo, 
+	               	  open_date as openDate, 
+	               	  jurisdiction_office as jurisdictionOffice, 
+	               	  phone as phone, 
+	               	  manager_name as managerName, 
+	               	  manager_email as managerEmail,
+	               	  deposit_no as depositNo,
+	               	  deposit_host as depositHost,
+	               	  insert_userid as insertUserid, 
+	               	  insert_day as insertDay, 
+	               	  update_userid as updateUserid, 
+	               	  update_day as updateDay
+		      	 from tb_purchasecustomer
+		    ]]>
+		    	
+		    	<if test="vo.deleteFlag!=null">     
+					<![CDATA[
+						where delete_flag = #{vo.deleteFlag }
+					]]>
+				</if>
+				
+				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    	<![CDATA[
+			    		and insert_day >= #{vo.datepicker1 }
+			    	]]>
+			    </if>
+				
+			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+			    	<![CDATA[
+			        	and insert_day <= #{vo.datepicker2 }
+			        ]]>
+			    </if>
+			    
+			    <if test='vo.no!=null and !vo.no.equals("")'>
+				    <![CDATA[
+				    	and no like '%${vo.no }%'
+				    ]]>
+			    </if>
+			    
+			    <![CDATA[
+			    	union
+			       select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
+			       		  (right(no, 12)) as no,
+			       		  name as name,
+			       		  ceo as ceo,
+			       		  address as address,
+			       		  detail_address as detailAddress,
+			       		  conditions as conditions,
+			       		  item as item,
+			       		  corporation_no as corporationNo,
+			       		  open_date as openDate,
+			       		  jurisdiction_office as jurisdictionOffice,
+			       		  phone as phone,
+			       		  manager_name as managerName,
+			       		  manager_email as managerEmail,
+			       		  deposit_no as depositNo,
+			       		  deposit_host as depositHost,
+			       		  insert_userid as insertUserid,
+			       		  insert_day as insertDay,
+			       		  update_userid as updateUserid,
+			       		  update_day as updateDay
+			       	 from tb_salescustomer
+			    ]]>
+			         
+			    <if test="vo.deleteFlag!=null">     
+					<![CDATA[
+						where delete_flag = #{vo.deleteFlag }
+					]]>
+				</if>
+				
+				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    	<![CDATA[
+			    		and insert_day >= #{vo.datepicker1 }
+			    	]]>
+			    </if>
+				
+			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+			    	<![CDATA[
+			        	and insert_day <= #{vo.datepicker2 }
+			        ]]>
+			    </if>
+			    
+			    <if test='vo.no!=null and !vo.no.equals("")'>
+				    <![CDATA[
+				    	and no like '%${vo.no }%'
+				    ]]>
+			    </if>
+			    
+			    <![CDATA[
+			    	order by corporationNo desc
+		   			   limit #{pagination.pageIndex }, #{pagination.listSize }
+			   	]]>
+			</if>
+		
+	<if test='vo.customerDiv == "Assets"'>
+	    <![CDATA[
+			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
+			       (right(no, 12)) as no,
+	               name as name, 
+	               ceo as ceo, 
+	               address as address,
+	               detail_address as detailAddress,
+	               conditions as conditions, 
+	               item as item, 
+	               corporation_no as corporationNo, 
+	               open_date as openDate, 
+	               jurisdiction_office as jurisdictionOffice, 
+	               phone as phone, 
+	               manager_name as managerName, 
+	               manager_email as managerEmail,
+	               deposit_no as depositNo,
+	               deposit_host as depositHost,
+	               insert_userid as insertUserid, 
+	               insert_day as insertDay, 
+	               update_userid as updateUserid, 
+	               update_day as updateDay
+		      from tb_customer
+		      ]]>
+			         
+			    <if test="vo.deleteFlag!=null">     
+				<![CDATA[
+			         where delete_flag = #{vo.deleteFlag }
+				]]>
+				</if>
+				
+				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    	<![CDATA[
+			    	and insert_day >= #{vo.datepicker1 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+			    	<![CDATA[
+			        and insert_day <= #{vo.datepicker2 }
+			        ]]>
+			    </if>
+			    
+			    <if test='vo.no!=null and !vo.no.equals("")'>
+				    <![CDATA[
+				    and no like '%${vo.no }%'
+				    ]]>
+			    </if>
+			    <![CDATA[
+		  order by corporationNo desc
+		 limit	#{pagination.pageIndex }, #{pagination.listSize }
+		]]>
+		</if>
+		
+		
+	<if test='vo.customerDiv == "Purchase"'>
+	    <![CDATA[
+			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
+			       (right(no, 12)) as no,
+	               name as name, 
+	               ceo as ceo, 
+	               address as address,
+	               detail_address as detailAddress,
+	               conditions as conditions, 
+	               item as item, 
+	               corporation_no as corporationNo, 
+	               open_date as openDate, 
+	               jurisdiction_office as jurisdictionOffice, 
+	               phone as phone, 
+	               manager_name as managerName, 
+	               manager_email as managerEmail,
+	               deposit_no as depositNo,
+	               deposit_host as depositHost,
+	               insert_userid as insertUserid, 
+	               insert_day as insertDay, 
+	               update_userid as updateUserid, 
+	               update_day as updateDay
+		      from tb_purchasecustomer
+		      ]]>
+			         
+			    <if test="vo.deleteFlag!=null">     
+				<![CDATA[
+			         where delete_flag = #{vo.deleteFlag }
+				]]>
+				</if>
+				
+				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    	<![CDATA[
+			    	and insert_day >= #{vo.datepicker1 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+			    	<![CDATA[
+			        and insert_day <= #{vo.datepicker2 }
+			        ]]>
+			    </if>
+			    
+			    <if test='vo.no!=null and !vo.no.equals("")'>
+				    <![CDATA[
+				    and no like '%${vo.no }%'
+				    ]]>
+			    </if>
+			    <![CDATA[
+		  order by corporationNo desc
+		 limit	#{pagination.pageIndex }, #{pagination.listSize }
+		]]>
+		</if>
+		
+	<if test='vo.customerDiv == "Sales"'>
+	    <![CDATA[
+			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
+			       (right(no, 12)) as no,
+	               name as name, 
+	               ceo as ceo, 
+	               address as address,
+	               detail_address as detailAddress,
+	               conditions as conditions, 
+	               item as item, 
+	               corporation_no as corporationNo, 
+	               open_date as openDate, 
+	               jurisdiction_office as jurisdictionOffice, 
+	               phone as phone, 
+	               manager_name as managerName, 
+	               manager_email as managerEmail,
+	               deposit_no as depositNo,
+	               deposit_host as depositHost,
+	               insert_userid as insertUserid, 
+	               insert_day as insertDay, 
+	               update_userid as updateUserid, 
+	               update_day as updateDay
+		      from tb_salescustomer
+		      ]]>
+			         
+			    <if test="vo.deleteFlag!=null">     
+				<![CDATA[
+			         where delete_flag = #{vo.deleteFlag }
+				]]>
+				</if>
+				
+				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    	<![CDATA[
+			    	and insert_day >= #{vo.datepicker1 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+			    	<![CDATA[
+			        and insert_day <= #{vo.datepicker2 }
+			        ]]>
+			    </if>
+			    
+			    <if test='vo.no!=null and !vo.no.equals("")'>
+				    <![CDATA[
+				    and no like '%${vo.no }%'
+				    ]]>
+			    </if>
+			    <![CDATA[
+		  order by corporationNo desc
+		 limit	#{pagination.pageIndex }, #{pagination.listSize }
+		]]>
+		</if>
     </select>
  
 </mapper>

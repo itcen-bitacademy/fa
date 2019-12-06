@@ -1,13 +1,13 @@
 package kr.co.itcen.fa.service.menu01;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu28Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
 /**
@@ -26,27 +26,15 @@ public class Menu28Service {
 		menu28Repository.test();
 	}
 
-	public List<CustomerVo> list() {
-		return menu28Repository.list();
-	}
+	public DataResult<CustomerVo> list(int page, CustomerVo customerVo) {
+		DataResult<CustomerVo> dataResult = new DataResult<CustomerVo>();
+		int totalCnt = menu28Repository.listCount(customerVo);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		dataResult.setPagination(pagination);
+		List<CustomerVo> list = menu28Repository.list(pagination, customerVo);
+		dataResult.setDatas(list);
+		return dataResult;
 
-//	public List<CustomerVo> listAll(String customerDiv, String customerNo, String deleteFlag) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-	public Map<String, Object> searchList(String customerDiv, String datepicker1, String datepicker2, String customerNo,
-			String deleteFlag) {
-		// TODO Auto-generated method stub
-		List<CustomerVo> list = menu28Repository.searchList(customerDiv, datepicker1, datepicker2, customerNo, deleteFlag);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
-		map.put("customerDiv", customerDiv);
-		map.put("datepicker1", datepicker1);
-		map.put("datepicker2", datepicker2);
-		map.put("customerNo", customerNo);
-		map.put("deleteFlag", deleteFlag);
-		return map;
 	}
 
 }
