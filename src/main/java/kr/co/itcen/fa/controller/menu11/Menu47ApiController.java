@@ -1,9 +1,12 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,21 +26,26 @@ public class Menu47ApiController {
 	public Menu47Service menu47Service;
 	
 	@ResponseBody
-	@RequestMapping("/" + Menu47Controller.SUBMENU + "/search")
-	public JSONResult search(STermDebtVo sTermDebtVo, @RequestParam(value="page", required=true) int page) {
+	@RequestMapping("/" + Menu47Controller.SUBMENU + "/{page}/search")
+	public JSONResult search(STermDebtVo sTermDebtVo, @PathVariable int page) {
 		Pagination pagination = new Pagination(5, 5, page);
 		List<STermDebtVo> list = menu47Service.search(sTermDebtVo, pagination);
-		return JSONResult.success(list);
+		Map map = new HashMap<>();
+		map.put("list", list);
+		map.put("pagination", pagination);
+		
+		System.out.println(pagination.getStartPage() + " " + pagination.getEndPage());
+		return JSONResult.success(map);
 	}
 	
 	@ResponseBody
-	@RequestMapping("/" + Menu47Controller.SUBMENU + "/order")
-	public JSONResult order(STermDebtVo sTermDebtVo, 
-			@RequestParam(value="orderColumn", required=true) String orderColumn,
-			@RequestParam(value="page", required=true) int page) {
+	@RequestMapping("/" + Menu47Controller.SUBMENU + "/{page}/order")
+	public JSONResult order(STermDebtVo sTermDebtVo, @PathVariable int page,
+			@RequestParam(value="orderColumn", required=true) String orderColumn) {
 		Pagination pagination = new Pagination(5, 5, page);
 		List<STermDebtVo> list = menu47Service.order(sTermDebtVo, orderColumn, pagination);
 		return JSONResult.success(list);
 	}
 	
 }
+
