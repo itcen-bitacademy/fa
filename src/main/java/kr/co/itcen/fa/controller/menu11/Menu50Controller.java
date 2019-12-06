@@ -84,8 +84,6 @@ public class Menu50Controller {
 		pdebtVo.setDepositNo("123-123-1"); // 1팀값 참조
 		pdebtVo.setAccountNo("110-123-123123"); // 1팀값 참조
 		pdebtVo.setVoucherNo(1L); // 1팀값 참조
-		
-		System.out.println("pdebtVo : " + pdebtVo.toString());
 
 		menu50Service.insert(pdebtVo); // 데이터베이스에 데이터 삽입
 		
