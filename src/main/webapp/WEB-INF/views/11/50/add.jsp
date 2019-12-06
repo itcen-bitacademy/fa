@@ -303,7 +303,6 @@ tr td:first-child {
 							</div>
 						</div>
 					</div>
-
 					<hr>
 					<div class="row-fluid">
 						<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
