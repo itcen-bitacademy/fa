@@ -50,12 +50,4 @@ public class Menu63Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	
-	@RequestMapping({"/" + SUBMENU + "/test" })
-	public void test() {
-		ClosingDateVo vo = new ClosingDateVo();
-		vo.setNo(124L);
-		vo.setClosingYearMonth("2019-10");
-		menu63Service.insertBalanceSheet(vo);
-	}
 }
