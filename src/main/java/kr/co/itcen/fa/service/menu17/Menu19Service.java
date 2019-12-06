@@ -32,6 +32,9 @@ public class Menu19Service {
 	private Menu61Service menu61Service;
 	
 	@Autowired
+	private Menu63Service menu63Service;
+	
+	@Autowired
 	private Menu64Service menu64Service;
 	
 	public void test() {
@@ -107,10 +110,12 @@ public class Menu19Service {
 		}
 		
 		// 시산표 및 재무제표 데이터 삭제
-		// TODO: 서비스 안에서 재무제표 데이터도 삭제해야함 
+		// 시산표 데이터 삭제  
 		menu61Service.deleteTrialBalanceByClosingDateNo(closingDate);
-		
-		menu19Repository.updateClosingDate(closingDate);
+		// 대차대조표 데이터 삭제
+		menu63Service.deleteBalanceSheet(closingDate);
+		// 손익계산서 데이터 삭제
+		menu64Service.deleteIncomeStatement(closingDate);
 		
 		return dataResult;
 	}
@@ -136,10 +141,10 @@ public class Menu19Service {
 		}
 		
 		// 시산표 및 재무제표 데이터 삭제
-		// TODO: 서비스 안에서 재무제표 데이터도 삭제해야함 
+		// 시산표 데이터 삭제  
 		menu61Service.deleteTrialBalanceByClosingDateNo(closingDate);
-		// TODO: 대차대조표 데이터 삭제
-		
+		// 대차대조표 데이터 삭제
+		menu63Service.deleteBalanceSheet(closingDate);
 		// 손익계산서 데이터 삭제
 		menu64Service.deleteIncomeStatement(closingDate);
 
