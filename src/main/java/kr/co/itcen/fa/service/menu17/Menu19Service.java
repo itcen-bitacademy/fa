@@ -3,8 +3,6 @@ package kr.co.itcen.fa.service.menu17;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -164,9 +162,7 @@ public class Menu19Service {
 	 * 		true	: 입력 가능
 	 * 		false	: 입력 불가능
 	 */
-	public boolean checkClosingDate(HttpSession session, Date businessDate) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		
+	public boolean checkClosingDate(UserVo authUser, Date businessDate) {
 		ClosingDateVo closingDateVo = null;
 		
 		switch(authUser.getTeamNo()) {
