@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
@@ -54,8 +55,22 @@ public class Menu50ApiController {
 	//배열로 넘어온거는 '[]' 붙여줘야한다.
 	@ResponseBody
 	@RequestMapping(value = "/deleteChecked", method = RequestMethod.POST)
-	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
+	public JSONResult deleteChecked(
+			@RequestParam(value="sendData[]", required=true) List<Long> noList) {
 		menu50Service.deleteChecked(noList);
+		System.out.println("deleteChecked : " + noList);
 		return JSONResult.success(noList);
 	}
+	
+	// 계좌 팝업창에서 계좌번호 조회
+	@ResponseBody
+	@RequestMapping("/getbankaccount")
+	public List<BankAccountVo> getBankaccountInfo(
+			@RequestParam("depositNo") String depositNo) {
+		System.out.println("depositNo : " + depositNo);
+		List<BankAccountVo> bankaccountList = menu50Service.selectBankaccountInfo(depositNo);
+		System.out.println("bankaccountList : " + bankaccountList.toString());
+		return bankaccountList;
+	}
+	
 }

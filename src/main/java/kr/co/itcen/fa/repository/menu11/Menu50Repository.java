@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.repository.menu11;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
-import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
  * 
@@ -26,12 +27,6 @@ public class Menu50Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public void test() {
-		TestVo testVo = new TestVo();
-		testVo.setName("박준호");
-		sqlSession.insert("menu50.save", testVo);
-	}
-	
 	public void insert(PdebtVo pdebtVo) {
 		sqlSession.insert("menu50.insert", pdebtVo);
 	}
@@ -40,14 +35,6 @@ public class Menu50Repository {
 	public int pdebtTotalcount() {
 		return sqlSession.selectOne("menu50.pdebtTotalcount");
 	}
-	
-	// 처음에 리스트에 출력할 때 실행하는 메소드
-	/*
-	 * public List<PdebtVo> list(int startNum, int lastNum) { Map<String, Integer>
-	 * map = new HashMap<String, Integer>(); map.put("startNum", startNum);
-	 * map.put("lastNum", lastNum); return sqlSession.selectList("menu50.list",
-	 * map); }
-	 */
 	
 	// 데이터 카운트
 	public int listCount(String year, String code) {
@@ -88,7 +75,34 @@ public class Menu50Repository {
 	}
 
 	public Boolean update(PdebtVo vo) {
+		System.out.println("vo vo vo update : " + vo.toString());
 		int count = sqlSession.update("menu50.update", vo);
 		return count == 1;
 	}
+	
+	public List<BankAccountVo> selectBankaccountInfo(String depositNo) {
+		List<BankAccountVo> bankaccountList = sqlSession.selectList("menu50.getBankaccountInfo", depositNo);
+		System.out.println(bankaccountList);
+		return bankaccountList;
+	}
+
+	public Boolean delete(Long[] no) {
+		List<Long> list = new ArrayList<Long>();
+		for (Long no1 : no) {
+			list.add(no1);
+		}
+		
+		int totalElements = list.size();
+		for (int index = 0; index < totalElements; index++) {
+			System.out.println(list.get(index));
+		}
+		
+		int count = sqlSession.update("menu50.delete", list);
+		return count >= 1;
+	}
+
+	public List<SectionVo> selectSection() {
+		return sqlSession.selectList("menu50.selectsection");
+	}
+	
 }

@@ -42,7 +42,11 @@
 				  and manager_name like CONCAT('%',#{managerName},'%') 
 			]]>
 		</if> 
-		    limit #{pagination.pageIndex }, #{pagination.listSize };
+		<if test="pagination.pageIndex >= 0">
+				<![CDATA[
+			    	limit #{pagination.pageIndex }, #{pagination.listSize }
+			    ]]>
+		</if>
 	</select>
 	
 	<select id="selectAllCount" parameterType="purchasecustomer35vo" resultType="int">

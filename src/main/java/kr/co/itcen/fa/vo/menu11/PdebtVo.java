@@ -1,9 +1,9 @@
 package kr.co.itcen.fa.vo.menu11;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Alias("pdebtvo")
 public class PdebtVo {
@@ -15,18 +15,25 @@ public class PdebtVo {
 	private String repayWay; // 상환방법
 	private String repayCompleFlag; // 상환완료여부
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date debtDate; // 차입일자
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expDate; // 만기일자
+
 	private int intRate; // 이율
 	private String intPayWay; // 이자지급방식
-	private int intAmount; // 이자금액
+	private Long intAmount; // 이자금액
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
 	private String dangerCode; // 위험등급
 	private String dangerName; // 위험등급명
 	private String majorCode;// 차입금대분류
 	private String bankCode; // 은행코드
+	private String bankName; // 은행이름
 	private String depositNo; // 계좌번호
+	private String depositHost; // 예금주
 	private String accountNo; // 계정코드
 	private int voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
@@ -132,12 +139,12 @@ public class PdebtVo {
 		this.intPayWay = intPayWay;
 	}
 
-	public int getIntAmount() {
+	public Long getIntAmount() {
 		return intAmount;
 	}
 
-	public void setIntAmount(int intAmount) {
-		this.intAmount = intAmount;
+	public void setIntAmount(Long money) {
+		this.intAmount = money;
 	}
 
 	public String getMgr() {
@@ -188,12 +195,28 @@ public class PdebtVo {
 		this.bankCode = bankCode;
 	}
 
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
 	public String getDepositNo() {
 		return depositNo;
 	}
 
 	public void setDepositNo(String depositNo) {
 		this.depositNo = depositNo;
+	}
+
+	public String getDepositHost() {
+		return depositHost;
+	}
+
+	public void setDepositHost(String depositHost) {
+		this.depositHost = depositHost;
 	}
 
 	public String getAccountNo() {
@@ -267,9 +290,10 @@ public class PdebtVo {
 				+ debtExpDate + ", debtDate=" + debtDate + ", expDate=" + expDate + ", intRate=" + intRate
 				+ ", intPayWay=" + intPayWay + ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall
 				+ ", dangerCode=" + dangerCode + ", dangerName=" + dangerName + ", majorCode=" + majorCode
-				+ ", bankCode=" + bankCode + ", depositNo=" + depositNo + ", accountNo=" + accountNo + ", voucherNo="
-				+ voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate
-				+ ", updateId=" + updateId + ", updateDate=" + updateDate + ", financialYear=" + financialYear + "]";
+				+ ", bankCode=" + bankCode + ", bankName=" + bankName + ", depositNo=" + depositNo + ", depositHost="
+				+ depositHost + ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag
+				+ ", insertId=" + insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate="
+				+ updateDate + ", financialYear=" + financialYear + "]";
 	}
 
 }

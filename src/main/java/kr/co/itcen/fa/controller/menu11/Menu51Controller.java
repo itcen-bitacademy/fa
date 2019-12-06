@@ -7,12 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu51Service;
 import kr.co.itcen.fa.vo.SectionVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
 /**
@@ -34,21 +35,32 @@ public class Menu51Controller {
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(
 			Model model, 
-			@RequestParam(value = "page", required = false, defaultValue = "1") int page, 
-			@RequestParam(value="sort", required=false) String sort,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "sort", required = false) String sort, 
 			PdebtVo pdebtVo) {
-		System.out.println("사채현황조회 page : " + page);
-		
-		DataResult<PdebtVo> dataResult = menu51Service.list(page, pdebtVo);
-//		if(dataResult.getPagination().getPageIndex() < 1) {
-//			dataResult.getPagination().set;
-//		}
+		DataResult<PdebtVo> dataResult = menu51Service.list(page, pdebtVo, sort);
 		List<SectionVo> sectionlist = menu51Service.selectSection();
-		System.out.println("dataResult : " + dataResult);
-		System.out.println("sectionlist : " + sectionlist);
+
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+				.queryParam("sort", sort)
+				.queryParam("debtDate", pdebtVo.getDebtDate())
+				.queryParam("expDate", pdebtVo.getExpDate())
+				.queryParam("intPayWay", pdebtVo.getIntPayWay())
+				.queryParam("bankCode", pdebtVo.getBankCode())
+				.build();
+		
+		String uri = uriComponents.toUriString();
+
+		System.out.println("uri : " + uri.toString());
+		System.out.println("dataResult : " + dataResult.toString());
+		System.out.println("sectionlist : " + sectionlist.toString());
+		
+		model.addAttribute("uri", uri);
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("sectionlist", sectionlist);
-		
+		model.addAttribute("sort", sort);
+
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+
 }

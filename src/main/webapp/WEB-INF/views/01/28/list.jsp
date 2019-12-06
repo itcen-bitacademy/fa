@@ -54,6 +54,7 @@
 			}).next().on(ace.click_event, function(){
 				$(this).prev().focus();
 			});
+			
 		})
 	</script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -76,70 +77,67 @@
 			<div class="row-fluid"> <!-- 검색조건 start -->
 					<form class="form-horizontal; center" name="searchOption" action="28" method="post"><!--  -->
 					거래처 구분 : &nbsp;
-						<select class="chosen-select" id="customerDiv" name="customerDiv" data-placeholder="거래처 종류" style="width:70px">
-							<option value="All" id="All"
-								<c:if test="${customerDiv == 'All'}">
-								selected</c:if>
-							>
-								전체
-							</option>
-							<option value="Purchase" id="Purchase"
-								<c:if test="${customerDiv == 'Purchase'}">
-								selected</c:if>
-							>
-								매입
-							</option>
-							<option value="Sales" id="Sales"
-								<c:if test="${customerDiv == 'Sales'}">
-								selected</c:if>
-							>
-								매출
-							</option>
-							<option value="Assets" id="Assets"
-								<c:if test="${customerDiv == 'Assets'}">
-								selected</c:if>
-							>
-								자산
-							</option>
+						<select class="chosen-select"
+							id="customerDiv" name="customerDiv" 
+							data-placeholder="선택" style="width:100px;">
+							 <option value="All">전체</option>
+							 <option value="Purchase">매입 거래처</option>
+							 <option value="Sales">매출 거래처</option>
+							 <option value="Assets">자산 거래처</option>
 						</select>
+						<script type="text/javascript">
+						var customerDiv = "${param.customerDiv}";
+						$("#customerDiv").val(customerDiv);
+						</script>
+						
 						
 						&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker1" name="datepicker1" value="${datepicker1 }" class="cl-date-picker"  style="width:100px"/>
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px"/>
+							
 							<span class="add-on">
 								<i class="icon-calendar"></i>
 							</span>
 						</div>
+						<script type="text/javascript">
+						var datepicker1 = "${param.datepicker1}";
+						$("#datepicker1").val(datepicker1);
+						</script>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" name="datepicker2" value="${datepicker2 }" class="cl-date-picker" style="width:100px"/>
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker" style="width:100px"/>
 								<span class="add-on">
 								<i class="icon-calendar"></i>
 							</span>
 						</div>
+						<script type="text/javascript">
+						var datepicker2 = "${param.datepicker2}";
+						$("#datepicker2").val(datepicker2);
+						</script>
 						
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;사업자등록번호 :&nbsp; 
-						<input type="text" id="customerNo" name="customerNo" value="${customerNo }" placeholder="ex)000-00-00000" size=4 style="width:150px"/>
+						<input type="text" id="no" name="no" placeholder="ex)000-00-00000" size=4 style="width:150px" style="width:100px;"/>
+						<script type="text/javascript">
+						var no = "${param.no}";
+						$("#no").val(no);
+						</script>
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;삭제여부 : &nbsp;
-						<select class="chosen-select" id="deleteFlag" name="deleteFlag" data-placeholder="삭제여부" style="width:50px">
-							<option value="N" id="N"
-								<c:if test="${deleteFlag == 'N'}">
-								selected</c:if>
-							>
-								N
-							</option>
-							
-							<option value="Y" id="Y"
-								<c:if test="${deleteFlag == 'Y'}">
-								selected</c:if>
-							>
-								Y
-							</option>
+						
+						<select class="chosen-select"
+							id="deleteFlag" name="deleteFlag" 
+							data-placeholder="선택" style="width:70px;">
+							<option value="N">N</option>
+							<option value="Y">Y</option>
 						</select>
+						<script type="text/javascript">
+						var deleteFlag = "${param.deleteFlag}";
+						$("#deleteFlag").val(deleteFlag);
+						</script>
+						
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btn btn-small btn-info" type="submit" >조회</button>
+						<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					</form>
 					
 					<div class="hr hr-18 dotted"></div>
@@ -160,7 +158,6 @@
 										<th class="center">거래처 전화번호</th>
 										<th class="center">거래처 담당자 성명</th>
 										<th class="center">e-mail</th>
-										<th class="center">은행명</th>
 										<th class="center">계좌번호</th>
 										<th class="center">예금주</th>
 										<th class="center">입력일자</th>
@@ -172,7 +169,7 @@
 								
 								<tbody>
 								
-										<c:forEach items="${list }" var="vo" varStatus="status">
+										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 											<tr>
 												<td>${vo.customerDiv }</td>
 												<td>${vo.no }</td>
@@ -184,9 +181,8 @@
 												<td>${vo.phone }</td>
 												<td>${vo.managerName }</td>
 												<td>${vo.managerEmail }</td>
-												<td></td>
 												<td>${vo.depositNo }</td>
-												<td></td>
+												<td>${vo.depositHost }</td>
 												<td>${vo.insertDay }</td>
 												<td>${vo.insertUserid }</td>
 												<td>${vo.updateDay }</td>
@@ -199,18 +195,36 @@
 						</div>
 					</div>
 					</div>
-						<div class="pagination"><!-- 페이징 공통 -->
-							<ul>
-								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-							</ul>
-						</div>
-			
+	<div class="pagination">
+		<ul>
+			<c:choose>
+			<c:when test="${dataResult.pagination.prev }">
+				<li><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+			</c:when>
+			<c:otherwise>
+				<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+			</c:otherwise>
+			</c:choose>
+			<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+			<c:choose>
+			<c:when test="${pg eq dataResult.pagination.page }">
+				<li class="active"><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${pg }">${pg }</a></li>
+			</c:when>
+			<c:otherwise>
+				<li><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${pg }">${pg }</a></li>
+			</c:otherwise>
+			</c:choose>
+			</c:forEach>
+			<c:choose>
+				<c:when test="${dataResult.pagination.next }">
+				<li><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+			</c:when>
+			<c:otherwise>
+				<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+			</c:otherwise>
+			</c:choose>
+				</ul>
+			</div>
 			
 			
 		</div><!-- /.page-content -->

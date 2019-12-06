@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
-import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
  * 
@@ -29,10 +27,11 @@ public class Menu51Repository {
 		return sqlSession.selectOne("menu51.selectAllCount", vo);
 	}
 
-	public List<PdebtVo> list(PaginationUtil pagination, PdebtVo vo) {
+	public List<PdebtVo> list(PaginationUtil pagination, PdebtVo vo, String sort) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
 		map.put("vo", vo);
+		map.put("sort",sort);
 		List<PdebtVo> list = sqlSession.selectList("menu51.selectAll", map);
 		return list;
 	}

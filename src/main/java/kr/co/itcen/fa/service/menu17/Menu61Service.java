@@ -28,6 +28,9 @@ public class Menu61Service {
 	private Menu61Repository menu61Repository;
 	
 	@Autowired
+	private Menu63Service menu63Service;
+	
+	@Autowired
 	private Menu64Service menu64Service;
 	
 	/**
@@ -64,7 +67,6 @@ public class Menu61Service {
 		
 		// 테스전표 데이터 조회
 		// TODO: 실제 데이터로 변경
-		// TODO: 조회기간 추가
 		List<StatementDataVo> testList = menu61Repository.testStatementData(lastestUnclosingDateVo);
 		
 		// 시산표 값 적산
@@ -106,10 +108,10 @@ public class Menu61Service {
 			menu61Repository.insertTrialBalance(tbVo);
 		}
 		
-		// TODO: 재무제표 작성 
-		// TODO: 대차대조표 작성
-		
-		// TODO: 손익계산서 작성
+		// 재무제표 작성 
+		// 대차대조표 작성
+		menu63Service.insertBalanceSheet(lastestUnclosingDateVo);
+		// 손익계산서 작성
 		menu64Service.insertIncomeStatement(lastestUnclosingDateVo);
 
 		// 결산완료 마감일 업데이트 
@@ -159,10 +161,7 @@ public class Menu61Service {
 	 * 해당 마감일의 시산표 및 재무제표 데이터 삭제 
 	 */
 	public DataResult<Object> deleteTrialBalanceByClosingDateNo(ClosingDateVo closingDateVo) {
-		// 시산표 데이터 삭제 
 		menu61Repository.deleteTrialBalanceByClosingDateNo(closingDateVo);
-		
-		// TODO: 재무제표 데이터 삭제 
 		
 		return new DataResult<Object>();
 	}
