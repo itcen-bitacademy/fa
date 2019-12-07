@@ -222,6 +222,7 @@ form {
 										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>	
+							
 							<td class="center">${ltermvo.mgr}</td>
 							<td class="center">${ltermvo.mgrCall}</td>
 							<td class="center">${ltermvo.bankName}</td>
