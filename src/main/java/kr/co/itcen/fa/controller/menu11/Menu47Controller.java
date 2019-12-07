@@ -1,6 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu11.Menu47Service;
-import kr.co.itcen.fa.util.Pagination;
-import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
  * 
@@ -31,12 +29,9 @@ public class Menu47Controller {
 	                                   //   /11/47, /11/47/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
-		Pagination pagination = new Pagination(5, 5, 1);	//기본 페이지는 1로 설정
-		List<STermDebtVo> list = menu47Service.getList(pagination);
+		Map map = menu47Service.getListMap();
 		
-		System.out.println("list size : " + list.size() + " startPage : " + pagination.getStartPage() + " endPage : " + pagination.getEndPage());
-		model.addAttribute("list", list);
-		model.addAttribute("pagination", pagination);
+		model.addAllAttributes(map);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

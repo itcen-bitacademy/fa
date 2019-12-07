@@ -6,6 +6,7 @@
 		<result column="debt_amount" property="debtAmount" />
 		<result column="repay_bal" property="repayBal" />
 		<result column="repay_way" property="repayWay" />
+		<result column="repay_comple_flag" property="repayCompleFlag"/>
 		<result column="debt_date" property="debtDate" />
 		<result column="exp_date" property="expDate" />
 		<result column="int_rate" property="intRate" />
@@ -34,28 +35,37 @@
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
-			where delete_flag="N" and repay_comple_flag="N"
 		]]>
-			<if test='bankName != null and !"".equals(bankName)'>
-				and bank_code = #{vo.bankName}
-			</if>
-			<if test='debtDate != null and !"".equals(debtDate)'>
-				and debt_date = #{vo.debtDate}
-			</if>
-			<if test='expDate != null and !"".equals(expDate)'>
-				and exp_date = #{vo.expDate}
-			</if>
-			<if test='intPayWay != null and !"".equals(intPayWay)'>
-				and int_pay_way = #{vo.intPayWay}
-			</if>
-			<if test='repayComplFlag != null and !"".equals(repayComplFlag)'>
-				and repay_compl_flag = #{vo.repayCompleFlag}
-			</if>
-			<if test='deleteFlag != null and !"".equals(deleteFlag)'>
-				and delete_flag = #{vo.repayCompleFlag}
-			</if>
+			<!-- 조회 조건 -->
+			<choose>
+				<when test='vo == null'>
+					where delete_flag="N" and repay_comple_flag="N"
+				</when>
+				<when test='vo != null'>	<!-- no > 0은 조건문을 위해 삽입한 Cheat Code -->
+					where no > 0
+					<if test='vo.repayCompleFlag != null and !"".equals(vo.repayCompleFlag)'>
+						and repay_comple_flag = #{vo.repayCompleFlag}
+					</if>
+					<if test='vo.deleteFlag != null and !"".equals(vo.deleteFlag)'>
+						and delete_flag = #{vo.deleteFlag}
+					</if>
+					<if test='vo.bankName != null and !"".equals(vo.bankName)'>
+					and bank_code = #{vo.bankName}
+					</if>
+					<if test='vo.debtDate != null and !"".equals(vo.debtDate)'>
+						and debt_date = #{vo.debtDate}
+					</if>
+					<if test='vo.expDate != null and !"".equals(vo.expDate)'>
+						and exp_date = #{vo.expDate}
+					</if>
+					<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>
+						and int_pay_way = #{vo.intPayWay}
+					</if>
+				</when>
+			</choose>
 			
-			<if test='orderColumn != null'>
+			<!-- 정렬 조건 -->
+			<if test='orderColumn != null and orderColumn != ""'>
 				<![CDATA[
 					order by 
 				]]>
@@ -66,56 +76,35 @@
 					<when test='orderColumn eq "debt_amount"'>debt_amount</when>
 				</choose>
 			</if>
+			<!-- limit 조건 -->
 			<![CDATA[
-				limit ${startRow}, ${endRow}
+				limit ${startRow}, ${pageSize}
 			]]>
 	</select>
 	
-	<select id="getListWithOrder" parameterType="map" resultType="stermdebtvo" resultMap="stermdebtResult">
-		<![CDATA[
-			select 
-			no, code, major_code, name,
-			debt_amount, repay_bal, repay_way,
-			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
-			int_pay_way, int_amount, mgr,
-			mgr_call, bank_code, deposit_no, 
-			account_no, voucher_no, delete_flag,
-			insert_id, insert_date, update_id,
-			update_date 
-			from tb_s_term_debt
-			where delete_flag="N" and repay_comple_flag="N"
-		]]>
-			<if test='vo.bankName != null and !"".equals(vo.bankName)'>
-				and bank_code = #{vo.bankName}
-			</if>
-			<if test='vo.debtDate != null and !"".equals(vo.debtDate)'>
-				and debt_date = #{vo.debtDate}
-			</if>
-			<if test='vo.expDate != null and !"".equals(vo.expDate)'>
-				and exp_date = #{vo.expDate}
-			</if>
-			<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>
-				and int_pay_way = #{vo.intPayWay}
-			</if>
-			<if test='repayComplFlag != null and !"".equals(repayComplFlag)'>
-				and repay_compl_flag = #{vo.repayCompleFlag}
-			</if>
-			<if test='deleteFlag != null and !"".equals(deleteFlag)'>
-				and delete_flag = #{vo.repayCompleFlag}
-			</if>
-			<![CDATA[
-			order by 
-			]]>
-			<choose>
-				<when test='orderColumn eq "debt_date"' >debt_date</when>
-				<when test='orderColumn eq "exp_date"'>exp_date</when>
-				<when test='orderColumn eq "insert_date"'>insert_date</when>
-				<when test='orderColumn eq "debt_amount"'>debt_amount</when>
-			</choose>
-	</select>
-	<select id="getTotalCount" resultType="int">
+	<select id="getTotalCnt" parameterType="stermdebtvo" resultType="int">
 		<![CDATA[
 			select count(*) from tb_s_term_debt
 		]]>
+			where no > 0
+			<if test='bankName != null and !"".equals(bankName)'>
+				and bank_code = #{bankName}
+			</if>
+			<if test='debtDate != null and !"".equals(debtDate)'>
+				and debt_date = #{debtDate}
+			</if>
+			<if test='expDate != null and !"".equals(expDate)'>
+				and exp_date = #{expDate}
+			</if>
+			<if test='intPayWay != null and !"".equals(intPayWay)'>
+				and int_pay_way = #{intPayWay}
+			</if>
+			<if test='repayCompleFlag != null and !"".equals(repayCompleFlag)'>
+				and repay_comple_flag = #{repayCompleFlag}
+			</if>
+			<if test='deleteFlag != null and !"".equals(deleteFlag)'>
+				and delete_flag = #{repayCompleFlag}
+			</if>
 	</select>
+	
 </mapper>

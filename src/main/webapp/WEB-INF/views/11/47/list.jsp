@@ -108,7 +108,7 @@
 <input type="hidden" id="context-path" value="${pageContext.request.contextPath }">
 <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode}">
 <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }">
-<input type="hidden" id="page" value="${pagination.page }">		<!-- page값을 저장 -->
+<input type="hidden" id="order-column">		<!-- page값을 저장 -->
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -157,11 +157,11 @@
 					<div class="chkbox-list-area">
 						<div class="chkbox-list">
 							<label>삭제포함</label>
-							<input type="checkbox" name="deleteFlag">
+							<input type="checkbox" name="deleteFlag" value="Y">
 						</div>
 						<div class="chkbox-list">
 							<label>상환완료포함</label>
-							<input type="checkbox" name="repayComplFlag">
+							<input type="checkbox" name="repayCompleFlag" value="Y">
 						</div>
 					</div>
 				</section> <!-- filter-right end -->
@@ -277,10 +277,10 @@ function renderingList(list){
 }
 
 function renderingPage(pagination){
-	
+	//페이징 리스트 삭제
 	$("#pagination>ul *").remove();
+	
 	//이전버튼 Rendering
-	console.log($("#pagination>ul"));
 	if(pagination.prev){
 		$("#pagination>ul").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" + 
 									"<a><i class='icon-double-angle-left'></i>" +
@@ -306,15 +306,22 @@ function renderingPage(pagination){
 	}
 	
 }
-
+ 
+ //조회 버튼 Click Event Method, 조회 데이터들을 넘겨준다.
  function search(){
-	 var sendData = $("#filter-area").serialize();
-	 var page = 1;
+	 var sendData = $("#filter-area").serialize();		// <속성>=<속성값>{&<속성>=<속성값>}
+	 console.log("search");
+	 if($("#filter-area")[0].repayCompleFlag.checked == false)
+		 sendData += "&repayCompleFlag=N";
+	 if($("#filter-area")[0].deleteFlag.checked == false)
+		 sendData += "&deleteFlag=N";
+	
+	 console.log(sendData);
 	 $.ajax({
 		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/search",
 		type : "POST",
 		dataType : "json",
-		data : {"sendData" : sendData, "page" : page},
+		data : sendData,
 		success: function(response){
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
@@ -322,15 +329,22 @@ function renderingPage(pagination){
 	 });
  }
  
+ //정렬 버튼 Click Event Method, 정렬 컬럼을 넘겨준다. 기본페이지 1
  function order(thisObj){
-	 var sendData = $("#filter-area").serialize();
-	 var orderColumn = $(thisObj).attr('id'); 
-	 var page = 1
+	 var sendData = $("#filter-area").serialize();			// <속성>=<속성값>{&<속성>=<속성값>}
+	 var orderColumn = $(thisObj).attr('id');
+	 $("#order-column").val(orderColumn);					// 정렬컬럼값을 저장해둔다.
+	 if($("#filter-area")[0].repayCompleFlag.checked == false)
+		 sendData += "&repayCompleFlag=N";
+	 if($("#filter-area")[0].deleteFlag.checked == false)
+		 sendData += "&deleteFlag=N";
+	 
+	 sendData += "&orderColumn=" + orderColumn;
 	 $.ajax({
 		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val()  + "/" + $("#sub-menu-code").val() + "/order",
 		type: "POST",
 		dataType : "json",
-		data : {"sendData" : sendData, "orderColumn" : orderColumn, "page" : page},
+		data : sendData,
 		success : function(response){
 				renderingList(response.data.list);
 				renderingPage(response.data.pagination);
@@ -341,23 +355,28 @@ function renderingPage(pagination){
 	 });
  }
  
+ //page click Event Method, 검색조건에 따른 페이지를 보여준다.
  function pageClicked(thisObj){
 	 var sendData = $("#filter-area").serialize();
+	 var orderColumn = $("#order-column").val();
 	 var page = $(thisObj).attr('id');
-	 console.log($(thisObj).attr('id'));
+	 if($("#filter-area")[0].repayCompleFlag.checked == false)
+		 sendData += "&repayCompleFlag=N";
+	 if($("#filter-area")[0].deleteFlag.checked == false)
+		 sendData += "&deleteFlag=N";
+	 sendData += "&orderColumn=" + orderColumn + "&page=" + page;
+	 
+	 console.log("paging : ");
+	 console.log(sendData);
+	 
 	 $.ajax({
-		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/search",
+		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/paging",
 		type : "POST",
 		dataType : "json",
-		data : {"sendData" : sendData, "page" : page},
+		data : sendData,
 		success: function(response){
-			console.log("length : " + response.data.list.length);
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
-			console.log("startPage : " + response.data.pagination.startPage);
-			console.log("endPage : " + response.data.pagination.endPage);
-			console.log("startRow : " + response.data.pagination.startRow);
-			console.log("endRow : " + response.data.pagination.endRow);
 		},
 		error: function(xhr, error){
 			

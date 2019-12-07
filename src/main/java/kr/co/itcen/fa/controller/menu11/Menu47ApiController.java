@@ -6,8 +6,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,27 +29,27 @@ public class Menu47ApiController {
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu47Controller.SUBMENU + "/search")
-	public JSONResult search(STermDebtVo sTermDebtVo, @RequestParam(value="page", required=true) int page) {
-		Pagination pagination = new Pagination(5, 5, page);
-		List<STermDebtVo> list = menu47Service.search(sTermDebtVo, pagination);
-		Map map = new HashMap<>();
-		map.put("list", list);
-		map.put("pagination", pagination);
-		
-		System.out.println(pagination.getStartPage() + " " + pagination.getEndPage());
+	public JSONResult search(STermDebtVo sTermDebtVo) {
+		Map map = menu47Service.search(sTermDebtVo);
+		List<STermDebtVo> list = (List<STermDebtVo>)map.get("list");
 		return JSONResult.success(map);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu47Controller.SUBMENU + "/order")
-	public JSONResult order(STermDebtVo sTermDebtVo, @RequestParam(value="page", required=true) int page,
+	public JSONResult order(STermDebtVo sTermDebtVo,
 			@RequestParam(value="orderColumn", required=true) String orderColumn) {
-		Pagination pagination = new Pagination(5, 5, page);
-		List<STermDebtVo> list = menu47Service.order(sTermDebtVo, orderColumn, pagination);
-		Map map = new HashMap<>();
-		map.put("list", list);
-		map.put("pagination", pagination);
-		
+		Map map = menu47Service.order(sTermDebtVo, orderColumn);
+		return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu47Controller.SUBMENU + "/paging", method=RequestMethod.POST)
+	public JSONResult paging(STermDebtVo sTermDebtVo, 
+			@RequestParam(value="orderColumn", required=false, defaultValue="") String orderColumn,
+			@RequestParam(value="page", required=true) int page) {
+		Map map = menu47Service.paging(sTermDebtVo, orderColumn, page);
+		System.out.println("paging : " + sTermDebtVo);
 		return JSONResult.success(map);
 	}
 	
