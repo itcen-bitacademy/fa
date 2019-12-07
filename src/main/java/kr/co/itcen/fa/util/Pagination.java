@@ -19,7 +19,6 @@ public class Pagination {
 	private int startPage;			// 시작 페이지
 	private int endPage;				// 마지막 페이지
 	private int startRow;			// 시작 Row
-	private int endRow;				// 끝 Row
 	private boolean prev;			// 이전 버튼
 	private boolean next;			// 다음 버튼
 	
@@ -27,29 +26,28 @@ public class Pagination {
 	 *  표시될 페이지 수, 페이지내의 Row수, 현재 페이지
 	 *  현재 페이지를 통해 Row 범위가 계산된다.
 	 */
-	public Pagination(int page){
-		this(5, 11, page);
+	public Pagination(int page, int totalCnt){
+		this(5, 11, page, totalCnt);
 	}
 	
 	/**
 	 * 직접 pageBlockSize 및 pageSize 지정가능
 	 */
-	public Pagination(int pageBlockSize, int pageSize, int page){
+	public Pagination(int pageBlockSize, int pageSize, int page, int totalCnt){
 		this.pageBlockSize = pageBlockSize;
 		this.pageSize = pageSize;
 		this.page = page;
 		
-		processRowRange();
+		processPaging(totalCnt);
 	}
 	
-	//page를 통해 startRow, endRow를 구한다.
-	private void processRowRange() {
+	
+	/**
+	 * Start Row, Start Page, End Page, Next, Priv값을 결정한다
+	 */
+	private void processPaging(int totalCnt) {
 		startRow = (page -1) * pageSize;
-		endRow = page * pageSize;
-	}
-	
-	//start Page, end Page, next, priv값을 결정한다
-	public void processPaging(int totalCnt) {
+		
 		totalPageCnt = (int) Math.ceil(totalCnt / (double)pageSize);
 			
 		//DB에서 데이터 삭제시 총 페이지가 현재 페이지보다 작을 수 있다.
@@ -68,10 +66,13 @@ public class Pagination {
 		next = (totalPageCnt > pageSize && endPage < totalPageCnt) ? true : false;
 	}
 	
+	/**
+	 * Limit 범위가 담긴맵
+	 */
 	public Map getRowRangeMap() {
 		Map map = new HashMap<String, Object>();
-		map.put("startRow", getStartRow());
-		map.put("endRow", getEndRow());
+		map.put("startRow", startRow);	//시작 Row
+		map.put("pageSize", pageSize);	//한 페이지에 보여줄갯수
 		
 		return map;
 	}
@@ -105,14 +106,6 @@ public class Pagination {
 
 	public void setStartRow(int startRow) {
 		this.startRow = startRow;
-	}
-
-	public int getEndRow() {
-		return endRow;
-	}
-
-	public void setEndRow(int endRow) {
-		this.endRow = endRow;
 	}
 
 	public boolean isPrev() {
