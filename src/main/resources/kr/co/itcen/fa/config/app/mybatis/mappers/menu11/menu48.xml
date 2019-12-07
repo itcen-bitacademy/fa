@@ -27,6 +27,22 @@
 			]]>
 	</selectKey>
 	</insert>
+	
+	<!--상환 insert -->
+	<insert parameterType="repayvo" id="insertrepay">
+	<![CDATA[
+		insert
+		  into tb_repay
+		values (null, #{debtNo},#{payPrinc},#{payDate}, 'L', null,#{depositNo},'N',#{insertId},now(),null,null)
+		]]>
+	<selectKey order="AFTER" resultType="long" keyProperty="no">
+	<![CDATA[
+			select last_insert_id()
+			]]>
+	</selectKey>
+	</insert>
+	
+	
 	<select parameterType="map" id="selectAllCount" resultType="int">
 	<![CDATA[
 		select count(*)
@@ -92,6 +108,29 @@
 		    where parent_no= 6
 	]]>
 	</select>
+	<!-- 상환후 갱신된 정보 select -->
+	<select parameterType="long" id="selectone" resultType="ldebtvo">
+	<![CDATA[
+		select no,
+			code,
+   			name,
+    		major_code as majorCode,
+    		debt_amount as debtAmount,
+    		repay_bal as repayBal,
+    		repay_way as repayWay,
+    		concat(date_format(debt_date,'%Y/%m/%d'),'-',
+    		date_format(exp_date,'%Y/%m/%d')) as debtExpDate,
+    		int_rate as intRate,
+    		int_pay_way as intPayWay,
+   			mgr,
+    		mgr_call as mgrCall,
+		    bank_code as bankCode,
+		    deposit_no as depositNo
+		    from tb_l_term_debt
+		    where no=#{_parameter}
+	]]>
+	</select>
+	
 	<!-- update -->
 	<update parameterType="ldebtvo" id="update">
 	<![CDATA[
@@ -133,4 +172,16 @@
 		#{item } 
 	</foreach>
 	</update>
+	
+	
+	<!-- 상환 update -->
+	<update parameterType="repayvo" id="repayupdate">
+	<![CDATA[
+		update tb_l_term_debt 
+		set repay_bal = repay_bal + #{payPrinc}	
+		where no=#{debtNo}
+	]]>
+	</update>
+	
+	
 </mapper>

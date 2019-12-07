@@ -654,12 +654,11 @@ $(function(){
 				    "상환": function(){
 				    	event.preventDefault();
 						var vo = {
-								"no":$("#no").val(),
-								"repayBal":$("#repay_bal").val(),
-								"payDate":$('input[name=payDate]').val(),
-								"depositNo":$('input[name=depositNo]').val()
+								"debtNo":$("#no").val(),//테이블 번호
+								"payPrinc":$("#repay_bal").val(),//상환액
+								"payDate":$('input[name=payDate]').val(),//상환일
+								"depositNo":$('input[name=depositNo]').val()//계좌번호
 						}
-						console.log(vo);
 						
 						// ajax 통신
 						$.ajax({
@@ -669,6 +668,7 @@ $(function(){
 							dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
 							data:JSON.stringify(vo),
 							success: function(response){
+								console.log(response);
 								if(response.result =="fail"){
 									console.error(response.message);
 									return;
@@ -677,12 +677,22 @@ $(function(){
 									alert("값을 정확히 입력하지 않았습니다.");
 									return;
 								}
-								
+								$("#tbody-list tr").each(function(i){
+									var td = $(this).children();
+									var n = td.eq(0).attr('lterm-no');
+									if(n == response.data.no){
+										td.eq(5).html(response.data.repayBal);
+									}
+								});
 							},
 							error: function(xhr, error){
 								console.error("error : " + error);
 							}
 						});
+						$(this).dialog('close');
+						//상환내역 반영
+						
+						
 				    },
 				    "닫기" : function() {
 				          	$(this).dialog('close');

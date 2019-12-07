@@ -86,22 +86,22 @@
 	</if>
 	<if test='sort != null and "d".equals(sort)'>	
 	<![CDATA[
-		order by debt_date desc
+		order by a.debt_date desc
 	]]>
 	</if>
 	<if test='sort != null and "e".equals(sort)'>	
 	<![CDATA[
-		order by exp_date desc
+		order by a.exp_date desc
 	]]>
 	</if>
 	<if test='sort != null and "i".equals(sort)'>
 	<![CDATA[
-		order by insert_date desc
+		order by a.insert_date desc
 	]]>
 	</if>
 	<if test='sort != null and "m".equals(sort)'>	
 	<![CDATA[
-		order by debt_amount
+		order by a.debt_amount
 	]]>
 	</if>
 	<if test="pagination.pageIndex >= 0">

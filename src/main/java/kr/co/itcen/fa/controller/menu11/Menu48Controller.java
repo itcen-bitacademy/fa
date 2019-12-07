@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
+import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
@@ -174,9 +175,11 @@ public class Menu48Controller {
 	}
 	@ResponseBody
 	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
-	public String repay(@RequestBody RepayVo vo) {
-		System.out.println(vo);
-		
-		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+	public JSONResult repay(@RequestBody RepayVo vo,@AuthUser UserVo uservo) {
+		vo.setInsertId(uservo.getId());
+		menu48Service.update(vo);
+		menu48Service.insert(vo);
+		LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());
+		return JSONResult.success(lvo);
 	}
 }

@@ -10,6 +10,7 @@ import kr.co.itcen.fa.repository.menu11.Menu48Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
+import kr.co.itcen.fa.vo.menu11.RepayVo;
 
 /**
  * 
@@ -31,7 +32,11 @@ public class Menu48Service {
 		return menu48Repository.insert(vo);
 		
 	}
-
+	//상환 insert
+	public Boolean insert(RepayVo vo) {
+		return menu48Repository.insert(vo);
+		
+	}
 	public DataResult<LTermdebtVo> list(int page, String year, String code) {
 		
 		DataResult<LTermdebtVo> dataResult = new DataResult<LTermdebtVo>();
@@ -62,5 +67,13 @@ public class Menu48Service {
 	public Long select(Long no) {
 		// TODO Auto-generated method stub
 		return menu48Repository.select(no);
+	}
+	public Boolean update(RepayVo vo) {
+		return menu48Repository.update(vo);
+	}
+
+	public LTermdebtVo getOne(Long debtNo) {
+		
+		return menu48Repository.getOne(debtNo);
 	}
 }
