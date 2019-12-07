@@ -23,6 +23,7 @@ import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
+import kr.co.itcen.fa.vo.menu11.RepayVo;
 
 /**
  * 
@@ -173,7 +174,7 @@ public class Menu48Controller {
 	}
 	@ResponseBody
 	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
-	public String repay(@RequestBody LTermdebtVo vo) {
+	public String repay(@RequestBody RepayVo vo) {
 		System.out.println(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;

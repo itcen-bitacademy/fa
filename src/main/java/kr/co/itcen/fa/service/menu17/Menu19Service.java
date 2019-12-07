@@ -1,10 +1,12 @@
 package kr.co.itcen.fa.service.menu17;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu19Repository;
@@ -92,6 +94,7 @@ public class Menu19Service {
 	 * 
 	 * 마감일 수정(미결산 마감일 및 가장 최근의 마감일만 수정 가능)
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public DataResult<Object> updateClosingDate(ClosingDateVo closingDate) {
 		DataResult<Object> dataResult = new DataResult<>();
 		
@@ -115,6 +118,10 @@ public class Menu19Service {
 		// 손익계산서 데이터 삭제
 		menu64Service.deleteIncomeStatement(closingDate);
 		
+		
+		// 마감일 수정 처리
+		menu19Repository.updateClosingDate(closingDate);
+		
 		return dataResult;
 	}
 	
@@ -123,6 +130,7 @@ public class Menu19Service {
 	 * 
 	 * 마감일 삭제(미결산 마감일 및 가장 최근의 마감일만 삭제 가능)
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public DataResult<Object> deleteClosingDate(ClosingDateVo closingDate) {
 		DataResult<Object> dataResult = new DataResult<>();
 		
@@ -146,7 +154,7 @@ public class Menu19Service {
 		// 손익계산서 데이터 삭제
 		menu64Service.deleteIncomeStatement(closingDate);
 
-		
+		// 마감일 삭제처리 
 		menu19Repository.deleteClosingDate(closingDate);
 		
 		return dataResult;
@@ -163,35 +171,60 @@ public class Menu19Service {
 	 * 		false	: 입력 불가능
 	 */
 	public boolean checkClosingDate(UserVo authUser, Date businessDate) {
-		ClosingDateVo closingDateVo = null;
+		// 마감일 정보 조회  
+		ClosingDateVo closingDateVo = menu19Repository.selectClosingDateByYearMonth(businessDate);
+		
+		if (closingDateVo == null) {
+			return true;
+		}
+		
+		Date closingDate = null;
 		
 		switch(authUser.getTeamNo()) {
-		case "1":		// 전표팀 마감일 조회
-			closingDateVo = menu19Repository.selectStatementClosingDateByBusinessDate(businessDate);
+		case "1":		// 전표팀 마감일
+			closingDate = closingDateVo.getClosingStatementDate();
 			break;
 			
-		case "2":		// 매입팀 마감일 조회
-			closingDateVo = menu19Repository.selectPurchaseClosingDateByBusinessDate(businessDate);
+		case "2":		// 매입팀 마감일
+			closingDate = closingDateVo.getClosingPurchaseDate();
 			break;
 			
-		case "3":		// 자산팀 마감일 조회
-			closingDateVo = menu19Repository.selectAssetsClosingDateByBusinessDate(businessDate);
+		case "3":		// 자산팀 마감일
+			closingDate = closingDateVo.getClosingAssetsDate();
 			break;
 			
-		case "4":		// 부채팀 마감이 조회
-			closingDateVo = menu19Repository.selectDebtClosingDateByBusinessDate(businessDate);
+		case "4":		// 부채팀 마감이
+			closingDate = closingDateVo.getClosingDebtDate();
 			break;
 			
-		case "5":		// 매출팀 마감일 조회
-			closingDateVo = menu19Repository.selectSalesClosingDateByBusinessDate(businessDate);
+		case "5":		// 매출팀 마감일
+			closingDate = closingDateVo.getClosingSalesDate();
 			break;
 			
-		case "6":		// 결산팀 마감일 조회
-			closingDateVo = menu19Repository.selectSettlementClosingDate(businessDate);
+		case "6":		// 결산팀 마감일
+			closingDate = closingDateVo.getClosingSettlementDate();
 			break;
 		}
 		
-		return (closingDateVo == null) ? false : true;
+		Calendar now = Calendar.getInstance();
+		
+		return (now.getTimeInMillis() <= getEndDate(closingDate)) ? true : false;
+	}
+	
+	private Long getEndDate(Date closingDate) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(closingDate);
+
+        calendar.set(Calendar.HOUR_OF_DAY,
+                     calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE,
+                     calendar.getActualMaximum(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND,
+                     calendar.getActualMaximum(Calendar.SECOND));
+        calendar.set(Calendar.MILLISECOND,
+                     calendar.getActualMaximum(Calendar.MILLISECOND));
+        
+        return calendar.getTimeInMillis();
 	}
 	
 	

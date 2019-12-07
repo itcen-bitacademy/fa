@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.vo.menu11;
 
 import java.util.Date;
-
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,18 +9,15 @@ public class PdebtVo {
 	private Long no; // 사채번호
 	private String code; // 사채코드
 	private String name; // 차입금명(사채명)
-	private int debtAmount; // 차입금액
-	private int repayBal; // 상환잔액 - 초기값으로 차입금액 삽입
+	private Long debtAmount; // 차입금액
+	private Long repayBal; // 상환잔액 - 초기값으로 차입금액 삽입
 	private String repayWay; // 상환방법
 	private String repayCompleFlag; // 상환완료여부
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
-
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date debtDate; // 차입일자
-
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expDate; // 만기일자
-
 	private int intRate; // 이율
 	private String intPayWay; // 이자지급방식
 	private Long intAmount; // 이자금액
@@ -35,7 +31,7 @@ public class PdebtVo {
 	private String depositNo; // 계좌번호
 	private String depositHost; // 예금주
 	private String accountNo; // 계정코드
-	private int voucherNo; // 전표번호
+	private Long voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
 	private String insertId; // 등록자
 	private Date insertDate; // 등록일
@@ -67,19 +63,19 @@ public class PdebtVo {
 		this.name = name;
 	}
 
-	public int getDebtAmount() {
+	public Long getDebtAmount() {
 		return debtAmount;
 	}
 
-	public void setDebtAmount(int debtAmount) {
+	public void setDebtAmount(Long debtAmount) {
 		this.debtAmount = debtAmount;
 	}
 
-	public int getRepayBal() {
+	public Long getRepayBal() {
 		return repayBal;
 	}
 
-	public void setRepayBal(int repayBal) {
+	public void setRepayBal(Long repayBal) {
 		this.repayBal = repayBal;
 	}
 
@@ -143,8 +139,8 @@ public class PdebtVo {
 		return intAmount;
 	}
 
-	public void setIntAmount(Long money) {
-		this.intAmount = money;
+	public void setIntAmount(Long intAmount) {
+		this.intAmount = intAmount;
 	}
 
 	public String getMgr() {
@@ -227,11 +223,11 @@ public class PdebtVo {
 		this.accountNo = accountNo;
 	}
 
-	public int getVoucherNo() {
+	public Long getVoucherNo() {
 		return voucherNo;
 	}
 
-	public void setVoucherNo(int voucherNo) {
+	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 

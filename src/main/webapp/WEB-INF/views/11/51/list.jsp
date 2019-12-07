@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
 <style>
 .radio {
 	float: left;
@@ -160,7 +161,7 @@ form {
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
 			
-		<!-- list -->
+				<!-- list -->
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>

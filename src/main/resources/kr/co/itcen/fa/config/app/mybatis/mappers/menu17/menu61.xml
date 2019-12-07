@@ -102,9 +102,6 @@
 		    , #{creditSpotMonth }
 		    , #{insertUserid }
 		);
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			select last_insert_id()
-		</selectKey>
 	</insert>
 	
 	
