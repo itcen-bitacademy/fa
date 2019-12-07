@@ -160,7 +160,7 @@
 
 			<%-- 에러 모달 --%>
 			<c:if test="${not empty param.error }">
-				<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<%-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
@@ -174,8 +174,23 @@
 				      </div>
 				    </div>
 				  </div>
-				</div>
+				</div> --%>
+				<input type="hidden" id="errorMessage" value="${param.error }"/>
 			</c:if>
+
+			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel"></h5>
+						</div>
+						<div class="modal-body" id="staticBackdropBody"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 		</div><!-- /.page-content -->
@@ -197,16 +212,31 @@
 		// 마감버튼 이벤트 연결
 		$('.settlement-btn').on('click', executeSettlement)
 
+		// 모달 설정
+		backdrop = $('#staticBackdrop')
+		backdrop.modal({
+			keyboard: false,
+			show: false
+		})
+		
 		// 에러 모달 연결
-		var errorModal = $('#staticBackdrop')
-		if (errorModal) {
-			errorModal.modal({
-				keyboard: false
-			})
+		var errorMessage = $('#errorMessage')
+		if (errorMessage.val()) {
+			openModal('Error', errorMessage.val())
 
-			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/61/list')
+			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/19/list')
 		}
 	});
+
+	// static backdrop modal
+	var backdrop
+
+	function openModal(title, message) {
+		$('#staticBackdropLabel').text('Error')
+		$('#staticBackdropBody').text(message)
+
+		backdrop.modal('show')
+	}
 
 	// 버튼 prevent default 설정
 	function disableFormSubmit(event) {
