@@ -37,7 +37,6 @@ public class Menu50ApiController {
 	@RequestMapping("/getbankcode")
 	public BankVo getBankcodeInfo(
 			@RequestParam("bankcodeVal") String bankcode) {
-		System.out.println("bankcodeVal : " + bankcode);
 		BankVo bankVo = menu50Service.selectOneBankcodeInfo(bankcode);
         return bankVo;
 	}
@@ -47,7 +46,6 @@ public class Menu50ApiController {
 	@RequestMapping("/getbankname")
 	public List<BankVo> getBanknameInfo(
 			@RequestParam("banknameVal") String bankname) {
-		System.out.println("banknameVal : " + bankname);
 		List<BankVo> banknameList = menu50Service.selectOneBanknameInfo(bankname);
         return banknameList;
 	}

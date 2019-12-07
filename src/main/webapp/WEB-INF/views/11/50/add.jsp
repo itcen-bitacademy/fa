@@ -12,7 +12,6 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .p-debt-code-input {
@@ -77,6 +76,7 @@ tr td:first-child {
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">사채관리</h1>
+					<div class="btn btn-link pull-right" ><span id="todayDate"></span></div>
 				</div>
 
 				<!-- PAGE CONTENT BEGINS -->
@@ -99,15 +99,15 @@ tr td:first-child {
 									</tr>
 									<tr>
 										<td><h4>차입금액</h4></td>
-										<td><input type="text" name="debtAmount" /></td>
+										<td>
+											<input type="text" id="inputPrice" name="debtAmount" />
+										</td>
 									</tr>
 									<tr>
 										<td><h4>차입일자 ~ 만기일자</h4></td>
 										<td colspan="2">
 											<div class="row-fluid input-prepend">
-												<input type="text" name="debtExpDate"
-													name="date-range-picker" id="id-date-range-picker-1" /> <span
-													class="add-on"> <i class="icon-calendar"></i>
+												<input type="text" name="debtExpDate" name="date-range-picker" id="id-date-range-picker-1" /> <span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
 										</td>
@@ -115,22 +115,25 @@ tr td:first-child {
 									<tr>
 										<td><h4>이자지급방식</h4></td>
 										<td colspan="2">
-											<div class="radio">
-												<label> <input name="intPayWay" type="radio"
-													class="ace" value="Y" /> <span class="lbl">년</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label> <input name="intPayWay" type="radio"
-													class="ace" value="M" /> <span class="lbl">월</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label> <input name="intPayWay" type="radio"
-													class="ace" value="E" /> <span class="lbl">해당없음</span>
-												</label>
-											</div>
-										</td>
+										<div class="radio">
+											<label>
+												<input name="intPayWay" type="radio" class="ace" value="Y"/>
+												<span class="lbl">년</span>
+											</label>
+										</div>
+										<div class="radio">
+											<label>
+												<input name="intPayWay" type="radio" class="ace" value="M"/>
+												<span class="lbl">월</span>
+											</label>
+										</div>
+										<div class="radio">
+											<label>
+												<input name="intPayWay" type="radio" class="ace" value="E"/>
+												<span class="lbl">해당없음</span>
+											</label>
+										</div>
+									</td>
 									</tr>
 									<tr>
 										<td><h4>은행코드</h4></td>
@@ -221,21 +224,24 @@ tr td:first-child {
 									<tr>
 										<td><h4>상환방법</h4></td>
 										<td colspan="2">
-											<div class="radio">
-												<label> <input name="repayWay" type="radio"
-													class="ace" value="Y" /> <span class="lbl">년</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label> <input name="repayWay" type="radio"
-													class="ace" value="M" /> <span class="lbl">월</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label> <input name="repayWay" type="radio"
-													class="ace" value="E" /> <span class="lbl">만기</span>
-												</label>
-											</div>
+												<div class="radio">
+													<label>
+														<input name="repayWay" type="radio" class="ace" value="Y"/>
+														<span class="lbl">년</span>
+													</label>
+												</div>
+												<div class="radio">
+													<label>
+														<input name="repayWay" type="radio" class="ace"  value="M"/>
+														<span class="lbl">월</span>
+													</label>
+												</div>
+												<div class="radio">
+													<label>
+														<input name="repayWay" type="radio" class="ace"  value="E"/>
+														<span class="lbl">만기</span>
+													</label>
+												</div>
 										</td>
 									</tr>
 									<tr>
@@ -297,12 +303,11 @@ tr td:first-child {
 							</div>
 						</div>
 					</div>
-
 					<hr>
 					<div class="row-fluid">
 						<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
 						&nbsp;
-						<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
+						<button type="button" class="btn btn-pink btn-small mybtn" >상환</button>
 						&nbsp;
 						<button class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;
@@ -342,9 +347,9 @@ tr td:first-child {
 						<tbody id="tbody-list">
 						<c:forEach items="${dataResult.datas}" var="vo" varStatus="status">
 							<tr id="${vo.no }">
-								<td id="select-checkbox" class="center">
+								<td id="select-checkbox" class="center" data-no="${vo.no }">
 									<label class="pos-rel"></label>
-									<input type="checkbox" class="ace" name="no"  value="${vo.no }" data-no="${vo.no }" /><span class="lbl"></span>
+									<input type="checkbox" class="ace" name="no"  data-no="${vo.no }" /><span class="lbl"></span>
 								</td>
 								<td class="center">${vo.code}</td>
 								<td>${vo.name}</td>
@@ -457,7 +462,7 @@ tr td:first-child {
 			var tr = $(this);
 			var td = tr.children();
 			
- 			$("input[name=no]").val(td.eq(0).text());
+			$("input[name=no]").val(td.eq(0).attr('data-no'));
 			$("input[name=code]").val(td.eq(1).text());
 			$("input[name=name]").val(td.eq(2).text());
 			var major='';
@@ -489,7 +494,7 @@ tr td:first-child {
 			
 			// 상환방법
 			var repayWay='';
-			switch (td.eq(6).text()){
+			switch (td.eq(5).text()){
 		    case '년' :
 		    	repayWay='Y';
 		        break;
@@ -503,36 +508,36 @@ tr td:first-child {
 			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
 			
 			// 차입일자 - 만기일자
-			$("input[name=debtExpDate]").val(td.eq(7).text());
+			$("input[name=debtExpDate]").val(td.eq(6).text());
 			
 			// 이율
-			var rate = td.eq(8).text().split('%');
-			$("input[name=intRate]").val(rate[0]);
+			//var rate = td.eq(8).text().split('%');
+			$("input[name=intRate]").val(td.eq(7).text());
 			
 			// 이자지급방식
 			var intPayWay='';
-			switch (td.eq(9).text()){
+			switch (td.eq(8).text()){
 		    case '년' :
 		    	intPayWay='Y';
 		        break;
 		    case '월' :
 		    	intPayWay='M';
 			    break;
-		    case '만기' :
+		    case '해당없음' :
 		    	intPayWay='E';
 		        break;
 			}
 			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
 			
-			$("input[name=mgr]").val(td.eq(10).text()); // 담당자
-			$("input[name=mgrCall]").val(td.eq(11).text()); // 담당자전화번호
-			$("input[name=bankCode]").val(td.eq(12).text()); // 은행코드
-			$("input[name=bankName]").val(td.eq(13).text()); // 은행명
-			$("input[name=depositNo]").val(td.eq(14).text()); // 계좌
+			$("input[name=mgr]").val(td.eq(9).text()); // 담당자
+			$("input[name=mgrCall]").val(td.eq(10).text()); // 담당자전화번호
+			$("input[name=bankCode]").val(td.eq(11).text()); // 은행코드
+			$("input[name=bankName]").val(td.eq(12).text()); // 은행명
+			$("input[name=depositNo]").val(td.eq(13).text()); // 계좌
 			
 			// 위험등급 분류
 			var dangerCode='';
-			switch (td.eq(15).text()){
+			switch (td.eq(14).text()){
 		    case '초고위험' :
 		    	dangerCode='RED1-초고위험';
 		        break;
@@ -550,7 +555,7 @@ tr td:first-child {
 		        break;
 			}
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
-			$("input[name=no]").val(td.eq(0).attr('data-no'));
+			
 		});
 		
 		// form에 입력한 모든 데이터 초기화
@@ -769,6 +774,59 @@ $(function() {
     
 });
 
+</script>
+<script>
+//오늘 날짜 출력
+todayIs();
+
+function todayIs() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; // Jan is 0
+    var yyyy = today.getFullYear();
+
+    if(dd<10){
+        dd = '0'+dd
+    }
+    if(mm<10){
+        mm = '0'+mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("todayDate").innerHTML = today;
+} 
+
+// 숫자 사이에 콤마 넣기
+//function digit_check(evt){
+//	var code = evt.which?evt.which:event.keyCode;
+//	if(code < 48 || code > 57){
+//		return false;
+//	}
+//}
+
+//[] <--문자 범위 [^] <--부정 [0-9] <-- 숫자  
+//[0-9] => \d , [^0-9] => \D
+//var rgx1 = /\D/g;  // /[^0-9]/g 와 같은 표현
+//var rgx2 = /(\d+)(\d{3})/; 
+
+//function getNumber(obj){
+//     var num01;
+//     var num02;
+//     num01 = obj.value;
+//    num02 = num01.replace(rgx1,"");
+//     num01 = setComma(num02);
+//     obj.value =  num01;
+//}
+
+//function setComma(inNum){
+//     var outNum;
+//     outNum = inNum; 
+//     while (rgx2.test(outNum)) {
+//          outNum = outNum.replace(rgx2, '$1' + ',' + '$2');
+//      }
+//     return outNum;
+//} 
+	
 </script>
 </body>
 </html>
