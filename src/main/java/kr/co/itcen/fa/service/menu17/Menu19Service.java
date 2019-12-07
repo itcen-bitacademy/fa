@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu19Repository;
@@ -93,6 +94,7 @@ public class Menu19Service {
 	 * 
 	 * 마감일 수정(미결산 마감일 및 가장 최근의 마감일만 수정 가능)
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public DataResult<Object> updateClosingDate(ClosingDateVo closingDate) {
 		DataResult<Object> dataResult = new DataResult<>();
 		
@@ -116,6 +118,10 @@ public class Menu19Service {
 		// 손익계산서 데이터 삭제
 		menu64Service.deleteIncomeStatement(closingDate);
 		
+		
+		// 마감일 수정 처리
+		menu19Repository.updateClosingDate(closingDate);
+		
 		return dataResult;
 	}
 	
@@ -124,6 +130,7 @@ public class Menu19Service {
 	 * 
 	 * 마감일 삭제(미결산 마감일 및 가장 최근의 마감일만 삭제 가능)
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public DataResult<Object> deleteClosingDate(ClosingDateVo closingDate) {
 		DataResult<Object> dataResult = new DataResult<>();
 		
@@ -147,7 +154,7 @@ public class Menu19Service {
 		// 손익계산서 데이터 삭제
 		menu64Service.deleteIncomeStatement(closingDate);
 
-		
+		// 마감일 삭제처리 
 		menu19Repository.deleteClosingDate(closingDate);
 		
 		return dataResult;

@@ -6,7 +6,7 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("trialBalance17Vo")
 public class TrialBalanceVo {
-	private Long no;					// 번호
+	private Long no;					// 번호 (사용하지 않음)
 	private Long closingDateNo;			// 마감일 번호
 	private Long accountNo;				// 계정코드
 	private String accountName;			// 계정명

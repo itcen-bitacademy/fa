@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu61Repository;
@@ -37,6 +38,7 @@ public class Menu61Service {
 	 * 
 	 * 해당 마감일 결산처리
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public DataResult<Object> executeSettlement(Menu17SearchForm menu17SearchForm) {
 		DataResult<Object> dataResult = new DataResult<>();
 		
@@ -101,7 +103,6 @@ public class Menu61Service {
 		List<TrialBalanceVo> insertTrialBalanceList = emptyTrialBalance.stream().filter(t -> t.getCreditTotal() != null || t.getCreditSpotMonth() != null || t.getDebtorTotal() != null || t.getDebtorSpotMonth() != null).collect(Collectors.toList());
 
 		// 시산표 저장 
-//		for (TrialBalanceVo tbVo : emptyTrialBalance) {			// null포함 시산표 전체 저장 
 		for (TrialBalanceVo tbVo : insertTrialBalanceList) {
 			tbVo.setCloSingDateNo(menu17SearchForm.getClosingDateNo());
 			tbVo.setInsertUserid(menu17SearchForm.getInsertUserid());
@@ -118,15 +119,6 @@ public class Menu61Service {
 		menu61Repository.executeSettlement(menu17SearchForm);
 		
 		return dataResult;
-	}
-	
-	
-	/**
-	 * 
-	 * 시산표 데이터 입력
-	 */
-	public int insertTrialBalance(TrialBalanceVo trialBalanceVo) {
-		return menu61Repository.insertTrialBalance(trialBalanceVo);
 	}
 	
 	

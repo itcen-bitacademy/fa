@@ -4,8 +4,7 @@
 	
 	<select id="selectTrialBalanceByClosingDateNo" parameterType="menu17SearchForm" resultType="trialBalance17Vo">
 		select	
-			t.no as no
-		    , t.closing_date_no as closing_date_no
+		    t.closing_date_no as closing_date_no
 		    , t.account_no as account_no
 		    , a.name as account_name
             , a.balance_type as balance_type
