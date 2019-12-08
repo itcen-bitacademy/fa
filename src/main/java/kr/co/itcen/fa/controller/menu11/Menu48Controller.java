@@ -58,6 +58,7 @@ public class Menu48Controller {
 		
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
+		model.addAttribute("year",year);
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";

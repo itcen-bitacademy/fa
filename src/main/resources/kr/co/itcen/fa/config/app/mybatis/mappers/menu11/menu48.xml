@@ -49,17 +49,10 @@
 		    from tb_l_term_debt
 		    where delete_flag= 'N'
 		    and repay_comple_flag = 'N'
+		    and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
+			and 	code like concat('%',#{code},'%') 	
 	]]>
-	<if test="year.length()>0 ">
-	<![CDATA[
-	and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
-	]]>
-	</if>
-	<if test="code.length()>0 ">
-	<![CDATA[
-		and 	code like concat('%',#{code},'%') 
-	]]>
-	</if>
+	
 	</select>
 	<!-- select list -->
 	<select parameterType="map" id="selectAll" resultType="ldebtvo">
@@ -82,17 +75,11 @@
 		    from tb_l_term_debt
 		    where delete_flag= 'N'
 		    	and repay_comple_flag = 'N'
+		    	and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
+				and 	code like concat('%',#{code},'%') 
+	
+	
 	]]>
-	<if test="year.length()>0 ">
-	<![CDATA[
-	and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
-	]]>
-	</if>
-	<if test="code.length()>0 ">
-	<![CDATA[
-		and 	code like concat('%',#{code},'%') 
-		]]>
-	</if>
 	<if test="pagination.pageIndex >= 0">
 	<![CDATA[
          limit    #{pagination.pageIndex }, #{pagination.listSize }
