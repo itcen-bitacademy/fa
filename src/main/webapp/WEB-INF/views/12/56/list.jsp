@@ -37,7 +37,26 @@ $(function() {
 	});
 	
 	$(".chosen-select").chosen();
+	
+	//$("#maincategory option:selected").val();
+	
+	$("#maincategory").change(function(){
+		var url = "${pageContext.request.contextPath }/12/56/list/"+$(this).val();
+		if($(this).val() != ""){
+			$("#category").attr("action", url).submit();
+			//alert($(this).val());	
+		}
+	});
+	
+	/* $("#maincategory").each(function(){
+		alert(this);
+	}); */
 })
+	
+	/* 	function mainchange(e){
+		alert(e);
+	} */
+
 </script>
 </head>
 <body class="skin-3">
@@ -50,6 +69,7 @@ $(function() {
 				<div class="page-header position-relative">
 					<h1 class="pull-left">품목 대분류별 매입매출 현황</h1>
 				</div><!-- /.page-header -->
+				<form class="form-horizontal" id="category" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 				<div class="row-fluid">
 							<div class="span12">
 									<div class="form-horizontal">
@@ -64,7 +84,6 @@ $(function() {
 															</span>
 														</div>
 													</div>
-												
 											</div>
 										</div>
 										
@@ -72,10 +91,17 @@ $(function() {
 											<div class="form-horizontal">
 													<label class="control-label" for="form-field-select-2" >대분류 코드</label>
 													<div class="controls">
-														<select class="chosen-select" id="form-field-select-2" name="client_code" data-placeholder="대분류코드 선택">
-															<option value="1">대분류코드11111</option>
-															<option value="2">대분류코드22222</option>
-														</select>														
+														<select class="chosen-select" onchange="mainchange(this)" id="maincategory" name="maincategory" data-placeholder="품목명 선택">
+															<c:forEach items='${maincategory }' var='mcategory' varStatus='status'>
+																<option value="${mcategory.no }">${mcategory.classification }</option>
+															</c:forEach>
+														</select>
+														<!-- maincategory 상태 유지 -->
+														<!-- 검색한 이후에 의미가 있는 값 -->
+														<script type="text/javascript">
+															var maincategory = "${param.maincategory}";
+															$("#maincategory").val(maincategory);
+														</script>
 													</div>
 											</div>
 										</div>
@@ -84,11 +110,16 @@ $(function() {
 											<div class="form-horizontal">
 													<label class="control-label" for="form-field-select-2">품목코드</label>
 													<div class="controls">
-														<select class="sapn3 chosen-select" id="form-field-select-2" name="client_code" data-placeholder="품목코드 선택">
-															<option value="1">품목코드11111</option>
-															<option value="2">품목코드22222</option>
+														<select class="chosen-select" id="subcategory" name="subcategory" data-placeholder="품목명 선택">
+															<c:forEach items='${subcategory }' var='scategory' varStatus='status'>
+																<option value="${scategory.code }">${scategory.classification }</option>
+															</c:forEach>
 														</select>
-														<!-- <button class="btn btn-small btn-info" type="submit">조회</button>				 -->						
+														<!-- itemname 상태 유지 -->
+														<script type="text/javascript">
+															var subcategory = "${param.subcategory}";
+															$("#subcategory").val(subcategory);
+														</script>
 													</div>
 											</div>
 										</div>
@@ -99,6 +130,7 @@ $(function() {
 									</div>
 								</div>
 							</div>
+							</form>
 								
 							<div class="hr hr-18 dotted"></div>
 								

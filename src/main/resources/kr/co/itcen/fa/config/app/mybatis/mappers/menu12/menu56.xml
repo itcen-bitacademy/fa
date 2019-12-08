@@ -37,8 +37,24 @@
 			from tb_sales_test
 			group by item_code)as sales
 	where purchasemanagement.item_code=sales.item_code;
-	
 	]]>
+	</select>
+	
+	
+	<!-- 대분류 목록을 가져오는 코드  -->
+	<!-- sectionvo의 경우 admin사용 하기 위해 만들어준 객체를 사용 -->
+	<select id="getmaincategory" resultType="sectionvo">
+		   select classification, code, no
+    	   from tb_section
+    	   where parent_no is null;
+	</select>
+	
+	<!-- 분류 목록을 가져오는 코드  -->
+	<!-- sectionvo의 경우 admin사용 하기 위해 만들어준 객체를 사용 -->
+	<select id="getsubcategory" resultType="sectionvo" parameterType="int">
+		select classification, code, no
+		from tb_section
+		where parent_no = #{no };
 	</select>
 
 </mapper>
