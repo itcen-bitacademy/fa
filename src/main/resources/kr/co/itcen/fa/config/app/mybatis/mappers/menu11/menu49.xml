@@ -18,7 +18,8 @@
 	<![CDATA[
 		select count(*)
 		    from tb_l_term_debt
-		    where delete_flag= "N"
+		    where delete_flag= 'N'
+		    and repay_comple_flag = 'N'
 	]]>
 	<if test='debtDate!=null and !"".equals(debtDate)'>
 	<![CDATA[
@@ -62,7 +63,8 @@
 			    b.name as bankName
 			    from tb_l_term_debt as a,tb_bank as b
 			    where a.bank_code=b.code
-			    		and a.delete_flag="N"
+			    		and a.delete_flag='N'
+			    		and a.repay_comple_flag = 'N'
 			    ]]>
 	<if test='vo.debtDate!=null and !"".equals(vo.debtDate)'>
 	<![CDATA[

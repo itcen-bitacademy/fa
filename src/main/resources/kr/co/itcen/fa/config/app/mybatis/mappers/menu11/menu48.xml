@@ -42,12 +42,13 @@
 	</selectKey>
 	</insert>
 	
-	
+	<!-- 전체 갯수 가지고 오기 -->
 	<select parameterType="map" id="selectAllCount" resultType="int">
 	<![CDATA[
 		select count(*)
 		    from tb_l_term_debt
-		    where delete_flag= "N"
+		    where delete_flag= 'N'
+		    and repay_comple_flag = 'N'
 	]]>
 	<if test="year.length()>0 ">
 	<![CDATA[
@@ -79,7 +80,8 @@
 		    bank_code as bankCode,
 		    deposit_no as depositNo
 		    from tb_l_term_debt
-		    where delete_flag= "N"
+		    where delete_flag= 'N'
+		    	and repay_comple_flag = 'N'
 	]]>
 	<if test="year.length()>0 ">
 	<![CDATA[
@@ -93,8 +95,8 @@
 	</if>
 	<if test="pagination.pageIndex >= 0">
 	<![CDATA[
-                limit    #{pagination.pageIndex }, #{pagination.listSize }
-             ]]>
+         limit    #{pagination.pageIndex }, #{pagination.listSize }
+    ]]>
 	</if>
 	</select>
 	<select id="selectsection" resultType="sectionvo">
@@ -130,6 +132,18 @@
 		    where no=#{_parameter}
 	]]>
 	</select>
+	<!-- code 중복확인 -->
+	<select parameterType="string" id="getbycode" resultType="ldebtvo">
+	<![CDATA[
+		select
+			code,
+			delete_flag as deleteFlag
+		from
+			tb_l_term_debt 
+   		where code like #{_parameter}
+	]]>
+	</select>
+	
 	
 	<!-- update -->
 	<update parameterType="ldebtvo" id="update">
@@ -180,6 +194,14 @@
 		update tb_l_term_debt 
 		set repay_bal = repay_bal + #{payPrinc}	
 		where no=#{debtNo}
+	]]>
+	</update>
+	<!-- 상환완료 flag update -->
+	<update parameterType="long" id="updaterepayflag">
+	<![CDATA[
+		update tb_l_term_debt 
+		set repay_comple_flag = 'Y'
+		where no=#{_parameter}
 	]]>
 	</update>
 	

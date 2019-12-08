@@ -92,4 +92,14 @@ public class Menu48Repository {
 		LTermdebtVo vo=sqlSession.selectOne("menu48.selectone",debtNo);
 		return vo;
 	}
+
+	public LTermdebtVo getCode(String code) {
+		LTermdebtVo vo = sqlSession.selectOne("menu48.getbycode",code);
+		return vo;
+	}
+
+	public Boolean updateRepayFlag(Long no) {
+		int count = sqlSession.update("menu48.updaterepayflag",no);
+		return count==1;
+	}
 }
