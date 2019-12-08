@@ -1,8 +1,11 @@
 package kr.co.itcen.fa.vo.menu11;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("repayvo")
 public class RepayVo {
 	private Long no;// 번호
-	private Long debt_no;//사채,장기,단기 번호
+	private Long debtNo;//사채,장기,단기 번호
 	private Long payPrinc;//상환액
 	private String payDate;//상환 일
 	private	String debtType;//사채,장기,단기 구분
@@ -19,12 +22,7 @@ public class RepayVo {
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public Long getDebt_no() {
-		return debt_no;
-	}
-	public void setDebt_no(Long debt_no) {
-		this.debt_no = debt_no;
-	}
+	
 	public Long getPayPrinc() {
 		return payPrinc;
 	}
@@ -85,9 +83,16 @@ public class RepayVo {
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
+	
+	public Long getDebtNo() {
+		return debtNo;
+	}
+	public void setDebtNo(Long debtNo) {
+		this.debtNo = debtNo;
+	}
 	@Override
 	public String toString() {
-		return "RepayVo [no=" + no + ", debt_no=" + debt_no + ", payPrinc=" + payPrinc + ", payDate=" + payDate
+		return "RepayVo [no=" + no + ", debtNo=" + debtNo + ", payPrinc=" + payPrinc + ", payDate=" + payDate
 				+ ", debtType=" + debtType + ", depositNo=" + depositNo + ", voucherNo=" + voucherNo + ", deleteFlag="
 				+ deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate + ", updateId=" + updateId
 				+ ", updateDate=" + updateDate + "]";

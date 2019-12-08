@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
+import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
@@ -36,7 +37,11 @@ public class Menu48Repository {
 		int count = sqlSession.insert("menu48.insert",vo);
 		return count==1;
 	}
-	
+	//상환 insert
+	public Boolean insert(RepayVo vo) {
+		int count = sqlSession.insert("menu48.insertrepay",vo);
+		return count==1;
+	}
 	public int listCount(String year, String code) {
 		Map<String,String> map = new HashMap<String, String>();
 		map.put("year", year);
@@ -77,5 +82,24 @@ public class Menu48Repository {
 		Long n=sqlSession.selectOne("menu48.selectno",no);
 		System.out.println(n);
 		return n;
+	}
+	public Boolean update(RepayVo vo) {
+		int count = sqlSession.update("menu48.repayupdate",vo);
+		return count==1;
+	}
+
+	public LTermdebtVo getOne(Long debtNo) {
+		LTermdebtVo vo=sqlSession.selectOne("menu48.selectone",debtNo);
+		return vo;
+	}
+
+	public LTermdebtVo getCode(String code) {
+		LTermdebtVo vo = sqlSession.selectOne("menu48.getbycode",code);
+		return vo;
+	}
+
+	public Boolean updateRepayFlag(Long no) {
+		int count = sqlSession.update("menu48.updaterepayflag",no);
+		return count==1;
 	}
 }

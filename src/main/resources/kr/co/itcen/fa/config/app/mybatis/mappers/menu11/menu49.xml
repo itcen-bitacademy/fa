@@ -18,7 +18,8 @@
 	<![CDATA[
 		select count(*)
 		    from tb_l_term_debt
-		    where delete_flag= "N"
+		    where delete_flag= 'N'
+		    and repay_comple_flag = 'N'
 	]]>
 	<if test='debtDate!=null and !"".equals(debtDate)'>
 	<![CDATA[
@@ -62,7 +63,8 @@
 			    b.name as bankName
 			    from tb_l_term_debt as a,tb_bank as b
 			    where a.bank_code=b.code
-			    		and a.delete_flag="N"
+			    		and a.delete_flag='N'
+			    		and a.repay_comple_flag = 'N'
 			    ]]>
 	<if test='vo.debtDate!=null and !"".equals(vo.debtDate)'>
 	<![CDATA[
@@ -86,22 +88,22 @@
 	</if>
 	<if test='sort != null and "d".equals(sort)'>	
 	<![CDATA[
-		order by debt_date desc
+		order by a.debt_date desc
 	]]>
 	</if>
 	<if test='sort != null and "e".equals(sort)'>	
 	<![CDATA[
-		order by exp_date desc
+		order by a.exp_date desc
 	]]>
 	</if>
 	<if test='sort != null and "i".equals(sort)'>
 	<![CDATA[
-		order by insert_date desc
+		order by a.insert_date desc
 	]]>
 	</if>
 	<if test='sort != null and "m".equals(sort)'>	
 	<![CDATA[
-		order by debt_amount
+		order by a.debt_amount
 	]]>
 	</if>
 	<if test="pagination.pageIndex >= 0">

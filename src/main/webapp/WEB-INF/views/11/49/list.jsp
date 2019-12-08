@@ -181,6 +181,7 @@ form {
 							<th class="center">장기차입금명</th>
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
+							<th class="center">상환액</th>
 							<th class="center">상환방법</th>
 							<th class="center">차입일자 ~ 만기일자</th>
 							<th class="center">이율</th>
@@ -208,6 +209,7 @@ form {
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
 							<td class="center">${ltermvo.debtAmount}</td>
+							<td class="center">${ltermvo.repayBal}</td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
@@ -220,6 +222,7 @@ form {
 										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>	
+							
 							<td class="center">${ltermvo.mgr}</td>
 							<td class="center">${ltermvo.mgrCall}</td>
 							<td class="center">${ltermvo.bankName}</td>

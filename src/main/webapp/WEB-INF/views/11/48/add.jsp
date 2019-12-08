@@ -75,6 +75,8 @@ tr td:first-child {
 									<td>
 										<input type="hidden" name="no" id = "no"/>
 										<input type="text" name="code" id ="code2" />
+										<input id="btn-check-code" type="button" value="중복확인">
+										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 									</td>
 								</tr>
 								<tr >
@@ -249,7 +251,7 @@ tr td:first-child {
 				</div>
 				<hr>
 				<div>
-					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;" type="submit">입력</button>
+					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;" type="submit" id="inputbtn">입력</button>
 					&nbsp;
 					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 					&nbsp;
@@ -303,7 +305,7 @@ tr td:first-child {
 						<tr>
 							<th class="center">
 								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
+									<input type="checkbox" class="ace" id="checkall"/>
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -424,7 +426,7 @@ $(function(){
 	});
 	
 	$(".chosen-select").chosen();
-	$("#simple-table tr").click(function(){ 
+	$("#tbody-list tr").click(function(){ 
 		
 		
 		var tr = $(this);
@@ -500,7 +502,7 @@ $(function(){
 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
 	});
 	
-	
+
 	
 	$("#clear").click(function(){ 
 		 $('input').val('');
@@ -508,7 +510,14 @@ $(function(){
 		 
 	});
 	
-	
+	$("#checkall").click(function(){
+		if ($(this).hasClass('allChecked')) {
+			$('input[type="checkbox"]', '#simple-table').prop('checked', false);
+		} else {
+			$('input[type="checkbox"]', '#simple-table').prop('checked', true);
+		}
+		$(this).toggleClass('allChecked');
+	});
 	
 	
 	// 은행코드 검색
@@ -654,12 +663,11 @@ $(function(){
 				    "상환": function(){
 				    	event.preventDefault();
 						var vo = {
-								"no":$("#no").val(),
-								"repayBal":$("#repay_bal").val(),
-								"payDate":$('input[name=payDate]').val(),
-								"depositNo":$('input[name=depositNo]').val()
+								"debtNo":$("#no").val(),//테이블 번호
+								"payPrinc":$("#repay_bal").val(),//상환액
+								"payDate":$('input[name=payDate]').val(),//상환일
+								"depositNo":$('input[name=depositNo]').val()//계좌번호
 						}
-						console.log(vo);
 						
 						// ajax 통신
 						$.ajax({
@@ -669,6 +677,7 @@ $(function(){
 							dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
 							data:JSON.stringify(vo),
 							success: function(response){
+								console.log(response);
 								if(response.result =="fail"){
 									console.error(response.message);
 									return;
@@ -677,12 +686,22 @@ $(function(){
 									alert("값을 정확히 입력하지 않았습니다.");
 									return;
 								}
-								
+								$("#tbody-list tr").each(function(i){
+									var td = $(this).children();
+									var n = td.eq(0).attr('lterm-no');
+									if(n == response.data.no){
+										td.eq(5).html(response.data.repayBal);
+									}
+								});
 							},
 							error: function(xhr, error){
 								console.error("error : " + error);
 							}
 						});
+						$(this).dialog('close');
+						//상환내역 반영
+						
+						
 				    },
 				    "닫기" : function() {
 				          	$(this).dialog('close');
@@ -691,7 +710,54 @@ $(function(){
 				});
 			});
 	});
-
+		//코드 중복체크
+		$("#code2").change(function(){
+			$("#btn-check-code").show();
+			$("#img-checkcode").hide();
+		});	
+		
+		$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
+		$("#btn-check-code").click(function(){
+			
+			var code = $("#code2").val();
+			if(code == ""){
+				return;
+			}
+		
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath }/11/48/checkcode?code=" + code,
+			type: "get",
+			dataType: "json",
+			data: "",
+			success: function(response){
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				console.log(response);
+				
+				if(response.data == null){
+					$("#inputbtn").show();
+					
+					$("#btn-check-code").hide();
+					$("#img-checkcode").show();
+					return;
+				}else if(response.data.deleteFlag == "Y"){
+					alert("삭제된 코드입니다.");
+				}else{
+					alert("이미 존재하는 코드입니다.");
+					$("#code2").val("");
+					//$("#inputbtn").hide();
+					$("#code2").focus();
+				}
+				
+				},
+				error:function(xhr,error) {
+					console.err("error" + error);
+				}
+			});
+		});	
 </script>
 </body>
 </html>
