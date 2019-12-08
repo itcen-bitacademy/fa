@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @작성자:	ban
+ * @작성자:	kbetter3
  * @작성일:	Dec 2, 2019
- * @이메일:	ban@gmail.com
+ * @이메일:	kbetter3@gmail.com
+ * @수정자: 	ban
  * 
  * 페이징 유틸 Ajax 쓰는 사람 쓰기를
  */
 public class Pagination {
 	private int page;				// 현재 페이지
-	private int totalRow;			// 전체 게시물 수 1
+	private int totalCnt;			// 전체 게시물 수 1
 	private int totalPageCnt;		// 전체 페이지 수
 	private final int pageBlockSize;	// 페이징 블럭 사이즈 ex) < 1 2 3 4 5 > 에 보여질 개수
 	private final int pageSize;			// 한 페이지에 보여질 게시글의 수
@@ -23,29 +24,33 @@ public class Pagination {
 	private boolean next;			// 다음 버튼
 	
 	/**
-	 *  표시될 페이지 수, 페이지내의 Row수, 현재 페이지
-	 *  현재 페이지를 통해 Row 범위가 계산된다.
+	 *  기본값 pageSize=11, pageBlockSize=5
 	 */
 	public Pagination(int page, int totalCnt){
-		this(5, 11, page, totalCnt);
+		this(page, totalCnt, 11);
 	}
 	
 	/**
-	 * 직접 pageBlockSize 및 pageSize 지정가능
+	 * pageSize 지정가능
 	 */
-	public Pagination(int pageBlockSize, int pageSize, int page, int totalCnt){
-		this.pageBlockSize = pageBlockSize;
-		this.pageSize = pageSize;
-		this.page = page;
-		
-		processPaging(totalCnt);
+	public Pagination(int page, int totalCnt, int pageSize){
+		this(page, totalCnt, pageSize, 5);
 	}
-	
-	
+	/**
+	 * 직접 pageBlockSize, pageSize 지정가능
+	 */
+	public Pagination(int page, int totalCnt, int pageSize, int pageBlockSize){
+		this.page = page;
+		this.totalCnt = totalCnt;
+		this.pageSize = pageSize;
+		this.pageBlockSize = pageBlockSize;
+		
+		processPaging();
+	}
 	/**
 	 * Start Row, Start Page, End Page, Next, Priv값을 결정한다
 	 */
-	private void processPaging(int totalCnt) {
+	private void processPaging() {
 		startRow = (page -1) * pageSize;
 		
 		totalPageCnt = (int) Math.ceil(totalCnt / (double)pageSize);
