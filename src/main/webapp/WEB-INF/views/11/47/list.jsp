@@ -208,8 +208,8 @@
 					</tbody>
 				</table>
 				
-				<div class="pagination" id="pagination">
-					<ul>
+				<section class="pagination" id="pagination">
+					<ul id="pg-list">
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
 								<li>
@@ -245,7 +245,10 @@
 							</c:otherwise>
 						</c:choose>
 					</ul>
-				</div>
+					<section id="pg-total-row">
+						<span>총<{/span>	
+					</section>
+				</section>
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
