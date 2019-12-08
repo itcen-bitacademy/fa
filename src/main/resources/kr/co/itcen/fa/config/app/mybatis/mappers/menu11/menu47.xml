@@ -41,12 +41,12 @@
 				<when test='vo == null'>
 					where delete_flag="N" and repay_comple_flag="N"
 				</when>
-				<when test='vo != null'>	<!-- no > 0은 조건문을 위해 삽입한 Cheat Code -->
+				<when test='vo != null'>									<!-- no > 0은 조건문을 위해 삽입한 Cheat Code -->
 					where no > 0
-					<if test='vo.repayCompleFlag != null and !"".equals(vo.repayCompleFlag)'>
+					<if test='"N".equals(vo.repayCompleFlag)'>					<!-- 포함인 경우 조건식을 적지 않는다 -->
 						and repay_comple_flag = #{vo.repayCompleFlag}
 					</if>
-					<if test='vo.deleteFlag != null and !"".equals(vo.deleteFlag)'>
+					<if test='"N".equals(vo.deleteFlag)'>
 						and delete_flag = #{vo.deleteFlag}
 					</if>
 					<if test='vo.bankName != null and !"".equals(vo.bankName)'>
@@ -99,11 +99,11 @@
 			<if test='intPayWay != null and !"".equals(intPayWay)'>
 				and int_pay_way = #{intPayWay}
 			</if>
-			<if test='repayCompleFlag != null and !"".equals(repayCompleFlag)'>
+			<if test='"N".equals(repayCompleFlag)'>						<!-- 포함인 경우 조건식을 적지 않는다 -->
 				and repay_comple_flag = #{repayCompleFlag}
 			</if>
-			<if test='deleteFlag != null and !"".equals(deleteFlag)'>
-				and delete_flag = #{repayCompleFlag}
+			<if test='"N".equals(deleteFlag)'>
+				and delete_flag = #{deleteFlag}
 			</if>
 	</select>
 	

@@ -276,6 +276,7 @@ function renderingList(list){
 	}
 }
 
+//page 번호 Rendering 함수
 function renderingPage(pagination){
 	//페이징 리스트 삭제
 	$("#pagination>ul *").remove();
@@ -309,79 +310,55 @@ function renderingPage(pagination){
  
  //조회 버튼 Click Event Method, 조회 데이터들을 넘겨준다.
  function search(){
-	 var sendData = $("#filter-area").serialize();		// <속성>=<속성값>{&<속성>=<속성값>}
-	 console.log("search");
-	 if($("#filter-area")[0].repayCompleFlag.checked == false)
-		 sendData += "&repayCompleFlag=N";
-	 if($("#filter-area")[0].deleteFlag.checked == false)
-		 sendData += "&deleteFlag=N";
-	
-	 console.log(sendData);
-	 $.ajax({
-		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/search",
-		type : "POST",
-		dataType : "json",
-		data : sendData,
-		success: function(response){
-			renderingList(response.data.list);
-			renderingPage(response.data.pagination);
-		}
-	 });
+	 console.log("search call");
+	 ajaxProcessing(null, "search");
  }
  
  //정렬 버튼 Click Event Method, 정렬 컬럼을 넘겨준다. 기본페이지 1
  function order(thisObj){
-	 var sendData = $("#filter-area").serialize();			// <속성>=<속성값>{&<속성>=<속성값>}
-	 var orderColumn = $(thisObj).attr('id');
-	 $("#order-column").val(orderColumn);					// 정렬컬럼값을 저장해둔다.
-	 if($("#filter-area")[0].repayCompleFlag.checked == false)
-		 sendData += "&repayCompleFlag=N";
-	 if($("#filter-area")[0].deleteFlag.checked == false)
-		 sendData += "&deleteFlag=N";
-	 
-	 sendData += "&orderColumn=" + orderColumn;
-	 $.ajax({
-		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val()  + "/" + $("#sub-menu-code").val() + "/order",
-		type: "POST",
-		dataType : "json",
-		data : sendData,
-		success : function(response){
-				renderingList(response.data.list);
-				renderingPage(response.data.pagination);
-			},
-		error : function(xhr, error){
-			
-		}
-	 });
+	 console.log("order call")
+	 ajaxProcessing(thisObj, "order");
  }
  
  //page click Event Method, 검색조건에 따른 페이지를 보여준다.
  function pageClicked(thisObj){
+	 console.log("paging call");
+	 ajaxProcessing(thisObj, "paging");
+ }
+ 
+ function ajaxProcessing(thisObj, urlStr) {
 	 var sendData = $("#filter-area").serialize();
-	 var orderColumn = $("#order-column").val();
-	 var page = $(thisObj).attr('id');
+	 
+	 if(urlStr == "order"){
+		 var orderColumn = $(thisObj).attr('id');							//클릭된 정렬값을 구해온다.
+		 $("#order-column").val(orderColumn);		 						//해당 값을 페이지에 저장한다.
+		 sendData += "&orderColumn=" + orderColumn;
+	 }
+	 else if(urlStr == "paging"){
+		 orderColumn = $("#order-column").val();							//페이지에 저장된 정렬값을 가져온다
+		 var page = $(thisObj).attr('id');									//클릭된 해당 페이지값을 가져온다
+		 sendData += "&orderColumn=" + orderColumn + "&page=" + page;
+	 }
+	
 	 if($("#filter-area")[0].repayCompleFlag.checked == false)
 		 sendData += "&repayCompleFlag=N";
 	 if($("#filter-area")[0].deleteFlag.checked == false)
 		 sendData += "&deleteFlag=N";
-	 sendData += "&orderColumn=" + orderColumn + "&page=" + page;
 	 
-	 console.log("paging : ");
-	 console.log(sendData);
-	 
+	 console.log("sendData : " + sendData);
 	 $.ajax({
-		url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/paging",
-		type : "POST",
-		dataType : "json",
-		data : sendData,
-		success: function(response){
-			renderingList(response.data.list);
-			renderingPage(response.data.pagination);
-		},
-		error: function(xhr, error){
-			
-		}
-	 });
+			url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/" + urlStr,
+			type : "POST",
+			dataType : "json",
+			data : sendData,
+			success: function(response){
+				renderingList(response.data.list);
+				renderingPage(response.data.pagination);
+			},
+			error: function(xhr, error){
+				
+			}
+		 });
  }
 </script>
 </html>
