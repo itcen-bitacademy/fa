@@ -102,11 +102,18 @@
 												</c:choose>
 											</td>
 											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.updateDay }"></fmt:formatDate></td>
-											<td>${cdt.updateUserid}</td>
+											<td>
+												<c:if test="${not empty cdt.updateUserid }">
+													${cdt.updateUsername }(${cdt.updateUserid })
+												</c:if>
+											</td>
 											<td class="closing-yn">
+												<%-- <c:if test="${!cdt.closingYn }">
+													<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
+												</c:if> --%>
 												<c:choose>
 													<c:when test="${cdt.closingYn }">
-														-
+														완료 
 													</c:when>
 													<c:otherwise>
 														<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
