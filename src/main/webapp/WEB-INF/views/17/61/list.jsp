@@ -55,6 +55,17 @@
 					</form>
 					<!-- /row -->
 
+					<div class="hr hr-18 dotted"></div>
+
+					<%-- 총 게시글 수 출력 --%>
+					<div class="row-fluid">
+						<div class="span6" style="text-align:left;">
+							<h6>총 ${dataResult.pagination.totalCnt }건</h6>
+						</div>
+						<div class="span6" style="text-align:right;">
+						</div>
+					</div>
+
 					<%-- 테이블 영역 --%>
 					<div class="row-fluid">
 						<div class="span12">
@@ -113,7 +124,7 @@
 												</c:if> --%>
 												<c:choose>
 													<c:when test="${cdt.closingYn }">
-														완료 
+														완료
 													</c:when>
 													<c:otherwise>
 														<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
