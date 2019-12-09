@@ -65,31 +65,16 @@ public class Menu13Controller {
 		
 		salesVo.setInsertUserid(authUser.getId()); //세션 ID vo set
 		
-		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
-		
-		// 배열로 넘어온 테이블 데이터 리스트에 담기
-		for(int i=0; i<itemCode.length; i++) {
-			SalesVo vo = new SalesVo(salesVo);
-			vo.setQuantity(quantity[i]);
-			vo.setItemCode(itemCode[i]);
-			vo.setItemName(itemName[i]);
-			vo.setSupplyValue(supplyValue[i]);
-			vo.setTaxValue(taxValue[i]);
-			vo.setNumber(number[i]);
-			vo.setSellPrice(supplyValue[i]+taxValue[i]);
-			list.add(vo);
-		}
+		ArrayList<SalesVo> list = arrayData(salesVo, quantity, itemCode, itemName, supplyValue, taxValue, number);
 		
 		//마감 여부 체크
-		if(!menu19Service.checkClosingDate(authUser, salesVo.getSalesDate())) { 
+		if(menu19Service.checkClosingDate(authUser, salesVo.getSalesDate())) { 
 			menu13Service.insert(list);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		} else {
 			model.addAttribute("closingDate", true);
 			return MAINMENU + "/" + SUBMENU + "/index"; 
 		}
-		
-		
 	}
 	
 	//매출번호로 조회
@@ -111,28 +96,44 @@ public class Menu13Controller {
 	
 	//매출 삭제 (flag 데이터 변경)
 	@RequestMapping(value= {"/"+ SUBMENU + "/delete/{salesNo}"}, method=RequestMethod.GET)
-	public String deleteData(@PathVariable("salesNo")String salesNo) {
+	public String deleteData(@PathVariable("salesNo")String salesNo, 
+							 @SessionAttribute("authUser") UserVo authUser, Model model) {
 		System.out.println("매출 삭제"+salesNo);
-		
-		menu13Service.deleteData(salesNo);
 		
 		return MAINMENU + "/" + SUBMENU + "/index"; 
 	}
 	
 	//매출 수정
 	@RequestMapping(value= {"/"+ SUBMENU + "/update/{pathSalesNo}"}, method=RequestMethod.POST)
-	public String update(@SessionAttribute("authUser") UserVo authUser, 
+	public String update(@SessionAttribute("authUser") UserVo authUser, Model model,
 						 @PathVariable("pathSalesNo")String pathSalesNo, SalesVo salesVo, 
 						 int quantity[], String itemCode[], String itemName[], 
-						 Long supplyValue[], Long taxValue[], int number[]) {
+						 Long supplyValue[], Long taxValue[], int number[]) throws ParseException {
 		
 		System.out.println("매출 수정"+pathSalesNo);
 		
 		salesVo.setUpdateUserid(authUser.getId());
 		
-		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
+		ArrayList<SalesVo> list = arrayData(salesVo, quantity, itemCode, itemName, supplyValue, taxValue, number);
 		
-		// 배열로 넘어온 테이블 데이터 리스트에 담기
+		//마감
+		if(menu19Service.checkClosingDate(authUser, salesVo.getSalesDate())) { 
+			if(salesVo.getSalesNo() != pathSalesNo) { // vo에 세팅된 번호와 pathvariable번호 일치 
+				menu13Service.updateDelete(pathSalesNo); // 업데이트위해 데이터 삭제
+				menu13Service.updateInsert(list); // 새로운 데이터 insert
+			}
+			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/" + pathSalesNo; 
+		} else {
+			model.addAttribute("closingDate", true);
+			return MAINMENU + "/" + SUBMENU + "/index"; 
+		}
+		
+	}
+	
+	//array데이터 리스트화
+	private ArrayList<SalesVo> arrayData(SalesVo salesVo, int quantity[], String itemCode[], String itemName[], 
+										Long supplyValue[], Long taxValue[], int number[]){
+		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		for(int i=0; i<itemCode.length; i++) {
 			SalesVo vo = new SalesVo(salesVo);
 			vo.setQuantity(quantity[i]);
@@ -144,12 +145,6 @@ public class Menu13Controller {
 			vo.setSellPrice(supplyValue[i]+taxValue[i]);
 			list.add(vo);
 		}
-
-		if(salesVo.getSalesNo() != pathSalesNo) { // vo에 세팅된 번호와 pathvariable번호 일치 
-			menu13Service.updateDelete(pathSalesNo); // 업데이트위해 데이터 삭제
-			menu13Service.updateInsert(list); // 새로운 데이터 insert
-		}
-		
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/" + pathSalesNo; 
+		return list;
 	}
 }
