@@ -108,6 +108,6 @@ public class Menu48Repository {
 		for(Long no1: no) {
 			list.add(no1);
 		}
-		return sqlSession.selectList("menu48.selectVoucherNo",no);
+		return sqlSession.selectList("menu48.selectVoucherNo",list);
 	}
 }

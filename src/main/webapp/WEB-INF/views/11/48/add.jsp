@@ -189,7 +189,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>회계연도</h4></td>
 									<td>
-										<input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도" class="number-input"/>
+										<input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도" />
 									</td>
 								</tr>
 								<tr>
@@ -243,7 +243,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td colspan="2">
-										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" />
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" readonly/>
 												<a href="#" id="a-bankaccountinfo-dialog">
 													<span class="btn btn-small btn-info">
 														<i class="icon-search nav-search-icon"></i>
@@ -282,7 +282,7 @@ tr td:first-child {
 												</div>
 												<!-- 계좌정보 Modal pop-up : end -->
 								
-											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주"/>
+											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
 									</td>
 								</tr>
 							</table>

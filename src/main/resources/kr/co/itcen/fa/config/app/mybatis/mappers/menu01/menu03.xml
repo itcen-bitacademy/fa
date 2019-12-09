@@ -363,10 +363,10 @@
 	</update>
 	
 	<!-- 다른팀 전표 삭제 시 팀정보 받아오기 -->
-	<select id="selectTeam" parameterType="Long" resultType="1vouchervo">
+	<select id="selectTeam" parameterType="1vouchervo" resultType="1vouchervo">
 		<![CDATA[
 			select insert_team
-			  from voucher_system_mapping
+			  from tb_voucher_system_mapping
 			 where voucher_no = #{no }
 		]]>
 	</select>

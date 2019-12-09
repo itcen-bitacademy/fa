@@ -44,7 +44,7 @@
 	
 	<!-- 전표번호 읽어오기 -->
 	<!-- delete -->
-	<select parameterType="list" id="selectVoucherNo">
+	<select parameterType="list" id="selectVoucherNo" resultType="long">
 	<![CDATA[
 		select voucher_no 
 		from tb_l_term_debt
