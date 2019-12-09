@@ -11,7 +11,7 @@
 	
 	#filter-area{
 		display: grid;
-		grid-template-columns: 845px 845px;
+		grid-template-columns: 50% 50%;
 		grid-template-rows: 70px 35px;
 	}
 	
@@ -24,15 +24,16 @@
 	
 	.input-area-wrapper{
 		display: grid;
-		grid-template-columns: repeat(4, 415px);
+		grid-template-columns: repeat(4, 24.6%);
 		gap: 10px;
 		
 		align-content: center;
 		margin: auto 0;
 	}
 	
-	.input-area{
-		grid-column: auto;
+	.input-area{grid-column: auto;}
+	.input-area:not(:first-child):not(:last-child){
+		margin: 0 auto;
 	}
 	
 	.input-area-last{ float: right; }
@@ -56,7 +57,6 @@
 		grid-column: 2;
 		grid-row: 2;
 		
-		display: grid;
 	}
 	
 	.order-list{
@@ -75,12 +75,15 @@
 	
 	.chkbox-list-area{
 		margin: auto 0;		/** **/
+		float:right;
 	}
 	
-	.chkbox-list{
-		float: right;
+	.chkbox-list-area>*{
+		display: inline;
 		margin-left: 10px;
 	}
+	
+	.selectbox-wrapper>select{ width:60px; height: 25px;}
 
 .prod-list-opts {
 	padding: 10px 15px 9px 11px;
@@ -102,6 +105,15 @@
 .checkbox {
 	float: left;
 }
+
+.pagination{
+ 	display:grid;
+ 	grid-template-columns: repeat(3,auto);
+ }
+ .pg-list{grid-column: 2;}
+ .pg-total-row{grid-column: 3}
+ .pg-total-row>h5{float:right; margin:0}
+
 </style>
 </head>
 <body class="skin-3">
@@ -163,6 +175,14 @@
 							<label>상환완료포함</label>
 							<input type="checkbox" name="repayCompleFlag" value="Y">
 						</div>
+						<div class="selectbox-wrapper">
+							<label for="pageSize">페이지내 건수</label>
+							<select id="pageSize" name="pageSize">
+								<option value="5" selected="selected">5</option>
+								<option value="10">10</option>
+								<option value="15">15</option>
+							</select>
+						</div>
 					</div>
 				</section> <!-- filter-right end -->
 			</form>
@@ -209,7 +229,7 @@
 				</table>
 				
 				<section class="pagination" id="pagination">
-					<ul id="pg-list">
+					<ul id="pg-list" class="pg-list">
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
 								<li>
@@ -245,8 +265,8 @@
 							</c:otherwise>
 						</c:choose>
 					</ul>
-					<section id="pg-total-row">
-						<span>총<{/span>	
+					<section id="pg-total-row" class="pg-total-row">
+						<h5>총  ${pagination.totalCnt }건</h5>
 					</section>
 				</section>
 		</div><!-- /.page-content -->
@@ -282,33 +302,35 @@ function renderingList(list){
 //page 번호 Rendering 함수
 function renderingPage(pagination){
 	//페이징 리스트 삭제
-	$("#pagination>ul *").remove();
+	$("#pg-list li").remove();
 	
 	//이전버튼 Rendering
 	if(pagination.prev){
-		$("#pagination>ul").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" + 
+		$("#pg-list").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" + 
 									"<a><i class='icon-double-angle-left'></i>" +
 									"</a>"+
 								"</li>");
 	}else{
-		$("#pagination>ul").append("<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>");
+		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>");
 	}
 	//페이지 Rendering
 	for(var i=pagination.startPage; i<=pagination.endPage ; ++i){
 		if(i == pagination.page)
-			$("#pagination>ul").append("<li class='active' onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
+			$("#pg-list").append("<li class='active' onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
 		else
-			$("#pagination>ul").append("<li onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
+			$("#pg-list").append("<li onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
 	}
 	//다음 버튼 Rendering
 	if(pagination.prev){
-		$("#pagination>ul").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" +
+		$("#pg-list").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" +
 										"<a><i class='icon-double-angle-right'></i></a>"+
 									"</li>");
 	}else{
-		$("#pagination>ul").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
+		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
 	}
 	
+	$("#pg-total-row>*").remove();
+	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>")
 }
  
  //조회 버튼 Click Event Method, 조회 데이터들을 넘겨준다.

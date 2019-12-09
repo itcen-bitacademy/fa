@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu61Repository;
+import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
@@ -27,6 +28,9 @@ public class Menu61Service {
 	
 	@Autowired
 	private Menu61Repository menu61Repository;
+	
+	@Autowired
+	private Menu03Service menu03Service;
 	
 	@Autowired
 	private Menu63Service menu63Service;
@@ -70,6 +74,7 @@ public class Menu61Service {
 		// 테스전표 데이터 조회
 		// TODO: 실제 데이터로 변경
 		List<StatementDataVo> testList = menu61Repository.testStatementData(lastestUnclosingDateVo);
+//		List<StatementDataVo> testList = menu03Service.statementData(lastestUnclosingDateVo);
 		
 		// 시산표 값 적산
 		for (StatementDataVo vo : testList) {

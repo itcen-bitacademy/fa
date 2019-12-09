@@ -83,25 +83,23 @@
 								<tr>
 									<c:choose>
 										<c:when test="${data.accountNo % 1000000 eq 0 }">
-											<td style="padding-left:1%;">
-												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
-											</td>
+											<td style="padding-left:1%;">${data.accountName }</td>
 										</c:when>
 										<c:when test="${data.accountNo % 1000000 >= 100000 and data.accountNo % 100000 eq 0}">
-											<td style="padding-left:3%;">
-												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
-											</td>
+											<td style="padding-left:3%;">${data.accountName }</td>
 										</c:when>
 										<c:otherwise>
-											<td style="padding-left:6%;">
-												<fmt:formatNumber value="${data.accountName }" pattern="#,###"></fmt:formatNumber>
-											</td>
+											<td style="padding-left:6%;">${data.accountName }</td>
 										</c:otherwise>
 									</c:choose>
-
-									<td class="center">${data.monthToAmount}</td>
-									<td class="center">${data.amount}</td>
+									<td class="center">
+										<fmt:formatNumber value="${data.monthToAmount}" pattern="#,###"></fmt:formatNumber>
+									</td>
+									<td class="center">
+										<fmt:formatNumber value="${data.amount}" pattern="#,###"></fmt:formatNumber>
+									</td>
 								</tr>
+									
 							</c:forEach>
 						</tbody>
 					</table>

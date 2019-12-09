@@ -227,8 +227,8 @@
 			   c.user as cardUser,
 		   	   ba.deposit_no as depositNo,
 			   ba.deposit_host as depositHost,
-			   ba.bank_code as bankCode,
-			   ba.bank_name as bankName,
+			   ifnull(ba.bank_code, c.bank_code) as bankCode,
+			   ifnull(ba.bank_name, c.bank_name) as bankName,
 		   	   m.voucher_use as voucherUse
           from tb_voucher_manager v
           join tb_voucher_item i
@@ -238,7 +238,7 @@
           join tb_account a
             on a.no = i.account_no
 	 left join (select no, name
-				  from tb_customer
+				  from tb_customer k
 				 union
 				select no, name
                   from tb_salescustomer
@@ -258,27 +258,6 @@
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
-	
-	<!-- delete 다른 팀 -->
-	<delete id="deleteVoucher" parameterType="1vouchervo">
-	<![CDATA[
-		delete from tb_voucher_manager where no = #{no };
-	]]>
-	</delete>
-	
-	<!-- delete 다른 팀 -->
-	<delete id="deleteItem" parameterType="1itemvo">
-	<![CDATA[
-		delete from tb_voucher_item where voucher_no = #{voucherNo };
-	]]>
-	</delete>
-	
-	<!-- delete 다른 팀 -->
-	<delete id="deleteMapping" parameterType="1mappingvo">
-	<![CDATA[
-		delete from tb_voucher_system_mapping where voucher_no = #{voucherNo };
-	]]>
-	</delete>
 	
 	<!-- delete 1팀 -->
 	<update id="deleteVoucher2" parameterType="1vouchervo">
@@ -383,6 +362,14 @@
 	]]>
 	</update>
 	
+	<!-- 다른팀 전표 삭제 시 팀정보 받아오기 -->
+	<select id="selectTeam" parameterType="Long" resultType="1vouchervo">
+		<![CDATA[
+			select insert_team
+			  from voucher_system_mapping
+			 where voucher_no = #{no }
+		]]>
+	</select>
 	
 	<!-- 전표테이블 새로 입력 -->
 	<insert id="newVoucher" parameterType="1vouchervo">
@@ -477,4 +464,28 @@
 		)
 		]]>
 	</insert>
+	
+	<!-- 결산 -->
+	<select id="statementData" resultType="statementData17Vo" parameterType="closingDate17Vo">
+		<![CDATA[
+		select	
+			v.no as no
+		    , a.no as account_no
+		    , a.name as account_name
+		    , v.reg_date as reg_date
+		    , i.amount as amount
+		    , i.amount_flag as amount_flag
+		    , a.parent1 as parent1
+		    , a.parent2 as parent2
+		    , a.parent3 as parent3
+		    , a.parent4 as parent4
+		    , a.parent5 as parent5
+		  from	tb_voucher_manager as v
+		  join	tb_voucher_item as i on v.no = i.voucher_no
+		  join	tb_account as a on a.no = i.account_no
+		 where	v.reg_date >= #{startDate }
+		   and	v.reg_date <= #{endDate }
+		;
+		]]>
+	</select>
 </mapper>

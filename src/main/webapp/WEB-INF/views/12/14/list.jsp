@@ -86,7 +86,19 @@
                                 <div class="control-group">
                                     <label class="control-label" for="form-field-5">정렬기준</label>
                                     <div class="controls">
+                                    <input type="hidden" value="${search.orderData }">
                                         <select class="chosen-select" id="form-field-select-1" name="orderData" data-placeholder="정렬기준">
+                                        	<c:choose>
+                                        	<c:when test="${search.orderData == 'sales_date' }">
+                                        		<option value="sales_date" selected style="display:none">매출일</option>
+                                        	</c:when>
+                                        	<c:when test="${search.orderData == 'customer_code' }">
+                                        		<option value="customer_code" selected style="display:none">거래처</option>
+                                        	</c:when>
+                                        	<c:when test="${search.orderData == 'supply_value' }">
+                                        		<option value="supply_value" selected style="display:none">공급가액</option>
+                                        	</c:when>                                        	
+                                        </c:choose>
                                         	<option value="">&nbsp;</option>
                                             <option value="sales_date">매출일</option>
                                             <option value="customer_code">거래처</option>
@@ -154,6 +166,7 @@
                 <div class="hr hr-10 dotted"></div>
                 <div class="row-fluid">
                     <div class="span12">
+                    	<p>총 ${contentsCount }건</p>
                         <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                             <tr>
                                 <th>매출번호</th>
@@ -243,8 +256,6 @@
     <script>
         $(function() {
             $(".chosen-select").chosen();
-     
-       
 	        $("#salesDate").daterangepicker({
 	       		locale: {
 	               	format: 'YYYY-MM-DD'
@@ -252,7 +263,8 @@
 	        });
 	        setDate();
 	    });
-        function movePage(page){
+        
+        function movePage(page){ // POST 페이지 이동 (검색 조건 있음)
         	var searchFlag = $("#searchFlag").val();
         	var url = "${pageContext.request.contextPath }/12/14/"+page;
         	if(searchFlag=="true"){
@@ -263,13 +275,8 @@
         	
         }
         
-        function setDate(){
+        function setDate(){ // 날짜로 검색 조회시 날짜 유지
         	if($("#searchFlag").val()=="true"){
-        		/* if($("#currentPage").val()==""||$("#currentPage").val()==null){
-        			history.pushState(null, null, "${pageContext.request.contextPath }/12/14/1");
-        		} else {
-        			history.pushState(null, null, "${pageContext.request.contextPath }/12/14/${pg}");
-        		} */
   	    	   	$('#salesDate').data('daterangepicker').setStartDate($("#startDate").val());
   	    	   	$('#salesDate').data('daterangepicker').setEndDate($("#endDate").val());
   	       }

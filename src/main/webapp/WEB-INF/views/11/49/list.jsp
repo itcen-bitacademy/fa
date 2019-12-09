@@ -150,13 +150,13 @@ form {
 								<div class="span2">
 									<div class="checkbox">
 										<label>
-											<input name="deleteFlag" type="checkbox" class="ace" value="Y"/>
+											<input name="deleteFlag" type="checkbox" class="ace" value=""/>
 											<span class="lbl">삭제포함</span>
 										</label>
 									</div>
 									<div class="checkbox">
 										<label>
-											<input name="repayCompleFlag" type="checkbox" class="ace" value="Y"/>
+											<input name="repayCompleFlag" type="checkbox" class="ace" value=""/>
 											<span class="lbl">상환완료포함</span>
 										</label>
 									</div>

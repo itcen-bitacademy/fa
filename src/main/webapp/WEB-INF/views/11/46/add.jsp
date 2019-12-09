@@ -213,7 +213,7 @@ tr td:first-child {
 					&nbsp;
 					<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
 					&nbsp;
-					<button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
+					<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
 					&nbsp;
 					<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 					&nbsp;
@@ -277,6 +277,48 @@ tr td:first-child {
 						</c:forEach>
 					</tbody>
 				</table>
+				
+				<section class="pagination" id="pagination">
+					<ul id="pg-list" class="pg-list">
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li>
+									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+										<i class="icon-double-angle-left"></i>
+									</a>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${pagination.startPage }" end="${pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq pagination.page }">
+									<li class="active" onclick='pageClicked(this)' id="${pg }"><a>${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li onclick='paging(this)' id="${pg }"><a>${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:choose>
+							<c:when test="${pagination.next }">
+								<li>
+									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+										<i class="icon-double-angle-right"></i>
+									</a>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+					<section id="pg-total-row" class="pg-total-row">
+						<h5>총  ${pagination.totalCnt }건</h5>
+					</section>
+				</section>
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -350,6 +392,96 @@ function selectRow(thisTr){
 	//$("#bankName").val(dataForm.elements[].value);
 }
 
+//리스트를 받아서 Rendering 하는 함수
+function renderingList(list){
+	$("#tbody-list > *").remove();
+	for(var i=0; i < list.length; ++i){
+		$("#tbody-list").append("<tr>" +
+				 "<td class='center'>" + list[i].code + "</td>" +
+				 "<td class='center'>" + list[i].name + "</td>" +
+				 "<td class='center'>" + list[i].majorCode + "</td>" +
+				 "<td class='center'>" + list[i].debtAmount + "</td>" +
+				 "<td class='center'>" + list[i].repayWay + "</td>" +
+				 "<td class='center'>" + list[i].debtDate + "</td>" + 
+				 "<td class='center'>" + list[i].expDate + "</td>" +
+				 "<td class='center'>" + list[i].intRate + "</td>" +
+				 "<td class='center'>" + list[i].intPayWay + "</td>" +
+				 "<td class='center'>" + list[i].mgr + "</td>" +
+				 "<td class='center'>" + list[i].mgrCall + "</td>" +
+				 "<td class='center'>" + list[i].bankCode + "</td>" +
+				 "<td class='center'>" + list[i].depositNo + "</td>");
+	}
+}
+
+//page 번호 Rendering 함수
+function renderingPage(pagination){
+	//페이징 리스트 삭제
+	$("#pg-list li").remove();
+	
+	//이전버튼 Rendering
+	if(pagination.prev){
+		$("#pg-list").append("<li onclick='paging(this)'> id='" + (pagination.endPage + 1) + "'" + 
+									"<a><i class='icon-double-angle-left'></i>" +
+									"</a>"+
+								"</li>");
+	}else{
+		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>");
+	}
+	//페이지 Rendering
+	for(var i=pagination.startPage; i<=pagination.endPage ; ++i){
+		if(i == pagination.page)
+			$("#pg-list").append("<li class='active' onclick='paging(this)' id='" + i + "'><a>" + i + "</a></li>");
+		else
+			$("#pg-list").append("<li onclick='paging(this)' id='" + i + "'><a>" + i + "</a></li>");
+	}
+	//다음 버튼 Rendering
+	if(pagination.prev){
+		$("#pg-list").append("<li onclick='paging(this)'> id='" + (pagination.endPage + 1) + "'" +
+										"<a><i class='icon-double-angle-right'></i></a>"+
+									"</li>");
+	}else{
+		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
+	}
+	
+	$("#pg-total-row>*").remove();
+	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>")
+}
+
+function search() {
+	console.log("search");
+	ajaxProcessing("search", null);
+}
+
+function paging(urlStr, thisObj){
+	console.log("paging");
+	console.log($(thisObj).attr('id'));
+	ajaxProcessing("paging", thisObj)
+}
+
+function ajaxProcessing(urlStr, thisObj){
+	var sendData = $("#input-form").serialize();
+	console.log($(thisObj).attr('id'));
+	if(thisObj != null){
+		var page = $(thisObj).attr('id');
+		console.log(page);
+		sendData += "&page=" + page;
+	}
+	
+	$.ajax({
+		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/" + urlStr,
+		type : "POST",
+		dataType : "JSON",
+		data : sendData,
+		success : function(response){
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
+		},
+		error : function(xhr, error){
+			
+		}
+	});
+}
+
 function deleteChecked(){
 	var sendData = [];
 	
@@ -366,10 +498,8 @@ function deleteChecked(){
 		dataType : "json",
 		data : {"sendData" : sendData},
 		success: function(response){
-			checkedList.each(function(i, e){
-				$("#" + $(this).val()).remove();
-				
-			})
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
 		},
 		error : function(xhr, error){
 		}

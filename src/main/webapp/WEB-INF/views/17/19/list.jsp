@@ -166,6 +166,13 @@
 						</div>
 					<div class="hr hr-18 dotted"></div>
 
+					<div class="row-fluid">
+						<div class="span6"></div>
+						<div class="span6" style="text-align:right;">
+							<h6>(총 마감일 수: ${dataResult.pagination.totalCnt })</h6>
+						</div>
+					</div>
+
 					<%-- 마감일 조회 테이블 --%>
 					<div class="row-fluid">
 						<div class="span12">
@@ -257,21 +264,6 @@
 
 			<%-- 에러 모달  --%>
 			<c:if test="${not empty param.error }">
-				<%-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="staticBackdropLabel">Error</h5>
-				      </div>
-				      <div class="modal-body">
-				        ${param.error }
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
-				      </div>
-				    </div>
-				  </div>
-				</div> --%>
 				<input type="hidden" id="errorMessage" value="${param.error }"/>
 			</c:if>
 
@@ -377,7 +369,7 @@
 	function disableFormSubmit(event) {
 		event.preventDefault();
 	}
-	
+
 	var validationMessage = ''
 
 	// validation check

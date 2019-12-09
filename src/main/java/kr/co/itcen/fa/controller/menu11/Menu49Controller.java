@@ -47,10 +47,11 @@ public class Menu49Controller {
 			vo.setBankName("");
 		if(vo.getExpDate() == null || "".equals(vo.getExpDate()))
 			vo.setExpDate("");
-		if("Y".equals(vo.getDeleteFlag()))
+		if("".equals(vo.getDeleteFlag()))
 			vo.setDeleteFlag("");
 		else vo.setDeleteFlag("N");
-		if("Y".equals(vo.getRepayCompleFlag()))
+		
+		if("".equals(vo.getRepayCompleFlag()))
 			vo.setRepayCompleFlag("");
 		else vo.setRepayCompleFlag("N");
 		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo,sort);

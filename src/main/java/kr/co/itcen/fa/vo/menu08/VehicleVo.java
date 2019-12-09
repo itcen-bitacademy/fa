@@ -5,10 +5,13 @@ import org.apache.ibatis.type.Alias;
 @Alias("vehicle08vo")
 public class VehicleVo {
 
+
 	private String id;
-	private String customerNo;
-	private String taxbillNo;
-	private String voucherNo;
+	private String customerNo; //거래처 코드
+	private String customerName; //거래처 명
+	private String managerName; //거래처 담당자
+	private String taxbillNo; 
+	private long voucherNo;
 	private String sectionNo;
 	private String classification;
 	private int staffNo; //직급번호
@@ -52,10 +55,10 @@ public class VehicleVo {
 	public void setTaxbillNo(String taxbillNo) {
 		this.taxbillNo = taxbillNo;
 	}
-	public String getVoucherNo() {
+	public long getVoucherNo() {
 		return voucherNo;
 	}
-	public void setVoucherNo(String voucherNo) {
+	public void setVoucherNo(long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 	public String getSectionNo() {
@@ -202,19 +205,33 @@ public class VehicleVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public String getManagerName() {
+		return managerName;
+	}
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
+	}
+	
+
 	@Override
 	public String toString() {
-		return "VehicleVo [id=" + id + ", customerNo=" + customerNo + ", taxbillNo=" + taxbillNo + ", voucherNo="
-				+ voucherNo + ", sectionNo=" + sectionNo + ", classification=" + classification + ", staffNo=" + staffNo
+		return "VehicleVo [id=" + id + ", customerNo=" + customerNo + ", customerName=" + customerName
+				+ ", managerName=" + managerName + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
+				+ ", sectionNo=" + sectionNo + ", classification=" + classification + ", staffNo=" + staffNo
 				+ ", staffName=" + staffName + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress
 				+ ", cityAddress=" + cityAddress + ", localAddress=" + localAddress + ", detailAddress=" + detailAddress
 				+ ", publicValue=" + publicValue + ", regTax=" + regTax + ", acqTax=" + acqTax + ", etcCost=" + etcCost
 				+ ", payDate=" + payDate + ", deposit=" + deposit + ", depositDate=" + depositDate + ", monthlyFee="
-				+ monthlyFee + ", feeDate=" + feeDate + ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserId=" + insertUserId + ", insertDay=" + insertDay + ", updateUserId="
-				+ updateUserId + ", updateDay=" + updateDay + "]";
+				+ monthlyFee + ", feeDate=" + feeDate + ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserId="
+				+ insertUserId + ", insertDay=" + insertDay + ", updateUserId=" + updateUserId + ", updateDay="
+				+ updateDay + "]";
 	}
-	
-
 
 
 }

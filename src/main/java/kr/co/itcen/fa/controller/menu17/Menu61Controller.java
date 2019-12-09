@@ -2,6 +2,8 @@ package kr.co.itcen.fa.controller.menu17;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +66,10 @@ public class Menu61Controller {
 	}
 	
 	/**
-	 * 결산작업 실행
+	 * 결산작업 실행 
 	 */
 	@PostMapping("/" + SUBMENU + "/settlement")
-	public String executeSettlement(@SessionAttribute("authUser") UserVo authUser, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException {
+	public String executeSettlement(@SessionAttribute("authUser") UserVo authUser, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException, ParseException {
 		String uri = null;
 		
 		// 마감일 체크 
@@ -75,7 +77,10 @@ public class Menu61Controller {
 		String year = closingDateVo.getClosingYearMonth().substring(0, 4);
 		uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?year=" + year;
 		
-		if (menu19Service.checkClosingDate(authUser, closingDateVo.getStartDate())) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+//		if (menu19Service.checkClosingDate(authUser, closingDateVo.getStartDate())) {
+		if (menu19Service.checkClosingDate(authUser, sdf.format(closingDateVo.getStartDate()))) {
 			// 등록자 설정 - 시산표 및 재무제표용 
 			menu17SearchForm.setInsertUserid(authUser.getId());
 			// 수저자 설정 - 마감일 업데이트용 
