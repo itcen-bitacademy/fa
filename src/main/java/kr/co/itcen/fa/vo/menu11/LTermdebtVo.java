@@ -1,16 +1,24 @@
 package kr.co.itcen.fa.vo.menu11;
 
 import org.apache.ibatis.type.Alias;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Alias("ldebtvo")
 public class LTermdebtVo {
 	private Long no;//장기차입금 번호
+	@NotEmpty
+	@Length(min=10,max=10)
 	private String code;//장기차입금 코드
+	@NotEmpty
+	@Length(max=50)
 	private String name;//장기차입금 명
+	@NotEmpty
 	private Long debtAmount;//차입금액
 	private Long repayBal;//상환잔액
 	private String repayWay;//상환방법
 	private String repayCompleFlag; // 상환완료여부
+	@NotEmpty
 	private String debtExpDate;//차입-만기일자
 	private String debtDate;//차입일자
 	private String expDate;//만기일자
@@ -29,8 +37,15 @@ public class LTermdebtVo {
 	private String insertDate;//등록일
 	private String updateId;//수정자
 	private String updateDate;//수정일
-	private String bankName;
+	private String bankName;//은행 이름
+	private String depositHost;//예금주
 	
+	public String getDepositHost() {
+		return depositHost;
+	}
+	public void setDepositHost(String depositHost) {
+		this.depositHost = depositHost;
+	}
 	public String getBankName() {
 		return bankName;
 	}
@@ -197,7 +212,7 @@ public class LTermdebtVo {
 				+ mgrCall + ", majorCode=" + majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo
 				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
 				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate
-				+ ", bankName=" + bankName + "]";
+				+ ", bankName=" + bankName + ", depositHost=" + depositHost + "]";
 	}
 	
 	

@@ -84,4 +84,8 @@ public class Menu48Service {
 	public Boolean updateRepayFlag(Long no) {
 		return menu48Repository.updateRepayFlag(no);
 	}
+
+	public List<Long> selectVoucherNo(Long[] no) {
+		return menu48Repository.selectVoucherNo(no);
+	}
 }
