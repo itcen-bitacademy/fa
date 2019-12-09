@@ -59,7 +59,7 @@
 									</div>
 								</div>
 								
-								<div class="control-group">
+						<%-- 		<div class="control-group">
 									<label class="control-label" for="form-field-select-1">주소(읍/면/동)</label>
 									<div class="controls">
 										<select class="chosen-select" id="form-field-select-1" name="localAddr" data-placeholder="전체">
@@ -68,17 +68,17 @@
 											</c:forEach>
 										</select>
 									</div>
-								</div>
+								</div> --%>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1">거래처 코드</label>
 									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="customerNo" data-placeholder="전체">
-											<c:forEach items="${listMainMenu }" var="customerVo">
-												<option value="${customerVo.no }">${customerVo.name }</option>
+										<select class="chosen-select" id="form-field-customerCode" name="customerName" data-placeholder="전체">
+											<c:forEach items="${customerList }" var="customerVo">
+												<option managerName="${customerVo.managerName }" customerCode="${customerVo.no }"  value="${customerVo.no }">${customerVo.name }</option>
 											</c:forEach>
 										</select>
-										<input readonly type="text" class="span6" id="form-input-readonly" value="코드를 지정하면 거래처명이 등록됩니다">
+										<input readonly type="text" class="span6" id="customerNo" name="customerNo" value="거래처명을 지정하면 코드가 등록됩니다">
 									</div>
 								</div>
 								
@@ -121,7 +121,7 @@
 								<div style="float:left;width:50%">											
 									<label class="control-label" for="form-field-1">사용 개월</label>
 									<div class="controls">
-										<input readonly type="text" class="span6" id="form-input-readonly" value="최대 60개월">
+										<input readonly type="text" class="span6" id="usingMonth" name="usingMonth" value="최대 60개월">
 									</div>
 								</div>	
 								<div style="float:left;width:50%">											
@@ -140,7 +140,7 @@
 									<div style="float:left;width:50%">											
 										<label class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width:90%">
-												<select class="chosen-select" id="form_field_classification" name="staffNo" data-placeholder="전체">
+												<select class="chosen-select" id="form-field-classification" name="staffNo" data-placeholder="전체">
 												<!-- <select class="chosen-select-1" id="form-field-select-1" name="staffName" data-placeholder="전체"> -->
 													<c:forEach items="${jikNameList}" var="StaffVo">
 														<option value="${StaffVo.no }">${StaffVo.staffName }</option>
@@ -154,28 +154,26 @@
 										</div>	
 								</div>
 								
-								<div class="control-group">
+						
+							<div class="control-group"  >
+								<div style="float:left;width:50%">	
 									<label class="control-label" for="form-field-select-1">주소(시/군/구)</label>
-									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="cityAddr" data-placeholder="전체">
-											<c:forEach items="${listMainMenu }" var="sectionVo">
-												<option value="${sectionVo.no }">${sectionVo.name }</option>
-											</c:forEach>
+									<div class="controls" style="width:90%">
+										<select class="chosen-select" id="gugun" name="cityAddr" data-placeholder="전체">
 										</select>
 									</div>
 								</div>
-								
-								<div class="control-group">
-									<label class="control-label" for="form-field-select-1">주소(상세)</label>
-									<div class="controls">
+								<div style="float:left;width:50%">
+									<label style="width:80px; margin-right:10px;" class="control-label" for="form-field-select-1">주소(상세)</label>
 										<input type="text" id="form-field-1" name="detailAddr" placeholder="주소를 상세히 입력하세요"/>
-									</div>
 								</div>
+							</div>	
+								
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">거래처 담당자</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="customerManager" placeholder="이름을 입력하세요"/>
+										<input type="text" id="customerManager" name="managerName" placeholder="이름을 입력하세요"/>
 									</div>
 								</div>
 								
@@ -248,7 +246,6 @@
 							</div>
 						</form>
 						</div><!-- 차변 대변 나누기 위한 row-fluid -->	
-							
 								<div>
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
@@ -284,15 +281,16 @@
 												<th>사용료 납부일</th>
 												<th>과세/영세</th>
 												<th>사용개월</th>
-												<th>작성자</th>
-												<th>작성일자</th>
+												<!-- <th>작성자</th>
+												<th>작성일자</th> -->
 											</tr>
 										</thead>
 
 										<tbody>
 											<c:forEach items="${list }" var = "VehicleVo" varStatus="status">
+										<%-- 	<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /> --%>
 										
-											<tr id="ㄷ">
+											<tr>
 												<td class="center">
 													<label>
 														<input type="checkbox" class="ace" name="checkRow" value="${content.IDX}"  />
@@ -310,23 +308,25 @@
 												<td>주소(기초)</td>
 												<td>주소(지번)</td>
 												<td>주소(상세)</td>
-												<td>매입거래처코드</td>
-												<td>매입거래처명</td>
-												<td>매입거래처담당자</td>
-												<td>${VehicleVo.payDate}</td>
+												<td>${VehicleVo.customerNo}</td>
+												<td>${VehicleVo.customerName}</td>
+												<td>${VehicleVo.managerName}</td>
+												<td class="pay-date">${VehicleVo.payDate}</td>
 												<td>${VehicleVo.publicValue}</td>
 												<td>${VehicleVo.regTax}</td>
 												<td>${VehicleVo.acqTax}</td>
 												<td>${VehicleVo.etcCost}</td>
-												<td>세금계산서번호</td>
+												<td>${VehicleVo.taxbillNo}</td>
 												<td>${VehicleVo.deposit}</td>
 												<td>${VehicleVo.depositDate}</td>
 												<td>${VehicleVo.monthlyFee}</td>
 												<td>${VehicleVo.feeDate}</td>
 												<td>${VehicleVo.taxKind}</td>
-												<td>사용개월</td>
-												<td>작성자</td>
-												<td>작성일자</td>
+												<td class="using-month"></td>
+												<%-- <td>${VehicleVo.insertUserId}</td>
+												<td>${VehicleVo.insertDay}</td> --%>
+												<%-- <td>${VehicleVo.insertUserId}</td> --%>
+												<%-- <td>${now}</td> --%>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -353,72 +353,49 @@
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script>
 $(function(){
 	$(".chosen-select").chosen(); 
 });
-</script>
+$(function() {
+	$.fn.datepicker.dates['ko'] = {
+	days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+	daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+	daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+	months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+	monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+	today: "Today",
+	clear: "Clear",
+	format: "yyyy-mm-dd",
+	titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+	weekStart: 0
+	};
 
-<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			today: "Today",
-			clear: "Clear",
-			format: "yyyy-mm-dd",
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart: 0
-			};
-	
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
-	</script>
-	
-<script>
-function checkAll(){
+	$('#cl-ym-date-picker').datepicker({
+		maxViewMode: 4,
+		minViewMode: 1,
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+
+	$('.cl-date-picker').datepicker({
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+});
+
+
+$(function checkAll(){
     if( $("#th_checkAll").is(':checked') ){
       $("input[name=checkRow]").prop("checked", true);
     }else{
       $("input[name=checkRow]").prop("checked", false);
     }
-}
-</script>
+});
 
-<script>
-function deleteAction(){
-	var checkRow = "";
-	 $( "input[name='checkRow']:checked" ).each (function (){
-		    checkRow = checkRow + $(this).val()+"," ;
-		  });
-	 checkRow = checkRow.substring(0,checkRow.lastIndexOf( ",")); //맨끝 콤마 지우기
-	 
-	  if(checkRow == ''){
-	    alert("삭제할 대상을 선택하세요.");
-	    return false;
-	  }
-	  console.log("### checkRow => {}"+checkRow);
-}
-</script>
-
-
-<script>
 /* //대분류코드 select box 변경시 이벤트
 $('#form-field-section').change(
 	function() { 
@@ -427,17 +404,58 @@ $('#form-field-section').change(
       var classification = $('#classification').val(); //1000cc
       alert("두번째" + classification)
 }); */
-
+$(function() {
 $('#form-field-section').change(
 		function() { 
 	      var classification = $('#form-field-section option:selected').attr('vehiclecode'); //1000CC
 	    
 	     $('#classification').val(classification); //val안에 classification안에 넣어야 한다.
-	   
-	});
-</script>
+		});
+});
 
-<script>
+$('#form-field-customerCode').change(function() {
+	var customerCode = $('#form-field-customerCode option:selected').attr('customerCode');
+	console.log(customerCode)
+	$('#customerNo').val(customerCode);
+	
+	var managerName = $('#form-field-customerCode option:selected').attr('managerName');
+	var managerName = $('#customerManager').val(managerName); 
+	
+
+});
+
+function calcMonth(index, item) {
+	var payDate = $(item).text();
+	
+	var today = new Date();	
+	var ddd = today.getDate();
+	var dd = "0"
+	var mmm = (today.getMonth() + 1); //January is 0!	
+	var mm = "0";
+	var yyyy = new String(today.getFullYear());
+	
+	if(mmm < 10 ){ mm = mm + new String(mmm); } else { mm = mmm; }
+	
+	if(ddd < 10 ){ dd = dd + new String(ddd); } else { dd = ddd; }
+	
+	var currentDate  = yyyy + mm + dd;
+	
+	var date1  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2));
+	var date2  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2));
+	
+	console.log("date1 : " + date1);
+	console.log("date2 : " + date2);
+	
+	var interval =  date2 - date1;
+	var day   =  1000*60*60*24;
+	var month  =  day*30;
+	var year  =  month*12;
+	
+	$(item).parent().find(".using-month").text(parseInt(interval/month));
+};
+function setMonth() {
+	$('tr .pay-date').each(calcMonth)
+};
 //버튼 구현
 $(function(){
    $("#insert").click(function() {
@@ -454,11 +472,12 @@ $(function(){
    
    $("#search").click(function() {
       alert("조회");
-   }); 
+   })
+   
+   setMonth();
 });
-</script>
 
-<script>
+
 // 테이블의 Row 클릭시 값 가져오기
 $("#sample-table-1 tr").click(function(){ 	
 
@@ -479,26 +498,123 @@ $("#sample-table-1 tr").click(function(){
 	
 	// td.eq(index)를 통해 값을 가져올 수도 있다.
 	$("input[name=id]").val(td.eq(2).text());
-    $('#form_field_section_chosen').find('span').text(td.eq(3).text());
-/*     $('#form_field_classification_chosen').find('span').text(td.eq(4).text()); */
+	$('#form-field-section').val(td.eq(3).text()).trigger('chosen:updated');
     $("input[name=classification]").val(td.eq(4).text());
-    $('#form_field_classification_chosen').find('span').text(td.eq(5).text());
-	$("input[id=form_field_classification]").val(td.eq(5).text());
+    //$('#form_field_classification_chosen').find('span').text(td.eq(5).text());
+    
+    /* 직급 */
+    
+    var staff='';
+	switch (td.eq(5).text()){
+    case '사원' :
+    	staff=1;
+        break;
+    case '대리' :
+    	staff=2;
+	    break;
+    case '과장' :
+    	staff=3;
+        break;
+    case '차장' :
+    	staff=4;
+        break;
+    case '부장' :
+    	staff=5;
+    	break;
+    case '이사' :
+    	staff=6;
+    	break;
+    case '상무' :
+    	staff=7;
+    	break;
+    case '전무' :
+    	staff=8;
+    	break;
+	}
+
+
+
+	$('#form-field-classification').val(staff).trigger('chosen:updated');
     $("input[name=ownerName]").val(td.eq(6).text());
 /*  $("input[name=wideAddress]").val(td.eq(13).text());
     $("input[name=cityAddress]").val(td.eq(8).text());
     $("input[name=localAddress]").val(td.eq(9).text());
     $("input[name=detailAddress]").val(td.eq(10).text()); */
+    
+    
+
+    $('#form_field_customerCode_chosen').find('span').text(td.eq(12).text())
+   
+    $("input[name=customerNo]").val(td.eq(11).text());
+    $("input[name=managerName]").val(td.eq(13).text());
     $("input[name=payDate]").val(td.eq(14).text());
     $("input[name=publicValue]").val(td.eq(15).text());
     $("input[name=regTax]").val(td.eq(16).text());
     $("input[name=acqTax]").val(td.eq(17).text());
     $("input[name=etcCost]").val(td.eq(18).text());
     $("input[name=taxbillNo]").val(td.eq(19).text());
-    $("input[name=deposit]").val(td.eq(20).text()); 
+    $("input[name=deposit]").val(td.eq(20).text()); s
     $("input[name=depositDate]").val(td.eq(21).text());
     $("input[name=monthlyFee]").val(td.eq(22).text());
     $("input[name=feeDate]").val(td.eq(23).text());
+    
+    
+    /* 사용 개월  */
+
+	var payDate  =  td.eq(14).text();
+	
+	var today = new Date();	
+	var ddd = today.getDate();
+	var dd = "0"
+	var mmm = (today.getMonth() + 1); //January is 0!	
+	var mm = "0";
+	var yyyy = new String(today.getFullYear());
+	
+	
+	if(mmm < 10 ){
+		mm = mm + new String(mmm);
+
+	}else {
+		mm = mmm;
+	}
+	
+	if(ddd < 10 ){
+		dd = dd + new String(ddd);
+
+	}else {
+		dd = ddd;
+	}
+	
+	var currentDate  = yyyy + mm + dd;
+	
+/* 	console.log("today : " + today);
+	console.log("mm : " + mm);
+	console.log("dd : " + dd);
+	
+	console.log("input1 : " + input1);
+	console.log("input2 : " + input2);	
+	 */
+	
+	
+	var date1  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2));
+	var date2  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2));
+	
+	console.log("date1 : " + date1);
+	console.log("date2 : " + date2);
+	
+	var interval =  date2 - date1;
+	var day   =  1000*60*60*24;
+	var month  =  day*30;
+	var year  =  month*12;
+	
+	//alert("기간 날짜수"+parseInt(interval/day));
+	//alert("기간 개월수"+parseInt(interval/month));
+	//alert("기간 년수"+parseInt(interval/year));
+
+	
+    $("input[name=usingMonth]").val(parseInt(interval/month)); //input의 name
+    $('#tdUsingMonth').val(parseInt(interval/month)); // input의 ID
+     
     if(td.eq(24).text() == "과세"){
    	   $("input[id=tax]").prop('checked', true);
      }

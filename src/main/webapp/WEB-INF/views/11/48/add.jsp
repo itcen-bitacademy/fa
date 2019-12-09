@@ -58,6 +58,7 @@ tr td:first-child {
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
+		
 
 			<div class="page-header position-relative">
 				<h1 class="pull-left">장기차입금관리</h1>
@@ -75,6 +76,8 @@ tr td:first-child {
 									<td>
 										<input type="hidden" name="no" id = "no"/>
 										<input type="text" name="code" id ="code2" />
+										<input id="btn-check-code" type="button" value="중복확인">
+										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 									</td>
 								</tr>
 								<tr >
@@ -249,7 +252,7 @@ tr td:first-child {
 				</div>
 				<hr>
 				<div>
-					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;" type="submit">입력</button>
+					<button class="btn btn-info btn-small" style="float:right;margin-right:20px;" type="submit" id="inputbtn">입력</button>
 					&nbsp;
 					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 					&nbsp;
@@ -303,7 +306,7 @@ tr td:first-child {
 						<tr>
 							<th class="center">
 								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
+									<input type="checkbox" class="ace" id="checkall"/>
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -424,7 +427,7 @@ $(function(){
 	});
 	
 	$(".chosen-select").chosen();
-	$("#simple-table tr").click(function(){ 
+	$("#tbody-list tr").click(function(){ 
 		
 		
 		var tr = $(this);
@@ -500,7 +503,7 @@ $(function(){
 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
 	});
 	
-	
+
 	
 	$("#clear").click(function(){ 
 		 $('input').val('');
@@ -508,7 +511,14 @@ $(function(){
 		 
 	});
 	
-	
+	$("#checkall").click(function(){
+		if ($(this).hasClass('allChecked')) {
+			$('input[type="checkbox"]', '#simple-table').prop('checked', false);
+		} else {
+			$('input[type="checkbox"]', '#simple-table').prop('checked', true);
+		}
+		$(this).toggleClass('allChecked');
+	});
 	
 	
 	// 은행코드 검색
@@ -701,7 +711,54 @@ $(function(){
 				});
 			});
 	});
-
+		//코드 중복체크
+		$("#code2").change(function(){
+			$("#btn-check-code").show();
+			$("#img-checkcode").hide();
+		});	
+		
+		$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
+		$("#btn-check-code").click(function(){
+			
+			var code = $("#code2").val();
+			if(code == ""){
+				return;
+			}
+		
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath }/11/48/checkcode?code=" + code,
+			type: "get",
+			dataType: "json",
+			data: "",
+			success: function(response){
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				console.log(response);
+				
+				if(response.data == null){
+					$("#inputbtn").show();
+					
+					$("#btn-check-code").hide();
+					$("#img-checkcode").show();
+					return;
+				}else if(response.data.deleteFlag == "Y"){
+					alert("삭제된 코드입니다.");
+				}else{
+					alert("이미 존재하는 코드입니다.");
+					$("#code2").val("");
+					//$("#inputbtn").hide();
+					$("#code2").focus();
+				}
+				
+				},
+				error:function(xhr,error) {
+					console.err("error" + error);
+				}
+			});
+		});	
 </script>
 </body>
 </html>

@@ -58,6 +58,7 @@ public class Menu48Controller {
 		
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
+		model.addAttribute("year",year);
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -71,7 +72,7 @@ public class Menu48Controller {
 	}
 	@RequestMapping(value = "/"+SUBMENU+"/add", method = RequestMethod.POST)
 	public String add(LTermdebtVo vo,@AuthUser UserVo user) {
-
+		
 		String[] dates=vo.getDebtExpDate().split("-");
 		vo.setDebtDate(dates[0]);
 		vo.setExpDate(dates[1]);
@@ -109,7 +110,7 @@ public class Menu48Controller {
 		Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
 		
 		
-		System.out.println(vo);
+		
 		vo.setVoucherNo(no);
 		menu48Service.insert(vo);
 		
@@ -180,6 +181,17 @@ public class Menu48Controller {
 		menu48Service.update(vo);
 		menu48Service.insert(vo);
 		LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());
+		if(lvo.getRepayBal() >= lvo.getDebtAmount())
+			menu48Service.updateRepayFlag(lvo.getNo());
 		return JSONResult.success(lvo);
 	}
+	@ResponseBody
+	@RequestMapping("/"+SUBMENU+"/checkcode")
+	public JSONResult checkCode(@RequestParam(value="code", required=true, defaultValue="") String code) {
+		LTermdebtVo lvo = menu48Service.existCode(code);
+		System.out.println(lvo);
+        return JSONResult.success(lvo);
+	}
+	
+	
 }

@@ -76,4 +76,12 @@ public class Menu48Service {
 		
 		return menu48Repository.getOne(debtNo);
 	}
+
+	public LTermdebtVo existCode(String code) {
+		return menu48Repository.getCode(code);
+	}
+
+	public Boolean updateRepayFlag(Long no) {
+		return menu48Repository.updateRepayFlag(no);
+	}
 }

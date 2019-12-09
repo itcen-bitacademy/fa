@@ -119,24 +119,28 @@
 	
 	<select id="selectAllClosingDate" resultType="closingDate17Vo" parameterType="menu17SearchForm">
 		select	
-			no
-		    , closing_year_month as closingYearMonth
-		    , closing_date
-		    , closing_statement_date
-		    , closing_purchase_date
-		    , closing_sales_date
-		    , closing_assets_date
-		    , closing_debt_date
-		    , closing_settlement_date
-		    , closing_yn
-		    , use_yn
-		    , insert_userid
-		    , insert_day
-		    , update_userid
-		    , update_day
-		  from	tb_closing_date
-		 where	use_yn = true
-		 order	by closing_year_month desc
+			c.no as no
+		    , c.closing_year_month as closing_year_month
+		    , c.closing_date as closing_date
+		    , c.closing_statement_date as closing_statement_date
+		    , c.closing_purchase_date as closing_purchase_date
+		    , c.closing_sales_date as closing_sales_date
+		    , c.closing_assets_date as closing_assets_date
+		    , c.closing_debt_date as closing_debt_date
+		    , c.closing_settlement_date as closing_settlement_date
+		    , c.closing_yn as closing_yn
+		    , c.use_yn as use_yn
+		    , c.insert_userid as insert_userid
+		    , iu.name as insert_username
+		    , c.insert_day as insert_day
+		    , c.update_userid as update_userid
+		    , uu.name as update_username
+		    , c.update_day as update_day
+		  from	tb_closing_date as c
+		  left  join user as iu on c.insert_userid = iu.id
+		  left  join user as uu on c.update_userid = uu.id
+		 where	c.use_yn = true
+		 order	by c.closing_year_month desc
 		 limit	#{pagination.pageIndex }, #{pagination.listSize }
 		;
 	</select>

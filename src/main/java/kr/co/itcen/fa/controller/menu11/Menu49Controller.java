@@ -38,7 +38,21 @@ public class Menu49Controller {
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
 		LTermdebtVo vo,
 		@RequestParam(value="sort", required=false) String sort) {
-		
+		System.out.println(vo);
+		if(vo.getDebtDate() == null || "".equals(vo.getDebtDate()))
+			vo.setDebtDate("");
+		if(vo.getIntPayWay() ==null || "".equals(vo.getIntPayWay()))
+			vo.setIntPayWay("");
+		if(vo.getBankName() == null || "".equals(vo.getBankName()))
+			vo.setBankName("");
+		if(vo.getExpDate() == null || "".equals(vo.getExpDate()))
+			vo.setExpDate("");
+		if("Y".equals(vo.getDeleteFlag()))
+			vo.setDeleteFlag("");
+		else vo.setDeleteFlag("N");
+		if("Y".equals(vo.getRepayCompleFlag()))
+			vo.setRepayCompleFlag("");
+		else vo.setRepayCompleFlag("N");
 		DataResult<LTermdebtVo> dataResult = menu49Service.list(page,vo,sort);
 		List<SectionVo> sectionlist = menu49Service.selectSection();
 		UriComponents uriComponents=
@@ -47,7 +61,9 @@ public class Menu49Controller {
 				.queryParam("debtDate",vo.getDebtDate())
 				.queryParam("expDate",vo.getExpDate())
 				.queryParam("intPayWay",vo.getIntPayWay())
-				.queryParam("bankCode",vo.getBankCode())
+				.queryParam("bankName",vo.getBankName())
+				.queryParam("deleteFlag",vo.getDeleteFlag())
+				.queryParam("repayCompleFlag",vo.getRepayCompleFlag())
 				.build();
 		String uri=uriComponents.toUriString();
 		

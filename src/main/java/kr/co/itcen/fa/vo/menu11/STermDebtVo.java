@@ -199,11 +199,12 @@ public class STermDebtVo {
 	}
 	@Override
 	public String toString() {
-		return "STermDebtVo [no=" + no + ", code=" + code + ", name=" + name + ", debtAmount=" + debtAmount
-				+ ", repayBal=" + repayBal + ", repayWay=" + repayWay + ", debtExpDate=" + debtExpDate + ", debtDate="
-				+ debtDate + ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay
-				+ ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", deptClassification="
-				+ deptClassification + ", bankCode=" + bankCode + ", depositNo=" + depositNo + ", accountNo="
+		return "STermDebtVo [no=" + no + ", code=" + code + ", name=" + name + ", majorCode=" + majorCode
+				+ ", debtAmount=" + debtAmount + ", repayBal=" + repayBal + ", repayWay=" + repayWay
+				+ ", repayCompleFlag=" + repayCompleFlag + ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate
+				+ ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay + ", intAmount="
+				+ intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", deptClassification=" + deptClassification
+				+ ", bankCode=" + bankCode + ", bankName=" + bankName + ", depositNo=" + depositNo + ", accountNo="
 				+ accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId
 				+ ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
 	}

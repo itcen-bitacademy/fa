@@ -89,7 +89,7 @@ $(function() {
 												<select class="chosen-select" id="itemname"
 													name="itemname" data-placeholder="품목명 선택">
 													<c:forEach items='${itemname }' var='itemname' varStatus='status'>
-													<option value="${itemname.itemname }">${itemname.itemname }</option>
+														<option value="${itemname.itemname }">${itemname.itemname }</option>
 													</c:forEach>
 												</select>
 													<!-- itemname 상태 유지 -->

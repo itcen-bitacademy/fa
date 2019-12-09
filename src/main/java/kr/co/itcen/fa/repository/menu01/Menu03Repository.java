@@ -14,6 +14,8 @@ import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.TestVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
  * 
@@ -135,6 +137,11 @@ public class Menu03Repository {
 		sqlSession.delete("menu03.deleteItem3", voucherVo);
 		sqlSession.delete("menu03.deleteMapping3", voucherVo);
 		
+	}
+	
+	// 결산
+	public List<StatementDataVo> statementData(ClosingDateVo closingDataVo) {
+		return sqlSession.selectList("menu03.statementData", closingDataVo);
 	}
 	
 }

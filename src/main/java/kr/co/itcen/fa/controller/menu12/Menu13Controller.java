@@ -43,29 +43,29 @@ public class Menu13Controller {
 	@Autowired
 	private Menu19Service menu19Service;
 	
-	
+	// index
 	@RequestMapping(value = {"", "/" + SUBMENU}, method=RequestMethod.GET )
 	public String index(@SessionAttribute("authUser") UserVo authUser, Model model) {
+		System.out.println("index");
+		
 		List<CustomerVo> customerlist = menu13Service.getCustomerList();
 		List<PurchaseitemVo> itemlist = menu13Service.getItemList();
 		
-		model.addAttribute("customerlist", customerlist);
-		model.addAttribute("itemlist", itemlist);
-		
-		System.out.println("check : "+ customerlist.toString() + " : " + itemlist.toString());
+		model.addAttribute("customerlist", customerlist); // 거래처 목록 세팅
+		model.addAttribute("itemlist", itemlist); // 품목 목록 세팅
 		
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}
 	
-	//매출 insert
+	//매출 입력
 	@RequestMapping(value = {"/" + SUBMENU}, method=RequestMethod.POST)
 	public String index(@SessionAttribute("authUser") UserVo authUser, 
-							SalesVo salesVo, 
+							SalesVo salesVo, Model model,
 							int quantity[], String itemCode[], String itemName[], 
 							Long supplyValue[], Long taxValue[], int number[]) {
+		System.out.println("매출 입력" + salesVo);
 		
 		salesVo.setInsertUserid(authUser.getId()); //세션 ID vo set
-		
 		
 		// 마감일
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -76,10 +76,6 @@ public class Menu13Controller {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		boolean result = menu19Service.checkClosingDate(authUser, businessDate);
-		System.out.println(result);
-		//
-		
 		
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		
@@ -96,21 +92,28 @@ public class Menu13Controller {
 			list.add(vo);
 		}
 		
-		menu13Service.insert(list);
+		//마감 여부 체크
+		if(!menu19Service.checkClosingDate(authUser, businessDate)) { 
+			menu13Service.insert(list);
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		} else {
+			model.addAttribute("closingDate", true);
+			return MAINMENU + "/" + SUBMENU + "/index"; 
+		}
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		
 	}
 	
 	//매출번호로 조회
 	@RequestMapping(value= {"/" + SUBMENU + "/{salesNo}"}, method=RequestMethod.GET )
 	public String getSales(@PathVariable("salesNo")String salesNo, Model model) {
-		System.out.println(salesNo);
+		System.out.println("매출 조회" + salesNo);
 		
 		List<CustomerVo> customerlist = menu13Service.getCustomerList();
 		List<PurchaseitemVo> itemlist = menu13Service.getItemList();
 		List<SalesVo> sales = menu13Service.getSalesNo(salesNo);
 		
-		model.addAttribute("flag", "true");
+		model.addAttribute("flag", "true"); // 조회 여부 체크 플래그(조회인 경우)
 		model.addAttribute("customerlist", customerlist);
 		model.addAttribute("itemlist", itemlist);
 		model.addAttribute("saleslist", sales);	
@@ -118,9 +121,11 @@ public class Menu13Controller {
 		return MAINMENU + "/" + SUBMENU + "/index";
 	}
 	
-	//매출 삭제 (flag)
+	//매출 삭제 (flag 데이터 변경)
 	@RequestMapping(value= {"/"+ SUBMENU + "/delete/{salesNo}"}, method=RequestMethod.GET)
 	public String deleteData(@PathVariable("salesNo")String salesNo) {
+		System.out.println("매출 삭제"+salesNo);
+		
 		menu13Service.deleteData(salesNo);
 		
 		return MAINMENU + "/" + SUBMENU + "/index"; 
@@ -133,11 +138,11 @@ public class Menu13Controller {
 						 int quantity[], String itemCode[], String itemName[], 
 						 Long supplyValue[], Long taxValue[], int number[]) {
 		
+		System.out.println("매출 수정"+pathSalesNo);
+		
 		salesVo.setUpdateUserid(authUser.getId());
 		
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
-		
-		System.out.println(salesVo);
 		
 		// 배열로 넘어온 테이블 데이터 리스트에 담기
 		for(int i=0; i<itemCode.length; i++) {
@@ -151,10 +156,10 @@ public class Menu13Controller {
 			vo.setSellPrice(supplyValue[i]+taxValue[i]);
 			list.add(vo);
 		}
-		System.out.println(list);
-		if(salesVo.getSalesNo() != pathSalesNo) {
-			menu13Service.updateDelete(pathSalesNo);
-			menu13Service.updateInsert(list);
+
+		if(salesVo.getSalesNo() != pathSalesNo) { // vo에 세팅된 번호와 pathvariable번호 일치 
+			menu13Service.updateDelete(pathSalesNo); // 업데이트위해 데이터 삭제
+			menu13Service.updateInsert(list); // 새로운 데이터 insert
 		}
 		
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/" + pathSalesNo; 

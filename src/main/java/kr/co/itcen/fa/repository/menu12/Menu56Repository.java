@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu12.CurrentSituationVo;
 import kr.co.itcen.fa.vo.menu12.TestVo;
 
@@ -32,7 +33,18 @@ public class Menu56Repository {
 		return list;
 		
 	}
-
+	
+	// 품목대분류별 매입매출현황 화면
+	// 대분류 목록을 보여주기 위한 코드
+	public List<SectionVo> getMainCategory(){
+		return sqlSession.selectList("menu56.getmaincategory");
+	}
+	
+	// 품목대분류별 매입매출현황 화면
+	// 품목 분류 목록을 보여주기 위한 코드
+	public List<SectionVo> getSubCategory(int no){
+		return sqlSession.selectList("menu56.getsubcategory", no);
+	}
 	
 	
 	

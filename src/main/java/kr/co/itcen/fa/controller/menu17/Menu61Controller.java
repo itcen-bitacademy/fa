@@ -68,10 +68,13 @@ public class Menu61Controller {
 	 */
 	@PostMapping("/" + SUBMENU + "/settlement")
 	public String executeSettlement(@SessionAttribute("authUser") UserVo authUser, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException {
-		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+		String uri = null;
 		
 		// 마감일 체크 
 		ClosingDateVo closingDateVo = menu19Service.selectClosingDateByNo(menu17SearchForm);
+		String year = closingDateVo.getClosingYearMonth().substring(0, 4);
+		uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?year=" + year;
+		
 		if (menu19Service.checkClosingDate(authUser, closingDateVo.getStartDate())) {
 			// 등록자 설정 - 시산표 및 재무제표용 
 			menu17SearchForm.setInsertUserid(authUser.getId());
@@ -82,11 +85,11 @@ public class Menu61Controller {
 			DataResult<Object> dataResult = menu61Service.executeSettlement(menu17SearchForm);
 			
 			if (!dataResult.isStatus()) {
-				uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
+				uri = uri + "?year=" + year + "&error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
 			}
 		} else {
 			// 마감일이 지났을 시 
-			uri = uri + "?error=" + URLEncoder.encode("마감일이 지났습니다. 관리자에게 문의하세요.", "UTF-8");
+			uri = uri + "?year=" + year + "&error=" + URLEncoder.encode("마감일이 지났습니다. 관리자에게 문의하세요.", "UTF-8");
 		}
 				
 		return uri;

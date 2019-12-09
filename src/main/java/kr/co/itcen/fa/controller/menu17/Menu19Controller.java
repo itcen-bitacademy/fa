@@ -3,8 +3,6 @@ package kr.co.itcen.fa.controller.menu17;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -51,12 +50,12 @@ public class Menu19Controller {
 	 * 마감일자 신규 등록
 	 */
 	@PostMapping("/" + SUBMENU + "/add")
-	public String addClosingDate(ClosingDateVo closingDate, HttpSession session) throws UnsupportedEncodingException {
-		UserVo userVo = (UserVo) session.getAttribute("authUser");
+	public String addClosingDate(ClosingDateVo closingDate, @SessionAttribute("authUser") UserVo authUser) throws UnsupportedEncodingException {
+		closingDate.setInsertUserid(authUser.getId());
 		
-		closingDate.setInsertUserid(userVo.getId());
+		DataResult<Object> dataResult = null;
 		
-		DataResult<Object> dataResult = menu19Service.insertClosingDate(closingDate);
+		dataResult = menu19Service.insertClosingDate(closingDate);
 		
 		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
 		
@@ -72,10 +71,8 @@ public class Menu19Controller {
 	 * 마감일 수정(미결산 마감일 및 가장 최근의 마감일만 수정가능)
 	 */
 	@PostMapping("/" + SUBMENU + "/update")
-	public String updateClosingDate(ClosingDateVo closingDate, HttpSession session) throws UnsupportedEncodingException {
-		UserVo userVo = (UserVo) session.getAttribute("authUser");
-		
-		closingDate.setUpdateUserid(userVo.getId());
+	public String updateClosingDate(ClosingDateVo closingDate, @SessionAttribute("authUser") UserVo authUser) throws UnsupportedEncodingException {
+		closingDate.setUpdateUserid(authUser.getId());
 		
 		DataResult<Object> dataResult = menu19Service.updateClosingDate(closingDate);
 		
@@ -94,10 +91,8 @@ public class Menu19Controller {
 	 * @throws UnsupportedEncodingException 
 	 */
 	@PostMapping("/" + SUBMENU + "/delete")
-	public String deleteClosingDate(ClosingDateVo closingDate, HttpSession session) throws UnsupportedEncodingException {
-		UserVo userVo = (UserVo) session.getAttribute("authUser");
-		
-		closingDate.setUpdateUserid(userVo.getId());
+	public String deleteClosingDate(ClosingDateVo closingDate, @SessionAttribute("authUser") UserVo authUser) throws UnsupportedEncodingException {
+		closingDate.setUpdateUserid(authUser.getId());
 		
 		DataResult<Object> dataResult = menu19Service.deleteClosingDate(closingDate);
 		
