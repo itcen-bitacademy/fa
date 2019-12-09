@@ -244,7 +244,10 @@
                   from tb_salescustomer
 				 union
 				select no, name
-                  from tb_purchasecustomer) as cu
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
