@@ -55,7 +55,7 @@
 									<label class="control-label" for="form-field-1">계정 코드 :</label>
 									<div class="controls">
 										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
+											id=""> <i class="icon-search nav-search-icon"></i> 
 										<input type="text" class="search-input-width-first" id="accountNo" name="accountNo" />
 										</a> 
 									
@@ -88,11 +88,11 @@
 									
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" id="bankCode" name="manageNo" value="" placeholder="증빙코드" /> 
+											<input type="text" id="" name="manageNo" value="" placeholder="증빙코드" /> 
 										</div>
 										&nbsp; &nbsp;
 										<div class="input-append">
-											<input type="text" id="bankCode" name ="bankName" value="" placeholder="세금계산서" readonly />
+											<input type="text" id="" name ="" value="" placeholder="세금계산서" readonly />
 										</div>
 									</div>
 								</div>
@@ -105,7 +105,7 @@
 									<label class="control-label" for="form-field-1">거래처 코드 :</label>
 									<div class="controls">
 										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
+											id=""> <i class="icon-search nav-search-icon"></i> 
 										<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
 										</a> 
 									
@@ -120,37 +120,36 @@
 									
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" id="bankCode" name="bankCode" value="" placeholder="은행코드" readonly /> 
+											<input type="text" id="bankCode" name="bankCode" value="" placeholder="은행코드" /> 
 										</div>
 										&nbsp; &nbsp;
 										<div class="input-append">
-											<input type="text" id="bankCode" name ="bankName" value="" placeholder="은행명" readonly />
+											<input type="text" id="bankCode" name ="bankName" value="" placeholder="은행명" />
 										</div>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">계좌 번호 :</label>
+									<label class="control-label" for="form-field-1">카드 번호 :</label>
 									<div class="controls">
 										<span class="btn btn-small btn-info"> <a href="#"
 											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
-										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" />
+										<input type="text" class="search-input-width-first" id="cardNo" name="cardNo" />
 										</a> 
 									
 										</span> 
 										&nbsp; &nbsp;
-										<input type="text" id="depositHost" name="depositHost" placeholder="소유자" readonly/>
+										<input type="text" id="cardUser" name="cardUser" placeholder="소유자" readonly/>
 									</div>
 								</div>
-								<!--  -->
 								
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
-								<div id="dialog-message" title="계좌" hidden="hidden">
+								<div id="dialog-bank" title="계좌" hidden="hidden">
 									<table id="dialog-message-table">
 										<tr>
-											<td><label>계좌번호</label> <input type="text"
+											<td><label>카드번호</label> <input type="text"
 												id="input-dialog-depositNo" style="width: 100px;" /> <a
-												href="#" id="a-dialog-depositNo"> <span
+												href="#" id=""> <span
 													class="btn btn-small btn-info" style="margin-bottom: 10px;">
 														<i class="icon-search nav-search-icon"></i>
 												</span>
@@ -176,20 +175,20 @@
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 								<!--  -->
 								
-								
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">카드 번호 :</label>
+									<label class="control-label" for="form-field-1">계좌 번호 :</label>
 									<div class="controls">
 										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-bankaccountinfo-dialog"> <i class="icon-search nav-search-icon"></i> 
-										<input type="text" class="search-input-width-first" id="cardNo" name="cardNo" />
+											id=""> <i class="icon-search nav-search-icon"></i> 
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" />
 										</a> 
 									
 										</span> 
 										&nbsp; &nbsp;
-										<input type="text" id="cardUser" name="cardUser" placeholder="소유자" readonly/>
+										<input type="text" id="depositHost" name="depositHost" placeholder="소유자" readonly/>
 									</div>
 								</div>
+								<!--  -->
 								
 								
 								
@@ -575,6 +574,87 @@ $(function(){
 		$("input[name='banker']").prop("readonly", true);
 		$("input[name='bankPhoneCall']").prop("readonly", true);  
 	});
+	
+	
+	// 팝업
+	$(function() {
+	      $("#dialog-bank").dialog({
+	         autoOpen : false
+	      });
+
+	      $("#a-bankaccountinfo-dialog").click(function() {
+	         $("#dialog-bank").dialog('open');
+	         $("#dialog-bank").dialog({
+	            title: "계좌정보",
+	            title_html: true,
+	               resizable: false,
+	             height: 500,
+	             width: 400,
+	             modal: true,
+	             close: function() {
+	                $('#tbody-bankacoountList tr').remove();
+	             },
+	             buttons: {
+	             "닫기" : function() {
+	                      $(this).dialog('close');
+	                      $('#tbody-bankaccountList tr').remove();
+	                 }
+	             }
+	         });
+	      });
+	  });
+	
+	
+  $('#dialog-message-table').on('click', '#a-dialog-depositNo', function(event) {
+     event.preventDefault();
+     $("#tbody-bankaccountList").find("tr").remove();
+     
+     var depositNo = $("#input-dialog-depositNo").val();
+     
+     // ajax 통신
+     $.ajax({
+        url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
+        contentType : "application/json; charset=utf-8",
+        type: "get",
+        dataType: "json",
+        data : "",
+        statusCode: {
+            404: function() {
+              alert("page not found");
+            }
+        },
+        success: function(result){
+      	  if(result.success) {
+      	  	$("#input-dialog-depositNo").val('');
+      	  	var baccountList = result.bankAccountList;
+      	  	console.log(result.bankAccountList);
+      	  	for(let a in baccountList) {
+      	  		$("#tbody-bankaccountList").append("<tr>" +
+                        "<td class='center'>" + baccountList[a].depositNo + "</td>" +
+                        "<td class='center'>" + baccountList[a].depositHost + "</td>" +
+                        "<td class='center'>" + baccountList[a].bankCode + "</td>" +
+                        "<td class='center'>" + baccountList[a].bankName + "</td>" +
+                        "</tr>");
+
+      	  	}
+      	  }
+        },
+        error: function(xhr, error){
+           console.error("error : " + error);
+        }
+     });
+  });
+  
+  // 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+  $(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
+     var tr = $(this);
+     var td = tr.children();
+     $("input[name=depositNo]").val(td.eq(0).text());
+     $("input[name=depositHost]").val(td.eq(1).text());
+     $("input[name=bankCode]").val(td.eq(2).text());
+     $("input[name=bankName]").val(td.eq(3).text());
+     $("#dialog-bank").dialog('close');
+  });
 }); // $(function
 
 </script>

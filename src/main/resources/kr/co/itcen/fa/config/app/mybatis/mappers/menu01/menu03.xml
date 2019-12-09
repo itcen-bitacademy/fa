@@ -238,7 +238,7 @@
           join tb_account a
             on a.no = i.account_no
 	 left join (select no, name
-				  from tb_customer
+				  from tb_customer k
 				 union
 				select no, name
                   from tb_salescustomer
@@ -477,4 +477,28 @@
 		)
 		]]>
 	</insert>
+	
+	<!-- 결산 -->
+	<select id="statementData" resultType="statementData17Vo" parameterType="closingDate17Vo">
+		<![CDATA[
+		select	
+			v.no as no
+		    , a.no as account_no
+		    , a.name as account_name
+		    , v.reg_date as reg_date
+		    , i.amount as amount
+		    , i.amount_flag as amount_flag
+		    , a.parent1 as parent1
+		    , a.parent2 as parent2
+		    , a.parent3 as parent3
+		    , a.parent4 as parent4
+		    , a.parent5 as parent5
+		  from	tb_voucher_manager as v
+		  join	tb_voucher_item as i on v.no = i.voucher_no
+		  join	tb_account as a on a.no = i.account_no
+		 where	v.reg_date >= #{startDate }
+		   and	v.reg_date <= #{endDate }
+		;
+		]]>
+	</select>
 </mapper>
