@@ -71,13 +71,11 @@ public class Menu61Service {
 		// 시산표 맵으로 변경 
 		Map<Long, TrialBalanceVo> trialBalanceMap = emptyTrialBalance.stream().collect(Collectors.toMap(TrialBalanceVo::getAccountNo, trialBalance -> trialBalance));
 		
-		// 테스전표 데이터 조회
-		// TODO: 실제 데이터로 변경
-		List<StatementDataVo> testList = menu61Repository.testStatementData(lastestUnclosingDateVo);
-//		List<StatementDataVo> testList = menu03Service.statementData(lastestUnclosingDateVo);
+		// 전표 데이터 조회
+		List<StatementDataVo> statementDataList = menu03Service.statementData(lastestUnclosingDateVo);
 		
 		// 시산표 값 적산
-		for (StatementDataVo vo : testList) {
+		for (StatementDataVo vo : statementDataList) {
 			TrialBalanceVo tbVo = null;
 			if (vo.getAccountNo() >= 5000000) {
 				tbVo = trialBalanceMap.get(vo.getAccountNo());
