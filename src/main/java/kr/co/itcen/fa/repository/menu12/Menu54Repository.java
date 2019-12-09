@@ -33,4 +33,9 @@ public class Menu54Repository {
 		return sqlSession.selectList("menu54.salescustomer");
 	}
 	
+	//품목에 대한 목록을 가져오는 기능
+	public List<SellTaxbillVo> salesItems(){
+		return sqlSession.selectList("menu54.salesitems");
+	}
+	
 }

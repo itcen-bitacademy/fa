@@ -28,4 +28,9 @@ public class Menu54Service {
 	public List<SellTaxbillVo> salesCustomer(){
 		return menu54Repository.salesCustomer();
 	}
+	
+	//품목에 대한 목록을 가져오는 기능
+	public List<SellTaxbillVo> salesItems(){
+		return menu54Repository.salesItems();
+	}
 }

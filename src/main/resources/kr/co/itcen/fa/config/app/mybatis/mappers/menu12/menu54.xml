@@ -20,4 +20,11 @@
 			select distinct customer_code as customerCode, customer_name as customerName from tb_sell_taxbill;
 		]]>
 	</select>
+	
+	<select id="salesitems" resultType="selltaxbill12vo">
+		<![CDATA[
+		select distinct tbs.item_code as itemCode, tbs.item_name as itemName, tst.sales_date as writeDate from tb_sales tbs, tb_sell_taxbill tst
+		where tbs.sales_no = tst.sales_no;
+		]]>
+	</select>
 </mapper>
