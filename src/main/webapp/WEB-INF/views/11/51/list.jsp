@@ -111,7 +111,7 @@ form {
 										<input type="text" name="bankName"/>
 									</td>
 									<td class="sixth-column">
-										<button type="submit" class="btn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+										<button type="submit" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 									</td>
 								</tr>
 								<tr>
@@ -127,8 +127,6 @@ form {
 								</tr>
 								</tbody>
 							</table>	
-							</form>
-							
 							<div class="row-fluid">
 								<div class="span9">
 									<div class="prod-list-opts">
@@ -157,11 +155,13 @@ form {
 									</div>
 								</div>
 							</div>
+							</form>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
 			
 				<!-- list -->
+				<p>총 ${contentsCount }건</p>
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
