@@ -83,7 +83,7 @@ public class Menu64Service {
 			}
 		}	
 		
-		vo.setAccountName("영업수익");
+		vo.setAccountName("매출액");
 		vo.setAccountOrder(orderNum++);
 		vo.setMonthToAmount(monthOperatingRevenue);
 		vo.setAmount(operatingRevenue);
