@@ -14,7 +14,7 @@ import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
  * 
- * @author 이종윤
+ * @author 이종윤 
  * 거래처 현황 조회
  *
  */
@@ -35,14 +35,20 @@ public class Menu28Repository {
 		System.out.println(customerVo.getDeleteFlag());
 		int i = sqlSession.selectOne("menu28.selectAllCount", customerVo);
 		System.out.println(i);
-		
+
 		return sqlSession.selectOne("menu28.selectAllCount", customerVo);
 	}
 
-	public List<CustomerVo> list(PaginationUtil pagination, CustomerVo customerVo) {
+	public List<CustomerVo> list(PaginationUtil pagination, CustomerVo customerVo, String customerDiv, String datepicker1, String datepicker2, String no, String deleteFlag) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
 		map.put("vo", customerVo);
+		map.put(customerDiv, "customerDiv");
+		map.put("datepicker1", datepicker1);
+		map.put("datepicker2", datepicker2);
+		System.out.println("customerDiv :"+customerDiv+"datepicker1 :"+datepicker1);
+		map.put("no", no);
+		map.put("deleteFlag", deleteFlag);
 		List<CustomerVo> list = sqlSession.selectList("menu28.optionSearch", map);
 		return list;
 
