@@ -140,8 +140,8 @@ public class Menu03Repository {
 	}
 	
 	// 결산
-	public StatementDataVo statementData(ClosingDateVo closingDataVo) {
-		return sqlSession.selectOne("menu03.statementData", closingDataVo);
+	public List<StatementDataVo> statementData(ClosingDateVo closingDataVo) {
+		return sqlSession.selectList("menu03.statementData", closingDataVo);
 	}
 	
 }

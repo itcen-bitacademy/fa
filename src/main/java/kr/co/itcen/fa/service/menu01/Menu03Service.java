@@ -115,7 +115,7 @@ public class Menu03Service {
 		
 		
 		// 결산
-		public StatementDataVo statementData(ClosingDateVo closingDataVo) {
+		public List<StatementDataVo> statementData(ClosingDateVo closingDataVo) {
 			return menu03Repository.statementData(closingDataVo);
 		}
 		
