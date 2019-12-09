@@ -33,36 +33,29 @@ public class Menu46Controller {
 	@Autowired
 	private Menu46Service menu46Service;
 	
-	                                   //   /11/46, /11/46/add
+	//기본
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String add(Model model) {
-		List<STermDebtVo> list = menu46Service.getList();
-		model.addAttribute("list", list);
+		Map map = menu46Service.getListMap();
+		model.addAllAttributes(map);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
+	//입력
 	@RequestMapping("/" + SUBMENU + "/insert")
 	public String insert(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
 		sTermDebtVo.setInsertId(authUser.getId());
 		menu46Service.insert(sTermDebtVo);
+		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
+	//수정
 	@RequestMapping("/" + SUBMENU + "/update")
 	public String update(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) {
 		sTermDebtVo.setUpdateId(authUser.getId());
 		menu46Service.update(sTermDebtVo);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
-	}
-	
-	@RequestMapping("/" + SUBMENU + "/search")
-	public String search(@RequestParam String code, @RequestParam String financialYear, Model model) {
-		Map map = new HashMap<String, String>();
-		map.put("code", code);
-		map.put("financialYear", financialYear);
-		List<STermDebtVo> list = menu46Service.search(map);
 		
-		model.addAttribute("list", list);
-		return MAINMENU + "/" + SUBMENU + "/add";
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 }

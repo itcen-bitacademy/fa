@@ -29,8 +29,10 @@ public class Menu47ApiController {
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu47Controller.SUBMENU + "/search")
-	public JSONResult search(STermDebtVo sTermDebtVo) {
-		Map map = menu47Service.search(sTermDebtVo);
+	public JSONResult search(STermDebtVo sTermDebtVo,
+			@RequestParam(value="pageSize", required=true) int pageSize) {
+		
+		Map map = menu47Service.search(sTermDebtVo, pageSize);
 		List<STermDebtVo> list = (List<STermDebtVo>)map.get("list");
 		return JSONResult.success(map);
 	}
@@ -38,17 +40,21 @@ public class Menu47ApiController {
 	@ResponseBody
 	@RequestMapping("/" + Menu47Controller.SUBMENU + "/order")
 	public JSONResult order(STermDebtVo sTermDebtVo,
+			@RequestParam(value="pageSize", required=true) int pageSize,
 			@RequestParam(value="orderColumn", required=true) String orderColumn) {
-		Map map = menu47Service.order(sTermDebtVo, orderColumn);
+		
+		Map map = menu47Service.order(sTermDebtVo, pageSize, orderColumn);
 		return JSONResult.success(map);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/" + Menu47Controller.SUBMENU + "/paging", method=RequestMethod.POST)
-	public JSONResult paging(STermDebtVo sTermDebtVo, 
+	public JSONResult paging(STermDebtVo sTermDebtVo,
+			@RequestParam(value="pageSize", required=true) int pageSize,
 			@RequestParam(value="orderColumn", required=false, defaultValue="") String orderColumn,
 			@RequestParam(value="page", required=true) int page) {
-		Map map = menu47Service.paging(sTermDebtVo, orderColumn, page);
+		
+		Map map = menu47Service.paging(sTermDebtVo, pageSize, orderColumn, page);
 		System.out.println("paging : " + sTermDebtVo);
 		return JSONResult.success(map);
 	}
