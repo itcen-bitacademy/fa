@@ -20,48 +20,48 @@
 					<h1 class="pull-left">재무제표계정관리</h1>
 				</div>
 				<!-- /.page-headerr -->
-				<div class="row-fluid">
-				
+				<div class="row-fluid">			
 					<div class="span12">
 						<!-- PAGE CONTENT BEGINS -->
-						<form class="form-horizontal" method="post"
-							action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-							<div class="span2">
-								<!-- 회계연도  -->
-								<label class="control-label" for="form-field-1">회계연도</label>
-								<div class="controls">
-									<input type="number" min="1900" max="2099" step="1"
-										value="2019" id="accountUsedyear" name="accountUsedyear"
-										placeholder="회계연도"
-										style="text-align: center; width: 150px; height: 18px;" />
+						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+							<!-- 회계연도  -->	
+							<div class="span3">								
+								<div class="control-group">
+									<label class="control-label" for="form-field-1" style="text-align:left;width:100px;" >회계연도</label>
+									<div class="controls" style="margin-left:100px;">		
+										<input type="number" min="1900" max="2099" step="1"
+											value="2019" id="accountUsedyear" name="accountUsedyear"
+											placeholder="회계연도"
+											style="text-align: center; width: 150px; height: 18px;" />
+									</div>
+								</div>
+							</div>	
+							<!-- 구분  -->						
+							<div class="span3">							
+								<div class="control-group">
+								<label class="control-label" for="form-field-select-1" style="text-align:left;width:100px;" >구분</label>
+									<div class="controls" style="margin-left:100px;">
+										<select id="selectedAccountStatementType" name="selectedAccountStatementType"
+											data-placeholder="메뉴선택"
+											style="text-align: center; width: 150px;">
+											<c:if test="${selectedAccountStatementType eq 'B' }">
+												<option value="B" selected="selected">대차대조표</option>
+												<option value="I">손익계산서</option>
+											</c:if>
+											<c:if test="${selectedAccountStatementType eq 'I' }">
+												<option value="B">대차대조표</option>
+												<option value="I" selected="selected">손익계산서</option>
+											</c:if>
+										</select>
+									</div>
 								</div>
 							</div>
-							
-							<div class="span2">
-								<!-- 구분  -->
-								<label class="control-label" for="form-field-select-1">구분</label>
-								<div class="controls">
-									<select id="selectedAccountStatementType" name="selectedAccountStatementType"
-										data-placeholder="메뉴선택"
-										style="text-align: center; width: 150px;">
-										<c:if test="${selectedAccountStatementType eq 'B' }">
-											<option value="B" selected="selected">대차대조표</option>
-											<option value="I">손익계산서</option>
-										</c:if>
-										<c:if test="${selectedAccountStatementType eq 'I' }">
-											<option value="B">대차대조표</option>
-											<option value="I" selected="selected">손익계산서</option>
-										</c:if>
-									</select>
-								</div>
-							</div>
-							
-							<div class="span5">
+							<div class="span4">
 								<!-- 계정명칭  -->
 								<div class="control-group">
-								<label class="control-label" for="form-field-select-1">계정과목</label>
-								<div class="controls">
-									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목">		
+								<label class="control-label" for="form-field-select-1" style="text-align:left;width:100px;">계정과목</label>
+								<div class="controls" style="margin-left:100px;">
+									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목" style="text-align:left;width:160px;" >		
 										<option value="" data-accountName="" id ="firstSelectedAccount" ></option>		
 										<c:choose>
 											<c:when test="${selectedAccount eq selectedAccount }">
@@ -72,13 +72,13 @@
 												<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>
 										</c:forEach>
 									</select> 
-									<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 200px; height: 18px;" disabled />
+									<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 160px; height: 18px;" disabled />
 								
 								</div>
 								</div>
 							</div>
 
-							<div class="span3">
+							<div class="span2">
 								&nbsp;
 								<button class="btn btn-info btn-small" type="submit" name="action"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 								&nbsp;
@@ -91,8 +91,8 @@
 				</div>
 
 				<!-- /.span -->
-
 				<!-- /.row-fluid -->
+				<div class="row-fluid">
 				<!-- 제무재표 계정과목 테이블  -->
 				<div class="span12">
 				<!-- 선 -->
@@ -105,10 +105,10 @@
 								<th>계정과목</th>
 								<th>계정명칭</th>
 								<th>잔액구분</th>
-								<th>입력일자</th>
 								<th>입력담당자</th>
-								<th>수정일자</th>
+								<th>입력일자</th>
 								<th>수정담당자</th>
+								<th>수정일자</th>
 							</tr>
 						</thead>
 
@@ -133,6 +133,7 @@
 							</tbody>				
 						</c:forEach>
 					</table>
+				</div>
 				</div>
 			</div>
 
