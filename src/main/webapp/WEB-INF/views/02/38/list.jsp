@@ -15,7 +15,6 @@
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
-
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <style>
@@ -59,7 +58,7 @@ input:focus {
 				</div>
 				<!-- /.page-header -->
 				<form method="post"
-					action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+					action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 					<div class="row-fluid">
 						<div class="span12">
 							<!-- PAGE CONTENT BEGINS -->
@@ -68,22 +67,21 @@ input:focus {
 								<div class="controls span5">
 									<div class="input-append">
 										<input class="cl-date-picker" id="id-date-picker-1"
-											type="text" style="width: 70%">
-										<span class="add-on"> <i class="icon-calendar"></i>
+											type="text" style="width: 70%"> <span class="add-on">
+											<i class="icon-calendar"></i>
 										</span>
 									</div>
 									~ &nbsp;
 									<div class="input-append">
 										<input class="cl-date-picker" id="id-date-picker-1"
-											type="text" style="width: 70%">
-										<span class="add-on"> <i class="icon-calendar"></i>
+											type="text" style="width: 70%"> <span class="add-on">
+											<i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="form-field-1">과세유형</label>
+								<label class="control-label span1" for="tax-type">과세유형</label>
 								<div class="controls span5">
-									<select class="chosen-select" id="zero" name="zero"
-										data-placeholder="영세/비영세">
+									<select class="chosen-select" id="tax-type" name="tax-type">
 										<option value="전체">전체</option>
 										<option value="과세">과세</option>
 										<option value="영세">영세</option>
@@ -96,10 +94,10 @@ input:focus {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-2">승인번호</label>
+								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
-									<input style="width: 97%" type="text" id="form-field-2"
-										name="id" placeholder="승인번호" />
+									<input style="width: 97%" type="text" id="no" name="no"
+										placeholder="승인번호" />
 								</div>
 							</div>
 						</div>
@@ -107,27 +105,27 @@ input:focus {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-3">품목명</label>
+								<label class="control-label span1" for="item-name">품목명</label>
 								<div class="controls span2">
 									<div class="input-append">
-										<input class="date-picker" id="form-field-3" type="text"
-											data-date-format="dd-mm-yyyy"> <span class="add-on">
-											<i class="icon-search"></i>
+										<input class="date-picker" id="item-name" type="text"
+											name="item-name" data-date-format="dd-mm-yyyy"> <span
+											class="add-on"> <i class="icon-search"></i>
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="form-field-4">거래처명</label>
+								<label class="control-label span1" for="customer-name">거래처명</label>
 								<div class="controls span2">
 									<div class="input-append">
-										<input class="date-picker" id="form-field-4" type="text"
-											data-date-format="dd-mm-yyyy"> <span class="add-on">
-											<i class="icon-search"></i>
+										<input class="date-picker" id="customer-name" type="text"
+											name="customer-name" data-date-format="dd-mm-yyyy"> <span
+											class="add-on"> <i class="icon-search"></i>
 										</span>
 									</div>
 								</div>
 								<div class="controls span6">
 									<button class="btn btn-default btn-small span1"
-									style="float: left; margin-left: 20px;">조회</button>
+										style="float: left; margin-left: 20px;">조회</button>
 								</div>
 							</div>
 						</div>
@@ -135,53 +133,129 @@ input:focus {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group span12">
-								<label class="control-label span1" for="form-field-order">정렬</label>
+								<label class="control-label span1" for="order">정렬</label>
 								<div class="controls span5">
-									<label style="display: inline;"> <input
-										name="form-field-radio" type="radio" class="ace" checked> <span
-										class="lbl">최근 순</span>
-									</label> <label style="display: inline;"> <input
-										name="form-field-radio" type="radio" class="ace"> <span
-										class="lbl">공급가액 순</span>
-									</label> <label style="display: inline;"> <input
-										name="form-field-radio" type="radio" class="ace"> <span
-										class="lbl">품목명 순</span>
-									</label> <label style="display: inline;"> <input
-										name="form-field-radio" type="radio" class="ace"> <span
-										class="lbl">거래처명 순</span>
+									<label style="display: inline;"> <input name="order"
+										type="radio" class="ace" checked> <span class="lbl">최근
+											순</span>
+									</label> <label style="display: inline;"> <input name="order"
+										type="radio" class="ace"> <span class="lbl">공급가액
+											순</span>
+									</label> <label style="display: inline;"> <input name="order"
+										type="radio" class="ace"> <span class="lbl">품목명
+											순</span>
+									</label> <label style="display: inline;"> <input name="order"
+										type="radio" class="ace"> <span class="lbl">거래처명
+											순</span>
 									</label>
-
 								</div>
-								
 							</div>
 						</div>
 					</div>
 				</form>
-
 
 				<div class="control-group"
 					style="overflow-x: scroll; max-width: 1400px">
 					<table id="sample-table-1"
 						class="table table-striped table-bordered table-hover"
 						style="width: 1700px">
-						<tr>
-							<th>번호</th>
-							<th>승인번호</th>
-							<th>작성일자</th>
-							<th>등록번호</th>
-							<th>거래처명</th>
-							<th>대표자명</th>
-							<th>업태</th>
-							<th>종목</th>
-							<th>총 공급가액</th>
-							<th>총 세액</th>
-							<th>과세유형</th>
-							<th>삭제여부</th>
+						<thead>
+							<tr>
+								<!-- 16개 -->
+								<th>승인번호</th>
+								<th>작성일자</th>
+								<th>등록번호</th>
+								<th>거래처명</th>
+								<th>대표자명</th>
+								<th>업태</th>
+								<th>종목</th>
+								<th>매입일자</th>
+								<th>품목명</th>
+								<th>수량</th>
+								<th>공급가액</th>
+								<th>세액</th>
+								<th>총 공급가액</th>
+								<th>총 세액</th>
+								<th>과세유형</th>
+								<th>삭제여부</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:choose>
+								<c:when test="${fn:length(taxbillList) == 0 }">
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${taxbillList }" var="taxbill">
+										<c:set var="count" value="0" />
+										<c:set var="status" value="0" />
+										<c:forEach items="${itemsList }" var="item">
+											<c:if test="${taxbill.no == item.taxbillNo }">
+												<c:set var="count" value="${count+1 }" />
+											</c:if>
+										</c:forEach>
 
-						</tr>
-						<tr>
-
-						</tr>
+										<c:forEach items="${itemsList }" var="item">
+											<c:if test="${taxbill.no == item.taxbillNo }">
+												<tr>
+													<c:if test="${status == 0 }">
+														<td rowspan="${count }">${taxbill.no }</td>
+														<td rowspan="${count }">${taxbill.writeDate }</td>
+													</c:if>
+													<c:forEach items="${customerList }" var="customer">
+														<c:if test="${taxbill.companyName == customer.name }">
+															<c:if test="${status == 0 }">
+																<td rowspan="${count }">${customer.no }</td>
+																<td rowspan="${count }">${customer.name}</td>
+																<td rowspan="${count }">${customer.ceo }</td>
+																<td rowspan="${count }">${customer.conditions }</td>
+																<td rowspan="${count }">${customer.item  }</td>
+															</c:if>
+														</c:if>
+													</c:forEach>
+													<td>${item.purchaseDate }</td>
+													<td>${item.itemName }</td>
+													<td>${item.amount }</td>
+													<td>${item.supplyValue }</td>
+													<td>${item.taxValue }</td>
+													<c:if test="${status == 0 }">
+														<td rowspan="${count }">${taxbill.totalSupplyValue }</td>
+														<td rowspan="${count }">${taxbill.totalTaxValue }</td>
+														<td rowspan="${count }">
+															<c:if test="${taxbill.taxType == 'zero' }">
+																영세
+															</c:if>
+															<c:if test="${taxbill.taxType == 'tax' }">
+																과세
+															</c:if>
+														</td>
+														<td rowspan="${count }">${taxbill.deleteFlag }</td>
+													</c:if>
+												</tr>
+												<c:set var="status" value="${status+1 }" />
+											</c:if>
+										</c:forEach>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</tbody>
 					</table>
 				</div>
 				<div class="control-group">

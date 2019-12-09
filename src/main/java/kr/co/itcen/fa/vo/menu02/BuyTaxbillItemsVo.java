@@ -19,8 +19,8 @@ public class BuyTaxbillItemsVo {
 	public String toString() {
 		return "BuyTaxbillItemsVo [no=" + no + ", taxbillNo=" + taxbillNo + ", purchaseDate=" + purchaseDate
 				+ ", itemName=" + itemName + ", amount=" + amount + ", supplyValue=" + supplyValue + ", taxValue="
-				+ taxValue + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + "]";
+				+ taxValue + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}
 	public Long getNo() {
 		return no;

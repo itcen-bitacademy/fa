@@ -4,6 +4,9 @@
 	<!-- Team -->
 	<insert id="save" parameterType="test2vo">
 		<![CDATA[
+		
+		]]>
+		<![CDATA[
 		insert
 		  into test
 		values (null, #{name })
@@ -14,4 +17,25 @@
 			]]>
 		</selectKey>
 	</insert>
+	<!-- 세금계산서의 모든 리스트를 가져오는 select -->
+	<select id="getAllBuyTaxbill" resultType="buytaxbillvo">
+		<![CDATA[
+		select *
+		  from tb_buy_taxbill
+		]]>
+	</select>
+	<!-- 세금계산서의 맞는 거래처List를 가져오는 select -->
+	<select id="getMatchTaxbillCustomerList" resultType="purchasecustomer35vo">
+		<![CDATA[
+		select *
+		  from tb_purchasecustomer
+		]]>
+	</select>
+	<!-- 세금계산서에 맞는 품목을 가져오는 select -->
+	<select id="getMatchTaxbillItemsList" resultType="buytaxbillitems">
+		<![CDATA[
+		select *
+		  from tb_buy_taxbill_items
+		]]>
+	</select>
 </mapper>
