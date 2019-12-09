@@ -32,7 +32,7 @@
 										<input type="number" min="1900" max="2099" step="1"
 											value="2019" id="accountUsedyear" name="accountUsedyear"
 											placeholder="회계연도"
-											style="text-align: center; width: 150px; height: 18px;" />
+											style="text-align: left; width: 150px; height: 18px;" />
 									</div>
 								</div>
 							</div>	
@@ -43,7 +43,7 @@
 									<div class="controls" style="margin-left:100px;">
 										<select id="selectedAccountStatementType" name="selectedAccountStatementType"
 											data-placeholder="메뉴선택"
-											style="text-align: center; width: 150px;">
+											style="text-align: left; width: 150px;">
 											<c:if test="${selectedAccountStatementType eq 'B' }">
 												<option value="B" selected="selected">대차대조표</option>
 												<option value="I">손익계산서</option>
