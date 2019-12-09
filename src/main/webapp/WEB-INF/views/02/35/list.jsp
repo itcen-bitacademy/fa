@@ -56,7 +56,7 @@
 			 
 			 // ajax 통신
 			 $.ajax({
-			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/gets?depositNo=" + depositNo,
+			    url: "${pageContext.request.contextPath }/api/deposit/gets?depositNo=" + depositNo,
 			    contentType : "application/json; charset=utf-8",
 			    type: "get",
 			    dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -584,8 +584,8 @@
 													<td>${customerVo.managerEmail }</td>
 													<td>${customerVo.depositNo }</td>
 													<td>${customerVo.depositHost }</td>
-													<td>은행코드</td>
-													<td>은행명</td>
+													<td>${customerVo.bankCode }</td>
+													<td>${customerVo.bankName }</td>
 													<td>${customerVo.insertDay }</td>
 													<td>${customerVo.insertUserid }</td>
 													<td>${customerVo.updateDay }</td>

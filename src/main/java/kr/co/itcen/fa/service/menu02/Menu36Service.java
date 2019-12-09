@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.service.menu02;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,11 @@ public class Menu36Service {
 		dataResult.setDatas(list);
 		
 		return dataResult;
+	}
+	
+	public Map<String, Object> gets(Map<String, String> parameters) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = menu36Repository.gets(parameters);
+		return map;
 	}
 }
