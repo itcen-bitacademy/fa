@@ -82,6 +82,7 @@ public class Menu53Controller {
 		selltaxbillvo.setInsertUserid(authUser.getId());
 		selltaxbillvo.setDeleteFlag("N");
 		
+		
 		selltaxbillvo.setAccountNo(1110101L);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
 		selltaxbillvo.setAmountFlag("d");		// select * from 
 		
@@ -93,9 +94,9 @@ public class Menu53Controller {
 		// 전표등록
 		
 		// 객체 생성
-		VoucherVo voucherVo = new VoucherVo();
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-		MappingVo mappingVo = new MappingVo();
+		VoucherVo voucherVo = new VoucherVo();				// 전표내용
+		List<ItemVo> itemVoList = new ArrayList<ItemVo>();	// 세부항목
+		MappingVo mappingVo = new MappingVo();				// 전표내용과 세부항목을 매핑!!!
 		
 		ItemVo itemVo = new ItemVo();
 		ItemVo itemVo2 = new ItemVo();
@@ -103,8 +104,8 @@ public class Menu53Controller {
 		
 		voucherVo.setRegDate(selltaxbillvo.getSalesDate());  // 매출일
 		itemVo.setAmount(selltaxbillvo.getTotalSupplyValue() + selltaxbillvo.getTotalTaxValue()); // 현금
-		itemVo.setAmountFlag("d");			// 차변 - d
-		itemVo.setAccountNo(1110101L);		// 계정과목코드 
+		itemVo.setAmountFlag("d");							 // 차변 - d
+		itemVo.setAccountNo(1110101L);						 // 계정과목코드 
 		itemVoList.add(itemVo);
 		
 		itemVo2.setAmount(selltaxbillvo.getTotalSupplyValue()); 	// 공급가액
@@ -112,17 +113,20 @@ public class Menu53Controller {
 		itemVo2.setAccountNo(5010101L);								// 상품매출
 		itemVoList.add(itemVo2);
 		
-		itemVo3.setAmount(selltaxbillvo.getTotalTaxValue()); 			// 부가세금액
+		itemVo3.setAmount(selltaxbillvo.getTotalTaxValue()); 		// 부가세금액
 		itemVo3.setAmountFlag("c");									// 대변
 		itemVo3.setAccountNo(2140101L);								// 부가세예수금
 		itemVoList.add(itemVo3);
 		
 		mappingVo.setVoucherUse(selltaxbillvo.getVoucherUse());     // 비고
-		mappingVo.setSystemCode(selltaxbillvo.getSalesNo());      // 매출번호
+		mappingVo.setSystemCode(selltaxbillvo.getSalesNo());      	// 매출번호
 		mappingVo.setDepositNo(selltaxbillvo.getDepositNo());       // 계좌번호
-		mappingVo.setCustomerNo(selltaxbillvo.getCustomerCode());       // 거래처 코드
+		mappingVo.setCustomerNo(selltaxbillvo.getCustomerCode());   // 거래처 코드
+		mappingVo.setManageNo(selltaxbillvo.getTaxbillNo());		// 세금계산서 번호 입력
 		
+		System.out.println(selltaxbillvo.getTaxbillNo());
 		long voucherNo;
+		
 		voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
 		
 		selltaxbillvo.setVoucherNo(String.valueOf(voucherNo)); 
