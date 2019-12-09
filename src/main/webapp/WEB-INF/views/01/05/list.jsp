@@ -96,11 +96,11 @@ $(function() {
 			    type: "POST",
 			    data: queryString,
 			    dataType: "json",
-			    success: function(dataResult){
-			    	if(dataResult.fail) {
+			    success: function(result){
+			    	if(result.fail) {
 			    		alert("다시 입력해주세요.");
 			    	}
-			    	if(dataResult.success) {
+			    	if(result.success) {
 			    		$('#input-form').each(function(){
 			    		    this.reset();
 			    		});
@@ -108,11 +108,13 @@ $(function() {
 			    		alert("카드 생성이 완료되었습니다."); 
 			    		
 			    		removeTable();
-			    		var cardList = dataResult.cardList;
+			    		var cardList = result.cardList;
 			    		createNewTable(cardList);
+			    		console.log(result.pagination.endPage )
 			    		
 				    	$('#pagination ul').remove();
-				    	createNewPage(dataResult, a);
+				    	createNewPage(result, a);
+				    	
 				    	$('#pagination').show();
 			    	}
 			    },
@@ -243,31 +245,32 @@ $(function() {
 		  $(".chosen-select").chosen();
 	}
 	
-	function createNewPage(dataResult, a){
+	function createNewPage(result, a){
 		var inputString = "<ul>";
 		
-        if('${dataResult.pagination.prev }') {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+        if(result.pagination.prev) {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${result.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
         } else {
         		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
         }
         
         if(a == "create") {
         	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-			for(var pg = 2; pg <= "${dataResult.pagination.endPage }"; pg++) {
+        	for(var pg = 2; pg <= result.pagination.endPage ; pg++) {
 				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
         	}
     	} else {
-        	for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
-        		if("${dataResult.pagination.page }" == pg){
-            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+    		console.log(result.pagination.endPage);
+        	for(var pg = result.pagination.startPage; pg <= result.pagination.endPage; pg++) {
+        		if(result.pagination.page == pg){
+            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
         		} else {
 	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
 	        	}
         	}
         }
 	            
-        if ('${dataResult.pagination.next }') {
+        if (result.pagination.next) {
         		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
         } else {
         		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
@@ -290,18 +293,18 @@ $(function() {
 		var cardNo3 = td.eq(1).text().substring(10,14);
 		var cardNo4 = td.eq(1).text().substring(15,20);
 			
-		$("input[name=cardNo1]").val(cardNo1);
-		$("input[name=cardNo2]").val(cardNo2);
-		$("input[name=cardNo3]").val(cardNo3);
-		$("input[name=cardNo4]").val(cardNo4);
+		$("input[id=cardNo1]").val(cardNo1);
+		$("input[id=cardNo2]").val(cardNo2);
+		$("input[id=cardNo3]").val(cardNo3);
+		$("input[id=cardNo4]").val(cardNo4);
 		
 		
 		$("input[name=cardNoOld]").val(td.eq(1).text());
 		
 		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
 		var year= td.eq(2).text().substring(3,5);
-		$("input[name=validityMM]").val(month);
-		$("input[name=validityYY]").val(year);
+		$("input[id=validityMM]").val(month);
+		$("input[id=validityYY]").val(year);
 		$("input[name=cvc]").val(td.eq(3).text());
 		$("input[name=user]").val(td.eq(4).text());
 		$("input[name=issuer]").val(td.eq(5).text());
@@ -330,18 +333,18 @@ $(function() {
 		var cardNo3 = td.eq(1).text().substring(10,14);
 		var cardNo4 = td.eq(1).text().substring(15,20);
 			
-		$("input[name=cardNo1]").val(cardNo1);
-		$("input[name=cardNo2]").val(cardNo2);
-		$("input[name=cardNo3]").val(cardNo3);
-		$("input[name=cardNo4]").val(cardNo4);
+		$("input[id=cardNo1]").val(cardNo1);
+		$("input[id=cardNo2]").val(cardNo2);
+		$("input[id=cardNo3]").val(cardNo3);
+		$("input[id=cardNo4]").val(cardNo4);
 		
 		
 		$("input[name=cardNoOld]").val(td.eq(1).text());
 		
 		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
 		var year= td.eq(2).text().substring(3,5);
-		$("input[name=validityMM]").val(month);
-		$("input[name=validityYY]").val(year);
+		$("input[id=validityMM]").val(month);
+		$("input[id=validityYY]").val(year);
 		$("input[name=cvc]").val(td.eq(3).text());
 		$("input[name=user]").val(td.eq(4).text());
 		$("input[name=issuer]").val(td.eq(5).text());
@@ -410,7 +413,7 @@ $(function() {
        
        // ajax 통신
        $.ajax({
-          url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
+          url: "${pageContext.request.contextPath }/api/deposit/gets?depositNo=" + depositNo,
           contentType : "application/json; charset=utf-8",
           type: "get",
           dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -493,23 +496,25 @@ $(function() {
 
 									<div class="controls">
 										<div class="input-append">
-									
-											<input type="text" class="validity" id="form-field-1" name="cardNo1" maxlength=4 /> 
+											
+											<input type="text" class="validity" id="cardNo1" name="cardNo" maxlength=4 /> 
 										</div>
 										-
 										
 										<div class="input-append">
-											<input type="text" class="validity" id="form-field-1" name="cardNo2"  maxlength=4 />
+											<input type="text" class="validity" id="cardNo2" name="cardNo"  maxlength=4 />
 										</div>
 										-
 										<div class="input-append">
-											<input type="text" class="validity" id="form-field-1" name="cardNo3" maxlength=4  />
+											<input type="text" class="validity" id="cardNo3" name="cardNo" maxlength=4  />
 										</div>
 										-
 										<div class="input-append">
-											<input type="text" class="validity" id="form-field-1" name="cardNo4" maxlength=4  />
+											<input type="text" class="validity" id="cardNo4" name="cardNo" maxlength=4  />
 										</div>
 									</div>
+									
+									
 									<input type="hidden" name="cardNoOld" />
 									
 								</div>
@@ -542,7 +547,7 @@ $(function() {
 										<span class="btn btn-small btn-info"> <a href="#"
 											id="a-bankaccountinfo-dialog"> <i
 												class="icon-search nav-search-icon"></i> <input type="text"
-												class="search-input-width-first" name="depositNo" />
+												class="search-input-width-first" name="depositNo" readonly/>
 										</a> 
 									
 										</span> 
@@ -625,12 +630,12 @@ $(function() {
 									<div class="controls">
 										<div class="input-append">
 									
-											<input type="text" class="validity" id="form-field-1" name="validityMM" placeholder="MM" /> 
+											<input type="text" class="validity" id="validityMM" name="validity" placeholder="MM" maxlength=2 /> 
 										</div>
 										/ 
 										
 										<div class="input-append">
-											<input type="text" class="validity" id="validityYY" name="validityYY" placeholder="YY" />
+											<input type="text" class="validity" id="validityYY" name="validity" placeholder="YY" maxlength=2 />
 										</div>
 									</div>
 								</div>

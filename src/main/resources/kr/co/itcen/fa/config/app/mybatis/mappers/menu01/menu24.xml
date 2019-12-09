@@ -3,21 +3,18 @@
 <mapper namespace="menu24">
 	<!-- Test -->
 
-	<select id="selectAllCount" resultType="int" parameterType="1cardvo">
-		select count(*)
-		from tb_cardmanager
-
-		<if test="deleteFlag!=null">		    
+	<select id="readCount" resultType="int" parameterType="1cardvo">	
 			<![CDATA[
+				select count(*)
+				from tb_cardmanager
 				where delete_flag= #{deleteFlag }
 			]]>
-		</if>
 		 <if  test="inputperiodStart!=null ">		    
 			<![CDATA[
 				and insert_day >= #{inputperiodStart }
 			]]>
 		</if>
-		<if  test='inputperiodEnd!=null and inputperiodEnd.equals("")' >		    
+		<if  test='inputperiodEnd!=null' >		    
 			<![CDATA[
 				and insert_day <= #{inputperiodEnd }
 			]]>
@@ -36,7 +33,7 @@
 	</select>
 
 
-	<select id="selectAll" resultType="1cardvo" parameterType="map">
+	<select id="read" resultType="1cardvo" parameterType="map">
 	<![CDATA[
 		select  card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
 				company, abroad, password, deposit_no as depositNo,
@@ -44,13 +41,11 @@
 				update_userid as updateUserId, update_day as updateDay, 
 				delete_flag as deleteFlag
 		   from	tb_cardmanager
+			where delete_flag= #{vo.deleteFlag }
 		   
 	]]>
-		<if test="vo.deleteFlag!=null">		    
-			<![CDATA[
-				where delete_flag= #{vo.deleteFlag }
-			]]>
-		</if>
+	
+		
 		 <if  test="vo.inputperiodStart!=null">		    
 			<![CDATA[
 				and insert_day >= #{vo.inputperiodStart }
