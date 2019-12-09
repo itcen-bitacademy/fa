@@ -2,7 +2,6 @@ package kr.co.itcen.fa.service.menu08;
 
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,17 @@ import kr.co.itcen.fa.vo.menu08.VehicleVo;
 @Service
 public class Menu41Service {
 	
+	
+	
 	@Autowired
 	private Menu41Repository menu41Repository;
 	
 	public void test() {
+		
+		
 		menu41Repository.test();
 	}
+	
 	
 	//대분류 리스트 테스트
 	public Map<String, Object> getSection() {
@@ -42,6 +46,13 @@ public class Menu41Service {
 		return map;
 	}
 
+	//거래처 리스트 테스트
+	public Map<String, Object> getCustomer() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("customerList", menu41Repository.getCustomer());
+		return map;
+	}
+	
 
 	//리스트 등록
 	public void insert(VehicleVo vehicleVo) {
@@ -74,5 +85,13 @@ public class Menu41Service {
 	}
 
 
-	
+	public String getDepositNo(String customerNo) {
+		
+		String depositNo = menu41Repository.getDepositNo(customerNo);
+		return depositNo;
+	}
+
+
+
+
 }
