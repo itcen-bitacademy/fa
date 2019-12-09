@@ -25,7 +25,7 @@ public class Menu17Advice {
 			returnUri = returnUri + "/" + uriArr[1];
 		}
 		
-		returnUri = returnUri + "?error=" + URLEncoder.encode("알 수 없는 에러가 발생하였습니다.17", "UTF-8");
+		returnUri = returnUri + "?error=" + URLEncoder.encode("알 수 없는 에러가 발생하였습니다.", "UTF-8");
 		
 		return returnUri; 
 	}
