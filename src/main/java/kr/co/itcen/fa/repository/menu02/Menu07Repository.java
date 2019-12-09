@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.repository.menu02;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +43,6 @@ public class Menu07Repository {
 		return result;
 	}
 
-	public List<PurchasemanagementVo> getList(Map<String, Object> map) {
-		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getSearchlist", map);
-		System.out.println("service : " + result);
-		return result;
-	}
 
 	public List<PurchasemanagementVo> getList(PurchasemanagementVo vo) {
 		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getSearchList", vo);

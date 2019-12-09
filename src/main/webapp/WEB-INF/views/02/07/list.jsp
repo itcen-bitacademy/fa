@@ -263,10 +263,10 @@
 			$(".chosen-select").chosen();
 		})
 		
-		
+		var searchFlag = true;
 		$("#search").click(function(event) {
 			var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
-					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val(),};
+					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val()};
 			console.log(vo);
 			event.preventDefault();
 			
@@ -279,6 +279,7 @@
 			        success : function(result){
 			        	console.log(result);
 						createTable(result);
+						searchFlag = false;
 			        },
 			        error : function(){
 			            alert("error");
@@ -320,13 +321,17 @@
 		}
 		
 		$("body").on("click",".page_go",function(e) {
-			var page_num = $(this).text();
-			
+			//var page_num = $(this).text();
+			var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
+					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val(), 
+					  page : $(this).text(), searchFlag : searchFlag};
+			console.log(vo);
 			$.ajax({
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
-				type:"get",
+				type:"post",
 				dataType:"json",
-				data:{"page" : page_num},
+				contentType: 'application/json;charset=utf-8',
+				data:JSON.stringify(vo),
 				success:function(result) {
 					createTable(result);
 				}, error:function(error) {

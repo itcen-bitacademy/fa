@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.service.menu02;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,9 +38,6 @@ public class Menu07Service {
 	}
 
 	
-//	public List<PurchasemanagementVo> getList(Map<String, Object> map) {
-//		return menu07Repository.getList(map);
-//	}
 
 	public List<PurchasemanagementVo> getList(PurchasemanagementVo vo) {
 		return menu07Repository.getList(vo);
