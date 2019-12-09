@@ -27,41 +27,46 @@ public class Menu14Controller {
 	@Autowired
 	private Menu14Service menu14Service;
 	
+	// 검색필터(조건) 없는 목록 조회
 	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}" }, method=RequestMethod.GET)
 	public String list(Model model,
 						@PathVariable(name="page", required=false) String page) {
 		int ipage = 1;
-		if(page!=null) {
+		if(page!=null) { // pathvariable 페이지 없는경우 1페이지 세팅
 			ipage = Integer.parseInt(page);
 		} 
 		
-		System.out.println("check!!!!!!!!!!!!!!!!!!");
+		model.addAttribute("customerlist", menu14Service.getCustomerList()); // 거래처 목록
+		model.addAttribute("itemlist", menu14Service.getItemList()); // 품목 목록
 		
-		model.addAttribute("customerlist", menu14Service.getCustomerList());
-		model.addAttribute("itemlist", menu14Service.getItemList());
-		model.addAttribute("dataResult", menu14Service.getList(ipage));
+		model.addAttribute("dataResult", menu14Service.getList(ipage)); // 조회실행
+		
+		model.addAttribute("contentsCount", menu14Service.getCount()); // 게시물 수
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
-		
+	
+	// 검색필터(조건) 있는 목록 조회
 	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}"}, method=RequestMethod.POST)
-	public String list(SalesSearchVo vo, String dates, Model model, String page) {	
+	public String list(SalesSearchVo vo, String dates, Model model,
+							@PathVariable(name="page", required=false)String page) {	
 		int ipage = 1;
-		if(page!=null) {
+		if(page!=null) { // pathvariable 페이지 없는경우 1페이지 세팅
 			ipage = Integer.parseInt(page);
 		}
 		
-		String[] date = dates.split(" - ");		
-		System.out.println(date[0]);
+		String[] date = dates.split(" - "); // daterange 분리
 		vo.setStartDate(date[0]);
 		vo.setEndDate(date[1]);
-		vo.setSearchFlag(true);
+		vo.setSearchFlag(true); // 검색 여부 플래그
 		
-		model.addAttribute("dataResult", menu14Service.getSerchList(vo, ipage));
-		model.addAttribute("customerlist", menu14Service.getCustomerList());
-		model.addAttribute("itemlist", menu14Service.getItemList());
+		model.addAttribute("customerlist", menu14Service.getCustomerList()); // 거래처 목록
+		model.addAttribute("itemlist", menu14Service.getItemList()); // 품목 목록
 		
-		model.addAttribute("search", vo);
+		model.addAttribute("dataResult", menu14Service.getSerchList(vo, ipage)); // 조회실행
+		
+		model.addAttribute("search", vo); // 검색 조건 데이터 저장 (화면에 세팅)
+		model.addAttribute("contentsCount", menu14Service.getCount(vo)); // 게시물 수
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

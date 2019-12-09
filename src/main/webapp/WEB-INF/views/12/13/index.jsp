@@ -55,11 +55,11 @@
        	}
     </style>
     <script>
-
+		// 테이블 행추가
         function add_row() {
-            var table = document.getElementById("item-table");
+            var table = document.getElementById("item-table"); // 테이블 아이디 
             var row = table.insertRow(table.rows.length); // 하단에 추가       
-            var cnt = table.rows.length-1;
+            var cnt = table.rows.length-1; // 헤더를 뺀 테이블 길이 아이디에 부여용도
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
@@ -77,49 +77,48 @@
             cell4.innerHTML = '<td><input type="text" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()" required></td>';
             cell5.innerHTML = '<td><input type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()" required></td>';
             cell6.innerHTML = '<td><input type="text" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()" required></td>';
-            document.getElementById("rowCnt").value = cnt;
-            
-            $(".chosen-select").chosen();
+           
+            $("#rowCnt").val(cnt);
+            $(".chosen-select").chosen(); // 각 row에 품목코드 chosen 활성화
         }
 
         function delete_row() {
             var table = document.getElementById('item-table');
-            if (table.rows.length < 3) {
+            if (table.rows.length < 3) { // 헤더와 default row 1개 는 고정
                 return;
             } else {
                 table.deleteRow(table.rows.length-1); // 하단부터 삭제
             }
         }
         
-        var sumData = {
-        		addQuantity: function(){
+        var sumData = { // 수량, 공급가액, 부가세 합계 계산
+        		addQuantity: function(){ // 수량게산
         			var sum = 0;
-        			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
+        			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
         				sum = sum + Number($("#quantity"+i).val());
         				$("#totalQuantity").val(sum);
         			}
-  					this.addSupplyValue();
-  					this.addTaxValue();
+  					this.addSupplyValue(); // 수량 변동시 공급가액 다시 계산
         		},
         		addSupplyValue: function(){
 					var sum = 0;
-					for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-						sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val());
+					for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
+						sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val()); // 각 row의 수량과 공급가액 곱
 						$("#taxValue"+i).val(Math.round($("#supplyValue"+i).val()*0.1));
 						$("#totalSupplyValue").val(sum);
 					}
-					this.addTaxValue();
+					this.addTaxValue(); // 공급가액 변동시 부가세 다시계산
 					this.totalPrice();
 				},
 				addTaxValue: function(){
         			var sum = 0;
-        			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-        				sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val());
+        			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
+        				sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val()); // 각 row의 수량과 부가세 곱
         				$("#totaltaxValue").val(sum);
         			}
-        			this.totalPrice();
+        			this.totalPrice(); // 변동시 수량 > 공급가액 > 부가세 순으로 계산 후 합계금액
         		},
-        		totalPrice: function(){
+        		totalPrice: function(){ // 최종 합계급액
         			var tax = Number($("#totaltaxValue").val());
         			var supply = Number($("#totalSupplyValue").val());
         			$("#totalPrice").val(tax+supply);
@@ -127,13 +126,15 @@
         }
         
        var setData = {
-        	customer: function(){
+        	customer: function(){ // 거래처 코드 선택시 data 세팅
         		var code = $("#customerCode").val();
         		if(code==""){
         			$("#empManager").val("");
     				$("#customerName").val("");
     				$("#customerPhone").val("");
         		}
+        		
+        		// 기존에 가지고 있던 거래처 목록에서 선택한것과 일치하는 데이터만 세팅
         		<c:forEach items="${customerlist }" var="item" varStatus="status">
         			if(code=="${item.no }"){
         				$("#empManager").val("${item.ceo}");
@@ -142,12 +143,13 @@
         			}
                 </c:forEach>                
         	},
-        	item : function(selectid){
-        		var rownum = selectid.substring(selectid.length-1, selectid.length);
+        	item : function(selectid){// 품목 코드 선택시 data 세팅(selectid 에서 row 가져옴)
+        		var rownum = selectid.substring(selectid.length-1, selectid.length); // 맨 뒷자리 만 자름
         		var code = $("#"+selectid).val();
         		if(code==""){
-        			$("#itemName"+rownum).val("");
+        			$("#itemName"+rownum).val(""); // 선택 row에 데이터 세팅
         		}
+        		// 기존에 가지고 있던 거래처 목록에서 선택한것과 일치하는 데이터만 세팅
         		<c:forEach items="${itemlist }" var="item" varStatus="status">
 	    			if(code=="${item.no }"){
 	    				$("#itemName"+rownum).val("${item.name}");
@@ -157,7 +159,7 @@
         }
         
 
-        function checkNo(){  
+        function checkNo(){  // 매출번호 입력 확인
 	        var code = $("#salesNo").val();
 	        if(code==""){
 	        	alert("매출번호를 입력하세요.");
@@ -166,40 +168,46 @@
 	        location.href = "${pageContext.request.contextPath }/12/13/"+code;
 	     }
         
-        function checkFlag(){
-            if($("#flag").val()=="true"){
+        function checkFlag(){ // 각 상황별 버튼 disabled
+            if($("#flag").val()=="true"){ // 조회시 입력버튼 disabled
             	$("#btnSubmit").attr('disabled', true);
             	sumData.addQuantity();
             	sumData.addSupplyValue();
             	sumData.addTaxValue();
-            } else {
+            } else { // 조회화면 아니면 삭제 수정 disabled
             	$("#btnModify").attr('disabled', true);
             	$("#btnDelete").attr('disabled', true);
             	add_row(); // 조회화면이 아니면 기본행 삽입
             }
         }
         
-        function deleteData(){
+        function deleteData(){ // 삭제
         	var code = $("#checkSalesNo").val();
-        	if($("#flag").val()=="true"&&code!=""){
-        		location.href = "${pageContext.request.contextPath }/12/13/delete/"+code;
+        	if($("#flag").val()=="true"&&code!=""){// 조회 여부 및 매출번호 있는지 확인
+        		location.href = "${pageContext.request.contextPath }/12/13/delete/"+code; // GET
         	}
         }
         
-        function update(){
+        function update(){ // 수정
         	var code = $("#checkSalesNo").val();
         	var url = "${pageContext.request.contextPath }/12/13/update/"+code;
-        	if($("#flag").val()=="true"&&code!=""){
-        		$("#insert-form").attr("action",url).submit();
+        	if($("#flag").val()=="true"&&code!=""){ // 조회 여부 및 매출번호 있는지 확인
+        		$("#insert-form").attr("action",url).submit(); 
         	}
         }
         
-        function deleteCheck(){
+        function deleteCheck(){ // 삭제된 데이터 인지 플래그로 확인
         	var salesNo = $("#checkSalesNo").val();
         	if($("#flag").val()=="true"&&salesNo==""){
         		alert("삭제됐거나 없는 데이터 입니다.");
         		location.href = "${pageContext.request.contextPath }/12/13";
         	}
+        }
+        
+        function checkClosing(){ // 마감일 세팅 여부
+        	if($("#closingDate").val()=="true"){
+        		alert("마감 \n저장되지 않았습니다");
+        	} 
         }
         
     </script>
@@ -391,6 +399,7 @@
                     </div>
                     <input type="hidden" value="${saleslist[0].insertUserid }" name="insertUserid">
                     <input type="hidden" value="${saleslist[0].insertDay }" name="insertDay">
+                    <input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
                 </form>
                 <!-- /.span -->
 
@@ -432,9 +441,11 @@
                 $(this).datepicker('hide');
             });
             $(".cl-date-picker").datepicker( "setDate" , new Date());
+            
             setData.customer(); // 거래처 목록 세팅
             checkFlag(); // 조회 확인 플래그  + 기본행 삽입
-            deleteCheck();
+            deleteCheck(); // 삭제데이터 확인
+            checkClosing(); // 마감일 확인
         })
     </script>
 </body>
