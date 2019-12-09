@@ -22,21 +22,8 @@
 		<result column="update_id" property="updateId" />
 		<result column="update_date" property="updateDate" />
 	</resultMap>
-	<!-- Team -->
-	<insert id="save" parameterType="test4vo">
-		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
-		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
-	</insert>
 	
-	<select id="getList" resultType="stermdebtvo" resultMap="stermdebtResult">
+	<select id="getList" parameterType="Map" resultType="stermdebtvo" resultMap="stermdebtResult">
 		<![CDATA[
 			select 
 			no, code, major_code, name,
@@ -50,25 +37,27 @@
 			from tb_s_term_debt
 			where delete_flag="N" and repay_comple_flag="N"
 		]]>
+		<if test='code != null and !"".equals(code)'>
+			and code LIKE CONCAT(#{code}, "%")
+		</if>
+		<if test='financialYear != null and !"".equals(financialYear)'>
+			and year(debt_date) = #{financialYear} 
+		</if>
 	</select>
 	
-	<select id="getSearchedList" parameterType="Map" resultType="stermdebtvo" resultMap="stermdebtResult">
+	<select id="getTotalCnt" parameterType="stermdebtvo" resultType="int">
 		<![CDATA[
-			select 
-			no, code, major_code, name,
-			debt_amount, repay_bal, repay_way,
-			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
-			int_pay_way, int_amount, mgr,
-			mgr_call, bank_code, deposit_no, 
-			account_no, voucher_no, delete_flag,
-			insert_id, insert_date, update_id,
-			update_date 
+			select count(*) 
 			from tb_s_term_debt
-			where code LIKE CONCAT(#{code}, "%") and debt_date LIKE CONCAT(#{financialYear}, "%")
-			      and delete_flag="N" and repay_comple_flag="N"
+			where no > 0
 		]]>
+		<if test='code != null and !"".equals(code)'>
+			and code LIKE CONCAT(#{code}, '%')
+		</if>
+		<if test='debtDate != null and !"".equals(debtDate)'>
+			and year(debt_date) = #{debtDate}
+		</if>
 	</select>
-	
 	<insert id="insert" parameterType="stermdebtvo">
 		<![CDATA[
 			insert into tb_s_term_debt(no, code, name, major_code, debt_amount, repay_bal, repay_way,

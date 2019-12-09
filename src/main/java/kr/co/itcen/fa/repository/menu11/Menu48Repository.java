@@ -102,4 +102,12 @@ public class Menu48Repository {
 		int count = sqlSession.update("menu48.updaterepayflag",no);
 		return count==1;
 	}
+
+	public List<Long> selectVoucherNo(Long[] no) {
+		List<Long>list = new ArrayList<Long>();
+		for(Long no1: no) {
+			list.add(no1);
+		}
+		return sqlSession.selectList("menu48.selectVoucherNo",list);
+	}
 }

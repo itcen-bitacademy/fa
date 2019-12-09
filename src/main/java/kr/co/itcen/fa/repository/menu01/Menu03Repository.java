@@ -14,6 +14,8 @@ import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.TestVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
  * 
@@ -125,16 +127,21 @@ public class Menu03Repository {
 	}
 	
 	// 전표 다른 팀 삭제
-	public void deleteVoucher(VoucherVo voucherVo, UserVo userVo) {
-		VoucherVo voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
-		if (!userVo.getTeamName().equals(voucherVoTemp.getInsertTeam())) {
-			return;
-		}
-		
-		sqlSession.delete("menu03.deleteVoucher3", voucherVo);
-		sqlSession.delete("menu03.deleteItem3", voucherVo);
-		sqlSession.delete("menu03.deleteMapping3", voucherVo);
-		
+	public void deleteVoucher(List<VoucherVo> voucherVo, UserVo userVo) {
+		for(VoucherVo v1:voucherVo) {
+			VoucherVo voucherVoTeam = sqlSession.selectOne("menu03.selectTeam", v1.getNo());
+			if (!userVo.getTeamName().equals(voucherVoTeam.getInsertTeam())) {
+				return;
+			}
+			sqlSession.delete("menu03.updateVoucher3", v1);
+			sqlSession.delete("menu03.updateItem3", v1);
+			sqlSession.delete("menu03.updateMapping3", v1);
+		};
+	}
+	
+	// 결산
+	public List<StatementDataVo> statementData(ClosingDateVo closingDataVo) {
+		return sqlSession.selectList("menu03.statementData", closingDataVo);
 	}
 	
 }

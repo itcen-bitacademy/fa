@@ -17,8 +17,9 @@
 	<select parameterType="ldebtvo" id="selectAllCount" resultType="int">
 	<![CDATA[
 		select count(*)
-		    from tb_l_term_debt as a,tb_bank as b
+		    from tb_l_term_debt as a,tb_bank as b,tb_bank_account as c
 		    where a.bank_code=b.code
+		    and 	a.deposit_no = c.deposit_no
 		   	and 	a.delete_flag like concat('%',#{deleteFlag},'%')
 			and 	a.repay_comple_flag like concat('%',#{repayCompleFlag},'%')
 		    and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
@@ -46,8 +47,9 @@
 			    a.bank_code as bankCode,
 			    a.deposit_no as depositNo,
 			    b.name as bankName
-			    from tb_l_term_debt as a,tb_bank as b
+			    from tb_l_term_debt as a,tb_bank as b,tb_bank_account as c
 			    where a.bank_code=b.code
+			    		and 	a.deposit_no = c.deposit_no
 			    		and 	a.delete_flag like concat('%',#{vo.deleteFlag},'%')
 			    		and 	a.repay_comple_flag like concat('%',#{vo.repayCompleFlag},'%')
 			    		and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 

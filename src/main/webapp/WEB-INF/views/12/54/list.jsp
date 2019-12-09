@@ -54,7 +54,21 @@
 									<div class="form-horizontal">
 										<div class="control-group">
 											<div class="span6">
-												<label class="control-label" for="form-field-select-1">대분류구분</label>
+												<label class="control-label" for="form-field-select-1">거래처</label>
+												<div class="controls">
+													<select class="chosen-select" id="customerlist" name="customerlist" data-placeholder="거래처">
+														<option value="">거래처항목</option>
+														<c:forEach items="${customerlist }" var="clist">
+															<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
+														</c:forEach>
+														</select>
+														<!-- <input class="span6" type="text" id="sales-no" name="sales-no" value="" readonly> -->
+														<%-- <input class="span6" type="text" id="sales-no" name="sales-no" values="${customerlist.customerName }" readonly> --%>
+												</div>
+											</div>
+											
+											<div class="span6">
+												<label class="control-label span1" for="form-field-1">세금계산서 번호</label>
 												<div class="controls">
 													<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
 														<option value="">없음</option>
@@ -62,15 +76,7 @@
 															<option value="${sectionVo.no }">${sectionVo.classification }</option>
 														</c:forEach>
 													</select>
-												</div>
-											</div>
-											
-											<div class="span6">
-												<label class="control-label span1" for="form-field-1">세금계산서 번호</label>
-												<div class="controls">
-														<input class="span8" type="text" id="form-field-1">
-														 <span class="btn btn-small btn-info">
-														 <i class="icon-search nav-search-icon" onclick=""></i></span>
+													<input class="span6" type="text" id="sales-no" name="sales-no" readonly>
 												</div>
 											</div>
 										</div>
@@ -80,17 +86,20 @@
 										<div class="control-group">
 												<div class="span6">
 													<label class="control-label span2" for="form-field-1">품목명</label>
-													<div class="controls">
-														 <input class="span5" type="text" id="form-field-1"> 
-														 <input class="span5" type="text" id="form-field-1">
-														 <span class="btn btn-small btn-info"><i
-																class="icon-search nav-search-icon"></i></span>
-													</div>
+														<div class="controls">
+														<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
+														<option value="">없음</option>
+														<c:forEach items="${listMainSection }" var="sectionVo">
+															<option value="${sectionVo.no }">${sectionVo.classification }</option>
+														</c:forEach>
+													</select>
+													<input class="span6" type="text" id="sales-no" name="sales-no" readonly>
+												</div>
 												</div>
 											
 											<div class="span6">	
 											<label class="control-label span2" for="form-field-1">영세</label>
-												<div class="span4">
+												<div class="controls">
 													<select class="chosen-select" id="zero" name="zero" data-placeholder="영세/비영세">
 														<option value="zero">yes</option>
 														<option value="no">no</option>
@@ -265,9 +274,7 @@
 			});
 			
 			$(".chosen-select").chosen();
-			
 		})
-		
 		
 	</script>
 </body>

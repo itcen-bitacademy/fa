@@ -1,8 +1,8 @@
 package kr.co.itcen.fa.repository.menu08;
 
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.itcen.fa.vo.menu08.TestVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.StaffVo;
 
 
@@ -45,6 +46,14 @@ public class Menu41Repository {
 		return list;
 	}
 
+	//거래처 리스트 
+	public List<CustomerVo> getCustomer() {
+		List<CustomerVo> list = sqlSession.selectList("menu41.customer");
+		System.out.println(list);
+		return list;
+	}
+
+	
 	//등록 리스트 삽입
 	public boolean insert(VehicleVo vehicleVo) {
 		int count = sqlSession.insert("menu41.insert", vehicleVo);
@@ -77,6 +86,12 @@ public class Menu41Repository {
 		int count = sqlSession.delete("menu41.delete", id);
 		return count == 1;
 	}
+
+	public String getDepositNo(String customerNo) {
+		String depositNo = sqlSession.selectOne("menu41.getDepositNo", customerNo);
+		return depositNo;
+	}
+
 
 	
 		

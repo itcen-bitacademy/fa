@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.controller.menu12;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.MenuService;
 import kr.co.itcen.fa.service.menu12.Menu54Service;
+import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 
 /**
  * 
@@ -36,6 +39,10 @@ public class Menu54Controller {
 		 * JSP
 		 * 12/15/list.jsp
 		 */
+		
+		List<SellTaxbillVo> customerlist = menu54Service.salesCustomer();
+		model.addAttribute("customerlist", customerlist);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 

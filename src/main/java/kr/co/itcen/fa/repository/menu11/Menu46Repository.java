@@ -21,26 +21,31 @@ public class Menu46Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public List<STermDebtVo> getList() {
-		return sqlSession.selectList("menu46.getList");
+	//기본, 조회
+	public List<STermDebtVo> getList(Map map) {
+		return sqlSession.selectList("menu46.getList", map);
 	}
 	
+	public int getTotalCnt(Map map) {
+		return sqlSession.selectOne("menu46.getTotalCnt");
+	}
+	
+	//입력
 	public Boolean insert(STermDebtVo sTermDebtVo) {
 		int count = sqlSession.insert("menu46.insert", sTermDebtVo);
 		return (count==1);
 	}
 	
+	//수정
 	public Boolean update(STermDebtVo sTermDebtVo) {
 		System.out.println("update 콜됨");
 		int count = sqlSession.update("menu46.update1", sTermDebtVo);
 		return (count==1);
 	}
 	
+	//삭제
 	public void updateDeleteFlag(List<Long> noList) {
 		sqlSession.update("menu46.updateDeleteFlag", noList);
 	}
 	
-	public List<STermDebtVo> getSearchedList(Map map){
-		return sqlSession.selectList("menu46.getSearchedList", map);
-	}
 }

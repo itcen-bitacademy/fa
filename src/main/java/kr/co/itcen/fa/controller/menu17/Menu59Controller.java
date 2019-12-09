@@ -148,7 +148,7 @@ public class Menu59Controller {
 						result = "nono";
 						model.addAttribute("result", result);
 						
-						accountManagement.setUpdateUserid(authUser.getName());
+						accountManagement.setUpdateUserid(authUser.getId());
 						
 						System.out.println(accountManagement);	
 						menu59Service.update(accountManagement);
@@ -162,7 +162,7 @@ public class Menu59Controller {
 						result = "nono";
 						model.addAttribute("result", result);
 						
-						accountManagement.setUpdateUserid(authUser.getName());
+						accountManagement.setUpdateUserid(authUser.getId());
 						
 						System.out.println(accountManagement);	
 						menu59Service.update(accountManagement);
@@ -182,7 +182,7 @@ public class Menu59Controller {
 			result = "nullData";
 			model.addAttribute("result", result);
 			
-			accountManagement.setInsertUserid(authUser.getName());
+			accountManagement.setInsertUserid(authUser.getId());
 			
 			menu59Service.insert(accountManagement);
 

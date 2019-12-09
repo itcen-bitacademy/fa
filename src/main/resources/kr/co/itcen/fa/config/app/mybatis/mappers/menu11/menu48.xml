@@ -42,43 +42,61 @@
 	</selectKey>
 	</insert>
 	
+	<!-- 전표번호 읽어오기 -->
+	<!-- delete -->
+	<select parameterType="list" id="selectVoucherNo" resultType="long">
+	<![CDATA[
+		select voucher_no 
+		from tb_l_term_debt
+		where no in 
+	]]>
+	<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+		#{item } 
+	</foreach>
+	</select>
+	
+	
 	<!-- 전체 갯수 가지고 오기 -->
 	<select parameterType="map" id="selectAllCount" resultType="int">
 	<![CDATA[
 		select count(*)
-		    from tb_l_term_debt
-		    where delete_flag= 'N'
-		    and repay_comple_flag = 'N'
-		    and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
-			and 	code like concat('%',#{code},'%') 	
+		    from tb_l_term_debt as a,tb_bank as b,tb_bank_account as c
+		    where a.bank_code=b.code
+		    and a.deposit_no = c.deposit_no
+		    and	a.delete_flag= 'N'
+		    and a.repay_comple_flag = 'N'
+		    and 	date_format(a.debt_date,'%Y') like concat('%',#{year},'%') 
+			and 	a.code like concat('%',#{code},'%') 	
 	]]>
 	
 	</select>
 	<!-- select list -->
 	<select parameterType="map" id="selectAll" resultType="ldebtvo">
 	<![CDATA[
-		select no,
-			code,
-   			name,
-    		major_code as majorCode,
-    		debt_amount as debtAmount,
-    		repay_bal as repayBal,
-    		repay_way as repayWay,
-    		concat(date_format(debt_date,'%Y/%m/%d'),'-',
-    		date_format(exp_date,'%Y/%m/%d')) as debtExpDate,
-    		int_rate as intRate,
-    		int_pay_way as intPayWay,
-   			mgr,
-    		mgr_call as mgrCall,
-		    bank_code as bankCode,
-		    deposit_no as depositNo
-		    from tb_l_term_debt
-		    where delete_flag= 'N'
-		    	and repay_comple_flag = 'N'
-		    	and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
-				and 	code like concat('%',#{code},'%') 
-	
-	
+		select a.no as no,
+			a.code as code,
+   			a.name as name,
+    		a.major_code as majorCode,
+    		a.debt_amount as debtAmount,
+    		a.repay_bal as repayBal,
+    		a.repay_way as repayWay,
+    		concat(date_format(a.debt_date,'%Y/%m/%d'),'-',
+    		date_format(a.exp_date,'%Y/%m/%d')) as debtExpDate,
+    		a.int_rate as intRate,
+    		a.int_pay_way as intPayWay,
+   			a.mgr,
+    		a.mgr_call as mgrCall,
+		    a.bank_code as bankCode,
+		    a.deposit_no as depositNo,
+		    c.deposit_host as depositHost,
+		    b.name as bankName
+		    from tb_l_term_debt as a,tb_bank as b,tb_bank_account as c
+		    where a.bank_code=b.code
+		   		and a.deposit_no = c.deposit_no
+		    	and a.delete_flag= 'N'
+		    	and a.repay_comple_flag = 'N'
+		    	and 	date_format(a.debt_date,'%Y') like concat('%',#{year},'%') 
+				and 	a.code like concat('%',#{code},'%') 
 	]]>
 	<if test="pagination.pageIndex >= 0">
 	<![CDATA[

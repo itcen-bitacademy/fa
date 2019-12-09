@@ -14,4 +14,10 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<select id="salescustomer" resultType="selltaxbill12vo">
+		<![CDATA[
+			select distinct customer_code as customerCode, customer_name as customerName from tb_sell_taxbill;
+		]]>
+	</select>
 </mapper>

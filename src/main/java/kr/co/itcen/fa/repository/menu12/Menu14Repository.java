@@ -11,6 +11,13 @@ import kr.co.itcen.fa.vo.menu12.CustomerVo;
 import kr.co.itcen.fa.vo.menu12.SalesSearchVo;
 import kr.co.itcen.fa.vo.menu12.SalesVo;
 
+/**
+ * 
+ * @author 김현곤
+ * 매출관리
+ *
+ */
+
 @Repository
 public class Menu14Repository {
 	@Autowired

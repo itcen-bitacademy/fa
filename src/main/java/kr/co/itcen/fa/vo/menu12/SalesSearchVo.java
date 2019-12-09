@@ -4,6 +4,14 @@ import org.apache.ibatis.type.Alias;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 
+/**
+ * 
+ * @author 김현곤
+ * 매출관리
+ *
+ */
+
+//검색조건 담는 VO
 @Alias("serchvo")
 public class SalesSearchVo {
 	private String salesNo; // 매출번호

@@ -38,8 +38,8 @@
 		]]>
 			<!-- 조회 조건 -->
 			<choose>
-				<when test='vo == null'>
-					where delete_flag="N" and repay_comple_flag="N"
+				<when test='vo == null'>								<!-- vo가 Null이 찍히지만 타지 않는다...왜그러지 Controller에서 처리-->
+					where delete_flag=1 and repay_comple_flag=1
 				</when>
 				<when test='vo != null'>									<!-- no > 0은 조건문을 위해 삽입한 Cheat Code -->
 					where no > 0

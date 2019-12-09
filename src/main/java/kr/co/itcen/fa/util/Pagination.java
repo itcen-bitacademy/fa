@@ -8,8 +8,7 @@ import java.util.Map;
  * @작성일:	Dec 2, 2019
  * @이메일:	kbetter3@gmail.com
  * @수정자: 	ban
- * 
- * 페이징 유틸 Ajax 쓰는 사람 쓰기를
+ * @개선사항: Mybatis로 값 넘기는 Map 반환 Method 추가, 생성자 추가
  */
 public class Pagination {
 	private int page;				// 현재 페이지
@@ -71,6 +70,14 @@ public class Pagination {
 		next = (totalPageCnt > pageSize && endPage < totalPageCnt) ? true : false;
 	}
 	
+	public int getTotalCnt() {
+		return totalCnt;
+	}
+
+	public void setTotalCnt(int totalCnt) {
+		this.totalCnt = totalCnt;
+	}
+
 	/**
 	 * Limit 범위가 담긴맵
 	 */
