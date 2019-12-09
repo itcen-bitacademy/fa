@@ -182,6 +182,7 @@ public class Menu48Controller {
 //		menu48Service.delete(no);
 //		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+		
 	}
 	@ResponseBody
 	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
