@@ -8,9 +8,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
-
-
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 tr td:first-child {
@@ -51,6 +48,18 @@ tr td:first-child {
 	}
 	
 .mybtn{float:right;margin-right:20px;}
+
+.pagination{
+	display: grid;
+	grid-template-columns: repeat(3,auto);
+}
+
+.pg-list{
+	grid-column: 2;
+}
+.pg-total-row{grid-column: 3;}
+.pg-total-row>*{float: right; margin:0;}
+
 </style>
 </head>
 <body class="skin-3">
@@ -395,8 +404,14 @@ function selectRow(thisTr){
 //리스트를 받아서 Rendering 하는 함수
 function renderingList(list){
 	$("#tbody-list > *").remove();
+	
 	for(var i=0; i < list.length; ++i){
 		$("#tbody-list").append("<tr>" +
+				 "<td class='center'>" +
+				 	"<label class='pos-rel'>" +
+				 		"<input type='checkbox' name='" + list[i].no + "' value='" + list[i].no + "' class='ace' />" +"<span class='lbl'></span>" +
+					 "</label>" +
+				 "</td>" +
 				 "<td class='center'>" + list[i].code + "</td>" +
 				 "<td class='center'>" + list[i].name + "</td>" +
 				 "<td class='center'>" + list[i].majorCode + "</td>" +
@@ -452,9 +467,9 @@ function search() {
 	ajaxProcessing("search", null);
 }
 
-function paging(urlStr, thisObj){
+function paging(thisObj){
 	console.log("paging");
-	console.log($(thisObj).attr('id'));
+	console.log("thisObj" + $(thisObj));
 	ajaxProcessing("paging", thisObj)
 }
 
@@ -463,7 +478,7 @@ function ajaxProcessing(urlStr, thisObj){
 	console.log($(thisObj).attr('id'));
 	if(thisObj != null){
 		var page = $(thisObj).attr('id');
-		console.log(page);
+		console.log("page : " + page);
 		sendData += "&page=" + page;
 	}
 	
