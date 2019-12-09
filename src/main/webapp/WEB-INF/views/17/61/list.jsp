@@ -102,11 +102,18 @@
 												</c:choose>
 											</td>
 											<td><fmt:formatDate pattern="yyyy-MM-dd" value="${cdt.updateDay }"></fmt:formatDate></td>
-											<td>${cdt.updateUserid}</td>
+											<td>
+												<c:if test="${not empty cdt.updateUserid }">
+													${cdt.updateUsername }(${cdt.updateUserid })
+												</c:if>
+											</td>
 											<td class="closing-yn">
+												<%-- <c:if test="${!cdt.closingYn }">
+													<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
+												</c:if> --%>
 												<c:choose>
 													<c:when test="${cdt.closingYn }">
-														-
+														완료 
 													</c:when>
 													<c:otherwise>
 														<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
@@ -160,21 +167,6 @@
 
 			<%-- 에러 모달 --%>
 			<c:if test="${not empty param.error }">
-				<%-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="staticBackdropLabel">Error</h5>
-				      </div>
-				      <div class="modal-body">
-				        ${param.error }
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
-				      </div>
-				    </div>
-				  </div>
-				</div> --%>
 				<input type="hidden" id="errorMessage" value="${param.error }"/>
 			</c:if>
 
@@ -218,7 +210,7 @@
 			keyboard: false,
 			show: false
 		})
-		
+
 		// 에러 모달 연결
 		var errorMessage = $('#errorMessage')
 		if (errorMessage.val()) {
