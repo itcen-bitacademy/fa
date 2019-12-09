@@ -88,8 +88,8 @@
 				    		createNewTable(bankList);
 				    		
 				    		$('#pagination ul').remove();
-				    		${'dataResult.pagination.page' };
 				    		createNewPage(dataResult, a);
+				    		$('#pagination').show();
 				    	}
 				    },
 				    error: function( err ){
@@ -140,6 +140,7 @@
 				    	
 				    	$('#pagination ul').remove();
 			    		createNewPage(dataResult, a);
+			    		$('#pagination').show();
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -165,6 +166,7 @@
 				    	
 				    	$('#pagination ul').remove();
 			    		createNewPage(dataResult, a);
+			    		$('#pagination').show();
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -390,39 +392,60 @@
 	
 	function createNewPage(dataResult, a){
 		var inputString = "<ul>";
+		var endPage = 0;
+		var prev = "${dataResult.pagination.prev }";
+		var next = "${dataResult.pagination.next }";
+		prev *= 1;
+		next *= 1;
 		
-		console.log('${dataResult.pagination.page }');
-        
-        if('${dataResult.pagination.prev }') {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
-        } else {
-        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
-        }
-        
-        if(a == "create" || a == "delete") {
-        	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-			for(var pg = 2; pg < 5; pg++) {
+		if(a == "create") {
+			if("${dataResult.pagination.endPage }" > 5) {
+				alert("asdf");
+				endPage = 5;
+				prev = 0;
+				next = 6;
+			} else {
+				endPage = "${dataResult.pagination.endPage }";
+			}
+			// 앞 (무조건 inactive)
+			inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+			// 중간
+			inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+			for(var pg = 2; pg <= endPage; pg++) {
 				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	    	}
+			// 뒤        
+	        if (next == 6) {
+	        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+6+"'><i class='icon-double-angle-right'></i></a></li>";
+	        } else {
+	        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+	        }
+    	}
+		else {
+			// 앞
+			if(prev != 0) {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+	        } else {
+	        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+	        }
+			// 중간
+			for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
+	        	if("${dataResult.pagination.page }" == pg){
+	            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
+	        	} else {
+		        	inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+		        }
         	}
-    	} else {
-        	for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
-        		if("${dataResult.pagination.page }" == pg){
-            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-        		} else {
-	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-	        	}
-        	}
-        }
-	            
-        if ('${dataResult.pagination.next }') {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
-        } else {
-        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
-        }
-        inputString += "</ul>";
-        alert(inputString);
-        $("#pagination").append(inputString);
+			// 뒤        
+	        if (next != 0) {
+	        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
+	        } else {
+	        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+	        }
+		}
         
+        inputString += "</ul>";
+        $("#pagination").append(inputString);
    };
 	
 	// Popup
