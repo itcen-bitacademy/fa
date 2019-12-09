@@ -265,14 +265,14 @@
 	<!-- delete 다른팀 -->
 	<delete id="deleteVoucher" parameterType="1vouchervo">
 	<![CDATA[
-		delete 
+		delete
 		  from tb_voucher_manager
 		 where no = #{no };
 	]]>
 	</delete>
 	
 	<!-- delete 다른팀 -->
-	<delete id="deleteMapping" parameterType="1itemvo">
+	<delete id="deleteItem" parameterType="1itemvo">
 	<![CDATA[
 		delete 
 		  from tb_voucher_item
