@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu03Repository;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
@@ -28,6 +29,9 @@ public class Menu03Service {
 		@Autowired
 		private Menu03Repository menu03Repository;
 		
+		@Autowired
+		private Menu19Service menu19Service;
+		
 		//@Autowired
 		//private Menu04Repository menu04Repository;
 		
@@ -37,6 +41,7 @@ public class Menu03Service {
 		
 		// 전표생성 (다른 팀)
 		public Long createVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
+			//마감 여부 체크
 			voucherVo.setInsertUserid(userVo.getId());
 			
 			for(int i = 0; i < itemVo.size(); i++) {
@@ -48,8 +53,8 @@ public class Menu03Service {
 			
 			System.out.println("22222222222222222" + voucherVo.getRegDate());
 			menu03Repository.createVoucher(voucherVo, itemVo, mappingVo);
-			
 			return voucherVo.getNo(); // 전표번호
+			
 		}
 		
 		// 전표수정 (다른 팀)

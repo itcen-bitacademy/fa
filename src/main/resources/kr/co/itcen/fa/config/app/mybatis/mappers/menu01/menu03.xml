@@ -262,6 +262,33 @@
 	  ]]>
 	</select>
 	
+	<!-- delete 다른팀 -->
+	<delete id="deleteVoucher" parameterType="1vouchervo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_manager
+		 where no = #{no };
+	]]>
+	</delete>
+	
+	<!-- delete 다른팀 -->
+	<delete id="deleteMapping" parameterType="1itemvo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_item
+		 where voucher_no = #{voucherNo };
+	]]>
+	</delete>
+	
+	<!-- delete 다른팀 -->
+	<delete id="deleteMapping" parameterType="1mappingvo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_system_mapping
+		 where voucher_no = #{voucherNo };
+	]]>
+	</delete>
+	
 	<!-- delete 1팀 -->
 	<update id="deleteVoucher2" parameterType="1vouchervo">
 	<![CDATA[
