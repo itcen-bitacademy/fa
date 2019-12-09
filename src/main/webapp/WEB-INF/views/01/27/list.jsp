@@ -507,7 +507,7 @@ function execDaumPostcode() {
 									<span class="lbl">건물</span> 
 									&nbsp;
 									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="c" />
-									<span class="lbl">자산</span> 
+									<span class="lbl">차량</span> 
 									&nbsp;
 									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="d" />
 									<span class="lbl">무형자산</span>

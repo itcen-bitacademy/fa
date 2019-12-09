@@ -65,6 +65,41 @@
 									</div>
 								</div>
 								
+								<!-- 계정코드, 계정명 Modal pop-up : start -->
+								<div id="dialog-message-account" title="계정과목코드" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>계정과목코드</label> <input type="text"
+												id="input-dialog-accountNo" style="width: 100px;" /> <a
+												href="#" id="a-dialog-accountNo"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+											<td><label>계정과목명</label> <input type="text"
+												id="input-dialog-accountName" style="width: 100px;" /> <a
+												href="#" id="a-dialog-accountName"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-account-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">계정과목코드</th>
+												<th class="center">계정과목명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-accountList">
+										</tbody>
+									</table>
+								</div>
+								<!-- 계정코드, 계정명 Modal pop-up : end -->
+								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">금액 :</label>
 									<div class="controls">
@@ -120,11 +155,11 @@
 									
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" id="bankCode" name="bankCode" value="" placeholder="은행코드" /> 
+											<input type="text" id="bankCode" name="bankCode" value="" placeholder="은행코드" readonly /> 
 										</div>
 										&nbsp; &nbsp;
 										<div class="input-append">
-											<input type="text" id="bankCode" name ="bankName" value="" placeholder="은행명" />
+											<input type="text" id="bankCode" name ="bankName" value="" placeholder="은행명" readonly />
 										</div>
 									</div>
 								</div>
@@ -144,7 +179,7 @@
 								</div>
 								
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
-								<div id="dialog-bank" title="계좌" hidden="hidden">
+								<!-- <div id="dialog-bank" title="계좌" hidden="hidden">
 									<table id="dialog-message-table">
 										<tr>
 											<td><label>카드번호</label> <input type="text"
@@ -156,7 +191,7 @@
 											</a></td>
 										</tr>
 									</table>
-									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									은행코드 및 은행명 데이터 리스트
 									<table id="modal-deposit-table"
 										class="table  table-bordered table-hover">
 										<thead>
@@ -171,9 +206,8 @@
 											
 										</tbody>
 									</table>
-								</div>
+								</div> -->
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-								<!--  -->
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">계좌 번호 :</label>
@@ -211,15 +245,15 @@
 			<!-- buttons -->
 			<div class="row-fluid">
 				<div class="span8">
-						<button type="submit" class="btn btn-info btn"  id="btn-read" name="btn-read"
+						<button type="submit" class="btn btn-info btn-small"  id="btn-read" name="btn-read"
 									formaction="${pageContext.request.contextPath}/01/25/read">조회</button>
-						<button class="btn btn-primary" type="submit" id="btn-create" name="btn-create"
+						<button class="btn btn-primary btn-small" type="submit" id="btn-create" name="btn-create"
 							formaction="${pageContext.request.contextPath }/01/03/add">입 력</button>
-						<button class="btn btn-warning" type="submit" id="btn-update" name="btn-update"
+						<button class="btn btn-warning btn-small" type="submit" id="btn-update" name="btn-update"
 							formaction="${pageContext.request.contextPath }/01/03/update">수 정</button>
-						<button class="btn btn-danger" type="submit" id="btn-delete" name="btn-delete"
+						<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
 							formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
-						<button class="btn btn-default" type="reset">취 소</button>
+						<button class="btn btn-default btn-small" type="reset">취 소</button>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 			<div class="hr hr-18 dotted"></div>
@@ -282,6 +316,9 @@
 								    <td>${voucherVo.customerNo }</td>
 									<td>${voucherVo.customerName }</td>
 									<c:choose>
+										<c:when test="${voucherVo.manageNo == '' }">
+								            <td></td>
+								        </c:when>
 								        <c:when test="${voucherVo.manageNo != null }">
 								            <td>세금계산서</td>
 								        </c:when>
@@ -655,6 +692,93 @@ $(function(){
      $("input[name=bankName]").val(td.eq(3).text());
      $("#dialog-bank").dialog('close');
   });
+  
+
+/* 계정코드 팝업 */
+	// 계정코드 검색
+	$("#a-dialog-accountNo").click(function(event){
+		event.preventDefault();
+		$("#tbody-accountList").find("tr").remove();
+		
+		var accountCodeVal = $("#input-dialog-accountNo").val();
+		console.log(accountCodeVal);
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				$("#input-dialog-bankcode").val('');
+				$("#tbody-bankList").append("<tr>" +
+						"<td class='center'>" + item.code + "</td>" +
+				        "<td class='center'>" + item.name + "</td>" +
+				        "<td class='center'>" + item.store + "</td>" +
+				        "<td style='visibility:hidden;position:absolute;'>" + item.mgr + "</td>" +
+				        "<td style='visibility:hidden;position:absolute;'>" + item.mgrPhone + "</td>" +
+				        "</tr>");
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+	});
+	
+	// 은행명 검색 : 은행목록 리스트로 가져오기
+	$('#dialog-message-table').on('click', '#a-dialog-bankname', function(event) {
+		event.preventDefault();
+		$("#tbody-bankList").find("tr").remove();
+		
+		var banknameVal = $("#input-dialog-bankname").val();
+		console.log(banknameVal);
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(data){
+				$("#input-dialog-bankname").val('');
+				 $.each(data,function(index, item){
+		                $("#tbody-bankList").append("<tr>" +
+		                		"<td class='center'>" + item.code + "</td>" +
+						        "<td class='center'>" + item.name + "</td>" +
+						        "<td class='center'>" + item.store + "</td>" +
+						        "<td style='visibility:hidden;position:absolute;'>" + item.mgr + "</td>" +
+						        "<td style='visibility:hidden;position:absolute;'>" + item.mgrPhone + "</td>" +
+						        "</tr>");
+		         })
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+	});
+	
+	// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+	$(document.body).delegate('#tbody-bankList tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=bankCode]").val(td.eq(0).text());
+		$("input[name=bankName]").val(td.eq(1).text());
+		$("input[name=bankLocation]").val(td.eq(2).text());
+		$("input[name=banker]").val(td.eq(3).text());
+		$("input[name=bankPhoneCall]").val(td.eq(4).text());
+		$("#dialog-message").dialog('close');
+	});
+  
 }); // $(function
 
 </script>

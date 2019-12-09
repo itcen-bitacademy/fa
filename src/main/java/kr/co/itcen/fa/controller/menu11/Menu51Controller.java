@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,32 +33,56 @@ public class Menu51Controller {
 	private Menu51Service menu51Service;
 
 	// /11/51, /11/51/list
+	@SuppressWarnings("unlikely-arg-type")
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(
 			Model model, 
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "sort", required = false) String sort, 
-			PdebtVo pdebtVo) {
-		DataResult<PdebtVo> dataResult = menu51Service.list(page, pdebtVo, sort);
+			PdebtVo vo) {
+		System.out.println("PdebtVo 1 : " + vo.toString());
+		
+		if(vo.getDebtDate() == null || "".equals(vo.getDebtDate()))
+			vo.setDebtDate("");
+		
+		if(vo.getIntPayWay() == null || "".equals(vo.getIntPayWay()))
+			vo.setIntPayWay("");
+		
+		if(vo.getBankName() == null || "".equals(vo.getBankName()))
+			vo.setBankName("");
+		
+		if(vo.getExpDate() == null || "".equals(vo.getExpDate()))
+			vo.setExpDate("");
+		
+		if("Y".equals(vo.getDeleteFlag()))
+			vo.setDeleteFlag("");
+		else vo.setDeleteFlag("N");
+		
+		if("Y".equals(vo.getRepayCompleFlag()))
+			vo.setRepayCompleFlag("");
+		else vo.setRepayCompleFlag("N");
+		
+		System.out.println("PdebtVo 2 : " + vo.toString());
+		DataResult<PdebtVo> dataResult = menu51Service.list(page,vo,sort);
 		List<SectionVo> sectionlist = menu51Service.selectSection();
-
-		UriComponents uriComponents = UriComponentsBuilder.newInstance()
-				.queryParam("sort", sort)
-				.queryParam("debtDate", pdebtVo.getDebtDate())
-				.queryParam("expDate", pdebtVo.getExpDate())
-				.queryParam("intPayWay", pdebtVo.getIntPayWay())
-				.queryParam("bankCode", pdebtVo.getBankCode())
+		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance()
+				.queryParam("sort",sort)
+				.queryParam("debtDate",vo.getDebtDate())
+				.queryParam("expDate",vo.getExpDate())
+				.queryParam("intPayWay",vo.getIntPayWay())
+				.queryParam("bankName",vo.getBankName())
+				.queryParam("deleteFlag",vo.getDeleteFlag())
+				.queryParam("repayCompleFlag",vo.getRepayCompleFlag())
 				.build();
 		
 		String uri = uriComponents.toUriString();
-
-		System.out.println("uri : " + uri.toString());
-		System.out.println("dataResult : " + dataResult.toString());
-		System.out.println("sectionlist : " + sectionlist.toString());
 		
-		model.addAttribute("uri", uri);
-		model.addAttribute("dataResult", dataResult);
-		model.addAttribute("sectionlist", sectionlist);
+		System.out.println("PdebtVo 3 : " + vo.toString());
+		model.addAttribute("uri",uri);
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("sort", sort);
 
 		return MAINMENU + "/" + SUBMENU + "/list";

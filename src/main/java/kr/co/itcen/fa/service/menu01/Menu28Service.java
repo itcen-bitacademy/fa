@@ -26,12 +26,12 @@ public class Menu28Service {
 		menu28Repository.test();
 	}
 
-	public DataResult<CustomerVo> list(int page, CustomerVo customerVo) {
+	public DataResult<CustomerVo> list(int page, CustomerVo customerVo, String customerDiv, String datepicker1, String datepicker2, String no, String deleteFlag) {
 		DataResult<CustomerVo> dataResult = new DataResult<CustomerVo>();
 		int totalCnt = menu28Repository.listCount(customerVo);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		dataResult.setPagination(pagination);
-		List<CustomerVo> list = menu28Repository.list(pagination, customerVo);
+		List<CustomerVo> list = menu28Repository.list(pagination, customerVo, customerDiv, datepicker1, datepicker2, no, deleteFlag);
 		dataResult.setDatas(list);
 		return dataResult;
 

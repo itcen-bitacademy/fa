@@ -73,7 +73,7 @@ public class Menu03Service {
 		}
 		
 		// 전표삭제 (다른 팀)
-		public void deleteVoucher(VoucherVo voucherVo, @AuthUser UserVo userVo) {
+		public void deleteVoucher(List<VoucherVo> voucherVo, @AuthUser UserVo userVo) {
 			menu03Repository.deleteVoucher(voucherVo, userVo);
 		}
 		
