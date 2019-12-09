@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 import kr.co.itcen.fa.vo.menu02.PurchasemanagementVo;
@@ -52,12 +53,31 @@ public class Menu06Repository {
 	}
 
 	public Boolean update(PurchasemanagementVo vo) {
-		int count = sqlSession.insert("menu06.update", vo);
+		int count = sqlSession.update("menu06.update", vo); //insert -> update
 		return count == 1;
 	}
+	
+//	public Boolean voucherUpdate(PurchasemanagementVo vo) {
+//		int count = sqlSession.update("menu06.voucherUpdate", vo);
+//		return count == 1;
+//	}
 
 	public Boolean delete(PurchasemanagementVo vo) {
 		int count = sqlSession.insert("menu06.delete", vo);
 		return count == 1;
+	}
+
+	public BuyTaxbillVo getTaxbillList(PurchasemanagementVo vo) {
+		BuyTaxbillVo result = sqlSession.selectOne("menu06.getTaxbillList",vo);
+		return result;
+	}
+
+	public CustomerVo getAccount(PurchasemanagementVo vo) {
+		CustomerVo result = sqlSession.selectOne("menu06.getAccount",vo);
+		return result;
+	}
+
+	public void voucherUpdate(PurchasemanagementVo vo) {
+		sqlSession.update("menu06.voucherUpdate", vo);
 	}
 }

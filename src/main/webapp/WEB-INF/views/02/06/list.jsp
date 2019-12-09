@@ -138,6 +138,7 @@
 								<button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
 								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
 								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
+								<button class="btn btn-default btn-small" type="submit" id="voucher" style="float:left;margin-right:20px;margin-bottom:20px;">전표 발행</button>
 							</div>
 							
 							<input type="hidden" id="rowCnt" name="rowCnt" value="1">
@@ -323,6 +324,9 @@
 		$("#input").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
 		});
+		$("#voucher").click(function() {
+			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/voucher");
+		});
 		});
 		 
 		 $(function() {
@@ -352,6 +356,7 @@
 							$("#quantity1").val(result.quantity);
 							$("#supplyValue1").val(result.supplyValue);
 							$("#taxValue1").val(result.taxValue);
+							$("#taxbillNo").val(result.taxbillNo);
 							if(result.taxType == 'tax'){
 								$("#taxType1").val(result.taxType).attr("checked", true);
 							} else{
