@@ -259,27 +259,6 @@
 	  ]]>
 	</select>
 	
-	<!-- delete 다른 팀 -->
-	<delete id="deleteVoucher" parameterType="1vouchervo">
-	<![CDATA[
-		delete from tb_voucher_manager where no = #{no };
-	]]>
-	</delete>
-	
-	<!-- delete 다른 팀 -->
-	<delete id="deleteItem" parameterType="1itemvo">
-	<![CDATA[
-		delete from tb_voucher_item where voucher_no = #{voucherNo };
-	]]>
-	</delete>
-	
-	<!-- delete 다른 팀 -->
-	<delete id="deleteMapping" parameterType="1mappingvo">
-	<![CDATA[
-		delete from tb_voucher_system_mapping where voucher_no = #{voucherNo };
-	]]>
-	</delete>
-	
 	<!-- delete 1팀 -->
 	<update id="deleteVoucher2" parameterType="1vouchervo">
 	<![CDATA[
@@ -350,7 +329,7 @@
 	<!-- update 다른 팀 -->
 	<select id="selectTemp" parameterType="1vouchervo" resultType="1vouchervo">
 	<![CDATA[
-		select insert_userid, insert_day, insert_team
+		select insert_userid, insert_day
 		  from tb_voucher_manager
 		 where no = #{no };
 	]]>
@@ -383,6 +362,14 @@
 	]]>
 	</update>
 	
+	<!-- 다른팀 전표 삭제 시 팀정보 받아오기 -->
+	<select id="selectTeam" parameterType="Long" resultType="1vouchervo">
+		<![CDATA[
+			select insert_team
+			  from voucher_system_mapping
+			 where voucher_no = #{no }
+		]]>
+	</select>
 	
 	<!-- 전표테이블 새로 입력 -->
 	<insert id="newVoucher" parameterType="1vouchervo">
