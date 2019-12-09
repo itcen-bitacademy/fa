@@ -79,7 +79,7 @@ form {
 									<td class="first-column"><h4>차입일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="date" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"  />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -118,7 +118,7 @@ form {
 								<td class="first-column"><h4>만기일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="date" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd"  />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
