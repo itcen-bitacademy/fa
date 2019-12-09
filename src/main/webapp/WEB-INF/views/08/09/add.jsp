@@ -11,6 +11,10 @@
 
 </head>
 <body class="skin-3">
+<input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
+<input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
+<input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
+
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -23,51 +27,54 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid"><!-- 차변 대변 나누기 위한 row-fluid -->
-						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+						<form class="form-horizontal" method="post" name="sendform" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add" 
+							onkeypress="if(event.keyCode == 13) formCheck();">
 							<div class="span6"><!-- 차변 -->
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-select-1">토지 코드1</label>
+									<label class="control-label" for="form-field-select-1">토지 코드</label>
 									<div class="controls">
-											<input type="text" id="land_code" name="id" placeholder="9자를 입력하세요"/>
-										<input readonly type="text" class="span6" style="border:none" placeholder="ex)2019년12월03일 191203001">
+										<input type="text" id="land_code" name="id" placeholder="9자를 입력하세요"/>
+										<input type="text" class="span6" id="default-landcode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
+										<input type="text" class="span6" id="overlap-landcode" style="border:none;color:red"  value="사용중인 품목코드입니다">
+										<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="토지코드는 숫자만 입력하세요.">
+										<input type="text" class="span6" id="null-landcode" style="border:none;color:red"  value="품목코드는 필수 입력 사항입니다!">
 									</div>									
 								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1">대분류 코드</label>
 									<div class="controls">
-										<select class="chosen-select" id="form-field-section" name="classification" data-placeholder="전체">
+										<select class="chosen-select" id="form-field-section" name="classification" data-placeholder="선택">
 											<c:forEach items="${sectionList }" var="sectionVo">
+												<option></option>
 												<option landcode="${sectionVo.code }" value="${sectionVo.classification }">${sectionVo.classification }</option>
 											</c:forEach>
 										</select>
-										<input readonly type="text" class="span6" id="code" name="sectionNo" value="001" placeholder="대분류명을 선택하면 코드값이 입력됩니다.">
+										<input readonly type="text" class="span6" id="code" name="sectionNo" placeholder="대분류명을 선택하면 코드값이 입력됩니다.">
 									</div>
 								</div>
-								<div class="control-group">
+								
+								 <div class="control-group">
 									<label class="control-label" for="form-field-1">주소(광역)</label>
 									<div class="controls">
-										<select class="chosen-select" id="wideAddr" name="wideAddress" data-placeholder="광역 선택">
-										</select>
+										<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
+										<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다.">
+										<input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
 									</div>
-								</div>
+								</div> 
+								
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">주소(읍/면/동)</label>
+									<label class="control-label" for="form-field-select-1">거래처 </label>
 									<div class="controls">
-										<select class="chosen-select" id="localAddr" name="localAddress" data-placeholder="읍/면/동 선택">
-										</select>
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label" for="form-field-select-1">거래처 코드</label>
-									<div class="controls">
-										<select class="chosen-select" id="form-field-customerCode" name="customerNo" data-placeholder="선택">
-											<c:forEach items="${listMainMenu }" var="customerVo">
-												<option value="${customerVo.no }">${customerVo.name }</option>
+										<select class="chosen-select" id="form-field-customerCode" name="customerName" data-placeholder="선택">
+											<option></option>
+											<c:forEach items="${customerList }" var="customerVo">
+												<option managerName="${customerVo.managerName }" customerCode="${customerVo.no }" value="${customerVo.no }">${customerVo.name }</option>
 											</c:forEach>
 										</select>
-										<input readonly type="text" class="span6" id="customerName" name="customerName" value="코드를 지정하면 거래처명이 등록됩니다">
+										
+										<input readonly type="text" class="span6" id="customerNo" name="customerNo" placeholder="거래처명을 선택하면 코드값이 입력됩니다.">
 									</div>
 								</div>
 								<div class="control-group">
@@ -81,22 +88,18 @@
 											</span>
 										</div>
 									</div>
-										</div>	
-										<div style="float:left;margin-left:10px">											
-											<label style="width:60px; margin-left:15px; margin-right:10px;" class="control-label" for="form-field-1">공시지가</label>
-											<input style="width:190px;" type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요"/>
 										</div>
 								</div>
 								<div class="control-group">
 										<div style="float:left;width:50%">
-											<label class="control-label" for="form-field-1">등록세</label>
+											<label class="control-label" for="form-field-2">취득금액</label>
 											<div class="controls">
-												<input type="text" id="regTax" name="regTax" placeholder="금액을 입력하세요"/>
+												<input type="text" id="acqPrice" name="acqPrice" placeholder="금액을 입력하세요"/>
 											</div>
 										</div>	
 										<div style="float:left;width:50%">											
 											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">취득세</label>
-											<input type="text" id="acqTax" name="acqTax" placeholder="금액을 입력하세요"/>
+											<input readonly type="text" id="acqTax" name="acqTax" placeholder="금액을 입력하세요"/>
 										</div>
 								</div>
 								<div class="control-group">
@@ -119,30 +122,24 @@
 										<input type="text" id="area" name="landArea" placeholder="숫자만 입력해주세요"/>
 									</div>
 								</div>
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">주소(시/군/구)</label>
-									<div class="controls">
-										<select class="chosen-select" id="cityAddr" name="cityAddress" data-placeholder="시/군/구 선택">
-										</select>
-									</div>
-								</div>
+								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">상세주소</label>
 									<div class="controls">
-										<input type="text" class="span7" id="detailAddr" name="detailAddress" placeholder="상세주소를 입력하세요"/>
+										<input type="text" id="detailAddr" name="detailAddress" placeholder="상세주소를 입력하세요"/>
 									</div>
-								</div>
+								</div> 
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">담당자</label>
 									<div class="controls">
-										<input readonly type="text" id="form-input-readonly" id="customerManager" name="customerManager" value="담당자자동입력"/>
+										<input readonly type="text" id="customerManager" name="customerManager" placeholder="거래처명을 선택하면 담당자가 입력됩니다."/>
 									</div>
 								</div>
 								<div class="control-group">
 										<div style="float:left;width:50%">											
-											<label class="control-label" for="form-field-1">취득금액</label>
+											<label class="control-label" for="form-field-1">공시지가</label>
 											<div class="controls">
-												<input type="text" id="acqPrice" name="acqPrice" placeholder="금액을 입력하세요"/>
+												<input type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요"/>
 											</div>
 										</div>	
 										<div style="float:left;width:50%">											
@@ -177,8 +174,8 @@
 							 	   <button class="btn btn-primary btn-small" id="insert" style="float:left; margin-right:20px;"  formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">등록</button>
 	                               <button class="btn btn-warning btn-small" id="modify" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 	                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
-	                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">조회</button>
-	                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;" type="reset">취소</button>
+	                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">조회</button>
+	                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;">초기화</button>
 						</div>
 					</div>
 					</div>
@@ -207,7 +204,6 @@
 									<th>토지분류명</th>
 									<th>주소(광역)</th>
 									<th>주소(시/군/구)</th>
-									<th>주소(읍/면/동)</th>
 									<th>주소(상세)</th>
 									<th>평수</th>
 									<th>토지소유자명</th>
@@ -218,80 +214,16 @@
 									<th>공시지가(원)</th>
 									<th>취득금액(원)</th>
 									<th>기타비용(원)</th>
-									<th>등록세(원)</th>
 									<th>취득세(원)</th>
 									<th>합병코드</th>
 									<th>세금계산서번호</th>
 									<th>구분</th>
-									<th>작성자</th>
-									<th>작성일</th>
+									<!-- <th>작성자</th>
+									<th>작성일</th> -->
 								</tr>
 							</thead>
 
 							<tbody>
-								<!-- <tr id="clickme"> -->
-								
-									<!-- <td class="center">
-										<label>
-											<input type="checkbox" class="ace" name="checkRow">
-											<span class="lbl"></span>
-										</label>
-									</td> -->
-								<%-- <c:forEach items='${landList}' var='land' varStatus="status">
-										<tr>
-												<td>${status.count}</td>
-												<td>${land.id }</td>
-												<td>${land.sectionNo}</td>
-												<td>${land.sectionName}</td>
-												<td>${land.wideAddress}</td>
-												<td>${land.cityAddress}</td>
-												<td>${land.localAddress}</td>
-												<td>${land.detailAddress}</td>
-												<td>${land.landArea}</td>
-												<td>${land.ownerName}</td>
-												<td>${land.customerNo}</td>
-												<td>매입거래처명</td>
-												<td>거래처담당자</td>
-												<td>${land.payDate}</td>
-												<td>${land.publicValue}</td>
-												<td>${land.acqPrice}</td>
-												<td>${land.etcCost}</td>
-												<td>${land.regTax}</td>
-												<td>${land.acqTax}</td>
-												<td>${land.combinNo}</td>
-												<td>${land.taxbillNo}</td>
-												<td>${land.taxKind}</td>
-												<td>${land.insertUserid}</td>
-												<td>${land.insertDay}</td>
-										</tr>  
-									</c:forEach> --%>	
- 					
-									<!-- <td>1</td>
-									<td>2019004001</td>
-									<td>004</td>
-									<td>논</td>
-									<td>서울특별시</td>
-									<td>강남구</td>
-									<td>테헤란로</td>
-									<td>119-2</td>
-									<td>40</td>
-									<td>아이티센</td>
-									<td>매입거래처코드</td>
-									<td>매입거래처명</td>
-									<td>거래처담당자</td>
-									<td>2019-12-01</td>
-									<td>100,000,000</td>
-									<td>400,000,000</td>
-									<td>50,000,000</td>
-									<td>20,000,000</td>
-									<td>20,000,000</td>
-									<td></td>
-									<td>세금계산서번호</td>
-									<td>과세</td>
-									<td>정의돈</td>
-									<td>2019-11-29</td>
-								</tr> -->
-								
 									<c:forEach items='${landList}' var='land' varStatus="status">
 										<tr class="clickme">
 											<td>${status.count}</td>
@@ -300,24 +232,22 @@
 											<td>${land.sectionName}</td>
 											<td>${land.wideAddress}</td>
 											<td>${land.cityAddress}</td>
-											<td>${land.localAddress}</td>
 											<td>${land.detailAddress}</td>
 											<td>${land.landArea}</td>
 											<td>${land.ownerName}</td>
 											<td>${land.customerNo}</td>
-											<td>매입거래처명</td>
-											<td>거래처담당자</td>
+											<td>${land.customerName }</td>
+											<td>${land.managerName }</td>
 											<td>${land.payDate}</td>
-											<td>${land.publicValue}</td>
-											<td>${land.acqPrice}</td>
-											<td>${land.etcCost}</td>
-											<td>${land.regTax}</td>
-											<td>${land.acqTax}</td>
+											<td><fmt:formatNumber value="${land.publicValue}" pattern="#,###"></fmt:formatNumber></td>
+											<td><fmt:formatNumber value="${land.acqPrice}" pattern="#,###"></fmt:formatNumber></td>
+											<td><fmt:formatNumber value="${land.etcCost}" pattern="#,###"></fmt:formatNumber></td>
+											<td><fmt:formatNumber value="${land.acqTax}" pattern="#,###"></fmt:formatNumber></td>
 											<td>${land.combineNo}</td>
 											<td>${land.taxbillNo}</td>
 											<td>${land.taxKind}</td>
-											<td>${land.insertUserid}</td>
-											<td>${land.insertDay}</td>
+											<%-- <td>${land.insertUserid}</td>
+											<td>${land.insertDay}</td> --%>
 										</tr>
 									</c:forEach>
 
@@ -339,13 +269,110 @@
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <%-- <script src="${pageContext.request.contextPath }/assets/js/08/09.js"></script> --%>
+
+<!-- <script type="text/javascript">
+new sojaeji('wideAddress', 'cityAddress', 'dong');
+</script> -->
 <script>
+
+//토지코드 유효성 검사
+$(document).ready(function(){
+	$("#overlap-landcode").hide();
+	$("#onlynumber").hide();
+	$("#null-landcode").hide();
+	
+	$("#land_code").focus();
+	
+	$("#land_code").on("change", function(e){
+		
+		if(isNaN($("#land_code").val()) /*=== true*/){
+			$("#default-landcode").hide();
+			$("#overlap-landcode").hide();
+			$("#null-landcode").hide();
+			$("#onlynumber").show();
+			$("#land_code").val(""); //text비우기
+			return;
+		}
+		var id = "c" + $("#land_code").val();
+        
+	   $.ajax({
+	      url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
+	      type : "get",
+	      dataType : "json",
+	      data : "",
+	      success: function(response){
+	         if(response.result == "fail"){
+	            console.error(response.message);
+	            return;
+	         }
+	         
+	         if(response.data == true){
+	            $("#default-landcode").hide();
+	            $("#null-landcode").hide();
+	            $("#onlynumber").hide();
+	            $("#overlap-landcode").show();
+	            $("#land_code").val("");
+	            $("#land_code").focus();
+	            return;
+	         
+	         } else if(id == "") {
+	            $("#default-landcode").hide();
+	            $("#overlap-landcode").hide();
+	            $("#onlynumber").hide();
+	            $("#null-landcode").show();
+	            $("#land_code").focus();
+	         }
+	      },
+	      error: function(xhr, error) {
+	         console.error("error: " + error);
+	      }
+	   });
+		
+	});
+
+});
 
 //select Box 
 $(function(){
 	$(".chosen-select").chosen(); 
 });
+
+
+//취득세 등록세 계산
+$(function() {
+	$("#acqPrice").change(function() {
+		$("#acqTax").val($("#acqPrice").val()*0.04);
+	});
+	
+});
+
+//빈칸 검사()
+function formCheck() {
+	
+	if($("#land_code").val() == "")
+    {
+		 document.getElementById(next).focus();
+         alert("검색어를 입력해주시기 바랍니다.");
+    }
+	
+	
+	
+	if(window.event.keyCode ==13) {
+		
+	}else{
+		return;
+	}
+}
+
+//엔터키 막기
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        $(this).next('.inputs').focus();
+        event.preventDefault();
+    }
+}, true);
 
 
 //체크박스 전체 클릭
@@ -356,6 +383,17 @@ function checkAll(){
       $("input[name=checkRow]").prop("checked", false);
     }
 }
+
+// 초기화버튼
+$(function() {
+	$("#clear").click(function() {
+		console.log($('#land_code').val());
+		$('#land_code').val("");
+		console.log($('#land_code').val());
+		$('#clear').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add').submit();
+	});
+});
+
 
 
 //클릭한 행 받아와서 text에 값넣어주기
@@ -387,61 +425,54 @@ $(function() {
 		$('#code').val(sectioncode)
 		
 		var section = td.eq(3).text();
-		/* $('#sectionName').val(section) */
 		$('#form_field_section_chosen').find('span').text(section)
 		
-		var wideAddress = td.eq(4).text();
+		var wideAddress = td.eq(4).text();  // 시/도
 		$('#wideAddr').val(wideAddress)
-		
-		var cityAddress = td.eq(5).text();
+
+		var cityAddress = td.eq(5).text(); //구군
 		$('#cityAddr').val(cityAddress)
 		
-		var localAddress = td.eq(6).text();
-		$('#localAddr').val(localAddress)
-		
-		var detailAddress = td.eq(7).text();
+		var detailAddress = td.eq(6).text(); //상세주소
 		$('#detailAddr').val(detailAddress)
 		
-		var landarea = td.eq(8).text();
+		var landarea = td.eq(7).text();
 		$('#area').val(landarea)
 		
-		var ownerName = td.eq(9).text();
+		var ownerName = td.eq(8).text();
 		$('#ownerName').val(ownerName)
 		
-		var customerCode = td.eq(10).text();
-		$('#form-field-customerCode').val(customerCode)
+		var customerCode = td.eq(9).text();
+		$('#customerNo').val(customerCode)
 		
-		var customerName = td.eq(11).text();
-		$('#customerName').val(customerName)
+		var customerName = td.eq(10).text();
+		$('#form_field_customerCode_chosen').find('span').text(customerName)
 		
-		var customerManager = td.eq(12).text();
+		var customerManager = td.eq(11).text();
 		$('#customerManager').val(customerManager)
 		
-		var payDate = td.eq(13).text();
+		var payDate = td.eq(12).text();
 		$('#id-date-picker-1').val(payDate)
 		
-		var publicValue = td.eq(14).text();
+		var publicValue = td.eq(13).text().replace(/,/g, "");
 		$('#publicValue').val(publicValue)
 		
-		var acqPrice = td.eq(15).text();
+		var acqPrice = td.eq(14).text().replace(/,/g, "");
 		$('#acqPrice').val(acqPrice)
 		
-		var etcCost = td.eq(16).text();
+		var etcCost = td.eq(15).text().replace(/,/g, "");
 		$('#etcCost').val(etcCost)
 		
-		var regTax = td.eq(17).text();
-		$('#regTax').val(regTax)
-		
-		var acqTax = td.eq(18).text();
+		var acqTax = td.eq(16).text().replace(/,/g, "");
 		$('#acqTax').val(acqTax)
 		
-		var combineNo = td.eq(19).text();
+		var combineNo = td.eq(17).text();
 		$('#combineNo').val(combineNo)
 		
-		var taxbillNo = td.eq(20).text();
+		var taxbillNo = td.eq(18).text();
 		$('#taxbillNo').val(taxbillNo)
 		
-		var taxKind = td.eq(21).text();
+		var taxKind = td.eq(19).text();
 		console.log(typeof(taxKind))
 		console.log(taxKind)
 		if(taxKind=="과세"){
@@ -454,6 +485,22 @@ $(function() {
 	});
 });
 
+
+//주소
+function execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete : function(data) {
+				var fullRoadAddr = data.roadAddress;
+				console.log(data)
+				$("#wideAddr").val(data.sido);
+				$("#cityAddr").val(data.sigungu); 
+				$("#detailAddr").val(data.roadname + " ");
+				$("#detailAddr").focus();
+			}
+		}).open();
+	};
+
+
 // 대분류코드 select box 변경시 이벤트
 $('#form-field-section').change(function() {
 		var sectionCode = $('#form-field-section option:selected').attr('landcode');
@@ -461,14 +508,20 @@ $('#form-field-section').change(function() {
 });
 
 //거래처코드 select box 변경시 이벤트
-/* $('#form-field-customerCode').change(function() {
-		var customerNo = $('#form-field-customerCode option:selected').val();
-		var code = $('#customerName').val(customerNo);
-		alert(code)
-}); */
+$('#form-field-customerCode').change(function() {
+		var customerCode = $('#form-field-customerCode option:selected').attr('customerCode');
+		var customerNo = $('#customerNo').val(customerCode);
+		console.log(customerNo)
+		var managerName = $('#form-field-customerCode option:selected').attr('managerName');
+		var managerName = $('#customerManager').val(managerName); 
+		console.log(managerName)
+});
+
 
 
 </script>
+
+
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
 		$(function() {
@@ -500,7 +553,7 @@ $('#form-field-section').change(function() {
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
-		})
+		});
 	</script>
 </body>
 </html>

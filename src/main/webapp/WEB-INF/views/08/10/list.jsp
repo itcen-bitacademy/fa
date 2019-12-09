@@ -31,8 +31,7 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">토지코드</label>
 											<div class="controls">
-												<input type="text" id="form-field-1" name="payDate"
-													placeholder="달력을 클릭해주세요" />
+												<input type="text" id="form-field-1" name="payDate" placeholder="토지코드를 입력해주세요" />
 											</div>
 										</div>
 										<div style="float: left; width: 50%;">
@@ -188,7 +187,6 @@
 										<th>토지분류명</th>
 										<th>주소(광역)</th>
 										<th>주소(시/군/구)</th>
-										<th>주소(읍/면/동)</th>
 										<th>주소(상세)</th>
 										<th>평수</th>
 										<th>토지소유자명</th>
@@ -199,7 +197,6 @@
 										<th>공시지가(원)</th>
 										<th>취득금액(원)</th>
 										<th>기타비용(원)</th>
-										<th>등록세(원)</th>
 										<th>취득세(원)</th>
 										<th>합병코드</th>
 										<th>세금계산서번호</th>
@@ -219,7 +216,6 @@
 										<td>토지분류명</td>
 										<td>주소(광역)</td>
 										<td>주소(시/군/구)</td>
-										<td>주소(읍/면/동)</td>
 										<td>주소(상세)</td>
 										<td>평수</td>
 										<td>토지소유자명</td>
@@ -230,65 +226,13 @@
 										<td>공시지가(원)</td>
 										<td>취득금액(원)</td>
 										<td>기타비용(원)</td>
-										<td>등록세(원)</td>
 										<td>취득세(원)</td>
 										<td>합병코드</td>
 										<td>세금계산서번호</td>
 										<td>구분</td>
 										<td>작성자</td>
 										<td>작성일</td>
-										<td>
-											<div class="hidden-phone visible-desktop btn-group">
-												<button class="btn btn-mini btn-success">
-													<i class="icon-ok bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-info">
-													<i class="icon-edit bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-danger">
-													<i class="icon-trash bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-warning">
-													<i class="icon-flag bigger-120"></i>
-												</button>
-											</div>
-
-											<div class="hidden-desktop visible-phone">
-												<div class="inline position-relative">
-													<button class="btn btn-minier btn-primary dropdown-toggle"
-														data-toggle="dropdown">
-														<i class="icon-cog icon-only bigger-110"></i>
-													</button>
-
-													<ul
-														class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
-														<li><a href="#" class="tooltip-info"
-															data-rel="tooltip" title="" data-original-title="View">
-																<span class="blue"> <i
-																	class="icon-zoom-in bigger-120"></i>
-															</span>
-														</a></li>
-
-														<li><a href="#" class="tooltip-success"
-															data-rel="tooltip" title="" data-original-title="Edit">
-																<span class="green"> <i
-																	class="icon-edit bigger-120"></i>
-															</span>
-														</a></li>
-
-														<li><a href="#" class="tooltip-error"
-															data-rel="tooltip" title="" data-original-title="Delete">
-																<span class="red"> <i
-																	class="icon-trash bigger-120"></i>
-															</span>
-														</a></li>
-													</ul>
-												</div>
-											</div>
-										</td>
+										<td>삭제여부</td>
 									</tr>
 
 
