@@ -96,11 +96,11 @@ left outer join tb_customer c on tb.customer_no = c.no
 		]]>
 	</update>
 	
-	<select id="getDepositNo" parameterType="string" resultType="string">
+   <select id="getCustomerInfo" parameterType="string" resultType="1customervo">
       <![CDATA[
-      select deposit_no
+      select deposit_no as depositNo, bank_code as bankCode, bank_name as bankName
         from tb_customer
-       where no = #{ _parameter }
+       where no = #{customerNo }
       ]]>
    </select>
 	

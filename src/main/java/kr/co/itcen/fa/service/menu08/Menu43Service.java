@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu08.Menu43Repository;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
 
 
@@ -59,8 +60,7 @@ public class Menu43Service {
 		return map;
 	}
 
-	public String getDepositNo(String customerNo) {
-		String depositNo = menu43Repository.getDepositNo(customerNo);
-		return depositNo;
+	public CustomerVo getCustomerInfo(String customerNo) {
+		return menu43Repository.getCustomerInfo(customerNo);
 	}
 }

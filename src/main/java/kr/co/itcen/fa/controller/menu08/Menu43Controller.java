@@ -18,6 +18,7 @@ import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu43Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
@@ -93,26 +94,36 @@ public class Menu43Controller {
 		// 전표 시작
 	    if(taxbillNo!=null) {
 	      
-	     String depositNo = menu43Service.getDepositNo(customerNo);
+	     CustomerVo customerVo = menu43Service.getCustomerInfo(customerNo);
 	         
 	     VoucherVo voucherVo = new VoucherVo();
 	     List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-	     ItemVo itemVo = new ItemVo();
+	     ItemVo itemVoD = new ItemVo();      // 차변(왼쪽)
+	     ItemVo itemVoC = new ItemVo();      // 대변(오른쪽)
 
 	     //왼쪽 : 얻은것 무형자산 가격  :::: 오른쪽  계좌 가격 
-	      
-	     //거래금액
 	     MappingVo mappingVo = new MappingVo();
+	      
+	     // 차변(d) 무형자산
 	     voucherVo.setRegDate(intangibleAssetsVo.getPayDate());
-	     itemVo.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
-	     itemVo.setAmountFlag("c");     // 차변대변 구분 자 - c : 대변
-	     itemVo.setAccountNo(1230000L); //계정과목 : 자산인가 무형자산인가
-	     itemVoList.add(itemVo);
+	     itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+	     itemVoD.setAmountFlag("d");
+	     itemVoD.setAccountNo(1230000L); // 계정과목 : 무형자산
+	     itemVoList.add(itemVoD);
+	     
+	     // 대변(c) 현금
+	     itemVoC.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+	     itemVoC.setAmountFlag("c");
+	     itemVoC.setAccountNo(1110101L); // 계정과목: 현금
+	     itemVoList.add(itemVoC);
 
+	     
 	     // 매핑테이블
 	     mappingVo.setVoucherUse(intangibleAssetsVo.getPurpose());  // 왜 샀는지 적어준다(용도).
 	     mappingVo.setSystemCode(intangibleAssetsVo.getCode());  // 각 무형자산 코드번호
-	     mappingVo.setDepositNo(depositNo);   // 계좌번호
+	     mappingVo.setDepositNo(customerVo.getDepositNo());      // 계좌번호
+	     mappingVo.setBankCode(customerVo.getBankCode());        // 은행 번호
+	     mappingVo.setBankName(customerVo.getBankName());        // 은행 이름
 	     mappingVo.setCustomerNo(customerNo); // 거래처번호
 	     mappingVo.setManageNo(taxbillNo);    // 세금계산서 번호
 

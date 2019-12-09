@@ -88,14 +88,14 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">취득금액</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="acqPrice"
+											<input type="text" id="form-field-1" name="acqPrice" style="text-align:right;"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">부대비용</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="addiFee"
+											<input type="text" id="form-field-1" name="addiFee"  style="text-align:right;"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
@@ -129,7 +129,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">수량</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="copyCount"
+											<input type="text" id="form-field-1" name="copyCount"  style="text-align:right;"
 												placeholder="수량을 입력하세요" />
 										</div>
 									</div>
@@ -246,12 +246,12 @@
 								<td>${vo.code }</td>
 								<td>${vo.customerNo }</td>
 								<td>${vo.customerName }</td>
-								<td>${vo.acqPrice }</td>
-								<td>${vo.addiFee }</td>
+								<td><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+								<td><fmt:formatNumber value="${vo.addiFee }" pattern="#,###"></fmt:formatNumber></td>
 								<td>${vo.taxbillNo }</td>
 								<td>${vo.name }</td>
 								<td>${vo.user }</td>
-								<td>${vo.copyCount }</td>
+								<td><fmt:formatNumber value="${vo.copyCount }" pattern="#,###"></fmt:formatNumber></td>
 								<td>${vo.customerManager }</td>
 								<td>${vo.purpose }</td>
 								<td>${vo.payDate }</td>
@@ -373,8 +373,8 @@
 				//$("input[name=customerNo]").val(td.eq(5).text());
 				$('#form_field_customer_chosen').find('span').text(td.eq(5).text());
 				$("input[name=customerName]").val(td.eq(6).text());
-				$("input[name=acqPrice]").val(td.eq(7).text());
-				$("input[name=addiFee]").val(td.eq(8).text());
+				$("input[name=acqPrice]").val((td.eq(7).text()).replace(/,/gi, ""));
+				$("input[name=addiFee]").val((td.eq(8).text()).replace(/,/gi, ""));
 				$("input[name=taxbillNo]").val(td.eq(9).text());
 				$("input[name=name]").val(td.eq(10).text());
 				$("input[name=user]").val(td.eq(11).text());

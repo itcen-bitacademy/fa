@@ -2,6 +2,8 @@ package kr.co.itcen.fa.vo.menu08;
 
 import org.apache.ibatis.type.Alias;
 
+import kr.co.itcen.fa.util.PaginationUtil;
+
 @Alias("intangibleAssetsVo")
 public class IntangibleAssetsVo {
 
@@ -28,6 +30,10 @@ public class IntangibleAssetsVo {
 	private String insertDay;
 	private String updateUserId;
 	private String updateDay;
+	
+	// 페이징
+	private int page = 1;
+	private PaginationUtil pagination;
 
 	public String getId() {
 		return id;
@@ -92,7 +98,7 @@ public class IntangibleAssetsVo {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
 	public String getClassification() {
 		return classification;
 	}
@@ -213,15 +219,32 @@ public class IntangibleAssetsVo {
 		this.updateDay = updateDay;
 	}
 
+	// 페이징
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public PaginationUtil getPagination() {
+		return pagination;
+	}
+
+	public void setPagination(PaginationUtil pagination) {
+		this.pagination = pagination;
+	}
+
 	@Override
 	public String toString() {
-		return "IntangibleAssetsVo [id=" + id + ", customerNo=" + customerNo + ", customerName="
-				+ customerName + ", customerManager=" + customerManager + ", taxbillNo=" + taxbillNo + ", voucherNo="
-				+ voucherNo + ", sectionNo=" + sectionNo + ", code=" + code + ", classification=" + classification
-				+ ", name=" + name + ", copyCount=" + copyCount + ", purpose=" + purpose + ", address=" + address
-				+ ", user=" + user + ", acqPrice=" + acqPrice + ", addiFee=" + addiFee + ", payDate=" + payDate
-				+ ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserId=" + insertUserId + ", insertDay="
-				+ insertDay + ", updateUserId=" + updateUserId + ", updateDay=" + updateDay + "]";
+		return "IntangibleAssetsVo [id=" + id + ", customerNo=" + customerNo + ", customerName=" + customerName
+				+ ", customerManager=" + customerManager + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
+				+ ", sectionNo=" + sectionNo + ", code=" + code + ", classification=" + classification + ", name="
+				+ name + ", copyCount=" + copyCount + ", purpose=" + purpose + ", address=" + address + ", user=" + user
+				+ ", acqPrice=" + acqPrice + ", addiFee=" + addiFee + ", payDate=" + payDate + ", taxKind=" + taxKind
+				+ ", flag=" + flag + ", insertUserId=" + insertUserId + ", insertDay=" + insertDay + ", updateUserId="
+				+ updateUserId + ", updateDay=" + updateDay + "]";
 	}
 
 }

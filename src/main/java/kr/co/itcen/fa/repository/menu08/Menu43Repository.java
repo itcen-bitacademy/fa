@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
 
@@ -63,5 +64,9 @@ public class Menu43Repository {
 	public String getDepositNo(String customerNo) {
 		String result = sqlSession.selectOne("menu43.getDepositNo", customerNo);
 		return result;
+	}
+
+	public CustomerVo getCustomerInfo(String customerNo) {
+		return sqlSession.selectOne("menu43.getCustomerInfo", customerNo);
 	}
 }

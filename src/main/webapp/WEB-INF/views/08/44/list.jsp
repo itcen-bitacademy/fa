@@ -90,7 +90,7 @@
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="date-range-picker"
+											<input class="span5" type="text" name="payDate"
 												id="id-date-range-picker-1">
 										</div>
 									</div>
@@ -98,7 +98,7 @@
 										<label class="control-label" for="form-field-1">취득금액</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="acqPrice"
-												placeholder="입력된 숫자 이하로 검색됩니다" />
+												style="text-align: right;" placeholder="입력된 숫자 이하로 검색됩니다" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -106,7 +106,7 @@
 											<div class="span3" style="float: right">
 												<button class="btn btn-info btn-small" type="submit"
 													style="float: right; margin-right: 20px;">
-													<i class="icon-ok bigger-80"></i>상세조회
+													<i class="icon-ok bigger-80"></i>조회
 												</button>
 											</div>
 											<div class="span2" style="float: right">
@@ -125,6 +125,7 @@
 						<div class="hr hr-18 dotted"></div>
 
 						<div class="row-fluid">
+							<!--
 							<form class="form-horizontal" method="post"
 								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 								<div class="control-group">
@@ -141,7 +142,7 @@
 										</div>
 									</div>
 								</div>
-							</form>
+							</form>   -->
 
 							<div>
 								<table id="sample-table-1"
@@ -172,7 +173,7 @@
 									</thead>
 
 									<tbody>
-										<c:forEach items="${list }" var="vo" varStatus="status">
+										<c:forEach items="${intangibleAssetsVo }" var="vo" varStatus="status">
 											<tr>
 												<td>${status.count }</td>
 												<td>${vo.id }</td>
@@ -181,71 +182,22 @@
 												<td>${vo.code }</td>
 												<td>${vo.customerNo }</td>
 												<td>${vo.customerName }</td>
-												<td>${vo.acqPrice }</td>
-												<td>${vo.addiFee }</td>
+												<td><fmt:formatNumber value="${vo.acqPrice }"
+														pattern="#,###"></fmt:formatNumber></td>
+												<td><fmt:formatNumber value="${vo.addiFee }"
+														pattern="#,###"></fmt:formatNumber></td>
 												<td>${vo.taxbillNo }</td>
 												<td>${vo.name }</td>
 												<td>${vo.user }</td>
-												<td>${vo.copyCount }</td>
+												<td><fmt:formatNumber value="${vo.copyCount }"
+														pattern="#,###"></fmt:formatNumber></td>
 												<td>${vo.customerManager }</td>
 												<td>${vo.purpose }</td>
 												<td>${vo.payDate }</td>
 												<td>${vo.taxKind }</td>
 												<td>${vo.insertUserId }</td>
 												<td>${vo.insertDay }</td>
-												<td>
-													<div class="hidden-phone visible-desktop btn-group">
-														<button class="btn btn-mini btn-success">
-															<i class="icon-ok bigger-120"></i>
-														</button>
-
-														<button class="btn btn-mini btn-info">
-															<i class="icon-edit bigger-120"></i>
-														</button>
-
-														<button class="btn btn-mini btn-danger">
-															<i class="icon-trash bigger-120"></i>
-														</button>
-
-														<button class="btn btn-mini btn-warning">
-															<i class="icon-flag bigger-120"></i>
-														</button>
-													</div>
-
-													<div class="hidden-desktop visible-phone">
-														<div class="inline position-relative">
-															<button
-																class="btn btn-minier btn-primary dropdown-toggle"
-																data-toggle="dropdown">
-																<i class="icon-cog icon-only bigger-110"></i>
-															</button>
-
-															<ul
-																class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
-																<li><a href="#" class="tooltip-info"
-																	data-rel="tooltip" title="" data-original-title="View">
-																		<span class="blue"> <i
-																			class="icon-zoom-in bigger-120"></i>
-																	</span>
-																</a></li>
-
-																<li><a href="#" class="tooltip-success"
-																	data-rel="tooltip" title="" data-original-title="Edit">
-																		<span class="green"> <i
-																			class="icon-edit bigger-120"></i>
-																	</span>
-																</a></li>
-
-																<li><a href="#" class="tooltip-error"
-																	data-rel="tooltip" title=""
-																	data-original-title="Delete"> <span class="red">
-																			<i class="icon-trash bigger-120"></i>
-																	</span>
-																</a></li>
-															</ul>
-														</div>
-													</div>
-												</td>
+												<td>삭제여부</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -266,14 +218,41 @@
 
 		<div class="pagination">
 			<ul>
-				<li class="disabled"><a href="#"><i
-						class="icon-double-angle-left"></i></a></li>
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+				<c:choose>
+					<c:when test="${dataResult.pagination.prev }">
+						<li><a
+							href="${pageContext.servletContext.contextPath }/08/44/list?page=${dataResult.pagination.startPage - 1 }"><i
+								class="icon-double-angle-left"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i
+								class="icon-double-angle-left"></i></a></li>
+					</c:otherwise>
+				</c:choose>
+				<c:forEach begin="${dataResult.pagination.startPage }"
+					end="${dataResult.pagination.endPage }" var="pg">
+					<c:choose>
+						<c:when test="${pg eq dataResult.pagination.page }">
+							<li class="active"><a
+								href="${pageContext.servletContext.contextPath }/08/44/list?page=${pg }">${pg }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a
+								href="${pageContext.servletContext.contextPath }/08/44/list?page=${pg }&kwd=${kwd }">${pg }</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				<c:choose>
+					<c:when test="${dataResult.pagination.next }">
+						<li><a
+							href="${pageContext.servletContext.contextPath }/08/44/list?page=${dataResult.pagination.endPage + 1 }"><i
+								class="icon-double-angle-right"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i
+								class="icon-double-angle-right"></i></a></li>
+					</c:otherwise>
+				</c:choose>
 			</ul>
 		</div>
 
