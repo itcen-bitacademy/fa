@@ -227,8 +227,8 @@
 			   c.user as cardUser,
 		   	   ba.deposit_no as depositNo,
 			   ba.deposit_host as depositHost,
-			   ba.bank_code as bankCode,
-			   ba.bank_name as bankName,
+			   ifnull(ba.bank_code, c.bank_code) as bankCode,
+			   ifnull(ba.bank_name, c.bank_name) as bankName,
 		   	   m.voucher_use as voucherUse
           from tb_voucher_manager v
           join tb_voucher_item i
