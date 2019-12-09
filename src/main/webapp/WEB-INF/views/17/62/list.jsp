@@ -131,6 +131,24 @@
 				</div>
 			</div>
 
+			<%-- 에러 모달  --%>
+			<c:if test="${not empty param.error }">
+				<input type="hidden" id="errorMessage" value="${param.error }"/>
+			</c:if>
+
+			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel"></h5>
+						</div>
+						<div class="modal-body" id="staticBackdropBody"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 		</div><!-- /.page-content -->
@@ -145,6 +163,21 @@
 
 		// 합계 계산
 		calculateSummary()
+
+		// 모달 설정
+		backdrop = $('#staticBackdrop')
+		backdrop.modal({
+			keyboard: false,
+			show: false
+		})
+
+		// 에러 모달 설정
+		var errorMessage = $('#errorMessage')
+		if (errorMessage.val()) {
+			openModal('Error', errorMessage.val())
+
+			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/19/list')
+		}
 	});
 
 	// 합계 저장용 변수
