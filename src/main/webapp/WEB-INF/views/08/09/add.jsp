@@ -270,11 +270,7 @@
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<%-- <script src="${pageContext.request.contextPath }/assets/js/08/09.js"></script> --%>
 
-<!-- <script type="text/javascript">
-new sojaeji('wideAddress', 'cityAddress', 'dong');
-</script> -->
 <script>
 
 //토지코드 유효성 검사
