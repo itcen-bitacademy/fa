@@ -1,9 +1,7 @@
 package kr.co.itcen.fa.controller.menu12;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,20 +60,10 @@ public class Menu13Controller {
 	public String index(@SessionAttribute("authUser") UserVo authUser, 
 							SalesVo salesVo, Model model,
 							int quantity[], String itemCode[], String itemName[], 
-							Long supplyValue[], Long taxValue[], int number[]) {
+							Long supplyValue[], Long taxValue[], int number[]) throws ParseException {
 		System.out.println("매출 입력" + salesVo);
 		
 		salesVo.setInsertUserid(authUser.getId()); //세션 ID vo set
-		
-		// 마감일
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date businessDate = null;
-		try {
-			businessDate = sdf.parse(salesVo.getSalesDate());
-			System.out.println(businessDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		
@@ -93,7 +81,7 @@ public class Menu13Controller {
 		}
 		
 		//마감 여부 체크
-		if(!menu19Service.checkClosingDate(authUser, businessDate)) { 
+		if(!menu19Service.checkClosingDate(authUser, salesVo.getSalesDate())) { 
 			menu13Service.insert(list);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		} else {

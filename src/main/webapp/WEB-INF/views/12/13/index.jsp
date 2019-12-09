@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
     <c:import url="/WEB-INF/views/common/head.jsp" />
     <style>
+    	input[type=number]{
+    		text-align:right;
+    	}
         #item-table tr td {
             padding: 0;
         }
@@ -74,9 +77,9 @@
 					            +'</c:forEach>'
 					        	+'</select><td>';
             cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명" value="" readonly></td>';
-            cell4.innerHTML = '<td><input type="text" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()" required></td>';
-            cell5.innerHTML = '<td><input type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()" required></td>';
-            cell6.innerHTML = '<td><input type="text" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()" required></td>';
+            cell4.innerHTML = '<td><input type="number" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()" required></td>';
+            cell5.innerHTML = '<td><input type="number" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()" required></td>';
+            cell6.innerHTML = '<td><input type="number" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()" required></td>';
            
             $("#rowCnt").val(cnt);
             $(".chosen-select").chosen(); // 각 row에 품목코드 chosen 활성화
@@ -280,13 +283,13 @@
                                 <div class="control-group">
                                     <label class="control-label" for="totalQuantity">수량합계</label>
                                     <div class="controls">
-                                        <input type="text" id="totalQuantity" name="totalQuantity" placeholder="수량합계" value="0" readonly>
+                                        <input type="number" id="totalQuantity" name="totalQuantity" placeholder="수량합계" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="totalTax">부가세합계</label>
                                     <div class="controls">
-                                        <input type="text" id="totaltaxValue" placeholder="부가세합계" value="0" readonly>
+                                        <input type="number" id="totaltaxValue" placeholder="부가세합계" value="0" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -324,13 +327,13 @@
                                 <div class="control-group">
                                     <label class="control-label" for="totalSupplyValue">공급가액합계</label>
                                     <div class="controls">
-                                        <input type="text" id="totalSupplyValue" placeholder="공급가액합계" value="0" readonly>
+                                        <input type="number" id="totalSupplyValue" placeholder="공급가액합계" value="0" readonly>
                                     </div>
                                 </div>                                
                                 <div class="control-group">
                                     <label class="control-label" for="totalPrice">합계금액</label>
                                     <div class="controls">
-                                        <input type="text" id="totalPrice" name="totalPrice" placeholder="합계금액" value="${saleslist[0].totalPrice }" readonly>
+                                        <input type="number" id="totalPrice" name="totalPrice" placeholder="합계금액" value="${saleslist[0].totalPrice }" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -388,9 +391,9 @@
                                         </select>
                                     </td>
                                     <td><input type="text" id="itemName${sales.number }" name="itemName" placeholder="품목명" value="${sales.itemName }" readonly></td>
-                                    <td><input type="text" id="quantity${sales.number }" name="quantity" placeholder="수량" value="${sales.quantity }" onkeyup="sumData.addQuantity()"></td>
-                                    <td><input type="text" id="supplyValue${sales.number }" name="supplyValue" placeholder="공급가액" value="${sales.supplyValue }" onkeyup="sumData.addSupplyValue()"></td>
-                                    <td><input type="text" id="taxValue${sales.number }" name="taxValue" placeholder="부가세" value="${sales.taxValue }" onkeyup="sumData.addTaxValue()"></td>
+                                    <td><input type="number" id="quantity${sales.number }" name="quantity" placeholder="수량" value="${sales.quantity }" onkeyup="sumData.addQuantity()"></td>
+                                    <td><input type="number" id="supplyValue${sales.number }" name="supplyValue" placeholder="공급가액" value="${sales.supplyValue }" onkeyup="sumData.addSupplyValue()"></td>
+                                    <td><input type="number" id="taxValue${sales.number }" name="taxValue" placeholder="부가세" value="${sales.taxValue }" onkeyup="sumData.addTaxValue()"></td>
                                 </tr>
                                 </c:forEach>
                             </table>
