@@ -350,7 +350,7 @@
 	<!-- update 다른 팀 -->
 	<select id="selectTemp" parameterType="1vouchervo" resultType="1vouchervo">
 	<![CDATA[
-		select insert_userid, insert_day
+		select insert_userid, insert_day, insert_team
 		  from tb_voucher_manager
 		 where no = #{no };
 	]]>

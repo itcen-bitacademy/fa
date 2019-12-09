@@ -127,15 +127,15 @@ public class Menu03Repository {
 	}
 	
 	// 전표 다른 팀 삭제
-	public void deleteVoucher(List<VoucherVo> voucherVo, UserVo userVo) {
-		for(int i = 0; i < voucherVo.size(); i++) {
-			VoucherVo voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo.get(i));
-			if (!userVo.getTeamName().equals(voucherVoTemp.getInsertTeam())) {
+	public void deleteVoucher(Long[] no, UserVo userVo) {
+		for(int i = 0; i < no.length; i++) {
+			List<VoucherVo> voucherVoTemp = sqlSession.selectList("menu03.selectTemp", no);
+			if (!userVo.getTeamName().equals(voucherVoTemp.get(i).getInsertTeam())) {
 				return;
 			}
-			sqlSession.delete("menu03.deleteVoucher3", voucherVo.get(i));
-			sqlSession.delete("menu03.deleteItem3", voucherVo.get(i));
-			sqlSession.delete("menu03.deleteMapping3", voucherVo.get(i));
+			sqlSession.delete("menu03.deleteVoucher3", no[i]);
+			sqlSession.delete("menu03.deleteItem3", no[i]);
+			sqlSession.delete("menu03.deleteMapping3", no[i]);
 		};
 	}
 	
