@@ -50,7 +50,7 @@ public class Menu64Service {
 		List<FinancialStatementVo> list = menu64Repository.selectIncomeStatementDataList(closingDate);
 		
 		FinancialStatementVo vo = new FinancialStatementVo();
-		if(list != null) {
+		if(list.isEmpty() == false) {
 			vo.setAccountStatementType(list.get(0).getAccountStatementType());
 			vo.setClosingDateNo(list.get(0).getClosingDateNo());
 			vo.setInsertUserid(list.get(0).getInsertUserid());
