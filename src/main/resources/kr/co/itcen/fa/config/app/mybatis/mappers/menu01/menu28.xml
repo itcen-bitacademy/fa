@@ -16,7 +16,7 @@
 	</insert>
 
 	<select id="selectAllCount" resultType="int" parameterType="1customervo">
-		<if test='customerDiv == "All"'>
+		<if test='customerDiv == "All" or customerDiv == ""' >
 			<![CDATA[
 				select ((select count(*) as count
 						   from tb_customer
@@ -190,7 +190,7 @@
 	</select><!-- 리스트 뽑기 -->
 	
 	<select id="optionSearch" parameterType="map" resultType="1customervo">
-	<if test='vo.customerDiv == "All"'>
+	<if test='vo.customerDiv == "All" or vo.customerDiv == ""'>
 	    <![CDATA[
 	    	select replace(left(no, 1), "A", "자산거래처") as customerDiv,
 			       (right(no, 12)) as no,

@@ -75,7 +75,7 @@
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid"> <!-- 검색조건 start -->
-					<form class="form-horizontal; center" name="searchOption" action="28" method="post"><!--  -->
+					<form class="form-horizontal; center" name="searchOption" ><!--  -->
 					거래처 구분 : &nbsp;
 						<select class="chosen-select"
 							id="customerDiv" name="customerDiv" 
@@ -199,7 +199,7 @@
 		<ul>
 			<c:choose>
 			<c:when test="${dataResult.pagination.prev }">
-				<li><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+				<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?customerDiv=${param.customerDiv }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }&no=${param.no }&daleteFlag=${param.deleteFlag }&page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
 			</c:when>
 			<c:otherwise>
 				<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -208,16 +208,17 @@
 			<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 			<c:choose>
 			<c:when test="${pg eq dataResult.pagination.page }">
-				<li class="active"><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${pg }">${pg }</a></li>
+
+				<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?customerDiv=${param.customerDiv }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }&no=${param.no }&daleteFlag=${param.deleteFlag }&page=${pg }">${pg }</a></li>
 			</c:when>
 			<c:otherwise>
-				<li><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${pg }">${pg }</a></li>
+				<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?customerDiv=${param.customerDiv }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }&no=${param.no }&daleteFlag=${param.deleteFlag }&page=${pg }">${pg }</a></li>
 			</c:otherwise>
 			</c:choose>
 			</c:forEach>
 			<c:choose>
 				<c:when test="${dataResult.pagination.next }">
-				<li><a href="${pageContext.servletContext.contextPath }/01/28/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+				<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?customerDiv=${param.customerDiv }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }&no=${param.no }&daleteFlag=${param.deleteFlag }&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 			</c:when>
 			<c:otherwise>
 				<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>

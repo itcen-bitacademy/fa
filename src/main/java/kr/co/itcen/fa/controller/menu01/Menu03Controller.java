@@ -69,7 +69,7 @@ public class Menu03Controller {
 		
 		menu03Service.createVoucher(voucherVo, userVo);
 		
-		// 카테고리 작성, 리스트
+		// 전표등록, 리스트
 		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
 		System.out.println("d : " + dataResult.getDatas());
 		model.addAttribute("dataResult", dataResult);
@@ -102,5 +102,7 @@ public class Menu03Controller {
 		
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
+	// 
 	
 }

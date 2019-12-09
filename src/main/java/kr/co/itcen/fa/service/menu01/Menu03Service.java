@@ -13,6 +13,8 @@ import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
  * 
@@ -71,7 +73,7 @@ public class Menu03Service {
 		}
 		
 		// 전표삭제 (다른 팀)
-		public void deleteVoucher(VoucherVo voucherVo, @AuthUser UserVo userVo) {
+		public void deleteVoucher(List<VoucherVo> voucherVo, @AuthUser UserVo userVo) {
 			menu03Repository.deleteVoucher(voucherVo, userVo);
 		}
 		
@@ -110,5 +112,12 @@ public class Menu03Service {
 			return menu03Repository.updateVoucher(voucherVo);
 			
 		}
+		
+		
+		// 결산
+		public List<StatementDataVo> statementData(ClosingDateVo closingDataVo) {
+			return menu03Repository.statementData(closingDataVo);
+		}
+		
 		
 	}

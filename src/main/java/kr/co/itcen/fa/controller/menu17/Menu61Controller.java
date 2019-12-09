@@ -2,6 +2,8 @@ package kr.co.itcen.fa.controller.menu17;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,15 +66,21 @@ public class Menu61Controller {
 	}
 	
 	/**
-	 * 결산작업 실행
+	 * 결산작업 실행 
 	 */
 	@PostMapping("/" + SUBMENU + "/settlement")
-	public String executeSettlement(@SessionAttribute("authUser") UserVo authUser, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException {
-		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+	public String executeSettlement(@SessionAttribute("authUser") UserVo authUser, Menu17SearchForm menu17SearchForm) throws UnsupportedEncodingException, ParseException {
+		String uri = null;
 		
 		// 마감일 체크 
 		ClosingDateVo closingDateVo = menu19Service.selectClosingDateByNo(menu17SearchForm);
-		if (menu19Service.checkClosingDate(authUser, closingDateVo.getStartDate())) {
+		String year = closingDateVo.getClosingYearMonth().substring(0, 4);
+		uri = "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?year=" + year;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+//		if (menu19Service.checkClosingDate(authUser, closingDateVo.getStartDate())) {
+		if (menu19Service.checkClosingDate(authUser, sdf.format(closingDateVo.getStartDate()))) {
 			// 등록자 설정 - 시산표 및 재무제표용 
 			menu17SearchForm.setInsertUserid(authUser.getId());
 			// 수저자 설정 - 마감일 업데이트용 
@@ -82,11 +90,11 @@ public class Menu61Controller {
 			DataResult<Object> dataResult = menu61Service.executeSettlement(menu17SearchForm);
 			
 			if (!dataResult.isStatus()) {
-				uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
+				uri = uri + "?year=" + year + "&error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
 			}
 		} else {
 			// 마감일이 지났을 시 
-			uri = uri + "?error=" + URLEncoder.encode("마감일이 지났습니다. 관리자에게 문의하세요.", "UTF-8");
+			uri = uri + "?year=" + year + "&error=" + URLEncoder.encode("마감일이 지났습니다. 관리자에게 문의하세요.", "UTF-8");
 		}
 				
 		return uri;

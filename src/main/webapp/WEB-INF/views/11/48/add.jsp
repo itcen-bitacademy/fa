@@ -50,6 +50,9 @@ tr td:first-child {
 	width: 150px;
 	display: inline;
 }
+.number-input{
+	text-align:right;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -58,6 +61,7 @@ tr td:first-child {
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
+		
 
 			<div class="page-header position-relative">
 				<h1 class="pull-left">장기차입금관리</h1>
@@ -87,14 +91,14 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="debtAmount" /></td>
+									<td><input type="text" name="debtAmount" class="number-input" /></td>
 								</tr>
 								<tr>
 									<td><h4>차입일자 ~ 만기일자</h4></td>
 									<td colspan="2">
 									<div class="control-group">
 				                        <div class="row-fluid input-prepend">			                        	
-				                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" />
+				                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" readonly/>
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -128,7 +132,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>은행코드</h4></td>
 									<td colspan="2">
-										<input type="text" class="search-input-width-first" name="bankCode"/>
+										<input type="text" class="search-input-width-first" name="bankCode" readonly/>
 										<a href="#" id="a-bankinfo-dialog">
 													<span class="btn btn-small btn-info">
 														<i class="icon-search nav-search-icon"></i>
@@ -175,7 +179,7 @@ tr td:first-child {
 														</table>
 												</div>
 												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-								<input type="text" class="search-input-width-second" name="bankName" />
+								<input type="text" class="search-input-width-second" name="bankName" readonly />
 								</td>
 								</tr>
 							</table>
@@ -185,7 +189,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>회계연도</h4></td>
 									<td>
-										<input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도"/>
+										<input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도" class="number-input"/>
 									</td>
 								</tr>
 								<tr>
@@ -225,7 +229,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>이율</h4></td>
 									<td colspan="2">
-										<input type="text" name="intRate" placeholder="(%)"/>
+										<input type="text" name="intRate" placeholder="(%)" class="number-input"/>
 									</td>
 								</tr>
 								<tr>
@@ -239,9 +243,46 @@ tr td:first-child {
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td colspan="2">
-										<input type="text" class="search-input-width-first" name="depositNo"/>
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="cardAccountBankName"/>
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" />
+												<a href="#" id="a-bankaccountinfo-dialog">
+													<span class="btn btn-small btn-info">
+														<i class="icon-search nav-search-icon"></i>
+													</span>
+												</a>
+												
+												<!-- 계좌정보 Modal pop-up : start -->
+												<div id="dialog-account-message" title="계좌" hidden="hidden">
+													<table id="dialog-account-message-table">
+														<tr>
+															<td>
+																<label>계좌번호</label>
+																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+																<a href="#" id="a-dialog-depositNo">
+																<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+																		<i class="icon-search nav-search-icon"></i>
+																</span>
+															</a>
+															</td>
+														</tr>
+													</table>
+													<!-- 계좌정보 데이터 리스트 -->
+													<table id="modal-deposit-table" class="table  table-bordered table-hover">
+														<thead>
+															<tr>
+																<th class="center">계좌번호</th>
+																<th class="center">예금주</th>
+																<th class="center">은행코드</th>
+																<th class="center">은행명</th>
+															</tr>
+														</thead>
+														<tbody id="tbody-bankaccountList">
+															
+														</tbody>
+													</table>
+												</div>
+												<!-- 계좌정보 Modal pop-up : end -->
+								
+											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주"/>
 									</td>
 								</tr>
 							</table>
@@ -357,9 +398,9 @@ tr td:first-child {
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>	
 							<td class="center">${ltermvo.mgr}</td>
-							<td class="center">${ltermvo.mgrCall}</td>
-							<td class="center">${ltermvo.bankCode}</td>
-							<td class="center">${ltermvo.depositNo}</td>
+							<td class="center" >${ltermvo.mgrCall}</td>
+							<td class="center" bank-name="${ltermvo.bankName}">${ltermvo.bankCode}</td>
+							<td class="center" deposit-host="${ltermvo.depositHost}">${ltermvo.depositNo}</td>			
 						</tr>
 						</c:forEach>
 					</tbody>
@@ -500,6 +541,11 @@ $(function(){
 		$("input[name=bankCode]").val(td.eq(12).text());
 		$("input[name=depositNo]").val(td.eq(13).text());
 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
+		
+		$("input[name=bankName]").val(td.eq(12).attr('bank-name'));
+		$("input[name=depositHost]").val(td.eq(13).attr('deposit-host'));
+		
+		
 	});
 	
 
@@ -637,6 +683,8 @@ $(function(){
 			});
 		});
 	});
+	
+	
 		$(function() {
 			$("#dialog-repayment").dialog({
 				autoOpen : false
@@ -758,6 +806,86 @@ $(function(){
 				}
 			});
 		});	
+</script>
+<script>
+//계좌목록
+$(function() {
+    $("#dialog-account-message").dialog({
+       autoOpen : false
+    });
+
+    $("#a-bankaccountinfo-dialog").click(function() {
+       $("#dialog-account-message").dialog('open');
+       $("#dialog-account-message").dialog({
+          title: "계좌정보",
+          title_html: true,
+             	resizable: false,
+	           height: 500,
+	           width: 400,
+	           modal: true,
+	           close: function() {
+              $('#tbody-bankacoountList tr').remove();
+           },
+           buttons: {
+           "닫기" : function() {
+                    $(this).dialog('close');
+                    $('#tbody-bankaccountList tr').remove();
+               }
+           }
+       });
+    });
+    
+    $('#dialog-account-message-table').on('click', '#a-dialog-depositNo', function(event) {
+        event.preventDefault();
+        $("#tbody-bankaccountList").find("tr").remove();
+        
+        var depositNo = $("#input-dialog-depositNo").val();
+        
+        // ajax 통신
+        $.ajax({
+           url: "${pageContext.servletContext.contextPath }/api/deposit/gets?depositNo=" + depositNo,
+           contentType : "application/json; charset=utf-8",
+           type: "get",
+           dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+           statusCode: {
+               404: function() {
+                 alert("page not found");
+               }
+           },
+           success: function(result){
+        	   console.log(result);
+         	  if(result.success) {
+         	  	$("#input-dialog-depositNo").val('');
+         	  	var baccountList = result.bankAccountList;
+         	  	console.log(result.bankAccountList);
+         	  	for(let a in baccountList) {
+         	  		$("#tbody-bankaccountList").append("<tr>" +
+                           "<td class='center'>" + baccountList[a].depositNo + "</td>" +
+                           "<td class='center'>" + baccountList[a].depositHost + "</td>" +
+                           "<td class='center'>" + baccountList[a].bankCode + "</td>" +
+                           "<td class='center'>" + baccountList[a].bankName + "</td>" +
+                           "</tr>");
+
+         	  	}
+         	  }
+           },
+           error: function(xhr, error){
+              console.error("error : " + error);
+           }
+        });
+     });
+
+	//은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+	$(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=depositNo]").val(td.eq(0).text());
+		$("input[name=depositHost]").val(td.eq(1).text());
+		$("#dialog-account-message").dialog('close');
+	});
+    
+});
+
 </script>
 </body>
 </html>

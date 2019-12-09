@@ -36,6 +36,16 @@
 		]]>
 	</select>
 	
+	<!-- 거래처 리스트 TEST -->
+	<select id="customer"  resultType="1customervo">
+		<![CDATA[
+		 select no, 
+		 		manager_name as managerName, 
+		 		name
+          from tb_customer 
+          where assets_flag = "a";
+		]]>
+	</select>
 	
 	<!-- 등록 TEST -->
 	<insert id="insert" parameterType="vehicle08vo">
@@ -43,9 +53,9 @@
 		insert
 		  into tb_vehicle
 		values (#{id },
-				null,
-				null,
-				null,
+				#{customerNo}, 
+				null, 
+				null, 
 				#{sectionNo},
 				#{staffNo},
 				#{ownerName},
@@ -64,8 +74,8 @@
 				#{feeDate}, 
 				#{taxKind}, 
 				"s", 
-				null, 
-				curdate(), 
+				#{insertUserId}, 
+				now(), 
 				null, 
 				null
 				);
@@ -80,7 +90,11 @@
 	<!-- 등록된거 조회 리스트 TEST -->
 	<select id="select"  resultType="vehicle08vo">
 		<![CDATA[
-		select  	v.id as id,
+			select  
+					v.id as id,
+					v.customer_no as customerNo,
+					c.name as customerName,
+					c.manager_name as managerName, 
 					v.section_no as sectionNo,
 					s.classification as classification,
 					st.staff_name as staffName,
@@ -89,28 +103,34 @@
 					v.reg_tax as regTax,
 					v.acq_tax as acqTax,
 					v.etc_cost as etcCost,
+					v.taxbill_no as taxbillNo,
 					v.pay_date as payDate,
 					v.deposit as deposit,
 					v.deposit_date as depositDate,
 					v.monthly_fee as monthlyFee,
 					v.fee_date as feeDate,
 					v.tax_kind as taxKind,
-					v.insert_day as insertDay
+                    v.insert_userid as insertUserId,
+                    v.insert_day as insertDay
 		from tb_vehicle v 
 				 left outer join tb_staff st on v.staff_no = st.no
 				 left outer join tb_section s on v.section_no = s.code 
-		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag IN('s','o');
+                 left outer join user u on v.insert_userid = u.id
+                 left outer join tb_customer c on v.customer_no = c.no
+		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag IN('s','o')
+		order by v.insert_day desc;
+	
 		]]>
 	</select>
-	
+		<!-- limit 0,3; -->
 	
 	<!-- 수정 TEST --><!-- where 조건절에 행이 선택되어있을경우 set flag="o"로 바꾸고 -->
 	<update id="update" parameterType="vehicle08vo">
 		<![CDATA[
 		update tb_vehicle
 		  set 
-		  	  customer_no = null,
-		  	  taxbill_no = null,
+		  	  customer_no = #{customerNo},
+		  	  taxbill_no = #{taxbillNo},
 		  	  voucher_no = null,
 		  	  section_no = #{sectionNo},
 		  	  staff_no = #{staffNo},
@@ -130,11 +150,20 @@
 			  fee_date = #{feeDate},
 			  tax_kind = #{taxKind},
 			  flag = "o",
-			  update_userid = null,
-			  update_day = curdate()
+			  update_userid = #{updateUserId},
+			  update_day = now()
 	    where id = #{id }; 
 		]]>
 	</update>
+ 	
+ 	<!-- 거래처번호를 통해 계좌번호 가져오기 -->
+	<select id="getDepositNo" parameterType="string" resultType="string">
+		<![CDATA[
+		select deposit_no
+		  from tb_customer
+		 where no = #{customerNo}
+		]]>
+	</select>
  
 	
 	<!-- 삭제 TEST --><!--  삭제버튼 클릭시 flag="s"를 flag="d"로 바꾸면서 삭제-->
@@ -142,7 +171,9 @@
 	<update id="delete" parameterType="string">
 		<![CDATA[
 		update tb_vehicle
-		  set flag="d"
+		  set flag="d",
+		  	  update_userid = #{updateUserId},
+			  update_day = now()
 	    where id = #{id}; 
 		]]>
 	</update>

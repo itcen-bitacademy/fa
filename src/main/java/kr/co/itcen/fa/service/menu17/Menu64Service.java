@@ -48,42 +48,47 @@ public class Menu64Service {
 		
 		
 		List<FinancialStatementVo> list = menu64Repository.selectIncomeStatementDataList(closingDate);
+		
 		FinancialStatementVo vo = new FinancialStatementVo();
-		vo.setAccountStatementType(list.get(0).getAccountStatementType());
-		vo.setClosingDateNo(list.get(0).getClosingDateNo());
-		vo.setInsertUserid(list.get(0).getInsertUserid());
-		vo.setInsertDay(list.get(0).getInsertDay());
-		
-		for(FinancialStatementVo dataVo : list) {
-			Long voAccountNo = dataVo.getAccountNo();
+		if(list.isEmpty() == false) {
+			vo.setAccountStatementType(list.get(0).getAccountStatementType());
+			vo.setClosingDateNo(list.get(0).getClosingDateNo());
+			vo.setInsertUserid(list.get(0).getInsertUserid());
+			vo.setInsertDay(list.get(0).getInsertDay());
 			
-			if(voAccountNo == 5000000){ //영업수익 값 저장
-				monthOperatingRevenue = dataVo.getMonthToAmount();
-				operatingRevenue = dataVo.getAmount();
+			for(FinancialStatementVo dataVo : list) {
+				Long voAccountNo = dataVo.getAccountNo();
+				
+				if(voAccountNo == 5000000){ //매출액(영업수익) 값 저장
+					monthOperatingRevenue = dataVo.getMonthToAmount();
+					operatingRevenue = dataVo.getAmount();
+				}
+				if(voAccountNo == 6000000){ //매출원가 값 저장
+					monthCostOfGoodsSold = dataVo.getMonthToAmount();
+					costOfGoodsSold = dataVo.getAmount();
+				}
+				if(voAccountNo == 8000000) { // 판매비와일반관리비 값 저장
+					monthSellingAndAdministrativeExpenses = dataVo.getMonthToAmount();
+					sellingAndAdministrativeExpenses = dataVo.getAmount();
+				}
+				if(voAccountNo == 9100000) { // 영업외수익 값 저장
+					monthNonOperatingIncome = dataVo.getMonthToAmount();
+					nonOperatingIncome = dataVo.getAmount();
+				}
+				if(voAccountNo == 9200000) { // 영업외비용 값 저장
+					monthNonOperatingExpenses = dataVo.getMonthToAmount();
+					nonOperatingExpenses = dataVo.getAmount();
+				}
+				if(voAccountNo == 9500000) { // 법인세비용 값 저장
+					monthCorporationTax = dataVo.getMonthToAmount();
+					corporationTax = dataVo.getAmount();
+				}
 			}
-			if(voAccountNo == 6000000){ //매출원가 값 저장
-				monthCostOfGoodsSold = dataVo.getMonthToAmount();
-				costOfGoodsSold = dataVo.getAmount();
-			}
-			if(voAccountNo == 8000000) { // 판매비와일반관리비 값 저장
-				monthSellingAndAdministrativeExpenses = dataVo.getMonthToAmount();
-				sellingAndAdministrativeExpenses = dataVo.getAmount();
-			}
-			if(voAccountNo == 9100000) { // 영업외수익 값 저장
-				monthNonOperatingIncome = dataVo.getMonthToAmount();
-				nonOperatingIncome = dataVo.getAmount();
-			}
-			if(voAccountNo == 9200000) { // 영업외비용 값 저장
-				monthNonOperatingExpenses = dataVo.getMonthToAmount();
-				nonOperatingExpenses = dataVo.getAmount();
-			}
-			if(voAccountNo == 9500000) { // 법인세비용 값 저장
-				monthCorporationTax = dataVo.getMonthToAmount();
-				corporationTax = dataVo.getAmount();
-			}
-		}	
+			
+		}
 		
-		vo.setAccountName("영업수익");
+		
+		vo.setAccountName("매출액");
 		vo.setAccountOrder(orderNum++);
 		vo.setMonthToAmount(monthOperatingRevenue);
 		vo.setAmount(operatingRevenue);

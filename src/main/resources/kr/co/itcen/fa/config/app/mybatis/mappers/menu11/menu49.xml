@@ -17,30 +17,16 @@
 	<select parameterType="ldebtvo" id="selectAllCount" resultType="int">
 	<![CDATA[
 		select count(*)
-		    from tb_l_term_debt
-		    where delete_flag= 'N'
-		    and repay_comple_flag = 'N'
+		    from tb_l_term_debt as a,tb_bank as b,tb_bank_account as c
+		    where a.bank_code=b.code
+		    and 	a.deposit_no = c.deposit_no
+		   	and 	a.delete_flag like concat('%',#{deleteFlag},'%')
+			and 	a.repay_comple_flag like concat('%',#{repayCompleFlag},'%')
+		    and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
+			and 	a.int_pay_way like concat('%',#{intPayWay},'%') 
+			and 	b.name like concat('%',#{bankName},'%') 
+			and 	date_format(a.exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
 	]]>
-	<if test='debtDate!=null and !"".equals(debtDate)'>
-	<![CDATA[
-		and 	date_format(debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
-	]]>
-	</if>
-	<if test='intPayWay != null and !"".equals(intPayWay)'>
-	<![CDATA[
-			and 	int_pay_way = #{intPayWay}
-	]]>
-	</if>
-	<if test='bankCode != null and !"".equals(bankCode)'>
-	<![CDATA[
-		and 	bank_code like concat('%',#{bankCode},'%') 
-	]]>
-	</if>
-	<if test='expDate != null and !"".equals(expDate)'>
-	<![CDATA[
-		and 	date_format(exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
-	]]>
-	</if>
 	</select>
 	<!-- select list -->
 	<select parameterType="map" id="selectAll" resultType="ldebtvo">
@@ -61,56 +47,41 @@
 			    a.bank_code as bankCode,
 			    a.deposit_no as depositNo,
 			    b.name as bankName
-			    from tb_l_term_debt as a,tb_bank as b
+			    from tb_l_term_debt as a,tb_bank as b,tb_bank_account as c
 			    where a.bank_code=b.code
-			    		and a.delete_flag='N'
-			    		and a.repay_comple_flag = 'N'
+			    		and 	a.deposit_no = c.deposit_no
+			    		and 	a.delete_flag like concat('%',#{vo.deleteFlag},'%')
+			    		and 	a.repay_comple_flag like concat('%',#{vo.repayCompleFlag},'%')
+			    		and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
+						and 	a.int_pay_way  like concat('%',#{vo.intPayWay},'%')
+						and 	b.name like concat('%',#{vo.bankName},'%')
+						and 	date_format(a.exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
 			    ]]>
-	<if test='vo.debtDate!=null and !"".equals(vo.debtDate)'>
-	<![CDATA[
-		and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{vo.debtDate},'%') 
-	]]>
-	</if>
-	<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>	
-	<![CDATA[
-		and 	a.int_pay_way = #{vo.intPayWay}
-	]]>
-	</if>	
-	<if test='vo.bankName != null and !"".equals(vo.bankName)'>
-	<![CDATA[
-		and 	b.name like concat('%',#{vo.bankName},'%') 
-	]]>
-	</if>
-	<if test='vo.expDate != null and !"".equals(vo.expDate)'>	
-	<![CDATA[
-		and 	a.date_format(exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
-	]]>
-	</if>
-	<if test='sort != null and "d".equals(sort)'>	
-	<![CDATA[
-		order by a.debt_date desc
-	]]>
-	</if>
-	<if test='sort != null and "e".equals(sort)'>	
-	<![CDATA[
-		order by a.exp_date desc
-	]]>
-	</if>
-	<if test='sort != null and "i".equals(sort)'>
-	<![CDATA[
-		order by a.insert_date desc
-	]]>
-	</if>
-	<if test='sort != null and "m".equals(sort)'>	
-	<![CDATA[
-		order by a.debt_amount
-	]]>
-	</if>
-	<if test="pagination.pageIndex >= 0">
-	<![CDATA[
-	     limit    #{pagination.pageIndex }, #{pagination.listSize }
-	]]>
-	</if>
+			<if test='sort != null and "d".equals(sort)'>	
+			<![CDATA[
+				order by a.debt_date desc
+			]]>
+			</if>
+			<if test='sort != null and "e".equals(sort)'>	
+			<![CDATA[
+				order by a.exp_date desc
+			]]>
+			</if>
+			<if test='sort != null and "i".equals(sort)'>
+			<![CDATA[
+				order by a.insert_date desc
+			]]>
+			</if>
+			<if test='sort != null and "m".equals(sort)'>	
+			<![CDATA[
+				order by a.debt_amount
+			]]>
+			</if>
+			<if test="pagination.pageIndex >= 0">
+			<![CDATA[
+			     limit    #{pagination.pageIndex }, #{pagination.listSize }
+			]]>
+			</if>
 	</select>
 	<select id="selectsection" resultType="sectionvo">
 	<![CDATA[

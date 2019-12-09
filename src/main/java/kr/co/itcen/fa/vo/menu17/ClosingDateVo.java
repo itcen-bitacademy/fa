@@ -27,8 +27,10 @@ public class ClosingDateVo {
 	private boolean closingYn;				// 마감여부
 	private boolean useYn;					// 사용여부
 	private String insertUserid;			// 등록자
+	private String insertUsername;			// 등록자명 
 	private Date insertDay;					// 등록일
 	private String updateUserid;			// 수정자
+	private String updateUsername;			// 수정자명
 	private Date updateDay;					// 수정일
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -70,6 +72,22 @@ public class ClosingDateVo {
 //	public void setClosingSettlementDate(Date closingSettlementDate) {
 //		this.closingSettlementDate = closingSettlementDate;
 //	}
+	
+	public String getInsertUsername() {
+		return insertUsername;
+	}
+
+	public void setInsertUsername(String insertUsername) {
+		this.insertUsername = insertUsername;
+	}
+
+	public String getUpdateUsername() {
+		return updateUsername;
+	}
+
+	public void setUpdateUsername(String updateUsername) {
+		this.updateUsername = updateUsername;
+	}
 
 	public Long getNo() {
 		return no;

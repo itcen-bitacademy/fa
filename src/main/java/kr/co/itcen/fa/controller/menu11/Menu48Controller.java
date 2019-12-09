@@ -3,6 +3,8 @@ package kr.co.itcen.fa.controller.menu11;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,6 +60,7 @@ public class Menu48Controller {
 		
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
+		model.addAttribute("year",year);
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -167,11 +170,19 @@ public class Menu48Controller {
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
 	@RequestMapping(value = "/"+SUBMENU+"/delete", method = RequestMethod.POST)
-	public String delete(@RequestParam Long[] no) {
-	
-		menu48Service.delete(no);
+	public String delete(@RequestParam Long[] no,@AuthUser UserVo uservo) {
+		List<Long> list = menu48Service.selectVoucherNo(no);
 		
+//		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+//		for(Long no1: list) {
+//			voucherVolist.add(no1);
+//		}
+//		
+//		menu03Service.deleteVoucher(voucherVolist, uservo);
+//		menu48Service.delete(no);
+//		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+		
 	}
 	@ResponseBody
 	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)

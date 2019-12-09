@@ -1,8 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,13 +60,16 @@ public class Menu50Controller {
 	@RequestMapping(value = "/" + SUBMENU + "/insert", method = RequestMethod.POST)
 	public String insert(
 			@ModelAttribute PdebtVo pdebtVo, 
-			@AuthUser UserVo userVo) throws ParseException {
+			@AuthUser UserVo userVo) {
 		pdebtVo.setInsertId(userVo.getId()); // 등록자 아이디 삽입
 		
-		DateFormat convertDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String deptExpDate = pdebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-		pdebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10))); // 차입일자 date format으로 변경
-		pdebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13))); // 만기일자 date format으로 변경
+		String saveDeptDate = deptExpDate.substring(0, 10);
+		String saveExpDate = deptExpDate.substring(13);
+		pdebtVo.setDebtDate(saveDeptDate);
+		pdebtVo.setExpDate(saveExpDate);
+		//pdebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10))); // 차입일자 date format으로 변경
+		//pdebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13))); // 만기일자 date format으로 변경
 		
 		// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달
 		String dangerCode = pdebtVo.getDangerCode(); // 위험등급코드 가져오기
@@ -95,10 +96,16 @@ public class Menu50Controller {
 			@ModelAttribute PdebtVo pdebtVo,
 			@AuthUser UserVo userVo) throws ParseException{
 		System.out.println(pdebtVo.getIntPayWay());
-		DateFormat convertDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		//DateFormat convertDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String deptExpDate = pdebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-		pdebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10))); // 차입일자 date format으로 변경
-		pdebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13))); // 만기일자 date format으로 변경
+		//pdebtVo.setDebtDate(convertDateFormat.parse(deptExpDate.substring(0, 10))); // 차입일자 date format으로 변경
+		//pdebtVo.setExpDate(convertDateFormat.parse(deptExpDate.substring(13))); // 만기일자 date format으로 변경
+		String saveDeptDate = deptExpDate.substring(0, 10);
+		String saveExpDate = deptExpDate.substring(13);
+		pdebtVo.setDebtDate(saveDeptDate);
+		pdebtVo.setExpDate(saveExpDate);
+		
+		
 		pdebtVo.setUpdateId(userVo.getId()); // 수정자 아이디 삽입
 		
 		Long money = (long) (pdebtVo.getDebtAmount() * pdebtVo.getIntRate() / 100);

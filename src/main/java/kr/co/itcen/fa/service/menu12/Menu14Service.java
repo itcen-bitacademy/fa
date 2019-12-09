@@ -50,7 +50,7 @@ public class Menu14Service {
 		
 		int totalCount = menu14Repository.searchCount(vo);
 		int showCount = 11;
-		if(totalCount<=11) {
+		if(totalCount<=11) { // 조회데이터 수 보다 전체 데이터 수가 작은경우
 			showCount = totalCount;
 		}
 		
@@ -70,5 +70,13 @@ public class Menu14Service {
 
 	public List<PurchaseitemVo> getItemList() {
 		return menu14Repository.getItemList();
+	}
+	
+	// 화면에 뿌리는 조회 데이터 수
+	public int getCount() {
+		return menu14Repository.selectAllCount();
+	}
+	public int getCount(SalesSearchVo vo) {
+		return menu14Repository.searchCount(vo);
 	}
 }

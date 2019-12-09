@@ -132,7 +132,7 @@ form {
 								</tr>
 								</tbody>
 							</table>	
-							</form>
+							
 							
 							<div class="row-fluid">
 								<div class="span9">
@@ -150,19 +150,19 @@ form {
 								<div class="span2">
 									<div class="checkbox">
 										<label>
-											<input name="form-field-checkbox" type="checkbox" class="ace" />
+											<input name="deleteFlag" type="checkbox" class="ace" value=""/>
 											<span class="lbl">삭제포함</span>
 										</label>
 									</div>
 									<div class="checkbox">
 										<label>
-											<input name="form-field-checkbox" type="checkbox" class="ace" />
+											<input name="repayCompleFlag" type="checkbox" class="ace" value=""/>
 											<span class="lbl">상환완료포함</span>
 										</label>
 									</div>
 								</div>
 							</div>
-															
+						</form>								
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
@@ -236,7 +236,7 @@ form {
 				<ul>
 				<c:choose>
 					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?${uri}&page=${dataResult.pagination.startPage - 1 }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.startPage - 1 }">
 						<i class="icon-double-angle-left"></i></a></li>
 					</c:when>
 					<c:otherwise>
@@ -246,17 +246,17 @@ form {
 				<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 					<c:choose>
 						<c:when test="${pg eq dataResult.pagination.page }">
-						<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?${uri}&page=${pg }">${pg }</a></li>
+						<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg }">${pg }</a></li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?${uri}&page=${pg}">${pg }</a></li>
+										<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg}">${pg }</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 
 							<c:choose>
 								<c:when test="${dataResult.pagination.next }">
-									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?${uri}&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>

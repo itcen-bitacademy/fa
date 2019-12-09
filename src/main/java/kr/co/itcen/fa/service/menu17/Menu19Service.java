@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.service.menu17;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -170,7 +172,11 @@ public class Menu19Service {
 	 * 		true	: 입력 가능
 	 * 		false	: 입력 불가능
 	 */
-	public boolean checkClosingDate(UserVo authUser, Date businessDate) {
+	public boolean checkClosingDate(UserVo authUser, String businessDateStr) throws ParseException {
+		// 날짜 포맷 변경
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date businessDate = sdf.parse(businessDateStr);
+		
 		// 마감일 정보 조회  
 		ClosingDateVo closingDateVo = menu19Repository.selectClosingDateByYearMonth(businessDate);
 		
