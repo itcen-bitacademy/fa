@@ -132,7 +132,8 @@
    			mgr,
     		mgr_call as mgrCall,
 		    bank_code as bankCode,
-		    deposit_no as depositNo
+		    deposit_no as depositNo,
+		    int_amount as intAmount
 		    from tb_l_term_debt
 		    where no=#{_parameter}
 	]]>
@@ -169,6 +170,8 @@
 			deposit_no=#{depositNo},
 			update_id=#{updateId},
 			update_date=now()
+			voucher_no = #{voucherNo}
+
 		where no=#{no}
 	]]>
 	</update>

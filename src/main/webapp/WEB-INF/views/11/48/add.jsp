@@ -68,7 +68,7 @@ tr td:first-child {
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<form id="myform" class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 				<div class="container-fluid">
 					<!-- Example row of columns -->
 					<div class="row">
@@ -78,7 +78,7 @@ tr td:first-child {
 									<td><h4>장기차입금코드</h4></td>
 									<td>
 										<input type="hidden" name="no" id = "no"/>
-										<input type="text" name="code" id ="code2" />
+										<input type="text" name="code" id ="code2" max="10" min="10" />
 										<input id="btn-check-code" type="button" value="중복확인">
 										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 									</td>
@@ -91,7 +91,7 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="debtAmount" class="number-input" /></td>
+									<td><input type="text" name="debtAmount" class="number-input numberformat" /></td>
 								</tr>
 								<tr>
 									<td><h4>차입일자 ~ 만기일자</h4></td>
@@ -130,15 +130,16 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr>
+						                              	
 									<td><h4>은행코드</h4></td>
 									<td colspan="2">
+									<div class="input-append">
 										<input type="text" class="search-input-width-first" name="bankCode" readonly/>
-										<a href="#" id="a-bankinfo-dialog">
-													<span class="btn btn-small btn-info">
-														<i class="icon-search nav-search-icon"></i>
-													</span>
-												</a>
-									
+												<span class="add-on">
+				                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+				                                    </a>
+				                                 </span>
+									</div>
 									
 									<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
 												<div id="dialog-message" title="은행코드" hidden="hidden">
@@ -146,21 +147,24 @@ tr td:first-child {
 																<tr>
 																	<td>
 																	<label>은행코드</label>
+																	<div class="input-append">
+
 																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
-																		<a href="#" id="a-dialog-bankcode">
-																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-																				<i class="icon-search nav-search-icon"></i>
-																			</span>
-																		</a>
+																		<span class="add-on">
+										                                    <a href="#" id="a-dialog-bankcode" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+										                                    </a>
+										                                 </span>
+																		</div>
 																	</td>
 																	<td>
 																	<label>은행명</label>
+																	<div class="input-append">
 																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
-																		<a href="#" id="a-dialog-bankname">
-																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-																				<i class="icon-search nav-search-icon"></i>
-																			</span>
-																		</a>
+																		<span class="add-on">
+										                                    <a href="#" id="a-dialog-bankname" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+										                                    </a>
+										                                 </span>
+																	</div>
 																	</td>
 																</tr>
 																
@@ -243,25 +247,28 @@ tr td:first-child {
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td colspan="2">
+									<div class="input-append">
 										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" readonly/>
-												<a href="#" id="a-bankaccountinfo-dialog">
-													<span class="btn btn-small btn-info">
-														<i class="icon-search nav-search-icon"></i>
-													</span>
-												</a>
-												
+												<span class="add-on">
+				                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+				                                    </a>
+				                                 </span>
+									</div>
 												<!-- 계좌정보 Modal pop-up : start -->
 												<div id="dialog-account-message" title="계좌" hidden="hidden">
 													<table id="dialog-account-message-table">
 														<tr>
 															<td>
+															<div class="input-append">
+															
+									
 																<label>계좌번호</label>
 																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-																<a href="#" id="a-dialog-depositNo">
-																<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-																		<i class="icon-search nav-search-icon"></i>
-																</span>
-															</a>
+																<span class="add-on">
+								                                    <a href="#" id="input-dialog-depositNo" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+								                                    </a>
+								                                 </span>
+															</div>
 															</td>
 														</tr>
 													</table>
@@ -383,7 +390,7 @@ tr td:first-child {
 										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center">${ltermvo.debtAmount}</td>
+							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
 							<td class="center">${ltermvo.repayBal}</td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
@@ -499,7 +506,8 @@ $(function(){
 
 		$('#form-field-select-3').val(major).trigger('chosen:updated');  
 		
-		$("input[name=debtAmount]").val(td.eq(4).text());
+
+		$("input[name=debtAmount]").val(td.eq(4).text().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 		$("input[name=debtExpDate]").val(td.eq(7).text());
 		var repayWay='';
 		switch (td.eq(6).text()){
@@ -517,11 +525,11 @@ $(function(){
 		$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
 		
 		
-		var rate = td.eq(8).text().split('.');
+		var rate = td.eq(8).text().split('%');
 		
 		
 		$("input[name=intRate]").val(rate[0]);
-		
+
 		var intPayWay='';
 		switch (td.eq(9).text()){
 	    case '년' :
@@ -656,6 +664,9 @@ $(function(){
 		
 		$("input[name=no]").val(sendData);
 		console.log(sendData);
+	}
+	function numberWithCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	$(function() {
 		$("#dialog-message").dialog({
@@ -887,5 +898,80 @@ $(function() {
 });
 
 </script>
+<script type="text/javascript">
+
+jQuery(function(){
+    // 숫자 제외하고 모든 문자 삭제.
+    $.fn.removeText = function(_v){
+        //console.log("removeText: 숫자 제거 합니다.");
+        if (typeof(_v)==="undefined")
+        {
+            $(this).each(function(){
+                this.value = this.value.replace(/[^0-9]/g,'');
+            });
+        }
+        else
+        {
+            return _v.replace(/[^0-9]/g,'');
+        }
+    };
+    // php의 number_format과 같은 효과.
+    $.fn.numberFormat = function(_v){
+        this.proc = function(_v){
+            var tmp = '',
+                number = '',
+                cutlen = 3,
+                comma = ','
+                i = 0,
+                len = _v.length,
+                mod = (len % cutlen),
+                k = cutlen - mod;    
+            for (i; i < len; i++)
+            {
+                number = number + _v.charAt(i);
+
+                if (i < len - 1)
+                {
+                    k++;
+                    if ((k % cutlen) == 0)
+                    {
+                        number = number + comma;
+                        k = 0;
+                    }
+                }
+            }
+            return number;
+        };
+         
+        var proc = this.proc;
+        if (typeof(_v)==="undefined")
+        {
+            $(this).each(function(){
+                this.value = proc($(this).removeText(this.value));
+            });
+        }
+        else
+        {
+            return proc(_v);
+        }
+    };
+    $.fn.onlyNumber = function (p) {
+        $(this).each(function(i) {
+            $(this).attr({'style':'text-align:right'});
+            this.value = $(this).removeText(this.value);
+            this.value = $(this).numberFormat(this.value);             
+            $(this).bind('keypress keyup',function(e){
+                this.value = $(this).removeText(this.value);
+                this.value = $(this).numberFormat(this.value);
+            });
+        });
+    };
+    $('.numberformat').onlyNumber();
+});
+$("form").on("submit", function() {
+	$('.numberformat').removeText(); 
+ });
+</script>
+
 </body>
 </html>

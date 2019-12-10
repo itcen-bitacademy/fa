@@ -72,6 +72,7 @@ public class Menu49Controller {
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("sort", sort);
+		model.addAttribute("vo", vo);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
