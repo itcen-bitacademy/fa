@@ -9,8 +9,8 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <script src="/fa/ace/assets/js/ace-elements.min.js"></script>
 <script src="/fa/ace/assets/js/ace.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
@@ -58,19 +58,40 @@
 			}
 		});
 		
-		$("#delete").click(function() {
+		$("#delete").click(function(event) {
 			var itemcode = $("#form-field-item-id").val();
-			var factorycode = $("")
-			console.log(itemcode);
+			var page_num = $("#select_num").text();
+			console.log(page_num);
 			
 			if(itemcode != null && itemcode.length > 0) {
+				event.preventDefault();
+				
 				$.ajax({
 					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
 					type:"get",
 					dataType:"json",
-					data:$("#form").serialize(),
+					data:$("#form").serialize() + "&page=" + page_num,
 					success:function(data) {
 						alert("삭제 완료");
+						
+						$("#form-field-item-id").val("");
+						$("#form-field-section-name").val("");
+						$("#form-field-factory-name").val("");
+						$("#form-field-factory-postaddress").val("");
+						$("#form-field-factory-roadaddress").val("");
+						$("#form-field-factory-detailaddress").val("");
+						$("#form-field-standard").val("");
+						$("#form-field-price").val("");
+						
+						$("#form-field-item-name").val("");
+						$("#form-field-section-code").val("");
+						$("#form-field-factory-code").val("");
+						$("#form-field-factory-manager").val("");
+						$("#id-date-picker-1").val("");
+						$("#form-field-purpose").val("");
+						
+						updateTable(data.pagepurchaseitemList, data.page_num);
+						updatePagination(data.purchaseitemListall, data.purchaseitemList, data.page_num, data.page_group);
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
 					}
@@ -78,21 +99,23 @@
 			}
 		});
 		
-		$("#update").click(function() {
+		$("#update").click(function(event) {
 			var itemcode = $("#form-field-item-id").val();
-			console.log(itemcode);
+			var page_num = $("#select_num").text();
+			console.log(page_num);
 			
 			if(itemcode != null && itemcode.length > 0) {
 				event.preventDefault();
+				
 				$.ajax({
 					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
 					type:"get",
 					dataType:"json",
-					data:$("#form").serialize(),
-					success:function(purchaseitemList) {
+					data:$("#form").serialize() + "&page=" + page_num,
+					success:function(data) {
 						alert("수정 완료");
 						
-						updateTable(purchaseitemList, 1);
+						updateTable(data, page_num);
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
 					}
@@ -100,12 +123,14 @@
 			}
 		});
 		
-		$("#add").click(function() {
+		$("#add").click(function(event) {
 			var itemcode = $("#form-field-item-id").val();
 			console.log(itemcode);
 			console.log();
 			
 			if(itemcode != null && itemcode.length > 0) {
+				event.preventDefault();
+				
 				$.ajax({
 					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add",
 					type:"get",
@@ -147,32 +172,6 @@
 			
 		});
 		
-		function updateTable(purchaseitemList, page_num) {
-			console.log(purchaseitemList);
-			
-			$("#select-purchaseitem-list").remove();
-			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>")
-			$("#sample-table-1").append($newTbody)
-			var i = 1;
-			
-			for(var pur in purchaseitemList) {
-				$newTbody.append(
-					"<tr>" +
-					"<td>" + isEmpty((i + (page_num-1)*11)) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].no) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].name) + "</td>" +
-					"<td class='hidden-480'>" + isEmpty(purchaseitemList[pur].sectioncode) + "</td>" +
-					"<td class='hidden-phone'>" + isEmpty(purchaseitemList[pur].sectionname) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].standard) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].price) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].managername) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].producedate) + "</td>" +
-					"</tr>"
-				);
-				i++;
-			}
-		}
-		
 		function isEmpty(value) {
 			if(value == null || value.length === 0) {
 				return "";
@@ -189,14 +188,14 @@
 			$("#dialog-section-main").dialog('open');
 			$("#dialog-section-main").dialog({
 				resizable: false,
-			    height: 400,
-			      width: 400,
-			      modal: true,
-			      buttons: {
-			        "확인": function() {
-			          $(this).dialog("close");
-			        }
-			      }
+				height: 400,
+				width: 400,
+				modal: true,
+				buttons: {
+					"확인": function() {
+						$(this).dialog("close");
+					}
+				}
 			});
 		});
 		
@@ -257,20 +256,131 @@
 		
 		$("body").on("click",".page_go",function(e) {
 			var page_num = $(this).text();
+			var page_group = parseInt((page_num-1)/5);
+			
+			console.log("page_num : " + page_num);
+			console.log("page_group : " + page_group);
 			
 			$.ajax({
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:{"page" : page_num},
+				data:{"page" : page_num, "page_group" : page_group},
 				success:function(data) {
-					console.log(page_num);
-					updateTable(data, page_num);
+					updateTable(data.pagepurchaseitemList, page_num);
+					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
 					alert("찾을 수 없는 품목입니다.");
 				}
 			});
 		});
+		
+		$("body").on("click",".page_go_prev",function(e) {
+			var page_num = $("#select_num").text();
+			var page_group = parseInt((page_num-1)/5);
+			
+			page_group = page_group - 1;
+			page_num = (page_group*5) + 5;
+			
+			console.log("page_num : " + page_num);
+			console.log("page_group : " + page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+				type:"get",
+				dataType:"json",
+				data:{"page" : page_num, "page_group" : page_group},
+				success:function(data) {
+					updateTable(data.pagepurchaseitemList, page_num);
+					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".page_go_next",function(e) {
+			var page_num = $("#select_num").text();
+			var page_group = parseInt((page_num-1)/5);
+			
+			page_group = page_group + 1;
+			page_num = (page_group*5) + 1;
+			
+			console.log("page_num : " + page_num);
+			console.log("page_group : " + page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+				type:"get",
+				dataType:"json",
+				data:{"page" : page_num, "page_group" : page_group},
+				success:function(data) {
+					updateTable(data.pagepurchaseitemList, page_num);
+					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		function updateTable(purchaseitemList, page_num) {
+			$("#select-purchaseitem-list").remove();
+			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>")
+			$("#sample-table-1").append($newTbody)
+			var i = 1;
+			
+			for(var pur in purchaseitemList) {
+				$newTbody.append(
+					"<tr>" +
+					"<td>" + isEmpty((i + (page_num-1)*11)) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].no) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].name) + "</td>" +
+					"<td class='hidden-480'>" + isEmpty(purchaseitemList[pur].sectioncode) + "</td>" +
+					"<td class='hidden-phone'>" + isEmpty(purchaseitemList[pur].sectionname) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].standard) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].price) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].managername) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].producedate) + "</td>" +
+					"</tr>"
+				);
+				i++;
+			}
+		}
+			
+		function updatePagination(purchaseitemListall, purchaseitemList, page_num, page_group) {
+			$("#pagination_list").remove();
+			$newUl = $("<ul id='pagination_list'></ul>")
+			$(".pagination").append($newUl);
+			var page_all_count = parseInt((purchaseitemListall.length-1)/11) + 1;
+			var list_size = parseInt((purchaseitemList.length-1)/11) + 1;
+			var page_group_max = parseInt((page_all_count-1) / 5);
+			
+			console.log(page_group_max);
+			
+			if(0 < page_group) {
+				$newUl.append("<li><a class='page_go_prev' href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+			}
+			
+			for(var li = 1; li <= list_size; li++) {
+				if(page_num == (li + page_group*5)) {
+					$newUl.append(
+						"<li class='active'><a id='select_num' href='javascript:void(0);'>" + (li + page_group*5) + "</a></li>"
+					);
+				} else {
+					$newUl.append(
+						"<li><a class='page_go' href='javascript:void(0);'>" + (li + page_group*5) + "</a></li>"
+					);
+				}
+			}
+			
+			if(page_group_max > page_group) {
+				$newUl.append("<li><a class='page_go_next' href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+			}
+		}
 	});
 	
 </script>
@@ -409,11 +519,6 @@
 								
 								
 								
-								
-								
-								
-								
-								
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-postaddress">생산공장 주소</label>
 									<div class="controls">
@@ -481,7 +586,6 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-										
 									</div>
 								</div>
 								
@@ -523,7 +627,7 @@
 									<th>대분류명</th>
 									<th>규격</th>
 									<th>단가(원)</th>
-									<th>담당자</th>
+									<th>생산담당자</th>
 									<th>일자</th>
 								</tr>
 							</thead>
@@ -548,16 +652,39 @@
 					</div><!-- /span -->
 					
 					<div class="pagination">
-						<ul>
-							<c:set var="page_count" value="${fn:length(purchaseitemList)}"></c:set>
+						<ul id="pagination_list">
+							<fmt:parseNumber var="page_all_count" integerOnly="true" value="${((fn:length(purchaseitemListall)-1)/11) + 1}" />
+							<fmt:parseNumber var="page_count" integerOnly="true" value="${((fn:length(purchaseitemList)-1)/11) + 1}" />
+							<fmt:parseNumber var="page_group_max" integerOnly="true" value="${(page_all_count-1) / 5 }" />
 							
-							<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
-							<c:forEach var="pur_size" begin="1" end="${((page_count-1)/11)+1 }" step="1">
-								<li><a class="page_go" href="javascript:void(0);">${pur_size }</a></li>
+							<c:choose>
+								<c:when test="${0 < page_group }">
+									<li><a class="page_go_prev" href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
+								</c:otherwise>
+							</c:choose>
+							
+							<c:forEach var="pur_size" begin="1" end="${page_count }" step="1">
+								<c:choose>
+									<c:when test="${cur_page == pur_size }">
+										<li class="active"><a id="select_num" href="javascript:void(0);">${pur_size }</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a class="page_go" href="javascript:void(0);">${pur_size }</a></li>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 							
-							<!-- <li class="active"><a href="#">1</a></li> -->
-							<li><a href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+							<c:choose>
+								<c:when test="${page_group_max > page_group }">
+									<li><a class="page_go_next" href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
 						</ul>
 					</div>
 				</div>
@@ -652,6 +779,10 @@
 				}
 			}
 		}).open();
+	};
+	
+	function reset() {
+		$("#form")[0].reset();
 	};
 	
 	$(function() {

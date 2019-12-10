@@ -66,8 +66,10 @@ public class Menu33Repository {
 		return sectionVo;
 	}
 	
-	public List<PurchaseitemVo> getPurchaseitemList() {
-		List<PurchaseitemVo> purchaseitemList = sqlSession.selectList("menu33.getpurchaseitemlist");
+	public List<PurchaseitemVo> getPurchaseitemList(int page_group) {
+		page_group *= 55;
+		
+		List<PurchaseitemVo> purchaseitemList = sqlSession.selectList("menu33.getpurchaseitemlist", page_group);
 		
 		return purchaseitemList;
 	}
@@ -98,6 +100,12 @@ public class Menu33Repository {
 		List<PurchaseitemVo> pagepurchaseitemList = sqlSession.selectList("menu33.getpagePurchaseitemList", page);
 		
 		return pagepurchaseitemList;
+	}
+
+	public List<PurchaseitemVo> getPurchaseitemListall() {
+		List<PurchaseitemVo> purchaseitemListall = sqlSession.selectList("menu33.getPurchaseitemListall");
+		
+		return purchaseitemListall;
 	}
 }
 
