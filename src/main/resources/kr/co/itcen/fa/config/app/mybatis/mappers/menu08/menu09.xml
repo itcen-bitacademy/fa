@@ -30,7 +30,7 @@
                      reg_tax as regTax,
                      acq_tax as acqTax,
 					 pay_date as payDate,
-					 tax_kind as taxKind,
+					 tax_kind as taxKind, 
 					 flag,
 					 tb_land.insert_userid as insertUserid,
 					 tb_land.insert_day as insertDay,
