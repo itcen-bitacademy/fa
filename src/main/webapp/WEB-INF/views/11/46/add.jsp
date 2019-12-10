@@ -57,8 +57,22 @@ tr td:first-child {
 .pg-list{
 	grid-column: 2;
 }
-.pg-total-row{grid-column: 3;}
-.pg-total-row>*{float: right; margin:0;}
+.above-table{
+	display: grid;
+	grid-template-columns: repeat(2, 50%);
+	height: 30px;
+}
+.above-table>*{grid-column: auto;}
+.pg-total-row{float: left; margin:0;}
+
+.btn-list{float: right; }
+.btn-list>button{ 
+	margin-right: 10px;
+	float:none;
+}
+.btn-list>button:last-child{
+	margin-right: 0;}
+.btn-list>button:not(:first-child):not(:last_child){margin: 0 auto}
 
 </style>
 </head>
@@ -217,19 +231,21 @@ tr td:first-child {
 					</div>
 				</div>
 				<hr>
-				<div>
-					<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
-					&nbsp;
-					<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
-					&nbsp;
-					<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
-					&nbsp;
-					<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
-					&nbsp;
-					<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-					&nbsp;
-					<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
-				</div>
+				<section class="above-table">
+					<section class="above-table-left">
+						<h5>총  ${pagination.totalCnt }건</h5>
+					</section>
+					<section class="above-table-right">
+						<div class="btn-list">
+							<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
+							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
+							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
+							<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
+							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
+						</div>
+					</section>
+				</section>
 				<hr>
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
@@ -324,9 +340,6 @@ tr td:first-child {
 							</c:otherwise>
 						</c:choose>
 					</ul>
-					<section id="pg-total-row" class="pg-total-row">
-						<h5>총  ${pagination.totalCnt }건</h5>
-					</section>
 				</section>
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
