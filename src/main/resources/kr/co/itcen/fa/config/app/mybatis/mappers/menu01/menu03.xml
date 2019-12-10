@@ -277,7 +277,7 @@
           join tb_account a
             on a.no = i.account_no
 	 left join (select no, name
-				  from tb_customer k
+				  from tb_customer
 				 union
 				select no, name
                   from tb_salescustomer
@@ -296,12 +296,12 @@
            and i.use_yn = 1
            and m.use_yn = 1
         ]]>
-    	<if test="regDate != null and !regDate.equals('')">
+    	<if test="regDate != null and !''.equals(regDate)">
     	   <![CDATA[
-    	   and v.reg_date = #{regDate }
+    	   and v.reg_date like concat('%',#{regDate },'%');
     	   ]]>
     	</if>
-    	<if test="regDate != null and !regDate.equals('')">
+    	<!-- <if test="accountNo != null and !accountNo.equals('')">
     	   <![CDATA[
     	   and a.no = #{accountNo }
     	   ]]>
@@ -315,7 +315,7 @@
     	   <![CDATA[
     	   and cu.no = #{customerNo };
     	   ]]>
-    	</if>
+    	</if> -->
 	</select>
 	
 	<!-- 전표조회 페이징 -->
@@ -349,7 +349,7 @@
           join tb_account a
             on a.no = i.account_no
 	 left join (select no, name
-				  from tb_customer k
+				  from tb_customer
 				 union
 				select no, name
                   from tb_salescustomer
@@ -373,6 +373,11 @@
     	   and v.reg_date = #{vo.regDate }
     	   ]]>
     	</if>
+    	<!-- <if test="vo.accountNo != null and !vo.accountNo.equals('')">
+    	   <![CDATA[
+    	   and a.no = #{vo.accountNo }
+    	   ]]>
+    	</if>
     	<if test="vo.amount != null and !vo.amount.equals('')">
     	   <![CDATA[
     	   and i.amount = #{vo.amount }
@@ -380,29 +385,12 @@
     	</if>
     	<if test="vo.customerNo != null and !vo.customerNo.equals('')">
     	   <![CDATA[
-    	   and cu.no = #{vo.customerNo };
+    	   and cu.no = #{vo.customerNo }
     	   ]]>
-    	</if>
+    	</if> -->
       <![CDATA[
       order by v.no desc,
                i.amount_flag
-      ]]>
-    	<if test="vo.regDate != null and !vo.regDate.equals('')">
-    	   <![CDATA[
-    	   and v.reg_date = #{vo.regDate }
-    	   ]]>
-    	</if>
-    	<if test="vo.amount != null and !vo.amount.equals('')">
-    	   <![CDATA[
-    	   and i.amount = #{vo.amount }
-    	   ]]>
-    	</if>
-    	<if test="vo.customerNo != null and !vo.customerNo.equals('')">
-    	   <![CDATA[
-    	   and cu.no = #{vo.customerNo };
-    	   ]]>
-    	</if>
-      <![CDATA[
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
