@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.controller.menu08;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +13,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu39Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu01.ItemVo;
+import kr.co.itcen.fa.vo.menu01.MappingVo;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu08.BuildingVo;
 
 
@@ -39,22 +49,23 @@ public class Menu39Controller {
 	@Autowired
 	private Menu39Service menu39Service;
 	
+	@Autowired
+	private Menu03Service menu03Service;
+	
+	@Autowired
+	private Menu19Service menu19Service;
+	
 	
 	//               /08   /   39     , /08/39/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
-	public String list(Model model, @RequestParam(value="id", required = false, defaultValue = "") String id) {
-		//menu39Service.test();
-		/*
-		 *   JSP
-		 *   08/39/list.jsp
-		 * 
-		 */
+	public String list(Model model, @RequestParam(value="id", required = false, defaultValue = "") String id,
+			@RequestParam(value="page", required=false,defaultValue = "1") int page,
+			@SessionAttribute("authUser") UserVo authUser) {
 		
-		//List 생성
-		List<BuildingVo> list = menu39Service.list(id); 
+		//dataresult 생성
+		DataResult<BuildingVo> dataResult = menu39Service.list(id, page); 
 		
-		model.addAttribute("list", list);
-		menu39Service.list(id);
+		model.addAttribute("dataResult",dataResult);
 		
 		//map 생성
 		Map<String, Object> map = new HashMap<>();
@@ -63,33 +74,99 @@ public class Menu39Controller {
 		map.putAll(menu39Service.getSection());
 		model.addAllAttributes(map);
 		
-		//대분류
+		//거래처
 		map.putAll(menu39Service.getCustomer());
 		model.addAllAttributes(map);
+				
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 	//등록(C)
 	@RequestMapping(value = "/" + SUBMENU + "/create" , method = RequestMethod.POST)
-	public String add(@ModelAttribute BuildingVo vo, @AuthUser UserVo uservo){
-		vo.setInsertUserid(uservo.getId());
-		menu39Service.add(vo);
+	public String add(@ModelAttribute BuildingVo buildingvo, @SessionAttribute("authUser") UserVo authUser, Model model) throws ParseException{
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		buildingvo.setInsertUserid(authUser.getId());
+		//menu39Service.add(buildingvo);
+		//return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		//마감 여부 체크
+	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
+	    	System.out.println("마감일자 제발!!!");
+	    	return MAINMENU + "/" + SUBMENU + "/add";
+	    } else {
+	    	model.addAttribute("closingDate", true);
+		    menu39Service.add(buildingvo);
+		    return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	    }
 	}
 	
 	//조회(R)
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public String list(@RequestParam(value="id", required = false, defaultValue = "") String id){
+		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "?id=" + id;
 	}
 	
 	//수정(U)
 	@RequestMapping(value = "/" + SUBMENU + "/update" , method = RequestMethod.POST)
-	public String update(@ModelAttribute BuildingVo vo, @AuthUser UserVo uservo){
-		vo.setUpdateUserid(uservo.getId());
-		menu39Service.modify(vo);
+	public String update(@ModelAttribute BuildingVo buildingvo, @AuthUser UserVo uservo,
+			@RequestParam(value="taxbillNo", required=false) String taxbillNo
+            ,@RequestParam(value="customerNo", required=false) String customerNo
+            ,@RequestParam(value="depositNo", required=false) String depositNo){
+		
+		buildingvo.setUpdateUserid(uservo.getId());
+		
+		if(buildingvo.getCombineNo() == null) {
+			buildingvo.setCombineNo("00");
+	      }
+		
+		//전표
+		if (taxbillNo != null) {
+			
+			//계좌(계좌번호, 은행코드, 은행이름)정보
+			CustomerVo bankInfo = menu39Service.getBankInfo(customerNo);
+			
+			System.out.println("계좌, 은행 : " + bankInfo);
+			
+			
+			//전표
+			VoucherVo voucherVo = new VoucherVo();
+			
+			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+			ItemVo itemVo = new ItemVo(); // 차변
+			ItemVo itemVo2 = new ItemVo(); // 대변
+
+			// 왼쪽 : 얻은 건물 가격 |||| 오른쪽 : 계좌 가격
+
+			// 거래금액
+			MappingVo mappingVo = new MappingVo();
+			
+			voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo.getPayDate() : 거래날짜
+			
+			itemVo.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost()); //  거래금액
+			itemVo.setAmountFlag("d"); // 차변
+			itemVo.setAccountNo(1220201L); //계정과목 : 건물
+			itemVoList.add(itemVo);
+
+			itemVo2.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost());
+			itemVo2.setAmountFlag("c"); // 대변
+			itemVo2.setAccountNo(1110101L); //계정과목 : 현금
+			itemVoList.add(itemVo2);
+
+			//매핑테이블
+		    mappingVo.setVoucherUse("민준용");  // 사용용도
+		    mappingVo.setSystemCode(buildingvo.getId());  // 각 건물코드
+		    mappingVo.setDepositNo(bankInfo.getDepositNo());  // 계좌번호
+		    mappingVo.setCustomerNo(customerNo); //거래처번호
+		    mappingVo.setManageNo(taxbillNo);//세금계산서번호
+		    
+		    //전표
+		    long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
+		    
+		    buildingvo.setVoucherNo(voucherNo);
+		}
+		
+		menu39Service.modify(buildingvo);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
@@ -101,4 +178,5 @@ public class Menu39Controller {
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
+
 }

@@ -48,23 +48,19 @@
 													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
 											</select> 
-											<input readonly type="text" class="span6" id="classification" name="sectionff" placeholder="코드를 지정하면 대분류명이 입력됩니다">
+											<input readonly type="text" class="span6" id="classification" name="sectionName" placeholder="코드를 지정하면 대분류명이 입력됩니다">
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">주소(광역)</label>
+										<label class="control-label" for="form-field-1">주소</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-select-1"
-												name="wideAddress" data-placeholder="선택">
-											</select>
-										</div>
-									</div>
-									<div class="control-group">
-										<label class="control-label" for="form-field-1">주소(읍/면/동)</label>
-										<div class="controls">
-											<select class="chosen-select" id="localAddress" name="localAddress" data-placeholder="선택">
-											</select>
-											<input type="text" id="form-field-1" name="detailAddress" style="width: 302px;" placeholder="상세주소를 입력하세요" />
+											<input class="span2" onclick="execDaumPostcode()" 
+												class="btn-primary box" type="button" value="주소 찾기">
+											<input class="span4" readonly type="text" id="wideAddress"
+												name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
+											<input style="width: 230px" class="span5" readonly type="text"
+												id="cityAddress" name="cityAddress"
+												placeholder="주소를 선택하면 입력됩니다.">
 										</div>
 									</div>
 									<div class="control-group">
@@ -75,7 +71,7 @@
 													<option customerName="${customerVo.name}" managerName="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
 												</c:forEach>
 											</select> 
-											<input readonly type="text" class="span6" name="classification" id="customerName" placeholder="코드를 지정하면 거래처명이 입력됩니다">
+											<input readonly type="text" class="span6" name="customerName" id="customerName" placeholder="코드를 지정하면 거래처명이 입력됩니다">
 										</div>
 									</div>
 									<div class="control-group">
@@ -99,17 +95,9 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">등록세</label>
-											<div class="controls">
-												<input type="text" id="form-field-1" name="regTax"
-													placeholder="금액을 입력하세요" />
-											</div>
-										</div>
-										<div style="float: left; width: 50%">
-											<label style="width: 70px; margin-right: 10px;"
-												class="control-label" for="form-field-1">취득세</label> <input
-												type="text" id="form-field-1" name="acqTax"
+										<label class="control-label" for="form-field-1">등록세</label>
+										<div class="controls">
+											<input type="text" id="combine_no" name="acqTax"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
@@ -157,16 +145,15 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">주소(시/군/구)</label>
+										<label class="control-label" for="form-field-1">상세주소</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-select-1"
-												name="cityAddress" data-placeholder="선택">
-											</select>
+											<input type="text" id="detailAddress" name="detailAddress"
+												placeholder="상세주소를 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">담당자</label>
+											<label class="control-label" for="form-field-1">거래처 담당자</label>
 											<div class="controls" id="form-input-customer">
 												<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" />
 											</div>
@@ -216,7 +203,7 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small" id="add"
+												<button class="btn btn-primary btn-small" id="insert"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">등록</button>
 												<button class="btn btn-warning btn-small" id="update"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
@@ -264,20 +251,15 @@
 							<th>공시지가(원)</th>
 							<th>취득금액(원)</th>
 							<th>기타비용(원)</th>
-							<th>등록세(원)</th>
 							<th>취득세(원)</th>
 							<th>합병코드</th>
 							<th>세금계산서번호</th>
 							<th>구분</th>
-							<th>작성자</th>
-							<th>작성일</th>
-							<th>수정자</th>
-							<th>수정일</th>
 						</tr>
 					</thead>
 					
 					<tbody>
-					<c:forEach items="${list }" var="vo" varStatus="status">
+					<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 						<tr class="table-row" >
 							<td>${vo.id }</td>
 							<td>${vo.sectionNo }</td>
@@ -296,18 +278,13 @@
 							<td>${vo.managerName }</td>
 							<td>${vo.ownerName }</td>
 							<td>${vo.payDate }</td>
-							<td>${vo.publicValue }</td>
-							<td>${vo.acqPrice }</td>
-							<td>${vo.etcCost }</td>
-							<td>${vo.regTax }</td>
-							<td>${vo.acqTax }</td>
+							<td><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+							<td><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+							<td><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+							<td><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 							<td>${vo.combineNo }</td>
 							<td>${vo.taxbillNo }</td>
 							<td>${vo.taxKind }</td>
-							<td>${vo.insertUserid }</td>
-							<td>${vo.insertDay }</td>
-							<td>${vo.updateUserid }</td>
-							<td>${vo.updateDay }</td>
 						</tr>
 					</c:forEach>
 					</tbody>
@@ -322,6 +299,45 @@
 				
 			</div><!-- /.page-content -->
 			
+			<!-- 페이징 row-fluid -->
+			<div class="row-fluid">
+			<!-- 페이징 -->
+			<div class="pagination">
+				<ul>
+					<c:choose>
+						<c:when test="${dataResult.pagination.prev }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
+								<i class="icon-double-angle-left"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+						<c:choose>
+							<c:when test="${pg eq dataResult.pagination.page }">
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }">
+							<i class="icon-double-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#">
+							<i class="icon-double-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+			</div><!-- 페이징 -->
+			</div><!-- 페이징 row-fluid -->
+
 		</div><!-- /.main-content -->
 		
 	</div><!-- /.main-container -->
@@ -335,6 +351,9 @@
 	
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
+<!-- id 검사 -->
 <script>
 $("input[name=id]").on("change", function() {
     var id = $("#id").val();
@@ -388,6 +407,7 @@ $("input[name=id]").on("change", function() {
 	});
 	
 	
+	
 	//관리화면
 	$(function() {
 		//한행 클릭 >> 건물코드 가져오기
@@ -418,53 +438,71 @@ $("input[name=id]").on("change", function() {
 		      $("input[name=managerName]").val(td.eq(14).text());
 		      $("input[name=ownerName]").val(td.eq(15).text());
 		      $("input[name=payDate]").val(td.eq(16).text());
-		      $("input[name=publicValue]").val(td.eq(17).text());
-		      $("input[name=acqPrice]").val(td.eq(18).text());
-		      $("input[name=etcCost]").val(td.eq(19).text());
-		      $("input[name=regTax]").val(td.eq(20).text());
-		      $("input[name=acqTax]").val(td.eq(21).text());
-		      $("input[name=combineNo]").val(td.eq(22).text());
-		      $("input[name=taxbillNo]").val(td.eq(23).text());
-				
-		      // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
-		      /* td.each(function(i){
-		         tdArr.push(td.eq(i).text());
-		      });
+		      $("input[name=publicValue]").val(td.eq(17).text().replace(/,/g, ""));
+		      $("input[name=acqPrice]").val(td.eq(18).text().replace(/,/g, ""));
+		      $("input[name=etcCost]").val(td.eq(19).text().replace(/,/g, ""));
+		      $("input[name=acqTax]").val(td.eq(20).text().replace(/,/g, ""));
+		      $("input[name=combineNo]").val(td.eq(21).text());
+		      $("input[name=taxbillNo]").val(td.eq(22).text());
 		      
-		      console.log("Array Stored Data : "+ tdArr);
-		       */
-		       
-		    //radio button
-		      if(td.eq(24).text() == "과세"){
+		     //radio button
+		      if(td.eq(23).text() == "과세"){
 		          $("input[id=tax]").prop('checked', true);
 		      }
-		      else if(td.eq(24).text() == "영세"){
+		      else if(td.eq(23).text() == "영세"){
 		          $("input[id=zeroTax]").prop('checked', true);
 		      } 
 		      
 			});
+		      
 	});
 
-	//버튼 구현
-	$(function() {
-		/*
-		$("#insert").click(function() {
-			alert("등록");
-		});
+	
+</script>
 
-		$("#modify").click(function() {
-			alert("수정");
-		});
+<script>
+//버튼 구현
+$(function() {
+	
+	/* $("#insert").click(function() {
+		if(${closingDate } == true){
+			alert("마감일자를 확인해 주세요");
+		}else{
+			alert("마감일자 잘봤네");
+		}
+	});  */
+	
+	/*
+	$("#modify").click(function() {
+		alert("수정");
+	});
 
-		$("#search").click(function() {
-			alert("조회");
-		});
-		*/
-		
-		$("#delete").click(function() {
-		alert("삭제");
+	$("#search").click(function() {
+		alert("조회");
 	});
+	*/
+	
+	$("#delete").click(function() {
+	alert("삭제");
 	});
+});
+</script>
+
+
+<script>
+//주소
+function execDaumPostcode() {
+        new daum.Postcode({
+           oncomplete : function(data) {
+              var fullRoadAddr = data.roadAddress;
+              console.log(data)
+              $("#wideAddress").val(data.sido);
+              $("#cityAddress").val(data.sigungu); 
+              $("#detailAddress").val(data.roadname + " ");
+              $("#detailAddress").focus();
+           }
+        }).open();
+     }
 </script>
 
 <!-- date picker -->

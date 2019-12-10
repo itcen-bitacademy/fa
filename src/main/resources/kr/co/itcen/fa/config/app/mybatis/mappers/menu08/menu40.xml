@@ -1,20 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu40">
-
-	<!--  TEST -->
-	<insert id="save" parameterType="test08vo">
+	
+	<!-- 조회 -->
+	<select id="list" resultType="building08vo" parameterType="map">
 		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
+		select id,
+			customer_no as customerNo,
+			name as customerName,
+			manager_name as managerName,
+			taxbill_no as taxbillNo,
+			voucher_no as voucherNo,
+			section_no as sectionNo,
+            classification as sectionName,
+			area,
+			combine_no as combineNo,
+			owner_name as ownerName,
+			wide_address as wideAddress,
+			city_address as cityAddress,
+			local_address as localAddress,
+			b.detail_address as detailAddress,
+			floor,
+			basement,
+			purpose,
+			material,
+			public_value as publicValue,
+			acq_price as acqPrice,
+			etc_cost as etcCost,
+			acq_tax as acqTax,
+			pay_date as payDate,
+			tax_kind as taxKind,
+			b.flag,
+			b.insert_userid as insertUserid,
+			b.insert_day as insertDay
+		from tb_building b left outer join tb_section on b.section_no = tb_section.code
+			               left outer join tb_customer on b.customer_no = tb_customer.no
+        where tb_section.parent_no = 3 
+           and b.insert_day > (NOW() - INTERVAL 3 DAY) 
+           and b.flag = 's'
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
+		<if test="id.length()>0 ">
+   			<![CDATA[
+  				and id like concat('%',#{id },'%') 
+   			]]>
+   		</if>
+   		<![CDATA[	
+		order by b.insert_day desc
+		]]>
+		<if test="pagination.pageIndex >= 0">
 			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
-	</insert>
+        		limit #{pagination.pageIndex }, #{pagination.listSize }
+    		]]>
+		</if>
+	</select>
 	
 	<!-- 대분류 -->
 	<select id="getSection" resultType="sectionvo">
@@ -27,6 +65,27 @@
 		from tb_section
 		where parent_no = 3
 		]]>
+	</select>
+	
+	<!-- 거래처 -->
+	<select id="getCustomer" resultType="1customervo">
+		<![CDATA[
+		select no, 
+			name,
+			manager_name as managerName
+		from tb_customer
+		]]>
+	</select>
+	
+	<select id="pageCount" resultType="int" parameterType="string">
+		select count(*)
+		from tb_building
+		where id like concat('%',#{id},'%')
+	</select>
+	
+	<select id="contentsCount" resultType="int">
+		select	count(*)
+		  from	tb_building
 	</select>
 
 </mapper>
