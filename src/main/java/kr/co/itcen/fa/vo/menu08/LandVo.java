@@ -12,21 +12,20 @@ public class LandVo {
 	private String customerName;
 	private String managerName;
 	private String taxbillNo;
-	private long voucherNo;
+	private Long voucherNo;
 	private String sectionNo;
 	private String sectionName;
-	private int landArea;
+	private Long landArea;
 	private String combineNo;
 	private String ownerName;
 	private String wideAddress;
 	private String cityAddress;
-	private String localAddress;
 	private String detailAddress;
-	private int publicValue;
-	private long acqPrice;
-	private long etcCost;
-	private long regTax;
-	private long acqTax;
+	private Long publicValue;
+	private Long acqPrice;
+	private Long etcCost;
+	private Long regTax;
+	private Long acqTax;
 	private String payDate;
 	private String taxKind;
 	private String flag;
@@ -65,10 +64,10 @@ public class LandVo {
 	public void setTaxbillNo(String taxbillNo) {
 		this.taxbillNo = taxbillNo;
 	}
-	public long getVoucherNo() {
+	public Long getVoucherNo() {
 		return voucherNo;
 	}
-	public void setVoucherNo(long voucherNo) {
+	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 	public String getSectionNo() {
@@ -83,10 +82,10 @@ public class LandVo {
 	public void setSectionName(String sectionName) {
 		this.sectionName = sectionName;
 	}
-	public int getLandArea() {
+	public Long getLandArea() {
 		return landArea;
 	}
-	public void setLandArea(int landArea) {
+	public void setLandArea(Long landArea) {
 		this.landArea = landArea;
 	}
 	public String getCombineNo() {
@@ -113,46 +112,40 @@ public class LandVo {
 	public void setCityAddress(String cityAddress) {
 		this.cityAddress = cityAddress;
 	}
-	public String getLocalAddress() {
-		return localAddress;
-	}
-	public void setLocalAddress(String localAddress) {
-		this.localAddress = localAddress;
-	}
 	public String getDetailAddress() {
 		return detailAddress;
 	}
 	public void setDetailAddress(String detailAddress) {
 		this.detailAddress = detailAddress;
 	}
-	public int getPublicValue() {
+	public Long getPublicValue() {
 		return publicValue;
 	}
-	public void setPublicValue(int publicValue) {
+	public void setPublicValue(Long publicValue) {
 		this.publicValue = publicValue;
 	}
-	public long getAcqPrice() {
+	public Long getAcqPrice() {
 		return acqPrice;
 	}
-	public void setAcqPrice(long acqPrice) {
+	public void setAcqPrice(Long acqPrice) {
 		this.acqPrice = acqPrice;
 	}
-	public long getEtcCost() {
+	public Long getEtcCost() {
 		return etcCost;
 	}
-	public void setEtcCost(long etcCost) {
+	public void setEtcCost(Long etcCost) {
 		this.etcCost = etcCost;
 	}
-	public long getRegTax() {
+	public Long getRegTax() {
 		return regTax;
 	}
-	public void setRegTax(long regTax) {
+	public void setRegTax(Long regTax) {
 		this.regTax = regTax;
 	}
-	public long getAcqTax() {
+	public Long getAcqTax() {
 		return acqTax;
 	}
-	public void setAcqTax(long acqTax) {
+	public void setAcqTax(Long acqTax) {
 		this.acqTax = acqTax;
 	}
 	public String getPayDate() {
@@ -203,7 +196,7 @@ public class LandVo {
 		return "LandVo [id=" + id + ", customerNo=" + customerNo + ", taxbillNo=" + taxbillNo + ", voucherNo="
 				+ voucherNo + ", sectionNo=" + sectionNo + ", landArea=" + landArea + ", combineNo=" + combineNo
 				+ ", ownerName=" + ownerName + ", wideAddress=" + wideAddress + ", cityAddress=" + cityAddress
-				+ ", localAddress=" + localAddress + ", detailAddress=" + detailAddress + ", publicValue=" + publicValue
+				+ ", detailAddress=" + detailAddress + ", publicValue=" + publicValue
 				+ ", acqPrice=" + acqPrice + ", etcCost=" + etcCost + ", regTax=" + regTax + ", acqTax=" + acqTax
 				+ ", payDate=" + payDate + ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserid=" + insertUserid
 				+ ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
