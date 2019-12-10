@@ -42,8 +42,6 @@ public class Menu44Service {
 		
 		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(paginationUtil); // dataResult타입에 pagination에 값 세팅 
-		System.out.println(totalCount);
-		System.out.println(paginationUtil.getPageIndex()+","+paginationUtil.getListSize());
 		
 		intangibleAssetsVo.setPagination(paginationUtil);// paginnationUtil 세팅
 		
@@ -60,8 +58,6 @@ public class Menu44Service {
 		
 		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(paginationUtil); // dataResult타입에 pagination에 값 세팅 
-		System.out.println(totalCount);
-		System.out.println(paginationUtil.getPageIndex()+","+paginationUtil.getListSize());
 		
 		intangibleAssetsVo.setPagination(paginationUtil);// paginnationUtil 세팅
 		

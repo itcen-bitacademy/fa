@@ -139,9 +139,11 @@
 									</div>
 								</div>
 							</form>   -->
-
+							
+							<div id="listCount" style="float: left;"></div>
+							
 							<div>
-								<table id="sample-table-1"
+								<table id="list-table"
 									class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
@@ -270,6 +272,11 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
+			
+			$("#listCount").ready(function() {
+				var total = $('#list-table tbody tr').length;
+				$('#listCount').text('총 ' + total + '건');
+			});
 		});		
 	</script>
 	<script
