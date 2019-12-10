@@ -23,8 +23,11 @@ public class Menu52Service {
 	@Autowired
 	private Menu52Repository menu52Repository;
 
-	public int getTotalCnt() {
-		return menu52Repository.findCustomerCnt();
+	public int getTotalCnt(CustomerVo customerVo) {
+		if(customerVo.getDeleteFlag() == null) {
+			customerVo.setDeleteFlag("N");
+		}
+		return menu52Repository.findCustomerCnt(customerVo);
 	}
 
 	public List<CustomerVo> getAllCustomer(CustomerVo customerVo, PaginationUtil pagination) {
@@ -33,6 +36,15 @@ public class Menu52Service {
 		map.put("pagination", pagination);
 		
 		return menu52Repository.findAllCustomer(map);
+	}
+
+	public Map<String, Object> gets(Map<String, String> parameters) {
+		
+		return menu52Repository.gets(parameters);
+	}
+
+	public CustomerVo get(String no) {
+		return menu52Repository.get(no);
 	}
 
 }

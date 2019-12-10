@@ -6,7 +6,7 @@
 		<![CDATA[
 		insert
 		  into tb_salescustomer
-		values (#{no }, #{name }, #{ceo }, #{corporationNo }, #{zipCode }, #{address }, #{detailAddress }, #{phone }, #{conditions }, #{item }, 
+		values (#{no }, concat('S', #{name }), #{ceo }, #{corporationNo }, #{zipCode }, #{address }, #{detailAddress }, #{phone }, #{conditions }, #{item }, 
 				#{openDate }, #{jurisdictionOffice }, #{managerName }, #{managerEmail }, #{depositNo }, #{depositHost }, 
 				#{insertUserid }, now(), null, null, 'N')
 		]]>

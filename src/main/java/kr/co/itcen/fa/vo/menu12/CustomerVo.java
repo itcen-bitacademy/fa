@@ -7,6 +7,7 @@ public class CustomerVo {
 	private String no;
 	private String preNo;
 	private String name;
+	private String preName;
 	private String ceo;
 	private String corporationNo;
 	private String zipCode;
@@ -41,6 +42,12 @@ public class CustomerVo {
 	}
 	public void setPreNo(String preNo) {
 		this.preNo = preNo;
+	}
+	public String getPreName() {
+		return preName;
+	}
+	public void setPreName(String preName) {
+		this.preName = preName;
 	}
 	public String getName() {
 		return name;

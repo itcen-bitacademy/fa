@@ -8,13 +8,23 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" />
+<style>
+.chosen-search {
+	display: none;
+}
+</style>
+
 </head>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script type="text/javascript">
-	jQuery(function($) {
-		
+	$(function() {
+		$(".chosen-select").chosen();
 		$('table th input:checkbox').on('click' , function(){
 			var that = this;
 			$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -54,7 +64,116 @@
 			$("#form-customer input[name=page]").val(page);
 			$("#form-customer").submit();
 		});
-	})
+		
+		$("#dialog-message").dialog({
+		       autoOpen : false
+		});
+		
+	    $(".a-customerinfo-dialog").click(function() {
+	       tf = $(this).parent().prev();
+	       $("#dialog-message").dialog({
+	          title: "매출거래처 정보",
+	          title_html: true,
+	             resizable: false,
+	           height: 500,
+	           width: 400,
+	           modal: true,
+	           close: function() {
+	              $('#tbody-customerList tr').remove();
+	           },
+	           buttons: {
+	           "닫기" : function() {
+	                    $(this).dialog('close');
+	                    $('#tbody-customerList tr').remove();
+	               }
+	           }
+	       });
+	       $("#dialog-message").dialog('open');
+	    });
+	    
+	    // 매출거래처 팝업 클릭시
+		$('#dialog-message-table').on('click', '#a-dialog-customerNo', function(event, ui) {
+			event.preventDefault();
+			 $("#tbody-customerList").find("tr").remove();
+			 
+			 var searchOption = $("#searchOption").val();
+			 var searchValue = $("#input-dialog-customerNo").val();
+			 
+			 // ajax 통신
+			 $.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/gets?"+searchOption+"="+searchValue,
+			    contentType : "application/json; charset=utf-8",
+			    type: "get",
+			    dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			    data : "",
+			    statusCode: {
+			        404: function() {
+			          alert("page not found");
+			        }
+			    },
+			    success: function(data){
+			  	  if(data.success) {
+			  	  	$("#input-dialog-customerNo").val('');
+			  	  	var customerList = data.customerList;
+			  	  	console.log(data.customerList);
+			  	  	for(let c in customerList) {
+			  	  		$("#tbody-customerList").append("<tr>" +
+			                    "<td class='center'>" + customerList[c].no + "</td>" +
+			                    "<td class='center'>" + customerList[c].name + "</td>" +
+			                    "</tr>");
+			
+			  	  	}
+			  	  }
+			    },
+			    error: function(xhr, error){
+			       console.error("error : " + error);
+			    }
+			});
+		});
+		// 매출거래처 리스트(customerList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
+		 var tr = $(this);
+		 var td = tr.children();
+
+		 $(tf).val(td.eq(1).text());
+		 $(tf).parent().prev().val(td.eq(0).text());
+		 $("#dialog-message").dialog('close');
+		});
+		
+		
+		// 매출거래처 name 자동입력
+		$('.no').on('change', function(event) {
+			 var el = $(this);
+			 
+			 // ajax 통신
+			 $.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/get?no="+$(el).val(),
+			    contentType : "application/json; charset=utf-8",
+			    type: "get",
+			    dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			    data : "",
+			    statusCode: {
+			        404: function() {
+			          alert("page not found");
+			        }
+			    },
+			    success: function(data){
+			    	$(el).next().children("input").val("");
+			    	if(data.success && data.customer != null) {
+						var customer = data.customer;
+				    	console.log(customer);
+				    	console.log(customer.name);
+						$(el).next().children("input").val(customer.name);
+					}
+			    },
+			    error: function(xhr, error){
+			       console.error("error : " + error);
+			    }
+			});
+		});
+			
+	});
+	
 </script>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -79,21 +198,62 @@
                         <div class="control-group">
                            <label class="control-label" for="customer">거래처</label>
                            <div class="controls">
-                              <input type="text" id="no1" name="no" style="width: 150px;" value="${customerVo.no }">
-                              <input type="text" id="name1" name="name1" readonly style="width: 200px;">
-                              <span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> ~ 
-                              <input type="text" id="no2" name="preNo" style="width: 150px;" value="${customerVo.preNo }">
-                              <input type="text" id="name2" name="name2" readonly style="width: 200px;">
-                              <span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+                              <input type="text" class="no" id="no" name="no" style="width: 150px;" value="${customerVo.no }">
+                              <div class="input-append">
+	                              <input type="text" id="name" name="name" class="name" readonly style="width: 200px;" value="${customerVo.name }">
+	                              <span class="add-on">
+		                              <a href="#" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+		                              </a>
+	                              </span>
+                              </div> ~ 
+                              <input type="text" class="no" id="no2" name="preNo" style="width: 150px;" value="${customerVo.preNo }">
+                              <div class="input-append">
+	                              <input type="text" id="name2" name="preName" class="name" readonly style="width: 200px;" value="${customerVo.preName }">
+	                              <span class="add-on"><a href="#" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a></span>
+                              </div>
                            </div>
                         </div>
                      </div>
-                  
+                  	 <!-- 매출거래처 사업자번호, 상호명 Modal pop-up : start -->
+						<div id="dialog-message" title="매출거래처" hidden="hidden">
+							<table id="dialog-message-table">
+								<tr>
+									<td>
+									<select id="searchOption" style="width:120px;">
+											<option value="no">사업자번호</option>
+											<option value="name">상호명</option>
+									</select>
+									<div class="input-append">
+										<input type="text" id="input-dialog-customerNo" style="width: 150px;" /> 
+										<span class="add-on">
+										<a href="#" id="a-dialog-customerNo"> 
+										<i class="icon-search icon-on-right bigger-110"></i>
+										</a>
+										</span>
+									</div>
+									</td>
+								</tr>
+							</table>
+							<!-- 은행코드 및 은행명 데이터 리스트 -->
+							<table id="modal-customer-table"
+								class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center">사업자번호</th>
+										<th class="center">상호명</th>
+									</tr>
+								</thead>
+								<tbody id="tbody-customerList">
+									
+								</tbody>
+							</table>
+						</div>
+						<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
                      <div class="span4">
                         <div class="control-group">
                            <label class="control-label" for="item">종목</label>
                            <div class="controls">
-                              <input type="text" id="item" name="item" style="width: 150px;">
+                              <input type="text" id="item" name="item" style="width: 150px;" value="${customerVo.item }">
                            </div>
                         </div>
                      
@@ -101,10 +261,22 @@
                            <label class="control-label" for="delete_flag">삭제포함여부</label>
 
                            <div class="controls">
-                              <input name="deleteFlag" type="radio" class="ace" value="N" checked="checked">
-                              <span class="lbl">미포함</span>
-                              <input name="deleteFlag" type="radio" class="ace" value="Y">
-                              <span class="lbl">포함</span>
+                           	  <c:choose>
+								<c:when test="${customerVo.deleteFlag eq 'N' || customerVo.deleteFlag eq null }">
+									<input name="deleteFlag" type="radio" class="ace" value="N" checked="checked">
+									<span class="lbl">미포함</span>
+									<input name="deleteFlag" type="radio" class="ace" value="Y">
+									<span class="lbl">포함</span>	
+								</c:when>
+								<c:otherwise>
+									<input name="deleteFlag" type="radio" class="ace" value="N">
+									<span class="lbl">미포함</span>
+									<input name="deleteFlag" type="radio" class="ace" value="Y" checked="checked">
+									<span class="lbl">포함</span>
+								</c:otherwise>
+								
+							  </c:choose>
+                              
                            </div>
                         </div>
                      </div>
@@ -141,8 +313,12 @@
                      </div>
                   </form>
 				</div>
+				<div>
+				총 ${pagination.totalCnt }건
+				</div>
 			</div>
 					<div class="row-fluid">
+					
 						<div class="span12">
 							<table id="customer-table" class="table table-striped table-bordered table-hover" aria-describedby="sample-table-2_info">
 								<thead>
