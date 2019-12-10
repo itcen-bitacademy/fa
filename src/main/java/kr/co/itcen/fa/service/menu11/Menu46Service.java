@@ -46,7 +46,8 @@ public class Menu46Service {
 		
 		map.putAll(pagination.getRowRangeMap());						//Limit 범위 데이터 set
 		List<STermDebtVo> list = menu46Repository.getList(map);
-		System.out.println("startRow : " + map.get("startRow"));		//startRow가 찍히는지 확인하자
+		System.out.println("pageSize : " + map.get("pageSize"));		//startRow가 찍히는지 확인하자
+		System.out.println("totalCnt : " + pagination.getTotalCnt());
 		
 		map.clear();
 		map.put("list", list);
@@ -55,9 +56,8 @@ public class Menu46Service {
 		return map;
 	}
 	
-	public Map deleteChecked(List<Long> noList) {
+	public void deleteChecked(List<Long> noList) {
 		menu46Repository.updateDeleteFlag(noList);
-		return getListMap();						//삭제 후 다시 전체 리스트를 조회한다.
 	}
 	
 	public void insert(STermDebtVo sTermDebtVo) throws ParseException {

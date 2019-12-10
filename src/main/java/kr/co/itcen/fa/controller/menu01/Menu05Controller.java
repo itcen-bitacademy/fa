@@ -50,15 +50,14 @@ public class Menu05Controller {
 	@RequestMapping(value="/" + SUBMENU + "/create")
 	public Map<String, Object> create(@ModelAttribute CardVo vo, @AuthUser UserVo uvo
 			, @RequestParam(value = "page", required=false, defaultValue = "1")int page,
-			@RequestParam("cardNo1") String cardNo1,@RequestParam("cardNo2") String cardNo2,
-			@RequestParam("cardNo3") String cardNo3, @RequestParam("cardNo4") String cardNo4,
-			@RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY,
+			@RequestParam("cardNo") String cardNo,
+			@RequestParam("validity") String validity, 
 			@RequestParam("limitation") Optional<Integer> limitation) {
-		String cardNo = cardNo1+"-"+cardNo2+"-" +cardNo3+"-" +cardNo4;
-		vo.setCardNo(cardNo);
+		String CardNo = cardNo.replace(",", "-");
+		vo.setCardNo(CardNo);
 		
-		String validity = validityMM + "/"+ validityYY ;
-		vo.setValidity(validity);
+		String Validity = validity.replace(",", "/");
+		vo.setValidity(Validity);
 		
 		vo.setInsertUserId(uvo.getName());
 		
@@ -69,71 +68,68 @@ public class Menu05Controller {
 		System.out.println(vo);
 		
 		page=1;
-		Map<String, Object> dataResult = menu05Service.create(vo, page);
+		Map<String, Object> result = menu05Service.create(vo, page);
 		
 		
-		return dataResult;
+		return result;
 	}
 	
 	// Read
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/read")
 	public Map<String, Object> read(@ModelAttribute CardVo vo, 
-			@RequestParam("cardNo1") String cardNo1,@RequestParam("cardNo2") String cardNo2,
-			@RequestParam("cardNo3") String cardNo3, @RequestParam("cardNo4") String cardNo4) {
-		String cardNo = cardNo1+"-"+cardNo2+"-" +cardNo3+"-" +cardNo4;
-		vo.setCardNo(cardNo);
-		Map<String, Object> dataResult = menu05Service.read(vo);
-		return dataResult;
+			@RequestParam("cardNo") String cardNo) {
+		String CardNo = cardNo.replace(",", "-");
+		vo.setCardNo(CardNo);
+		Map<String, Object> result = menu05Service.read(vo);
+		return result;
 	}
 	
 	// Update
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/update")
 	public Map<String, Object> update(@ModelAttribute CardVo vo, @AuthUser UserVo uvo, 
-			@RequestParam("validityMM") String validityMM, @RequestParam("validityYY") String validityYY,
+			@RequestParam("validity") String validity, 
 			@RequestParam("limitation") Optional<Integer> limitation, @RequestParam("cardNoOld") String cardNoOld, 
-			@RequestParam("cardNo1") String cardNo1,@RequestParam("cardNo2") String cardNo2,
-			@RequestParam("cardNo3") String cardNo3, @RequestParam("cardNo4") String cardNo4,
+			@RequestParam("cardNo") String cardNo,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
-		String cardNo = cardNo1+"-"+cardNo2+"-" +cardNo3+"-" +cardNo4;
-		vo.setCardNo(cardNo);
+		String CardNo = cardNo.replace(",", "-");
+		vo.setCardNo(CardNo);
 		
-		String validity = validityMM + "/"+ validityYY ;				//두자 고정으로
-		vo.setValidity(validity);
+		String Validity = validity.replace(",", "/");
+		vo.setValidity(Validity);
 		vo.setUpdateUserId(uvo.getName());
 		vo.setLimitation(limitation.get());
 		
 		
-		Map<String, Object> dataResult = menu05Service.update(vo, page);
-		return dataResult;
+		Map<String, Object> result = menu05Service.update(vo, page);
+		return result;
 	}
 	
 	// Delete
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/delete")
 	public Map<String, Object> remove(@ModelAttribute CardVo vo,
-			@RequestParam("cardNo1") String cardNo1,@RequestParam("cardNo2") String cardNo2,
-			@RequestParam("cardNo3") String cardNo3, @RequestParam("cardNo4") String cardNo4,
+			@RequestParam("cardNo") String cardNo,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
-		String cardNo = cardNo1+"-"+cardNo2+"-" +cardNo3+"-" +cardNo4;
-		vo.setCardNo(cardNo);
+		String CardNo = cardNo.replace(",", "-");
+		vo.setCardNo(CardNo);
 		
-		Map<String, Object> dataResult =menu05Service.delete(vo, page);
-		dataResult.put("success", true);
-		return dataResult;
+		Map<String, Object> result =menu05Service.delete(vo, page);
+		result.put("success", true);
+		return result;
 	}
 		
 	// PopUp
-		@ResponseBody
-		@RequestMapping("/" + SUBMENU + "/gets")
-		public Map<String, Object> gets(@RequestParam("cardNo") String cardNo) {
-			System.out.println("gets");
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/gets")
+	public Map<String, Object> gets(@RequestParam("cardNo") String cardNo) {
+		System.out.println("gets");
 			
-			Map<String, Object> data = menu05Service.gets(cardNo);
-			data.put("success", true);
-			return data;
-		}
+		Map<String, Object> data = menu05Service.gets(cardNo);
+		data.put("success", true);
+		return data;
+	}
 	
 	
 }

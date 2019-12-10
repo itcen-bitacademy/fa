@@ -26,7 +26,14 @@
             width: 50%;
             min-width: 200px
         }
+
+        #list-table tr .number {
+            text-align: right;
+        }
     </style>
+    <script>
+
+    </script>
 </head>
 
 <body class="skin-3" style="min-width:1280px;">
@@ -34,18 +41,19 @@
     <div class="main-container container-fluid">
         <c:import url="/WEB-INF/views/common/sidebar.jsp" />
         <div class="main-content">
-            <div class="page-content">
+            <div class="page-content" style="min-width:1280px;">
                 <div class="page-header position-relative">
                     <h1 class="pull-left">매출현황조회</h1>
                 </div>
                 <!-- /.page-header -->
 
                 <!-- PAGE CONTENT BEGINS -->
-                <div class="row-fluid">
 
-                    <!-- PAGE CONTENT BEGINS -->
-                    <div class="span12">
-                        <form class="form-horizontal" method="post" id="searchForm" action="${pageContext.request.contextPath }/12/14">
+
+                <!-- PAGE CONTENT BEGINS -->
+                <form class="form-horizontal" method="post" id="searchForm" action="${pageContext.request.contextPath }/12/14">
+                    <div class="row-fluid">
+                        <div class="span12">
                             <!-- left -->
                             <div class="span6">
                                 <div class="control-group">
@@ -69,16 +77,16 @@
                                     <label class="control-label" for="itemCode">품목코드</label>
                                     <div class="controls">
                                         <select class="chosen-select" id="itemCode" data-placeholder="품목코드" name="itemCode">
-                                        <option value="">&nbsp;</option>
+                                            <option value="">&nbsp;</option>
                                             <c:forEach items="${itemlist }" var="list" varStatus="status">
-                                            	<c:choose>
-                                            		<c:when test="${list.no eq search.itemCode }">
-                                            			<option id="" value="${list.no }" selected>${list.no }(${list.name })</option>
-                                            		</c:when>
-                                            		<c:otherwise>
-                                            			<option id="" value="${list.no }">${list.no }(${list.name })</option>
-                                            		</c:otherwise>
-                                            	</c:choose>
+                                                <c:choose>
+                                                    <c:when test="${list.no eq search.itemCode }">
+                                                        <option id="" value="${list.no }" selected>${list.no }(${list.name })</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option id="" value="${list.no }">${list.no }(${list.name })</option>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -86,20 +94,20 @@
                                 <div class="control-group">
                                     <label class="control-label" for="form-field-5">정렬기준</label>
                                     <div class="controls">
-                                    <input type="hidden" value="${search.orderData }">
+                                        <input type="hidden" value="${search.orderData }">
                                         <select class="chosen-select" id="form-field-select-1" name="orderData" data-placeholder="정렬기준">
-                                        	<c:choose>
-                                        	<c:when test="${search.orderData == 'sales_date' }">
-                                        		<option value="sales_date" selected style="display:none">매출일</option>
-                                        	</c:when>
-                                        	<c:when test="${search.orderData == 'customer_code' }">
-                                        		<option value="customer_code" selected style="display:none">거래처</option>
-                                        	</c:when>
-                                        	<c:when test="${search.orderData == 'supply_value' }">
-                                        		<option value="supply_value" selected style="display:none">공급가액</option>
-                                        	</c:when>                                        	
-                                        </c:choose>
-                                        	<option value="">&nbsp;</option>
+                                            <c:choose>
+                                                <c:when test="${search.orderData == 'sales_date' }">
+                                                    <option value="sales_date" selected style="display:none">매출일</option>
+                                                </c:when>
+                                                <c:when test="${search.orderData == 'customer_code' }">
+                                                    <option value="customer_code" selected style="display:none">거래처</option>
+                                                </c:when>
+                                                <c:when test="${search.orderData == 'supply_value' }">
+                                                    <option value="supply_value" selected style="display:none">공급가액</option>
+                                                </c:when>
+                                            </c:choose>
+                                            <option value="">&nbsp;</option>
                                             <option value="sales_date">매출일</option>
                                             <option value="customer_code">거래처</option>
                                             <option value="supply_value">공급가액</option>
@@ -115,18 +123,18 @@
                                 <div class="control-group">
                                     <label class="control-label" for="customerCode">거래처코드</label>
                                     <div class="controls">
-                                    <input type="hidden" value="${search.customerCode }">
+                                        <input type="hidden" value="${search.customerCode }">
                                         <select class="chosen-select" id="customerCode" data-placeholder="거래처코드" name="customerCode">
-                                        <option value="">&nbsp;</option>
+                                            <option value="">&nbsp;</option>
                                             <c:forEach items="${customerlist }" var="list" varStatus="status">
-                                            	<c:choose>
-                                            		<c:when test="${list.no eq search.customerCode }">
-                                            			<option id="" value="${list.no }" selected>${list.no }(${list.name })</option>
-                                            		</c:when>
-                                            		<c:otherwise>
-                                            			<option id="" value="${list.no }">${list.no }(${list.name })</option>
-                                            		</c:otherwise>
-                                            	</c:choose>
+                                                <c:choose>
+                                                    <c:when test="${list.no eq search.customerCode }">
+                                                        <option id="" value="${list.no }" selected>${list.no }(${list.name })</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option id="" value="${list.no }">${list.no }(${list.name })</option>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -142,32 +150,49 @@
                                     <input type="hidden" value="${search.deleteFlag }">
                                     <div class="controls">
                                         <select class="chosen-select" id="deleteFlag" name="deleteFlag" data-placeholder="팀선택">
-                                        <c:choose>
-                                        	<c:when test="${search.deleteFlag == 'Y' }">
-                                        		<option value="Y" selected style="display:none">삭제</option>
-                                        	</c:when>
-                                        	<c:when test="${search.deleteFlag == 'N' }">
-                                        		<option value="N" selected style="display:none">미삭제</option>
-                                        	</c:when>
-                                        	<c:otherwise>
-                                        		<option value="" selected style="display:none">전체</option>
-                                        	</c:otherwise>                                        	
-                                        </c:choose>
-                                        		<option value="">전체</option>
-                                        		<option value="Y">삭제</option>
-                                        		<option value="N">미삭제</option>
+                                            <c:choose>
+                                                <c:when test="${search.deleteFlag == 'Y' }">
+                                                    <option value="Y" selected style="display:none">삭제</option>
+                                                </c:when>
+                                                <c:when test="${search.deleteFlag == 'N' }">
+                                                    <option value="N" selected style="display:none">미삭제</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="" selected style="display:none">전체</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <option value="">전체</option>
+                                            <option value="Y">삭제</option>
+                                            <option value="N">미삭제</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-                <div class="hr hr-10 dotted"></div>
+
+                    <div class="hr hr-10 dotted"></div>
+                    <p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">총 ${dataResult.pagination.totalCnt } 건</p>
+                    <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;" onchange="view()">
+                    	<c:choose>
+                             <c:when test="${viewCount == 10 }">
+                                 <option value="10" selected style="display:none">10</option>
+                             </c:when>
+                             <c:when test="${viewCount == 20 }">
+                                 <option value="20" selected style="display:none">20</option>
+                             </c:when>
+                             <c:when test="${viewCount == 30 }">
+                                 <option value="30" selected style="display:none">30</option>
+                             </c:when>
+                         </c:choose>
+                         <option value="10">10</option>
+	                     <option value="30">30</option>
+	                     <option value="50">50</option>
+                    </select>
+                </form>
                 <div class="row-fluid">
                     <div class="span12">
-                    	<p>총 ${contentsCount }건</p>
-                        <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                        <table id="list-table" class="table table-striped table-bordered table-hover">
                             <tr>
                                 <th>매출번호</th>
                                 <th>매출일</th>
@@ -185,22 +210,22 @@
                                 <th>부가세</th>
                             </tr>
                             <c:forEach items="${dataResult.datas }" var="list" varStatus="status">
-                            <tr>
-                                <td>${list.salesNo }</td>
-                                <td>${list.salesDate }</td>
-                                <td>${list.releaseDate }</td>
-                                <td>${list.customerCode }</td>
-                                <td>${list.customerName }</td>
-                                <td>${list.empManager }</td>
-                                <td>${list.customerPhone }</td>
-                                <td>${list.taxbillNo }</td>
-                                <td>${list.number }</td>
-                                <td>${list.itemCode }</td>
-                                <td>${list.itemName }</td>
-                                <td>${list.quantity }</td>
-                                <td>${list.supplyValue }</td>
-                                <td>${list.taxValue }</td>
-                            </tr>
+                                <tr>
+                                    <td>${list.salesNo }</td>
+                                    <td>${list.salesDate }</td>
+                                    <td>${list.releaseDate }</td>
+                                    <td>${list.customerCode }</td>
+                                    <td>${list.customerName }</td>
+                                    <td>${list.empManager }</td>
+                                    <td>${list.customerPhone }</td>
+                                    <td>${list.taxbillNo }</td>
+                                    <td>${list.number }</td>
+                                    <td>${list.itemCode }</td>
+                                    <td>${list.itemName }</td>
+                                    <td class="number"><fmt:formatNumber value="${list.quantity }" pattern="#,###"></fmt:formatNumber></td>
+                                    <td class="number"><fmt:formatNumber value="${list.supplyValue }" pattern="#,###"></fmt:formatNumber></td>
+                                    <td class="number"><fmt:formatNumber value="${list.taxValue }" pattern="#,###"></fmt:formatNumber></td>
+                                </tr>
                             </c:forEach>
                         </table>
                         <input type="hidden" value="${search.searchFlag }" name="searchFlag" id="searchFlag">
@@ -217,28 +242,28 @@
                         <ul>
                         <c:choose>
                             <c:when test="${dataResult.pagination.prev }">
-                            <li><a href="javascript:movePage(${dataResult.pagination.startPage - 1 });"><i class="icon-double-angle-left"></i></a></li>
+                                <li><a href="javascript:movePage(${dataResult.pagination.startPage - 1 });"><i class="icon-double-angle-left"></i></a></li>
                             </c:when>
                             <c:otherwise>
-                            <li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+                                <li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
                             </c:otherwise>
                         </c:choose>
                         <c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
                             <c:choose>
                                 <c:when test="${pg eq dataResult.pagination.page }">
-                                <li class="active"><a href="javascript:movePage(${pg });">${pg }</a></li>
+                                    <li class="active"><a href="javascript:movePage(${pg });">${pg }</a></li>
                                 </c:when>
                                 <c:otherwise>
-                                <li><a href="javascript:movePage(${pg });">${pg }</a></li>
+                                    <li><a href="javascript:movePage(${pg });">${pg }</a></li>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
                         <c:choose>
                             <c:when test="${dataResult.pagination.next }">
-                            <li><a href="javascript:movePage(${dataResult.pagination.endPage + 1 });"><i class="icon-double-angle-right"></i></a></li>
+                                <li><a href="javascript:movePage(${dataResult.pagination.endPage + 1 });"><i class="icon-double-angle-right"></i></a></li>
                             </c:when>
                             <c:otherwise>
-                            <li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+                                <li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
                             </c:otherwise>
                         </c:choose>
                         </ul>
@@ -256,32 +281,36 @@
     <script>
         $(function() {
             $(".chosen-select").chosen();
-	        $("#salesDate").daterangepicker({
-	       		locale: {
-	               	format: 'YYYY-MM-DD'
-	            }
-	        });
-	        setDate();
-	    });
-        
-        function movePage(page){ // POST 페이지 이동 (검색 조건 있음)
-        	var searchFlag = $("#searchFlag").val();
-        	var url = "${pageContext.request.contextPath }/12/14/"+page;
-        	if(searchFlag=="true"){
-        		$("#searchForm").attr("action", url).submit();
-        	} else {
-        		location.href = url;
-        	}
-        	
+            $("#salesDate").daterangepicker({
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            });
+            setDate();
+        });
+
+        function movePage(page) { // POST 페이지 이동 (검색 조건 있음)
+            var searchFlag = $("#searchFlag").val();
+            var url = "${pageContext.request.contextPath }/12/14/" + page;
+            if (searchFlag == "true") {
+                $("#searchForm").attr("action", url).submit();
+            } else {
+                location.href = url;
+            }
         }
-        
-        function setDate(){ // 날짜로 검색 조회시 날짜 유지
-        	if($("#searchFlag").val()=="true"){
-  	    	   	$('#salesDate').data('daterangepicker').setStartDate($("#startDate").val());
-  	    	   	$('#salesDate').data('daterangepicker').setEndDate($("#endDate").val());
-  	       }
+
+        function setDate() { // 날짜로 검색 조회시 날짜 유지
+            if ($("#searchFlag").val() == "true") {
+                $("#salesDate").data("daterangepicker").setStartDate($("#startDate").val());
+                $("#salesDate").data("daterangepicker").setEndDate($("#endDate").val());
+            }
         }
-      
+
+        
+        function view(){
+        	var url = "${pageContext.request.contextPath }/12/14/1";
+        	$("#searchForm").attr("action", url).submit();
+        }
     </script>
 </body>
 

@@ -89,15 +89,15 @@ $(function(){
 				<div class="page-header position-relative">
 					<h1 class="pull-left">재무제표계정관리</h1>
 				</div>
-				<!-- /.page-header -->
-				<div class="row">
-					<div class="span10">
+				<!-- /.page-header -->				
+				<div class="row-fluid">
+					<div class="span12">
 						<!-- PAGE CONTENT BEGINS -->
 						<form id="form-babo" class="form-horizontal" method="post" action="">	
 											
 							<!-- 회계연도  -->
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">회계연도</label>
+								<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >회계연도</label>
 								<div class="controls">
 									<input type="number" min="1900" max="2099" step="1" value="${accountUsedyear }" id="accountUsedyear" name="accountUsedyear" placeholder="회계연도" />
 								</div>
@@ -105,7 +105,7 @@ $(function(){
 							 
 							<!-- 구분  -->
 							<div class="control-group">
-								<label class="control-label" for="form-field-select-1">구분</label>
+								<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;">구분</label>
 								<div class="controls">
 									<select id="selectedAccountStatementType" name="selectedAccountStatementType" >
 										<c:if test="${selectedAccountStatementType eq 'B' }">
@@ -122,7 +122,7 @@ $(function(){
 							
 							<!-- 순번  -->
 							<div class="control-group">
-								<label class="control-label" for="accountOrder">순번</label>
+								<label class="control-label" for="accountOrder" style="text-align:left;width:120px;" >순번</label>
 								<div class="controls">
 									<input type="number" min="0001" max="1000" step="1" value="${accountOrder }" id="accountOrder" name="accountOrder" placeholder="순번입력" />
 									<input type="hidden" id="no" name="no" value="" >
@@ -131,7 +131,7 @@ $(function(){
 							 
 							<!-- 계정과목  -->
 							<div class="control-group">
-								<label class="control-label" for="form-field-select-1">계정과목</label>
+								<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >계정과목</label>
 								<div class="controls">
 									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목">		
 										<option value="" data-accountName=""></option>		
@@ -149,7 +149,6 @@ $(function(){
 								</div>
 							</div>
 							
-							&nbsp; &nbsp; &nbsp;
 							<button class="btn btn-info btn-small" type="submit" id="account-list-btn" name="account-list-btn"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 							&nbsp;
 							<button class="btn btn-danger btn-small" type="submit" name="action"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
@@ -165,6 +164,7 @@ $(function(){
 				</div>
 
 				<!-- /.row-fluid -->
+				<div class="row-fluid">
 				<!-- 제무재표 계정과목 테이블  -->
 				<div class="span12">
 				<!-- 선 -->
@@ -177,10 +177,10 @@ $(function(){
 								<th>계정과목</th>
 								<th>계정명칭</th>
 								<th>잔액구분</th>
-								<th>입력일자</th>
 								<th>입력담당자</th>
-								<th>수정일자</th>
+								<th>입력일자</th>
 								<th>수정담당자</th>
+								<th>수정일자</th>
 							</tr>
 						</thead>
 
@@ -206,12 +206,13 @@ $(function(){
 						</c:forEach>
 					</table>
 				</div>
+				</div>
 			</div>
 
 		</div>
-	</div>
+	</div>	
 	
-		
+	
 	<%-- 페이징 --%>
 	<div class="pagination">
 		<ul>

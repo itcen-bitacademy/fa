@@ -74,5 +74,27 @@
 			;
 		]]>
 	</select>
+	
+	<select id="gets" parameterType="map" resultType="purchasecustomer35vo">
+		<![CDATA[
+			select	no, 
+			      	name
+			  from	tb_purchasecustomer
+			  where delete_flag = "N"
+		]]>
+		<if test="no!=null and !no.equals('')">
+			<![CDATA[
+				  and no like CONCAT('%',#{no},'%')
+			]]>
+		</if>
+		<if test="name!=null and !name.equals('')">
+			<![CDATA[
+				  and name like CONCAT('%',#{name},'%')
+			]]>
+		</if>  
+		<![CDATA[
+			;
+		]]>
+	</select>
 
 </mapper>

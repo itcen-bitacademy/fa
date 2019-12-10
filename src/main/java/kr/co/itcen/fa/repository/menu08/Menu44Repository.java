@@ -36,4 +36,13 @@ public class Menu44Repository {
 		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList");
 		return result;
 	}
+	
+	public int selectAllCount(IntangibleAssetsVo intangibleAssetsVo) {
+		return sqlSession.selectOne("menu44.selectAllCount", intangibleAssetsVo);
+	}
+
+	public List<IntangibleAssetsVo> getList(IntangibleAssetsVo intangibleAssetsVo) {
+		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList2", intangibleAssetsVo);
+		return result;
+	}
 }

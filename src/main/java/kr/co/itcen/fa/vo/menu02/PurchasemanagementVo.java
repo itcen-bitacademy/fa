@@ -55,7 +55,27 @@ public class PurchasemanagementVo {
 	private String updateDay;			//수정날짜
 	private String orderStd;			//정렬기준
 	private int page;					//페이지
+	private boolean searchFlag;			//조회여부
+	private Long voucherNo;			//전표번호
 	
+	
+	
+	public Long getVoucherNo() {
+		return voucherNo;
+	}
+
+	public void setVoucherNo(Long voucherNo) {
+		this.voucherNo = voucherNo;
+	}
+
+	public boolean isSearchFlag() {
+		return searchFlag;
+	}
+
+	public void setSearchFlag(boolean searchFlag) {
+		this.searchFlag = searchFlag;
+	}
+
 	public int getPage() {
 		return page;
 	}
@@ -220,9 +240,13 @@ public class PurchasemanagementVo {
 				+ ", taxValue=" + taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType + ", taxbillNo="
 				+ taxbillNo + ", receiptDate=" + receiptDate + ", releaseDate=" + releaseDate + ", deleteFlag="
 				+ deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + ", orderStd=" + orderStd + ", page=" + page + "]";
+				+ updateUserid + ", updateDay=" + updateDay + ", orderStd=" + orderStd + ", page=" + page
+				+ ", searchFlag=" + searchFlag + ", voucherNo=" + voucherNo + "]";
 	}
 
+	
+
+	
 	
 	
 	

@@ -23,11 +23,7 @@ public class Menu24Repository {
 	private SqlSession sqlSession;
 	
 	public int listCount(CardVo vo) {
-		System.out.println(vo.getDeleteFlag());
-		int i = sqlSession.selectOne("menu24.selectAllCount",vo);
-		System.out.println(i);
-		return sqlSession.selectOne("menu24.selectAllCount",vo);
-		
+		return sqlSession.selectOne("menu24.readCount",vo);
 		
 	}
 	
@@ -35,8 +31,19 @@ public class Menu24Repository {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
 		map.put("vo", vo);
-		List<CardVo> list= sqlSession.selectList("menu24.selectAll",map);
+		System.out.println(vo);
+		List<CardVo> list= sqlSession.selectList("menu24.read",map);
 		return list;
 		
 	}
+
+	public Map<String, Object> read(PaginationUtil pagination, CardVo vo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("pagination", pagination);
+		map.put("vo", vo);
+		map.put("cardList", sqlSession.selectList("menu05.read",map));
+		return map;
+	}
+
+
 }

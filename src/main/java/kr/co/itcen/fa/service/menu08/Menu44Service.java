@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu44Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
 
 
@@ -36,4 +38,23 @@ public class Menu44Service {
 	public List<IntangibleAssetsVo> getList() {
 		return menu44Repository.getList();
 	}
+	
+	public DataResult<IntangibleAssetsVo> getList(int page, IntangibleAssetsVo intangibleAssetsVo) {
+		DataResult<IntangibleAssetsVo> dataResult = new DataResult<>(); // 본인의 vo 형식을 리스트에 담음
+		
+		int totalCount = menu44Repository.selectAllCount(intangibleAssetsVo);
+		
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(paginationUtil); // dataResult타입에 pagination에 값 세팅 
+		System.out.println(totalCount);
+		System.out.println(paginationUtil.getPageIndex()+","+paginationUtil.getListSize());
+		
+		intangibleAssetsVo.setPagination(paginationUtil);// paginnationUtil 세팅
+		
+		List<IntangibleAssetsVo> list = menu44Repository.getList(intangibleAssetsVo);//뽑은 list를 dataResult타입을 list에 세팅 => 1개~ 11개 모두 리스트에 세팅
+		dataResult.setDatas(list);
+		
+		return dataResult;
+	}
+
 }

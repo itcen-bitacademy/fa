@@ -93,13 +93,13 @@
 						입력 기간
 
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" name="inputperiodStart"/> <span
+							<input type="text" id="datepicker" class="cl-date-picker" name="inputperiodStart" readonly/> <span
 								class="add-on" > <i class="icon-calendar"></i>
 							</span>
 						</div>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" class="cl-date-picker" name="inputperiodEnd"/> <span
+							<input type="text" id="datepicker2" class="cl-date-picker" name="inputperiodEnd" readonly/> <span
 								class="add-on" > <i class="icon-calendar"></i>
 							</span>
 						</div>
@@ -117,7 +117,7 @@
 
 						</select>
 
-						<button type="submit" class="btn btn-small btn-info" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+						<button type="submit" class="btn btn-small btn-info" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 
 					</form>
 					<div class="hr hr-18 dotted"></div>

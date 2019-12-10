@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu02.Menu06Repository;
+import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 import kr.co.itcen.fa.vo.menu02.PurchasemanagementVo;
@@ -50,5 +51,18 @@ public class Menu06Service {
 	public void delete(PurchasemanagementVo vo) {
 		menu06Repository.delete(vo);
 		
+	}
+
+	public BuyTaxbillVo getTaxbillList(PurchasemanagementVo vo) {
+		return menu06Repository.getTaxbillList(vo);
+	}
+
+	public CustomerVo getAccount(PurchasemanagementVo vo) {
+		
+		return menu06Repository.getAccount(vo);
+	}
+
+	public void voucherUpdate(PurchasemanagementVo vo) {
+		menu06Repository.voucherUpdate(vo);
 	}
 }

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu14Service;
@@ -17,6 +18,7 @@ import kr.co.itcen.fa.vo.menu12.SalesSearchVo;
  * 매출관리
  *
  */
+
 @Auth
 @Controller
 @RequestMapping("/" + Menu14Controller.MAINMENU)
@@ -41,19 +43,20 @@ public class Menu14Controller {
 		
 		model.addAttribute("dataResult", menu14Service.getList(ipage)); // 조회실행
 		
-		model.addAttribute("contentsCount", menu14Service.getCount()); // 게시물 수
-		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	// 검색필터(조건) 있는 목록 조회
 	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}"}, method=RequestMethod.POST)
 	public String list(SalesSearchVo vo, String dates, Model model,
-							@PathVariable(name="page", required=false)String page) {	
+							@PathVariable(name="page", required=false)String page, 
+							@RequestParam(name="viewCount") int viewCount) {	
 		int ipage = 1;
 		if(page!=null) { // pathvariable 페이지 없는경우 1페이지 세팅
 			ipage = Integer.parseInt(page);
 		}
+		
+		System.out.println(viewCount);
 		
 		String[] date = dates.split(" - "); // daterange 분리
 		vo.setStartDate(date[0]);
@@ -63,10 +66,10 @@ public class Menu14Controller {
 		model.addAttribute("customerlist", menu14Service.getCustomerList()); // 거래처 목록
 		model.addAttribute("itemlist", menu14Service.getItemList()); // 품목 목록
 		
-		model.addAttribute("dataResult", menu14Service.getSerchList(vo, ipage)); // 조회실행
+		model.addAttribute("dataResult", menu14Service.getSerchList(vo, ipage, viewCount)); // 조회실행
 		
 		model.addAttribute("search", vo); // 검색 조건 데이터 저장 (화면에 세팅)
-		model.addAttribute("contentsCount", menu14Service.getCount(vo)); // 게시물 수
+		model.addAttribute("viewCount", viewCount);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

@@ -15,5 +15,129 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	
+	<select id="landList" resultType="08landvo" parameterType="String">
+		<![CDATA[
+			select id, customer_no as customerNo, tb_customer.name as customerName, tb_customer.manager_name as managerName, taxbill_no as taxbillNo, voucher_no as voucherNo,
+				   section_no as sectionNo, classification as sectionName, land_area as landArea, combine_no as combineNo, owner_name as ownerName, 
+                   wide_address as wideAddress,
+                     city_address as cityAddress,
+                     local_address as localAddress,
+                     tb_land.detail_address as detailAddress,
+                     public_value as publicValue,
+                     acq_price as acqPrice,
+                     etc_cost as etcCost,
+                     reg_tax as regTax,
+                     acq_tax as acqTax,
+					 pay_date as payDate,
+					 tax_kind as taxKind,
+					 flag,
+					 tb_land.insert_userid as insertUserid,
+					 tb_land.insert_day as insertDay,
+					 tb_land.update_userid as updateUserid, 
+					 tb_land.update_day as updateDay
+			from tb_land left outer join tb_section on tb_land.section_no=tb_section.code 
+			left outer join tb_customer on tb_land.customer_no=tb_customer.no 
+	]]>
+		 <![CDATA[
+		where tb_section.parent_no=2 and tb_land.insert_day> (NOW() - INTERVAL 3 DAY)
+             and flag IN('s','o')
+		]]>
+		<if test="_parameter>0"><!-- "_parameter.length()>0" -->
+            <![CDATA[
+              and id like concat('%',#{_parameter },'%') 
+            ]]>
+         </if>
+         <![CDATA[
+          order by tb_land.update_day asc, tb_land.insert_day asc;
+         ]]>
+	</select>
+	
+	<!-- 토지분류 리스트 -->
+	<select id="sectionList" resultType="sectionvo">
+		<![CDATA[
+			select no, classification ,code
+		    from tb_section
+		    where parent_no=2
+			order by code asc
+		]]>
+	
+	</select>
+	
+	<!-- 거래처리스트 -->
+	<select id="customerList" resultType="1customervo">
+		<![CDATA[
+			select no, manager_name as managerName, name 
+		    from tb_customer 
+		    where assets_flag = "a"
+		]]>
+	
+	</select>
+	
+	<!-- 토지 입력 -->
+	<insert id="insertLand" parameterType="08landvo">
+		<![CDATA[
+			insert into tb_land values(#{id}, #{customerNo}, null, null, #{sectionNo}, #{landArea}, #{combineNo}, #{ownerName}, #{wideAddress}, #{cityAddress}, #{localAddress}, #{detailAddress}, #{publicValue}, #{acqPrice}, #{etcCost}, #{regTax}, #{acqTax}, #{payDate}, #{taxKind}, "s", #{insertUserid}, now(), null, null)
+		]]>
+	
+	</insert>
+	
+	<!-- 토지코드중복확인 -->
+	<select id="checkId" parameterType="string" resultType="string">
+		<![CDATA[
+		select id
+		  from tb_land
+		 where id = #{id }
+		]]>
+	</select>
+	
+	<!-- 토지삭제 -->
+	<update id="deleteLand" parameterType="map">
+		<![CDATA[
+			update tb_land 
+				set flag = "d",
+				update_userid = #{userId}, 
+				update_day = now() 
+				where id = #{id}
+		]]>
+	</update>
+	
+	<!-- 토지 업데이트 -->
+	<update id="updateLand" parameterType="08landvo">
+		<![CDATA[
+			update tb_land 
+				set 
+				 customer_no = #{customerNo},
+				 taxbill_no = #{taxbillNo},
+				 voucher_no = #{voucherNo},
+				 section_no = #{sectionNo}, land_area = #{landArea}, combine_no = #{combineNo}, owner_name = #{ownerName}, 
+                 wide_address = #{wideAddress},
+                 city_address = #{cityAddress},
+                 local_address = #{localAddress},
+                 detail_address = #{detailAddress},
+                 public_value = #{publicValue},
+                 acq_price = #{acqPrice},
+                 etc_cost = #{etcCost},
+                 reg_tax = #{regTax},
+                 acq_tax = #{acqTax},
+				 pay_date = #{payDate},
+				 tax_kind = #{taxKind},
+				 flag = "o",
+				 update_userid = #{updateUserid}, 
+				 update_day = now() 
+				 where id = #{id}
+		]]>
+	</update>
+	
+	<!-- 거래처번호를 통해 계좌번호 가져오기 -->
+	<select id="getDepositNo" parameterType="string" resultType="1customervo">
+		<![CDATA[
+		select deposit_no as depositNo, bank_code as bankCode, bank_name as bankName
+		  from tb_customer where no = #{customerNo }
+		]]>
+	</select>
+	
+	
 
 </mapper>

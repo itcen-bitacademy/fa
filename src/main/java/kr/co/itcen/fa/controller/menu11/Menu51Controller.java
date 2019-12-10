@@ -1,6 +1,5 @@
 package kr.co.itcen.fa.controller.menu11;
 
-import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +32,12 @@ public class Menu51Controller {
 	private Menu51Service menu51Service;
 
 	// /11/51, /11/51/list
-	@SuppressWarnings("unlikely-arg-type")
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(
 			Model model, 
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "sort", required = false) String sort, 
 			PdebtVo vo) {
-		System.out.println("PdebtVo 1 : " + vo.toString());
-		
 		if(vo.getDebtDate() == null || "".equals(vo.getDebtDate()))
 			vo.setDebtDate("");
 		
@@ -62,7 +58,6 @@ public class Menu51Controller {
 			vo.setRepayCompleFlag("");
 		else vo.setRepayCompleFlag("N");
 		
-		System.out.println("PdebtVo 2 : " + vo.toString());
 		DataResult<PdebtVo> dataResult = menu51Service.list(page,vo,sort);
 		List<SectionVo> sectionlist = menu51Service.selectSection();
 		
@@ -78,12 +73,11 @@ public class Menu51Controller {
 				.build();
 		
 		String uri = uriComponents.toUriString();
-		
-		System.out.println("PdebtVo 3 : " + vo.toString());
 		model.addAttribute("uri",uri);
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("sort", sort);
+		model.addAttribute("contentsCount", dataResult.getPagination().getTotalCnt()); // 게시물 수
 
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

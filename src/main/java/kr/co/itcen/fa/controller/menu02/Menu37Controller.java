@@ -52,6 +52,7 @@ public class Menu37Controller {
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String write(@ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
 			Long amount[], Long supplyValue[], Long taxValue[]) {
+
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		String insertUserid = authUser.getId();
 		vo.setInsertUserid(insertUserid);

@@ -37,7 +37,8 @@ public class Menu05Service {
 		}
 		
 		int totalCnt = menu05Repository.listCount();
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt+1, 11, 5);
+		System.out.println(pagination.getEndPage());
 		
 		map = menu05Repository.create(vo, pagination);
 		map.put("pagination", pagination);
@@ -78,7 +79,7 @@ public class Menu05Service {
 	public Map<String, Object> delete(CardVo vo, int page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int totalCnt = menu05Repository.listCount();
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt-1, 11, 5);
 		
 		map = menu05Repository.delete(vo, pagination);
 		map.put("pagination", pagination);

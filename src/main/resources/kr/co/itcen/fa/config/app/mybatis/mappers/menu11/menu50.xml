@@ -45,17 +45,17 @@
 		]]>
 			<if test="year.length()>0 ">
 				<![CDATA[
-				and 	date_format(debt_date,'%Y') like concat('%',#{year},'%') 
+				and 	date_format(a.debt_date,'%Y') like concat('%',#{year},'%') 
 				]]>
 			</if>
 			<if test="code.length()>0 ">
 				<![CDATA[
-				and 	code like concat('%',#{code},'%') 
+				and 	a.code like concat('%',#{code},'%') 
 				]]>
 			</if>
 			<if test="pagination.pageIndex >= 0">
 				<![CDATA[
-			    	order by debt_date limit #{pagination.pageIndex }, #{pagination.listSize }
+			    	order by a.debt_date limit #{pagination.pageIndex }, #{pagination.listSize }
 			    ]]>
 		    </if>
 	</select>
@@ -107,9 +107,9 @@
 		<![CDATA[
 			update tb_p_debt set delete_flag = "Y" where no IN 	
 		]]>
-		<foreach collection="list" item="item" open="(" close=")" separator=",">
-			${item}
-		</foreach>
+			<foreach collection="list" item="item" open="(" close=")" separator=",">
+				${item}
+			</foreach>
 	</update>
 	
 	<select id="bankList" resultType="bankvo">
@@ -152,20 +152,11 @@
 	<update id="update" parameterType="pdebtvo">
 		<![CDATA[
 			update tb_p_debt 
-			set name = #{name},
-				major_code = #{majorCode},
-				debt_amount = #{debtAmount},
-				repay_way=#{repayWay},
-				debt_date=#{debtDate},
-				exp_date=#{expDate},
-				int_rate=#{intRate},
-				int_pay_way=#{intPayWay},
-				mgr=#{mgr},
-				mgr_call=#{mgrCall},
-				bank_code=#{bankCode},
-				deposit_no=#{depositNo}, 
-				update_id=#{updateId},
-				update_date=now()
+			set name = #{name}, major_code = #{majorCode}, debt_amount = #{debtAmount}, 
+			repay_way=#{repayWay}, debt_date=#{debtDate}, exp_date=#{expDate}, 
+			int_rate=#{intRate}, int_pay_way=#{intPayWay}, mgr=#{mgr}, 
+			mgr_call=#{mgrCall}, bank_code=#{bankCode}, deposit_no=#{depositNo}, 
+			update_id=#{updateId}, update_date=now() 
 			where no=#{no}
 		]]>
 	</update>
@@ -189,5 +180,80 @@
 			#{item }
 		</foreach>
 	</update>
+	
+	<!-- 전표번호에 따른 사채테이블 데이터 조회 -->
+	<!-- select no -->
+	<select id="selectByVoucherNo" parameterType="long" resultType="long">
+		<![CDATA[
+			select voucher_no from tb_p_debt where no=#{_parameter}
+		]]>
+	</select>
+	
+	<!-- 상환후 갱신된 정보 select -->
+	<select parameterType="long" id="selectone" resultType="pdebtvo">
+		<![CDATA[
+			select no,
+				code,
+	   			name,
+	    		major_code as majorCode,
+	    		debt_amount as debtAmount,
+	    		repay_bal as repayBal,
+	    		repay_way as repayWay,
+	    		concat(date_format(debt_date,'%Y/%m/%d'),'-',
+	    		date_format(exp_date,'%Y/%m/%d')) as debtExpDate,
+	    		int_rate as intRate,
+	    		int_pay_way as intPayWay,
+	   			mgr,
+	    		mgr_call as mgrCall,
+			    bank_code as bankCode,
+			    deposit_no as depositNo
+			    from tb_p_debt
+			    where no=#{_parameter}
+		]]>
+	</select>
+	
+	<!--상환 insert -->
+	<insert parameterType="repayvo" id="insertrepay">
+		<![CDATA[
+			insert
+			  into tb_repay
+			values (null, #{debtNo},#{payPrinc},#{payDate}, 'L', null,#{depositNo},'N',#{insertId},now(),null,null)
+		]]>
+	<selectKey order="AFTER" resultType="long" keyProperty="no">
+		<![CDATA[
+			select last_insert_id()
+		]]>
+	</selectKey>
+	</insert>
+	
+	<!-- 상환 update -->
+	<update parameterType="repayvo" id="repayupdate">
+	<![CDATA[
+		update tb_p_debt 
+		set repay_bal = repay_bal + #{payPrinc}	
+		where no=#{debtNo}
+	]]>
+	</update>
+	
+	<!-- 상환완료 flag update -->
+	<update parameterType="long" id="updaterepayflag">
+	<![CDATA[
+		update tb_p_debt 
+		set repay_comple_flag = 'Y'
+		where no=#{_parameter}
+	]]>
+	</update>
+	
+	<!-- 사채코드 중복확인 -->
+	<select parameterType="string" id="getbycode" resultType="ldebtvo">
+	<![CDATA[
+		select
+			code,
+			delete_flag as deleteFlag
+		from
+			tb_p_debt 
+   		where code like #{_parameter}
+	]]>
+	</select>
 
 </mapper>

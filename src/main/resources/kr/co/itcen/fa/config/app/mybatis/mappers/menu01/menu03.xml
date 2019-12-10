@@ -244,7 +244,10 @@
                   from tb_salescustomer
 				 union
 				select no, name
-                  from tb_purchasecustomer) as cu
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -258,6 +261,33 @@
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
+	
+	<!-- delete 다른팀 -->
+	<delete id="deleteVoucher" parameterType="1vouchervo">
+	<![CDATA[
+		delete
+		  from tb_voucher_manager
+		 where no = #{no };
+	]]>
+	</delete>
+	
+	<!-- delete 다른팀 -->
+	<delete id="deleteItem" parameterType="1itemvo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_item
+		 where voucher_no = #{voucherNo };
+	]]>
+	</delete>
+	
+	<!-- delete 다른팀 -->
+	<delete id="deleteMapping" parameterType="1mappingvo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_system_mapping
+		 where voucher_no = #{voucherNo };
+	]]>
+	</delete>
 	
 	<!-- delete 1팀 -->
 	<update id="deleteVoucher2" parameterType="1vouchervo">
@@ -363,10 +393,10 @@
 	</update>
 	
 	<!-- 다른팀 전표 삭제 시 팀정보 받아오기 -->
-	<select id="selectTeam" parameterType="Long" resultType="1vouchervo">
+	<select id="selectTeam" parameterType="1vouchervo" resultType="1vouchervo">
 		<![CDATA[
 			select insert_team
-			  from voucher_system_mapping
+			  from tb_voucher_system_mapping
 			 where voucher_no = #{no }
 		]]>
 	</select>

@@ -173,13 +173,19 @@ public class Menu48Controller {
 	public String delete(@RequestParam Long[] no,@AuthUser UserVo uservo) {
 		List<Long> list = menu48Service.selectVoucherNo(no);
 		
-//		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-//		for(Long no1: list) {
-//			voucherVolist.add(no1);
-//		}
-//		
-//		menu03Service.deleteVoucher(voucherVolist, uservo);
-//		menu48Service.delete(no);
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		for(Long no1: list) {
+			VoucherVo v = new VoucherVo();
+			v.setNo(no1);
+			voucherVolist.add(v);
+		}
+		for(VoucherVo v : voucherVolist) {
+			System.out.println(v);
+		}
+		
+		
+		menu03Service.deleteVoucher(voucherVolist, uservo);
+		menu48Service.delete(no);
 //		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 		

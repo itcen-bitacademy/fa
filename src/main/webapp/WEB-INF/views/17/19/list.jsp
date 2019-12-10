@@ -166,10 +166,12 @@
 						</div>
 					<div class="hr hr-18 dotted"></div>
 
+					<%-- 총 게시글 수 출력 --%>
 					<div class="row-fluid">
-						<div class="span6"></div>
+						<div class="span6" style="text-align:left;">
+							<h6>총 ${dataResult.pagination.totalCnt }건</h6>
+						</div>
 						<div class="span6" style="text-align:right;">
-							<h6>(총 마감일 수: ${dataResult.pagination.totalCnt })</h6>
 						</div>
 					</div>
 

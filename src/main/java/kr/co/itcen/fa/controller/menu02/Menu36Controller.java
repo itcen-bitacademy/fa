@@ -1,15 +1,15 @@
 package kr.co.itcen.fa.controller.menu02;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -55,5 +55,21 @@ public class Menu36Controller {
 		model.addAttribute("customerVo", dataResult.getDatas());
 
 		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	// 매입거래처 팝업
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/gets")
+	public Map<String, Object> gets(@RequestParam(value="no", required=false, defaultValue="") String no,
+									@RequestParam(value="name", required=false, defaultValue="") String name) {
+		System.out.println("gets");
+		
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("no", no);
+		parameters.put("name", name);
+		
+		Map<String, Object> data = menu36Service.gets(parameters);
+		data.put("success", true);
+		return data;
 	}
 }

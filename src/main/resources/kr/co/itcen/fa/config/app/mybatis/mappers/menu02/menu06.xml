@@ -22,7 +22,7 @@
 		  values(null, #{no }, #{number }, #{purchaseDate }, #{purchaseManager }, #{customerCode }, #{customerName }, 
 		   (select code from tb_section where parent_no = 1 and code = (select section_code as sectionCode from tb_purchaseitem where no = #{itemCode })), 
 		  (select classification from tb_section where parent_no = 1 and code = (select section_code as sectionCode from tb_purchaseitem where no = #{itemCode })), 
-		  #{itemCode }, #{itemName }, #{quantity }, #{supplyValue }, #{taxValue }, #{totalPrice }, #{taxType }, 0, #{receiptDate }, #{releaseDate },"N", "gg", now(),null,null)
+		  #{itemCode }, #{itemName }, #{quantity }, #{supplyValue }, #{taxValue }, #{totalPrice }, #{taxType }, 0, #{receiptDate }, #{releaseDate },"N", #{insertUserid }, now(),null,null)
 		]]>
 	</insert>
 	
@@ -55,8 +55,16 @@
         update tb_purchasemanagement
            set  purchase_no = #{no }, number = #{number }, purchase_date = #{purchaseDate }, purchase_manager = #{purchaseManager }, customer_code = #{customerCode }, 
            customer_name = #{customerName }, item_code = #{itemCode }, item_name = #{itemName }, quantity = #{quantity }, supply_value = #{supplyValue },
-           tax_value = #{taxValue }, total_price = #{totalPrice }, tax_type = #{taxType }, taxbill_no = #{taxbillNo }, receipt_date = #{receiptDate }, release_date = #{releaseDate }, update_userid = 'aa', update_day = now()
+           tax_value = #{taxValue }, total_price = #{totalPrice }, tax_type = #{taxType }, taxbill_no = #{taxbillNo }, receipt_date = #{receiptDate }, release_date = #{releaseDate }, update_userid = #{updateUserid }, update_day = now()
          where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
+		]]>
+	</update>
+	
+	<update id="voucherUpdate" parameterType="purchasemanagement06vo">
+		<![CDATA[
+        update tb_purchasemanagement
+           set voucher_no = #{voucherNo }, 
+         where purchase_no = #{no } and purchase_date = #{purchaseDate }
 		]]>
 	</update>
 	
@@ -67,5 +75,21 @@
          where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
 		]]>
 	</update>
+	
+	<select id="getTaxbillList" resultType="buytaxbillvo">
+		<![CDATA[
+		  select *
+		  from tb_buy_taxbill
+		  where manage_no = #{taxbillNo }
+		]]>
+	</select>
+	
+	<select id="getAccount" resultType="purchasecustomer35vo">
+		<![CDATA[
+		  select deposit_no as depositNo
+		  from tb_purchasecustomer
+		  where no = #{customerCode }
+		]]>
+	</select>
 	
 </mapper>

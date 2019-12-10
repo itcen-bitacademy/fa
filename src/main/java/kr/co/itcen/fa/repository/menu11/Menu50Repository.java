@@ -8,13 +8,13 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
+import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
-
+import kr.co.itcen.fa.vo.menu11.RepayVo;
 /**
  * 
  * @author 박준호
@@ -77,6 +77,7 @@ public class Menu50Repository {
 	public Boolean update(PdebtVo vo) {
 		System.out.println("vo vo vo update : " + vo.toString());
 		int count = sqlSession.update("menu50.update", vo);
+		System.out.println("======================= update complete");
 		return count == 1;
 	}
 	
@@ -103,6 +104,39 @@ public class Menu50Repository {
 
 	public List<SectionVo> selectSection() {
 		return sqlSession.selectList("menu50.selectsection");
+	}
+
+	public Long select(Long no) {
+		Long longNo = sqlSession.selectOne("menu50.selectByVoucherNo", no);
+		return longNo;
+	}
+
+	// 상환데이터 수정
+	public Boolean updateRepayVo(RepayVo vo) {
+		int count = sqlSession.update("menu50.repayupdate", vo);
+		return count == 1;
+	}
+
+	// 상환데이터 입력
+	public Boolean insertRepayVo(RepayVo vo) {
+		int count = sqlSession.insert("menu50.insertrepay", vo);
+		return count == 1;
+	}
+
+	// 상환후 갱신된 정보 select
+	public PdebtVo getOne(Long debtNo) {
+		PdebtVo vo = sqlSession.selectOne("menu50.selectone", debtNo);
+		return vo;
+	}
+
+	public Boolean updateRepayFlag(Long no) {
+		int count = sqlSession.update("menu50.updaterepayflag", no);
+		return count == 1;
+	}
+
+	public PdebtVo getCode(String code) {
+		PdebtVo vo = sqlSession.selectOne("menu50.getbycode", code);
+		return vo;
 	}
 	
 }

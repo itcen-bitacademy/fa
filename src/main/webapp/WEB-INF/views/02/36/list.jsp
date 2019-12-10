@@ -8,6 +8,7 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -37,14 +38,53 @@
 									<label class="control-label" for="customer">거래처</label>
 									<div class="controls">
 										<input type="text" name="firstNo" style="width: 150px;">
-										<input type="text" name="name1" readonly style="width: 200px;">
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> ~ 
+										<input type="text" name="firstName" readonly style="width: 200px;">
+										<a href="#" id="a-firstCustomerInfo-dialog">
+										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span></a> ~ 
 										<input type="text" name="secondNo" style="width: 150px;">
-										<input type="text" name="name2" readonly style="width: 200px;">
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+										<input type="text" name="secondname" readonly style="width: 200px;">
+										<a href="#" id="a-secondCustomerInfo-dialog">
+										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span></a>
 									</div>
 								</div>
 							</div>
+							
+							
+								<!-- 매입거래처 사업자번호, 상호명 Modal pop-up : start -->
+								<div id="dialog-message" title="매입거래처" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td>
+											<select id="searchOption" style="width:160px;">
+													<option value="no">사업자번호</option>
+													<option value="name">상호명</option>
+											</select>
+											
+											<input type="text" id="input-dialog-customerNo" style="width: 100px;" /> 
+											<a href="#" id="a-dialog-customerNo"> 
+											<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search nav-search-icon"></i>
+											</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-customer-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">사업자번호</th>
+												<th class="center">상호명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-customerList">
+											
+										</tbody>
+									</table>
+								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+								
+								
 
 							<div class="span6">
 								<div class="control-group">
@@ -144,8 +184,8 @@
 													<td>${customerVo.managerEmail }</td>
 													<td>${customerVo.depositNo }</td>
 													<td>${customerVo.depositHost }</td>
-													<td>은행코드</td>
-													<td>은행명</td>
+													<td>${customerVo.bankCode }</td>
+													<td>${customerVo.bankName }</td>
 													<td>${customerVo.insertDay }</td>
 													<td>${customerVo.insertUserid }</td>
 													<td>${customerVo.updateDay }</td>
@@ -210,21 +250,102 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 	<script>
+	var tf;
+	
 	$(function() {
 		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
 		$(".chosen-select").chosen();
-	});
-	
-	//조회
-	$("#btn_select").click(function(){
-		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list");
-		document.getElementById('form-customer').submit();
 		
-        return false;
+		// 매입거래처 팝업
+		$("#dialog-message").dialog({
+		       autoOpen : false
+		});
+		
+	    $("#a-firstCustomerInfo-dialog, #a-secondCustomerInfo-dialog").click(function() {
+	       tf = $(this).prev();
+	       $("#dialog-message").dialog({
+	          title: "매입거래처 정보",
+	          title_html: true,
+	             resizable: false,
+	           height: 500,
+	           width: 400,
+	           modal: true,
+	           close: function() {
+	              $('#tbody-customerList tr').remove();
+	           },
+	           buttons: {
+	           "닫기" : function() {
+	                    $(this).dialog('close');
+	                    $('#tbody-customerList tr').remove();
+	               }
+	           }
+	       });
+	       $("#dialog-message").dialog('open');
+	    });
+	    
+		// 매입거래처 팝업 클릭시
+		$('#dialog-message-table').on('click', '#a-dialog-customerNo', function(event, ui) {
+			event.preventDefault();
+			 $("#tbody-customerList").find("tr").remove();
+			 
+			 var searchOption = $("#searchOption").val();
+			 var searchValue = $("#input-dialog-customerNo").val();
+			 
+			 // ajax 통신
+			 $.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/gets?"+searchOption+"="+searchValue,
+			    contentType : "application/json; charset=utf-8",
+			    type: "get",
+			    dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			    data : "",
+			    statusCode: {
+			        404: function() {
+			          alert("page not found");
+			        }
+			    },
+			    success: function(data){
+			  	  if(data.success) {
+			  	  	$("#input-dialog-customerNo").val('');
+			  	  	var customerList = data.customerList;
+			  	  	console.log(data.customerList);
+			  	  	for(let c in customerList) {
+			  	  		$("#tbody-customerList").append("<tr>" +
+			                    "<td class='center'>" + customerList[c].no + "</td>" +
+			                    "<td class='center'>" + customerList[c].name + "</td>" +
+			                    "</tr>");
+			
+			  	  	}
+			  	  }
+			    },
+			    error: function(xhr, error){
+			       console.error("error : " + error);
+			    }
+			});
+		});
+			
+		// 매입거래처 리스트(customerList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
+		 var tr = $(this);
+		 var td = tr.children();
+		 
+		 $(tf).val(td.eq(1).text());
+		 $(tf).prev().val(td.eq(0).text());
+		 $("#dialog-message").dialog('close');
+		});
+		
+		//조회
+		$("#btn_select").click(function(){
+			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list");
+			document.getElementById('form-customer').submit();
+			
+	        return false;
+		});
 	});
 	
 	</script>

@@ -34,7 +34,7 @@ public class SellTaxbillVo { // 논리명
 	private String bankCode; // 은행코드
 	private String deleteFlag; // 삭제
 	private String voucherNo; // 전표번호
-
+	
 	private String salesDate; // 매출일자
 
 	private String voucherUse; // 사용목적
@@ -52,6 +52,8 @@ public class SellTaxbillVo { // 논리명
 	private long quantity; // 수량
 	private long supplyValue; // 공급가액
 	private long taxValue; // 부가세
+	
+	
 
 	public long getIdx() {
 		return idx;
