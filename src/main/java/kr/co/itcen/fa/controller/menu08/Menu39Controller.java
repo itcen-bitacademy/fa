@@ -87,8 +87,7 @@ public class Menu39Controller {
 	public String add(@ModelAttribute BuildingVo buildingvo, @SessionAttribute("authUser") UserVo authUser, Model model) throws ParseException{
 		
 		buildingvo.setInsertUserid(authUser.getId());
-		//menu39Service.add(buildingvo);
-		//return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
 	    	System.out.println("마감일자 제발!!!");

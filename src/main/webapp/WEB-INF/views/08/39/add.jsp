@@ -35,7 +35,7 @@
 							<form class="form-horizontal" method="post">
 								<div class="span6">
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">건물 코드</label>
+										<label class="control-label" for="form-field-1">건물코드</label>
 										<div class="controls">
 											<input type="text" id="land_code" name="id" placeholder="10자로 입력하세요"/>
 										</div>
@@ -239,7 +239,6 @@
 							<th>층수(지하)</th>
 							<th>주소(광역)</th>
 							<th>주소(시/군/구)</th>
-							<th>주소(읍/면/동)</th>
 							<th>주소(상세)</th>
 							<th>용도</th>
 							<th>주 구조</th>
@@ -269,7 +268,6 @@
 							<td>${vo.basement }</td>
 							<td>${vo.wideAddress }</td>
 							<td>${vo.cityAddress }</td>
-							<td>${vo.localAddress }</td>
 							<td>${vo.detailAddress }</td>
 							<td>${vo.purpose }</td>
 							<td>${vo.material }</td>
@@ -428,28 +426,27 @@ $("input[name=id]").on("change", function() {
 		      $("input[name=basement]").val(td.eq(5).text());
 		      $("input[name=wideAddress]").val(td.eq(6).text());
 		      $("input[name=cityAddress]").val(td.eq(7).text());
-		      $("input[name=localAddress]").val(td.eq(8).text());
-		      $("input[name=detailAddress]").val(td.eq(9).text());
-		      $("input[name=purpose]").val(td.eq(10).text());
-		      $("input[name=material]").val(td.eq(11).text());
+		      $("input[name=detailAddress]").val(td.eq(8).text());
+		      $("input[name=purpose]").val(td.eq(9).text());
+		      $("input[name=material]").val(td.eq(10).text());
 		      //customerNo 에 대한 값(name)을 select box에 표시
-		      $('#form-field-customer').val(td.eq(12).text()).trigger('chosen:updated'); 
-		      $("input[name=customerName]").val(td.eq(13).text());
-		      $("input[name=managerName]").val(td.eq(14).text());
-		      $("input[name=ownerName]").val(td.eq(15).text());
-		      $("input[name=payDate]").val(td.eq(16).text());
-		      $("input[name=publicValue]").val(td.eq(17).text().replace(/,/g, ""));
-		      $("input[name=acqPrice]").val(td.eq(18).text().replace(/,/g, ""));
-		      $("input[name=etcCost]").val(td.eq(19).text().replace(/,/g, ""));
-		      $("input[name=acqTax]").val(td.eq(20).text().replace(/,/g, ""));
-		      $("input[name=combineNo]").val(td.eq(21).text());
-		      $("input[name=taxbillNo]").val(td.eq(22).text());
+		      $('#form-field-customer').val(td.eq(11).text()).trigger('chosen:updated'); 
+		      $("input[name=customerName]").val(td.eq(12).text());
+		      $("input[name=managerName]").val(td.eq(13).text());
+		      $("input[name=ownerName]").val(td.eq(14).text());
+		      $("input[name=payDate]").val(td.eq(15).text());
+		      $("input[name=publicValue]").val(td.eq(16).text().replace(/,/g, ""));
+		      $("input[name=acqPrice]").val(td.eq(17).text().replace(/,/g, ""));
+		      $("input[name=etcCost]").val(td.eq(18).text().replace(/,/g, ""));
+		      $("input[name=acqTax]").val(td.eq(19).text().replace(/,/g, ""));
+		      $("input[name=combineNo]").val(td.eq(20).text());
+		      $("input[name=taxbillNo]").val(td.eq(21).text());
 		      
 		     //radio button
-		      if(td.eq(23).text() == "과세"){
+		      if(td.eq(22).text() == "과세"){
 		          $("input[id=tax]").prop('checked', true);
 		      }
-		      else if(td.eq(23).text() == "영세"){
+		      else if(td.eq(22).text() == "영세"){
 		          $("input[id=zeroTax]").prop('checked', true);
 		      } 
 		      
