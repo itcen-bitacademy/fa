@@ -4,7 +4,7 @@
 	<!-- Team -->
 	<select id="getPurchaseitemListall" resultType="purchaseitem33vo">
 		<![CDATA[
-		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate
+		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate, p.delete_flag as deleteflag
 		from tb_purchaseitem p, tb_factory f, tb_section s
 		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
         order by p.idx asc
@@ -13,7 +13,7 @@
 	
 	<select id="getPurchaseitemList" parameterType="int" resultType="purchaseitem33vo">
 		<![CDATA[
-		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate
+		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate, p.delete_flag as deleteflag
 		from tb_purchaseitem p, tb_factory f, tb_section s
 		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
         order by p.idx asc
@@ -23,7 +23,7 @@
 	
 	<select id="getpagePurchaseitemList" parameterType="int" resultType="purchaseitem33vo">
 		<![CDATA[
-		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate
+		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate, p.delete_flag as deleteflag
 		from tb_purchaseitem p, tb_factory f, tb_section s
 		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
         order by p.idx asc

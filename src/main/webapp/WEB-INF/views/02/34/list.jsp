@@ -159,6 +159,7 @@
 					"<td>" + isEmpty(purchaseitemList[pur].factorypostaddress) + " " + isEmpty(purchaseitemList[pur].factoryroadaddress) + " " + isEmpty(purchaseitemList[pur].factorydetailaddress) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].managername) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].producedate) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].deleteflag) + "</td>" +
 					"</tr>"
 				);
 				i++;
@@ -423,6 +424,7 @@
 										<th>생산공장 주소</th>
 										<th>생산담당자</th>
 										<th>생산일자</th>
+										<th>삭제여부</th>
 									</tr>
 								</thead>
 
@@ -443,6 +445,7 @@
 											<td>${pl.factorypostaddress } ${pl.factoryroadaddress } ${pl.factorydetailaddress }</td>
 											<td>${pl.managername }</td>
 											<td>${pl.producedate }</td>
+											<td>${pl.deleteflag }</td>
 										</tr>
 									</c:forEach>
 								</tbody>
