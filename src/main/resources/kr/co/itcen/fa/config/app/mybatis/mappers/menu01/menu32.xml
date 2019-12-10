@@ -21,21 +21,21 @@
 				   (right(no, 12)) as no,
 				   name as name
 		 	  from tb_customer
-		 	 where no like concat('%',${_parameter },'%')
+		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N"
 		 	 union
 			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
 				   (right(no, 12)) as no,
 				   name as name
 		 	  from tb_purchasecustomer
-		 	 where no like concat('%',${_parameter },'%')
+		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N"
 		 	 union
 			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
 				   (right(no, 12)) as no,
 				   name as name
 		 	  from tb_salescustomer
-		 	 where no like concat('%',${_parameter },'%')
+		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N" 
 		]]>
 	</select>

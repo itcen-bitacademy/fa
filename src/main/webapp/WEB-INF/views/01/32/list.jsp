@@ -49,28 +49,34 @@
 			
 			<div class="row-fluid"> <!-- 검색조건 -->
 				<form class="form-horizontal; center">
+					<div class="form-group"style="float: left">
 					&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명 :&nbsp; 
 					<input type="text" id="form-field-1" placeholder="계정코드" size=4 style="width:150px"/>
 					<input type="text" id="form-field-1" placeholder="계정명" size=4 style="width:150px" readonly/> <!-- 계정명 자동입력 -->
-
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										상호명:&nbsp;
-									</label>
-									<div class="input-append">
-										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-customerinfo-dialog"> <i
-												class="icon-search nav-search-icon"></i> <input type="text"
-												class="search-input-width-first" name="name" placeholder="상호명" readonly/>
+					</div>
+					<div class="form-group" style="float: left">
+							&nbsp; &nbsp;&nbsp; &nbsp;상호명/사업자등록번호:&nbsp;
+						<div class="input-append">
+						<span class="btn btn-small btn-info">
+						<a href="#" id="a-customerinfo-dialog">
+						<i class="icon-search nav-search-icon"></i>
+						<input type="text" class="search-input-width-first" name="name" id="name" placeholder="상호명" readonly/>
+										<script type="text/javascript">
+											var name = "${param.name}";
+											$("#name").val(name);
+										</script>
 										</a>
 										</span>
 									</div>
-									&nbsp; &nbsp; &nbsp; &nbsp; 사업자등록번호:
 									<input type="text" id="no" name="no" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
+										<script type="text/javascript">
+											var no = "${param.no}";
+											$("#no").val(no);
+										</script>
 								</div>
 
 			
-								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<!-- 거래처 Modal pop-up : start -->
 								<div id="dialog-message" title="계좌" hidden="hidden">
 									<table id="dialog-message-table">
 										<tr>
@@ -90,7 +96,7 @@
 										</a></td>
 										</tr>
 									</table>
-									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<!-- 거래처 데이터 리스트 -->
 									<table id="modal-customer-table"
 										class="table  table-bordered table-hover">
 										<thead>
@@ -104,7 +110,7 @@
 										</tbody>
 									</table>
 								</div>
-								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+								<!-- 거래처Modal pop-up : end -->
 					&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 					<div class="input-append">
 						<input type="text" id="datepicker" class="cl-date-picker"  style="width:100px"/>
@@ -360,7 +366,7 @@
 			});
 		});
 
-		//거래처리스트(customerList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		//거래처리스트(customerList)의 row의 해당 데이터 form에 추가
 		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
 			var tr = $(this);
 			var td = tr.children();
