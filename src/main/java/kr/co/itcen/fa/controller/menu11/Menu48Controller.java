@@ -102,6 +102,7 @@ public class Menu48Controller {
 		
 		itemVo3.setAmount(vo.getDebtAmount()+money);
 		itemVo3.setAmountFlag("d");
+		
 		itemVo3.setAccountNo(1110103L);
 		itemVoList.add(itemVo3);
 		
