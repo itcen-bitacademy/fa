@@ -13,7 +13,9 @@ import kr.co.itcen.fa.util.PaginationUtil;
 
 @Alias("purchasecustomer35vo")
 public class CustomerVo {
+	private String preNo;					//사업자등록번호
 	private String no;						//사업자등록번호
+	private String preName;					//상호
 	private String name;					//상호
 	private String ceo;						//대표자
 	private String corporationNo;			//법인번호
@@ -41,15 +43,23 @@ public class CustomerVo {
 	private int page = 1;
 	private PaginationUtil pagination;
 	
-	// 조건검색용
-	private String firstNo;						//첫번째 사업자등록번호
-	private String secondNo;					//두번째 사업자등록번호
-	
+	public String getPreNo() {
+		return preNo;
+	}
+	public void setPreNo(String preNo) {
+		this.preNo = preNo;
+	}
 	public String getNo() {
 		return no;
 	}
 	public void setNo(String no) {
 		this.no = no;
+	}
+	public String getPreName() {
+		return preName;
+	}
+	public void setPreName(String preName) {
+		this.preName = preName;
 	}
 	public String getName() {
 		return name;
@@ -198,29 +208,14 @@ public class CustomerVo {
 		this.pagination = pagination;
 	}
 	
-	// 검색용 사업자번호
-	public String getFirstNo() {
-		return firstNo;
-	}
-	public void setFirstNo(String firstNo) {
-		this.firstNo = firstNo;
-	}
-	public String getSecondNo() {
-		return secondNo;
-	}
-	public void setSecondNo(String secondNo) {
-		this.secondNo = secondNo;
-	}
-	
-	
 	@Override
 	public String toString() {
-		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", corporationNo=" + corporationNo
-				+ ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress + ", phone="
-				+ phone + ", conditions=" + conditions + ", item=" + item + ", openDate=" + openDate
+		return "CustomerVo [no=" + no + ", preNo=" + preNo + ", name=" + name + ", ceo=" + ceo + ", corporationNo="
+				+ corporationNo + ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress
+				+ ", phone=" + phone + ", conditions=" + conditions + ", item=" + item + ", openDate=" + openDate
 				+ ", jurisdictionOffice=" + jurisdictionOffice + ", managerName=" + managerName + ", managerEmail="
-				+ managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost + ", insertUserid="
-				+ insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay="
-				+ updateDay + ", deleteFlag=" + deleteFlag + "]";
+				+ managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost + ", bankCode=" + bankCode
+				+ ", bankName=" + bankName + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + "]";
 	}
 }
