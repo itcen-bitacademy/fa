@@ -40,6 +40,376 @@
 }
 
 </style>
+
+
+<c:import url="/WEB-INF/views/common/head.jsp" />
+</head>
+
+<body class="skin-3">
+	<c:import url="/WEB-INF/views/common/navbar.jsp" />
+	<div class="main-container container-fluid">
+		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+		<div class="main-content">
+			<div class="page-content">
+
+
+
+
+				<div class="page-header position-relative">
+					<h1 class="pull-left">카드 관리</h1>
+				</div>
+
+
+				<form class="form-horizontal" id="input-form" name="input-form"
+					method="post">
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="tabbable">
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">카드 번호</label>
+
+									<div class="controls">
+										<div class="input-append">
+											
+											<input type="text" class="validity" id="cardNo1" name="cardNo" maxlength=4 /> 
+										</div>
+										-
+										
+										<div class="input-append">
+											<input type="text" class="validity" id="cardNo2" name="cardNo"  maxlength=4 />
+										</div>
+										-
+										<div class="input-append">
+											<input type="text" class="validity" id="cardNo3" name="cardNo" maxlength=4  />
+										</div>
+										-
+										<div class="input-append">
+											<input type="text" class="validity" id="cardNo4" name="cardNo" maxlength=4  />
+										</div>
+									</div>
+									
+									
+									<input type="hidden" name="cardNoOld" />
+									
+								</div>
+
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">사용자</label>
+
+									<div class="controls">
+										<input type="text" id="form-field-1" name="user" class="name"
+											placeholder="사용자" />
+									</div>
+								</div>
+
+
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">카드 발급자
+									</label>
+
+									<div class="controls">
+										<input type="text" id="form-field-1" name="issuer" class="name"
+											placeholder="카드발급자" />
+									</div>
+								</div>
+
+
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">계좌 번호 </label>
+									<div class="controls">
+
+										<span class="btn btn-small btn-info"> <a href="#"
+											id="a-bankaccountinfo-dialog"> <i
+												class="icon-search nav-search-icon"></i> <input type="text"
+												class="search-input-width-first" name="depositNo" readonly/>
+										</a> 
+									
+										</span> 
+										&nbsp; &nbsp;
+										<input type="text" id="form-field-1" name="depositHost"
+											placeholder="예금주" readonly/>
+										
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">은행 </label> 
+									
+									<div class="controls">
+										<div class="input-append">
+											<input type="text" name = "bankCode" value="" placeholder="은행코드" readonly /> 
+										</div>
+										&nbsp; &nbsp;
+										<div class="input-append">
+											<input type="text" name ="bankName" value="" placeholder="은행명" readonly />
+										</div>
+									</div>
+								</div>
+
+			
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<div id="dialog-message" title="계좌" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>계좌번호</label> <input type="text"
+												id="input-dialog-depositNo" style="width: 100px;" /> <a
+												href="#" id="a-dialog-depositNo"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-deposit-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">계좌번호</th>
+												<th class="center">예금주</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-bankaccountList">
+											
+										</tbody>
+									</table>
+								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+
+
+
+
+
+
+
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">카드 한도(만원)
+									</label>
+
+									<div class="controls">
+										<input type="text" id="form-field-1" name="limitation" class="limitation" 
+											placeholder="한도" value="" />
+									</div>
+								</div>
+								
+								
+								
+							</div>
+						</div>
+
+						<div class="span6">
+							<div class="control-group">
+								<div>
+									<label class="control-label" for="form-field-1">유효기간 </label> 
+									<div class="controls">
+										<div class="input-append">
+									
+											<input type="text" class="validity" id="validityMM" name="validity" placeholder="MM" maxlength=2 /> 
+										</div>
+										/ 
+										
+										<div class="input-append">
+											<input type="text" class="validity" id="validityYY" name="validity" placeholder="YY" maxlength=2 />
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							
+							<div class="control-group">
+								<div>
+									<label class="control-label" for="form-field-1">CVC </label> 
+									<div class="controls">
+									<input type="text" class="validity" id="form-field-1" name="cvc" placeholder="CVC" />
+									</div>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label" for="form-field-1">교통카드 유무 </label> 
+								<div class="controls">
+									<input name="transportation" type="radio" class="ace" value="true" checked  /> 
+									<span class="lbl"> Yes</span> 
+									
+									<input name="transportation" type="radio" class="ace" value="false"  />
+									<span class="lbl"> No</span>
+								</div>
+							</div>
+					
+							<div class="control-group">
+								<label class="control-label" for="form-field-1">해외사용 여부</label> 
+								<div class="controls">
+										<input name="abroad" type="radio" class="ace" value="true" checked /> 
+										<span class="lbl"> Yes</span> 
+										
+										<input name="abroad" type="radio" class="ace" value="false" /> 
+										<span class="lbl">No</span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-field-1">비밀번호 </label>
+
+								<div class="controls">
+									<input type="password" id="form-field-1" name="password" class="limit"
+										placeholder="비밀번호" />
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" for="form-field-1">카드사 </label>
+
+								<div class="controls">
+									<input type="text" id="form-field-1" name="company" class="bankname"
+										placeholder="카드사" />
+								</div>
+							</div>
+
+
+						</div>
+						<!-- /.span -->
+					</div>
+					<!-- /row -->
+					<!-- /.row-fluid -->
+
+					<div class="hr hr-18 dotted"></div>
+					<!-- buttons -->
+					<div class="row-fluid">
+						<div class="span8">
+						
+							<button class="btn btn-info btn-small" id="btn-read">조회</button>
+							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
+							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
+							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
+							<button class="btn btn-default btn-small" id="btn-reset" onclick= "location.reload()">취소</button> 
+						</div>
+
+					</div>
+					<div class="hr hr-18 dotted"></div>
+				
+				</form>
+
+				<!-- Tables -->
+				<div class="row-fluid">
+					<div class="span12">
+						<table id="simple-table-1"
+							class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center"><label> <input type="checkbox"
+											class="ace" id="selectAll" /> <span class="lbl"></span>
+									</label></th>
+									<th>카드번호</th>
+									<th>유효기간</th>
+									<th>CVC</th>
+									<th>사용자</th>
+									<th>카드발급자</th>
+									<th>계좌번호</th>
+									<th>예금주</th>
+									<th>비밀번호</th>
+									<th>은행코드</th>
+									<th>은행명</th>
+									<th>카드사</th>
+									<th>카드한도(만원)</th>
+									<th>교통카드 유무</th>
+									<th>해외사용 여부</th>
+									<th>입력일자</th>
+									<th>입력담당자</th>
+									<th>수정일자</th>
+									<th>수정담당자</th>
+
+								</tr>
+							</thead>
+
+							<tbody class="origin-tbody" >
+
+								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
+									<tr>
+										<td class="center"><label> <input type="checkbox"
+												class="ace" /> <span class="lbl"></span>
+										</label></td>
+
+										<td>${vo.cardNo }</td>
+										<td>${vo.validity }</td>
+										<td>${vo.cvc}</td>
+										<td>${vo.user}</td>
+										<td>${vo.issuer}</td>
+										<td>${vo.depositNo }</td>
+										<td>${vo.depositHost}</td>
+										<td>${vo.password }</td>
+										<td>${vo.bankCode }</td>
+										<td>${vo.bankName }</td>
+										<td>${vo.company }</td>
+										<td>${vo.limitation }</td>
+										<td>${vo.transportation }</td>
+										<td>${vo.abroad }</td>
+										<td>${vo.insertDay }</td>
+										<td>${vo.insertUserId }</td>
+										<td>${vo.updateDay }</td>
+										<td>${vo.updateUserId }</td>
+
+									</tr>
+
+								</c:forEach>
+
+							</tbody>
+						</table>
+					</div>
+					<!-- /span -->
+				</div>
+				<!-- /row -->
+			<div class="pagination" id = "pagination">
+					<ul>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
+
+			</div>
+			<!-- /.page-content -->
+		</div>
+		<!-- /.main-content -->
+	</div>
+	<!-- basic scripts -->
+	<c:import url="/WEB-INF/views/common/footer.jsp" />
+</body>
 <script
 	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 
@@ -70,21 +440,13 @@ $(function() {
 	$("#btn-delete").click(function(){
 		a = "delete";
 	});
-
+	
 	
 	$("#input-form").submit(function(event) {
         event.preventDefault();
-        
-        if($("input[name=balance]").val() == "") {
-			$("input[name=balance]").val(0);		
-		}
-		if($("input[name=depositLimit]").val() == "") {
-			$("input[name=depositLimit]").val(0);			
-		}
-		if($("input[name=profit]").val() == "") {
-			$("input[name=profit]").val(0);
-		}
-		
+       
+    	$("input[name=limitation]").val($("input[name=limitation]").val().replace(/[^0-9]/g,""));
+		console.log($("input[name=limitation]").val());
         var queryString = $("form[name=input-form]").serializeArray();
 		
 		if("${param.page}") {
@@ -110,7 +472,6 @@ $(function() {
 			    		removeTable();
 			    		var cardList = result.cardList;
 			    		createNewTable(cardList);
-			    		console.log(result.pagination.endPage )
 			    		
 				    	$('#pagination ul').remove();
 				    	createNewPage(result, a);
@@ -247,33 +608,25 @@ $(function() {
 	
 	function createNewPage(result, a){
 		var inputString = "<ul>";
-		
         if(result.pagination.prev) {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${result.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+(result.pagination.startPage - 1)+"'><i class='icon-double-angle-left'></i></a></li>";
         } else {
-        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+        		inputString += "<li class='disabled'><a><i class='icon-double-angle-left'></i></a></li>";
         }
         
-        if(a == "create") {
-        	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-        	for(var pg = 2; pg <= result.pagination.endPage ; pg++) {
-				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-        	}
-    	} else {
-    		console.log(result.pagination.endPage);
-        	for(var pg = result.pagination.startPage; pg <= result.pagination.endPage; pg++) {
-        		if(result.pagination.page == pg){
-            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-        		} else {
-	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-	        	}
-        	}
+        
+        for(var pg = result.pagination.startPage; pg <= result.pagination.endPage; pg++) {
+        	if(result.pagination.page == pg){
+           		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+        	} else {
+	       		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	       	}
         }
-	            
+              
         if (result.pagination.next) {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+(result.pagination.endPage + 1) +"'><i class='icon-double-angle-right'></i></a></li>";
         } else {
-        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+        		inputString += "<li class='disabled'><a><i class='icon-double-angle-right'></i></a></li>";
         }
         inputString += "</ul>";
         $("#pagination").append(inputString);
@@ -456,382 +809,26 @@ $(function() {
        $("#dialog-message").dialog('close');
     });
     
-	
-	
-	
-	
+
+    function addCommas(x) {
+         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    
+    $("input[name=limitation]").on('keyup', function(event){
+    	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+    });
+    
+    
 	
 	$(".chosen-select").chosen();
 })
-	
+ 
+		
 		
 </script>
 
 
-<c:import url="/WEB-INF/views/common/head.jsp" />
-</head>
-
-<body class="skin-3">
-	<c:import url="/WEB-INF/views/common/navbar.jsp" />
-	<div class="main-container container-fluid">
-		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
-		<div class="main-content">
-			<div class="page-content">
 
 
-
-
-				<div class="page-header position-relative">
-					<h1 class="pull-left">카드 관리</h1>
-				</div>
-
-
-				<form class="form-horizontal" id="input-form" name="input-form"
-					method="post">
-					<div class="row-fluid">
-						<div class="span6">
-							<div class="tabbable">
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">카드 번호</label>
-
-									<div class="controls">
-										<div class="input-append">
-											
-											<input type="text" class="validity" id="cardNo1" name="cardNo" maxlength=4 /> 
-										</div>
-										-
-										
-										<div class="input-append">
-											<input type="text" class="validity" id="cardNo2" name="cardNo"  maxlength=4 />
-										</div>
-										-
-										<div class="input-append">
-											<input type="text" class="validity" id="cardNo3" name="cardNo" maxlength=4  />
-										</div>
-										-
-										<div class="input-append">
-											<input type="text" class="validity" id="cardNo4" name="cardNo" maxlength=4  />
-										</div>
-									</div>
-									
-									
-									<input type="hidden" name="cardNoOld" />
-									
-								</div>
-
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">사용자</label>
-
-									<div class="controls">
-										<input type="text" id="form-field-1" name="user" class="name"
-											placeholder="사용자" />
-									</div>
-								</div>
-
-
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">카드 발급자
-									</label>
-
-									<div class="controls">
-										<input type="text" id="form-field-1" name="issuer" class="name"
-											placeholder="카드발급자" />
-									</div>
-								</div>
-
-
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">계좌 번호 </label>
-									<div class="controls">
-
-										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-bankaccountinfo-dialog"> <i
-												class="icon-search nav-search-icon"></i> <input type="text"
-												class="search-input-width-first" name="depositNo" readonly/>
-										</a> 
-									
-										</span> 
-										&nbsp; &nbsp;
-										<input type="text" id="form-field-1" name="depositHost"
-											placeholder="예금주" readonly/>
-										
-									</div>
-								</div>
-
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">은행 </label> 
-									
-									<div class="controls">
-										<div class="input-append">
-											<input type="text" name = "bankCode" value="" placeholder="은행코드" readonly /> 
-										</div>
-										&nbsp; &nbsp;
-										<div class="input-append">
-											<input type="text" name ="bankName" value="" placeholder="은행명" readonly />
-										</div>
-									</div>
-								</div>
-
-			
-								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
-								<div id="dialog-message" title="계좌" hidden="hidden">
-									<table id="dialog-message-table">
-										<tr>
-											<td><label>계좌번호</label> <input type="text"
-												id="input-dialog-depositNo" style="width: 100px;" /> <a
-												href="#" id="a-dialog-depositNo"> <span
-													class="btn btn-small btn-info" style="margin-bottom: 10px;">
-														<i class="icon-search nav-search-icon"></i>
-												</span>
-											</a></td>
-										</tr>
-									</table>
-									<!-- 은행코드 및 은행명 데이터 리스트 -->
-									<table id="modal-deposit-table"
-										class="table  table-bordered table-hover">
-										<thead>
-											<tr>
-												<th class="center">계좌번호</th>
-												<th class="center">예금주</th>
-												<th class="center">은행코드</th>
-												<th class="center">은행명</th>
-											</tr>
-										</thead>
-										<tbody id="tbody-bankaccountList">
-											
-										</tbody>
-									</table>
-								</div>
-								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-
-
-
-
-
-
-
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">카드 한도(만원)
-									</label>
-
-									<div class="controls">
-										<input type="text" id="form-field-1" name="limitation" class="limit"
-											placeholder="한도" value="" />
-									</div>
-								</div>
-
-							</div>
-						</div>
-
-						<div class="span6">
-							<div class="control-group">
-								<div>
-									<label class="control-label" for="form-field-1">유효기간 </label> 
-									<div class="controls">
-										<div class="input-append">
-									
-											<input type="text" class="validity" id="validityMM" name="validity" placeholder="MM" maxlength=2 /> 
-										</div>
-										/ 
-										
-										<div class="input-append">
-											<input type="text" class="validity" id="validityYY" name="validity" placeholder="YY" maxlength=2 />
-										</div>
-									</div>
-								</div>
-								
-							</div>
-							
-							<div class="control-group">
-								<div>
-									<label class="control-label" for="form-field-1">CVC </label> 
-									<div class="controls">
-									<input type="text" class="validity" id="form-field-1" name="cvc" placeholder="CVC" />
-									</div>
-								</div>
-							</div>
-							
-							<div class="control-group">
-								<label class="control-label" for="form-field-1">교통카드 유무 </label> 
-								<div class="controls">
-									<input name="transportation" type="radio" class="ace" value="true" checked  /> 
-									<span class="lbl"> Yes</span> 
-									
-									<input name="transportation" type="radio" class="ace" value="false"  />
-									<span class="lbl"> No</span>
-								</div>
-							</div>
-					
-							<div class="control-group">
-								<label class="control-label" for="form-field-1">해외사용 여부</label> 
-								<div class="controls">
-										<input name="abroad" type="radio" class="ace" value="true" checked /> 
-										<span class="lbl"> Yes</span> 
-										
-										<input name="abroad" type="radio" class="ace" value="false" /> 
-										<span class="lbl">No</span>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label" for="form-field-1">비밀번호 </label>
-
-								<div class="controls">
-									<input type="password" id="form-field-1" name="password" class="limit"
-										placeholder="비밀번호" />
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label" for="form-field-1">카드사 </label>
-
-								<div class="controls">
-									<input type="text" id="form-field-1" name="company" class="bankname"
-										placeholder="카드사" />
-								</div>
-							</div>
-
-
-						</div>
-						<!-- /.span -->
-					</div>
-					<!-- /row -->
-					<!-- /.row-fluid -->
-
-					<div class="hr hr-18 dotted"></div>
-					<!-- buttons -->
-					<div class="row-fluid">
-						<div class="span8">
-							<button class="btn btn-info btn-small" id="btn-read">조회</button>
-							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
-							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
-							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" 
-								type = "reset">취소</button>
-						</div>
-
-					</div>
-					<div class="hr hr-18 dotted"></div>
-				
-				</form>
-
-				<!-- Tables -->
-				<div class="row-fluid">
-					<div class="span12">
-						<table id="simple-table-1"
-							class="table table-striped table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center"><label> <input type="checkbox"
-											class="ace" id="selectAll" /> <span class="lbl"></span>
-									</label></th>
-									<th>카드번호</th>
-									<th>유효기간</th>
-									<th>CVC</th>
-									<th>사용자</th>
-									<th>카드발급자</th>
-									<th>계좌번호</th>
-									<th>예금주</th>
-									<th>비밀번호</th>
-									<th>은행코드</th>
-									<th>은행명</th>
-									<th>카드사</th>
-									<th>카드한도(만원)</th>
-									<th>교통카드 유무</th>
-									<th>해외사용 여부</th>
-									<th>입력일자</th>
-									<th>입력담당자</th>
-									<th>수정일자</th>
-									<th>수정담당자</th>
-
-								</tr>
-							</thead>
-
-							<tbody class="origin-tbody" >
-
-								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
-									<tr>
-										<td class="center"><label> <input type="checkbox"
-												class="ace" /> <span class="lbl"></span>
-										</label></td>
-
-										<td>${vo.cardNo }</td>
-										<td>${vo.validity }</td>
-										<td>${vo.cvc}</td>
-										<td>${vo.user}</td>
-										<td>${vo.issuer}</td>
-										<td>${vo.depositNo }</td>
-										<td>${vo.depositHost}</td>
-										<td>${vo.password }</td>
-										<td>${vo.bankCode }</td>
-										<td>${vo.bankName }</td>
-										<td>${vo.company }</td>
-										<td>${vo.limitation }</td>
-										<td>${vo.transportation }</td>
-										<td>${vo.abroad }</td>
-										<td>${vo.insertDay }</td>
-										<td>${vo.insertUserId }</td>
-										<td>${vo.updateDay }</td>
-										<td>${vo.updateUserId }</td>
-
-									</tr>
-
-								</c:forEach>
-
-							</tbody>
-						</table>
-					</div>
-					<!-- /span -->
-				</div>
-				<!-- /row -->
-			<div class="pagination" id = "pagination">
-					<ul>
-						<c:choose>
-							<c:when test="${dataResult.pagination.prev }">
-								<li><a
-									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
-										<i class="icon-double-angle-left"></i>
-								</a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="disabled"><a href="#"><i
-										class="icon-double-angle-left"></i></a></li>
-							</c:otherwise>
-						</c:choose>
-						<c:forEach begin="${dataResult.pagination.startPage }"
-							end="${dataResult.pagination.endPage }" var="pg">
-							<c:choose>
-								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-
-						<c:choose>
-							<c:when test="${dataResult.pagination.next }">
-								<li><a
-									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i
-										class="icon-double-angle-right"></i></a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="disabled"><a href="#"><i
-										class="icon-double-angle-right"></i></a></li>
-							</c:otherwise>
-						</c:choose>
-					</ul>
-				</div>
-
-			</div>
-			<!-- /.page-content -->
-		</div>
-		<!-- /.main-content -->
-	</div>
-	<!-- basic scripts -->
-	<c:import url="/WEB-INF/views/common/footer.jsp" />
-</body>
 </html>
