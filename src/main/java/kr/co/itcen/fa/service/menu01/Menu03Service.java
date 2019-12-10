@@ -39,11 +39,11 @@ public class Menu03Service {
 	}
 	
 	// 전표생성 (다른 팀)
-	public Long createVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) throws ParseException {
+	public Long createVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 		//마감 여부 체크
-		if(!menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-			return null;
-		}
+//		if(!menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+//			return null;
+//		}
 		voucherVo.setInsertUserid(userVo.getId());
 		
 		for(int i = 0; i < itemVo.size(); i++) {
@@ -60,12 +60,12 @@ public class Menu03Service {
 	}
 	
 	// 전표수정 (다른 팀)
-	public Long updateVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) throws ParseException {
+	public Long updateVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 		
 		//마감 여부 체크
-		if(!menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-			return null;
-		}
+//		if(!menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+//			return null;
+//		}
 		voucherVo.setUpdateUserid(userVo.getId());
 		System.out.println("###########" + voucherVo.getNo());
 		System.out.println("service" + mappingVo.getVoucherNo());
@@ -85,12 +85,12 @@ public class Menu03Service {
 	}
 	
 	// 전표삭제 (다른 팀)
-	public Long deleteVoucher(List<VoucherVo> voucherVo, @AuthUser UserVo userVo) throws ParseException {
-		for(int i = 0; i < voucherVo.size(); i++) {
-			if(!menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
-				return null;
-			}
-		}
+	public Long deleteVoucher(List<VoucherVo> voucherVo, @AuthUser UserVo userVo) {
+//		for(int i = 0; i < voucherVo.size(); i++) {
+//			if(!menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
+//				return null;
+//			}
+//		}
 		menu03Repository.deleteVoucher(voucherVo, userVo);
 		return 0L;
 	}
