@@ -12,6 +12,12 @@ import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu01.Menu32Service;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
+/**
+ * 
+ * @author 이종윤 
+ * 매입, 매출, 자산 거래처 팝업창
+ *
+ */
 @RestController("Menu32Controller")
 @RequestMapping("api/customer")
 public class Menu32ApiController {
