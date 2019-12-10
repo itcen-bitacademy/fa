@@ -97,8 +97,11 @@
 				<div class="span12">
 				<!-- 선 -->
 				<div class="hr hr-18 dotted"></div>
-					<table id="tb_account_management"
-						class="table table-striped table-bordered table-hover">
+				
+				<!-- 게시글 총 수 -->
+				<h6>총 ${dataResult.pagination.totalCnt }건</h6>
+				
+					<table id="tb_account_management" class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>순번</th>
