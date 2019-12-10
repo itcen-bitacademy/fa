@@ -8,8 +8,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu08.BuildingVo;
 import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
 
@@ -84,11 +86,11 @@ public class Menu09Repository {
 		sqlSession.update("menu09.updateLand", landVo);
 	}
 
-	public List<LandVo> getSearchList(String id) {
-		List<LandVo> list = sqlSession.selectList("menu09.landList", id);
-		System.out.println(list);
-		return list;
-	}
+//	public List<LandVo> getSearchList(String id) {
+//		List<LandVo> list = sqlSession.selectList("menu09.landList", id);
+//		System.out.println(list);
+//		return list;
+//	}
 
 	public String checkId(String id) {
 		
@@ -104,6 +106,22 @@ public class Menu09Repository {
 		
 		return cus;
 	}
+
+
+	public int listCount(String id) {
+		return sqlSession.selectOne("menu09.pageCount", id);
+	}
+
+	public List<LandVo> list(String id, PaginationUtil pagination) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("pagination", pagination);
+		List<LandVo> list = sqlSession.selectList("menu09.list", map);
+		
+		return list;
+	}
+
 
 	
 }
