@@ -232,7 +232,7 @@
 									</div>
 									<div class="control-group">
 										<div class="controls">
-											<button class="btn btn-default btn-small" id="segumBtn">세금계산서보기</button>
+											<button class="btn btn-default btn-small" type="button" id="segumBtn">세금계산서보기</button>
 										</div>
 									</div>
 							</div><!-- 대변 span -->
@@ -386,23 +386,25 @@
 														<!-- 차량코드, 납부일, 세금계산서 번호 데이터 리스트 -->
 														<table id="segum-table" class="table  table-bordered table-hover">
 															<thead>
+																
 																<tr>
 																	<th class="vehicle-code">차량코드</th>
-																	<th class="pay-day">납부일</th>
 																	<th class="pay-day">가격</th>
+																	<th class="pay-day">납부일</th>
 																	<th class="center">세금계산서번호</th>
 																	<th class="center">전표번호</th>
 																	<th class="center">구분</th>
 																</tr>
+																<c:forEach items="${segumList }" var = "segumVo" varStatus="status">
 																<tr>
-																	<td>c</td>
-																	<td>s</td>
-																	<td>t</td>
-																	<td>t</td>
-																	<td>t</td>
-																	<td>t</td>
+																	<td>${segumVo.vehicleNo}</td>
+																	<td>${segumVo.pay}</td>
+																	<td>${segumVo.paymentDate}</td>
+																	<td>${segumVo.taxbillNo}</td>
+																	<td>${segumVo.voucherNo}</td>
+																	<td>${segumVo.gubun}</td>
 																</tr>
-																
+																</c:forEach>
 															</thead>
 															<tbody id="tbody-segumList">
 															</tbody>
@@ -581,7 +583,8 @@ $(function(){
 
  // 테이블의 Row 클릭시 값 가져오기
 $("#sample-table-1 tr").click(function(){
-
+	
+	$("#segumBtn").show();
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
 	
@@ -693,35 +696,11 @@ $("#sample-table-1 tr").click(function(){
 	}else{
 		$("#walsa").hide();
 	}
-$(function() {
-		$("#segumList").dialog({
-			autoOpen : false
-		});
+
 		
-	$("#segumBtn").show();
-    $("#segumBtn").on( "click", function() {
-		$("#gubun").val("월사용료");
-	/*  console.log("eeeee" + $(this).parent().find(".vehicle-id").text());*/
-	$("#segumList").dialog('open');
-		$("#segumList").dialog	({
-			title: "세금계산서정보",
-			title_html: true,
-		   	resizable: false,
-		    height: 700,
-		    width: 600,
-		    modal: true,
-		    close: function() {
-		    	$('#tbody-sseList tr').remove();
-		    },
-		    buttons: {
-		    "닫기" : function() {
-		          	$(this).dialog('close');
-		          	$('#tbody-sseList tr').remove();
-		        }
-		    }
-		});
-	});
-});
+	
+    
+
     
     
 
@@ -810,6 +789,9 @@ $(function() {
 	$("#dialog-message").dialog({
 		autoOpen : false
 	});
+	$("#segumList").dialog({
+		autoOpen : false
+	});
 
 	$("#nabbu").on( "click", function() {
 			$(".monthfee").hide();
@@ -858,6 +840,58 @@ $(function() {
 	    		$("#walsa").hide();
 	          	$(this).dialog('close');
 	          	$('#tbody-bankList tr').remove();
+	        }
+	    }
+	});
+});
+	// 세금계산서 리스트
+	$("#segumBtn").on( "click", function() {
+		
+		$("#gubun").val("월사용료");
+		$.ajax({
+			url: "${pageContext.request.contextPath }/11/48/repay",
+			contentType : "application/json; charset=utf-8",
+			type: "post",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data:JSON.stringify(vo),
+			success: function(response){
+				console.log(response);
+				if(response.result =="fail"){
+					console.error(response.message);
+					return;
+				}
+				if(response.data==null){
+					alert("값을 정확히 입력하지 않았습니다.");
+					return;
+				}
+				$("#tbody-list tr").each(function(i){
+					var td = $(this).children();
+					var n = td.eq(0).attr('lterm-no');
+					if(n == response.data.no){
+						td.eq(5).html(response.data.repayBal);
+					}
+				});
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+
+	$("#segumList").dialog('open');
+	$("#segumList").dialog	({
+		title: "세금계산서정보",
+		title_html: true,
+	   	resizable: false,
+	    height: 700,
+	    width: 600,
+	    modal: true,
+	    close: function() {
+	    	$('#tbody-sseList tr').remove();
+	    },
+	    buttons: {
+	    "닫기" : function() {
+	          	$(this).dialog('close');
+	          	$('#tbody-sseList tr').remove();
 	        }
 	    }
 	});
