@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu08;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu09Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
@@ -50,6 +53,9 @@ public class Menu09Controller {
 	
 	@Autowired
 	private Menu03Service menu03Service;  // 1팀 전표
+	
+	@Autowired
+	private Menu19Service menu19Service;  // 6팀 결산
 	
 	
 	//조회
@@ -90,19 +96,29 @@ public class Menu09Controller {
 	
 	//입력
 	@RequestMapping(value={"/" + SUBMENU + "/insert" }, method=RequestMethod.POST)
-	public String insert(@ModelAttribute LandVo landVo, @AuthUser UserVo user
+	public String insert(@ModelAttribute LandVo landVo, @SessionAttribute("authUser") UserVo user
 						 /*, @ModelAttribute SectionVo sectionVo,@ModelAttribute */
-						 ) {
-
+						 ,Model model
+						 ) throws ParseException {
+		
+		System.out.println("거래날짜 : " +landVo.getPayDate());
 		if(landVo.getCombineNo() == null) {
 			landVo.setCombineNo("00");
 		}
 
 		landVo.setId("c"+landVo.getId());
 		landVo.setInsertUserid(user.getId());
-		menu09Service.insertLand(landVo);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+
+		//마감 여부 체크
+		if(!menu19Service.checkClosingDate(user, landVo.getPayDate())) {
+			System.out.println("등록일 해보자");
+			menu09Service.insertLand(landVo);
+			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+		} else {
+			System.out.println("등록일 안된다.");
+			model.addAttribute("closingDate", true);
+			return MAINMENU + "/" + SUBMENU + "/add";
+		}
 	}
 
 	//수정

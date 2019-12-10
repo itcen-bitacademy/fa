@@ -94,12 +94,12 @@
 										<div style="float:left;width:50%">
 											<label class="control-label" for="form-field-2">취득금액</label>
 											<div class="controls">
-												<input type="text" id="acqPrice" name="acqPrice" placeholder="금액을 입력하세요"/>
+												<input type="text" style="text-align:right;" id="acqPrice" name="acqPrice" />
 											</div>
 										</div>	
 										<div style="float:left;width:50%">											
 											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">취득세</label>
-											<input readonly type="text" id="acqTax" name="acqTax" placeholder="금액을 입력하세요"/>
+											<input readonly type="text" id="acqTax" name="acqTax" />
 										</div>
 								</div>
 								<div class="control-group">
@@ -132,19 +132,19 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">담당자</label>
 									<div class="controls">
-										<input readonly type="text" id="customerManager" name="customerManager" placeholder="거래처명을 선택하면 담당자가 입력됩니다."/>
+										<input readonly type="text" id="customerManager" name="customerManager" />
 									</div>
 								</div>
 								<div class="control-group">
 										<div style="float:left;width:50%">											
 											<label class="control-label" for="form-field-1">공시지가</label>
 											<div class="controls">
-												<input type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요"/>
+												<input style="text-align:right;" type="text" id="publicValue" name="publicValue" />
 											</div>
 										</div>	
 										<div style="float:left;width:50%">											
 											<label style="width:70px; margin-right:10px;" class="control-label" for="form-field-1">기타비용</label>
-											<input type="text" id="etcCost" name="etcCost" placeholder="금액을 입력하세요"/>
+											<input style="text-align:right;" type="text" id="etcCost" name="etcCost" />
 										</div>	
 								</div>
 								<div class="control-group">
