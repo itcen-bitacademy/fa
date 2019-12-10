@@ -32,7 +32,10 @@ public class Menu32Repository {
 	}
 
 	public List<CustomerVo> getCustomerNameInfo(String customerName) {
-		return sqlSession.selectOne("menu32.getCustomerNameInfo", customerName);
+		String name = "%"+ customerName +"%";
+		List<CustomerVo> result = sqlSession.selectList("menu32.getCustomerNameInfo", name);
+		
+		return result;
 	}
 
 

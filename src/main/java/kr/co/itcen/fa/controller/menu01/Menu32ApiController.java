@@ -32,10 +32,12 @@ public class Menu32ApiController {
 	
 	@ResponseBody
 	@RequestMapping("/getcustomerName")
-	public List<CustomerVo> getCustomerNameInfo(
+	public JSONResult getCustomerNameInfo(
 			@RequestParam("customerNameVal") String customerName){
+		
+		System.out.println(customerName+"!!!");
 		List<CustomerVo> customerNameList = menu32Service.getCustomerNameInfo(customerName);
-		return customerNameList;
+		return JSONResult.success(customerNameList);
 	}
 
 }

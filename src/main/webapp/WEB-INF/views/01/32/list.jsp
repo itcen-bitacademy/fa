@@ -274,7 +274,7 @@
 				url: "${pageContext.request.contextPath }/api/customer/getcustomerNo?customerNoVal=" + customerNoVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				dataType: "json",
 				data: "",
 				statusCode: {
 				    404: function() {
@@ -298,12 +298,13 @@
 			});
 		});
 		
-		// 은행명 검색 : 은행목록 리스트로 가져오기
+		//거래처명 검색 :거래처목록 리스트로 가져오기
 		$("#a-dialog-customername").click(function(event){
 			event.preventDefault();
 			$("#tbody-customerList").find("tr").remove();
-			console.log("11111");
+			
 			var customerNameVal = $("#input-dialog-customername").val();
+			console.log(customerNameVal);
 			// ajax 통신
 			$.ajax({
 				url: "${pageContext.request.contextPath }/api/customer/getcustomerName?customerNameVal=" + customerNameVal,
@@ -316,9 +317,9 @@
 				      alert("page not found");
 				    }
 				},
-				success: function(data){
+				success: function(response){
 					$("#input-dialog-customername").val('');
-					 $.each(data,function(index, item){
+					 $.each(response.data,function(index, item){
 			                $("#tbody-customerList").append("<tr>" +
 			                		"<td class='center'>" + item.customerDiv + "</td>" +
 							        "<td class='center'>" + item.no + "</td>" +
@@ -357,6 +358,15 @@
 			        }
 			    }
 			});
+		});
+
+		//거래처리스트(customerList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
+			var tr = $(this);
+			var td = tr.children();
+			$("input[name=no]").val(td.eq(1).text());
+			$("input[name=name]").val(td.eq(2).text());
+			$("#dialog-message").dialog('close');
 		});
 
 	});
