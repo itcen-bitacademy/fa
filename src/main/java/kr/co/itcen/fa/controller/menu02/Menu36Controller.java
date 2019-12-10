@@ -45,12 +45,12 @@ public class Menu36Controller {
 	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
 	public String closingDateListPage(CustomerVo customerVo, Model model, @RequestParam(defaultValue = "1") int page) {
 		
-		System.out.println("@@@@@@@@@@@@wlsWkwlsWK@"+customerVo);
 		if(customerVo.getDeleteFlag() == null) {
 			customerVo.setDeleteFlag("N");
 		}
 
 		DataResult<CustomerVo> dataResult = menu36Service.selectAll(page, customerVo);
+		model.addAttribute("inputCustomer", customerVo);
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("customerVo", dataResult.getDatas());
 

@@ -79,7 +79,7 @@ form {
 									<td class="first-column"><h4>차입일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" value="${vo.debtDate } " readonly/>
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -111,7 +111,7 @@ form {
 									</td>
 									<td class="fourth-column"><h4>은행명</h4></td>
 									<td class="fifth-column">
-										<input type="text" name="bankName"/>
+										<input type="text" name="bankName" value="${vo.bankName }"/>
 									</td>
 									<td class="sixth-column">
 										<button type="submit" class="btn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
@@ -122,7 +122,7 @@ form {
 								<td class="first-column"><h4>만기일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" value="${vo.expDate }" readonly />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -150,13 +150,27 @@ form {
 								<div class="span2">
 									<div class="checkbox">
 										<label>
-											<input name="deleteFlag" type="checkbox" class="ace" value=""/>
+										<c:choose>
+										<c:when test='${vo.deleteFlag eq ""}'>
+											<input name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
+										</c:when>
+										<c:otherwise>
+											<input name="deleteFlag" type="checkbox" class="ace" value="" />
+										</c:otherwise>
+										</c:choose>
 											<span class="lbl">삭제포함</span>
 										</label>
 									</div>
 									<div class="checkbox">
 										<label>
+										<c:choose>
+										<c:when test='${vo.repayCompleFlag eq ""}'>
+											<input name="repayCompleFlag" type="checkbox" class="ace" value="" checked="checked"/>
+										</c:when>
+										<c:otherwise>
 											<input name="repayCompleFlag" type="checkbox" class="ace" value=""/>
+										</c:otherwise>
+										</c:choose>
 											<span class="lbl">상환완료포함</span>
 										</label>
 									</div>
@@ -281,6 +295,7 @@ $(function() {
 		$('.date-picker').datepicker().next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
+	
 });
 
 

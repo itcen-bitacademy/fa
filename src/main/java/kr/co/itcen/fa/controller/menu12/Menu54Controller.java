@@ -46,7 +46,23 @@ public class Menu54Controller {
 		List<SellTaxbillVo> itemlist = menu54Service.salesItems();
 		model.addAttribute("itemlist", itemlist);
 		
+		List<SellTaxbillVo> taxlist = menu54Service.taxbillList();
+		model.addAttribute("taxlist", taxlist);
+		
+		List<SellTaxbillVo> alllist = menu54Service.taxbillAllList();
+		model.addAttribute("alllist", alllist);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
+	// 조회기능을 구현한 Controller
+	/*@RequestMapping()
+	public String list() {
+		
+	}*/
+
+	
+	
+	
 
 }

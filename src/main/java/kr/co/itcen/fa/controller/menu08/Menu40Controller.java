@@ -41,11 +41,32 @@ public class Menu40Controller {
 	
 	//               /08   /   40     , /08/40/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model,  @RequestParam(value="id", required = false, defaultValue = "") String id,
-			@RequestParam(value="page", required=false,defaultValue = "1") int page, BuildingVo vo) {
+	public String list(Model model, @RequestParam(value="page", required=false,defaultValue = "1") int page, BuildingVo vo) {
+		System.out.println(vo);
+		if(vo.getId() == null || "".equals(vo.getId()))
+			vo.setId("");
+		if(vo.getPayDate() == null || "".equals(vo.getPayDate()))
+			vo.setPayDate("");
+		if(vo.getSectionNo() == null || "".equals(vo.getSectionNo()))
+			vo.setSectionNo("");
+		if(vo.getCustomerNo() == null || "".equals(vo.getCustomerNo()))
+			vo.setCustomerNo("");
+		if(vo.getCustomerName() == null || "".equals(vo.getCustomerNo()))
+			vo.setCustomerName("");
+		if(vo.getManagerName() == null || "".equals(vo.getCustomerNo()))
+			vo.setManagerName("");
+		if(vo.getWideAddress() == null || "".equals(vo.getWideAddress()))
+			vo.setWideAddress("");
+		if(vo.getCityAddress() == null || "".equals(vo.getCityAddress()))
+			vo.setCityAddress("");
+		if(vo.getDetailAddress() == null || "".equals(vo.getDetailAddress()))
+			vo.setDetailAddress("");
+		if("".equals(vo.getFlag()))
+			vo.setFlag("");
+		else vo.setFlag("s");
 		
 		//dataresult 생성
-		DataResult<BuildingVo> dataResult = menu40Service.list(id, page); 
+		DataResult<BuildingVo> dataResult = menu40Service.list(vo, page); 
 				
 		model.addAttribute("dataResult",dataResult);
 		
@@ -62,12 +83,5 @@ public class Menu40Controller {
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
-	
-	//조회(R)
-		@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/search" }, method = RequestMethod.POST)
-		public String list(@RequestParam(value="id", required = false, defaultValue = "") String id){
-			
-			return "redirect:/" + MAINMENU + "/" + SUBMENU + "?id=" + id;
-		}
 	
 }

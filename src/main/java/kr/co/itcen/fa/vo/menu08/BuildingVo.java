@@ -18,7 +18,6 @@ public class BuildingVo {
 	private String ownerName;
 	private String wideAddress;
 	private String cityAddress;
-	private String localAddress;
 	private String detailAddress;
 	private int floor;
 	private int basement;
@@ -35,6 +34,7 @@ public class BuildingVo {
 	private String insertDay;
 	private String updateUserid;
 	private String updateDay;
+	
 	public String getId() {
 		return id;
 	}
@@ -112,12 +112,6 @@ public class BuildingVo {
 	}
 	public void setCityAddress(String cityAddress) {
 		this.cityAddress = cityAddress;
-	}
-	public String getLocalAddress() {
-		return localAddress;
-	}
-	public void setLocalAddress(String localAddress) {
-		this.localAddress = localAddress;
 	}
 	public String getDetailAddress() {
 		return detailAddress;
@@ -221,7 +215,7 @@ public class BuildingVo {
 				+ ", managerName=" + managerName + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
 				+ ", sectionNo=" + sectionNo + ", sectionName=" + sectionName + ", area=" + area + ", combineNo="
 				+ combineNo + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress + ", cityAddress="
-				+ cityAddress + ", localAddress=" + localAddress + ", detailAddress=" + detailAddress + ", floor="
+				+ cityAddress + ", detailAddress=" + detailAddress + ", floor="
 				+ floor + ", basement=" + basement + ", purpose=" + purpose + ", material=" + material
 				+ ", publicValue=" + publicValue + ", acqPrice=" + acqPrice + ", etcCost=" + etcCost 
 				+ ", acqTax=" + acqTax + ", payDate=" + payDate + ", taxKind=" + taxKind + ", flag=" + flag

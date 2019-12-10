@@ -38,4 +38,14 @@ public class Menu54Repository {
 		return sqlSession.selectList("menu54.salesitems");
 	}
 	
+	//세금계산서에 대한 목록을 가져오는 기능
+	public List<SellTaxbillVo> taxbillList(){
+		return sqlSession.selectList("menu54.taxbilllist");
+	}
+	
+	//전체 리스트가 출력되게 하는 기능
+	public List<SellTaxbillVo> taxbillAllList(){
+		return sqlSession.selectList("menu54.getaxbilllist");
+	}
+	
 }

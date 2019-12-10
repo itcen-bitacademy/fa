@@ -139,7 +139,8 @@
 												<input name="checkDel" type="checkbox" class="ace">
 												<span class="lbl">삭제포함</span>
 											<button class="btn btn-info btn-small"
-												style="float: right; margin-right: 20px;">조회</button>
+												style="float: right; margin-right: 20px;"
+												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 										</div>
 									</div>
 								</div>
@@ -149,7 +150,7 @@
 						</div><!-- 나누기 위한 row-fluid -->
 						<div class="hr hr-18 dotted"></div>
 						<div>
-							<p>총 ${contentsCount }건</p>
+							<p>총 ${dataResult.pagination.totalCnt }건</p>
 							<table id="sample-table-1"
 								class="table table-striped table-bordered table-hover">
 								<thead>
@@ -162,7 +163,6 @@
 										<th>층수(지하)</th>
 										<th>주소(광역)</th>
 										<th>주소(시/군/구)</th>
-										<th>주소(읍/면/동)</th>
 										<th>주소(상세)</th>
 										<th>용도</th>
 										<th>주 구조</th>
@@ -194,7 +194,6 @@
 										<td>${vo.basement }</td>
 										<td>${vo.wideAddress }</td>
 										<td>${vo.cityAddress }</td>
-										<td>${vo.localAddress }</td>
 										<td>${vo.detailAddress }</td>
 										<td>${vo.purpose }</td>
 										<td>${vo.material }</td>
@@ -319,14 +318,13 @@
 		      $("input[name=area]").val(td.eq(3).text());
 		      $("input[name=wideAddress]").val(td.eq(6).text());
 		      $("input[name=cityAddress]").val(td.eq(7).text());
-		      $("input[name=localAddress]").val(td.eq(8).text());
-		      $("input[name=detailAddress]").val(td.eq(9).text());
+		      $("input[name=detailAddress]").val(td.eq(8).text());
 		      //customerNo 에 대한 값(name)을 select box에 표시
-		      $('#form-field-customer').val(td.eq(12).text()).trigger('chosen:updated'); 
-		      $("input[name=customerName]").val(td.eq(13).text());
-		      $("input[name=managerName]").val(td.eq(14).text());
-		      $("input[name=payDate]").val(td.eq(16).text());
-		      $("input[name=acqPrice]").val(td.eq(18).text().replace(/,/g, ""));
+		      $('#form-field-customer').val(td.eq(11).text()).trigger('chosen:updated'); 
+		      $("input[name=customerName]").val(td.eq(12).text());
+		      $("input[name=managerName]").val(td.eq(13).text());
+		      $("input[name=payDate]").val(td.eq(15).text());
+		      $("input[name=acqPrice]").val(td.eq(17).text().replace(/,/g, ""));
 		      
 			});
 	});

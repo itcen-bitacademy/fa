@@ -26,14 +26,11 @@ public class Menu40Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public List<BuildingVo> getList(String id) {
-		List<BuildingVo> list = sqlSession.selectList("menu40.list",id);
-		return list;
-	}
-	
-	public List<BuildingVo> list(String id, PaginationUtil pagination) {
+	//전체 리스트
+	public List<BuildingVo> list(BuildingVo vo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", id);
+		map.put("vo", vo);
+		System.out.println(vo);
 		map.put("pagination", pagination);
 		List<BuildingVo> list = sqlSession.selectList("menu40.list", map);
 		
@@ -50,7 +47,7 @@ public class Menu40Repository {
 		return customerList;
 	}
 
-	public int listCount(String id) {
-		return sqlSession.selectOne("menu40.pageCount", id);
+	public int listCount(BuildingVo vo) {
+		return sqlSession.selectOne("menu40.pageCount", vo);
 	}
 }

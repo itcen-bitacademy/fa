@@ -318,10 +318,16 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">주소</label>
 										<div class="controls">
-											<span class="btn btn-small btn-info" onclick="execDaumPostcode()"><i class="icon-search nav-search-icon"></i></span>
-											<input class="span2" type="text" id="zipCode" readonly name="zipCode">
-											<input class="span6" type="text" id="address" readonly name="address">
-											<input class="span9" type="text" id="detailAddress" name="detailAddress">
+											<div class="input-append">
+												<input class="span4" type="text" id="zipCode" readonly name="zipCode">
+					                            <input class="span9" type="text" id="address" readonly name="address">
+												<span class="add-on" onclick="execDaumPostcode()">
+						                        	<a href="#" class="a-customerinfo-dialog">
+						                        		<i class="icon-search nav-search-icon"></i>
+						                        	</a>
+					                            </span>
+			                                </div>
+											<input class="span8" type="text" id="detailAddress" name="detailAddress">
 										</div>
 									</div>
 									<div class="control-group">
@@ -348,8 +354,14 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">입금계좌번호</label>
 										<div class="controls">
-											<a href="#" id="a-bankaccountinfo-dialog"><span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span></a>
-											<input class="span6" type="text" id="depositNo" name="depositNo">
+											<div class="input-append">
+												<input class="span10" type="text" id="depositNo" readonly name="depositNo">
+												<span class="add-on">
+					                                <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
+					                                	<i class="icon-search icon-on-right bigger-110"></i>
+					                                </a>
+				                                </span>
+											</div>
 										</div>
 									</div>
 								</div>

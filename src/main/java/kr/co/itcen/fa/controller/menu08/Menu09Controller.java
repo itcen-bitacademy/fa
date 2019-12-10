@@ -76,8 +76,7 @@ public class Menu09Controller {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		//대분류코드 select box
-		map.putAll(menu09Service.getSectionList());
-		
+		List<SectionVo> list = menu09Service.getSectionList();
 		//거래처관련 select box
 		map.putAll(menu09Service.getCustomerCodeList());
 		
@@ -87,7 +86,7 @@ public class Menu09Controller {
 		if(id != null) {
 			map.putAll(menu09Service.getsearchList(id));		
 		}
-		
+		model.addAttribute("sectionList", list);
 		model.addAllAttributes(map);
 //		
 		return  MAINMENU + "/" + SUBMENU + "/add";
@@ -97,11 +96,10 @@ public class Menu09Controller {
 	//입력
 	@RequestMapping(value={"/" + SUBMENU + "/insert" }, method=RequestMethod.POST)
 	public String insert(@ModelAttribute LandVo landVo, @SessionAttribute("authUser") UserVo user
-						 /*, @ModelAttribute SectionVo sectionVo,@ModelAttribute */
 						 ,Model model
 						 ) throws ParseException {
 		
-		System.out.println("거래날짜 : " +landVo.getPayDate());
+		
 		if(landVo.getCombineNo() == null) {
 			landVo.setCombineNo("00");
 		}
@@ -111,13 +109,12 @@ public class Menu09Controller {
 
 		//마감 여부 체크
 		if(!menu19Service.checkClosingDate(user, landVo.getPayDate())) {
-			System.out.println("등록일 해보자");
-			menu09Service.insertLand(landVo);
+			model.addAttribute("closingDate", true);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		} else {
-			System.out.println("등록일 안된다.");
-			model.addAttribute("closingDate", true);
-			return MAINMENU + "/" + SUBMENU + "/add";
+			menu09Service.insertLand(landVo);
+			
+			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		}
 	}
 
@@ -159,7 +156,10 @@ public class Menu09Controller {
 		itemVo2.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getRegTax()+landVo.getEtcCost());
 		itemVo2.setAmountFlag("c");  // c: 대변 오른쪽
 		itemVo2.setAccountNo(1110101L); //현금
-		itemVoList.add(itemVo2);
+		itemVoList.add(itemVo2);  
+		
+		
+		
 
 		// 토지구입비용 + 부가세 = 지불금액 / 차변 대변 값으로
 		

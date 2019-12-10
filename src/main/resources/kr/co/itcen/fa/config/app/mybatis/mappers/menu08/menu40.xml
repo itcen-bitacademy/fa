@@ -18,7 +18,6 @@
 			owner_name as ownerName,
 			wide_address as wideAddress,
 			city_address as cityAddress,
-			local_address as localAddress,
 			b.detail_address as detailAddress,
 			floor,
 			basement,
@@ -33,17 +32,20 @@
 			b.flag,
 			b.insert_userid as insertUserid,
 			b.insert_day as insertDay
-		from tb_building b left outer join tb_section on b.section_no = tb_section.code
+		from tb_building as b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
         where tb_section.parent_no = 3 
-           and b.insert_day > (NOW() - INTERVAL 3 DAY) 
            and b.flag = 's'
+           and b.pay_date like concat('%',#{vo.id },'%')
+           and b.customer_no like concat('%',#{vo.customerNo },'%')
+           and b.area like concat('%',#{vo.area },'%')
+           and b.section_no like concat('%',#{vo.sectionNo },'%')
+           and b.wide_address like concat('%',#{vo.wideAddress },'%')
+           and b.city_address like concat('%',#{vo.cityAddress },'%')
+           and b.detail_address like concat('%',#{vo.detailAddress },'%')
+           and b.acq_price like concat('%',#{vo.acqPrice },'%')
+           
 		]]>
-		<if test="id.length()>0 ">
-   			<![CDATA[
-  				and id like concat('%',#{id },'%') 
-   			]]>
-   		</if>
    		<![CDATA[	
 		order by b.insert_day desc
 		]]>
@@ -77,15 +79,8 @@
 		]]>
 	</select>
 	
-	<select id="pageCount" resultType="int" parameterType="string">
+	<select id="pageCount" resultType="int" parameterType="building08vo">
 		select count(*)
 		from tb_building
-		where id like concat('%',#{id},'%')
 	</select>
-	
-	<select id="contentsCount" resultType="int">
-		select	count(*)
-		  from	tb_building
-	</select>
-
 </mapper>

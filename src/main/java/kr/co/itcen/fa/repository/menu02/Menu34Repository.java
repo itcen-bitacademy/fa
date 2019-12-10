@@ -1,10 +1,13 @@
 package kr.co.itcen.fa.repository.menu02;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.itcen.fa.vo.menu02.TestVo;
+import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
 /**
  * 
@@ -18,10 +21,35 @@ public class Menu34Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public void test() {
-		TestVo testVo = new TestVo();
-		testVo.setName("이름넣기"); // 이름
+	public List<PurchaseitemVo> getPurchaseitemListall() {
+		List<PurchaseitemVo> purchaseitemListall = sqlSession.selectList("menu34.getPurchaseitemListall");
 		
-		sqlSession.insert("menu34.save", testVo);
+		return purchaseitemListall;
+	}
+
+	public List<PurchaseitemVo> getPurchaseitemList(int page_group) {
+		List<PurchaseitemVo> purchaseitemList = sqlSession.selectList("menu34.getPurchaseitemList", page_group);
+		
+		return purchaseitemList;
+	}
+
+	public List<PurchaseitemVo> getpagePurchaseitemList(int page) {
+		page = (page-1)*11;
+		
+		List<PurchaseitemVo> pagepurchaseitemList = sqlSession.selectList("menu34.getpagePurchaseitemList", page);
+		
+		return pagepurchaseitemList;
+	}
+
+	public List<SectionVo> getSectionList() {
+		List<SectionVo> sectionList = sqlSession.selectList("menu34.getSectionList");
+		
+		return sectionList;
+	}
+
+	public List<SectionVo> getFactorysectionList() {
+		List<SectionVo> factoryList = sqlSession.selectList("menu34.getFactorysectionList");
+		
+		return factoryList;
 	}
 }

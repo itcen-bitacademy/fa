@@ -92,21 +92,23 @@ public class Menu48Controller {
 		voucherVo.setRegDate(vo.getDebtDate());
 		itemVo.setAmount(vo.getDebtAmount());
 		itemVo.setAmountFlag("c");
-		itemVo.setAccountNo(2401000L);
+		itemVo.setAccountNo(2401101L);
 		itemVoList.add(itemVo);
 		
 		itemVo2.setAmount(money);
 		itemVo2.setAmountFlag("c");
-		itemVo2.setAccountNo(9201000L);
+		itemVo2.setAccountNo(9201101L);
 		itemVoList.add(itemVo2);
 		
 		itemVo3.setAmount(vo.getDebtAmount()+money);
 		itemVo3.setAmountFlag("d");
+		
 		itemVo3.setAccountNo(1110103L);
 		itemVoList.add(itemVo3);
 		
 		mappingVo.setVoucherUse(vo.getName());//사용목적
 		mappingVo.setSystemCode(vo.getCode());//제코드l190
+		mappingVo.setCustomerNo(vo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 		
 		Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
@@ -126,8 +128,10 @@ public class Menu48Controller {
 		vo.setDebtDate(dates[0]);
 		vo.setExpDate(dates[1]);
 		vo.setUpdateId(user.getId());
+		
 		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
 		vo.setIntAmount(money);
+		System.out.println(money);
 		vo.setVoucherNo(menu48Service.select(vo.getNo()));
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -142,13 +146,13 @@ public class Menu48Controller {
 		voucherVo.setRegDate(vo.getDebtDate());
 		itemVo.setAmount(vo.getDebtAmount());
 		itemVo.setAmountFlag("c");
-		itemVo.setAccountNo(2401000L);
+		itemVo.setAccountNo(2401101L);
 		itemVo.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo);
 		
 		itemVo2.setAmount(money);
 		itemVo2.setAmountFlag("c");
-		itemVo2.setAccountNo(9201000L);
+		itemVo2.setAccountNo(9201101L);
 		itemVo2.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo2);
 		
@@ -160,11 +164,13 @@ public class Menu48Controller {
 		
 		mappingVo.setVoucherUse(vo.getName());//사용목적
 		mappingVo.setSystemCode(vo.getCode());//제코드l190
+		mappingVo.setCustomerNo(vo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 		mappingVo.setVoucherNo(vo.getVoucherNo());
 		
 		
-		menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
+		Long n=menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
+		vo.setVoucherNo(n);
 		menu48Service.update(vo);
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
@@ -197,7 +203,8 @@ public class Menu48Controller {
 		menu48Service.update(vo);
 		menu48Service.insert(vo);
 		LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());
-		if(lvo.getRepayBal() >= lvo.getDebtAmount())
+		
+		if((lvo.getRepayBal()+lvo.getIntAmount()) >= lvo.getDebtAmount())
 			menu48Service.updateRepayFlag(lvo.getNo());
 		return JSONResult.success(lvo);
 	}
