@@ -19,7 +19,6 @@ public class VehicleVo {
 	private String ownerName;
 	private String wideAddress;
 	private String cityAddress;
-	private String localAddress;
 	private String detailAddress;
 	private int publicValue;
 	private int regTax;
@@ -103,12 +102,7 @@ public class VehicleVo {
 	public void setCityAddress(String cityAddress) {
 		this.cityAddress = cityAddress;
 	}
-	public String getLocalAddress() {
-		return localAddress;
-	}
-	public void setLocalAddress(String localAddress) {
-		this.localAddress = localAddress;
-	}
+
 	public String getDetailAddress() {
 		return detailAddress;
 	}
@@ -225,7 +219,7 @@ public class VehicleVo {
 				+ ", managerName=" + managerName + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
 				+ ", sectionNo=" + sectionNo + ", classification=" + classification + ", staffNo=" + staffNo
 				+ ", staffName=" + staffName + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress
-				+ ", cityAddress=" + cityAddress + ", localAddress=" + localAddress + ", detailAddress=" + detailAddress
+				+ ", cityAddress=" + cityAddress + ", detailAddress=" + detailAddress
 				+ ", publicValue=" + publicValue + ", regTax=" + regTax + ", acqTax=" + acqTax + ", etcCost=" + etcCost
 				+ ", payDate=" + payDate + ", deposit=" + deposit + ", depositDate=" + depositDate + ", monthlyFee="
 				+ monthlyFee + ", feeDate=" + feeDate + ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserId="

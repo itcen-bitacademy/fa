@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu08.Menu41Repository;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
 
@@ -85,13 +87,21 @@ public class Menu41Service {
 	}
 
 
-	public String getDepositNo(String customerNo) {
-		
-		String depositNo = menu41Repository.getDepositNo(customerNo);
-		return depositNo;
+	//전표 수정 -> 전표 보내기
+	public CustomerVo getDepositNo(String customerNo) {
+		CustomerVo cus = menu41Repository.getDepositNo(customerNo);
+		return cus;
 	}
 
 
+	// 차량세금계산서테이블 넣기
+	public void taxbill(TaxbillVo taxVo) {
+		menu41Repository.insertTaxbill(taxVo);
+		
+	}
 
-
+	//세금계산서를 포함한 차량 테이블 업데이트
+	public void updateTax(String taxno, String veno, long voucherNo, String uId) {
+		menu41Repository.updateTaxbill(taxno, veno, voucherNo, uId);
+	}
 }
