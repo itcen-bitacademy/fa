@@ -148,17 +148,17 @@ $(function(){
 								
 								</div>
 							</div>
-							
-							<button class="btn btn-info btn-small" type="submit" id="account-list-btn" name="account-list-btn"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
-							&nbsp;
-							<button class="btn btn-danger btn-small" type="submit" name="action"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
-							&nbsp;
-							<button class="btn btn-warning btn-small" type="submit" name="action"  value="update" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-							&nbsp;
-							<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="action" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
-							&nbsp;
-							<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >취소</button>
-
+							<div class="controls" style="margin-left: 0px;">
+								<button class="btn btn-info btn-small" type="submit" id="account-list-btn" name="account-list-btn"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
+								&nbsp;
+								<button class="btn btn-danger btn-small" type="submit" name="action"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+								&nbsp;
+								<button class="btn btn-warning btn-small" type="submit" name="action"  value="update" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+								&nbsp;
+								<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="action" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
+								&nbsp;
+								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >취소</button>
+							</div>	
 						</form>
 					</div>
 				</div>
@@ -169,8 +169,11 @@ $(function(){
 				<div class="span12">
 				<!-- 선 -->
 				<div class="hr hr-18 dotted"></div>
-					<table id="tb_account_management"
-						class="table table-striped table-bordered table-hover">
+				
+				<!-- 게시글 총 수 -->
+				<h6>총 ${dataResult.pagination.totalCnt }건</h6>
+			
+					<table id="tb_account_management" class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>순번</th>
