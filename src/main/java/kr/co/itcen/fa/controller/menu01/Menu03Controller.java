@@ -2,6 +2,7 @@ package kr.co.itcen.fa.controller.menu01;
 
 
 import java.text.ParseException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -56,25 +58,39 @@ public class Menu03Controller {
 		// 데이블 셋팅
 		model.addAttribute("dataResult", dataResult);
 		
-		
-		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	// 전표 작성 & 리스트 반환
 	@RequestMapping(value= "/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String categoryWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, @RequestParam(defaultValue = "1") int page
+	public String voucherWrite(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo, @RequestParam(defaultValue = "1") int page
 			, Model model) throws ParseException {
 		// 마감 여부 체크
-		//if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-		menu03Service.createVoucher(voucherVo, userVo);
-		//}
+		
+		System.out.println("asdf: " + voucherVo.getRegDate());
+		
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			menu03Service.createVoucher(voucherVo, userVo);
+		}
 		// 전표등록, 리스트
 		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
-		System.out.println("d : " + dataResult.getDatas());
 		model.addAttribute("dataResult", dataResult);
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
+	
+    // 전표 관리페이지 조회
+	@RequestMapping(value= "/" + SUBMENU + "/read", method=RequestMethod.POST)
+	public String read(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page , Model model) {
+		System.out.println("1 : " + voucherVo.getRegDate());
+		System.out.println("1 : " + voucherVo.getAmount());
+		System.out.println("1 : " + voucherVo.getCustomerNo());
+		// 전표 검색
+		DataResult<VoucherVo> dataResult = menu03Service.selectVoucherCount(voucherVo, page);
+		model.addAttribute("dataResult", dataResult);
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	 
 	
 	// 전표 삭제 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
@@ -99,6 +115,13 @@ public class Menu03Controller {
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	// 
+	// 거래처, 은행, 계좌, 카드 조회
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/getCustomer", method=RequestMethod.GET)
+	public Map<String, Object> customerList(@RequestParam String customerNo) {
+		Map<String, Object> data = menu03Service.getCustomer(customerNo);
+		data.put("success", true);
+		return data;
+	}
 	
 }
