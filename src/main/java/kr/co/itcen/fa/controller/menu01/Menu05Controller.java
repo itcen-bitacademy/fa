@@ -63,6 +63,7 @@ public class Menu05Controller {
 		
 		vo.setCardNoOld(null);
 		
+		
 		vo.setLimitation(limitation.get());
 		
 		System.out.println(vo);
