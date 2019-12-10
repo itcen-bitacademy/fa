@@ -43,6 +43,9 @@ public class Menu54Controller {
 		List<SellTaxbillVo> customerlist = menu54Service.salesCustomer();
 		model.addAttribute("customerlist", customerlist);
 		
+		List<SellTaxbillVo> itemlist = menu54Service.salesItems();
+		model.addAttribute("itemlist", itemlist);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 

@@ -89,8 +89,8 @@
 														<div class="controls">
 														<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
 														<option value="">없음</option>
-														<c:forEach items="${listMainSection }" var="sectionVo">
-															<option value="${sectionVo.no }">${sectionVo.classification }</option>
+														<c:forEach items="${itemlist }" var="ilist">
+															<option value="${ilist.itemCode }">${ilist.itemName }</option>
 														</c:forEach>
 													</select>
 													<input class="span6" type="text" id="sales-no" name="sales-no" readonly>

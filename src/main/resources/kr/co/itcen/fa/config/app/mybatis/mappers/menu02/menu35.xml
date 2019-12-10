@@ -5,77 +5,89 @@
 	<select id="getList" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      no, 
-			      name, 
-			      ceo, 
-			      corporation_no as corporationNo, 
-			      concat(zip_code, " ", address, " ", detail_address) as address, 
-			      phone, 
-			      conditions, 
-			      item, 
-			      open_date as openDate, 
-			      jurisdiction_office as jurisdictionOffice, 
-			      manager_name as managerName, 
-			      manager_email as managerEmail, 
-			      deposit_no as depositNo, 
-				  insert_userid as insertUserid, 
-				  insert_day as insertDay, 
-				  update_userid as updateUserid, 
-				  update_day as updateDay, 
-				  delete_flag as deleteFlag 
-			 from tb_purchasecustomer;
+			      p.no, 
+			      p.name, 
+			      p.ceo, 
+			      p.corporation_no as corporationNo, 
+			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as address, 
+			      p.phone, 
+			      p.conditions, 
+			      p.item, 
+			      p.open_date as openDate, 
+			      p.jurisdiction_office as jurisdictionOffice, 
+			      p.manager_name as managerName, 
+			      p.manager_email as managerEmail, 
+			      p.deposit_no as depositNo,
+			      p.deposit_host as depositHost,
+			      b.bank_code as bankCode,
+			      b.bank_name as bankName, 
+				  p.insert_userid as insertUserid, 
+				  p.insert_day as insertDay, 
+				  p.update_userid as updateUserid, 
+				  p.update_day as updateDay, 
+				  p.delete_flag as deleteFlag 
+			 from tb_purchasecustomer p left outer join tb_bank_account b
+			   on p.deposit_no = b.deposit_no;
 		]]>
 	</select>
 	
 	<select id="search" parameterType="string" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      no, 
-			      name, 
-			      ceo, 
-			      corporation_no as corporationNo, 
-			      concat(zip_code, " ", address, " ", detail_address) as address, 
-			      phone, 
-			      conditions, 
-			      item, 
-			      date_format(open_date, '%Y-%m-%d') as openDate, 
-			      jurisdiction_office as jurisdictionOffice, 
-			      manager_name as managerName, 
-			      manager_email as managerEmail, 
-			      deposit_no as depositNo, 
-				  insert_userid as insertUserid, 
-				  insert_day as insertDay, 
-				  update_userid as updateUserid, 
-				  update_day as updateDay, 
-				  delete_flag as deleteFlag 
-			 from tb_purchasecustomer
-			where no like CONCAT('%',#{no},'%')
-		 order by no;
+			      p.no, 
+			      p.name, 
+			      p.ceo, 
+			      p.corporation_no as corporationNo, 
+			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as address, 
+			      p.phone, 
+			      p.conditions, 
+			      p.item, 
+			      p.open_date as openDate, 
+			      p.jurisdiction_office as jurisdictionOffice, 
+			      p.manager_name as managerName, 
+			      p.manager_email as managerEmail, 
+			      p.deposit_no as depositNo,
+			      p.deposit_host as depositHost,
+			      b.bank_code as bankCode,
+			      b.bank_name as bankName, 
+				  p.insert_userid as insertUserid, 
+				  p.insert_day as insertDay, 
+				  p.update_userid as updateUserid, 
+				  p.update_day as updateDay, 
+				  p.delete_flag as deleteFlag 
+			 from tb_purchasecustomer p left outer join tb_bank_account b
+			   on p.deposit_no = b.deposit_no
+			where p.no like CONCAT('%',#{no},'%')
+		 order by p.no;
 		]]>
 	</select>
 	
 	<select id="afterDelete" parameterType="list" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      no, 
-			      name, 
-			      ceo, 
-			      corporation_no as corporationNo, 
-			      concat(zip_code, " ", address, " ", detail_address) as address, 
-			      phone, 
-			      conditions, 
-			      item, 
-			      date_format(open_date, '%Y-%m-%d') as openDate, 
-			      jurisdiction_office as jurisdictionOffice, 
-			      manager_name as managerName, 
-			      manager_email as managerEmail, 
-			      deposit_no as depositNo, 
-				  insert_userid as insertUserid, 
-				  insert_day as insertDay, 
-				  update_userid as updateUserid, 
-				  update_day as updateDay, 
-				  delete_flag as deleteFlag 
-			 from tb_purchasecustomer
+			      p.no, 
+			      p.name, 
+			      p.ceo, 
+			      p.corporation_no as corporationNo, 
+			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as address, 
+			      p.phone, 
+			      p.conditions, 
+			      p.item, 
+			      p.open_date as openDate, 
+			      p.jurisdiction_office as jurisdictionOffice, 
+			      p.manager_name as managerName, 
+			      p.manager_email as managerEmail, 
+			      p.deposit_no as depositNo,
+			      p.deposit_host as depositHost,
+			      b.bank_code as bankCode,
+			      b.bank_name as bankName, 
+				  p.insert_userid as insertUserid, 
+				  p.insert_day as insertDay, 
+				  p.update_userid as updateUserid, 
+				  p.update_day as updateDay, 
+				  p.delete_flag as deleteFlag 
+			 from tb_purchasecustomer p left outer join tb_bank_account b
+			   on p.deposit_no = b.deposit_no
 			where no in
 		]]>
 		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >

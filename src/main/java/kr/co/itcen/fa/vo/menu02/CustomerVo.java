@@ -29,6 +29,8 @@ public class CustomerVo {
 	private String managerEmail;			//담당자 Email
 	private String depositNo;				//계좌번호
 	private String depositHost;				//예금주
+	private String bankCode;				//은행코드
+	private String bankName;				//은행명
 	private String insertUserid;			//입력자
 	private String insertDay;				//입력일자
 	private String updateUserid;			//수정자
@@ -138,6 +140,18 @@ public class CustomerVo {
 	}
 	public void setDepositHost(String depositHost) {
 		this.depositHost = depositHost;
+	}
+	public String getBankCode() {
+		return bankCode;
+	}
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 	public String getInsertUserid() {
 		return insertUserid;

@@ -83,6 +83,7 @@ public class Menu35Controller {
 		List<CustomerVo> customerVo = menu35Service.search(no);
 		model.addAttribute("customerVo", customerVo);
 		
+		System.out.println("@@@@@@@@@@@@@예금주내놔:"+customerVo);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
@@ -96,13 +97,13 @@ public class Menu35Controller {
 		return JSONResult.success(exist);
 	}
 	
-	@ResponseBody
-	@RequestMapping("/" + SUBMENU + "/gets")
-	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
-		System.out.println("gets");
-		
-		Map<String, Object> data = menu25Service.gets(depositNo);
-		data.put("success", true);
-		return data;
-	}
+//	@ResponseBody
+//	@RequestMapping("/" + SUBMENU + "/gets")
+//	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
+//		System.out.println("gets");
+//		
+//		Map<String, Object> data = menu25Service.gets(depositNo);
+//		data.put("success", true);
+//		return data;
+//	}
 }
