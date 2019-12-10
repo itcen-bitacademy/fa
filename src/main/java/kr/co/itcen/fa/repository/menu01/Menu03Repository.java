@@ -115,18 +115,21 @@ public class Menu03Repository {
 		VoucherVo voucherVoTemp = new VoucherVo();
 		VoucherVo insertTeam = new VoucherVo();
 		insertTeam = sqlSession.selectOne("menu03.selectTeam", voucherVo);
-		if(insertTeam.getInsertTeam() != userVo.getTeamName()) {
+		if(!insertTeam.getInsertTeam().equals(userVo.getTeamName())) {
+			System.out.println("너냐 범인이");
 			return null;
 		}
 		voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
-		
+		System.out.println("! :" + voucherVo.getNo());
 		sqlSession.delete("menu03.deleteVoucher", voucherVo);
 		
 		for(int i = 0; i < itemVo.size(); i++) {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
+			System.out.println("@ : " + itemVo.get(i).getVoucherNo());
 			sqlSession.delete("menu03.deleteItem", itemVo.get(i));
 		}
 		mappingVo.setVoucherNo(voucherVo.getNo());
+		System.out.println("# :" + mappingVo.getVoucherNo());
 		sqlSession.delete("menu03.deleteMapping", mappingVo);
 		
 		voucherVo.setInsertUserid(voucherVoTemp.getInsertUserid());

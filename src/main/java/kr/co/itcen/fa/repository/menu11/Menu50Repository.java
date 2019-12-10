@@ -8,11 +8,11 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
-import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 /**
@@ -75,9 +75,7 @@ public class Menu50Repository {
 	}
 
 	public Boolean update(PdebtVo vo) {
-		System.out.println("vo vo vo update : " + vo.toString());
 		int count = sqlSession.update("menu50.update", vo);
-		System.out.println("======================= update complete");
 		return count == 1;
 	}
 	
@@ -137,6 +135,14 @@ public class Menu50Repository {
 	public PdebtVo getCode(String code) {
 		PdebtVo vo = sqlSession.selectOne("menu50.getbycode", code);
 		return vo;
+	}
+
+	public List<Long> selectVoucherNo(Long[] no) {
+		List<Long> list = new ArrayList<Long>();
+		for (Long no1 : no) {
+			list.add(no1);
+		}
+		return sqlSession.selectList("menu50.selectVoucherNo", list);
 	}
 	
 }

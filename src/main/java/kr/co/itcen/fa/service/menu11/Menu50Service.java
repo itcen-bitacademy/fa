@@ -29,12 +29,6 @@ public class Menu50Service {
 		menu50Repository.insert(pdebtVo);
 	}
 	
-	// 사채테이블 각페이지당 데이터 11개 리스트로 조회
-	/*
-	 * public List<PdebtVo> list(int startNum, int lastNum) { return
-	 * menu50Repository.list(startNum, lastNum); }
-	 */
-	
 	public DataResult<PdebtVo> list(int page, String year, String code) {
 		DataResult<PdebtVo> dataResult = new DataResult<PdebtVo>();
 		int totalCnt = menu50Repository.listCount(year, code);
@@ -80,7 +74,6 @@ public class Menu50Service {
 	
 	// 계좌번호로 데이터 가져오기
 	public List<BankAccountVo> selectBankaccountInfo(String depositNo) {
-		// TODO Auto-generated method stub
 		List<BankAccountVo> bankaccountList = menu50Repository.selectBankaccountInfo(depositNo);
 		return bankaccountList;
 	}
@@ -118,6 +111,10 @@ public class Menu50Service {
 
 	public PdebtVo existCode(String code) {
 		return menu50Repository.getCode(code);
+	}
+
+	public List<Long> selectVoucherNo(Long[] no) {
+		return menu50Repository.selectVoucherNo(no);
 	}
 	
 }
