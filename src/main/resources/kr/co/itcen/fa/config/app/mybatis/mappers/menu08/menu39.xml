@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu39">
-
-	<!--  test -->
-	<insert id="save" parameterType="test08vo">
-		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
-		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
-	</insert>
 	
 	<!-- 대분류 -->
 	<select id="getSection" resultType="sectionvo">
@@ -34,60 +20,19 @@
 		<![CDATA[
 		select no, 
 			name,
-			ceo,
-			address,
-			detail_address as detailAddress,
-			conditions,
-			item,
-			corporation_no as corporationNo,
-			open_date as openDate,
-			jurisdiction_office as jurisdictionOffice,
-			phone,
-			manager_name as managerName,
-			manager_email as managerEmail,
-			deposit_no as depositNo,
-			delete_flag as deleteFlag,
-			assets_flag as insertUserid,
-			insert_userid as insertUserid,
-			insert_day as insertDay,
-			update_userid as updateUserid,
-			update_day as updateDay
+			manager_name as managerName
 		from tb_customer
 		]]>
 	</select>
 	
-	<!-- <select id="selectAllClosingDateCount" resultType="int">
-		select	count(*) as cnt
-		  from	tb_closing_date
-	</select> -->
-	
-	<!-- 
-	<select id="selectAllClosingDate" resultType="building08vo" parameterType="menu17SearchForm">
-		select	
-			no
-		    , closing_year_month as closingYearMonth
-		    , closing_date
-		    , closing_statement_date
-		    , closing_purchase_date
-		    , closing_sales_date
-		    , closing_assets_date
-		    , closing_debt_date
-		    , closing_settlement_date
-		    , closing_yn
-		    , use_yn
-		    , insert_userid
-		    , insert_day
-		    , update_userid
-		    , update_day
-		  from	tb_closing_date
-		 where	use_yn = true
-		 order	by closing_year_month desc
-		 limit	#{pagination.pageIndex }, #{pagination.listSize }
+	<select id="pageCount" resultType="int" parameterType="string">
+		select count(*)
+		from tb_building
+		where id like concat('%',#{id},'%')
 	</select>
-	-->
 	
 	<!-- 조회 -->
-	<select id="list" resultType="building08vo" parameterType="string">
+	<select id="list" resultType="building08vo" parameterType="map">
 		<![CDATA[
 		select id,
 			customer_no as customerNo,
@@ -102,7 +47,6 @@
 			owner_name as ownerName,
 			wide_address as wideAddress,
 			city_address as cityAddress,
-			local_address as localAddress,
 			b.detail_address as detailAddress,
 			floor,
 			basement,
@@ -111,7 +55,6 @@
 			public_value as publicValue,
 			acq_price as acqPrice,
 			etc_cost as etcCost,
-			reg_tax as regTax,
 			acq_tax as acqTax,
 			pay_date as payDate,
 			tax_kind as taxKind,
@@ -126,15 +69,19 @@
            and b.insert_day > (NOW() - INTERVAL 3 DAY) 
            and b.flag = 's'
 		]]>
-		<if test="_parameter.length()>0 ">
+		<if test="id.length()>0 ">
    			<![CDATA[
-  				and id like concat('%',#{_parameter },'%') 
+  				and id like concat('%',#{id },'%') 
    			]]>
    		</if>
    		<![CDATA[	
 		order by b.insert_day desc
-			limit 0, 3
 		]]>
+		<if test="pagination.pageIndex >= 0">
+			<![CDATA[
+        		limit #{pagination.pageIndex }, #{pagination.listSize }
+    		]]>
+		</if>
 	</select>
 	
 	<!--  등록 -->
@@ -145,14 +92,13 @@
 		values (#{id },
 			#{customerNo },
 			#{taxbillNo }, 
-			'123',
+			#{voucherNo },
 			#{sectionNo },
 			#{area },
 			#{combineNo },
 			#{ownerName },
 			#{wideAddress},
 			#{cityAddress},
-			#{localAddress},
 			#{detailAddress},
 			#{floor }, 
 			#{basement }, 
@@ -161,7 +107,6 @@
 			#{publicValue },
 			#{acqPrice },
 			#{etcCost },
-			#{regTax },
 			#{acqTax },
 			#{payDate },
 			#{taxKind },
@@ -177,14 +122,14 @@
 	<update id="modify" parameterType="building08vo" >
 	<![CDATA[
 		update tb_building 
-		set taxbill_no = #{taxbillNo },
+		set customer_no = #{customerNo },
+			taxbill_no = #{taxbillNo },
 			section_no = #{sectionNo },
 			area = #{area },
 			combine_no = #{combineNo },
 			owner_name = #{ownerName }, 
 			wide_address = #{wideAddress},
 			city_address = #{cityAddress},
-			local_address = #{localAddress},
 			detail_address = #{detailAddress},
 			floor = #{floor }, 
 			basement = #{basement }, 
@@ -193,7 +138,6 @@
 			public_value = #{publicValue },
 			acq_price = #{acqPrice },
 			etc_cost = #{ etcCost },
-			reg_tax = #{regTax },
 			acq_tax = #{acqTax },
 			pay_date = #{payDate },
 			tax_kind = #{taxKind },
@@ -211,5 +155,13 @@
 		where id = #{id}
 	]]>
 	</update>
-
+	
+	<!-- 계좌정보 select -->
+	<select id="getBankInfo" resultType="1customervo" parameterType="string">
+      <![CDATA[
+      select deposit_no as depositNo, bank_code as bankCode, bank_name as bankName
+        from tb_customer
+       where no = #{customerNo }
+      ]]>
+   </select>
 </mapper>

@@ -13,7 +13,8 @@ import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
 /**
  * 
- * @author 이종윤 거래처 현황 조회
+ * @author 이종윤
+ * 거래처 현황 조회
  *
  */
 

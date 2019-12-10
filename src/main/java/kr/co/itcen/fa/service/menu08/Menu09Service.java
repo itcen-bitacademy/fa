@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu08.Menu09Repository;
+import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.LandVo;
 
@@ -28,11 +29,9 @@ public class Menu09Service {
 		menu09Repository.test();
 	}
 
-	public Map<String, Object> getSectionList() {
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("sectionList", menu09Repository.getSectionList());
-		return map;
+	public List<SectionVo> getSectionList() {
+		List<SectionVo> list = menu09Repository.getSectionList();
+		return list;
 	}
 	
 	public Map<String, Object> getCustomerCodeList() {

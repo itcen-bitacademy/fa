@@ -38,22 +38,19 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">품목 코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id"
-												placeholder="10자로 입력하세요" />
+											<input type="text" id="form-field-1" name="id"/>
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">거래처명</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="customerName"
-												placeholder="거래처명을 입력하세요" />
+											<input type="text" id="form-field-1" name="customerName"/>
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">설치주소</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="address"
-												placeholder="설치주소를 입력하세요" />
+											<input type="text" id="form-field-1" name="address"/>
 										</div>
 									</div>
 								</div>
@@ -76,8 +73,7 @@
 										<label class="control-label" for="form-field-1">거래처
 											담당자</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="customerManager"
-												placeholder="거래처 담당자를 입력하세요" />
+											<input type="text" id="form-field-1" name="customerManager"/>
 										</div>
 									</div>
 								</div>
@@ -89,16 +85,16 @@
 											<div class="input-append">
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
+												<input class="span12" type="text" name="payDate" class="cl-date-range-picker"
+													id="id-date-range-picker-1">
 											</div>
-											<input class="span5" type="text" name="payDate"
-												id="id-date-range-picker-1">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">취득금액</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="acqPrice"
-												style="text-align: right;" placeholder="입력된 숫자 이하로 검색됩니다" />
+												style="text-align: right;" value="0" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -110,9 +106,9 @@
 												</button>
 											</div>
 											<div class="span2" style="float: right">
-												<label style="float: right"> <input name="checkDel"
-													type="checkbox" class="ace"> <span class="lbl">
-														삭제포함</span>
+												<label style="float: right"> <input name="isChecked"
+													id="delete" value="삭제된 항목" type="checkbox" class="ace">
+													<span class="lbl"> 삭제포함</span>
 												</label>
 											</div>
 										</div>
@@ -143,9 +139,11 @@
 									</div>
 								</div>
 							</form>   -->
-
+							
+							<div id="listCount" style="float: left;"></div>
+							
 							<div>
-								<table id="sample-table-1"
+								<table id="list-table"
 									class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
@@ -173,7 +171,8 @@
 									</thead>
 
 									<tbody>
-										<c:forEach items="${intangibleAssetsVo }" var="vo" varStatus="status">
+										<c:forEach items="${intangibleAssetsVo }" var="vo"
+											varStatus="status">
 											<tr>
 												<td>${status.count }</td>
 												<td>${vo.id }</td>
@@ -197,7 +196,14 @@
 												<td>${vo.taxKind }</td>
 												<td>${vo.insertUserId }</td>
 												<td>${vo.insertDay }</td>
-												<td>삭제여부</td>
+												<c:choose>
+													<c:when test="${vo.flag == 'd'}">
+														<td>삭제된 항목입니다</td>
+													</c:when>
+													<c:otherwise>
+														<td></td>
+													</c:otherwise>
+												</c:choose>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -266,7 +272,12 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
-		});
+			
+			$("#listCount").ready(function() {
+				var total = $('#list-table tbody tr').length;
+				$('#listCount').text('총 ' + total + '건');
+			});
+		});		
 	</script>
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>

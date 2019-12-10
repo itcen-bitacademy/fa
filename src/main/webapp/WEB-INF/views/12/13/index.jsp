@@ -161,7 +161,15 @@
         	}
         }
         
-
+        function insert(){
+   			if($("#salesNo").val()==$("#checkSalesNo").val()){
+   				$("#insert-form").submit(); 
+   			} else {
+   				alert("매출번호가 수정되어 입력이 불가능합니다.\n새 매출번호를 생성합니다.");
+   				createSalesNo();
+   			}
+        }
+        
         function checkNo(){  // 매출번호 입력 확인
 	        var code = $("#salesNo").val();
 	        if(code==""){
@@ -210,7 +218,24 @@
         function checkClosing(){ // 마감일 세팅 여부
         	if($("#closingDate").val()=="true"){
         		alert("마감 \n저장되지 않았습니다");
+        		location.href="${pageContext.request.contextPath }/12/13";
         	} 
+        }
+        
+        function createSalesNo(){
+	       	var salseNo = "";
+	       	var date = new Date();
+	  	 	var year = date.getFullYear().toString();
+	  	 	var month = (date.getMonth()+1).toString();	 	
+	  		var day = date.getDate().toString();
+	  		if (month.length < 2) month = "0" + month;
+	  	 	if (day.length < 2) day = "0" + day;
+	  	 	salseNo = year + month + day;
+	  	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	  	    for( var i=0; i < 4; i++ )
+	  	    	salseNo += possible.charAt(Math.floor(Math.random() * possible.length));
+	  	    $("#salesNo").val(salseNo);
+	  	    $("#checkSalesNo").val(salseNo);       	 
         }
         
     </script>
@@ -345,7 +370,7 @@
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="btn-group">
-                                <button class="btn btn-success btn-small" type="submit" id="btnSubmit">입력</button>
+                                <button class="btn btn-success btn-small" type="button" id="btnSubmit" onclick="insert();">입력</button>
                             </div>
                             <div class="btn-group">
                                 <button class="btn btn-info btn-small" type="button" id="btnModify" onclick="update();">수정</button>
@@ -431,7 +456,6 @@
                 clear: "Clear",
                 format: "yyyy-mm-dd",
                 titleFormat: "yyyy MM",
-                /* Leverages same syntax as 'format' */
                 weekStart: 0
             };
             $('.cl-date-picker').datepicker({
@@ -449,6 +473,7 @@
             checkFlag(); // 조회 확인 플래그  + 기본행 삽입
             deleteCheck(); // 삭제데이터 확인
             checkClosing(); // 마감일 확인
+            createSalesNo(); // 매출번호 부여
         })
     </script>
 </body>

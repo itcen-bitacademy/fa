@@ -31,18 +31,23 @@ public class Menu44Repository {
 		List<Object> result = sqlSession.selectList("menu44.getSection");
 		return result;
 	}
-
-	public List<IntangibleAssetsVo> getList() {
-		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList");
-		return result;
-	}
 	
+	public int selectCount(IntangibleAssetsVo intangibleAssetsVo) {
+		return sqlSession.selectOne("menu44.selectCount", intangibleAssetsVo);
+	}
+
 	public int selectAllCount(IntangibleAssetsVo intangibleAssetsVo) {
 		return sqlSession.selectOne("menu44.selectAllCount", intangibleAssetsVo);
 	}
 
 	public List<IntangibleAssetsVo> getList(IntangibleAssetsVo intangibleAssetsVo) {
-		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList2", intangibleAssetsVo);
+		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList", intangibleAssetsVo);
 		return result;
 	}
+
+	public List<IntangibleAssetsVo> getAllList(IntangibleAssetsVo intangibleAssetsVo) {
+		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getAllList", intangibleAssetsVo);
+		return result;
+	}
+
 }

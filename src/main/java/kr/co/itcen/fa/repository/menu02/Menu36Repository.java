@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.repository.menu02;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,16 @@ public class Menu36Repository {
 	public List<CustomerVo> getList(CustomerVo customerVo){
 		List<CustomerVo> result = sqlSession.selectList("menu36.getList", customerVo);
 		return result;
+	}
+	
+	public Map<String, Object> gets(Map<String, String> parameters) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<CustomerVo> s = sqlSession.selectList("menu36.gets", parameters);
+		map.put("customerList", s);
+		
+		
+		return map;
 	}
 
 }

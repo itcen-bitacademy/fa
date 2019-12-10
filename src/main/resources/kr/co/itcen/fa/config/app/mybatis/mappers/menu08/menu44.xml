@@ -24,23 +24,7 @@
 	]]>
 	</select>
 
-	<select id="getList" resultType="intangibleAssetsVo">
-	<![CDATA[
-	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
-		   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
-		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind, c.name as customerName, c.manager_name as customerManager,
-		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
-		   tb.update_day as updateDay
-	  from tb_intangible_assets tb 
-left outer join tb_section s on tb.code = s.code 
-left outer join tb_customer c on tb.customer_no = c.no
-	 where s.parent_no = 5
-	   and flag ='s'
-  order by tb.insert_day desc
-  	]]>
-	</select>
-
-	<select id="getList2" resultType="intangibleAssetsVo"
+	<select id="getList" resultType="intangibleAssetsVo"
 		parameterType="intangibleAssetsVo">
 	<![CDATA[
 	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
@@ -53,6 +37,61 @@ left outer join tb_section s on tb.code = s.code
 left outer join tb_customer c on tb.customer_no = c.no
 	 where s.parent_no = 5
 	   and flag ='s'
+  	]]>
+		<if test="id!=null and !id.equals('')">
+			<![CDATA[
+				  and id like CONCAT('%',#{id },'%')
+			]]>
+		</if>
+		<if test="customerName!=null and !customerName.equals('')">
+			<![CDATA[
+				  and c.name like CONCAT('%',#{customerName },'%') 
+			]]>
+		</if>
+		<if test="address!=null and !address.equals('')">
+			<![CDATA[
+				  and tb.address like CONCAT('%',#{address },'%') 
+			]]>
+		</if>
+		<if test="classification!=null and !classification.equals('')">
+			<![CDATA[
+				  and s.classification like CONCAT('%',#{classification },'%') 
+			]]>
+		</if>
+		<if test="customerManager!=null and !customerManager.equals('')">
+			<![CDATA[
+				  and c.manager_name like CONCAT('%',#{customerManager },'%') 
+			]]>
+		</if>
+		<if test="payDate!=null and !payDate.equals('')">
+			<![CDATA[
+				  and date_format(tb.pay_date, '%Y-%m-%d') = #{payDate }
+			]]>
+		</if>
+		<if test="acqPrice!=null and !acqPrice.equals('') and acqPrice gt 0">
+			<![CDATA[
+				  and tb.acq_price <= ${acqPrice }
+			]]>
+		</if>
+		<if test="pagination.pageIndex >= 0">
+	<![CDATA[
+		limit #{pagination.pageIndex }, #{pagination.listSize }
+	]]>
+		</if>
+	</select>
+
+	<select id="getAllList" resultType="intangibleAssetsVo"
+		parameterType="intangibleAssetsVo">
+	<![CDATA[
+	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
+		   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
+		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind, c.name as customerName, c.manager_name as customerManager,
+		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
+		   tb.update_day as updateDay
+	  from tb_intangible_assets tb 
+left outer join tb_section s on tb.code = s.code 
+left outer join tb_customer c on tb.customer_no = c.no
+	 where s.parent_no = 5
   	]]>
 		<if test="id!=null and !id.equals('')">
 			<![CDATA[
@@ -101,6 +140,15 @@ left outer join tb_customer c on tb.customer_no = c.no
 		<![CDATA[
 			select	count(*)
 			  from	tb_intangible_assets
+		]]>
+	</select>
+	
+	<select id="selectCount" parameterType="intangibleAssetsVo"
+		resultType="int">
+		<![CDATA[
+			select	count(*)
+			  from	tb_intangible_assets
+			 where  flag = 's'
 		]]>
 	</select>
 

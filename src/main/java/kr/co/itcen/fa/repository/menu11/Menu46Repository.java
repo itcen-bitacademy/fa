@@ -23,11 +23,13 @@ public class Menu46Repository {
 	
 	//기본, 조회
 	public List<STermDebtVo> getList(Map map) {
+		System.out.println("startRow : " + map.get("startRow") + " pageSize : " + map.get("pageSize"));
 		return sqlSession.selectList("menu46.getList", map);
 	}
 	
 	public int getTotalCnt(Map map) {
-		return sqlSession.selectOne("menu46.getTotalCnt");
+		System.out.println("financialYear : " + map.get("financialYear"));
+		return sqlSession.selectOne("menu46.getTotalCnt", map);
 	}
 	
 	//입력

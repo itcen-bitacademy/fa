@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu08;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu43Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
@@ -45,6 +47,9 @@ public class Menu43Controller {
 	
 	@Autowired
 	private Menu03Service menu03Service;
+
+	@Autowired
+	private Menu19Service menu19Service;
 
 	// main page
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
@@ -76,17 +81,27 @@ public class Menu43Controller {
 	// 무형자산 등록 : C
 	@RequestMapping(value = { "/" + SUBMENU + "/add" }, method = RequestMethod.POST)
 	public String insert(@ModelAttribute IntangibleAssetsVo intangibleAssetsVo,
-			@AuthUser UserVo user) {
+			@SessionAttribute("authUser") UserVo user,
+			Model model) throws ParseException {
 		intangibleAssetsVo.setInsertUserId(user.getId()); // session값으로 사용자 id가져오기
 		
-		menu43Service.insert(intangibleAssetsVo);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		// 마감 여부 체크
+		if(!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) {   // 매입일자 가져오기
+			model.addAttribute("closingDate", true);
+			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		} else { // 입력 가능!
+			menu43Service.insert(intangibleAssetsVo);
+			return "redirect:/" + MAINMENU + "/" + SUBMENU; 
+		}
+		
+		//menu43Service.insert(intangibleAssetsVo);
+		//return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
 	// 무형자산 항목 수정 : U
 	@RequestMapping(value = { "/" + SUBMENU + "/update" }, method = RequestMethod.POST)
 	public String update(@ModelAttribute IntangibleAssetsVo intangibleAssetsVo,
-			@AuthUser UserVo user,
+			@SessionAttribute("authUser") UserVo user,
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
 			@RequestParam(value = "customerNo", required = false) String customerNo) {
 		intangibleAssetsVo.setUpdateUserId(user.getId()); // session값으로 사용자 id가져오기
@@ -103,21 +118,62 @@ public class Menu43Controller {
 
 	     //왼쪽 : 얻은것 무형자산 가격  :::: 오른쪽  계좌 가격 
 	     MappingVo mappingVo = new MappingVo();
-	      
-	     // 차변(d) 무형자산
 	     voucherVo.setRegDate(intangibleAssetsVo.getPayDate());
-	     itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
-	     itemVoD.setAmountFlag("d");
-	     itemVoD.setAccountNo(1230000L); // 계정과목 : 무형자산
-	     itemVoList.add(itemVoD);
 	     
-	     // 대변(c) 현금
+	     // 차변(d) : 영업권, 특허권, 상표권, 실용신안권, 의장권, 면허권, 개발비, 소프트웨어, 건설중인자산(무형) -> 전표에 등록
+	     if(intangibleAssetsVo.getPurpose().equals("영업권")) {
+	    	 itemVoD.setAccountNo(1230101L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("특허권")) {
+	    	 itemVoD.setAccountNo(1230201L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("상표권")) {
+	    	 itemVoD.setAccountNo(1230202L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("실용신안권")) {
+	    	 itemVoD.setAccountNo(1230203L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("의장권")) {
+	    	 itemVoD.setAccountNo(1230204L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("면허권")) {
+	    	 itemVoD.setAccountNo(1230205L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("개발비")) {
+	    	 itemVoD.setAccountNo(1230301L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("소프트웨어")) {
+	    	 itemVoD.setAccountNo(1230401L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } else if(intangibleAssetsVo.getPurpose().equals("건설중인자산")) {
+	    	 itemVoD.setAccountNo(1230501L);
+	    	 itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
+		     itemVoD.setAmountFlag("d");
+		     itemVoList.add(itemVoD);
+	     } 
+	     
+	     // 대변(c) : 현금
 	     itemVoC.setAmount((long) (intangibleAssetsVo.getAcqPrice()+ intangibleAssetsVo.getAddiFee())); // 취득금액 + 부대비용
 	     itemVoC.setAmountFlag("c");
 	     itemVoC.setAccountNo(1110101L); // 계정과목: 현금
 	     itemVoList.add(itemVoC);
 
-	     
 	     // 매핑테이블
 	     mappingVo.setVoucherUse(intangibleAssetsVo.getPurpose());  // 왜 샀는지 적어준다(용도).
 	     mappingVo.setSystemCode(intangibleAssetsVo.getCode());  // 각 무형자산 코드번호

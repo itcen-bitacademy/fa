@@ -27,36 +27,7 @@
 	</script>
 
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			today: "Today",
-			clear: "Clear",
-			format: "yyyy-mm-dd",
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart: 0
-			};
 	
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
-	</script>
 	
 	<c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
@@ -78,13 +49,68 @@
 			
 			<div class="row-fluid"> <!-- 검색조건 -->
 				<form class="form-horizontal; center">
+					<div class="form-group"style="float: left">
 					&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명 :&nbsp; 
 					<input type="text" id="form-field-1" placeholder="계정코드" size=4 style="width:150px"/>
 					<input type="text" id="form-field-1" placeholder="계정명" size=4 style="width:150px" readonly/> <!-- 계정명 자동입력 -->
-						
-					&nbsp; &nbsp;&nbsp; &nbsp;사업자등록번호 :&nbsp; 
-					<input type="text" id="form-field-1" placeholder="사업자등록번호" size=4 style="width:150px"/>
-						
+					</div>
+					<div class="form-group" style="float: left">
+							&nbsp; &nbsp;&nbsp; &nbsp;상호명/사업자등록번호:&nbsp;
+						<div class="input-append">
+						<span class="btn btn-small btn-info">
+						<a href="#" id="a-customerinfo-dialog">
+						<i class="icon-search nav-search-icon"></i>
+						<input type="text" class="search-input-width-first" name="name" id="name" placeholder="상호명" readonly/>
+										<script type="text/javascript">
+											var name = "${param.name}";
+											$("#name").val(name);
+										</script>
+										</a>
+										</span>
+									</div>
+									<input type="text" id="no" name="no" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
+										<script type="text/javascript">
+											var no = "${param.no}";
+											$("#no").val(no);
+										</script>
+								</div>
+
+			
+								<!-- 거래처 Modal pop-up : start -->
+								<div id="dialog-message" title="계좌" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>사업자등록번호</label> <input type="text"
+												id="input-dialog-customerno" style="width: 100px;" /> <a
+												href="#" id="a-dialog-customerno"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										<td><label>상호명</label> <input type="text"
+											id="input-dialog-customername" style="width: 100px;" /> <a
+											href="#" id="a-dialog-customername"> <span
+												class="btn btn-small btn-info" style="margin-bottom: 10px;">
+													<i class="icon-search nav-search-icon"></i>
+											</span>
+										</a></td>
+										</tr>
+									</table>
+									<!-- 거래처 데이터 리스트 -->
+									<table id="modal-customer-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">구분</th>
+												<th class="center">사업자등록번호</th>
+												<th class="center">상호명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-customerList">
+										</tbody>
+									</table>
+								</div>
+								<!-- 거래처Modal pop-up : end -->
 					&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 					<div class="input-append">
 						<input type="text" id="datepicker" class="cl-date-picker"  style="width:100px"/>
@@ -212,5 +238,144 @@
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		});
+		
+		// 사업자번호 검색
+		$("#a-dialog-customerno").click(function(event){
+			event.preventDefault();
+			$("#tbody-customerList").find("tr").remove();
+		
+			var customerNoVal = $("#input-dialog-customerno").val();
+			console.log(customerNoVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getcustomerNo?customerNoVal=" + customerNoVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json",
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-customerno").val('');
+					$.each(response.data,function(index, item){
+						$("#tbody-customerList").append("<tr>" +
+						        "<td class='center'>" + item.customerDiv + "</td>" +
+						        "<td class='center'>" + item.no + "</td>" +
+						        "<td class='center'>" + item.name + "</td>" +
+						        "</tr>");
+		        	 });
+				
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		//거래처명 검색 :거래처목록 리스트로 가져오기
+		$("#a-dialog-customername").click(function(event){
+			event.preventDefault();
+			$("#tbody-customerList").find("tr").remove();
+			
+			var customerNameVal = $("#input-dialog-customername").val();
+			console.log(customerNameVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getcustomerName?customerNameVal=" + customerNameVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-customername").val('');
+					 $.each(response.data,function(index, item){
+			                $("#tbody-customerList").append("<tr>" +
+			                		"<td class='center'>" + item.customerDiv + "</td>" +
+							        "<td class='center'>" + item.no + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "</tr>");
+			         })
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+	</script>
+<script>
+	$(function() {
+		$("#dialog-message").dialog({
+			autoOpen : false
+		});
+
+		$("#a-customerinfo-dialog").click(function() {
+			$("#dialog-message").dialog('open');
+			$("#dialog-message").dialog({
+				title: "거래처정보",
+				title_html: true,
+			   	resizable: false,
+			    height: 500,
+			    width: 400,
+			    modal: true,
+			    close: function() {
+			    	$('#tbody-customerList tr').remove();
+			    },
+			    buttons: {
+			    "닫기" : function() {
+			          	$(this).dialog('close');
+			          	$('#tbody-customerList tr').remove();
+			        }
+			    }
+			});
+		});
+
+		//거래처리스트(customerList)의 row의 해당 데이터 form에 추가
+		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
+			var tr = $(this);
+			var td = tr.children();
+			$("input[name=no]").val(td.eq(1).text());
+			$("input[name=name]").val(td.eq(2).text());
+			$("#dialog-message").dialog('close');
+		});
+
+	});
+</script>
 </body>
 </html>

@@ -45,16 +45,15 @@ public class Menu14Service {
 		return dataResult;
 	}
 
-	public DataResult<SalesVo> getSerchList(SalesSearchVo vo, int page) {
+	public DataResult<SalesVo> getSerchList(SalesSearchVo vo, int page, int viewCount) {
 		DataResult<SalesVo> dataResult = new DataResult<>();
 		
 		int totalCount = menu14Repository.searchCount(vo);
-		int showCount = 11;
 		if(totalCount<=11) { // 조회데이터 수 보다 전체 데이터 수가 작은경우
-			showCount = totalCount;
+			viewCount = totalCount;
 		}
 		
-		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, showCount, 5);
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, viewCount, 5);
 		dataResult.setPagination(paginationUtil);
 		
 		vo.setPagination(paginationUtil);

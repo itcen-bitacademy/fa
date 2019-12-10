@@ -8,6 +8,7 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -31,61 +32,120 @@
 					<div class="span12">
 
 						<!-- PAGE CONTENT BEGINS -->
-						<form class="form-horizontal" id="form-customer" method="post">
+						<form class="form-horizontal" id="form-customer" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 							<div class="span12">
 								<div class="control-group">
 									<label class="control-label" for="customer">거래처</label>
 									<div class="controls">
-										<input type="text" name="firstNo" style="width: 150px;">
-										<input type="text" name="name1" readonly style="width: 200px;">
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span> ~ 
-										<input type="text" name="secondNo" style="width: 150px;">
-										<input type="text" name="name2" readonly style="width: 200px;">
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+										<input type="text" name="preNo" style="width: 150px;" value="${inputCustomer.preNo }">
+										<div class="input-append">
+										<input type="text" name="preName" readonly style="width: 200px;" value="${inputCustomer.preName }">
+										<span class="add-on">
+										<a href="#" id="a-firstCustomerInfo-dialog">
+										<i class="icon-search icon-on-right bigger-110"></i></a></span></div> ~
+										<input type="text" name="no" style="width: 150px;" value="${inputCustomer.no }">
+										<div class="input-append">
+											<input type="text" name="name" readonly style="width: 200px;" value="${inputCustomer.name }">
+											<span class="add-on">
+											<a href="#" id="a-secondCustomerInfo-dialog">
+												<i class="icon-search icon-on-right bigger-110"></i>
+											</a>
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
-
-							<div class="span6">
-								<div class="control-group">
-									<label class="control-label" for="item">종목</label>
-									<div class="controls">
-										<input type="text" id="item" name="item" style="width: 150px;">
-									</div>
-								</div>
 							
-								<div class="control-group">
-									<label class="control-label" for="deleteFlag">삭제포함여부</label>
-
-									<div class="controls">
-										<input id="deleteFlag" name="deleteFlag" type="radio" class="ace" value="N" checked="checked">
-										<span class="lbl">미포함</span>
-										<input name="deleteFlag" type="radio" class="ace" value="Y">
-										<span class="lbl">포함</span>
-									</div>
+							
+								<!-- 매입거래처 사업자번호, 상호명 Modal pop-up : start -->
+								<div id="dialog-message" title="매입거래처" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td>
+											<select id="searchOption" style="width:160px;">
+													<option value="no">사업자번호</option>
+													<option value="name">상호명</option>
+											</select>
+											<div class="input-append">
+												<input type="text" id="input-dialog-customerNo" style="width: 100px;" /> 
+												<a href="#" id="a-dialog-customerNo"> 
+													<span class="add-on" style="margin-bottom: 10px;">
+														<i class="icon-search icon-on-right bigger-110"></i>
+													</span>
+												</a>
+											</div>
+											</td>
+										</tr>
+									</table>
+									<!-- 사업자번호 및 상호명 데이터 리스트 -->
+									<table id="modal-customer-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">사업자번호</th>
+												<th class="center">상호명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-customerList">
+											
+										</tbody>
+									</table>
 								</div>
-							</div>
+								<!-- 매입거래처 사업자번호, 상호명 Modal pop-up : end -->
+								
+								
+
+							<div class="span4">
+		                        <div class="control-group">
+		                           <label class="control-label" for="item">종목</label>
+		                           <div class="controls">
+		                              <input type="text" id="item" name="item" style="width: 150px;" value="${inputCustomer.item }">
+		                           </div>
+		                        </div>
+		                     
+		                        <div class="control-group">
+		                           <label class="control-label" for="delete_flag">삭제포함여부</label>
+		
+		                           <div class="controls">
+		                           		<c:choose>
+		                           			<c:when test="${inputCustomer.deleteFlag == 'N'}">
+			                           			<input id="deleteFlag" name="deleteFlag" type="radio" class="ace" value="N" checked="checked">
+				                                <span class="lbl">미포함</span>
+				                                <input id="deleteFlag" name="deleteFlag" type="radio" class="ace" value="Y">
+				                                <span class="lbl">포함</span>
+		                           			</c:when>
+		                           			<c:otherwise>
+			                           			<input id="deleteFlag" name="deleteFlag" type="radio" class="ace" value="N">
+				                                <span class="lbl">미포함</span>
+				                                <input id="deleteFlag" name="deleteFlag" type="radio" class="ace" value="Y" checked="checked">
+				                                <span class="lbl">포함</span>
+		                           			</c:otherwise>
+		                           		</c:choose>
+		                              
+		                           </div>
+		                        </div>
+		                     </div>
 						
 							<div class="span6">
-								<div class="control-group">
-									<label class="control-label" for="insert_date">입력일자</label>
-										<div class="controls">
-											<div class="row-fluid input-append">
-											<input class="cl-date-picker" id="id-date-picker-1" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
-												<span class="add-on">
-												<i class="icon-calendar"></i>
-												</span>
-											</div>
-										</div>
-								</div>
-								
-								<div class="control-group">
-									<label class="control-label" for="manager_name">거래처 담당자</label>
-									<div class="controls">
-										<input type="text" name="managerName" style="width: 150px;">
-									</div>
-								</div>
-							</div>
+		                        <div class="control-group">
+		                           <label class="control-label" for="insert_date">입력일자</label>
+		                              <div class="controls">
+		                                 <div class="row-fluid input-append">
+		                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${inputCustomer.insertDay }"/>
+		                                    <span class="add-on">
+		                                    <i class="icon-calendar"></i>
+		                                    </span>
+		                                 </div>
+		                              </div>
+		                        </div>
+		                        
+		                        <div class="control-group">
+		                           <label class="control-label" for="manager_name">거래처 담당자</label>
+		                           <div class="controls">
+		                              <input type="text" name="managerName" id="manager_name" style="width: 150px;" value="${inputCustomer.managerName }">
+		                           </div>
+		                        </div>
+		                     </div>
 						</form>
 						
 							<div class="row-fluid">
@@ -100,57 +160,58 @@
 
 							<div class="row-fluid">
 								<div class="span12">
+								<label>총 ${dataResult.pagination.totalCnt }건</label>
 									<table id="customer-table" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-				                                 <th>사업자번호</th>
-				                                 <th>상호</th>
-				                                 <th>대표자</th>
-				                                 <th>법인번호</th>
-				                                 <th>주소</th>
-				                                 <th>전화번호</th>
-				                                 <th>업태</th>
-				                                 <th>종목</th>
-				                                 <th>개설일자</th>
-				                                 <th>관할사무소</th>
-				                                 <th>거래처담당자성명</th>
-				                                 <th>담당자이메일</th>
-				                                 <th>계좌번호</th>
-				                                 <th>예금주</th>
-				                                 <th>은행코드</th>
-				                                 <th>은행명</th>
-				                                 <th>입력일자</th>
-				                                 <th>입력담당자ID</th>
-				                                 <th>수정일자</th>
-				                                 <th>수정담당자ID</th>
-				                                 <th>삭제여부</th>
+				                                 <th class="center">사업자번호</th>
+				                                 <th class="center">상호</th>
+				                                 <th class="center">대표자</th>
+				                                 <th class="center">법인번호</th>
+				                                 <th class="center">주소</th>
+				                                 <th class="center">전화번호</th>
+				                                 <th class="center">업태</th>
+				                                 <th class="center">종목</th>
+				                                 <th class="center">개설일자</th>
+				                                 <th class="center">관할사무소</th>
+				                                 <th class="center">거래처담당자성명</th>
+				                                 <th class="center">담당자이메일</th>
+				                                 <th class="center">계좌번호</th>
+				                                 <th class="center">예금주</th>
+				                                 <th class="center">은행코드</th>
+				                                 <th class="center">은행명</th>
+				                                 <th class="center">입력일자</th>
+				                                 <th class="center">입력담당자ID</th>
+				                                 <th class="center">수정일자</th>
+				                                 <th class="center">수정담당자ID</th>
+				                                 <th class="center">삭제여부</th>
 											</tr>
 										</thead>
 
 										<tbody>
 											<c:forEach items="${customerVo }" var="customerVo" varStatus="status">
 												<tr>
-													<td>${customerVo.no }</td>
-													<td>${customerVo.name }</td>
-													<td>${customerVo.ceo }</td>
-													<td>${customerVo.corporationNo }</td>
-													<td>${customerVo.address }</td>
-													<td>${customerVo.phone }</td>
-													<td>${customerVo.conditions }</td>
-													<td>${customerVo.item }</td>
-													<td>${customerVo.openDate }</td>
-													<td>${customerVo.jurisdictionOffice }</td>
-													<td>${customerVo.managerName }</td>
-													<td>${customerVo.managerEmail }</td>
-													<td>${customerVo.depositNo }</td>
-													<td>${customerVo.depositHost }</td>
-													<td>은행코드</td>
-													<td>은행명</td>
-													<td>${customerVo.insertDay }</td>
-													<td>${customerVo.insertUserid }</td>
-													<td>${customerVo.updateDay }</td>
-													<td>${customerVo.updateUserid }</td>
-													<td>${customerVo.deleteFlag }</td>
+													<td class="center">${customerVo.no }</td>
+													<td class="left">${customerVo.name }</td>
+													<td class="left">${customerVo.ceo }</td>
+													<td class="left">${customerVo.corporationNo }</td>
+													<td class="left">${customerVo.address }</td>
+													<td class="left">${customerVo.phone }</td>
+													<td class="left">${customerVo.conditions }</td>
+													<td class="left">${customerVo.item }</td>
+													<td class="center">${customerVo.openDate }</td>
+													<td class="left">${customerVo.jurisdictionOffice }</td>
+													<td class="left">${customerVo.managerName }</td>
+													<td class="left">${customerVo.managerEmail }</td>
+													<td class="left">${customerVo.depositNo }</td>
+													<td class="left">${customerVo.depositHost }</td>
+													<td class="center">${customerVo.bankCode }</td>
+													<td class="center">${customerVo.bankName }</td>
+													<td class="center">${customerVo.insertDay }</td>
+													<td class="center">${customerVo.insertUserid }</td>
+													<td class="center">${customerVo.updateDay }</td>
+													<td class="center">${customerVo.updateUserid }</td>
+													<td class="center">${customerVo.deleteFlag }</td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -210,21 +271,113 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 	<script>
+	var tf;
+	
 	$(function() {
 		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
 		$(".chosen-select").chosen();
-	});
-	
-	//조회
-	$("#btn_select").click(function(){
-		$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list");
-		document.getElementById('form-customer').submit();
 		
-        return false;
+		// 매입거래처 팝업
+		$("#dialog-message").dialog({
+		       autoOpen : false
+		});
+		
+	    $("#a-firstCustomerInfo-dialog, #a-secondCustomerInfo-dialog").click(function() {
+	       tf = $(this).parent().prev();
+	       
+	       $("#dialog-message").dialog({
+	          title: "매입거래처 정보",
+	          title_html: true,
+	             resizable: false,
+	           height: 500,
+	           width: 400,
+	           modal: true,
+	           close: function() {
+	              $('#tbody-customerList tr').remove();
+	           },
+	           buttons: {
+	           "닫기" : function() {
+	                    $(this).dialog('close');
+	                    $('#tbody-customerList tr').remove();
+	               }
+	           }
+	       });
+	       $("#dialog-message").dialog('open');
+	    });
+	    
+		// 매입거래처 팝업 클릭시
+		$('#dialog-message-table').on('click', '#a-dialog-customerNo', function(event, ui) {
+			event.preventDefault();
+			 $("#tbody-customerList").find("tr").remove();
+			 
+			 var searchOption = $("#searchOption").val();
+			 var searchValue = $("#input-dialog-customerNo").val();
+			 
+			 // ajax 통신
+			 $.ajax({
+			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/gets?"+searchOption+"="+searchValue,
+			    contentType : "application/json; charset=utf-8",
+			    type: "get",
+			    dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			    data : "",
+			    statusCode: {
+			        404: function() {
+			          alert("page not found");
+			        }
+			    },
+			    success: function(data){
+			  	  if(data.success) {
+			  	  	$("#input-dialog-customerNo").val('');
+			  	  	var customerList = data.customerList;
+			  	  	
+			  	  	for(let c in customerList) {
+			  	  		$("#tbody-customerList").append("<tr>" +
+			                    "<td class='center'>" + customerList[c].no + "</td>" +
+			                    "<td class='left'>" + customerList[c].name + "</td>" +
+			                    "</tr>");
+			
+			  	  	}
+			  	  }
+			    },
+			    error: function(xhr, error){
+			       console.error("error : " + error);
+			    }
+			});
+		});
+			
+		// 매입거래처 리스트(customerList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
+		 var tr = $(this);
+		 var td = tr.children();
+		 
+		 $(tf).val(td.eq(1).text());
+		 $(tf).parent().prev().val(td.eq(0).text());
+		 $("#dialog-message").dialog('close');
+		});
+		
+		// 조회
+		$("#btn_select").click(function(){
+			document.getElementById('form-customer').submit();
+		});
+		
+		// 삭제포함여부 클릭시
+		$("input:radio[name=deleteFlag]").click(function()
+	    {
+			document.getElementById('form-customer').submit();
+	    });
+		
+		// 검색 Form에서 엔터키 클릭시
+		$('form input').keydown(function(e) {
+	        if (e.keyCode == 13) {
+	            $('form').submit();
+	        }
+	    });
 	});
 	
 	</script>

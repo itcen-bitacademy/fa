@@ -24,6 +24,7 @@
 				<h1 class="pull-left">매출세금계산서 현황조회</h1>
 			</div><!-- /.page-header -->
 			
+			<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 			<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="span12">
@@ -32,11 +33,11 @@
 										<div class="span6">
 											<label class="control-label" for="form-field-date">작 성 일 자</label>
 												<div class="controls">
-													<input class="span5 cl-date-picker" id="sales-date" name="sales-date1" type="text" data-date-format="yyyy-mm-dd"> 
+													<input class="span4 cl-date-picker" id="sales-date" name="sales-date1" type="text" data-date-format="yyyy-mm-dd"> 
 													<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 													&nbsp; ~ &nbsp;															
-													<input class="span5 cl-date-picker" id="sales-date" name="sales-date2" type="text" data-date-format="yyyy-mm-dd"> 
+													<input class="span4 cl-date-picker" id="sales-date" name="sales-date2" type="text" data-date-format="yyyy-mm-dd"> 
 													<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 												</div>
@@ -56,27 +57,12 @@
 											<div class="span6">
 												<label class="control-label" for="form-field-select-1">거래처</label>
 												<div class="controls">
-													<select class="chosen-select" id="customerlist" name="customerlist" data-placeholder="거래처">
+													<select class="span3 chosen-select" id="customerlist" name="customerlist" data-placeholder="거래처">
 														<option value="">거래처항목</option>
 														<c:forEach items="${customerlist }" var="clist">
 															<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
 														</c:forEach>
 														</select>
-														<!-- <input class="span6" type="text" id="sales-no" name="sales-no" value="" readonly> -->
-														<%-- <input class="span6" type="text" id="sales-no" name="sales-no" values="${customerlist.customerName }" readonly> --%>
-												</div>
-											</div>
-											
-											<div class="span6">
-												<label class="control-label span1" for="form-field-1">세금계산서 번호</label>
-												<div class="controls">
-													<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
-														<option value="">없음</option>
-														<c:forEach items="${listMainSection }" var="sectionVo">
-															<option value="${sectionVo.no }">${sectionVo.classification }</option>
-														</c:forEach>
-													</select>
-													<input class="span6" type="text" id="sales-no" name="sales-no" readonly>
 												</div>
 											</div>
 										</div>
@@ -84,86 +70,61 @@
 									
 									<div class="form-horizontal">
 										<div class="control-group">
-												<div class="span6">
-													<label class="control-label span2" for="form-field-1">품목명</label>
-														<div class="controls">
-														<select class="chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
-														<option value="">없음</option>
-														<c:forEach items="${listMainSection }" var="sectionVo">
-															<option value="${sectionVo.no }">${sectionVo.classification }</option>
-														</c:forEach>
-													</select>
-													<input class="span6" type="text" id="sales-no" name="sales-no" readonly>
-												</div>
-												</div>
-											
-											<div class="span6">	
-											<label class="control-label span2" for="form-field-1">영세</label>
+											<div class="span6">
+												<label class="control-label" for="form-field-1">세금계산서 번호</label>
 												<div class="controls">
-													<select class="chosen-select" id="zero" name="zero" data-placeholder="영세/비영세">
-														<option value="zero">yes</option>
-														<option value="no">no</option>
+													<select class="span3 chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
+															<option value="">없음</option>
+															<c:forEach items="${taxlist }" var="tlist">
+																<option value="${tlist.taxbillNo }">${tlist.taxbillNo } [${tlist.salesNo }]</option>
+															</c:forEach>
+													</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-horizontal">
+										<div class="control-group">
+											<div class="span6">
+												<label class="control-label" for="form-field-1">품목명</label>
+													<div class="controls">
+													<select class="span3 chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
+														<option value="">없음</option>
+														<c:forEach items="${itemlist }" var="ilist">
+															<option value="${ilist.itemCode }">${ilist.itemName }</option>
+														</c:forEach>
 													</select>
 												</div>
 											</div>
 										</div>
 									</div>
 									
-								<!-- <div class="form-horizontal">
-											<div class="control-group">
-													<div class="span6">
-														<div class="controls">
-														</div>
-													</div>
-												
-												<div class="span6">	
-													<div class="control-group">
-				
-														<div class="controls">
-															<label>
-																<input name="form-field-radio" type="radio" class="ace">
-																<span class="lbl">&nbsp;전체조회&nbsp;&nbsp;&nbsp;</span>
-																
-																<input name="form-field-radio" type="radio" class="ace">
-																<span class="lbl">&nbsp;승인&nbsp;&nbsp;</span>
-																
-																<input name="form-field-radio" type="radio" class="ace">
-																<span class="lbl">&nbsp;미승인 </span>
-															</label>
-														</div>
-														
-													</div>
-												</div>
-											</div>
-										</div> -->
 									<div class="hr hr-18 dotted"></div>
 									<div class="form-horizontal">
 										<div class="control-group">
-											<div class="span6">	
+											<div class="span10">	
 												<div class="control">
-													<label class="control-label">정렬순서</label>
-													<div class="controls">
-														<label>
-															<input name="form-field-radio" type="radio" class="ace">
-															<span class="lbl">&nbsp;최근순&nbsp;&nbsp;&nbsp;</span>
+														<span class="lbl">&nbsp;정렬순서&nbsp;&nbsp;&nbsp;</span>
+														
+														<span class="lbl">&nbsp;최근순&nbsp;</span>
+														<input name="form-field-radio" type="radio" class="ace">
 															
-															<input name="form-field-radio" type="radio" class="ace">
-															<span class="lbl">&nbsp;공급가액 순&nbsp;&nbsp;</span>
+														<span class="lbl">&nbsp;공급가액 순&nbsp;&nbsp;</span>
+														<input name="form-field-radio" type="radio" class="ace">
 															
-															<input name="form-field-radio" type="radio" class="ace">
-															<span class="lbl">&nbsp;품목명 순&nbsp;&nbsp;</span>
+														<span class="lbl">&nbsp;품목명 순&nbsp;&nbsp;</span>
+														<input name="form-field-radio" type="radio" class="ace">
 															
-															<input name="form-field-radio" type="radio" class="ace">
-															<span class="lbl">&nbsp;거래처명 순&nbsp;&nbsp;</span>
+														<span class="lbl">&nbsp;거래처명 순&nbsp;&nbsp;</span>
+														<input name="form-field-radio" type="radio" class="ace">
 															
-															<button class="btn btn-small btn-info">조회</button>
-														</label>
-													</div>
+														<span class="lbl">&nbsp;과세구분&nbsp;&nbsp;</span>
+														<select class="chosen-select" id="zero" name="zero" data-placeholder="영세/비영세">
+															<option value="zero">yes</option>
+															<option value="no">no</option>
+														</select>
+														<button class="btn btn-small btn-info">조회</button>
 												</div>
-											</div>
-											
-											<div class="span6">
-													<div class="controls"></div>
 											</div>
 										</div>
 									</div>
@@ -175,43 +136,45 @@
 									<tr>
 										<th>번 호</th>
 										<th>세금계산서번호</th>
-										<th>작성일자</th>
-										<th>매입번호</th>
-										<th>등록번호</th>
+										<th>세금계산서일자</th>
+										<th>매출번호</th>
+										<th>매출일자</th>
 										<th>거래처명</th>
+										<th>거래처코드</th>
+										<th>품목명</th>
 										<th>대표자명</th>
 										<th>담당자명</th>
-										<th>품목명</th>
-										<th>수량</th>
-										<th>입고일자</th>
-										<th>출고일자</th>
-										<th>공급가액</th>
-										<th>세액</th>
+										<th>은행명</th>
+										<th>계좌번호</th>
+										<th>예금주</th>
+										<th>총 공급가액</th>
+										<th>총 세액</th>
 										<th>비고</th>
 										<th>과세유형</th>
-										<th>삭제여부</th>
 									</tr>
 								</thead>
 								<tbody>
+									<c:forEach items="${alllist }" var = "alllist" varStatus="status">
 									<tr>
-										<td>1</td>
-										<td>1102-4448-6665</td>
-										<td>19/11/22</td>
-										<td>110223</td>
-										<td>1123-5569-7784</td>
-										<td>삼성전자</td>
-										<td>이재용</td>
-										<td>안태영</td>
-										<td>반도체</td>
-										<td>1</td>
-										<td>19/11/13</td>
-										<td>19/11/19</td>
-										<td>1,800,000</td>
-										<td>180,000</td>
-										<td>-</td>
-										<td>영세</td>
-										<td>F</td>
+										<td>${status.count }</td>
+										<td>${alllist.taxbillNo }</td>
+										<td>${alllist.writeDate }</td>
+										<td>${alllist.salesNo }</td>
+										<td>${alllist.salesDate }</td>
+										<td>${alllist.customerName }</td>
+										<td>${alllist.customerCode }</td>
+										<td>${alllist.itemName }</td>
+										<td>${alllist.ceo }</td>
+										<td>${alllist.managerName }</td>
+										<td>${alllist.bankName }</td>
+										<td>${alllist.depositNo }</td>
+										<td>${alllist.depositHost }</td>
+										<td>${alllist.totalSupplyValue }</td>
+										<td>${alllist.totalTaxValue }</td>
+										<td>${alllist.voucherUse }</td>
+										<td>${alllist.taxType }</td>
 									</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div><!-- /span -->
@@ -235,6 +198,7 @@
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
+</div>
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <!-- basic scripts -->

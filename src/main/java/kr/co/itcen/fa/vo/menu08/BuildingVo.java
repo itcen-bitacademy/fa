@@ -10,25 +10,23 @@ public class BuildingVo {
 	private String customerName;
 	private String managerName;
 	private String taxbillNo;
-	private String voucherNo;
+	private long voucherNo;
 	private String sectionNo;
 	private String sectionName;
 	private int area;
-	private int combineNo;
+	private String combineNo;
 	private String ownerName;
 	private String wideAddress;
 	private String cityAddress;
-	private String localAddress;
 	private String detailAddress;
 	private int floor;
 	private int basement;
 	private String purpose;
 	private String material;
 	private int publicValue;
-	private int acqPrice;
-	private int etcCost;
-	private int regTax;
-	private int acqTax;
+	private long acqPrice;
+	private long etcCost;
+	private long acqTax;
 	private String payDate;
 	private String taxKind;
 	private String flag;
@@ -36,7 +34,6 @@ public class BuildingVo {
 	private String insertDay;
 	private String updateUserid;
 	private String updateDay;
-	
 	
 	public String getId() {
 		return id;
@@ -50,14 +47,12 @@ public class BuildingVo {
 	public void setCustomerNo(String customerNo) {
 		this.customerNo = customerNo;
 	}
-	
 	public String getCustomerName() {
 		return customerName;
 	}
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	
 	public String getManagerName() {
 		return managerName;
 	}
@@ -70,10 +65,10 @@ public class BuildingVo {
 	public void setTaxbillNo(String taxbillNo) {
 		this.taxbillNo = taxbillNo;
 	}
-	public String getVoucherNo() {
+	public long getVoucherNo() {
 		return voucherNo;
 	}
-	public void setVoucherNo(String voucherNo) {
+	public void setVoucherNo(long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 	public String getSectionNo() {
@@ -82,16 +77,22 @@ public class BuildingVo {
 	public void setSectionNo(String sectionNo) {
 		this.sectionNo = sectionNo;
 	}
+	public String getSectionName() {
+		return sectionName;
+	}
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
 	public int getArea() {
 		return area;
 	}
 	public void setArea(int area) {
 		this.area = area;
 	}
-	public int getCombineNo() {
+	public String getCombineNo() {
 		return combineNo;
 	}
-	public void setCombineNo(int combineNo) {
+	public void setCombineNo(String combineNo) {
 		this.combineNo = combineNo;
 	}
 	public String getOwnerName() {
@@ -111,12 +112,6 @@ public class BuildingVo {
 	}
 	public void setCityAddress(String cityAddress) {
 		this.cityAddress = cityAddress;
-	}
-	public String getLocalAddress() {
-		return localAddress;
-	}
-	public void setLocalAddress(String localAddress) {
-		this.localAddress = localAddress;
 	}
 	public String getDetailAddress() {
 		return detailAddress;
@@ -154,28 +149,22 @@ public class BuildingVo {
 	public void setPublicValue(int publicValue) {
 		this.publicValue = publicValue;
 	}
-	public int getAcqPrice() {
+	public long getAcqPrice() {
 		return acqPrice;
 	}
-	public void setAcqPrice(int acqPrice) {
+	public void setAcqPrice(long acqPrice) {
 		this.acqPrice = acqPrice;
 	}
-	public int getEtcCost() {
+	public long getEtcCost() {
 		return etcCost;
 	}
-	public void setEtcCost(int etcCost) {
+	public void setEtcCost(long etcCost) {
 		this.etcCost = etcCost;
 	}
-	public int getRegTax() {
-		return regTax;
-	}
-	public void setRegTax(int regTax) {
-		this.regTax = regTax;
-	}
-	public int getAcqTax() {
+	public long getAcqTax() {
 		return acqTax;
 	}
-	public void setAcqTax(int acqTax) {
+	public void setAcqTax(long acqTax) {
 		this.acqTax = acqTax;
 	}
 	public String getPayDate() {
@@ -220,23 +209,19 @@ public class BuildingVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
-	public String getSectionName() {
-		return sectionName;
-	}
-	public void setSectionName(String sectionName) {
-		this.sectionName = sectionName;
-	}
 	@Override
 	public String toString() {
 		return "BuildingVo [id=" + id + ", customerNo=" + customerNo + ", customerName=" + customerName
 				+ ", managerName=" + managerName + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
 				+ ", sectionNo=" + sectionNo + ", sectionName=" + sectionName + ", area=" + area + ", combineNo="
 				+ combineNo + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress + ", cityAddress="
-				+ cityAddress + ", localAddress=" + localAddress + ", detailAddress=" + detailAddress + ", floor="
+				+ cityAddress + ", detailAddress=" + detailAddress + ", floor="
 				+ floor + ", basement=" + basement + ", purpose=" + purpose + ", material=" + material
-				+ ", publicValue=" + publicValue + ", acqPrice=" + acqPrice + ", etcCost=" + etcCost + ", regTax="
-				+ regTax + ", acqTax=" + acqTax + ", payDate=" + payDate + ", taxKind=" + taxKind + ", flag=" + flag
+				+ ", publicValue=" + publicValue + ", acqPrice=" + acqPrice + ", etcCost=" + etcCost 
+				+ ", acqTax=" + acqTax + ", payDate=" + payDate + ", taxKind=" + taxKind + ", flag=" + flag
 				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
 				+ ", updateDay=" + updateDay + "]";
 	}
+	
+	
 }

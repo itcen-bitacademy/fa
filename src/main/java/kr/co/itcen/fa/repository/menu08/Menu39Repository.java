@@ -1,11 +1,14 @@
 package kr.co.itcen.fa.repository.menu08;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.BuildingVo;
@@ -23,21 +26,18 @@ public class Menu39Repository {
 	@Autowired
 	private SqlSession sqlSession;
 
-	/*
-	public void test() {
-		TestVo testVo = new TestVo();
-		testVo.setName("김민준관리!");
-		sqlSession.insert("menu39.save", testVo);
-	}
-	*/
 	
 	public Boolean add(BuildingVo vo) {
 		int count = sqlSession.insert("menu39.add", vo);
 		return count == 1;
 	}
 
-	public List<BuildingVo> getList(String id) {
-		List<BuildingVo> list = sqlSession.selectList("menu39.list",id);
+	public List<BuildingVo> list(String id, PaginationUtil pagination) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("pagination", pagination);
+		List<BuildingVo> list = sqlSession.selectList("menu39.list", map);
+		
 		return list;
 	}
 	
@@ -59,5 +59,13 @@ public class Menu39Repository {
 	public List<CustomerVo> getCustomer() {
 		List<CustomerVo> customerList = sqlSession.selectList("menu39.getCustomer");
 		return customerList;
+	}
+
+	public CustomerVo getBankInfo(String customerNo) {
+		return sqlSession.selectOne("menu39.getBankInfo", customerNo);
+	}
+
+	public int listCount(String id) {
+		return sqlSession.selectOne("menu39.pageCount", id);
 	}
 }

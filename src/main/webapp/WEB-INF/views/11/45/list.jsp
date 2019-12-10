@@ -8,6 +8,54 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+.radio {
+	float: left;
+	width: 10%;
+}
+
+.prod-list-opts {
+	padding: 10px 15px 9px 11px;
+	position: relative;
+}
+
+.prod-list-opts .order-list {
+    margin: 3px 0 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.prod-list-opts .order-item {
+    float: left;
+    padding: 0 9px 0 8px;
+    
+}
+
+.prod-list-opts li {
+    list-style: none;
+    float: left;
+}
+
+.checkbox {
+	float: left;
+}
+
+form {
+	margin-bottom: 0px;
+}
+
+/* table columns  */
+.first-column {width:170px; padding-left:20px;}
+.second-column {width:400px;}
+.third-column {width:120px;}
+.fourth-column {width:70px;}
+.fifth-column {width:200px;}
+.sixth-column {padding-left:20px;}
+
+/* second row */
+.span2 {padding-left:40px; padding-top:20px;}
+
+</style>
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -15,104 +63,114 @@
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
+			
 				<div class="page-header position-relative">
 					<h1 class="pull-left">은행코드 현황조회</h1>
-				</div>
-				<!-- /.page-header -->
+					<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
+				</div><!-- /.page-header -->
 				
-				<div class="row-fluid">
-			
-				<form class="form-horizontal">
-				
-				<div class="span4">
-					<div class="control-group">
-								<label class="control-label" for="form-field-codename">은행명</label>
-								<div class="controls">
-									<input class="span6" type="text" id="name"
-										name="name" placeholder="은행명" />
-							</div>
-						</div>
-					</div>
-					
-					<div class="span4">
-						<div class="control-group">
-							<label class="control-label" for="form-field-codename">지점명</label>
-							<div class="controls">
-								<input class="span5" type="text" id="store" name="store" placeholder="지점명"/>
-							</div>
-						</div>
-					</div>
-					
-				<div class="span4">	
-					<div class="control-group">
-						<label class="control-label" for="form-field-codename">거래시작일</label>
-							<div class="controls">
-							<div class="row-fluid input-append">
-								<input class="span5 date-picker" id="id-date-picker-1"
-										name="dealDate" type="text" data-date-format="yyyy-mm-dd" /> <span
-										class="add-on"><i class="icon-calendar"></i></span>
-								</div>
-							</div>
-						</div>
-					</div>
-				
-					<br>
-					<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-					<div class="pull-right">
-						<label >
-						<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
-						<span class="lbl">삭제포함</span>
-						</label>
-					</div>
-					</form>
-				</div>
-
 				<!-- PAGE CONTENT BEGINS -->
-				<div class="row-fluid">
-					<div class="span12">
-						<br>
-						<table id="simple-table" class="table  table-bordered table-hover">
-                          <thead>
-                              <tr>
-                                  <th class="center">은행코드</th>
-                                  <th class="center">은행명</th>
-                                  <th class="center">지점명</th>
-                                  <th class="center">거래시작일</th>
-                                  <th class="center">전화번호</th>
-                                  <th class="center">FAX</th>
-                                  <th class="center">우편번호</th>
-                                  <th class="center">은행주소</th>
-                                  <th class="center">담당자</th>
-                                  <th class="center">담당자전화번호</th>
-                                  <th class="center">담당자이메일</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                 	<c:forEach items="${dataResult.datas }" var="bankvo">
-                                    <tr>
-                                       <td class="center">${bankvo.code }</td>
-                                       <td class="center">${bankvo.name }</td>
-                                       <td class="center">${bankvo.store }</td>
-                                       <td class="center">${bankvo.dealDate }</td>
-                                       <td class="center">${bankvo.phone }</td>
-                                       <td class="center">${bankvo.fax }</td>
-                                       <td class="center">${bankvo.post }</td>
-                                       <td class="center">${bankvo.address }</td>
-                                       <td class="center">${bankvo.mgr }</td>
-                                       <td class="center">${bankvo.mgrPhone }</td>
-                                       <td class="center">${bankvo.mgrEmail }</td>
-                                    </tr>
-                                    </c:forEach>
-                                 </tbody>
-                              </table>
+				<div>
+				<div>
+				<form class="form-horizontal">
+					<table style="width:100%;">
+						<tbody>
+						<tr>
+							<td class="first-column"><h4>은행명</h4></td>
+							<td class="second-column">
+				                <input type="text" name="name" />
+				            </td>
+							
+					
+							<td class="third-column"><h4>지점명</h4></td>
+							<td class="fourth-column">
+				                <input type="text" name="store" />
+				            </td>
+					
+					
+							<td class="fifth-column"><h4>거래시작일</h4></td>
+							<td class="sixth-column">
+								<div class="control-group">
+									<div class="row-fluid input-append">
+										<input class="span7 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
+										<span class="add-on">
+										<i class="icon-calendar"></i>
+										</span>
+									</div>
+								</div>
+							</td>
+					
+							<td class="seventh-column" >
+								<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							</td>
+												
+						</tr>
+						</tbody>
+					</table>
+					
+					<div class="row-fluid">
+<!-- 						<div class="span2"> -->
+							<div class="checkbox">
+								<label >
+									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
+									<span class="lbl">삭제포함</span>
+								</label>
+							</div>
 					</div>
-					<!-- /span -->
-				</div>
-				<!-- PAGE CONTENT ENDS -->
-			</div><!-- /.page-content -->
-			
-			<div class="pagination">
-				<ul>
+				</form>
+			</div>
+		</div>
+		<!-- PAGE CONTENT BEGINS -->
+		
+		<table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                	<th class="center">
+						<label class="pos-rel">
+							<input type="checkbox" class="ace" />
+							<span class="lbl"></span>
+						</label>
+					</th>
+                   <th class="center">은행코드</th>
+                   <th class="center">은행명</th>
+                   <th class="center">지점명</th>
+                   <th class="center">거래시작일</th>
+                   <th class="center">전화번호</th>
+                   <th class="center">FAX</th>
+                   <th class="center">우편번호</th>
+                   <th class="center">은행주소</th>
+                   <th class="center">담당자</th>
+                   <th class="center">담당자전화번호</th>
+                   <th class="center">담당자이메일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${dataResult.datas }" var="bankvo">
+                      <tr>
+                      	<td class="center">
+                     	 	<label class="pos-rel">
+								<input type="checkbox" class="ace" /> 
+								<span class="lbl"></span>
+							</label>
+						</td>
+                      	<td class="center">${bankvo.code }</td>
+                        <td class="center">${bankvo.name }</td>
+                        <td class="center">${bankvo.store }</td>
+                        <td class="center">${bankvo.dealDate }</td>
+                        <td class="center">${bankvo.phone }</td>
+                        <td class="center">${bankvo.fax }</td>
+                        <td class="center">${bankvo.post }</td>
+                        <td class="center">${bankvo.address }</td>
+                        <td class="center">${bankvo.mgr }</td>
+                        <td class="center">${bankvo.mgrPhone }</td>
+                        <td class="center">${bankvo.mgrEmail }</td>
+                     </tr>
+				</c:forEach>
+           </tbody>
+       </table>
+					
+		<div class="pagination">
+			<ul>
 				<c:choose>
 					<c:when test="${dataResult.pagination.prev }">
 						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri} &page=${dataResult.pagination.startPage - 1 }">
@@ -144,8 +202,10 @@
 							</c:choose>
 				</ul>
 			</div>
-		</div><!-- /.main-content -->
-	</div><!-- /.main-container -->
+		</div><!-- /.page-content -->
+	</div><!-- /.main-content -->
+</div><!-- /.main-container -->
+
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>

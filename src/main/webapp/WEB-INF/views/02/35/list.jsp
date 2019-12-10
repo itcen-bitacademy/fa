@@ -56,7 +56,7 @@
 			 
 			 // ajax 통신
 			 $.ajax({
-			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/gets?depositNo=" + depositNo,
+			    url: "${pageContext.request.contextPath }/api/deposit/gets?depositNo=" + depositNo,
 			    contentType : "application/json; charset=utf-8",
 			    type: "get",
 			    dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -155,6 +155,9 @@
 		
 		// 취소 cancel
 		$("#btn_cancel").click(function(){
+			// 입력버튼 활성화
+			$("#btn_insert").prop("disabled", false);
+			
 			$("#no").val('');					//사업자번호
 			$("#preNo").val('');				//사업자번호
 			$("#bsname").val('');				//상호
@@ -179,6 +182,9 @@
 		
 		// table-tr 클릭시 input에 데이터 뿌리기	
 		$("#customer-table tr").click(function(){ 	
+			// 입력버튼 비활성화
+			$("#btn_insert").prop("disabled", true);
+			
 			var str = ""
 			var tdArr = new Array();	// 배열 선언
 			
@@ -241,41 +247,7 @@
 				}
 			});	
 		}
-	    
-	    
-	    
 	});
-	</script>
-	
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			today: "Today",
-			clear: "Clear",
-			format: "yyyy-mm-dd",
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart: 0
-			};
-	
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
 	</script>
 	
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -369,8 +341,10 @@
 									<label class="control-label" for="address">주소</label>
 									<div class="controls">
 										<input type="text" id="zipCode" name="zipCode" readonly style="width: 60px;"> 
-										<input type="text" id="address" name="address" readonly style="width: 200px;"> 
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon" onclick="execDaumPostcode()"></i></span>
+										<div class="input-append">
+											<input type="text" id="address" name="address" readonly style="width: 200px;"> 
+											<span class="add-on"><i class="icon-search icon-on-right bigger-110" onclick="execDaumPostcode()"></i></span>
+										</div>	
 										<br>
 										<br> 
 										<input type="text" id="detailAddress" name="detailAddress" style="width: 330px;">
@@ -406,10 +380,12 @@
 								<div class="control-group">
 									<label class="control-label" for="depositNo">입금계좌번호</label>
 									<div class="controls">
-										<input type="text" id="depositNo" name="depositNo" style="width: 200px;"> 
-										<a href="#" id="a-bankaccountinfo-dialog">
-										<span class="btn btn-small btn-info">
-										<i class="icon-search nav-search-icon"></i></span></a>
+										<div class="input-append">
+											<input type="text" id="depositNo" name="depositNo" style="width: 200px;"> 
+											<span class="add-on">
+											<a href="#" id="a-bankaccountinfo-dialog">
+											<i class="icon-search icon-on-right bigger-110"></i></a></span>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -537,27 +513,27 @@
 				                                       <span class="lbl"></span>
 				                                    </label>
 				                                 </th>
-				                                 <th>사업자번호</th>
-				                                 <th>상호</th>
-				                                 <th>대표자</th>
-				                                 <th>법인번호</th>
-				                                 <th>주소</th>
-				                                 <th>전화번호</th>
-				                                 <th>업태</th>
-				                                 <th>종목</th>
-				                                 <th>개설일자</th>
-				                                 <th>관할사무소</th>
-				                                 <th>거래처담당자성명</th>
-				                                 <th>담당자이메일</th>
-				                                 <th>계좌번호</th>
-				                                 <th>예금주</th>
-				                                 <th>은행코드</th>
-				                                 <th>은행명</th>
-				                                 <th>입력일자</th>
-				                                 <th>입력담당자ID</th>
-				                                 <th>수정일자</th>
-				                                 <th>수정담당자ID</th>
-				                                 <th>삭제여부</th>
+				                                 <th class="center">사업자번호</th>
+				                                 <th class="center">상호</th>
+				                                 <th class="center">대표자</th>
+				                                 <th class="center">법인번호</th>
+				                                 <th class="center">주소</th>
+				                                 <th class="center">전화번호</th>
+				                                 <th class="center">업태</th>
+				                                 <th class="center">종목</th>
+				                                 <th class="center">개설일자</th>
+				                                 <th class="center">관할사무소</th>
+				                                 <th class="center">거래처담당자성명</th>
+				                                 <th class="center">담당자이메일</th>
+				                                 <th class="center">계좌번호</th>
+				                                 <th class="center">예금주</th>
+				                                 <th class="center">은행코드</th>
+				                                 <th class="center">은행명</th>
+				                                 <th class="center">입력일자</th>
+				                                 <th class="center">입력담당자ID</th>
+				                                 <th class="center">수정일자</th>
+				                                 <th class="center">수정담당자ID</th>
+				                                 <th class="center">삭제여부</th>
 											</tr>
 										</thead>
 
@@ -570,27 +546,27 @@
 															<span class="lbl"></span>
 														</label>
 													</td>
-													<td>${customerVo.no }</td>
-													<td>${customerVo.name }</td>
-													<td>${customerVo.ceo }</td>
-													<td>${customerVo.corporationNo }</td>
-													<td>${customerVo.address }</td>
-													<td>${customerVo.phone }</td>
-													<td>${customerVo.conditions }</td>
-													<td>${customerVo.item }</td>
-													<td>${customerVo.openDate }</td>
-													<td>${customerVo.jurisdictionOffice }</td>
-													<td>${customerVo.managerName }</td>
-													<td>${customerVo.managerEmail }</td>
-													<td>${customerVo.depositNo }</td>
-													<td>${customerVo.depositHost }</td>
-													<td>은행코드</td>
-													<td>은행명</td>
-													<td>${customerVo.insertDay }</td>
-													<td>${customerVo.insertUserid }</td>
-													<td>${customerVo.updateDay }</td>
-													<td>${customerVo.updateUserid }</td>
-													<td>${customerVo.deleteFlag }</td>
+													<td class="center">${customerVo.no }</td>
+													<td class="left">${customerVo.name }</td>
+													<td class="left">${customerVo.ceo }</td>
+													<td class="left">${customerVo.corporationNo }</td>
+													<td class="left">${customerVo.address }</td>
+													<td class="left">${customerVo.phone }</td>
+													<td class="left">${customerVo.conditions }</td>
+													<td class="left">${customerVo.item }</td>
+													<td class="center">${customerVo.openDate }</td>
+													<td class="left">${customerVo.jurisdictionOffice }</td>
+													<td class="left">${customerVo.managerName }</td>
+													<td class="left">${customerVo.managerEmail }</td>
+													<td class="left">${customerVo.depositNo }</td>
+													<td class="left">${customerVo.depositHost }</td>
+													<td class="center">${customerVo.bankCode }</td>
+													<td class="center">${customerVo.bankName }</td>
+													<td class="center">${customerVo.insertDay }</td>
+													<td class="center">${customerVo.insertUserid }</td>
+													<td class="center">${customerVo.updateDay }</td>
+													<td class="center">${customerVo.updateUserid }</td>
+													<td class="center">${customerVo.deleteFlag }</td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -617,6 +593,36 @@
 	
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-
+	
+	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+			};
+	
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode: 4,
+				minViewMode: 1,
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+	
+			$('.cl-date-picker').datepicker({
+				language: 'ko'
+			}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+		})
+	</script>
 </body>
 </html>

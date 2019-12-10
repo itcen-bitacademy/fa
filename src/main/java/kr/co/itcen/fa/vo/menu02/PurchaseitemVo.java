@@ -11,22 +11,50 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("purchaseitem33vo")
 public class PurchaseitemVo {
-	private String no;					//품목코드
-	private String name;				//품목명
-	private Long price;					//단가
-	private String producedate;			//생산일자
-	private String purpose;				//사용용도
-	private String standard;			//규격
-	private String sectioncode;			//분류코드
-	private String factorycode;			//공장코드
-	private String deleteflag;			//삭제여부
-	private String insertuserid;		//입력자
-	private String insertday;			//입력날짜
-	private String updateuserid;		//수정자
-	private String updateday;			//수정날짜
-	private String sectionname;			//분류명
-	private String managername;			//생산담당자명
+	private String no;						//품목코드
+	private String name;					//품목명
+	private Long price;						//단가
+	private String producedate;				//생산일자
+	private String purpose;					//사용용도
+	private String standard;				//규격
+	private String sectioncode;				//분류코드
+	private String factorycode;				//공장코드
+	private String deleteflag;				//삭제여부
+	private String insertuserid;			//입력자
+	private String insertday;				//입력날짜
+	private String updateuserid;			//수정자
+	private String updateday;				//수정날짜
+	private String sectionname;				//분류명
+	private String managername;				//생산담당자명
+	private String factoryname;				//공장명
+	private String factorypostaddress;		//우편번호
+	private String factoryroadaddress;		//도로명주소
+	private String factorydetailaddress;	//세부주소
 	
+	public String getFactoryname() {
+		return factoryname;
+	}
+	public void setFactoryname(String factoryname) {
+		this.factoryname = factoryname;
+	}
+	public String getFactorypostaddress() {
+		return factorypostaddress;
+	}
+	public void setFactorypostaddress(String factorypostaddress) {
+		this.factorypostaddress = factorypostaddress;
+	}
+	public String getFactoryroadaddress() {
+		return factoryroadaddress;
+	}
+	public void setFactoryroadaddress(String factoryroadaddress) {
+		this.factoryroadaddress = factoryroadaddress;
+	}
+	public String getFactorydetailaddress() {
+		return factorydetailaddress;
+	}
+	public void setFactorydetailaddress(String factorydetailaddress) {
+		this.factorydetailaddress = factorydetailaddress;
+	}
 	public String getManagername() {
 		return managername;
 	}
@@ -123,6 +151,8 @@ public class PurchaseitemVo {
 				+ ", purpose=" + purpose + ", standard=" + standard + ", sectioncode=" + sectioncode + ", factorycode="
 				+ factorycode + ", deleteflag=" + deleteflag + ", insertuserid=" + insertuserid + ", insertday="
 				+ insertday + ", updateuserid=" + updateuserid + ", updateday=" + updateday + ", sectionname="
-				+ sectionname + ", managername=" + managername + "]";
+				+ sectionname + ", managername=" + managername + ", factoryname=" + factoryname
+				+ ", factorypostaddress=" + factorypostaddress + ", factoryroadaddress=" + factoryroadaddress
+				+ ", factorydetailaddress=" + factorydetailaddress + "]";
 	}
 }

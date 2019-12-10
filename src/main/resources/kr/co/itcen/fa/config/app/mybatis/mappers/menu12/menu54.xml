@@ -20,4 +20,44 @@
 			select distinct customer_code as customerCode, customer_name as customerName from tb_sell_taxbill;
 		]]>
 	</select>
+	
+	<select id="salesitems" resultType="selltaxbill12vo">
+		<![CDATA[
+		select distinct tbs.item_code as itemCode, tbs.item_name as itemName, tst.sales_date as writeDate from tb_sales tbs, tb_sell_taxbill tst
+		where tbs.sales_no = tst.sales_no;
+		]]>
+	</select>
+	
+	<select id="taxbilllist" resultType="selltaxbill12vo" >
+		<![CDATA[
+			select taxbill_no as taxbillNo, sales_no as salesNo from tb_sell_taxbill;
+		]]>
+	</select>
+	
+	<select id="getaxbilllist" resultType="selltaxbill12vo">
+		<![CDATA[
+			select 
+			tst.taxbill_no as taxbillNo,
+			tst.write_date as writeDate,
+			tst.sales_no as salesNo,
+			tst.sales_date as salesDate,
+			tst.customer_name as customerName,
+			tst.customer_code as customerCode,
+			tbs.item_name as itemName,
+			tst.ceo as ceo,
+			tst.manager_name as managerName,
+			tst.bank_name as bankName,
+			tst.deposit_no as depositNo,
+			tst.deposit_post as depositHost,
+			tst.total_supply_value as totalSupplyValue, 
+			tst.total_tax_value as totalTaxValue,
+			tst.voucher_use as voucherUse, 
+			tst.tax_type as taxType
+			from tb_sell_taxbill as tst, tb_sales as tbs
+			order by 
+			tst.taxbill_no desc,
+			tst.write_date desc;
+		]]>
+	</select>
+
 </mapper>

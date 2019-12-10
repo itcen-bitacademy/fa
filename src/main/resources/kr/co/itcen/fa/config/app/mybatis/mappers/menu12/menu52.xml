@@ -2,11 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu52">
 	
-	<select id="count" resultType="int">
+	<select id="count" parameterType="salescustomervo" resultType="int">
 		<![CDATA[
 		select count(*)
 		from tb_salescustomer
+		where 1=1
 		]]>
+		<if test='deleteFlag == "N" '>
+			<![CDATA[
+			and delete_flag = #{deleteFlag }
+			]]>	
+		</if>
+		<if test="item != null and !item.equals('')">
+			<![CDATA[
+			and item like concat('%', #{item }, '%')
+			]]>	
+		</if>
+		<if test="insertDay != null and !insertDay.equals('') ">
+			<![CDATA[
+			and insert_day = #{insertDay }
+			]]>	
+		</if>
+		<if test="managerName != null and !managerName.equals('') ">
+			<![CDATA[
+			and manager_name = #{managerName }
+			]]>	
+		</if>
+		<if test="no != null and !no.equals('') ">
+			<![CDATA[
+			and no >= #{no }
+			]]>	
+		</if>
+		<if test="preNo != null and !preNo.equals('') ">
+			<![CDATA[
+			and no <= #{preNo }
+			]]>	
+		</if>
 	</select>
 	
 	<select id="findAllCustomer" parameterType="map" resultType="salescustomervo">
@@ -27,7 +58,7 @@
 		</if>
 		<if test="customer.item != null and !customer.item.equals('')">
 			<![CDATA[
-			and item = #{customer.item }
+			and item like concat('%', #{customer.item }, '%')
 			]]>	
 		</if>
 		<if test="customer.insertDay != null and !customer.insertDay.equals('') ">
@@ -56,4 +87,32 @@
 		]]>
 	</select>
 	
+	<select id="gets" parameterType="map" resultType="salescustomervo">
+		<![CDATA[
+			select	no, 
+			      	name
+			  from	tb_salescustomer
+			  where delete_flag = "N"
+		]]>
+		<if test="no!=null and !no.equals('')">
+			<![CDATA[
+				  and no like CONCAT('%',#{no},'%')
+			]]>
+		</if>
+		<if test="name!=null and !name.equals('')">
+			<![CDATA[
+				  and name like CONCAT('%',#{name},'%')
+			]]>
+		</if>  
+	</select>
+	
+	<select id="get" parameterType="string" resultType="salescustomervo">
+		<![CDATA[
+			select	no, 
+			      	name
+			  from	tb_salescustomer
+			  where delete_flag = "N"
+			  and no = #{_parameter }
+		]]>
+	</select>
 </mapper>

@@ -43,28 +43,45 @@ public class Menu33Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list"})
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
 					   @RequestParam(value="page", required=false, defaultValue="1") int page,
+					   @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
 					   Model model) {
-		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList();
 		
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
 		List<SectionVo> sectionList = menu33Service.getSectionList();
 		List<SectionVo> factoryList = menu33Service.getFactorysectionList();
 		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
 		
-		model.addAttribute("purchaseitemList", purchaseitemList);
-		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList);
+		model.addAttribute("purchaseitemListall", purchaseitemListall); //모든 데이터
+		model.addAttribute("purchaseitemList", purchaseitemList); //5페이지씩 데이터 55개
+		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList); //한페이지 데이터 11개
 		model.addAttribute("sectionList", sectionList);
 		model.addAttribute("factoryList", factoryList);
+		model.addAttribute("cur_page", page);
+		model.addAttribute("page_group", page_group);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
-	public List<PurchaseitemVo> paging(@RequestParam(value="page", required=false, defaultValue="1") int page) {
+	public Map<String, Object> paging(@RequestParam(value="page", required=false, defaultValue="1") int page,
+									  @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
+									  Model model) {
 		System.out.println(page);
 		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
 		
-		return pagepurchaseitemList;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("purchaseitemListall", purchaseitemListall);
+		map.put("purchaseitemList", purchaseitemList);
+		map.put("pagepurchaseitemList", pagepurchaseitemList);
+		map.put("cur_page", page);
+		map.put("page_group", page_group);
+		
+		return map;
 	}
 	
 	@ResponseBody
@@ -169,10 +186,11 @@ public class Menu33Controller {
 	
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/delete")
-	public String delete(@ModelAttribute PurchaseitemVo purchaseitemVo,
- 			 			 @ModelAttribute FactoryVo factoryVo,
- 			 			 @RequestParam(value="factoryname", required=false) String factory_name,
- 			 			 HttpServletRequest request) {
+	public Map<String, Object> delete(@ModelAttribute PurchaseitemVo purchaseitemVo,
+ 			 			 			  @ModelAttribute FactoryVo factoryVo,
+ 			 			 			  @RequestParam(value="factoryname", required=false) String factory_name,
+ 			 			 			  @RequestParam(value="page", required=false, defaultValue="1") int page,
+ 			 			 			  HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
@@ -192,7 +210,30 @@ public class Menu33Controller {
 			}
 		}
 		
-		return "success";
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
+		
+		int page_max = ((purchaseitemListall.size()-1) / 11) + 1;
+		
+		if(page_max < page) {
+			page--;
+		}
+		
+		int page_group = (page-1) / 5;
+		
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("page_num", page);
+		map.put("page_group", page_group);
+		map.put("purchaseitemListall", purchaseitemListall);
+		map.put("pagepurchaseitemList", pagepurchaseitemList);
+		map.put("purchaseitemList", purchaseitemList);
+		
+		System.out.println("gdgd");
+		
+		return map;
 	}
 }
 

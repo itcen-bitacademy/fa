@@ -11,8 +11,44 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-.chosen-search {
-	display: none;
+tr td:first-child {
+	padding-right: 40px;
+}
+
+.radio {
+	float: left;
+	width: 10%;
+}
+
+.search-input-width-first {
+	width: 130px;
+}
+
+.search-input-width-second {
+	width: 235px;
+}
+
+.debt-name-input {
+	width: 420px;
+}
+
+.mgr-input {
+	width: 90px;
+	display: inline;
+}
+
+.mgr-number-input-h4 {
+	display: inline;
+	margin-left: 30px;
+	margin-right: 20px;
+}
+
+.mgr-call-input {
+	width: 150px;
+	display: inline;
+}
+.number-input{
+	text-align:right;
 }
 </style>
 </head>
@@ -22,203 +58,261 @@
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-			<div class="page-header position-relative">
-				<h1 class="pull-left">은행코드관리</h1>
-			</div><!-- /.page-header -->
+
+		<div class="page-header position-relative">
+			<h1 class="pull-left">은행코드관리</h1>
+		</div><!-- /.page-header -->
 			
-			<div class="row-fluid">
-				<div class="span12">
-
-					<!-- PAGE CONTENT BEGINS -->
-					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-						
-						<div class="span6">
-						
-						<div class="control-group">
-							<label class="control-label" for="form-field-codename">은행코드</label>
-							<div class="controls">
-								<input class="span5" type="text" id="form-field-code" name="code" placeholder="은행코드"/>
-<%-- 								<form:input path="code" /> --%>
-
+		<!-- PAGE CONTENT BEGINS -->
+		<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+		<div class="container-fluid">
+	
+		<!-- Example row of columns -->
+			<div class="row">
+				<div class="span8">
+					<table>
+						<tr >
+							<td><h4>은행코드</h4></td>
+							<td>
+								<input type="text" name="code"/>
+									
 								<input id="btn-check-code" type="button" value="중복확인">
 								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+							</td>
+						</tr>
 								
-								
-							</div>
-						</div>
+						<tr >
+							<td><h4>지점명</h4></td>
+							<td colspan="2">
+								<input type="text" name="store"/>
+							</td>
+						</tr>
 							
-							<div class="control-group">	
-								<label class="control-label" for="form-field-codename">은행명</label>
-								<div class="controls">
-									<input class="span8" type="text" id="form-field-name" name="name" placeholder="은행명"/>
-							</div>	
+						<tr >
+							<td><h4>FAX</h4></td>
+							<td colspan="2">
+								<input type="text" name="fax"/>
+							</td>
+						</tr>
 							
-							</div>
-						
-						<div class="control-group">
-								<label class="control-label" for="form-field-phoe">은행 전화번호</label>
-								<div class="controls">
-									<input class="span8" type="text" id="form-field-phone" name="phone" placeholder="phone"/>
-								</div>
-							</div>
-						<div class="control-group">
-							<label class="control-label" for="form-field-codename">거래시작일</label>
-								<div class="controls">
+						<tr>
+						<td><h4>거래시작일</h4></td>
+							<td colspan="2">
+								<div class="control-group">
 									<div class="row-fluid input-append">
-									<input class="span7 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
+										<input class="span7 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="form-field-mgr">담당자</label>
-							<div class="controls">
-								<input class="span8" type="text" id="form-field-mgr" name="mgr" placeholder="담당자"/>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="form-field-mgrphone">담당자전화번호</label>
-							<div class="controls">
-								<input class="span8" type="text" id="form-field-mgrphone" name="mgrPhone" placeholder="담당자전화번호"/>
-								</div>
-							</div>
+							</td>
+						</tr>	
 						
-						</div>
+						<!-- 줄내림  -->
+						<tr style="visibility:hidden;">
+							<td><h4></h4></td>
+							<td colspan="2">
+								<input type="text" name="mgr"/>
+							</td>
+						</tr>
 						
-						<div class="span6">		
-							<div class="control-group">
-								<label class="control-label" for="form-field-store">지점명</label>
-								<div class="controls">
-									<input class="span10" type="text" id="form-field-store" name="store" placeholder="지점명"/>
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" for="form-field-fax">FAX</label>
-								<div class="controls">
-									<input class="span10" type="text" id="form-field-fax" name="fax" placeholder="FAX"/>
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" for="form-field-mgremail">담당자이메일</label>
-								<div class="controls">
-									<input class="span10" type="text" id="form-field-mgremail" name="mgrEmail" placeholder="담당자이메일"/>
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" for="form-field-address">주소</label>
-								<div class="controls">
-			                        <input type="button" class="btn-primary box"
-			                            onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-			                   	 </div>
-			                   	 
-			                   	 <div class="controls">
-			                        <input class="span2" type="text" name="post" class="box" id="postcode"
-			                            placeholder="우편번호" required>
-			                        <input class="span6" type="text" name="roadAddress" class="box"
-			                            id="roadAddress" placeholder="도로명주소" required>
-			                    </div>
-			                  
-			                    <label class="control-label" for="form-field-address"></label>
-			                    <div class="controls">
-									<input class="span8" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
-								</div>
-							</div>
-						</div>
+						<tr >
+							<td><h4>담당자</h4></td>
+							<td colspan="2">
+								<input type="text" name="mgr"/>
+							</td>
+						</tr>
 						
-						<div class="hr hr-18 dotted"></div>
-						
-						
-						<div class="span8">
-							<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-							<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
-							<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-							<button class="btn btn-primary btn-small" id="inputbtn" >입력</button>
-							<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
-						</div>
-						
-						<div class="span8">
-						</div>
-						
-					<table id="simple-table" class="table  table-bordered table-hover">
-                          <thead>
-                              <tr>
-                                  <th class="center">은행코드</th>
-                                  <th class="center">은행명</th>
-                                  <th class="center">지점명</th>
-                                  <th class="center">거래시작일</th>
-                                  <th class="center">전화번호</th>
-                                  <th class="center">FAX</th>
-                                  <th class="center">우편번호</th>
-                                  <th class="center">은행주소</th>
-                                  <th class="center">담당자</th>
-                                  <th class="center">담당자전화번호</th>
-                                  <th class="center">담당자이메일</th>
-                                    </tr>
-                                 </thead>
 
-                                 <tbody>
-                                 	<c:forEach items="${dataResult.datas }" var="bankvo">
-                                    <tr>
+						<tr >
+							<td><h4>담당자전화번호</h4></td>
+							<td colspan="2">
+								<input type="text" name="mgrphone"/>
+							</td>
+						</tr>
+
+						</table>
+					</div>
+						
+					<div class="span8">
+						<table>
+							<tr>
+								<td><h4>은행명</h4></td>
+								<td colspan="2">
+									<input type="text" name="name"/>
+								</td>
+							</tr>
+
+
+							<tr >
+								<td><h4>은행전화번호</h4></td>
+								<td colspan="2">
+									<input type="text" name="phone"/>
+								</td>
+							</tr>
+							
+							
+							<tr >
+								<td><h4>주소</h4></td>
+								<td colspan="2">
+								<div class="control-group"> 
+			                       <div>
+									<input type="button" class="btn-primary box"
+			                            onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+			                       </div>
+									<div>
+			                        
+			                      		<input type="text" name="post" class="box" id="postcode"
+			                           		placeholder="우편번호" required>
+									</div>			
+									<div>
+			                       		<input  type="text" name="roadAddress" class="box"
+			                           		id="roadAddress" placeholder="도로명주소" required>
+									</div>                     
+									<div>
+					                 		<input  type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
+									</div>
+								
+			                   	
+			                    
+								</div>
+								</td>
+							</tr>
+							
+							
+							
+							<tr >
+								<td><h4>담당자이메일</h4></td>
+								<td colspan="2">
+									<input type="text" name="mgrEmail"/>
+								</td>
+							</tr>
+
+
+							
+<!-- 						
+									<div class="control-group"> -->
+<!-- 								<label class="control-label" for="form-field-address">주소</label> -->
+<!-- 								<div class="controls"> -->
+<!-- 			                        <input type="button" class="btn-primary box" -->
+<!-- 			                            onclick="execDaumPostcode()" value="우편번호 찾기"><br> -->
+<!-- 			                   	 </div> -->
+
+
+
+			                
+<!-- 			                   	 <div class="controls"> -->
+<!-- 			                        <input class="span2" type="text" name="post" class="box" id="postcode" -->
+<!-- 			                            placeholder="우편번호" required> -->
+<!-- 			                        <input class="span6" type="text" name="roadAddress" class="box" -->
+<!-- 			                            id="roadAddress" placeholder="도로명주소" required> -->
+<!-- 			                    </div> -->
+			                  
+<!-- 			                    <label class="control-label" for="form-field-address"></label> -->
+<!-- 			                    <div class="controls"> -->
+<!-- 									<input class="span8" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+						
+						</table>
+					</div>
+				</div>
+			
+			</div>
+			
+			<hr>
+			
+			<div class="span8">
+				<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+				<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+				<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+				<button class="btn btn-primary btn-small" id="inputbtn" >입력</button>
+				<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
+			</div>
+					
+		</form>			
+		<!-- PAGE CONTENT ENDS -->
+			
+		<table id="simple-table" class="table  table-bordered table-hover">
+             <thead>
+                  <tr>
+	                 <th class="center">은행코드</th>
+	                 <th class="center">은행명</th>
+	                 <th class="center">지점명</th>
+	                 <th class="center">거래시작일</th>
+	                 <th class="center">전화번호</th>
+	                 <th class="center">FAX</th>
+	                 <th class="center">우편번호</th>
+	                 <th class="center">은행주소</th>
+	                 <th class="center">담당자</th>
+	                 <th class="center">담당자전화번호</th>
+	                 <th class="center">담당자이메일</th>
+                  </tr>
+               </thead>
+
+          	<tbody id= "tbody-list">
+                <c:forEach items="${dataResult.datas }" var="bankvo">
+                     <tr>
                                        
-                                       <td class="center">${bankvo.code }</td>
-                                       <td class="center">${bankvo.name }</td>
-                                       <td class="center">${bankvo.store }</td>
-                                       <td class="center">${bankvo.dealDate }</td>
-                                       <td class="center">${bankvo.phone }</td>
-                                       <td class="center">${bankvo.fax }</td>
-                                       <td class="center">${bankvo.post }</td>
-                                       <td class="center">${bankvo.address }</td>
-                                       <td class="center">${bankvo.mgr }</td>
-                                       <td class="center">${bankvo.mgrPhone }</td>
-                                       <td class="center">${bankvo.mgrEmail }</td>
-                                    </tr>
-                                    </c:forEach>
-                                 </tbody>
-                              </table>
-		</form>					
-			<!-- PAGE CONTENT ENDS -->
-	</div><!-- /.span -->
-   </div><!-- /.row-fluid -->
-  </div><!-- /.page-content -->
+	                          <td class="center">${bankvo.code }</td>
+	                          <td class="center">${bankvo.name }</td>
+	                          <td class="center">${bankvo.store }</td>
+	                          <td class="center">${bankvo.dealDate }</td>
+	                          <td class="center">${bankvo.phone }</td>
+	                          <td class="center">${bankvo.fax }</td>
+	                          <td class="center">${bankvo.post }</td>
+	                          <td class="center">${bankvo.address }</td>
+	                          <td class="center">${bankvo.mgr }</td>
+	                          <td class="center">${bankvo.mgrPhone }</td>
+	                          <td class="center">${bankvo.mgrEmail }</td>
+                         </tr>
+                         </c:forEach>
+                     </tbody>
+             </table>
+             
+		<!-- PAGE CONTENT ENDS -->
+		</div><!-- /.page-content -->
+
   
-  <div class="pagination">
-				<ul>
+  		<div class="pagination">
+			<ul>
+			<c:choose>
+				<c:when test="${dataResult.pagination.prev }">
+					<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+					<i class="icon-double-angle-left"></i></a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+				</c:otherwise>
+			</c:choose>
+			<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 				<c:choose>
-					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
-						<i class="icon-double-angle-left"></i></a></li>
+					<c:when test="${pg eq dataResult.pagination.page }">
+						<li class="active">
+							<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
 					</c:when>
 					<c:otherwise>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
 					</c:otherwise>
 				</c:choose>
-				<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
-					<c:choose>
-						<c:when test="${pg eq dataResult.pagination.page }">
-							<li class="active">
-								<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
+			</c:forEach>
 
-					<c:choose>
-						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
-								</c:when>
-								<c:otherwise>
-									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
-								</c:otherwise>
-							</c:choose>
-				</ul>
-			</div>
-  
-  </div><!-- /.main-content -->
-</div><!-- /.main-container -->
+			<c:choose>
+				<c:when test="${dataResult.pagination.next }">
+					<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+				</c:otherwise>
+			</c:choose>
+		</ul>
+	</div>
+			
+   </div>/.main-content -->
+ </div>/.main-container -->
+
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
   <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>

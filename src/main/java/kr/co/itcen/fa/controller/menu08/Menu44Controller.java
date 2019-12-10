@@ -48,24 +48,20 @@ public class Menu44Controller {
 		map.putAll(menu44Service.getSection());
 		model.addAllAttributes(map);
 		
-//		if(kwd != null) {
-//			List<IntangibleAssetsVo> list = menu44Service.getList(kwd);
-//			model.addAttribute("kwd", kwd);
-//			model.addAttribute("list", list);
-//			
-//			return MAINMENU + "/" + SUBMENU + "/list";
-//		}
-//		
-//		kwd = null;
-//		List<IntangibleAssetsVo> list = menu44Service.getList(kwd);
-//		model.addAttribute("kwd", kwd);
-//		model.addAttribute("list", list);
-		
-		DataResult<IntangibleAssetsVo> dataResult = menu44Service.getList(page, intangibleAssetsVo);
-		model.addAttribute("dataResult", dataResult);
-		model.addAttribute("intangibleAssetsVo", dataResult.getDatas());
-		
-		return MAINMENU + "/" + SUBMENU + "/list";
+		// 삭제포함 버튼 확인
+		if(intangibleAssetsVo.getIsChecked() == null) {
+			DataResult<IntangibleAssetsVo> dataResult = menu44Service.getList(page, intangibleAssetsVo);
+			model.addAttribute("dataResult", dataResult);
+			model.addAttribute("intangibleAssetsVo", dataResult.getDatas());
+			
+			return MAINMENU + "/" + SUBMENU + "/list";
+		} else {
+			DataResult<IntangibleAssetsVo> dataResult = menu44Service.getAllList(page, intangibleAssetsVo);
+			model.addAttribute("dataResult", dataResult);
+			model.addAttribute("intangibleAssetsVo", dataResult.getDatas());
+			
+			return MAINMENU + "/" + SUBMENU + "/list";
+		}
 	}
 	
 }

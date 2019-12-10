@@ -8,9 +8,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
-
-
-
+<!-- For Dialog -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 tr td:first-child {
@@ -51,6 +50,32 @@ tr td:first-child {
 	}
 	
 .mybtn{float:right;margin-right:20px;}
+
+.pagination{
+	display: grid;
+	grid-template-columns: repeat(3,auto);
+}
+
+.pg-list{
+	grid-column: 2;
+}
+.above-table{
+	display: grid;
+	grid-template-columns: repeat(2, 50%);
+	height: 30px;
+}
+.above-table>*{grid-column: auto;}
+.pg-total-row{float: left; margin:0;}
+
+.btn-list{float: right; }
+.btn-list>button{ 
+	margin-right: 10px;
+	float:none;
+}
+.btn-list>button:last-child{
+	margin-right: 0;}
+.btn-list>button:not(:first-child):not(:last_child){margin: 0 auto}
+
 </style>
 </head>
 <body class="skin-3">
@@ -127,11 +152,49 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><h4>은행코드</h4></td>
-									<td>
-										<input type="text" class="search-input-width-first" name="bankCode" id="bankCode"/>
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
-									</td>
+									<td colspan="2">
+											<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드"/>
+											<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명"/>
+												<a href="#" id="a-bankinfo-dialog" onclick="openDialog()">
+													<span class="btn btn-small btn-info">
+														<i class="icon-search nav-search-icon"></i>
+													</span>
+												</a>
+												
+												<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+												<div id="dialog-message" title="은행코드" hidden="hidden">
+													
+															<table id ="dialog-message-table" align="center">
+																<tr>
+																	<td>
+																	<label>은행코드</label>
+																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
+																	<button type="button" id="a-dialog-bankcode" style="background-color:#6fb3e0;color:#FFF">조회</button>
+																	</td>
+																	<td>
+																	<label>은행명</label>
+																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
+																		<a href="#" id="a-dialog-bankname">
+																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span>
+																		</a>
+																	</td>
+																</tr>
+															</table>
+														<!-- 은행코드 및 은행명 데이터 리스트 -->
+														<table id="modal-bank-table" class="table  table-bordered table-hover">
+															<thead>
+																<tr>
+																	<th class="center">은행코드</th>
+																	<th class="center">은행명</th>
+																	<th class="center">지점명</th>
+																</tr>
+															</thead>
+															<tbody id="tbody-bankList">
+															</tbody>
+														</table>
+												</div>
+												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+										</td>
 								</tr>
 							</table>
 						</div>
@@ -208,19 +271,21 @@ tr td:first-child {
 					</div>
 				</div>
 				<hr>
-				<div>
-					<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
-					&nbsp;
-					<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
-					&nbsp;
-					<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
-					&nbsp;
-					<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
-					&nbsp;
-					<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-					&nbsp;
-					<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
-				</div>
+				<section class="above-table">
+					<section class="above-table-left">
+						<h5>총  ${pagination.totalCnt }건</h5>
+					</section>
+					<section class="above-table-right">
+						<div class="btn-list">
+							<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
+							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
+							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
+							<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
+							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
+						</div>
+					</section>
+				</section>
 				<hr>
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
@@ -315,20 +380,23 @@ tr td:first-child {
 							</c:otherwise>
 						</c:choose>
 					</ul>
-					<section id="pg-total-row" class="pg-total-row">
-						<h5>총  ${pagination.totalCnt }건</h5>
-					</section>
 				</section>
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<!-- For Dialog -->
+
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<!-- bootstrap -->
 <script src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+
+
 <script>
 $(function() {
 	//1.Range Picker
@@ -347,14 +415,120 @@ $(function() {
 		$(this).next().focus();
 	});
 	
+	//--------------------------------------------------------------------------------------------------------------------------//
 	//Checkbox All Check
 	$("#chkbox-select-all").click(function(){
 		$('input[type=checkbox]').prop('checked', this.checked);	//All Checkbox 버튼의 check여부에 따라 바뀐다.
+	});
+	
+	//--------------------------------------------------------------------------------------------------------------------------//
+	//은행, 계좌 Dialog
+	$("#dialog-message").dialog({
+		autoOpen : false
 	});
 });
 
 </script>
 <script>
+//-----------------------------------은행 Model 메서드 ---------------------------------//
+//Dialog Open하는 함수
+function openDialog(){
+	$("#dialog-message").dialog('open');
+	$("#dialog-message").dialog({
+		title: "은행정보",
+		title_html: true,
+	   	resizable: false,
+	    height: 500,
+	    width: 400,
+	    modal: true,
+	    close: function() {
+	    	$('#tbody-bankList tr').remove();
+	    },
+	    buttons: {
+	    "닫기" : function() {
+	          	$(this).dialog('close');
+	          	$('#tbody-bankList tr').remove();
+	        }
+	    }
+	});
+}
+
+//은행코드 검색
+$("#a-dialog-bankcode").click(function(event){
+	//event.preventDefault();
+	$("#tbody-bankList").find("tr").remove();
+	
+	var bankcodeVal = $("#input-dialog-bankcode").val();
+	console.log(bankcodeVal);
+	// ajax 통신
+	$.ajax({
+		url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+		contentType : "application/json; charset=utf-8",
+		type: "get",
+		dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+		data: "",
+		statusCode: {
+		    404: function() {
+		      alert("page not found");
+		    }
+		},
+		success: function(response){
+			$("#input-dialog-bankcode").val('');
+			$("#tbody-bankList").append("<tr>" +
+			        "<td class='center'>" + response.code + "</td>" +
+			        "<td class='center'>" + response.name + "</td>" +
+			        "<td class='center'>" + response.store + "</td>" +
+			        "</tr>");
+		},
+		error: function(xhr, error){
+			console.error("error : " + error);
+		}
+	});
+});
+
+//은행명 검색 : 은행목록 리스트로 가져오기
+$("#a-dialog-bankname").click(function(event){
+	//event.preventDefault();
+	$("#tbody-bankList").find("tr").remove();
+	
+	var banknameVal = $("#input-dialog-bankname").val();
+	// ajax 통신
+	$.ajax({
+		url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
+		contentType : "application/json; charset=utf-8",
+		type: "get",
+		dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+		data: "",
+		statusCode: {
+		    404: function() {
+		      alert("page not found");
+		    }
+		},
+		success: function(data){
+			$("#input-dialog-bankname").val('');
+			 $.each(data,function(index, item){
+	                $("#tbody-bankList").append("<tr>" +
+	                		"<td class='center'>" + item.code + "</td>" +
+					        "<td class='center'>" + item.name + "</td>" +
+					        "<td class='center'>" + item.store + "</td>" +
+					        "</tr>");
+	         })
+		},
+		error: function(xhr, error){
+			console.error("error : " + error);
+		}
+	});
+});
+
+//은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 input form에 추가
+$(document.body).delegate('#tbody-bankList tr', 'click', function() {
+	var tr = $(this);
+	var td = tr.children();
+	$("input[name=bankCode]").val(td.eq(0).text());
+	$("input[name=bankName]").val(td.eq(1).text());
+	$("#dialog-message").dialog('close');
+});
+//-----------------------------------Row Click input 영역 채워지도록 ---------------------------------//
 function selectRow(thisTr){
 	var dataForm = $("#form" + $(thisTr).attr('id'))[0];
 	var inputForm = $("#input-form")[0];
@@ -392,11 +566,18 @@ function selectRow(thisTr){
 	//$("#bankName").val(dataForm.elements[].value);
 }
 
+//-----------------------------------리스트 및 페이지 Rendering ---------------------------------//
 //리스트를 받아서 Rendering 하는 함수
 function renderingList(list){
 	$("#tbody-list > *").remove();
+	
 	for(var i=0; i < list.length; ++i){
 		$("#tbody-list").append("<tr>" +
+				 "<td class='center'>" +
+				 	"<label class='pos-rel'>" +
+				 		"<input type='checkbox' name='" + list[i].no + "' value='" + list[i].no + "' class='ace' />" +"<span class='lbl'></span>" +
+					 "</label>" +
+				 "</td>" +
 				 "<td class='center'>" + list[i].code + "</td>" +
 				 "<td class='center'>" + list[i].name + "</td>" +
 				 "<td class='center'>" + list[i].majorCode + "</td>" +
@@ -447,14 +628,15 @@ function renderingPage(pagination){
 	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>")
 }
 
+//-----------------------------------조회 및 페이지 클릭 Event Method ---------------------------------//
 function search() {
 	console.log("search");
 	ajaxProcessing("search", null);
 }
 
-function paging(urlStr, thisObj){
+function paging(thisObj){
 	console.log("paging");
-	console.log($(thisObj).attr('id'));
+	console.log("thisObj" + $(thisObj));
 	ajaxProcessing("paging", thisObj)
 }
 
@@ -463,7 +645,7 @@ function ajaxProcessing(urlStr, thisObj){
 	console.log($(thisObj).attr('id'));
 	if(thisObj != null){
 		var page = $(thisObj).attr('id');
-		console.log(page);
+		console.log("page : " + page);
 		sendData += "&page=" + page;
 	}
 	
@@ -482,6 +664,7 @@ function ajaxProcessing(urlStr, thisObj){
 	});
 }
 
+//-----------------------------------삭제 Click 메서드 ---------------------------------//
 function deleteChecked(){
 	var sendData = [];
 	

@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu08.Menu40Service;
 import kr.co.itcen.fa.vo.SectionVo;
@@ -40,7 +42,33 @@ public class Menu40Controller {
 	//               /08   /   40     , /08/40/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, @RequestParam(value="page", required=false,defaultValue = "1") int page, BuildingVo vo) {
-		//menu40Service.test();
+		System.out.println(vo);
+		if(vo.getId() == null || "".equals(vo.getId()))
+			vo.setId("");
+		if(vo.getPayDate() == null || "".equals(vo.getPayDate()))
+			vo.setPayDate("");
+		if(vo.getSectionNo() == null || "".equals(vo.getSectionNo()))
+			vo.setSectionNo("");
+		if(vo.getCustomerNo() == null || "".equals(vo.getCustomerNo()))
+			vo.setCustomerNo("");
+		if(vo.getCustomerName() == null || "".equals(vo.getCustomerNo()))
+			vo.setCustomerName("");
+		if(vo.getManagerName() == null || "".equals(vo.getCustomerNo()))
+			vo.setManagerName("");
+		if(vo.getWideAddress() == null || "".equals(vo.getWideAddress()))
+			vo.setWideAddress("");
+		if(vo.getCityAddress() == null || "".equals(vo.getCityAddress()))
+			vo.setCityAddress("");
+		if(vo.getDetailAddress() == null || "".equals(vo.getDetailAddress()))
+			vo.setDetailAddress("");
+		if("".equals(vo.getFlag()))
+			vo.setFlag("");
+		else vo.setFlag("s");
+		
+		//dataresult 생성
+		DataResult<BuildingVo> dataResult = menu40Service.list(vo, page); 
+				
+		model.addAttribute("dataResult",dataResult);
 		
 		//map 생성
 		Map<String, Object> map = new HashMap<>();
@@ -48,6 +76,11 @@ public class Menu40Controller {
 		//대분류
 		map.putAll(menu40Service.getSection());
 		model.addAllAttributes(map);
+		
+		//거래처
+		map.putAll(menu40Service.getCustomer());
+		model.addAllAttributes(map);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

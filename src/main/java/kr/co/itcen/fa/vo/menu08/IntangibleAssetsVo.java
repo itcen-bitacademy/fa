@@ -31,6 +31,9 @@ public class IntangibleAssetsVo {
 	private String updateUserId;
 	private String updateDay;
 	
+	// 삭제포함 버튼
+	private String isChecked;
+	
 	// 페이징
 	private int page = 1;
 	private PaginationUtil pagination;
@@ -217,6 +220,15 @@ public class IntangibleAssetsVo {
 
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
+	}
+	
+	// 삭제포함 버튼
+	public String getIsChecked() {
+		return isChecked;
+	}
+
+	public void setIsChecked(String isChecked) {
+		this.isChecked = isChecked;
 	}
 
 	// 페이징

@@ -40,6 +40,7 @@ public class Menu46ApiController {
 			@RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize,
 			@RequestParam(value="page", required=true) int page){
 		
+		System.out.println("pageSize : " + pageSize);
 		Map map = menu46Service.paging(code, financialYear, pageSize, page);
 		
 		return JSONResult.success(map);
@@ -49,6 +50,7 @@ public class Menu46ApiController {
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
 	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
 		menu46Service.deleteChecked(noList);
-		return JSONResult.success("success");
+		Map map = menu46Service.getListMap();
+		return JSONResult.success(map);
 	}
 }

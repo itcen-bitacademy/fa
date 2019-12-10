@@ -13,7 +13,9 @@ import kr.co.itcen.fa.util.PaginationUtil;
 
 @Alias("purchasecustomer35vo")
 public class CustomerVo {
+	private String preNo;					//사업자등록번호
 	private String no;						//사업자등록번호
+	private String preName;					//상호
 	private String name;					//상호
 	private String ceo;						//대표자
 	private String corporationNo;			//법인번호
@@ -29,6 +31,8 @@ public class CustomerVo {
 	private String managerEmail;			//담당자 Email
 	private String depositNo;				//계좌번호
 	private String depositHost;				//예금주
+	private String bankCode;				//은행코드
+	private String bankName;				//은행명
 	private String insertUserid;			//입력자
 	private String insertDay;				//입력일자
 	private String updateUserid;			//수정자
@@ -39,15 +43,23 @@ public class CustomerVo {
 	private int page = 1;
 	private PaginationUtil pagination;
 	
-	// 조건검색용
-	private String firstNo;						//첫번째 사업자등록번호
-	private String secondNo;					//두번째 사업자등록번호
-	
+	public String getPreNo() {
+		return preNo;
+	}
+	public void setPreNo(String preNo) {
+		this.preNo = preNo;
+	}
 	public String getNo() {
 		return no;
 	}
 	public void setNo(String no) {
 		this.no = no;
+	}
+	public String getPreName() {
+		return preName;
+	}
+	public void setPreName(String preName) {
+		this.preName = preName;
 	}
 	public String getName() {
 		return name;
@@ -139,6 +151,18 @@ public class CustomerVo {
 	public void setDepositHost(String depositHost) {
 		this.depositHost = depositHost;
 	}
+	public String getBankCode() {
+		return bankCode;
+	}
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
 	public String getInsertUserid() {
 		return insertUserid;
 	}
@@ -184,29 +208,14 @@ public class CustomerVo {
 		this.pagination = pagination;
 	}
 	
-	// 검색용 사업자번호
-	public String getFirstNo() {
-		return firstNo;
-	}
-	public void setFirstNo(String firstNo) {
-		this.firstNo = firstNo;
-	}
-	public String getSecondNo() {
-		return secondNo;
-	}
-	public void setSecondNo(String secondNo) {
-		this.secondNo = secondNo;
-	}
-	
-	
 	@Override
 	public String toString() {
-		return "CustomerVo [no=" + no + ", name=" + name + ", ceo=" + ceo + ", corporationNo=" + corporationNo
-				+ ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress + ", phone="
-				+ phone + ", conditions=" + conditions + ", item=" + item + ", openDate=" + openDate
+		return "CustomerVo [no=" + no + ", preNo=" + preNo + ", name=" + name + ", ceo=" + ceo + ", corporationNo="
+				+ corporationNo + ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress
+				+ ", phone=" + phone + ", conditions=" + conditions + ", item=" + item + ", openDate=" + openDate
 				+ ", jurisdictionOffice=" + jurisdictionOffice + ", managerName=" + managerName + ", managerEmail="
-				+ managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost + ", insertUserid="
-				+ insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay="
-				+ updateDay + ", deleteFlag=" + deleteFlag + "]";
+				+ managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost + ", bankCode=" + bankCode
+				+ ", bankName=" + bankName + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + "]";
 	}
 }

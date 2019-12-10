@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu08;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu09Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
@@ -51,6 +54,9 @@ public class Menu09Controller {
 	@Autowired
 	private Menu03Service menu03Service;  // 1팀 전표
 	
+	@Autowired
+	private Menu19Service menu19Service;  // 6팀 결산
+	
 	
 	//조회
 	//               /08   /   09     , /08/09/list
@@ -70,8 +76,7 @@ public class Menu09Controller {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		//대분류코드 select box
-		map.putAll(menu09Service.getSectionList());
-		
+		List<SectionVo> list = menu09Service.getSectionList();
 		//거래처관련 select box
 		map.putAll(menu09Service.getCustomerCodeList());
 		
@@ -81,7 +86,7 @@ public class Menu09Controller {
 		if(id != null) {
 			map.putAll(menu09Service.getsearchList(id));		
 		}
-		
+		model.addAttribute("sectionList", list);
 		model.addAllAttributes(map);
 //		
 		return  MAINMENU + "/" + SUBMENU + "/add";
@@ -90,19 +95,27 @@ public class Menu09Controller {
 	
 	//입력
 	@RequestMapping(value={"/" + SUBMENU + "/insert" }, method=RequestMethod.POST)
-	public String insert(@ModelAttribute LandVo landVo, @AuthUser UserVo user
-						 /*, @ModelAttribute SectionVo sectionVo,@ModelAttribute */
-						 ) {
-
+	public String insert(@ModelAttribute LandVo landVo, @SessionAttribute("authUser") UserVo user
+						 ,Model model
+						 ) throws ParseException {
+		
+		
 		if(landVo.getCombineNo() == null) {
 			landVo.setCombineNo("00");
 		}
 
 		landVo.setId("c"+landVo.getId());
 		landVo.setInsertUserid(user.getId());
-		menu09Service.insertLand(landVo);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+
+		//마감 여부 체크
+		if(!menu19Service.checkClosingDate(user, landVo.getPayDate())) {
+			model.addAttribute("closingDate", true);
+			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+		} else {
+			menu09Service.insertLand(landVo);
+			
+			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+		}
 	}
 
 	//수정
@@ -143,7 +156,10 @@ public class Menu09Controller {
 		itemVo2.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getRegTax()+landVo.getEtcCost());
 		itemVo2.setAmountFlag("c");  // c: 대변 오른쪽
 		itemVo2.setAccountNo(1110101L); //현금
-		itemVoList.add(itemVo2);
+		itemVoList.add(itemVo2);  
+		
+		
+		
 
 		// 토지구입비용 + 부가세 = 지불금액 / 차변 대변 값으로
 		

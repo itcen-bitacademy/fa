@@ -32,40 +32,36 @@
 
 								<!-- 차변 -->
 								<div class="span6">
+								
 									<div class="control-group">
-										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">건물코드</label>
-											<div class="controls">
-												<input type="text" id="form-field-1" name="id"
+										<label class="control-label" for="form-field-1">건물코드</label>
+										<div class="controls">
+											<input type="text" id="form-field-1" name="id"
 													placeholder="10자로 입력하세요" />
-											</div>
 										</div>
-										<div style="float: left; width: 50%;">
-											<label style="margin-right: 20px" class="control-label"
-												for="form-field-1">건물대분류명</label> <select
-												class="chosen-select" id="form-field-select-1"
-												name="sectionNo" data-placeholder="전체">
-												<c:forEach items="${listMainMenu }" var="sectionVo">
-													<option value="${sectionVo.no }">${sectionVo.name }</option>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label" for="form-field-select-1">대분류코드</label>
+										<div class="controls">
+											<select class="chosen-select" id="form-field-section" name="sectionNo">
+												<c:forEach items="${sectionList }" var="sectionVo">
+													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
-											</select>
+											</select> 
+											<input readonly type="text" class="span6" id="classification" name="sectionName" placeholder="코드를 지정하면 대분류명이 입력됩니다">
 										</div>
 									</div>
 
 									<div class="control-group">
-										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">매입거래처명</label>
-											<div class="controls">
-												<input type="text" id="form-field-1" name="customer_name"
-													placeholder="내용을 입력하세요" />
-											</div>
-										</div>
-										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">거래처담당자명</label>
-											<div class="controls">
-												<input type="text" id="form-field-1" name="manager_name"
-													placeholder="내용을 입력하세요" />
-											</div>
+										<label class="control-label" for="form-field-select-1">거래처코드</label>
+										<div class="controls">
+											<select class="chosen-select" id="form-field-customer" name="customerNo">
+												<c:forEach items="${customerList }" var="customerVo">
+													<option customerName="${customerVo.name}" managerName="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
+												</c:forEach>
+											</select> 
+											<input readonly type="text" class="span6" name="customerName" id="customerName" placeholder="코드를 지정하면 거래처명이 입력됩니다">
 										</div>
 									</div>
 
@@ -73,7 +69,7 @@
 										<div style="float: left;">
 											<label class="control-label" for="form-field-1">주소</label>
 											<div class="controls">
-												<select style="width: 205px;" class="chosen-select"
+												<select style="width: 155px;" class="chosen-select"
 													id="form-field-select-1" name="sectionNo"
 													data-placeholder="광역">
 													<c:forEach items="${listMainMenu }" var="sectionVo">
@@ -83,7 +79,7 @@
 											</div>
 										</div>
 										<div style="float: left; margin-left: 10px" class="controls">
-											<select style="width: 205px;" class="chosen-select"
+											<select style="width: 155px;" class="chosen-select"
 												id="form-field-select-1" name="sectionNo"
 												data-placeholder="시/군/구">
 												<c:forEach items="${listMainMenu }" var="sectionVo">
@@ -92,22 +88,16 @@
 											</select>
 										</div>
 										<div style="float: left; margin-left: 10px" class="controls">
-											<select style="width: 205px;" class="chosen-select"
-												id="form-field-select-1" name="sectionNo"
-												data-placeholder="읍/면/동">
-												<c:forEach items="${listMainMenu }" var="sectionVo">
-													<option value="${sectionVo.no }">${sectionVo.name }</option>
-												</c:forEach>
-											</select>
+											<input type="text" id="form-field-1" name="detailAddress" style="width: 290px;" placeholder="상세주소를 입력하세요" />
 										</div>
 									</div>
+									
 									<div class="control-group">
 										<label class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" id="area" name="area"
+											<input type="text" id="acqPrice" name="acqPrice"
 												placeholder="금액을 입력하세요" /> <input
-												style="border-style: none;" type="text" id="area"
-												name="area" placeholder="입력된 금액이하로 검색됩니다." />
+												style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
 								</div>
@@ -124,7 +114,8 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="date-range-picker" id="id-date-range-picker-1">
+											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1"
+											placeholder="날짜 범위를 지정하세요">
 										</div>
 									</div>		
 									<div class="control-group">
@@ -132,11 +123,15 @@
 										<div class="controls">
 											<input type="text" id="area" name="area"
 												placeholder="숫자만 입력하세요" /> <input
-												style="border-style: none;" type="text" id="area"
-												name="area" placeholder="입력된 숫자이하로 검색됩니다." />
+												style="border-style: none;" type="text" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
-									
+									<div class="control-group">
+										<label class="control-label" for="form-field-1">거래처 담당자</label>
+										<div class="controls" id="form-input-customer">
+											<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" />
+										</div>
+									</div>
 									<span style="line-height:550%"><br></span>
 									
 									<div class="control-group" style="margin-bottom:0px;">
@@ -144,7 +139,8 @@
 												<input name="checkDel" type="checkbox" class="ace">
 												<span class="lbl">삭제포함</span>
 											<button class="btn btn-info btn-small"
-												style="float: right; margin-right: 20px;">상세조회</button>
+												style="float: right; margin-right: 20px;"
+												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 										</div>
 									</div>
 								</div>
@@ -153,30 +149,12 @@
 							<!-- 구분선 -->
 						</div><!-- 나누기 위한 row-fluid -->
 						<div class="hr hr-18 dotted"></div>
-						
 						<div>
-						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-							<div class="control-group">
-								<div class="controls">
-									<div class="span1" style="float: right">
-										<button class="btn btn-info btn-small"
-											style="float: right; margin-right: 20px;">조회</button>
-									</div>
-									<div class="span2" style="float: right">
-										<input type="text" class="span12" id="form-field-1"
-											name="search" placeholder="검색어를 입력하세요" />
-									</div>
-								</div>
-							</div>
-						</form>
-						</div>
-						
-						<div>
+							<p>총 ${dataResult.pagination.totalCnt }건</p>
 							<table id="sample-table-1"
 								class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th>NO</th>
 										<th>건물코드</th>
 										<th>건물대분류코드</th>
 										<th>건물분류명</th>
@@ -185,7 +163,6 @@
 										<th>층수(지하)</th>
 										<th>주소(광역)</th>
 										<th>주소(시/군/구)</th>
-										<th>주소(읍/면/동)</th>
 										<th>주소(상세)</th>
 										<th>용도</th>
 										<th>주 구조</th>
@@ -197,7 +174,6 @@
 										<th>공시지가(원)</th>
 										<th>취득금액(원)</th>
 										<th>기타비용(원)</th>
-										<th>등록세(원)</th>
 										<th>취득세(원)</th>
 										<th>세금계산서번호</th>
 										<th>합병코드</th>
@@ -208,131 +184,38 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
+								<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
+									<tr class="table-row">
+										<td>${vo.id }</td>
+										<td>${vo.sectionNo }</td>
+										<td>${vo.sectionName }</td>
+										<td>${vo.area }</td>
+										<td>${vo.floor }</td>
+										<td>${vo.basement }</td>
+										<td>${vo.wideAddress }</td>
+										<td>${vo.cityAddress }</td>
+										<td>${vo.detailAddress }</td>
+										<td>${vo.purpose }</td>
+										<td>${vo.material }</td>
+										<td>${vo.customerNo }</td>
+										<td>${vo.customerName }</td>
+										<td>${vo.managerName }</td>
+										<td>${vo.ownerName }</td>
+										<td>${vo.payDate }</td>
+										<td><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+										<td><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+										<td><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+										<td><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
+										<td>${vo.combineNo }</td>
+										<td>${vo.taxbillNo }</td>
+										<td>${vo.taxKind }</td>
+										<td>${vo.insertUserid }</td>
+										<td>${vo.insertDay }</td>
 										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td>
-											<div class="hidden-phone visible-desktop btn-group">
-												<button class="btn btn-mini btn-success">
-													<i class="icon-ok bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-info">
-													<i class="icon-edit bigger-120"></i>
-												</button>
-
-												<button class="btn btn-mini btn-danger">
-													<i class="icon-trash bigger-120"></i>
-												</button>
-												<button class="btn btn-mini btn-warning">
-													<i class="icon-flag bigger-120"></i>
-												</button>
-											</div>
-											<div class="hidden-desktop visible-phone">
-												<div class="inline position-relative">
-													<button class="btn btn-minier btn-primary dropdown-toggle"
-														data-toggle="dropdown">
-														<i class="icon-cog icon-only bigger-110"></i>
-													</button>
-													<ul
-														class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
-														<li><a href="#" class="tooltip-info"
-															data-rel="tooltip" title="" data-original-title="View">
-																<span class="blue"> <i
-																	class="icon-zoom-in bigger-120"></i>
-															</span>
-														</a></li>
-														<li><a href="#" class="tooltip-success"
-															data-rel="tooltip" title="" data-original-title="Edit">
-																<span class="green"> <i
-																	class="icon-edit bigger-120"></i>
-															</span>
-														</a></li>
-
-														<li><a href="#" class="tooltip-error"
-															data-rel="tooltip" title="" data-original-title="Delete">
-																<span class="red"> <i
-																	class="icon-trash bigger-120"></i>
-															</span>
-														</a></li>
-													</ul>
-												</div>
-											</div>
-										</td>
 									</tr>
-								</tbody>
-							</table>
-							
-							<!-- paging -->
-							<div class="pagination">
-								<ul>
-									<c:choose>
-										<c:when test="${dataResult.pagination.prev }">
-											<li><a
-												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${dataResult.pagination.startPage - 1 }">
-													<i class="icon-double-angle-left"></i>
-											</a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="disabled"><a href="#"><i
-													class="icon-double-angle-left"></i></a></li>
-										</c:otherwise>
-									</c:choose>
-									<c:forEach begin="${dataResult.pagination.startPage }"
-										end="${dataResult.pagination.endPage }" var="pg">
-										<c:choose>
-											<c:when test="${pg eq dataResult.pagination.page }">
-												<li class="active"><a
-													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${pg }">${pg }</a></li>
-											</c:when>
-											<c:otherwise>
-												<li><a
-													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${pg}">${pg }</a></li>
-											</c:otherwise>
-										</c:choose>
 									</c:forEach>
-
-									<c:choose>
-										<c:when test="${dataResult.pagination.next }">
-											<li><a
-												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=${sort}&page=${dataResult.pagination.endPage + 1 }"><i
-													class="icon-double-angle-right"></i></a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="disabled"><a href="#"><i
-													class="icon-double-angle-right"></i></a></li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div><!-- paging -->
-							
-							
+								</tbody>
+							</table>							
 						</div>
 						<!-- PAGE CONTENT ENDS -->
 					</div>
@@ -341,6 +224,45 @@
 				<!-- /.row-fluid -->
 			</div>
 			<!-- /.page-content -->
+			
+			<!-- 페이징 row-fluid -->
+			<div class="row-fluid">
+			<!-- 페이징 -->
+			<div class="pagination">
+				<ul>
+					<c:choose>
+						<c:when test="${dataResult.pagination.prev }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
+								<i class="icon-double-angle-left"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+						<c:choose>
+							<c:when test="${pg eq dataResult.pagination.page }">
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }">
+							<i class="icon-double-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#">
+							<i class="icon-double-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+			</div><!-- 페이징 -->
+			</div><!-- 페이징 row-fluid -->
 		</div>
 		<!-- /.main-content -->
 	</div>
@@ -359,6 +281,53 @@
 				$(this).next().focus();
 			});
 		});
+	</script>
+	<script>
+	$(function(){
+		$(".chosen-select").chosen(); 
+	});
+	
+	//select box 선택 시 값 등록
+	$('#form-field-section').change(function() {
+  		var classification = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.classification}
+ 		$('#classification').val(classification); 
+	});
+	
+	$('#form-field-customer').change(function() {
+  		var customername = $('#form-field-customer option:selected').attr('customerName'); // ${customerVo.name}
+  		$('#customerName').val(customername);
+ 		var managername = $('#form-field-customer option:selected').attr('managerName'); // ${customerVo.manager_name}
+ 		$('#managerName').val(managername);
+	});
+	
+	
+	$(function() {
+		//한행 클릭 >> 건물코드 가져오기
+		   $(".table-row").click(function() {
+		      var str = ""
+		      var tdArr = new Array();   // 배열 선언
+		      
+		      // 현재 클릭된 Row(<tr>)
+		      var tr = $(this);
+		      var td = tr.children();
+		      
+		      $("input[name=id]").val(td.eq(0).text());
+		      //sectionNo 에 대한 값(classification)을 select box에 표시
+		      $('#form-field-section').val(td.eq(1).text()).trigger('chosen:updated'); 
+		      $("input[name=sectionName]").val(td.eq(2).text()); 
+		      $("input[name=area]").val(td.eq(3).text());
+		      $("input[name=wideAddress]").val(td.eq(6).text());
+		      $("input[name=cityAddress]").val(td.eq(7).text());
+		      $("input[name=detailAddress]").val(td.eq(8).text());
+		      //customerNo 에 대한 값(name)을 select box에 표시
+		      $('#form-field-customer').val(td.eq(11).text()).trigger('chosen:updated'); 
+		      $("input[name=customerName]").val(td.eq(12).text());
+		      $("input[name=managerName]").val(td.eq(13).text());
+		      $("input[name=payDate]").val(td.eq(15).text());
+		      $("input[name=acqPrice]").val(td.eq(17).text().replace(/,/g, ""));
+		      
+			});
+	});
 	</script>
 </body>
 </html>
