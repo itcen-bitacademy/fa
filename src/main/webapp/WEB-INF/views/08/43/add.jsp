@@ -151,9 +151,9 @@
 									<div class="control-group">
 										<label class="control-label" for="id-date-picker-1">매입일자</label>
 										<div class="controls">
-											<input class="cl-date-picker" id="id-date-picker-1"
-												type="text" name="payDate">
 											<div class="input-append">
+												<input class="cl-date-picker" id="id-date-picker-1"
+													type="text" name="payDate">
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
