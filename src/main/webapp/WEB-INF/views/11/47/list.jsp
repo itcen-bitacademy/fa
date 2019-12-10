@@ -245,10 +245,10 @@
 						<c:forEach begin="${pagination.startPage }" end="${pagination.endPage }" var="pg">
 							<c:choose>
 								<c:when test="${pg eq pagination.page }">
-									<li class="active" onclick='pageClicked(this)' id="${pg }"><a>${pg }</a></li>
+									<li class="active" onclick='paging(this)' id="${pg }"><a>${pg }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li onclick='pageClicked(this)' id="${pg }"><a>${pg }</a></li>
+									<li onclick='paging(this)' id="${pg }"><a>${pg }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -306,7 +306,7 @@ function renderingPage(pagination){
 	
 	//이전버튼 Rendering
 	if(pagination.prev){
-		$("#pg-list").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" + 
+		$("#pg-list").append("<li onclick='paging(this)'> id='" + (pagination.endPage + 1) + "'" + 
 									"<a><i class='icon-double-angle-left'></i>" +
 									"</a>"+
 								"</li>");
@@ -316,13 +316,13 @@ function renderingPage(pagination){
 	//페이지 Rendering
 	for(var i=pagination.startPage; i<=pagination.endPage ; ++i){
 		if(i == pagination.page)
-			$("#pg-list").append("<li class='active' onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
+			$("#pg-list").append("<li class='active' onclick='paging(this)' id='" + i + "'><a>" + i + "</a></li>");
 		else
-			$("#pg-list").append("<li onclick='pageClicked(this)' id='" + i + "'><a>" + i + "</a></li>");
+			$("#pg-list").append("<li onclick='paging(this)' id='" + i + "'><a>" + i + "</a></li>");
 	}
 	//다음 버튼 Rendering
 	if(pagination.prev){
-		$("#pg-list").append("<li onclick='pageClicked(this)'> id='" + (pagination.endPage + 1) + "'" +
+		$("#pg-list").append("<li onclick='paging(this)'> id='" + (pagination.endPage + 1) + "'" +
 										"<a><i class='icon-double-angle-right'></i></a>"+
 									"</li>");
 	}else{
@@ -346,7 +346,7 @@ function renderingPage(pagination){
  }
  
  //page click Event Method, 검색조건에 따른 페이지를 보여준다.
- function pageClicked(thisObj){
+ function paging(thisObj){
 	 console.log("paging call");
 	 ajaxProcessing(thisObj, "paging");
  }
