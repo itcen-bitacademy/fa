@@ -84,7 +84,6 @@
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">사채관리</h1>
-					<div class="btn btn-link pull-right" ><span id="todayDate"></span></div>
 				</div>
 
 				<!-- PAGE CONTENT BEGINS -->
@@ -113,7 +112,7 @@
 										<td class="first-span-first-padding-right"><h4>차입금액</h4></td>
 										<td>
 											<input type="text" id="inputPrice" name="text-debtAmount" value="" />
-											<input type="hidden" id="hidden-dept-amount" name="debtAmount" />
+											<input type="text" id="hidden-dept-amount" name="debtAmount" />
 										</td>
 									</tr>
 									<tr>
@@ -364,9 +363,12 @@
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
-							<th class="center" ><label class="pos-rel">
-							<input type="checkbox" class="ace" id="selectAll" /> <span class="lbl"></span>
-							</label></th>
+							<th class="center" >
+								<label class="pos-rel">
+									<input type="checkbox" class="ace" id="selectAll" />
+									<span class="lbl"></span>
+								</label>
+							</th>
 							<th class="center">사채코드</th>
 							<th class="center">사채명</th>
 							<th class="center">차입금대분류</th>
@@ -400,7 +402,10 @@
 											<c:when test="${vo.majorCode eq '008005'}"><td class="center">외국계은행</td></c:when>
 											<c:otherwise><td class="center">증권</td></c:otherwise>
 								</c:choose>	
-								<td class="center">${vo.debtAmount}</td>
+								<td class="center">
+									<fmt:formatNumber id="debtamount-formatnumber" value="${vo.debtAmount}" pattern="#,###" />
+									<input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" />
+								</td>				
 								<c:choose>
 											<c:when test="${vo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
 											<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
@@ -529,7 +534,9 @@
 			$('#majorcode-field-select').val(major).trigger('chosen:updated');  
 			
 			// 차입금액
-			$("input[name=debtAmount]").val(td.eq(4).text());
+			var debt = $("#debtamount-formatnumber").val();
+			$("input[name=debtAmount]").val(debt);
+			$("input[name=hidden-dept-amount]").val($("input[name=tbody-hidden-debtAmount]").val());
 			
 			// 상환방법
 			var repayWay='';
@@ -820,28 +827,7 @@ $(function() {
 });
 
 </script>
-<script>
-//오늘 날짜 출력
-todayIs();
 
-function todayIs() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth()+1; // Jan is 0
-    var yyyy = today.getFullYear();
-
-    if(dd<10){
-        dd = '0'+dd
-    }
-    if(mm<10){
-        mm = '0'+mm
-    }
-
-    today = yyyy + '-' + mm + '-' + dd;
-    document.getElementById("todayDate").innerHTML = today;
-} 
-
-</script>
 <script>
 $(function() {
 	$("#dialog-repayment").dialog({
@@ -906,8 +892,6 @@ $(function() {
 				});
 				$(this).dialog('close');
 				//상환내역 반영
-				
-				
 		    },
 		    "닫기" : function() {
 		          	$(this).dialog('close');
@@ -916,54 +900,54 @@ $(function() {
 		});
 	});
 });
-//코드 중복체크
-$("#code2").change(function(){
-	$("#btn-check-code").show();
-	$("#img-checkcode").hide();
-});	
-
-$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
-$("#btn-check-code").click(function(){
+	//코드 중복체크
+	$("#code2").change(function(){
+		$("#btn-check-code").show();
+		$("#img-checkcode").hide();
+	});	
 	
-	var code = $("#code2").val();
-	if(code == ""){
-		return;
-	}
-
-// ajax 통신
-$.ajax({
-	url: "${pageContext.servletContext.contextPath }/11/48/checkcode?code=" + code,
-	type: "get",
-	dataType: "json",
-	data: "",
-	success: function(response){
-		if(response.result == "fail"){
-			console.error(response.message);
+	$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
+	$("#btn-check-code").click(function(){
+		
+		var code = $("#code2").val();
+		if(code == ""){
 			return;
 		}
-		console.log(response);
-		
-		if(response.data == null){
-			$("#inputbtn").show();
+	
+	// ajax 통신
+	$.ajax({
+		url: "${pageContext.servletContext.contextPath }/11/50/checkcode?code=" + code,
+		type: "get",
+		dataType: "json",
+		data: "",
+		success: function(response){
+			if(response.result == "fail"){
+				console.error(response.message);
+				return;
+			}
+			console.log(response);
 			
-			$("#btn-check-code").hide();
-			$("#img-checkcode").show();
-			return;
-		}else if(response.data.deleteFlag == "Y"){
-			alert("삭제된 코드입니다.");
-		}else{
-			alert("이미 존재하는 코드입니다.");
-			$("#code2").val("");
-			//$("#inputbtn").hide();
-			$("#code2").focus();
-		}
-		
-		},
-		error:function(xhr,error) {
-			console.err("error" + error);
-		}
-	});
-});	
+			if(response.data == null){
+				$("#inputbtn").show();
+				
+				$("#btn-check-code").hide();
+				$("#img-checkcode").show();
+				return;
+			}else if(response.data.deleteFlag == "Y"){
+				alert("삭제된 코드입니다.");
+			}else{
+				alert("이미 존재하는 코드입니다.");
+				$("#code2").val("");
+				//$("#inputbtn").hide();
+				$("#code2").focus();
+			}
+			
+			},
+			error:function(xhr,error) {
+				console.err("error" + error);
+			}
+		});
+	});	
 </script>
 <script>
 /* $(function() {

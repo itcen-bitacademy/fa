@@ -216,9 +216,7 @@ public class Menu50Controller {
 		vo.setInsertId(uservo.getId());
 		menu50Service.updateRepayVo(vo);
 		menu50Service.insertRepayVo(vo);
-		
 		PdebtVo pdebtVo = menu50Service.getOne(vo.getDebtNo());
-		
 		if(pdebtVo.getRepayBal() >= pdebtVo.getDebtAmount())
 			menu50Service.updateRepayFlag(pdebtVo.getNo());
 		return JSONResult.success(pdebtVo);

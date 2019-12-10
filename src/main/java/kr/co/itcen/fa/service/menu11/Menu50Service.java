@@ -2,10 +2,8 @@ package kr.co.itcen.fa.service.menu11;
 
 import java.text.ParseException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu50Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
@@ -13,6 +11,7 @@ import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
+import kr.co.itcen.fa.vo.menu11.RepayVo;
 
 /**
  * 
@@ -92,6 +91,33 @@ public class Menu50Service {
 
 	public List<SectionVo> selectSection() {
 		return menu50Repository.selectSection();
+	}
+
+	public Long select(Long no) {
+		return menu50Repository.select(no);
+	}
+
+	// 상환데이터 수정
+	public Boolean updateRepayVo(RepayVo vo) {
+		return menu50Repository.updateRepayVo(vo);
+	}
+
+	// 상환데이터 입력
+	public Boolean insertRepayVo(RepayVo vo) {
+		return menu50Repository.insertRepayVo(vo);
+	}
+
+	// 상환후 갱신된 정보 select
+	public PdebtVo getOne(Long debtNo) {
+		return menu50Repository.getOne(debtNo);
+	}
+
+	public Boolean updateRepayFlag(Long no) {
+		return menu50Repository.updateRepayFlag(no);
+	}
+
+	public PdebtVo existCode(String code) {
+		return menu50Repository.getCode(code);
 	}
 	
 }
