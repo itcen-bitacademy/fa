@@ -200,9 +200,8 @@ function execDaumPostcode() {
 		        "<td>" + customerList[customer].no + "</td>" +
 		        "<td>" + customerList[customer].name + "</td>" +
 		        "<td>" + customerList[customer].ceo + "</td>" +
-		        "<td>" + customerList[customer].address + " " + customerList[customer].detailAddress + "</td>" +
-		        "<td>" + customerList[customer].conditions + "</td>" +
-		        "<td>" + customerList[customer].item + "</td>" +
+		        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
+		        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
 		        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
 		        "<td>" + customerList[customer].phone + "</td>" +
 		        "<td>" + customerList[customer].managerName + "</td>" +
@@ -224,22 +223,37 @@ function execDaumPostcode() {
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
+		//var customerNo1=td.eq(1).text().substring(0,2);
+		//var customerNo2=td.eq(1).text().substring(4,5);
+		//var customerNo3=td.eq(1).text().substring(7,11);
+		var customerNo = td.eq(1).text();
+		var noArray=customerNo.split('-');
 		
-		$("input[name=no]").val(td.eq(1).text());
+		var customerPhone = td.eq(7).text();
+		var phoneArray=customerPhone.split('-');
+		
+		var customerAddr = td.eq(4).text();
+		var addrArray=customerAddr.split('/');
+		
+		var customerConIt = td.eq(5).text();
+		var conitArray=customerConIt.split('/');
+		
+		$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
 		$("input[name=name]").val(td.eq(2).text());
 		$("input[name=ceo]").val(td.eq(3).text());
-		$("input[name=address]").val(td.eq(4).text());
-		$("input[name=conditions]").val(td.eq(5).text());
-		$("input[name=item]").val(td.eq(6).text());
-		$("input[name=corporationNo]").val(td.eq(1).text());
-		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
-		$("input[name=phone]").val(td.eq(8).text());
-		$("input[name=managerEmail]").val(td.eq(10).text());
-		$("input[name=bankName]").val(td.eq(12).text());
-		$("input[name=bankCode]").val(td.eq(11).text());
-		$("input[name=depositNo]").val(td.eq(13).text());
-		$("input[name=managerName]").val(td.eq(9).text());
-		$("input[name=depositHost]").val(td.eq(14).text());
+		$("input[name=address]").val(addrArray[0]);
+		$("input[name=detailAddress]").val(addrArray[1]);
+		$("input[name=conditions]").val(conitArray[0]);
+		$("input[name=item]").val(conitArray[1]);
+		$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
+		$("input[name=jurisdictionOffice]").val(td.eq(6).text());
+		$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
+		$("input[name=managerEmail]").val(td.eq(9).text());
+		$("input[name=bankName]").val(td.eq(11).text());
+		$("input[name=bankCode]").val(td.eq(10).text());
+		$("input[name=depositNo]").val(td.eq(12).text());
+		$("input[name=managerName]").val(td.eq(8).text());
+		$("input[name=depositHost]").val(td.eq(13).text());
 		$("input[name=address]").prop("readonly", true);
 		$("input[name=depositNo]").prop("readonly", true);
 		$("input[name='bankCode']").prop("readonly", true);
@@ -646,9 +660,8 @@ function execDaumPostcode() {
 												<th>사업자등록번호</th>
 												<th>상호</th>
 												<th>대표자</th>
-												<th>주소</th>
-												<th>업태</th>
-												<th>종목</th>
+												<th>주소/상세주소</th>
+												<th>업태/종목</th>
 												<th>관할영업소</th>
 												<th>거래처 전화번호</th>
 												<th>거래처 담당자 성명</th>
@@ -677,9 +690,8 @@ function execDaumPostcode() {
 													<td>${vo.no }</td>
 													<td>${vo.name }</td>
 													<td>${vo.ceo }</td>
-													<td>${vo.address } ${vo.detailAddress }</td>
-													<td>${vo.conditions }</td>
-													<td>${vo.item }</td>
+													<td>${vo.address }/${vo.detailAddress }</td>
+													<td>${vo.conditions }/${vo.item }</td>
 													<td>${vo.jurisdictionOffice }</td>
 													<td>${vo.phone }</td>
 													<td>${vo.managerName }</td>

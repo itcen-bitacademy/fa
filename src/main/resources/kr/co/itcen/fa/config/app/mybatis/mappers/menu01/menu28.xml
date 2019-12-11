@@ -194,7 +194,7 @@
 	<if test='vo.customerDiv == "All" or vo.customerDiv == ""'>
 	    <![CDATA[
 	    	select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       substr(no,2) as no,
+			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -203,8 +203,20 @@
 	               item as item, 
 	               corporation_no as corporationNo, 
 	               open_date as openDate, 
-	               jurisdiction_office as jurisdictionOffice, 
-	               phone as phone, 
+	               jurisdiction_office as jurisdictionOffice,
+			       (IFNULL(CASE LEFT(phone,2)
+			        WHEN "02" THEN
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            END
+			        ELSE
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            END
+			        END,"없음")) as phone,
 	               manager_name as managerName, 
 	               manager_email as managerEmail,
 	               deposit_no as depositNo,
@@ -244,7 +256,7 @@
 			<![CDATA[
 				union
 			   select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
-			       	  substr(no,2) as no,
+			          concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 	               	  name as name, 
 	               	  ceo as ceo, 
 	               	  address as address,
@@ -254,7 +266,19 @@
 	               	  corporation_no as corporationNo, 
 	               	  open_date as openDate, 
 	               	  jurisdiction_office as jurisdictionOffice, 
-	               	  phone as phone, 
+				       (IFNULL(CASE LEFT(phone,2)
+				        WHEN "02" THEN
+				            CASE CHAR_LENGTH(phone)
+				                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+				                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+				            END
+				        ELSE
+				            CASE CHAR_LENGTH(phone)
+				                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+				                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+				                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+				            END
+				        END,"없음")) as phone,
 	               	  manager_name as managerName, 
 	               	  manager_email as managerEmail,
 	               	  deposit_no as depositNo,
@@ -293,7 +317,7 @@
 			    <![CDATA[
 			    	union
 			       select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
-			       		  substr(no,2) as no,
+			              concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 			       		  name as name,
 			       		  ceo as ceo,
 			       		  address as address,
@@ -302,8 +326,20 @@
 			       		  item as item,
 			       		  corporation_no as corporationNo,
 			       		  open_date as openDate,
-			       		  jurisdiction_office as jurisdictionOffice,
-			       		  phone as phone,
+			       		  jurisdiction_office as jurisdictionOffice, 
+					       (IFNULL(CASE LEFT(phone,2)
+					        WHEN "02" THEN
+					            CASE CHAR_LENGTH(phone)
+					                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+					                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+					            END
+					        ELSE
+					            CASE CHAR_LENGTH(phone)
+					                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+					                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+					                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+					            END
+					        END,"없음")) as phone,
 			       		  manager_name as managerName,
 			       		  manager_email as managerEmail,
 			       		  deposit_no as depositNo,
@@ -348,7 +384,7 @@
 	<if test='vo.customerDiv == "Assets"'>
 	    <![CDATA[
 			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       substr(no,2) as no,
+			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -358,7 +394,19 @@
 	               corporation_no as corporationNo, 
 	               open_date as openDate, 
 	               jurisdiction_office as jurisdictionOffice, 
-	               phone as phone, 
+			       (IFNULL(CASE LEFT(phone,2)
+			        WHEN "02" THEN
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            END
+			        ELSE
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            END
+			        END,"없음")) as phone,
 	               manager_name as managerName, 
 	               manager_email as managerEmail,
 	               deposit_no as depositNo,
@@ -405,7 +453,7 @@
 	<if test='vo.customerDiv == "Purchase"'>
 	    <![CDATA[
 			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
-			       substr(no,2) as no,
+			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -415,7 +463,19 @@
 	               corporation_no as corporationNo, 
 	               open_date as openDate, 
 	               jurisdiction_office as jurisdictionOffice, 
-	               phone as phone, 
+			       (IFNULL(CASE LEFT(phone,2)
+			        WHEN "02" THEN
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            END
+			        ELSE
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            END
+			        END,"없음")) as phone,
 	               manager_name as managerName, 
 	               manager_email as managerEmail,
 	               deposit_no as depositNo,
@@ -460,7 +520,7 @@
 	<if test='vo.customerDiv == "Sales"'>
 	    <![CDATA[
 			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
-			       substr(no,2) as no,
+			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 	               name as name,
 	               ceo as ceo, 
 	               address as address,
@@ -470,7 +530,19 @@
 	               corporation_no as corporationNo, 
 	               open_date as openDate, 
 	               jurisdiction_office as jurisdictionOffice, 
-	               phone as phone, 
+			       (IFNULL(CASE LEFT(phone,2)
+			        WHEN "02" THEN
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            END
+			        ELSE
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            END
+			        END,"없음")) as phone,
 	               manager_name as managerName, 
 	               manager_email as managerEmail,
 	               deposit_no as depositNo,
