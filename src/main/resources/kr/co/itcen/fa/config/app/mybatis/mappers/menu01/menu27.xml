@@ -138,6 +138,7 @@
 				   update_userid = #{updateUserid },
 				   update_day = now()
 			 where no = concat('A', #{no})
+			   and name!='여비'
 		]]>
 	</update>
 	
@@ -147,6 +148,7 @@
 			update tb_customer
 			   set delete_flag = 'Y'
 			 where name =  #{name }
+			   and name!='여비'
 		]]>
 	</update>
 	
@@ -164,6 +166,7 @@
 		select	count(*)
 		 from	tb_customer 
 		 where	delete_flag = "N"
+		   and  name!='여비'
 		]]>
 	</select>
 	
