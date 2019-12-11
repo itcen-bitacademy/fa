@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
@@ -62,7 +62,8 @@ public class Menu09Controller {
 	//               /08   /   09     , /08/09/list
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model, 
-						@RequestParam(value="id", required=false) String id) {
+						@RequestParam(value="id", required=false, defaultValue = "") String id
+						,@RequestParam(value="page", required=false, defaultValue = "1") int page) {
 		
 
 		
@@ -73,6 +74,13 @@ public class Menu09Controller {
 		 * 
 		 */
 		
+		//dataresult 생성, 모델
+		DataResult<LandVo> dataResult = menu09Service.list(id, page); 
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page" , page);
+		
+		
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		//대분류코드 select box
@@ -81,14 +89,14 @@ public class Menu09Controller {
 		map.putAll(menu09Service.getCustomerCodeList());
 		
 		//관리 list
-		map.putAll(menu09Service.getLandList());
+//		map.putAll(menu09Service.getLandList());
 		
-		if(id != null) {
-			map.putAll(menu09Service.getsearchList(id));		
-		}
+//		if(id != null) {
+//			map.putAll(menu09Service.getsearchList(id));		
+//		}
 		model.addAttribute("sectionList", list);
 		model.addAllAttributes(map);
-//		
+		
 		return  MAINMENU + "/" + SUBMENU + "/add";
 	}
 	

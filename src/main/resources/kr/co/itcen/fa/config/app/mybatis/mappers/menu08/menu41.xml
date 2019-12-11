@@ -43,7 +43,7 @@
 		 		manager_name as managerName, 
 		 		name
           from tb_customer 
-          where assets_flag = "a";
+          where assets_flag = "c";
 		]]>
 	</select>
 	
@@ -59,10 +59,9 @@
 				#{sectionNo},
 				#{staffNo},
 				#{ownerName},
-				null,
-				null,
-				null,
-				null,
+			 	#{wideAddress},
+				#{cityAddress},
+				#{detailAddress},
 				#{publicValue},
 				#{regTax},
 				#{acqTax},
@@ -99,6 +98,9 @@
 					s.classification as classification,
 					st.staff_name as staffName,
 					v.owner_name as ownerName,
+					v.wide_address as wideAddress,
+					v.city_address as cityAddress,
+					v.detail_address as detailAddress,
 					v.public_value as publicValue,
 					v.reg_tax as regTax,
 					v.acq_tax as acqTax,
@@ -135,10 +137,9 @@
 		  	  section_no = #{sectionNo},
 		  	  staff_no = #{staffNo},
 		  	  owner_name = #{ownerName},
-		  	  wide_address = null,
-		  	  city_address = null,
-		  	  local_address = null,
-		  	  detail_address = null,
+		  	  wide_address = #{wideAddress},
+		  	  city_address = #{cityAddress},
+		  	  detail_address = #{detailAddress},
 		  	  public_value = #{publicValue},
 		  	  reg_tax = #{regTax},
 		  	  acq_tax = #{acqTax},
@@ -157,11 +158,10 @@
 	</update>
  	
  	<!-- 거래처번호를 통해 계좌번호 가져오기 -->
-	<select id="getDepositNo" parameterType="string" resultType="string">
+	<select id="getDepositNo" parameterType="string" resultType="1customervo">
 		<![CDATA[
-		select deposit_no
-		  from tb_customer
-		 where no = #{customerNo}
+		select deposit_no as depositNo, bank_code as bankCode, bank_name as bankName
+		  from tb_customer where no = #{customerNo }
 		]]>
 	</select>
  
@@ -187,6 +187,9 @@
 					s.classification as classification,
 					st.staff_name as staffName,
 					v.owner_name as ownerName,
+					v.wide_address as wideAddress,
+					v.city_address as cityAddress,
+					v.detail_address as detailAddress,
 					v.public_value as publicValue,
 					v.reg_tax as regTax,
 					v.acq_tax as acqTax,
@@ -212,4 +215,41 @@
          </if>
 	</select>
 	
+	
+	<!-- 세금계산서 등록-->
+	<insert id="insertTaxbill" parameterType="08taxVehicle">
+		<![CDATA[
+		insert
+		  into tb_taxbill
+		values (
+				null,
+				#{taxbillNo},
+				#{voucherNo},
+				#{vehicleNo},
+				#{pay},
+				#{paymentDate},
+				#{gubun},
+				#{insertUserid},
+				now(),
+				null, null
+				);
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<!-- 세금계산서 차량 테이블에 업데이트-->
+	<update id="updateTaxbill" parameterType="map">
+		<![CDATA[
+		update tb_vehicle
+		  	set 
+			  	taxbill_no = #{taxno},
+			  	voucher_no = #{voucherNo},
+			  	update_userid= #{updateUserId}
+	    	where id = #{veno};
+   		]]>
+	</update>
 </mapper>

@@ -6,6 +6,10 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/js/08/41/41.js" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -49,15 +53,13 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-select-1">주소(광역)</label>
-									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="wideAddr" data-placeholder="전체">
-											<c:forEach items="${listMainMenu }" var="sectionVo">
-												<option value="${sectionVo.no }">${sectionVo.name }</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
+		                           <label class="control-label" for="form-field-1">주소(광역)</label>
+		                           <div class="controls">
+		                              <input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
+		                              <input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다.">
+		                              <input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
+		                           </div>
+		                        </div>
 								
 						<%-- 		<div class="control-group">
 									<label class="control-label" for="form-field-select-1">주소(읍/면/동)</label>
@@ -155,19 +157,12 @@
 								</div>
 								
 						
-							<div class="control-group"  >
-								<div style="float:left;width:50%">	
-									<label class="control-label" for="form-field-select-1">주소(시/군/구)</label>
-									<div class="controls" style="width:90%">
-										<select class="chosen-select" id="gugun" name="cityAddr" data-placeholder="전체">
-										</select>
-									</div>
-								</div>
-								<div style="float:left;width:50%">
-									<label style="width:80px; margin-right:10px;" class="control-label" for="form-field-select-1">주소(상세)</label>
-										<input type="text" id="form-field-1" name="detailAddr" placeholder="주소를 상세히 입력하세요"/>
-								</div>
-							</div>	
+								<div class="control-group">
+		                           <label class="control-label" for="form-field-1">상세주소</label>
+		                           <div class="controls">
+		                              <input type="text" id="detailAddr" name="detailAddress" placeholder="상세주소를 입력하세요"/>
+		                           </div>
+		                        </div>
 								
 								
 								<div class="control-group">
@@ -191,37 +186,55 @@
 								</div>
 								
 								
-								<div class="control-group">
+							<!-- 	<div class="control-group">
 									<label class="control-label" for="form-field-1">세금계산서 번호</label>
 									<div class="controls">
 										<input type="text" class="span7" id="form-field-1" name="taxbillNo" placeholder="12자로 입력하세요"/>
 									</div>
-								</div>
+								</div> 
+								-->
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">보증금 납부일자</label>
-									<div class="controls">
-										<input class="cl-date-picker" type="text" style="width:150px" id="form-field-1" name="depositDate" placeholder=""/>	
+									<div style="float:left;width:50%">											
+										<label class="control-label" for="form-field-1">보증금 납부일자</label>
+										<div class="controls" style="width:90%">
+											<input class="cl-date-picker" type="text" style="width:150px" id="depositDate" name="depositDate" placeholder=""/>	
 										<i class="icon-calendar"></i>
-									</div>
-								</div>
-								
-								<div class="control-group">
-									<div style="float:left;width:50%">	
-										<label class="control-label" for="form-field-1">사용료 납부일</label>
-										<div class="controls">
-											<input type="text" class="span10" id="form-field-1" name="feeDate" placeholder="일자 2자리를 입력하세요"/>
 										</div>
-									</div>
-									<div style="float:left;width:50%" >											
-										<label class="control-label" for="form-field-1" >구분</label>
-										<div class="controls">
-											<input type="radio" name="taxKind" id="tax" value="과세">과세
-											<input type="radio" name="taxKind" id="zeroTax" value="영세">영세
-										</div>
+									</div>	
+									<div style="float:left;">											
+										<button class="btn btn-default btn-small" id="nabbu" style="float:right;margin-right:20px;" type="reset">납부</button>
 									</div>	
 								</div>
 								
+								
+								
+								<div class="control-group">
+									<div style="float:left;width:50%">	
+										<label class="control-label" for="form-field-1">월 사용료 납부일</label>
+										<div class="controls">
+											<input type="text" class="span10" id="feeDate" name="feeDate" placeholder="일자 2자리를 입력하세요"/>
+										</div>
+									</div>
+									<div style="float:left;">											
+										<button class="btn btn-default btn-small" id="walsa" style="float:right;margin-right:20px;" type="reset">납부</button>
+									</div>	
+								</div>
+								
+									<div class="control-group">
+										<div style="float:left;width:50%" >											
+											<label class="control-label" for="form-field-1" >구분</label>
+											<div class="controls">
+												<input type="radio" name="taxKind" id="tax" value="과세">과세
+												<input type="radio" name="taxKind" id="zeroTax" value="영세">영세
+											</div>
+										</div>	
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<button class="btn btn-default btn-small" type="button" id="segumBtn">세금계산서보기</button>
+										</div>
+									</div>
 							</div><!-- 대변 span -->
 							
 							
@@ -263,8 +276,7 @@
 												<th>직급</th>
 												<th>사용자</th>
 												<th>주소(광역)</th>
-												<th>주소(기초)</th>
-												<th>주소(지번)</th>
+												<th>주소(시/군/구)</th>
 												<th>주소(상세)</th>
 												<th>매입거래처코드</th>
 												<th>매입거래처명</th>
@@ -278,9 +290,10 @@
 												<th>보증금(원)</th>
 												<th>보증금 납부일자</th>
 												<th>월 사용료(원)</th>
-												<th>사용료 납부일</th>
+												<th>월 사용료 납부일</th>
 												<th>과세/영세</th>
 												<th>사용개월</th>
+												<th>월 사용료 납부금액</th>
 												<!-- <th>작성자</th>
 												<th>작성일자</th> -->
 											</tr>
@@ -288,8 +301,6 @@
 
 										<tbody>
 											<c:forEach items="${list }" var = "VehicleVo" varStatus="status">
-										<%-- 	<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /> --%>
-										
 											<tr>
 												<td class="center">
 													<label>
@@ -299,38 +310,106 @@
 												</td>
 
 											 	<td>${status.count }</td> 
-												<td>${VehicleVo.id}</td>
+												<td class="vehicle-id">${VehicleVo.id}</td>
 												<td>${VehicleVo.sectionNo}</td>
 												<td>${VehicleVo.classification}</td>
 												<td>${VehicleVo.staffName}</td>
 												<td>${VehicleVo.ownerName}</td>
-												<td>주소(광역)</td>
-												<td>주소(기초)</td>
-												<td>주소(지번)</td>
-												<td>주소(상세)</td>
+												<td>${VehicleVo.wideAddress}</td>
+												<td>${VehicleVo.cityAddress}</td>
+												<td>${VehicleVo.detailAddress}</td>
 												<td>${VehicleVo.customerNo}</td>
 												<td>${VehicleVo.customerName}</td>
 												<td>${VehicleVo.managerName}</td>
 												<td class="pay-date">${VehicleVo.payDate}</td>
-												<td>${VehicleVo.publicValue}</td>
-												<td>${VehicleVo.regTax}</td>
-												<td>${VehicleVo.acqTax}</td>
-												<td>${VehicleVo.etcCost}</td>
-												<td>${VehicleVo.taxbillNo}</td>
-												<td>${VehicleVo.deposit}</td>
+												<td><fmt:formatNumber value="${VehicleVo.publicValue}" pattern="#,###"></fmt:formatNumber></td>
+												<td><fmt:formatNumber value="${VehicleVo.regTax}" pattern="#,###"></fmt:formatNumber></td>
+												<td><fmt:formatNumber value="${VehicleVo.acqTax}" pattern="#,###"></fmt:formatNumber></td>
+												<td><fmt:formatNumber value="${VehicleVo.etcCost}" pattern="#,###"></fmt:formatNumber></td>
+												<td><button type="button" class="myBtn">세금계산서번호</button></td>
+												<td><fmt:formatNumber value="${VehicleVo.deposit}" pattern="#,###"></fmt:formatNumber></td>
 												<td>${VehicleVo.depositDate}</td>
-												<td>${VehicleVo.monthlyFee}</td>
+												<td class="monthly-fee"><fmt:formatNumber value="${VehicleVo.monthlyFee}" pattern="#,###"></fmt:formatNumber></td>
 												<td>${VehicleVo.feeDate}</td>
 												<td>${VehicleVo.taxKind}</td>
 												<td class="using-month"></td>
-												<%-- <td>${VehicleVo.insertUserId}</td>
-												<td>${VehicleVo.insertDay}</td> --%>
-												<%-- <td>${VehicleVo.insertUserId}</td> --%>
-												<%-- <td>${now}</td> --%>
+												<td class="month-cost"></td>
+										
 											</tr>
 										</c:forEach>
 									</tbody>
 								</table>
+								
+							<div id="dialog-message" title="세금계산서번호" hidden="hidden">
+															<table id ="dialog-message-table" align="center">
+																<tr>
+																	<td>
+																	<form action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
+																		<label>세금계산서번호</label>
+																		<input type="text"  id="input-dialog-bankname" name="taxbillNo" placeholder="세금계산서번호"/>
+																		<label>차량코드</label>
+																		<input readonly type="text" id="vehicleNo" name="vehicleNo" value="차량코드">
+																		<label>납부일</label>
+																		<input readonly type="text" id="paymentDate" name="paymentDate" value="납부일">
+																		<label class="deposits">보증금</label>
+																		<input readonly type="text" class="deposits" name="deposit" value="보증금">
+																		<label class="monthfee">월 사용료</label>
+																		<input readonly type="text" class="monthfee" name="monthlyFee" value="월 사용료">
+																		<input type="hidden" id="cusNo" name="cusNo" value="">
+																		<input type="hidden" id="gubun" name="gubun" value="">
+																		<button class="btn btn-info btn-small" id="segum" style="float:right;margin-left:10px;">입력</button>
+																	</form>				
+																	</td>
+																</tr>
+															</table>
+														<!-- 차량코드, 납부일, 세금계산서 번호 데이터 리스트 -->
+														<!-- <table id="modal-bank-table" class="table  table-bordered table-hover">
+															<thead>
+																<tr>
+																	<th class="vehicle-code">차량코드</th>
+																	<th class="pay-day">납부일</th>
+																	<th class="center">세금계산서번호</th>
+																</tr>
+																<tr>
+																	<td>c</td>
+																	<td>s</td>
+																	<td>t</td>
+																</tr>
+																
+															</thead>
+															<tbody id="tbody-bankList">
+															</tbody>
+														</table> -->
+												</div>
+												
+										<div id="segumList" title="차량 세금계산서" hidden="hidden">
+														<!-- 차량코드, 납부일, 세금계산서 번호 데이터 리스트 -->
+														<table id="segum-table" class="table  table-bordered table-hover">
+															<thead>
+																
+																<tr>
+																	<th class="vehicle-code">차량코드</th>
+																	<th class="pay-day">가격</th>
+																	<th class="pay-day">납부일</th>
+																	<th class="center">세금계산서번호</th>
+																	<th class="center">전표번호</th>
+																	<th class="center">구분</th>
+																</tr>
+																<c:forEach items="${segumList }" var = "segumVo" varStatus="status">
+																<tr>
+																	<td>${segumVo.vehicleNo}</td>
+																	<td>${segumVo.pay}</td>
+																	<td>${segumVo.paymentDate}</td>
+																	<td>${segumVo.taxbillNo}</td>
+																	<td>${segumVo.voucherNo}</td>
+																	<td>${segumVo.gubun}</td>
+																</tr>
+																</c:forEach>
+															</thead>
+															<tbody id="tbody-segumList">
+															</tbody>
+														</table>
+												</div>
 								
 										<div class="pagination">
 											<ul>
@@ -354,7 +433,14 @@
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
+
+$(document).ready(function(){
+	$("#nabbu").hide();
+	$("#walsa").hide();
+	$("#segumBtn").hide();
+});
 $(function(){
 	$(".chosen-select").chosen(); 
 });
@@ -419,7 +505,7 @@ $('#form-field-customerCode').change(function() {
 	$('#customerNo').val(customerCode);
 	
 	var managerName = $('#form-field-customerCode option:selected').attr('managerName');
-	var managerName = $('#customerManager').val(managerName); 
+	$('#customerManager').val(managerName); 
 	
 
 });
@@ -452,10 +538,27 @@ function calcMonth(index, item) {
 	var year  =  month*12;
 	
 	$(item).parent().find(".using-month").text(parseInt(interval/month));
+/* 	$(item).parent().find(".month-cost").text((parseInt(interval/month))*(td.eq(22).text()));
+	console.log((parseInt(interval/month))*(td.eq(22).text()));  */
 };
+
+function setMonth() {
+	$('tr .pay-date').each(calcMonth)
+	//$('tr .monthly-fee').each(calcMonth)
+};
+
+/* //여기서 월 사용료 납부 금액
+function calcMonthCost(index, item) {
+
+	
+	$(item).parent().find(".month-cost").text(parseInt(interval/month)*);
+}; 
+
 function setMonth() {
 	$('tr .pay-date').each(calcMonth)
 };
+*/
+
 //버튼 구현
 $(function(){
    $("#insert").click(function() {
@@ -478,14 +581,15 @@ $(function(){
 });
 
 
-// 테이블의 Row 클릭시 값 가져오기
-$("#sample-table-1 tr").click(function(){ 	
-
+ // 테이블의 Row 클릭시 값 가져오기
+$("#sample-table-1 tr").click(function(){
+	
+	$("#segumBtn").show();
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
 	
 	// 현재 클릭된 Row(<tr>)
-	var tr = $(this);
+	var tr = $(this); 
 	var td = tr.children();
 	
 	// tr.text()는 클릭된 Row 즉 tr에 있는 모든 값을 가져온다.
@@ -494,17 +598,18 @@ $("#sample-table-1 tr").click(function(){
 	// 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
 
 	
-/* 	console.log("배열에 담긴 값 : "+tdArr); */
+	//console.log("배열에 담긴 값 : "+tdArr);
 	
-	// td.eq(index)를 통해 값을 가져올 수도 있다.
-	$("input[name=id]").val(td.eq(2).text());
+	//td.eq(index)를 통해 값을 가져올 수도 있다.
+	var vehicleNo = $("input[name=id]").val(td.eq(2).text());
+	$("#vehicleNo").val(td.eq(2).text()); //차량코드 납부버튼에 관련된 jquery
 	$('#form-field-section').val(td.eq(3).text()).trigger('chosen:updated');
     $("input[name=classification]").val(td.eq(4).text());
     //$('#form_field_classification_chosen').find('span').text(td.eq(5).text());
     
-    /* 직급 */
-    
+    // 직급
     var staff='';
+    
 	switch (td.eq(5).text()){
     case '사원' :
     	staff=1;
@@ -532,36 +637,75 @@ $("#sample-table-1 tr").click(function(){
     	break;
 	}
 
-
-
 	$('#form-field-classification').val(staff).trigger('chosen:updated');
     $("input[name=ownerName]").val(td.eq(6).text());
-/*  $("input[name=wideAddress]").val(td.eq(13).text());
+  	$("input[name=wideAddress]").val(td.eq(7).text());
     $("input[name=cityAddress]").val(td.eq(8).text());
-    $("input[name=localAddress]").val(td.eq(9).text());
-    $("input[name=detailAddress]").val(td.eq(10).text()); */
+    $("input[name=detailAddress]").val(td.eq(9).text()); 
+    $('#form_field_customerCode_chosen').find('span').text(td.eq(11).text())
+    $("input[name=customerNo]").val(td.eq(10).text());
+    $("input[name=managerName]").val(td.eq(12).text());
+    $("input[name=payDate]").val(td.eq(13).text());
+    $("input[name=publicValue]").val(td.eq(14).text().replace(/,/g, ""));
+    $("input[name=regTax]").val(td.eq(15).text().replace(/,/g, ""));
+    $("input[name=acqTax]").val(td.eq(16).text().replace(/,/g, ""));
+    $("input[name=etcCost]").val(td.eq(17).text().replace(/,/g, ""));
+   // $("input[name=taxbillNo]").val(td.eq(19).text());
+    $("input[name=deposit]").val(td.eq(19).text().replace(/,/g, "")); 
+    $("#deposits").val(td.eq(19).text()); //보증금 납부버튼에 관련된 jquery
+    $("#cusNo").val(td.eq(10).text());
+    $("input[name=depositDate]").val(td.eq(20).text());
+    $("#paymentDate").val(td.eq(20).text()); //보증금 납부일 납부버튼에 관련된 jquery
+    $("input[name=monthlyFee]").val(td.eq(21).text().replace(/,/g, ""));
+    $("#monthfee").val(td.eq(21).text()); //월 사용료 납부일 납부버튼에 관련된 jquery
+    $("input[name=feeDate]").val(td.eq(22).text());
+    
+    
+    var today = new Date();	
+	var ddd = today.getDate();
+	var dd = "0"
+	var mmm = (today.getMonth() + 1); //January is 0!	
+	var mm = "0";
+	var yyyy = new String(today.getFullYear());
+	
+	if(mmm < 10 ){ mm = mm + new String(mmm); } else { mm = mmm; }
+	
+	if(ddd < 10 ){ dd = dd + new String(ddd); } else { dd = ddd; }
+	
+	var currentDate  = yyyy + mm + dd;
+	
+	// 보증금 날짜 비교하기 
+	var depositDate = $("#depositDate").val();
+	depositDate = depositDate.replace(/-/g, "");
+	console.log("C " + currentDate)
+	console.log("D " + depositDate)
+	
+	if(depositDate < currentDate || depositDate == currentDate){
+		$("#nabbu").show();
+	}else{
+		$("#nabbu").hide();
+	}
+	
+	// 월사용료 날짜 비교하기위해서. 현재날짜 + 월사용료 일수 가져오기
+	var walsaDate  = yyyy + mm + $("#feeDate").val();
+	
+	console.log(walsaDate);
+	
+	if(walsaDate < currentDate || walsaDate == currentDate){
+		$("#walsa").show();
+	}else{
+		$("#walsa").hide();
+	}
+
+		
+	
+    
+
     
     
 
-    $('#form_field_customerCode_chosen').find('span').text(td.eq(12).text())
-   
-    $("input[name=customerNo]").val(td.eq(11).text());
-    $("input[name=managerName]").val(td.eq(13).text());
-    $("input[name=payDate]").val(td.eq(14).text());
-    $("input[name=publicValue]").val(td.eq(15).text());
-    $("input[name=regTax]").val(td.eq(16).text());
-    $("input[name=acqTax]").val(td.eq(17).text());
-    $("input[name=etcCost]").val(td.eq(18).text());
-    $("input[name=taxbillNo]").val(td.eq(19).text());
-    $("input[name=deposit]").val(td.eq(20).text()); s
-    $("input[name=depositDate]").val(td.eq(21).text());
-    $("input[name=monthlyFee]").val(td.eq(22).text());
-    $("input[name=feeDate]").val(td.eq(23).text());
-    
-    
-    /* 사용 개월  */
-
-	var payDate  =  td.eq(14).text();
+	//사용 개월  
+	var payDate  =  td.eq(20).text();
 	
 	var today = new Date();	
 	var ddd = today.getDate();
@@ -587,13 +731,13 @@ $("#sample-table-1 tr").click(function(){
 	
 	var currentDate  = yyyy + mm + dd;
 	
-/* 	console.log("today : " + today);
-	console.log("mm : " + mm);
-	console.log("dd : " + dd);
+//	console.log("today : " + today);
+//	console.log("mm : " + mm);
+//	console.log("dd : " + dd);
 	
-	console.log("input1 : " + input1);
-	console.log("input2 : " + input2);	
-	 */
+//	console.log("input1 : " + input1);
+//	console.log("input2 : " + input2);	
+	 
 	
 	
 	var date1  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2));
@@ -610,17 +754,148 @@ $("#sample-table-1 tr").click(function(){
 	//alert("기간 날짜수"+parseInt(interval/day));
 	//alert("기간 개월수"+parseInt(interval/month));
 	//alert("기간 년수"+parseInt(interval/year));
-
 	
     $("input[name=usingMonth]").val(parseInt(interval/month)); //input의 name
-    $('#tdUsingMonth').val(parseInt(interval/month)); // input의 ID
+    $('#tdUsingMonth').val(parseInt(interval/month));  // input의 ID 
      
-    if(td.eq(24).text() == "과세"){
+    if(td.eq(23).text() == "과세"){
    	   $("input[id=tax]").prop('checked', true);
      }
-    else if(td.eq(24).text() == "영세"){
+    else if(td.eq(23).text() == "영세"){
    	   $("input[id=zeroTax]").prop('checked', true);
      } 
+    
+    
+    
+    
+});
+
+//주소
+function execDaumPostcode() {
+      new daum.Postcode({
+         oncomplete : function(data) {
+            var fullRoadAddr = data.roadAddress;
+            console.log(data)
+            $("#wideAddr").val(data.sido);
+            $("#cityAddr").val(data.sigungu); 
+            $("#detailAddr").val(data.roadname + " ");
+            $("#detailAddr").focus();
+         }
+      }).open();
+   };
+
+
+$(function() {
+	$("#dialog-message").dialog({
+		autoOpen : false
+	});
+	$("#segumList").dialog({
+		autoOpen : false
+	});
+
+	$("#nabbu").on( "click", function() {
+			$(".monthfee").hide();
+			$(".deposits").show();
+			$("#gubun").val("보증금");
+		/*  console.log("eeeee" + $(this).parent().find(".vehicle-id").text());*/
+		$("#dialog-message").dialog('open');
+		$("#dialog-message").dialog	({
+			title: "세금계산서정보",
+			title_html: true,
+		   	resizable: false,
+		    height: 500,
+		    width: 400,
+		    modal: true,
+		    close: function() {
+		    	$('#tbody-bankList tr').remove();
+		    },
+		    buttons: {
+		    "닫기" : function() {
+		    		$("#nabbu").hide();
+		          	$(this).dialog('close');
+		          	$('#tbody-bankList tr').remove();
+		        }
+		    }
+		});
+	});
+	
+	$("#walsa").on( "click", function() {
+		$(".monthfee").show();
+		$(".deposits").hide();
+		$("#gubun").val("월사용료");
+	/*  console.log("eeeee" + $(this).parent().find(".vehicle-id").text());*/
+	$("#dialog-message").dialog('open');
+	$("#dialog-message").dialog	({
+		title: "세금계산서정보",
+		title_html: true,
+	   	resizable: false,
+	    height: 500,
+	    width: 400,
+	    modal: true,
+	    close: function() {
+	    	$('#tbody-bankList tr').remove();
+	    },
+	    buttons: {
+	    "닫기" : function() {
+	    		$("#walsa").hide();
+	          	$(this).dialog('close');
+	          	$('#tbody-bankList tr').remove();
+	        }
+	    }
+	});
+});
+	// 세금계산서 리스트
+	$("#segumBtn").on( "click", function() {
+		
+		$("#gubun").val("월사용료");
+		$.ajax({
+			url: "${pageContext.request.contextPath }/11/48/repay",
+			contentType : "application/json; charset=utf-8",
+			type: "post",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data:JSON.stringify(vo),
+			success: function(response){
+				console.log(response);
+				if(response.result =="fail"){
+					console.error(response.message);
+					return;
+				}
+				if(response.data==null){
+					alert("값을 정확히 입력하지 않았습니다.");
+					return;
+				}
+				$("#tbody-list tr").each(function(i){
+					var td = $(this).children();
+					var n = td.eq(0).attr('lterm-no');
+					if(n == response.data.no){
+						td.eq(5).html(response.data.repayBal);
+					}
+				});
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+
+	$("#segumList").dialog('open');
+	$("#segumList").dialog	({
+		title: "세금계산서정보",
+		title_html: true,
+	   	resizable: false,
+	    height: 700,
+	    width: 600,
+	    modal: true,
+	    close: function() {
+	    	$('#tbody-sseList tr').remove();
+	    },
+	    buttons: {
+	    "닫기" : function() {
+	          	$(this).dialog('close');
+	          	$('#tbody-sseList tr').remove();
+	        }
+	    }
+	});
+});
 });
 </script>
 </body>

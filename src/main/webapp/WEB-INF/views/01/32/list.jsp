@@ -28,145 +28,190 @@
 
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	
-	
 	<c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 
 <body class="skin-3">
-<c:import url="/WEB-INF/views/common/navbar.jsp" />
-<div class="main-container container-fluid">
-	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
-	<div class="main-content">
-		<div class="page-content">
+	<c:import url="/WEB-INF/views/common/navbar.jsp" />
+	<div class="main-container container-fluid">
+		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+		<div class="main-content">
+			<div class="page-content">
 		
 		
 		
 		
-			<div class="page-header position-relative">
-				<h1 class="pull-left">계정거래처원장조회[32]</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
-			</div><!-- /.page-header -->
+				<div class="page-header position-relative">
+					<h1 class="pull-left">계정거래처원장조회[32]</h1>
+					<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+						<i class="icon-plus-sign bigger-120 green"></i>
+						팀 추가
+					</a>
+				</div><!-- /.page-header -->
 			
-			<div class="row-fluid"> <!-- 검색조건 -->
-				<form class="form-horizontal; center">
-					<div class="form-group"style="float: left">
-					&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명 :&nbsp; 
-					<input type="text" id="form-field-1" placeholder="계정코드" size=4 style="width:150px"/>
-					<input type="text" id="form-field-1" placeholder="계정명" size=4 style="width:150px" readonly/> <!-- 계정명 자동입력 -->
-					</div>
-					<div class="form-group" style="float: left">
-							&nbsp; &nbsp;&nbsp; &nbsp;상호명/사업자등록번호:&nbsp;
-						<div class="input-append">
-						<span class="btn btn-small btn-info">
-						<a href="#" id="a-customerinfo-dialog">
-						<i class="icon-search nav-search-icon"></i>
-						<input type="text" class="search-input-width-first" name="name" id="name" placeholder="상호명" readonly/>
-										<script type="text/javascript">
-											var name = "${param.name}";
-											$("#name").val(name);
-										</script>
-										</a>
-										</span>
-									</div>
-									<input type="text" id="no" name="no" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
-										<script type="text/javascript">
-											var no = "${param.no}";
-											$("#no").val(no);
-										</script>
-								</div>
-
-			
-								<!-- 거래처 Modal pop-up : start -->
-								<div id="dialog-message" title="계좌" hidden="hidden">
-									<table id="dialog-message-table">
-										<tr>
-											<td><label>사업자등록번호</label> <input type="text"
-												id="input-dialog-customerno" style="width: 100px;" /> <a
-												href="#" id="a-dialog-customerno"> <span
-													class="btn btn-small btn-info" style="margin-bottom: 10px;">
-														<i class="icon-search nav-search-icon"></i>
-												</span>
-											</a></td>
-										<td><label>상호명</label> <input type="text"
-											id="input-dialog-customername" style="width: 100px;" /> <a
-											href="#" id="a-dialog-customername"> <span
-												class="btn btn-small btn-info" style="margin-bottom: 10px;">
-													<i class="icon-search nav-search-icon"></i>
-											</span>
-										</a></td>
-										</tr>
-									</table>
-									<!-- 거래처 데이터 리스트 -->
-									<table id="modal-customer-table"
-										class="table  table-bordered table-hover">
-										<thead>
-											<tr>
-												<th class="center">구분</th>
-												<th class="center">사업자등록번호</th>
-												<th class="center">상호명</th>
-											</tr>
-										</thead>
-										<tbody id="tbody-customerList">
-										</tbody>
-									</table>
-								</div>
-								<!-- 거래처Modal pop-up : end -->
-					&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
-					<div class="input-append">
-						<input type="text" id="datepicker" class="cl-date-picker"  style="width:100px"/>
-						<span class="add-on">
-							<i class="icon-calendar">
-							</i>
-						</span>
+				<div class="row-fluid"> <!-- 검색조건 -->
+					<form class="form-horizontal; center">
+					<div class="control-group" style="float: left">
+						<div class="controls" style="float: left">
+							계정코드/계정명
+							<select class="chosen-select" id="accountNo" name="accountNo" data-placeholder="계정과목코드" style="width:100px; float: left;">		
+								<option value="" data-accountName=""></option>		
+								<c:choose>
+									<c:when test="${accountNo eq accountNo }">
+										<option value="${accountNo}" data-accountName="${accountNo }" selected>${accountNo }</option>
+									</c:when>										
+								</c:choose>				
+								<c:forEach items="${accountList }" var="vo">									
+									<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>
+								</c:forEach>
+							</select>
+								
+							<script type="text/javascript">
+								var accountNo = "${param.accountNo}";
+								$("#accountNo").val(accountNo);
+							</script>
+						</div>
+						&nbsp; &nbsp; &nbsp;
+						<input type="text" id="accountName" name="accountName" placeholder="계정명"  style="text-align: center; width:100px;" readonly="readonly" />
+						<script type="text/javascript">
+							var accountName = "${param.accountName}";
+							$("#accountName").val(accountName);
+						</script>
+						
 					</div>
 					
-					&nbsp; &nbsp; ~ &nbsp; &nbsp;
-					<div class="input-append">
-						<input type="text" id="datepicker2" class="cl-date-picker"  style="width:100px"/> 
-						<span class="add-on"> 
-							<i class="icon-calendar">
-							</i>
-						</span>
+					<div class="form-group" style="float: left">
+						&nbsp; &nbsp;&nbsp; &nbsp;상호명/사업자등록번호:&nbsp;
+						<div class="input-append">
+							<span class="btn btn-small btn-info">
+								<a href="#" id="a-customerinfo-dialog">
+									<i class="icon-search nav-search-icon"></i>
+									<input type="text" class="search-input-width-first" name="name" id="name" placeholder="상호명" readonly/>
+									<script type="text/javascript">
+										var name = "${param.name}";
+										$("#name").val(name);
+									</script>
+								</a>
+							</span>
+						</div>
+				
+						<input type="text" id="no" name="no" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
+						<script type="text/javascript">
+							var no = "${param.no}";
+							$("#no").val(no);
+						</script>
 					</div>
+					
+					
+					<!-- 거래처 Modal pop-up : start -->
+					<div id="dialog-message" title="계좌" hidden="hidden">
+						<table id="dialog-message-table">
+							<tr>
+								<td>
+									<label>사업자등록번호</label>
+									<input type="text" id="input-dialog-customerno" style="width: 100px;" />
+									<a href="#" id="a-dialog-customerno"> 
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search nav-search-icon"></i>
+										</span>
+									</a>
+								</td>
+								
+								<td>
+									<label>상호명</label>
+									<input type="text" id="input-dialog-customername" style="width: 100px;" />
+									<a href="#" id="a-dialog-customername">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search nav-search-icon"></i>
+										</span>
+									</a>
+								</td>
+							</tr>
+						</table>
 						
-					&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btn btn-small btn-info">조회</button>
+						<!-- 거래처 데이터 리스트 -->
+						<table id="modal-customer-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">구분</th>
+									<th class="center">사업자등록번호</th>
+									<th class="center">상호명</th>
+								</tr>
+							</thead>
+							
+							<tbody id="tbody-customerList">
+							</tbody>
+						</table>
+					</div>
+					<!-- 거래처Modal pop-up : end -->
+					
+					<div class="form-group" style="float: left">
+						&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
+						<div class="input-append">
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px"/>
+							<span class="add-on">
+								<i class="icon-calendar"></i>
+							</span>
+						</div>
+						
+						<script type="text/javascript">
+							var datepicker1 = "${param.datepicker1}";
+							$("#datepicker1").val(datepicker1);
+						</script>
+						
+						&nbsp; &nbsp; ~ &nbsp; &nbsp;
+						<div class="input-append">
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px"/> 
+							<span class="add-on"> 
+								<i class="icon-calendar"></i>
+							</span>
+						</div>
+						
+						<script type="text/javascript">
+							var datepicker2 = "${param.datepicker2}";
+							$("#datepicker2").val(datepicker2);
+						</script>
+					</div>
+					&nbsp; &nbsp;&nbsp;
+					<button class="btn btn-small btn-info" id="search" name="search">조회</button>
 				</form>
+				
 				<div class="hr hr-18 dotted">
 				</div>
 			</div><!-- 검색조건 END -->
 			
 			<div class="row-fluid">
 				<div class="span12">
-				
+
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
 						<div class="span12">
-						<div style="width:100%; overflow-x:auto"> <!-- scroll auto -->
-							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
-								<thead>
-									<tr>
-										<th class="center">
-											<label class="pos-rel">
-											<input type="checkbox" class="ace" />
-											<span class="lbl"></span>
-											</label>
-										</th>
-										<th class="center">계정명</th>
-										<th class="center">거래처명</th>
-										<th class="center">일자</th>
-										<th class="center">전표번호</th>
-										<th class="center">전표순번</th>
-										<th class="center">사용팀/성명</th>
-										<th class="center">적요</th>
-										<th class="center">카드번호/종류</th>
-										<th class="center">은행명/계좌번호/예금주</th>
-										<th class="center">차대구분</th>
-										<th class="center">금액</th>
-										<th class="center">부가세</th>
-									</tr>
-								</thead>
-								<tbody>
+							<div style="width:100%; overflow-x:auto"> <!-- scroll auto -->
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th class="center">
+												<label class="pos-rel">
+													<input type="checkbox" class="ace" />
+													<span class="lbl"></span>
+												</label>
+											</th>
+											<th class="center">계정명</th>
+											<th class="center">거래처명</th>
+											<th class="center">일자</th>
+											<th class="center">전표번호</th>
+											<th class="center">전표순번</th>
+											<th class="center">사용팀/성명</th>
+											<th class="center">적요</th>
+											<th class="center">카드번호/종류</th>
+											<th class="center">은행명/계좌번호/예금주</th>
+											<th class="center">차대구분</th>
+											<th class="center">금액</th>
+											<th class="center">부가세</th>
+										</tr>
+									</thead>
+									
+									<tbody>
 										<tr>
 											<td class="center">
 												<label class="pos-rel">
@@ -195,6 +240,7 @@
 													<span class="lbl"></span>
 												</label>
 											</td>
+											
 											<td class="center">카드미수금</td>
 											<td class="center">비트컴퓨터</td>
 											<td class="center">20191129</td>
@@ -208,30 +254,58 @@
 											<td class="center">100,000,000,000</td>
 											<td class="center">10,000,000,000</td>
 										</tr>
-								</tbody>
-							</table>
-						</div>
-							
-							
+									</tbody>
+									<thead>
+										<tr>
+											<th class="center">
+												<label class="pos-rel">
+													<input type="checkbox" class="ace" />
+													<span class="lbl"></span>
+												</label>
+											</th>
+											<th class="center">계정명</th>
+											<th class="center">거래처명</th>
+											<th class="center">일자</th>
+											<th class="center">전표번호</th>
+											<th class="center">전표순번</th>
+											<th class="center">사용팀/성명</th>
+											<th class="center">적요</th>
+											<th class="center">카드번호/종류</th>
+											<th class="center">은행명/계좌번호/예금주</th>
+											<th class="center">차대구분</th>
+											<th class="center">금액</th>
+											<th class="center">부가세</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
-					
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
+	
 			<div class="pagination"><!-- 페이징 공통 -->
-							<ul>
-								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-							</ul>
-						</div>
-			
-			
+				<ul>
+					<li class="disabled">
+						<a href="#">
+							<i class="icon-double-angle-left"></i>
+						</a>
+					</li>
+					
+					<li class="active"><a href="#">1</a></li>
+								
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li>
+						<a href="#">
+							<i class="icon-double-angle-right"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
 			
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
@@ -377,5 +451,12 @@
 
 	});
 </script>
+
+				<script type="text/javascript">
+				$('#accountNo').change(function () {
+			    	var accountName =$(this).find('option:selected').attr('data-accountName');
+			    	$('#accountName').val(accountName);
+			   	});
+				</script>
 </body>
 </html>

@@ -1,18 +1,20 @@
 package kr.co.itcen.fa.repository.menu08;
 
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.itcen.fa.vo.menu08.TestVo;
-import kr.co.itcen.fa.vo.menu08.VehicleVo;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.StaffVo;
+import kr.co.itcen.fa.vo.menu08.TaxbillVo;
+import kr.co.itcen.fa.vo.menu08.TestVo;
+import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
 
 /**
@@ -53,7 +55,6 @@ public class Menu41Repository {
 		return list;
 	}
 
-	
 	//등록 리스트 삽입
 	public boolean insert(VehicleVo vehicleVo) {
 		int count = sqlSession.insert("menu41.insert", vehicleVo);
@@ -71,14 +72,12 @@ public class Menu41Repository {
 	public boolean update(VehicleVo vehicleVo) {
 		int count = sqlSession.update("menu41.update", vehicleVo);
 		return count == 1;
-		
 	}
 
 	//검색 리스트
 	public List<VehicleVo> search(String id) {
 		List<VehicleVo> list = sqlSession.selectList("menu41.search",id);
 		return list;
-		
 	}
 	
 	//삭제 리스트 
@@ -87,12 +86,30 @@ public class Menu41Repository {
 		return count == 1;
 	}
 
-	public String getDepositNo(String customerNo) {
-		String depositNo = sqlSession.selectOne("menu41.getDepositNo", customerNo);
-		return depositNo;
+	//전표등록
+	public CustomerVo getDepositNo(String customerNo) {
+		CustomerVo cus = sqlSession.selectOne("menu41.getDepositNo", customerNo);
+		return cus;
 	}
 
+	//세금계산서 번호 등록
+	public boolean insertTaxbill(TaxbillVo taxVo) {
 
-	
+		int count = sqlSession.insert("menu41.insertTaxbill", taxVo);
+		return count == 1;
+	}
+
+	//세금계산서 차량 테이블에 업데이트
+	public boolean updateTaxbill(String taxno,String veno, long voucherNo, String uId) {
 		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("taxno", taxno);
+		map.put("veno", veno);
+		map.put("voucherNo", voucherNo);
+		map.put("userId", uId);
+		int count = sqlSession.update("menu41.updateTaxbill", map);
+		return count == 1;
+		
+	}
 }

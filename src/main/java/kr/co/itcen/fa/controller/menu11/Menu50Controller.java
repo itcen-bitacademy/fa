@@ -74,71 +74,63 @@ public class Menu50Controller {
 	public String insert(
 			@ModelAttribute PdebtVo vo, 
 			@AuthUser UserVo userVo) {
-		System.out.println("50controller vo 1 : " + vo.toString());
-		
-//		Long intDebtAmount = 0L;
-//		// 차입금액 콤마제거
-//		if (convertDebtAmount.endsWith(",")) {
-//			convertDebtAmount = convertDebtAmount.substring(0, convertDebtAmount.length() - 1);
-//			intDebtAmount = Long.parseLong(convertDebtAmount);
-//			vo.setDebtAmount(intDebtAmount);
-//		}
-		
-		System.out.println("50controller vo 2 : " + vo.toString());
 		vo.setInsertId(userVo.getId()); // 등록자 아이디 삽입
 		
 		String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
 		String saveDeptDate = deptExpDate.substring(0, 10);
 		String saveExpDate = deptExpDate.substring(13);
-		vo.setDebtDate(saveDeptDate);
-		vo.setExpDate(saveExpDate);
+		vo.setDebtDate(saveDeptDate); // 차입일자 등록
+		vo.setExpDate(saveExpDate); // 만기일지 등록
 		
-		// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달
+		// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - start
 		String dangerCode = vo.getDangerCode(); // 위험등급코드 가져오기
 		String[] dangerArray = dangerCode.split("-");
 		vo.setDangerCode(dangerArray[0]);
 		vo.setDangerName(dangerArray[1]);
+		// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - end
 		
+		System.out.println("vovovovovo : " + vo.toString());
 		Long money = (long) (vo.getDebtAmount() * vo.getIntRate() / 100);
 		vo.setIntAmount(money);
-		vo.setAccountNo("11-11-111");
-		
+		System.out.println("@@@@@@@");
 		/////////////////////////////////////
 		//전표등록
-		
+		// G: 단기차입금
+		// H: 장기차입금
+		// I: 사채
 		//객체 생성
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
 		ItemVo itemVo = new ItemVo();
 		ItemVo itemVo2 = new ItemVo();
 		ItemVo itemVo3 = new ItemVo();
-
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		MappingVo mappingVo = new MappingVo();
 
 		voucherVo.setRegDate(vo.getDebtDate());
-		itemVo.setAmount(vo.getDebtAmount());
-		itemVo.setAmountFlag("c");
-		itemVo.setAccountNo(2401000L);
+		itemVo.setAmount(vo.getDebtAmount() + money); // 사채차입금액 입력
+		itemVo.setAmountFlag("c"); // 대변 - c
+		itemVo.setAccountNo(2402101L); // 사채 : 계정과목코드 1팀 테이블 tb_account 확인
 		itemVoList.add(itemVo);
-
-		itemVo2.setAmount(money);
-		itemVo2.setAmountFlag("c");
-		itemVo2.setAccountNo(9201000L);
+		System.out.println("###########");
+		itemVo2.setAmount(money); // 사채차입금액 입력
+		itemVo2.setAmountFlag("d"); // 차변 - d
+		itemVo2.setAccountNo(9201101L); // 이자비용 : 계정과목코드
 		itemVoList.add(itemVo2);
 
-		itemVo3.setAmount(vo.getDebtAmount() + money);
-		itemVo3.setAmountFlag("d");
+		itemVo3.setAmount(vo.getDebtAmount());
+		itemVo3.setAmountFlag("d"); // 차변 - d : [예금]자산의 증가 - 내 계좌로 돈이 들어오기 때문에..
 		itemVo3.setAccountNo(1110103L);
 		itemVoList.add(itemVo3);
 
 		mappingVo.setVoucherUse(vo.getName());// 사용목적
-		mappingVo.setSystemCode(vo.getCode());// 제코드l190
+		mappingVo.setSystemCode(vo.getCode());// 시스템코드
+		mappingVo.setCustomerNo(vo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());// 계좌번호
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
-
+		System.out.println("vou :" + no);
 		vo.setVoucherNo(no);
-
 		menu50Service.insert(vo); // 데이터베이스에 데이터 삽입
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
@@ -147,7 +139,7 @@ public class Menu50Controller {
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
 	public String update(
 			@ModelAttribute PdebtVo vo,
-			@AuthUser UserVo userVo) throws ParseException{
+			@AuthUser UserVo userVo) throws ParseException {
 		System.out.println(vo.getIntPayWay());
 		
 		String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
@@ -160,7 +152,6 @@ public class Menu50Controller {
 		
 		Long money = (long) (vo.getDebtAmount() * vo.getIntRate() / 100);
 		vo.setIntAmount(money);
-		
 		vo.setVoucherNo(menu50Service.select(vo.getNo()));
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -171,40 +162,60 @@ public class Menu50Controller {
 		MappingVo mappingVo = new MappingVo();
 		System.out.println("vNo : " + vo.getVoucherNo());
 		voucherVo.setNo(vo.getVoucherNo());
+		System.out.println("1 :" + voucherVo.getNo());
 		voucherVo.setRegDate(vo.getDebtDate());
+		
 		itemVo.setAmount(vo.getDebtAmount());
-		itemVo.setAmountFlag("c");
-		itemVo.setAccountNo(2401000L);
+		itemVo.setAmountFlag("c"); // 대변 - c
+		itemVo.setAccountNo(2402101L); // 사채 : 계정과목코드 1팀 테이블 tb_account 확인
 		itemVo.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo);
 		
 		itemVo2.setAmount(money);
-		itemVo2.setAmountFlag("c");
-		itemVo2.setAccountNo(9201000L);
+		itemVo2.setAmountFlag("d"); // 차변 - d
+		itemVo2.setAccountNo(9201101L); // 이자비용 : 계정과목코드
 		itemVo2.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo2);
 		
 		itemVo3.setAmount(vo.getDebtAmount()+money);
-		itemVo3.setAmountFlag("d");
+		itemVo3.setAmountFlag("d"); // 차변 - d : [예금]자산의 증가 - 내 계좌로 돈이 들어오기 때문에..
 		itemVo3.setAccountNo(1110103L);
 		itemVo3.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo3);
 		
 		mappingVo.setVoucherUse(vo.getName());//사용목적
 		mappingVo.setSystemCode(vo.getCode());//제코드l190
+		mappingVo.setCustomerNo(vo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 		mappingVo.setVoucherNo(vo.getVoucherNo());
-		
-		menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, userVo);
-		
+		Long no = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, userVo);
+		System.out.println("updateNo :" + no);
+		vo.setVoucherNo(no);
 		menu50Service.update(vo);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
-	public String delete(@RequestParam Long[] no) {
+	public String delete(
+			@RequestParam Long[] no, 
+			@AuthUser UserVo uservo) throws ParseException {
+		List<Long> list = menu50Service.selectVoucherNo(no);
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		
+		for(Long no1: list) {
+			VoucherVo v = new VoucherVo();
+			v.setNo(no1);
+			voucherVolist.add(v);
+		}
+		
+		for(VoucherVo v : voucherVolist) {
+			System.out.println("VoucherVo : " + v);
+		}
+		
+		menu03Service.deleteVoucher(voucherVolist, uservo);
 		menu50Service.delete(no);
+		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
@@ -216,7 +227,9 @@ public class Menu50Controller {
 		vo.setInsertId(uservo.getId());
 		menu50Service.updateRepayVo(vo);
 		menu50Service.insertRepayVo(vo);
+		
 		PdebtVo pdebtVo = menu50Service.getOne(vo.getDebtNo());
+		
 		if(pdebtVo.getRepayBal() >= pdebtVo.getDebtAmount())
 			menu50Service.updateRepayFlag(pdebtVo.getNo());
 		return JSONResult.success(pdebtVo);

@@ -12,7 +12,8 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
+<!-- plugin 참조-->
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/ace/js/jquery.validate.min.js"></script>
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
@@ -30,7 +31,6 @@
 }
 
 .second-span-first-padding-right {
-	padding-left: 20px;
 	padding-right: 20px;
 }
 
@@ -67,12 +67,6 @@
 	display: inline;
 }
 
-/* button 정렬 */
-.mybtn {
-	float: right;
-	margin-right: 20px;
-}
-
 </style>
 </head>
 <body class="skin-3">
@@ -92,11 +86,11 @@
 						<!-- Example row of columns -->
 						<div class="row">
 							<div class="span8">
-								<table>
+								<table class="input-form-left">
 									<tr>
 										<td class="first-span-first-padding-right"><h4>사채코드</h4></td>
-										<td colspan="2">
-										<input type="hidden" name="no" />
+										<td class="second-td" colspan="2">
+										<input type="hidden" name="no" id = "no" />
 										<input type="text" id="engAndNumber" class="p-debt-code-input" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)"  />
 										<input class="btn btn-primary btn-small" id="btn-check-code" type="button" value="중복확인">
 										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
@@ -104,20 +98,15 @@
 									</tr>
 									<tr>
 										<td class="first-span-first-padding-right"><h4>사채명</h4></td>
-										<td colspan="2">
-										<input type="text" id="onlyHangulAndNumber" class="p-debt-name-input" name="name" placeholder="육하원칙으로 입력해주세요."  />
-										</td>
+										<td class="second-td" colspan="2"><input type="text" id="onlyHangulAndNumber" class="p-debt-name-input" name="name" placeholder="육하원칙으로 입력해주세요."  /></td>
 									</tr>
 									<tr>
 										<td class="first-span-first-padding-right"><h4>차입금액</h4></td>
-										<td>
-											<input type="text" id="inputPrice" name="text-debtAmount" value="" />
-											<input type="text" id="hidden-dept-amount" name="debtAmount" />
-										</td>
+										<td class="second-td" style="display: inline-block;"><input type="text" id="inputPrice" name="textDebtAmount" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5><input type="hidden" id="hidden-dept-amount" name="debtAmount" /></td>
 									</tr>
 									<tr>
 										<td class="first-span-first-padding-right"><h4>차입일자 ~ 만기일자</h4></td>
-										<td colspan="2">
+										<td class="second-td" colspan="2">
 											<div class="row-fluid input-prepend">
 												<input type="text" name="debtExpDate" name="date-range-picker" id="id-date-range-picker-1" /> <span class="add-on"> <i class="icon-calendar"></i>
 												</span>
@@ -126,7 +115,7 @@
 									</tr>
 									<tr>
 										<td class="first-span-first-padding-right"><h4>이자지급방식</h4></td>
-										<td colspan="2">
+										<td class="second-td" colspan="2">
 										<div class="radio">
 											<label>
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
@@ -149,7 +138,7 @@
 									</tr>
 									<tr>
 										<td class="first-span-first-padding-right"><h4>은행코드</h4></td>
-										<td colspan="2">
+										<td class="second-td" colspan="2">
 											<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드"/>
 											<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명"/>
 												<a href="#" id="a-bankinfo-dialog">
@@ -197,7 +186,7 @@
 									</tr>
 									<tr>
 										<td class="first-span-first-padding-right"><h4>위험등급</h4></td>
-										<td colspan="2">
+										<td class="second-td" colspan="2">
 										<select class="chosen-select form-control" name="dangerCode" id="dangercode-field-select" >
 												<option value="초기값">선택해주세요.</option>
 												<option value="RED1-초고위험">초고위험</option>
@@ -254,9 +243,7 @@
 									</tr>
 									<tr>
 										<td class="second-span-first-padding-right"><h4>이율</h4></td>
-										<td colspan="2">
-											<input type="text" name="intRate" placeholder="(%) 정수로 입력하세요." />
-										</td>
+										<td colspan="2"><input type="text" name="intRate" placeholder="(%) 정수로 입력하세요." style="text-align:right;"/> <h5 style="display: inline-block;">(%)</h5></td>
 									</tr>
 									<tr>
 										<td class="second-span-first-padding-right"><h4>담당자</h4></td>
@@ -267,7 +254,7 @@
 									<tr>
 										<td class="second-span-first-padding-right"><h4>계좌</h4></td>
 										<td colspan="2">
-											<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" placeholder="계좌번호"/>
+											<input type="text" class="search-input-width-first" id="input-id-depositNo" name="depositNo" placeholder="계좌번호"/>
 											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주"/>
 												<a href="#" id="a-bankaccountinfo-dialog">
 													<span class="btn btn-small btn-info">
@@ -342,17 +329,18 @@
 					</div>
 					<hr>
 					<div class="row-fluid">
-						<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
+						<button type="submit" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
 						&nbsp;
-						<button id="dialog-repayment-button" type="button" class="btn btn-pink btn-small mybtn" >상환</button>
+						<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 						&nbsp;
-						<button class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+						<button type="submit" class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()">삭제</button>
 						&nbsp;
-						<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()">삭제</button>
+						<button class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;
-						<button class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
+						<button id="dialog-repayment-button" type="button" class="btn btn-pink btn-small" >상환</button>
 						&nbsp;
-						<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert" onclick="submit()">입력</button>
+						<button type="button" class="btn btn-success btn-small" id="formReset">초기화</button>
+						&nbsp;
 					</div>
 					<hr>
 				</form>
@@ -402,10 +390,7 @@
 											<c:when test="${vo.majorCode eq '008005'}"><td class="center">외국계은행</td></c:when>
 											<c:otherwise><td class="center">증권</td></c:otherwise>
 								</c:choose>	
-								<td class="center">
-									<fmt:formatNumber id="debtamount-formatnumber" value="${vo.debtAmount}" pattern="#,###" />
-									<input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" />
-								</td>				
+								<td class="center"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /><input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" /></td>				
 								<c:choose>
 											<c:when test="${vo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
 											<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
@@ -425,6 +410,7 @@
 								<td class="center">${vo.depositNo}</td>
 								<td class="center">${vo.dangerName}</td>
 							</tr>
+							
 							</c:forEach>
 						</tbody>
 				</table>
@@ -533,10 +519,19 @@
 	
 			$('#majorcode-field-select').val(major).trigger('chosen:updated');  
 			
-			// 차입금액
-			var debt = $("#debtamount-formatnumber").val();
-			$("input[name=debtAmount]").val(debt);
-			$("input[name=hidden-dept-amount]").val($("input[name=tbody-hidden-debtAmount]").val());
+			// 차입금액 input 추가 (입력창에 보여지는 부분)
+			$("input[name=textDebtAmount]").val(td.eq(4).text());
+			var debtHiddenVal = td.eq(4).text(); // 콤마가 붙지 않은 차입금액
+			var debtWithoutComma = removeCommaReturn(td.eq(4).text()); // 콤마가 붙은 차입금액
+			
+			// 콤마 제거 (제거값리턴)
+			function removeCommaReturn(val){
+			   if(val != ""){
+			    	val = val.replace(/,/g, "");
+			   }
+			   return val;
+			}
+			$("input[name=debtAmount]").val(debtWithoutComma);
 			
 			// 상환방법
 			var repayWay='';
@@ -691,7 +686,7 @@
 		});
 		
 	});
-
+	
 	$(function(){
 		// checkbox로 데이터 모든 데이터 선택하거나 낱개로 선택
 		$(document).ready(function() {
@@ -835,7 +830,7 @@ $(function() {
 	});
 	
 	$("#dialog-repayment-button").click(function() {
-		$("#code").val($("#code2").val());
+		$("#code").val($("#engAndNumber").val());
 		$("#dialog-repayment").dialog('open');
 		$("#dialog-repayment").dialog({
 			title: "상환정보등록",
@@ -901,7 +896,7 @@ $(function() {
 	});
 });
 	//코드 중복체크
-	$("#code2").change(function(){
+	$("#engAndNumber").change(function(){
 		$("#btn-check-code").show();
 		$("#img-checkcode").hide();
 	});	
@@ -909,7 +904,7 @@ $(function() {
 	$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
 	$("#btn-check-code").click(function(){
 		
-		var code = $("#code2").val();
+		var code = $("#engAndNumber").val();
 		if(code == ""){
 			return;
 		}
@@ -949,70 +944,6 @@ $(function() {
 		});
 	});	
 </script>
-<script>
-/* $(function() {
-    $.validator.setDefaults({
-        onkeyup:false,
-        onclick:false,
-        onfocusout:false,
-        showErrors:function(errorMap, errorList){
-            if(this.numberOfInvalids()) {
-                alert(errorList[0].message);
-            }
-        }
-    });
-    $("form[name=p-dept-input-form]").validate({
-        rules: {
-            code: { required: true, maxlength: 10 },
-            name: { required: true, maxlength: 50 },
-            inputPrice: { required: true, maxlength: 50 },
-            debtExpDate: 'required',
-            bankCode: 'required',
-            bankName: 'required',
-            dangerCode: 'required',
-        },
-        messages: {
-           	code: {
-                required: '사채코드를 입력해 주십시오.',
-                minlength: '아이디를 4글자 이상 입력해 주십시오.'
-            },
-            name: {
-                required: '사채명을 입력해 주십시오.',
-                minlength: '사채명을 입력해 주십시오.'
-            },
-            inputPrice: {
-            	 required: '차입금액을 입력해 주십시오.'
-            },
-            debtExpDate: {
-                required: '차입일자 및 만기일자를 입력해 주십시오.'
-            },
-            bankCode: {
-                required: '은행코드 및 은행명을 입력해 주십시오.'
-            },
-            bankName: {
-                required: '은행코드 및 은행명을 입력해 주십시오.'
-            },
-            dangerCode: {
-                required: '위험등급을 입력해 주십시오.'
-            }
-        },
-        submitHandler: function(form) {
-           	var pattern1 = /(^[a-zA-Z])/;
-            var pattern2 = /([^a-zA-Z0-9-_])/;
-            var code = $.trim($("input[name=code]").val());
-            if(!pattern1.test(code)){
-                alert('코드의 첫글자는 영문이어야 합니다.');
-                return false;
-            }
-            if(pattern2.test(code)){
-                alert('코드는 영문, 숫자, -, _ 만 사용할 수 있습니다.');
-                return false;
-            }
-            form.submit();
-        }
-    });
-}); */
-</script>
 
 <script>
 // 숫자에 콤마 적용해서 데이터 처리 code start
@@ -1021,9 +952,10 @@ $(document).ready(function(){
     var rgx3 = /,/gi;
     $("#inputPrice").bind('keyup keydown', function(){
         inputNumberFormat(this);
-        var amount = $('input[name=text-debtAmount]').val();
+        var amount = $('input[name=textDebtAmount]').val();
         var coverAmount = amount.replace(/,/g, '');
-        $('input[name="debtAmount"]').val(coverAmount); // hidden값에..콤마를 뺀 값을 넣어든다.
+        // hidden값에..콤마를 뺀 값을 넣어둔다.
+        $('input[name="debtAmount"]').val(coverAmount);
     });
 
     //입력한 문자열 전달
@@ -1044,7 +976,69 @@ $(document).ready(function(){
     }
 });
 //숫자에 콤마 적용해서 데이터 처리 code end
+</script>
 
+<script>
+	/* $(document).ready(function() {
+		// validate the comment form when it is submitted
+		// 기본옵션
+		$("#input-form").validate({
+			// 테스트를 위하여 유효성 검사가 완료되어도 submit을 처리하지 않음.
+		    debug : true,
+		     //검사할 필드와 검사 항목의 나열
+		     rules : {
+		    	 code : {
+		    		 required : true,
+		    		 maxlength : 10
+		    	 },
+		    	 name : "required",
+		    	 textDebtAmount : "required",
+		    	 debtExpDate : "required",
+		    	 intPayWay : {
+		    		 required : true
+		    	 },
+		    	 bankCode : "required",
+		    	 bankName : "required",
+		    	 dangerCode : "required",
+		    	 financialYear : "required",
+		    	 majorCode : "required",
+		    	 repayWay : "required",
+		    	 intRate : "required",
+		    	 mgr : "required",
+		    	 mgrCall : "required",
+		    	 depositNo : "required",
+		    	 depositHost : "required",
+		     },
+		     //검사를 충족하지 못할 경우 표시될 메시지의 나열                                                         
+		     messages : {
+		    	 code : {
+		    		 required : "사채코드를 입력해주세요.",
+		    		 maxlength : "사채코드를 10자 이내로 입력해주세요."
+		    	 },
+		    	 name : {
+		    		 required : "사채명을 입력해주세요."
+		    	 }
+		     },
+		     invalidHandler: function(event, validator) {
+		    	    // 'this' refers to the form
+		    	    var errors = validator.numberOfInvalids();
+		    	    if (errors) {
+		    	      var message = errors == 1
+		    	        ? 'You missed 1 field. It has been highlighted'
+		    	        : 'You missed ' + errors + ' fields. They have been highlighted';
+		    	      $("div.error span").html(message);
+		    	      $("div.error").show();
+		    	    } else {
+		    	      $("div.error").hide();
+		    	    }
+		   	},
+			// specifying a submitHandler prevents the default submit
+		    submitHandler: function(form) {
+		    	alert("submitHandler");
+		    	return false;  // block the default submit action
+		    }
+		});
+	}); //end ready() */
 </script>
 </body>
 </html>

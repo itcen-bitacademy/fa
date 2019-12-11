@@ -224,9 +224,9 @@
 							</thead>
 
 							<tbody>
-									<c:forEach items='${landList}' var='land' varStatus="status">
+									<c:forEach items='${dataResult.datas }' var='land' varStatus="status">
 										<tr class="clickme">
-											<td>${status.count}</td>
+											<td>${(page-1)*11 + status.count}</td>
 											<td>${land.id }</td>
 											<td>${land.sectionNo}</td>
 											<td>${land.sectionName}</td>
@@ -259,7 +259,51 @@
 						</table>
 					</div>
 					<!-- PAGE CONTENT ENDS -->
+					<div class="row-fluid">
+							<div class="pagination">
+								<ul>
+									<c:choose>
+										<c:when test="${dataResult.pagination.prev }">
+											<li><a
+												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+													<i class="icon-double-angle-left"></i>
+											</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="disabled"><a href="#"><i
+													class="icon-double-angle-left"></i></a></li>
+										</c:otherwise>
+									</c:choose>
+									<c:forEach begin="${dataResult.pagination.startPage }"
+										end="${dataResult.pagination.endPage }" var="pg">
+										<c:choose>
+											<c:when test="${pg eq dataResult.pagination.page }">
+												<li class="active"><a
+													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+											</c:when>
+											<c:otherwise>
+												<li><a
+													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
 
+									<c:choose>
+										<c:when test="${dataResult.pagination.next }">
+											<li><a
+												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+													<i class="icon-double-angle-right"></i>
+											</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="disabled"><a href="#"> <i
+													class="icon-double-angle-right"></i></a></li>
+										</c:otherwise>
+									</c:choose>
+								</ul>
+							</div>
+							<!-- 페이징 -->
+						</div>
 
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->

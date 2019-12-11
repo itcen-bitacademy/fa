@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
@@ -68,11 +69,26 @@ public class Menu03Repository {
 		return sqlSession.selectOne("menu03.selectAllVoucherCount");
 	}
 	
+	// 전표 전체 조회
 	public List<VoucherVo> selectAllVoucher(PaginationUtil paginationUtil) {
 		// TODO: 페이징 추가
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("paginationUtil", paginationUtil);
 		List<VoucherVo> list = sqlSession.selectList("menu03.selectAllVoucher", map);
+		return list;
+	}
+	
+	// 전표 관리페이지 조건 개수
+	public int selectVoucherCount(VoucherVo voucherVo) {
+		return sqlSession.selectOne("munu03.selectVoucherCount", voucherVo);
+	}
+	
+	// 전표 관리페이지 조건 조회
+	public List<VoucherVo> selectVoucher(VoucherVo voucherVo, PaginationUtil paginationUtil) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("paginationUtil", paginationUtil);
+		map.put("vo", voucherVo);
+		List<VoucherVo> list = sqlSession.selectList("menu03.selectVoucher", map);
 		return list;
 	}
 	
@@ -95,15 +111,25 @@ public class Menu03Repository {
 	}
 	
 	// 전표 다른 팀 수정
-	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo) {
+	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 		VoucherVo voucherVoTemp = new VoucherVo();
+		VoucherVo insertTeam = new VoucherVo();
+		insertTeam = sqlSession.selectOne("menu03.selectTeam", voucherVo);
+		if(!insertTeam.getInsertTeam().equals(userVo.getTeamName())) {
+			System.out.println("너냐 범인이");
+			return null;
+		}
 		voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
-		
+		System.out.println("! :" + voucherVo.getNo());
 		sqlSession.delete("menu03.deleteVoucher", voucherVo);
 		
 		for(int i = 0; i < itemVo.size(); i++) {
+			itemVo.get(i).setVoucherNo(voucherVo.getNo());
+			System.out.println("@ : " + itemVo.get(i).getVoucherNo());
 			sqlSession.delete("menu03.deleteItem", itemVo.get(i));
 		}
+		mappingVo.setVoucherNo(voucherVo.getNo());
+		System.out.println("# :" + mappingVo.getVoucherNo());
 		sqlSession.delete("menu03.deleteMapping", mappingVo);
 		
 		voucherVo.setInsertUserid(voucherVoTemp.getInsertUserid());
@@ -127,16 +153,17 @@ public class Menu03Repository {
 	}
 	
 	// 전표 다른 팀 삭제
-	public void deleteVoucher(List<VoucherVo> voucherVo, UserVo userVo) {
+	public Long deleteVoucher(List<VoucherVo> voucherVo, UserVo userVo) {
 		for(VoucherVo v1:voucherVo) {
 			VoucherVo voucherVoTeam = sqlSession.selectOne("menu03.selectTeam", v1.getNo());
 			if (!userVo.getTeamName().equals(voucherVoTeam.getInsertTeam())) {
-				return;
+				return null;
 			}
 			sqlSession.delete("menu03.updateVoucher3", v1);
 			sqlSession.delete("menu03.updateItem3", v1);
 			sqlSession.delete("menu03.updateMapping3", v1);
 		};
+		return 0L;
 	}
 	
 	// 결산
@@ -144,4 +171,12 @@ public class Menu03Repository {
 		return sqlSession.selectList("menu03.statementData", closingDataVo);
 	}
 	
+	// 거래처, 은행, 계좌, 카드 조회
+	public Map<String, Object> getCustomer(String customerNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<VoucherVo> voucherList = sqlSession.selectList("menu03.getCustomer", customerNo);
+		map.put("customerList",voucherList);
+		return map;
+	}
+
 }

@@ -7,9 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu09Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu08.BuildingVo;
 import kr.co.itcen.fa.vo.menu08.LandVo;
 
 
@@ -42,13 +45,13 @@ public class Menu09Service {
 		return map;
 	}
 
-	public Map<String, Object> getLandList() {
-		System.out.println("getLandList");
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("landList", menu09Repository.getLandList());
-		
-		return map;
-	}
+//	public Map<String, Object> getLandList() {
+//		System.out.println("getLandList");
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("landList", menu09Repository.getLandList());
+//		
+//		return map;
+//	}
 
 	public void insertLand(LandVo landVo) {
 		
@@ -67,13 +70,13 @@ public class Menu09Service {
 		
 	}
 
-	public Map<String, Object> getsearchList(String id) {
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("landList", menu09Repository.getSearchList(id));
-		
-		return map;
-	}
+//	public Map<String, Object> getsearchList(String id) {
+//		
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("landList", menu09Repository.getSearchList(id));
+//		
+//		return map;
+//	}
 
 	public Boolean checkId(String id) {
 		
@@ -86,5 +89,18 @@ public class Menu09Service {
 		CustomerVo cus = menu09Repository.getDepositNo(customerNo);
 		return cus;
 	}
-	
+
+	public DataResult<LandVo> list(String id, int page) {
+		DataResult<LandVo> dataResult = new DataResult<LandVo>();
+		
+		int totalCount = menu09Repository.listCount(id);
+		
+		//pagination
+		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(pagination);
+		List<LandVo> list = menu09Repository.list(id, pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
+	}
 }

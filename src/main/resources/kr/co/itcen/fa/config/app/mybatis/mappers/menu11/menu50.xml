@@ -11,7 +11,7 @@
 				#{debtDate }, #{expDate }, #{intRate }, 
 				#{intPayWay }, #{intAmount }, #{mgr }, 
 				#{mgrCall }, #{dangerCode }, #{dangerName }, 
-				#{bankCode }, #{depositNo }, #{accountNo }, #{voucherNo }, 
+				#{bankCode }, #{depositNo }, '2402101', #{voucherNo }, 
 				'N', #{insertId }, now(), 0, now())
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
@@ -156,7 +156,7 @@
 			repay_way=#{repayWay}, debt_date=#{debtDate}, exp_date=#{expDate}, 
 			int_rate=#{intRate}, int_pay_way=#{intPayWay}, mgr=#{mgr}, 
 			mgr_call=#{mgrCall}, bank_code=#{bankCode}, deposit_no=#{depositNo}, 
-			update_id=#{updateId}, update_date=now() 
+			update_id=#{updateId}, update_date=now() , voucher_no=#{voucherNo}
 			where no=#{no}
 		]]>
 	</update>
@@ -180,6 +180,17 @@
 			#{item }
 		</foreach>
 	</update>
+	
+	<!-- 전표번호 읽어오기 -->
+	<!-- delete -->
+	<select parameterType="list" id="selectVoucherNo" resultType="long">
+		<![CDATA[
+			select voucher_no from tb_p_debt where no in 
+		]]>
+		<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+			#{item } 
+		</foreach>
+	</select>
 	
 	<!-- 전표번호에 따른 사채테이블 데이터 조회 -->
 	<!-- select no -->

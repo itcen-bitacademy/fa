@@ -196,7 +196,10 @@
                   from tb_salescustomer
 				 union
 				select no, name
-                  from tb_purchasecustomer) as cu
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -238,7 +241,7 @@
           join tb_account a
             on a.no = i.account_no
 	 left join (select no, name
-				  from tb_customer k
+				  from tb_customer
 				 union
 				select no, name
                   from tb_salescustomer
@@ -256,6 +259,136 @@
          where v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
+      order by v.no desc,
+               i.amount_flag
+      limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
+	  ]]>
+	</select>
+	
+	<!-- 검색된 점표 갯수 -->
+	<select id="selectVoucherCount" resultType="int" parameterType="1vouchervo">
+		<![CDATA[
+		select count(*) as cnt
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+          join tb_voucher_system_mapping m
+            on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join (select no, name
+				  from tb_customer
+				 union
+				select no, name
+                  from tb_salescustomer
+				 union
+				select no, name
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
+        ]]>
+    	<if test="regDate != null and !''.equals(regDate)">
+    	   <![CDATA[
+    	   and v.reg_date like concat('%',#{regDate },'%');
+    	   ]]>
+    	</if>
+    	<!-- <if test="accountNo != null and !accountNo.equals('')">
+    	   <![CDATA[
+    	   and a.no = #{accountNo }
+    	   ]]>
+    	</if>
+    	<if test="amount != null and !amount.equals('')">
+    	   <![CDATA[
+    	   and i.amount = #{amount }
+    	   ]]>
+    	</if>
+    	<if test="customerNo != null and !customerNo.equals('')">
+    	   <![CDATA[
+    	   and cu.no = #{customerNo };
+    	   ]]>
+    	</if> -->
+	</select>
+	
+	<!-- 전표조회 페이징 -->
+	<select id="selectVoucher" parameterType="map" resultType="1vouchervo">
+		<![CDATA[
+		select reg_date as regDate,
+			   v.no as no,
+			   i.amount_flag as amountFlag,
+			   m.insert_team as insertTeam,
+			   m.insert_userid as insertUserid,
+			   m.insert_day as insertDay,
+			   m.system_code as systemCode,
+			   a.no as accountNo,
+			   a.name as accountName,
+			   i.amount as amount,
+			   cu.no as customerNo,
+		   	   cu.name as customerName,
+			   m.manage_no as manageNo,
+		   	   c.card_no as cardNo,
+			   c.user as cardUser,
+		   	   ba.deposit_no as depositNo,
+			   ba.deposit_host as depositHost,
+			   ifnull(ba.bank_code, c.bank_code) as bankCode,
+			   ifnull(ba.bank_name, c.bank_name) as bankName,
+		   	   m.voucher_use as voucherUse
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+          join tb_voucher_system_mapping m
+            on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join (select no, name
+				  from tb_customer
+				 union
+				select no, name
+                  from tb_salescustomer
+				 union
+				select no, name
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
+        ]]>
+    	<if test="vo.regDate != null and !vo.regDate.equals('')">
+    	   <![CDATA[
+    	   and v.reg_date = #{vo.regDate }
+    	   ]]>
+    	</if>
+    	<!-- <if test="vo.accountNo != null and !vo.accountNo.equals('')">
+    	   <![CDATA[
+    	   and a.no = #{vo.accountNo }
+    	   ]]>
+    	</if>
+    	<if test="vo.amount != null and !vo.amount.equals('')">
+    	   <![CDATA[
+    	   and i.amount = #{vo.amount }
+    	   ]]>
+    	</if>
+    	<if test="vo.customerNo != null and !vo.customerNo.equals('')">
+    	   <![CDATA[
+    	   and cu.no = #{vo.customerNo }
+    	   ]]>
+    	</if> -->
+      <![CDATA[
       order by v.no desc,
                i.amount_flag
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
@@ -517,5 +650,35 @@
 		   and	v.reg_date <= #{endDate }
 		;
 		]]>
+	</select>
+	
+	<!-- 거래처 -->
+	<select id="getCustomer" resultType="1vouchervo" parameterType="String">
+	<![CDATA[
+	   select cu.no as customerNo,
+	   		  cu.name as customerName,
+	   		  cu.deposit_no as depositNo,
+	   		  cu.deposit_host as depositHost,
+	   		  ba.bank_code as bankCode,
+	   		  ba.bank_name as bankName,
+	   		  c.card_no as cardNo,
+	   		  c.user as cardUser
+    	from (select no, name, deposit_no, deposit_host
+		 	    from tb_customer
+			   union
+	   		  select no, name, deposit_no, deposit_host
+		 		from tb_salescustomer
+			   union
+	   		  select no, name, deposit_no, deposit_host
+		 		from tb_purchasecustomer) cu
+	left join tb_bank_account ba
+  		   on cu.deposit_no = ba.deposit_no
+		 join tb_bank b
+     		   on b.code = ba.bank_code
+		 join tb_cardmanager c
+     		   on ba.deposit_no = c.deposit_no
+        where cu.no like concat('%', #{customerNo }, '%');
+     
+	]]>
 	</select>
 </mapper>
