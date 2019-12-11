@@ -18,7 +18,7 @@
 	<!-- 순번 구하기 -->
 	<select id="selectOrder" parameterType="Long" resultType="int">
 		<![CDATA[
-		select order_no * from tb_voucher_item where voucher_no = ${_parameter };
+		select order_no from tb_voucher_item where voucher_no = ${_parameter };
 		]]>
 	</select>
 	
