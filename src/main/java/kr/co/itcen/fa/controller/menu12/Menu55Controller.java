@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 
@@ -32,14 +30,13 @@ public class Menu55Controller {
 	
 	//@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model,CurrentSituationVo vo, 
-			@RequestParam(value="itemname",required=false) String itemname,
-			@RequestParam(value="searchdate",required=false) String searchdate) {
-		
-		List<CurrentSituationVo> iname = menu55Service.getitemcode(itemname);
+	public String list(Model model,CurrentSituationVo vo) {
+		if(vo.getSearchdate()==null || "".equals(vo.getSearchdate())){
+			vo.setSearchdate("");
+		}
+		List<CurrentSituationVo> iname = menu55Service.getitemcode(vo.getItemcode());
 		model.addAttribute("itemname",iname);
 		List<CurrentSituationVo> list = menu55Service.getList(vo);
-		vo.setSearchdate(searchdate);
 		model.addAttribute("list",list);
 		System.out.println(list);
 		return MAINMENU + "/" + SUBMENU + "/list";

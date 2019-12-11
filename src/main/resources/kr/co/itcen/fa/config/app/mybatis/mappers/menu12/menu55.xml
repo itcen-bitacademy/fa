@@ -17,96 +17,67 @@
 	
 	<select id="getList" resultType="currentsituationvo" parameterType="currentsituationvo">
 	<![CDATA[
-	select
-	   sc.code as itemcode
-	    , sc.parent_no as parentno
-	    , sc.classification as itemname
-	    , p.quantity as purchasemanagementquantity
-	    , p.supply_value as purchasemanagementsupplyvalue
-	    , p.tax_value as purchasemanagementtaxvalue
-	    , p.total_price as purchasemanagementtotalprice
-	    , p.purchase_date as purchasedate
-	    , s.quantity as salesquantity
-	    , s.supply_value as salessupplyvalue
-	    , s.tax_value as salestaxvalue
-	    , s.total_price as salestotalprice
-	    , s.sales_date as salesdate
-	  from	tb_section as sc
-		  left	join (
+    select 
+		  pi.no as itemcode
+          , pi.name as itemname
+          , s.quantity as purchasemanagementquantity
+          , s.supply_value as purchasemanagementsupplyvalue
+          , s.tax_value as purchasemanagementtaxvalue
+          , s.total_price as purchasemanagementtotalprice
+          , s.sales_date as salesdate
+		  , p.quantity as salesquantity
+          , p.supply_value as salessupplyvalue
+          , p.tax_value as salestaxvalue
+          , p.total_price as salestotalprice
+          , p.purchase_date as purchasedate
+    from tb_purchaseitem_test as pi 
+    left join(
+			select 
+			s1.item_code as item_code
+			, s1.item_name as item_name
+			, sum(s1.quantity) as quantity
+			, sum(s1.supply_value) as supply_value
+			, sum(s1.tax_value) as tax_value
+			, sum(s1.total_price) as total_price
+			, s1.sales_date as sales_date
+		from tb_sales_test as s1
+        where 1=1
+        and date_format(s1.sales_date,'%Y-%m') like concat('%',#{searchdate },'%')
+		group by s1.item_name
+		)as s on pi.no = s.item_code
+	left join(
 			select	
-				p1.item_code
-				, p1.item_name as item_name
-				, sum(p1.quantity) as quantity
-				, sum(p1.supply_value) as supply_value
-				, sum(p1.tax_value) as tax_value
-				, sum(p1.total_price) as total_price
-				, p1.purchase_date as purchase_date
-			  from	tb_purchasemanagement_test as p1
-		 ]]>
-			<if test="itemname!=null and !itemname.equals('')">
-		     <![CDATA[
-			 where	p1.item_name = #{itemname }
-			]]>
-			</if>
-			<if test="searchdate!=null and!searchdate.equals('')">
-			<![CDATA[
-			and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%') 
- 			]]>
-			</if>
-		<![CDATA[
+			p1.item_code as item_code
+			, p1.item_name as item_name
+			, sum(p1.quantity) as quantity
+			, sum(p1.supply_value) as supply_value
+			, sum(p1.tax_value) as tax_value
+			, sum(p1.total_price) as total_price
+			, p1.purchase_date as purchase_date
+		  from	tb_purchasemanagement_test as p1
+          where 1=1
+          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')
 	     group	by p1.item_name
-	  		) as p on sc.classification = p.item_name
-	 		 left	join (
-				select	
-					s1.item_code
-					, s1.item_name as item_name
-					, sum(s1.quantity) as quantity
-					, sum(s1.supply_value) as supply_value
-					, sum(s1.tax_value) as tax_value
-					, sum(s1.total_price) as total_price
-					, s1.sales_date as sales_date
-				  from	tb_sales_test as s1
-				]]>
-				<if test="itemname!=null and !itemname.equals('')">
-			     <![CDATA[
-				 where	s1.item_name = #{itemname }
-				]]>
-				</if>
-				<if test="searchdate!=null and!searchdate.equals('')">
-				<![CDATA[
-				and date_format(s1.sales_date,'%Y-%m') like concat('%',#{searchdate },'%') 
-	 			]]>
-				</if>
-				<![CDATA[
-	     		group	by s1.item_name
-				  ) as s on sc.classification = s.item_name
-				 ]]>
-<!-- 		<if test="itemname!=null and !itemname.equals('')"> -->
-<!-- 	     <![CDATA[ -->
-<!-- 		 where	sc.classification = #{itemname } -->
-<!-- 		]]> -->
-<!-- 		</if> -->
-<!-- 		<if test="searchdate!=null and!searchdate.equals('')"> -->
-<!-- 		<![CDATA[ -->
-<!-- 		and date_format(s.sales_date,'%Y-%m') like concat('%',#{searchdate },'%')  -->
-<!--  		and date_format(p.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')  -->
-<!-- 	 	]]>  -->
-<!-- 		</if> -->
+        )as p on pi.no = p.item_code
+		where(p.quantity is not null 
+        or s.quantity is not null)
+        ]]>
+        <if test="itemcode!=null and !itemcode.equals('')">
 		<![CDATA[
-		where sc.parent_no is not null
-		and sc.parent_no != "38"		
-		]]>
+   		and pi.no = #{itemcode}
+		]]>        
+        </if>
+
 
 
 	</select>
-	
-	<select id="getitemname" resultType="currentsituationvo">
+	<!-- 	품목명을 가져오는 코드 -->
+	<select id="getitemcode" resultType="currentsituationvo">
 	<![CDATA[
-		select	classification as itemname
-		  from	tb_section
-		 where	parent_no is not null 
-		 and	parent_no != "38"
-		 order	by parent_no, code
+	select 
+		   no as itemcode
+		   , name as itemname
+    from tb_purchaseitem_test;
 	]]>
 	</select>
 

@@ -27,8 +27,8 @@ public class Menu55Service {
 	public List<CurrentSituationVo> getList(CurrentSituationVo vo){
 		return menu55Repository.getList(vo);
 	}
-	public List<CurrentSituationVo> getitemcode(String itemname) {
-		return menu55Repository.getitemname(itemname);
+	public List<CurrentSituationVo> getitemcode(String itemcode) {
+		return menu55Repository.getitemcode(itemcode);
 	}
 
 }

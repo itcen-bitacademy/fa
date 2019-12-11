@@ -28,22 +28,20 @@ public class Menu56Repository {
 		sqlSession.insert("menu56.save", testVo);
 	}
 	
-	public List<CurrentSituationVo> getList() {
-		List<CurrentSituationVo> list = sqlSession.selectList("menu56.getList");
+	public List<CurrentSituationVo> getList(CurrentSituationVo vo) {
+		List<CurrentSituationVo> list = sqlSession.selectList("menu56.getList",vo);
 		return list;
 		
 	}
 	
-	// 품목대분류별 매입매출현황 화면
-	// 대분류 목록을 보여주기 위한 코드
-	public List<SectionVo> getMainCategory(){
-		return sqlSession.selectList("menu56.getmaincategory");
+	// 대분류 을 보여주기 위한 코드
+	public List<SectionVo> getCategory(){
+		return sqlSession.selectList("menu56.getcategory");
 	}
 	
-	// 품목대분류별 매입매출현황 화면
-	// 품목 분류 목록을 보여주기 위한 코드
-	public List<SectionVo> getSubCategory(int no){
-		return sqlSession.selectList("menu56.getsubcategory", no);
+	// 품목 을 보여주기 위한 코드
+	public List<CurrentSituationVo> getItemname(String sectioncode){
+		return sqlSession.selectList("menu56.getitemname",sectioncode );
 	}
 	
 	

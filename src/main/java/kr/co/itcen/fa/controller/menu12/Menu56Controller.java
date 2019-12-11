@@ -5,17 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu56Service;
 import kr.co.itcen.fa.vo.SectionVo;
-import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu12.CurrentSituationVo;
-import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 
 /**
  * 
@@ -36,50 +34,43 @@ public class Menu56Controller {
 	
 	// 대분류를 가져오기 위한 코드
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model) {
-		menu56Service.test();
-		/*
-		 * JSP
-		 * 12/56/list.jsp
-		 */
-		List<CurrentSituationVo> list = menu56Service.getList();
+	public String list(Model model ,CurrentSituationVo vo) {
+		
+		if(vo.getItemcode() == null || "".equals(vo.getItemcode()))
+			vo.setItemcode("");
+		if(vo.getSearchdate() == null || "".equals(vo.getSearchdate()))
+			vo.setSearchdate("");
+		
+		System.out.println("안녕"+vo);
+		
+		//포스트 지울려면
+		//@path주는 거 지워
+		List<CurrentSituationVo> list = menu56Service.getList(vo);
 		model.addAttribute("list",list);
 		
 		// 대분류 목록을 보여주기 위한 코드
-		List<SectionVo> maincategory = menu56Service.getMainCategory();
-		model.addAttribute("maincategory",maincategory);
+		List<SectionVo> maincategory = menu56Service.getCategory();
+		model.addAttribute("gcategory",maincategory);
+		
+	
+		
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	
-	@RequestMapping(value= {"/"+ SUBMENU + "/list/{no}"}, method=RequestMethod.POST)
-	public String list(@PathVariable("no")int no, Model model) {
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/api")
+	public JSONResult list(@RequestParam("sectioncode")String sectioncode) {
+
+		List<CurrentSituationVo> subcategory = menu56Service.getItemname(sectioncode);
 		
-		/*selltaxbillvo.setSalesNo(pathSalesNO);
 		
-		System.out.println(selltaxbillvo.getVoucherUse());
 		
-		menu53Service.taxbillupdate(selltaxbillvo);
-		menu53Service.salesUpdate(selltaxbillvo);
-		System.out.println("업데이트 이벤트 발생");*/
+		return JSONResult.success(subcategory);
 		
-		// 대분류 목록을 보여주기 위한 코드
-		List<SectionVo> maincategory = menu56Service.getMainCategory();
-		
-		// 분류 목록을 보여주기 위한 코드
-		List<SectionVo> subcategory = menu56Service.getSubCategory(no);
-		
-		model.addAttribute("maincategory",maincategory);
-		model.addAttribute("subcategory", subcategory);
-		
-		System.out.println("main카테고리 이벤트 발생");
-		
-		return MAINMENU + "/" + SUBMENU + "/list"; 
 	}
 	
 	
 	
 	
 }
-

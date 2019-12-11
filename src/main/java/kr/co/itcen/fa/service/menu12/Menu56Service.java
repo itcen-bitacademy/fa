@@ -25,20 +25,18 @@ public class Menu56Service {
 		menu56Repository.test();
 	}
 	
-	public List<CurrentSituationVo> getList(){
-		return menu56Repository.getList();
+	public List<CurrentSituationVo> getList(CurrentSituationVo vo){
+		return menu56Repository.getList(vo);
 	}
 	
-	// 품목대분류별 매입매출현황 화면
-	// 대분류 목록을 보여주기 위한 코드
-	public List<SectionVo> getMainCategory(){
-		return menu56Repository.getMainCategory(); 
+	// 대분류  보여주기 위한 코드
+	public List<SectionVo> getCategory(){
+		return menu56Repository.getCategory(); 
 	}
 	
-	// 품목대분류별 매입매출현황 화면
-	// 품목 분류 목록을 보여주기 위한 코드
-	public List<SectionVo> getSubCategory(int no){
-		return menu56Repository.getSubCategory(no);
+	// 품목 분류 보여주기 위한 코드
+	public List<CurrentSituationVo> getItemname(String sectioncode){
+		return menu56Repository.getItemname(sectioncode);
 	}
 	
 }
