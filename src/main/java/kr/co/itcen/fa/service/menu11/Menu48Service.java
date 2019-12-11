@@ -89,7 +89,5 @@ public class Menu48Service {
 		return menu48Repository.selectVoucherNo(no);
 	}
 
-	public String selectBankCode(String depositNo) {
-		return menu48Repository.selectBankCode(depositNo);
-	}
+
 }
