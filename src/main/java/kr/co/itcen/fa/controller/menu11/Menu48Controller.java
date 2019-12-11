@@ -195,6 +195,7 @@ public class Menu48Controller {
 		LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());//기존 장기차입금 컬럼 값 읽기
 		
 		
+		
 		Long money= (long) (vo.getPayPrinc()*lvo.getIntRate()/100);//money= 상환액 * 기존 이자 /100 ->즉 이자납입금
 		
 		VoucherVo voucherVo = new VoucherVo();
