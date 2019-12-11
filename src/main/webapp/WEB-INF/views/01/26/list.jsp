@@ -26,6 +26,7 @@
 
 <script>
 	$(function() {
+		
 		$(".chosen-select").chosen();
 		
 		$.fn.datepicker.dates['ko'] = {
@@ -56,6 +57,113 @@
 		}).next().on(ace.click_event, function() {
 			$(this).prev().focus();
 		});
+		
+		$("#input-form").submit(function(event) {
+	        event.preventDefault();
+	        $("input[name=balance]").val(0);
+			$("input[name=depositLimit]").val(0);			
+			$("input[name=profit]").val(0);
+			
+			var queryString = $("form[name=input-form]").serializeArray();
+				
+			$.ajax({
+				url : "${pageContext.request.contextPath}/01/26/read",
+				type : "POST",
+				data : queryString,
+				dataType : "json",
+				success : function(dataResult) {
+					if (dataResult.success) {
+						
+						removeTable();
+			    		var bankList = dataResult.bankList;
+			    		createNewTable(bankList);
+			    		
+			    		$('#pagination ul').remove();
+			    		createNewPage(dataResult);
+			    		$('#pagination').show();
+					}
+				},
+				error : function(err) {
+					console.log(err)
+				}
+			})
+
+		});
+		
+		
+		
+		function removeTable(){
+			  // 원래 테이블 제거
+			  $(".origin-tbody").remove();
+			  // ajax로 추가했던 테이블 제거
+			  $(".new-tbody").remove();
+		}
+		function createNewTable(bankList){
+			  var $newTbody = $("<tbody class='new-tbody'>")
+			  $("#simple-table-1").append($newTbody)
+				
+			  for(let bankdeposit in bankList){
+				  $newTbody.append(
+				   	"<tr>" +
+			        "<td>" + bankList[bankdeposit].depositNo + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankCode + "</td>" +
+			        "<td>" + bankList[bankdeposit].depositHost + "</td>" +
+			        "<td>" + bankList[bankdeposit].makeDate + "</td>" +
+			        "<td>" + bankList[bankdeposit].enDate + "</td>" +
+			        "<td>" + bankList[bankdeposit].balance + "</td>" +	
+			        "<td>" + bankList[bankdeposit].depositLimit + "</td>" +
+			        "<td>" + bankList[bankdeposit].profit + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankName + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankLocation + "</td>" +
+			        "<td>" + bankList[bankdeposit].banker + "</td>" +
+			        "<td>" + bankList[bankdeposit].bankPhoneCall + "</td>" +
+			        "<td>" + bankList[bankdeposit].insertUserId + "</td>" +
+			        "<td>" + bankList[bankdeposit].insertDay + "</td>" +
+			        "<td>" + bankList[bankdeposit].updateUserId + "</td>" +
+			        "<td>" + bankList[bankdeposit].updateDay + "</td>" +
+			        "</tr>");
+			  }
+			  $newTbody.append("</tbody>");
+			  $(".chosen-select").chosen();
+		}
+		
+		function goPage(dataResult, page){
+			
+			
+			console.log(dataResult, page);
+		};
+		
+		function createNewPage(dataResult){
+			alert("김승곤 멍청이!");
+			var inputString = "<ul>";
+			
+			// 앞
+			if(dataResult.pagination.prev != 0) {
+	        	inputString += "<li><a href="+ goPage(dataResult.bankList, (dataResult.pagination.startPage - 1))+"><i class='icon-double-angle-left'></i></a></li>";
+		       } else {
+		       	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+		    }
+			
+			// 중간
+			for(var pg = dataResult.pagination.startPage ; pg <= dataResult.pagination.endPage;  pg++) {
+		      	if(dataResult.pagination.page == pg){
+		       		inputString +=	"<li class='active'><a href="+ goPage(dataResult.bankList, pg)+">"+pg+"</a></li>";
+		       	} else {
+			      	inputString += 	"<li><a href="+ goPage(dataResult.bankList, pg)+">"+pg+"</a></li>";
+			    }
+			}
+			
+			// 뒤        
+		    if (dataResult.pagination.next != 0) {
+		    	inputString += "<li><a href="+ goPage(dataResult.bankList, (dataResult.pagination.endPage + 1))+"><i class='icon-double-angle-right'></i></a></li>";
+		    } else {
+		    	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+		    }
+			
+	        inputString += "</ul>";
+	        $("#pagination").append(inputString);
+	   };
+	   
 	})
 </script>
 
@@ -73,132 +181,144 @@
 				</div>
 
 
-				<div class="row-fluid">
-					<form class="form-horizontal">
-						입력 기간
+		<div class="row-fluid"> <!-- 검색조건 start -->
+					<form class="form-horizontal" id="input-form" name="input-form"	method="post">
+						조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" /> <span
-								class="add-on"> <i class="icon-calendar"></i>
+							<input type="text" id="datepicker1" name="makeDate" class="cl-date-picker"  style="width:100px"/>
+							
+							<span class="add-on">
+								<i class="icon-calendar"></i>
 							</span>
 						</div>
+						
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" /> <span
-								class="add-on"> <i class="icon-calendar"></i>
+							<input type="text" id="datepicker2" name="enDate" class="cl-date-picker" style="width:100px"/>
+								<span class="add-on">
+								<i class="icon-calendar"></i>
 							</span>
-						</div>
-
-						계좌시작번호 : 
-						<input type="text" id="form-field-1" placeholder="계좌번호" />							
-						삭제여부 : <select class="chosen-select"
-							id="form-field-select-1" name="parentNo"
-							data-placeholder="상위메뉴 선택">
-							<option value="false">N</option>
-							<option value="true">Y</option>
-
+						</div>						
+						
+						&nbsp; &nbsp;&nbsp; &nbsp;계좌시작번호 :&nbsp; 
+						<input type="text" id="no" name="depositNo" placeholder="ex)000-00-00000" size=4 style="width:150px" style="width:100px;"/>
+						
+						&nbsp; &nbsp;&nbsp; &nbsp;삭제여부 : &nbsp;
+						
+						<select class="chosen-select"
+							id="deleteFlag" name="deleteFlag" 
+							data-placeholder="선택" style="width:70px;">
+							<option value="N">N</option>
+							<option value="Y">Y</option>
 						</select>
-						<button class="btn btn-small btn-info">조회</button>
-
-
+						
+						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-small btn-info" type="submit">조회</button>
 					</form>
+					
 					<div class="hr hr-18 dotted"></div>
-				</div>
-
-
-
+				
 				<div class="row-fluid">
-					<div class="span12">
-						<table id="sample-table-1"
-							class="table table-striped table-bordered table-hover">
-							<thead>
-								<tr>
-									<th>계좌번호</th>
-									<th>은행번호</th>
-									<th>예금주</th>
-									<th>개설일자</th>
-									<th>만기일자</th>
-									<th>예금한도(만원)</th>
-									<th>이율(%)</th>
-									<th>개설지점</th>
-									<th>은행</th>
-									<th>담당자</th>
-									<th>은행전화번호</th>
-									<th>입력일자</th>
-									<th>입력담당자</th>
-									<th>수정일자</th>
-									<th>수정담당자</th>
-								</tr>
-							</thead>
+						<div class="span12">
 
-							<tbody>
-								<tr>
+							<table id="simple-table-1" class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>계좌번호</th>
+										<th>은행번호</th>
+										<th>예금주</th>
+										<th>개설일자</th>
+										<th>만기일자</th>
+										<th>잔액</th>
+										<th>예금한도(만원)</th>
+										<th>이율(%)</th>
+										<th>은행</th>
+										<th>개설지점</th>
+										<th>담당자</th>
+										<th>은행전화번호</th>
+										<th>입력담당자</th>
+										<th>입력일자</th>
+										<th>수정담당자</th>
+										<th>수정일자</th>
+									</tr>
+								</thead>
+								
+								<tbody class="origin-tbody">
 
-									<td>201911150001</td>
-									<td>1234567</td>
-									<td>이고니</td>
-									<td>2018-01-12</td>
-									<td>2023-01-11</td>
-									<td>5,000</td>
-									<td>0.09</td>
-									<td>가로수길</td>
-									<td>국민</td>
-									<td>김길동</td>
-									<td>02)442-2213</td>
-									<td>20119-11-12</td>
-									<td>신동주</td>
-									<td>-</td>
-									<td>-</td>
+									<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
+										<tr>
+											<td>${vo.depositNo }</td>
+											<td>${vo.bankCode }</td>
+											<td>${vo.depositHost }</td>
+											<td>${vo.makeDate}</td>
+											<td>${vo.enDate}</td>
+											<td>${vo.balance}</td>
+											<td>${vo.depositLimit }</td>
+											<td>${vo.profit}</td>
+											<td>${vo.bankName }</td>
+											<td>${vo.bankLocation }</td>
+											<td>${vo.banker }</td>
+											<td>${vo.bankPhoneCall }</td>
+											<td>${vo.insertUserId }</td>
+											<td>${vo.insertDay }</td>
+											<td>${vo.updateUserId }</td>
+											<td>${vo.updateDay }</td>
+										</tr>
 
+									</c:forEach>
 
-								</tr>
-								<tr>
-
-									<td>201911150001</td>
-									<td>1234567</td>
-									<td>곽철용</td>
-									<td>20189-05-11</td>
-									<td>2024-05-10</td>
-									<td>10,000</td>
-									<td>0.05</td>
-									<td>강남(서)</td>
-									<td>우리</td>
-									<td>잔나비</td>
-									<td>02)4512-5532</td>
-									<td>20119-11-12</td>
-									<td>신동주</td>
-									<td>-</td>
-									<td>-</td>
-								</tr>
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+						</div>
 					</div>
-					<!-- /span -->
+					</div>
+			<div class="pagination" id = "pagination">
+					<ul>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
 				</div>
-
-				<div class="pagination no-margin">
-				<ul>
-					<li class="prev disabled"><a href="#"> <i
-							class="icon-double-angle-left"></i>
-					</a></li>
-
-					<li class="active"><a href="#">1</a></li>
-
-					<li><a href="#">2</a></li>
-
-					<li><a href="#">3</a></li>
-
-					<li class="next"><a href="#"> <i
-							class="icon-double-angle-right"></i>
-					</a></li>
-				</ul>
-			</div>
-			</div>
-			<!-- /.page-content -->
-		</div>
-		<!-- /.main-content -->
-	</div>
-	<!-- /.main-container -->
-	<!-- basic scripts -->
-	<c:import url="/WEB-INF/views/common/footer.jsp" />
+			
+			
+		</div><!-- /.page-content -->
+	</div><!-- /.main-content -->
+</div><!-- /.main-container -->
+<!-- basic scripts -->
+<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

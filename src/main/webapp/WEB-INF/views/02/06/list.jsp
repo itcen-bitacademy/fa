@@ -145,43 +145,44 @@
 							<table id="item-table" class="table table-striped table-bordered table-hover">							
 						
 									<tr>
-										<th class="center">
+										<th class="left">
 											<label>
 												<input type="checkbox" class="ace">
 												<span class="lbl"></span>
 											</label>
 										</th>
-										<th class="center">순번</th>
-										<th class="center">품목코드</th>
-										<th class="center">품목명</th>
-										<th class="center">수량</th>
-										<th class="center">공급가액</th>
-										<th class="center">부가세</th>
+										<th class="left">순번</th>
+										<th class="left">품목코드</th>
+										<th class="left">품목명</th>
+										<th class="left">수량</th>
+										<th class="left">공급가액</th>
+										<th class="left">부가세</th>
 									</tr>
 								
 								<tr>
-								<td class="center">
+								<td class="left">
 								<label>
 								<input type="checkbox" class="ace" value="1" name='check' id="check1">
 								<span class="lbl"></span>
 								</label>
 								</td>
-								<td class="center"><input class="input-mini" type="number" id="number1" placeholder="" name="number"></td>								
+								<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number"></td>								
 								
-								<td class="center">
+								<td class="left">
 									<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
 									<c:forEach items='${itemList }' var='vo' varStatus='status'>
 										<option value="${vo.no }">${vo.no }</option>
 									</c:forEach>
 									</select>
 								</td>
-								<td class="center"><input class="input-large" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
-								<td class="center"><input class="input-mini" type="text" id="quantity1" placeholder="" name="quantity" value="0"></td>
-								<td class="center"><input class="input-medium" type="text" id="supplyValue1" placeholder="" name="supplyValue" value="0" readonly></td>
-								<td class="center"><input class="input-medium" type="text" id="taxValue1" placeholder="" name="taxValue" value="0" readonly ></td>															
+								<td class="left"><input class="input-large" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
+								<td class="left"><input class="input-mini" style="text-align:right;" type="text" id="quantity1" placeholder="" name="quantity" value="0"></td>
+								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="supplyValue1" placeholder="" name="supplyValue" value="0" readonly></td>
+								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="taxValue1" placeholder="" name="taxValue" value="0" readonly ></td>															
 								</tr>	
 														
 							</table>
+							<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
 							</form>
 						</div><!-- /span -->
 					</div><!-- /row -->
@@ -239,26 +240,35 @@
 			
 			$(".chosen-select").chosen();
 			
+			
 		})
+		
+		 function checkClosing(){ // 마감일 세팅 여부
+			//console.log($("#closingDate").val());
+        	if($("#closingDate").val()=="true"){
+        		alert("마감일자가 지난 매입입니다.");
+        	} 
+        }
+		
 		function add_row() {
 			var table = document.getElementById("item-table");
 			 var row = table.insertRow(table.rows.length); // 하단에 추가
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        "<td class='center'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" +
-				      		        "<td class='center'><input class='input-mini' type='number' id='number"+cnt+"' placeholder='' name='number'></td>" +
-				      		        "<td class='center'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
+				      		        "<td class='left'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" +
+				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='number' id='number"+cnt+"' placeholder='' name='number'></td>" +
+				      		        "<td class='left'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
 					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +
 				      		      		"<option value='" + '${vo.no }' + "'> " + '${vo.no }' + "</option>" + 
 				            			"</c:forEach>"+
 				      		      		
 									"</select></td>" + 
-				      		        "<td class='center'><input class='input-large' type='text' id='itemName"+cnt+"' name='itemName' placeholder='' readonly value=''></td>" +
-				      		        "<td class='center'><input class='input-mini' type='text' id='quantity"+cnt+"' name='quantity' placeholder=''  value='0'></td>" +
-				      		        "<td class='center'><input class='input-medium' type='text' id='supplyValue"+cnt+"' name='supplyValue' placeholder='' value='0'readonly></td>" +
-				      			    "<td class='center'><input class='input-medium' type='text' id='taxValue"+cnt+"' name='taxValue' placeholder='' value='0'readonly></td>" +
+				      		        "<td class='left'><input class='input-large' type='text' id='itemName"+cnt+"' name='itemName' placeholder='' readonly value=''></td>" +
+				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='text' id='quantity"+cnt+"' name='quantity' placeholder=''  value='0'></td>" +
+				      		        "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='supplyValue"+cnt+"' name='supplyValue' placeholder='' value='0'readonly></td>" +
+				      			    "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='taxValue"+cnt+"' name='taxValue' placeholder='' value='0'readonly></td>" +
 				      		       "</tr>"
 				      	);
 				        
@@ -311,6 +321,10 @@
 		            	</c:forEach>  
 		        	}
 		        }
+		 $(window).load(function(){
+			 checkClosing();
+			 //location.reload();			 
+		 });
 		
 		jQuery(function($) {
 		$("#delete").click(function() {
@@ -323,6 +337,7 @@
 		
 		$("#input").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
+			
 		});
 		$("#voucher").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/voucher");

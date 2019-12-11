@@ -2,17 +2,79 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu26">
 	<!-- Test -->
-	<insert id="save" parameterType="test1vo">
+	<select id="read" parameterType="map" resultType="bankaccountvo">
 		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
+		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
+			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
+			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
+			   insert_userid as insertUserId, insert_day as insertDay, 
+			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
+		 from	tb_bank_account 
+		 where	delete_flag = #{bavo.deleteFlag}
+			 ]]>
+		 <if test="bavo.depositNo != null ">
+		 	<![CDATA[
+			 	and	deposit_no like #{bavo.depositNo}
+			 ]]>
+		 </if>
+		 <if test="bavo.makeDate != null ">
+		 	<![CDATA[
+			 	and	makedate > #{bavo.makeDate}
+			 ]]>
+		 </if>
+		 <if test="bavo.enDate != null ">
+		 	<![CDATA[
+			 	and endate <= #{bavo.enDate}
+			 ]]>
+		 </if>
+		 <if test="pagination.pageIndex >= 0 ">
+		<![CDATA[
+			 limit #{pagination.pageIndex	}, #{pagination.listSize	}
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
-	</insert>
+		</if>
+	</select>
+	
+	<select id="getCount" parameterType="bankaccountvo" resultType="int">
+		<![CDATA[
+		select	count(*)
+		 from	tb_bank_account 
+		where	delete_flag = #{deleteFlag}
+		  ]]>
+		
+		 <if test='depositNo != null '>
+		 	<![CDATA[
+			 	and	deposit_no like #{depositNo}
+			 ]]>
+		 </if>
+		 <if test='makeDate != null '>
+		 	<![CDATA[
+			 	and	makedate > #{makeDate}
+			 ]]>
+		 </if>
+		 <if test='enDate != null '>
+		 	<![CDATA[
+			 	and endate <= #{enDate}
+			 ]]>
+		 </if>
+	</select>
+	
+	<select id="list" parameterType="map" resultType="bankaccountvo">
+		<![CDATA[
+		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
+			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
+			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
+			   insert_userid as insertUserId, insert_day as insertDay, 
+			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
+		 from	tb_bank_account 
+		 where	delete_flag = "N"
+		 order by insert_day desc
+		]]>
+		<if test="pagination.pageIndex >= 0 ">
+		<![CDATA[
+			 limit #{pagination.pageIndex	}, #{pagination.listSize	}
+		]]>
+		</if>
+		
+	</select>
 
 </mapper>

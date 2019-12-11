@@ -65,4 +65,14 @@ public class Menu06Service {
 	public void voucherUpdate(PurchasemanagementVo vo) {
 		menu06Repository.voucherUpdate(vo);
 	}
+
+	public Long getVoucherNo(PurchasemanagementVo vo) {
+		
+		return menu06Repository.getVoucherNo(vo);
+	}
+
+	public void TaxbillUpdate(PurchasemanagementVo vo) {
+		menu06Repository.TaxbillUpdate(vo);
+		
+	}
 }

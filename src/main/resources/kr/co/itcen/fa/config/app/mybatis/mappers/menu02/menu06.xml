@@ -19,10 +19,31 @@
 		<![CDATA[
 		insert
 		  into tb_purchasemanagement
-		  values(null, #{no }, #{number }, #{purchaseDate }, #{purchaseManager }, #{customerCode }, #{customerName }, 
-		   (select code from tb_section where parent_no = 1 and code = (select section_code as sectionCode from tb_purchaseitem where no = #{itemCode })), 
-		  (select classification from tb_section where parent_no = 1 and code = (select section_code as sectionCode from tb_purchaseitem where no = #{itemCode })), 
-		  #{itemCode }, #{itemName }, #{quantity }, #{supplyValue }, #{taxValue }, #{totalPrice }, #{taxType }, 0, #{receiptDate }, #{releaseDate },"N", #{insertUserid }, now(),null,null)
+		  values(null
+		  		, #{no }
+		  		, #{number }
+		  		, #{purchaseDate }
+		  		, #{purchaseManager }
+		  		, #{customerCode }
+		  		, #{customerName }
+		  		, (select code from tb_section where parent_no = 1 and code = (select section_code as sectionCode from tb_purchaseitem where no = #{itemCode }))
+		  		, (select classification from tb_section where parent_no = 1 and code = (select section_code as sectionCode from tb_purchaseitem where no = #{itemCode }))
+		  		, #{itemCode }
+		  		, #{itemName }
+		  		, #{quantity }
+		  		, #{supplyValue }
+		  		, #{taxValue }
+		  		, #{totalPrice }
+		  		, #{taxType }
+		  		, 0
+		  		, 0
+		  		, #{receiptDate }
+		  		, #{releaseDate }
+		  		,"N"
+		  		, #{insertUserid }
+		  		, now()
+		  		,null
+		  		,null)
 		]]>
 	</insert>
 	
@@ -30,6 +51,7 @@
 		<![CDATA[
 		  select no, name, price
 		  from tb_purchaseitem
+		  where delete_flag = "N"
 		]]>
 	</select>
 	
@@ -37,6 +59,7 @@
 		<![CDATA[
 		  select no, name, manager_name as managerName
 		  from tb_purchasecustomer
+		  where delete_flag = "N"
 		]]>
 	</select>
 	
@@ -63,7 +86,15 @@
 	<update id="voucherUpdate" parameterType="purchasemanagement06vo">
 		<![CDATA[
         update tb_purchasemanagement
-           set voucher_no = #{voucherNo }, 
+           set voucher_no = #{voucherNo } 
+         where purchase_no = #{no } and purchase_date = #{purchaseDate }
+		]]>
+	</update>
+	
+	<update id="TaxbillUpdate" parameterType="purchasemanagement06vo">
+		<![CDATA[
+        update tb_purchasemanagement
+           set taxbill_no = #{taxbillNo } 
          where purchase_no = #{no } and purchase_date = #{purchaseDate }
 		]]>
 	</update>
@@ -89,6 +120,14 @@
 		  select deposit_no as depositNo
 		  from tb_purchasecustomer
 		  where no = #{customerCode }
+		]]>
+	</select>
+	
+	<select id="getVoucherNo" resultType="long" parameterType="purchasemanagement06vo">
+		<![CDATA[
+		  select voucher_no as voucherNo
+		  from tb_purchasemanagement
+		  where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
 		]]>
 	</select>
 	

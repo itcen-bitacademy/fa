@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.vo.menu01;
 
+
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("bankaccountvo")
@@ -8,10 +10,10 @@ public class BankAccountVo {
 	private String depositOld;
 	private String depositHost;
 	private String makeDate;
-	private Integer balance;
+	private int balance;
 	private String enDate;
-	private Integer depositLimit;
-	private Double profit;
+	private int depositLimit;
+	private double profit;
 	
 	private String insertUserId;
 	private String insertDay;
@@ -151,6 +153,5 @@ public class BankAccountVo {
 				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
 				+ "]";
 	}
-	
-	
+		
 }
