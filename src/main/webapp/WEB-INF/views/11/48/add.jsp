@@ -77,8 +77,8 @@ tr td:first-child {
 								<tr>
 									<td><h4>장기차입금코드</h4></td>
 									<td>
-										<input type="hidden" name="no" id = "no"/>
-										<input type="text" name="code" id ="code2" max="10" min="10" />
+										<input type="hidden" name="no" id = "no" />
+										<input type="text" name="code" id ="code2" maxlength="10"  required/>
 										<input id="btn-check-code" type="button" value="중복확인">
 										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 									</td>
@@ -86,12 +86,12 @@ tr td:first-child {
 								<tr >
 									<td><h4>장기차입금명</h4></td>
 									<td colspan="2">
-										<input type="text" name="name"/>
+										<input type="text" name="name" required/>
 									</td>
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="debtAmount" class="number-input numberformat" /></td>
+									<td><input type="text" name="debtAmount" class="number-input numberformat"/></td>
 								</tr>
 								<tr>
 									<td><h4>차입일자 ~ 만기일자</h4></td>
@@ -109,7 +109,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>이자지급방식</h4></td>
 									<td colspan="2">
-										<div class="radio">
+										<div class="radio" >
 											<label>
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
 												<span class="lbl">년</span>
@@ -233,7 +233,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>이율</h4></td>
 									<td colspan="2">
-										<input type="text" name="intRate" placeholder="(%)" class="number-input"/>
+										<input type="text" name="intRate" placeholder="(%)" class="number-input" />
 									</td>
 								</tr>
 								<tr>
@@ -260,14 +260,11 @@ tr td:first-child {
 														<tr>
 															<td>
 															<div class="input-append">
-															
-									
 																<label>계좌번호</label>
 																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-																<span class="add-on">
-								                                    <a href="#" id="input-dialog-depositNo" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-								                                    </a>
-								                                 </span>
+																<a href="#" id="a-dialog-depositNo">
+																<span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span>
+															</a>
 															</div>
 															</td>
 														</tr>
@@ -305,7 +302,7 @@ tr td:first-child {
 					&nbsp;
 					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()" type="submit" >삭제</button>
 					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }" id= "search">조회</button>
 					&nbsp;
 					<button id="dialog-repayment-button" type="button" class="btn">상환</button>
 					&nbsp;
@@ -786,15 +783,16 @@ $(function(){
 		// ajax 통신
 		$.ajax({
 			url: "${pageContext.servletContext.contextPath }/11/48/checkcode?code=" + code,
+			contentType : "application/json; charset=utf-8",
 			type: "get",
 			dataType: "json",
 			data: "",
 			success: function(response){
+				console.log(response);
 				if(response.result == "fail"){
 					console.error(response.message);
 					return;
 				}
-				console.log(response);
 				
 				if(response.data == null){
 					$("#inputbtn").show();
@@ -804,6 +802,9 @@ $(function(){
 					return;
 				}else if(response.data.deleteFlag == "Y"){
 					alert("삭제된 코드입니다.");
+					$("#code2").val("");
+					//$("#inputbtn").hide();
+					$("#code2").focus();
 				}else{
 					alert("이미 존재하는 코드입니다.");
 					$("#code2").val("");
@@ -971,6 +972,12 @@ jQuery(function(){
 $("form").on("submit", function() {
 	$('.numberformat').removeText(); 
  });
+ 
+ $("#search").click(function(){
+	 $("input[name=name]").attr('disabled',true);
+ });
+ 
+ 
 </script>
 
 </body>
