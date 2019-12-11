@@ -175,6 +175,7 @@ public class Menu53Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	
 	// 수정사항 발생
 	@RequestMapping(value= {"/"+ SUBMENU + "/update/{pathSalesNo}"}, method=RequestMethod.POST)
 	public String update(@SessionAttribute("authUser") UserVo authUser,
@@ -190,5 +191,7 @@ public class Menu53Controller {
 		
 		return MAINMENU + "/" + SUBMENU + "/list"; 
 	}
+	
+	
 	
 }

@@ -54,6 +54,7 @@
 			tst.voucher_use as voucherUse, 
 			tst.tax_type as taxType
 			from tb_sell_taxbill as tst, tb_sales as tbs
+			where tst.sales_no = tbs.sales_no
 			order by 
 			tst.taxbill_no desc,
 			tst.write_date desc;
