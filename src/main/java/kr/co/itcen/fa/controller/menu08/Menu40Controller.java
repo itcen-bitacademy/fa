@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.controller.menu08;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +50,6 @@ public class Menu40Controller {
 			vo.setSectionNo("");
 		if(vo.getCustomerNo() == null || "".equals(vo.getCustomerNo()))
 			vo.setCustomerNo("");
-		if(vo.getCustomerName() == null || "".equals(vo.getCustomerNo()))
-			vo.setCustomerName("");
-		if(vo.getManagerName() == null || "".equals(vo.getCustomerNo()))
-			vo.setManagerName("");
 		if(vo.getWideAddress() == null || "".equals(vo.getWideAddress()))
 			vo.setWideAddress("");
 		if(vo.getCityAddress() == null || "".equals(vo.getCityAddress()))

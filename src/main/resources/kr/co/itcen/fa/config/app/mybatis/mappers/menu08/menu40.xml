@@ -29,29 +29,68 @@
 			acq_tax as acqTax,
 			pay_date as payDate,
 			tax_kind as taxKind,
-			b.flag,
-			b.insert_userid as insertUserid,
-			b.insert_day as insertDay
+			b.flag
+		
 		from tb_building as b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
-        where tb_section.parent_no = 3 
-           and b.flag = 's'
-           and b.pay_date like concat('%',#{vo.id },'%')
+        
+        where tb_section.parent_no = 3
+           and b.id like concat('%',#{vo.id },'%')
+           and b.pay_date like concat('%',#{vo.payDate },'%')
            and b.customer_no like concat('%',#{vo.customerNo },'%')
-           and b.area like concat('%',#{vo.area },'%')
            and b.section_no like concat('%',#{vo.sectionNo },'%')
            and b.wide_address like concat('%',#{vo.wideAddress },'%')
            and b.city_address like concat('%',#{vo.cityAddress },'%')
            and b.detail_address like concat('%',#{vo.detailAddress },'%')
-           and b.acq_price like concat('%',#{vo.acqPrice },'%')
+           and b.flag like concat('%',#{vo.flag },'%')
            
 		]]>
+		<if test="area != null">
+			<![CDATA[
+        		and b.area = #{area }
+    		]]>
+		</if>
+		<if test="acqPrice != null">
+			<![CDATA[
+        		and b.acq_price = #{acqPrice }
+    		]]>
+		</if>
    		<![CDATA[	
 		order by b.insert_day desc
 		]]>
 		<if test="pagination.pageIndex >= 0">
 			<![CDATA[
         		limit #{pagination.pageIndex }, #{pagination.listSize }
+    		]]>
+		</if>
+	</select>
+	
+	<!-- page 건수  -->
+	<select id="pageCount" resultType="int" parameterType="building08vo">
+	<![CDATA[
+		select count(*)
+		
+		from tb_building as b left outer join tb_section on b.section_no = tb_section.code
+			               left outer join tb_customer on b.customer_no = tb_customer.no
+		 
+		  where tb_section.parent_no = 3 
+           and b.id like concat('%',#{id },'%')
+           and date_format(b.pay_date,'%Y-%m-%d')like concat('%',#{payDate },'%')
+           and b.customer_no like concat('%',#{customerNo },'%')
+           and b.section_no like concat('%',#{sectionNo },'%')
+           and b.wide_address like concat('%',#{wideAddress },'%')
+           and b.city_address like concat('%',#{cityAddress },'%')
+           and b.detail_address like concat('%',#{detailAddress },'%')
+           and b.flag like concat('%',#{flag },'%')
+       ]]>
+		<if test='area != null'>
+			<![CDATA[
+        		and b.area = #{area }
+    		]]>
+		</if>
+		<if test='acqPrice != null'>
+			<![CDATA[
+        		and b.acq_price = #{acqPrice }
     		]]>
 		</if>
 	</select>
@@ -79,8 +118,5 @@
 		]]>
 	</select>
 	
-	<select id="pageCount" resultType="int" parameterType="building08vo">
-		select count(*)
-		from tb_building
-	</select>
+	
 </mapper>

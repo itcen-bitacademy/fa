@@ -75,5 +75,10 @@ public class Menu39Service {
 		return menu39Repository.getBankInfo(customerNo);
 	}
 
+	public Long getVoucherNo(String id) {
+		Long voucherNo = menu39Repository.getVoucherNo(id);
+		return voucherNo;
+	}
+
 	
 }

@@ -10,23 +10,23 @@ public class BuildingVo {
 	private String customerName;
 	private String managerName;
 	private String taxbillNo;
-	private long voucherNo;
+	private Long voucherNo;
 	private String sectionNo;
 	private String sectionName;
-	private int area;
+	private Long area;
 	private String combineNo;
 	private String ownerName;
 	private String wideAddress;
 	private String cityAddress;
 	private String detailAddress;
-	private int floor;
-	private int basement;
+	private Long floor;
+	private Long basement;
 	private String purpose;
 	private String material;
-	private int publicValue;
-	private long acqPrice;
-	private long etcCost;
-	private long acqTax;
+	private Long publicValue;
+	private Long acqPrice;
+	private Long etcCost;
+	private Long acqTax;
 	private String payDate;
 	private String taxKind;
 	private String flag;
@@ -65,10 +65,10 @@ public class BuildingVo {
 	public void setTaxbillNo(String taxbillNo) {
 		this.taxbillNo = taxbillNo;
 	}
-	public long getVoucherNo() {
+	public Long getVoucherNo() {
 		return voucherNo;
 	}
-	public void setVoucherNo(long voucherNo) {
+	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 	public String getSectionNo() {
@@ -83,10 +83,10 @@ public class BuildingVo {
 	public void setSectionName(String sectionName) {
 		this.sectionName = sectionName;
 	}
-	public int getArea() {
+	public Long getArea() {
 		return area;
 	}
-	public void setArea(int area) {
+	public void setArea(Long area) {
 		this.area = area;
 	}
 	public String getCombineNo() {
@@ -119,16 +119,16 @@ public class BuildingVo {
 	public void setDetailAddress(String detailAddress) {
 		this.detailAddress = detailAddress;
 	}
-	public int getFloor() {
+	public Long getFloor() {
 		return floor;
 	}
-	public void setFloor(int floor) {
+	public void setFloor(Long floor) {
 		this.floor = floor;
 	}
-	public int getBasement() {
+	public Long getBasement() {
 		return basement;
 	}
-	public void setBasement(int basement) {
+	public void setBasement(Long basement) {
 		this.basement = basement;
 	}
 	public String getPurpose() {
@@ -143,28 +143,28 @@ public class BuildingVo {
 	public void setMaterial(String material) {
 		this.material = material;
 	}
-	public int getPublicValue() {
+	public Long getPublicValue() {
 		return publicValue;
 	}
-	public void setPublicValue(int publicValue) {
+	public void setPublicValue(Long publicValue) {
 		this.publicValue = publicValue;
 	}
-	public long getAcqPrice() {
+	public Long getAcqPrice() {
 		return acqPrice;
 	}
-	public void setAcqPrice(long acqPrice) {
+	public void setAcqPrice(Long acqPrice) {
 		this.acqPrice = acqPrice;
 	}
-	public long getEtcCost() {
+	public Long getEtcCost() {
 		return etcCost;
 	}
-	public void setEtcCost(long etcCost) {
+	public void setEtcCost(Long etcCost) {
 		this.etcCost = etcCost;
 	}
-	public long getAcqTax() {
+	public Long getAcqTax() {
 		return acqTax;
 	}
-	public void setAcqTax(long acqTax) {
+	public void setAcqTax(Long acqTax) {
 		this.acqTax = acqTax;
 	}
 	public String getPayDate() {
@@ -215,13 +215,18 @@ public class BuildingVo {
 				+ ", managerName=" + managerName + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
 				+ ", sectionNo=" + sectionNo + ", sectionName=" + sectionName + ", area=" + area + ", combineNo="
 				+ combineNo + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress + ", cityAddress="
-				+ cityAddress + ", detailAddress=" + detailAddress + ", floor="
-				+ floor + ", basement=" + basement + ", purpose=" + purpose + ", material=" + material
-				+ ", publicValue=" + publicValue + ", acqPrice=" + acqPrice + ", etcCost=" + etcCost 
-				+ ", acqTax=" + acqTax + ", payDate=" + payDate + ", taxKind=" + taxKind + ", flag=" + flag
-				+ ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid
-				+ ", updateDay=" + updateDay + "]";
+				+ cityAddress + ", detailAddress=" + detailAddress + ", floor=" + floor + ", basement=" + basement
+				+ ", purpose=" + purpose + ", material=" + material + ", publicValue=" + publicValue + ", acqPrice="
+				+ acqPrice + ", etcCost=" + etcCost + ", acqTax=" + acqTax + ", payDate=" + payDate + ", taxKind="
+				+ taxKind + ", flag=" + flag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
+				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}
+
+	
+	
+	
+	
+	
 	
 	
 }
