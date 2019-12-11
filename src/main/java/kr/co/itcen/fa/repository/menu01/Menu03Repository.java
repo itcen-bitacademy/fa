@@ -48,7 +48,7 @@ public class Menu03Repository {
 			itemVo.get(i).setGroupNo(voucherVo.getNo());
 			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
 			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
-			itemVo.get(i).setOrderNo(order+1);
+			itemVo.get(i).setOrderNo(order);
 			sqlSession.update("menu03.updateOrder", itemVo.get(i));
 		}
 		
@@ -145,11 +145,11 @@ public class Menu03Repository {
 			itemVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
 			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
-			
+			itemVo.get(i).setGroupNo(voucherVo.getNo());
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
 			
 			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
-			itemVo.get(i).setOrderNo(order+1);
+			itemVo.get(i).setOrderNo(order);
 			sqlSession.update("menu03.updateOrder", itemVo.get(i));
 		}
 		
