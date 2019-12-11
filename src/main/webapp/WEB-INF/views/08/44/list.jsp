@@ -121,25 +121,6 @@
 						<div class="hr hr-18 dotted"></div>
 
 						<div class="row-fluid">
-							<!--
-							<form class="form-horizontal" method="post"
-								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-								<div class="control-group">
-									<div class="controls">
-										<div class="span1" style="float: right">
-											<button class="btn btn-info btn-small" type="submit"
-												style="float: right; margin-right: 20px;">
-												<i class="icon-ok bigger-80"></i>조회
-											</button>
-										</div>
-										<div class="span2" style="float: right">
-											<input type="text" class="span11" id="form-field-1"
-												name="search" placeholder="검색어를 입력하세요" />
-										</div>
-									</div>
-								</div>
-							</form>   -->
-							
 							<div id="listCount" style="float: left;"></div>
 							
 							<div>
