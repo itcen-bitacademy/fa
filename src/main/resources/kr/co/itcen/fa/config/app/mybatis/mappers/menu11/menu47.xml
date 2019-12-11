@@ -29,7 +29,7 @@
 			no, code, major_code, name,
 			debt_amount, repay_bal, repay_way,
 			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
-			int_pay_way, int_amount, mgr,
+			int_pay_way, mgr,
 			mgr_call, bank_code, deposit_no, 
 			account_no, voucher_no, delete_flag,
 			insert_id, insert_date, update_id,

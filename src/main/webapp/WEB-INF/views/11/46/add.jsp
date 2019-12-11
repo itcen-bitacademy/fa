@@ -299,7 +299,7 @@ tr td:first-child {
 							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
-							<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
+							<button id="dialog-repayment-button" type="button" class="btn" onclick="openRepayDialog()">상환</button>
 							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
 						</div>
 					</section>
@@ -311,6 +311,39 @@ tr td:first-child {
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
 			
+			<!-- 상환  Modal pop-up : start -->
+					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
+						<form id="repay-form">
+							<table id ="dialog-repayment-table" align="center">
+								<tr>
+									<td>
+										<label>차입금코드</label>
+										<input type="text" name="code" readonly= "readonly"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<label>납입금</label>
+										<input type="text" name="repayBal" id= "repay_bal"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+									<label>납입일자</label>
+									<div class="row-fluid input-prepend">
+					                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+					                    <span class="add-on">
+					                     <i class="icon-calendar"></i>
+					              	</span>
+					                         
+					                </div>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+					
 			<!-- list -->
 				<table  class="table table-bordered table-hover">
 					<thead>
@@ -447,6 +480,10 @@ $(function() {
 	$("#dialog-message").dialog({
 		autoOpen : false
 	});
+	
+	$("#dialog-repayment").dialog({
+		autoOpen : false
+	});
 });
 
 </script>
@@ -549,6 +586,75 @@ function selectBankRow(thisObj){
 	$("input[name=bankName]").val(td.eq(1).text());
 	$("#dialog-message").dialog('close');
 }
+
+//-----------------------------------상환 Model 메서드 ---------------------------------//
+function openRepayDialog(){
+	var repayForm = $("#repay-form")[0];
+	repayForm.code.value = $("#input-form")[0].code.value;
+	$("#dialog-repayment").dialog('open');
+	$("#dialog-repayment").dialog({
+		title: "상환정보등록",
+		title_html: true,
+	   	resizable: false,
+	    height: 500,
+	    width: 400,
+	    modal: true,
+	    close: function() {
+	    	repayForm.code.value = '';
+	    	repayForm.repayBal.value = '';
+	    	repayForm.payDate.value = '';
+	    },
+	    buttons: {
+	    	//상환버튼 클릭시
+	    "상환": function(){
+	    	event.preventDefault();
+			var vo = {
+					"debtNo":$("#no").val(),						//테이블 번호
+					"payPrinc":$("#repay_bal").val(),				//상환액
+					"payDate":$('input[name=payDate]').val(),		//상환일
+					"depositNo":$('input[name=depositNo]').val()	//계좌번호
+			}
+			
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/11/48/repay",
+				contentType : "application/json; charset=utf-8",
+				type: "post",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data:JSON.stringify(vo),
+				success: function(response){
+					console.log(response);
+					if(response.result =="fail"){
+						console.error(response.message);
+						return;
+					}
+					if(response.data==null){
+						alert("값을 정확히 입력하지 않았습니다.");
+						return;
+					}
+					$("#tbody-list tr").each(function(i){
+						var td = $(this).children();
+						var n = td.eq(0).attr('lterm-no');
+						if(n == response.data.no){
+							td.eq(5).html(response.data.repayBal);
+						}
+					});
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+			$(this).dialog('close');
+			//상환내역 반영
+			
+			
+	    },
+	    "닫기" : function() {
+	          	$(this).dialog('close');
+	        }
+	    }
+	});
+}//openRepayDailog() end
 
 //-----------------------------------Row Click input 영역 채워지도록 ---------------------------------//
 function selectRow(thisTr){
