@@ -151,11 +151,11 @@ $(function(){
 							<div class="controls" style="margin-left: 0px;">
 								<button class="btn btn-info btn-small" type="submit" id="account-list-btn" name="account-list-btn"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 								&nbsp;
-								<button class="btn btn-danger btn-small" type="submit" name="action"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+								<button class="btn btn-danger btn-small" type="submit" id="account-delete-btn" name="account-delete-btn"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 								&nbsp;
-								<button class="btn btn-warning btn-small" type="submit" name="action"  value="update" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+								<button class="btn btn-warning btn-small" type="submit" id="account-update-btn" name="account-update-btn"  value="update" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 								&nbsp;
-								<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="action" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
+								<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="account-add-btn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
 								&nbsp;
 								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >취소</button>
 							</div>	
@@ -250,6 +250,26 @@ $(function(){
 		</ul>
 	</div>
 	<!-- PAGE CONTENT ENDS -->
+
+	<%-- 에러 모달  --%>
+	<c:if test="${not empty param.error }">
+		<input type="hidden" id="errorMessage" value="${param.error }"/>
+	</c:if>
+
+	<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel"></h5>
+				</div>
+				<div class="modal-body" id="staticBackdropBody"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	
 	<!-- /.main-container -->
 	<!-- basic scripts -->
@@ -284,13 +304,6 @@ $(function(){
         var accountNo = td.eq(1).text();
         var accountName = td.eq(2).text();
         var hiddenNo = td.eq(8).text();
-             
-        //$(".selectedAccount").val(accountNo).trigger('change'); 
-        //$("#selectedAccount").val(accountNo).prop("selected", true);
-        //$("#selectedAccount").val("10230123").attr("selected", "selected");                       
-       	//$("#selectedAccount").val(accountNo);
-        //$("#selectedAccount  option:contains(" + accountNo + ")").text(accountNo);  
-     	//$('#selectedAccount').chosen().val(accountNo);
      	
      	$('#selectedAccount').val(accountNo).trigger('chosen:updated');    	
         $("#accountOrder").val(accountOrder);
@@ -322,9 +335,60 @@ $(function(){
     	//$('#selectedAccount').val($('#selectedAccount').val()).trigger('chosen:updated');
     });
     
-	$(function(){
+	var validationMessage = ''
 		
-		var result = "${param.result}";
+	// validation check
+	function saveValidation() {
+		
+		let accountNo = $('#selectedAccount').val()
+		let accountUsedyear = $('#accountUsedyear').val()
+		let accountOrder = $('#accountOrder').val()
+
+		console.log("accountNo : " + accountNo)
+		console.log("accountUsedyear : " + accountUsedyear)
+		console.log("accountOrder : " + accountOrder)
+						
+						
+		
+		if (!accountNo) {
+			validationMessage = '계정과목을 입력해주세요'
+			return false;
+		} else if (!accountUsedyear) {
+			validationMessage = '회계 연도를 입력해주세요.'
+			return false;
+		} else if (!accountOrder) {
+			validationMessage = '순번을 입력해주세요.'
+			return false;
+		}
+		
+		return true;
+	}
+		
+    //입력버튼 누를 시 초기화
+    $("#account-add-btn").click(function() {
+    	console.log("입력 버튼 클릭")
+		if (!saveValidation()) {
+			//openModal('Error', validationMessage);
+			//window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/59/list')
+		}
+    });
+    
+	$(function(){
+		// 모달 설정
+		backdrop = $('#staticBackdrop')
+		backdrop.modal({
+			keyboard: false,
+			show: false
+		})
+
+		// 에러 모달 설정
+		var errorMessage = $('#errorMessage')
+		if (errorMessage.val()) {
+			openModal('Error', errorMessage.val())
+			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/59/list')
+		}
+
+	/* 	var result = "${param.result}";
 		
 		if('overlap' == result ){			
 			alert("이미 있는 데이터입니다.");
@@ -346,9 +410,24 @@ $(function(){
 			
 			result = "";
 			return;
-		}
+		} */
+		
+		
 	});
-    
+
+	// static backdrop modal
+	var backdrop
+
+	function openModal(title, message) {
+		$('#staticBackdropLabel').text('Error')
+		$('#staticBackdropBody').text(message)
+
+		backdrop.modal('show')
+	}
+	
+	
+	
+	
 	</script>
 </body>
 </html>

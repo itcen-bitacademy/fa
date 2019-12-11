@@ -22,7 +22,7 @@ public class Menu59Repository {
 	private SqlSession sqlSession;
 	
 	//계정과목 저장
-	public Boolean insert(AccountManagementVo vo) {
+	public Boolean add(AccountManagementVo vo) {
 		int count = sqlSession.insert("menu59.insert",vo);
 		return count == 1;	
 	}
