@@ -1,9 +1,15 @@
 package kr.co.itcen.fa.repository.menu01;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.TestVo;
 
 /**
@@ -18,9 +24,34 @@ public class Menu26Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public void test (){
-		TestVo testVo = new TestVo();
-		testVo.setName("김길동26");
-		sqlSession.insert("menu26.save", testVo);
+
+	public List<BankAccountVo> list(BankAccountVo bavo, PaginationUtil pagination) {
+		Map<String, Object> s = new HashMap<String, Object>();
+		
+		s.put("bavo", bavo);
+		s.put("pagination", pagination);
+		
+		List<BankAccountVo> res = sqlSession.selectList("menu26.read", s); 
+		
+		return res;
 	}
+	
+	public Map<String, Object> read(BankAccountVo bavo, PaginationUtil pagination) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> s = new HashMap<String, Object>();
+		
+		
+		s.put("bavo", bavo);
+		s.put("pagination", pagination);
+		
+		map.put("bankList", sqlSession.selectList("menu26.read", s));
+		
+		return map;
+	}
+
+	public int selectCount(BankAccountVo bavo) {	
+		int res = sqlSession.selectOne("menu26.getCount", bavo);
+		return res;
+	}
+
 }

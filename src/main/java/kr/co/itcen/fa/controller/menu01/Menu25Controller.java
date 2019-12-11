@@ -100,7 +100,6 @@ public class Menu25Controller {
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
 		System.out.println("delete");
 		
-		page = 1;
 		Map<String, Object> dataResult = menu25Service.delete(bavo, page);
 		dataResult.put("success", true);
 		
