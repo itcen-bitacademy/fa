@@ -135,7 +135,8 @@ tr td:first-child {
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<form class="form-horizontal" id="
+" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 				<input type="hidden" name="no"/>
 				<div class="input-area">
 					<section>
@@ -324,19 +325,18 @@ tr td:first-child {
 								<tr>
 									<td>
 										<label>납입금</label>
-										<input type="text" name="repayBal" id= "repay_bal"/>
+										<input type="text" name="payPrinc" id= "repay_bal"/>
 									</td>
 								</tr>
 								<tr>
 									<td>
-									<label>납입일자</label>
-									<div class="row-fluid input-prepend">
-					                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
-					                    <span class="add-on">
-					                     <i class="icon-calendar"></i>
-					              	</span>
-					                         
-					                </div>
+										<label>납입일자</label>
+										<div class="row-fluid input-prepend">
+						                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+						                    <span class="add-on">
+						                     <i class="icon-calendar"></i>
+						              	</span>
+						                </div>
 									</td>
 								</tr>
 							</table>
@@ -590,7 +590,8 @@ function selectBankRow(thisObj){
 //-----------------------------------상환 Model 메서드 ---------------------------------//
 function openRepayDialog(){
 	var repayForm = $("#repay-form")[0];
-	repayForm.code.value = $("#input-form")[0].code.value;
+	var inputForm = $("#input-form")[0];
+	repayForm.code.value = inputForm.code.value;
 	$("#dialog-repayment").dialog('open');
 	$("#dialog-repayment").dialog({
 		title: "상환정보등록",
@@ -609,10 +610,10 @@ function openRepayDialog(){
 	    "상환": function(){
 	    	event.preventDefault();
 			var vo = {
-					"debtNo":$("#no").val(),						//테이블 번호
-					"payPrinc":$("#repay_bal").val(),				//상환액
-					"payDate":$('input[name=payDate]').val(),		//상환일
-					"depositNo":$('input[name=depositNo]').val()	//계좌번호
+					"debtNo":inputForm.no.value,					//차입금 테이블 번호
+					"payPrinc":repayForm.payPrinc.value,			//상환액
+					"payDate":repayForm.payDate.value,				//상환일
+					"depositNo":inputForm.depositNo.value	//계좌번호
 			}
 			
 			// ajax 통신
