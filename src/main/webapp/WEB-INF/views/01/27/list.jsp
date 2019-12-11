@@ -247,7 +247,13 @@ function execDaumPostcode() {
 		$("input[name=item]").val(conitArray[1]);
 		$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
 		$("input[name=jurisdictionOffice]").val(td.eq(6).text());
-		$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
+		if (phoneArray[2] !=null){
+			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
+		} else if (phoneArray[2]==null){
+			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]);
+		}
+		
+		//$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
 		$("input[name=managerEmail]").val(td.eq(9).text());
 		$("input[name=bankName]").val(td.eq(11).text());
 		$("input[name=bankCode]").val(td.eq(10).text());
