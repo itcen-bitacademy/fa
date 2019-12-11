@@ -1,10 +1,15 @@
 package kr.co.itcen.fa.vo.menu11;
 
+import javax.validation.constraints.Pattern;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("bankvo")
 public class BankVo {
+	
+	
 	private String code; //은행 코드
+	
 	private String name; //은행명 
 	private String store; //점포명
 	private String dealDate; //거래일자

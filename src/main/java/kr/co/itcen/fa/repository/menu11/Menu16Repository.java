@@ -61,6 +61,7 @@ public class Menu16Repository {
 
 	public Object getCode(String code) {
 		BankVo result = sqlSession.selectOne("menu16.getByCode",code);
+		System.out.println(result + "sdfsdfsdfs");
 		return result;
 	}
 
