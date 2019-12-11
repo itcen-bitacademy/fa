@@ -246,6 +246,7 @@
 							<tr>
 								<th>일자</th>
 								<th>전표번호</th>
+								<th>순번</th>
 								<th>구분</th>
 								<th>계정과목코드</th>
 								<th>계정과목명</th>
@@ -271,6 +272,7 @@
 								<tr>
 									<td>${voucherVo.regDate }</td>
 									<td>${voucherVo.no }</td>
+									<td>${voucherVo.orderNo }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
 								            <td>차변</td>
@@ -308,7 +310,7 @@
 									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
-										<c:when test="${voucherVo.depositHost == '여비' }">
+										<c:when test="${voucherVo.customerName eq '여비' }">
 											<td>${voucherVo.cardNo }</td>
 								            <td></td>
 								            <td>${voucherVo.cardUser }</td>
@@ -560,31 +562,32 @@ $(function(){
 		
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
-		$("input[name=amountFlag]").val(td.eq(2).text());
-		$('#accountNo').val(td.eq(3).text()).trigger('chosen:updated');
-		$("input[name=accountName]").val(td.eq(4).text());
+		$("input[name=orderNo]").val(td.eq(2).text());
+		$("input[name=amountFlag]").val(td.eq(3).text());
+		$('#accountNo').val(td.eq(4).text()).trigger('chosen:updated');
+		$("input[name=accountName]").val(td.eq(5).text());
 		console.log($("input[name=no]").val());
-		if(td.eq(5).text()== "") {
+		if(td.eq(6).text()== "") {
+			$("input[name=amount]").val(td.eq(7).text());	
+		} else {
 			$("input[name=amount]").val(td.eq(6).text());	
-		} else {
-			$("input[name=amount]").val(td.eq(5).text());	
 		}
-		$("input[name=customerNo]").val(td.eq(7).text());
-		$("input[name=customerName]").val(td.eq(8).text());
-		$("input[name=manageName]").val(td.eq(9).text());
-		$("input[name=manageNo]").val(td.eq(10).text());
-		$("input[name=bankCode]").val(td.eq(11).text());
-		$("input[name=bankName]").val(td.eq(12).text());
-		$("input[name=cardNo]").val(td.eq(13).text());
-		$("input[name=depositNo]").val(td.eq(14).text());
-		if(td.eq(13).text()== "") {
-			$("input[name=depositHost]").val(td.eq(15).text());
+		$("input[name=customerNo]").val(td.eq(8).text());
+		$("input[name=customerName]").val(td.eq(9).text());
+		$("input[name=manageName]").val(td.eq(10).text());
+		$("input[name=manageNo]").val(td.eq(11).text());
+		$("input[name=bankCode]").val(td.eq(12).text());
+		$("input[name=bankName]").val(td.eq(13).text());
+		$("input[name=cardNo]").val(td.eq(14).text());
+		$("input[name=depositNo]").val(td.eq(15).text());
+		if(td.eq(14).text()== "") {
+			$("input[name=depositHost]").val(td.eq(16).text());
 		} else {
-			$("input[name=cardUser]").val(td.eq(15).text());
+			$("input[name=cardUser]").val(td.eq(16).text());
 		}
 		
-		$("input[name=voucherUse]").val(td.eq(16).text());
-		$("input[name=insertTeam]").val(td.eq(17).text());
+		$("input[name=voucherUse]").val(td.eq(17).text());
+		$("input[name=insertTeam]").val(td.eq(18).text());
 		
 		$("input[name=bankName]").prop("readonly", true);
 		$("input[name='bankLocation']").prop("readonly", true);

@@ -40,10 +40,13 @@ public class Menu03Repository {
 	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo) {
 		System.out.println("#################" + voucherVo.getRegDate());
 		sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
+		
 		System.out.println("222233333333" + voucherVo.getNo());
 		for(int i = 0; i < itemVo.size(); i++) {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			System.out.println("33333333" + voucherVo.getNo());
+			itemVo.get(i).setGroupNo(voucherVo.getNo());
+			itemVo.get(i).setOrderNo(itemVo.get(i).getOrderNo() + 1);
 			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
 		}
 		
@@ -178,5 +181,6 @@ public class Menu03Repository {
 		map.put("customerList",voucherList);
 		return map;
 	}
+	
 
 }

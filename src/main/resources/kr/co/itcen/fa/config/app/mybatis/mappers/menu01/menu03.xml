@@ -50,7 +50,9 @@
 		  			insert_day,
 		  			use_yn,
 		  			voucher_no,
-		  			account_no
+		  			account_no,
+		  			group_no,
+		  			order_no
 		)
 		values (null,
 				#{amount },
@@ -59,7 +61,9 @@
 				now(),
 				true,
 				#{voucherNo },
-				#{accountNo }
+				#{accountNo },
+				#{groupNo },
+				#{orderNo }
 		)
 		]]>
 	</insert>
@@ -215,6 +219,7 @@
 		<![CDATA[
 		select reg_date as regDate,
 			   v.no as no,
+			   i.order_no as orderNo,
 			   i.amount_flag as amountFlag,
 			   m.insert_team as insertTeam,
 			   m.insert_userid as insertUserid,
@@ -260,7 +265,7 @@
            and i.use_yn = 1
            and m.use_yn = 1
       order by v.no desc,
-               i.amount_flag
+               i.order_no
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
@@ -323,6 +328,7 @@
 		<![CDATA[
 		select reg_date as regDate,
 			   v.no as no,
+			   i.order_no as orderNo,
 			   i.amount_flag as amountFlag,
 			   m.insert_team as insertTeam,
 			   m.insert_userid as insertUserid,
@@ -390,7 +396,7 @@
     	</if>
       <![CDATA[
       order by v.no desc,
-               i.amount_flag
+               i.order_no
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
