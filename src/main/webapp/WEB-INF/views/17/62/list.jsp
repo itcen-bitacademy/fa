@@ -180,6 +180,16 @@
 		}
 	});
 
+	// static backdrop modal
+	var backdrop
+
+	function openModal(title, message) {
+		$('#staticBackdropLabel').text('Error')
+		$('#staticBackdropBody').text(message)
+
+		backdrop.modal('show')
+	}
+
 	// 합계 저장용 변수
 	var totalAmount = 0
 

@@ -205,6 +205,16 @@
 		}
 	});
 
+	// static backdrop modal
+	var backdrop
+
+	function openModal(title, message) {
+		$('#staticBackdropLabel').text('Error')
+		$('#staticBackdropBody').text(message)
+
+		backdrop.modal('show')
+	}
+
 	// 버튼 prevent default 설정
 	function disableFormSubmit(event) {
 		event.preventDefault();
