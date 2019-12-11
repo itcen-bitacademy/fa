@@ -70,4 +70,12 @@ public class Menu14Service {
 	public List<PurchaseitemVo> getItemList() {
 		return menu14Repository.getItemList();
 	}
+	
+	// 화면에 뿌리는 조회 데이터 수
+	public int getCount() {
+		return menu14Repository.selectAllCount();
+	}
+	public int getCount(SalesSearchVo vo) {
+		return menu14Repository.searchCount(vo);
+	}
 }
