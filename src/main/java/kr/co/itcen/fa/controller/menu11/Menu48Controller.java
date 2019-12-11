@@ -79,8 +79,6 @@ public class Menu48Controller {
 		vo.setDebtDate(dates[0]);
 		vo.setExpDate(dates[1]);
 		vo.setInsertId(user.getId());
-		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
-		vo.setIntAmount(money);
 		
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -124,9 +122,6 @@ public class Menu48Controller {
 		vo.setExpDate(dates[1]);
 		vo.setUpdateId(user.getId());
 		
-		Long money= (long) (vo.getDebtAmount()*vo.getIntRate()/100);
-		vo.setIntAmount(money);
-		System.out.println(money);
 		vo.setVoucherNo(menu48Service.select(vo.getNo()));
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
