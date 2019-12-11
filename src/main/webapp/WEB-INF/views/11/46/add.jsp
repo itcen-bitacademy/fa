@@ -474,12 +474,12 @@ function openDialog(){
 	});
 }
 
-//은행코드 검색 : 은행목록 리스트로 가져오기
+//은행코드 검색 : 최대 하나의 결과만 가져온다.
 function searchByBankcode(){
+	console.log("searchByBankcode called");
 	$("#tbody-bankList").find("tr").remove();
 	
 	var bankcodeVal = $("#input-dialog-bankcode").val();
-	console.log(bankcodeVal);
 	// ajax 통신
 	$.ajax({
 		url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
@@ -494,11 +494,11 @@ function searchByBankcode(){
 		},
 		success: function(response){
 			$("#input-dialog-bankcode").val('');
-			$("#tbody-bankList").append("<tr>" +
-			        "<td class='center'>" + response.code + "</td>" +
-			        "<td class='center'>" + response.name + "</td>" +
-			        "<td class='center'>" + response.store + "</td>" +
-			        "</tr>");
+			$("#tbody-bankList").append("<tr onclick='selectBankRow(this)'>" +
+									        "<td class='center'>" + response.code + "</td>" +
+									        "<td class='center'>" + response.name + "</td>" +
+									        "<td class='center'>" + response.store + "</td>" +
+			       						 "</tr>");
 		},
 		error: function(xhr, error){
 			console.error("error : " + error);
@@ -508,7 +508,8 @@ function searchByBankcode(){
 
 //은행명 검색 : 은행목록 리스트로 가져오기
 function searchByBankname(){
-$("#tbody-bankList").find("tr").remove();
+	console.log("searchByBankname called");
+	$("#tbody-bankList").find("tr").remove();
 	
 	var banknameVal = $("#input-dialog-bankname").val();
 	// ajax 통신
@@ -525,13 +526,14 @@ $("#tbody-bankList").find("tr").remove();
 		},
 		success: function(data){
 			$("#input-dialog-bankname").val('');
-			 $.each(data,function(index, item){
-	                $("#tbody-bankList").append("<tr>" +
-	                		"<td class='center'>" + item.code + "</td>" +
-					        "<td class='center'>" + item.name + "</td>" +
-					        "<td class='center'>" + item.store + "</td>" +
-					        "</tr>");
-	         })
+			
+			for(var i=0; i < data.length; ++i){
+				 $("#tbody-bankList").append("<tr onclick='selectBankRow(this)'>" +
+						                		"<td class='center'>" + data[i].code + "</td>" +
+										        "<td class='center'>" + data[i].name + "</td>" +
+										        "<td class='center'>" + data[i].store + "</td>" +
+										    "</tr>");
+			}
 		},
 		error: function(xhr, error){
 			console.error("error : " + error);
@@ -540,13 +542,14 @@ $("#tbody-bankList").find("tr").remove();
 }
 
 //은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 input form에 추가
-$(document.body).delegate('#tbody-bankList tr', 'click', function() {
-	var tr = $(this);
+function selectBankRow(thisObj){
+	var tr = $(thisObj);
 	var td = tr.children();
 	$("input[name=bankCode]").val(td.eq(0).text());
 	$("input[name=bankName]").val(td.eq(1).text());
 	$("#dialog-message").dialog('close');
-});
+}
+
 //-----------------------------------Row Click input 영역 채워지도록 ---------------------------------//
 function selectRow(thisTr){
 	var dataForm = $("#form" + $(thisTr).attr('id'))[0];
