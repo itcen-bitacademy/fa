@@ -261,12 +261,13 @@ public class Menu43Controller {
 
 			// 매핑테이블
 			mappingVo.setVoucherUse(intangibleAssetsVo.getPurpose()); // 왜 샀는지 적어준다(용도).
-			mappingVo.setSystemCode(intangibleAssetsVo.getCode()); // 각 무형자산 코드번호
-			mappingVo.setDepositNo(customerVo.getDepositNo()); // 계좌번호
-			mappingVo.setBankCode(customerVo.getBankCode()); // 은행 번호
-			mappingVo.setBankName(customerVo.getBankName()); // 은행 이름
-			mappingVo.setCustomerNo(customerNo); // 거래처번호
-			mappingVo.setManageNo(taxbillNo); // 세금계산서 번호
+			mappingVo.setSystemCode(intangibleAssetsVo.getCode());    // 각 무형자산 코드번호
+			mappingVo.setDepositNo(customerVo.getDepositNo());        // 계좌번호
+			mappingVo.setBankCode(customerVo.getBankCode());          // 은행 번호
+			mappingVo.setBankName(customerVo.getBankName());          // 은행 이름
+			mappingVo.setCustomerNo(customerNo);                      // 거래처번호
+			mappingVo.setManageNo(taxbillNo);                         // 세금계산서 번호
+			mappingVo.setVoucherNo(voucherNo);                        // 전표 번호를 넣어야 수정된 것이 삭제가 됨 
 			
 			voucherVo.setNo(voucherNo);
 			Long updateVoucher = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);

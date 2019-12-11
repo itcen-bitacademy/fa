@@ -108,7 +108,7 @@ left outer join tb_customer c on tb.customer_no = c.no
       <![CDATA[
       select voucher_no as voucherNo
         from tb_intangible_assets
-       where taxbill_no = #{taxbillNo }
+       where id = #{id }
       ]]>
    </select>
    
