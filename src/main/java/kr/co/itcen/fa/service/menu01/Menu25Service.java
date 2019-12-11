@@ -40,7 +40,7 @@ public class Menu25Service {
 		}
 		
 		int totalCnt = menu25Repository.selectCount();
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt+1, 11, 5);
 		
 		map = menu25Repository.create(bavo, pagination);
 		
@@ -74,7 +74,7 @@ public class Menu25Service {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<String, Object>();
 		int totalCnt = menu25Repository.selectCount();
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt-1, 11, 5);
 		
 		map = menu25Repository.delete(bavo, pagination);
 		map.put("pagination", pagination);

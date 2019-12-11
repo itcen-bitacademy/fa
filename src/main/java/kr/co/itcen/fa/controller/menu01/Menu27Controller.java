@@ -55,9 +55,9 @@ public class Menu27Controller {
 		customerVo.setInsertUserid(authUser.getName());
 		
 		page = 1;
-		Map<String, Object> dataResult =  menu27Service.create(customerVo, page);
+		Map<String, Object> result =  menu27Service.create(customerVo, page);
 		
-		return dataResult;
+		return result;
 	}
 	
 	// Read
@@ -66,8 +66,8 @@ public class Menu27Controller {
 	public Map<String, Object> read(@ModelAttribute CustomerVo customerVo) {
 		System.out.println("read");
 		
-		Map<String, Object> dataResult = menu27Service.read(customerVo);
-		return dataResult;
+		Map<String, Object> result = menu27Service.read(customerVo);
+		return result;
 	}
 	
 	// Update
@@ -82,8 +82,8 @@ public class Menu27Controller {
 		
 		System.out.println(customerVo.toString());
 		
-		Map<String, Object> dataResult = menu27Service.update(customerVo, page);
-		return dataResult;
+		Map<String, Object> result = menu27Service.update(customerVo, page);
+		return result;
 	}
 	
 	// Delete
@@ -93,10 +93,10 @@ public class Menu27Controller {
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
 		System.out.println("delete");
 		page = 1;
-		Map<String, Object> dataResult = menu27Service.delete(customerVo, page);
-		dataResult.put("success", true);
+		Map<String, Object> result = menu27Service.delete(customerVo, page);
+		result.put("success", true);
 		
-		return dataResult;
+		return result;
 	}
 
 }

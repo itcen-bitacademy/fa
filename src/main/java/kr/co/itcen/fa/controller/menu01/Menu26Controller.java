@@ -1,13 +1,20 @@
 package kr.co.itcen.fa.controller.menu01;
 
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu26Service;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 
 
 /**
@@ -25,10 +32,37 @@ public class Menu26Controller {
 
 	@Autowired
 	private Menu26Service menu26Service;
-
+	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String test(Model model) {
-		menu26Service.test();
+	public String test(Model model,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
+			@ModelAttribute BankAccountVo bavo) {
+		System.out.println(bavo);
+		DataResult<BankAccountVo> dataResult = menu26Service.defaultRead(page, bavo);
+		model.addAttribute("dataResult", dataResult);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
+	@RequestMapping({"/" + SUBMENU + "/search" })
+	public String search(Model model,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
+			@ModelAttribute BankAccountVo bavo) {
+		System.out.println(bavo);
+		DataResult<BankAccountVo> dataResult = menu26Service.defaultRead(page, bavo);
+		model.addAttribute("dataResult", dataResult);
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+
+	@ResponseBody	
+	@RequestMapping("/" + SUBMENU + "/read")
+	public Map<String, Object> read(@ModelAttribute BankAccountVo bavo,
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
+		System.out.println(bavo);
+		
+		Map<String, Object> dataResult = menu26Service.read(bavo, page);
+		
+		return dataResult;
+	}
+	
+	
 }

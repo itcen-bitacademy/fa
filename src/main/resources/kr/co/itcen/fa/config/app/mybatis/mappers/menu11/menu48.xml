@@ -33,7 +33,7 @@
 	<![CDATA[
 		insert
 		  into tb_repay
-		values (null, #{debtNo},#{payPrinc},#{payDate}, 'L', null,#{depositNo},'N',#{insertId},now(),null,null)
+		values (null, #{debtNo},#{payPrinc},#{payDate}, 'L', #{voucherNo},#{depositNo},'N',#{insertId},now(),null,null)
 		]]>
 	<selectKey order="AFTER" resultType="long" keyProperty="no">
 	<![CDATA[
@@ -133,7 +133,8 @@
     		mgr_call as mgrCall,
 		    bank_code as bankCode,
 		    deposit_no as depositNo,
-		    int_amount as intAmount
+		    int_amount as intAmount,
+		    voucher_no as voucherNo
 		    from tb_l_term_debt
 		    where no=#{_parameter}
 	]]>
@@ -148,6 +149,13 @@
 			tb_l_term_debt 
    		where code like #{_parameter}
 	]]>
+	</select>
+	
+	<!-- BankCode읽기 -->
+	<select id="selectBankCode" resultType="string" parameterType="string">
+		select bank_code
+		from tb_bank_account
+		where deposit_no=#{_parameter}
 	</select>
 	
 	

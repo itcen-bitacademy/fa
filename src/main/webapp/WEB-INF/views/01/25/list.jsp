@@ -392,58 +392,30 @@
 	
 	function createNewPage(dataResult, a){
 		var inputString = "<ul>";
-		var endPage = 0;
-		var prev = "${dataResult.pagination.prev }";
-		var next = "${dataResult.pagination.next }";
-		prev *= 1;
-		next *= 1;
 		
-		if(a == "create") {
-			if("${dataResult.pagination.endPage }" > 5) {
-				alert("asdf");
-				endPage = 5;
-				prev = 0;
-				next = 6;
-			} else {
-				endPage = "${dataResult.pagination.endPage }";
-			}
-			// 앞 (무조건 inactive)
-			inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
-			// 중간
-			inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-			for(var pg = 2; pg <= endPage; pg++) {
-				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-	    	}
-			// 뒤        
-	        if (next == 6) {
-	        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+6+"'><i class='icon-double-angle-right'></i></a></li>";
-	        } else {
-	        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
-	        }
-    	}
-		else {
-			// 앞
-			if(prev != 0) {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
-	        } else {
-	        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
-	        }
-			// 중간
-			for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
-	        	if("${dataResult.pagination.page }" == pg){
-	            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-	        	} else {
-		        	inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-		        }
-        	}
-			// 뒤        
-	        if (next != 0) {
-	        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
-	        } else {
-	        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
-	        }
+		// 앞
+		if(dataResult.pagination.prev != 0) {
+        	inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+ (dataResult.pagination.startPage - 1) +"'><i class='icon-double-angle-left'></i></a></li>";
+	       } else {
+	       	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+	    }
+		
+		// 중간
+		for(var pg = dataResult.pagination.startPage ; pg <= dataResult.pagination.endPage;  pg++) {
+	      	if(dataResult.pagination.page == pg){
+	       		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	       	} else {
+		      	inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+		    }
 		}
-        
+		
+		// 뒤        
+	    if (dataResult.pagination.next != 0) {
+	    	inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+(dataResult.pagination.endPage + 1) +"'><i class='icon-double-angle-right'></i></a></li>";
+	    } else {
+	    	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+	    }
+		
         inputString += "</ul>";
         $("#pagination").append(inputString);
    };
@@ -657,13 +629,10 @@
 						<div class="span12">
 							<div class="hr hr-18 dotted"></div>
 							<button type="submit" class="btn btn-info btn"
-								formaction="${pageContext.request.contextPath}/01/25/read"
 								id="btn-read" name="btn-read">조회</button>
 							<button type="submit" class="btn btn-danger btn"
-								formaction="${pageContext.request.contextPath}/01/25/delete"
 								id="btn-delete" name="btn-delete">삭제</button>
 							<button type="submit" class="btn btn-warning btn"
-								formaction="${pageContext.request.contextPath}/01/25/update"
 								id="btn-update" name="btn-update">수정</button>
 							<button type="submit" class="btn btn-primary btn" id="btn-create"
 								name="btn-create">입력</button>
