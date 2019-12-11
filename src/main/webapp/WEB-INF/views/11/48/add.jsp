@@ -306,7 +306,7 @@ tr td:first-child {
 					&nbsp;
 					<button id="dialog-repayment-button" type="button" class="btn">상환</button>
 					&nbsp;
-					<!-- 상환  Modal pop-up : start -->
+					<!-- 차입금코드,납입원금,납입이자,납입일자,부채유형 Modal pop-up : start -->
 					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
 						<table id ="dialog-repayment-table" align="center">
 							<tr>
