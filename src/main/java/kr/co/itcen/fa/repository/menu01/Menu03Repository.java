@@ -80,7 +80,7 @@ public class Menu03Repository {
 	
 	// 전표 관리페이지 조건 개수
 	public int selectVoucherCount(VoucherVo voucherVo) {
-		return sqlSession.selectOne("munu03.selectVoucherCount", voucherVo);
+		return sqlSession.selectOne("menu03.selectVoucherCount", voucherVo);
 	}
 	
 	// 전표 관리페이지 조건 조회

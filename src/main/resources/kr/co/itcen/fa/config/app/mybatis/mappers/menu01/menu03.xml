@@ -298,10 +298,10 @@
         ]]>
     	<if test="regDate != null and !''.equals(regDate)">
     	   <![CDATA[
-    	   and v.reg_date like concat('%',#{regDate },'%');
+    	   and v.reg_date like concat('%',#{regDate },'%')
     	   ]]>
     	</if>
-    	<!-- <if test="accountNo != null and !accountNo.equals('')">
+    	<if test="accountNo != null and !accountNo.equals('')">
     	   <![CDATA[
     	   and a.no = #{accountNo }
     	   ]]>
@@ -315,7 +315,7 @@
     	   <![CDATA[
     	   and cu.no = #{customerNo };
     	   ]]>
-    	</if> -->
+    	</if>
 	</select>
 	
 	<!-- 전표조회 페이징 -->
@@ -373,7 +373,7 @@
     	   and v.reg_date = #{vo.regDate }
     	   ]]>
     	</if>
-    	<!-- <if test="vo.accountNo != null and !vo.accountNo.equals('')">
+    	<if test="vo.accountNo != null and !vo.accountNo.equals('')">
     	   <![CDATA[
     	   and a.no = #{vo.accountNo }
     	   ]]>
@@ -387,7 +387,7 @@
     	   <![CDATA[
     	   and cu.no = #{vo.customerNo }
     	   ]]>
-    	</if> -->
+    	</if>
       <![CDATA[
       order by v.no desc,
                i.amount_flag
@@ -643,12 +643,13 @@
 		    , a.parent3 as parent3
 		    , a.parent4 as parent4
 		    , a.parent5 as parent5
-		  from	tb_voucher_manager as v
-		  join	tb_voucher_item as i on v.no = i.voucher_no
-		  join	tb_account as a on a.no = i.account_no
-		 where	v.reg_date >= #{startDate }
-		   and	v.reg_date <= #{endDate }
-		;
+		  from tb_voucher_manager as v
+		  join tb_voucher_item as i on v.no = i.voucher_no
+		  join tb_account as a on a.no = i.account_no
+		 where v.reg_date >= #{startDate }
+		   and v.reg_date <= #{endDate }
+		   and v.use_yn = 1
+           and i.use_yn = 1;
 		]]>
 	</select>
 	
@@ -675,7 +676,7 @@
   		   on cu.deposit_no = ba.deposit_no
 		 join tb_bank b
      		   on b.code = ba.bank_code
-		 join tb_cardmanager c
+	left join tb_cardmanager c
      		   on ba.deposit_no = c.deposit_no
         where cu.no like concat('%', #{customerNo }, '%');
      
