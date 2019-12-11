@@ -140,7 +140,7 @@ public class Menu48Controller {
 		
 		voucherVo.setRegDate(vo.getDebtDate());
 		itemVo.setAmount(vo.getDebtAmount());//장기차입금 금액
-		itemVo.setAmountFlag("d");//차변
+		itemVo.setAmountFlag("c");//차변
 		itemVo.setAccountNo(2401101L);
 		itemVo.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo);
