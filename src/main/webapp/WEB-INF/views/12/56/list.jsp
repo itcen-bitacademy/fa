@@ -112,9 +112,10 @@
 											<th>출고공급가액</th>
 											<th>출고부가세</th>
 											<th>출고금액</th>
-<!-- 											<th>재고수량</th> -->
-<!-- 											<th>재고금액</th> -->
-<!-- 											<th>재고부가세</th> -->
+											<th>재고수량</th>
+											<th>재고공급가액</th>
+											<th>재고부가세</th>
+											<th>재고금액</th>
 										</tr>
 										</thead>
 										<c:forEach items='${list }' var='vo' varStatus='status'>
@@ -131,9 +132,10 @@
 											<td>${vo.salessupplyvalue }</td>
 											<td>${vo.salestaxvalue }</td>
 											<td>${vo.salestotalprice }</td>
-<%-- 											<td>${vo.stockquantity }</td> --%>
-<%-- 											<td>${vo.stocktotalprice }</td> --%>
-<%-- 											<td>${vo.stocktaxvalue }</td> --%>
+											<td>${vo.stockquantity }</td>
+											<td>${vo.stocksupplyvalue }</td>
+											<td>${vo.stocktaxvalue }</td>
+											<td>${vo.stocktotalprice }</td>
 										</tr>
 										</c:forEach>
 									</table>

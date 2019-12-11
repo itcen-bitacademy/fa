@@ -20,16 +20,20 @@
     select 
 		  pi.no as itemcode
           , pi.name as itemname
-          , s.quantity as purchasemanagementquantity
-          , s.supply_value as purchasemanagementsupplyvalue
-          , s.tax_value as purchasemanagementtaxvalue
-          , s.total_price as purchasemanagementtotalprice
+		  , p.quantity as purchasemanagementquantity
+          , p.supply_value as purchasemanagementsupplyvalue
+          , p.tax_value as purchasemanagementtaxvalue
+          , p.total_price as purchasemanagementtotalprice
+		  , s.quantity as salesquantity
+          , s.supply_value as salessupplyvalue
+          , s.tax_value as salestaxvalue
+          , s.total_price as salestotalprice
           , s.sales_date as salesdate
-		  , p.quantity as salesquantity
-          , p.supply_value as salessupplyvalue
-          , p.tax_value as salestaxvalue
-          , p.total_price as salestotalprice
           , p.purchase_date as purchasedate
+          , (p.quantity - s.quantity)as  stockquantity
+          , (p.quantity - s.quantity)*p.supply_value as stocksupplyvalue
+          , (p.quantity - s.quantity)*p.tax_value as stocktaxvalue
+          , (p.quantity - s.quantity)*(p.supply_value+p.tax_value) as stocktotalprice
     from tb_purchaseitem_test as pi 
     left join(
 			select 
