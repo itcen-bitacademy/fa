@@ -144,5 +144,10 @@ public class Menu50Repository {
 		}
 		return sqlSession.selectList("menu50.selectVoucherNo", list);
 	}
+
+	// 계좌번호로 은행코드 호출
+	public String selectBankCode(String depositNo) {
+		return sqlSession.selectOne("menu50.selectBankCode", depositNo);
+	}
 	
 }
