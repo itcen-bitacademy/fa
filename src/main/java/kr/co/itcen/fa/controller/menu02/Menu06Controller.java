@@ -68,24 +68,25 @@ public class Menu06Controller {
 	
 	@RequestMapping(value = {"/" + SUBMENU + "/update" }, method = RequestMethod.POST)
 	public String update(PurchasemanagementVo vo, @AuthUser UserVo authUser) {
-		System.out.println(menu06Service.getVoucherNo(vo));
-		System.out.println(vo);
+//		System.out.println(menu06Service.getVoucherNo(vo));
+//		System.out.println(vo);
 		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
-		System.out.println(menu06Service.getVoucherNo(vo));
+		//System.out.println(menu06Service.getVoucherNo(vo));
 		if(Integer.parseInt(vo.getTaxbillNo()) == 0 && vo.getVoucherNo() == 0) { // 세금계산서 입력 전에 수정
-			System.out.println("1");
+			System.out.println("세금계산서 입력 전에 수정");
 			vo.setTaxbillNo("0");
 			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue())*vo.getQuantity());
 			vo.setUpdateUserid(authUser.getId());
 			menu06Service.update(vo);
 		} else if(Integer.parseInt(vo.getTaxbillNo()) != 0 && vo.getVoucherNo() == 0) { // 세금계산서 번호 품목 일괄 업데이트
-			System.out.println("2");
+			System.out.println("세금계산서 등록");
 			menu06Service.TaxbillUpdate(vo);
 		} else { // 전표에 등록된 매입건 수정
-			System.out.println("3");
+			System.out.println("전표에 등록된 매입건에 대한 수정");
 			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue())*vo.getQuantity());
 			vo.setUpdateUserid(authUser.getId());
 			menu06Service.update(vo);
+			
 			BuyTaxbillVo buyTaxbillVo = new BuyTaxbillVo();
 			VoucherVo voucherVo = new VoucherVo();
 			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -93,11 +94,11 @@ public class Menu06Controller {
 			
 			buyTaxbillVo = menu06Service.getTaxbillList(vo);
 			CustomerVo customerAccount = menu06Service.getAccount(vo);
-			Long voucherNo = menu06Service.getVoucherNo(vo);
-			System.out.println(menu06Service.getVoucherNo(vo));
-			System.out.println(vo);
-			System.out.println(buyTaxbillVo);
-			System.out.println(customerAccount);
+//			Long voucherNo = menu06Service.getVoucherNo(vo);
+//			System.out.println(menu06Service.getVoucherNo(vo));
+//			System.out.println(vo);
+//			System.out.println(buyTaxbillVo);
+//			System.out.println(customerAccount);
 			ItemVo itemVo = new ItemVo();
 			ItemVo itemVo2 = new ItemVo();
 			ItemVo itemVo3 = new ItemVo();
@@ -128,7 +129,7 @@ public class Menu06Controller {
 			mappingVo.setDepositNo(customerAccount.getDepositNo());	 	   // 계좌번호 입력
 			mappingVo.setVoucherNo(vo.getVoucherNo());
 			
-			System.out.println(mappingVo);
+			//System.out.println(mappingVo);
 			Long no = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
 			vo.setVoucherNo(no);
 			menu06Service.voucherUpdate(vo);
@@ -142,8 +143,15 @@ public class Menu06Controller {
 	}
 	
 	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
-	public String delete(PurchasemanagementVo vo) {
+	public String delete(PurchasemanagementVo vo,  @AuthUser UserVo authUser) {
 		menu06Service.delete(vo);
+		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
+		//System.out.println(vo);
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		VoucherVo voucherVo = new VoucherVo();
+		voucherVo.setNo(vo.getVoucherNo());
+		voucherVolist.add(voucherVo);
+		menu03Service.deleteVoucher(voucherVolist, authUser);
 		return "redirect:/02";
 	}
 
@@ -170,7 +178,7 @@ public class Menu06Controller {
 
 		//마감 여부 체크
 				if(menu19Service.checkClosingDate(authUser, purchasemanagementVo.getPurchaseDate())) { 
-					System.out.println("a");
+					System.out.println("마감일자 이전");
 					if (itemCode.length > 1) {
 						for (int i = 0; i < itemCode.length; i++) {
 							PurchasemanagementVo vo = new PurchasemanagementVo(purchasemanagementVo);
@@ -186,19 +194,23 @@ public class Menu06Controller {
 						}
 					} else {
 						purchasemanagementVo.setTotalPrice((purchasemanagementVo.getSupplyValue() + purchasemanagementVo.getTaxValue())*purchasemanagementVo.getQuantity());
-						System.out.println("a : "+purchasemanagementVo);
+						//System.out.println("a : "+purchasemanagementVo);
 						menu06Service.insert(purchasemanagementVo);
 					}
 					return "redirect:/02";
 				} else {
-					System.out.println("b");
+					System.out.println("마감일자 이후");
 					model.addAttribute("closingDate", true);
+					List<PurchaseitemVo> itemList = menu06Service.getItemList();
+					List<CustomerVo> customerList = menu06Service.getCustomerList();
+					model.addAttribute("itemList", itemList);
+					model.addAttribute("customerList", customerList);
 					return MAINMENU + "/" + SUBMENU + "/list"; 
 				}
 	}
 	
 	@RequestMapping(value="/" + SUBMENU + "/voucher", method=RequestMethod.POST)
-	public String voucher(PurchasemanagementVo vo, @AuthUser UserVo authUser) {
+	public String voucher(PurchasemanagementVo vo, @AuthUser UserVo authUser, Model model) {
 		
 		/////////////////////////////////////
 		// 전표등록
@@ -245,6 +257,10 @@ public class Menu06Controller {
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
 		vo.setVoucherNo(no);
 		menu06Service.voucherUpdate(vo);
+		List<PurchaseitemVo> itemList = menu06Service.getItemList();
+		List<CustomerVo> customerList = menu06Service.getCustomerList();
+		model.addAttribute("itemList", itemList);
+		model.addAttribute("customerList", customerList);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

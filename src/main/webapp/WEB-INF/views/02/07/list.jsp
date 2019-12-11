@@ -121,6 +121,7 @@
 							
 							<table id="searchList" class="table table-striped table-bordered table-hover">
 								<thead>
+								<tr>총 매입 건수</tr>
 									<tr>
 										<th class="center">매입일자</th>
 										<th class="center">매입번호</th>
@@ -164,7 +165,7 @@
 								<ul>
 								<c:choose>
 									<c:when test="${ curPage > 5 }">
-										<li><a href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
+										<li><a class="page_go" href="javascript:void(0);" id="gotoPrev"><i class="icon-double-angle-left"></i></a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -174,10 +175,10 @@
 										end="${ blockLastNum }">
 										<c:choose>
 											<c:when test="${ i > lastPage }">
-												<li class="disabled"><a class="page_go" href="javascript:void(0);">${ i }</a></li>
+												<li class="disabled"><a href="#">${ i }</a></li>
 											</c:when>
 											<c:when test="${ i == curPage }">
-												<li><a class="page_go" href="javascript:void(0);">${ i }</a></li>
+												<li class="selected"><a class="page_go" href="javascript:void(0);">${ i }</a></li>
 											</c:when>
 											<c:otherwise>
 												<li><a class="page_go" href="javascript:void(0);">${ i }</a></li>
@@ -187,7 +188,7 @@
 									
 									<c:choose>
 									<c:when test="${ lastPage > blockLastNum }">
-										<li><a href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+										<li><a class="page_go" href="javascript:void(0);" id="gotoNext"><i class="icon-double-angle-right"></i></a></li>
 									</c:when>
 									<c:otherwise>
 										<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -321,11 +322,25 @@
 		}
 		
 		$("body").on("click",".page_go",function(e) {
-			//var page_num = $(this).text();
+			var page_num = $(this).text();
+			console.log("now " +page_num);
+			
+			var id = $(this).attr('id');
+		    //alert(id);
+			
+			if(id == "gotoNext") {
+				page_num = "${blockLastNum +1}";
+				console.log("next " + page_num);
+			} else if(id == "gotoPrev"){
+				page_num = "${blockStartNum - 1}";
+				console.log("prev " +page_num);
+			}
+			
 			var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
 					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val(), 
-					  page : $(this).text(), searchFlag : searchFlag};
+					  page : page_num, searchFlag : searchFlag};
 			console.log(vo);
+			
 			$.ajax({
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"post",
