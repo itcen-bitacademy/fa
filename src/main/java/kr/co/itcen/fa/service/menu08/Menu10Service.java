@@ -29,20 +29,19 @@ public class Menu10Service {
 		menu10Repository.test();
 	}
 
-	public Map<String, Object> getList(LandVo landVo, String startDate, String endDate) {
+	public DataResult<LandVo> getList(LandVo landVo, String startDate, String endDate, int page) {
+		DataResult<LandVo> dataResult = new DataResult<LandVo>();
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchList", menu10Repository.getList(landVo, startDate, endDate));
+		int totalCount = menu10Repository.listCount(landVo, startDate, endDate);
 		
+		//pagination
+		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(pagination);
 		
-		return map;
-	}
-
-	public Map<String, Object> selectList() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("selectList", menu10Repository.selectList());
+		List<LandVo> list = menu10Repository.getList(landVo, startDate, endDate, pagination);
+		dataResult.setDatas(list);
 		
-		return map;
+		return dataResult;
 	}
 	
 	public DataResult<LandVo> list(String id, int page) {

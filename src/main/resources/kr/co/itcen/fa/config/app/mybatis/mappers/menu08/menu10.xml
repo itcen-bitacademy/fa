@@ -15,30 +15,22 @@
 			]]>
 		</selectKey>
 	</insert>
-
-
-	<select id="getList" parameterType="map" resultType="08landvo">
+	
+	<select id="pageAllCount" resultType="int">
+		select count(*)
+		from tb_land
+	</select>
+	
+	<select id="pageCount" parameterType="map" resultType="int">
 		<![CDATA[
-			select a.id, a.customer_no as customerNo, c.name as customerName, c.manager_name as managerName, a.taxbill_no as taxbillNo, a.voucher_no as voucherNo,
-				a.section_no as sectionNo, b.classification as sectionName, a.land_area as landArea, a.combine_no as combineNo, a.owner_name as ownerName, 
-				a.wide_address as wideAddress,
-				a.city_address as cityAddress,
-				a.detail_address as detailAddress,
-				a.public_value as publicValue,
-				a.acq_price as acqPrice,
-				a.etc_cost as etcCost,
-				a.reg_tax as regTax,
-				a.acq_tax as acqTax,
-				a.pay_date as payDate,
-				a.tax_kind as taxKind,
-				a.flag as flag
+			select count(*)
 			from tb_land a, tb_section b, tb_customer c 
 			where a.section_no = b.code and b.parent_no=2  
 			and a.customer_no = c.no and c.assets_flag="a" 
 			]]>
 				<if test='id!=null'>
 				<![CDATA[
-					 and a.id like #{id}
+					 and a.id like concat('%', #{id },'%')
 				]]>
 				</if>
 				<if test='sectionName!=""'>
@@ -53,12 +45,12 @@
 				</if>
 				<if test='customerName!=""'>
 				<![CDATA[
-					 and b.name like #{customerName }
+					 and b.name like concat('%',#{customerName },'%')
 				]]>
 				</if>
 				<if test='managerName!=""'>
 				<![CDATA[
-					 and c.manager_name like #{managerName }
+					 and c.manager_name like concat('%',#{managerName },'%')
 				]]>
 				</if>
 				<if test='landArea!=0'>
@@ -81,31 +73,91 @@
 					 and a.acq_price <= #{acqPrice }
 				]]>
 				</if>
-	</select>
-	
-	<select id="selectList" parameterType="map" resultType="08landvo">
+				<if test='flag=""'>
+				<![CDATA[
+					 and a.flag = "s" or a.flag= "o"
+				]]>
+				</if>
+			</select>
+
+
+	<select id="getList" parameterType="map" resultType="08landvo">
 		<![CDATA[
-			select id, customer_no as customerNo, tb_customer.name as customerName, tb_customer.manager_name as managerName, taxbill_no as taxbillNo, voucher_no as voucherNo,
-				   section_no as sectionNo, classification as sectionName, land_area as landArea, combine_no as combineNo, owner_name as ownerName, 
-                   wide_address as wideAddress,
-                   city_address as cityAddress,
-                   tb_land.detail_address as detailAddress,
-                   public_value as publicValue,
-                   acq_price as acqPrice,
-                   etc_cost as etcCost,
-                   reg_tax as regTax,
-                   acq_tax as acqTax,
-				   pay_date as payDate,
-				   tax_kind as taxKind, 
-				   flag,
-				   tb_land.insert_userid as insertUserid,
-				   tb_land.insert_day as insertDay,
-				   tb_land.update_userid as updateUserid, 
-				   tb_land.update_day as updateDay
-			  from tb_land left outer join tb_section on tb_land.section_no=tb_section.code 
-			left outer join tb_customer on tb_land.customer_no=tb_customer.no
-			where tb_section.parent_no=2
-		]]>
+			select a.id, a.customer_no as customerNo, c.name as customerName, c.manager_name as managerName, a.taxbill_no as taxbillNo, a.voucher_no as voucherNo,
+				a.section_no as sectionNo, b.classification as sectionName, a.land_area as landArea, a.combine_no as combineNo, a.owner_name as ownerName, 
+				a.wide_address as wideAddress,
+				a.city_address as cityAddress,
+				a.detail_address as detailAddress,
+				a.public_value as publicValue,
+				a.acq_price as acqPrice,
+				a.etc_cost as etcCost,
+				a.reg_tax as regTax,
+				a.acq_tax as acqTax,
+				a.pay_date as payDate,
+				a.tax_kind as taxKind,
+				a.flag as flag
+			from tb_land a, tb_section b, tb_customer c 
+			where a.section_no = b.code and b.parent_no=2  
+			and a.customer_no = c.no and c.assets_flag="a" 
+			]]>
+				<if test='id!=""'>
+				<![CDATA[
+					 and a.id like concat('%', #{id },'%')
+				]]>
+				</if>
+				<if test='sectionName!=""'>
+				<![CDATA[
+					 and b.classification = #{sectionName }
+				]]>
+				</if>	
+				<if test='payDate!=""'>
+				<![CDATA[
+					and a.pay_date >= '${startDate } 00:00:00' and a.pay_date <= '${endDate } 23:59:59'
+				]]>
+				</if>
+				<if test='customerName!=""'>
+				<![CDATA[
+					 and b.name like concat('%',#{customerName },'%')
+				]]>
+				</if>
+				<if test='managerName!=""'>
+				<![CDATA[
+					 and c.manager_name like concat('%',#{managerName },'%')
+				]]>
+				</if>
+				<if test='landArea!=""'>
+				<![CDATA[
+					 and a.land_area <= ${landArea }
+				]]>
+				</if>
+				<if test='wideAddress!=""'>
+				<![CDATA[
+					 and a.wide_address = #{wideAddress }
+				]]>
+				</if>
+				<if test='cityAddress!=""'>
+				<![CDATA[
+					 and a.wide_address = #{cityAddress }
+				]]>
+				</if>
+				<if test='acqPrice!=null and acqPrice!=0'>
+				<![CDATA[
+					 and a.acq_price <= ${acqPrice }
+				]]>
+				</if>
+				<if test='flag=""'>
+				<![CDATA[
+					 and a.flag = "s" or a.flag= "o"
+				]]>
+				</if>
+				<![CDATA[
+			         order by a.update_day asc, a.insert_day asc
+			    ]]>
+			    <if test="pagination.pageIndex >= 0">
+				<![CDATA[
+			       	 limit #{pagination.pageIndex }, #{pagination.listSize }
+			   	]]>
+				</if>
 	</select>
 	
 	
