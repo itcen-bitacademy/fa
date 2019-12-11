@@ -80,4 +80,13 @@ public class Menu06Repository {
 	public void voucherUpdate(PurchasemanagementVo vo) {
 		sqlSession.update("menu06.voucherUpdate", vo);
 	}
+
+	public Long getVoucherNo(PurchasemanagementVo vo) {
+		return sqlSession.selectOne("menu06.getVoucherNo",vo);
+	}
+
+	public void TaxbillUpdate(PurchasemanagementVo vo) {
+		sqlSession.update("menu06.TaxbillUpdate", vo);
+		
+	}
 }
