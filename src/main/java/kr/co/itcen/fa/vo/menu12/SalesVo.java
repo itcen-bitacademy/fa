@@ -55,7 +55,15 @@ public class SalesVo {
 	private String updateUserid; // 수정자
 	private String updateDay; // 수정일
 	
-
+	// 3자리 콤마 
+	public Long getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = Long.parseLong(totalPrice.replaceAll(",", ""));
+	}
+	//
+	
 	public String getCustomerPhone() {
 		return customerPhone;
 	}
@@ -139,12 +147,6 @@ public class SalesVo {
 	}
 	public void setSupplyValue(Long supplyValue) {
 		this.supplyValue = supplyValue;
-	}
-	public Long getTotalPrice() {
-		return totalPrice;
-	}
-	public void setTotalPrice(Long totalPrice) {
-		this.totalPrice = totalPrice;
 	}
 	public String getTaxType() {
 		return taxType;
