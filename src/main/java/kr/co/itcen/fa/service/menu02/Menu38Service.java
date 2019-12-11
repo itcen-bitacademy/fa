@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu02.Menu38Repository;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
+import kr.co.itcen.fa.vo.menu02.BuyTaxbillListVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 
@@ -34,5 +35,12 @@ public class Menu38Service {
 	public List<BuyTaxbillItemsVo> getMatchTaxbillItemsList() {
 		List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Repository.getMatchTaxbillItemsList();
 		return getMatchTaxbillItemsList;
+	}
+
+	
+
+	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+		List<BuyTaxbillVo> getSelectedBuyTaxbillList = menu38Repository.getSelectedBuyTaxbillList(buyTaxbillListVo);
+		return getSelectedBuyTaxbillList;
 	}
 }

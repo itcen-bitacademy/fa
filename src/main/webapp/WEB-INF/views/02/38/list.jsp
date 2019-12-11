@@ -66,27 +66,30 @@ input:focus {
 								<label class="control-label span1" for="form-field-date">작성일자</label>
 								<div class="controls span5">
 									<div class="input-append">
-										<input class="cl-date-picker" id="id-date-picker-1"
-											type="text" style="width: 70%"> <span class="add-on">
-											<i class="icon-calendar"></i>
+										<input class="cl-date-picker calender" id="calender"
+											type="text" style="width: 70%" name="startDate"
+											autocomplete="off"> <span class="add-on"> <i
+											class="icon-calendar"></i>
 										</span>
 									</div>
 									~ &nbsp;
 									<div class="input-append">
-										<input class="cl-date-picker" id="id-date-picker-1"
-											type="text" style="width: 70%"> <span class="add-on">
-											<i class="icon-calendar"></i>
+										<input class="cl-date-picker calender" id="calender"
+											type="text" style="width: 70%" name="endDate"
+											autocomplete="off"> <span class="add-on"> <i
+											class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
 								<label class="control-label span1" for="tax-type">과세유형</label>
 								<div class="controls span5">
-									<select class="chosen-select" id="tax-type" name="tax-type">
-										<option value="전체">전체</option>
-										<option value="과세">과세</option>
-										<option value="영세">영세</option>
+									<select class="chosen-select" id="tax-type" name="taxType">
+										<option value="">전체</option>
+										<option value="tax">과세</option>
+										<option value="zero">영세</option>
 									</select>
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -99,31 +102,32 @@ input:focus {
 									<input style="width: 97%" type="text" id="no" name="no"
 										placeholder="승인번호" />
 								</div>
+								<label class="control-label span1" for="delete-flag">삭제여부</label>
+								<div class="controls span5">
+									<select class="chosen-select" id="delete-flag"
+										name="deleteFlag">
+										<option value="">전체</option>
+										<option value="y">삭제</option>
+										<option value="n">미삭제</option>
+									</select>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="item-name">품목명</label>
-								<div class="controls span2">
-									<div class="input-append">
-										<input class="date-picker" id="item-name" type="text"
-											name="item-name" data-date-format="dd-mm-yyyy"> <span
-											class="add-on"> <i class="icon-search"></i>
-										</span>
-									</div>
-								</div>
+
 								<label class="control-label span1" for="customer-name">거래처명</label>
 								<div class="controls span2">
 									<div class="input-append">
-										<input class="date-picker" id="customer-name" type="text"
-											name="customer-name" data-date-format="dd-mm-yyyy"> <span
-											class="add-on"> <i class="icon-search"></i>
+										<input class="date-picker" id="company-name" type="text"
+											name="companyName"> <span class="add-on"> <i
+											class="icon-search"></i>
 										</span>
 									</div>
 								</div>
-								<div class="controls span6">
+								<div class="controls span9">
 									<button class="btn btn-default btn-small span1"
 										style="float: left; margin-left: 20px;">조회</button>
 								</div>
@@ -135,19 +139,21 @@ input:focus {
 							<div class="control-group span12">
 								<label class="control-label span1" for="order">정렬</label>
 								<div class="controls span5">
+
 									<label style="display: inline;"> <input name="order"
-										type="radio" class="ace" checked> <span class="lbl">최근
-											순</span>
+										type="radio" class="ace" value="writeDate" checked> <span
+										class="lbl">작성일 순</span>
 									</label> <label style="display: inline;"> <input name="order"
-										type="radio" class="ace"> <span class="lbl">공급가액
-											순</span>
+										type="radio" class="ace" value="companyName"> <span
+										class="lbl">거래처명 순</span>
 									</label> <label style="display: inline;"> <input name="order"
-										type="radio" class="ace"> <span class="lbl">품목명
-											순</span>
+										type="radio" class="ace" value="rowValue"> <span
+										class="lbl">낮은총공급가액 순</span>
 									</label> <label style="display: inline;"> <input name="order"
-										type="radio" class="ace"> <span class="lbl">거래처명
-											순</span>
+										type="radio" class="ace" value="highValue"> <span
+										class="lbl">높은총공급가액 순</span>
 									</label>
+
 								</div>
 							</div>
 						</div>
@@ -238,14 +244,12 @@ input:focus {
 													<c:if test="${status == 0 }">
 														<td rowspan="${count }">${taxbill.totalSupplyValue }</td>
 														<td rowspan="${count }">${taxbill.totalTaxValue }</td>
-														<td rowspan="${count }">
-															<c:if test="${taxbill.taxType == 'zero' }">
+														<td rowspan="${count }"><c:if
+																test="${taxbill.taxType == 'zero' }">
 																영세
-															</c:if>
-															<c:if test="${taxbill.taxType == 'tax' }">
+															</c:if> <c:if test="${taxbill.taxType == 'tax' }">
 																과세
-															</c:if>
-														</td>
+															</c:if></td>
 														<td rowspan="${count }">${taxbill.deleteFlag }</td>
 													</c:if>
 												</tr>
@@ -258,19 +262,8 @@ input:focus {
 						</tbody>
 					</table>
 				</div>
-				<div class="control-group">
-					<div class="pagination">
-						<ul>
-							<li class="disabled"><a href="#"><i
-									class="icon-double-angle-left"></i></a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-						</ul>
-					</div>
+				<div class="row-fluid">
+					<div class="pagination"></div>
 				</div>
 				<!-- PAGE CONTENT ENDS -->
 			</div>
@@ -303,20 +296,12 @@ input:focus {
 				titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
 				weekStart : 0
 			};
-
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode : 4,
-				minViewMode : 1,
+			$('.calender').datepicker({
 				language : 'ko'
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
 
-			$('.cl-date-picker').datepicker({
-				language : 'ko'
-			}).next().on(ace.click_event, function() {
-				$(this).prev().focus();
-			});
 		})
 	</script>
 </body>
