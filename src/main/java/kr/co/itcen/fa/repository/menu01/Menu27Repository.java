@@ -34,8 +34,6 @@ public class Menu27Repository {
 	public List<CustomerVo> list(PaginationUtil pagination) {
 		Map <String, Object> s = new HashMap<String, Object>();
 		s.put("pagination", pagination);
-		System.out.println(pagination.getPageIndex());
-		System.out.println(pagination.getListSize());
 		List<CustomerVo> res = sqlSession.selectList("menu27.getList", s); 
 		return res;
 	}
@@ -81,8 +79,9 @@ public class Menu27Repository {
 	}
 
 	// Delete All
-	public void deleteAll(CustomerVo customervo) {
-		sqlSession.delete("menu27.deleteAll", customervo);
+	public boolean deleteAll(CustomerVo customervo) {
+		int count = sqlSession.delete("menu27.deleteAll", customervo);
+		return (count ==1);
 	}
 
 	public int selectCount() {

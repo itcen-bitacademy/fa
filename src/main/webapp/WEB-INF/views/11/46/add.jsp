@@ -12,6 +12,31 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+
+.input-area{
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	margin-left: 8px;
+}
+
+.input-area>*{
+	grid-column: auto;
+	display: grid;
+	grid-template-rows: repeat(6, auto);
+	grid-template-columns: 150px auto;
+	gap: 10px 0;
+}
+
+.la-radio-wrapper > input[type="radio"] {margin-left: 10px}
+.la-radio-wrapper > span.lbl{margin-right: 10px;}
+.la-radio-wrapper{
+	display: grid;
+	grid-template-columns: 50px 50px auto
+}
+
+.ia-left{grid-column:1;}
+.ia-right{grid-column:2;}
+
 tr td:first-child {
 	padding-right: 10px;
 }
@@ -65,9 +90,9 @@ tr td:first-child {
 	height: 30px;
 }
 .above-table>*{grid-column: auto;}
-.pg-total-row{float: left; margin:0;}
+.above-table-right>*{float: right; margin:0;}
 
-.btn-list{float: right; }
+.btn-list{float: left; }
 .btn-list>button{ 
 	margin-right: 10px;
 	float:none;
@@ -75,6 +100,23 @@ tr td:first-child {
 .btn-list>button:last-child{
 	margin-right: 0;}
 .btn-list>button:not(:first-child):not(:last_child){margin: 0 auto}
+
+.dialog-area{
+	display:grid;
+	grid-template-rows:70px auto;
+}
+.da-top{
+	display: grid;
+	grid-template-columns: repeat(2, 50%);
+}
+.bank-input-area input[type="text"]{width: 60%;}
+.bank-input-area>button, .bank-input-area>input {margin: auto 0;}
+.btn-bank-search{
+	background-color: #6fb3e0;
+    color: #FFF;
+    PADDING: 4.5px 10px;
+    border: none
+}
 
 </style>
 </head>
@@ -95,187 +137,163 @@ tr td:first-child {
 			<!-- PAGE CONTENT BEGINS -->
 				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 				<input type="hidden" name="no"/>
-				<div class="container-fluid">
-					<!-- Example row of columns -->
-					<div class="row">
-						<div class="span8">
-							<table>
-								<tr>
-									<td><h4>단기차입금코드</h4></td>
-									<td>
-										<input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" />
-									</td>
-								</tr>
-								<tr >
-									<td><h4>단기차입금명</h4></td>
-									<td>
-										<input type="text" id="name" name="name"/>
-									</td>
-								</tr>
-								<tr>
-									<td><h4>차입금액</h4></td>
-									<td><input type="text" id="debtAmount" name="debtAmount" /></td>
-								</tr>
-								<tr>
-									<td style="width:170px;"><h4>차입일자 ~ 만기일자</h4></td>
-									<td>
-				                        <div class="row-fluid input-prepend">
-				                           <input type="text" name="debtExpDate" id="debtExpDate"/>
-				                           <span class="add-on">
-				                              <i class="icon-calendar"></i>
-				                           </span>
-				                           </div>
-									</td>
-								</tr>
-								<tr>
-									<td><h4>이자지급방식</h4></td>
-									<td>
-										<div class="radio">
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="Y"/>
-												<span class="lbl">년</span>
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="M"/>
-												<span class="lbl">월</span>
-											</label>
-										</div>
-										<div class="radio" style="width:15%;">
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="E"/>
-												<span class="lbl">해당없음</span>
-											</label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td><h4>은행코드</h4></td>
-									<td colspan="2">
-											<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드"/>
-											<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명"/>
-												<a href="#" id="a-bankinfo-dialog" onclick="openDialog()">
-													<span class="btn btn-small btn-info">
-														<i class="icon-search nav-search-icon"></i>
-													</span>
-												</a>
-												
-												<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
-												<div id="dialog-message" title="은행코드" hidden="hidden">
-													
-															<table id ="dialog-message-table" align="center">
-																<tr>
-																	<td>
-																	<label>은행코드</label>
-																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
-																	<button type="button" id="a-dialog-bankcode" style="background-color:#6fb3e0;color:#FFF">조회</button>
-																	</td>
-																	<td>
-																	<label>은행명</label>
-																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
-																		<a href="#" id="a-dialog-bankname">
-																			<span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span>
-																		</a>
-																	</td>
-																</tr>
-															</table>
-														<!-- 은행코드 및 은행명 데이터 리스트 -->
-														<table id="modal-bank-table" class="table  table-bordered table-hover">
-															<thead>
-																<tr>
-																	<th class="center">은행코드</th>
-																	<th class="center">은행명</th>
-																	<th class="center">지점명</th>
-																</tr>
-															</thead>
-															<tbody id="tbody-bankList">
-															</tbody>
-														</table>
-												</div>
-												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+				<div class="input-area">
+					<section>
+						<div class="ia-left"><h4>단기차입금코드</h4></div>
+						<div class="ia-right"><input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" required></div>
+						<div class="ia-left"><h4>단기차입금명</h4></div>
+						<div class="ia-right"><input type="text" id="name" name="name" required></div>
+						<div class="ia-left"><h4>차입금액</h4></div>
+						<div class="ia-right"><input type="text" id="debtAmount" name="debtAmount" required></div>
+						<div class="ia-left"><h4>차입일자 ~ 만기일자</h4></div>
+						<div class="ia-right">
+							<input type="text" name="debtExpDate" id="debtExpDate" required>
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
+						<div class="ia-left"><h4>이자지급방식</h4></div>
+						<div class="ia-right la-radio-wrapper">
+							<div>
+								<input type="radio" name="intPayWay" value="Y" class="ace" checked="checked">
+								<span class="lbl">년</span>
+							</div>
+							<div>
+								<input type="radio" name="intPayWay" value="M" class="ace">
+								<span class="lbl">월</span>
+							</div>
+							<div>
+								<input type="radio" name="intPayWay" value="E" class="ace">
+								<span class="lbl">해당없음</span>
+							</div>
+						</div>
+						<div class="ia-left"><h4>은행코드</h4></div>
+						<div class="ia-right">
+							<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" required/>
+							<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" required/>
+							<a href="#" id="a-bankinfo-dialog" onclick="openDialog()">
+								<span class="btn btn-small btn-info">
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+							</a>
+						</div>
+						
+						<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+						<div id="dialog-message" title="은행코드" hidden="hidden">
+							<section class="dialog-area">
+								<section class="da-top">
+									<div class="bank-input-area">
+										<label>은행코드</label>
+										<input type="text"  id="input-dialog-bankcode"/>
+										<button type="button" id="btn-dialog-bankcode" class="btn-bank-search" onclick="searchByBankcode()">조회</button>
+									</div>
+									<div class="bank-input-area">
+										<label>은행명</label>
+										<input type="text"  id="input-dialog-bankname"/>
+										<button type="button" id="btn-dialog-bankname" class="btn-bank-search" onclick="searchByBankname()">조회</button>
+									</div>
+								</section>
+								
+								<!-- 은행코드 및 은행명 데이터 리스트 -->
+								<table id="modal-bank-table" class="table  table-bordered table-hover">
+									<thead>
+										<tr>
+											<th class="center">은행코드</th>
+											<th class="center">은행명</th>
+											<th class="center">지점명</th>
+										</tr>
+									</thead>
+									<tbody id="tbody-bankList">
+									</tbody>
+								</table>
+							</section>
+						</div>
+					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+						
+					</section>
+					<section>
+						<div class="ia-left"><h4>회계연도</h4></div>
+						<div class="ia-right"><input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도"></div>
+						
+						<div class="ia-left"><h4>차입금대분류</h4></div>
+						<div class="ia-right">
+							<select class="chosen-select form-control" name="majorCode" id="majorCode" data-placeholder="차입금대분류" required>
+								<option value=""></option>
+								<option value="008001">국내은행</option>
+								<option value="008002">저축은행</option>
+								<option value="008003">신용금고</option>
+								<option value="008004">새마을금고</option>
+								<option value="008005">외국계은행</option>
+								<option value="008006">증권</option>
+							</select>
+						</div>
+						
+						<div class="ia-left"><h4>상환방법</h4></div>
+						<div class="ia-right la-radio-wrapper">
+							<div>
+								<input name="repayWay" type="radio" class="ace"  value="Y" checked="checked"/>
+								<span class="lbl">년</span>
+							</div>
+							<div>
+								<input name="repayWay" type="radio" class="ace"  value="M" />
+								<span class="lbl">월</span>
+							</div>
+							<div>
+								<input name="repayWay" type="radio" class="ace"  value="E" />
+								<span class="lbl">만기</span>
+							</div>
+						</div>
+						
+						<div class="ia-left"><h4>이율</h4></div>
+						<div class="ia-right"><input type="text" name="intRate" id="intRate" placeholder="(%)" required/></div>
+						
+						<div class="ia-left"><h4>담당자</h4></div>
+						<div class="ia-right">
+							<input type="text" class="mgr-input" name="mgr" id="mgr" required/>
+							<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+							<input type="text" class="mgr-call-input" name="mgrCall" id="mgrCall" required/>
+						</div>
+						
+						<div class="ia-left"><h4>계좌</h4></div>
+						<div class="ia-right">
+							<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" required/>
+							<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+							<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
+						</div>
+						<!-- 계좌정보 Modal pop-up : start -->
+						<div id="dialog-account-message" title="계좌" hidden="hidden">
+							<section>
+								<table id="dialog-account-message-table">
+									<tr>
+										<td>
+											<label>계좌번호</label>
+											<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+											<a href="#" id="a-dialog-depositNo">
+											<span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span>
+											</a>
 										</td>
-								</tr>
-							</table>
-						</div>
-						<div class="span8">
-							<table>
-								<tr>
-									<td><h4>회계연도</h4></td>
-									<td>
-										<input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도"/>
-									</td>
-								</tr>
-								<tr>
-									<td><h4>차입금대분류</h4></td>
-									<td>
-										<select class="chosen-select form-control" name="majorCode" id="majorCode" data-placeholder="차입금대분류">
-											<option value=""></option>
-											<option value="008001">국내은행</option>
-											<option value="008002">저축은행</option>
-											<option value="008003">신용금고</option>
-											<option value="008004">새마을금고</option>
-											<option value="008005">외국계은행</option>
-											<option value="008006">증권</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-								<td><h4>상환방법</h4></td>
-									<td>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="Y" />
-													<span class="lbl">년</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="M"/>
-													<span class="lbl">월</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="E"/>
-													<span class="lbl">만기</span>
-												</label>
-											</div>
-									</td>
 									</tr>
-								<tr>
-									<td><h4>이율</h4></td>
-									<td>
-										<input type="text" name="intRate" id="intRate" placeholder="(%)"/>
-									</td>
-								</tr>
-								<tr>
-									<td><h4>담당자</h4></td>
-									<td>
-										<input type="text" class="mgr-input" name="mgr" id="mgr"/>
-										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
-										<input type="text" class="mgr-call-input" name="mgrCall" id="mgrCall"/>
-									</td>
-								</tr>
-								<tr>
-									<td><h4>계좌</h4></td>
-									<td>
-										<input type="text" class="search-input-width-first" name="depositNo" id="depositNo"/>
-										<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
-										<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
-									</td>
-								</tr>
-							</table>	
+								</table>
+								<!-- 계좌정보 데이터 리스트 -->
+								<table id="modal-deposit-table" class="table  table-bordered table-hover">
+									<thead>
+										<tr>
+											<th class="center">계좌번호</th>
+											<th class="center">예금주</th>
+											<th class="center">은행코드</th>
+											<th class="center">은행명</th>
+										</tr>
+									</thead>
+									<tbody id="tbody-bankaccountList">
+										
+									</tbody>
+								</table>
+							</section>
 						</div>
-
-					</div>
-				</div>
+						<!-- 계좌정보 Modal pop-up : end -->
+					</section>
+				</div>	<!--  input area -->
 				<hr>
 				<section class="above-table">
 					<section class="above-table-left">
-						<h5>총  ${pagination.totalCnt }건</h5>
-					</section>
-					<section class="above-table-right">
 						<div class="btn-list">
 							<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
 							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
@@ -284,6 +302,9 @@ tr td:first-child {
 							<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
 							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
 						</div>
+					</section>
+					<section class="above-table-right" id="above-table-right">
+						<h5>총  ${pagination.totalCnt }건</h5>
 					</section>
 				</section>
 				<hr>
@@ -348,7 +369,7 @@ tr td:first-child {
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
 								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+									<a onclick='paging(this)' id="${pagination.startPage - 1 }">
 										<i class="icon-double-angle-left"></i>
 									</a>
 								</li>
@@ -370,7 +391,7 @@ tr td:first-child {
 						<c:choose>
 							<c:when test="${pagination.next }">
 								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+									<a onclick="paging(this)" id="${pagination.endPage + 1 }">
 										<i class="icon-double-angle-right"></i>
 									</a>
 								</li>
@@ -453,13 +474,12 @@ function openDialog(){
 	});
 }
 
-//은행코드 검색
-$("#a-dialog-bankcode").click(function(event){
-	//event.preventDefault();
+//은행코드 검색 : 최대 하나의 결과만 가져온다.
+function searchByBankcode(){
+	console.log("searchByBankcode called");
 	$("#tbody-bankList").find("tr").remove();
 	
 	var bankcodeVal = $("#input-dialog-bankcode").val();
-	console.log(bankcodeVal);
 	// ajax 통신
 	$.ajax({
 		url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
@@ -474,21 +494,21 @@ $("#a-dialog-bankcode").click(function(event){
 		},
 		success: function(response){
 			$("#input-dialog-bankcode").val('');
-			$("#tbody-bankList").append("<tr>" +
-			        "<td class='center'>" + response.code + "</td>" +
-			        "<td class='center'>" + response.name + "</td>" +
-			        "<td class='center'>" + response.store + "</td>" +
-			        "</tr>");
+			$("#tbody-bankList").append("<tr onclick='selectBankRow(this)'>" +
+									        "<td class='center'>" + response.code + "</td>" +
+									        "<td class='center'>" + response.name + "</td>" +
+									        "<td class='center'>" + response.store + "</td>" +
+			       						 "</tr>");
 		},
 		error: function(xhr, error){
 			console.error("error : " + error);
 		}
 	});
-});
+}
 
 //은행명 검색 : 은행목록 리스트로 가져오기
-$("#a-dialog-bankname").click(function(event){
-	//event.preventDefault();
+function searchByBankname(){
+	console.log("searchByBankname called");
 	$("#tbody-bankList").find("tr").remove();
 	
 	var banknameVal = $("#input-dialog-bankname").val();
@@ -506,28 +526,30 @@ $("#a-dialog-bankname").click(function(event){
 		},
 		success: function(data){
 			$("#input-dialog-bankname").val('');
-			 $.each(data,function(index, item){
-	                $("#tbody-bankList").append("<tr>" +
-	                		"<td class='center'>" + item.code + "</td>" +
-					        "<td class='center'>" + item.name + "</td>" +
-					        "<td class='center'>" + item.store + "</td>" +
-					        "</tr>");
-	         })
+			
+			for(var i=0; i < data.length; ++i){
+				 $("#tbody-bankList").append("<tr onclick='selectBankRow(this)'>" +
+						                		"<td class='center'>" + data[i].code + "</td>" +
+										        "<td class='center'>" + data[i].name + "</td>" +
+										        "<td class='center'>" + data[i].store + "</td>" +
+										    "</tr>");
+			}
 		},
 		error: function(xhr, error){
 			console.error("error : " + error);
 		}
 	});
-});
+}
 
 //은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 input form에 추가
-$(document.body).delegate('#tbody-bankList tr', 'click', function() {
-	var tr = $(this);
+function selectBankRow(thisObj){
+	var tr = $(thisObj);
 	var td = tr.children();
 	$("input[name=bankCode]").val(td.eq(0).text());
 	$("input[name=bankName]").val(td.eq(1).text());
 	$("#dialog-message").dialog('close');
-});
+}
+
 //-----------------------------------Row Click input 영역 채워지도록 ---------------------------------//
 function selectRow(thisTr){
 	var dataForm = $("#form" + $(thisTr).attr('id'))[0];
@@ -624,8 +646,8 @@ function renderingPage(pagination){
 		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
 	}
 	
-	$("#pg-total-row>*").remove();
-	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>")
+	$("#above-table-right>*").remove();
+	$("#above-table-right").append("<h5>총  " + pagination.totalCnt +"건</h5>")
 }
 
 //-----------------------------------조회 및 페이지 클릭 Event Method ---------------------------------//

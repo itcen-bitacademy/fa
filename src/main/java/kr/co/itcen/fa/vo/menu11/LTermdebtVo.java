@@ -14,7 +14,7 @@ public class LTermdebtVo {
 	private String debtExpDate;//차입-만기일자
 	private String debtDate;//차입일자
 	private String expDate;//만기일자
-	private Double intRate;//이율
+	private double intRate;//이율
 	private String intPayWay;//이자지급방식
 	private Long intAmount;//이자금액
 	private String mgr;//담당자명

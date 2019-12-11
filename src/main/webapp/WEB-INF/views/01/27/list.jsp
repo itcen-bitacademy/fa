@@ -77,23 +77,24 @@ function execDaumPostcode() {
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(dataResult){
-				    	if(dataResult.fail) {
+				    success: function(result){
+				    	if(result.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
-				    	if(dataResult.success) {
+				    	if(result.success) {
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
 				    		alert("거래처 등록이 완료되었습니다."); 
 				    		
 				    		removeTable();
-				    		var customerList = dataResult.customerList;
+				    		var customerList = result.customerList;
 				    		createNewTable(customerList);
 				    		
 				    		$('#pagination ul').remove();
-				    		${'dataResult.pagination.page' };
-				    		createNewPage(dataResult, a);
+				    		createNewPage(result, a);
+				    		
+				    		$('#pagination').show();
 				    	}
 				    },
 				    error: function( err ){
@@ -106,17 +107,17 @@ function execDaumPostcode() {
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(dataResult){
-				    	if(dataResult.success) {
+				    success: function(result){
+				    	if(result.success) {
 				    		alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
 				    		
-				    		var customerList = dataResult.customerList;
-				    		settingInput(customerList);
+				    		var customerList = result.customerList;
 				    		createNewTable(customerList);
+				    		settingInput(customerList);
 				    		$('#pagination').hide();
 				    	}
 				    },
@@ -130,20 +131,21 @@ function execDaumPostcode() {
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(dataResult){
-				    	if(dataResult.success) {
+				    success: function(result){
+				    	if(result.success) {
 				    		alert("거래처 수정이 완료되었습니다."); 
 				    		removeTable();
 				    		
-				    		var customerList = dataResult.customerList;
+				    		var customerList = result.customerList;
 				    		createNewTable(customerList);
 				    	}
-				    	if(dataResult.fail) {
+				    	if(result.fail) {
 				    		alert("다시 입력해주세요.");
 				    	}
 				    	
 				    	$('#pagination ul').remove();
-			    		createNewPage(dataResult, a);
+			    		createNewPage(result, a);
+				    	$('#pagination').show();
 				    },
 				    error: function( err ){
 				      	console.log(err)
@@ -155,27 +157,28 @@ function execDaumPostcode() {
 				    type: "POST",
 				    data: queryString,
 				    dataType: "json",
-				    success: function(dataResult){
-				    	if(dataResult.success) {
+				    success: function(result){
+				    	if(result.success) {
 				    		alert("거래처 삭제가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
 				    		
-				    		var customerList = dataResult.customerList;
+				    		var customerList = result.customerList;
 				    		createNewTable(customerList);
 				    	}
 				    	
 				    	$('#pagination ul').remove();
-			    		createNewPage(dataResult, a);
+			    		createNewPage(result, a);
+			    		$('#pagination').show();
 				    },
 				    error: function( err ){
 				      	console.log(err)
 				    }
 				 })
 			} else {
-				alert("끝");
+				alert("예외사항 발생");
 			}
 		
 	});
@@ -361,39 +364,29 @@ function execDaumPostcode() {
 	
 	$(".chosen-select").chosen();
 	
-	function createNewPage(dataResult, a){
+	function createNewPage(result, a){
 		var inputString = "<ul>";
-		
-		console.log('${dataResult.pagination.page }');
-        
-        if('${dataResult.pagination.prev }') {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }'><i class='icon-double-angle-left'></i></a></li>";
+        if(result.pagination.prev) {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+(result.pagination.startPage - 1)+"'><i class='icon-double-angle-left'></i></a></li>";
         } else {
-        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+        		inputString += "<li class='disabled'><a><i class='icon-double-angle-left'></i></a></li>";
         }
         
-        if(a == "create" || a == "delete") {
-        	inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-			for(var pg = 2; pg < 5; pg++) {
-				inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-        	}
-    	} else {
-        	for(var pg = "${dataResult.pagination.startPage }"; pg <= "${dataResult.pagination.endPage }"; pg++) {
-        		if("${dataResult.pagination.page }" == pg){
-            		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+1+"'>"+1+"</a></li>";
-        		} else {
-	        		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-	        	}
-        	}
+        
+        for(var pg = result.pagination.startPage; pg <= result.pagination.endPage; pg++) {
+        	if(result.pagination.page == pg){
+           		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+        	} else {
+	       		inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
+	       	}
         }
-	            
-        if ('${dataResult.pagination.next }') {
-        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage - 1 }'><i class='icon-double-angle-right'></i></a></li>";
+              
+        if (result.pagination.next) {
+        		inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+(result.pagination.endPage + 1) +"'><i class='icon-double-angle-right'></i></a></li>";
         } else {
-        		inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+        		inputString += "<li class='disabled'><a><i class='icon-double-angle-right'></i></a></li>";
         }
         inputString += "</ul>";
-        alert(inputString);
         $("#pagination").append(inputString);
         
    };
@@ -728,7 +721,7 @@ function execDaumPostcode() {
 								</a></li>
 							</c:when>
 							<c:otherwise>
-								<li class="disabled"><a href="#"><i
+								<li class="disabled"><a><i
 										class="icon-double-angle-left"></i></a></li>
 							</c:otherwise>
 						</c:choose>
@@ -753,7 +746,7 @@ function execDaumPostcode() {
 										class="icon-double-angle-right"></i></a></li>
 							</c:when>
 							<c:otherwise>
-								<li class="disabled"><a href="#"><i
+								<li class="disabled"><a><i
 										class="icon-double-angle-right"></i></a></li>
 							</c:otherwise>
 						</c:choose>

@@ -88,4 +88,8 @@ public class Menu48Service {
 	public List<Long> selectVoucherNo(Long[] no) {
 		return menu48Repository.selectVoucherNo(no);
 	}
+
+	public String selectBankCode(String depositNo) {
+		return menu48Repository.selectBankCode(depositNo);
+	}
 }

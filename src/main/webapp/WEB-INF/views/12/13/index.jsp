@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
     <c:import url="/WEB-INF/views/common/head.jsp" />
     <style>
-    	input[type=number]{
+    	.number{
     		text-align:right;
     	}
         #item-table tr td {
@@ -77,9 +77,9 @@
 					            +'</c:forEach>'
 					        	+'</select><td>';
             cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명" value="" readonly></td>';
-            cell4.innerHTML = '<td><input type="number" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()" required></td>';
-            cell5.innerHTML = '<td><input type="number" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue()" required></td>';
-            cell6.innerHTML = '<td><input type="number" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue()" required></td>';
+            cell4.innerHTML = '<td><input class="number" type="number" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()" required></td>';
+            cell5.innerHTML = '<td><input class="number" type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue(this)" required></td>';
+            cell6.innerHTML = '<td><input class="number" type="text"" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue(this)" required></td>';
            
             $("#rowCnt").val(cnt);
             $(".chosen-select").chosen(); // 각 row에 품목코드 chosen 활성화
@@ -103,20 +103,25 @@
         			}
   					this.addSupplyValue(); // 수량 변동시 공급가액 다시 계산
         		},
-        		addSupplyValue: function(){
+        		addSupplyValue: function(e){
 					var sum = 0;
 					for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
-						sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val()); // 각 row의 수량과 공급가액 곱
+						sum = sum + 
+								Number($("#quantity"+i).val()) *
+								Number($("#supplyValue"+i).val()); // 각 row의 수량과 공급가액 곱
 						$("#taxValue"+i).val(Math.round($("#supplyValue"+i).val()*0.1));
 						$("#totalSupplyValue").val(sum);
 					}
 					this.addTaxValue(); // 공급가액 변동시 부가세 다시계산
 					this.totalPrice();
+					
 				},
-				addTaxValue: function(){
+				addTaxValue: function(e){
         			var sum = 0;
         			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
-        				sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val()); // 각 row의 수량과 부가세 곱
+        				sum = sum + 
+        						Number($("#quantity"+i).val()) *
+        						Number($("#taxValue"+i).val()); // 각 row의 수량과 부가세 곱
         				$("#totaltaxValue").val(sum);
         			}
         			this.totalPrice(); // 변동시 수량 > 공급가액 > 부가세 순으로 계산 후 합계금액
@@ -125,6 +130,12 @@
         			var tax = Number($("#totaltaxValue").val());
         			var supply = Number($("#totalSupplyValue").val());
         			$("#totalPrice").val(tax+supply);
+        		},
+        		setComma: function(x) {
+        		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        		},
+        		removeComma: function(x){
+        			return x.replace(",","");
         		}
         }
         
@@ -308,13 +319,13 @@
                                 <div class="control-group">
                                     <label class="control-label" for="totalQuantity">수량합계</label>
                                     <div class="controls">
-                                        <input type="number" id="totalQuantity" name="totalQuantity" placeholder="수량합계" value="0" readonly>
+                                        <input class="number" type="text" id="totalQuantity" name="totalQuantity" placeholder="수량합계" value="0" readonly>
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="totalTax">부가세합계</label>
                                     <div class="controls">
-                                        <input type="number" id="totaltaxValue" placeholder="부가세합계" value="0" readonly>
+                                        <input class="number" type="text" id="totaltaxValue" placeholder="부가세합계" value="0" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -352,13 +363,13 @@
                                 <div class="control-group">
                                     <label class="control-label" for="totalSupplyValue">공급가액합계</label>
                                     <div class="controls">
-                                        <input type="number" id="totalSupplyValue" placeholder="공급가액합계" value="0" readonly>
+                                        <input class="number" type="text" id="totalSupplyValue" placeholder="공급가액합계" value="0" readonly>
                                     </div>
                                 </div>                                
                                 <div class="control-group">
                                     <label class="control-label" for="totalPrice">합계금액</label>
                                     <div class="controls">
-                                        <input type="number" id="totalPrice" name="totalPrice" placeholder="합계금액" value="${saleslist[0].totalPrice }" readonly>
+                                        <input class="number" type="text" id="totalPrice" name="totalPrice" placeholder="합계금액" value="${saleslist[0].totalPrice }" readonly>
                                     </div>
                                 </div>
                             </div>

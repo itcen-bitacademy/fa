@@ -34,7 +34,8 @@ public class Menu27Service {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		int totalCnt = menu27Repository.selectCount();
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		System.out.println("djflsf"+totalCnt);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt+1, 11, 5);
 		
 		map = menu27Repository.create(customervo, pagination);
 		map.put("pagination", pagination);
@@ -65,7 +66,7 @@ public class Menu27Service {
 	public Map<String, Object> delete(CustomerVo customerVo, int page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int totalCnt = menu27Repository.selectCount();
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt-1, 11, 5);
 		
 		map = menu27Repository.delete(customerVo, pagination);
 		map.put("pagination", pagination);
@@ -78,7 +79,6 @@ public class Menu27Service {
 		DataResult<CustomerVo> dataResult = new DataResult<CustomerVo>();
 		
 		int totalCnt = menu27Repository.selectCount();
-		System.out.println(totalCnt);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		
 		List<CustomerVo> list = menu27Repository.list(pagination);
