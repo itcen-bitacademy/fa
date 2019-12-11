@@ -22,6 +22,16 @@
 		]]>
 	</select>
 	
+	<!-- 순번 업데이트 -->
+	<update id="updateOrder" parameterType="1itemvo">
+		<![CDATA[
+		update tb_voucher_item
+		   set o_no = o_no+1
+		 where g_no = #{groupNo }
+		   and o_no <= #{orderNo };
+		]]>
+	</update>
+	
 	<!-- 전표테이블 입력 -->
 	<insert id="insertVoucher" parameterType="1vouchervo">
 		<![CDATA[
@@ -59,7 +69,6 @@
 		  			voucher_no,
 		  			account_no,
 		  			group_no,
-		  			order_no
 		)
 		values (null,
 				#{amount },
@@ -69,8 +78,7 @@
 				true,
 				#{voucherNo },
 				#{accountNo },
-				#{groupNo },
-				#{orderNo }
+				#{groupNo }
 		)
 		]]>
 	</insert>

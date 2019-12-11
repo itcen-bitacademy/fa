@@ -45,10 +45,11 @@ public class Menu03Repository {
 		for(int i = 0; i < itemVo.size(); i++) {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			System.out.println("33333333" + voucherVo.getNo());
-			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
 			itemVo.get(i).setGroupNo(voucherVo.getNo());
-			itemVo.get(i).setOrderNo(order + 1);
 			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
+			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+			itemVo.get(i).setOrderNo(order+1);
+			sqlSession.update("menu03.updateOrder", itemVo.get(i));
 		}
 		
 		mappingVo.setVoucherNo(voucherVo.getNo());
@@ -145,10 +146,11 @@ public class Menu03Repository {
 			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			
-			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
-			itemVo.get(i).setGroupNo(voucherVo.getNo());
-			itemVo.get(i).setOrderNo(order + 1);
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
+			
+			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+			itemVo.get(i).setOrderNo(order+1);
+			sqlSession.update("menu03.updateOrder", itemVo.get(i));
 		}
 		
 		mappingVo.setInsertUserid(voucherVoTemp.getInsertUserid());
