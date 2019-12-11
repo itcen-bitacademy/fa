@@ -182,5 +182,13 @@
 		from tb_land
 		where id like concat('%',#{id},'%')
 	</select>
+	
+	
+	<!-- 전표번호 -->
+	<select id="getVoucher" resultType="Long" parameterType="string">
+		select voucher_no 
+		from tb_land 
+		where id =#{id}
+	</select>
 
 </mapper>

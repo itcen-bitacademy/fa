@@ -99,7 +99,7 @@
 										</div>	
 										<div style="float:left;width:50%">											
 											<label style="width:70px; margin-right:10px;text-align:left;" class="control-label" for="form-field-1">취득세</label>
-											<input readonly type="text" id="acqTax" name="acqTax" />
+											<input readonly style="text-align:right" type="text" id="acqTax" name="acqTax" />
 										</div>
 								</div>
 								<div class="control-group">
@@ -383,7 +383,7 @@ $(function(){
 //취득세 등록세 계산
 $(function() {
 	$("#acqPrice").change(function() {
-		$("#acqTax").val($("#acqPrice").val()*0.04);
+		$("#acqTax").val(Math.floor($("#acqPrice").val()*0.04));
 	});
 	
 });

@@ -63,7 +63,7 @@ public class Menu09Controller {
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model, 
 						@RequestParam(value="id", required=false, defaultValue = "") String id
-						,@RequestParam(value="page", required=false, defaultValue = "1") int page) {
+						, @RequestParam(value="page", required=false, defaultValue = "1") int page) {
 		
 
 		
@@ -128,19 +128,20 @@ public class Menu09Controller {
 
 	//수정
 	@RequestMapping(value={"/" + SUBMENU + "/update" }, method=RequestMethod.POST)
-	public String update(@ModelAttribute LandVo landVo , @AuthUser UserVo user
+	public String update(@ModelAttribute LandVo landVo , @SessionAttribute("authUser") UserVo user
 						 ,@RequestParam(value="taxbillNo", required=false) String taxbillNo
 						 ,@RequestParam(value="customerNo", required=false) String customerNo) {
 		
 		landVo.setUpdateUserid(user.getId());
+		Long landVno = menu09Service.getVoucherNo(landVo.getId());
 		
 		if(landVo.getCombineNo() == null) {
 			landVo.setCombineNo("00");
 		}
 
 		// 전표 시작
-		if(taxbillNo!=null) {
-		
+		if(taxbillNo!=null && landVno==null) { //세금계산서번호가 있을때 //전표번호가 없을때
+		System.out.println("여기탐 !!");
 		CustomerVo cus = menu09Service.getDepositNo(customerNo);
 		
 		VoucherVo voucherVo = new VoucherVo();
@@ -156,12 +157,12 @@ public class Menu09Controller {
 		MappingVo mappingVo = new MappingVo();
 		//토지
 		voucherVo.setRegDate(landVo.getPayDate()); // landVo.getPayDate() : 거래날짜
-		itemVo.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getRegTax()+landVo.getEtcCost());  // landVo.getAcqPrice() : 거래금액 (토지를 얻기 위해 세금을 포함한 금액)
+		itemVo.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getEtcCost());  // landVo.getAcqPrice() : 거래금액 (토지를 얻기 위해 세금을 포함한 금액)
 		itemVo.setAmountFlag("d");     //d: 차변 왼쪽
 		itemVo.setAccountNo(1220101L); //계정과목 : 자산인가 토지인가
 		itemVoList.add(itemVo);
 
-		itemVo2.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getRegTax()+landVo.getEtcCost());
+		itemVo2.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getEtcCost());
 		itemVo2.setAmountFlag("c");  // c: 대변 오른쪽
 		itemVo2.setAccountNo(1110101L); //현금
 		itemVoList.add(itemVo2);  
@@ -182,6 +183,44 @@ public class Menu09Controller {
 
 		long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
 		landVo.setVoucherNo(voucherNo);
+		
+		}else if(landVno!=null) { //전표번호가 있을때 수정(전표수정) 
+			System.out.println("여기안타냐?");
+			
+			CustomerVo cus = menu09Service.getDepositNo(customerNo);
+			
+			VoucherVo voucherVo = new VoucherVo();
+			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+			ItemVo itemVo = new ItemVo();
+			ItemVo itemVo2 = new ItemVo();
+			
+			MappingVo mappingVo = new MappingVo();
+			//토지
+			voucherVo.setRegDate(landVo.getPayDate()); // landVo.getPayDate() : 거래날짜
+			itemVo.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getEtcCost());  // landVo.getAcqPrice() : 거래금액 (토지를 얻기 위해 세금을 포함한 금액)
+			itemVo.setAmountFlag("d");     //d: 차변 왼쪽
+			itemVo.setAccountNo(1220101L); //계정과목 : 자산인가 토지인가
+			itemVoList.add(itemVo);
+
+			itemVo2.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getEtcCost());
+			itemVo2.setAmountFlag("c");  // c: 대변 오른쪽
+			itemVo2.setAccountNo(1110101L); //현금
+			itemVoList.add(itemVo2);
+			
+			//매핑테이블
+			mappingVo.setVoucherUse("투자");  // 왜 샀는지 적어준다.
+			mappingVo.setSystemCode(landVo.getId());  // 각 토지 코드번호
+			mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+			mappingVo.setCustomerNo(customerNo); //거래처번호
+			mappingVo.setManageNo(taxbillNo);//세금계산서번호
+			mappingVo.setBankCode(cus.getBankCode()); //은행코드
+			mappingVo.setBankName(cus.getBankName()); //은행명
+			mappingVo.setVoucherNo(landVno);
+			
+			voucherVo.setNo(landVno);
+			System.out.println("userTeam :" + user.getTeamName());
+			Long voucherNo = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
+			landVo.setVoucherNo(voucherNo);
 		}
 
 		menu09Service.updateLand(landVo);
@@ -191,10 +230,21 @@ public class Menu09Controller {
 	
 	//삭제
 	@RequestMapping(value = { "/" + SUBMENU + "/delete" }, method=RequestMethod.POST)
-	public String delete(@RequestParam(value="id") String id, @AuthUser UserVo user) {
+	public String delete(@RequestParam(value="id") String id, @SessionAttribute("authUser") UserVo user) {
 		
 		String userId = user.getId();
 		
+		
+		Long voucherNo = menu09Service.getVoucherNo(id);
+		if(voucherNo != null) {
+			
+		//전표삭제
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		VoucherVo v = new VoucherVo();
+		v.setNo(voucherNo);
+		voucherVolist.add(v);
+		menu03Service.deleteVoucher(voucherVolist, user);
+		}
 		
 		menu09Service.delLand(id, userId);
 		
