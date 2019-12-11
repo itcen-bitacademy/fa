@@ -194,7 +194,7 @@
 	<if test='vo.customerDiv == "All" or vo.customerDiv == ""'>
 	    <![CDATA[
 	    	select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       (right(no, 12)) as no,
+			       substr(no,2) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -244,7 +244,7 @@
 			<![CDATA[
 				union
 			   select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
-			       	  (right(no, 12)) as no,
+			       	  substr(no,2) as no,
 	               	  name as name, 
 	               	  ceo as ceo, 
 	               	  address as address,
@@ -293,7 +293,7 @@
 			    <![CDATA[
 			    	union
 			       select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
-			       		  (right(no, 12)) as no,
+			       		  substr(no,2) as no,
 			       		  name as name,
 			       		  ceo as ceo,
 			       		  address as address,
@@ -348,7 +348,7 @@
 	<if test='vo.customerDiv == "Assets"'>
 	    <![CDATA[
 			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       (right(no, 12)) as no,
+			       substr(no,2) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -405,7 +405,7 @@
 	<if test='vo.customerDiv == "Purchase"'>
 	    <![CDATA[
 			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
-			       (right(no, 12)) as no,
+			       substr(no,2) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -460,7 +460,7 @@
 	<if test='vo.customerDiv == "Sales"'>
 	    <![CDATA[
 			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
-			       (right(no, 12)) as no,
+			       substr(no,2) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,

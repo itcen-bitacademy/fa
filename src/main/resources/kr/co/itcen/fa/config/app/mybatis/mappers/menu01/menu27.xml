@@ -19,7 +19,7 @@
 	<!-- 리스트 뽑기 -->
 	<select id="getList" parameterType="map" resultType="1customervo">
 		<![CDATA[
-			select (right(no, 12)) as no,
+			select substr(no,2) as no,
      			   name as name, 
        			   ceo as ceo, 
 			       address as address,
@@ -86,7 +86,7 @@
 	<!-- 거래처 검색(사업자등록번호로) -->
 	<select id="read" parameterType="1customervo" resultType="1customervo">
 		<![CDATA[
-			select (right(no, 12)) as no,
+			select substr(no,2) as no,
      			   name as name, 
        			   ceo as ceo, 
 			       address as address,
