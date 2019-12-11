@@ -186,65 +186,8 @@ public class Menu48Controller {
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 		
 	}
-	@ResponseBody
-	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
-	public JSONResult repay(@RequestBody RepayVo vo,@AuthUser UserVo uservo) {
-		vo.setInsertId(uservo.getId());//유저 아이디 셋팅
-		menu48Service.update(vo);//기존 장기 차입금 수정
-		
-		LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());//기존 장기차입금 컬럼 값 읽기
-		
-		
-		
-		Long money= (long) (vo.getPayPrinc()*lvo.getIntRate()/100);//money= 상환액 * 기존 이자 /100 ->즉 이자납입금
-		
-		VoucherVo voucherVo = new VoucherVo();
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-		ItemVo itemVo = new ItemVo();
-		ItemVo itemVo2 = new ItemVo();
-		ItemVo itemVo3 = new ItemVo();
-		
-		MappingVo mappingVo = new MappingVo();
-		voucherVo.setRegDate(vo.getPayDate());
-		
-		itemVo.setAmount(money);//이자납입금
-		itemVo.setAmountFlag("d");//차변
-		itemVo.setAccountNo(9201101L);//계정과목코드
-		itemVoList.add(itemVo);
-		
-		itemVo2.setAmount(vo.getPayPrinc()-money);//장기차입금에서 빠진 금액
-		itemVo2.setAmountFlag("d");//차변
-		itemVo2.setAccountNo(2401101L);
-		itemVoList.add(itemVo2);
-		
-		itemVo3.setAmount(vo.getPayPrinc());//예금액= 상환액으로 입력한 값
-		itemVo3.setAmountFlag("c");//대변
-		itemVo3.setAccountNo(1110103L);//dPrma
-		itemVoList.add(itemVo3);
-		
-		mappingVo.setVoucherUse(lvo.getName());//사용목적
-		mappingVo.setSystemCode(lvo.getCode());//제코드l190
-		
-		String BankCode=menu48Service.selectBankCode(lvo.getDepositNo());
-		mappingVo.setCustomerNo(BankCode);
-		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
-		
-		
-		Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
-		
-		vo.setVoucherNo(no);
-		menu48Service.insert(vo);//상환 테이블에 insert -> 
-		if((lvo.getRepayBal()+lvo.getIntAmount()) >= lvo.getDebtAmount())
-			menu48Service.updateRepayFlag(lvo.getNo());
-		return JSONResult.success(lvo);
-	}
-	@ResponseBody
-	@RequestMapping("/"+SUBMENU+"/checkcode")
-	public JSONResult checkCode(@RequestParam(value="code", required=true, defaultValue="") String code) {
-		LTermdebtVo lvo = menu48Service.existCode(code);
-		System.out.println(lvo);
-        return JSONResult.success(lvo);
-	}
+	
+	
 	
 	
 }
