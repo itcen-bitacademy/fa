@@ -461,7 +461,7 @@
 	    <![CDATA[
 			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
 			       substr(no,2) as no,
-	               name as name, 
+	               name as name,
 	               ceo as ceo, 
 	               address as address,
 	               detail_address as detailAddress,

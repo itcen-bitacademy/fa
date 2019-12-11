@@ -121,7 +121,7 @@
 			   set no = concat('A' ,#{no }),
 				   name = #{name },
 				   ceo = #{ceo },
-				   address = #{address },
+				   address = #{address }, 
 				   detail_address = #{detailAddress },
 				   conditions = #{conditions },
 				   item = #{item },
