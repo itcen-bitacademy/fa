@@ -17,60 +17,100 @@
 	
 	<select id="getList" resultType="currentsituationvo" parameterType="currentsituationvo">
 	<![CDATA[
-	  select  
-		  s.section_code as sectioncode
-          , s.section_name as sectionname
-		  , pi.no as itemcode
-          , pi.name as itemname
-		  , p.quantity as purchasemanagementquantity
-          , p.supply_value as purchasemanagementsupplyvalue
-          , p.tax_value as purchasemanagementtaxvalue
-          , p.total_price as purchasemanagementtotalprice
-		  , s.quantity as salesquantity
-          , s.supply_value as salessupplyvalue
-          , s.tax_value as salestaxvalue
-          , s.total_price as salestotalprice
-          , (p.quantity - s.quantity)as  stockquantity
-          , (p.quantity - s.quantity)*p.supply_value as stocksupplyvalue
-          , (p.quantity - s.quantity)*p.tax_value as stocktaxvalue
-          , (p.quantity - s.quantity)*(p.supply_value+p.tax_value) as stocktotalprice
-    from tb_purchaseitem_test as pi 
-    left join(
-			select 
-			s1.section_code 
-			, s1.section_name
-            , s1.item_code 
-			, s1.item_name 
-			, sum(s1.quantity) as quantity
-			, sum(s1.supply_value) as supply_value
-			, sum(s1.tax_value) as tax_value
-			, sum(s1.total_price) as total_price
-			, s1.sales_date as sales_date
-		from tb_sales_test as s1
-        where 1=1
-        and date_format(s1.sales_date,'%Y-%m') like concat('%',#{searchdate },'%')
-		group by s1.item_name
-		)as s on pi.no = s.item_code
-	left join(
-			select	
-			p1.item_code 
-			, p1.item_name 
-			, sum(p1.quantity) as quantity
-			, sum(p1.supply_value) as supply_value
-			, sum(p1.tax_value) as tax_value
-			, sum(p1.total_price) as total_price
-			, p1.purchase_date as purchase_date
-		  from	tb_purchasemanagement_test as p1
-          where 1=1
-          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')
-	     group	by p1.item_name
-        )as p on pi.no = p.item_code
-		where(p.quantity is not null 
-        or s.quantity is not null)
+		select  
+				  ifnull(s.section_code, p.section_code) as sectioncode
+		          , ifnull(s.section_name, p.section_name) as sectionname
+				  , pi.no as itemcode
+		          , pi.name as itemname
+				  , p.quantity as purchasemanagementquantity
+		          , p.supply_value as purchasemanagementsupplyvalue
+		          , p.tax_value as purchasemanagementtaxvalue
+		          , p.total_price as purchasemanagementtotalprice
+				  , s.quantity as salesquantity
+		          , s.supply_value as salessupplyvalue
+		          , s.tax_value as salestaxvalue
+		          , s.total_price as salestotalprice
+		          , st.stock as stockquantity
+		          , st.stock*p.supply_value as stocksupplyvalue
+		          , st.stock*p.tax_value as stocktaxvalue
+		          , st.stock*(p.supply_value+p.tax_value) as stocktotalprice
+		from tb_purchaseitem_test as pi 
+		left join(
+		/* 매출 테이블을 품목명을 기준으로 select */
+					select 
+					s1.section_code 
+					, s1.section_name
+		            , s1.item_code 
+					, s1.item_name 
+					, sum(s1.quantity) as quantity
+					, sum(s1.supply_value) as supply_value
+					, sum(s1.tax_value) as tax_value
+					, sum(s1.total_price) as total_price
+					, s1.sales_date as sales_date
+				from tb_sales_test as s1
+		        where 1=1
+		        and date_format(s1.sales_date,'%Y-%m') like concat('%',#{searchdate },'%')
+				group by s1.item_name
+				)as s on pi.no = s.item_code
+		left join(
+		/* 매입 테이블을 품목명을 기준으로 select */
+					select	
+		            p1.section_code
+		            , p1.section_name
+					, p1.item_code 
+					, p1.item_name 
+					, sum(p1.quantity) as quantity
+					, sum(p1.supply_value) as supply_value
+					, sum(p1.tax_value) as tax_value
+					, sum(p1.total_price) as total_price
+					, p1.purchase_date as purchase_date
+				  from	tb_purchasemanagement_test as p1
+		          where 1=1
+		          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')
+			     group	by p1.item_name
+		        )as p on pi.no = p.item_code
+		left join(
+/* 재고수량을 구하기 위한 join */
+					select   pi.no as item_code  
+							, ifnull(p.quantity,0)-ifnull(s.quantity,0) as stock
+					from  tb_purchaseitem_test as pi
+					left join(
+							 select s1.item_code 
+		                            , sum(s1.quantity) as quantity
+							 from tb_sales_test as s1
+							 where 1=1
+							]]>
+	 						<if test="searchdate!=null and !searchdate.equals('')">
+							<![CDATA[ 
+					         and date_format(s1.sales_date,'%Y-%m') <= #{searchdate }
+					         ]]>
+					        </if> 
+					        <![CDATA[
+					         group by s1.item_name
+					         )as s on pi.no = s.item_code
+				    left join(
+					         select	p1.item_code
+		                            , sum(p1.quantity) as quantity
+							 from	tb_purchasemanagement_test as p1
+							 where 1=1
+							 ]]>
+							 <if test="searchdate!=null and !searchdate.equals('')">
+							 <![CDATA[
+							  and date_format(p1.purchase_date,'%Y-%m') <= #{searchdate }
+							 ]]>
+							 </if>
+							 <![CDATA[
+							 group	by p1.item_name
+		                    )as p on pi.no = p.item_code
+					where(p.quantity is not null 
+					      or s.quantity is not null)
+		) as st on pi.no = st.item_code
+		  where(p.quantity is not null 
+					or s.quantity is not null) 
       ]]>
 	 <if test="sectioncode!=null and !sectioncode.equals('')">
 	 <![CDATA[
- 	 and s.section_code = #{sectioncode } 
+ 	 and ifnull(s.section_code, p.section_code) = #{sectioncode } 
  	 ]]>
 	 </if>
 	 <![CDATA[

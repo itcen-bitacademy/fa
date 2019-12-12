@@ -30,6 +30,7 @@ public class Menu03Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	
 	public void test (){
 		TestVo testVo = new TestVo();
 		testVo.setName("김길동");
@@ -173,6 +174,18 @@ public class Menu03Repository {
 			sqlSession.delete("menu03.updateItem3", v1);
 			sqlSession.delete("menu03.updateMapping3", v1);
 		};
+		return 0L;
+	}
+	
+	public Long deleteVoucher(Long no, UserVo userVo) {
+		VoucherVo voucherVoTeam = sqlSession.selectOne("menu03.selectTeam2", no);
+		if (!userVo.getTeamName().equals(voucherVoTeam.getInsertTeam())) {
+			return null;
+		}
+		
+		sqlSession.delete("menu03.updateVoucher3", no);
+		sqlSession.delete("menu03.updateItem3", no);
+		sqlSession.delete("menu03.updateMapping3", no);
 		return 0L;
 	}
 	

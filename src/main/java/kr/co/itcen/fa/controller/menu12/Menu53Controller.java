@@ -75,8 +75,10 @@ public class Menu53Controller {
 	}
 	
 	// 전표등록 메소드
-	public SellTaxbillVo voucher(SellTaxbillVo selltaxbillvo, UserVo authUser, boolean flag){
+	public SellTaxbillVo voucher(SellTaxbillVo selltaxbillvo, UserVo authUser, int flagNum){
 		
+		// true / false
+		// 1 - 입력 / 2 - update / 3 - delete
 	
 			selltaxbillvo.setInsertUserid(authUser.getId());
 			selltaxbillvo.setDeleteFlag("N");
@@ -120,13 +122,26 @@ public class Menu53Controller {
 			mappingVo.setManageNo(selltaxbillvo.getTaxbillNo());		// 세금계산서 번호 입력
 
 			System.out.println(selltaxbillvo.getTaxbillNo());
-			long voucherNo;
 			
-			if(flag) {
+			Long voucherNo = Long.parseLong(selltaxbillvo.getVoucherNo()== null? "0" : selltaxbillvo.getVoucherNo());
+			System.out.println(voucherNo);
+			
+			if(flagNum == 1) {
 				voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
-			}else {
+			}else if(flagNum == 2){
+				voucherVo.setNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
+				for(ItemVo list : itemVoList) {
+					list.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
+				}
+				mappingVo.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
 				voucherNo = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
+				
+				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+				System.out.println("수정이벤트 발생");
+				System.out.println(selltaxbillvo.toString());
+			}else {
+				voucherNo = menu03Service.deleteVoucher(voucherNo, authUser);
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
 			}
 			
@@ -138,19 +153,15 @@ public class Menu53Controller {
 	
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
 	public String add(SellTaxbillVo selltaxbillvo, @AuthUser UserVo authUser) {
-		// @SessionAttribute("authUser") UserVo authUser, 
-		
+//		@SessionAttribute("authUser") UserVo authUser, 
 //		selltaxbillvo.setInsertUserid(authUser.getId());
 //		selltaxbillvo.setDeleteFlag("N");
-//		
-//		
 //		selltaxbillvo.setAccountNo(1110101L);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
 //		selltaxbillvo.setAmountFlag("d");		// select * from 
 		
 		
-		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, true));
-		
-		
+		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, 1));
+			
 /////////////////////////////////////////////
 // 		전표등록
 //		객체 생성
@@ -192,7 +203,7 @@ public class Menu53Controller {
 //		selltaxbillvo.setVoucherNo(String.valueOf(voucherNo)); 
 /////////////////////////////////////////////
 		
-		menu53Service.insert(voucher(selltaxbillvo, authUser, true));
+		menu53Service.insert(voucher(selltaxbillvo, authUser, 1));
 			
 		System.out.println("추가 이벤트 발생");
 		

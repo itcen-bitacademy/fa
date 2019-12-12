@@ -241,12 +241,14 @@
 	  		var day = date.getDate().toString();
 	  		if (month.length < 2) month = "0" + month;
 	  	 	if (day.length < 2) day = "0" + day;
-	  	 	salseNo = year + month + day;
+	  	 	salseNo = "K"+year + month + day;
 	  	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	  	    for( var i=0; i < 4; i++ )
+	  	    for( var i=0; i < 3; i++ )
 	  	    	salseNo += possible.charAt(Math.floor(Math.random() * possible.length));
-	  	    $("#salesNo").val(salseNo);
-	  	    $("#checkSalesNo").val(salseNo);       	 
+	  	    if($("#flag").val()==''){
+	  	    	$("#salesNo").val(salseNo);
+		  	    $("#checkSalesNo").val(salseNo);    
+	  	    }
         }
         
     </script>

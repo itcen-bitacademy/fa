@@ -12,17 +12,17 @@
 		 from	tb_bank_account 
 		 where	delete_flag = #{bavo.deleteFlag}
 			 ]]>
-		 <if test="bavo.depositNo != null ">
+		 <if test="bavo.depositNo != ''">
 		 	<![CDATA[
 			 	and	deposit_no like #{bavo.depositNo}
 			 ]]>
 		 </if>
-		 <if test="bavo.makeDate != null ">
+		 <if test="bavo.makeDate != ''">
 		 	<![CDATA[
 			 	and	makedate > #{bavo.makeDate}
 			 ]]>
 		 </if>
-		 <if test="bavo.enDate != null ">
+		 <if test="bavo.enDate != ''">
 		 	<![CDATA[
 			 	and endate <= #{bavo.enDate}
 			 ]]>
@@ -40,41 +40,21 @@
 		 from	tb_bank_account 
 		where	delete_flag = #{deleteFlag}
 		  ]]>
-		
-		 <if test='depositNo != null '>
+		 <if test="depositNo != '' ">
 		 	<![CDATA[
 			 	and	deposit_no like #{depositNo}
 			 ]]>
 		 </if>
-		 <if test='makeDate != null '>
+		 <if test="makeDate != '' ">
 		 	<![CDATA[
 			 	and	makedate > #{makeDate}
 			 ]]>
 		 </if>
-		 <if test='enDate != null '>
+		 <if test="enDate != '' ">
 		 	<![CDATA[
 			 	and endate <= #{enDate}
 			 ]]>
 		 </if>
 	</select>
 	
-	<select id="list" parameterType="map" resultType="bankaccountvo">
-		<![CDATA[
-		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
-			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
-			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
-			   insert_userid as insertUserId, insert_day as insertDay, 
-			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
-		 from	tb_bank_account 
-		 where	delete_flag = "N"
-		 order by insert_day desc
-		]]>
-		<if test="pagination.pageIndex >= 0 ">
-		<![CDATA[
-			 limit #{pagination.pageIndex	}, #{pagination.listSize	}
-		]]>
-		</if>
-		
-	</select>
-
 </mapper>

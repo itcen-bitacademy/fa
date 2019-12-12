@@ -101,22 +101,36 @@ tr td:first-child {
 	margin-right: 0;}
 .btn-list>button:not(:first-child):not(:last_child){margin: 0 auto}
 
-.dialog-area{
+.bank-dialog-area{
 	display:grid;
 	grid-template-rows:70px auto;
 }
-.da-top{
+.bda-top{
 	display: grid;
 	grid-template-columns: repeat(2, 50%);
 }
-.bank-input-area input[type="text"]{width: 60%;}
-.bank-input-area>button, .bank-input-area>input {margin: auto 0;}
-.btn-bank-search{
+.modal-input-area input[type="text"]{width: 60%;}
+.modal-input-area>button, .modal-input-area>input {margin: auto 0;}
+.btn-search{
 	background-color: #6fb3e0;
     color: #FFF;
     PADDING: 4.5px 10px;
     border: none
 }
+
+#repay-form{
+	display: grid;
+	grid-template-rows: repeat(5, auto);
+	height: 80%;
+	margin-top:30px
+}
+.repay-input-wrapper{
+	display: grid;
+	grid-template-columns: 30% auto;
+	margin: auto 0;
+}
+
+.repay-input-wrapper:last-child{}
 
 </style>
 </head>
@@ -135,9 +149,9 @@ tr td:first-child {
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" id="
-" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 				<input type="hidden" name="no"/>
+				<input type="hidden" name="repayBal" value="${vo.repayBal }">
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>단기차입금코드</h4></div>
@@ -177,19 +191,19 @@ tr td:first-child {
 							</a>
 						</div>
 						
-						<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+						<!-- 은행조회 Modal pop-up : start -->
 						<div id="dialog-message" title="은행코드" hidden="hidden">
-							<section class="dialog-area">
-								<section class="da-top">
-									<div class="bank-input-area">
+							<section class="bank-dialog-area">
+								<section class="bda-top">
+									<div class="modal-input-area">
 										<label>은행코드</label>
 										<input type="text"  id="input-dialog-bankcode"/>
-										<button type="button" id="btn-dialog-bankcode" class="btn-bank-search" onclick="searchByBankcode()">조회</button>
+										<button type="button" id="btn-dialog-bankcode" class="btn-search" onclick="searchByBankcode()">조회</button>
 									</div>
-									<div class="bank-input-area">
+									<div class="modal-input-area">
 										<label>은행명</label>
 										<input type="text"  id="input-dialog-bankname"/>
-										<button type="button" id="btn-dialog-bankname" class="btn-bank-search" onclick="searchByBankname()">조회</button>
+										<button type="button" id="btn-dialog-bankname" class="btn-search" onclick="searchByBankname()">조회</button>
 									</div>
 								</section>
 								
@@ -261,18 +275,13 @@ tr td:first-child {
 						</div>
 						<!-- 계좌정보 Modal pop-up : start -->
 						<div id="dialog-account-message" title="계좌" hidden="hidden">
-							<section>
-								<table id="dialog-account-message-table">
-									<tr>
-										<td>
-											<label>계좌번호</label>
-											<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-											<a href="#" id="a-dialog-depositNo">
-											<span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span>
-											</a>
-										</td>
-									</tr>
-								</table>
+							<section class="account-dialog-area">
+								<section>
+									<label>계좌번호</label>
+									<input type="text" id="input-dialog-depositNo" />
+									<button type="button" class="btn-search" onclick="searchAccountNo()">조회</button>
+								</section>
+								
 								<!-- 계좌정보 데이터 리스트 -->
 								<table id="modal-deposit-table" class="table  table-bordered table-hover">
 									<thead>
@@ -315,31 +324,26 @@ tr td:first-child {
 			<!-- 상환  Modal pop-up : start -->
 					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
 						<form id="repay-form">
-							<table id ="dialog-repayment-table" align="center">
-								<tr>
-									<td>
-										<label>차입금코드</label>
-										<input type="text" name="code" readonly= "readonly"/>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<label>납입금</label>
-										<input type="text" name="payPrinc" id= "repay_bal"/>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<label>납입일자</label>
-										<div class="row-fluid input-prepend">
-						                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
-						                    <span class="add-on">
-						                     <i class="icon-calendar"></i>
-						              	</span>
-						                </div>
-									</td>
-								</tr>
-							</table>
+								<section class="repay-input-wrapper">
+									<label>차입금코드</label>
+									<input type="text" name="debtCode" readonly= "readonly"/>
+								</section>
+								<section class="repay-input-wrapper">
+									<label>납입금</label>
+									<input type="text" name="payPrinc" id= "repay_bal"/>
+								</section>
+								<section class="repay-input-wrapper">
+									<label>이자금액</label>
+									<input type="text" name="intAmount" readonly= "readonly"/>
+								</section>
+								<section class="repay-input-wrapper">
+									<label>납입일자</label>
+									<input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"/>
+								</section>
+								<section class="repay-input-wrapper">
+									<label>계좌번호</label>
+									<input type="text" name="depositNo" readonly= "readonly"/>
+								</section>
 						</form>
 					</div>
 					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
@@ -382,6 +386,7 @@ tr td:first-child {
 										<td class="center"><input type="hidden" name="name" value="${vo.name }">${vo.name }</td>
 										<td class="center"><input type="hidden" name="majorCode" value="${vo.majorCode }">${vo.majorCode }</td>
 										<td class="center"><input type="hidden" name="debtAmount" value="${vo.debtAmount }">${vo.debtAmount }</td>
+										<input type="hidden" name="repayBal" value="${vo.repayBal }">
 										<td class="center"><input type="hidden" name="repayWay" value="${vo.repayWay }">${vo.repayWay }</td>
 										<td class="center"><input type="hidden" name="debtDate" value="${vo.debtDate }">${vo.debtDate }</td> 
 										<td class="center"><input type="hidden" name="expDate" value="${vo.expDate }">${vo.expDate }</td>
@@ -589,9 +594,14 @@ function selectBankRow(thisObj){
 
 //-----------------------------------상환 Model 메서드 ---------------------------------//
 function openRepayDialog(){
-	var repayForm = $("#repay-form")[0];
-	var inputForm = $("#input-form")[0];
-	repayForm.code.value = inputForm.code.value;
+	var repayForm = $("#repay-form")[0];			//상환폼
+	var inputForm = $("#input-form")[0];			//선택된 차입금 form
+	
+	//초깃값 지정
+	repayForm.debtCode.value = inputForm.code.value;
+	repayForm.intAmount.value = (inputForm.repayBal.value * inputForm.intRate.value);		//상환잔액 * 이율
+	repayForm.depositNo.value = inputForm.depositNo.value;
+	
 	$("#dialog-repayment").dialog('open');
 	$("#dialog-repayment").dialog({
 		title: "상환정보등록",
@@ -601,20 +611,17 @@ function openRepayDialog(){
 	    width: 400,
 	    modal: true,
 	    close: function() {
-	    	repayForm.code.value = '';
-	    	repayForm.repayBal.value = '';
+	    	repayForm.debtCode.value = '';
+	    	repayForm.payPrinc.value = '';
+	    	repayForm.intAmount.value= '';
 	    	repayForm.payDate.value = '';
+	    	repayForm.depositNo.value= '';
 	    },
 	    buttons: {
 	    	//상환버튼 클릭시
 	    "상환": function(){
-	    	event.preventDefault();
-			var vo = {
-					"debtNo":inputForm.no.value,					//차입금 테이블 번호
-					"payPrinc":repayForm.payPrinc.value,			//상환액
-					"payDate":repayForm.payDate.value,				//상환일
-					"depositNo":inputForm.depositNo.value	//계좌번호
-			}
+	    	//event.preventDefault();
+			var sendData = repayForm.serialize();
 			
 			// ajax 통신
 			$.ajax({
@@ -622,9 +629,9 @@ function openRepayDialog(){
 				contentType : "application/json; charset=utf-8",
 				type: "post",
 				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data:JSON.stringify(vo),
+				data: sendData,
 				success: function(response){
-					console.log(response);
+					
 					if(response.result =="fail"){
 						console.error(response.message);
 						return;
@@ -647,8 +654,6 @@ function openRepayDialog(){
 			});
 			$(this).dialog('close');
 			//상환내역 반영
-			
-			
 	    },
 	    "닫기" : function() {
 	          	$(this).dialog('close');
@@ -663,6 +668,7 @@ function selectRow(thisTr){
 	var inputForm = $("#input-form")[0];
 	
 	inputForm.no.value = dataForm.no.value;
+	inputForm.no.value = dataForm.repayBal.value;
 	inputForm.code.value = dataForm.code.value;
 	inputForm.name.value = dataForm.name.value;
 	inputForm.debtAmount.value = dataForm.debtAmount.value;

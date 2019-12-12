@@ -202,6 +202,7 @@ function execDaumPostcode() {
 		        "<td>" + customerList[customer].ceo + "</td>" +
 		        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
 		        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+		        "<td>" + customerList[customer].assetsFlag + "</td>" +
 		        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
 		        "<td>" + customerList[customer].phone + "</td>" +
 		        "<td>" + customerList[customer].managerName + "</td>" +
@@ -229,7 +230,7 @@ function execDaumPostcode() {
 		var customerNo = td.eq(1).text();
 		var noArray=customerNo.split('-');
 		
-		var customerPhone = td.eq(7).text();
+		var customerPhone = td.eq(8).text();
 		var phoneArray=customerPhone.split('-');
 		
 		var customerAddr = td.eq(4).text();
@@ -246,26 +247,35 @@ function execDaumPostcode() {
 		$("input[name=conditions]").val(conitArray[0]);
 		$("input[name=item]").val(conitArray[1]);
 		$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
-		$("input[name=jurisdictionOffice]").val(td.eq(6).text());
+		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
 		if (phoneArray[2] !=null){
 			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
 		} else if (phoneArray[2]==null){
 			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]);
 		}
-		
 		//$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
-		$("input[name=managerEmail]").val(td.eq(9).text());
-		$("input[name=bankName]").val(td.eq(11).text());
-		$("input[name=bankCode]").val(td.eq(10).text());
-		$("input[name=depositNo]").val(td.eq(12).text());
-		$("input[name=managerName]").val(td.eq(8).text());
-		$("input[name=depositHost]").val(td.eq(13).text());
+		$("input[name=managerEmail]").val(td.eq(10).text());
+		$("input[name=bankName]").val(td.eq(12).text());
+		$("input[name=bankCode]").val(td.eq(11).text());
+		$("input[name=depositNo]").val(td.eq(13).text());
+		$("input[name=managerName]").val(td.eq(9).text());
+		$("input[name=depositHost]").val(td.eq(14).text());
 		$("input[name=address]").prop("readonly", true);
 		$("input[name=depositNo]").prop("readonly", true);
 		$("input[name='bankCode']").prop("readonly", true);
 		$("input[name='bankName']").prop("readonly", true);
 		$("input[name='depositHost']").prop("readonly", true);  
-	});
+		var td6 = td.eq(6).text();
+		if(td6 == "토지"){
+		$('input:radio[name=assetsFlag]:input[value="a"]').prop("checked", true);
+		} else if (td6 =="건물"){
+		$('input:radio[name=assetsFlag]:input[value="b"]').prop("checked", true);
+		} else if (td6 =="차량"){
+		$('input:radio[name=assetsFlag]:input[value="c"]').prop("checked", true);
+		} else if (td6 =="무형자산"){
+		$('input:radio[name=assetsFlag]:input[value="d"]').prop("checked", true);
+		}
+		});
 	
 	function settingInput(customerList) {
 		$("input[name=no]").val(customerList[0].no);
@@ -472,12 +482,12 @@ function execDaumPostcode() {
 										주소:&nbsp;
 									</label>
 									<div class="input-append">
-										<span class="btn btn-small btn-info">
-											<a href="#" onclick="execDaumPostcode()">
-												<i class="icon-search nav-search-icon"></i>
-												<input type="text" id="address" name="address" placeholder="주소" class="col-xs-10 col-sm-5" readonly />
-											</a>
-										</span>
+										<a href="#"onclick="execDaumPostcode()">
+											<input type="text" class="search-input-width-first" id="address" name="address" readonly/>
+											<span class="add-on">
+				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            </span>
+				                    	</a>
 									</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
 									<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"/>
@@ -513,16 +523,16 @@ function execDaumPostcode() {
 										종류:&nbsp;&nbsp;
 									</label> 
 								
-									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="a" checked /> 
+									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="토지" class="ace" value="a" checked /> 
 									<span class="lbl">토지</span> 
 									&nbsp;
-									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="b" />
+									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="건물" class="ace" value="b" />
 									<span class="lbl">건물</span> 
 									&nbsp;
-									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="c" />
+									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="차량" class="ace" value="c" />
 									<span class="lbl">차량</span> 
 									&nbsp;
-									<input name="assetsFlag" id="assetsFlag" type="radio" class="ace" value="d" />
+									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="무형자산" class="ace" value="d" />
 									<span class="lbl">무형자산</span>
 
 								</div>
@@ -556,17 +566,19 @@ function execDaumPostcode() {
 								<br/>
 
 								<div class="form-group">
+								
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										계좌번호:&nbsp;
 									</label>
 									<div class="input-append">
-										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-bankaccountinfo-dialog"> <i
-												class="icon-search nav-search-icon"></i> <input type="text"
-												class="search-input-width-first" name="depositNo" placeholder="계좌번호" readonly/>
-										</a>
-										</span>
-									</div>
+										 <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
+										<input type="text" class="search-input-width-first" name="depositNo" readonly/>
+												<span class="add-on">
+				                                   <i class="icon-search icon-on-right bigger-110"></i>
+				                                  
+				                                 </span>
+				                                   </a>
+										</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
@@ -668,6 +680,7 @@ function execDaumPostcode() {
 												<th>대표자</th>
 												<th>주소/상세주소</th>
 												<th>업태/종목</th>
+												<th>종류</th>
 												<th>관할영업소</th>
 												<th>거래처 전화번호</th>
 												<th>거래처 담당자 성명</th>
@@ -698,6 +711,7 @@ function execDaumPostcode() {
 													<td>${vo.ceo }</td>
 													<td>${vo.address }/${vo.detailAddress }</td>
 													<td>${vo.conditions }/${vo.item }</td>
+													<td>${vo.assetsFlag }</td>
 													<td>${vo.jurisdictionOffice }</td>
 													<td>${vo.phone }</td>
 													<td>${vo.managerName }</td>

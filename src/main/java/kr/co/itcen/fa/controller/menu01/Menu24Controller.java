@@ -35,7 +35,7 @@ public class Menu24Controller {
 	public String list(Model model,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
 			@ModelAttribute CardVo vo) {
-		if(vo.getDeleteFlag()==null) {
+		if(vo.getDeleteFlag()==null || vo.getDeleteFlag().equals("")) {
 			vo.setDeleteFlag("N");
 		}
 		System.out.println(vo);

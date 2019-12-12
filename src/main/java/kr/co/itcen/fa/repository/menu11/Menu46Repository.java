@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
@@ -21,6 +22,9 @@ public class Menu46Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	public STermDebtVo get(Long no) {
+		return sqlSession.selectOne("menu46.get", no);
+	}
 	//기본, 조회
 	public List<STermDebtVo> getList(Map map) {
 		System.out.println("startRow : " + map.get("startRow") + " pageSize : " + map.get("pageSize"));
@@ -40,14 +44,20 @@ public class Menu46Repository {
 	
 	//수정
 	public Boolean update(STermDebtVo sTermDebtVo) {
-		System.out.println("update 콜됨");
-		int count = sqlSession.update("menu46.update1", sTermDebtVo);
+		int count = sqlSession.update("menu46.update", sTermDebtVo);
 		return (count==1);
 	}
 	
-	//삭제
 	public void updateDeleteFlag(List<Long> noList) {
 		sqlSession.update("menu46.updateDeleteFlag", noList);
 	}
 	
+	public Boolean updateRepayBal(RepayVo repayVo) {
+		int count = sqlSession.update("menu46.updateRepayBal",  repayVo);
+		return (count==1);
+	}
+	
+	public void insertRepay(RepayVo vo) {
+		sqlSession.insert("menu46.insertRepay", vo);
+	}
 }

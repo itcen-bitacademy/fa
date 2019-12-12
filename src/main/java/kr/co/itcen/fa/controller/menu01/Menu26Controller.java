@@ -36,32 +36,10 @@ public class Menu26Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
-			@ModelAttribute BankAccountVo bavo) {
-		System.out.println(bavo);
+			BankAccountVo bavo) {
 		DataResult<BankAccountVo> dataResult = menu26Service.defaultRead(page, bavo);
 		model.addAttribute("dataResult", dataResult);
 		return MAINMENU + "/" + SUBMENU + "/list";
-	}
-	
-	@RequestMapping({"/" + SUBMENU + "/search" })
-	public String search(Model model,
-			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
-			@ModelAttribute BankAccountVo bavo) {
-		System.out.println(bavo);
-		DataResult<BankAccountVo> dataResult = menu26Service.defaultRead(page, bavo);
-		model.addAttribute("dataResult", dataResult);
-		return MAINMENU + "/" + SUBMENU + "/list";
-	}
-
-	@ResponseBody	
-	@RequestMapping("/" + SUBMENU + "/read")
-	public Map<String, Object> read(@ModelAttribute BankAccountVo bavo,
-			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
-		System.out.println(bavo);
-		
-		Map<String, Object> dataResult = menu26Service.read(bavo, page);
-		
-		return dataResult;
 	}
 	
 	

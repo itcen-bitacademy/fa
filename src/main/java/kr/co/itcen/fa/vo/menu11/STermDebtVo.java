@@ -23,10 +23,10 @@ public class STermDebtVo {
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
 	private String deptClassification; // 차입금대분류
-	private Long bankCode; // 은행코드
+	private String bankCode; // 은행코드
 	private String bankName;	//은행이름 , 은행코드를 통해 얻어온다
 	private String depositNo; // 계좌번호
-	private String accountNo; // 계정코드
+	private Long accountNo = 2180101L; // 계정코드
 	private Long voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
 	private String insertId; // 등록자
@@ -130,10 +130,10 @@ public class STermDebtVo {
 	public void setDeptClassification(String deptClassification) {
 		this.deptClassification = deptClassification;
 	}
-	public Long getBankCode() {
+	public String getBankCode() {
 		return bankCode;
 	}
-	public void setBankCode(Long bankCode) {
+	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
 	}
 	public String getBankName() {
@@ -148,10 +148,10 @@ public class STermDebtVo {
 	public void setDepositNo(String depositNo) {
 		this.depositNo = depositNo;
 	}
-	public String getAccountNo() {
+	public Long getAccountNo() {
 		return accountNo;
 	}
-	public void setAccountNo(String accountNo) {
+	public void setAccountNo(Long accountNo) {
 		this.accountNo = accountNo;
 	}
 	public Long getVoucherNo() {

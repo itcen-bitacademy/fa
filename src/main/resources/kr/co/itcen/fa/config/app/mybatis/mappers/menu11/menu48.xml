@@ -170,7 +170,7 @@
 			bank_code=#{bankCode},
 			deposit_no=#{depositNo},
 			update_id=#{updateId},
-			update_date=now()
+			update_date=now(),
 			voucher_no = #{voucherNo}
 
 		where no=#{no}
