@@ -95,6 +95,12 @@ public class Menu03Service {
 		return 0L;
 	}
 	
+	// 전표삭제 (5팀)
+	public Long deleteVoucher(Long no, @AuthUser UserVo userVo) {
+		menu03Repository.deleteVoucher(no, userVo);
+		return 0L;
+	}
+	
 	
 	// 페이징 처리
 	public DataResult<VoucherVo> selectAllVoucherCount(int page) {
