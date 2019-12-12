@@ -30,6 +30,7 @@ public class Menu03Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	
 	public void test (){
 		TestVo testVo = new TestVo();
 		testVo.setName("김길동");
