@@ -20,11 +20,8 @@ public class Menu56Service {
 	
 	@Autowired
 	private Menu56Repository menu56Repository;
-	
-	public void test() {
-		menu56Repository.test();
-	}
-	
+
+	//전체 리스트 
 	public List<CurrentSituationVo> getList(CurrentSituationVo vo){
 		return menu56Repository.getList(vo);
 	}

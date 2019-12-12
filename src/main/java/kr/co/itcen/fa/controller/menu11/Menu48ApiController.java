@@ -62,17 +62,17 @@ public class Menu48ApiController {
 		MappingVo mappingVo = new MappingVo();
 		voucherVo.setRegDate(vo.getPayDate());
 		
-		itemVo.setAmount(vo.getIntAmount());//이자납입금
+		itemVo.setAmount(money);//이자납입금
 		itemVo.setAmountFlag("d");//차변
 		itemVo.setAccountNo(9201101L);//계정과목코드
 		itemVoList.add(itemVo);
 		
-		itemVo2.setAmount(vo.getPayPrinc());//장기차입금에서 빠진 금액
+		itemVo2.setAmount(vo.getPayPrinc()-money);//장기차입금에서 빠진 금액
 		itemVo2.setAmountFlag("d");//차변
 		itemVo2.setAccountNo(2401101L);
 		itemVoList.add(itemVo2);
 		
-		itemVo3.setAmount(vo.getPayPrinc()+vo.getIntAmount());//예금액= 상환액으로 입력한 값
+		itemVo3.setAmount(vo.getPayPrinc());//예금액= 상환액으로 입력한 값
 		itemVo3.setAmountFlag("c");//대변
 		itemVo3.setAccountNo(1110103L);//dPrma
 		itemVoList.add(itemVo3);
@@ -80,15 +80,16 @@ public class Menu48ApiController {
 		mappingVo.setVoucherUse(lvo.getName());//사용목적
 		mappingVo.setSystemCode(lvo.getCode());//제코드l190
 		
-		mappingVo.setCustomerNo(lvo.getBankCode());
-		mappingVo.setDepositNo(lvo.getDepositNo());//계좌번호
+		String BankCode=menu48Service.selectBankCode(lvo.getDepositNo());
+		mappingVo.setCustomerNo(BankCode);
+		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 		
 		
 		Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
 		
 		vo.setVoucherNo(no);
 		menu48Service.insert(vo);//상환 테이블에 insert -> 
-		if(lvo.getRepayBal() >=lvo.getDebtAmount())
+		if((lvo.getRepayBal()+lvo.getIntAmount()) >= lvo.getDebtAmount())
 			menu48Service.updateRepayFlag(lvo.getNo());
 		return JSONResult.success(lvo);
 	}

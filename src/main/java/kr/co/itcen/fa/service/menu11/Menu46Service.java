@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu11.Menu46Repository;
 import kr.co.itcen.fa.util.Pagination;
+import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
@@ -26,6 +27,9 @@ public class Menu46Service {
 	@Autowired
 	private Menu46Repository menu46Repository;
 	
+	public STermDebtVo get(Long no) {
+		return menu46Repository.get(no);
+	}
 	//기본
 	public Map getListMap() {
 		return search(null, null, 5);
@@ -71,6 +75,14 @@ public class Menu46Service {
 	
 	public void update(STermDebtVo sTermDebtVo) {
 		menu46Repository.update(sTermDebtVo);
+	}
+	
+	public void updateRepayBal(RepayVo repayVo) {
+		menu46Repository.updateRepayBal(repayVo);
+	}
+	
+	public void insertRepay(RepayVo repayVo) {
+		menu46Repository.insertRepay(repayVo);
 	}
 	
 }

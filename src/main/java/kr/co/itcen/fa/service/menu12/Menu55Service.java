@@ -19,14 +19,13 @@ public class Menu55Service {
 	
 	@Autowired
 	private Menu55Repository menu55Repository;
-	
-//	public void test() {
-//		menu55Repository.test();
-//	}
-	
+
+	//전체 리스트
 	public List<CurrentSituationVo> getList(CurrentSituationVo vo){
 		return menu55Repository.getList(vo);
 	}
+	
+	//품목을 가져오기 위한 코드
 	public List<CurrentSituationVo> getitemcode(String itemcode) {
 		return menu55Repository.getitemcode(itemcode);
 	}
