@@ -793,6 +793,7 @@ $(function(){
 										td.eq(5).html(m).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 									}
 								});
+								
 							},
 							error: function(xhr, error){
 								console.error("error : " + error);
