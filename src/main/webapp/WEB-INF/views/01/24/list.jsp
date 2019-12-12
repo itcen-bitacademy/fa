@@ -89,7 +89,7 @@
 
 
 				<div class="row-fluid">
-					<form class="form-horizontal">
+					<form class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list" method="post">
 						입력 기간
 
 						<div class="input-append">
@@ -117,7 +117,7 @@
 
 						</select>
 
-						<button type="submit" class="btn btn-small btn-info" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
+						<button type="submit" class="btn btn-small btn-info" >조회</button>
 
 					</form>
 					<div class="hr hr-18 dotted"></div>
@@ -183,16 +183,53 @@
 					<!-- /span -->
 				</div>
 
-				<div class="pagination">
+				<div class="pagination" id = "pagination">
 					<ul>
-						<li class="disabled"><a href="#"><i
-								class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
+									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}
+										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
+									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 

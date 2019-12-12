@@ -1,8 +1,6 @@
 package kr.co.itcen.fa.service.menu01;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class Menu24Service {
 
 	public DataResult<CardVo> list(int page, CardVo vo) {
 		DataResult<CardVo> dataResult = new DataResult<CardVo>();
-		
+		System.out.println(page);
 		int totalCnt = menu24Repository.listCount(vo);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		
@@ -38,20 +36,5 @@ public class Menu24Service {
 		return dataResult;
 		
 	}
-
-
-	public Map<String, Object> read(CardVo vo, int page) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		int totalCnt = menu24Repository.listCount(vo);
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		
-		map = menu24Repository.read(pagination, vo);
-		map.put("pagination", pagination);
-		
-		map.put("success", true);
-		return map;
-	}
-
 
 }
