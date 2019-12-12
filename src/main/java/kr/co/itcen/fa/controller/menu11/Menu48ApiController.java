@@ -88,7 +88,10 @@ public class Menu48ApiController {
 		
 		vo.setVoucherNo(no);
 		menu48Service.insert(vo);//상환 테이블에 insert -> 
-		if(lvo.getRepayBal() >=lvo.getDebtAmount())
+		System.out.println(lvo.getDebtAmount());
+		System.out.println(lvo.getRepayBal());
+		
+		if(lvo.getRepayBal() <= 0)
 			menu48Service.updateRepayFlag(lvo.getNo());
 		return JSONResult.success(lvo);
 	}
