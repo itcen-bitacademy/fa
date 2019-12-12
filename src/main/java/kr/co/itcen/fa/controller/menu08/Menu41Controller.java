@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
@@ -97,7 +98,7 @@ public class Menu41Controller {
 
 	
 	//등록기능
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/insert" }, method = RequestMethod.POST)
+	@RequestMapping(value = {"/" + SUBMENU + "/insert" }, method = RequestMethod.POST)
 	public String insert(@ModelAttribute VehicleVo vehicleVo, @SessionAttribute("authUser") UserVo userVo, Model model) throws ParseException{
 		/*
 		 * if(vehicleVo.getId() !=null || vehicleVo.getSectionNo() !=null ||
@@ -106,7 +107,6 @@ public class Menu41Controller {
 		 * 
 		 * }
 		 */
-		System.out.println(vehicleVo.getCustomerNo());
 		vehicleVo.setInsertUserId(userVo.getId());
 		vehicleVo.setId("e"+vehicleVo.getId());
 		
@@ -122,17 +122,16 @@ public class Menu41Controller {
 	}
 
 	//수정기능
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/update" }, method =RequestMethod.POST) 
+	@RequestMapping(value = { "/" + SUBMENU + "/update" }, method =RequestMethod.POST) 
 	public String update(@ModelAttribute VehicleVo vehicleVo, @AuthUser UserVo userVo){
 		
 		vehicleVo.setUpdateUserId(userVo.getId());
-		System.out.println(vehicleVo);
 		menu41Service.update(vehicleVo); 	
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
 	}
 	
 	//삭제기능
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
+	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
 	public String delete(@ModelAttribute VehicleVo vehicleVo, @RequestParam(value="id") String id, @AuthUser UserVo userVo ) {
 		
 		//삭제한 사람도 남길때 set무엇으로 하는게 적당한지 모르겠음
@@ -143,12 +142,14 @@ public class Menu41Controller {
 	
 	
 	//세금 계산서 차량 테이블 수정 기능 + 세금계산서 모달창 세금계산서 삽입기능
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/segum" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/" + SUBMENU + "/segum" }, method = RequestMethod.POST)
 	public String taxbill(@ModelAttribute TaxbillVo taxbillVo, @AuthUser UserVo userVo,
 						  @RequestParam(value="gubun" ) String gubun,
 						  @RequestParam(value="deposit" ) Long deposit,
 						  @RequestParam(value="monthlyFee") Long monthlyFee,
-						  @RequestParam(value="cusNo") String customerNo) {
+						  @RequestParam(value="cusNo") String customerNo,
+						  @RequestParam(value="payDate-1") String maip
+						  ) {
 		
 		
 		taxbillVo.setInsertUserid(userVo.getId());
@@ -172,7 +173,7 @@ public class Menu41Controller {
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String paymentDay = transFormat.format(from);
 		
-		voucherVo.setRegDate(paymentDay);   // : 거래날짜
+		voucherVo.setRegDate(maip);   //매입일자로 바꾸기
 		
 		if(gubun.equals("보증금")) {
 			//차변
@@ -180,7 +181,7 @@ public class Menu41Controller {
 			System.out.println("보증금입니다");
 			itemVo.setAmount(deposit);   	// landVo.getAcqPrice() : 거래금액 (보증금)
 			itemVo.setAmountFlag("d");      //d: 차변 왼쪽
-			itemVo.setAccountNo(1110701L);  //계정과목 : 선급금
+			itemVo.setAccountNo(1220501L);  //계정과목 : 선급금
 			itemVoList.add(itemVo);
 			
 			//대변
@@ -197,11 +198,11 @@ public class Menu41Controller {
 			System.out.println("월사용료입니다");
 			itemVo.setAmount(monthlyFee);   // landVo.getAcqPrice() : 거래금액 (월사용료)
 			itemVo.setAmountFlag("d");      //d: 차변 왼쪽
-			itemVo.setAccountNo(2120101L);  //계정과목 : 미지급금
+			itemVo.setAccountNo(8140104L);  //계정과목 : 미지급금
 			itemVoList.add(itemVo);
 			
 			//대변
-			itemVo2.setAmount(deposit);   // landVo.getAcqPrice() : 거래금액 (보증금)
+			itemVo2.setAmount(deposit);   // landVo.getAcqPrice() : 거래금액 (월사용료)
 			itemVo2.setAmountFlag("c");   // c: 대변 오른쪽
 			itemVo2.setAccountNo(1110101L); //현금
 			itemVoList.add(itemVo2);
@@ -222,6 +223,24 @@ public class Menu41Controller {
 		menu41Service.taxbill(taxbillVo);   //차량세금 인서트
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
+	}
+	
+	
+	//세금계산서 정보 조회하기 RequestMethod를 GET메소드로 받아줘야지만 코드가 도는데?
+	@ResponseBody
+	@RequestMapping(value = {"/" + SUBMENU + "/taxinfo" }, method = RequestMethod.GET)
+	public Map<String, Object> taxlist(
+			@ModelAttribute TaxbillVo taxbillVo, 
+			@RequestParam(value="id", required = false) String id, 
+			Model model
+			) {
+
+		//조회기능 
+		Map<String, Object> map = new HashMap<>();
+		map.putAll(menu41Service.selectTaxList(id));
+		model.addAllAttributes(map);
+
+		return map;
 	}
 	
 }

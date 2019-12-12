@@ -10,7 +10,8 @@ public class TaxbillVo {
 	private Long voucherNo;
 	private String vehicleNo;
 	private Long pay;
-	private String paymentDate;
+	private String paymentDate; //납부한 날
+	private String dueDate; //납부 예정 일
 	private String gubun;
 	private String insertUserid;
 	private String insertDay;
@@ -55,6 +56,12 @@ public class TaxbillVo {
 	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = paymentDate;
 	}
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
 	public String getGubun() {
 		return gubun;
 	}
@@ -86,14 +93,14 @@ public class TaxbillVo {
 		this.updateDay = updateDay;
 	}
 	
+
 	@Override
 	public String toString() {
-		return "TaxbillVo [no=" + no + ", taxbillNo=" + taxbillNo + ", vehicleNo=" + vehicleNo + ", paymentDate="
-				+ paymentDate + ", gubun=" + gubun + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
+		return "TaxbillVo [no=" + no + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo + ", vehicleNo="
+				+ vehicleNo + ", pay=" + pay + ", paymentDate=" + paymentDate + ", dueDate=" + dueDate + ", gubun="
+				+ gubun + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
+				+ updateUserid + ", updateDay=" + updateDay + "]";
 	}
-
-	
 	
 
 }
