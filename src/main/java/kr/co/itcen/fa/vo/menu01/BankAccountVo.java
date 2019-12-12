@@ -18,8 +18,12 @@ public class BankAccountVo {
 	private String insertUserId;
 	private String insertDay;
 	private String updateUserId;
+	public Long getAccountNo() {
+		return accountNo;
+	}
 	private String updateDay;
 	private String deleteFlag;
+	private Long accountNo = 1110103L;
 		
 	//take from others (FK)
 	private String bankName;
