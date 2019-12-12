@@ -144,11 +144,11 @@
         			var supply = Number($("#totalSupplyValue").val());
         			$("#totalPrice").val(tax+supply);
         		},
-        		setComma: function(x) {
-        		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        		setComma: function(x) { // 콤마 찍기
+        		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 콤마 정규식
         		},
-        		removeComma: function(x){
-        			return x.replace(",","");
+        		removeComma: function(x){ // 콤마 제거
+        			return x.replace(",",""); 
         		}
         }
         
@@ -187,10 +187,10 @@
         }
         
         function insert(){
-   			if($("#salesNo").val()==$("#checkSalesNo").val()){
+   			if($("#salesNo").val()==$("#checkSalesNo").val()){ // 기존 제공된 매출번호를 수정한 경우 체크
    				$("#insert-form").submit(); 
    			} else {
-   				alert("매출번호가 수정되어 입력이 불가능합니다.\n새 매출번호를 생성합니다.");
+   				alert("매출번호가 수정되어 입력이 불가능합니다.\n새 매출번호를 생성합니다."); 
    				createSalesNo();
    			}
         }
@@ -247,19 +247,19 @@
         	} 
         }
         
-        function createSalesNo(){
+        function createSalesNo(){ // 매출번호 랜덤 생성
 	       	var salseNo = "";
 	       	var date = new Date();
-	  	 	var year = date.getFullYear().toString();
-	  	 	var month = (date.getMonth()+1).toString();	 	
-	  		var day = date.getDate().toString();
-	  		if (month.length < 2) month = "0" + month;
-	  	 	if (day.length < 2) day = "0" + day;
+	  	 	var year = date.getFullYear().toString(); // 년
+	  	 	var month = (date.getMonth()+1).toString();	 // 월	
+	  		var day = date.getDate().toString(); // 일
+	  		if (month.length < 2) month = "0" + month; // 한자리 월 0
+	  	 	if (day.length < 2) day = "0" + day; // 한자리 일 0
 	  	 	salseNo = "K"+year + month + day;
 	  	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	  	    for( var i=0; i < 3; i++ )
-	  	    	salseNo += possible.charAt(Math.floor(Math.random() * possible.length));
-	  	    if($("#flag").val()==''){
+	  	    for( var i=0; i < 3; i++ ) // 스펠링 난수
+	  	    	salseNo += possible.charAt(Math.floor(Math.random() * possible.length)); // 스펠링 난수
+	  	    if($("#flag").val()==''){ // 조회한 경우가 아닐때 생성된 매출번호 set
 	  	    	$("#salesNo").val(salseNo);
 		  	    $("#checkSalesNo").val(salseNo);    
 	  	    }
@@ -302,6 +302,7 @@
                                     <label class="control-label" for="customerCode">거래처코드</label>
                                     <div class="controls">
                                         <select class="chosen-select" id="customerCode" data-placeholder="거래처코드" name="customerCode" onchange="setData.customer();">
+                                        <!-- 매출 조회 여부에 따른 select 박스 데이터 -->
 	                                        <c:choose>
 		                                        <c:when test="${flag == 'true'}">
 										           <option value="${saleslist[0].customerCode }" selected style="display:none">${saleslist[0].customerCode }(${saleslist[0].customerName })</option>
@@ -428,6 +429,7 @@
                                     <th>공급가액</th>
                                     <th>부가세</th>
                                 </tr>
+                                <!-- 매출 조회 시 -->
                                 <c:forEach items="${saleslist }" var="sales" varStatus="status">
                                 <tr>
                                     <td>
@@ -443,9 +445,9 @@
                                         </select>
                                     </td>
                                     <td><input type="text" id="itemName${sales.number }" name="itemName" placeholder="품목명" value="${sales.itemName }" readonly></td>
-                                    <td><input type="number" id="quantity${sales.number }" name="quantity" placeholder="수량" value="${sales.quantity }" onkeyup="sumData.addQuantity()"></td>
-                                    <td><input type="number" id="supplyValue${sales.number }" name="supplyValue" placeholder="공급가액" value="${sales.supplyValue }" onkeyup="sumData.addSupplyValue()"></td>
-                                    <td><input type="number" id="taxValue${sales.number }" name="taxValue" placeholder="부가세" value="${sales.taxValue }" onkeyup="sumData.addTaxValue()"></td>
+                                    <td><input type="number" class="number" id="quantity${sales.number }" name="quantity" placeholder="수량" value="${sales.quantity }" onkeyup="sumData.addQuantity()"></td>
+                                    <td><input type="number" class="number" id="supplyValue${sales.number }" name="supplyValue" placeholder="공급가액" value="${sales.supplyValue }" onkeyup="sumData.addSupplyValue()"></td>
+                                    <td><input type="number" class="number" id="taxValue${sales.number }" name="taxValue" placeholder="부가세" value="${sales.taxValue }" onkeyup="sumData.addTaxValue()"></td>
                                 </tr>
                                 </c:forEach>
                             </table>

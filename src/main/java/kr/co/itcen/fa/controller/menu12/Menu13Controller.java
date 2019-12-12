@@ -79,7 +79,7 @@ public class Menu13Controller {
 			menu13Service.insert(list);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		} else {
-			model.addAttribute("closingDate", true);
+			model.addAttribute("closingDate", true); // 마감된 경우
 			return MAINMENU + "/" + SUBMENU + "/index"; 
 		}
 	}
@@ -89,9 +89,9 @@ public class Menu13Controller {
 	public String getSales(@PathVariable("salesNo")String salesNo, Model model) {
 		System.out.println("매출 조회" + salesNo);
 		
-		List<CustomerVo> customerlist = menu13Service.getCustomerList();
-		List<SalesVo> itemlist = menu13Service.getItemList();
-		List<SalesVo> sales = menu13Service.getSalesNo(salesNo);
+		List<CustomerVo> customerlist = menu13Service.getCustomerList(); // 거래처
+		List<SalesVo> itemlist = menu13Service.getItemList(); // 품목
+		List<SalesVo> sales = menu13Service.getSalesNo(salesNo); // 조회 매출
 		
 		model.addAttribute("flag", "true"); // 조회 여부 체크 플래그(조회인 경우)
 		model.addAttribute("customerlist", customerlist);
@@ -106,9 +106,9 @@ public class Menu13Controller {
 	public String deleteData(@PathVariable("salesNo")String salesNo, 
 							 @SessionAttribute("authUser") UserVo authUser, Model model) {
 		System.out.println("매출 삭제"+salesNo);
-		menu13Service.deleteData(salesNo);
-		Long voucherNo = Long.parseLong(menu13Service.getVoucherNo(salesNo));
-		menu03Service.deleteVoucher(voucherNo, authUser);
+		menu13Service.deleteData(salesNo); // 매출데이터 flag Y
+		Long voucherNo = Long.parseLong(menu13Service.getVoucherNo(salesNo)); // 전표 삭제를 위한 전표번호 get
+		menu03Service.deleteVoucher(voucherNo, authUser); // 전표 및 세금계산서 플래그(삭제) 처리
 		return MAINMENU + "/" + SUBMENU + "/index"; 
 	}
 	
@@ -130,7 +130,7 @@ public class Menu13Controller {
 				menu13Service.updateDelete(pathSalesNo); // 업데이트위해 데이터 삭제
 				menu13Service.updateInsert(list); // 새로운 데이터 insert
 				SellTaxbillVo taxVo = null;
-				if(list.get(0).getTaxbillNo().equals("")) {
+				if(list.get(0).getTaxbillNo().equals("")) { // 세금계산서가 발행되지 않은 데이터 처리
 					return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/" + pathSalesNo; 
 				} else {
 					taxVo = menu13Service.controlTaxbill(pathSalesNo);// 세금계산서 select, delete
