@@ -82,18 +82,18 @@
 					
 					<div class="form-group" style="float: left">
 						&nbsp; &nbsp;&nbsp; &nbsp;상호명/사업자등록번호:&nbsp;
-						<div class="input-append">
-							<span class="btn btn-small btn-info">
-								<a href="#" id="a-customerinfo-dialog">
-									<i class="icon-search nav-search-icon"></i>
-									<input type="text" class="search-input-width-first" name="name" id="name" placeholder="상호명" readonly/>
-									<script type="text/javascript">
-										var name = "${param.name}";
-										$("#name").val(name);
-									</script>
-								</a>
-							</span>
-						</div>
+									<div class="input-append">
+										<a href="#" id="a-customerinfo-dialog">
+											<input type="text" class="search-input-width-first" id="name" name="name" readonly/>
+											<script type="text/javascript">
+												var name = "${param.name}";
+												$("#name").val(name);
+												</script>
+											<span class="add-on">
+				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            </span>
+				                    	</a>
+									</div>
 				
 						<input type="text" id="no" name="no" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 						<script type="text/javascript">
