@@ -10,7 +10,7 @@
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
-			select last_insert_id()
+			select last_insert_id() 
 			]]>
 		</selectKey>
 	</insert>
@@ -28,12 +28,13 @@
 		          , s.supply_value as salessupplyvalue
 		          , s.tax_value as salestaxvalue
 		          , s.total_price as salestotalprice
-		          , st.stock as stockquantity
-		          , st.stock*p.supply_value as stocksupplyvalue
-		          , st.stock*p.tax_value as stocktaxvalue
-		          , st.stock*(p.supply_value+p.tax_value) as stocktotalprice
+		          , st.stock as stockquantity    									/*  재고수량   */
+ 		          , st.stock*p.supply_value as stocksupplyvalue						/*  재고공급가액  */
+		          , st.stock*p.tax_value as stocktaxvalue							/* 재고부가세  */
+		          , st.stock*(p.supply_value+p.tax_value) as stocktotalprice		/* 재고합계  */
 		from tb_purchaseitem_test as pi 
 		left join(
+		/* 매출 테이블을 품목명을 기준으로 select */
 					select 
 					s1.item_code 
 					, s1.item_name 
@@ -48,6 +49,7 @@
 				group by s1.item_name
 				)as s on pi.no = s.item_code
 		left join(
+		/* 매입 테이블을 품목명을 기준으로 select */
 					select	
 					p1.item_code 
 					, p1.item_name 
@@ -62,6 +64,7 @@
 			     group	by p1.item_name
 		        )as p on pi.no = p.item_code
 		left join(
+/* 재고수량을 구하기 위한 join */
 					select   pi.no as item_code  
 							, ifnull(p.quantity,0)-ifnull(s.quantity,0) as stock
 					from  tb_purchaseitem_test as pi
@@ -102,7 +105,8 @@
  	 and pi.no like concat('%',#{itemcode },'%') 
  	 ]]> 
 	</select>
-		<!-- 	품목명을 가져오는 코드 -->
+	
+	<!-- 	품목명을 가져오는 코드 -->
 	<select id="getitemcode" resultType="currentsituationvo">
 	<![CDATA[
 	select 
@@ -111,5 +115,7 @@
     from tb_purchaseitem_test;
 	]]>
 	</select>
+	
+
 
 </mapper>

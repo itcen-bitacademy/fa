@@ -125,18 +125,18 @@
 											<td>${vo.sectionname }</td>
 											<td>${vo.itemcode }</td>
 											<td>${vo.itemname }</td>
-											<td>${vo.purchasemanagementquantity }</td>
-											<td>${vo.purchasemanagementsupplyvalue }</td>
-											<td>${vo.purchasemanagementtaxvalue }</td>
-											<td>${vo.purchasemanagementtotalprice }</td>
-											<td>${vo.salesquantity }</td>
-											<td>${vo.salessupplyvalue }</td>
-											<td>${vo.salestaxvalue }</td>
-											<td>${vo.salestotalprice }</td>
-											<td>${vo.stockquantity }</td>
-											<td>${vo.stocksupplyvalue }</td>
-											<td>${vo.stocktaxvalue }</td>
-											<td>${vo.stocktotalprice }</td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementquantity }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementsupplyvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementtaxvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementtotalprice }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.salesquantity }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.salessupplyvalue }" pattern="#,###" />
+											<td><fmt:formatNumber value="${vo.salestaxvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.salestotalprice }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stockquantity }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stocksupplyvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stocktaxvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stocktotalprice }" pattern="#,###" /></td>
 										</tr>
 										</c:forEach>
 									</table>
@@ -210,6 +210,7 @@ $(function() {
 				var list= response.data;
 					//선택하지 않았을 때 빈 값이 설정되도록
 					$("#subcategory").append("<option value=null placeholder=전체 품목 선택></option>")	
+					//대분류에 알맞는 품목리스트를 가져오도록
 				for(let i in list){
 					$("#subcategory").append("<option value='"+list[i].itemcode+"'>"+list[i].itemname+"</option>");
 					$('#subcategory').trigger("chosen:updated");

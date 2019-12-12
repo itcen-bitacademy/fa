@@ -36,6 +36,7 @@
 		          , st.stock*(p.supply_value+p.tax_value) as stocktotalprice
 		from tb_purchaseitem_test as pi 
 		left join(
+		/* 매출 테이블을 품목명을 기준으로 select */
 					select 
 					s1.section_code 
 					, s1.section_name
@@ -52,6 +53,7 @@
 				group by s1.item_name
 				)as s on pi.no = s.item_code
 		left join(
+		/* 매입 테이블을 품목명을 기준으로 select */
 					select	
 		            p1.section_code
 		            , p1.section_name
@@ -67,7 +69,8 @@
 		          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')
 			     group	by p1.item_name
 		        )as p on pi.no = p.item_code
-		join(
+		left join(
+/* 재고수량을 구하기 위한 join */
 					select   pi.no as item_code  
 							, ifnull(p.quantity,0)-ifnull(s.quantity,0) as stock
 					from  tb_purchaseitem_test as pi
