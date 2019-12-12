@@ -274,7 +274,7 @@ function execDaumPostcode() {
 		$('input:radio[name=assetsFlag]:input[value="c"]').prop("checked", true);
 		} else if (td6 =="무형자산"){
 		$('input:radio[name=assetsFlag]:input[value="d"]').prop("checked", true);
-		} 
+		}
 		});
 	
 	function settingInput(customerList) {
@@ -482,12 +482,12 @@ function execDaumPostcode() {
 										주소:&nbsp;
 									</label>
 									<div class="input-append">
-										<span class="btn btn-small btn-info">
-											<a href="#" onclick="execDaumPostcode()">
-												<i class="icon-search nav-search-icon"></i>
-												<input type="text" id="address" name="address" placeholder="주소" class="col-xs-10 col-sm-5" readonly />
-											</a>
-										</span>
+										<a href="#"onclick="execDaumPostcode()">
+											<input type="text" class="search-input-width-first" id="address" name="address" readonly/>
+											<span class="add-on">
+				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            </span>
+				                    	</a>
 									</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
 									<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"/>
@@ -566,17 +566,19 @@ function execDaumPostcode() {
 								<br/>
 
 								<div class="form-group">
+								
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										계좌번호:&nbsp;
 									</label>
 									<div class="input-append">
-										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-bankaccountinfo-dialog"> <i
-												class="icon-search nav-search-icon"></i> <input type="text"
-												class="search-input-width-first" name="depositNo" placeholder="계좌번호" readonly/>
-										</a>
-										</span>
-									</div>
+										 <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
+										<input type="text" class="search-input-width-first" name="depositNo" readonly/>
+												<span class="add-on">
+				                                   <i class="icon-search icon-on-right bigger-110"></i>
+				                                  
+				                                 </span>
+				                                   </a>
+										</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
