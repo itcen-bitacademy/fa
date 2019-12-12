@@ -73,11 +73,12 @@
             cell2.innerHTML = '<td><select class="chosen-select" id="itemCode'+cnt+'" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id)">'
 					            +'<option value="">&nbsp;</option>'
 					            +'<c:forEach items="${itemlist }" var="list" varStatus="status">'
-					            +'<option value="${list.no }" id="">${list.no }(${list.name })</option>'
+					            +'<option value="${list.itemCode }" id="">${list.itemCode }(${list.itemName } 재고:${list.stock})</option>'
 					            +'</c:forEach>'
 					        	+'</select><td>';
             cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명" value="" readonly></td>';
-            cell4.innerHTML = '<td><input class="number" type="number" id="quantity'+cnt+'" name="quantity" placeholder="수량" onkeyup="sumData.addQuantity()" required></td>';
+            cell4.innerHTML = '<td><input class="number" type="number" id="quantity'+cnt+'" name="quantity" placeholder="수량" min="0" onkeyup="sumData.addQuantity()" required>'
+            				  	+'<input type="hidden" value="0" id="stock'+cnt+'"></td>';
             cell5.innerHTML = '<td><input class="number" type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue(this)" required></td>';
             cell6.innerHTML = '<td><input class="number" type="text"" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue(this)" required></td>';
            
@@ -94,12 +95,24 @@
             }
         }
         
+        function setStock(){
+        	
+        }
+        
         var sumData = { // 수량, 공급가액, 부가세 합계 계산
         		addQuantity: function(){ // 수량게산
         			var sum = 0;
+        			
         			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
         				sum = sum + Number($("#quantity"+i).val());
         				$("#totalQuantity").val(sum);
+        				
+            			if(Number($("#quantity"+i).val()) > Number($("#stock"+i).val()) ){ // 재고 수량 체크
+            				alert("품목을 선택하지 않았거나 \n재고보다 수량이 높습니다.");
+            				$("#quantity"+i).val("");
+            				$("#quantity"+i).focus();
+            				return;
+            			}
         			}
   					this.addSupplyValue(); // 수량 변동시 공급가액 다시 계산
         		},
@@ -163,10 +176,11 @@
         		if(code==""){
         			$("#itemName"+rownum).val(""); // 선택 row에 데이터 세팅
         		}
-        		// 기존에 가지고 있던 거래처 목록에서 선택한것과 일치하는 데이터만 세팅
+        		// 기존에 가지고 있던 품목 목록에서 선택한것과 일치하는 데이터만 세팅
         		<c:forEach items="${itemlist }" var="item" varStatus="status">
-	    			if(code=="${item.no }"){
-	    				$("#itemName"+rownum).val("${item.name}");
+	    			if(code=="${item.itemCode }"){
+	    				$("#itemName"+rownum).val("${item.itemName}");
+	    				$("#stock"+rownum).val(${item.stock});
 	    			}
             	</c:forEach>  
         	}
@@ -424,7 +438,7 @@
                                     	<select class="chosen-select" id="itemCode${sales.number }" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id);">
                                     		<option value="${sales.itemCode }" selected style="display:none">${sales.itemCode }(${sales.itemName })</option>
                                             <c:forEach items="${itemlist }" var="list" varStatus="status">
-                                            	<option value="${list.no }">${list.no }(${list.name })</option>
+                                            	<option value="${list.itemCode }">${list.itemCode }(${list.itemName } 재고 :${list.stock })</option>
                                             </c:forEach>
                                         </select>
                                     </td>

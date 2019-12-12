@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu12.Menu13Repository;
-import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
 import kr.co.itcen.fa.vo.menu12.SalesVo;
 import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
@@ -30,7 +29,7 @@ public class Menu13Service {
 	public List<CustomerVo> getCustomerList() {
 		return menu13Repository.getCustomerList();
 	}
-	public List<PurchaseitemVo> getItemList() {
+	public List<SalesVo> getItemList() {
 		return menu13Repository.getItemList();
 	}
 	public List<SalesVo> getSalesNo(String salesNo) {
@@ -50,7 +49,9 @@ public class Menu13Service {
 	}
 	public void insertTaxvill(SellTaxbillVo taxVo) {
 		menu13Repository.insertTaxbill(taxVo);
-		
+	}
+	public String getVoucherNo(String salesNo) {
+		return menu13Repository.getVoucherNo(salesNo);
 	}
 
 }

@@ -30,7 +30,7 @@ public class Menu13Repository {
 	public List<CustomerVo> getCustomerList() {
 		return sqlSession.selectList("menu13.customerlist");
 	}
-	public List<PurchaseitemVo> getItemList() {
+	public List<SalesVo> getItemList() {
 		return sqlSession.selectList("menu13.itemlist");
 	}
 	public List<SalesVo> getSalesNo(String salesNo) {		
@@ -52,6 +52,10 @@ public class Menu13Repository {
 	}
 	public void insertTaxbill(SellTaxbillVo selltaxbillvo) {
 		sqlSession.insert("menu13.insertTax", selltaxbillvo);
+	}
+	public String getVoucherNo(String salesNo) {
+		sqlSession.update("menu13.taxbillremove", salesNo);
+		return sqlSession.selectOne("menu13.getVoucherNo", salesNo);
 	}
 	
 }

@@ -80,11 +80,11 @@
                                             <option value="">&nbsp;</option>
                                             <c:forEach items="${itemlist }" var="list" varStatus="status">
                                                 <c:choose>
-                                                    <c:when test="${list.no eq search.itemCode }">
-                                                        <option id="" value="${list.no }" selected>${list.no }(${list.name })</option>
+                                                    <c:when test="${list.itemCode eq search.itemCode }">
+                                                        <option id="" value="${list.itemCode }" selected>${list.itemCode }(${list.itemName })</option>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <option id="" value="${list.no }">${list.no }(${list.name })</option>
+                                                        <option id="" value="${list.itemCode }">${list.itemCode }(${list.itemName })</option>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </c:forEach>
