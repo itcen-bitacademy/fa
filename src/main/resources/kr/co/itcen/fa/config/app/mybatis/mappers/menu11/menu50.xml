@@ -9,7 +9,7 @@
 		#{debtAmount }, #{debtAmount }, 
 				#{repayWay }, 'N', 
 				#{debtDate }, #{expDate }, #{intRate }, 
-				#{intPayWay }, #{intAmount }, #{mgr }, 
+				#{intPayWay }, #{mgr }, 
 				#{mgrCall }, #{dangerCode }, #{dangerName }, 
 				#{bankCode }, #{depositNo }, '2402101', #{voucherNo }, 
 				'N', #{insertId }, now(), 0, now())
