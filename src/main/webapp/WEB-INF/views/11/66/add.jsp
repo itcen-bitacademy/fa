@@ -87,7 +87,7 @@ input[type="text"], input[type="date"], select {
 						<div class="ia-left"><h4>부채유형</h4></div>
 						<div class="ia-right">
 							<select name="debtType"  id="debtType" >
-								<option value="">부채유형을 선택해주세요.</option>
+								<option value="초기값">부채유형을 선택해주세요.</option>
 								<option value="S">단기차입금</option>
 								<option value="L">장기차입금</option>
 								<option value="P">사채</option>
@@ -107,7 +107,7 @@ input[type="text"], input[type="date"], select {
 							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
+							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
 						</div>
 					</section>
 				</section>
@@ -149,7 +149,6 @@ input[type="text"], input[type="date"], select {
 								<td class="center">${vo.debtNo}</td>
 								<td class="center">${vo.payPrinc}</td>
 								<td class="center">${vo.intAmount}</td>
-								<td class="center">${vo.debtType}</td>
 								<c:choose>
 									<c:when test="${vo.debtType eq 'S'}"><td class="center">단기차입금</td></c:when>
 									<c:when test="${vo.debtType eq 'L'}"><td class="center">장기차입금</td></c:when>
@@ -229,25 +228,33 @@ $(function() {
 		
 		$("input[name=no]").val(td.eq(0).attr('data-no')); // 상환테이블 PK : no
 		$("input[name=code]").val(td.eq(1).text()); // 차입금코드
-		$("input[name=name]").val(td.eq(2).text()); // 상환금액
-		$("input[name=name]").val(td.eq(3).text()); // 이자금액
+		$("input[name=payPrinc]").val(td.eq(2).text()); // 상환금액
+		$("input[name=intAmount]").val(td.eq(3).text()); // 이자금액
 		
 		var debtType='';
 		switch (td.eq(4).text()){
-	    case 'S' :
-	    	debtType = '단기차입금';
+	    case '단기차입금' :
+	    	debtType = 'S';
 	        break;
-	    case 'L' :
-	    	debtType = '장기차입금';
+	    case '장기차입금' :
+	    	debtType = 'L';
 		    break;
-	    case 'P' :
-	    	debtType = '사채';
+	    case '사채' :
+	    	debtType = 'P';
 	        break;
 		}
 		$('#debtType').val(debtType).trigger('chosen:updated'); // 부채유형
 		
 		$("input[name=payDate]").val(td.eq(5).text()); // 상환일자
 	});
+	//--------------------------------------------------------------------------------------------------------------------------//
+	
+	//--------------------------------------------------------------------------------------------------------------------------//
+	// form에 입력한 모든 데이터 초기화
+	$("#formReset").bind("click", function () {
+		$('#input-form')[0].reset(); // form의 모든 데이터 초기화
+		$('#debtType').val('초기값').trigger('chosen:updated'); // value 값으로 선택
+    });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
 });

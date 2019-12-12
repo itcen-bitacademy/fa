@@ -90,6 +90,9 @@ public class Menu50RepayApiController {
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
 		vo.setVoucherNo(no);
 		menu50Service.insertRepayVo(vo); // 상환 테이블에 insert
+		
+		System.out.println("차입금액 : " + pdebtVo.getDebtAmount());
+		System.out.println("상환잔액 : " + pdebtVo.getRepayBal());
 
 		if ((pdebtVo.getRepayBal() + pdebtVo.getIntAmount()) >= pdebtVo.getDebtAmount())
 			menu50Service.updateRepayFlag(pdebtVo.getNo());

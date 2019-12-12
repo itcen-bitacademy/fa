@@ -825,93 +825,102 @@
 		
 		$("#dialog-repayment-button").click(function() {
 			$("#code").val($("#pdebtcode-id").val());
+			$("#tbody-list tr").each(function(i){
+				var td = $(this).children();
+				var n = td.eq(0).attr('data-no');
+				if (n == $("#no").val()) {
+					var k = parseInt(td.eq(5).text().replace(/,/g, ''));
+					var intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/100);
+					$("#amount").text("이번달 이자금액 : " + intAmount);
+				}
+			});
 			$("#dialog-repayment").dialog('open');
 			$("#dialog-repayment").dialog({
 				title: "상환정보등록",
 				title_html: true,
-			   	resizable: false,
-			    height: 500,
-			    width: 400,
-			    modal: true,
-			    close: function() {
-			    	$('#code').val('');
-			    	$('input[name=payDate]').val('');
-			    	$('#repay_bal').val('');
-			    	$('#intAmount').val('');
-			    },
-			    buttons: {
-			    	//상환버튼 클릭시
-				    "상환": function(){
-				    	event.preventDefault();
-				    	var intAmount; 
-				    	var remainmoney
-				    	$("#tbody-list tr").each(function(i){
-							var td = $(this).children();
+				resizable: false,
+				height: 500,
+				width: 400,
+				modal: true,
+				close: function() {
+					$('#code').val('');
+				    $('input[name=payDate]').val('');
+				    $('#payPrinc').val('');
+				    $('#intAmount').val('');
+				},
+				buttons: {
+					//상환버튼 클릭시
+					"상환": function() {
+						event.preventDefault();
+						var intAmount; 
+				    	var remainmoney;
+				    	var k;
+				    	$("#tbody-list tr").each(function(i) {
+				    		var td = $(this).children();
 							var n = td.eq(0).attr('data-no');
-							if(n == $("#no").val()){
-								var m = parseInt(td.eq(5).text().replace(/,/g, ''));
-								alert(m);
-								remainmoney = parseInt(td.eq(5).text().replace(/,/g, ''));
-								alert(remainmoney);
-								intAmount = parseInt((m * (td.eq(8).text().replace('%', ''))) / 100);
-								$('#intAmount').val(intAmount);
-								console.log(intAmount);
+							if (n == $("#no").val()) {
+								k = parseInt(td.eq(5).text().replace(/,/g, ''));
+								intAmount = parseInt((k * (td.eq(8).text().replace('%', ''))) / 100);
+								remainmoney = parseInt(td.eq(5).text().replace(/,/g, '')) + intAmount;
 							}
 						});
-			    	
-					var vo = {
-							"debtNo":$("#no").val(), //테이블 번호
-							"payPrinc":$("#repay_bal").val(), //상환액
-							"payDate":$('input[name=payDate]').val(), //상환일
-							"intAmount":intAmount //이자금액
-					}
-					
-					if (intAmount >= vo.payPrinc) {
-						alert("이자 금액보다 납입금이 작습니다 이자(" + intAmount + ")이상 입력해주세요");
+				    	
+				    	var payPrinc = parseInt($('input[name=payPrinc]').val()) - intAmount;//납입금
+				    	console.log("이율"+intAmount);
+						console.log("납입금"+payPrinc);
+						console.log("총액 = "+remainmoney);
 						
-						return;
-					}
-					if (remainmoney <= vo.payPrinc) {
-						alert("납입금이 상환 잔액보다 큽니다 상환 잔액(" + remainmoney + ")보다 작게 입력해주세요");
-						return;
-					}
-					
-					// ajax 통신
-					$.ajax({
-						url: "${pageContext.request.contextPath }/11/50/repay",
-						contentType : "application/json; charset=utf-8",
-						type: "post",
-						dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-						data:JSON.stringify(vo),
-						success: function(response){
-							console.log(response);
-							if(response.result =="fail"){
-								console.error(response.message);
-								return;
-							}
-							if(response.data==null){
-								alert("값을 정확히 입력하지 않았습니다.");
-								return;
-							}
-							$("#tbody-list tr").each(function(i){
-								var td = $(this).children();
-								var n = td.eq(0).attr('data-no');
-								if(n == response.data.no){
-									td.eq(5).html(response.data.repayBal);
-								}
-							});
-						},
-						error: function(xhr, error){
-							console.error("error : " + error);
+				    	var vo = {
+								"debtNo":$("#no").val(),//테이블 번호
+								"payPrinc":payPrinc,//낼돈 - 이자금
+								"payDate":$('input[name=payDate]').val(),//상환일
+								"intAmount": intAmount
 						}
-					});
-					$(this).dialog('close');
-					//상환내역 반영
-			    },
-			    "닫기" : function() {
-			          	$(this).dialog('close');
-			        }
-			    }
+						if (intAmount > parseInt($('input[name=payPrinc]').val())) {
+							alert("이자 금액보다 납입금이 작습니다 납입금("+ intAmount+")보다 크게 입력해주세요");
+							return;
+						}
+						if (remainmoney < parseInt($('input[name=payPrinc]').val())) {
+							alert("납입금이 상환 잔액보다 큽니다 납입금("+k+") "+"이자("+ intAmount+")보다 작게 입력해주세요");
+							return;
+						}
+						// ajax 통신
+						$.ajax({
+							url: "${pageContext.request.contextPath }/11/50/repay",
+							contentType : "application/json; charset=utf-8",
+							type: "post",
+							dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+							data:JSON.stringify(vo),
+							success: function(response) {
+								console.log(response);
+								if (response.result =="fail") {
+									console.error(response.message);
+									return;
+								}
+								if (response.data==null) {
+									alert("값을 정확히 입력하지 않았습니다.");
+									return;
+								}
+								$("#tbody-list tr").each(function(i) {
+									var td = $(this).children();
+									var n = td.eq(0).attr('data-no');
+									if(n == response.data.no){
+										var m = response.data.repayBal
+										td.eq(5).html(m).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+									}
+								});
+							},
+							error: function(xhr, error) {
+								console.error("error : " + error);
+							}
+						});
+						$(this).dialog('close');
+						//상환내역 반영
+				    },
+				    "닫기" : function() {
+				    	$(this).dialog('close');
+					}
+				}
 			});
 		});
 		
