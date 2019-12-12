@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.controller.menu02;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.menu01.Menu25Service;
 import kr.co.itcen.fa.service.menu02.Menu35Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
@@ -37,8 +35,6 @@ public class Menu35Controller {
 	
 	@Autowired
 	private Menu35Service menu35Service;
-	@Autowired
-	private Menu25Service menu25Service; 
 
 	// 걍 페이지 들어가자마자 조회
 //	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })

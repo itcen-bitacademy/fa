@@ -5,11 +5,14 @@
 	<select id="getList" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      p.no, 
+			      right(p.no, 10) as no, 
 			      p.name, 
 			      p.ceo, 
 			      p.corporation_no as corporationNo, 
-			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as address, 
+			      p.zip_code as zipCode,
+			      p.address,
+			      p.detail_address as detailAddress,
+			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as fullAddress,
 			      p.phone, 
 			      p.conditions, 
 			      p.item, 
@@ -34,11 +37,14 @@
 	<select id="search" parameterType="string" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      p.no, 
+			      right(p.no, 10) as no, 
 			      p.name, 
 			      p.ceo, 
 			      p.corporation_no as corporationNo, 
-			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as address, 
+			      p.zip_code as zipCode,
+			      p.address,
+			      p.detail_address as detailAddress,
+			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as fullAddress,
 			      p.phone, 
 			      p.conditions, 
 			      p.item, 
@@ -65,11 +71,14 @@
 	<select id="afterDelete" parameterType="list" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      p.no, 
+			      right(p.no, 10) as no, 
 			      p.name, 
 			      p.ceo, 
 			      p.corporation_no as corporationNo, 
-			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as address, 
+			      p.zip_code as zipCode,
+			      p.address,
+			      p.detail_address as detailAddress,
+			      concat(p.zip_code, " ", p.address, " ", p.detail_address) as fullAddress,
 			      p.phone, 
 			      p.conditions, 
 			      p.item, 
@@ -102,7 +111,7 @@
 		<![CDATA[
 		insert
 		  into tb_purchasecustomer
-		values (#{no}, 
+		values (concat("P", #{no}), 
 				#{name}, 
 				#{ceo}, 
 				#{corporationNo}, 
@@ -129,7 +138,7 @@
 	<update id="update" parameterType="purchasecustomer35vo">
 		<![CDATA[
 			update tb_purchasecustomer 
-			   set no = #{no }, 
+			   set no = concat("P", #{no}), 
 			       name = #{name },
 			       ceo = #{ceo },
 			       corporation_no = #{corporationNo },
@@ -147,7 +156,7 @@
 			       deposit_host = #{depositHost },
 			       update_userid = #{updateUserid },
 			       update_day = now()			       
-			 where no = #{no }
+			 where right(no, 10) = #{no }
 		]]>
 	</update>
 	
