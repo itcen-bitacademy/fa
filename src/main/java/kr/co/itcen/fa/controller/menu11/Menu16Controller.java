@@ -49,7 +49,7 @@ public class Menu16Controller {
 	}
 	
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.POST)
-	public String list(@RequestParam(value="page", required=false,defaultValue = "1") int page,	
+	public String list(@RequestParam(value="page", required=false, defaultValue = "1") int page,	
 	@RequestParam(value="code", required=false,defaultValue = "") String code ) {
 
 	return "redirect:/" + MAINMENU + "/" + SUBMENU + "?page=" + page + "&code=" + code;
@@ -57,13 +57,13 @@ public class Menu16Controller {
 	
 	@RequestMapping(value= "/" + SUBMENU + "/add" , method = RequestMethod.POST)
 	public String add(@ModelAttribute @Valid BankVo vo,
-					BindingResult result,
+			/* BindingResult result, */
 					Model model) {
 		
-		if(result.hasErrors()) {
-			model.addAllAttributes(result.getModel());
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		}
+		/*
+		 * if(result.hasErrors()) { model.addAllAttributes(result.getModel()); return
+		 * "redirect:/" + MAINMENU + "/" + SUBMENU; }
+		 */
 		System.out.println(vo);
 		vo.setAddress(vo.getRoadAddress() + vo.getDetailAddress());
 		menu16Service.insert(vo);

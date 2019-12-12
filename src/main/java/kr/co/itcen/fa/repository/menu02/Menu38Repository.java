@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
+import kr.co.itcen.fa.vo.menu02.BuyTaxbillListVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 import kr.co.itcen.fa.vo.menu02.TestVo;
@@ -36,5 +37,10 @@ public class Menu38Repository {
 	public List<BuyTaxbillItemsVo> getMatchTaxbillItemsList() {
 		List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = sqlSession.selectList("menu38.getMatchTaxbillItemsList");
 		return getMatchTaxbillItemsList;
+	}
+
+	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+		List<BuyTaxbillVo> getSelectedBuyTaxbillList = sqlSession.selectList("menu38.getSelectedBuyTaxbillList", buyTaxbillListVo);
+		return getSelectedBuyTaxbillList;
 	}
 }

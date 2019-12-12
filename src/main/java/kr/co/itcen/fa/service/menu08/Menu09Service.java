@@ -103,4 +103,10 @@ public class Menu09Service {
 		
 		return dataResult;
 	}
+
+	//토지코드에 따른 전표번호 얻기
+	public Long getVoucherNo(String id) {
+		Long voucherNo = menu09Repository.getVoucherNo(id);
+		return voucherNo;
+	}
 }

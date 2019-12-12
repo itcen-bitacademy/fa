@@ -68,4 +68,9 @@ public class Menu39Repository {
 	public int listCount(String id) {
 		return sqlSession.selectOne("menu39.pageCount", id);
 	}
+
+	public Long getVoucherNo(String id) {
+		Long vocherNo = sqlSession.selectOne("menu39.getVoucherNo", id);
+		return vocherNo;
+	}
 }

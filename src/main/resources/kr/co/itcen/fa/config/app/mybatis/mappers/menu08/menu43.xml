@@ -103,7 +103,15 @@ left outer join tb_customer c on tb.customer_no = c.no
        where no = #{customerNo }
       ]]>
    </select>
-	
+   
+   <select id="getVoucherNo" parameterType="intangibleAssetsVo" resultType="long">
+      <![CDATA[
+      select voucher_no as voucherNo
+        from tb_intangible_assets
+       where id = #{id }
+      ]]>
+   </select>
+   
 	<delete id="delete" parameterType="string">
 	<![CDATA[
 	update tb_intangible_assets 

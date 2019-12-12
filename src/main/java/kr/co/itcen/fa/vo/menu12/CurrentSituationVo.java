@@ -4,14 +4,12 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("currentsituationvo")
 public class CurrentSituationVo {
-	//대분류번호,대분류명,품목번호,품목명,입고수량,입고공급가,입고부가세,입고금액
-	//출고수량,출고공급가,출고부가세,출고금액
-	
-	private String searchdate; //검색날짜
 
+	private String searchdate; //검색날짜
 	private String purchasedate;  //입고날짜
 	private String salesdate; //출고날짜
-	private Long parentno;
+	private Long parentno; 
+	private Long sectionno; //대분류번호
 	private String sectioncode; //대분류코드
 	private String sectionname; //대분류명
 	private String itemcode; //품목코드
@@ -25,8 +23,22 @@ public class CurrentSituationVo {
 	private Long salestaxvalue; //출고부가세
 	private Long salestotalprice; //출고금액
 	private Long stockquantity; //재고수량
+	private Long stocksupplyvalue; //재고 부가세
 	private Long stocktaxvalue; //재고부가세
 	private Long stocktotalprice; //재고금액
+	public Long getStocksupplyvalue() {
+		return stocksupplyvalue;
+	}
+	public void setStocksupplyvalue(Long stocksupplyvalue) {
+		this.stocksupplyvalue = stocksupplyvalue;
+	}
+	
+	public Long getSectionno() {
+		return sectionno;
+	}
+	public void setSectionno(Long sectionno) {
+		this.sectionno = sectionno;
+	}
 	public String getSearchdate() {
 		return searchdate;
 	}
@@ -144,14 +156,14 @@ public class CurrentSituationVo {
 	@Override
 	public String toString() {
 		return "CurrentSituationVo [searchdate=" + searchdate + ", purchasedate=" + purchasedate + ", salesdate="
-				+ salesdate + ", parentno=" + parentno + ", sectioncode=" + sectioncode + ", sectionname=" + sectionname
-				+ ", itemcode=" + itemcode + ", itemname=" + itemname + ", purchasemanagementquantity="
-				+ purchasemanagementquantity + ", purchasemanagementsupplyvalue=" + purchasemanagementsupplyvalue
-				+ ", purchasemanagementtaxvalue=" + purchasemanagementtaxvalue + ", purchasemanagementtotalprice="
-				+ purchasemanagementtotalprice + ", salesquantity=" + salesquantity + ", salessupplyvalue="
-				+ salessupplyvalue + ", salestaxvalue=" + salestaxvalue + ", salestotalprice=" + salestotalprice
-				+ ", stockquantity=" + stockquantity + ", stocktaxvalue=" + stocktaxvalue + ", stocktotalprice="
-				+ stocktotalprice + "]";
+				+ salesdate + ", parentno=" + parentno + ", sectionno=" + sectionno + ", sectioncode=" + sectioncode
+				+ ", sectionname=" + sectionname + ", itemcode=" + itemcode + ", itemname=" + itemname
+				+ ", purchasemanagementquantity=" + purchasemanagementquantity + ", purchasemanagementsupplyvalue="
+				+ purchasemanagementsupplyvalue + ", purchasemanagementtaxvalue=" + purchasemanagementtaxvalue
+				+ ", purchasemanagementtotalprice=" + purchasemanagementtotalprice + ", salesquantity=" + salesquantity
+				+ ", salessupplyvalue=" + salessupplyvalue + ", salestaxvalue=" + salestaxvalue + ", salestotalprice="
+				+ salestotalprice + ", stockquantity=" + stockquantity + ", stocksupplyvalue=" + stocksupplyvalue
+				+ ", stocktaxvalue=" + stocktaxvalue + ", stocktotalprice=" + stocktotalprice + "]";
 	}
 
 	

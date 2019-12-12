@@ -317,12 +317,6 @@ tr td:first-child {
 							</tr>
 							<tr>
 								<td>
-									<label>납입금</label>
-									<input type="text" name="repay_bal" id= "repay_bal"/>
-								</td>
-							</tr>
-							<tr>
-								<td>
 								<label>납입일자</label>
 								<div class="row-fluid input-prepend">
 				                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
@@ -331,6 +325,12 @@ tr td:first-child {
 				              	</span>
 				                         
 				                </div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>납입금</label>
+									<input type="text" name="payPrinc" id= "payPrinc"/>
 								</td>
 							</tr>
 							</table>
@@ -388,7 +388,7 @@ tr td:first-child {
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
 							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
-							<td class="center">${ltermvo.repayBal}</td>
+							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
@@ -718,13 +718,36 @@ $(function(){
 				    	//상환버튼 클릭시
 				    "상환": function(){
 				    	event.preventDefault();
+				    	var intAmount; 
+				    	var remainmoney
+				    	$("#tbody-list tr").each(function(i){
+							var td = $(this).children();
+							var n = td.eq(0).attr('lterm-no');
+							if(n == $("#no").val()){
+								
+								var m = parseInt(td.eq(5).text().replace(/,/g, ''));
+								remainmoney=parseInt(td.eq(5).text().replace(/,/g, ''));
+								intAmount= parseInt((m*(td.eq(8).text().replace('%', '')))/100);
+								console.log(intAmount);
+							}
+						});
+				    	
 						var vo = {
 								"debtNo":$("#no").val(),//테이블 번호
-								"payPrinc":$("#repay_bal").val(),//상환액
+								"payPrinc":$("#payPrinc").val(),//상환액
 								"payDate":$('input[name=payDate]').val(),//상환일
-								"depositNo":$('input[name=depositNo]').val()//계좌번호
+								"intAmount": intAmount
 						}
 						
+						if(intAmount >= vo.payPrinc){
+							alert("이자 금액보다 납입금이 작습니다 이자("+ intAmount+")이상 입력해주세요");
+							
+							return;
+						}
+						if( remainmoney<= vo.payPrinc){
+							alert("납입금이 상환 잔액보다 큽니다 상환 잔액("+remainmoney+")보다 작게 입력해주세요");
+							return;
+						}
 						// ajax 통신
 						$.ajax({
 							url: "${pageContext.request.contextPath }/11/48/repay",
@@ -746,7 +769,8 @@ $(function(){
 									var td = $(this).children();
 									var n = td.eq(0).attr('lterm-no');
 									if(n == response.data.no){
-										td.eq(5).html(response.data.repayBal);
+										var m = response.data.debtAmount-response.data.repayBal
+										td.eq(5).html(m);
 									}
 								});
 							},

@@ -27,7 +27,8 @@ public class PurchasemanagementVo {
 			this.receiptDate = vo.getReceiptDate();
 			this.releaseDate = vo.getReleaseDate();
 			this.taxbillNo = vo.getTaxbillNo();
-			this.taxType = vo.getTaxType();	
+			this.taxType = vo.getTaxType();
+			this.insertUserid = vo.getInsertUserid();
 			}
 	
 	private String no;					//매입번호

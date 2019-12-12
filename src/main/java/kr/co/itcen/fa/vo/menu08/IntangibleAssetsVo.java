@@ -12,7 +12,7 @@ public class IntangibleAssetsVo {
 	private String customerName;
 	private String customerManager;
 	private String taxbillNo;
-	private String voucherNo;
+	private Long voucherNo;
 	private String sectionNo;
 	private String code;
 	private String classification;
@@ -78,11 +78,11 @@ public class IntangibleAssetsVo {
 		this.taxbillNo = taxbillNo;
 	}
 
-	public String getVoucherNo() {
+	public Long getVoucherNo() {
 		return voucherNo;
 	}
 
-	public void setVoucherNo(String voucherNo) {
+	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
 

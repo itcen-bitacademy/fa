@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
+
 <style>
 tr td:first-child {
 	padding-right: 40px;
@@ -69,14 +71,13 @@ tr td:first-child {
 	
 		<!-- Example row of columns -->
 			<div class="row">
-				<div class="span8">
+				<div class="span10">
 					<table>
 						<tr >
 							<td><h4>은행코드</h4></td>
 							<td>
-								<input type="text" name="code"/>
-									
-								<input id="btn-check-code" type="button" value="중복확인">
+								<input type="text" name="code" class="box" id="code" maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) " required />
+								<input id="btn-check-code" type="button" value="중복확인" />
 								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 							</td>
 						</tr>
@@ -84,43 +85,43 @@ tr td:first-child {
 						<tr >
 							<td><h4>지점명</h4></td>
 							<td colspan="2">
-								<input type="text" name="store"/>
+								<input type="text" name="store" id="store" required />
 							</td>
 						</tr>
 							
 						<tr >
 							<td><h4>FAX</h4></td>
 							<td colspan="2">
-								<input type="text" name="fax"/>
+								<input type="text" name="fax" id="fax" placeholder="팩스번호는 띄어쓰기로 구분." required/>
 							</td>
 						</tr>
 							
 						<tr>
 						<td><h4>거래시작일</h4></td>
-							<td colspan="2">
+ 							<td colspan="2"> 
 								<div class="control-group">
 									<div class="row-fluid input-append">
-										<input class="span7 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
+										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" required/>
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
-							</td>
+ 							</td> 
 						</tr>	
 						
 						<!-- 줄내림  -->
 						<tr style="visibility:hidden;">
 							<td><h4></h4></td>
 							<td colspan="2">
-								<input type="text" name="mgr"/>
+							<input type="text" />	
 							</td>
 						</tr>
 						
 						<tr >
 							<td><h4>담당자</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgr"/>
+								<input type="text" name="mgr" id="mgr" required />
 							</td>
 						</tr>
 						
@@ -128,19 +129,19 @@ tr td:first-child {
 						<tr >
 							<td><h4>담당자전화번호</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgrphone"/>
+								<input type="text" name="mgrPhone" id="mgrPhone" placeholder="전화번호는 띄어쓰기로 구분." required />
 							</td>
 						</tr>
 
 						</table>
 					</div>
 						
-					<div class="span8">
+					<div class="span12">
 						<table>
 							<tr>
 								<td><h4>은행명</h4></td>
 								<td colspan="2">
-									<input type="text" name="name"/>
+									<input type="text" name="name" id="name" required />
 								</td>
 							</tr>
 
@@ -148,7 +149,7 @@ tr td:first-child {
 							<tr >
 								<td><h4>은행전화번호</h4></td>
 								<td colspan="2">
-									<input type="text" name="phone"/>
+									<input type="text" name="phone" id="phone" placeholder="전화번호는 띄어쓰기로 구분." required />
 								</td>
 							</tr>
 							
@@ -173,48 +174,27 @@ tr td:first-child {
 									<div>
 					                 		<input  type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
 									</div>
-								
-			                   	
-			                    
 								</div>
 								</td>
 							</tr>
 							
+									<!-- 줄내림  -->
+								<tr style="visibility:hidden;">
+									<td><h4></h4></td>
+									<td colspan="2">
+									<input type="text" />
+									</td>
+								</tr>
+								
 							
 							
 							<tr >
 								<td><h4>담당자이메일</h4></td>
 								<td colspan="2">
-									<input type="text" name="mgrEmail"/>
+									<input type="email" name="mgrEmail" id="email" required />
+										ex) jisu@naver.com
 								</td>
 							</tr>
-
-
-							
-<!-- 						
-									<div class="control-group"> -->
-<!-- 								<label class="control-label" for="form-field-address">주소</label> -->
-<!-- 								<div class="controls"> -->
-<!-- 			                        <input type="button" class="btn-primary box" -->
-<!-- 			                            onclick="execDaumPostcode()" value="우편번호 찾기"><br> -->
-<!-- 			                   	 </div> -->
-
-
-
-			                
-<!-- 			                   	 <div class="controls"> -->
-<!-- 			                        <input class="span2" type="text" name="post" class="box" id="postcode" -->
-<!-- 			                            placeholder="우편번호" required> -->
-<!-- 			                        <input class="span6" type="text" name="roadAddress" class="box" -->
-<!-- 			                            id="roadAddress" placeholder="도로명주소" required> -->
-<!-- 			                    </div> -->
-			                  
-<!-- 			                    <label class="control-label" for="form-field-address"></label> -->
-<!-- 			                    <div class="controls"> -->
-<!-- 									<input class="span8" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 						
 						</table>
 					</div>
@@ -228,8 +208,8 @@ tr td:first-child {
 				<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 				<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 				<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-				<button class="btn btn-primary btn-small" id="inputbtn" >입력</button>
-				<button type="button" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
+				<button class="btn btn-primary btn-small" id="inputbtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">입력</button>
+				<button type="reset" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
 			</div>
 					
 		</form>			
@@ -378,6 +358,8 @@ tr td:first-child {
                         }
                     }).open();
    		    };
+   		    
+   		    /////////////////////////////////////////////////////////////////////////////////////////
    	
 	        $(function() {
 	        	  $(".chosen-select").chosen();
@@ -386,6 +368,9 @@ tr td:first-child {
 						$(this).prev().focus();
 					});
 					
+		
+			////////////////////////////////////////////////////////////////////////////////////////
+			
 			$("#simple-table tr").click(function(){ 
 				
 				var tr = $(this);
@@ -407,23 +392,64 @@ tr td:first-child {
 		/////////////////////////////////////////////////////////////////
 		//조회시 필요없는 정보 입력 X
 			$("#search").click(function(){
+				$("#name").attr("disabled",true);
+				$("#store").attr("disabled",true);
+				$("#id-date-picker-1").attr("disabled",true);
+				$("#phone").attr("disabled",true);
+				$("#fax").attr("disabled",true);
 				$("#postcode").attr("disabled",true);
 				$("#roadAddress").attr("disabled",true);
 				$("#detailAddress").attr("disabled",true);
+				$("#mgr").attr("disabled",true);
+				$("#mgrPhone").attr("disabled",true);
+				$("#mgrEmail").attr("disabled",true);
+				
+				
+				$("#name").val('');
+				$("#store").val('');
+				$("#id-date-picker-1").val('');
+				$("#phone").val('');
+				$("#fax").val('');
+				$("#postcode").val('');
+				$("#roadAddress").val('');
+				$("#detailAddress").val('');
+				$("#mgr").val('');
+				$("#mgrPhone").val('');
+				$("#mgrEmail").val('');
 				});
+		
+		///////////////////////////////////////////////////////////////
+		//이메일 유효성 검사
+		$('#email').onchage(function(){
+			function validateEmail(email) {
+				var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+				return re.test(email);
+				}
+							
+			
+				var email = $('#email').val();
+				if (email == '' || !re.test($mgrEmail)) {
+					alert("올바른 이메일 주소를 입력하세요")
+				return false;
+				}
+			
+		});
+							
+			
+
 		
 		/////////////////////////////////////////////////////////////////
 		//은행코드 중복체크
-			$("#form-field-code").change(function(){
+			$("#code").change(function(){
 
 				$("#btn-check-code").show();
 				$("#img-checkcode").hide();
 			});	
-			
+		
 			$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
 			$("#btn-check-code").click(function(){
 				
-				var code = $("#form-field-code").val();
+				var code = $("#code").val();
 				if(code == ""){
 					return;
 				}
@@ -441,18 +467,16 @@ tr td:first-child {
 						}
 						console.log(response);
 						
-						
 						if(response.data == true){
 							alert("이미 존재하는 은행코드입니다.");
 							$("#input-code").val("");
-							//$("#inputbtn").hide();
 							$("#input-code").focus();
 							return;
 						}else{
 							$("#inputbtn").show();
-						
 							$("#btn-check-code").hide();
 							$("#img-checkcode").show();
+						
 						}
 						},
 						error:function(xhr,error) {

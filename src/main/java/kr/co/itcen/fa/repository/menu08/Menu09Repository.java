@@ -122,6 +122,12 @@ public class Menu09Repository {
 		return list;
 	}
 
+	public Long getVoucherNo(String id) {
+		
+		Long voucherNo = sqlSession.selectOne("menu09.getVoucher", id);
+		return voucherNo;
+	}
+
 
 	
 }

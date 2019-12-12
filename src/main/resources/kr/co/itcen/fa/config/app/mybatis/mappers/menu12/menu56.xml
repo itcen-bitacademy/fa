@@ -15,46 +15,86 @@
 		</selectKey>
 	</insert>
 	
-	<select id="getList" resultType="currentsituationvo">
+	<select id="getList" resultType="currentsituationvo" parameterType="currentsituationvo">
 	<![CDATA[
-	select sales.section_code as sectioncode,sales.section_name as sectionname,sales.item_code as itemcode,sales.item_name as itemname,
-			purchasemanagement.quantity as purchasemanagementquantity, purchasemanagement.sum_supply_value as purchasemanagementsupplyvalue,
-			purchasemanagement.sum_tax_value as purchasemanagementtaxvalue,purchasemanagement.total_price as purchasemanagementtotalprice,
-	        sales.quantity as salesquantity,sales.sum_supply_value as salessupplyvalue,sales.sum_tax_value as salestaxvalue,sales.total_price as salestotalprice,
-	        purchasemanagement.quantity - sales.quantity as stockquantity,
-	        (purchasemanagement.quantity - sales.quantity)*(purchasemanagement.tax_value+purchasemanagement.supply_value) as stocktotalprice,
-	        (purchasemanagement.quantity-sales.quantity)*purchasemanagement.tax_value as stocktaxvalue
-	from (select section_code,section_name,item_code,item_name,
-				sum(quantity)as quantity,sum(total_price)as total_price,
-	            sum(tax_value)as sum_tax_value,tax_value,
-	            sum(supply_value) as sum_supply_value, supply_value
-			from tb_purchasemanagement_test
-			group by item_code)as purchasemanagement,
-		 (select section_code,section_name,item_code,item_name,
-				sum(quantity)as quantity,sum(total_price)as total_price,
-	            sum(tax_value)as sum_tax_value,tax_value,
-	            sum(supply_value) as sum_supply_value, supply_value
-			from tb_sales_test
-			group by item_code)as sales
-	where purchasemanagement.item_code=sales.item_code;
-	]]>
+	  select  
+		  s.section_code as sectioncode
+          , s.section_name as sectionname
+		  , pi.no as itemcode
+          , pi.name as itemname
+		  , p.quantity as purchasemanagementquantity
+          , p.supply_value as purchasemanagementsupplyvalue
+          , p.tax_value as purchasemanagementtaxvalue
+          , p.total_price as purchasemanagementtotalprice
+		  , s.quantity as salesquantity
+          , s.supply_value as salessupplyvalue
+          , s.tax_value as salestaxvalue
+          , s.total_price as salestotalprice
+          , (p.quantity - s.quantity)as  stockquantity
+          , (p.quantity - s.quantity)*p.supply_value as stocksupplyvalue
+          , (p.quantity - s.quantity)*p.tax_value as stocktaxvalue
+          , (p.quantity - s.quantity)*(p.supply_value+p.tax_value) as stocktotalprice
+    from tb_purchaseitem_test as pi 
+    left join(
+			select 
+			s1.section_code 
+			, s1.section_name
+            , s1.item_code 
+			, s1.item_name 
+			, sum(s1.quantity) as quantity
+			, sum(s1.supply_value) as supply_value
+			, sum(s1.tax_value) as tax_value
+			, sum(s1.total_price) as total_price
+			, s1.sales_date as sales_date
+		from tb_sales_test as s1
+        where 1=1
+        and date_format(s1.sales_date,'%Y-%m') like concat('%',#{searchdate },'%')
+		group by s1.item_name
+		)as s on pi.no = s.item_code
+	left join(
+			select	
+			p1.item_code 
+			, p1.item_name 
+			, sum(p1.quantity) as quantity
+			, sum(p1.supply_value) as supply_value
+			, sum(p1.tax_value) as tax_value
+			, sum(p1.total_price) as total_price
+			, p1.purchase_date as purchase_date
+		  from	tb_purchasemanagement_test as p1
+          where 1=1
+          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')
+	     group	by p1.item_name
+        )as p on pi.no = p.item_code
+		where(p.quantity is not null 
+        or s.quantity is not null)
+      ]]>
+	 <if test="sectioncode!=null and !sectioncode.equals('')">
+	 <![CDATA[
+ 	 and s.section_code = #{sectioncode } 
+ 	 ]]>
+	 </if>
+	 <![CDATA[
+ 	 and pi.no like concat('%',#{itemcode },'%') 
+ 	 ]]> 
+
+		
+	</select>		 
+	
+	<!-- 	대분류명 가져오는 코드 -->
+	<select id="getcategory" resultType="sectionvo">  
+		 select classification,no,code
+		    from tb_section
+		    where parent_no =1
 	</select>
 	
 	
-	<!-- 대분류 목록을 가져오는 코드  -->
-	<!-- sectionvo의 경우 admin사용 하기 위해 만들어준 객체를 사용 -->
-	<select id="getmaincategory" resultType="sectionvo">
-		   select classification, code, no
-    	   from tb_section
-    	   where parent_no is null;
-	</select>
-	
-	<!-- 분류 목록을 가져오는 코드  -->
-	<!-- sectionvo의 경우 admin사용 하기 위해 만들어준 객체를 사용 -->
-	<select id="getsubcategory" resultType="sectionvo" parameterType="int">
-		select classification, code, no
-		from tb_section
-		where parent_no = #{no };
+	<!-- 품목명을 가져오는 코드  -->
+	<select id="getitemname" resultType="currentsituationvo" parameterType="String">
+		    select no as itemcode
+		           ,name as itemname
+		           , section_code as sectioncode
+		    from tb_purchaseitem_test
+		    where section_code like #{sectioncode }
 	</select>
 
 </mapper>

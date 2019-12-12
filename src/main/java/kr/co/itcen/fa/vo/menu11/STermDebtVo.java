@@ -20,7 +20,6 @@ public class STermDebtVo {
 	private String expDate; // 만기일자
 	private Long intRate; // 이율
 	private String intPayWay; // 이자지급방식
-	private Long intAmount; // 이자금액
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
 	private String deptClassification; // 차입금대분류
@@ -113,12 +112,6 @@ public class STermDebtVo {
 	public void setIntPayWay(String intPayWay) {
 		this.intPayWay = intPayWay;
 	}
-	public Long getIntAmount() {
-		return intAmount;
-	}
-	public void setIntAmount(Long intAmount) {
-		this.intAmount = intAmount;
-	}
 	public String getMgr() {
 		return mgr;
 	}
@@ -202,11 +195,11 @@ public class STermDebtVo {
 		return "STermDebtVo [no=" + no + ", code=" + code + ", name=" + name + ", majorCode=" + majorCode
 				+ ", debtAmount=" + debtAmount + ", repayBal=" + repayBal + ", repayWay=" + repayWay
 				+ ", repayCompleFlag=" + repayCompleFlag + ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate
-				+ ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay + ", intAmount="
-				+ intAmount + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", deptClassification=" + deptClassification
-				+ ", bankCode=" + bankCode + ", bankName=" + bankName + ", depositNo=" + depositNo + ", accountNo="
-				+ accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId
-				+ ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
+				+ ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay + ", mgr=" + mgr
+				+ ", mgrCall=" + mgrCall + ", deptClassification=" + deptClassification + ", bankCode=" + bankCode
+				+ ", bankName=" + bankName + ", depositNo=" + depositNo + ", accountNo=" + accountNo + ", voucherNo="
+				+ voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate
+				+ ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
 	}
 
 }

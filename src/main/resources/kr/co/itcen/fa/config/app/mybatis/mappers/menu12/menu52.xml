@@ -30,19 +30,19 @@
 		</if>
 		<if test="no != null and !no.equals('') ">
 			<![CDATA[
-			and no >= #{no }
+			and substring(no, 2) >= #{no }
 			]]>	
 		</if>
 		<if test="preNo != null and !preNo.equals('') ">
 			<![CDATA[
-			and no <= #{preNo }
+			and substring(no, 2) <= #{preNo }
 			]]>	
 		</if>
 	</select>
 	
 	<select id="findAllCustomer" parameterType="map" resultType="salescustomervo">
 		<![CDATA[
-		select no, name, ceo, corporation_no as corporationNo, zip_code as zipCode, address, detail_address as detailAddress, 
+		select substring(no, 2) as no, name, ceo, corporation_no as corporationNo, zip_code as zipCode, address, detail_address as detailAddress, 
 			   concat(address, " (", zip_code, ")", " ", detail_address) as addressAll, phone, conditions, item, date_format(open_date, "%Y-%m-%d") as openDate,
 		       jurisdiction_office as jurisdictionOffice, manager_name as managerName, manager_email as managerEmail,
 		       deposit_no as depositNo, case when delete_flag = 'Y' then '삭제' when delete_flag = 'N' then '' end as deleteFlag, 
@@ -73,12 +73,12 @@
 		</if>
 		<if test="customer.no != null and !customer.no.equals('') ">
 			<![CDATA[
-			and no >= #{customer.no }
+			and substring(no, 2) >= #{customer.no }
 			]]>	
 		</if>
 		<if test="customer.preNo != null and !customer.preNo.equals('') ">
 			<![CDATA[
-			and no <= #{customer.preNo }
+			and substring(no, 2) <= #{customer.preNo }
 			]]>	
 		</if>
 		<![CDATA[
@@ -89,14 +89,14 @@
 	
 	<select id="gets" parameterType="map" resultType="salescustomervo">
 		<![CDATA[
-			select	no, 
+			select	substring(no, 2) as no, 
 			      	name
 			  from	tb_salescustomer
 			  where delete_flag = "N"
 		]]>
 		<if test="no!=null and !no.equals('')">
 			<![CDATA[
-				  and no like CONCAT('%',#{no},'%')
+				  and substring(no, 2) like CONCAT('%',#{no},'%')
 			]]>
 		</if>
 		<if test="name!=null and !name.equals('')">
@@ -108,11 +108,11 @@
 	
 	<select id="get" parameterType="string" resultType="salescustomervo">
 		<![CDATA[
-			select	no, 
+			select	substring(no, 2) as no, 
 			      	name
 			  from	tb_salescustomer
 			  where delete_flag = "N"
-			  and no = #{_parameter }
+			  and substring(no, 2) = #{_parameter }
 		]]>
 	</select>
 </mapper>

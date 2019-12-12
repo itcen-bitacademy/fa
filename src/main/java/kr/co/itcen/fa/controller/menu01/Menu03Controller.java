@@ -82,11 +82,16 @@ public class Menu03Controller {
     // 전표 관리페이지 조회
 	@RequestMapping(value= "/" + SUBMENU + "/read", method=RequestMethod.POST)
 	public String read(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page , Model model) {
-		System.out.println("1 : " + voucherVo.getRegDate());
-		System.out.println("1 : " + voucherVo.getAmount());
-		System.out.println("1 : " + voucherVo.getCustomerNo());
+		System.out.println("regDate : " + voucherVo.getRegDate());
+		System.out.println("amount : " + voucherVo.getAmount());
+		System.out.println("custoemrNo : " + voucherVo.getCustomerNo());
 		// 전표 검색
 		DataResult<VoucherVo> dataResult = menu03Service.selectVoucherCount(voucherVo, page);
+		
+		// 계정조회
+		model.addAttribute("accountList", menu59Service.getAllAccountList());
+		
+		// 테이블 셋팅
 		model.addAttribute("dataResult", dataResult);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu02;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu02.Menu06Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
@@ -42,6 +44,9 @@ public class Menu06Controller {
 	
 	@Autowired
 	private Menu03Service menu03Service;
+	
+	@Autowired
+	private Menu19Service menu19Service;
 
 	@RequestMapping(value = { "", "/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.GET)
 	public String index(Model model) {
@@ -63,9 +68,25 @@ public class Menu06Controller {
 	
 	@RequestMapping(value = {"/" + SUBMENU + "/update" }, method = RequestMethod.POST)
 	public String update(PurchasemanagementVo vo, @AuthUser UserVo authUser) {
-		if("".equals(vo.getTaxbillNo())) {
+//		System.out.println(menu06Service.getVoucherNo(vo));
+//		System.out.println(vo);
+		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
+		//System.out.println(menu06Service.getVoucherNo(vo));
+		if(Integer.parseInt(vo.getTaxbillNo()) == 0 && vo.getVoucherNo() == 0) { // 세금계산서 입력 전에 수정
+			System.out.println("세금계산서 입력 전에 수정");
 			vo.setTaxbillNo("0");
-		} else {
+			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue())*vo.getQuantity());
+			vo.setUpdateUserid(authUser.getId());
+			menu06Service.update(vo);
+		} else if(Integer.parseInt(vo.getTaxbillNo()) != 0 && vo.getVoucherNo() == 0) { // 세금계산서 번호 품목 일괄 업데이트
+			System.out.println("세금계산서 등록");
+			menu06Service.TaxbillUpdate(vo);
+		} else { // 전표에 등록된 매입건 수정
+			System.out.println("전표에 등록된 매입건에 대한 수정");
+			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue())*vo.getQuantity());
+			vo.setUpdateUserid(authUser.getId());
+			menu06Service.update(vo);
+			
 			BuyTaxbillVo buyTaxbillVo = new BuyTaxbillVo();
 			VoucherVo voucherVo = new VoucherVo();
 			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -73,14 +94,16 @@ public class Menu06Controller {
 			
 			buyTaxbillVo = menu06Service.getTaxbillList(vo);
 			CustomerVo customerAccount = menu06Service.getAccount(vo);
-			System.out.println(vo);
-			System.out.println(buyTaxbillVo);
-			System.out.println(customerAccount);
+//			Long voucherNo = menu06Service.getVoucherNo(vo);
+//			System.out.println(menu06Service.getVoucherNo(vo));
+//			System.out.println(vo);
+//			System.out.println(buyTaxbillVo);
+//			System.out.println(customerAccount);
 			ItemVo itemVo = new ItemVo();
 			ItemVo itemVo2 = new ItemVo();
 			ItemVo itemVo3 = new ItemVo();
 			
-			voucherVo.setNo(vo.getVoucherNo());
+			voucherVo.setNo(menu06Service.getVoucherNo(vo)); // voucherno 꺼내서 넣어줘야함 내 전표에 voucherno가 없어서 수정안됨
 			voucherVo.setRegDate(vo.getPurchaseDate());  // 매입일
 			itemVo.setAmount(buyTaxbillVo.getTotalSupplyValue() + buyTaxbillVo.getTotalTaxValue()); // 현금
 			itemVo.setAmountFlag("c");			// 대변 - c
@@ -106,25 +129,35 @@ public class Menu06Controller {
 			mappingVo.setDepositNo(customerAccount.getDepositNo());	 	   // 계좌번호 입력
 			mappingVo.setVoucherNo(vo.getVoucherNo());
 			
-			System.out.println(mappingVo);
-			menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
+			//System.out.println(mappingVo);
+			Long no = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
+			vo.setVoucherNo(no);
+			menu06Service.voucherUpdate(vo);
 		}
-		vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue())*vo.getQuantity());
-		vo.setUpdateUserid(authUser.getId());
-		System.out.println(vo.getTotalPrice());
-		menu06Service.update(vo);
+		
+		//System.out.println(vo.getTotalPrice());
+		//menu06Service.update(vo);
+		
+		
 		return "redirect:/02";
 	}
 	
 	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
-	public String delete(PurchasemanagementVo vo) {
+	public String delete(PurchasemanagementVo vo,  @AuthUser UserVo authUser) {
 		menu06Service.delete(vo);
+		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
+		//System.out.println(vo);
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		VoucherVo voucherVo = new VoucherVo();
+		voucherVo.setNo(vo.getVoucherNo());
+		voucherVolist.add(voucherVo);
+		menu03Service.deleteVoucher(voucherVolist, authUser);
 		return "redirect:/02";
 	}
 
 	@RequestMapping(value = { "", "/" + SUBMENU, "/" + SUBMENU + "/input" }, method = RequestMethod.POST)
 	public String input(PurchasemanagementVo purchasemanagementVo, Long number[], int quantity[], String itemCode[],
-			String itemName[], Long supplyValue[], Long taxValue[], @AuthUser UserVo authUser) {
+			String itemName[], Long supplyValue[], Long taxValue[], @AuthUser UserVo authUser, Model model)  throws ParseException  {
 
 		System.out.println(purchasemanagementVo);
 		Long[] totalPrice = new Long[itemCode.length];
@@ -141,29 +174,43 @@ public class Menu06Controller {
 		purchasemanagementVo.setInsertUserid(authUser.getId());
 		
 		// 배열로 넘어온 테이블 데이터 리스트에 담기
-		if (itemCode.length > 1) {
-			for (int i = 0; i < itemCode.length; i++) {
-				PurchasemanagementVo vo = new PurchasemanagementVo(purchasemanagementVo);
-				vo.setNumber(number[i]);
-				vo.setQuantity(quantity[i]);
-				vo.setItemCode(itemCode[i]);
-				vo.setItemName(itemName[i]);
-				vo.setSupplyValue(supplyValue[i]);
-				vo.setTaxValue(taxValue[i]);
-				totalPrice[i] = (supplyValue[i] + taxValue[i])*quantity[i];
-				vo.setTotalPrice(totalPrice[i]);
-				menu06Service.insert(vo);
-			}
-		} else {
-			purchasemanagementVo.setTotalPrice((purchasemanagementVo.getSupplyValue() + purchasemanagementVo.getTaxValue())*purchasemanagementVo.getQuantity());
-			menu06Service.insert(purchasemanagementVo);
-		}
+		
 
-		return "redirect:/02";
+		//마감 여부 체크
+				if(menu19Service.checkClosingDate(authUser, purchasemanagementVo.getPurchaseDate())) { 
+					System.out.println("마감일자 이전");
+					if (itemCode.length > 1) {
+						for (int i = 0; i < itemCode.length; i++) {
+							PurchasemanagementVo vo = new PurchasemanagementVo(purchasemanagementVo);
+							vo.setNumber(number[i]);
+							vo.setQuantity(quantity[i]);
+							vo.setItemCode(itemCode[i]);
+							vo.setItemName(itemName[i]);
+							vo.setSupplyValue(supplyValue[i]);
+							vo.setTaxValue(taxValue[i]);
+							totalPrice[i] = (supplyValue[i] + taxValue[i])*quantity[i];
+							vo.setTotalPrice(totalPrice[i]);
+							menu06Service.insert(vo);
+						}
+					} else {
+						purchasemanagementVo.setTotalPrice((purchasemanagementVo.getSupplyValue() + purchasemanagementVo.getTaxValue())*purchasemanagementVo.getQuantity());
+						//System.out.println("a : "+purchasemanagementVo);
+						menu06Service.insert(purchasemanagementVo);
+					}
+					return "redirect:/02";
+				} else {
+					System.out.println("마감일자 이후");
+					model.addAttribute("closingDate", true);
+					List<PurchaseitemVo> itemList = menu06Service.getItemList();
+					List<CustomerVo> customerList = menu06Service.getCustomerList();
+					model.addAttribute("itemList", itemList);
+					model.addAttribute("customerList", customerList);
+					return MAINMENU + "/" + SUBMENU + "/list"; 
+				}
 	}
 	
 	@RequestMapping(value="/" + SUBMENU + "/voucher", method=RequestMethod.POST)
-	public String voucher(PurchasemanagementVo vo, @AuthUser UserVo authUser) {
+	public String voucher(PurchasemanagementVo vo, @AuthUser UserVo authUser, Model model) {
 		
 		/////////////////////////////////////
 		// 전표등록
@@ -210,6 +257,10 @@ public class Menu06Controller {
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
 		vo.setVoucherNo(no);
 		menu06Service.voucherUpdate(vo);
+		List<PurchaseitemVo> itemList = menu06Service.getItemList();
+		List<CustomerVo> customerList = menu06Service.getCustomerList();
+		model.addAttribute("itemList", itemList);
+		model.addAttribute("customerList", customerList);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

@@ -19,7 +19,7 @@
 	<!-- 리스트 뽑기 -->
 	<select id="getList" parameterType="map" resultType="1customervo">
 		<![CDATA[
-			select substr(no,2) as no,
+			select concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
      			   name as name, 
        			   ceo as ceo, 
 			       address as address,
@@ -29,7 +29,19 @@
 			       corporation_no as corporationNo, 
 			       open_date as openDate, 
 			       jurisdiction_office as jurisdictionOffice, 
-			       phone as phone, 
+			       (IFNULL(CASE LEFT(phone,2)
+			        WHEN "02" THEN
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            END
+			        ELSE
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            END
+			        END,"없음")) as phone,
 			       manager_name as managerName, 
 			       manager_email as managerEmail,
 			       assets_flag as assetsFlag,
@@ -86,7 +98,7 @@
 	<!-- 거래처 검색(사업자등록번호로) -->
 	<select id="read" parameterType="1customervo" resultType="1customervo">
 		<![CDATA[
-			select substr(no,2) as no,
+			select concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
      			   name as name, 
        			   ceo as ceo, 
 			       address as address,
@@ -96,7 +108,19 @@
 			       corporation_no as corporationNo, 
 			       open_date as openDate, 
 			       jurisdiction_office as jurisdictionOffice, 
-			       phone as phone, 
+			       (IFNULL(CASE LEFT(phone,2)
+			        WHEN "02" THEN
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            END
+			        ELSE
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            END
+			        END,"없음")) as phone, 
 			       manager_name as managerName, 
 			       manager_email as managerEmail,
 			       deposit_no as depositNo,

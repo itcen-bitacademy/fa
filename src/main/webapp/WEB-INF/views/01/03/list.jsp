@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
 <!DOCTYPE html>
 <html lang="ko">
@@ -17,6 +16,12 @@
 .search-input-width-first{
 	width: .span4;
 }
+
+#dialog-message {
+	overflow: auto;
+}
+
+
 </style>
 
 </head>
@@ -32,10 +37,10 @@
 				<div class="page-header position-relative">
 					<h1 class="pull-left">전표관리[1-03]</h1>
 				</div><!-- /.page-header -->
-				<form class="form-horizontal" method="post">
+				<form class="form-horizontal" id="input-form"  method="post">
 					<div class="row-fluid">
-					
 						<div class="span6">
+							
 								<!-- 전표 등록 영역 -->
 								
 								<!-- 전표 등록 날짜 -->
@@ -106,7 +111,7 @@
 						</div>
 	
 						<div class="span6">
-								
+							<div class="tabbable">
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >거래처 코드</label>
 									<div class="controls">
@@ -207,7 +212,7 @@
 									</table>
 								</div>
 								<!-- 거래처 Modal pop-up : end -->
-								
+							</div>
 
 						</div>
 
@@ -218,8 +223,8 @@
 			<!-- buttons -->
 			<div class="row-fluid">
 				<div class="span8">
-						<button type="submit" class="btn btn-info btn-small"  id="btn-read" name="btn-read"
-									formaction="${pageContext.request.contextPath}/01/03/read">조회</button>
+						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
+							formaction="${pageContext.request.contextPath}/01/03/read">조회</button>
 						<button class="btn btn-primary btn-small" type="submit" id="btn-create" name="btn-create"
 							formaction="${pageContext.request.contextPath }/01/03/add">입 력</button>
 						<button class="btn btn-warning btn-small" type="submit" id="btn-update" name="btn-update"
@@ -241,6 +246,7 @@
 							<tr>
 								<th>일자</th>
 								<th>전표번호</th>
+								<th>순번</th>
 								<th>구분</th>
 								<th>계정과목코드</th>
 								<th>계정과목명</th>
@@ -266,6 +272,7 @@
 								<tr>
 									<td>${voucherVo.regDate }</td>
 									<td>${voucherVo.no }</td>
+									<td>${voucherVo.orderNo }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
 								            <td>차변</td>
@@ -303,7 +310,7 @@
 									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
-										<c:when test="${voucherVo.depositHost == '여비' }">
+										<c:when test="${voucherVo.customerName eq '여비' }">
 											<td>${voucherVo.cardNo }</td>
 								            <td></td>
 								            <td>${voucherVo.cardUser }</td>
@@ -555,31 +562,32 @@ $(function(){
 		
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
-		$("input[name=amountFlag]").val(td.eq(2).text());
-		$('#accountNo').val(td.eq(3).text()).trigger('chosen:updated');
-		$("input[name=accountName]").val(td.eq(4).text());
+		$("input[name=orderNo]").val(td.eq(2).text());
+		$("input[name=amountFlag]").val(td.eq(3).text());
+		$('#accountNo').val(td.eq(4).text()).trigger('chosen:updated');
+		$("input[name=accountName]").val(td.eq(5).text());
 		console.log($("input[name=no]").val());
-		if(td.eq(5).text()== "") {
+		if(td.eq(6).text()== "") {
+			$("input[name=amount]").val(td.eq(7).text());	
+		} else {
 			$("input[name=amount]").val(td.eq(6).text());	
-		} else {
-			$("input[name=amount]").val(td.eq(5).text());	
 		}
-		$("input[name=customerNo]").val(td.eq(7).text());
-		$("input[name=customerName]").val(td.eq(8).text());
-		$("input[name=manageName]").val(td.eq(9).text());
-		$("input[name=manageNo]").val(td.eq(10).text());
-		$("input[name=bankCode]").val(td.eq(11).text());
-		$("input[name=bankName]").val(td.eq(12).text());
-		$("input[name=cardNo]").val(td.eq(13).text());
-		$("input[name=depositNo]").val(td.eq(14).text());
-		if(td.eq(13).text()== "") {
-			$("input[name=depositHost]").val(td.eq(15).text());
+		$("input[name=customerNo]").val(td.eq(8).text());
+		$("input[name=customerName]").val(td.eq(9).text());
+		$("input[name=manageName]").val(td.eq(10).text());
+		$("input[name=manageNo]").val(td.eq(11).text());
+		$("input[name=bankCode]").val(td.eq(12).text());
+		$("input[name=bankName]").val(td.eq(13).text());
+		$("input[name=cardNo]").val(td.eq(14).text());
+		$("input[name=depositNo]").val(td.eq(15).text());
+		if(td.eq(14).text()== "") {
+			$("input[name=depositHost]").val(td.eq(16).text());
 		} else {
-			$("input[name=cardUser]").val(td.eq(15).text());
+			$("input[name=cardUser]").val(td.eq(16).text());
 		}
 		
-		$("input[name=voucherUse]").val(td.eq(16).text());
-		$("input[name=insertTeam]").val(td.eq(17).text());
+		$("input[name=voucherUse]").val(td.eq(17).text());
+		$("input[name=insertTeam]").val(td.eq(18).text());
 		
 		$("input[name=bankName]").prop("readonly", true);
 		$("input[name='bankLocation']").prop("readonly", true);
@@ -593,6 +601,7 @@ $(function(){
     	$('#accountName').val(accountName);
    	});
 	
+	// 팝업
     $(function() {
 	      $("#dialog-message").dialog({
 	         autoOpen : false
@@ -601,11 +610,11 @@ $(function(){
 	      $("#a-customerinfo-dialog").click(function() {
 	         $("#dialog-message").dialog('open');
 	         $("#dialog-message").dialog({
-	            title: "계좌정보",
+	            title: "거래처정보",
 	            title_html: true,
 	               resizable: false,
 	             height: 500,
-	             width: 400,
+	             width: 700,
 	             modal: true,
 	             close: function() {
 	                $('#tbody-customerList tr').remove();
@@ -644,6 +653,18 @@ $(function(){
       	  	var customerList = result.customerList;
       	  	console.log(result.customerList);
       	  	for(let a in customerList) {
+      	  		if(customerList[a].cardNo != null) { // 카드번호값 셋팅
+      	  			var cardNo = customerList[a].cardNo;
+      	  		} else {
+      	  			cardNo = '';
+      	  		}
+      	  		
+	      	  	if(customerList[a].depositNo != null) {
+	  	  			var depositNo = customerList[a].depositNo;
+	  	  		} else {
+	  	  			depositNo = '';
+	  	  		}
+	      	  	
       	  		if(customerList[a].customerName == '여비') {
       	  			var host = customerList[a].cardUser;
       	  		} else {
@@ -655,8 +676,8 @@ $(function(){
                         "<td class='center'>" + customerList[a].customerName + "</td>" +
                         "<td class='center'>" + customerList[a].bankCode + "</td>" +
                         "<td class='center'>" + customerList[a].bankName + "</td>" +
-                        "<td class='center'>" + customerList[a].cardNo + "</td>" +
-                        "<td class='center'>" + customerList[a].depositNo + "</td>" +
+                        "<td class='center'>" + cardNo + "</td>" +
+                        "<td class='center'>" + depositNo + "</td>" +
                         "<td class='center'>" + host + "</td>" +
                         "</tr>");
       	  	}
@@ -682,6 +703,23 @@ $(function(){
      $("#dialog-message").dialog('close');
   });
 	
+  
+  
+  // 금액 3자리 , 찍기
+  /**
+  function addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+ }
+ $("input[name=amount]").on('keyup', function(event){
+ 	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+ });
+ //
+ $("#input-form").submit(function(event) {
+	 
+ });
+ */
+ 
+ 
 }); // $(function
 
 </script>

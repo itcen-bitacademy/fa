@@ -24,18 +24,14 @@ public class Menu59Service {
 	@Autowired
 	private Menu59Repository menu59Repository;
 	
-	public Boolean insert(AccountManagementVo vo) {		
-
-		return menu59Repository.insert(vo);	
-	}
-	
-	public DataResult<AccountManagementVo> getList(AccountManagementVo vo, int page ,int pagee ){
+	//재무제표 계정관리 조회
+	public DataResult<AccountManagementVo> getList(AccountManagementVo vo, int page ){
 		DataResult<AccountManagementVo> dataResult = new DataResult<>();
 		
 		int totalCount = menu59Repository.selectCount(vo);
 		System.out.println(totalCount);
 		
-		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, pagee, 5);	
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);	
 		if(totalCount == 0) {
 			paginationUtil.setListSize(0);
 			paginationUtil.setPageSize(0);
@@ -56,31 +52,102 @@ public class Menu59Service {
 		return dataResult;
 	}
 	
+	//계정과목, 계정명칭 조회
 	public List<AccountManagementVo> getAllAccountList(){
 		
 		return menu59Repository.getAllAccountList();
 	}
+	
+	//재무제표 계정관리 저장
+	public DataResult<AccountManagementVo> add(AccountManagementVo vo) {		
+		DataResult<AccountManagementVo> dataResult = new DataResult<>();
+		
+		if(vo.getAccountNo() == null || vo.getAccountUsedyear() == null || vo.getAccountOrder() == null) {
+			dataResult.setStatus(false);
+			dataResult.setError("데이터를 입력해주세요");
+			
+			return dataResult;
+		}
+		
+		if(menu59Repository.chechedAccount(vo).size() < 1) {	
+			menu59Repository.add(vo);
+		}else {
+			dataResult.setStatus(false);
+			dataResult.setError("이미 존재하는 데이터입니다.");
+		}
+		
+		return dataResult;	
+	}
+	
+	//수정
+	public DataResult<AccountManagementVo> update(AccountManagementVo vo) {
+		DataResult<AccountManagementVo> dataResult = new DataResult<>();
+		
+		if(vo.getAccountNo() == null || vo.getAccountUsedyear() == null || vo.getAccountOrder() == null) {
+			dataResult.setStatus(false);
+			dataResult.setError("데이터를 입력해주세요");
+			
+			return dataResult;
+		}
+		
+		List<AccountManagementVo> list = menu59Repository.chechedAccount(vo);
+		
+		if(list.size() >= 1) {
+			if(list.get(0).getAccountOrder() != vo.getAccountOrder()) {		
+				if(list.get(0).getAccountNo().equals(vo.getAccountNo())) {
+					if(menu59Repository.chechedAccount3(vo).size() < 1) {
 
-	public Boolean update(AccountManagementVo vo) {
-		Boolean count = menu59Repository.update(vo);
-		return count;	
+						vo.setUpdateUserid(vo.getUpdateUserid());
+	
+						menu59Repository.update(vo);
+					} else {
+
+						//result = "overlap";
+						//model.addAttribute("result", result);
+						
+						dataResult.setStatus(false);
+						dataResult.setError("이미 존재하는 데이터입니다.");
+						
+						return dataResult;
+					}
+				}else {				
+					if(menu59Repository.chechedAccount2(vo).size() < 1) {
+						//result = "nono";
+						//model.addAttribute("result", result);
+						
+						vo.setUpdateUserid(vo.getUpdateUserid());
+	
+						menu59Repository.update(vo);
+					}else {
+						dataResult.setStatus(false);
+						dataResult.setError("이미 존재하는 데이터입니다.");
+						
+						return dataResult;
+					}
+				}
+			}else {
+				dataResult.setStatus(false);
+				dataResult.setError("이미 존재하는 데이터입니다.");
+				
+				return dataResult;
+			}
+			
+		}else {			
+			dataResult.setStatus(false);
+			dataResult.setError("없는 데이터는 수정이 불가합니다.");
+			
+			return dataResult;
+
+		}
+		
+		return dataResult;	
 	}	
 	
+	//삭제
 	public Boolean delete(Long no) {
 		Boolean count = menu59Repository.delete(no);
 		return count;	
 	}
 	
-	public List<AccountManagementVo> chechedAccount(AccountManagementVo vo) {
-		return menu59Repository.chechedAccount(vo);	
-	}
-	
-	public List<AccountManagementVo> chechedAccount2(AccountManagementVo vo) {
-		return menu59Repository.chechedAccount2(vo);	
-	}
-	
-	public List<AccountManagementVo> chechedAccount3(AccountManagementVo vo) {
-		return menu59Repository.chechedAccount3(vo);	
-	}
 	
 }

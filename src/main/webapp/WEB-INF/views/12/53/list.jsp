@@ -267,9 +267,9 @@
 										<td>${status.count}</td>
 										<td>${list.itemCode}</td>
 										<td>${list.itemName}</td>
-										<td><input id="quantity" readonly value="${list.quantity}" style="text-align: center;"></td>
-										<td><input id="supplyValue" readonly value="${list.supplyValue}" style="text-align: center;"></td>
-										<td><input id="taxValue" readonly value="${list.taxValue}" style="text-align: center;"></td>
+										<td><input id="quantity${status.index+1 }" readonly value="${list.quantity}" style="text-align: center;"></td>
+										<td><input id="supplyValue${status.index+1 }" readonly value="${list.supplyValue}" style="text-align: center;"></td>
+										<td><input id="taxValue${status.index+1 }" readonly value="${list.taxValue}" style="text-align: center;"></td>
 									</tr>
 								</c:forEach>
 								</tbody>
@@ -347,29 +347,33 @@
 				
         	addQuantity: function(){
         		var sum = 0;
+        		
         		for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-        			sum = sum + Number($("#quantity").val());
+        			
+        			sum = sum + Number($("#quantity"+i).val());
+        			console.log(sum);
         			$("#totalQuantity").val(sum);
         		}
         	},
         	
         	addSupplyValue: function(){
 				var sum = 0;
+				
 				for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-					sum = sum + Number($("#quantity").val())*Number($("#supplyValue").val());
+					sum = sum + Number($("#quantity"+i).val())*Number($("#supplyValue"+i).val());
 					$("#totalSupplyValue").val(sum);
 				}
 			},
+			
 			addTaxValue: function(){
         		var sum = 0;
+        		
         		for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-        			sum = sum + Number($("#quantity").val())*Number($("#taxValue").val());
+        			sum = sum + Number($("#quantity"+i).val())*Number($("#taxValue"+i).val());
         			$("#totaltaxValue").val(sum);
         		}
         	}
         }
-
-
 		
 		function update(){
 			var code = $("#salesNo").val();
@@ -381,7 +385,7 @@
 			
 			if($("#taxbillNo").val().trim() != ""){
 				console.log($("#taxbillNo").val() + "not null");
-/* 				if($("#write_date").val() != null){ */
+				/* 				if($("#write_date").val() != null){ */
 					var url = "${pageContext.request.contextPath }/12/53/update/"+code;
 					if($("#flag").val() == "true"&&code!=""){
 						$("#insert-form").attr("action",url).submit();

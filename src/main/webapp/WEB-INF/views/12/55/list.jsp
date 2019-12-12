@@ -29,7 +29,7 @@ $(function() {
 	};
 
 	// 년월 설정 데이트피커
-	$('#cl-ym-date-picker').datepicker({
+	$('#datepicker').datepicker({
 		maxViewMode: 4,
 		minViewMode: 1,
 		language: 'ko'
@@ -66,7 +66,7 @@ $(function() {
 												style="text-align: left; width: 120px;"> 년 월</label>
 											<div class="controls" style="margin-left: 120px;">
 												<div class="row-fluid input-append">
-													<input class="span11 date-picker" id="searchdate"
+													<input class="span11 date-picker" id="datepicker"
 														name="searchdate" type="text"
 														data-date-format="yyyy-mm" /> <span class="add-on">
 														<i class="icon-calendar"></i>
@@ -75,8 +75,8 @@ $(function() {
 												
 													<!-- searchdate 상태 유지 -->
 													<script type="text/javascript">
-													var searchdate = "${param.searchdate}";
-													$("#searchdate").val(searchdate);
+													var datepicker = "${param.datepicker}";
+													$("#datepicker").val(datepicker);
 													</script>
 											</div>
 										</div>
@@ -86,10 +86,9 @@ $(function() {
 											<label class="control-label" for="form-field-select-2"
 												style="text-align: left; width: 120px;">품목명</label>
 											<div class="controls" style="margin-left: 120px;">
-												<select class="chosen-select" id="itemname"
-													name="itemname" data-placeholder="품목명 선택">
+												<select class="chosen-select" id="itemname"	name="itemcode" data-placeholder="품목명 선택">
 													<c:forEach items='${itemname }' var='itemname' varStatus='status'>
-														<option value="${itemname.itemname }">${itemname.itemname }</option>
+														<option value="${itemname.itemcode }">${itemname.itemname }</option>
 													</c:forEach>
 												</select>
 													<!-- itemname 상태 유지 -->
@@ -124,14 +123,14 @@ $(function() {
 										<th>출고공급가액</th>
 										<th>출고부가세</th>
 										<th>출고금액</th>
-<!-- 									<th>재고수량</th> -->
-<!-- 									<th>재고금액</th> -->
-<!-- 									<th>재고부가세</th> -->
+										<th>재고수량</th>
+										<th>재고공급가액</th>
+										<th>재고부가세</th>
+										<th>재고금액</th>
 									</tr>
 									</thead>
 									<c:forEach items='${list }' var='vo' varStatus='status'>
 									<tr>
-										<c:if test='${vo.purchasemanagementquantity ne null ||vo.salesquantity ne null}'>
 											<td>${vo.itemcode }</td>
 											<td>${vo.itemname }</td>
 											<td>${vo.purchasemanagementquantity }</td>
@@ -142,11 +141,11 @@ $(function() {
 											<td>${vo.salessupplyvalue }</td>
 											<td>${vo.salestaxvalue }</td>
 											<td>${vo.salestotalprice }</td>
-										</c:if>
-										
-<%-- 										<td>${vo.stockquantity }</td> --%>
-<%-- 										<td>${vo.stocktotalprice }</td> --%>
-<%-- 										<td>${vo.stocktaxvalue }</td> --%>
+											<td>${vo.stockquantity }</td>
+											<td>${vo.stocksupplyvalue }</td>
+											<td>${vo.stocktaxvalue }</td>
+											<td>${vo.stocktotalprice }</td>
+		
 									</tr>
 									</c:forEach>
 								</table>

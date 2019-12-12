@@ -151,6 +151,8 @@ public class Menu07Controller {
 		model.addAttribute("blockLastNum", blockLastNum);
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("curPage", curPage);
+		System.out.println("startPage : " + startPage + "endPage : " + endPage + "blockStartNum : " + blockStartNum + "blockLastNum : " + blockLastNum +
+				"lastPage : " + lastPage + "curPage : " + curPage);
 		return result;
 	}
 }

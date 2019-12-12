@@ -27,112 +27,7 @@
 	border: 0
 }
 </style>
-<script>
-	var cnt = 2;
-	function add_row() {
-		var table = document.getElementById("sample-table-1");
-		var row = table.insertRow(table.rows.length); // 하단에 추가
 
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-		var cell3 = row.insertCell(2);
-		var cell4 = row.insertCell(3);
-		var cell5 = row.insertCell(4);
-		var cell6 = row.insertCell(5);
-		cell1.innerHTML = '<td><p>' + cnt + '</p></td>';
-		cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" name="purchaseDate"></td>';
-		cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName"></td>';
-		cell4.innerHTML = '<td><input type="text" id="amount'+cnt+'" name="amount"></td>';
-		cell5.innerHTML = '<td><input type="text" id="supply-value'
-				+ cnt
-				+ '" name="supplyValue" onkeyup="sum_allsupply_alltax();"></td>';
-		cell6.innerHTML = '<td><input type="text" id="tax-value'+cnt+'" name="taxValue"></td>';
-		cnt++;
-
-	}
-
-	function delete_row() {
-
-		var table = document.getElementById('sample-table-1');
-		if (table.rows.length < 3) {
-			return;
-		} else {
-			cnt--
-			table.deleteRow(table.rows.length - 1);
-		}
-	}
-
-	function sum_allsupply_alltax() {
-		var sum = 0;
-		for (var i = 1; i < cnt; i++) {
-			var supply_value = document.getElementById('supply-value' + i).value;
-			var amount = document.getElementById('amount' + i).value;
-			sum = sum + (supply_value * amount);
-		}
-		document.getElementById('form-field-14').value = sum;
-		document.getElementById('form-field-15').value = sum * 0.1;
-
-	}
-
-	function load_customer_imfo() {
-		var company_name = document.getElementById("company-name").value;
-		var deposit_no;
-		alert(company_name);
-		if (company_name == "") {
-			$("#customer-name").val("");
-			$("#customer-address").val("");
-			$("#conditions").val("");
-			$("#items").val("");
-			$("#customer-no").val("");
-			$("#deposit-no").val("");
-			$("#deposit-host").val("");
-			$("#bank-code").val("");
-			$("#bank-name").val("");
-		} else {
-			<c:forEach items="${customerList }" var="list" varStatus="status">
-			if (company_name == "${list.name }") {
-				$("#customer-name").val("${list.ceo}");
-				$("#customer-address").val("${list.address}");
-				$("#conditions").val("${list.conditions}");
-				$("#items").val("${list.item}");
-				$("#customer-no").val("${list.no}");
-				deposit_no = "${list.depositNo }";
-				alert(deposit_no);
-			}
-			</c:forEach>
-			<c:forEach items="${customerBankList }" var="list" varStatus="status">
-			if (deposit_no == "${list.depositNo}") {
-				$("#deposit-no").val("${list.depositNo}");
-				$("#deposit-host").val("${list.depositHost}");
-				$("#bank-code").val("${list.bankCode}");
-				$("#bank-name").val("${list.bankName}");
-			}
-			</c:forEach>
-		}
-	}
-
-	function update_button() {
-		$("#manage-form")
-				.attr(
-						"action",
-						"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update")
-				.submit();
-	}
-	function delete_button() {
-		$("#manage-form")
-				.attr(
-						"action",
-						"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
-				.submit();
-	}
-	function lookup_button() {
-		$("#manage-form")
-				.attr(
-						"action",
-						"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/lookUp")
-				.submit();
-	}
-</script>
 </head>
 <body class="skin-3" style="min-width: 1920px">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -307,13 +202,13 @@
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-13">일자</label>
+								<label class="control-label span1" for="id-date-picker-1">일자</label>
 								<div class="controls span2">
 									<div class="input-append" style="width: 100%">
-										<input id="id-date-picker-1" class="cl-date-picker"
+										<input id="id-date-picker-1" class="calender"
 											value="${getAboutNoData.writeDate }" name="writeDate"
-											type="text"> <span class="add-on"> <i
-											class="icon-calendar"></i>
+											type="text" autocomplete="off"> <span class="add-on">
+											<i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
@@ -364,8 +259,8 @@
 												varStatus="status">
 												<tr>
 													<td><p>${status.count }</p></td>
-													<td><input type="text" id="date1" name="purchaseDate"
-														value="${items.purchaseDate }"></td>
+													<td><input type="text" id="date1" class="calender"
+														name="purchaseDate" value="${items.purchaseDate }" autocomplete="off"></td>
 													<td><input type="text" id="item1" name="itemName"
 														value="${items.itemName }"></td>
 													<td><input type="text" id="amount1"
@@ -382,7 +277,8 @@
 										<c:otherwise>
 											<tr>
 												<td><p>1</p></td>
-												<td><input type="text" id="date1" name="purchaseDate"></td>
+												<td><input type="text" id="date1" class="calender"
+													name="purchaseDate" autocomplete="off"></td>
 												<td><input type="text" id="item1" name="itemName"></td>
 												<td><input type="text" id="amount1"
 													onkeyup="sum_allsupply_alltax();" name="amount"></td>
@@ -408,7 +304,6 @@
 								<button class="btn btn-default btn-small" type="button"
 									style="float: left; margin-left: 20px;"
 									onclick="lookup_button();">조회</button>
-
 							</div>
 							<!-- PAGE CONTENT ENDS -->
 						</div>
@@ -448,20 +343,120 @@
 				weekStart : 0
 			};
 
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode : 4,
-				minViewMode : 1,
-				language : 'ko'
-			}).next().on(ace.click_event, function() {
-				$(this).prev().focus();
-			});
-
-			$('.cl-date-picker').datepicker({
+			$('.calender').datepicker({
 				language : 'ko'
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
 		})
+
+		var cnt = 2;
+		function add_row() {
+			var table = document.getElementById("sample-table-1");
+			var row = table.insertRow(table.rows.length); // 하단에 추가
+
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			var cell5 = row.insertCell(4);
+			var cell6 = row.insertCell(5);
+
+			cell1.innerHTML = '<td><p>' + cnt + '</p></td>';
+			cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" class="calender" name="purchaseDate" autocomplete="off"></td>';
+			cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName"></td>';
+			cell4.innerHTML = '<td><input type="text" id="amount'+cnt+'" name="amount"></td>';
+			cell5.innerHTML = '<td><input type="text" id="supply-value'
+					+ cnt
+					+ '" name="supplyValue" onkeyup="sum_allsupply_alltax();"></td>';
+			cell6.innerHTML = '<td><input type="text" id="tax-value'+cnt+'" name="taxValue"></td>';
+			cnt++;
+
+		}
+
+		function delete_row() {
+
+			var table = document.getElementById('sample-table-1');
+			if (table.rows.length < 3) {
+				return;
+			} else {
+				cnt--
+				table.deleteRow(table.rows.length - 1);
+			}
+		}
+	</script>
+
+	<script>
+		function sum_allsupply_alltax() {
+			var sum = 0;
+			for (var i = 1; i < cnt; i++) {
+				var supply_value = document.getElementById('supply-value' + i).value;
+				var amount = document.getElementById('amount' + i).value;
+				sum = sum + (supply_value * amount);
+			}
+			document.getElementById('form-field-14').value = sum;
+			document.getElementById('form-field-15').value = sum * 0.1;
+
+		}
+
+		function load_customer_imfo() {
+			var company_name = document.getElementById("company-name").value;
+			var deposit_no;
+			alert(company_name);
+			if (company_name == "") {
+				$("#customer-name").val("");
+				$("#customer-address").val("");
+				$("#conditions").val("");
+				$("#items").val("");
+				$("#customer-no").val("");
+				$("#deposit-no").val("");
+				$("#deposit-host").val("");
+				$("#bank-code").val("");
+				$("#bank-name").val("");
+			} else {
+				<c:forEach items="${customerList }" var="list" varStatus="status">
+				if (company_name == "${list.name }") {
+					$("#customer-name").val("${list.ceo}");
+					$("#customer-address").val("${list.address}");
+					$("#conditions").val("${list.conditions}");
+					$("#items").val("${list.item}");
+					$("#customer-no").val("${list.no}");
+					deposit_no = "${list.depositNo }";
+					alert(deposit_no);
+				}
+				</c:forEach>
+				<c:forEach items="${customerBankList }" var="list" varStatus="status">
+				if (deposit_no == "${list.depositNo}") {
+					$("#deposit-no").val("${list.depositNo}");
+					$("#deposit-host").val("${list.depositHost}");
+					$("#bank-code").val("${list.bankCode}");
+					$("#bank-name").val("${list.bankName}");
+				}
+				</c:forEach>
+			}
+		}
+
+		function update_button() {
+			$("#manage-form")
+					.attr(
+							"action",
+							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update")
+					.submit();
+		}
+		function delete_button() {
+			$("#manage-form")
+					.attr(
+							"action",
+							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
+					.submit();
+		}
+		function lookup_button() {
+			$("#manage-form")
+					.attr(
+							"action",
+							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/lookUp")
+					.submit();
+		}
 	</script>
 </body>
 </html>

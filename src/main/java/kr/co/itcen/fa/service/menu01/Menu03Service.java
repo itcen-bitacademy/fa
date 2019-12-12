@@ -114,7 +114,7 @@ public class Menu03Service {
    public DataResult<VoucherVo> selectVoucherCount(VoucherVo voucherVo, int page) {
    
 	   DataResult<VoucherVo> dataResult = new DataResult<VoucherVo>();
-	   
+	   System.out.println("regDateService :" + voucherVo.getRegDate());
 	   int totalCount = menu03Repository.selectVoucherCount(voucherVo);
 	   PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
 	   dataResult.setPagination(paginationUtil);

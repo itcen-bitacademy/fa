@@ -21,6 +21,7 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 	jQuery(function($) {
+		$(".td-hide").hide();
 		
 		$('table th input:checkbox').on('click' , function(){
 			var that = this;
@@ -78,20 +79,23 @@
 			var ceo = td.eq(3).text();
 			var corporationNo = td.eq(4).text();
 			var addressAll = td.eq(5).text();
-			var zipCode = addressAll.substring(addressAll.indexOf("(")+1, addressAll.indexOf(")"));
-			var address = addressAll.substring(0, addressAll.indexOf("(")-1);
-			var detailAddress = addressAll.substring(addressAll.indexOf(")")+2);
-			var phone = td.eq(6).text();
-			var conditions = td.eq(7).text();
-			var item = td.eq(8).text();
-			var openDate = td.eq(9).text();
-			var jurisdictionOffice = td.eq(10).text();
-			var managerName = td.eq(11).text();
-			var managerEmail = td.eq(12).text();
-			var depositNo = td.eq(13).text();
-			var depositHost = td.eq(14).text();
-			var bankCode = td.eq(15).text();
-			var bankName = td.eq(16).text();
+			var zipCode =  td.eq(6).text();
+			//addressAll.substring(addressAll.indexOf("(")+1, addressAll.indexOf(")"));
+			var address = td.eq(7).text();
+			//addressAll.substring(0, addressAll.indexOf("(")-1);
+			var detailAddress = td.eq(8).text(); 
+			//addressAll.substring(addressAll.indexOf(")")+2);
+			var phone = td.eq(9).text();
+			var conditions = td.eq(10).text();
+			var item = td.eq(11).text();
+			var openDate = td.eq(12).text();
+			var jurisdictionOffice = td.eq(13).text();
+			var managerName = td.eq(14).text();
+			var managerEmail = td.eq(15).text();
+			var depositNo = td.eq(16).text();
+			var depositHost = td.eq(17).text();
+			var bankCode = td.eq(18).text();
+			var bankName = td.eq(19).text();
 			
 			$("#no").val(no);
 			$("#preNo").val(no);
@@ -413,8 +417,8 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">은행</label>
 										<div class="controls">
-											<input class="span2" type="text" id="form-field-1" readonly name="bankCode">
-											<input class="span6" type="text" id="form-field-1" readonly name="bankName">
+											<input class="span2" type="text" id="bankCode" readonly name="bankCode">
+											<input class="span6" type="text" id="bankName" readonly name="bankName">
 										</div>
 									</div>
 								</div>
@@ -513,6 +517,9 @@
 												<td>${customer.ceo }</td>
 												<td>${customer.corporationNo }</td>
 												<td>${customer.addressAll }</td>
+												<td class="td-hide">${customer.zipCode }</td>
+												<td class="td-hide">${customer.address }</td>
+												<td class="td-hide">${customer.detailAddress }</td>
 												<td>${customer.phone }</td>
 												<td>${customer.conditions }</td>
 												<td>${customer.item }</td>
@@ -529,6 +536,7 @@
 												<td>${customer.updateDay }</td>
 												<td>${customer.updateUserid }</td>
 												<td>${customer.deleteFlag }</td>
+												
 											</tr>
 										</c:forEach>
 									</tbody>

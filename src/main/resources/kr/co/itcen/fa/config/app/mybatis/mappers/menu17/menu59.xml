@@ -96,6 +96,7 @@
  	     and use_yn = 1
  	     and (account_order = #{accountOrder } or account_no = #{accountNo })
          and account_statement_type = #{accountStatementType }
+         and account_usedyear = #{accountUsedyear }
 		]]>
 	</select>
 
@@ -109,6 +110,7 @@
  	     and use_yn = 1
  	     and account_no = #{accountNo }
          and account_statement_type = #{accountStatementType }
+         and account_usedyear = #{accountUsedyear }
 		]]>
 	</select>
 	
@@ -122,6 +124,7 @@
  	     and use_yn = 1
  	     and account_order = #{accountOrder }
          and account_statement_type = #{accountStatementType }
+         and account_usedyear = #{accountUsedyear }
 		]]>
 	</select>
 		

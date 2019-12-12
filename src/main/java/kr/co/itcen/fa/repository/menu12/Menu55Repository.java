@@ -32,8 +32,8 @@ public class Menu55Repository {
 		return list;
 	}
 	
-	public List<CurrentSituationVo> getitemname(String itemname) {
-		List<CurrentSituationVo> result = sqlSession.selectList("menu55.getitemname");
+	public List<CurrentSituationVo> getitemcode(String itemcode) {
+		List<CurrentSituationVo> result = sqlSession.selectList("menu55.getitemcode",itemcode);
 		return result;
 		
 		
