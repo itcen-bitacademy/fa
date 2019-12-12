@@ -7,10 +7,12 @@ public class RepayVo {
 	private Long no;// 번호
 	private Long debtNo;//사채,장기,단기 번호
 	private Long payPrinc;//상환액
+	private Long intAmount;	//이자금액
 	private String payDate;//상환 일
 	private	String debtType;//사채,장기,단기 구분
 	private String depositNo;//계좌번호
 	private Long voucherNo;//전표번호
+	private Long accountNo = 9201101L;		//이자 비용 계정코드
 	private String deleteFlag;//식제여부
 	private String insertId;//등록자
 	private String insertDate;//등록일
@@ -28,6 +30,12 @@ public class RepayVo {
 	}
 	public void setPayPrinc(Long payPrinc) {
 		this.payPrinc = payPrinc;
+	}
+	public Long getIntAmount() {
+		return intAmount;
+	}
+	public void setIntAmount(Long intAmount) {
+		this.intAmount = intAmount;
 	}
 	public String getPayDate() {
 		return payDate;
@@ -52,6 +60,12 @@ public class RepayVo {
 	}
 	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
+	}
+	public Long getAccountNo() {
+		return accountNo;
+	}
+	public void setAccountNo(Long accountNo) {
+		this.accountNo = accountNo;
 	}
 	public String getDeleteFlag() {
 		return deleteFlag;
