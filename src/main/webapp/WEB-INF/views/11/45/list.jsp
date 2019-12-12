@@ -67,7 +67,6 @@ form {
 			
 				<div class="page-header position-relative">
 					<h1 class="pull-left">은행코드 현황조회</h1>
-					<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div><!-- /.page-header -->
 				
 				<!-- PAGE CONTENT BEGINS -->
@@ -90,7 +89,7 @@ form {
 							<td class="fifth-column center"><h4>거래시작일</h4></td>
 							<td class="sixth-column">
 									<div class="row-fluid input-append">
-										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd"  />
+										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" readOnly />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
