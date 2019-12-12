@@ -58,112 +58,6 @@
 			$(this).prev().focus();
 		});
 		
-		$("#input-form").submit(function(event) {
-	        event.preventDefault();
-	        $("input[name=balance]").val(0);
-			$("input[name=depositLimit]").val(0);			
-			$("input[name=profit]").val(0);
-			
-			var queryString = $("form[name=input-form]").serializeArray();
-				
-			$.ajax({
-				url : "${pageContext.request.contextPath}/01/26/read",
-				type : "POST",
-				data : queryString,
-				dataType : "json",
-				success : function(dataResult) {
-					if (dataResult.success) {
-						
-						removeTable();
-			    		var bankList = dataResult.bankList;
-			    		createNewTable(bankList);
-			    		
-			    		$('#pagination ul').remove();
-			    		createNewPage(dataResult);
-			    		$('#pagination').show();
-					}
-				},
-				error : function(err) {
-					console.log(err)
-				}
-			})
-
-		});
-		
-		
-		
-		function removeTable(){
-			  // 원래 테이블 제거
-			  $(".origin-tbody").remove();
-			  // ajax로 추가했던 테이블 제거
-			  $(".new-tbody").remove();
-		}
-		function createNewTable(bankList){
-			  var $newTbody = $("<tbody class='new-tbody'>")
-			  $("#simple-table-1").append($newTbody)
-				
-			  for(let bankdeposit in bankList){
-				  $newTbody.append(
-				   	"<tr>" +
-			        "<td>" + bankList[bankdeposit].depositNo + "</td>" +
-			        "<td>" + bankList[bankdeposit].bankCode + "</td>" +
-			        "<td>" + bankList[bankdeposit].depositHost + "</td>" +
-			        "<td>" + bankList[bankdeposit].makeDate + "</td>" +
-			        "<td>" + bankList[bankdeposit].enDate + "</td>" +
-			        "<td>" + bankList[bankdeposit].balance + "</td>" +	
-			        "<td>" + bankList[bankdeposit].depositLimit + "</td>" +
-			        "<td>" + bankList[bankdeposit].profit + "</td>" +
-			        "<td>" + bankList[bankdeposit].bankName + "</td>" +
-			        "<td>" + bankList[bankdeposit].bankLocation + "</td>" +
-			        "<td>" + bankList[bankdeposit].banker + "</td>" +
-			        "<td>" + bankList[bankdeposit].bankPhoneCall + "</td>" +
-			        "<td>" + bankList[bankdeposit].insertUserId + "</td>" +
-			        "<td>" + bankList[bankdeposit].insertDay + "</td>" +
-			        "<td>" + bankList[bankdeposit].updateUserId + "</td>" +
-			        "<td>" + bankList[bankdeposit].updateDay + "</td>" +
-			        "</tr>");
-			  }
-			  $newTbody.append("</tbody>");
-			  $(".chosen-select").chosen();
-		}
-		
-		function goPage(dataResult, page){
-			
-			
-			console.log(dataResult, page);
-		};
-		
-		function createNewPage(dataResult){
-			alert("김승곤 멍청이!");
-			var inputString = "<ul>";
-			
-			// 앞
-			if(dataResult.pagination.prev != 0) {
-	        	inputString += "<li><a href="+ goPage(dataResult.bankList, (dataResult.pagination.startPage - 1))+"><i class='icon-double-angle-left'></i></a></li>";
-		       } else {
-		       	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
-		    }
-			
-			// 중간
-			for(var pg = dataResult.pagination.startPage ; pg <= dataResult.pagination.endPage;  pg++) {
-		      	if(dataResult.pagination.page == pg){
-		       		inputString +=	"<li class='active'><a href="+ goPage(dataResult.bankList, pg)+">"+pg+"</a></li>";
-		       	} else {
-			      	inputString += 	"<li><a href="+ goPage(dataResult.bankList, pg)+">"+pg+"</a></li>";
-			    }
-			}
-			
-			// 뒤        
-		    if (dataResult.pagination.next != 0) {
-		    	inputString += "<li><a href="+ goPage(dataResult.bankList, (dataResult.pagination.endPage + 1))+"><i class='icon-double-angle-right'></i></a></li>";
-		    } else {
-		    	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
-		    }
-			
-	        inputString += "</ul>";
-	        $("#pagination").append(inputString);
-	   };
-	   
 	})
 </script>
 
@@ -201,7 +95,7 @@
 						</div>						
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;계좌시작번호 :&nbsp; 
-						<input type="text" id="no" name="depositNo" placeholder="ex)000-00-00000" size=4 style="width:150px" style="width:100px;"/>
+						<input type="text" id="no" name="depositNo" placeholder="시작번호" size=4 style="width:150px" style="width:100px;"/>
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;삭제여부 : &nbsp;
 						
@@ -213,7 +107,7 @@
 						</select>
 						
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btn btn-small btn-info" type="submit">조회</button>
+						<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					</form>
 					
 					<div class="hr hr-18 dotted"></div>
@@ -272,49 +166,37 @@
 						</div>
 					</div>
 					</div>
-			<div class="pagination" id = "pagination">
-					<ul>
-						<c:choose>
-							<c:when test="${dataResult.pagination.prev }">
-								<li><a
-									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
-										<i class="icon-double-angle-left"></i>
-								</a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="disabled"><a href="#"><i
-										class="icon-double-angle-left"></i></a></li>
-							</c:otherwise>
-						</c:choose>
-						<c:forEach begin="${dataResult.pagination.startPage }"
-							end="${dataResult.pagination.endPage }" var="pg">
-							<c:choose>
-								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-
-						<c:choose>
-							<c:when test="${dataResult.pagination.next }">
-								<li><a
-									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i
-										class="icon-double-angle-right"></i></a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="disabled"><a href="#"><i
-										class="icon-double-angle-right"></i></a></li>
-							</c:otherwise>
-						</c:choose>
-					</ul>
-				</div>
-			
-			
+			<div class="pagination">
+				<ul>
+					<c:choose>
+					<c:when test="${dataResult.pagination.prev }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+					</c:otherwise>
+					</c:choose>
+					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+					<c:choose>
+					<c:when test="${pg eq dataResult.pagination.page }">
+		
+						<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+					</c:otherwise>
+					</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					</c:otherwise>
+					</c:choose>
+				</ul>
+			</div>
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
