@@ -163,14 +163,14 @@
 	<select id="findByNo" parameterType="string" resultType="purchasecustomer35vo">
 		select no
 		from tb_purchasecustomer
-		where no = #{_parameter }
+		where right(no, 10) = #{_parameter }
 	</select>
 	
 	<update id="delete" parameterType="list">
 		<![CDATA[
 			update tb_purchasecustomer
 			set delete_flag = 'Y'
-			where no in
+			where right(no, 10) in
 		]]>
 		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >
 	        #{item}
