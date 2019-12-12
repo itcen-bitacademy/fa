@@ -67,31 +67,31 @@ input[type="text"], input[type="date"], select {
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
-				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<form class="form-horizontal" id="input-form" method="post" action="">
 				<input type="hidden" name="no"/>
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>차입금코드</h4></div>
-						<div class="ia-right"><input type="text" id="debtNo" name="debtNo" placeholder="ex) P191128001 (P+년+월+일+번호)" required></div>
+						<div class="ia-right"><input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" ></div>
 						<div class="ia-left"><h4>상환금액</h4></div>
-						<div class="ia-right"><input type="text" id="payPrinc" name="payPrinc" required></div>
+						<div class="ia-right"><input type="text" id="payPrinc" name="payPrinc" ></div>
 						<div class="ia-left"><h4>이자금액</h4></div>
-						<div class="ia-right"><input type="text" id="intAmount" name="intAmount" required></div>
+						<div class="ia-right"><input type="text" id="intAmount" name="intAmount"></div>
 					</section>
 					
 					<section>
+						<div class="ia-left"><h4>부채유형</h4></div>
+						<div class="ia-right">
+							<select name="debtType"  id="debtType" >
+								<option value="">부채유형을 선택해주세요.</option>
+								<option value="S">단기차입금</option>
+								<option value="L">장기차입금</option>
+								<option value="P">사채</option>
+							</select>
+						</div>
 						<div class="ia-left"><h4>상환일자</h4></div>
 						<div class="ia-right">
 							<input type="date" id="payDate" name="payDate">
-						</div>
-						<div class="ia-left"><h4>부채유형</h4></div>
-						<div class="ia-right">
-							<select class="chosen-select form-control" name="debtType" id="debtType" data-placeholder="부채유형을 선택해주세요." required>
-								<option value=""></option>
-								<option value="008001">단기차입금</option>
-								<option value="008002">장기차입금</option>
-								<option value="008003">사채</option>
-							</select>
 						</div>
 					</section>
 				</div>	<!--  input area -->
@@ -100,11 +100,9 @@ input[type="text"], input[type="date"], select {
 				<section class="above-table">
 					<section class="above-table-left">
 						<div class="btn-list">
-							<button type="submit" class="btn btn-primary btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">입력</button>
 							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
-							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
-							<button type="submit" class="btn btn-pink btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repayInsert">상환</button>
+							<button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
 						</div>
 					</section>

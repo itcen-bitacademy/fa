@@ -368,7 +368,7 @@
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자 - 만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>

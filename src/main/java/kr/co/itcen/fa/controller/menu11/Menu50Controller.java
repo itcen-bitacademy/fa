@@ -122,7 +122,13 @@ public class Menu50Controller {
 		mappingVo.setCustomerNo(vo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());// 계좌번호
 
+		System.out.println("============ add =============");
+		System.out.println("voucherVo : " + voucherVo.toString());
+		System.out.println("itemVo : " + itemVo.toString());
+		System.out.println("itemVo2 : " + itemVo2.toString());
+		System.out.println("mappingVo : " + mappingVo.toString());
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
+		System.out.println("nonononononono : " + no);
 		vo.setVoucherNo(no);
 		menu50Service.insert(vo); // 데이터베이스에 데이터 삽입
 		

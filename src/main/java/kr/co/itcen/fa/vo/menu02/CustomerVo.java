@@ -22,6 +22,7 @@ public class CustomerVo {
 	private String zipCode;					//우편번호
 	private String address;					//도로명주소
 	private String detailAddress;			//상세주소
+	private String fullAddress;				//전체주소
 	private String phone;					//전화번호
 	private String conditions;				//업태
 	private String item;					//종목
@@ -96,6 +97,12 @@ public class CustomerVo {
 	}
 	public void setDetailAddress(String detailAddress) {
 		this.detailAddress = detailAddress;
+	}
+	public String getFullAddress() {
+		return fullAddress;
+	}
+	public void setFullAddress(String fullAddress) {
+		this.fullAddress = fullAddress;
 	}
 	public String getPhone() {
 		return phone;
@@ -210,12 +217,14 @@ public class CustomerVo {
 	
 	@Override
 	public String toString() {
-		return "CustomerVo [no=" + no + ", preNo=" + preNo + ", name=" + name + ", ceo=" + ceo + ", corporationNo="
-				+ corporationNo + ", zipCode=" + zipCode + ", address=" + address + ", detailAddress=" + detailAddress
-				+ ", phone=" + phone + ", conditions=" + conditions + ", item=" + item + ", openDate=" + openDate
-				+ ", jurisdictionOffice=" + jurisdictionOffice + ", managerName=" + managerName + ", managerEmail="
-				+ managerEmail + ", depositNo=" + depositNo + ", depositHost=" + depositHost + ", bankCode=" + bankCode
-				+ ", bankName=" + bankName + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + "]";
+		return "CustomerVo [preNo=" + preNo + ", no=" + no + ", preName=" + preName + ", name=" + name + ", ceo=" + ceo
+				+ ", corporationNo=" + corporationNo + ", zipCode=" + zipCode + ", address=" + address
+				+ ", detailAddress=" + detailAddress + ", fullAddress=" + fullAddress + ", phone=" + phone
+				+ ", conditions=" + conditions + ", item=" + item + ", openDate=" + openDate + ", jurisdictionOffice="
+				+ jurisdictionOffice + ", managerName=" + managerName + ", managerEmail=" + managerEmail
+				+ ", depositNo=" + depositNo + ", depositHost=" + depositHost + ", bankCode=" + bankCode + ", bankName="
+				+ bankName + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
+				+ updateUserid + ", updateDay=" + updateDay + ", deleteFlag=" + deleteFlag + "]";
 	}
+	
 }

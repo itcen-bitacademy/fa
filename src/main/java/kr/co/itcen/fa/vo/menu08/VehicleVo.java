@@ -5,7 +5,6 @@ import org.apache.ibatis.type.Alias;
 @Alias("vehicle08vo")
 public class VehicleVo {
 
-
 	private String id;
 	private String customerNo; //거래처 코드
 	private String customerName; //거래처 명
@@ -24,7 +23,8 @@ public class VehicleVo {
 	private int regTax;
 	private int acqTax;
 	private int etcCost;
-	private String payDate;
+	private String payDate; //납부한 날
+	private String dueDate; //납부예정일
 	private int deposit; //보증금
 	private String depositDate; //보증금 납부일자
 	private int monthlyFee; //월사용료
@@ -35,7 +35,7 @@ public class VehicleVo {
 	private String insertDay;
 	private String updateUserId;
 	private String updateDay;
-
+	
 	public String getId() {
 		return id;
 	}
@@ -47,6 +47,18 @@ public class VehicleVo {
 	}
 	public void setCustomerNo(String customerNo) {
 		this.customerNo = customerNo;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public String getManagerName() {
+		return managerName;
+	}
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
 	public String getTaxbillNo() {
 		return taxbillNo;
@@ -102,7 +114,6 @@ public class VehicleVo {
 	public void setCityAddress(String cityAddress) {
 		this.cityAddress = cityAddress;
 	}
-
 	public String getDetailAddress() {
 		return detailAddress;
 	}
@@ -132,6 +143,12 @@ public class VehicleVo {
 	}
 	public void setEtcCost(int etcCost) {
 		this.etcCost = etcCost;
+	}
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
 	}
 	public String getPayDate() {
 		return payDate;
@@ -199,33 +216,21 @@ public class VehicleVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	public String getManagerName() {
-		return managerName;
-	}
-	public void setManagerName(String managerName) {
-		this.managerName = managerName;
-	}
 	
-
+	
 	@Override
 	public String toString() {
 		return "VehicleVo [id=" + id + ", customerNo=" + customerNo + ", customerName=" + customerName
 				+ ", managerName=" + managerName + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo
 				+ ", sectionNo=" + sectionNo + ", classification=" + classification + ", staffNo=" + staffNo
 				+ ", staffName=" + staffName + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress
-				+ ", cityAddress=" + cityAddress + ", detailAddress=" + detailAddress
-				+ ", publicValue=" + publicValue + ", regTax=" + regTax + ", acqTax=" + acqTax + ", etcCost=" + etcCost
+				+ ", cityAddress=" + cityAddress + ", detailAddress=" + detailAddress + ", publicValue=" + publicValue
+				+ ", regTax=" + regTax + ", acqTax=" + acqTax + ", etcCost=" + etcCost + ", dueDate=" + dueDate
 				+ ", payDate=" + payDate + ", deposit=" + deposit + ", depositDate=" + depositDate + ", monthlyFee="
 				+ monthlyFee + ", feeDate=" + feeDate + ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserId="
 				+ insertUserId + ", insertDay=" + insertDay + ", updateUserId=" + updateUserId + ", updateDay="
 				+ updateDay + "]";
 	}
 
-
+	
 }

@@ -3,18 +3,18 @@
 <mapper namespace="menu24">
 	<!-- Test -->
 
-	<select id="readCount" resultType="int" parameterType="1cardvo">	
+	<select id="listCount" resultType="int" parameterType="1cardvo">	
 			<![CDATA[
 				select count(*)
 				from tb_cardmanager
 				where delete_flag= #{deleteFlag }
 			]]>
-		 <if  test="inputperiodStart!=null ">		    
+		 <if  test='inputperiodStart!=null and !inputperiodStart.equals("") '>		    
 			<![CDATA[
 				and insert_day >= #{inputperiodStart }
 			]]>
 		</if>
-		<if  test='inputperiodEnd!=null' >		    
+		<if  test='inputperiodEnd!=null and !inputperiodEnd.equals("")' >		    
 			<![CDATA[
 				and insert_day <= #{inputperiodEnd }
 			]]>
@@ -29,11 +29,10 @@
 				and card_no like concat("%", #{cardEndNo })
 			]]>
 		</if>
-
 	</select>
 
 
-	<select id="read" resultType="1cardvo" parameterType="map">
+	<select id="list" resultType="1cardvo" parameterType="map">
 	<![CDATA[
 		select  card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
 				company, abroad, password, deposit_no as depositNo,
@@ -46,12 +45,12 @@
 	]]>
 	
 		
-		 <if  test="vo.inputperiodStart!=null">		    
+		 <if  test='vo.inputperiodStart!=null and !vo.inputperiodStart.equals("")'>		    
 			<![CDATA[
 				and insert_day >= #{vo.inputperiodStart }
 			]]>
 		</if>
-		<if  test="vo.inputperiodEnd!=null ">		    
+		<if  test='vo.inputperiodEnd!=null and !vo.inputperiodEnd.equals("")'>		    
 			<![CDATA[
 				and insert_day <= #{vo.inputperiodEnd }
 			]]>
@@ -66,7 +65,11 @@
 				and card_no like concat("%", #{vo.cardEndNo })
 			]]>
 		</if>
-		
+		<if test="pagination.pageIndex >= 0 ">
+		<![CDATA[
+			 limit #{pagination.pageIndex	}, #{pagination.listSize	}
+		]]>
+		</if>
 	</select>
 
 </mapper>

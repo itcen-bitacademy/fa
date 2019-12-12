@@ -6,6 +6,7 @@ import org.apache.ibatis.type.Alias;
 public class RepayVo {
 	private Long no;// 번호
 	private Long debtNo;// 사채,장기,단기 번호
+	private String code; // 각 사채, 장기, 단기 테이블과 비교하기 위한 변수
 	private Long payPrinc;// 상환액
 	private Long intAmount; // 이자금액
 	private String payDate;// 상환 일
@@ -32,6 +33,14 @@ public class RepayVo {
 
 	public void setDebtNo(Long debtNo) {
 		this.debtNo = debtNo;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public Long getPayPrinc() {
@@ -124,10 +133,10 @@ public class RepayVo {
 
 	@Override
 	public String toString() {
-		return "RepayVo [no=" + no + ", debtNo=" + debtNo + ", payPrinc=" + payPrinc + ", intAmount=" + intAmount
-				+ ", payDate=" + payDate + ", debtType=" + debtType + ", voucherNo=" + voucherNo + ", depositNo="
-				+ depositNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate
-				+ ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
+		return "RepayVo [no=" + no + ", debtNo=" + debtNo + ", code=" + code + ", payPrinc=" + payPrinc + ", intAmount="
+				+ intAmount + ", payDate=" + payDate + ", debtType=" + debtType + ", voucherNo=" + voucherNo
+				+ ", depositNo=" + depositNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate="
+				+ insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
 	}
 
 }

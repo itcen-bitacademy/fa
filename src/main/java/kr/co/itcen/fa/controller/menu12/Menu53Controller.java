@@ -74,102 +74,126 @@ public class Menu53Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	// 추가사항 발생
+	// 전표등록 메소드
+	public SellTaxbillVo voucher(SellTaxbillVo selltaxbillvo, UserVo authUser, boolean flag){
+		
+	
+			selltaxbillvo.setInsertUserid(authUser.getId());
+			selltaxbillvo.setDeleteFlag("N");
+		
+		
+			selltaxbillvo.setAccountNo(1110101L);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
+			selltaxbillvo.setAmountFlag("d");		// select * from 
+		
+			/////////////////////////////////////
+			// 전표등록
+
+			// 객체 생성
+			VoucherVo voucherVo = new VoucherVo();				// 전표내용
+			List<ItemVo> itemVoList = new ArrayList<ItemVo>();	// 세부항목
+			MappingVo mappingVo = new MappingVo();				// 전표내용과 세부항목을 매핑!!!
+
+			ItemVo itemVo = new ItemVo();
+			ItemVo itemVo2 = new ItemVo();
+			ItemVo itemVo3 = new ItemVo();
+
+			voucherVo.setRegDate(selltaxbillvo.getSalesDate());  // 매출일
+			itemVo.setAmount(selltaxbillvo.getTotalSupplyValue() + selltaxbillvo.getTotalTaxValue()); // 현금
+			itemVo.setAmountFlag("d");							 // 차변 - d
+			itemVo.setAccountNo(1110101L);						 // 계정과목코드 
+			itemVoList.add(itemVo);
+
+			itemVo2.setAmount(selltaxbillvo.getTotalSupplyValue()); 	// 공급가액
+			itemVo2.setAmountFlag("c");                                 // 대변 - c
+			itemVo2.setAccountNo(5010101L);								// 상품매출
+			itemVoList.add(itemVo2);
+
+			itemVo3.setAmount(selltaxbillvo.getTotalTaxValue()); 		// 부가세금액
+			itemVo3.setAmountFlag("c");									// 대변
+			itemVo3.setAccountNo(2140101L);								// 부가세예수금
+			itemVoList.add(itemVo3);
+
+			mappingVo.setVoucherUse(selltaxbillvo.getVoucherUse());     // 비고
+			mappingVo.setSystemCode(selltaxbillvo.getSalesNo());      	// 매출번호
+			mappingVo.setDepositNo(selltaxbillvo.getDepositNo());       // 계좌번호
+			mappingVo.setCustomerNo(selltaxbillvo.getCustomerCode());   // 거래처 코드
+			mappingVo.setManageNo(selltaxbillvo.getTaxbillNo());		// 세금계산서 번호 입력
+
+			System.out.println(selltaxbillvo.getTaxbillNo());
+			long voucherNo;
+			
+			if(flag) {
+				voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+			}else {
+				voucherNo = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
+				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+			}
+			
+		return selltaxbillvo;
+	}
+	
+	
+	
+	
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
 	public String add(SellTaxbillVo selltaxbillvo, @AuthUser UserVo authUser) {
 		// @SessionAttribute("authUser") UserVo authUser, 
 		
-		selltaxbillvo.setInsertUserid(authUser.getId());
-		selltaxbillvo.setDeleteFlag("N");
+//		selltaxbillvo.setInsertUserid(authUser.getId());
+//		selltaxbillvo.setDeleteFlag("N");
+//		
+//		
+//		selltaxbillvo.setAccountNo(1110101L);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
+//		selltaxbillvo.setAmountFlag("d");		// select * from 
 		
 		
-		selltaxbillvo.setAccountNo(1110101L);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
-		selltaxbillvo.setAmountFlag("d");		// select * from 
+		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, true));
 		
 		
-		menu53Service.salesUpdate(selltaxbillvo);
+/////////////////////////////////////////////
+// 		전표등록
+//		객체 생성
+//		VoucherVo voucherVo = new VoucherVo();				// 전표내용
+//		List<ItemVo> itemVoList = new ArrayList<ItemVo>();	// 세부항목
+//		MappingVo mappingVo = new MappingVo();				// 전표내용과 세부항목을 매핑!!!
+//		
+//		ItemVo itemVo = new ItemVo();
+//		ItemVo itemVo2 = new ItemVo();
+//		ItemVo itemVo3 = new ItemVo();
+//		
+//		voucherVo.setRegDate(selltaxbillvo.getSalesDate());  // 매출일
+//		itemVo.setAmount(selltaxbillvo.getTotalSupplyValue() + selltaxbillvo.getTotalTaxValue()); // 현금
+//		itemVo.setAmountFlag("d");							 // 차변 - d
+//		itemVo.setAccountNo(1110101L);						 // 계정과목코드 
+//		itemVoList.add(itemVo);
+//		
+//		itemVo2.setAmount(selltaxbillvo.getTotalSupplyValue()); 	// 공급가액
+//		itemVo2.setAmountFlag("c");                                 // 대변 - c
+//		itemVo2.setAccountNo(5010101L);								// 상품매출
+//		itemVoList.add(itemVo2);
+//		
+//		itemVo3.setAmount(selltaxbillvo.getTotalTaxValue()); 		// 부가세금액
+//		itemVo3.setAmountFlag("c");									// 대변
+//		itemVo3.setAccountNo(2140101L);								// 부가세예수금
+//		itemVoList.add(itemVo3);
+//		
+//		mappingVo.setVoucherUse(selltaxbillvo.getVoucherUse());     // 비고
+//		mappingVo.setSystemCode(selltaxbillvo.getSalesNo());      	// 매출번호
+//		mappingVo.setDepositNo(selltaxbillvo.getDepositNo());       // 계좌번호
+//		mappingVo.setCustomerNo(selltaxbillvo.getCustomerCode());   // 거래처 코드
+//		mappingVo.setManageNo(selltaxbillvo.getTaxbillNo());		// 세금계산서 번호 입력
+//		
+//		System.out.println(selltaxbillvo.getTaxbillNo());
+//		long voucherNo;
+//		
+//		voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+//		
+//		selltaxbillvo.setVoucherNo(String.valueOf(voucherNo)); 
+/////////////////////////////////////////////
 		
-		
-		/////////////////////////////////////
-		// 전표등록
-		
-		// 객체 생성
-		VoucherVo voucherVo = new VoucherVo();				// 전표내용
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>();	// 세부항목
-		MappingVo mappingVo = new MappingVo();				// 전표내용과 세부항목을 매핑!!!
-		
-		ItemVo itemVo = new ItemVo();
-		ItemVo itemVo2 = new ItemVo();
-		ItemVo itemVo3 = new ItemVo();
-		
-		voucherVo.setRegDate(selltaxbillvo.getSalesDate());  // 매출일
-		itemVo.setAmount(selltaxbillvo.getTotalSupplyValue() + selltaxbillvo.getTotalTaxValue()); // 현금
-		itemVo.setAmountFlag("d");							 // 차변 - d
-		itemVo.setAccountNo(1110101L);						 // 계정과목코드 
-		itemVoList.add(itemVo);
-		
-		itemVo2.setAmount(selltaxbillvo.getTotalSupplyValue()); 	// 공급가액
-		itemVo2.setAmountFlag("c");                                 // 대변 - c
-		itemVo2.setAccountNo(5010101L);								// 상품매출
-		itemVoList.add(itemVo2);
-		
-		itemVo3.setAmount(selltaxbillvo.getTotalTaxValue()); 		// 부가세금액
-		itemVo3.setAmountFlag("c");									// 대변
-		itemVo3.setAccountNo(2140101L);								// 부가세예수금
-		itemVoList.add(itemVo3);
-		
-		mappingVo.setVoucherUse(selltaxbillvo.getVoucherUse());     // 비고
-		mappingVo.setSystemCode(selltaxbillvo.getSalesNo());      	// 매출번호
-		mappingVo.setDepositNo(selltaxbillvo.getDepositNo());       // 계좌번호
-		mappingVo.setCustomerNo(selltaxbillvo.getCustomerCode());   // 거래처 코드
-		mappingVo.setManageNo(selltaxbillvo.getTaxbillNo());		// 세금계산서 번호 입력
-		
-		System.out.println(selltaxbillvo.getTaxbillNo());
-		long voucherNo;
-		
-		voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
-		
-		selltaxbillvo.setVoucherNo(String.valueOf(voucherNo)); 
-		
-		// voucherVo.setRegDate(selltaxbillvo.gets);
-		//menu03Service.createVoucher(voucherVo, itemVo, mappingVo, authUser);
-		
-		
-		// VoucherVo voucherVo = new VoucherVo();
-		// List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-		// ItemVo itemVo = new ItemVo();
-		// ItemVo itemVo2 = new ItemVo();
-		// ItemVo itemVo3 = new ItemVo();
-		
-		// MappingVo mappingVo = new MappingVo();
-		
-		// voucherVo.setRegDate(vo.getDebtDate());	    // 등록일 - 매출일
-		// itemVo.setAmount(vo.getDebtAmount());	    // 판매 금액 - 현금 - 금액
-		// itemVo.setAmountFlag("c");				    // 차변 - d
-		// itemVo.setAccountNo(2401000L);			    // 계정과목코드 
-		// itemVoList.add(itemVo);					    // 항목리스트
-		
-		
-		// itemVo2.setAmount(money);				    // 금액 - 현금 - 부가세
-		// itemVo2.setAmountFlag("c");				    // 대변 - c
-		// itemVo2.setAccountNo(9201000L);			    // 계정과목코드
-		// itemVoList.add(itemVo2);					    // 항목리스트
-		
-		
-		// itemVo3.setAmount(vo.getDebtAmount()+money);	// 부가세금액
-		// itemVo3.setAmountFlag("d");					// 대변 - c
-		// itemVo3.setAccountNo(1110103L);				// 계정과목코드
-		// itemVoList.add(itemVo3);						// 항목리스트
-		
-		// mappingVo.setVoucherUse(vo.getName());		// 비고	
-		// mappingVo.setSystemCode(vo.getCode());		// 매출번호
-		// mappingVo.setDepositNo(vo.getDepositNo());	// 계좌번호
-		// mappingVo.거래처(vo.get) 						// 거래처
-		
-		// menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-		
-		menu53Service.insert(selltaxbillvo);
-		
+		menu53Service.insert(voucher(selltaxbillvo, authUser, true));
+			
 		System.out.println("추가 이벤트 발생");
 		
 		return MAINMENU + "/" + SUBMENU + "/list";

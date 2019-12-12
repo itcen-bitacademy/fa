@@ -22,16 +22,21 @@ public class Menu66Service {
 	@Autowired
 	private Menu66Repository menu66Repository;
 
-	public DataResult<RepayVo> list(int page, String code) {
+	public DataResult<RepayVo> list(int page, String code, String debtType) {
 		DataResult<RepayVo> dataResult = new DataResult<RepayVo>();
-		int totalCnt = menu66Repository.listCount(code);
+		int totalCnt = menu66Repository.listCount(code, debtType);
+		System.out.println("RepayVo totalCnt : " + totalCnt);
 
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		dataResult.setPagination(pagination);
-		List<RepayVo> list = menu66Repository.list(code, pagination);
+		List<RepayVo> list = menu66Repository.list(code, debtType, pagination);
 		dataResult.setDatas(list);
 
 		return dataResult;
+	}
+
+	public Boolean update(RepayVo vo) {
+		return menu66Repository.update(vo);
 	}
 
 //	public List<RepayVo> selectSection() {
