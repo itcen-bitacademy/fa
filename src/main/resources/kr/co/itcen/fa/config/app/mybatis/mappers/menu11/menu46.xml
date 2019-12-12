@@ -11,10 +11,8 @@
 		<result column="exp_date" property="expDate" />
 		<result column="int_rate" property="intRate" />
 		<result column="int_pay_way" property="intPayWay" />
-		<result column="int_amount" property="intAmount" />
 		<result column="bank_code" property="bankCode" />
 		<result column="deposit_no" property="depositNo" />
-		<result column="account_no" property="accountNo" />
 		<result column="voucher_no" property="voucherNo" />
 		<result column="delete_flag" property="deleteFlag" />
 		<result column="insert_id" property="insertId" />
@@ -68,13 +66,13 @@
 			values (null, #{code }, #{name }, #{majorCode}, ${debtAmount }, 
 			${debtAmount }, #{repayWay }, #{debtDate}, #{expDate},
 			${intRate }, #{intPayWay }, #{mgr }, 
-			#{mgrCall }, ${bankCode },
+			#{mgrCall }, #{bankCode },
 			#{depositNo }, 123, 123, 
 			'N', #{insertId }, now(), null, null) 
 		]]>
 	</insert>
 	
-	<update id="update1" parameterType="stermdebtvo">
+	<update id="update" parameterType="stermdebtvo">
 		<![CDATA[
 			update tb_s_term_debt 
 			set code=#{code}, name=#{name}, major_code=#{majorCode}, debt_amount=${debtAmount}, repay_way=#{repayWay}, 
@@ -95,4 +93,18 @@
 		</foreach>
 	</update>
 	
+	<update id="updateRepayBal" parameterType="repayvo">
+		<![CDATA[
+			update tb_s_term_debt 
+			set repay_bal = repay_bal - ${payPrinc} 
+			where no = ${debtNo}
+		]]>
+	</update>
+	
+	<insert id="insertRepay" parameterType="repayvo">
+		<![CDATA[
+			insert into tb_repay(no, debt_no, pay_prinv, int_amount, pay_date, debt_type, voucher_no, delete_flag, insert_id, insert_date)
+			values(null, ${debtNo}, ${payPrinc}, ${intAmount}, #{payDate}, #{debtType}, ${voucherNo}, "N", #{insertId}, now())
+		]]>
+	</insert>
 </mapper>

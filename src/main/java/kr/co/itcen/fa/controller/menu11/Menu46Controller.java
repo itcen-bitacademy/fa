@@ -58,4 +58,5 @@ public class Menu46Controller {
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
+	
 }
