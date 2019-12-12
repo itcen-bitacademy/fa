@@ -21,6 +21,8 @@
 		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
 		$(".chosen-select").chosen();
 		
+		$(".td-hide").hide();
+		
 		// 입금계좌번호 팝업
 		$("#dialog-message").dialog({
 		       autoOpen : false
@@ -192,28 +194,25 @@
 			var tr = $(this);
 			var td = tr.children();
 			
-			var fullAddress = td.eq(5).text();
-			var address = fullAddress.split(')');
-			
 			$("#no").val(td.eq(1).text());					//사업자번호
 			$("#preNo").val(td.eq(1).text());				//사업자번호
 			$("#bsname").val(td.eq(2).text());				//상호
 			$("#ceo").val(td.eq(3).text());					//대표자
 			$("#corporationNo").val(td.eq(4).text());		//법인번호
-			$("#zipCode").val(fullAddress.substr(0,5));			//우편번호
-			$("#address").val(address[0].substr(6, address[0].length)+')');	//도로명주소
-			$("#detailAddress").val(address[1].substr(0, address[1].length));		//상세주소
-			$("#phone").val(td.eq(6).text());				//전화번호
-			$("#conditions").val(td.eq(7).text());			//업태
-			$("#item").val(td.eq(8).text());				//종목
-			$("#openDate").val(td.eq(9).text());			//개설일자
-			$("#jurisdictionOffice").val(td.eq(10).text());	//관할사무소
-			$("#managerName").val(td.eq(11).text());		//거래처담당자성명
-			$("#managerEmail").val(td.eq(12).text());		//담당자이메일
-			$("#depositNo").val(td.eq(13).text());			//계좌번호
-			$("#depositHost").val(td.eq(14).text());		//예금주
-			$("#bankCode").val(td.eq(15).text());			//은행코드
-			$("#bankName").val(td.eq(16).text());			//은행명
+			$("#zipCode").val(td.eq(5).text());				//우편번호
+			$("#address").val(td.eq(6).text());				//도로명주소
+			$("#detailAddress").val(td.eq(7).text());		//상세주소
+			$("#phone").val(td.eq(9).text());				//전화번호
+			$("#conditions").val(td.eq(10).text());			//업태
+			$("#item").val(td.eq(11).text());				//종목
+			$("#openDate").val(td.eq(12).text());			//개설일자
+			$("#jurisdictionOffice").val(td.eq(13).text());	//관할사무소
+			$("#managerName").val(td.eq(14).text());		//거래처담당자성명
+			$("#managerEmail").val(td.eq(15).text());		//담당자이메일
+			$("#depositNo").val(td.eq(16).text());			//계좌번호
+			$("#depositHost").val(td.eq(17).text());		//예금주
+			$("#bankCode").val(td.eq(18).text());			//은행코드
+			$("#bankName").val(td.eq(19).text());			//은행명
 			
 		});
 		
@@ -550,7 +549,10 @@
 													<td class="left">${customerVo.name }</td>
 													<td class="left">${customerVo.ceo }</td>
 													<td class="left">${customerVo.corporationNo }</td>
-													<td class="left">${customerVo.address }</td>
+													<td class="td-hide">${customerVo.zipCode }</td>
+													<td class="td-hide">${customerVo.address }</td>
+													<td class="td-hide">${customerVo.detailAddress }</td>
+													<td class="left">${customerVo.fullAddress }</td>
 													<td class="left">${customerVo.phone }</td>
 													<td class="left">${customerVo.conditions }</td>
 													<td class="left">${customerVo.item }</td>

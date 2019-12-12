@@ -100,7 +100,7 @@ public class Menu41Repository {
 	}
 
 	//세금계산서 차량 테이블에 업데이트
-	public boolean updateTaxbill(String taxno,String veno, long voucherNo, String uId) {
+	public boolean updateTaxbill(String taxno, String veno, long voucherNo, String uId) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -111,5 +111,13 @@ public class Menu41Repository {
 		int count = sqlSession.update("menu41.updateTaxbill", map);
 		return count == 1;
 		
+	}
+
+	//세금계산서 정보 조회
+	public List<TaxbillVo> selectTaxList(String id) {
+		//System.out.println(id);
+		List<TaxbillVo> list = sqlSession.selectList("menu41.selectTaxbill", id);
+		System.out.println("세금계산서 정보" + list);
+		return list;
 	}
 }

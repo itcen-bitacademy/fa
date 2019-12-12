@@ -79,7 +79,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
 									<div class="controls">
-										<input type="text" id="amount" name="amount">
+										<input type="text" id="amount" name="amount" placeholder="0" onkeyup="inputNumberFormat(this)">
 									</div>
 								</div>
 								
@@ -285,12 +285,12 @@
 									<td>${voucherVo.accountName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
-								            <td>${voucherVo.amount }</td>
+								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								            <td></td>
 								        </c:when>
 								        <c:otherwise>
 								        	<td></td>
-								            <td>${voucherVo.amount }</td>
+								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								        </c:otherwise>
 								    </c:choose>
 								    <td>${voucherVo.customerNo }</td>
@@ -702,26 +702,28 @@ $(function(){
      $("input[name=depositHost]").val(td.eq(6).text());
      $("#dialog-message").dialog('close');
   });
-	
   
-  
-  // 금액 3자리 , 찍기
-  /**
-  function addCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
- }
- $("input[name=amount]").on('keyup', function(event){
- 	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
- });
- //
- $("#input-form").submit(function(event) {
-	 
- });
- */
- 
- 
+  $("#input-form").submit(function(event) {
+	  $("input[name=amount]").val($("input[name=amount]").val().replace(/[^0-9]/g,""));
+  });
 }); // $(function
+</script>
+<script>
+	function comma(str) {
+	  str = String(str);
+	  return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
 
+	//콤마풀기
+	function uncomma(str) {
+		str = String(str);
+	    return str.replace(/[^\d]+/g, '');
+	}
+
+	//값 입력시 콤마찍기
+	function inputNumberFormat(obj) {
+	    obj.value = comma(uncomma(obj.value));
+	}
 </script>
 </body>
 </html>

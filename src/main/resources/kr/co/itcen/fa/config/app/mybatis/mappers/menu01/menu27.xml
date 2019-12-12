@@ -44,7 +44,16 @@
 			        END,"없음")) as phone,
 			       manager_name as managerName, 
 			       manager_email as managerEmail,
-			       assets_flag as assetsFlag,
+			       (case 
+					  when assets_flag="a"
+                      then "토지"
+                      when assets_flag="b"
+                      then "건물"
+                      when assets_flag="c"
+                      then "차량"
+                      when assets_flag="d"
+                      then "무형자산"
+                      end) as assetsFlag,
 			       deposit_no as depositNo,
 			       deposit_host as depositHost,
 			       bank_code as bankCode,
@@ -127,7 +136,16 @@
 			       deposit_host as depositHost,
 			       bank_code as bankCode,
 			       bank_name as bankName,
-			       assets_flag as assetsFlag,
+			       (case 
+					  when assets_flag="a"
+                      then "토지"
+                      when assets_flag="b"
+                      then "건물"
+                      when assets_flag="c"
+                      then "차량"
+                      when assets_flag="d"
+                      then "무형자산"
+                      end) as assetsFlag,
 			       insert_userid as insertUserid,
 			       insert_day as insertDay, 
 			       update_userid as updateUserid

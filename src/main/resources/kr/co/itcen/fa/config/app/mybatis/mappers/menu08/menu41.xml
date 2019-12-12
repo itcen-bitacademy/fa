@@ -106,6 +106,7 @@
 					v.acq_tax as acqTax,
 					v.etc_cost as etcCost,
 					v.taxbill_no as taxbillNo,
+					t.due_date as dueDate,
 					v.pay_date as payDate,
 					v.deposit as deposit,
 					v.deposit_date as depositDate,
@@ -119,6 +120,7 @@
 				 left outer join tb_section s on v.section_no = s.code 
                  left outer join user u on v.insert_userid = u.id
                  left outer join tb_customer c on v.customer_no = c.no
+                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
 		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag IN('s','o')
 		order by v.insert_day desc;
 	
@@ -228,10 +230,12 @@
 				#{vehicleNo},
 				#{pay},
 				#{paymentDate},
+				now(),
 				#{gubun},
 				#{insertUserid},
 				now(),
-				null, null
+				null, 
+				null
 				);
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
@@ -252,4 +256,22 @@
 	    	where id = #{veno};
    		]]>
 	</update>
+	
+	<!-- 세금계산서 정보 조회-->
+	<select id="selectTaxbill" parameterType="string"  resultType="08taxVehicle">
+		<![CDATA[
+		select 	 
+			 a.id as vehicleNo,
+			 b.pay as pay, 
+			 b.due_date as dueDate,
+			 b.pay_date as paymentDate,
+			 b.taxbill_no as taxbillNo,
+			 b.voucher_no as voucherNo,
+			 b.gubun  as gubun
+		from tb_vehicle a 
+			 inner join tb_taxbill b on a.id=b.vehicle_no 
+		where a.id=#{_parameter};
+		]]>
+	</select>
+	
 </mapper>

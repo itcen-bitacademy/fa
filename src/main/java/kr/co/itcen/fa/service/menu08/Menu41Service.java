@@ -104,4 +104,13 @@ public class Menu41Service {
 	public void updateTax(String taxno, String veno, long voucherNo, String uId) {
 		menu41Repository.updateTaxbill(taxno, veno, voucherNo, uId);
 	}
+
+	//세금계산서 정보 조회하기
+	public  Map<String, Object> selectTaxList(String id) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("taxlist", menu41Repository.selectTaxList(id));
+		return map;
+		
+	}
 }
