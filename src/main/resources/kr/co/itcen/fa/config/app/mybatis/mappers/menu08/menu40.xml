@@ -30,7 +30,7 @@
 			pay_date as payDate,
 			tax_kind as taxKind,
 			b.flag
-		
+			
 		from tb_building as b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
         
@@ -43,16 +43,20 @@
            and b.city_address like concat('%',#{vo.cityAddress },'%')
            and b.detail_address like concat('%',#{vo.detailAddress },'%')
            and b.flag like concat('%',#{vo.flag },'%')
-           
 		]]>
-		<if test="area != null">
+		<if test="vo.area != null">
 			<![CDATA[
-        		and b.area = #{area }
+        		and b.area <= #{vo.area }
     		]]>
 		</if>
-		<if test="acqPrice != null">
+		<if test='vo.acqPrice != null'>
 			<![CDATA[
-        		and b.acq_price = #{acqPrice }
+        		and b.acq_price <= #{vo.acqPrice }
+    		]]>
+		</if>
+		<if test='vo.flag == "d"'>
+			<![CDATA[
+        		b.flag like concat('%',#{vo.flag },'%')
     		]]>
 		</if>
    		<![CDATA[	
@@ -75,7 +79,7 @@
 		 
 		  where tb_section.parent_no = 3 
            and b.id like concat('%',#{id },'%')
-           and date_format(b.pay_date,'%Y-%m-%d')like concat('%',#{payDate },'%')
+           and date_format(b.pay_date,'%Y-%m-%d') like concat('%',#{payDate },'%')
            and b.customer_no like concat('%',#{customerNo },'%')
            and b.section_no like concat('%',#{sectionNo },'%')
            and b.wide_address like concat('%',#{wideAddress },'%')
@@ -83,14 +87,19 @@
            and b.detail_address like concat('%',#{detailAddress },'%')
            and b.flag like concat('%',#{flag },'%')
        ]]>
-		<if test='area != null'>
+		<if test="area != null">
 			<![CDATA[
-        		and b.area = #{area }
+        		and b.area <= #{area }
     		]]>
 		</if>
 		<if test='acqPrice != null'>
 			<![CDATA[
-        		and b.acq_price = #{acqPrice }
+        		and b.acq_price <= #{acqPrice }
+    		]]>
+		</if>
+		<if test='flag == "d"'>
+			<![CDATA[
+        		and b.flag like concat('%',#{flag },'%')
     		]]>
 		</if>
 	</select>
@@ -115,6 +124,7 @@
 			name,
 			manager_name as managerName
 		from tb_customer
+		where assets_flag = "b"
 		]]>
 	</select>
 	

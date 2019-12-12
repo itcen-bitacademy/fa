@@ -22,7 +22,7 @@
 			name,
 			manager_name as managerName
 		from tb_customer
-		where assets_flag="b"
+		where assets_flag = "b"
 		]]>
 	</select>
 	
@@ -171,4 +171,13 @@
       	 where id = #{id }
    		]]>
     </select>
+    
+    <!-- 건물코드 중복확인 -->
+	<select id="checkId" parameterType="string" resultType="string">
+		<![CDATA[
+		select id
+		  from tb_building
+		 where id = #{id }
+		]]>
+	</select>
 </mapper>
