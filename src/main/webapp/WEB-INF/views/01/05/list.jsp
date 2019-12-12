@@ -7,8 +7,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+	
+<c:import url="/WEB-INF/views/common/head.jsp" />		<!-- 위치로 인해 css가 안먹을수 있다. -->
 
 <style>
 .chosen-search {
@@ -42,11 +45,13 @@
 	width:100px;
 	text-align:right;
 }
+ .form-horizontal .control-label {
+            text-align: left
+        }
 
 </style>
 
 
-<c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 
 <body class="skin-3">

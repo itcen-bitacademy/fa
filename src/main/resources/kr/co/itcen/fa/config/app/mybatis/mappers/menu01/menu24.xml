@@ -31,13 +31,13 @@
 		</if>
 	</select>
 
-
 	<select id="list" resultType="1cardvo" parameterType="map">
 	<![CDATA[
 		select  card_no as cardNo, validity, transportation, limitation, cvc, issuer, user, 
-				company, abroad, password, deposit_no as depositNo,
-				insert_userid as insertUserId, insert_day as insertDay, 
-				update_userid as updateUserId, update_day as updateDay, 
+				company, abroad, password, deposit_no as depositNo,  deposit_host as depositHost,
+				bank_code as bankCode , bank_Name as bankName,
+				insert_userid as insertUserId, date_format(insert_day, "%Y-%m-%d") as insertDay, 
+			   ifnull(update_userid , "")as updateUserId, ifnull(date_format(update_day, "%Y-%m-%d"), "") as updateDay, 
 				delete_flag as deleteFlag
 		   from	tb_cardmanager
 			where delete_flag= #{vo.deleteFlag }
