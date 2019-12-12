@@ -129,7 +129,7 @@ public class Menu13Controller {
 				SellTaxbillVo taxVo = menu13Service.controlTaxbill(pathSalesNo);// 세금계산서 select, delete
 				System.out.println(taxVo);
 				
-				taxVo = menu53Controller.voucher(taxVo, authUser, true);// 전표 업데이트
+				taxVo = menu53Controller.voucher(taxVo, authUser, 2);// 전표 업데이트
 				menu13Service.insertTaxvill(taxVo);
 				
 			}
