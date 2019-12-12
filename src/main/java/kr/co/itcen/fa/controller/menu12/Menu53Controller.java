@@ -122,14 +122,24 @@ public class Menu53Controller {
 			mappingVo.setManageNo(selltaxbillvo.getTaxbillNo());		// 세금계산서 번호 입력
 
 			System.out.println(selltaxbillvo.getTaxbillNo());
+			
 			Long voucherNo = Long.parseLong(selltaxbillvo.getVoucherNo()== null? "0" : selltaxbillvo.getVoucherNo());
+			System.out.println(voucherNo);
 			
 			if(flagNum == 1) {
 				voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
 			}else if(flagNum == 2){
+				voucherVo.setNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
+				for(ItemVo list : itemVoList) {
+					list.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
+				}
+				mappingVo.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
 				voucherNo = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
+				
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+				System.out.println("수정이벤트 발생");
+				System.out.println(selltaxbillvo.toString());
 			}else {
 				voucherNo = menu03Service.deleteVoucher(voucherNo, authUser);
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
