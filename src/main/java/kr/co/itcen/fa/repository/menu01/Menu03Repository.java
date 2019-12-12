@@ -177,6 +177,18 @@ public class Menu03Repository {
 		return 0L;
 	}
 	
+	public Long deleteVoucher(Long no, UserVo userVo) {
+		VoucherVo voucherVoTeam = sqlSession.selectOne("menu03.selectTeam2", no);
+		if (!userVo.getTeamName().equals(voucherVoTeam.getInsertTeam())) {
+			return null;
+		}
+		
+		sqlSession.delete("menu03.updateVoucher3", no);
+		sqlSession.delete("menu03.updateItem3", no);
+		sqlSession.delete("menu03.updateMapping3", no);
+		return 0L;
+	}
+	
 	// 결산
 	public List<StatementDataVo> statementData(ClosingDateVo closingDataVo) {
 		return sqlSession.selectList("menu03.statementData", closingDataVo);
