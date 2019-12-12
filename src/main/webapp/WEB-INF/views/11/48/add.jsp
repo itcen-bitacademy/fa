@@ -300,7 +300,7 @@ tr td:first-child {
 					&nbsp;
 					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
 					&nbsp;
-					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()" type="submit" >삭제</button>
+					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()" type="submit" id='delete' >삭제</button>
 					&nbsp;
 					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }" id= "search">조회</button>
 					&nbsp;
@@ -558,6 +558,7 @@ $(function(){
 	$("#clear").click(function(){ 
 		 $('input').val('');
 		 $('#form-field-select-3').val('초기값').trigger('chosen:updated');
+		 $('#btn-check-code').val('중복확인');
 		 
 	});
 	
@@ -998,6 +999,10 @@ $("form").on("submit", function() {
  });
  
  $("#search").click(function(){
+	 $("input[name=name]").attr('disabled',true);
+ });
+ $("#delete").click(function(){
+	 $("input[code=code]").attr('disabled',true);
 	 $("input[name=name]").attr('disabled',true);
  });
  
