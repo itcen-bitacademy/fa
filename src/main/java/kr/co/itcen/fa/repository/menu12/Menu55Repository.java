@@ -20,18 +20,14 @@ public class Menu55Repository {
 	@Autowired
 	private SqlSession sqlSession;
 
-//	public void test() {
-//		TestVo testVo = new TestVo();
-//		testVo.setName("곽세연");
-//		sqlSession.insert("menu55.save", testVo);
-//	}
-//	
+	//전체리스트
 	public List<CurrentSituationVo> getList(CurrentSituationVo vo){
 		
 		List<CurrentSituationVo> list = sqlSession.selectList("menu55.getList",vo);
 		return list;
 	}
 	
+	//품목 을 가져오기위한 코드
 	public List<CurrentSituationVo> getitemcode(String itemcode) {
 		List<CurrentSituationVo> result = sqlSession.selectList("menu55.getitemcode",itemcode);
 		return result;

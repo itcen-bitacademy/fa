@@ -36,25 +36,21 @@ public class Menu56Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model ,CurrentSituationVo vo) {
 		
+		
 		if(vo.getItemcode() == null || "".equals(vo.getItemcode()))
 			vo.setItemcode("");
 		if(vo.getSearchdate() == null || "".equals(vo.getSearchdate()))
 			vo.setSearchdate("");
+
 		
-		System.out.println("안녕"+vo);
-		
-		//포스트 지울려면
-		//@path주는 거 지워
+		//전체 리스트를 가져오기 위한 코드 
 		List<CurrentSituationVo> list = menu56Service.getList(vo);
 		model.addAttribute("list",list);
 		
 		// 대분류 목록을 보여주기 위한 코드
 		List<SectionVo> maincategory = menu56Service.getCategory();
 		model.addAttribute("gcategory",maincategory);
-		
-	
-		
-		
+
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

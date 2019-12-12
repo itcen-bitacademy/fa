@@ -31,14 +31,18 @@ public class Menu55Controller {
 	//@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model,CurrentSituationVo vo) {
-		if(vo.getSearchdate()==null || "".equals(vo.getSearchdate())){
+		if(vo.getSearchdate()==null || "".equals(vo.getSearchdate()))
 			vo.setSearchdate("");
-		}
+		if(vo.getItemcode() == null || "".equals(vo.getItemcode()))
+			vo.setItemcode("");
+		
+		//전체 리스트 
 		List<CurrentSituationVo> iname = menu55Service.getitemcode(vo.getItemcode());
 		model.addAttribute("itemname",iname);
+		//품목 을 가져 오기위한 코드
 		List<CurrentSituationVo> list = menu55Service.getList(vo);
 		model.addAttribute("list",list);
-		System.out.println(list);
+
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

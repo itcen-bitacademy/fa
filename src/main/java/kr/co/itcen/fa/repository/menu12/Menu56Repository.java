@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu12.CurrentSituationVo;
-import kr.co.itcen.fa.vo.menu12.TestVo;
 
 /**
  * 
@@ -22,12 +21,7 @@ public class Menu56Repository {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public void test() {
-		TestVo testVo = new TestVo();
-		testVo.setName("곽세연");
-		sqlSession.insert("menu56.save", testVo);
-	}
-	
+	//전체 리스트 
 	public List<CurrentSituationVo> getList(CurrentSituationVo vo) {
 		List<CurrentSituationVo> list = sqlSession.selectList("menu56.getList",vo);
 		return list;

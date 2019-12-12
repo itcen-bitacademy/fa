@@ -27,6 +27,7 @@
 				<div class="row-fluid">
 							<div class="span12">
 									<div class="form-horizontal">
+									
 										<div class="span3">
 											<div class="form-horizontal">
 													<label class="control-label" for="cl-ym-date-picker"> 년 월</label>
@@ -142,7 +143,7 @@
 								</div>
 								
 								<div class="span12">
-								<div class="pagination">
+								  <div class="pagination">
 									<ul>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
 									<li class="active"><a href="#">1</a></li>
@@ -190,15 +191,7 @@ $(function() {
 	
 	$(".chosen-select").chosen();
 	
-	//$("#maincategory option:selected").val();
-	
-// 	$("#maincategory").change(function(){
-// 		var url = "${pageContext.request.contextPath }/12/56/list/"+$(this).val();
-// 		if($(this).val() != ""){
-// 			$("#category").attr("action", url).submit();
-// 			//alert($(this).val());	
-// 		}
-// 	});
+	//대분류명을 선택하였을 때 그에 맞는 품목명이 바뀌도록
 	$("#gcategory").change(function(){
 		$.ajax({
 			url: "${pageContext.request.contextPath }/12/56/api?sectioncode="+$(this).val(),
@@ -215,6 +208,7 @@ $(function() {
 				console.log(response);
 				$("#subcategory option").remove();
 				var list= response.data;
+					//선택하지 않았을 때 빈 값이 설정되도록
 					$("#subcategory").append("<option value=null placeholder=전체 품목 선택></option>")	
 				for(let i in list){
 					$("#subcategory").append("<option value='"+list[i].itemcode+"'>"+list[i].itemname+"</option>");

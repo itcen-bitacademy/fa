@@ -6,12 +6,15 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script>
 $(function() {
 	// 데이트피커 한글설정
@@ -55,121 +58,133 @@ $(function() {
 						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
 						class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div>
-				<div class="row-fluid">
-					<div class="span12">
-							<div class="control-group">
-							<div class="row-fluid">
-							<form class="form-horizontal">
-								<div class="span4">
-										<div class="control-group">
-											<label class="control-label" for="cl-ym-date-picker"
-												style="text-align: left; width: 120px;"> 년 월</label>
-											<div class="controls" style="margin-left: 120px;">
-												<div class="row-fluid input-append">
-													<input class="span11 date-picker" id="datepicker"
-														name="searchdate" type="text"
-														data-date-format="yyyy-mm" /> <span class="add-on">
-														<i class="icon-calendar"></i>
-													</span>
-												</div>
-												
-													<!-- searchdate 상태 유지 -->
-													<script type="text/javascript">
+				<form class="form-horizontal">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="form-horizontal">
+
+								<div class="span3">
+									<div class="form-horizontal">
+										<label class="control-label" for="cl-ym-date-picker"
+											style="text-align: left; width: 120px;"> 년 월</label>
+										<div class="controls" style="margin-left: 120px;">
+											<div class="row-fluid input-append">
+												<input class="span11 date-picker" id="datepicker"
+													name="searchdate" type="text" data-date-format="yyyy-mm" />
+												<span class="add-on"> <i class="icon-calendar"></i>
+												</span>
+											</div>
+
+											<!-- searchdate 상태 유지 -->
+											<script type="text/javascript">
 													var datepicker = "${param.datepicker}";
 													$("#datepicker").val(datepicker);
 													</script>
-											</div>
 										</div>
+									</div>
 								</div>
+
+
 								<div class="span4">
-										<div class="control-group">
-											<label class="control-label" for="form-field-select-2"
-												style="text-align: left; width: 120px;">품목명</label>
-											<div class="controls" style="margin-left: 120px;">
-												<select class="chosen-select" id="itemname"	name="itemcode" data-placeholder="품목명 선택">
-													<c:forEach items='${itemname }' var='itemname' varStatus='status'>
-														<option value="${itemname.itemcode }">${itemname.itemname }</option>
-													</c:forEach>
-												</select>
-													<!-- itemname 상태 유지 -->
-													<script type="text/javascript">
+									<div class="form-horizontal">
+										<label class="control-label" for="form-field-select-2"
+											style="text-align: left; width: 120px;">품목명</label>
+										<div class="controls" style="margin-left: 120px;">
+											<select class="chosen-select" id="itemname" name="itemcode"
+												data-placeholder="품목명 선택">
+												<c:forEach items='${itemname }' var='itemname'
+													varStatus='status'>
+													<option value="${itemname.itemcode }">${itemname.itemname }</option>
+												</c:forEach>
+											</select>
+											<!-- itemname 상태 유지 -->
+											<script type="text/javascript">
 													var itemname = "${param.itemname}";
 													$("#itemname").val(itemname);
 													</script>
-											</div>
 										</div>
+									</div>
 								</div>
 
-								<div class="span1">
+
+								<div class="span2">
 									<button type="submit" class="btn btn-small btn-info"
-									formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+										formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 
 								</div>
-								</form>
+
 							</div>
-
-							<div class="hr hr-18 dotted"></div>
-								
-								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
-									<thead>
-									<tr>
-										<th>품목코드</th>
-										<th>품목명</th>
-										<th>입고수량</th>
-										<th>입고공급가액</th>
-										<th>입고부가세</th>
-										<th>입고금액</th>
-										<th>출고수량</th>
-										<th>출고공급가액</th>
-										<th>출고부가세</th>
-										<th>출고금액</th>
-										<th>재고수량</th>
-										<th>재고공급가액</th>
-										<th>재고부가세</th>
-										<th>재고금액</th>
-									</tr>
-									</thead>
-									<c:forEach items='${list }' var='vo' varStatus='status'>
-									<tr>
-											<td>${vo.itemcode }</td>
-											<td>${vo.itemname }</td>
-											<td>${vo.purchasemanagementquantity }</td>
-											<td>${vo.purchasemanagementsupplyvalue }</td>
-											<td>${vo.purchasemanagementtaxvalue }</td>
-											<td>${vo.purchasemanagementtotalprice }</td>
-											<td>${vo.salesquantity }</td>
-											<td>${vo.salessupplyvalue }</td>
-											<td>${vo.salestaxvalue }</td>
-											<td>${vo.salestotalprice }</td>
-											<td>${vo.stockquantity }</td>
-											<td>${vo.stocksupplyvalue }</td>
-											<td>${vo.stocktaxvalue }</td>
-											<td>${vo.stocktotalprice }</td>
-		
-									</tr>
-									</c:forEach>
-								</table>
-								</div>
-								<div class="pagination">
-									<ul>
-									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-									<li class="active"><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-									</ul>
-								</div>
 						</div>
 					</div>
+				</form>
 
+				<div class="hr hr-18 dotted"></div>
 
+				<div class="row-fluid">
+					<div class="span12">
+					<table id="sample-table-1"class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>품목코드</th>
+								<th>품목명</th>
+								<th>입고수량</th>
+								<th>입고공급가액</th>
+								<th>입고부가세</th>
+								<th>입고금액</th>
+								<th>출고수량</th>
+								<th>출고공급가액</th>
+								<th>출고부가세</th>
+								<th>출고금액</th>
+								<th>재고수량</th>
+								<th>재고공급가액</th>
+								<th>재고부가세</th>
+								<th>재고금액</th>
+							</tr>
+						</thead>
+						<c:forEach items='${list }' var='vo' varStatus='status'>
+							<tr>
+								<td>${vo.itemcode }</td>
+								<td>${vo.itemname }</td>
+								<td>${vo.purchasemanagementquantity }</td>
+								<td>${vo.purchasemanagementsupplyvalue }</td>
+								<td>${vo.purchasemanagementtaxvalue }</td>
+								<td>${vo.purchasemanagementtotalprice }</td>
+								<td>${vo.salesquantity }</td>
+								<td>${vo.salessupplyvalue }</td>
+								<td>${vo.salestaxvalue }</td>
+								<td>${vo.salestotalprice }</td>
+								<td>${vo.stockquantity }</td>
+								<td>${vo.stocksupplyvalue }</td>
+								<td>${vo.stocktaxvalue }</td>
+								<td>${vo.stocktotalprice }</td>
 
+							</tr>
+						</c:forEach>
+					</table>
+				</div>
+				
+				<div class="span12">
+				<div class="pagination">
+					<ul>
+						<li class="disabled"><a href="#"><i
+								class="icon-double-angle-left"></i></a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					</ul>
+				</div>
+				</div>
 			</div>
-			<!-- /.page-content -->
+
+
+
 		</div>
-		<!-- /.main-content -->
+		<!-- /.page-content -->
+	</div>
+	<!-- /.main-content -->
 	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->

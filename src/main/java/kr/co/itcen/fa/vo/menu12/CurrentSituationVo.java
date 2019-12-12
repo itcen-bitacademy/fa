@@ -26,6 +26,7 @@ public class CurrentSituationVo {
 	private Long stocksupplyvalue; //재고 부가세
 	private Long stocktaxvalue; //재고부가세
 	private Long stocktotalprice; //재고금액
+	
 	public Long getStocksupplyvalue() {
 		return stocksupplyvalue;
 	}
