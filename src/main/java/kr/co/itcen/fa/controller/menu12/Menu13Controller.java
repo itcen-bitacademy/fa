@@ -19,6 +19,7 @@ import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
 import kr.co.itcen.fa.vo.menu12.SalesVo;
+import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 
 /**
  * 
@@ -40,6 +41,9 @@ public class Menu13Controller {
 	
 	@Autowired
 	private Menu19Service menu19Service;
+	
+	@Autowired
+	private Menu53Controller menu53Controller;
 	
 	// index
 	@RequestMapping(value = {"", "/" + SUBMENU}, method=RequestMethod.GET )
@@ -121,6 +125,13 @@ public class Menu13Controller {
 			if(salesVo.getSalesNo() != pathSalesNo) { // vo에 세팅된 번호와 pathvariable번호 일치 
 				menu13Service.updateDelete(pathSalesNo); // 업데이트위해 데이터 삭제
 				menu13Service.updateInsert(list); // 새로운 데이터 insert
+				
+				SellTaxbillVo taxVo = menu13Service.controlTaxbill(pathSalesNo);// 세금계산서 select, delete
+				System.out.println(taxVo);
+				
+				taxVo = menu53Controller.voucher(taxVo, authUser, true);// 전표 업데이트
+				menu13Service.insertTaxvill(taxVo);
+				
 			}
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/" + pathSalesNo; 
 		} else {

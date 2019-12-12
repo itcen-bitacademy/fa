@@ -28,6 +28,9 @@ public class Menu26Service {
 	public DataResult<BankAccountVo> defaultRead(int page, BankAccountVo bavo) {
 		DataResult<BankAccountVo> dataResult = new DataResult<BankAccountVo>();
 		if(bavo.getDeleteFlag()==null) {
+			bavo.setDepositNo("");
+			bavo.setMakeDate("");
+			bavo.setEnDate("");
 			bavo.setDeleteFlag("N");
 		}
 		
@@ -37,26 +40,15 @@ public class Menu26Service {
 		
 		List<BankAccountVo> list = menu26Repository.list(bavo, pagination);
 		
+		System.out.println("startoage:" + totalCnt);
+		System.out.println("startoage:" + pagination.getStartPage());
+		System.out.println("startoage:" + pagination.getEndPage());
 		dataResult.setPagination(pagination);
 		dataResult.setDatas(list);
+		System.out.println(list.toString());
 		
 		return dataResult;
 	}
 	
-	public Map<String, Object> read(BankAccountVo bavo, int page) {
-		bavo.setDepositNo(bavo.getDepositNo()+"%");
-		int totalCnt = menu26Repository.selectCount(bavo); 
-		System.out.println("또달카운트 : " + totalCnt);
-
-		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		map = menu26Repository.read(bavo, pagination);
-		
-		map.put("pagination", pagination);
-		map.put("success", true);
-		
-		return map;
-	}
 
 }

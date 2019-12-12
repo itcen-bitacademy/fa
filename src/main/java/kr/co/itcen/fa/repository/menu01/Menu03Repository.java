@@ -40,11 +40,16 @@ public class Menu03Repository {
 	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo) {
 		System.out.println("#################" + voucherVo.getRegDate());
 		sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
+		
 		System.out.println("222233333333" + voucherVo.getNo());
 		for(int i = 0; i < itemVo.size(); i++) {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			System.out.println("33333333" + voucherVo.getNo());
+			itemVo.get(i).setGroupNo(voucherVo.getNo());
 			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
+			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+			itemVo.get(i).setOrderNo(order);
+			sqlSession.update("menu03.updateOrder", itemVo.get(i));
 		}
 		
 		mappingVo.setVoucherNo(voucherVo.getNo());
@@ -80,7 +85,7 @@ public class Menu03Repository {
 	
 	// 전표 관리페이지 조건 개수
 	public int selectVoucherCount(VoucherVo voucherVo) {
-		return sqlSession.selectOne("munu03.selectVoucherCount", voucherVo);
+		return sqlSession.selectOne("menu03.selectVoucherCount", voucherVo);
 	}
 	
 	// 전표 관리페이지 조건 조회
@@ -140,7 +145,12 @@ public class Menu03Repository {
 			itemVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
 			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
+			itemVo.get(i).setGroupNo(voucherVo.getNo());
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
+			
+			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+			itemVo.get(i).setOrderNo(order);
+			sqlSession.update("menu03.updateOrder", itemVo.get(i));
 		}
 		
 		mappingVo.setInsertUserid(voucherVoTemp.getInsertUserid());
@@ -178,5 +188,6 @@ public class Menu03Repository {
 		map.put("customerList",voucherList);
 		return map;
 	}
+	
 
 }

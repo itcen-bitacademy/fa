@@ -111,7 +111,4 @@ public class Menu48Repository {
 		return sqlSession.selectList("menu48.selectVoucherNo",list);
 	}
 
-	public String selectBankCode(String depositNo) {
-		return sqlSession.selectOne("menu48.selectBankCode",depositNo);
-	}
 }

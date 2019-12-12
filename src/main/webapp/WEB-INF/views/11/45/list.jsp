@@ -45,12 +45,13 @@ form {
 }
 
 /* table columns  */
-.first-column {width:170px; padding-left:20px;}
-.second-column {width:400px;}
-.third-column {width:120px;}
-.fourth-column {width:70px;}
-.fifth-column {width:200px;}
-.sixth-column {padding-left:20px;}
+.first-column {width:120px; padding-left:20px;}
+.second-column {width:70px;}
+.third-column {width:140px;}
+.fourth-column {width:300px;}
+.fifth-column {width:140px;}
+.sixth-column {width:70px;}
+.seventh-column {padding-left:20px;}
 
 /* second row */
 .span2 {padding-left:40px; padding-top:20px;}
@@ -70,34 +71,30 @@ form {
 				</div><!-- /.page-header -->
 				
 				<!-- PAGE CONTENT BEGINS -->
-				<div>
+			<div>
 				<div>
 				<form class="form-horizontal">
 					<table style="width:100%;">
 						<tbody>
 						<tr>
-							<td class="first-column"><h4>은행명</h4></td>
+							<td class="first-column center"><h4>은행명</h4></td>
 							<td class="second-column">
 				                <input type="text" name="name" />
 				            </td>
-							
-					
-							<td class="third-column"><h4>지점명</h4></td>
+				            
+							<td class="third-column center"><h4>지점명</h4></td>
 							<td class="fourth-column">
 				                <input type="text" name="store" />
 				            </td>
-					
-					
-							<td class="fifth-column"><h4>거래시작일</h4></td>
+				            
+							<td class="fifth-column center"><h4>거래시작일</h4></td>
 							<td class="sixth-column">
-								<div class="control-group">
 									<div class="row-fluid input-append">
-										<input class="span7 date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" />
+										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd"  />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
 									</div>
-								</div>
 							</td>
 					
 							<td class="seventh-column" >
@@ -122,15 +119,11 @@ form {
 		</div>
 		<!-- PAGE CONTENT BEGINS -->
 		
+		<!-- list -->
+		<p>총 ${dataResult.pagination.totalCnt }건</p>
 		<table id="simple-table" class="table  table-bordered table-hover">
             <thead>
                 <tr>
-                	<th class="center">
-						<label class="pos-rel">
-							<input type="checkbox" class="ace" />
-							<span class="lbl"></span>
-						</label>
-					</th>
                    <th class="center">은행코드</th>
                    <th class="center">은행명</th>
                    <th class="center">지점명</th>
@@ -147,12 +140,6 @@ form {
             <tbody>
                 <c:forEach items="${dataResult.datas }" var="bankvo">
                       <tr>
-                      	<td class="center">
-                     	 	<label class="pos-rel">
-								<input type="checkbox" class="ace" /> 
-								<span class="lbl"></span>
-							</label>
-						</td>
                       	<td class="center">${bankvo.code }</td>
                         <td class="center">${bankvo.name }</td>
                         <td class="center">${bankvo.store }</td>

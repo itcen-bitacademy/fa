@@ -1,13 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+.chosen-search {
+	display: none;
+}
+
+.search-input-width-first{
+	width: .span4;
+}
+
+#dialog-message {
+	overflow: auto;
+}
+
+
+</style>
 
 </head>
 <body class="skin-3">
@@ -20,20 +35,20 @@
 
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">전표현황조회</h1>
+					<h1 class="pull-left">전표현황조회[1-04]</h1>
 				</div><!-- /.page-header -->
-				
+				<form class="form-horizontal" id="input-form"  method="post">
 					<div class="row-fluid">
 						<div class="span6">
-							<form class="form-horizontal">
+							
+								<!-- 전표 조회 영역 -->
 								
-								
-								<!-- 조회 필터 영역 -->
+								<!-- 전표 조회 날짜 -->
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">일자 :</label>
+									<label class="control-label" for="form-field-codename" style="text-align:left;width:120px;" >일자</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
-										<input class="span4 date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" />
+										<input class="span4 date-picker" id="regDate" name="regDate" type="text" data-date-format="yyyy-mm-dd" />
 											<span class="add-on">
 											<i class="icon-calendar"></i>
 											</span>
@@ -41,70 +56,128 @@
 									</div>
 								</div>
 								
+								<!-- 계정과목  -->
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">계정과목코드 / 계정명 :</label>
+									<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >계정과목</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-code" name="code" placeholder="계정과목코드"/>
+										<select class="chosen-select" id="accountNo" name="accountNo" data-placeholder="계정과목코드">		
+											<option value="" data-accountName=""></option>		
+											<c:choose>
+												<c:when test="${accountNo eq accountNo }">
+													<option value="${accountNo}" data-accountName="${accountNo }" selected>${accountNo }</option>
+												</c:when>										
+											</c:choose>				
+											<c:forEach items="${accountList }" var="vo">									
+													<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>
+											</c:forEach>
+										</select> 
+										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
+									
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-codename">증빙코드 :</label>
+									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-code" name="code1" placeholder="증빙코드"/>
-									</div>
-								</div>
-							</form>
-						</div>
-								
-						<div class="span6">
-							<form class="form-horizontal">
-								<div class="control-group">
-									<label class="control-label" for="form-field-codename">사용자 성명 :</label>
-									<div class="controls">
-										<input class="span4" type="text" id="form-field-code" name="code1" placeholder="증빙코드"/>
+										<input type="text" id="amount" name="amount">
 									</div>
 								</div>
 								
-								<div class="control-group">
-									<label class="control-label" for="form-field-1">전표사용목적 :</label>
-									<div class="controls">
-										<input class="span6" type="text" id="form-field-code" name="code6" placeholder="전표사용목적"/>
-									</div>
-								</div>
-								
-							</form>
 						</div>
 	
+						<div class="span6">
+							<div class="tabbable">
+								<div class="control-group">
+									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >거래처 코드</label>
+									<div class="controls">
+										<span class="btn btn-small btn-info">
+										<a href="#" id="a-customerinfo-dialog"> 
+										<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
+										<i class="icon-search nav-search-icon"></i> 
+										</a> 
+									
+										</span> 
+										&nbsp; &nbsp;
+										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
+									</div>
+								</div>
+								
+								<div class="control-group">
+									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표사용목적</label>
+									<div class="controls">
+										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적"/>
+										<input class="span8" type="hidden" id="voucherNo" name="no" />
+										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
+									</div>
+								</div>
+								
+								<!-- 거래처 Modal pop-up : start -->
+								<div id="dialog-message" title="거래처" hidden="hidden">
+									<table id="dialog-message-table">
+										<tr>
+											<td><label>거래처코드</label> <input type="text"
+												id="input-dialog-customerNo" style="width: 100px;" /> <a
+												href="#" id="a-dialog-customerNo"> <span
+													class="btn btn-small btn-info" style="margin-bottom: 10px;">
+														<i class="icon-search nav-search-icon"></i>
+												</span>
+											</a></td>
+										</tr>
+									</table>
+									<!-- 거래처코드 및 거래처명 데이터 리스트 -->
+									<table id="modal-customer-table"
+										class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">거래처번호</th>
+												<th class="center">거래처명</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+												<th class="center">카드번호</th>
+												<th class="center">계좌번호</th>
+												<th class="center">소유주</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-customerList">
+											
+										</tbody>
+									</table>
+								</div>
+								<!-- 거래처 Modal pop-up : end -->
+							</div>
+
+						</div>
+
 					</div><!-- /.row-fluid -->
 
-
+			
+			<div class="hr hr-18 dotted"></div>
 			<!-- buttons -->
 			<div class="row-fluid">
-				<div class="span12">
-					<div class="form-actions">
-						<button class="btn btn-danger" type="reset">조 회</button>
-					</div>
-					<div class="hr"></div>
+				<div class="span8">
+						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
+							formaction="${pageContext.request.contextPath}/01/03/read">조회</button>
+						<button class="btn btn-default btn-small" type="reset">취 소</button>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-
+			<div class="hr hr-18 dotted"></div>
+			</form>
 
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
 				<div class="span12">
-					<table class="table table-striped table-bordered table-hover">
+					<table id="simple-table-1"
+						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>일자</th>
 								<th>전표번호</th>
-								<th>전표순번</th>
-								<th>계정과목</th>
+								<th>구분</th>
+								<th>계정과목코드</th>
 								<th>계정과목명</th>
-								<th>차대구분</th>
-								<th>금액</th>
-								<th>부가세</th>
-								<th>거래처코드</th>
+								<th>차변</th>
+								<th>대변</th>
+								<th>거래처번호</th>
 								<th>거래처</th>
 								<th>증빙종류</th>
 								<th>증빙코드</th>
@@ -114,51 +187,68 @@
 								<th>계좌번호</th>
 								<th>소유자</th>
 								<th>사용목적</th>
+								<th>관리팀</th>
 							</tr>
 						</thead>
 						
-						<tbody>
-							<tr>
-								<td>20191127</td>
-								<td>0001</td>
-								<td>01</td>
-								<td>123456</td>
-								<td>당좌예금</td>
-								<td>차변</td>
-								<td>100,000,000</td>
-								<td>10,000,000</td>
-								<td>거래처코드</td>
-								<td>아이티센</td>
-								<td>세금계산서</td>
-								<td>123123</td>
-								<td>777777</td>
-								<td>신한은행</td>
-								<td>카드번호</td>
-								<td></td>
-								<td>임성주</td>
-								<td>회식비 2차 20,000원 당좌예금에서 보통예금으로 입금</td>
-							</tr>
-							
-							<tr>
-								<td>20191127</td>
-								<td>0001</td>
-								<td>02</td>
-								<td>123457</td>
-								<td>보통예금</td>
-								<td>대변</td>
-								<td>100,000,000</td>
-								<td>10,000,000</td>
-								<td>거래처코드</td>
-								<td>아이티센</td>
-								<td>세금계산서</td>
-								<td>123123</td>
-								<td>777777</td>
-								<td>신한은행</td>
-								<td>카드번호</td>
-								<td></td>
-								<td>임성주</td>
-								<td>회식비 2차 20,000원 보통예금에서 당좌예금으로 출금</td>
-							</tr>
+						<tbody id="voucher_list">
+							<c:forEach items='${dataResult.datas }' var='voucherVo' varStatus='status'>
+
+								<tr>
+									<td>${voucherVo.regDate }</td>
+									<td>${voucherVo.no }</td>
+									<c:choose>
+								        <c:when test="${voucherVo.amountFlag == 'd' }">
+								            <td>차변</td>
+								        </c:when>
+								        <c:otherwise>
+								            <td>대변</td>
+								        </c:otherwise>
+								    </c:choose>
+									<td>${voucherVo.accountNo }</td>
+									<td>${voucherVo.accountName }</td>
+									<c:choose>
+								        <c:when test="${voucherVo.amountFlag == 'd' }">
+								            <td>${voucherVo.amount }</td>
+								            <td></td>
+								        </c:when>
+								        <c:otherwise>
+								        	<td></td>
+								            <td>${voucherVo.amount }</td>
+								        </c:otherwise>
+								    </c:choose>
+								    <td>${voucherVo.customerNo }</td>
+									<td>${voucherVo.customerName }</td>
+									<c:choose>
+										<c:when test="${voucherVo.manageNo == '' }">
+								            <td></td>
+								        </c:when>
+								        <c:when test="${voucherVo.manageNo != null }">
+								            <td>세금계산서</td>
+								        </c:when>
+								        <c:otherwise>
+								            <td></td>
+								        </c:otherwise>
+								    </c:choose>
+									<td>${voucherVo.manageNo }</td>
+									<td>${voucherVo.bankCode }</td>
+									<td>${voucherVo.bankName }</td>
+									<c:choose>
+										<c:when test="${voucherVo.customerName eq '여비' }">
+											<td>${voucherVo.cardNo }</td>
+								            <td></td>
+								            <td>${voucherVo.cardUser }</td>
+								        </c:when>
+								        <c:otherwise>
+								        	<td></td>
+								        	<td>${voucherVo.depositNo }</td>
+								            <td>${voucherVo.depositHost }</td>
+								        </c:otherwise>
+								    </c:choose>
+									<td>${voucherVo.voucherUse }</td>
+									<td>${voucherVo.insertTeam }</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -170,7 +260,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/03/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -180,17 +270,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/03/list?page=${pg }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${pg }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/01/03/list?page=${pg }">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${pg }">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/17/19/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -203,6 +293,10 @@
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 <script>
@@ -211,7 +305,167 @@ $(function(){
 	$('.date-picker').datepicker().next().on(ace.click_event, function(){
 		$(this).prev().focus();
 	});
-});
+	
+	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		
+		$("input[name=regDate]").val(td.eq(0).text());
+		$('#accountNo').val(td.eq(3).text()).trigger('chosen:updated');
+		$("input[name=accountName]").val(td.eq(4).text());
+		console.log($("input[name=no]").val());
+		if(td.eq(5).text()== "") {
+			$("input[name=amount]").val(td.eq(6).text());	
+		} else {
+			$("input[name=amount]").val(td.eq(5).text());	
+		}
+		$("input[name=customerNo]").val(td.eq(7).text());
+		$("input[name=customerName]").val(td.eq(8).text());
+		$("input[name=bankCode]").val(td.eq(11).text());
+		$("input[name=bankName]").val(td.eq(12).text());
+		$("input[name=cardNo]").val(td.eq(13).text());
+		$("input[name=depositNo]").val(td.eq(14).text());
+		if(td.eq(13).text()== "") {
+			$("input[name=depositHost]").val(td.eq(15).text());
+		} else {
+			$("input[name=cardUser]").val(td.eq(15).text());
+		}
+		
+		$("input[name=insertTeam]").val(td.eq(17).text());
+		
+		$("input[name=bankName]").prop("readonly", true);
+		$("input[name='bankLocation']").prop("readonly", true);
+		$("input[name='banker']").prop("readonly", true);
+		$("input[name='bankPhoneCall']").prop("readonly", true);
+	});
+	
+	//계정과목에 따른 계정명 불러오기
+    $('#accountNo').change(function () {
+    	var accountName =$(this).find('option:selected').attr('data-accountName');
+    	$('#accountName').val(accountName);
+   	});
+	
+	// 팝업
+    $(function() {
+	      $("#dialog-message").dialog({
+	         autoOpen : false
+	      });
+
+	      $("#a-customerinfo-dialog").click(function() {
+	         $("#dialog-message").dialog('open');
+	         $("#dialog-message").dialog({
+	            title: "거래처정보",
+	            title_html: true,
+	               resizable: false,
+	             height: 500,
+	             width: 700,
+	             modal: true,
+	             close: function() {
+	                $('#tbody-customerList tr').remove();
+	             },
+	             buttons: {
+	             "닫기" : function() {
+	                      $(this).dialog('close');
+	                      $('#tbody-customerList tr').remove();
+	                 }
+	             }
+	         });
+	      });
+	  });
+	
+  $('#dialog-message-table').on('click', '#a-dialog-customerNo', function(event) {
+     event.preventDefault();
+     $("#tbody-customerList").find("tr").remove();
+     
+     var customerNo = $("#input-dialog-customerNo").val();
+     
+     // ajax 통신
+     $.ajax({
+        url: "${pageContext.request.contextPath }/01/03/getCustomer?customerNo=" + customerNo,
+        contentType : "application/json; charset=utf-8",
+        type: "get",
+        dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+        data : "",
+        statusCode: {
+            404: function() {
+              alert("page not found");
+            }
+        },
+        success: function(result){
+      	  if(result.success) {
+      	  	$("#input-dialog-customerNo").val('');
+      	  	var customerList = result.customerList;
+      	  	console.log(result.customerList);
+      	  	for(let a in customerList) {
+      	  		if(customerList[a].cardNo != null) { // 카드번호값 셋팅
+      	  			var cardNo = customerList[a].cardNo;
+      	  		} else {
+      	  			cardNo = '';
+      	  		}
+      	  		
+	      	  	if(customerList[a].depositNo != null) {
+	  	  			var depositNo = customerList[a].depositNo;
+	  	  		} else {
+	  	  			depositNo = '';
+	  	  		}
+	      	  	
+      	  		if(customerList[a].customerName == '여비') {
+      	  			var host = customerList[a].cardUser;
+      	  		} else {
+      	  			host = customerList[a].depositHost
+      	  		}
+      	  		
+      	  		$("#tbody-customerList").append("<tr>" +
+                        "<td class='center'>" + customerList[a].customerNo + "</td>" +
+                        "<td class='center'>" + customerList[a].customerName + "</td>" +
+                        "<td class='center'>" + customerList[a].bankCode + "</td>" +
+                        "<td class='center'>" + customerList[a].bankName + "</td>" +
+                        "<td class='center'>" + cardNo + "</td>" +
+                        "<td class='center'>" + depositNo + "</td>" +
+                        "<td class='center'>" + host + "</td>" +
+                        "</tr>");
+      	  	}
+      	  }
+        },
+        error: function(xhr, error){
+           console.error("error : " + error);
+        }
+     });
+  });
+  
+  // 거래처 리스트에서 row를 선택하면 row의 해당 데이터 form에 추가
+  $(document.body).delegate('#tbody-customerList tr', 'click', function() {
+     var tr = $(this);
+     var td = tr.children();
+     $("input[name=customerNo]").val(td.eq(0).text());
+     $("input[name=customerName]").val(td.eq(1).text());
+     $("input[name=bankCode]").val(td.eq(2).text());
+     $("input[name=bankName]").val(td.eq(3).text());
+     $("input[name=cardNo]").val(td.eq(4).text());
+     $("input[name=depositNo]").val(td.eq(5).text());
+     $("input[name=depositHost]").val(td.eq(6).text());
+     $("#dialog-message").dialog('close');
+  });
+	
+  
+  
+  // 금액 3자리 , 찍기
+  /**
+  function addCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+ }
+ $("input[name=amount]").on('keyup', function(event){
+ 	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+ });
+ //
+ $("#input-form").submit(function(event) {
+	 
+ });
+ */
+ 
+ 
+}); // $(function
+
 </script>
 </body>
 </html>

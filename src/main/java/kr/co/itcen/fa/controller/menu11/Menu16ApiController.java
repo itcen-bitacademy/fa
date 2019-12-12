@@ -25,6 +25,7 @@ public class Menu16ApiController {
 	@RequestMapping("/"+SUBMENU+"/api/checkcode")
 	public JSONResult checkCode(@RequestParam(value="code", required=true, defaultValue="") String code) {
 		Boolean exist = menu16Service.existCode(code);
+		System.out.println(code+"sfdfdsf");
         return JSONResult.success(exist);
 	}
 	

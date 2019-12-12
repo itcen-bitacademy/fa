@@ -89,15 +89,15 @@ public class Menu50Service {
 	public Long select(Long no) {
 		return menu50Repository.select(no);
 	}
+	
+	// 상환데이터 입력
+	public Boolean insertRepayVo(RepayVo vo) {
+		return menu50Repository.insertRepayVo(vo);
+	}
 
 	// 상환데이터 수정
 	public Boolean updateRepayVo(RepayVo vo) {
 		return menu50Repository.updateRepayVo(vo);
-	}
-
-	// 상환데이터 입력
-	public Boolean insertRepayVo(RepayVo vo) {
-		return menu50Repository.insertRepayVo(vo);
 	}
 
 	// 상환후 갱신된 정보 select
@@ -116,5 +116,10 @@ public class Menu50Service {
 	public List<Long> selectVoucherNo(Long[] no) {
 		return menu50Repository.selectVoucherNo(no);
 	}
-	
+
+	// 계좌번호로 은행코드 호출
+	public String selectBankCode(String depositNo) {
+		return menu50Repository.selectBankCode(depositNo);
+	}
+
 }

@@ -24,10 +24,12 @@
 				<h1 class="pull-left">매출세금계산서 현황조회</h1>
 			</div><!-- /.page-header -->
 			
-			<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 			<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
-					<div class="span12">
+						
+					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+					
+						<div class="span12">
 						<div class="row-fluid">
 									<div class="form-horizontal">
 										<div class="span6">
@@ -48,9 +50,9 @@
 							</div>
 						</div>
 						<br>
-				</div>
-				<!-- <button type="button" onclick=""><i class="icon-search nav-search-icon"></i> -->
-				<div class="row-fluid">
+						</div>
+				
+						<div class="row-fluid">
 							<div class="span12">
 									<div class="form-horizontal">
 										<div class="control-group">
@@ -67,6 +69,7 @@
 											</div>
 										</div>
 									</div>
+									</div>
 									
 									<div class="form-horizontal">
 										<div class="control-group">
@@ -81,6 +84,7 @@
 													</select>
 											</div>
 										</div>
+									</div>
 									</div>
 									
 									<div class="form-horizontal">
@@ -98,8 +102,9 @@
 											</div>
 										</div>
 									</div>
-									
+									</div>
 									<div class="hr hr-18 dotted"></div>
+									
 									<div class="form-horizontal">
 										<div class="control-group">
 											<div class="span10">	
@@ -124,11 +129,13 @@
 															<option value="no">no</option>
 														</select>
 														<button class="btn btn-small btn-info">조회</button>
-												</div>
 											</div>
 										</div>
 									</div>
-									<div class="hr hr-18 dotted"></div>
+								</div>
+						</form>
+							
+						<div class="hr hr-18 dotted"></div>
 						<div class="row-fluid">
 						<div class="span12">
 							<table class="table table-striped table-bordered table-hover">
@@ -179,6 +186,7 @@
 							</table>
 						</div><!-- /span -->
 					</div><!-- /row -->
+					
 					<div class="pagination">
 						<ul>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>

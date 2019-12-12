@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu66">
+		
+	<select id="selectAllCount" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(*) 
+				from tb_repay 
+					where delete_flag= 'N'
+		]]>
+			<if test="code != null and debtType.equals('S')">
+				<![CDATA[
+					and 	debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%'))
+				]]>
+			</if>
+			<if test="code != null and debtType.equals('L')">
+				<![CDATA[
+					and 	debt_no = (select no from tb_l_term_debt where code like concat('%',#{code},'%'))
+				]]>
+			</if>
+			<if test="code != null and debtType.equals('P')">
+				<![CDATA[
+					and 	debt_no = (select no from tb_p_debt where code like concat('%',#{code},'%'))
+				]]>
+			</if>
+	</select>
+		
+	<select id="selectAll" resultType="repayvo" parameterType="map">
+		<![CDATA[
+			   select 
+			   	  a.no as no,
+		          a.debt_no as debtNo, 
+		          a.pay_princ as payPrinc, 
+		          a.int_amount as intAmount, 
+		          date_format(a.pay_date,'%Y-%m-%d %H:%i:%S') as payDate, 
+		          a.debt_type as debtType, 
+		          a.voucher_no as voucherNo, 
+		          date_format(a.insert_date,'%Y-%m-%d %H:%i:%S') as insertDate 
+		          from tb_repay as a
+		          where a.delete_flag = 'N'
+		]]>
+			<if test="code != null and debtType.equals('S')">
+				<![CDATA[
+					and 	debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%')) 
+					order by insertDate desc limit #{pagination.pageIndex }, #{pagination.listSize }
+				]]>
+			</if>
+			<if test="code != null and debtType.equals('L')">
+				<![CDATA[
+					and 	debt_no = (select no from tb_l_term_debt where code like concat('%',#{code},'%')) 
+					order by insertDate desc limit #{pagination.pageIndex }, #{pagination.listSize }
+				]]>
+			</if>
+			<if test="code != null and debtType.equals('P')">
+				<![CDATA[
+					and 	debt_no = (select no from tb_p_debt where code like concat('%',#{code},'%')) 
+					order by insertDate desc limit #{pagination.pageIndex }, #{pagination.listSize }
+				]]>
+			</if>
+			<if test="pagination.pageIndex >= 0">
+				<![CDATA[
+			    	order by insertDate desc limit #{pagination.pageIndex }, #{pagination.listSize }
+			    ]]>
+		    </if>
+	</select>
+	
+	<!-- update -->
+	<update id="update" parameterType="pdebtvo">
+		<![CDATA[
+			update tb_repay set 
+				pay_princ = #{payPrinc}, int_amount = #{intAmount}, pay_date = #{payDate} 
+					where delete_flag= 'N' and debt_no = #{debtNo} and debt_type = #{debtType}
+		]]>
+	</update>
+
+</mapper>

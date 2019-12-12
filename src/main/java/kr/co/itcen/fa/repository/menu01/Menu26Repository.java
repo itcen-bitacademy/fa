@@ -27,6 +27,7 @@ public class Menu26Repository {
 
 	public List<BankAccountVo> list(BankAccountVo bavo, PaginationUtil pagination) {
 		Map<String, Object> s = new HashMap<String, Object>();
+		bavo.setDepositNo(bavo.getDepositNo()+"%");
 		
 		s.put("bavo", bavo);
 		s.put("pagination", pagination);
@@ -36,19 +37,6 @@ public class Menu26Repository {
 		return res;
 	}
 	
-	public Map<String, Object> read(BankAccountVo bavo, PaginationUtil pagination) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String, Object> s = new HashMap<String, Object>();
-		
-		
-		s.put("bavo", bavo);
-		s.put("pagination", pagination);
-		
-		map.put("bankList", sqlSession.selectList("menu26.read", s));
-		
-		return map;
-	}
-
 	public int selectCount(BankAccountVo bavo) {	
 		int res = sqlSession.selectOne("menu26.getCount", bavo);
 		return res;

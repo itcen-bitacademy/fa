@@ -178,8 +178,6 @@
 										<th>세금계산서번호</th>
 										<th>합병코드</th>
 										<th>구분</th>
-										<th>작성자</th>
-										<th>작성일</th>
 										<th>삭제여부</th>
 									</tr>
 								</thead>
@@ -209,9 +207,7 @@
 										<td>${vo.combineNo }</td>
 										<td>${vo.taxbillNo }</td>
 										<td>${vo.taxKind }</td>
-										<td>${vo.insertUserid }</td>
-										<td>${vo.insertDay }</td>
-										<td></td>
+										<td>${vo.flag }</td>
 									</tr>
 									</c:forEach>
 								</tbody>
@@ -232,7 +228,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
 								<i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
@@ -242,17 +238,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
 							<i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
@@ -276,7 +272,7 @@
 		$(function() {
 			$(".chosen-select").chosen();
 			$('#id-date-range-picker-1').daterangepicker({
-				format : 'YYYY-MM-DD'
+				format: "yyyy-mm-dd"
 			}).prev().on(ace.click_event, function(){
 				$(this).next().focus();
 			});

@@ -62,7 +62,7 @@
 	
 	<select id="customerlist" resultType="salescustomervo">
 		<![CDATA[
-			select no, name, ceo, phone from tb_salescustomer;
+			select no, name, manager_name as ceo, phone from tb_salescustomer;
 		]]>
 	</select>
 	
@@ -170,5 +170,70 @@
 				)
 			]]>
 		</foreach>
+	</insert>
+	<select id="getTaxbill" parameterType="String" resultType="selltaxbill12vo">
+		<![CDATA[
+			select 	t.taxbill_no as taxbillNo,
+					s.sales_no as salesNo, 
+			        s.sales_date as salesDate,
+			        s.customer_code as customerCode,
+			        c.name as customerName,
+			        c.ceo as ceo,
+			        c.zip_code as zipCode,
+			        c.address as address,
+			        c.detail_address as detailAddress,
+			        c.manager_name as managerName,
+			        c.manager_email as managerEmail,
+			        sum(s.quantity) as totalQuantity,
+			        sum(s.supply_value*s.quantity) as totalSupplyValue, 
+					sum(s.tax_value*s.quantity) as totalTaxValue,		
+			        t.write_date as writeDate,
+			        t.tax_type as taxType,
+					t.deposit_no as depositNo,
+			        s.release_date as releaseDate,
+			        b.deposit_host as depositHost,
+			        b.bank_name as bankName,
+			        b.bank_code as bankCode,
+			        t.voucher_no as voucherNo,
+			        t.voucher_use as voucherUse,
+			        t.amount_flag as amountFlag,
+			        t.account_no as accountNo,
+			        t.insert_userid as insertUserid,
+			        t.insert_day as insertDay		
+			from	fa.tb_sales s, 
+					fa.tb_sell_taxbill t, 
+			        fa.tb_salescustomer c, 
+			        fa.tb_bank_account b
+			where	s.sales_no = #{salesNo}
+			and		s.taxbill_no = t.taxbill_no
+			and		s.customer_code = c.no
+			and		t.deposit_no = b.deposit_no; 
+		]]>
+	</select>
+	<delete id="deleteTaxbill" parameterType="String">
+		<![CDATA[
+			delete from tb_sell_taxbill where sales_no = #{salesNo }
+		]]>
+	</delete>
+	
+	<insert id="insertTax" parameterType="selltaxbill12vo">
+		<![CDATA[
+			insert into 
+			tb_sell_taxbill 
+			values(
+			 null, #{taxbillNo },
+			 #{salesNo }, #{salesDate}, #{customerCode },
+			 #{customerName }, #{ceo },
+			 #{zipCode }, #{address }, #{detailAddress },
+			 #{managerName }, #{managerEmail },
+			 #{totalQuantity }, #{totalSupplyValue }, #{totalTaxValue }, #{writeDate }, #{taxType },
+			 #{depositNo }, #{releaseDate }, #{depositHost }, #{bankName }, #{bankCode }, 'N', #{voucherNo },
+			 #{voucherUse }, #{amountFlag }, #{accountNo }, #{insertUserid }, #{insertDay }, #{updateUserid }, #{updateDay });
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
 	</insert>
 </mapper>

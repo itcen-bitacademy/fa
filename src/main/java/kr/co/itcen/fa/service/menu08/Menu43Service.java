@@ -63,4 +63,9 @@ public class Menu43Service {
 	public CustomerVo getCustomerInfo(String customerNo) {
 		return menu43Repository.getCustomerInfo(customerNo);
 	}
+
+	public Long getVoucherNo(IntangibleAssetsVo intangibleAssetsVo) {
+		return menu43Repository.getVoucherNo(intangibleAssetsVo);
+	}
+
 }

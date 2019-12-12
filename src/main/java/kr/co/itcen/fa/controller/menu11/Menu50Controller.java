@@ -89,10 +89,9 @@ public class Menu50Controller {
 		vo.setDangerName(dangerArray[1]);
 		// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - end
 		
-		System.out.println("vovovovovo : " + vo.toString());
 		Long money = (long) (vo.getDebtAmount() * vo.getIntRate() / 100);
 		vo.setIntAmount(money);
-		System.out.println("@@@@@@@");
+		vo.setVoucherNo(menu50Service.select(vo.getNo()));  // 지워야함.
 		/////////////////////////////////////
 		//전표등록
 		// G: 단기차입금
@@ -103,33 +102,33 @@ public class Menu50Controller {
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
 		ItemVo itemVo = new ItemVo();
 		ItemVo itemVo2 = new ItemVo();
-		ItemVo itemVo3 = new ItemVo();
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		
 		MappingVo mappingVo = new MappingVo();
-
 		voucherVo.setRegDate(vo.getDebtDate());
-		itemVo.setAmount(vo.getDebtAmount() + money); // 사채차입금액 입력
-		itemVo.setAmountFlag("c"); // 대변 - c
-		itemVo.setAccountNo(2402101L); // 사채 : 계정과목코드 1팀 테이블 tb_account 확인
+		
+		itemVo.setAmount(vo.getDebtAmount());
+		itemVo.setAmountFlag("d"); // 차변 - d : [예금] 자산의 증가 - 내 계좌로 돈이 들어오기 때문에..
+		itemVo.setAccountNo(1110103L); // 보통예금 : 1110103
 		itemVoList.add(itemVo);
-		System.out.println("###########");
-		itemVo2.setAmount(money); // 사채차입금액 입력
-		itemVo2.setAmountFlag("d"); // 차변 - d
-		itemVo2.setAccountNo(9201101L); // 이자비용 : 계정과목코드
+		
+		// 차입금
+		itemVo2.setAmount(vo.getDebtAmount() + money); // 사채차입금액 입력
+		itemVo2.setAmountFlag("c"); // 대변 - c : [부채] 부채의 증가 - 빚이 생김
+		itemVo2.setAccountNo(2402101L); // 사채 : 계정과목코드 1팀 테이블 tb_account 확인
 		itemVoList.add(itemVo2);
-
-		itemVo3.setAmount(vo.getDebtAmount());
-		itemVo3.setAmountFlag("d"); // 차변 - d : [예금]자산의 증가 - 내 계좌로 돈이 들어오기 때문에..
-		itemVo3.setAccountNo(1110103L);
-		itemVoList.add(itemVo3);
 
 		mappingVo.setVoucherUse(vo.getName());// 사용목적
 		mappingVo.setSystemCode(vo.getCode());// 시스템코드
 		mappingVo.setCustomerNo(vo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());// 계좌번호
 
+		System.out.println("============ add =============");
+		System.out.println("voucherVo : " + voucherVo.toString());
+		System.out.println("itemVo : " + itemVo.toString());
+		System.out.println("itemVo2 : " + itemVo2.toString());
+		System.out.println("mappingVo : " + mappingVo.toString());
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
-		System.out.println("vou :" + no);
+		System.out.println("nonononononono : " + no);
 		vo.setVoucherNo(no);
 		menu50Service.insert(vo); // 데이터베이스에 데이터 삽입
 		
@@ -153,43 +152,36 @@ public class Menu50Controller {
 		Long money = (long) (vo.getDebtAmount() * vo.getIntRate() / 100);
 		vo.setIntAmount(money);
 		vo.setVoucherNo(menu50Service.select(vo.getNo()));
+		
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
 		ItemVo itemVo = new ItemVo();
 		ItemVo itemVo2 = new ItemVo();
-		ItemVo itemVo3 = new ItemVo();
 		
 		MappingVo mappingVo = new MappingVo();
-		System.out.println("vNo : " + vo.getVoucherNo());
 		voucherVo.setNo(vo.getVoucherNo());
-		System.out.println("1 :" + voucherVo.getNo());
 		voucherVo.setRegDate(vo.getDebtDate());
 		
-		itemVo.setAmount(vo.getDebtAmount());
-		itemVo.setAmountFlag("c"); // 대변 - c
-		itemVo.setAccountNo(2402101L); // 사채 : 계정과목코드 1팀 테이블 tb_account 확인
+		itemVo.setAmount(vo.getDebtAmount()); // 예금
+		itemVo.setAmountFlag("d"); // 차변 - d : [예금] 자산의 증가 - 내 계좌로 돈이 들어오기 때문에..
+		itemVo.setAccountNo(1110103L); // 보통예금 : 1110103
 		itemVo.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo);
 		
-		itemVo2.setAmount(money);
-		itemVo2.setAmountFlag("d"); // 차변 - d
-		itemVo2.setAccountNo(9201101L); // 이자비용 : 계정과목코드
+		// 차입금
+		itemVo2.setAmount(vo.getDebtAmount() + money); // 사채차입금액 입력
+		itemVo2.setAmountFlag("c"); // 대변 - c : [부채] 부채의 증가 - 빚이 생김
+		itemVo2.setAccountNo(2402101L); // 사채 : 계정과목코드 1팀 테이블 tb_account 확인
 		itemVo2.setVoucherNo(vo.getVoucherNo());
 		itemVoList.add(itemVo2);
-		
-		itemVo3.setAmount(vo.getDebtAmount()+money);
-		itemVo3.setAmountFlag("d"); // 차변 - d : [예금]자산의 증가 - 내 계좌로 돈이 들어오기 때문에..
-		itemVo3.setAccountNo(1110103L);
-		itemVo3.setVoucherNo(vo.getVoucherNo());
-		itemVoList.add(itemVo3);
 		
 		mappingVo.setVoucherUse(vo.getName());//사용목적
 		mappingVo.setSystemCode(vo.getCode());//제코드l190
 		mappingVo.setCustomerNo(vo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 		mappingVo.setVoucherNo(vo.getVoucherNo());
+		
 		Long no = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, userVo);
-		System.out.println("updateNo :" + no);
 		vo.setVoucherNo(no);
 		menu50Service.update(vo);
 		
@@ -214,34 +206,12 @@ public class Menu50Controller {
 		}
 		
 		menu03Service.deleteVoucher(voucherVolist, uservo);
+		for(Long i : no) {
+			System.out.println("delete no : " + i);
+		}
 		menu50Service.delete(no);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
-	public JSONResult repay(
-			@RequestBody RepayVo vo, 
-			@AuthUser UserVo uservo) {
-		vo.setInsertId(uservo.getId());
-		menu50Service.updateRepayVo(vo);
-		menu50Service.insertRepayVo(vo);
-		
-		PdebtVo pdebtVo = menu50Service.getOne(vo.getDebtNo());
-		
-		if(pdebtVo.getRepayBal() >= pdebtVo.getDebtAmount())
-			menu50Service.updateRepayFlag(pdebtVo.getNo());
-		return JSONResult.success(pdebtVo);
-	}
-	
-	@ResponseBody
-	@RequestMapping("/"+SUBMENU+"/checkcode")
-	public JSONResult checkCode(
-			@RequestParam(value="code", required=true, defaultValue="") String code) {
-		PdebtVo pdebtVo = menu50Service.existCode(code);
-		System.out.println(pdebtVo);
-        return JSONResult.success(pdebtVo);
 	}
 
 }

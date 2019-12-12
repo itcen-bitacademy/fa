@@ -44,12 +44,14 @@ public class Menu48ApiController {
 	@ResponseBody
 	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
 	public JSONResult repay(@RequestBody RepayVo vo,@AuthUser UserVo uservo) {
+	
 		vo.setInsertId(uservo.getId());//유저 아이디 셋팅
 		menu48Service.update(vo);//기존 장기 차입금 수정
 		
 		LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());//기존 장기차입금 컬럼 값 읽기
 		
-		Long money= (long) (vo.getPayPrinc()*lvo.getIntRate()/100);//money= 상환액 * 기존 이자 /100 ->즉 이자납입금
+		
+		
 		
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();

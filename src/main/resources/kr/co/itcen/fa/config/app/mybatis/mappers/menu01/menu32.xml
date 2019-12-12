@@ -18,25 +18,26 @@
 	<select id="getCustomerNoInfo" parameterType="String" resultType="1customervo">
 		<![CDATA[
 			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-				   (right(no, 12)) as no,
+				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 				   name as name
 		 	  from tb_customer
 		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N"
 		 	 union
 			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
-				   (right(no, 12)) as no,
+				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 				   name as name
 		 	  from tb_purchasecustomer
 		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N"
 		 	 union
 			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
-				   (right(no, 12)) as no,
+				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 				   name as name
 		 	  from tb_salescustomer
 		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N" 
+		  order by name desc
 		]]>
 	</select>
 	
@@ -45,25 +46,26 @@
 	<select id="getCustomerNameInfo" parameterType="String" resultType="1customervo">
 		<![CDATA[
 			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-				   (right(no, 12)) as no,
+				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 				   name as name
 		 	  from tb_customer
 		 	 where name like '${_parameter }'
 		 	   and delete_flag = "N"
 		 	 union
 			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
-				   (right(no, 12)) as no,
+				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 				   name as name
 		 	  from tb_purchasecustomer
 		 	 where name like '${_parameter }'
 		 	   and delete_flag = "N"
 		 	 union
 			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
-				   (right(no, 12)) as no,
+				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
 				   name as name
 		 	  from tb_salescustomer
 		 	 where name like '${_parameter }'
 		 	   and delete_flag = "N" 
+		  order by name desc
 		]]>
 	</select>
 	

@@ -69,4 +69,9 @@ public class Menu43Repository {
 	public CustomerVo getCustomerInfo(String customerNo) {
 		return sqlSession.selectOne("menu43.getCustomerInfo", customerNo);
 	}
+
+	public Long getVoucherNo(IntangibleAssetsVo intangibleAssetsVo) {
+		return sqlSession.selectOne("menu43.getVoucherNo", intangibleAssetsVo);
+	}
+
 }

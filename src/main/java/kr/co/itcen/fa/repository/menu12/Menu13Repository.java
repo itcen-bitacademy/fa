@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
 import kr.co.itcen.fa.vo.menu12.SalesVo;
+import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 
 /**
  * 
@@ -44,4 +45,13 @@ public class Menu13Repository {
 	public void updateInsert(ArrayList<SalesVo> list) {
 		sqlSession.insert("menu13.updateinsert", list);
 	}
+	public SellTaxbillVo controlTaxbill(String pathSalesNo) {
+		SellTaxbillVo vo = sqlSession.selectOne("menu13.getTaxbill", pathSalesNo);
+		sqlSession.delete("menu13.deleteTaxbill", pathSalesNo);
+		return vo;
+	}
+	public void insertTaxbill(SellTaxbillVo selltaxbillvo) {
+		sqlSession.insert("menu13.insertTax", selltaxbillvo);
+	}
+	
 }

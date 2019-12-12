@@ -34,9 +34,13 @@
 .bankname{
 	width: 200px;
 }
-
 .limit{
 	width:100px;
+}
+
+.limitation{
+	width:100px;
+	text-align:right;
 }
 
 </style>
@@ -97,7 +101,7 @@
 									<label class="control-label" for="form-field-1">사용자</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="user" class="name"
+										<input type="text" id="form-field-1" name="user" class="name" maxlength=6
 											placeholder="사용자" />
 									</div>
 								</div>
@@ -108,7 +112,7 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="issuer" class="name"
+										<input type="text" id="form-field-1" name="issuer" class="name" maxlength=6
 											placeholder="카드발급자" />
 									</div>
 								</div>
@@ -118,13 +122,16 @@
 									<label class="control-label" for="form-field-1">계좌 번호 </label>
 									<div class="controls">
 
-										<span class="btn btn-small btn-info"> <a href="#"
-											id="a-bankaccountinfo-dialog"> <i
-												class="icon-search nav-search-icon"></i> <input type="text"
-												class="search-input-width-first" name="depositNo" readonly/>
-										</a> 
-									
-										</span> 
+										
+										<div class="input-append">
+										 <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
+										<input type="text" class="search-input-width-first" name="depositNo" readonly/>
+												<span class="add-on">
+				                                   <i class="icon-search icon-on-right bigger-110"></i>
+				                                  
+				                                 </span>
+				                                   </a>
+										</div>
 										&nbsp; &nbsp;
 										<input type="text" id="form-field-1" name="depositHost"
 											placeholder="예금주" readonly/>
@@ -147,16 +154,19 @@
 								</div>
 
 			
-								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<!-- 팝업창 -->
 								<div id="dialog-message" title="계좌" hidden="hidden">
 									<table id="dialog-message-table">
 										<tr>
 											<td><label>계좌번호</label> <input type="text"
-												id="input-dialog-depositNo" style="width: 100px;" /> <a
-												href="#" id="a-dialog-depositNo"> <span
+												id="input-dialog-depositNo" style="width: 100px;" /> 
+												<a href="#" id="a-dialog-depositNo"> <span
 													class="btn btn-small btn-info" style="margin-bottom: 10px;">
 														<i class="icon-search nav-search-icon"></i>
 												</span>
+												
+
+
 											</a></td>
 										</tr>
 									</table>
@@ -222,7 +232,7 @@
 								<div>
 									<label class="control-label" for="form-field-1">CVC </label> 
 									<div class="controls">
-									<input type="text" class="validity" id="form-field-1" name="cvc" placeholder="CVC" />
+									<input type="text" class="validity" id="form-field-1" name="cvc" maxlength=3 placeholder="CVC" />
 									</div>
 								</div>
 							</div>
@@ -342,7 +352,7 @@
 										<td>${vo.bankCode }</td>
 										<td>${vo.bankName }</td>
 										<td>${vo.company }</td>
-										<td>${vo.limitation }</td>
+										<td><fmt:formatNumber value="${vo.limitation }" pattern="#,###"  /></td>
 										<td>${vo.transportation }</td>
 										<td>${vo.abroad }</td>
 										<td>${vo.insertDay }</td>
@@ -576,7 +586,8 @@ $(function() {
 		  var $newTbody = $("<tbody class='new-tbody'>");
 		  
 		  $("#simple-table-1").append($newTbody);
-			
+		  
+		  
 		  for(let card in cardList){
 			  $newTbody.append(
 				"<tr>" +
@@ -592,7 +603,7 @@ $(function() {
 		        "<td>" + cardList[card].bankCode+ "</td>" +
 		        "<td>" + cardList[card].bankName+ "</td>" +
 		        "<td>" + cardList[card].company+ "</td>" +
-		        "<td>" + cardList[card].limitation+ "</td>" +
+		        "<td>" + addCommas(cardList[card].limitation)+ "</td>" +
 		        "<td>" + cardList[card].transportation+ "</td>" +
 		        "<td>" + cardList[card].abroad+ "</td>" +
 		        "<td>" + cardList[card].insertDay + "</td>" +

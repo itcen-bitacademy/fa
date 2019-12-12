@@ -35,6 +35,9 @@ public class Menu40Service {
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(pagination);
 		List<BuildingVo> list = menu40Repository.list(vo, pagination);
+		for(BuildingVo v:list) {
+			System.out.println(v);
+		}
 		dataResult.setDatas(list);
 		
 		return dataResult;

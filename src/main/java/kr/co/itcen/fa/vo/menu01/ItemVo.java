@@ -23,114 +23,90 @@ public class ItemVo {
 	private boolean useYn;		 // 사용여부
 	private Long voucherNo; 	 // 전표번호
 	private Long accountNo; 	 // 계정과목코드
-	
+	private Long groupNo;		 // 그룹번호
+	private int orderNo;		 // 순번
 	
 	public Long getNo() {
 		return no;
 	}
-
-
 	public void setNo(Long no) {
 		this.no = no;
 	}
-
-
 	public Long getAmount() {
 		return amount;
 	}
-
-
 	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
-
-
 	public String getAmountFlag() {
 		return amountFlag;
 	}
-
-
 	public void setAmountFlag(String amountFlag) {
 		this.amountFlag = amountFlag;
 	}
-
-
 	public String getInsertUserid() {
 		return insertUserid;
 	}
-
-
 	public void setInsertUserid(String insertUserid) {
 		this.insertUserid = insertUserid;
 	}
-
-
 	public String getInsertDay() {
 		return insertDay;
 	}
-
-
 	public void setInsertDay(String insertDay) {
 		this.insertDay = insertDay;
 	}
-
-
 	public String getUpdateUserid() {
 		return updateUserid;
 	}
-
-
 	public void setUpdateUserid(String updateUserid) {
 		this.updateUserid = updateUserid;
 	}
-
-
 	public String getUpdateDay() {
 		return updateDay;
 	}
-
-
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
-
-
 	public boolean isUseYn() {
 		return useYn;
 	}
-
-
 	public void setUseYn(boolean useYn) {
 		this.useYn = useYn;
 	}
-
-
 	public Long getVoucherNo() {
 		return voucherNo;
 	}
-
-
 	public void setVoucherNo(Long voucherNo) {
 		this.voucherNo = voucherNo;
 	}
-
-
 	public Long getAccountNo() {
 		return accountNo;
 	}
-
-
 	public void setAccountNo(Long accountNo) {
 		this.accountNo = accountNo;
 	}
-
-
+	public Long getGroupNo() {
+		return groupNo;
+	}
+	public void setGroupNo(Long groupNo) {
+		this.groupNo = groupNo;
+	}
+	public int getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
+	}
+	
 	@Override
 	public String toString() {
-		return "ItemVo [accountNo=" + accountNo + ", amount=" + amount + ", amountFlag=" + amountFlag + ", insertDay="
-				+ insertDay + ", insertUserid=" + insertUserid + ", no=" + no + ", updateDay=" + updateDay
-				+ ", updateUserid=" + updateUserid + ", useYn=" + useYn + ", voucherNo=" + voucherNo + "]";
+		return "ItemVo [no=" + no + ", amount=" + amount + ", amountFlag=" + amountFlag + ", insertUserid="
+				+ insertUserid + ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay="
+				+ updateDay + ", useYn=" + useYn + ", voucherNo=" + voucherNo + ", accountNo=" + accountNo
+				+ ", groupNo=" + groupNo + ", orderNo=" + orderNo + "]";
 	}
+	
 	
 	
 }

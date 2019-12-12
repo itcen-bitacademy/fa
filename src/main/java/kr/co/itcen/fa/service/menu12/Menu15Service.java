@@ -25,6 +25,7 @@ public class Menu15Service {
 	}
 
 	public void addCustomer(CustomerVo customerVo) {
+		customerVo.setNo("S"+customerVo.getNo());
 		menu15Repository.saveCustomer(customerVo);
 	}
 

@@ -9,7 +9,7 @@
 		#{debtAmount }, #{debtAmount }, 
 				#{repayWay }, 'N', 
 				#{debtDate }, #{expDate }, #{intRate }, 
-				#{intPayWay }, #{intAmount }, #{mgr }, 
+				#{intPayWay }, #{mgr }, 
 				#{mgrCall }, #{dangerCode }, #{dangerName }, 
 				#{bankCode }, #{depositNo }, '2402101', #{voucherNo }, 
 				'N', #{insertId }, now(), 0, now())
@@ -37,7 +37,8 @@
 		          a.mgr,
 		          a.mgr_call as mgrCall, a.danger_code as dangerCode, a.danger_name as dangerName, 
 		          a.bank_code as bankCode,
-		          a.deposit_no as depositNo,
+		          a.deposit_no as depositNo, 
+		          date_format(a.insert_date,'%Y-%m-%d %H:%i:%S') as insertDate, 
 		          b.name as bankName
 		          from tb_p_debt as a,tb_bank as b
 		          where a.bank_code = b.code
@@ -55,7 +56,7 @@
 			</if>
 			<if test="pagination.pageIndex >= 0">
 				<![CDATA[
-			    	order by a.debt_date limit #{pagination.pageIndex }, #{pagination.listSize }
+			    	order by insertDate desc limit #{pagination.pageIndex }, #{pagination.listSize }
 			    ]]>
 		    </if>
 	</select>
@@ -237,11 +238,10 @@
 	</selectKey>
 	</insert>
 	
-	<!-- 상환 update -->
+	<!-- 기존사채 차입금액 수정 - 상환 update -->
 	<update parameterType="repayvo" id="repayupdate">
 	<![CDATA[
-		update tb_p_debt 
-		set repay_bal = repay_bal + #{payPrinc}	
+		update tb_p_debt set repay_bal = repay_bal - #{payPrinc}	
 		where no=#{debtNo}
 	]]>
 	</update>
@@ -265,6 +265,15 @@
 			tb_p_debt 
    		where code like #{_parameter}
 	]]>
+	</select>
+	
+	<!-- 상환에서 BankCode읽기 -->
+	<select id="selectBankCode" resultType="string" parameterType="string">
+		<![CDATA[
+			select bank_code
+			from tb_bank_account
+			where deposit_no=#{_parameter}
+		]]>
 	</select>
 
 </mapper>

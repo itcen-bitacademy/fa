@@ -22,6 +22,7 @@
 			name,
 			manager_name as managerName
 		from tb_customer
+		where assets_flag="b"
 		]]>
 	</select>
 	
@@ -58,11 +59,7 @@
 			acq_tax as acqTax,
 			pay_date as payDate,
 			tax_kind as taxKind,
-			b.flag,
-			b.insert_userid as insertUserid,
-			b.insert_day as insertDay,
-			b.update_userid as updateUserid,
-			b.update_day as updateDay
+			b.flag
 		from tb_building b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
         where tb_section.parent_no = 3 
@@ -125,6 +122,7 @@
 		set customer_no = #{customerNo },
 			taxbill_no = #{taxbillNo },
 			section_no = #{sectionNo },
+			voucher_no = #{voucherNo},
 			area = #{area },
 			combine_no = #{combineNo },
 			owner_name = #{ownerName }, 
@@ -164,4 +162,13 @@
        where no = #{customerNo }
       ]]>
    </select>
+   
+    <!-- 전표번호 select -->
+    <select id="getVoucherNo" resultType="Long" parameterType="string">
+    	<![CDATA[
+      	select voucher_no
+      	  from tb_building
+      	 where id = #{id }
+   		]]>
+    </select>
 </mapper>

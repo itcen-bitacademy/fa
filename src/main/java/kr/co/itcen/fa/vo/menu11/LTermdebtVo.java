@@ -16,7 +16,7 @@ public class LTermdebtVo {
 	private String expDate;//만기일자
 	private double intRate;//이율
 	private String intPayWay;//이자지급방식
-	private Long intAmount;//이자금액
+
 	private String mgr;//담당자명
 	private String mgrCall;//담당자 번호
 	private String majorCode;//차입금대분류
@@ -118,12 +118,7 @@ public class LTermdebtVo {
 		this.intPayWay = intPayWay;
 	}
 	
-	public Long getIntAmount() {
-		return intAmount;
-	}
-	public void setIntAmount(Long intAmount) {
-		this.intAmount = intAmount;
-	}
+	
 	public String getMgr() {
 		return mgr;
 	}
@@ -201,12 +196,13 @@ public class LTermdebtVo {
 		return "LTermdebtVo [no=" + no + ", code=" + code + ", name=" + name + ", debtAmount=" + debtAmount
 				+ ", repayBal=" + repayBal + ", repayWay=" + repayWay + ", repayCompleFlag=" + repayCompleFlag
 				+ ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate + ", expDate=" + expDate + ", intRate="
-				+ intRate + ", intPayWay=" + intPayWay + ", intAmount=" + intAmount + ", mgr=" + mgr + ", mgrCall="
-				+ mgrCall + ", majorCode=" + majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo
-				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
-				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate
-				+ ", bankName=" + bankName + ", depositHost=" + depositHost + "]";
+				+ intRate + ", intPayWay=" + intPayWay + ", mgr=" + mgr + ", mgrCall=" + mgrCall + ", majorCode="
+				+ majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo + ", accountNo=" + accountNo
+				+ ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate="
+				+ insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate + ", bankName=" + bankName
+				+ ", depositHost=" + depositHost + "]";
 	}
+	
 	
 	
 	

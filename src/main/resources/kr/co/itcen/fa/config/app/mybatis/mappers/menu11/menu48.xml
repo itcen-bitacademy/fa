@@ -19,7 +19,7 @@
 	<![CDATA[
 		insert
 		  into tb_l_term_debt
-		values (null, #{code},#{name},#{majorCode},#{debtAmount}, 0, #{repayWay}, 'N',#{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{intAmount}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',#{voucherNo},'N',#{insertId},now(),null,null)
+		values (null, #{code},#{name},#{majorCode},#{debtAmount}, #{debtAmount}, #{repayWay}, 'N',#{debtDate}, #{expDate}, #{intRate}, #{intPayWay}, #{mgr}, #{mgrCall}, #{bankCode},#{depositNo},'2401101',#{voucherNo},'N',#{insertId},now(),null,null)
 		]]>
 	<selectKey order="AFTER" resultType="long" keyProperty="no">
 	<![CDATA[
@@ -33,7 +33,7 @@
 	<![CDATA[
 		insert
 		  into tb_repay
-		values (null, #{debtNo},#{payPrinc},#{payDate}, 'L', #{voucherNo},#{depositNo},'N',#{insertId},now(),null,null)
+		values (null, #{debtNo},#{payPrinc},#{intAmount},#{payDate}, 'L', #{voucherNo},'N',#{insertId},now(),null,null)
 		]]>
 	<selectKey order="AFTER" resultType="long" keyProperty="no">
 	<![CDATA[
@@ -133,7 +133,6 @@
     		mgr_call as mgrCall,
 		    bank_code as bankCode,
 		    deposit_no as depositNo,
-		    int_amount as intAmount,
 		    voucher_no as voucherNo
 		    from tb_l_term_debt
 		    where no=#{_parameter}
@@ -151,12 +150,6 @@
 	]]>
 	</select>
 	
-	<!-- BankCode읽기 -->
-	<select id="selectBankCode" resultType="string" parameterType="string">
-		select bank_code
-		from tb_bank_account
-		where deposit_no=#{_parameter}
-	</select>
 	
 	
 	<!-- update -->
@@ -166,12 +159,12 @@
 		set name = #{name},
 			major_code = #{majorCode},
 			debt_amount = #{debtAmount},
+			repay_bal = #{debtAmount},
 			repay_way=#{repayWay},
 			debt_date=#{debtDate},
 			exp_date=#{expDate},
 			int_rate=#{intRate},
 			int_pay_way=#{intPayWay},
-			int_amount=#{intAmount},
 			mgr=#{mgr},
 			mgr_call=#{mgrCall},
 			bank_code=#{bankCode},
@@ -208,7 +201,7 @@
 	<update parameterType="repayvo" id="repayupdate">
 	<![CDATA[
 		update tb_l_term_debt 
-		set repay_bal = repay_bal + #{payPrinc}	
+		set repay_bal = repay_bal - #{payPrinc}
 		where no=#{debtNo}
 	]]>
 	</update>

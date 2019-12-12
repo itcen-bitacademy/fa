@@ -89,7 +89,7 @@
 	
 	<select id="getByCode" parameterType="string" resultType="bankvo">
 		<![CDATA[
-			select code
+			select *
 			from tb_bank
 			where code=#{code }
 		]]>
