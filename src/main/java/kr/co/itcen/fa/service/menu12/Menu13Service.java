@@ -10,6 +10,7 @@ import kr.co.itcen.fa.repository.menu12.Menu13Repository;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
 import kr.co.itcen.fa.vo.menu12.SalesVo;
+import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 
 /**
  * 
@@ -43,6 +44,12 @@ public class Menu13Service {
 	}
 	public void updateInsert(ArrayList<SalesVo> list) {
 		menu13Repository.updateInsert(list);
+	}
+	public SellTaxbillVo controlTaxbill(String pathSalesNo) {
+		return menu13Repository.controlTaxbill(pathSalesNo);
+	}
+	public void insertTaxvill(SellTaxbillVo taxVo) {
+		menu13Repository.insertTaxbill(taxVo);
 		
 	}
 
