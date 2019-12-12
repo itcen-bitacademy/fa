@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
-import kr.co.itcen.fa.vo.SectionVo;
-import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 /**
  * 
@@ -26,10 +24,7 @@ public class Menu66Repository {
 
 	// 상환테이블 데이터 카운트
 	public int listCount(String code, String debtType) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println("========listCount========");
-		System.out.println("code : " + code);
-		System.out.println("debtType : " + debtType);
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("code", code);
 		map.put("debtType", debtType);
 		return sqlSession.selectOne("menu66.selectAllCount", map);
@@ -41,8 +36,11 @@ public class Menu66Repository {
 		map.put("code", code);
 		map.put("debtType", debtType);
 		map.put("pagination", pagination);
+		
 		List<RepayVo> list = sqlSession.selectList("menu66.selectAll", map);
-		System.out.println("Repository RepayVo list : " + list.get(0));
+		for (RepayVo repayVo : list) {
+			System.out.println("data : " + repayVo.toString());
+		}
 		return list;
 	}
 

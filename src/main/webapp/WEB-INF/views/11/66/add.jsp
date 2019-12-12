@@ -50,6 +50,9 @@ input[type="text"], input[type="date"], select {
 	margin-right: 0;}
 .btn-list>button:not(:first-child):not(:last_child){margin: 0 auto}
 
+.code-search-info {
+	padding: 0 0 10px 10px;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -65,6 +68,7 @@ input[type="text"], input[type="date"], select {
 			<div class="page-header position-relative">
 				<h1 class="pull-left">상환내역관리</h1>
 			</div>
+			<div class="code-search-info" ><h5>* 상환내역을 조회할 때, 코드와 유형을 같이 입력해주세요.</h5></div>
 			
 			<!-- PAGE CONTENT BEGINS -->
 				<form class="form-horizontal" id="input-form" method="post" action="">
@@ -72,7 +76,7 @@ input[type="text"], input[type="date"], select {
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>차입금코드</h4></div>
-						<div class="ia-right"><input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" ></div>
+						<div class="ia-right"><input type="text" id="code" name="code" placeholder="ex) I191128001 (P+년+월+일+번호)" ></div>
 						<div class="ia-left"><h4>상환금액</h4></div>
 						<div class="ia-right"><input type="text" id="payPrinc" name="payPrinc" ></div>
 						<div class="ia-left"><h4>이자금액</h4></div>
@@ -128,8 +132,8 @@ input[type="text"], input[type="date"], select {
 							<th class="center">차입금코드</th>
 							<th class="center">상환금액</th>
 							<th class="center">이자금액</th>
-							<th class="center">상환일자</th>
 							<th class="center">부채유형</th>
+							<th class="center">상환일자</th>
 							<th class="center">전표번호</th>
 							<th class="center">계좌번호</th>
 							<th class="center">등록일</th>
@@ -145,8 +149,13 @@ input[type="text"], input[type="date"], select {
 								<td class="center">${vo.debtNo}</td>
 								<td class="center">${vo.payPrinc}</td>
 								<td class="center">${vo.intAmount}</td>
-								<td class="center">${vo.payDate}</td>
 								<td class="center">${vo.debtType}</td>
+								<c:choose>
+									<c:when test="${vo.debtType eq 'S'}"><td class="center">단기차입금</td></c:when>
+									<c:when test="${vo.debtType eq 'L'}"><td class="center">장기차입금</td></c:when>
+									<c:when test="${vo.debtType eq 'P'}"><td class="center">사채</td></c:when>
+								</c:choose>
+								<td class="center">${vo.payDate}</td>
 								<td class="center">${vo.voucherNo}</td>
 								<td class="center">${vo.depositNo}</td>
 								<td class="center">${vo.insertDate}</td>
@@ -211,6 +220,36 @@ input[type="text"], input[type="date"], select {
 <script>
 $(function() {
 	$(".chosen-select").chosen();
+	
+	//--------------------------------------------------------------------------------------------------------------------------//
+	// 상환내역관리 리스트에서 row를 선택하면 row의 해당 데이터 form에 추가
+	$("#tbody-list tr").click(function(){ 
+		var tr = $(this);
+		var td = tr.children();
+		
+		$("input[name=no]").val(td.eq(0).attr('data-no')); // 상환테이블 PK : no
+		$("input[name=code]").val(td.eq(1).text()); // 차입금코드
+		$("input[name=name]").val(td.eq(2).text()); // 상환금액
+		$("input[name=name]").val(td.eq(3).text()); // 이자금액
+		
+		var debtType='';
+		switch (td.eq(4).text()){
+	    case 'S' :
+	    	debtType = '단기차입금';
+	        break;
+	    case 'L' :
+	    	debtType = '장기차입금';
+		    break;
+	    case 'P' :
+	    	debtType = '사채';
+	        break;
+		}
+		$('#debtType').val(debtType).trigger('chosen:updated'); // 부채유형
+		
+		$("input[name=payDate]").val(td.eq(5).text()); // 상환일자
+	});
+	//--------------------------------------------------------------------------------------------------------------------------//
+	
 });
 </script>
 </body>

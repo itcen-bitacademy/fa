@@ -75,7 +75,7 @@ public class Menu50Repository {
 	}
 
 	public Boolean update(PdebtVo vo) {
-		int count = sqlSession.update("menu50.update", vo);
+		int count = sqlSession.update("menu50.pdebtupdate", vo);
 		return count == 1;
 	}
 	
