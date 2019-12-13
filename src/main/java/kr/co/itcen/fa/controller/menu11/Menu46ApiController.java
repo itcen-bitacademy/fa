@@ -32,8 +32,6 @@ public class Menu46ApiController {
 	@Autowired
 	Menu46Service menu46Service;
 	
-	@Autowired
-	Menu03Service menu03Service;
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/search")
@@ -72,7 +70,7 @@ public class Menu46ApiController {
 	public JSONResult repay(@RequestBody RepayVo repayVo,@AuthUser UserVo uservo) {
 		STermDebtVo vo = menu46Service.get(repayVo.getDebtNo());	//단기 차입금 불러온다
 		
-		//단기차입금 update
+		//-----------------단기차입금 update----------------------//
 		System.out.println("상환잔액 : " + vo.getRepayBal() + " 납입금: " + repayVo.getPayPrinc());
 		if(vo.getRepayBal() < repayVo.getPayPrinc()) {
 			return JSONResult.success(false);
@@ -84,46 +82,13 @@ public class Menu46ApiController {
 		
 		menu46Service.update(vo);
 		
-		//전표입력
-		Long intAmount= (Long) (vo.getRepayBal()*vo.getIntRate()/100);//intAmount= 상환액 * 기존 이자 /100 ->즉 이자납입금
-		repayVo.setIntAmount(intAmount);
+		//-----------------전표입력----------------------//
+		Long voucherNo= menu46Service.insertVoucherWithRepay(vo, repayVo, uservo);	//전표번호를 받아온다.
 		
-		VoucherVo voucherVo = new VoucherVo();
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-		ItemVo itemVo = new ItemVo();
-		ItemVo itemVo2 = new ItemVo();
-		ItemVo itemVo3 = new ItemVo();
-		
-		MappingVo mappingVo = new MappingVo();
-		voucherVo.setRegDate(repayVo.getPayDate());
-		
-		itemVo.setAmount(repayVo.getIntAmount());		//이자납입금
-		itemVo.setAmountFlag("d");						//차변
-		itemVo.setAccountNo(repayVo.getAccountNo());	//이자비용 계정과목코드
-		itemVoList.add(itemVo);
-		
-		itemVo2.setAmount(repayVo.getPayPrinc());		//납입원금
-		itemVo2.setAmountFlag("d");						//차변
-		itemVo2.setAccountNo(vo.getAccountNo());		//단기차입금 계정과목코드					
-		itemVoList.add(itemVo2);
-		
-		itemVo3.setAmount(repayVo.getPayPrinc() + repayVo.getIntAmount());		//보통예금
-		itemVo3.setAmountFlag("c");//대변
-		itemVo3.setAccountNo(1110103L);//dPrma
-		itemVoList.add(itemVo3);
-		
-		mappingVo.setVoucherUse(vo.getName());//사용목적
-		mappingVo.setSystemCode(vo.getCode());//제코드l190
-		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
-		
-		//전표입력후 전표번호를 가져온다.
-		Long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
-		
-		//상환 입력
+		//-----------------상환 입력----------------------//
 		repayVo.setVoucherNo(voucherNo);
 		menu46Service.insertRepay(repayVo);
 		
 		return JSONResult.success(vo);
 	}
-}
+}	

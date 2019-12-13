@@ -14,7 +14,6 @@
 		<result column="int_amount" property="intAmount" />
 		<result column="bank_code" property="bankCode" />
 		<result column="deposit_no" property="depositNo" />
-		<result column="account_no" property="accountNo" />
 		<result column="voucher_no" property="voucherNo" />
 		<result column="delete_flag" property="deleteFlag" />
 		<result column="insert_id" property="insertId" />
@@ -31,7 +30,7 @@
 			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
 			int_pay_way, mgr,
 			mgr_call, bank_code, deposit_no, 
-			account_no, voucher_no, delete_flag,
+			voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
