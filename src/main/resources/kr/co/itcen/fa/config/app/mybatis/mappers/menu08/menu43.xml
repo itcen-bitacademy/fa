@@ -38,6 +38,14 @@
 	<![CDATA[
 	select no , name , manager_name
 	  from tb_customer
+	 where assets_flag = 'd'
+	]]>
+	</select>
+	
+	<select id="getPurpose" resultType="purposevo">
+	<![CDATA[
+	select classification, account_no, y_or_n
+	  from tb_purpose
 	]]>
 	</select>
 	
@@ -101,6 +109,14 @@ left outer join tb_customer c on tb.customer_no = c.no
       select deposit_no as depositNo, bank_code as bankCode, bank_name as bankName
         from tb_customer
        where no = #{customerNo }
+      ]]>
+   </select>
+   
+   <select id="getPurposeInfo" parameterType="string" resultType="purposevo">
+      <![CDATA[
+      select classification, account_no as accountNo
+        from tb_purpose
+       where classification = #{purpose }
       ]]>
    </select>
    

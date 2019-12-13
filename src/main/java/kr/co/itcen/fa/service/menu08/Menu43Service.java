@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.repository.menu08.Menu43Repository;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
+import kr.co.itcen.fa.vo.menu08.PurposeVo;
 
 
 /**
@@ -59,6 +60,13 @@ public class Menu43Service {
 		map.put("customerList",menu43Repository.getCustomer());
 		return map;
 	}
+	
+	public Map<? extends String, ? extends Object> getPurpose() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("purposeList",menu43Repository.getPurpose());
+		return map;
+	}
+
 
 	public CustomerVo getCustomerInfo(String customerNo) {
 		return menu43Repository.getCustomerInfo(customerNo);
@@ -66,6 +74,10 @@ public class Menu43Service {
 
 	public Long getVoucherNo(IntangibleAssetsVo intangibleAssetsVo) {
 		return menu43Repository.getVoucherNo(intangibleAssetsVo);
+	}
+
+	public PurposeVo getPurposeInfo(String purpose) {
+		return menu43Repository.getPurposeInfo(purpose);
 	}
 
 }
