@@ -632,7 +632,7 @@
 			console.log(bankcodeVal);
 			// ajax 통신
 			$.ajax({
-				url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+				url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcode=" + bankcodeVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
 				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -645,9 +645,9 @@
 				success: function(response){
 					$("#input-dialog-bankcode").val('');
 					$("#tbody-bankList").append("<tr>" +
-					        "<td class='center'>" + response.code + "</td>" +
-					        "<td class='center'>" + response.name + "</td>" +
-					        "<td class='center'>" + response.store + "</td>" +
+					        "<td class='center'>" + response.data.code + "</td>" +
+					        "<td class='center'>" + response.data.name + "</td>" +
+					        "<td class='center'>" + response.data.store + "</td>" +
 					        "</tr>");
 				},
 				error: function(xhr, error){

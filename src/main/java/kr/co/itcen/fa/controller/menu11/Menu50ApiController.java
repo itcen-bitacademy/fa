@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
@@ -33,10 +34,10 @@ public class Menu50ApiController {
 	// 은행 팝업창에서 은행코드로 조회
 	@ResponseBody
 	@RequestMapping("/getbankcode")
-	public BankVo getBankcodeInfo(
-			@RequestParam("bankcodeVal") String bankcode) {
+	public JSONResult getBankcodeInfo(
+			@RequestParam("bankcode") String bankcode) {
 		BankVo bankVo = menu50Service.selectOneBankcodeInfo(bankcode);
-        return bankVo;
+        return JSONResult.success(bankVo);
 	}
 	
 	// 은행 팝업창에서 은행명으로 데이터 리스트형식으로 조회
