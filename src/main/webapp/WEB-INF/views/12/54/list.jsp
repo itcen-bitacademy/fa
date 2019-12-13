@@ -27,7 +27,7 @@
 			<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
 						
-					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+					<form class="form-horizontal" method="post" id="searchForm" action="${pageContext.request.contextPath }/12/54">
 					
 						<div class="span12">
 						<div class="row-fluid">
@@ -35,11 +35,11 @@
 										<div class="span6">
 											<label class="control-label" for="form-field-date">작 성 일 자</label>
 												<div class="controls">
-													<input class="span4 cl-date-picker" id="sales-date" name="sales-date1" type="text" data-date-format="yyyy-mm-dd"> 
+													<input class="span4 cl-date-picker" id="sales-date" name="startDate" type="text" data-date-format="yyyy-mm-dd"> 
 													<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 													&nbsp; ~ &nbsp;															
-													<input class="span4 cl-date-picker" id="sales-date" name="sales-date2" type="text" data-date-format="yyyy-mm-dd"> 
+													<input class="span4 cl-date-picker" id="sales-date" name="endDate" type="text" data-date-format="yyyy-mm-dd"> 
 													<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 												</div>
@@ -59,7 +59,7 @@
 											<div class="span6">
 												<label class="control-label" for="form-field-select-1">거래처</label>
 												<div class="controls">
-													<select class="span3 chosen-select" id="customerlist" name="customerlist" data-placeholder="거래처">
+													<select class="span3 chosen-select" id="customerCode" name="customerCode" data-placeholder="거래처">
 														<option value="">거래처항목</option>
 														<c:forEach items="${customerlist }" var="clist">
 															<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
@@ -76,7 +76,7 @@
 											<div class="span6">
 												<label class="control-label" for="form-field-1">세금계산서 번호</label>
 												<div class="controls">
-													<select class="span3 chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
+													<select class="span3 chosen-select" id="taxbillNo" name="taxbillNo" data-placeholder="세금계산서">
 															<option value="">없음</option>
 															<c:forEach items="${taxlist }" var="tlist">
 																<option value="${tlist.taxbillNo }">${tlist.taxbillNo } [${tlist.salesNo }]</option>
@@ -92,7 +92,7 @@
 											<div class="span6">
 												<label class="control-label" for="form-field-1">품목명</label>
 													<div class="controls">
-													<select class="span3 chosen-select" id="form-field-select-1" name="parentNo" data-placeholder="대분류코드">
+													<select class="span3 chosen-select" id="itemCode" name="itemCode" data-placeholder="품목명">
 														<option value="">없음</option>
 														<c:forEach items="${itemlist }" var="ilist">
 															<option value="${ilist.itemCode }">${ilist.itemName }</option>
@@ -112,23 +112,23 @@
 														<span class="lbl">&nbsp;정렬순서&nbsp;&nbsp;&nbsp;</span>
 														
 														<span class="lbl">&nbsp;최근순&nbsp;</span>
-														<input name="form-field-radio" type="radio" class="ace">
+														<input name="orderData" type="radio" class="ace" value="tst.write_date">
 															
 														<span class="lbl">&nbsp;공급가액 순&nbsp;&nbsp;</span>
-														<input name="form-field-radio" type="radio" class="ace">
+														<input name="orderData" type="radio" class="ace" value="tst.total_supply_value">
 															
 														<span class="lbl">&nbsp;품목명 순&nbsp;&nbsp;</span>
-														<input name="form-field-radio" type="radio" class="ace">
+														<input name="orderData" type="radio" class="ace" value="tbs.item_code">
 															
 														<span class="lbl">&nbsp;거래처명 순&nbsp;&nbsp;</span>
-														<input name="form-field-radio" type="radio" class="ace">
+														<input name="orderData" type="radio" class="ace" value="tst.customer_name">
 															
 														<span class="lbl">&nbsp;과세구분&nbsp;&nbsp;</span>
-														<select class="chosen-select" id="zero" name="zero" data-placeholder="영세/비영세">
-															<option value="zero">yes</option>
+														<select class="chosen-select" id="zero" name="orderData" data-placeholder="영세/비영세">
+															<option value="tax">yes</option>
 															<option value="no">no</option>
 														</select>
-														<button class="btn btn-small btn-info">조회</button>
+														<button class="btn btn-small btn-info" type="submit">조회</button>
 											</div>
 										</div>
 									</div>
@@ -161,25 +161,25 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${alllist }" var = "alllist" varStatus="status">
+									<c:forEach items="${resultlist }" var = "rlist" varStatus="status">
 									<tr>
 										<td>${status.count }</td>
-										<td>${alllist.taxbillNo }</td>
-										<td>${alllist.writeDate }</td>
-										<td>${alllist.salesNo }</td>
-										<td>${alllist.salesDate }</td>
-										<td>${alllist.customerName }</td>
-										<td>${alllist.customerCode }</td>
-										<td>${alllist.itemName }</td>
-										<td>${alllist.ceo }</td>
-										<td>${alllist.managerName }</td>
-										<td>${alllist.bankName }</td>
-										<td>${alllist.depositNo }</td>
-										<td>${alllist.depositHost }</td>
-										<td>${alllist.totalSupplyValue }</td>
-										<td>${alllist.totalTaxValue }</td>
-										<td>${alllist.voucherUse }</td>
-										<td>${alllist.taxType }</td>
+										<td>${rlist.taxbillNo }</td>
+										<td>${rlist.writeDate }</td>
+										<td>${rlist.salesNo }</td>
+										<td>${rlist.salesDate }</td>
+										<td>${rlist.customerName }</td>
+										<td>${rlist.customerCode }</td>
+										<td>${rlist.itemName }</td>
+										<td>${rlist.ceo }</td>
+										<td>${rlist.managerName }</td>
+										<td>${rlist.bankName }</td>
+										<td>${rlist.depositNo }</td>
+										<td>${rlist.depositHost }</td>
+										<td>${rlist.totalSupplyValue }</td>
+										<td>${rlist.totalTaxValue }</td>
+										<td>${rlist.voucherUse }</td>
+										<td>${rlist.taxType }</td>
 									</tr>
 									</c:forEach>
 								</tbody>
