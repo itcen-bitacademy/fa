@@ -29,7 +29,7 @@
 			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
 			int_pay_way, mgr,
 			mgr_call, bank_code, deposit_no, 
-			account_no, voucher_no, delete_flag,
+			voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
@@ -67,7 +67,7 @@
 			${debtAmount }, #{repayWay }, #{debtDate}, #{expDate},
 			${intRate }, #{intPayWay }, #{mgr }, 
 			#{mgrCall }, #{bankCode },
-			#{depositNo }, 123, 123, 
+			#{depositNo }, ${accountNo}, ${voucherNo}, 
 			'N', #{insertId }, now(), null, null) 
 		]]>
 	</insert>

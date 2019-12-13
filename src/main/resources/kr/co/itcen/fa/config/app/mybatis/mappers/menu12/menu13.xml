@@ -66,9 +66,16 @@
 		]]>
 	</select>
 	
-	<select id="itemlist" resultType="purchaseitem33vo">
+	<select id="itemlist" resultType="salesvo">
 		<![CDATA[
-			select no, name from tb_purchaseitem;
+			select		b.item_code as itemCode, 
+						b.item_name as itemName, 
+			            (sum(b.quantity)-c.quantity) as stock
+			from		fa.tb_purchaseitem a, fa.tb_purchasemanagement b,
+						(select item_code, sum(quantity) as quantity from fa.tb_sales group by item_code) c
+			where		a.no = b.item_code
+			and			b.item_code = c.item_code
+			group by	b.item_code;
 		]]>
 	</select>
 	
@@ -210,6 +217,19 @@
 			and		t.deposit_no = b.deposit_no; 
 		]]>
 	</select>
+	
+	<select id="getVoucherNo" parameterType="String" resultType="String">
+		<![CDATA[
+			select voucher_no from tb_sell_taxbill where sales_no = #{salesNo }
+		]]>
+	</select>
+	
+	<delete id="taxbillremove" parameterType="String">
+		<![CDATA[
+			update tb_sell_taxbill set delete_flag='Y' where sales_no = #{salesNo }
+		]]>
+	</delete>
+	
 	<delete id="deleteTaxbill" parameterType="String">
 		<![CDATA[
 			delete from tb_sell_taxbill where sales_no = #{salesNo }

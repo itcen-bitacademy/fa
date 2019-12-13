@@ -149,9 +149,12 @@ tr td:first-child {
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
+				<input id="searchData" type="hidden">
 				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-				<input type="hidden" name="no"/>
-				<input type="hidden" name="repayBal" value="${vo.repayBal }">
+					<input type="hidden" name="no"/>
+					<input type="hidden" name="repayBal">
+					<input type="hidden" name="voucherNo">
+				
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>단기차입금코드</h4></div>
@@ -338,7 +341,11 @@ tr td:first-child {
 								</section>
 								<section class="repay-input-wrapper">
 									<label>납입일자</label>
-									<input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"/>
+									<section>
+										<input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"/>
+										<span class="add-on">
+				                  	    <i class="icon-calendar"></i>
+									</section>
 								</section>
 								<section class="repay-input-wrapper">
 									<label>계좌번호</label>
@@ -362,6 +369,7 @@ tr td:first-child {
 							<th class="center">단기차입금명</th>
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
+							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
 							<th class="center">차입일자</th>
 							<th class="center">만기일자</th>
@@ -386,7 +394,7 @@ tr td:first-child {
 										<td class="center"><input type="hidden" name="name" value="${vo.name }">${vo.name }</td>
 										<td class="center"><input type="hidden" name="majorCode" value="${vo.majorCode }">${vo.majorCode }</td>
 										<td class="center"><input type="hidden" name="debtAmount" value="${vo.debtAmount }">${vo.debtAmount }</td>
-										<input type="hidden" name="repayBal" value="${vo.repayBal }">
+										<td class="center"><input type="hidden" name="repayBal" value="${vo.repayBal }">${vo.repayBal }</td>
 										<td class="center"><input type="hidden" name="repayWay" value="${vo.repayWay }">${vo.repayWay }</td>
 										<td class="center"><input type="hidden" name="debtDate" value="${vo.debtDate }">${vo.debtDate }</td> 
 										<td class="center"><input type="hidden" name="expDate" value="${vo.expDate }">${vo.expDate }</td>
@@ -396,6 +404,7 @@ tr td:first-child {
 										<td class="center"><input type="hidden" name="mgrCall" value="${vo.mgrCall }">${vo.mgrCall }</td>
 										<td class="center"><input type="hidden" name="bankCode" value="${vo.bankCode }">${vo.bankCode }</td>
 										<td class="center"><input type="hidden" name="depositNo" value="${vo.depositNo }">${vo.depositNo }</td>
+										<input type="hidden" name="voucherNo" value="${vo.voucherNo }">
 									</form>
 								</tr>
 						</c:forEach>
@@ -474,6 +483,9 @@ $(function() {
 		$(this).next().focus();
 	});
 	
+	$('.date-picker').datepicker().next().on(ace.click_event, function(){
+        $(this).prev().focus();
+     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	//Checkbox All Check
 	$("#chkbox-select-all").click(function(){
@@ -664,11 +676,13 @@ function openRepayDialog(){
 
 //-----------------------------------Row Click input 영역 채워지도록 ---------------------------------//
 function selectRow(thisTr){
+	console.log("selectRow() call")
 	var dataForm = $("#form" + $(thisTr).attr('id'))[0];
 	var inputForm = $("#input-form")[0];
 	
 	inputForm.no.value = dataForm.no.value;
-	inputForm.no.value = dataForm.repayBal.value;
+	inputForm.repayBal.value = dataForm.repayBal.value;
+	inputForm.voucherNo.value = dataForm.voucherNo.value;
 	inputForm.code.value = dataForm.code.value;
 	inputForm.name.value = dataForm.name.value;
 	inputForm.debtAmount.value = dataForm.debtAmount.value;
@@ -707,25 +721,28 @@ function renderingList(list){
 	$("#tbody-list > *").remove();
 	
 	for(var i=0; i < list.length; ++i){
-		$("#tbody-list").append("<tr>" +
+		$("#tbody-list").append("<tr onclick='selectRow(this)'" + " id='" + list[i].no + "'>" +
+			+ "<form id='form" + list[i].no + "' >" +
 				 "<td class='center'>" +
 				 	"<label class='pos-rel'>" +
-				 		"<input type='checkbox' name='" + list[i].no + "' value='" + list[i].no + "' class='ace' />" +"<span class='lbl'></span>" +
+				 		"<input type='checkbox' name='no' value='" + list[i].no + "' class='ace' />" +"<span class='lbl'></span>" +
 					 "</label>" +
 				 "</td>" +
-				 "<td class='center'>" + list[i].code + "</td>" +
-				 "<td class='center'>" + list[i].name + "</td>" +
-				 "<td class='center'>" + list[i].majorCode + "</td>" +
-				 "<td class='center'>" + list[i].debtAmount + "</td>" +
-				 "<td class='center'>" + list[i].repayWay + "</td>" +
-				 "<td class='center'>" + list[i].debtDate + "</td>" + 
-				 "<td class='center'>" + list[i].expDate + "</td>" +
-				 "<td class='center'>" + list[i].intRate + "</td>" +
-				 "<td class='center'>" + list[i].intPayWay + "</td>" +
-				 "<td class='center'>" + list[i].mgr + "</td>" +
-				 "<td class='center'>" + list[i].mgrCall + "</td>" +
-				 "<td class='center'>" + list[i].bankCode + "</td>" +
-				 "<td class='center'>" + list[i].depositNo + "</td>");
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].code + "'>" + list[i].code + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].name + "'>" + list[i].name + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].majorCode + "'>" + list[i].majorCode + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].debtAmount + "'>" + list[i].debtAmount + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].repayWay + "'>" + list[i].repayWay + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].debtDate + "'>" + list[i].debtDate + "</td>" + 
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].expDate + "'>" + list[i].expDate + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].intRate + "'>" + list[i].intRate + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].intPayWay + "'>" + list[i].intPayWay + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].mgr + "'>" + list[i].mgr + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].mgrCall + "'>" + list[i].mgrCall + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].bankCode + "'>" + list[i].bankCode + "</td>" +
+				 "<td class='center'><input type='hidden' name='code' value='" + list[i].depositNo + "'>" + list[i].depositNo + "</td>" +
+				"</form>" +
+			"</tr>");
 	}
 }
 
@@ -776,11 +793,15 @@ function paging(thisObj){
 }
 
 function ajaxProcessing(urlStr, thisObj){
-	var sendData = $("#input-form").serialize();
-	console.log($(thisObj).attr('id'));
-	if(thisObj != null){
+	var sendData;
+	if(urlStr == "search"){
+		sendData = $("#input-form").serialize();
+		$("#searchData").val(sendData);					//조회조건 조장
+	}
+	
+	else if(urlStr == "paging"){
+		sendData = $("#searchData").val();
 		var page = $(thisObj).attr('id');
-		console.log("page : " + page);
 		sendData += "&page=" + page;
 	}
 	

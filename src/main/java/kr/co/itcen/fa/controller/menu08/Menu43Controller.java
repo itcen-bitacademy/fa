@@ -25,6 +25,7 @@ import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
+import kr.co.itcen.fa.vo.menu08.PurposeVo;
 
 /**
  * 
@@ -58,6 +59,7 @@ public class Menu43Controller {
 		Map<String, Object> map = new HashMap<>();
 		map.putAll(menu43Service.getSection());
 		map.putAll(menu43Service.getCustomer());
+		map.putAll(menu43Service.getPurpose());
 		model.addAllAttributes(map);
 
 		// 품목코드로 조회
@@ -101,7 +103,8 @@ public class Menu43Controller {
 	public String update(@ModelAttribute IntangibleAssetsVo intangibleAssetsVo,
 			@SessionAttribute("authUser") UserVo user,
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
-			@RequestParam(value = "customerNo", required = false) String customerNo) {
+			@RequestParam(value = "customerNo", required = false) String customerNo,
+			@RequestParam(value = "purpose", required = false) String purpose) {
 
 		intangibleAssetsVo.setUpdateUserId(user.getId()); // session값으로 사용자 id가져오기
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo);  // voucherNo는 db에서 직접 가져와야함
@@ -123,53 +126,14 @@ public class Menu43Controller {
 			intangibleAssetsVo.setVoucherNo(voucherVo.getNo());
 
 			// 차변(d) : 영업권, 특허권, 상표권, 실용신안권, 의장권, 면허권, 개발비, 소프트웨어, 건설중인자산(무형) -> 전표에 등록
-			if (intangibleAssetsVo.getPurpose().equals("영업권")) {
-				itemVoD.setAccountNo(1230101L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("특허권")) {
-				itemVoD.setAccountNo(1230201L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("상표권")) {
-				itemVoD.setAccountNo(1230202L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("실용신안권")) {
-				itemVoD.setAccountNo(1230203L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("의장권")) {
-				itemVoD.setAccountNo(1230204L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("면허권")) {
-				itemVoD.setAccountNo(1230205L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("개발비")) {
-				itemVoD.setAccountNo(1230301L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("소프트웨어")) {
-				itemVoD.setAccountNo(1230401L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("건설중인자산")) {
-				itemVoD.setAccountNo(1230501L);
+			PurposeVo purposeVo = menu43Service.getPurposeInfo(purpose);
+			if(!purposeVo.getClassification().equals("산업재산권") && !purposeVo.getClassification().equals("무형자산")) {
+				itemVoD.setAccountNo(purposeVo.getAccountNo());
 				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
 				itemVoD.setAmountFlag("d");
 				itemVoList.add(itemVoD);
 			}
-
+			
 			// 대변(c) : 현금
 			itemVoC.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액 +
 																											// 부대비용
@@ -205,48 +169,9 @@ public class Menu43Controller {
 			intangibleAssetsVo.setVoucherNo(voucherVo.getNo());
 
 			// 차변(d) : 영업권, 특허권, 상표권, 실용신안권, 의장권, 면허권, 개발비, 소프트웨어, 건설중인자산(무형) -> 전표에 등록
-			if (intangibleAssetsVo.getPurpose().equals("영업권")) {
-				itemVoD.setAccountNo(1230101L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("특허권")) {
-				itemVoD.setAccountNo(1230201L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("상표권")) {
-				itemVoD.setAccountNo(1230202L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("실용신안권")) {
-				itemVoD.setAccountNo(1230203L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("의장권")) {
-				itemVoD.setAccountNo(1230204L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("면허권")) {
-				itemVoD.setAccountNo(1230205L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("개발비")) {
-				itemVoD.setAccountNo(1230301L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("소프트웨어")) {
-				itemVoD.setAccountNo(1230401L);
-				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			} else if (intangibleAssetsVo.getPurpose().equals("건설중인자산")) {
-				itemVoD.setAccountNo(1230501L);
+			PurposeVo purposeVo = menu43Service.getPurposeInfo(purpose);
+			if(!purposeVo.getClassification().equals("산업재산권") && !purposeVo.getClassification().equals("무형자산")) {
+				itemVoD.setAccountNo(purposeVo.getAccountNo());
 				itemVoD.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액
 				itemVoD.setAmountFlag("d");
 				itemVoList.add(itemVoD);
@@ -256,7 +181,7 @@ public class Menu43Controller {
 			itemVoC.setAmount((long) (intangibleAssetsVo.getAcqPrice() + intangibleAssetsVo.getAddiFee())); // 취득금액 +
 																											// 부대비용
 			itemVoC.setAmountFlag("c");
-			itemVoC.setAccountNo(1110101L); // 계정과목: 현금
+			itemVoC.setAccountNo(1110103L); // 계정과목: 보통예금
 			itemVoList.add(itemVoC);
 
 			// 매핑테이블

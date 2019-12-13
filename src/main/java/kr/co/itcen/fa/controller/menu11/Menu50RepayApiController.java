@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,13 +49,19 @@ public class Menu50RepayApiController {
 	@ResponseBody
 	@RequestMapping(value = "/" + SUBMENU + "/repay", method = RequestMethod.POST)
 	public JSONResult repay(
-			@RequestBody RepayVo vo, 
-			@AuthUser UserVo uservo) {
+			 RepayVo vo,
+			 @RequestParam(value = "debtNo") Long debtNo, 
+			 @RequestParam(value = "payPrinc") Long payPrinc, 
+			 @RequestParam(value = "payDate") String payDate, 
+			 @RequestParam(value = "intAmount") Long intAmount, 
+			 @AuthUser UserVo uservo) {
 		vo.setInsertId(uservo.getId()); // 유저 아이디 셋팅
+		System.out.println("===== 상환처리 =====");
+		System.out.println("repay" + vo.toString());
 		
 		// 상환금액 - 상환납입원금
 		menu50Service.updateRepayVo(vo); // 기존 사채 차입금액 수정
-		PdebtVo pdebtVo = menu50Service.getOne(vo.getDebtNo()); // 기존 사채 컬럼 값 읽기
+		PdebtVo pdebtVo = menu50Service.getOne(debtNo); // 기존 사채 컬럼 값 읽기
 
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -65,33 +70,37 @@ public class Menu50RepayApiController {
 		ItemVo itemVo3 = new ItemVo();
 
 		MappingVo mappingVo = new MappingVo();
-		voucherVo.setRegDate(vo.getPayDate());
+		voucherVo.setRegDate(payDate);
 
-		itemVo.setAmount(vo.getIntAmount());// 이자납입금
+		itemVo.setAmount(intAmount);// 이자납입금
 		itemVo.setAmountFlag("d");// 차변
 		itemVo.setAccountNo(9201101L);// 계정과목코드
 		itemVoList.add(itemVo);
 
-		itemVo2.setAmount(vo.getPayPrinc());// 장기차입금에서 빠진 금액
+		itemVo2.setAmount(payPrinc);// 사채에서 빠진 금액
 		itemVo2.setAmountFlag("d");// 차변
-		itemVo2.setAccountNo(2401101L);
+		itemVo2.setAccountNo(2402101L);
 		itemVoList.add(itemVo2);
 
-		itemVo3.setAmount(vo.getPayPrinc() + vo.getIntAmount());// 보통예금 : 예금액= 상환액으로 입력한 값
+		itemVo3.setAmount(payPrinc + intAmount);// 보통예금 : 예금액= 상환액으로 입력한 값
 		itemVo3.setAmountFlag("c");// 대변
-		itemVo3.setAccountNo(1110103L);// dPrma
+		itemVo3.setAccountNo(1110103L);// tb_account 보통예금 - no:1110103
 		itemVoList.add(itemVo3);
 
 		mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
-		mappingVo.setSystemCode(pdebtVo.getCode());// 제코드l190
+		mappingVo.setSystemCode(pdebtVo.getCode());// 사채코드 삽입 ex) I191212001
 		mappingVo.setCustomerNo(pdebtVo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());// 계좌번호
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
 		vo.setVoucherNo(no);
-		menu50Service.insertRepayVo(vo);// 상환 테이블에 insert ->
+		menu50Service.insertRepayVo(vo); // 상환 테이블에 insert
+		
+		System.out.println("차입금액 : " + pdebtVo.getDebtAmount());
+		System.out.println("상환잔액 : " + pdebtVo.getRepayBal());
+		System.out.println("이자금액 : " + intAmount);
 
-		if ((pdebtVo.getRepayBal() + pdebtVo.getIntAmount()) >= pdebtVo.getDebtAmount())
+		if ((pdebtVo.getRepayBal() + intAmount) >= pdebtVo.getDebtAmount())
 			menu50Service.updateRepayFlag(pdebtVo.getNo());
 
 		return JSONResult.success(pdebtVo);

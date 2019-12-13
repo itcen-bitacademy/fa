@@ -44,21 +44,44 @@ public class Menu33Controller {
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
 					   @RequestParam(value="page", required=false, defaultValue="1") int page,
 					   @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
+					   @RequestParam(value="section_page", required=false, defaultValue="1") int section_page,
+					   @RequestParam(value="section_page_group", required=false, defaultValue="0") int section_page_group,
+					   @RequestParam(value="factory_page", required=false, defaultValue="1") int factory_page,
+					   @RequestParam(value="factory_page_group", required=false, defaultValue="0") int factory_page_group,
 					   Model model) {
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();//모든 데이터
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);//5페이지씩 데이터 55개
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);//한페이지 데이터 11개
 		
-		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);
-		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
-		List<SectionVo> sectionList = menu33Service.getSectionList();
-		List<SectionVo> factoryList = menu33Service.getFactorysectionList();
-		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
+		///////////////
+		List<SectionVo> sectionListall = menu33Service.getSectionListall();//모든 대분류데이터
+		List<SectionVo> sectionList = menu33Service.getSectionList(section_page_group);//5페이지씩 데이터 6개
+		List<SectionVo> pagesectionList = menu33Service.getpageSectionList(section_page);//한페이지 데이터 6개
+		//////////////
 		
-		model.addAttribute("purchaseitemListall", purchaseitemListall); //모든 데이터
-		model.addAttribute("purchaseitemList", purchaseitemList); //5페이지씩 데이터 55개
-		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList); //한페이지 데이터 11개
-		model.addAttribute("sectionList", sectionList);
-		model.addAttribute("factoryList", factoryList);
+		//////////////
+		List<SectionVo> factoryListall = menu33Service.getFactoryListall();//모든 공장데이터
+		List<SectionVo> factoryList = menu33Service.getFactoryList(factory_page_group);//5페이지씩 데이터 6개
+		List<SectionVo> pagefactoryList = menu33Service.getpageFactoryList(factory_page);//한페이지 데이터 6개
+		//////////////
+		
+		model.addAttribute("purchaseitemListall", purchaseitemListall);
+		model.addAttribute("purchaseitemList", purchaseitemList);
+		model.addAttribute("pagepurchaseitemList", pagepurchaseitemList);
 		model.addAttribute("cur_page", page);
 		model.addAttribute("page_group", page_group);
+		
+		model.addAttribute("sectionListall", sectionListall);
+		model.addAttribute("sectionList", sectionList);
+		model.addAttribute("pagesectionList", pagesectionList);
+		model.addAttribute("section_cur_page", section_page);
+		model.addAttribute("section_page_group", section_page_group);		
+		
+		model.addAttribute("factoryListall", factoryListall);
+		model.addAttribute("factoryList", factoryList);
+		model.addAttribute("pagefactoryList", pagefactoryList);
+		model.addAttribute("factory_cur_page", factory_page);
+		model.addAttribute("factory_page_group", factory_page_group);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
@@ -235,6 +258,51 @@ public class Menu33Controller {
 		
 		return map;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/factorypaging")
+	public Map<String, Object> factorypaging(@RequestParam(value="factory_page", required=false, defaultValue="1") int factory_page,
+									  		 @RequestParam(value="factory_page_group", required=false, defaultValue="0") int factory_page_group,
+									  		 Model model) {
+		System.out.println(factory_page);
+		
+		List<SectionVo> factoryListall = menu33Service.getFactoryListall();//모든 공장데이터
+		List<SectionVo> factoryList = menu33Service.getFactoryList(factory_page_group);//5페이지씩 데이터 6개
+		List<SectionVo> pagefactoryList = menu33Service.getpageFactoryList(factory_page);//한페이지 데이터 6개
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("factoryListall", factoryListall);
+		map.put("factoryList", factoryList);
+		map.put("pagefactoryList", pagefactoryList);
+		map.put("factory_cur_page", factory_page);
+		map.put("factory_page_group", factory_page_group);
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/sectionpaging")
+	public Map<String, Object> sectionpaging(@RequestParam(value="section_page", required=false, defaultValue="1") int section_page,
+									  		 @RequestParam(value="section_page_group", required=false, defaultValue="0") int section_page_group,
+									  		 Model model) {
+		System.out.println(section_page);
+		
+		List<SectionVo> sectionListall = menu33Service.getSectionListall();//모든 대분류데이터
+		List<SectionVo> sectionList = menu33Service.getSectionList(section_page_group);//5페이지씩 데이터 6개
+		List<SectionVo> pagesectionList = menu33Service.getpageSectionList(section_page);//한페이지 데이터 6개
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("sectionListall", sectionListall);
+		map.put("sectionList", sectionList);
+		map.put("pagesectionList", pagesectionList);
+		map.put("section_page", section_page);
+		map.put("section_page_group", section_page_group);
+		
+		return map;
+	}
+	
 }
 
 

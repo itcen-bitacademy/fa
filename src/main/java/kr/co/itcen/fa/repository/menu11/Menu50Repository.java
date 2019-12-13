@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
-import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
@@ -27,16 +26,12 @@ public class Menu50Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// 사채정보입력
 	public void insert(PdebtVo pdebtVo) {
 		sqlSession.insert("menu50.insert", pdebtVo);
 	}
 	
-	// 사채관리 테이블에 들어있는 전체 데이터 갯수 출력
-	public int pdebtTotalcount() {
-		return sqlSession.selectOne("menu50.pdebtTotalcount");
-	}
-	
-	// 데이터 카운트
+	// 사채테이블의 데이터 카운트
 	public int listCount(String year, String code) {
 		Map<String,String> map = new HashMap<String, String>();
 		map.put("year", year);
@@ -44,7 +39,7 @@ public class Menu50Repository {
 		return sqlSession.selectOne("menu50.selectAllCount", map);
 	}
 	
-	// 리스트 데이터 출력
+	// 사채현황관리 리스트에 출력할 리스트 데이터 호출
 	public List<PdebtVo> list(String year, String code, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("year", year);
@@ -54,37 +49,28 @@ public class Menu50Repository {
 		return list;
 	}
 	
+	// 사채코드와 일치하는 데이터 조회
 	public PdebtVo selectOnePdebtInfo(String debtcode) {
 		return sqlSession.selectOne("menu50.getPdebtInfo", debtcode);
 	}
-	
-	public void updateDeleteFlag(List<Long> noList) {
-		sqlSession.update("menu50.updateDeleteFlag", noList);
-	}
 
-	public List<BankVo> bankInfoList() {
-		return sqlSession.selectList("menu50.bankList");
-	}
-
+	// 은행 팝업창에서 은행코드로 조회 - 은행코드로 데이터 출력
 	public BankVo selectOneBankcodeInfo(String bankcode) {
 		return sqlSession.selectOne("menu50.getBankcodeInfo", bankcode);
 	}
 
+	// 은행 팝업창에서 은행명으로 데이터 리스트형식으로 조회 - 은행명으로 데이터 출력
 	public List<BankVo> selectOneBanknameInfo(String bankname) {
 		return sqlSession.selectList("menu50.getBanknameList", bankname);
 	}
 
+	// 사채관리 페이지에서 수정을 눌렀을 때, 해당 사채정보 수정
 	public Boolean update(PdebtVo vo) {
-		int count = sqlSession.update("menu50.update", vo);
+		int count = sqlSession.update("menu50.pdebtupdate", vo);
 		return count == 1;
 	}
-	
-	public List<BankAccountVo> selectBankaccountInfo(String depositNo) {
-		List<BankAccountVo> bankaccountList = sqlSession.selectList("menu50.getBankaccountInfo", depositNo);
-		System.out.println(bankaccountList);
-		return bankaccountList;
-	}
 
+	// 사채테이블에서 사채정보 삭제
 	public Boolean delete(Long[] no) {
 		List<Long> list = new ArrayList<Long>();
 		for (Long no1 : no) {
@@ -100,43 +86,42 @@ public class Menu50Repository {
 		return count >= 1;
 	}
 
+	// 공통테이블에 있는 차입금대분류 데이터 호출
 	public List<SectionVo> selectSection() {
 		return sqlSession.selectList("menu50.selectsection");
 	}
 
+	// 전표번호와 일치하는 사채테이블 데이터 조회
 	public Long select(Long no) {
 		Long longNo = sqlSession.selectOne("menu50.selectByVoucherNo", no);
 		return longNo;
 	}
-
-	// 상환데이터 수정
-	public Boolean updateRepayVo(RepayVo vo) {
-		int count = sqlSession.update("menu50.repayupdate", vo);
+	
+	// 상환데이터 입력
+	public Boolean insertRepayVo(RepayVo vo) {
+		int count = sqlSession.insert("menu50.insertRepay", vo);
 		return count == 1;
 	}
 
-	// 상환데이터 입력
-	public Boolean insertRepayVo(RepayVo vo) {
-		int count = sqlSession.insert("menu50.insertrepay", vo);
+	// 상환데이터 수정
+	public Boolean updateRepayVo(RepayVo vo) {
+		int count = sqlSession.update("menu50.repayUpdate", vo);
 		return count == 1;
 	}
 
 	// 상환후 갱신된 정보 select
 	public PdebtVo getOne(Long debtNo) {
-		PdebtVo vo = sqlSession.selectOne("menu50.selectone", debtNo);
+		PdebtVo vo = sqlSession.selectOne("menu50.selectOne", debtNo);
 		return vo;
 	}
 
+	// 상환완료된 데이터 flag update
 	public Boolean updateRepayFlag(Long no) {
-		int count = sqlSession.update("menu50.updaterepayflag", no);
+		int count = sqlSession.update("menu50.updateRepayFlag", no);
 		return count == 1;
 	}
 
-	public PdebtVo getCode(String code) {
-		PdebtVo vo = sqlSession.selectOne("menu50.getbycode", code);
-		return vo;
-	}
-
+	// 전표번호 읽어오기
 	public List<Long> selectVoucherNo(Long[] no) {
 		List<Long> list = new ArrayList<Long>();
 		for (Long no1 : no) {
@@ -144,10 +129,11 @@ public class Menu50Repository {
 		}
 		return sqlSession.selectList("menu50.selectVoucherNo", list);
 	}
-
-	// 계좌번호로 은행코드 호출
-	public String selectBankCode(String depositNo) {
-		return sqlSession.selectOne("menu50.selectBankCode", depositNo);
+	
+	// 동일한 사채코드가 존재하는지 비교
+	public PdebtVo getCode(String code) {
+		PdebtVo vo = sqlSession.selectOne("menu50.getByCode", code);
+		return vo;
 	}
 	
 }

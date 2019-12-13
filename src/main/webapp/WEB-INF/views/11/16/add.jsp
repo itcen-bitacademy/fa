@@ -76,7 +76,10 @@ tr td:first-child {
 						<tr >
 							<td><h4>은행코드</h4></td>
 							<td>
-								<input type="text" name="code" class="box" id="code" maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) " required />
+								<input type="text" name="code" class="box" id="code" 
+								 maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) " required 
+								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'/>
+								 
 								<input id="btn-check-code" type="button" value="중복확인" />
 								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 							</td>
@@ -92,7 +95,9 @@ tr td:first-child {
 						<tr >
 							<td><h4>FAX</h4></td>
 							<td colspan="2">
-								<input type="text" name="fax" id="fax" placeholder="팩스번호는 띄어쓰기로 구분." required/>
+								<input type="text" name="fax" id="fax" maxlength="15"
+								 placeholder="팩스번호는 띄어쓰기로 구분." required
+									onKeyup="inputTelNumber(this);" />
 							</td>
 						</tr>
 							
@@ -101,7 +106,7 @@ tr td:first-child {
  							<td colspan="2"> 
 								<div class="control-group">
 									<div class="row-fluid input-append">
-										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" required/>
+										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" readOnly required/>
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
@@ -129,7 +134,9 @@ tr td:first-child {
 						<tr >
 							<td><h4>담당자전화번호</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgrPhone" id="mgrPhone" placeholder="전화번호는 띄어쓰기로 구분." required />
+								<input type="text" name="mgrPhone" id="mgrPhone" maxlength="15"
+									placeholder="전화번호는 띄어쓰기로 구분." required
+									onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'  />
 							</td>
 						</tr>
 
@@ -149,7 +156,8 @@ tr td:first-child {
 							<tr >
 								<td><h4>은행전화번호</h4></td>
 								<td colspan="2">
-									<input type="text" name="phone" id="phone" placeholder="전화번호는 띄어쓰기로 구분." required />
+									<input type="text" name="phone" id="phone" placeholder="전화번호는 띄어쓰기로 구분." maxlength="15"
+										onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' required />
 								</td>
 							</tr>
 							
@@ -165,11 +173,11 @@ tr td:first-child {
 									<div>
 			                        
 			                      		<input type="text" name="post" class="box" id="postcode"
-			                           		placeholder="우편번호" required>
+			                           		placeholder="우편번호" readOnly required>
 									</div>			
 									<div>
 			                       		<input  type="text" name="roadAddress" class="box"
-			                           		id="roadAddress" placeholder="도로명주소" required>
+			                           		id="roadAddress" placeholder="도로명주소" readOnly required>
 									</div>                     
 									<div>
 					                 		<input  type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
@@ -364,7 +372,7 @@ tr td:first-child {
 	        $(function() {
 	        	  $(".chosen-select").chosen();
 					
-					$('.date-picker').datepicker().next().on(ace.click_event, function(){
+					$('.date-picker').datepicker().next().on(ace.click_event,function(){
 						$(this).prev().focus();
 					});
 					
@@ -434,9 +442,65 @@ tr td:first-child {
 				}
 			
 		});
-							
-			
+		
+		
+		
+		/////////////////////////////////////////////////////////////////
+		//전화번호 자동 하이픈
+			function inputTelNumber(obj) {
 
+			    var number = obj.value.replace(/[^0-9]/g, "");
+			    var tel = "";
+			
+			    // 서울 지역번호(02)가 들어오는 경우
+			    if(number.substring(0, 2).indexOf('02') == 0) {
+			        if(number.length < 3) {
+			            return number;
+			        } else if(number.length < 6) {
+			            tel += number.substr(0, 2);
+			            tel += "-";
+			            tel += number.substr(2);
+			        } else if(number.length < 10) {
+			            tel += number.substr(0, 2);
+			            tel += "-";
+			            tel += number.substr(2, 3);
+			            tel += "-";
+			            tel += number.substr(5);
+			        } else {
+			            tel += number.substr(0, 2);
+			            tel += "-";
+			            tel += number.substr(2, 4);
+			            tel += "-";
+			            tel += number.substr(6);
+			        }
+			    
+			    // 서울 지역번호(02)가 아닌경우
+			    } else {
+			        if(number.length < 4) {
+			            return number;
+			        } else if(number.length < 7) {
+			            tel += number.substr(0, 3);
+			            tel += "-";
+			            tel += number.substr(3);
+			        } else if(number.length < 11) {
+			            tel += number.substr(0, 3);
+			            tel += "-";
+			            tel += number.substr(3, 3);
+			            tel += "-";
+			            tel += number.substr(6);
+			        } else {
+			            tel += number.substr(0, 3);
+			            tel += "-";
+			            tel += number.substr(3, 4);
+			            tel += "-";
+			            tel += number.substr(7);
+			        }
+			    }
+			
+			    obj.value = tel;
+			}	
+		
+		
 		
 		/////////////////////////////////////////////////////////////////
 		//은행코드 중복체크
@@ -487,5 +551,26 @@ tr td:first-child {
 		
 	  		});
 	    </script>
+	    <script>
+	    /////////////////////////////////////////////////////////////////
+		//은행코드 유효성검사
+		function onlyNumber(event){
+		    event = event || window.event;
+		    var keyID = (event.which) ? event.which : event.keyCode;
+		    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+		        return;
+		    else
+		        return false;
+		}
+		 
+		function removeChar(event) {
+		    event = event || window.event;
+		    var keyID = (event.which) ? event.which : event.keyCode;
+		    if ( keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+		        return;
+		    else
+		        event.target.value = event.target.value.replace(/[^0-9]/g, "");
+		}
+		</script>
 </body>
 </html>

@@ -80,5 +80,10 @@ public class Menu39Service {
 		return voucherNo;
 	}
 
+	public boolean checkId(String id) {
+		menu39Repository.checkId(id);
+		return menu39Repository.checkId(id) != null;
+	}
+
 	
 }

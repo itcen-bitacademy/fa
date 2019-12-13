@@ -46,6 +46,7 @@
 			tbs.customer_code = tbc.no and tbc.deposit_no = tba.deposit_no
 			and 
 			date(tbs.sales_date) = #{salesDate } and tbs.sales_no = #{salesNo }
+			and tbs.delete_flag = 'N'
 			order by tbs.number;
 		]]>
 	</select>

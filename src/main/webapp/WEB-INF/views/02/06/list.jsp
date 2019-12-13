@@ -94,7 +94,7 @@
 									<label class="control-label" for="form-field-1">매 입 번 호</label>
 									<div class="controls">
 										<input class="input-mini" type="text" id="no" placeholder="" name="no">
-										<span class="btn btn-small">조회</span>
+										
 									</div>
 							</div>
 							

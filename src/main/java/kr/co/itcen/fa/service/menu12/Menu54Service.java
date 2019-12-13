@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu12.Menu54Repository;
 import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
+import kr.co.itcen.fa.vo.menu12.TaxbillSearchVo;
 
 /**
  * 
@@ -42,5 +43,10 @@ public class Menu54Service {
 	//전체 리스트가 출력되게 하는 기능
 	public List<SellTaxbillVo> taxbillAllList(){
 		return menu54Repository.taxbillAllList();
+	}
+	
+	//검색 필터를 통해 출력되는 기능
+	public List<SellTaxbillVo> taxbillsearch(TaxbillSearchVo taxbillsearchvo){
+		return menu54Repository.taxbillsearch(taxbillsearchvo);
 	}
 }

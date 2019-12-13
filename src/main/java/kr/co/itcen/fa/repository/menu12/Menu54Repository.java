@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
+import kr.co.itcen.fa.vo.menu12.TaxbillSearchVo;
 import kr.co.itcen.fa.vo.menu12.TestVo;
 
 /**
@@ -46,6 +47,11 @@ public class Menu54Repository {
 	//전체 리스트가 출력되게 하는 기능
 	public List<SellTaxbillVo> taxbillAllList(){
 		return sqlSession.selectList("menu54.getaxbilllist");
+	}
+	
+	//검색 필터를 통해 출력되는 기능
+	public List<SellTaxbillVo> taxbillsearch(TaxbillSearchVo taxbillsearchvo){
+		return sqlSession.selectList("menu54.taxbillsearch", taxbillsearchvo);
 	}
 	
 }

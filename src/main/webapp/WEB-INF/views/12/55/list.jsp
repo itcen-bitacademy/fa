@@ -145,18 +145,18 @@ $(function() {
 							<tr>
 								<td>${vo.itemcode }</td>
 								<td>${vo.itemname }</td>
-								<td>${vo.purchasemanagementquantity }</td>
-								<td>${vo.purchasemanagementsupplyvalue }</td>
-								<td>${vo.purchasemanagementtaxvalue }</td>
-								<td>${vo.purchasemanagementtotalprice }</td>
-								<td>${vo.salesquantity }</td>
-								<td>${vo.salessupplyvalue }</td>
-								<td>${vo.salestaxvalue }</td>
-								<td>${vo.salestotalprice }</td>
-								<td>${vo.stockquantity }</td>
-								<td>${vo.stocksupplyvalue }</td>
-								<td>${vo.stocktaxvalue }</td>
-								<td>${vo.stocktotalprice }</td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementquantity }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementsupplyvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementtaxvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementtotalprice }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.salesquantity }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.salessupplyvalue }" pattern="#,###" />
+								<td><fmt:formatNumber value="${vo.salestaxvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.salestotalprice }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stockquantity }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stocksupplyvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stocktaxvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stocktotalprice }" pattern="#,###" /></td>
 
 							</tr>
 						</c:forEach>

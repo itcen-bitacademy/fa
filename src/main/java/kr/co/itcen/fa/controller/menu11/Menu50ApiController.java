@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
-import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
@@ -24,6 +21,7 @@ public class Menu50ApiController {
 	@Autowired
 	private Menu50Service menu50Service;
 	
+	// 사채코드와 일치하는 데이터 조회
 	@ResponseBody
 	@RequestMapping("/getpdebtInfo")
 	public PdebtVo getPdebtInfo(
@@ -48,27 +46,6 @@ public class Menu50ApiController {
 			@RequestParam("banknameVal") String bankname) {
 		List<BankVo> banknameList = menu50Service.selectOneBanknameInfo(bankname);
         return banknameList;
-	}
-	
-	//배열로 넘어온거는 '[]' 붙여줘야한다.
-	@ResponseBody
-	@RequestMapping(value = "/deleteChecked", method = RequestMethod.POST)
-	public JSONResult deleteChecked(
-			@RequestParam(value="sendData[]", required=true) List<Long> noList) {
-		menu50Service.deleteChecked(noList);
-		System.out.println("deleteChecked : " + noList);
-		return JSONResult.success(noList);
-	}
-	
-	// 계좌 팝업창에서 계좌번호 조회
-	@ResponseBody
-	@RequestMapping("/getbankaccount")
-	public List<BankAccountVo> getBankaccountInfo(
-			@RequestParam("depositNo") String depositNo) {
-		System.out.println("depositNo : " + depositNo);
-		List<BankAccountVo> bankaccountList = menu50Service.selectBankaccountInfo(depositNo);
-		System.out.println("bankaccountList : " + bankaccountList.toString());
-		return bankaccountList;
 	}
 	
 }

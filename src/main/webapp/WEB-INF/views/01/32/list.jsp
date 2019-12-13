@@ -190,93 +190,37 @@
 								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
-											<th class="center">
-												<label class="pos-rel">
-													<input type="checkbox" class="ace" />
-													<span class="lbl"></span>
-												</label>
-											</th>
+											
 											<th class="center">계정명</th>
 											<th class="center">거래처명</th>
 											<th class="center">일자</th>
-											<th class="center">전표번호</th>
-											<th class="center">전표순번</th>
+											<th class="center">전표번호-순번</th>
 											<th class="center">사용팀/성명</th>
 											<th class="center">적요</th>
-											<th class="center">카드번호/종류</th>
+											<th class="center">카드번호/사용자</th>
 											<th class="center">은행명/계좌번호/예금주</th>
 											<th class="center">차대구분</th>
 											<th class="center">금액</th>
-											<th class="center">부가세</th>
 										</tr>
 									</thead>
 									
 									<tbody>
-										<tr>
-											<td class="center">
-												<label class="pos-rel">
-													<input type="checkbox" class="ace" />
-													<span class="lbl"></span>
-												</label>
-											</td>
-											<td class="center">카드미수금</td>
-											<td class="center">비트컴퓨터</td>
-											<td class="center">20191128</td>
-											<td class="center">0001</td>
-											<td class="center">02</td>
-											<td class="center">5팀/김현곤</td>
-											<td class="center">비트컴퓨터에 네트워크장비 10대 판매</td>
-											<td class="center">1111-1111-1111/???</td>
-											<td class="center"></td>
-											<td class="center">차변</td>
-											<td class="center">100,000,000</td>
-											<td class="center">10,000,000</td>
-										</tr>
-										
-										<tr>
-											<td class="center">
-												<label class="pos-rel">
-													<input type="checkbox" class="ace" />
-													<span class="lbl"></span>
-												</label>
-											</td>
-											
-											<td class="center">카드미수금</td>
-											<td class="center">비트컴퓨터</td>
-											<td class="center">20191129</td>
-											<td class="center">0001</td>
-											<td class="center">01</td>
-											<td class="center">5팀/김현곤</td>
-											<td class="center">김승곤매니져한테 네트워크장비 10대 덤탱이 씌워서 판매</td>
-											<td class="center">1111-1111-1111/???</td>
-											<td class="center"></td>
-											<td class="center">차변</td>
-											<td class="center">100,000,000,000</td>
-											<td class="center">10,000,000,000</td>
-										</tr>
+								
+										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
+											<tr>
+												<td>${vo.accountName }</td>
+												<td>${vo.customerName }</td>
+												<td>${vo.regDate }</td>
+												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
+												<td>${vo.insertTeam }/${vo.insertUserid }</td>
+												<td>${vo.voucherUse }</td>
+												<td>${vo.cardNo }/${vo.cardUser }</td>
+												<td>${vo.bankName }/${vo.depositNo }/${vo.depositHost }</td>
+												<td>${vo.amountFlag }</td>
+												<td>${vo.amount }</td>
+											</tr>
+									</c:forEach>
 									</tbody>
-									<thead>
-										<tr>
-											<th class="center">
-												<label class="pos-rel">
-													<input type="checkbox" class="ace" />
-													<span class="lbl"></span>
-												</label>
-											</th>
-											<th class="center">계정명</th>
-											<th class="center">거래처명</th>
-											<th class="center">일자</th>
-											<th class="center">전표번호</th>
-											<th class="center">전표순번</th>
-											<th class="center">사용팀/성명</th>
-											<th class="center">적요</th>
-											<th class="center">카드번호/종류</th>
-											<th class="center">은행명/계좌번호/예금주</th>
-											<th class="center">차대구분</th>
-											<th class="center">금액</th>
-											<th class="center">부가세</th>
-										</tr>
-									</thead>
 								</table>
 							</div>
 						</div><!-- /span -->
