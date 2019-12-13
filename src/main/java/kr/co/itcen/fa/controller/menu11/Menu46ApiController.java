@@ -18,8 +18,6 @@ import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.ItemVo;
-import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
@@ -32,6 +30,8 @@ public class Menu46ApiController {
 	@Autowired
 	Menu46Service menu46Service;
 	
+	@Autowired
+	Menu03Service menu03Service;
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/search")
@@ -59,8 +59,24 @@ public class Menu46ApiController {
 	//배열로 넘어온거는 '[]' 붙여줘야한다.
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
-	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
+	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList,
+			@RequestParam(value="voucherNoList[]", required=true) List<Long> voucherNoList,
+			@AuthUser UserVo authUser){
+		//전표 삭제
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		
+		for(Long voucherNo : voucherNoList) {
+			VoucherVo vo = new VoucherVo();
+			vo.setNo(voucherNo);
+			voucherVolist.add(vo);
+		}
+		
+		menu03Service.deleteVoucher(voucherVolist, authUser);
+		
+		//차입금 삭제
 		menu46Service.deleteChecked(noList);
+		
+		//삭제후 리스트 다시 얻음.
 		Map map = menu46Service.getListMap();
 		return JSONResult.success(map);
 	}
