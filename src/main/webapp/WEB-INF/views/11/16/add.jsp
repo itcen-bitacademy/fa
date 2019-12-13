@@ -376,7 +376,57 @@ tr td:first-child {
 						$(this).prev().focus();
 					});
 					
+		///////////////////////////////////////////////////////////////////////////////////////////////
 		
+		
+/////////////////////////////////////////////////////////////////
+					//은행코드 중복체크
+						$("#code").change(function(){
+
+							$("#btn-check-code").show();
+							$("#img-checkcode").hide();
+						});	
+					
+						$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
+						$("#btn-check-code").click(function(){
+							
+							var code = $("#code").val();
+							if(code == ""){
+								return;
+							}
+						
+							// ajax 통신
+							$.ajax({
+								url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/checkcode?code=" + code,
+								type: "get",
+								dataType: "json",
+								data: "",
+								success: function(response){
+									if(response.result == "fail"){
+										console.error(response.message);
+										return;
+									}
+									console.log(response);
+									
+									if(response.data == true){
+										alert("이미 존재하는 은행코드입니다.");
+										$("#input-code").val("");
+										$("#input-code").focus();
+										return;
+									}else{
+										$("#inputbtn").show();
+										$("#btn-check-code").hide();
+										$("#img-checkcode").show();
+									
+									}
+									},
+									error:function(xhr,error) {
+										console.err("error" + error);
+									}
+								});
+							});	
+					
+				  		});
 			////////////////////////////////////////////////////////////////////////////////////////
 			
 			$("#simple-table tr").click(function(){ 
@@ -428,14 +478,14 @@ tr td:first-child {
 		
 		///////////////////////////////////////////////////////////////
 		//이메일 유효성 검사
-		$('#email').onchage(function(){
+		$("#email").change(function(){
 			function validateEmail(email) {
 				var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 				return re.test(email);
 				}
 							
 			
-				var email = $('#email').val();
+				var email = $("#email").val();
 				if (email == '' || !re.test($mgrEmail)) {
 					alert("올바른 이메일 주소를 입력하세요")
 				return false;
@@ -502,56 +552,11 @@ tr td:first-child {
 		
 		
 		
-		/////////////////////////////////////////////////////////////////
-		//은행코드 중복체크
-			$("#code").change(function(){
-
-				$("#btn-check-code").show();
-				$("#img-checkcode").hide();
-			});	
 		
-			$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
-			$("#btn-check-code").click(function(){
-				
-				var code = $("#code").val();
-				if(code == ""){
-					return;
-				}
-			
-				// ajax 통신
-				$.ajax({
-					url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/checkcode?code=" + code,
-					type: "get",
-					dataType: "json",
-					data: "",
-					success: function(response){
-						if(response.result == "fail"){
-							console.error(response.message);
-							return;
-						}
-						console.log(response);
-						
-						if(response.data == true){
-							alert("이미 존재하는 은행코드입니다.");
-							$("#input-code").val("");
-							$("#input-code").focus();
-							return;
-						}else{
-							$("#inputbtn").show();
-							$("#btn-check-code").hide();
-							$("#img-checkcode").show();
-						
-						}
-						},
-						error:function(xhr,error) {
-							console.err("error" + error);
-						}
-					});
-				});	
 		
-	  		});
-	    </script>
-	    <script>
+		
+		
+	
 	    /////////////////////////////////////////////////////////////////
 		//은행코드 유효성검사
 		function onlyNumber(event){
