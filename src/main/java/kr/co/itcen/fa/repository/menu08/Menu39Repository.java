@@ -73,4 +73,8 @@ public class Menu39Repository {
 		Long vocherNo = sqlSession.selectOne("menu39.getVoucherNo", id);
 		return vocherNo;
 	}
+
+	public String checkId(String id) {
+		return sqlSession.selectOne("menu39.checkId", id);
+	}
 }

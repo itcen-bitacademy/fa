@@ -331,6 +331,8 @@ tr td:first-child {
 								<td>
 									<label>납입금</label>
 									<input type="text" name="payPrinc" id= "payPrinc"/>
+									<h4 id="amount"></h4>
+									
 								</td>
 							</tr>
 							</table>
@@ -701,6 +703,18 @@ $(function(){
 			
 			$("#dialog-repayment-button").click(function() {
 				$("#code").val($("#code2").val());
+			
+		    	$("#tbody-list tr").each(function(i){
+					var td = $(this).children();
+					var n = td.eq(0).attr('lterm-no');
+					if(n == $("#no").val()){
+						
+						var k = parseInt(td.eq(5).text().replace(/,/g, ''));
+						var intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/100);
+
+						$("#amount").text("이번달 이자금액:"+intAmount);
+					}
+				});
 				$("#dialog-repayment").dialog('open');
 				$("#dialog-repayment").dialog({
 					title: "상환정보등록",
@@ -711,7 +725,7 @@ $(function(){
 				    modal: true,
 				    close: function() {
 				    	$('#code').val('');
-				    	$('#repay_bal').val('');
+				    	$('#payPrinc').val('');
 				    	$('input[name=payDate]').val('');
 				    	
 				    },
@@ -720,33 +734,38 @@ $(function(){
 				    "상환": function(){
 				    	event.preventDefault();
 				    	var intAmount; 
-				    	var remainmoney
+				    	var remainmoney;
+				    	var k;
 				    	$("#tbody-list tr").each(function(i){
 							var td = $(this).children();
 							var n = td.eq(0).attr('lterm-no');
 							if(n == $("#no").val()){
 								
-								var m = parseInt(td.eq(5).text().replace(/,/g, ''));
-								remainmoney=parseInt(td.eq(5).text().replace(/,/g, ''));
-								intAmount= parseInt((m*(td.eq(8).text().replace('%', '')))/100);
-								console.log(intAmount);
+								k = parseInt(td.eq(5).text().replace(/,/g, ''));
+								intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/100);
+
+								remainmoney=parseInt(td.eq(5).text().replace(/,/g, ''))+intAmount;
+								
 							}
 						});
-				    	
-						var vo = {
+				    	var payPrinc=parseInt($('input[name=payPrinc]').val())-intAmount;//납입금
+				    	console.log("이율"+intAmount);
+
+						console.log("납입금"+payPrinc);
+						console.log("총액 = "+remainmoney);
+				    	var vo = {
 								"debtNo":$("#no").val(),//테이블 번호
-								"payPrinc":$("#payPrinc").val(),//상환액
+								"payPrinc":payPrinc,//낼돈 - 이자금
 								"payDate":$('input[name=payDate]').val(),//상환일
 								"intAmount": intAmount
 						}
-						
-						if(intAmount >= vo.payPrinc){
-							alert("이자 금액보다 납입금이 작습니다 이자("+ intAmount+")이상 입력해주세요");
+						if(intAmount > parseInt($('input[name=payPrinc]').val())){
+							alert("이자 금액보다 납입금이 작습니다 납입금("+ intAmount+")보다 크게 입력해주세요");
 							
 							return;
 						}
-						if( remainmoney<= vo.payPrinc){
-							alert("납입금이 상환 잔액보다 큽니다 상환 잔액("+remainmoney+")보다 작게 입력해주세요");
+						if( remainmoney < parseInt($('input[name=payPrinc]').val())){
+							alert("납입금이 상환 잔액보다 큽니다 납입금("+k+") "+"이자("+ intAmount+")보다 작게 입력해주세요");
 							return;
 						}
 						// ajax 통신
@@ -770,10 +789,11 @@ $(function(){
 									var td = $(this).children();
 									var n = td.eq(0).attr('lterm-no');
 									if(n == response.data.no){
-										var m = response.data.debtAmount-response.data.repayBal
-										td.eq(5).html(m);
+										var m = response.data.repayBal
+										td.eq(5).html(m).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 									}
 								});
+								
 							},
 							error: function(xhr, error){
 								console.error("error : " + error);

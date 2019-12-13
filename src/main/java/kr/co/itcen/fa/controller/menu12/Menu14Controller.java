@@ -40,7 +40,6 @@ public class Menu14Controller {
 		
 		model.addAttribute("customerlist", menu14Service.getCustomerList()); // 거래처 목록
 		model.addAttribute("itemlist", menu14Service.getItemList()); // 품목 목록
-		
 		model.addAttribute("dataResult", menu14Service.getList(ipage)); // 조회실행
 		
 		return MAINMENU + "/" + SUBMENU + "/list";

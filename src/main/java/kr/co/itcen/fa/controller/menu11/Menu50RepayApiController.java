@@ -79,17 +79,20 @@ public class Menu50RepayApiController {
 
 		itemVo3.setAmount(vo.getPayPrinc() + vo.getIntAmount());// 보통예금 : 예금액= 상환액으로 입력한 값
 		itemVo3.setAmountFlag("c");// 대변
-		itemVo3.setAccountNo(1110103L);// dPrma
+		itemVo3.setAccountNo(1110103L);// tb_account 보통예금 - no:1110103
 		itemVoList.add(itemVo3);
 
 		mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
-		mappingVo.setSystemCode(pdebtVo.getCode());// 제코드l190
+		mappingVo.setSystemCode(pdebtVo.getCode());// 사채코드 삽입 ex) I191212001
 		mappingVo.setCustomerNo(pdebtVo.getBankCode());
 		mappingVo.setDepositNo(vo.getDepositNo());// 계좌번호
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
 		vo.setVoucherNo(no);
-		menu50Service.insertRepayVo(vo);// 상환 테이블에 insert ->
+		menu50Service.insertRepayVo(vo); // 상환 테이블에 insert
+		
+		System.out.println("차입금액 : " + pdebtVo.getDebtAmount());
+		System.out.println("상환잔액 : " + pdebtVo.getRepayBal());
 
 		if ((pdebtVo.getRepayBal() + pdebtVo.getIntAmount()) >= pdebtVo.getDebtAmount())
 			menu50Service.updateRepayFlag(pdebtVo.getNo());

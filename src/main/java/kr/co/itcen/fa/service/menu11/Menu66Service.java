@@ -25,7 +25,6 @@ public class Menu66Service {
 	public DataResult<RepayVo> list(int page, String code, String debtType) {
 		DataResult<RepayVo> dataResult = new DataResult<RepayVo>();
 		int totalCnt = menu66Repository.listCount(code, debtType);
-		System.out.println("RepayVo totalCnt : " + totalCnt);
 
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		dataResult.setPagination(pagination);

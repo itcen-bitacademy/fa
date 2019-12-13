@@ -41,7 +41,7 @@ public class Menu40Controller {
 	//               /08   /   40     , /08/40/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, @RequestParam(value="page", required=false,defaultValue = "1") int page, BuildingVo vo) {
-		System.out.println(vo);
+		System.out.println("조회 페이지 입성~" + vo);
 		if(vo.getId() == null || "".equals(vo.getId()))
 			vo.setId("");
 		if(vo.getPayDate() == null || "".equals(vo.getPayDate()))
@@ -56,9 +56,8 @@ public class Menu40Controller {
 			vo.setCityAddress("");
 		if(vo.getDetailAddress() == null || "".equals(vo.getDetailAddress()))
 			vo.setDetailAddress("");
-		if("".equals(vo.getFlag()))
-			vo.setFlag("");
-		else vo.setFlag("s");
+		if(vo.getFlag() == null || "".equals(vo.getFlag()))
+			vo.setFlag("s");
 		
 		//dataresult 생성
 		DataResult<BuildingVo> dataResult = menu40Service.list(vo, page); 

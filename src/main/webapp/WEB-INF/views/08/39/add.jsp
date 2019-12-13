@@ -43,7 +43,8 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">대분류코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-section" name="sectionNo">
+											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="대분류코드">
+											<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
@@ -66,7 +67,8 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">거래처코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-customer" name="customerNo">
+											<select class="chosen-select" id="form-field-customer" data-placeholder="거래처코드" name="customerNo">
+												<option value=""></option>
 												<c:forEach items="${customerList }" var="customerVo">
 													<option customerName="${customerVo.name}" managerName="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
 												</c:forEach>
@@ -454,7 +456,13 @@ $("input[name=id]").on("change", function() {
 		      
 	});
 
-	
+	//엔터키 막기
+	document.addEventListener('keydown', function(event) {
+	    if (event.keyCode === 13) {
+	        $(this).next('.inputs').focus();
+	        event.preventDefault();
+	    }
+	}, true);
 </script>
 
 <script>

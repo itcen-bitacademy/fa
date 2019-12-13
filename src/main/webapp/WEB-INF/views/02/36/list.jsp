@@ -68,11 +68,11 @@
 											</select>
 											<div class="input-append">
 												<input type="text" id="input-dialog-customerNo" style="width: 100px;" /> 
-												<a href="#" id="a-dialog-customerNo"> 
-													<span class="add-on" style="margin-bottom: 10px;">
-														<i class="icon-search icon-on-right bigger-110"></i>
+													<span class="add-on">
+														<a href="#" id="a-dialog-customerNo"> 
+																<i class="icon-search icon-on-right bigger-110"></i>
+														</a>
 													</span>
-												</a>
 											</div>
 											</td>
 										</tr>

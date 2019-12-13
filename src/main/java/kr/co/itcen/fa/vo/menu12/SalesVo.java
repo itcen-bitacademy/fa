@@ -41,6 +41,7 @@ public class SalesVo {
 	private String sectionName; // 대분류명
 	private String itemCode; // 품목코드
 	private String itemName; //품목명
+	private int stock; // 품목 재고량
 	private int quantity; // 수량
 	private Long supplyValue; // 공급가액
 	private Long taxValue; // 부가세
@@ -64,8 +65,15 @@ public class SalesVo {
 	}
 	//
 	
+	
 	public String getCustomerPhone() {
 		return customerPhone;
+	}
+	public int getStock() {
+		return stock;
+	}
+	public void setStock(int stock) {
+		this.stock = stock;
 	}
 	public void setCustomerPhone(String customerPhone) {
 		this.customerPhone = customerPhone;

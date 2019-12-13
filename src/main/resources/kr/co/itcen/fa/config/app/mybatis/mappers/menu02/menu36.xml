@@ -114,7 +114,7 @@
 	
 	<select id="gets" parameterType="map" resultType="purchasecustomer35vo">
 		<![CDATA[
-			select	right(p.no, 10) as no, 
+			select	right(no, 10) as no, 
 			      	name
 			  from	tb_purchasecustomer
 			  where delete_flag = "N"

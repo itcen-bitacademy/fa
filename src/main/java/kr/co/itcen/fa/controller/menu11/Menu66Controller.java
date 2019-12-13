@@ -17,7 +17,8 @@ import kr.co.itcen.fa.vo.menu11.RepayVo;
 
 /**
  * 
- * @author 박준호 상환내역관리
+ * @author 박준호 
+ * 상환내역관리
  *
  */
 @Auth
@@ -35,13 +36,8 @@ public class Menu66Controller {
 			Model model,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page, 
 			@ModelAttribute("vo") RepayVo vo) {
-		System.out.println("====== list ======");
-		System.out.println(vo.toString());
-		System.out.println(vo.getCode());
-		System.out.println(vo.getDebtType());
 		// tb_repay 의 debtNo를 통해 각 사채테이블의 PK인 no와 비교하여 데이터 호출
 		DataResult<RepayVo> dataResult = menu66Service.list(page, vo.getCode(), vo.getDebtType());
-		
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("contentsCount", dataResult.getPagination().getTotalCnt()); // 게시물 수
 		return MAINMENU + "/" + SUBMENU + "/add";
