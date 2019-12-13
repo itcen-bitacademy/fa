@@ -79,7 +79,7 @@ form {
 									<td class="first-column"><h4>차입일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" value="${vo.debtDate } " readonly/>
+				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" value="${vo.debtDate }" readonly/>
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -185,12 +185,7 @@ form {
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
-							<th class="center">
-								<label class="pos-rel">
-									<input type="checkbox" class="ace" />
-									<span class="lbl"></span>
-								</label>
-							</th>
+							
 							<th class="center">장기차입금코드</th>
 							<th class="center">장기차입금명</th>
 							<th class="center">차입금대분류</th>
@@ -209,9 +204,7 @@ form {
 					<tbody>
 					<c:forEach items="${dataResult.datas }" var="ltermvo">
 						<tr>
-							<td class="center"><label class="pos-rel">
-							<input type="checkbox" class="ace" /> <span class="lbl"></span>
-							</label></td>
+							
 							<td class="center">${ltermvo.code}</td>
 							<td>${ltermvo.name}</td>
 							 <c:choose>

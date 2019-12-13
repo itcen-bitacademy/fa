@@ -91,14 +91,14 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
-									<td><input type="text" name="debtAmount" class="number-input numberformat"/></td>
+									<td><input type="text" name="debtAmount" class="number-input numberformat" required/></td>
 								</tr>
 								<tr>
 									<td><h4>차입일자 ~ 만기일자</h4></td>
 									<td colspan="2">
 									<div class="control-group">
 				                        <div class="row-fluid input-prepend">			                        	
-				                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" readonly/>
+				                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" readonly required/>
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -111,20 +111,20 @@ tr td:first-child {
 									<td colspan="2">
 										<div class="radio" >
 											<label>
-												<input name="intPayWay" type="radio" class="ace" value="Y"/>
+												<input name="intPayWay" type="radio" class="ace" value="Y" required/>
 												<span class="lbl">년</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="intPayWay" type="radio" class="ace" value="M"/>
+												<input name="intPayWay" type="radio" class="ace" value="M" required/>
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
-												<input name="intPayWay" type="radio" class="ace" value="E"/>
-												<span class="lbl">만기</span>
+												<input name="intPayWay" type="radio" class="ace" value="E" required/>
+												<span class="lbl">해당없음</span>
 											</label>
 										</div>
 									</td>
@@ -134,7 +134,7 @@ tr td:first-child {
 									<td><h4>은행코드</h4></td>
 									<td colspan="2">
 									<div class="input-append">
-										<input type="text" class="search-input-width-first" name="bankCode" readonly/>
+										<input type="text" class="search-input-width-first" name="bankCode" readonly required/>
 												<span class="add-on">
 				                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 				                                    </a>
@@ -401,7 +401,7 @@ tr td:first-child {
 							<c:choose>
 										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
 										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
-										<c:otherwise><td class="center">만기</td></c:otherwise>
+										<c:otherwise><td class="center">해당없음</td></c:otherwise>
 							</c:choose>	
 							<td class="center">${ltermvo.mgr}</td>
 							<td class="center" >${ltermvo.mgrCall}</td>
@@ -537,7 +537,7 @@ $(function(){
 	    case '월' :
 	    	intPayWay='M';
 		    break;
-	    case '만기' :
+	    case '해당없음' :
 	    	intPayWay='E';
 	        break;
 		}
@@ -710,9 +710,18 @@ $(function(){
 					if(n == $("#no").val()){
 						
 						var k = parseInt(td.eq(5).text().replace(/,/g, ''));
-						var intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/100);
-
-						$("#amount").text("이번달 이자금액:"+intAmount);
+						
+						var intPayWay = td.eq(9).text();
+						console.log("이자지급방식"+intPayWay);
+						if(intPayWay === "월"){
+							var intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/12)/100;
+						}else if(intPayWay === "년"){
+							var intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/100);
+						}else{
+							intAmount=0;
+						}
+						console.log(intAmount);
+						$("#amount").text("이자금액: "+intAmount);
 					}
 				});
 				$("#dialog-repayment").dialog('open');
@@ -742,8 +751,16 @@ $(function(){
 							if(n == $("#no").val()){
 								
 								k = parseInt(td.eq(5).text().replace(/,/g, ''));
-								intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/100);
-
+								
+								var intPayWay = td.eq(9).text();
+								if(intPayWay === '월'){
+									intAmount= parseInt(((k*(td.eq(8).text().replace('%', '')))/12)/100);
+								}else if(intPayWay === '년'){
+									intAmount= parseInt((k*(td.eq(8).text().replace('%', '')))/100);
+								}else{
+									intAmount=0;
+								}
+								console.log(intAmount);
 								remainmoney=parseInt(td.eq(5).text().replace(/,/g, ''))+intAmount;
 								
 							}
