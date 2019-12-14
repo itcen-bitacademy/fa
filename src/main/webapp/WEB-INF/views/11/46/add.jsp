@@ -101,7 +101,7 @@ tr td:first-child {
 	margin-right: 0;}
 .btn-list>button:not(:first-child):not(:last_child){margin: 0 auto}
 
-.bank-dialog-area{
+.dialog-area{
 	display:grid;
 	grid-template-rows:70px auto;
 }
@@ -150,6 +150,7 @@ tr td:first-child {
 			
 			<!-- PAGE CONTENT BEGINS -->
 				<input id="searchData" type="hidden">
+				<input id="checkedDataStr" type="hidden">
 				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 					<input type="hidden" name="no"/>
 					<input type="hidden" name="repayBal">
@@ -196,7 +197,7 @@ tr td:first-child {
 						
 						<!-- 은행조회 Modal pop-up : start -->
 						<div id="dialog-message" title="은행코드" hidden="hidden">
-							<section class="bank-dialog-area">
+							<section class="dialog-area">
 								<section class="bda-top">
 									<div class="modal-input-area">
 										<label>은행코드</label>
@@ -273,13 +274,13 @@ tr td:first-child {
 						<div class="ia-left"><h4>계좌</h4></div>
 						<div class="ia-right">
 							<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" required/>
-							<span class="btn btn-small btn-info"><i class="icon-search nav-search-icon"></i></span>
+							<span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span>
 							<input type="text" class="search-input-width-second" name="bankName" disabled="disabled"/>
 						</div>
 						<!-- 계좌정보 Modal pop-up : start -->
 						<div id="dialog-account-message" title="계좌" hidden="hidden">
-							<section class="account-dialog-area">
-								<section>
+							<section class="dialog-area">
+								<section class="modal-input-area">
 									<label>계좌번호</label>
 									<input type="text" id="input-dialog-depositNo" />
 									<button type="button" class="btn-search" onclick="searchAccountNo()">조회</button>
@@ -361,7 +362,7 @@ tr td:first-child {
 						<tr>
 							<th class="center">
 								<label class="pos-rel">
-									<input type="checkbox" class="ace" id="chkbox-select-all"/>
+									<input type="checkbox" class="ace" id="chkbox-select-all" />
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -385,8 +386,9 @@ tr td:first-child {
 						<c:forEach items="${list }" var="vo" varStatus="status">
 								<tr onclick="selectRow(this)" id="${vo.no }">
 									<form id="form${vo.no}">
+										<input type="hidden" name="no" value="${vo.no }">
 										<td class="center"><label class="pos-rel"> 
-											<input type="checkbox" name="no" value="${vo.no }" class="ace" /> 
+											<input type="checkbox" value="form${vo.no }" class="ace" onchange="rowChecked(this)"/> 
 											<span class="lbl"></span>
 											</label>
 										</td>
@@ -498,9 +500,10 @@ $(function() {
 		autoOpen : false
 	});
 	
-	$("#dialog-repayment").dialog({
+	$("#dialog-account-message").dialog({
 		autoOpen : false
 	});
+	
 });
 
 </script>
@@ -674,6 +677,29 @@ function openRepayDialog(){
 	});
 }//openRepayDailog() end
 
+function openAccountDialog(){
+	//var accountForm = $("#account-form")[0];
+	console.log("openAccountDialog() called");
+	
+	$("#dialog-account-message").dialog('open');
+	$("#dialog-account-message").dialog({
+	   	title: "계좌정보",
+	   	title_html: true,
+			resizable: false,
+			height: 500,
+			width: 400,
+			modal: true,
+			close: function() {
+		   	$('#tbody-bankacoountList tr').remove();
+		},
+		buttons: {
+		"닫기" : function() {
+				$(this).dialog('close');
+				$('#tbody-bankaccountList tr').remove();
+			}
+		}
+	});
+}
 //-----------------------------------Row Click input 영역 채워지도록 ---------------------------------//
 function selectRow(thisTr){
 	console.log("selectRow() call")
@@ -821,21 +847,48 @@ function ajaxProcessing(urlStr, thisObj){
 }
 
 //-----------------------------------삭제 Click 메서드 ---------------------------------//
+function rowChecked(thisObj){
+	console.log("rowChecked Called");
+	
+	var dataForm = $("#" + $(thisObj).val())[0];
+	var checkedDataStr = $("#checkedDataStr").val();		//JSON 객체 String
+	var checkedData;										//JSON 객체
+	var noList = [];
+	var voucherNoList = [];
+	
+	if(checkedDataStr == ""){
+		console.log("no : " + dataForm.no.value);
+		console.log("voucherNo : " + dataForm.voucherNo.value);
+		
+		noList.push(dataForm.no.value);										//noList에 입력
+		voucherNoList.push(dataForm.voucherNo.value);							//vocherList에 입력
+		
+		var checkedData = {"noList": noList, "voucherNoList": voucherNoList};	//Javascript 객체로 변환
+	}else{
+		console.log("1개이상 checked")
+		checkedData = JSON.parse(checkedDataStr);					//String -> Json객체변환
+		
+		noList = checkedData.noList;								//List 추출
+		voucherNoList = checkedData.voucherNoList;
+		noList.push(dataForm.no.value);								//값 입력
+		voucherNoList.push(dataForm.voucherNo.value);
+	}
+	$("#checkedDataStr").val(JSON.stringify(checkedData));				//해당 객체를 String으로 변환후 저장
+	console.log($("#checkedDataStr").val());
+}
 function deleteChecked(){
-	var sendData = [];
+	var checkedDataStr = $("#checkedDataStr").val();		//JSON 객체 String
+	var checkedData = JSON.parse(checkedDataStr);			//JSON 객체
+	var noList = checkedData.noList;
+	var voucherNoList = checkedData.voucherNoList;
 	
-	//넘어갈 no 배열을 생성한다.
-	var checkedList = $("#tbody-list input[type=checkbox]:checked");
-	checkedList.each(function(i, e){
-		sendData.push($(this).val());
-	});
-	
-	//no 배열을 넘겨준다.
+	console.log("noList : " +  noList + " voucherNoList : " + voucherNoList);
+	//각 배열을 넘겨준다.
 	$.ajax({
 		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
 		type : "POST",
 		dataType : "json",
-		data : {"sendData" : sendData},
+		data : {"noList" : noList, "voucherNoList" : voucherNoList},
 		success: function(response){
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);

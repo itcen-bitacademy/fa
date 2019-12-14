@@ -59,7 +59,7 @@ public class Menu46ApiController {
 	//배열로 넘어온거는 '[]' 붙여줘야한다.
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
-	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList,
+	public JSONResult deleteChecked(@RequestParam(value="noList[]", required=true) List<Long> noList,
 			@RequestParam(value="voucherNoList[]", required=true) List<Long> voucherNoList,
 			@AuthUser UserVo authUser){
 		//전표 삭제
@@ -70,7 +70,7 @@ public class Menu46ApiController {
 			vo.setNo(voucherNo);
 			voucherVolist.add(vo);
 		}
-		
+		System.out.println(voucherVolist);
 		menu03Service.deleteVoucher(voucherVolist, authUser);
 		
 		//차입금 삭제
