@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
+import kr.co.itcen.fa.vo.menu08.PurposeVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
 
 
@@ -60,6 +61,11 @@ public class Menu43Repository {
 		List<Object> result = sqlSession.selectList("menu43.getCustomer");
 		return result;
 	}
+	
+	public Object getPurpose() {
+		List<Object> result = sqlSession.selectList("menu43.getPurpose");
+		return result;
+	}
 
 	public String getDepositNo(String customerNo) {
 		String result = sqlSession.selectOne("menu43.getDepositNo", customerNo);
@@ -72,6 +78,10 @@ public class Menu43Repository {
 
 	public Long getVoucherNo(IntangibleAssetsVo intangibleAssetsVo) {
 		return sqlSession.selectOne("menu43.getVoucherNo", intangibleAssetsVo);
+	}
+
+	public PurposeVo getPurposeInfo(String purpose) {
+		return sqlSession.selectOne("menu43.getPurposeInfo", purpose);
 	}
 
 }

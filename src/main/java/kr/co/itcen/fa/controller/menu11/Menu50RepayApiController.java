@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -91,7 +90,7 @@ public class Menu50RepayApiController {
 		mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
 		mappingVo.setSystemCode(pdebtVo.getCode());// 사채코드 삽입 ex) I191212001
 		mappingVo.setCustomerNo(pdebtVo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());// 계좌번호
+		mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
 		vo.setVoucherNo(no);
