@@ -112,19 +112,19 @@
 														<span class="lbl">&nbsp;정렬순서&nbsp;&nbsp;&nbsp;</span>
 														
 														<span class="lbl">&nbsp;최근순&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="tst.write_date">
+														<input name="orderData" type="radio" class="ace" value="writeDate">
 															
 														<span class="lbl">&nbsp;공급가액 순&nbsp;&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="tst.total_supply_value">
+														<input name="orderData" type="radio" class="ace" value="totalSupplyValue">
 															
 														<span class="lbl">&nbsp;품목명 순&nbsp;&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="tbs.item_code">
+														<input name="orderData" type="radio" class="ace" value="itemCode">
 															
 														<span class="lbl">&nbsp;거래처명 순&nbsp;&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="tst.customer_name">
+														<input name="orderData" type="radio" class="ace" value="customerName">
 															
 														<span class="lbl">&nbsp;과세구분&nbsp;&nbsp;</span>
-														<select class="chosen-select" id="zero" name="orderData" data-placeholder="영세/비영세">
+														<select class="chosen-select" id="zero" name="taxType" data-placeholder="영세/비영세">
 															<option value="tax">yes</option>
 															<option value="no">no</option>
 														</select>
