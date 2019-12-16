@@ -34,7 +34,7 @@ public class Menu32Controller {
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "accountCode", required = false) Long accountCode,
+			@RequestParam(value = "accountCode", required = false, defaultValue = "") Long accountCode,
 			@RequestParam(value = "datepicker1", required = true, defaultValue = "") String datepicker1,
 			@RequestParam(value = "datepicker2", required = true, defaultValue = "") String datepicker2,
 			@RequestParam(value = "customerNo", required = true, defaultValue = "All") String customerNo,

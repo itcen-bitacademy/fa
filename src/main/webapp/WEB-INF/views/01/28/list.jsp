@@ -142,6 +142,7 @@
 					
 					<div class="hr hr-18 dotted"></div>
 				
+					</div>
 				<div class="row-fluid">
 						<div class="span12">
 
@@ -193,7 +194,6 @@
 									</tbody>
 							</table>
 						</div>
-					</div>
 					</div>
 	<div class="pagination">
 		<ul>

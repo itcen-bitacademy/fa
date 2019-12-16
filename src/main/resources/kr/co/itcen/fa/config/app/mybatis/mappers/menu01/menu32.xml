@@ -71,9 +71,11 @@
 	
 	<select id="optionSearch" parameterType="map" resultType="1accountcustomerledgervo">
 		<![CDATA[
-			select a.name as accountName,
-		   	 cu.name as customerName,
-			   v.reg_date as regDate,
+			select a.no as accountCode,
+				a.name as accountName,
+				cu.no as customerNo,
+		   	 	cu.name as customerName,
+		   	 	m.insert_day as regDate,
 			   v.no as voucherNo,
 			   i.order_no as voucherOrderNo,
 			   m.insert_team as insertTeam,
@@ -87,9 +89,9 @@
 			   ba.deposit_host as depositHost,
 			   case 
 			   when amount_flag="c"
-			   then "차변"
-			   when amount_flag="d"
 			   then "대변"
+			   when amount_flag="d"
+			   then "차변"
 			   end as amountFlag,
 			   i.amount as amount
           from tb_voucher_manager v
@@ -120,30 +122,30 @@
            and m.use_yn = 1
            ]]>
            
-			<if test="vo.datepicker1=null and !vo.datepicker1.equals('')">		    
+			<if test="vo.datepicker1!=null and !vo.datepicker1.equals('')">		    
 				<![CDATA[
-					and m.insert_day >= #{datepicker1 }
+					and m.insert_day >= #{vo.datepicker1 }
 				]]>
 			</if>
 			<if test="vo.datepicker2!=null and !vo.datepicker2.equals('')">		    
 				<![CDATA[
-					and m.insert_day <= #{datepicker2 }
+					and m.insert_day <= #{vo.datepicker2 }
 				]]>
 			</if>
-			<if test="vo.accountCode!=null">
+			<if test="vo.accountCode!=null and !vo.accountCode.equals('')">
 				<![CDATA[
-					and a.code = #{accountCode }
+					and a.no = #{vo.accountCode }
 				]]>
 			</if>
-			<if test="vo.customerNo!=null">
+			<if test="vo.customerNo!=null and !vo.customerNo.equals('')">
 				<![CDATA[
-					and cu.no = #{customerNo }
+					and cu.no like '%${vo.customerNo }%'
 				]]>
 			</if>
 			
 			
 			<![CDATA[
-		      order by v.no desc, i.order_no ;
+		      order by v.no asc, i.order_no ;
 			]]>
 	</select>
 	
