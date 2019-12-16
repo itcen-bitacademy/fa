@@ -1210,6 +1210,7 @@ $("form").on("submit", function() {
 	 $("input[name=financialYear]").attr('disabled',false);
 	 $('#myform').submit();
 	 
+	 
  });
  $("#delete").click(function(){
 	 $('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
