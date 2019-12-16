@@ -25,6 +25,7 @@
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	
 	<c:import url="/WEB-INF/views/common/head.jsp" />
+	
 </head>
 
 <body class="skin-3">
@@ -197,7 +198,6 @@
 									</thead>
 									
 									<tbody>
-								
 										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 											<tr>
 												<td>${vo.accountName }</td>
@@ -206,8 +206,22 @@
 												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
 												<td>${vo.insertTeam }/${vo.insertUserid }</td>
 												<td>${vo.voucherUse }</td>
+												<c:choose>
+												<c:when test="${empty vo.cardNo }">
+												<td></td>
+												</c:when>
+												<c:otherwise>
 												<td>${vo.cardNo }/${vo.cardUser }</td>
+												</c:otherwise>
+												</c:choose>
+												<c:choose>
+												<c:when test="${empty vo.bankName}">
+												<td></td>
+												</c:when>
+												<c:otherwise>
 												<td>${vo.bankName }/${vo.depositNo }/${vo.depositHost }</td>
+												</c:otherwise>
+												</c:choose>
 												<td>${vo.amountFlag }</td>
 													<c:choose>
 												        <c:when test="${vo.amountFlag == '차변' }">
