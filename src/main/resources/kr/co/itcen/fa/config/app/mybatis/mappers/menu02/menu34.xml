@@ -15,28 +15,24 @@
 		and f.name like #{factoryname }
 		]]>
 		
-		<choose>
-		<when test='deleteflag.equals("N")'>
+		<if test='deleteflag.equals("N")'>
 		<![CDATA[
-	    	and p.delete_flag = #{deleteflag }
+	    and p.delete_flag = #{deleteflag }
 	    ]]>
-	    </when>
-	  	</choose>
-		<choose>
-		<when test="price_start != '' and price_end != ''">
-		<![CDATA[
-	    	and p.produce_date between #{price_start} and #{price_end}
-	    ]]>
-	    </when>
-	  	</choose>
-		<choose>
-		<when test="producedate_start != '' and producedate_end !=''">
-		<![CDATA[
-	    	and p.price between #{producedate_start } and #{producedate_end }
-	    ]]>
-	    </when>
-	  	</choose>
+		</if>
 	  	
+	  	<if test='price_start != "" and price_end != ""'>
+		<![CDATA[
+	    and p.price between #{price_start} and #{price_end}
+	    ]]>
+		</if>
+	  	
+	  	<if test='producedate_start != "" and producedate_end !=""'>
+		<![CDATA[
+		and p.produce_date between #{producedate_start } and #{producedate_end }
+	    ]]>
+		</if>
+		
 		<![CDATA[
 		order by p.idx asc
 		]]>
@@ -55,27 +51,23 @@
 		and f.name like #{factoryname }
 		]]>
 		
-		<choose>
-		<when test='deleteflag.equals("N")'>
+		<if test='deleteflag.equals("N")'>
 		<![CDATA[
-	    	and p.delete_flag = #{deleteflag }
+	    and p.delete_flag = #{deleteflag }
 	    ]]>
-	    </when>
-	  	</choose>
-		<choose>
-		<when test="price_start != '' and price_end != ''">
+		</if>
+	  	
+	  	<if test='price_start != "" and price_end != ""'>
 		<![CDATA[
-	    	and p.produce_date between #{price_start} and #{price_end}
+	    and p.price between #{price_start} and #{price_end}
 	    ]]>
-	    </when>
-	  	</choose>
-		<choose>
-		<when test="producedate_start != '' and producedate_end !=''">
+		</if>
+	  	
+	  	<if test='producedate_start != "" and producedate_end !=""'>
 		<![CDATA[
-	    	and p.price between #{producedate_start } and #{producedate_end }
+		and p.produce_date between #{producedate_start } and #{producedate_end }
 	    ]]>
-	    </when>
-	  	</choose>
+		</if>
 	  	
 		<![CDATA[
 		order by p.idx asc
@@ -96,27 +88,23 @@
 		and f.name like #{factoryname }
 		]]>
 		
-		<choose>
-		<when test='deleteflag.equals("N")'>
+		<if test='deleteflag.equals("N")'>
 		<![CDATA[
-	    	and p.delete_flag = #{deleteflag }
+	    and p.delete_flag = #{deleteflag }
 	    ]]>
-	    </when>
-	  	</choose>
-		<choose>
-		<when test="price_start != '' and price_end != ''">
+		</if>
+	  	
+	  	<if test='price_start != "" and price_end != ""'>
 		<![CDATA[
-	    	and p.produce_date between #{price_start} and #{price_end}
+	    and p.price between #{price_start} and #{price_end}
 	    ]]>
-	    </when>
-	  	</choose>
-		<choose>
-		<when test="producedate_start != '' and producedate_end !=''">
+		</if>
+	  	
+	  	<if test='producedate_start != "" and producedate_end !=""'>
 		<![CDATA[
-	    	and p.price between #{producedate_start } and #{producedate_end }
+		and p.produce_date between #{producedate_start } and #{producedate_end }
 	    ]]>
-	    </when>
-	  	</choose>
+		</if>
 	  	
 		<![CDATA[
 		order by p.idx asc
