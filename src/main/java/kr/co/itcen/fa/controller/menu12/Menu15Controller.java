@@ -46,8 +46,15 @@ public class Menu15Controller {
 	}
 	
 	@RequestMapping("/" + SUBMENU + "/list")
-	public String list(Model model, @RequestParam(value = "no", required = false) String no) {
-		model.addAttribute("customerList", menu15Service.getAllCustomer(no));
+	public String list(Model model, @RequestParam(value = "checkNoList", required = false) List<String> checkNoList, @RequestParam(value = "no", required = false) String no) {
+		System.out.println(checkNoList);
+		System.out.println(no);
+		if(checkNoList == null) {
+			model.addAttribute("customerList", menu15Service.getAllCustomer(no));
+		} else {
+			model.addAttribute("customerList", menu15Service.getAllCustomer(checkNoList));
+		}
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
@@ -55,6 +62,7 @@ public class Menu15Controller {
 	public String add(CustomerVo customerVo, HttpSession session) {
 		UserVo userVo = (UserVo)session.getAttribute("authUser");
 		customerVo.setInsertUserid(userVo.getId());
+		
 		menu15Service.addCustomer(customerVo);
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?no=" + customerVo.getNo();
 	}
@@ -75,11 +83,17 @@ public class Menu15Controller {
 		return JSONResult.success(exist);
 	}
 	
-	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
-	public JSONResult delete(@RequestParam(value = "checkNoArr[]") List<String> checkNoList) {
-		Boolean exist = menu15Service.deleteCustomer(checkNoList);
-		return JSONResult.success(exist);
+	public String delete(@RequestParam(value = "checkNoArr") List<String> checkNoList, @AuthUser UserVo userVo) {
+		System.out.println(checkNoList);
+		menu15Service.deleteCustomer(checkNoList, userVo);
+		
+		String noList = "";
+		for (int i = 0; i < checkNoList.size()-1; i++) {
+			noList += (checkNoList.get(i)+",");
+		}
+		noList += checkNoList.get(checkNoList.size()-1);
+		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?checkNoList="+noList;
 	}
 	
 	// PopUp

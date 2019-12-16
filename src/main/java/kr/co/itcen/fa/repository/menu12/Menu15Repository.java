@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.repository.menu12;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class Menu15Repository {
 		no = "%" + no + "%";
 		return sqlSession.selectList("menu15.findAll", no);
 	}
+	
+	public List<CustomerVo> findAllCustomer(List<String> checkNoList) {
+		return sqlSession.selectList("menu15.findByNolist", checkNoList);
+	}
 
 	public void updateCustomer(CustomerVo customerVo) {
 		sqlSession.update("menu15.update", customerVo);
@@ -37,8 +42,8 @@ public class Menu15Repository {
 		return sqlSession.selectOne("menu15.findByNo", no);
 	}
 
-	public int deleteCustomer(List<String> checkNoList) {
-		return sqlSession.update("menu15.deleteByNo", checkNoList);
+	public int deleteCustomer(Map<String, Object> map) {
+		return sqlSession.update("menu15.deleteByNo", map);
 	}
 	
 	
