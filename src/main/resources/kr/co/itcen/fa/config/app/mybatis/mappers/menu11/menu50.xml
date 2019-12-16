@@ -150,8 +150,8 @@
 		<![CDATA[
 			insert into tb_repay 
 				values 
-					(null, #{debtNo}, #{payPrinc}, 
-					#{intAmount}, #{payDate}, 'L', 
+					(null, #{debtNo}, #{code}, #{payPrinc}, 
+					#{intAmount}, #{payDate}, 'P', 
 					#{voucherNo}, 'N', #{insertId}, now(), null, null)
 		]]>
 		<selectKey order="AFTER" resultType="long" keyProperty="no">

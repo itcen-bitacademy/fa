@@ -72,15 +72,15 @@ input[type="text"], input[type="date"], select {
 			
 			<!-- PAGE CONTENT BEGINS -->
 				<form class="form-horizontal" id="input-form" method="post" action="">
-				<input type="hidden" name="no"/>
+				<input type="hidden" name="debtNo"/>
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>차입금코드</h4></div>
 						<div class="ia-right"><input type="text" id="code" name="code" placeholder="ex) I191128001 (P+년+월+일+번호)" ></div>
 						<div class="ia-left"><h4>상환금액</h4></div>
-						<div class="ia-right"><input type="text" id="payPrinc" name="payPrinc" ></div>
+						<div class="ia-right"><input type="text" id="id-payPrinc" name="name-payPrinc"  style="text-align:right;"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
 						<div class="ia-left"><h4>이자금액</h4></div>
-						<div class="ia-right"><input type="text" id="intAmount" name="intAmount"></div>
+						<div class="ia-right"><input type="text" id="id-intAmount" name="name-intAmount" style="text-align:right;" readonly="readonly"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="intAmount" /></div>
 					</section>
 					
 					<section>
@@ -104,7 +104,7 @@ input[type="text"], input[type="date"], select {
 				<section class="above-table">
 					<section class="above-table-left">
 						<div class="btn-list">
-							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" onclick="return payPrincCheck()">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
@@ -130,12 +130,12 @@ input[type="text"], input[type="date"], select {
 								</label>
 							</th>
 							<th class="center">차입금코드</th>
+							<th class="center">상환코드</th>
 							<th class="center">상환금액</th>
 							<th class="center">이자금액</th>
 							<th class="center">부채유형</th>
 							<th class="center">상환일자</th>
 							<th class="center">전표번호</th>
-							<th class="center">계좌번호</th>
 							<th class="center">등록일</th>
 						</tr>
 					</thead>
@@ -146,9 +146,10 @@ input[type="text"], input[type="date"], select {
 									<label class="pos-rel"></label>
 									<input type="checkbox" class="ace" name="no"  data-no="${vo.no }" /><span class="lbl"></span>
 								</td>
+								<td class="center">${vo.code}</td>
 								<td class="center">${vo.debtNo}</td>
-								<td class="center">${vo.payPrinc}</td>
-								<td class="center">${vo.intAmount}</td>
+								<td class="center"><fmt:formatNumber value="${vo.payPrinc}" pattern="#,###" /><input type="hidden" value="${vo.payPrinc}" /></td>	
+								<td class="center"><fmt:formatNumber value="${vo.intAmount}" pattern="#,###" /><input type="hidden" value="${vo.intAmount}" /></td>
 								<c:choose>
 									<c:when test="${vo.debtType eq 'S'}"><td class="center">단기차입금</td></c:when>
 									<c:when test="${vo.debtType eq 'L'}"><td class="center">장기차입금</td></c:when>
@@ -156,7 +157,6 @@ input[type="text"], input[type="date"], select {
 								</c:choose>
 								<td class="center">${vo.payDate}</td>
 								<td class="center">${vo.voucherNo}</td>
-								<td class="center">${vo.depositNo}</td>
 								<td class="center">${vo.insertDate}</td>
 							</tr>
 							</c:forEach>
@@ -228,11 +228,20 @@ $(function() {
 		
 		$("input[name=no]").val(td.eq(0).attr('data-no')); // 상환테이블 PK : no
 		$("input[name=code]").val(td.eq(1).text()); // 차입금코드
-		$("input[name=payPrinc]").val(td.eq(2).text()); // 상환금액
-		$("input[name=intAmount]").val(td.eq(3).text()); // 이자금액
+		$("input[name=debtNo]").val(td.eq(2).text()); // 차입금코드
+		
+		// 상환금액 input 추가 (입력창에 보여지는 부분)
+		$("input[name=name-payPrinc]").val(td.eq(3).text()); // 상환금액
+		var payPrincWithoutComma = removeCommaReturn(td.eq(3).text()); // 콤마가 붙은 차입금액
+		$("input[name=tempPayPrinc]").val(payPrincWithoutComma);
+		
+		// 상환금액 input 추가 (입력창에 보여지는 부분)
+		$("input[name=name-intAmount]").val(td.eq(4).text()); // 이자금액
+		var intAmountWithoutComma = removeCommaReturn(td.eq(4).text()); // 콤마가 붙은 차입금액
+		$("input[name=intAmount]").val(intAmountWithoutComma);
 		
 		var debtType='';
-		switch (td.eq(4).text()){
+		switch (td.eq(5).text()){
 	    case '단기차입금' :
 	    	debtType = 'S';
 	        break;
@@ -245,7 +254,7 @@ $(function() {
 		}
 		$('#debtType').val(debtType).trigger('chosen:updated'); // 부채유형
 		
-		$("input[name=payDate]").val(td.eq(5).text()); // 상환일자
+		$("input[name=payDate]").val(td.eq(6).text()); // 상환일자
 	});
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
@@ -257,7 +266,61 @@ $(function() {
     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
+	//--------------------------------------------------------------------------------------------------------------------------//
+	// 숫자에 콤마 적용해서 데이터 처리
+    var rgx3 = /,/gi;
+    $("#id-payPrinc").bind('keyup keydown', function(){
+        inputNumberFormat(this);
+        var amount = $('input[name=name-payPrinc]').val();
+        var coverAmount = amount.replace(/,/g, '');
+        // hidden값에..콤마를 뺀 값을 넣어둔다.
+        $('input[name="payPrinc"]').val(coverAmount);
+    });
+	//--------------------------------------------------------------------------------------------------------------------------//
+	
 });
+
+//--------------------------------------------------------------------------------------------------------------------------//
+//javascript function
+//<숫자에 콤마 적용해서 데이터 처리>
+//1. 입력한 문자열 전달
+function inputNumberFormat(obj) {
+ obj.value = comma(uncomma(obj.value));
+}
+   
+//2. 콤마찍기
+function comma(str) {
+ str = String(str);
+ return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+
+//3. 콤마풀기
+function uncomma(str) {
+ str = String(str);
+ return str.replace(/[^\d]+/g, '');
+}
+
+//4. 콤마 제거 (제거값리턴)
+function removeCommaReturn(val){
+   if(val != ""){
+    	val = val.replace(/,/g, "");
+   }
+   return val;
+}
+//--------------------------------------------------------------------------------------------------------------------------//
+
+// 상환내역 금액 수정 확인
+function payPrincCheck(){
+	var intAmount = $("input[name=intAmount]").val();
+	if (intAmount > parseInt($("input[name=payPrinc]").val())) {
+		alert("이자 금액보다 납입금이 작습니다 납입금(" + intAmount + ")보다 크게 입력해주세요");
+		return false;
+    } else {
+        return true;
+    }
+}
+
+
 </script>
 </body>
 </html>
