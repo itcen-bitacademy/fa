@@ -96,46 +96,62 @@ public class Menu33Repository {
 		return purchaseitemListall;
 	}
 
-	public List<SectionVo> getSectionListall() {
-		List<SectionVo> sectionListall = sqlSession.selectList("menu33.getSectionListall");
+	public List<SectionVo> getSectionListall(String searchdata) {
+		List<SectionVo> sectionListall = sqlSession.selectList("menu33.getSectionListall", searchdata);
 		
 		return sectionListall;
 	}
 	
-	public List<SectionVo> getSectionList(int section_page_group) {
+	public List<SectionVo> getSectionList(int section_page_group, String searchdata) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		section_page_group *= 30;
 		
-		List<SectionVo> sectionList = sqlSession.selectList("menu33.getSectionList", section_page_group);
+		map.put("section_page_group", section_page_group);
+		map.put("searchdata", searchdata);
+		
+		List<SectionVo> sectionList = sqlSession.selectList("menu33.getSectionList", map);
 		
 		return sectionList;
 	}
 
-	public List<SectionVo> getpageSectionList(int section_page) {
+	public List<SectionVo> getpageSectionList(int section_page, String searchdata) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		section_page = (section_page-1)*6;
 		
-		List<SectionVo> pagesectionList = sqlSession.selectList("menu33.getpageSectionList", section_page);
+		map.put("section_page", section_page);
+		map.put("searchdata", searchdata);
+		
+		List<SectionVo> pagesectionList = sqlSession.selectList("menu33.getpageSectionList", map);
 		
 		return pagesectionList;
 	}
 	
-	public List<SectionVo> getFactoryListall() {
-		List<SectionVo> factoryListall = sqlSession.selectList("menu33.getFactoryListall");
+	public List<SectionVo> getFactoryListall(String searchdata) {
+		List<SectionVo> factoryListall = sqlSession.selectList("menu33.getFactoryListall", searchdata);
 		
 		return factoryListall;
 	}
 
-	public List<SectionVo> getFactoryList(int factory_page_group) {
+	public List<SectionVo> getFactoryList(int factory_page_group, String searchdata) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		factory_page_group *= 30;
 		
-		List<SectionVo> factoryList = sqlSession.selectList("menu33.getFactoryList", factory_page_group);
+		map.put("factory_page_group", factory_page_group);
+		map.put("searchdata", searchdata);
+		
+		List<SectionVo> factoryList = sqlSession.selectList("menu33.getFactoryList", map);
 		
 		return factoryList;
 	}
 
-	public List<SectionVo> getpageFactoryList(int factory_page) {
+	public List<SectionVo> getpageFactoryList(int factory_page, String searchdata) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		factory_page = (factory_page-1)*6;
 		
-		List<SectionVo> pagefactoryList = sqlSession.selectList("menu33.getpageFactoryList", factory_page);
+		map.put("factory_page", factory_page);
+		map.put("searchdata", searchdata);
+		
+		List<SectionVo> pagefactoryList = sqlSession.selectList("menu33.getpageFactoryList", map);
 		
 		return pagefactoryList;
 	}

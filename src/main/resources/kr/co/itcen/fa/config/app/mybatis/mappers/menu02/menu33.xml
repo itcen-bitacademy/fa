@@ -101,53 +101,53 @@
 		]]>
 	</select>
 	
-	<select id="getSectionListall" resultType="sectionvo">
+	<select id="getSectionListall" parameterType="String" resultType="sectionvo">
 		<![CDATA[
-		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1 order by no asc
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1 and classification like #{searchdata } order by no asc
 		]]>
 	</select>
 	
-	<select id="getSectionList" parameterType="int" resultType="sectionvo">
+	<select id="getSectionList" parameterType="map" resultType="sectionvo">
 		<![CDATA[
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
-		where parent_no = 1
+		where parent_no = 1 and classification like #{searchdata }
 		order by no asc
 		limit #{section_page_group }, 30
 		]]>
 	</select>
 	
-	<select id="getpageSectionList" parameterType="int" resultType="sectionvo">
+	<select id="getpageSectionList" parameterType="map" resultType="sectionvo">
 		<![CDATA[
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
-		where parent_no = 1
+		where parent_no = 1 and classification like #{searchdata }
 		order by no asc
 		limit #{section_page }, 6
 		]]>
 	</select>
 	
-	<select id="getFactoryListall" resultType="sectionvo">
+	<select id="getFactoryListall" parameterType="String" resultType="sectionvo">
 		<![CDATA[
-		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 38 order by no asc
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 38 and classification like #{searchdata } order by no asc
 		]]>
 	</select>
 	
-	<select id="getFactoryList" parameterType="int" resultType="sectionvo">
+	<select id="getFactoryList" parameterType="map" resultType="sectionvo">
 		<![CDATA[
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
-		where parent_no = 38
+		where parent_no = 38 and classification like #{searchdata }
 		order by no asc
 		limit #{factory_page_group }, 30
 		]]>
 	</select>
 	
-	<select id="getpageFactoryList" parameterType="int" resultType="sectionvo">
+	<select id="getpageFactoryList" parameterType="map" resultType="sectionvo">
 		<![CDATA[
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
-		where parent_no = 38
+		where parent_no = 38 and classification like #{searchdata }
 		order by no asc
 		limit #{factory_page }, 6
 		]]>

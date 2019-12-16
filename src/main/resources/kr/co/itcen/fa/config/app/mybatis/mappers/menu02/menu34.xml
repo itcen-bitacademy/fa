@@ -2,44 +2,177 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu34">
 	<!-- Team -->
-	<select id="getPurchaseitemListall" resultType="purchaseitem33vo">
+	<select id="getPurchaseitemListall" parameterType="map" resultType="purchaseitem33vo">
 		<![CDATA[
 		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate, p.delete_flag as deleteflag
 		from tb_purchaseitem p, tb_factory f, tb_section s
-		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
-        order by p.idx asc
+		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1
+		and p.no like #{no }
+		and p.name like #{name }
+		and s.classification like #{sectionname }
+		and p.section_code like #{sectioncode }
+		and f.no like #{factorycode }
+		and f.name like #{factoryname }
+		]]>
+		
+		<choose>
+		<when test='deleteflag.equals("N")'>
+		<![CDATA[
+	    	and p.delete_flag = #{deleteflag }
+	    ]]>
+	    </when>
+	  	</choose>
+		<choose>
+		<when test="price_start != '' and price_end != ''">
+		<![CDATA[
+	    	and p.produce_date between #{price_start} and #{price_end}
+	    ]]>
+	    </when>
+	  	</choose>
+		<choose>
+		<when test="producedate_start != '' and producedate_end !=''">
+		<![CDATA[
+	    	and p.price between #{producedate_start } and #{producedate_end }
+	    ]]>
+	    </when>
+	  	</choose>
+	  	
+		<![CDATA[
+		order by p.idx asc
 		]]>
 	</select>
 	
-	<select id="getPurchaseitemList" parameterType="int" resultType="purchaseitem33vo">
+	<select id="getPurchaseitemList" parameterType="map" resultType="purchaseitem33vo">
 		<![CDATA[
 		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate, p.delete_flag as deleteflag
 		from tb_purchaseitem p, tb_factory f, tb_section s
-		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
-        order by p.idx asc
-        limit #{page_group }, 55
+		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1
+		and p.no like #{no }
+		and p.name like #{name }
+		and s.classification like #{sectionname }
+		and p.section_code like #{sectioncode }
+		and f.no like #{factorycode }
+		and f.name like #{factoryname }
+		]]>
+		
+		<choose>
+		<when test='deleteflag.equals("N")'>
+		<![CDATA[
+	    	and p.delete_flag = #{deleteflag }
+	    ]]>
+	    </when>
+	  	</choose>
+		<choose>
+		<when test="price_start != '' and price_end != ''">
+		<![CDATA[
+	    	and p.produce_date between #{price_start} and #{price_end}
+	    ]]>
+	    </when>
+	  	</choose>
+		<choose>
+		<when test="producedate_start != '' and producedate_end !=''">
+		<![CDATA[
+	    	and p.price between #{producedate_start } and #{producedate_end }
+	    ]]>
+	    </when>
+	  	</choose>
+	  	
+		<![CDATA[
+		order by p.idx asc
+		limit #{page_group }, 55
 		]]>
 	</select>
 	
-	<select id="getpagePurchaseitemList" parameterType="int" resultType="purchaseitem33vo">
+	<select id="getpagePurchaseitemList" parameterType="map" resultType="purchaseitem33vo">
 		<![CDATA[
 		select p.idx, p.no, p.name, p.section_code as sectioncode, s.classification as sectionname, p.standard, p.price, p.purpose, f.no as factorycode ,f.name as factoryname, f.postaddress as factorypostaddress, f.roadaddress as factoryroadaddress, f.detailaddress as factorydetailaddress, f.manager_name as managername, date(p.produce_date) as producedate, p.delete_flag as deleteflag
 		from tb_purchaseitem p, tb_factory f, tb_section s
-		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
-        order by p.idx asc
-        limit #{page }, 11
+		where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1
+		and p.no like #{no }
+		and p.name like #{name }
+		and s.classification like #{sectionname }
+		and p.section_code like #{sectioncode }
+		and f.no like #{factorycode }
+		and f.name like #{factoryname }
+		]]>
+		
+		<choose>
+		<when test='deleteflag.equals("N")'>
+		<![CDATA[
+	    	and p.delete_flag = #{deleteflag }
+	    ]]>
+	    </when>
+	  	</choose>
+		<choose>
+		<when test="price_start != '' and price_end != ''">
+		<![CDATA[
+	    	and p.produce_date between #{price_start} and #{price_end}
+	    ]]>
+	    </when>
+	  	</choose>
+		<choose>
+		<when test="producedate_start != '' and producedate_end !=''">
+		<![CDATA[
+	    	and p.price between #{producedate_start } and #{producedate_end }
+	    ]]>
+	    </when>
+	  	</choose>
+	  	
+		<![CDATA[
+		order by p.idx asc
+		limit #{page }, 11
 		]]>
 	</select>
 	
-	<select id="getSectionList" resultType="sectionvo">
+	<select id="getSectionListall" parameterType="String" resultType="sectionvo">
 		<![CDATA[
-		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1 and classification like #{searchdata } order by no asc
 		]]>
 	</select>
 	
-	<select id="getFactorysectionList" resultType="sectionvo">
+	<select id="getSectionList" parameterType="map" resultType="sectionvo">
 		<![CDATA[
-		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 38
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
+		from tb_section
+		where parent_no = 1 and classification like #{searchdata }
+		order by no asc
+		limit #{section_page_group }, 30
+		]]>
+	</select>
+	
+	<select id="getpageSectionList" parameterType="map" resultType="sectionvo">
+		<![CDATA[
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
+		from tb_section
+		where parent_no = 1 and classification like #{searchdata }
+		order by no asc
+		limit #{section_page }, 6
+		]]>
+	</select>
+	
+	<select id="getFactoryListall" parameterType="String" resultType="sectionvo">
+		<![CDATA[
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 38 and classification like #{searchdata } order by no asc
+		]]>
+	</select>
+	
+	<select id="getFactoryList" parameterType="map" resultType="sectionvo">
+		<![CDATA[
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
+		from tb_section
+		where parent_no = 38 and classification like #{searchdata }
+		order by no asc
+		limit #{factory_page_group }, 30
+		]]>
+	</select>
+	
+	<select id="getpageFactoryList" parameterType="map" resultType="sectionvo">
+		<![CDATA[
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
+		from tb_section
+		where parent_no = 38 and classification like #{searchdata }
+		order by no asc
+		limit #{factory_page }, 6
 		]]>
 	</select>
 </mapper>

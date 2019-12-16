@@ -359,34 +359,14 @@
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		$("#btn-search-section").click(function() {
-			var section_name = $("#search-section-name").val();
-			$("#search-section-name").data("searchsectionname", section_name);
-			console.log("sectionname : " + $("#search-section-name").data("searchsectionname"));
-		});
-		
-		/* $("#btn-search-section").click(function() {
-			var sectionname = $("#search-section-name").val();
+			var search_section = $("#search-section-name").val();
+			$("#search-section-name").data("searchsectionname", search_section);
 			
-			if(sectionname != null && sectionname.length > 0) {
-				
-				console.log(sectionname);
-				$.ajax({
-					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/searchsection",
-					type:"get",
-					dataType:"json",
-					data:{"sectionname" : sectionname},
-					success:function(data) {
-					}, error:function(error) {
-						alert("찾을 수 없는 품목입니다.");
-					}
-				});
-			}
-		}); */
-		
-		$("body").on("click",".section_page_go",function(e) {
-			var section_page_num = $(this).text();
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
+			var section_page_num = 1;
 			var section_page_group = parseInt((section_page_num-1)/5);
 			
+			console.log("search_sectiondata : " + search_sectiondata);
 			console.log("section_page_num : " + section_page_num);
 			console.log("section_page_group : " + section_page_group);
 			
@@ -394,9 +374,32 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
 				type:"get",
 				dataType:"json",
-				data:{"section_page" : section_page_num, "section_page_group" : section_page_group},
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
 				success:function(data) {
-					section_updateTable(data.sectionList, section_page_num);
+					section_updateTable(data.pagesectionList, section_page_num);
+					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".section_page_go",function(e) {
+			var section_page_num = $(this).text();
+			var section_page_group = parseInt((section_page_num-1)/5);
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
+			
+			console.log("search_sectiondata : " + search_sectiondata);
+			console.log("section_page_num : " + section_page_num);
+			console.log("section_page_group : " + section_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
+				type:"get",
+				dataType:"json",
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
+				success:function(data) {
+					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
 					alert("찾을 수 없는 품목입니다.");
@@ -407,6 +410,7 @@
 		$("body").on("click",".section_page_go_prev",function(e) {
 			var section_page_num = $("#section_select_num").text();
 			var section_page_group = parseInt((section_page_num-1)/5);
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
 			
 			section_page_group = section_page_group - 1;
 			section_page_num = (section_page_group*5) + 5;
@@ -418,9 +422,9 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
 				type:"get",
 				dataType:"json",
-				data:{"section_page" : section_page_num, "section_page_group" : section_page_group},
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
 				success:function(data) {
-					section_updateTable(data.sectionList, section_page_num);
+					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
 					alert("찾을 수 없는 품목입니다.");
@@ -431,6 +435,7 @@
 		$("body").on("click",".section_page_go_next",function(e) {
 			var section_page_num = $("#section_select_num").text();
 			var section_page_group = parseInt((section_page_num-1)/5);
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
 			
 			section_page_group = section_page_group + 1;
 			section_page_num = (section_page_group*5) + 1;
@@ -442,16 +447,16 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
 				type:"get",
 				dataType:"json",
-				data:{"section_page" : section_page_num, "section_page_group" : section_page_group},
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
 				success:function(data) {
-					section_updateTable(data.sectionList, section_page_num);
+					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
 					alert("찾을 수 없는 품목입니다.");
 				}
 			});
 		});
-		
+	
 		function section_updateTable(pagesectionList, section_page_num) {
 			$("#tbody-section-list").remove();
 			$newTbody = $("<tbody id='tbody-section-list'></tbody>");
@@ -460,8 +465,8 @@
 			for(var sec in pagesectionList) {
 				$newTbody.append(
 					"<tr>" +
-					"<td>" + isEmpty(pagesectionList[sec].classification) + "</td>" +
-					"<td>" + isEmpty(pagesectionList[sec].code) + "</td>" +
+					"<td class='center'>" + isEmpty(pagesectionList[sec].classification) + "</td>" +
+					"<td class='center'>" + isEmpty(pagesectionList[sec].code) + "</td>" +
 					"</tr>"
 				);
 			}
@@ -502,20 +507,36 @@
 			}
 		}
 		
-		
-		
-		
-		
-		
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		$("#btn-search-factory").click(function() {
-			var factory_name = $("#search-factory-name").val();
-			$("#search-factory-name").data("searchfactoryname", factory_name);
-			console.log("factoryname : " + $("#search-factory-name").data("searchfactoryname"));
+			var search_factory = $("#search-factory-name").val();
+			$("#search-factory-name").data("searchfactoryname", search_factory);
+			
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
+			var factory_page_num = 1;
+			var factory_page_group = parseInt((factory_page_num-1)/5);
+			
+			console.log("search_factorydata : " + search_factorydata);
+			console.log("factory_page_num : " + factory_page_num);
+			console.log("factory_page_group : " + factory_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
+				type:"get",
+				dataType:"json",
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
+				success:function(data) {
+					factory_updateTable(data.pagefactoryList, factory_page_num);
+					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
 		});
 		
 		$("body").on("click",".factory_page_go",function(e) {
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
 			var factory_page_num = $(this).text();
 			var factory_page_group = parseInt((factory_page_num-1)/5);
 			
@@ -526,7 +547,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
 				type:"get",
 				dataType:"json",
-				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group},
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
 				success:function(data) {
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
@@ -537,6 +558,7 @@
 		});
 		
 		$("body").on("click",".factory_page_go_prev",function(e) {
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
 			var factory_page_num = $("#factory_select_num").text();
 			var factory_page_group = parseInt((factory_page_num-1)/5);
 			
@@ -550,7 +572,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
 				type:"get",
 				dataType:"json",
-				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group},
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
 				success:function(data) {
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
@@ -561,6 +583,7 @@
 		});
 		
 		$("body").on("click",".factory_page_go_next",function(e) {
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
 			var factory_page_num = $("#factory_select_num").text();
 			var factory_page_group = parseInt((factory_page_num-1)/5);
 			
@@ -574,7 +597,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
 				type:"get",
 				dataType:"json",
-				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group},
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
 				success:function(data) {
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
@@ -592,8 +615,8 @@
 			for(var fac in pagefactoryList) {
 				$newTbody.append(
 					"<tr>" +
-					"<td>" + isEmpty(pagefactoryList[fac].classification) + "</td>" +
-					"<td>" + isEmpty(pagefactoryList[fac].code) + "</td>" +
+					"<td class='center'>" + isEmpty(pagefactoryList[fac].classification) + "</td>" +
+					"<td class='center'>" + isEmpty(pagefactoryList[fac].code) + "</td>" +
 					"</tr>"
 				);
 			}
@@ -1054,14 +1077,14 @@
 		});
 	})
 	
-	$("#section-table tr").click(function(){ 
+	$("body").on("click","#section-table tr",function(e) {
 		var tr = $(this);
 		var td = tr.children();
 		$("input[name=sectionname]").val(td.eq(0).text());
 		$("input[name=sectioncode]").val(td.eq(1).text());
 	});
 	
-	$("#factory-table tr").click(function(){ 
+	$("body").on("click","#factory-table tr",function(e) {
 		var tr = $(this);
 		var td = tr.children();
 		$("input[name=factoryname]").val(td.eq(0).text());
