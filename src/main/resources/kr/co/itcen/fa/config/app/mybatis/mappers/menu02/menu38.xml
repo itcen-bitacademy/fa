@@ -1,15 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu38">
-
 	<!-- 세금계산서의 모든 리스트를 가져오는 select -->
-	<select id="getAllBuyTaxbill" resultType="buytaxbillvo">
+	<select id="getBuyTaxbillAll" resultType="buytaxbillvo">
 		<![CDATA[
-		select *
-		  from tb_buy_taxbill
-	  order by write_date desc
+			select no,
+				   manage_no as manageNo,
+				   company_name as companyName,
+				   date_format(write_date, '%Y-%m-%d') as writeDate,
+				   total_supply_value as totalSupplyValue,
+				   total_tax_value as totalTaxValue,
+				   tax_type as taxType,
+				   delete_flag as deleteFlag	  	 
+			from tb_buy_taxbill
 		]]>
 	</select>
+	<!-- 세금계산서의 11개를 가져오는 select -->
+	<select id="getBuyTaxbillList" resultType="buytaxbillvo">
+		<![CDATA[
+			select no,
+				   manage_no as manageNo,
+				   company_name as companyName,
+				   date_format(write_date, '%Y-%m-%d') as writeDate,
+				   total_supply_value as totalSupplyValue,
+				   total_tax_value as totalTaxValue,
+				   tax_type as taxType,
+				   delete_flag as deleteFlag	  	 
+			from tb_buy_taxbill
+			limit #{page_group }, 55
+		]]>
+	</select>
+	<!-- 세금계산서의 5page 가져오는 select -->
+	<select id="getpageBuyTaxbillList" resultType="buytaxbillvo">
+		<![CDATA[
+			select no,
+				   manage_no as manageNo,
+				   company_name as companyName,
+				   date_format(write_date, '%Y-%m-%d') as writeDate,
+				   total_supply_value as totalSupplyValue,
+				   total_tax_value as totalTaxValue,
+				   tax_type as taxType,
+				   delete_flag as deleteFlag	  	 
+			from tb_buy_taxbill
+			limit #{page }, 11
+		]]>
+	</select>
+
 	<!-- 세금계산서의 맞는 거래처List를 가져오는 select -->
 	<select id="getMatchTaxbillCustomerList"
 		resultType="purchasecustomer35vo">

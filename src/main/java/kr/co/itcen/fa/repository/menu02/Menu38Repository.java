@@ -10,12 +10,11 @@ import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillListVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
-import kr.co.itcen.fa.vo.menu02.TestVo;
+import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
 /**
  * 
- * @author 윤종진
- * 매입세금계산서현황조회
+ * @author 이제구 매입세금계산서현황조회
  *
  */
 
@@ -23,9 +22,9 @@ import kr.co.itcen.fa.vo.menu02.TestVo;
 public class Menu38Repository {
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	public List<BuyTaxbillVo> getAllBuyTaxbill() {
-		 List<BuyTaxbillVo> getAllBuyTaxbill = sqlSession.selectList("menu38.getAllBuyTaxbill");
+		List<BuyTaxbillVo> getAllBuyTaxbill = sqlSession.selectList("menu38.getAllBuyTaxbill");
 		return getAllBuyTaxbill;
 	}
 
@@ -40,7 +39,22 @@ public class Menu38Repository {
 	}
 
 	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
-		List<BuyTaxbillVo> getSelectedBuyTaxbillList = sqlSession.selectList("menu38.getSelectedBuyTaxbillList", buyTaxbillListVo);
+		List<BuyTaxbillVo> getSelectedBuyTaxbillList = sqlSession.selectList("menu38.getSelectedBuyTaxbillList",
+				buyTaxbillListVo);
 		return getSelectedBuyTaxbillList;
+	}
+
+	public List<BuyTaxbillVo> getBuyTaxbillAll() {
+		return sqlSession.selectList("menu38.getBuyTaxbillAll");
+	}
+
+	public List<BuyTaxbillVo> getBuyTaxbillList(int page_group) {
+		return sqlSession.selectList("menu38.getBuyTaxbillList", page_group);
+	}
+
+	public List<BuyTaxbillVo> getpageBuyTaxbillList(int page) {
+		page = (page - 1) * 11;
+
+		return sqlSession.selectList("menu38.getpageBuyTaxbillList", page);
 	}
 }

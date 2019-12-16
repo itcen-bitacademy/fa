@@ -144,8 +144,14 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">용도</label>
 										<div class="controls">
-											<input type="text" class="span11" id="form-field-1"
-												name="purpose" placeholder="용도를 입력하세요" />
+											<!-- <input type="text" class="span11" id="form-field-1"
+												name="purpose" placeholder="용도를 입력하세요" /> -->
+											<select class="chosen-select" id="form-field-purpose"
+												name="purpose" data-placeholder="전체">
+												<c:forEach items="${purposeList }" var="purposeVo">
+													<option value="${purposeVo.classification }">${purposeVo.classification }</option>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 									<div class="control-group">
@@ -380,7 +386,8 @@
 				$("input[name=user]").val(td.eq(11).text());
 				$("input[name=copyCount]").val(td.eq(12).text());
 				$("input[name=customerManager]").val(td.eq(13).text());
-				$("input[name=purpose]").val(td.eq(14).text());
+				$('#form_field_purpose_chosen').find('span').text(td.eq(14).text());
+				//$("input[name=purpose]").val(td.eq(14).text());
 				$("input[name=payDate]").val(td.eq(15).text());
 				$("input[name=taxKind]").val(td.eq(16).text());
 			    

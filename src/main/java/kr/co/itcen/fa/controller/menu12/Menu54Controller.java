@@ -74,7 +74,7 @@ public class Menu54Controller {
 		
 		List<SellTaxbillVo> resultlist = menu54Service.taxbillsearch(tvo);
 		model.addAttribute("resultlist", resultlist);
-		
+		System.out.println(resultlist.toString());
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
