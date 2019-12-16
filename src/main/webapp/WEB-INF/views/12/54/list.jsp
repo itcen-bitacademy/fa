@@ -133,9 +133,26 @@
 										</div>
 									</div>
 								</div>
+						<div class="hr hr-18 dotted"></div>
+						<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">세금계산서 발행 ${resultlist.pagination.totalCnt } 건</p>
+	                    <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;" onchange="view()">
+	                    	<c:choose>
+	                             <c:when test="${viewCount == 10 }">
+	                                 <option value="10" selected style="display:none">10</option>
+	                             </c:when>
+	                             <c:when test="${viewCount == 20 }">
+	                                 <option value="20" selected style="display:none">20</option>
+	                             </c:when>
+	                             <c:when test="${viewCount == 30 }">
+	                                 <option value="30" selected style="display:none">30</option>
+	                             </c:when>
+	                         </c:choose>
+	                         <option value="10">10</option>
+		                     <option value="30">30</option>
+		                     <option value="50">50</option>
+	                    </select>
 						</form>
 							
-						<div class="hr hr-18 dotted"></div>
 						<div class="row-fluid">
 						<div class="span12">
 							<table class="table table-striped table-bordered table-hover">
@@ -161,7 +178,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${resultlist }" var = "rlist" varStatus="status">
+									<c:forEach items="${resultlist.datas }" var = "rlist" varStatus="status">
 									<tr>
 										<td>${status.count }</td>
 										<td>${rlist.taxbillNo }</td>
@@ -184,29 +201,46 @@
 									</c:forEach>
 								</tbody>
 							</table>
+							<input type="hidden" value="${pg }" name="" id="currentPage">
 						</div><!-- /span -->
 					</div><!-- /row -->
-					
-					<div class="pagination">
+					<div class="row-fluid">
+						<div class="pagination">
 						<ul>
-							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-						</ul>
+	                        <c:choose>
+	                            <c:when test="${resultlist.pagination.prev }">
+	                                <li><a href="javascript:movePage(${resultlist.pagination.startPage - 1 });"><i class="icon-double-angle-left"></i></a></li>
+	                            </c:when>
+	                            <c:otherwise>
+	                                <li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+	                            </c:otherwise>
+	                        </c:choose>
+	                        <c:forEach begin="${resultlist.pagination.startPage }" end="${resultlist.pagination.endPage }" var="pg">
+	                            <c:choose>
+	                                <c:when test="${pg eq resultlist.pagination.page }">
+	                                    <li class="active"><a href="javascript:movePage(${pg });">${pg }</a></li>
+	                                </c:when>
+	                                <c:otherwise>
+	                                    <li><a href="javascript:movePage(${pg });">${pg }</a></li>
+	                                </c:otherwise>
+	                            </c:choose>
+	                        </c:forEach>
+	                        <c:choose>
+	                            <c:when test="${resultlist.pagination.next }">
+	                                <li><a href="javascript:movePage(${resultlist.pagination.endPage + 1 });"><i class="icon-double-angle-right"></i></a></li>
+	                            </c:when>
+	                            <c:otherwise>
+	                                <li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+	                            </c:otherwise>
+	                        </c:choose>
+                        </ul>
+						</div>
 					</div>
-								</div>
+					</div>
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
-					
 				</div><!-- /.span -->
 		</div><!-- /.page-content -->
-	</div><!-- /.main-content -->
-</div><!-- /.main-container -->
-</div>
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <!-- basic scripts -->
@@ -247,6 +281,23 @@
 			
 			$(".chosen-select").chosen();
 		})
+		
+		function view(){
+        	var url = "${pageContext.request.contextPath }/12/54/1";
+        	$("#searchForm").attr("action", url).submit();
+        }
+		
+		function movePage(page) { // POST 페이지 이동 (검색 조건 있음)
+            //var searchFlag = $("#searchFlag").val();
+            var url = "${pageContext.request.contextPath }/12/54/" + page;
+            location.href = url;
+            
+            /* if (searchFlag == "true") {
+                $("#searchForm").attr("action", url).submit();
+            } else {
+                location.href = url;
+            } */
+        }
 		
 	</script>
 </body>

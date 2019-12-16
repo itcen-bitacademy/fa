@@ -58,7 +58,8 @@
 			and tst.delete_flag = 'N'
 			order by 
 			tst.taxbill_no desc,
-			tst.write_date desc;
+			tst.write_date desc
+			limit #{pagination.pageIndex }, #{pagination.listSize };
 		]]>
 	</select>
 	
@@ -108,9 +109,20 @@
             	and tbs.item_code = '${itemCode }'	
             	]]>
             </if>
+            <if test='orderData!=""'>
+	            <![CDATA[
+	            order by '${orderData }' desc
+	            ]]>
+            </if>
             <![CDATA[
-            	order by '${orderData }' desc;	
+            	limit #{pagination.pageIndex }, #{pagination.listSize };
             ]]>
+	</select>
+	
+	<select id="taxbillallcount" resultType="int">
+		<![CDATA[
+			select count(*) as cnt from tb_sell_taxbill;
+		]]>
 	</select>
 
 </mapper>
