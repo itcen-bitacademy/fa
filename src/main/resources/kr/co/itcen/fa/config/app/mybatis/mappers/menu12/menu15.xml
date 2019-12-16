@@ -28,11 +28,12 @@
 		]]>
 		<if test="_parameter != '%%' ">
 			<![CDATA[
-			where no like #{_parameter }
+			where substring(s.no, 2) like #{_parameter }
 			]]>	
 		</if>
 		<![CDATA[
-		order by no
+		order by s.no
+		limit 0, 3
 		]]>
 	</select>
 	

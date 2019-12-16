@@ -85,7 +85,7 @@ public class Menu15Controller {
 	// PopUp
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/gets")
-	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
+	public Map<String, Object> gets(@RequestParam(value = "depositNo", required = true, defaultValue = "") String depositNo) {
 		System.out.println("gets");
 		
 		Map<String, Object> data =  menu25Service.gets(depositNo);

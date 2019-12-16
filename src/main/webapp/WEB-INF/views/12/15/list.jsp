@@ -23,7 +23,7 @@
 	jQuery(function($) {
 		$(".td-hide").hide();
 		
-		$('table th input:checkbox').on('click' , function(){
+		/* $('table th input:checkbox').on('click' , function(){
 			var that = this;
 			$(this).closest('table').find('tr > td:first-child input:checkbox')
 			.each(function(){
@@ -31,7 +31,7 @@
 				$(this).closest('tr').toggleClass('selected');
 			});
 				
-		});
+		}); */
 		
 		$.fn.datepicker.dates['ko'] = {
 			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
@@ -67,7 +67,9 @@
 		});
 		
 		$("#btn-clear").on("click", function(){
-			$("#form-customer input").val("");
+			$('#form-customer').each(function(){
+    		    this.reset();
+    		});
 		});
 		
 		$("#customer-table tr.rows").on("click", function(event){
@@ -475,10 +477,6 @@
 									<thead>
 										<tr role="row">
 											<th class="center">
-												<label>
-													<input type="checkbox" class="ace">
-													<span class="lbl"></span>
-												</label>
 											</th>
 											<th>사업자번호</th>
 											<th>상호</th>
