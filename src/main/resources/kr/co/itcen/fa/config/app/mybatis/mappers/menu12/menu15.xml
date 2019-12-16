@@ -15,7 +15,7 @@
 	<select id="findAll" parameterType="string" resultType="salescustomervo">
 		<![CDATA[
 		select substring(s.no, 2) as no, s.name as name, s.ceo as ceo, s.corporation_no as corporationNo, s.zip_code as zipCode, s.address as address, s.detail_address as detailAddress, 
-			   concat(s.address, " (", s.zip_code, ")", " ", s.detail_address) as addressAll, s.phone as phone, s.conditions as conditions, s.item as item, 
+			   concat( "(", s.zip_code, ") ",s.address, " ", s.detail_address) as addressAll, s.phone as phone, s.conditions as conditions, s.item as item, 
                date_format(s.open_date, "%Y-%m-%d") as openDate,
 		       s.jurisdiction_office as jurisdictionOffice, s.manager_name as managerName, s.manager_email as managerEmail,
 		       b.deposit_no as depositNo, b.deposit_host as depositHost, b.bank_code as bankCode, b.bank_name as bankName, 
@@ -28,18 +28,43 @@
 		]]>
 		<if test="_parameter != '%%' ">
 			<![CDATA[
-			where no like #{_parameter }
+			where substring(s.no, 2) like #{_parameter }
 			]]>	
 		</if>
 		<![CDATA[
-		order by no
+		order by s.no
+		limit 0, 3
+		]]>
+	</select>
+	
+	<select id="findByNolist" parameterType="list" resultType="salescustomervo">
+		<![CDATA[
+		select substring(s.no, 2) as no, s.name as name, s.ceo as ceo, s.corporation_no as corporationNo, s.zip_code as zipCode, s.address as address, s.detail_address as detailAddress, 
+			   concat( "(", s.zip_code, ") ",s.address, " ", s.detail_address) as addressAll, s.phone as phone, s.conditions as conditions, s.item as item, 
+               date_format(s.open_date, "%Y-%m-%d") as openDate,
+		       s.jurisdiction_office as jurisdictionOffice, s.manager_name as managerName, s.manager_email as managerEmail,
+		       b.deposit_no as depositNo, b.deposit_host as depositHost, b.bank_code as bankCode, b.bank_name as bankName, 
+               case when s.delete_flag = 'Y' then '삭제' when s.delete_flag = 'N' then '' end as deleteFlag, 
+		       s.insert_userid as insertUserid, date_format(s.insert_day, "%Y-%m-%d %T") as insertDay,
+		       s.update_userid as updateUserid, date_format(s.update_day, "%Y-%m-%d %T") as updateDay
+		from tb_salescustomer s
+        left join tb_bank_account b
+        on s.deposit_no = b.deposit_no
+        where substring(no, 2) in
+		]]>
+		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >
+	        #{item }
+	    </foreach>
+	    
+		<![CDATA[
+		order by s.no
 		]]>
 	</select>
 	
 	<update id="update" parameterType="salescustomervo">
 		<![CDATA[
 		update tb_salescustomer
-		set no=concat('S', #{no }), name=#{name }, ceo=#{ceo }, corporation_no=#{corporationNo }, zip_code=#{zipCode }, address=#{address }, 
+		set no=#{no }, name=#{name }, ceo=#{ceo }, corporation_no=#{corporationNo }, zip_code=#{zipCode }, address=#{address }, 
 			detail_address=#{detailAddress }, phone=#{phone }, conditions=#{conditions }, item=#{item },
 			open_date=#{openDate }, jurisdiction_office=#{jurisdictionOffice }, manager_name=#{managerName }, manager_email=#{managerEmail }, 
 			deposit_no=#{depositNo }, deposit_host=#{depositHost }, update_userid=#{updateUserid }, update_day=now()
@@ -50,17 +75,17 @@
 	<select id="findByNo" parameterType="string" resultType="salescustomervo">
 		select substring(no, 2) as no
 		from tb_salescustomer
-		where no = #{_parameter }
+		where substring(no, 2) = #{_parameter }
 	</select>
 	
-	<update id="deleteByNo" parameterType="list">
+	<update id="deleteByNo" parameterType="map">
 		<![CDATA[
 		update tb_salescustomer 
-		set delete_flag = 'Y'
-		where no in
+		set delete_flag = 'Y', update_userid=#{userVo.id }, update_day=now()
+		where substring(no, 2) in
 		]]>
-		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >
-	        concat('S', #{item })
-	  </foreach>
+		<foreach item="item" index="index" collection="checkNoList" open="(" close=")" separator="," >
+	        #{item }
+	    </foreach>
 	</update>
 </mapper>

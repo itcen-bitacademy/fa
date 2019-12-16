@@ -10,41 +10,32 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
-
-
 <style>
 tr td:first-child {
 	padding-right: 40px;
 }
-
 .radio {
 	float: left;
 	width: 10%;
 }
-
 .search-input-width-first {
 	width: 130px;
 }
-
 .search-input-width-second {
 	width: 235px;
 }
-
 .debt-name-input {
 	width: 420px;
 }
-
 .mgr-input {
 	width: 90px;
 	display: inline;
 }
-
 .mgr-number-input-h4 {
 	display: inline;
 	margin-left: 30px;
 	margin-right: 20px;
 }
-
 .mgr-call-input {
 	width: 150px;
 	display: inline;
@@ -60,15 +51,14 @@ tr td:first-child {
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-
 		<div class="page-header position-relative">
 			<h1 class="pull-left">은행코드관리</h1>
 		</div><!-- /.page-header -->
 			
 		<!-- PAGE CONTENT BEGINS -->
-		<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+		<form id="myform" class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 		<div class="container-fluid">
-	
+
 		<!-- Example row of columns -->
 			<div class="row">
 				<div class="span8">
@@ -76,11 +66,11 @@ tr td:first-child {
 						<tr >
 							<td><h4>은행코드</h4></td>
 							<td>
-								<input type="text" name="code" class="box" id="code" 
+								<input type="text" name="code" class="code" id="code" 
 								 maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) " required 
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'/>
 								 
-								<input id="btn-check-code" type="button" value="중복확인" />
+								<input id="btn-check-code" type="button" value="중복확인" /> 
 								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 							</td>
 						</tr>
@@ -130,7 +120,6 @@ tr td:first-child {
 							</td>
 						</tr>
 						
-
 						<tr >
 							<td><h4>담당자전화번호</h4></td>
 							<td colspan="2">
@@ -139,10 +128,9 @@ tr td:first-child {
 									onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'  />
 							</td>
 						</tr>
-
 						</table>
 					</div>
-						
+
 					<div class="span8">
 						<table>
 							<tr>
@@ -151,8 +139,6 @@ tr td:first-child {
 									<input type="text" name="name" id="name" required />
 								</td>
 							</tr>
-
-
 							<tr >
 								<td><h4>은행전화번호</h4></td>
 								<td colspan="2">
@@ -216,7 +202,7 @@ tr td:first-child {
 				<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 				<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 				<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-				<button class="btn btn-primary btn-small" id="inputbtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">입력</button>
+				<button class="btn btn-primary btn-small" id="inputbtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
 				<button type="reset" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
 			</div>
 					
@@ -239,7 +225,6 @@ tr td:first-child {
 	                 <th class="center">담당자이메일</th>
                   </tr>
                </thead>
-
           	<tbody id= "tbody-list">
                 <c:forEach items="${dataResult.datas }" var="bankvo">
                      <tr>
@@ -262,7 +247,6 @@ tr td:first-child {
              
 		<!-- PAGE CONTENT ENDS -->
 		</div><!-- /.page-content -->
-
   
   		<div class="pagination">
 			<ul>
@@ -286,7 +270,6 @@ tr td:first-child {
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
-
 			<c:choose>
 			
 				<c:when test="${dataResult.pagination.next }">
@@ -301,7 +284,6 @@ tr td:first-child {
 			
    </div>/.main-content -->
  </div>/.main-container -->
-
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
   <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
@@ -309,6 +291,9 @@ tr td:first-child {
   <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>	
   <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
   <script>
+  
+  var ischecked = false;	
+  
         //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
         function execDaumPostcode() {
             new daum.Postcode(
@@ -380,15 +365,13 @@ tr td:first-child {
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
-/////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
 					//은행코드 중복체크
 						$("#code").change(function(){
-
-							$("#btn-check-code").show();
 							$("#img-checkcode").hide();
+							$("#btn-check-code").show();
 						});	
 					
-						$("#inputbtn").hide();	// 초기 입력버튼이 보이지 않도록 하는 코드
 						$("#btn-check-code").click(function(){
 							
 							var code = $("#code").val();
@@ -415,10 +398,9 @@ tr td:first-child {
 										$("#input-code").focus();
 										return;
 									}else{
-										$("#inputbtn").show();
 										$("#btn-check-code").hide();
 										$("#img-checkcode").show();
-									
+										ischecked = true;
 									}
 									},
 									error:function(xhr,error) {
@@ -428,6 +410,18 @@ tr td:first-child {
 							});	
 					
 				  		});
+   		    
+			   		    
+				        $("#inputbtn").click(function(){
+				        	   if(ischecked == false){
+				        	      alert("은행코드를 중복체크 해야합니다.");
+				        	      return;
+				        	   }
+				        	   else{
+				        	      $('#myform').submit();
+				        	   }
+				        	 });
+	        
 			////////////////////////////////////////////////////////////////////////////////////////
 			
 			$("#simple-table tr").click(function(){ 
@@ -499,7 +493,6 @@ tr td:first-child {
 		/////////////////////////////////////////////////////////////////
 		//전화번호 자동 하이픈
 			function inputTelNumber(obj) {
-
 			    var number = obj.value.replace(/[^0-9]/g, "");
 			    var tel = "";
 			
@@ -551,12 +544,6 @@ tr td:first-child {
 			    obj.value = tel;
 			}	
 		
-		
-		
-		
-		
-		
-		
 	
 	    /////////////////////////////////////////////////////////////////
 		//은행코드 유효성검사
@@ -577,6 +564,10 @@ tr td:first-child {
 		    else
 		        event.target.value = event.target.value.replace(/[^0-9]/g, "");
 		}
+		
+		
+		
+		
 		</script>
 </body>
 </html>

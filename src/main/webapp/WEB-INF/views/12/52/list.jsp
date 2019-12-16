@@ -60,7 +60,20 @@
 		
 		$(".pagination li a").on("click", function(event){
 			event.preventDefault();
-			var page = $(this).text();
+			var activePage = $(this).parent().attr("class");
+			if(activePage == "disabled" || activePage == "active") {
+				return;
+			}
+			var page = $(".pagination li[class=active]").children().text();
+			var icon = $(this).children().attr("class");
+			if(icon == "icon-double-angle-left") {
+				page += 1;
+			} else if(icon == "icon-double-angle-right") {
+				page -= 1;
+			} else {
+				page = $(this).text();
+			}
+			
 			$("#form-customer input[name=page]").val(page);
 			$("#form-customer").submit();
 		});
@@ -234,7 +247,7 @@
 									</td>
 								</tr>
 							</table>
-							<!-- 은행코드 및 은행명 데이터 리스트 -->
+							<!-- 사업자번호 및 상호명 데이터 리스트 -->
 							<table id="modal-customer-table"
 								class="table table-bordered table-hover">
 								<thead>
@@ -248,7 +261,7 @@
 								</tbody>
 							</table>
 						</div>
-						<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+						<!-- 사업자번호, 상호명, 지점명 Modal pop-up : end -->
                      <div class="span4">
                         <div class="control-group">
                            <label class="control-label" for="item">종목</label>
@@ -376,15 +389,17 @@
 							</table>
 						</div>
 					</div>
-					
 					<div class="pagination">
 						<ul>
-							<c:if test="${!pagination.prev }">
-								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-							</c:if>
-							<c:if test="${pagination.prev }">
-								<li><a href="#"><i class="icon-double-angle-left"></i></a></li>
-							</c:if>
+							<c:choose>
+								<c:when test="${pagination.prev }">
+									<li><a href="#"><i class="icon-double-angle-left"></i></a></li>								
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+								</c:otherwise>
+							</c:choose>
+								
 							
 							<c:forEach var="pageNum" begin="${pagination.startPage }" end="${pagination.endPage }">
 								<c:choose>
@@ -397,12 +412,14 @@
 								</c:choose>
 							</c:forEach>
 							
-							<c:if test="${!pagination.prev }">
-								<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
-							</c:if>
-							<c:if test="${pagination.prev }">
-								<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-							</c:if>
+							<c:choose>
+								<c:when test="${pagination.prev }">
+									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>								
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
 						</ul>
 					</div>
 				</div><!-- /.span -->
