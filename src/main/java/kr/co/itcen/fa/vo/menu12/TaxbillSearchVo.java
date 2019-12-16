@@ -20,6 +20,24 @@ public class TaxbillSearchVo {
 	private String itemName; // 품목명
 	private String taxType; // 과세구분
 	private String orderData; // 정렬기준
+	private long totalSupplyValue; // 총공급가액
+	private String writeDate; // 발행일
+
+	public String getWriteDate() {
+		return writeDate;
+	}
+
+	public void setWriteDate(String writeDate) {
+		this.writeDate = writeDate;
+	}
+
+	public long getTotalSupplyValue() {
+		return totalSupplyValue;
+	}
+
+	public void setTotalSupplyValue(long totalSupplyValue) {
+		this.totalSupplyValue = totalSupplyValue;
+	}
 
 	public String getOrderData() {
 		return orderData;

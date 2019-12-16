@@ -159,7 +159,7 @@ form {
 			<ul>
 				<c:choose>
 					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri} &page=${dataResult.pagination.startPage - 1 }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.startPage - 1 }">
 						<i class="icon-double-angle-left"></i></a></li>
 					</c:when>
 					<c:otherwise>
