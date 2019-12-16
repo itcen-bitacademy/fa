@@ -71,7 +71,7 @@ tr td:first-child {
 	
 		<!-- Example row of columns -->
 			<div class="row">
-				<div class="span10">
+				<div class="span8">
 					<table>
 						<tr >
 							<td><h4>은행코드</h4></td>
@@ -143,7 +143,7 @@ tr td:first-child {
 						</table>
 					</div>
 						
-					<div class="span12">
+					<div class="span8">
 						<table>
 							<tr>
 								<td><h4>은행명</h4></td>
