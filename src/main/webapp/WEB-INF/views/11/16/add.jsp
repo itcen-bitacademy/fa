@@ -268,7 +268,7 @@ tr td:first-child {
 			<ul>
 			<c:choose>
 				<c:when test="${dataResult.pagination.prev }">
-					<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+					<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?code=${code }&page=${dataResult.pagination.startPage - 1 }">
 					<i class="icon-double-angle-left"></i></a></li>
 				</c:when>
 				<c:otherwise>
@@ -279,17 +279,17 @@ tr td:first-child {
 				<c:choose>
 					<c:when test="${pg eq dataResult.pagination.page }">
 						<li class="active">
-							<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+							<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?code=${code }&page=${pg }">${pg }</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?code=${code }&page=${pg}">${pg }</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 
 			<c:choose>
 				<c:when test="${dataResult.pagination.next }">
-					<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?code=${code }&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 				</c:when>
 				<c:otherwise>
 					<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
