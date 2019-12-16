@@ -47,7 +47,7 @@ public class Menu48ApiController {
 	
 		vo.setInsertId(uservo.getId());//유저 아이디 셋팅
 		menu48Service.update(vo);//기존 장기 차입금 수정
-		
+		System.out.println(vo);
 		LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());//기존 장기차입금 컬럼 값 읽기
 		
 		
@@ -94,5 +94,11 @@ public class Menu48ApiController {
 		if(lvo.getRepayBal() <= 0)
 			menu48Service.updateRepayFlag(lvo.getNo());
 		return JSONResult.success(lvo);
+	}
+	@ResponseBody
+	@RequestMapping("/"+SUBMENU+"/checkrepay")
+	public JSONResult checkrepay(@RequestParam(value="no", required=true) Long no) {
+		List<RepayVo> list = menu48Service.getRepay(no);
+        return JSONResult.success(list);
 	}
 }

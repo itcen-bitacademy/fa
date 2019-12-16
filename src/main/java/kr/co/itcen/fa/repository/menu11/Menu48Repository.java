@@ -111,4 +111,9 @@ public class Menu48Repository {
 		return sqlSession.selectList("menu48.selectVoucherNo",list);
 	}
 
+	public List<RepayVo> getRepay(Long no) {
+		List<RepayVo> list = sqlSession.selectList("menu48.selectrepaylist",no);
+		return list;
+	}
+
 }

@@ -89,5 +89,10 @@ public class Menu48Service {
 		return menu48Repository.selectVoucherNo(no);
 	}
 
+	public List<RepayVo> getRepay(Long no) {
+		
+		return menu48Repository.getRepay(no);
+	}
+
 
 }
