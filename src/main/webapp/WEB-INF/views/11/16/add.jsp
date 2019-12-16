@@ -288,6 +288,7 @@ tr td:first-child {
 			</c:forEach>
 
 			<c:choose>
+			
 				<c:when test="${dataResult.pagination.next }">
 					<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?code=${code }&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 				</c:when>
