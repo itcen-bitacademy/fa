@@ -29,7 +29,7 @@
 		};
 
 		// 년월 설정 데이트피커
-		$('#cl-ym-date-picker').datepicker({
+		$('#datepicker').datepicker({
 			maxViewMode: 4,
 			minViewMode: 1,
 			language: 'ko'
@@ -66,21 +66,31 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">년 월</label>
 										<div class="row-fluid input-append span2">
-											<input class="date-picker" id="cl-ym-date-picker" type="text" data-date-format="yyyy-mm">
+											<input class="date-picker" id=datepicker name="salesDate" type="text" data-date-format="yyyy-mm"/>
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
 										</div>
+									<script type="text/javascript">
+									var salesDate = "${param.salesDate}";
+									$("#salesDate").val(salesDate);
+									</script>
 									</div>
 								</div>
 								<div class="span4">
 									<div class="control-group">
 										<label class="control-label span2" for="form-field-1">거래처</label>
 										<div class="span4">
-											<select class="chosen-select" id="zero" name="zero" data-placeholder="선택">
-												<option value="1234567890">비트컴퓨터</option>
-												<option value="1234567891">비트교육센터</option>
+											<select class="chosen-select" id="customerName" name="customerCode" data-placeholder="거래처명 선택">
+											<option value=""></option>
+											<c:forEach items='${customerName }' var='customerName' varStatus='status'>
+												<option value ="${customerName.customerCode }">${customerName.customerName }</option>
+											</c:forEach>
 											</select>
+										<script type="text/javascript">
+ 										var customerCode = "${param.customerCode }";
+  										$("#customerCode").val(customerCode);										
+ 										</script> 
 										</div>
 									</div>
 								</div>
@@ -99,26 +109,26 @@
 										<th>사업자번호</th>
 										<th>상호명</th>
 										<th>담당자명</th>
-										<th>담당자 이메일</th>
 										<th>품목</th>
 										<th>수량</th>
 										<th>공급가액</th>
 										<th>부가세</th>
+										<th>합계금액</th>
 									</tr>
 									</thead>
-									<tbody>
+								<c:forEach items='${list }' var='vo' varStatus='status'>
 									<tr>
-										<td>2019.11.25</td>
-										<td>1234567890</td>
-										<td>비트컴퓨터</td>
-										<td>김승곤</td>
-										<td>kkk@kkk</td>
-										<td>IBM서버</td>
-										<td>10</td>
-										<td>10000</td>
-										<td>1000</td>
+										<td>${vo.salesDate }</td>
+										<td>${vo.customerCode }</td>
+										<td>${vo.customerName }</td>
+										<td>${vo.empManager }</td>
+										<td>${vo.itemName }</td>
+										<td><fmt:formatNumber value="${vo.quantity }" pattern="#,###" /></td>
+										<td><fmt:formatNumber value="${vo.supplyValue }" pattern="#,###" /></td>
+										<td><fmt:formatNumber value="${vo.taxValue }" pattern="#,###" /></td>
+										<td><fmt:formatNumber value="${vo.totalPrice }" pattern="#,###" /></td>
 									</tr>
-									</tbody>
+								</c:forEach>
 								</table>
 								</div>
 								<div class="pagination">

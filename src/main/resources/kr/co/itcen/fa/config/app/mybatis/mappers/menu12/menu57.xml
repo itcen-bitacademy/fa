@@ -14,5 +14,30 @@
 			]]>
 		</selectKey>
 	</insert>
-
+	
+	<select id="getList" resultType="salesvo" parameterType="salesvo">
+	<![CDATA[
+	 select date_format(sales_date,'%Y-%m-%d') as salesDate
+		   , customer_code as customerCode    /* 사업자번호, 거래처코드 */
+           , customer_name as customerName    /* 상호명, 거래처명 */
+           , emp_manager as empManager         /* 거래처담당자 */
+           , item_name as itemName
+           , quantity as quantity 
+           , supply_value as supplyValue 
+           , tax_value as taxValue
+           , total_price as totalPrice
+    from tb_sales
+    where 1=1
+    and date_format(sales_date,'%Y-%m') like concat('%',#{salesDate },'%')
+    and customer_code like concat('%',#{customerCode },'%');	
+	
+	]]>
+	</select>
+	
+	<select id="getcustomerName" resultType="salesvo">
+	    select customer_code as customerCode
+		       , customer_name as customerName
+  	    from tb_sales;
+	
+	</select>
 </mapper>
