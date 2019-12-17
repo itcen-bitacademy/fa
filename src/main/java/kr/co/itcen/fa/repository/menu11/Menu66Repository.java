@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.repository.menu11;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,9 +61,9 @@ public class Menu66Repository {
 		return longNo;
 	}
 
+	// 상환잔액을 수정되기 이전으로 돌리기
 	public Boolean restoreRepayBal(RepayVo vo) {
 		int count = sqlSession.update("menu66.restoreRepayBal", vo);
-		System.out.println("restoreRepayBal count : " + count);
 		return count == 1;
 	}
 
@@ -87,8 +88,32 @@ public class Menu66Repository {
 	// 상환잔액 업데이트
 	public Boolean updateRepayVo(RepayVo vo) {
 		int count = sqlSession.update("menu66.repayUpdate", vo);
-		System.out.println("restoreRepayBal count : " + count);
 		return count == 1;
+	}
+
+	// 전표번호 읽어오기
+	public List<Long> selectVoucherNo(Long[] no) {
+		List<Long> list = new ArrayList<Long>();
+		for (Long no1 : no) {
+			list.add(no1);
+		}
+		return sqlSession.selectList("menu66.selectVoucherNo", list);
+	}
+
+	// 상환테이블에서 상환정보 삭제
+	public Boolean delete(Long[] no) {
+		List<Long> list = new ArrayList<Long>();
+		for (Long no1 : no) {
+			list.add(no1);
+		}
+		
+		int totalElements = list.size();
+		for (int index = 0; index < totalElements; index++) {
+			System.out.println(list.get(index));
+		}
+		
+		int count = sqlSession.update("menu66.delete", list);
+		return count >= 1;
 	}
 	
 }

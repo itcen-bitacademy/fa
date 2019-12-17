@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,6 +152,30 @@ public class Menu66Controller {
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
 		vo.setVoucherNo(no);
 		menu66Service.update(vo); // 상환 테이블에 update
+		
+		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	}
+	
+	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
+	public String delete(
+			@RequestParam Long[] no, 
+			@AuthUser UserVo uservo) {
+		System.out.println("delete");
+		List<Long> list = menu66Service.selectVoucherNo(no);
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		
+		for(Long no1: list) {
+			VoucherVo v = new VoucherVo();
+			v.setNo(no1);
+			voucherVolist.add(v);
+		}
+		
+		for(VoucherVo v : voucherVolist) {
+			System.out.println("VoucherVo : " + v);
+		}
+		
+		menu03Service.deleteVoucher(voucherVolist, uservo);
+		menu66Service.delete(no);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}

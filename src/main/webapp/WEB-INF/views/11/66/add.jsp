@@ -16,13 +16,13 @@ input[type="text"], input[type="date"], select {
 	width: 300px;
 }
 
-.input-area{
+.input-area {
 	display: grid;
 	grid-template-columns: repeat(2, auto);
 	margin-left: 8px;
 }
 
-.input-area>*{
+.input-area>* {
 	grid-column: auto;
 	display: grid;
 	grid-template-rows: repeat(6, auto);
@@ -30,25 +30,45 @@ input[type="text"], input[type="date"], select {
 	gap: 10px 0;
 }
 
-.ia-left{grid-column:1;}
-.ia-right{grid-column:2;}
+.ia-left {
+	grid-column: 1;
+}
 
-.above-table{
+.ia-right {
+	grid-column: 2;
+}
+
+.above-table {
 	display: grid;
 	grid-template-columns: repeat(2, 50%);
 	height: 30px;
 }
-.above-table>*{grid-column: auto;}
-.above-table-left>*{float: left; margin:0;}
 
-.btn-list{float: left; }
-.btn-list>button{ 
-	margin-right: 10px;
-	float:none;
+.above-table>* {
+	grid-column: auto;
 }
-.btn-list>button:last-child{
-	margin-right: 0;}
-.btn-list>button:not(:first-child):not(:last_child){margin: 0 auto}
+
+.above-table-left>* {
+	float: left;
+	margin: 0;
+}
+
+.btn-list {
+	float: left;
+}
+
+.btn-list>button {
+	margin-right: 10px;
+	float: none;
+}
+
+.btn-list>button:last-child {
+	margin-right: 0;
+}
+
+.btn-list>button:not (:first-child ):not (:last_child ){
+	margin: 0 auto
+}
 
 .code-search-info {
 	padding: 0 0 10px 10px;
@@ -72,6 +92,7 @@ input[type="text"], input[type="date"], select {
 			
 			<!-- PAGE CONTENT BEGINS -->
 				<form class="form-horizontal" id="input-form" method="post" action="">
+				<input type="hidden" name="no"/> <!-- tb_repay 테이블의 PK인 no값 전달 -->
 				<input type="hidden" name="debtNo"/>
 				<div class="input-area">
 					<section>
@@ -105,7 +126,7 @@ input[type="text"], input[type="date"], select {
 					<section class="above-table-left">
 						<div class="btn-list">
 							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" onclick="return payPrincCheck()">수정</button>
-							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
+							<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()">삭제</button>
 							<button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
 						</div>
@@ -125,7 +146,7 @@ input[type="text"], input[type="date"], select {
 						<tr>
 							<th class="center" >
 								<label class="pos-rel">
-									<input type="checkbox" class="ace" id="chkbox-select-all" />
+									<input type="checkbox" class="ace" id="checkall" />
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -278,6 +299,17 @@ $(function() {
     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
+	//--------------------------------------------------------------------------------------------------------------------------//
+    // 삭제하기 위해 체크박스 눌렀을 때, row 전체선택 및 해제
+	$("#checkall").click(function(){
+		if ($(this).hasClass('allChecked')) {
+			$('input[type="checkbox"]', '#simple-table').prop('checked', false);
+		} else {
+			$('input[type="checkbox"]', '#simple-table').prop('checked', true);
+		}
+		$(this).toggleClass('allChecked');
+	});
+  //--------------------------------------------------------------------------------------------------------------------------//
 });
 
 //--------------------------------------------------------------------------------------------------------------------------//
@@ -318,6 +350,18 @@ function payPrincCheck(){
     } else {
         return true;
     }
+}
+
+// 상환내역리스트에서 선택한 row 삭제
+function deleteChecked(){
+	var sendData = [];
+	var checkedList = $("#tbody-list input[type=checkbox]:checked");
+	checkedList.each(function(i, e){
+		sendData.push($(this).attr('data-no'));
+	});
+	
+	$("input[name=no]").val(sendData);
+	alert(sendData);
 }
 
 

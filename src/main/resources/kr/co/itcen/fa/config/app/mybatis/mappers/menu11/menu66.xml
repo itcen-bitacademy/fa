@@ -5,21 +5,21 @@
 	<select id="selectAllCount" resultType="int" parameterType="map">
 		<![CDATA[
 			select count(*) 
-				from tb_repay
+				from tb_repay where delete_flag = 'N' 
 		]]>
 			<if test='code != null and "S".equals(debtType)'>
 				<![CDATA[
-					where debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%'))
+					and debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%'))
 				]]>
 			</if>
 			<if test='code != null and "L".equals(debtType)'>
 				<![CDATA[
-					where debt_no = (select no from tb_l_term_debt where code like concat('%',#{code},'%'))
+					and debt_no = (select no from tb_l_term_debt where code like concat('%',#{code},'%'))
 				]]>
 			</if>
 			<if test='code != null and "P".equals(debtType)'>
 				<![CDATA[
-					where debt_no = (select no from tb_p_debt where code like concat('%',#{code},'%'))
+					and debt_no = (select no from tb_p_debt where code like concat('%',#{code},'%'))
 				]]>
 			</if>
 	</select>
@@ -36,22 +36,22 @@
 		          debt_type as debtType, 
 		          voucher_no as voucherNo, 
 		          date_format(insert_date,'%Y-%m-%d %H:%i:%S') as insertDate 
-		          	from tb_repay
+		          	from tb_repay where delete_flag = 'N' 
 		  ]]>        
 		          			
 			<if test='code != null and "S".equals(debtType)'>
 				<![CDATA[
-					where debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%')) 
+					and debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%')) 
 				]]>
 			</if>
 			<if test='code != null and "L".equals(debtType)'>
 				<![CDATA[
-					where debt_no = (select no from tb_l_term_debt where code like concat('%',#{code},'%')) 
+					and debt_no = (select no from tb_l_term_debt where code like concat('%',#{code},'%')) 
 				]]>
 			</if>
 			<if test='code != null and "P".equals(debtType)'>
 				<![CDATA[
-					where debt_no = (select no from tb_p_debt where code like concat('%',#{code},'%')) 
+					and debt_no = (select no from tb_p_debt where code like concat('%',#{code},'%')) 
 				]]>
 			</if>
 			<if test="pagination.pageIndex >= 0">
@@ -62,7 +62,7 @@
 	</select>
 	
 	<!-- update -->
-	<update id="update" parameterType="pdebtvo">
+	<update id="update" parameterType="repayvo">
 		<![CDATA[
 			update tb_repay set 
 				pay_princ = #{payPrinc}, 
@@ -203,5 +203,27 @@
 			    		where no = #{_parameter}
 		]]>
 	</select>
+	
+	<!-- 전표번호 읽어오기 -->
+	<select id="selectVoucherNo" parameterType="list" resultType="long">
+		<![CDATA[
+			select voucher_no 
+				from tb_p_debt 
+					where no in 
+		]]>
+			<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+				#{item } 
+			</foreach>
+	</select>
+	
+	<!-- 상환관리 페이지에서 삭제를 눌렀을 때, 해당 정보 delete_flag='Y'로 업데이트 -->
+	<update id="delete" parameterType="list">
+		<![CDATA[
+			update tb_repay set delete_flag='Y' where no in 
+		]]>
+		<foreach item="item" index="index" collection="list" close=")" open="(" separator=",">
+			#{item }
+		</foreach>
+	</update>
 
 </mapper>

@@ -71,17 +71,14 @@ public class Menu66Service {
 		return menu66Repository.updateRepayVo(vo);
 	}
 
-	public PdebtVo getOne(Long debtNo) {
-		// TODO Auto-generated method stub
-		return null;
+	// 전표번호 읽어오기
+	public List<Long> selectVoucherNo(Long[] no) {
+		return menu66Repository.selectVoucherNo(no);
 	}
 
-	
-
-	
-
-//	public List<RepayVo> selectSection() {
-//		return menu66Repository.selectSection();
-//	}
+	// 상환테이블에서 상환정보 삭제
+	public Boolean delete(Long[] no) {
+		return menu66Repository.delete(no);
+	}
 
 }

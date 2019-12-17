@@ -8,7 +8,7 @@ public class RepayVo {
 	private Long debtNo;// 사채,장기,단기 번호
 	private String code; // 각 사채, 장기, 단기 테이블과 비교하기 위한 변수
 	private Long payPrinc;// 상환액
-	private Long tempPayPrinc;
+	private Long tempPayPrinc; // 상환잔액 수정시에 임시저장하는 변수
 	private Long intAmount; // 이자금액
 	private String payDate;// 상환 일
 	private String debtType;// 사채,장기,단기 구분
