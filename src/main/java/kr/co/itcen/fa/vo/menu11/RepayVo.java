@@ -14,7 +14,7 @@ public class RepayVo {
 	private String debtType;// 사채,장기,단기 구분
 	private Long voucherNo;// 전표번호
 	private String depositNo;// 계좌번호
-	private Long accountNo; // 계정코드
+	private Long accountNo = 9201101L; // 계정코드
 	private String deleteFlag;// 식제여부
 	private String insertId;// 등록자
 	private String insertDate;// 등록일
