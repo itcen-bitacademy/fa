@@ -17,12 +17,15 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
+import kr.co.itcen.fa.service.menu12.Menu13Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
+import kr.co.itcen.fa.vo.menu12.SalesVo;
 
 /**
  * 
@@ -41,6 +44,12 @@ public class Menu50Controller {
 	
 	@Autowired
 	private Menu03Service menu03Service;
+	
+	@Autowired
+	private Menu13Service menu13Service;
+	
+	@Autowired
+	private Menu19Service menu19Service;
 
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(
@@ -125,8 +134,11 @@ public class Menu50Controller {
 	
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
 	public String update(
-			@ModelAttribute PdebtVo vo,
-			@AuthUser UserVo userVo) throws ParseException {
+			@ModelAttribute PdebtVo vo, 
+			SalesVo salesVo, 
+			@AuthUser UserVo userVo, 
+			Model model) throws ParseException {
+
 		String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
 		String saveDeptDate = deptExpDate.substring(0, 10);
 		String saveExpDate = deptExpDate.substring(13);
