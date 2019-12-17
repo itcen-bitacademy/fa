@@ -61,4 +61,12 @@ public class Menu54Repository {
 		return sqlSession.selectOne("menu54.taxbillallcount");
 	}
 	
+	// 검색 필터를 통해 출력되는 전체 리스트의 항목을 가져오는 기능
+	public int taxbillsearchcount(TaxbillSearchVo tvo) {
+		System.out.println("필터를 통한 전체 검샘 목록 표시");
+		return sqlSession.selectOne("menu54.taxbillsearchcount", tvo);
+	}
+	
+	
+	
 }

@@ -64,11 +64,30 @@ public class Menu54Service {
 		return dataResult;
 	}
 	
-	//검색 필터를 통해 출력되는 기능
-	public List<SellTaxbillVo> taxbillSearch(TaxbillSearchVo taxbillsearchvo, int page, int viewCount){
+	
+	public DataResult<SellTaxbillVo> taxbillSearch(TaxbillSearchVo taxbillsearchvo, int page, int viewCount){
+		DataResult<SellTaxbillVo> dataResult = new DataResult<>();
+		
 		System.out.println("검색 리스트 조회 - 서비스");
-		return menu54Repository.taxbillSearch(taxbillsearchvo);
 		
+		// 검색 필터를 통해 출력되는 전체 리스트의 항목을 가져오는 기능
+		int totalCount = menu54Repository.taxbillsearchcount(taxbillsearchvo);
 		
+		if(totalCount<=11) {
+			viewCount = totalCount;
+		}
+		
+		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, viewCount, 5);
+		dataResult.setPagination(paginationUtil);
+		
+		taxbillsearchvo.setPagination(paginationUtil);
+		
+		List<SellTaxbillVo> list = menu54Repository.taxbillSearch(taxbillsearchvo);
+		dataResult.setDatas(list);
+		
+		return dataResult;
 	}
+	
+	
+	
 }
