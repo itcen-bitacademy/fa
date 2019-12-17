@@ -9,8 +9,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.StaffVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
@@ -120,31 +122,44 @@ public class Menu41Repository {
 		return list;
 	}
 
-
+	//보증금 납부일 가져오기
 	public String selectTaxVo(String id) {
-		
 		String taxVo = sqlSession.selectOne("menu41.selectTaxVo", id);
-			
 		return taxVo;
 	}
-
+	
+	//리스트 전표번호 가져오기(차량코드id를 이용해서)
 	public Long getVoucherNo(String id) {
 	
 		Long vNo = sqlSession.selectOne("menu41.selectVNO",id);
 		return vNo;
 	}
 
+	//세금계산서 전표번호 가져오기(차량코드id를 이용해서)
 	public List getTaxVoucherNo(String id) {
 		
 		List<Long> taxVNO = sqlSession.selectList("menu41.selectTaxVNO",id);
 		return taxVNO;
 	}
 
+	//세금계산서 삭제
 	public boolean deleteTaxbill(String id) {
 		int count = sqlSession.delete("menu41.deleteTaxbill", id);
 		return count == 1;
 	}
-
 	
+	//페이지수 세기
+	public int listCount(String id) {
+		return sqlSession.selectOne("menu41.pageCount", id);
+	}
 
+	//페이지 리스트 조회하기
+	public List<VehicleVo> list(String id, PaginationUtil pagination) {
+	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("pagination", pagination);
+		List<VehicleVo> list = sqlSession.selectList("menu41.list", map);
+		return list;
+	}
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
@@ -26,6 +27,7 @@ import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
@@ -59,13 +61,21 @@ public class Menu41Controller {
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(
 			Model model,
-			@RequestParam(value="id", required = false) String id ) {
+			@RequestParam(value="id", required=false, defaultValue = "") String id,
+			@RequestParam(value="page", required=false, defaultValue = "1") int page) 
+		{
 		//menu41Service.test();
 		/*
 		 *   JSP
 		 *   08/41/add.jsp
 		 * 
 		 */
+		//페이징 처리 	dataresult 생성, 모델
+		//DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
+		DataResult<VehicleVo> dataResult = menu41Service.list(id, page);
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page" , page);
+		
 		Map<String, Object> map = new HashMap<>();
 
 		//if 조회기능 else 검색기능
@@ -92,7 +102,9 @@ public class Menu41Controller {
 		model.addAllAttributes(map);
 		
 		
-
+		
+		
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
