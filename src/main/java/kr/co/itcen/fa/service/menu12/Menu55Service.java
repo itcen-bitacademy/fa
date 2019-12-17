@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu12.Menu55Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu12.CurrentSituationVo;
 
 /**
@@ -21,8 +23,16 @@ public class Menu55Service {
 	private Menu55Repository menu55Repository;
 
 	//전체 리스트
-	public List<CurrentSituationVo> getList(CurrentSituationVo vo){
-		return menu55Repository.getList(vo);
+	public DataResult<CurrentSituationVo> getList(int page,CurrentSituationVo vo){
+		DataResult<CurrentSituationVo> dataResult = new DataResult<CurrentSituationVo>();
+		int totalCnt=menu55Repository.selectAllCount(vo);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt,11, 5);
+		
+		dataResult.setPagination(pagination);
+		List<CurrentSituationVo> list =menu55Repository.getList(pagination, vo);
+		dataResult.setDatas(list);				
+				
+		return dataResult;
 	}
 	
 	//품목을 가져오기 위한 코드
