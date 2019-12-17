@@ -88,10 +88,10 @@
 							<c:forEach items="${incomeStatementDataList }" var="data" varStatus='status' >
 								<tr>
 									<td style="text-align:left;">${data.accountName }</td>
-									<td class="center">
+									<td style="text-align:right;">
 										<fmt:formatNumber value="${data.monthToAmount }" pattern="#,###"></fmt:formatNumber>
 									</td>
-									<td class="center">
+									<td style="text-align:right;">
 										<fmt:formatNumber value="${data.amount }" pattern="#,###"></fmt:formatNumber>
 									</td>
 								</tr>

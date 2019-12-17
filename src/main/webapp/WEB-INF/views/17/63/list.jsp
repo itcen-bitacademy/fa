@@ -97,10 +97,10 @@
 											<td style="padding-left:6%;">${data.accountName }</td>
 										</c:otherwise>
 									</c:choose>
-									<td class="center">
+									<td style="text-align:right;">
 										<fmt:formatNumber value="${data.monthToAmount}" pattern="#,###"></fmt:formatNumber>
 									</td>
-									<td class="center">
+									<td style="text-align:right;">
 										<fmt:formatNumber value="${data.amount}" pattern="#,###"></fmt:formatNumber>
 									</td>
 								</tr>
