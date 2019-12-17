@@ -76,6 +76,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		}
 		
 		if(paths.length > 2 && paths[2].matches("\\d{2}")) {
+			mainMenuNo = Long.valueOf(paths[2]);
 			mainMenuCode = paths[2];
 		}
 		
