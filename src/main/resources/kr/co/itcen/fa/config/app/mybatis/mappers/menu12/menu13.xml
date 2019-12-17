@@ -72,7 +72,7 @@
 							b.item_name as itemName, 
 							(sum(b.quantity)-ifnull(c.quantity, 0)) as stock
 			from			fa.tb_purchaseitem a, fa.tb_purchasemanagement b
-			left outer join (select item_code, sum(quantity) as quantity from fa.tb_sales group by item_code) c
+			left outer join (select item_code, sum(quantity) as quantity from fa.tb_sales where delete_flag ='N' group by item_code) c
 			on				b.item_code = c.item_code
 			where			a.no = b.item_code
 			group by		b.item_code;
