@@ -142,7 +142,7 @@
 												<div class="input-append">
 													<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly/>
 														<span class="add-on">
-							                                    <a href="#" id="a-customer-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+							                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
 							                        	</span>
 												</div>
 												
@@ -337,7 +337,7 @@
 										<tr>
 											<td>
 												<label>차입금코드</label>
-												<input type="text" id="code" readonly= "readonly"/>
+												<input type="text" id="code" name="debtcode" readonly= "readonly"/>
 											</td>
 										</tr>
 										<tr>
@@ -397,11 +397,7 @@
 					<div class="row-fluid">
 						<button type="button" id="inputbtn" class="btn btn-primary btn-small">입력</button>
 						&nbsp;
-<<<<<<< HEAD
 						<button type="submit" id="updatebtn" class="btn btn-danger btn-small">수정</button>
-=======
-						<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit">수정</button>
->>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 						&nbsp;
 						<button type="submit" id="delete'" class="btn btn-danger btn-small" onclick="deleteChecked()">삭제</button>
 						&nbsp;
@@ -1026,12 +1022,15 @@
 								remainmoney = parseInt(td.eq(5).text().replace(/,/g, '')) + intAmount;
 							}
 				    	});
-						
-						var debtNo = $("#no").val(); // 테이블 번호
-						var payPrinc = parseInt($('input[name=payPrinc]').val()) - intAmount //납입금
-						var payDate = $('input[name=payDate]').val(); // 상환일
-						var intAmount = $('input[name=intAmount]').val(); // 이자금액
 				    	
+						var vo = {
+								"code" : $('input[name=debtcode]').val(),
+								"debtNo" : $("#no").val(), // 테이블 번호
+								"payPrinc" : $('input[name=payPrinc]').val(), //납입금
+								"payDate" : $('input[name=payDate]').val(), // 상환일
+								"intAmount" : $('input[name=intAmount]').val() // 이자금액
+						}
+						
 						if (intAmount > parseInt($('input[name=payPrinc]').val())) {
 							alert("이자 금액보다 납입금이 작습니다 납입금("+ intAmount+")보다 크게 입력해주세요");
 							return;
@@ -1046,10 +1045,11 @@
 						
 						// ajax 통신
 						$.ajax({
-							url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repay?debtNo=" + debtNo + "&payPrinc=" + payPrinc + "&payDate=" + payDate + "&intAmount=" + intAmount,
+							url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/repay",
 							contentType : "application/json; charset=utf-8",
 							type: "post",
 							dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+							data: JSON.stringify(vo),
 							success: function(response) {
 								console.log(response);
 								if (response.result =="fail") {
