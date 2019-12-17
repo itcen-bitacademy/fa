@@ -142,11 +142,9 @@
 												<div class="input-append">
 													<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly/>
 														<span class="add-on">
-							                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+							                                    <a href="#" id="a-customer-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
 							                        	</span>
 												</div>
-												
-												
 												
 												<!-- 거래처 Modal pop-up : start -->
 												<div id="dialog-customer-message" title="계좌" hidden="hidden">
@@ -399,7 +397,7 @@
 						&nbsp;
 						<button type="submit" id="updatebtn" class="btn btn-danger btn-small">수정</button>
 						&nbsp;
-						<button type="submit" id="delete'" class="btn btn-danger btn-small" onclick="deleteChecked()">삭제</button>
+						<button type="submit" id="delete" class="btn btn-danger btn-small" onclick="deleteChecked()">삭제</button>
 						&nbsp;
 						<button class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;

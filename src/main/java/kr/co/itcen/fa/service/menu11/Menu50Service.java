@@ -10,6 +10,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu50Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
@@ -117,6 +118,16 @@ public class Menu50Service {
 	//상환내역이 있을경우 수정불가 (no를 배열로 전달)
 	public List<RepayVo> getRepay(Long[] no) {
 		return menu50Repository.getRepay(no);
+	}
+
+	// 은행코드로 거래처테이블에서 정보가져오기
+	public CustomerVo selectNoFromCustomer(String no) {
+		return menu50Repository.selectNoFromCustomer(no);
+	}
+
+	// 은행명으로 거래처테이블에서 정보가져오기
+	public List<CustomerVo> selectNameFromCustomer(String name) {
+		return menu50Repository.selectNameFromCustomer(name);
 	}
 
 }

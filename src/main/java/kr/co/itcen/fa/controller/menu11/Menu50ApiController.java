@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 
@@ -47,6 +48,24 @@ public class Menu50ApiController {
 			@RequestParam("banknameVal") String bankname) {
 		List<BankVo> banknameList = menu50Service.selectOneBanknameInfo(bankname);
         return banknameList;
+	}
+	
+	// 거래처 - 은행 팝업창에서 은행코드로 조회
+	@ResponseBody
+	@RequestMapping("/get-bankcode-customer")
+	public JSONResult getCustomerInfoUsingNo(
+			@RequestParam("bankcode-customer") String no) {
+		CustomerVo customerVo = menu50Service.selectNoFromCustomer(no);
+		return JSONResult.success(customerVo);
+	}
+
+	// 거래처 - 은행 팝업창에서 은행명으로 데이터 리스트형식으로 조회
+	@ResponseBody
+	@RequestMapping("/get-bankname-customer")
+	public List<CustomerVo> getCustomerUnfoUsingName(
+			@RequestParam("bankname-customer") String name) {
+		List<CustomerVo> customerVo = menu50Service.selectNameFromCustomer(name);
+		return customerVo;
 	}
 	
 }

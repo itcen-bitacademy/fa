@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
@@ -150,6 +151,14 @@ public class Menu50Repository {
 		}
 		List<RepayVo> list = sqlSession.selectList("menu50.selectRepayAlllist", listRepay);
 		return list;
+	}
+
+	public CustomerVo selectNoFromCustomer(String no) {
+		return sqlSession.selectOne("menu50.selectVoucherNo", no);
+	}
+
+	public List<CustomerVo> selectNameFromCustomer(String name) {
+		return sqlSession.selectList("menu50.selectVoucherNo", name);
 	}
 	
 }

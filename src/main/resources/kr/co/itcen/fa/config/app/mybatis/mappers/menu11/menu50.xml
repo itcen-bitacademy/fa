@@ -261,6 +261,24 @@
 		]]>
 	</select>
 	
+	<select id="getBankCodeInfo" parameterType="String" resultType="1customervo">
+		<![CDATA[
+			select no as no,
+				   bank_name as bankName
+				   from tb_customer
+			 where code like '${_parameter }'
+		]]>
+	</select>
+	
+	<select id="getBankNameInfo" parameterType="String" resultType="1customervo">
+		<![CDATA[
+			select no as no,
+				   bank_name as bankName
+				   from tb_customer
+			 where concat(name, "은행", store) like '%${_parameter }%'
+		]]>
+	</select>
+	
 	<!-- ==================================================== -->
 	<!-- ==================================================== -->
 	<!-- ==================================================== -->
