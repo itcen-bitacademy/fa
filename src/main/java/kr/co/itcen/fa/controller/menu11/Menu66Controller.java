@@ -1,6 +1,5 @@
 package kr.co.itcen.fa.controller.menu11;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +69,6 @@ public class Menu66Controller {
 	public String update(
 			@ModelAttribute("vo") RepayVo vo, 
 			@AuthUser UserVo userVo) {
-		System.out.println("update====================");
 		System.out.println(vo.getTempPayPrinc() + " : " + vo.getPayPrinc());
 		vo.setUpdateId(userVo.getId()); // 수정자 아이디 삽입
 		

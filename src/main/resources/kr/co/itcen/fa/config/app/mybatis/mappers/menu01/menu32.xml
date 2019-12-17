@@ -204,7 +204,66 @@
 			
 			
 			<![CDATA[
-		      order by v.no asc, i.order_no ;
+		      order by v.no asc, i.order_no
+		      limit	#{pagination.pageIndex }, #{pagination.listSize };
+			]]>
+	</select>
+	
+	<select id="listCount" parameterType="1accountcustomerledgervo" resultType="int">
+		<![CDATA[
+			select count(*) as cnt
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+          join tb_voucher_system_mapping m
+            on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join (select no, name, concat("") as store
+				  from tb_customer
+				 union
+				select no, name, concat("") as store
+                  from tb_salescustomer
+				 union
+				select no, name, concat("") as store
+                  from tb_purchasecustomer
+                 union
+                select code as no, name, store as store
+                  from tb_bank) as cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
+           ]]>
+           
+			<if test="datepicker1!=null and !datepicker1.equals('')">		    
+				<![CDATA[
+					and m.insert_day >= #{datepicker1 }
+				]]>
+			</if>
+			<if test="datepicker2!=null and !datepicker2.equals('')">		    
+				<![CDATA[
+					and m.insert_day <= #{vo.datepicker2 }
+				]]>
+			</if>
+			<if test="accountNo!=null and !accountNo.equals('')">
+				<![CDATA[
+					and a.no = #{accountNo }
+				]]>
+			</if>
+			<if test="customerNo!=null and !customerNo.equals('')">
+				<![CDATA[
+					and cu.no like '%${customerNo }%'
+				]]>
+			</if>
+			
+			
+			<![CDATA[
+		      order by v.no asc, i.order_no;
 			]]>
 	</select>
 	

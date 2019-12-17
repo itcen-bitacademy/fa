@@ -284,7 +284,7 @@
 	  ]]>
 	</select>
 	
-	<!-- 검색된 점표 갯수 -->
+	<!-- 검색된 전표 갯수 -->
 	<select id="selectVoucherCount" resultType="int" parameterType="1vouchervo">
 		<![CDATA[
 		select count(*) as cnt
@@ -308,13 +308,30 @@
             on c.card_no = m.card_no
 	 left join tb_bank_account ba
             on ba.deposit_no = m.deposit_no
-         where v.use_yn = 1
+         where
+         ]]>
+        <if test="useYn == true">
+    	   <![CDATA[
+               v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
-        ]]>
+    	   ]]>
+    	</if>
+        <if test="useYn == false">
+    	   <![CDATA[
+               v.use_yn = #{useYn }
+           and i.use_yn = #{useYn }
+           and m.use_yn = #{useYn }
+    	   ]]>
+    	</if>
     	<if test="regDate != null and !''.equals(regDate)">
     	   <![CDATA[
     	   and v.reg_date like concat('%',#{regDate },'%')
+    	   ]]>
+    	</if>
+    	<if test="no != null and !no.equals('')">
+    	   <![CDATA[
+    	   and v.no = #{no }
     	   ]]>
     	</if>
     	<if test="accountNo != null and !accountNo.equals('')">
@@ -329,7 +346,12 @@
     	</if>
     	<if test="customerNo != null and !customerNo.equals('')">
     	   <![CDATA[
-    	   and cu.no = #{customerNo };
+    	   and cu.no = #{customerNo }
+    	   ]]>
+    	</if>
+    	<if test="voucherUse != null and !voucherUse.equals('')">
+    	   <![CDATA[
+    	   and m.voucher_use = #{voucherUse };
     	   ]]>
     	</if>
 	</select>
@@ -381,13 +403,30 @@
             on c.card_no = m.card_no
 	 left join tb_bank_account ba
             on ba.deposit_no = m.deposit_no
-         where v.use_yn = 1
+         where
+         ]]>
+        <if test="vo.useYn == true">
+    	   <![CDATA[
+               v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
-        ]]>
+    	   ]]>
+    	</if>
+        <if test="vo.useYn == false">
+    	   <![CDATA[
+               v.use_yn = 0
+           and i.use_yn = 0
+           and m.use_yn = 0
+    	   ]]>
+    	</if>
     	<if test="vo.regDate != null and !vo.regDate.equals('')">
     	   <![CDATA[
     	   and v.reg_date = #{vo.regDate }
+    	   ]]>
+    	</if>
+    	<if test="vo.no != null and !vo.no.equals('')">
+    	   <![CDATA[
+    	   and v.no = #{vo.no }
     	   ]]>
     	</if>
     	<if test="vo.accountNo != null and !vo.accountNo.equals('')">
@@ -403,6 +442,11 @@
     	<if test="vo.customerNo != null and !vo.customerNo.equals('')">
     	   <![CDATA[
     	   and cu.no = #{vo.customerNo }
+    	   ]]>
+    	</if>
+    	<if test="vo.voucherUse != null and !vo.voucherUse.equals('')">
+    	   <![CDATA[
+    	   and m.voucher_use = #{vo.voucherUse }
     	   ]]>
     	</if>
       <![CDATA[

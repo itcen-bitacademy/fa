@@ -55,6 +55,10 @@
 										</div>
 									</div>
 								</div>
+								<script type="text/javascript">
+								var regDate = "${param.regDate}";
+								$("#regDate").val(regDate);
+								</script>
 								
 								<!-- 계정과목  -->
 								<div class="control-group">
@@ -72,9 +76,12 @@
 											</c:forEach>
 										</select> 
 										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
-									
 									</div>
 								</div>
+								<script type="text/javascript">
+								var accountNo = "${param.accountNo}";
+								$("#accountNo").val(accountNo);
+								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
@@ -82,6 +89,10 @@
 										<input type="text" id="amount" name="amount" placeholder="0" onkeyup="inputNumberFormat(this)">
 									</div>
 								</div>
+								<script type="text/javascript">
+								var accountNo = "${param.amount}";
+								$("#amount").val(amount);
+								</script>
 								
 								<div class="control-group">
 									<label class="control-label" style="text-align:left;width:120px;" >차대구분</label>
@@ -90,7 +101,6 @@
 											<option value="d">차변</option>
 											<option value="c">대변</option>
 										</select>
-		
 									</div>
 								</div>
 								
@@ -107,7 +117,6 @@
 										</div>
 									</div>
 								</div>
-								
 						</div>
 	
 						<div class="span6">
@@ -126,6 +135,10 @@
 										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
 									</div>
 								</div>
+								<script type="text/javascript">
+								var customerNo = "${param.customerNo}";
+								$("#customerNo").val(customerNo);
+								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >은행</label> 
@@ -178,6 +191,10 @@
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
+								<script type="text/javascript">
+								var voucherUse = "${param.voucherUse}";
+								$("#voucherUse").val(voucherUse);
+								</script>
 								
 								<!-- 거래처 Modal pop-up : start -->
 								<div id="dialog-message" title="거래처" hidden="hidden">
@@ -236,7 +253,9 @@
 			</div><!-- /.row-fluid -->
 			<div class="hr hr-18 dotted"></div>
 			</form>
-
+			
+			<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 전표 ${dataResult.pagination.totalCnt } 건</p>
+			
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -244,25 +263,25 @@
 						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th>일자</th>
-								<th>전표번호</th>
-								<th>순번</th>
-								<th>구분</th>
-								<th>계정과목코드</th>
-								<th>계정과목명</th>
-								<th>차변</th>
-								<th>대변</th>
-								<th>거래처번호</th>
-								<th>거래처</th>
-								<th>증빙종류</th>
-								<th>증빙코드</th>
-								<th>은행코드</th>
-								<th>은행명</th>
-								<th>카드번호</th>
-								<th>계좌번호</th>
-								<th>소유자</th>
-								<th>사용목적</th>
-								<th>관리팀</th>
+								<th class="center">일자</th>
+								<th class="center">전표번호</th>
+								<th class="center">순번</th>
+								<th class="center">구분</th>
+								<th class="center">계정과목코드</th>
+								<th class="center">계정과목명</th>
+								<th class="center">차변</th>
+								<th class="center">대변</th>
+								<th class="center">거래처번호</th>
+								<th class="center">거래처</th>
+								<th class="center">증빙종류</th>
+								<th class="center">증빙코드</th>
+								<th class="center">은행코드</th>
+								<th class="center">은행명</th>
+								<th class="center">카드번호</th>
+								<th class="center">계좌번호</th>
+								<th class="center">소유자</th>
+								<th class="center">사용목적</th>
+								<th class="center">관리팀</th>
 							</tr>
 						</thead>
 						
@@ -336,7 +355,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/03/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/03/read?page=${dataResult.pagination.startPage - 1 }&regDate=${param.regDate }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }"><i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -346,17 +365,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/03/list?page=${pg }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/03/read?page=${pg }&regDate=${param.regDate }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/01/03/list?page=${pg }">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/01/03/read?page=${pg }&regDate=${param.regDate }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/03/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/03/read?page=${dataResult.pagination.endPage + 1 }&regDate=${param.regDate }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }"><i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>

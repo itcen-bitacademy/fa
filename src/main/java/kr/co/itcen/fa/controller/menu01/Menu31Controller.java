@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu31Service;
+import kr.co.itcen.fa.service.menu17.Menu59Service;
 
 
 /**
@@ -25,6 +26,9 @@ public class Menu31Controller {
 
 	@Autowired
 	private Menu31Service menu31Service;
+	
+	@Autowired
+	private Menu59Service menu59Service;
 
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model) {

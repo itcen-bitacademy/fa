@@ -127,13 +127,14 @@ public class Menu03Service {
 	   DataResult<VoucherVo> dataResult = new DataResult<VoucherVo>();
 	   System.out.println("regDateService :" + voucherVo.getRegDate());
 	   int totalCount = menu03Repository.selectVoucherCount(voucherVo);
+	   System.out.println("totalCount : " + totalCount);
 	   PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
 	   dataResult.setPagination(paginationUtil);
 	   
 	   List<VoucherVo> list = menu03Repository.selectVoucher(voucherVo, paginationUtil);
 	   dataResult.setDatas(list);
 	   
-	   return dataResult; 
+	   return dataResult;
    }
 	
 	// 전표생성 (1팀)

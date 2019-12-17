@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
@@ -134,6 +135,30 @@ public class Menu50Repository {
 	public PdebtVo getCode(String code) {
 		PdebtVo vo = sqlSession.selectOne("menu50.getByCode", code);
 		return vo;
+	}
+
+	//상환내역이 있을경우 수정불가
+	public List<RepayVo> getRepay(Long no) {
+		List<RepayVo> list = sqlSession.selectList("menu50.selectRepaylist", no);
+		return list;
+	}
+
+	//상환내역이 있을경우 수정불가 (no를 배열로 전달)
+	public List<RepayVo> getRepay(Long[] no) {
+		List<Long> listRepay = new ArrayList<Long>();
+		for (Long no1 : no) {
+			listRepay.add(no1);
+		}
+		List<RepayVo> list = sqlSession.selectList("menu50.selectRepayAlllist", listRepay);
+		return list;
+	}
+
+	public CustomerVo selectNoFromCustomer(String no) {
+		return sqlSession.selectOne("menu50.selectVoucherNo", no);
+	}
+
+	public List<CustomerVo> selectNameFromCustomer(String name) {
+		return sqlSession.selectList("menu50.selectVoucherNo", name);
 	}
 	
 }
