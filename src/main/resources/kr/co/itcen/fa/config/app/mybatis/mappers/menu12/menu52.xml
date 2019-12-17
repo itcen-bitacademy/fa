@@ -43,7 +43,8 @@
 	<select id="findAllCustomer" parameterType="map" resultType="salescustomervo">
 		<![CDATA[
 		select substring(s.no, 2) as no, s.name as name, s.ceo as ceo, s.corporation_no as corporationNo, s.zip_code as zipCode, s.address as address, s.detail_address as detailAddress, 
-			   concat(s.address, " (", s.zip_code, ")", " ", s.detail_address) as addressAll, s.phone as phone, s.conditions as conditions, s.item as item, 
+			   ifnull(s.zip_code, concat( "(", s.zip_code, ") ",s.address, " ", s.detail_address)) as addressAll, 
+			   s.phone as phone, s.conditions as conditions, s.item as item, 
                date_format(s.open_date, "%Y-%m-%d") as openDate,
 		       s.jurisdiction_office as jurisdictionOffice, s.manager_name as managerName, s.manager_email as managerEmail,
 		       b.deposit_no as depositNo, b.deposit_host as depositHost, b.bank_code as bankCode, b.bank_name as bankName, 

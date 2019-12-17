@@ -7,15 +7,16 @@
 		insert
 		  into tb_salescustomer
 		values (#{no }, #{name }, #{ceo }, #{corporationNo }, #{zipCode }, #{address }, #{detailAddress }, #{phone }, #{conditions }, #{item }, 
-				#{openDate }, #{jurisdictionOffice }, #{managerName }, #{managerEmail }, #{depositNo }, #{depositHost }, 
+				#{openDate }, #{jurisdictionOffice }, #{managerName }, #{managerEmail }, #{depositNo }, #{depositHost }, #{bankCode }, 
 				#{insertUserid }, now(), null, null, 'N')
 		]]>
 	</insert>
 	
 	<select id="findAll" parameterType="string" resultType="salescustomervo">
 		<![CDATA[
-		select substring(s.no, 2) as no, s.name as name, s.ceo as ceo, s.corporation_no as corporationNo, s.zip_code as zipCode, s.address as address, s.detail_address as detailAddress, 
-			   concat( "(", s.zip_code, ") ",s.address, " ", s.detail_address) as addressAll, s.phone as phone, s.conditions as conditions, s.item as item, 
+		select substring(s.no, 2) as no, s.name as name, s.ceo as ceo, s.corporation_no as corporationNo, s.zip_code as zipCode, s.address as address, s.detail_address as detailAddress,
+			   ifnull(s.zip_code, concat( "(", s.zip_code, ") ",s.address, " ", s.detail_address)) as addressAll,
+			   s.phone as phone, s.conditions as conditions, s.item as item, 
                date_format(s.open_date, "%Y-%m-%d") as openDate,
 		       s.jurisdiction_office as jurisdictionOffice, s.manager_name as managerName, s.manager_email as managerEmail,
 		       b.deposit_no as depositNo, b.deposit_host as depositHost, b.bank_code as bankCode, b.bank_name as bankName, 
@@ -40,7 +41,8 @@
 	<select id="findByNolist" parameterType="list" resultType="salescustomervo">
 		<![CDATA[
 		select substring(s.no, 2) as no, s.name as name, s.ceo as ceo, s.corporation_no as corporationNo, s.zip_code as zipCode, s.address as address, s.detail_address as detailAddress, 
-			   concat( "(", s.zip_code, ") ",s.address, " ", s.detail_address) as addressAll, s.phone as phone, s.conditions as conditions, s.item as item, 
+			   ifnull(s.zip_code, concat( "(", s.zip_code, ") ",s.address, " ", s.detail_address)) as addressAll,
+			   s.address, " ", s.detail_address) as addressAll, s.phone as phone, s.conditions as conditions, s.item as item, 
                date_format(s.open_date, "%Y-%m-%d") as openDate,
 		       s.jurisdiction_office as jurisdictionOffice, s.manager_name as managerName, s.manager_email as managerEmail,
 		       b.deposit_no as depositNo, b.deposit_host as depositHost, b.bank_code as bankCode, b.bank_name as bankName, 
@@ -67,7 +69,7 @@
 		set no=#{no }, name=#{name }, ceo=#{ceo }, corporation_no=#{corporationNo }, zip_code=#{zipCode }, address=#{address }, 
 			detail_address=#{detailAddress }, phone=#{phone }, conditions=#{conditions }, item=#{item },
 			open_date=#{openDate }, jurisdiction_office=#{jurisdictionOffice }, manager_name=#{managerName }, manager_email=#{managerEmail }, 
-			deposit_no=#{depositNo }, deposit_host=#{depositHost }, update_userid=#{updateUserid }, update_day=now()
+			deposit_no=#{depositNo }, deposit_host=#{depositHost }, bank_code = #{bankCode }, update_userid=#{updateUserid }, update_day=now()
 		where substring(no, 2) = #{preNo }
 		]]>
 	</update>
