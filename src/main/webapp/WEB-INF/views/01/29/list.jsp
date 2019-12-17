@@ -23,7 +23,9 @@
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script>
+		
 		$(function() {
+			// 데이트피커 한글설정
 			$.fn.datepicker.dates['ko'] = {
 			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
 			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
@@ -32,19 +34,20 @@
 			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
 			today: "Today",
 			clear: "Clear",
-			format: "yyyy-mm",
-			titleFormat: "yyyy", /* Leverages same syntax as 'format' */
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
 			weekStart: 0
 			};
-	
-			$('#cl-ym-date-picker').datepicker({
+
+			// 년월 설정 데이트피커
+			$('#datepicker').datepicker({
 				maxViewMode: 4,
 				minViewMode: 1,
 				language: 'ko'
 			}).next().on(ace.click_event, function(){
 				$(this).prev().focus();
 			});
-	
+			
 			$('.cl-date-picker').datepicker({
 				language: 'ko'
 			}).next().on(ace.click_event, function(){
@@ -79,13 +82,6 @@
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
-						&nbsp; &nbsp; ~ &nbsp;
-						<div class="input-append">
-							<input type="text" id="datepicker2" class="cl-date-picker" /> <span
-								class="add-on"> <i class="icon-calendar"></i>
-							</span>
-						</div>
-
 
 						계정과목코드 : <input type="text" id="form-field-1" placeholder="계정과목코드" />
 
@@ -126,36 +122,9 @@
 									<td></td>
 									<td></td>
 									<td></td>
-									<td>-25,000,000</td>
 									<td></td>
-									<td>-25,000,000</td>
-
-								</tr>
-
-								<tr>
-									<td>2019-12-22</td>
-									<td>123-56-789</td>
-									<td>아이티센</td>
-									<td>1234567</td>
-									<td>상품매출</td>
-									<td>인건비</td>
-									<td>-300,000</td>
 									<td></td>
-									<td>-25,300,000</td>
-
-								</tr>
-
-								<tr>
-									<td>2019-12-22</td>
-									<td>123-56-888</td>
-									<td>비트컴퓨터</td>
-									<td>1234567</td>
-									<td>상품매출</td>
-									<td>인건비</td>
-									<td>-500,000</td>
 									<td></td>
-									<td>-25,800,000</td>
-
 								</tr>
 
 								<tr>
@@ -165,7 +134,7 @@
 									<td></td>
 									<td></td>
 									<td></td>
-									<td>-800,000</td>
+									<td></td>
 									<td></td>
 									<td></td>
 								</tr>
@@ -177,7 +146,7 @@
 									<td></td>
 									<td></td>
 									<td></td>
-									<td>-25,800,000</td>
+									<td></td>
 									<td></td>
 									<td></td>
 								</tr>
@@ -186,21 +155,6 @@
 					</div>
 					<!-- /span -->
 				</div>
-
-				<div class="pagination">
-					<ul>
-						<li class="disabled"><a href="#"><i
-								class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-					</ul>
-				</div>
-
-
 
 			</div>
 			<!-- /.page-content -->
