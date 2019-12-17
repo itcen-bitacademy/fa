@@ -7,6 +7,11 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+#staticBackdrop {
+	z-index: -1;
+}
+</style>
 </head>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
