@@ -54,43 +54,99 @@ public class Menu38Controller {
 		model.addAttribute("page_group", page_group);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
-	public Map<String, Object> paging(@RequestParam(value="page", required=false, defaultValue="1") int page,
+	public Map<String, Object> paging(@RequestParam(value="page_num", required=false, defaultValue="1") int page,
 									  @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
-									  Model model) {
-
-		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getBuyTaxbillAll(); // 전체리스트
-		List<BuyTaxbillVo> buyTaxbillList = menu38Service.getBuyTaxbillList(page_group); // 5개씩 리스트
-		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getpageBuyTaxbillList(page); // 11개씩 데이터
-		List<CustomerVo> getMatchTaxbillCustomerList = menu38Service.getMatchTaxbillCustomerList();
-		List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Service.getMatchTaxbillItemsList();
+									  BuyTaxbillListVo buyTaxbillListVo) {
 		
+		boolean flag = false;
+		
+		if(buyTaxbillListVo.getNo() != null) {
+			System.out.println("1");
+			flag = true;
+		}
+		if(buyTaxbillListVo.getStartDate() != "") {
+			System.out.println("2");
+			flag = true;
+		}
+		if(buyTaxbillListVo.getEndDate() != "") {
+			System.out.println("3");
+			flag = true;
+		}
+		if(buyTaxbillListVo.getCompanyName() != "") {
+			System.out.println("4");
+			flag = true;
+		}
+		if(buyTaxbillListVo.getTaxType() != "") {
+			System.out.println("5");
+			flag = true;
+		}
+		if(buyTaxbillListVo.getDeleteFlag() != "") {
+			System.out.println("6");
+			flag = true;
+		}
+		if(!(buyTaxbillListVo.getOrder().equals("writeDate"))) {
+			System.out.println("7");
+			flag = true;
+		}
+		System.out.println(flag);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("buyTaxbillListAll", buyTaxbillListAll);
-		map.put("buyTaxbillList", buyTaxbillList);
-		map.put("pagebuyTaxbillList", pagebuyTaxbillList);
-		map.put("customerList", getMatchTaxbillCustomerList);
-		map.put("itemsList", getMatchTaxbillItemsList);
-		map.put("cur_page", page);
-		map.put("page_group", page_group);
-		
+		if(flag) {
+			System.out.println("조건있는조회");
+			buyTaxbillListVo.setPage(page);
+			buyTaxbillListVo.setPageGroup(page_group);
+	
+			System.out.println(buyTaxbillListVo.toString());
+			List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillListAll(buyTaxbillListVo); // 전체리스트
+			List<BuyTaxbillVo> buyTaxbillList = menu38Service.getSelectedBuyTaxbillList(buyTaxbillListVo); // 5개씩 리스트
+			List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getSelectedpageBuyTaxbillList(buyTaxbillListVo); // 11개씩
+			List<CustomerVo> getMatchTaxbillCustomerList = menu38Service.getMatchTaxbillCustomerList();
+			List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Service.getMatchTaxbillItemsList();
+			
+			map.put("buyTaxbillListAll", buyTaxbillListAll);
+			map.put("buyTaxbillList", buyTaxbillList);
+			map.put("pagebuyTaxbillList", pagebuyTaxbillList);
+			map.put("customerList", getMatchTaxbillCustomerList);
+			map.put("itemsList", getMatchTaxbillItemsList);
+			
+		} else {
+			System.out.println("조건없는조회");
+			List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getBuyTaxbillAll(); // 전체리스트
+			List<BuyTaxbillVo> buyTaxbillList = menu38Service.getBuyTaxbillList(page_group); // 5개씩 리스트
+			List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getpageBuyTaxbillList(page); // 11개씩 데이터
+			List<CustomerVo> getMatchTaxbillCustomerList = menu38Service.getMatchTaxbillCustomerList();
+			List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Service.getMatchTaxbillItemsList();
+			
+			map.put("buyTaxbillListAll", buyTaxbillListAll);
+			map.put("buyTaxbillList", buyTaxbillList);
+			map.put("pagebuyTaxbillList", pagebuyTaxbillList);
+			map.put("cur_page", page);
+			map.put("page_group", page_group);
+			map.put("customerList", getMatchTaxbillCustomerList);
+			map.put("itemsList", getMatchTaxbillItemsList);
+			
+		}
 		return map;
 	}
 
 	@RequestMapping(value = "/" + SUBMENU + "/list", method = RequestMethod.POST)
-	public String list(Model model, BuyTaxbillListVo buyTaxbillListVo, @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "page_group", required = false, defaultValue = "0") int page_group) {
+	public String list(Model model, BuyTaxbillListVo buyTaxbillListVo,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "page_group", required = false, defaultValue = "0") int pageGroup) {
 
-
-		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillList(buyTaxbillListVo); // 전체리스트
-		List<BuyTaxbillVo> buyTaxbillList = menu38Service.getBuyTaxbillList(page_group); // 5개씩 리스트
-		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getpageBuyTaxbillList(page); // 11개씩 데이터
+		buyTaxbillListVo.setPage(page);
+		buyTaxbillListVo.setPageGroup(pageGroup);
+		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillListAll(buyTaxbillListVo); // 전체리스트
+		List<BuyTaxbillVo> buyTaxbillList = menu38Service.getSelectedBuyTaxbillList(buyTaxbillListVo); // 5개씩 리스트
+		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getSelectedpageBuyTaxbillList(buyTaxbillListVo); // 11개씩
+																												// 데이터
 		List<CustomerVo> getMatchTaxbillCustomerList = menu38Service.getMatchTaxbillCustomerList();
 		List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Service.getMatchTaxbillItemsList();
 
+		model.addAttribute("searchData", buyTaxbillListVo);
 		model.addAttribute("buyTaxbillListAll", buyTaxbillListAll);
 		model.addAttribute("buyTaxbillList", buyTaxbillList);
 		model.addAttribute("pagebuyTaxbillList", pagebuyTaxbillList);

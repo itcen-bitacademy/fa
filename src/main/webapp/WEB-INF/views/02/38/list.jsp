@@ -50,19 +50,13 @@ input:focus {
 						function(e) {
 							var page_num = $(this).text();
 							var page_group = parseInt((page_num - 1) / 5);
-
-							console.log("page_num : " + page_num);
-							console.log("page_group : " + page_group);
-
+							
 							$
 									.ajax({
 										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 										type : "get",
 										dataType : "json",
-										data : {
-											"page" : page_num,
-											"page_group" : page_group
-										},
+										data : $("#search-form").serialize() + "&page_num=" + page_num + "&page_group=" + page_group,
 										success : function(data) {
 											console.log(data);
 											updateTable(
@@ -75,7 +69,7 @@ input:focus {
 													page_num, page_group);
 										},
 										error : function(error) {
-											alert("찾을 수 없는 품목입니다.");
+											alert("값을 찾을 수 없습니다.");
 										}
 									});
 						});
@@ -291,6 +285,16 @@ input:focus {
 
 	});
 </script>
+<script>
+	function search_button() {
+		$("#search-form")
+				.attr(
+						"action",
+						"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list")
+				.submit();
+
+	}
+</script>
 </head>
 <body class="skin-3" style="min-width: 1920px">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -305,7 +309,7 @@ input:focus {
 						class="icon-plus-sign bigger-120 green"></i>메뉴 추가</a>
 				</div>
 				<!-- /.page-header -->
-				<form method="post"
+				<form id="search-form" method="post"
 					action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 					<div class="row-fluid">
 						<div class="span12">
@@ -314,27 +318,42 @@ input:focus {
 								<label class="control-label span1" for="form-field-date">작성일자</label>
 								<div class="controls span5">
 									<div class="input-append">
-										<input class="cl-date-picker calender" id="calender"
+										<input class="cl-date-picker calender" id="calender1"
 											type="text" style="width: 70%" name="startDate"
-											autocomplete="off"> <span class="add-on"> <i
-											class="icon-calendar"></i>
+											autocomplete="off" value="${searchData.startDate }">
+										<span class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
 									~ &nbsp;
 									<div class="input-append">
-										<input class="cl-date-picker calender" id="calender"
+										<input class="cl-date-picker calender" id="calender2"
 											type="text" style="width: 70%" name="endDate"
-											autocomplete="off"> <span class="add-on"> <i
-											class="icon-calendar"></i>
+											autocomplete="off" value="${searchData.endDate }"> <span
+											class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
 								<label class="control-label span1" for="tax-type">과세유형</label>
 								<div class="controls span5">
 									<select class="chosen-select" id="tax-type" name="taxType">
-										<option value="">전체</option>
-										<option value="tax">과세</option>
-										<option value="zero">영세</option>
+										<c:choose>
+											<c:when test="${searchData.taxType == 'zero'}">
+												<option value="">전체</option>
+												<option value="tax">과세</option>
+												<option value="zero" selected="selected">영세</option>
+											</c:when>
+											<c:when test="${searchData.taxType == 'tax'}">
+												<option value="" selected="selected">전체</option>
+												<option value="tax" selected="selected">과세</option>
+												<option value="zero">영세</option>
+											</c:when>
+											<c:otherwise>
+												<option value="" selected="selected">전체</option>
+												<option value="tax">과세</option>
+												<option value="zero">영세</option>
+											</c:otherwise>
+										</c:choose>
+
 									</select>
 								</div>
 
@@ -348,15 +367,30 @@ input:focus {
 								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
 									<input style="width: 93%" type="text" id="no" name="no"
-										placeholder="승인번호" />
+										value="${searchData.no }" placeholder="승인번호" />
 								</div>
 								<label class="control-label span1" for="delete-flag">삭제여부</label>
 								<div class="controls span5">
 									<select class="chosen-select" id="delete-flag"
 										name="deleteFlag">
-										<option value="">전체</option>
-										<option value="y">삭제</option>
-										<option value="n">미삭제</option>
+										<c:choose>
+											<c:when test="${searchData.deleteFlag == 'n'}">
+												<option value="">전체</option>
+												<option value="y">삭제</option>
+												<option value="n" selected="selected">미삭제</option>
+											</c:when>
+											<c:when test="${searchData.deleteFlag == 'y'}">
+												<option value="">전체</option>
+												<option value="y" selected="selected">삭제</option>
+												<option value="n">미삭제</option>
+											</c:when>
+											<c:otherwise>
+												<option value="" selected="selected">전체</option>
+												<option value="y">삭제</option>
+												<option value="n">미삭제</option>
+											</c:otherwise>
+										</c:choose>
+
 									</select>
 								</div>
 							</div>
@@ -370,8 +404,8 @@ input:focus {
 								<div class="controls span5">
 									<div class="input-append">
 										<input class="date-picker" id="company-name" type="text"
-											name="companyName"> <span class="add-on"> <i
-											class="icon-search"></i>
+											name="companyName" value="${searchData.companyName }">
+										<span class="add-on"> <i class="icon-search"></i>
 										</span>
 									</div>
 								</div>
@@ -384,25 +418,103 @@ input:focus {
 						<div class="control-group span12">
 							<label class="control-label span1" for="order">정렬</label>
 							<div class="controls span4">
-
-								<label style="display: inline;"> <input name="order"
-									type="radio" class="ace" value="writeDate" checked> <span
-									class="lbl">작성일 순</span>
-								</label> <label style="display: inline;"> <input name="order"
-									type="radio" class="ace" value="companyName"> <span
-									class="lbl">거래처명 순</span>
-								</label> <label style="display: inline;"> <input name="order"
-									type="radio" class="ace" value="rowValue"> <span
-									class="lbl">낮은총공급가액 순</span>
-								</label> <label style="display: inline;"> <input name="order"
-									type="radio" class="ace" value="highValue"> <span
-									class="lbl">높은총공급가액 순</span>
-								</label>
-
+								<c:choose>
+									<c:when test="${searchData.order == 'writeDate'}">
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="writeDate" checked> <span
+											class="lbl">작성일 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="companyName"> <span
+											class="lbl">거래처명 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="rowValue"> <span
+											class="lbl">낮은총공급가액 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="highValue"> <span
+											class="lbl">높은총공급가액 순</span>
+										</label>
+									</c:when>
+									<c:when test="${searchData.order == 'companyName'}">
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="writeDate"> <span
+											class="lbl">작성일 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="companyName" checked>
+											<span class="lbl">거래처명 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="rowValue"> <span
+											class="lbl">낮은총공급가액 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="highValue"> <span
+											class="lbl">높은총공급가액 순</span>
+										</label>
+									</c:when>
+									<c:when test="${searchData.order == 'rowValue'}">
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="writeDate"> <span
+											class="lbl">작성일 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="companyName"> <span
+											class="lbl">거래처명 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="rowValue" checked> <span
+											class="lbl">낮은총공급가액 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="highValue"> <span
+											class="lbl">높은총공급가액 순</span>
+										</label>
+									</c:when>
+									<c:when test="${searchData.order == 'highValue'}">
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="writeDate"> <span
+											class="lbl">작성일 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="companyName"> <span
+											class="lbl">거래처명 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="rowValue"> <span
+											class="lbl">낮은총공급가액 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="highValue" checked> <span
+											class="lbl">높은총공급가액 순</span>
+										</label>
+									</c:when>
+									<c:otherwise>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="writeDate" checked> <span
+											class="lbl">작성일 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="companyName"> <span
+											class="lbl">거래처명 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="rowValue"> <span
+											class="lbl">낮은총공급가액 순</span>
+										</label>
+										<label style="display: inline;"> <input name="order"
+											type="radio" class="ace" value="highValue"> <span
+											class="lbl">높은총공급가액 순</span>
+										</label>
+									</c:otherwise>
+								</c:choose>
 							</div>
 							<div class="controls span6">
-								<button class="btn btn-default btn-small span1"
-									style="float: left; margin-left: 20px;">조회</button>
+								<button class="btn btn-default btn-small" type="button"
+									style="float: left; margin-left: 20px;"
+									onclick="search_button();">조회</button>
 							</div>
 						</div>
 					</div>
