@@ -31,7 +31,13 @@ public class Menu10Repository {
 	}
 
 	public List<LandVo> getList(LandVo landVo, String startDate, String endDate, PaginationUtil pagination) {
-		
+		System.out.println("조건조회");
+		System.out.println(landVo.getFlag());
+		if(landVo.getFlag()==null) {
+			System.out.println("flag가null이다 ");
+		}else {
+			System.out.println("flag가null이 아니다 ");
+		}
 		Map<String, Object> map =new HashMap<String, Object>();
 		map.put("id", landVo.getId());
 		map.put("sectionName", landVo.getSectionName());
@@ -47,14 +53,19 @@ public class Menu10Repository {
 		map.put("flag", landVo.getFlag());
 		System.out.println("flag" + landVo.getFlag());
 		map.put("pagination", pagination);
+		
+		System.out.println("내가 검색한것 id : " + landVo.getId() + "sectionName : " + landVo.getSectionName() + " payDate : " + landVo.getPayDate() + " customerName : " +
+				landVo.getCustomerName() +"managerName : " + landVo.getManagerName() + "평수 : " + landVo.getLandArea() + "wideAddress : " + landVo.getWideAddress() +
+				"cityAddress : " + landVo.getCityAddress() + "acqPrice : " + landVo.getAcqPrice() + "startDate : " + startDate + "endDate : " + endDate +
+				"flag : " + landVo.getFlag()
+				);
 		List<LandVo> list = sqlSession.selectList("menu10.getList", map);
-		System.out.println("ㄴㅅㄴ" + list);
 		return list;  
 	}
 	
 	//조건조회화면 전체 개수
 	public int listCount(LandVo landVo, String startDate, String endDate) {
-		
+		System.out.println("조건조회전체개수");
 		System.out.println("landVo : " + landVo);
 		
 		Map<String, Object> map =new HashMap<String, Object>();
@@ -69,11 +80,13 @@ public class Menu10Repository {
 		map.put("acqPrice", landVo.getAcqPrice());
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
+		map.put("flag", landVo.getFlag());
 		
 		return sqlSession.selectOne("menu10.pageCount", map);
 	}
 
 	public List<LandVo> list(String id, PaginationUtil pagination) {
+		System.out.println("기본조회");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("pagination", pagination);
@@ -84,6 +97,7 @@ public class Menu10Repository {
 	
 	//기본조회화면 전체 개수
 	public int listCount(String id) {
+		System.out.println("기본조회 전체개수");
 		return sqlSession.selectOne("menu10.pageAllCount", id);
 	}
 	
