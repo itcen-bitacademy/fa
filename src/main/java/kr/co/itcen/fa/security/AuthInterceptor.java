@@ -38,15 +38,18 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		// 3. Method의 @Auth 받아오기
 		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
+		NoAuth noAuth = handlerMethod.getMethod().getAnnotation(NoAuth.class);
 		
-		// 4. Method에 @Auth가 붙어 있지 않으면, Class(Type)의 @Auth 받아오기  
-		if(auth == null) {
-			auth = handlerMethod.getMethod().getDeclaringClass().getAnnotation( Auth.class );
-		}
-		
-		// 5. Method와 Type에 @Auth가 없음 
-		if(auth == null) {
-			return true;
+		if (noAuth != null) {
+			// 4. Method에 @Auth가 붙어 있지 않으면, Class(Type)의 @Auth 받아오기  
+			if(auth == null) {
+				auth = handlerMethod.getMethod().getDeclaringClass().getAnnotation( Auth.class );
+			}
+			
+			// 5. Method와 Type에 @Auth가 없음 
+			if(auth == null) {
+				return true;
+			}
 		}
 		
 		// 6. @Auth가 있기 때문에 인증 여부 확인 필요
@@ -88,7 +91,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		List<Menu> menus = menuService.getAllMenu();
 		List<Menu> subMenus = null;
 		for(Menu menu : menus) {
-			if(menu.getNo() == mainMenuNo) {
+//			if(menu.getNo() == mainMenuNo) {
+			Long mainMenuNo2 = (mainMenuCode == null || mainMenuCode.isEmpty()) ? mainMenuNo : Long.valueOf(mainMenuCode);
+			if(menu.getNo() == mainMenuNo2) {
 				subMenus = menu.getSubMenus();
 				break;
 			}
@@ -105,7 +110,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		menuInfo.put("mainMenuNo", mainMenuNo);
 		
 		// 7-3. 메뉴매핑이 되어있으면 접근 메뉴 확인!
-		if(!accessMenu.equals(mainMenuCode)) {
+//		if(!accessMenu.equals(mainMenuCode)) {
+		if(noAuth == null && !accessMenu.equals(mainMenuCode)) {
 			response.sendRedirect( request.getContextPath() + "/error/403" );
 			return false;
 		}
