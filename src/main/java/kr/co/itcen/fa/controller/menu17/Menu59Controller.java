@@ -169,15 +169,15 @@ public class Menu59Controller {
 
 	
 	//test
-	//@ResponseBody
+	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/addorupdate", method=RequestMethod.POST)
-	public String test(@RequestParam(value = "changedRows", defaultValue = "") List<String> changedRows,
+	public DataResult<AccountManagementVo> test(@RequestParam(value = "changedRows", defaultValue = "") List<String> changedRows,
 					   Model model,
 					   @AuthUser UserVo authUser) throws UnsupportedEncodingException {
 		
 		DataResult<AccountManagementVo> dataResult = new DataResult<>();
 		List<AccountManagementVo> list = new ArrayList<AccountManagementVo>();
-		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
+//		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
 		
 		String no     = null;
 		String order  = null;
@@ -217,7 +217,9 @@ public class Menu59Controller {
 			
 		}
 		
-		return uri;
+//		return uri;
+		
+		return dataResult;
 	}
 
 }

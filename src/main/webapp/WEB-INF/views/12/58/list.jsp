@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" />
@@ -13,13 +12,12 @@
 
 
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script type="text/javascript">
 	jQuery(function($) {
-		
+		$("th").attr("class", "center");
 		$.fn.datepicker.dates['ko'] = {
 			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
 			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
@@ -268,40 +266,42 @@
 								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 									<thead>
 									<tr>
-										<th class="center">매입일자</th>
-										<th class="center">매입번호</th>
-										<th class="center">매입순번</th>
-										<th class="center">거래처코드</th>
-										<th class="center">거래처명</th>
-										<th class="center">담당자</th>
-										<th class="center">품목코드</th>
-										<th class="center">품목명</th>
-										<th class="center">입고일자</th>
-										<th class="center">출고일자</th>
-										<th class="center">수량</th>
-										<th class="center">공급가액</th>
-										<th class="center">부가세</th>
-										<th class="center">세금계산서번호</th>
+										<th>매입일자</th>
+										<th>매입번호</th>
+										<th>매입순번</th>
+										<th>거래처코드</th>
+										<th>거래처명</th>
+										<th>담당자</th>
+										<th>품목코드</th>
+										<th>품목명</th>
+										<th>입고일자</th>
+										<th>출고일자</th>
+										<th>수량</th>
+										<th>공급가액</th>
+										<th>부가세</th>
+										<th>합 계</th>
+										<th>세금계산서번호</th>
 									</tr>
 									</thead>
 									<tbody>
 									<tr>
 										<c:forEach items='${dataResult.datas }' var='purchase'>
 										<tr>
-											<td class="center">${purchase.purchaseDate }</td>
-											<td class="center">${purchase.no }</td>
-											<td class="center">${purchase.number }</td>
-											<td class="center">${purchase.customerCode }</td>
-											<td class="center">${purchase.customerName }</td>
-											<td class="center">${purchase.purchaseManager }</td>
-											<td class="center">${purchase.itemCode }</td>
-											<td class="center">${purchase.itemName }</td>
-											<td class="center">${purchase.receiptDate }</td>
-											<td class="center">${purchase.releaseDate }</td>
-											<td class="center">${purchase.quantity }</td>
-											<td class="center">${purchase.supplyValue }</td>
-											<td class="center">${purchase.taxValue }</td>
-											<td class="center">${purchase.taxbillNo }</td>
+											<td>${purchase.purchaseDate }</td>
+											<td>${purchase.no }</td>
+											<td style="text-align:right">${purchase.number }</td>
+											<td>${purchase.customerCode }</td>
+											<td>${purchase.customerName }</td>
+											<td>${purchase.purchaseManager }</td>
+											<td>${purchase.itemCode }</td>
+											<td>${purchase.itemName }</td>
+											<td>${purchase.receiptDate }</td>
+											<td>${purchase.releaseDate }</td>
+											<td style="text-align:right"><fmt:formatNumber value="${purchase.quantity }" pattern="#,###" /></td>
+											<td style="text-align:right"><fmt:formatNumber value="${purchase.supplyValue }" pattern="#,###" /></td>
+											<td style="text-align:right"><fmt:formatNumber value="${purchase.taxValue }" pattern="#,###" /></td>
+											<td style="text-align:right"><fmt:formatNumber value="${purchase.totalPrice }" pattern="#,###" /></td>
+											<td>${purchase.taxbillNo }</td>
 										</tr>
 									</c:forEach>
 									</tr>
@@ -311,30 +311,32 @@
 								<div class="pagination">
 									<ul>
 										<c:choose>
-										<c:when test="${dataResult.pagination.prev }">
-											<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-										</c:otherwise>
+											<c:when test="${dataResult.pagination.prev }">
+												<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+											</c:when>
+											<c:otherwise>
+												<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+											</c:otherwise>
 										</c:choose>
+										
 										<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
-										<c:choose>
-										<c:when test="${pg eq dataResult.pagination.page }">
-											<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${pg }">${pg }</a></li>
-										</c:when>
-										<c:otherwise>
-											<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${pg }">${pg }</a></li>
-										</c:otherwise>
+											<c:choose>
+											<c:when test="${pg eq dataResult.pagination.page }">
+												<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${pg }">${pg }</a></li>
+											</c:when>
+											<c:otherwise>
+												<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${pg }">${pg }</a></li>
+											</c:otherwise>
 										</c:choose>
 										</c:forEach>
+										
 										<c:choose>
 											<c:when test="${dataResult.pagination.next }">
-											<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
-										</c:when>
-										<c:otherwise>
-											<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
-										</c:otherwise>
+												<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+											</c:when>
+											<c:otherwise>
+												<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+											</c:otherwise>
 										</c:choose>
 									</ul>
 								</div>

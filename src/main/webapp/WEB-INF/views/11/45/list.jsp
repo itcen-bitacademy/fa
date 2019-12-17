@@ -52,6 +52,7 @@ form {
 .fifth-column {width:140px;}
 .sixth-column {width:70px;}
 .seventh-column {padding-left:20px;}
+.eight-column {}
 
 /* second row */
 .span2 {padding-left:40px; padding-top:20px;}
@@ -99,19 +100,30 @@ form {
 							<td class="seventh-column" >
 								<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							</td>
-												
-						</tr>
+							</tr>
+							
+<!-- 					<tr> -->
+<!-- 						<td class="eight-column" style="float:right"> -->
+<!-- 							<div class="checkbox" style="float:right"> -->
+<!-- 								<label > -->
+<!-- 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/>  -->
+<!-- 									<span class="lbl">삭제포함</span> -->
+<!-- 								</label> -->
+<!-- 							</div> -->
+<!-- 						</td> -->
+<!-- 					</tr>					 -->
+						
 						</tbody>
 					</table>
-					
 					<div class="row-fluid">
-<!-- 						<div class="span2"> -->
-							<div class="checkbox">
-								<label >
+						<div class="span8"> 
+							<div class="checkbox" style="float:right">
+								<label>
 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
 									<span class="lbl">삭제포함</span>
 								</label>
-							</div>
+							</div>	
+						</div>
 					</div>
 				</form>
 			</div>

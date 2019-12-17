@@ -178,11 +178,11 @@
                              <c:when test="${viewCount == 10 }">
                                  <option value="10" selected style="display:none">10</option>
                              </c:when>
-                             <c:when test="${viewCount == 20 }">
-                                 <option value="20" selected style="display:none">20</option>
-                             </c:when>
                              <c:when test="${viewCount == 30 }">
                                  <option value="30" selected style="display:none">30</option>
+                             </c:when>
+                             <c:when test="${viewCount == 50 }">
+                                 <option value="50" selected style="display:none">50</option>
                              </c:when>
                          </c:choose>
                          <option value="10">10</option>
@@ -282,6 +282,8 @@
         $(function() {
             $(".chosen-select").chosen();
             $("#salesDate").daterangepicker({
+            	startDate: "2019-12-01",
+                endDate: "2019-12-31",
                 locale: {
                     format: 'YYYY-MM-DD'
                 }

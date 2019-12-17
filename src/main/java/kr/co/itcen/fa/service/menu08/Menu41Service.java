@@ -8,7 +8,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu41Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
@@ -131,6 +133,27 @@ public class Menu41Service {
 	//세금계산서에서 지우기
 	public void deleteTaxbill(String id) {
 		menu41Repository.deleteTaxbill(id);
+	}
+	
+	//페이징 하기
+	public DataResult<VehicleVo> list(String id, int page) {
+		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
+		
+		int totalCount = menu41Repository.listCount(id);
+		
+		//pagination
+		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(pagination);
+		List<VehicleVo> list = menu41Repository.list(id, pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
+	}
+
+	//차량코드 중복 확인
+	public boolean checkId(String id) {
+		menu41Repository.checkId(id);
+		return menu41Repository.checkId(id) != null;
 	}
 
 

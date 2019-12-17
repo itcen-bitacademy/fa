@@ -89,6 +89,8 @@ public class Menu13Controller {
 	public String getSales(@PathVariable("salesNo")String salesNo, Model model) {
 		System.out.println("매출 조회" + salesNo);
 		
+		System.out.println(salesNo.substring(1, 9));
+		
 		List<CustomerVo> customerlist = menu13Service.getCustomerList(); // 거래처
 		List<SalesVo> itemlist = menu13Service.getItemList(); // 품목
 		List<SalesVo> sales = menu13Service.getSalesNo(salesNo); // 조회 매출
@@ -107,8 +109,12 @@ public class Menu13Controller {
 							 @SessionAttribute("authUser") UserVo authUser, Model model) {
 		System.out.println("매출 삭제"+salesNo);
 		menu13Service.deleteData(salesNo); // 매출데이터 flag Y
-		Long voucherNo = Long.parseLong(menu13Service.getVoucherNo(salesNo)); // 전표 삭제를 위한 전표번호 get
-		menu03Service.deleteVoucher(voucherNo, authUser); // 전표 및 세금계산서 플래그(삭제) 처리
+		
+		
+		if(menu13Service.getVoucherNo(salesNo)!=null) {
+			Long voucherNo = Long.parseLong(menu13Service.getVoucherNo(salesNo)); // 전표 삭제를 위한 전표번호 get
+			menu03Service.deleteVoucher(voucherNo, authUser); // 전표 및 세금계산서 플래그(삭제) 처리
+		}
 		return MAINMENU + "/" + SUBMENU + "/index"; 
 	}
 	
@@ -125,7 +131,7 @@ public class Menu13Controller {
 		
 		ArrayList<SalesVo> list = arrayData(salesVo, quantity, itemCode, itemName, supplyValue, taxValue, number);
 		//마감
-		if(menu19Service.checkClosingDate(authUser, salesVo.getSalesDate())) { 
+		if(menu19Service.checkClosingDate(authUser, salesVo.getSalesDate())) {  // 마감 여부 체크
 			if(salesVo.getSalesNo() != pathSalesNo) { // vo에 세팅된 번호와 pathvariable번호 일치 
 				menu13Service.updateDelete(pathSalesNo); // 업데이트위해 데이터 삭제
 				menu13Service.updateInsert(list); // 새로운 데이터 insert

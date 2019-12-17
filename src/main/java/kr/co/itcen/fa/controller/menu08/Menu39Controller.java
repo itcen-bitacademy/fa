@@ -121,7 +121,8 @@ public class Menu39Controller {
 	public String update(@ModelAttribute BuildingVo buildingvo, @SessionAttribute("authUser") UserVo authUser,
 			@RequestParam(value="taxbillNo", required=false) String taxbillNo
             ,@RequestParam(value="customerNo", required=false) String customerNo
-            ,@RequestParam(value="depositNo", required=false) String depositNo){
+            ,@RequestParam(value="depositNo", required=false) String depositNo
+            ,Model model) throws ParseException{
 		
 		buildingvo.setUpdateUserid(authUser.getId());
 		
@@ -224,15 +225,22 @@ public class Menu39Controller {
 //		    buildingvo.setVoucherNo(voucherNo);
 //		}
 		
-		menu39Service.modify(buildingvo);
+		//마감 여부 체크
+	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
+	    	System.out.println("마감일 이상함");
+	    	return MAINMENU + "/" + SUBMENU + "/add";
+	    } else {
+	    	model.addAttribute("closingDate", true);
+	    	menu39Service.modify(buildingvo);
+		    return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	    }
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
 	//삭제(D)
 	@RequestMapping(value = "/" + SUBMENU + "/delete" , method = RequestMethod.POST)
 	public String delete(@RequestParam(value="id", required = false, defaultValue = "") String id,
-			@SessionAttribute("authUser") UserVo authUser){
+			@SessionAttribute("authUser") UserVo authUser, BuildingVo buildingvo, Model model) throws ParseException{
 		
 		Long bVoucherNo = menu39Service.getVoucherNo(id);
 		
@@ -246,9 +254,15 @@ public class Menu39Controller {
 			menu03Service.deleteVoucher(voucherVolist, authUser);
 		}
 		
-		menu39Service.delete(id);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		//마감 여부 체크
+	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
+	    	System.out.println("마감일 이상함");
+	    	return MAINMENU + "/" + SUBMENU + "/add";
+	    } else {
+	    	model.addAttribute("closingDate", true);
+	    	menu39Service.delete(id);
+		    return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	    }
 	}
 
 }

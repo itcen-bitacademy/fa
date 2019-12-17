@@ -9,6 +9,7 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
     <c:import url="/WEB-INF/views/common/head.jsp" />
     <style>
     	.number{
@@ -56,6 +57,9 @@
         .chosen-single{
        		margin-top: 4px;
        	}
+       	.chosen-container {
+       		width:260px !important;
+       	}
     </style>
     <script>
 		// 테이블 행추가
@@ -95,20 +99,16 @@
             }
         }
         
-        function setStock(){
-        	
-        }
-        
         var sumData = { // 수량, 공급가액, 부가세 합계 계산
         		addQuantity: function(){ // 수량게산
         			var sum = 0;
         			
-        			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
+        			for(var i=1; i<=$("#item-table tr").length-1; i++){ // 전체 row 돌며 총 합 계산
         				sum = sum + Number($("#quantity"+i).val());
         				$("#totalQuantity").val(sum);
         				
             			if(Number($("#quantity"+i).val()) > Number($("#stock"+i).val()) ){ // 재고 수량 체크
-            				alert("품목을 선택하지 않았거나 \n재고보다 수량이 높습니다.");
+            				dialog("품목을 선택하지 않았거나 <br>재고보다 수량이 높습니다.", false); 
             				$("#quantity"+i).val("");
             				$("#quantity"+i).focus();
             				return;
@@ -118,12 +118,12 @@
         		},
         		addSupplyValue: function(e){
 					var sum = 0;
-					for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
+					for(var i=1; i<=$("#item-table tr").length-1; i++){ // 전체 row 돌며 총 합 계산
 						sum = sum + 
 								Number($("#quantity"+i).val()) *
 								Number($("#supplyValue"+i).val()); // 각 row의 수량과 공급가액 곱
 						$("#taxValue"+i).val(Math.round($("#supplyValue"+i).val()*0.1));
-						$("#totalSupplyValue").val(sum);
+						$("#totalSupplyValue").val(this.setComma(sum));
 					}
 					this.addTaxValue(); // 공급가액 변동시 부가세 다시계산
 					this.totalPrice();
@@ -131,24 +131,25 @@
 				},
 				addTaxValue: function(e){
         			var sum = 0;
-        			for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){ // 전체 row 돌며 총 합 계산
+        			for(var i=1; i<=$("#item-table tr").length-1; i++){ // 전체 row 돌며 총 합 계산
         				sum = sum + 
         						Number($("#quantity"+i).val()) *
         						Number($("#taxValue"+i).val()); // 각 row의 수량과 부가세 곱
-        				$("#totaltaxValue").val(sum);
+        				$("#totaltaxValue").val(this.setComma(sum));
         			}
         			this.totalPrice(); // 변동시 수량 > 공급가액 > 부가세 순으로 계산 후 합계금액
         		},
         		totalPrice: function(){ // 최종 합계급액
-        			var tax = Number($("#totaltaxValue").val());
-        			var supply = Number($("#totalSupplyValue").val());
-        			$("#totalPrice").val(tax+supply);
+        			var tax = this.removeComma($("#totaltaxValue").val()); 
+        			var supply = this.removeComma($("#totalSupplyValue").val());
+        			var sum = Number(tax)+Number(supply); // 콤마 제거 후 연산
+        			$("#totalPrice").val(this.setComma(sum)); // 콤마 다시 세팅
         		},
         		setComma: function(x) { // 콤마 찍기
         		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 콤마 정규식
         		},
         		removeComma: function(x){ // 콤마 제거
-        			return x.replace(",",""); 
+        			return x.replace(/,/g ,""); 
         		}
         }
         
@@ -188,17 +189,50 @@
         
         function insert(){
    			if($("#salesNo").val()==$("#checkSalesNo").val()){ // 기존 제공된 매출번호를 수정한 경우 체크
+   				if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
+   				for(var i=1; i<=$("#item-table tr").length-1; i++){
+   					if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
+   					if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
+   					if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
+   					if(!valid.numberCheck("taxValue"+i, "부가세")) return;
+   				}
+   				
+   				
    				$("#insert-form").submit(); 
    			} else {
-   				alert("매출번호가 수정되어 입력이 불가능합니다.\n새 매출번호를 생성합니다."); 
+   				dialog("매출번호가 수정되어 입력이 불가능합니다.<br>새 매출번호를 생성합니다.", false); 
    				createSalesNo();
    			}
+        }
+        
+        var valid = {
+        		nullCheck: function(id, msg){ // null 체크
+        			if($("#"+id).val()==""){
+        				dialog(msg+" 을(를) 입력 해 주세요.");
+        				return false;
+        			} else {
+        				return true;
+        			}
+        		},
+				strCheck: function(id){  // 문자열 체크 
+        			
+        		}, 
+				numberCheck: function(id, msg){  // 숫자 체크
+        			if(!$.isNumeric($("#"+id).val())){        	
+        				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
+        				$("#"+id).focus();
+        				return false;
+        			} else {
+        				return true;
+        			}
+        		}
+        
         }
         
         function checkNo(){  // 매출번호 입력 확인
 	        var code = $("#salesNo").val();
 	        if(code==""){
-	        	alert("매출번호를 입력하세요.");
+	        	dialog("매출번호를 입력하세요.", false);
 	        	return;
 	        }
 	        location.href = "${pageContext.request.contextPath }/12/13/"+code;
@@ -234,16 +268,14 @@
         
         function deleteCheck(){ // 삭제된 데이터 인지 플래그로 확인
         	var salesNo = $("#checkSalesNo").val();
-        	if($("#flag").val()=="true"&&salesNo==""){
-        		alert("삭제됐거나 없는 데이터 입니다.");
-        		location.href = "${pageContext.request.contextPath }/12/13";
+        	if($("#flag").val()=="true"&&salesNo==""){        		
+        		dialog("삭제됐거나 없는 데이터 입니다." , true);
         	}
         }
         
         function checkClosing(){ // 마감일 세팅 여부
         	if($("#closingDate").val()=="true"){
-        		alert("마감 \n저장되지 않았습니다");
-        		location.href="${pageContext.request.contextPath }/12/13";
+        		dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
         	} 
         }
         
@@ -264,6 +296,28 @@
 		  	    $("#checkSalesNo").val(salseNo);    
 	  	    }
         }
+        
+        function dialog(txt, flag) {
+        	$("#dialog-txt").html(txt);
+    		var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$( this ).dialog( "close" ); 
+								location.href="${pageContext.request.contextPath }/12/13";
+							} else {
+								$( this ).dialog( "close" ); 
+							}
+						}
+					}
+				]
+			});
+    	}
         
     </script>
 </head>
@@ -423,7 +477,7 @@
                             <table id="item-table" class="table table-striped table-bordered table-hover">
                                 <tr>
                                     <th>순번</th>
-                                    <th>품목코드</th>
+                                    <th style="width:260px">품목코드</th>
                                     <th>품목명</th>
                                     <th>수량</th>
                                     <th>공급가액</th>
@@ -454,12 +508,16 @@
                             <!-- PAGE CONTENT ENDS -->
                         </div>
                     </div>
+                    <div id="dialog-confirm" class="hide">
+						<p id="dialog-txt" class="bolder grey">
+						</p>
+					</div>
                     <input type="hidden" value="${saleslist[0].insertUserid }" name="insertUserid">
                     <input type="hidden" value="${saleslist[0].insertDay }" name="insertDay">
                     <input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
                 </form>
                 <!-- /.span -->
-
+                
                 <!-- /.row-fluid -->
             </div>
             <!-- /.page-content -->
@@ -469,12 +527,17 @@
     <!-- /.main-container -->
     <!-- basic scripts -->
     <c:import url="/WEB-INF/views/common/footer.jsp" />
+    <script src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
+
+		<!-- ace scripts -->
+
     <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
     <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+    
+		
     <script>
         $(function() {
             $(".chosen-select").chosen();
-
             $.fn.datepicker.dates['ko'] = {
                 days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
                 daysShort: ["일", "월", "화", "수", "목", "금", "토"],

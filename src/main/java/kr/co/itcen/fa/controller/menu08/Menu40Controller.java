@@ -92,6 +92,7 @@ public class Menu40Controller {
 		String uri = uriComponents.toUriString();
 		model.addAttribute("uri",uri);
 		model.addAttribute("vo",vo);
+				
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

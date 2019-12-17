@@ -3,11 +3,13 @@ package kr.co.itcen.fa.controller.menu12;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,16 +43,17 @@ public class Menu15Controller {
 	private Menu25Service menu25Service;
 	
 	@RequestMapping("/" + SUBMENU)
-	public String list(Model model) {
+	public String list(@ModelAttribute CustomerVo customerVo) {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	@RequestMapping("/" + SUBMENU + "/list")
-	public String list(Model model, @RequestParam(value = "checkNoList", required = false) List<String> checkNoList, @RequestParam(value = "no", required = false) String no) {
+	public String list(@ModelAttribute CustomerVo customerVo, Model model, @RequestParam(value = "noString", required = false) List<String> checkNoList, @RequestParam(value = "no", required = false) String no) {
 		System.out.println(checkNoList);
 		System.out.println(no);
 		if(checkNoList == null) {
 			model.addAttribute("customerList", menu15Service.getAllCustomer(no));
+			customerVo.setNo("");
 		} else {
 			model.addAttribute("customerList", menu15Service.getAllCustomer(checkNoList));
 		}
@@ -59,8 +62,13 @@ public class Menu15Controller {
 	}
 	
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
-	public String add(CustomerVo customerVo, HttpSession session) {
-		UserVo userVo = (UserVo)session.getAttribute("authUser");
+	public String add(@ModelAttribute @Valid CustomerVo customerVo, BindingResult result, Model model, @AuthUser UserVo userVo) {
+		if(result.hasErrors()) {
+			model.addAllAttributes(result.getModel());
+			
+			return MAINMENU + "/" + SUBMENU + "/list";
+		}
+		
 		customerVo.setInsertUserid(userVo.getId());
 		
 		menu15Service.addCustomer(customerVo);
@@ -68,7 +76,13 @@ public class Menu15Controller {
 	}
 	
 	@RequestMapping(value="/" + SUBMENU + "/modify", method=RequestMethod.POST)
-	public String update(CustomerVo customerVo, @AuthUser UserVo userVo) {
+	public String update(@ModelAttribute @Valid CustomerVo customerVo, BindingResult result, Model model, @AuthUser UserVo userVo) {
+		if(result.hasErrors()) {
+			model.addAllAttributes(result.getModel());
+			
+			return MAINMENU + "/" + SUBMENU + "/list";
+		}
+		
 		customerVo.setUpdateUserid(userVo.getId());
 		System.out.println(customerVo);
 		menu15Service.modifyCustomer(customerVo);
@@ -88,12 +102,10 @@ public class Menu15Controller {
 		System.out.println(checkNoList);
 		menu15Service.deleteCustomer(checkNoList, userVo);
 		
-		String noList = "";
-		for (int i = 0; i < checkNoList.size()-1; i++) {
-			noList += (checkNoList.get(i)+",");
-		}
-		noList += checkNoList.get(checkNoList.size()-1);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?checkNoList="+noList;
+		String noString = checkNoList.toString().replaceAll(" ", "").replaceAll("\\[", "").replaceAll("\\]", "");
+		System.out.println(noString);
+		
+		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?noString="+noString;
 	}
 	
 	// PopUp
