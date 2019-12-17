@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu01.Menu32Service;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu11.BankVo;
+import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 
 /**
  * 
@@ -44,6 +46,48 @@ public class Menu32ApiController {
 		System.out.println(customerName+"!!!");
 		List<CustomerVo> customerNameList = menu32Service.getCustomerNameInfo(customerName);
 		return JSONResult.success(customerNameList);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getbankCode")
+	public JSONResult getbankCodeInfo(
+			@RequestParam("bankCodeVal") String bankCode){
+		
+		System.out.println(bankCode+"!!!");
+		List<BankVo> bankCodeList = menu32Service.getBankCodeInfo(bankCode);
+		return JSONResult.success(bankCodeList);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getbankName")
+	public JSONResult getbankNameInfo(
+			@RequestParam("bankNameVal") String bankName){
+		
+		System.out.println(bankName+"!!!");
+		List<BankVo> bankNameList = menu32Service.getBankNameInfo(bankName);
+		return JSONResult.success(bankNameList);
+	}
+	
+
+	
+	@ResponseBody
+	@RequestMapping("/getaccountNo")
+	public JSONResult getaccountNoInfo(
+			@RequestParam("accountNoVal") String accountNo){
+		
+		System.out.println(accountNo+"!!!");
+		List<AccountManagementVo> accountNoList = menu32Service.getAccountNoInfo(accountNo);
+		return JSONResult.success(accountNoList);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getaccountName")
+	public JSONResult getaccountNameInfo(
+			@RequestParam("accountNameVal") String accountName){
+		
+		System.out.println(accountName+"!!!");
+		List<AccountManagementVo> accountNameList = menu32Service.getAccountNameInfo(accountName);
+		return JSONResult.success(accountNameList);
 	}
 
 }

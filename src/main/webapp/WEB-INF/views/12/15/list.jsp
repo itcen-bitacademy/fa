@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,11 +20,12 @@
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 	jQuery(function($) {
 		$(".td-hide").hide();
-		
+		$("th").attr("class", "center");
 		/* $('table th input:checkbox').on('click' , function(){
 			var that = this;
 			$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -310,12 +313,13 @@
 				<div class="span12">
 					<div class="row-fluid">
 						<div class="span12">
-							<form id="form-customer" class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add" method="post">
+							<form:form id="form-customer" modelAttribute="customerVo" class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add" method="post">
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label form-field-1">사업자번호</label>
 										<div class="controls">
-											<input class="span6 input-validation" type="text" id="no" name="no" required>
+											<form:input path="no"/>
+											<!-- <input type="text" class="input-validation" id="no" name="no" required> -->
 											<input class="span6" type="hidden" id="preNo" name="preNo">
 											<div id="invalid">
 												중복된 사업자번호 입니다.
@@ -361,7 +365,8 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">담당자명</label>
 										<div class="controls">
-											<input type="text" class="input-validation" id="managerName" name="managerName" required>
+											<form:input path="managerName" />
+											<!-- <input type="text" class="input-validation" id="managerName" name="managerName" required> -->
 										</div>
 									</div>
 									<div class="control-group">
@@ -382,7 +387,8 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">상호</label>
 										<div class="controls">
-											<input class="span7" class="input-validation" type="text" id="name" name="name" required>
+											<form:input path="name" />
+											<!-- <input class="span7" class="input-validation" type="text" id="name" name="name" required> -->
 										</div>
 									</div>
 									<div class="control-group">
@@ -394,7 +400,8 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">전화번호</label>
 										<div class="controls">
-											<input class="span5 input-validation" type="text" id="phone" name="phone">
+											<form:input path="phone"/>
+											<!-- <input class="span5 input-validation" type="text" id="phone" name="phone"> -->
 										</div>
 									</div>
 									<div class="control-group">
@@ -414,7 +421,8 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">메일</label>
 										<div class="controls">
-											<input class="span7 input-validation" type="text" id="managerEmail" name="managerEmail" required>
+											<form:input path="managerEmail"/>
+											<!-- <input class="span7 input-validation" type="text" id="managerEmail" name="managerEmail" required> -->
 										</div>
 									</div>
 									<div class="control-group">
@@ -461,7 +469,7 @@
 									</table>
 								</div>
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-							</form>
+							</form:form>
 						</div>
 					</div>
 					
@@ -511,13 +519,21 @@
 									<tbody role="alert" aria-live="polite" aria-relevant="all">
 										<c:forEach items="${customerList }" var="customer">
 											<tr class="rows">
-												<td class="center">
-												<label>
-													<input type="checkbox" class="ace">
-													<span class="lbl"></span>
-												</label>
-												</td>
-												<td>${customer.no }</td>
+												<c:choose>
+													<c:when test="${customer.deleteFlag eq '' }">
+														<td class="center">
+														<label>
+															<input type="checkbox" class="ace">
+															<span class="lbl"></span>
+														</label>
+														</td>					
+													</c:when>
+													<c:otherwise>
+														<td></td>
+													</c:otherwise>
+												</c:choose>
+												
+												<td class="center">${customer.no }</td>
 												<td>${customer.name }</td>
 												<td>${customer.ceo }</td>
 												<td>${customer.corporationNo }</td>

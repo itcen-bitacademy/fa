@@ -18,6 +18,7 @@ public class StatementDataVo {
     private Long parent4;
     private Long parent5;
     
+	private String customerNo;
     
     
 	public Long getNo() {
@@ -25,6 +26,12 @@ public class StatementDataVo {
 	}
 	public void setNo(Long no) {
 		this.no = no;
+	}
+	public String getCustomerNo() {
+		return customerNo;
+	}
+	public void setCustomerNo(String customerNo) {
+		this.customerNo = customerNo;
 	}
 	public Long getAccountNo() {
 		return accountNo;

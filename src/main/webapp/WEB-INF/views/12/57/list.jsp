@@ -280,6 +280,7 @@
 										<th class="center">수량</th>
 										<th class="center">공급가액</th>
 										<th class="center">부가세</th>
+										<th class="center">합 계</th>
 										<th class="center">세금계산서번호</th>
 									</tr>
 									</thead>
@@ -296,9 +297,10 @@
 											<td class="center">${sales.itemCode }</td>
 											<td class="center">${sales.itemName }</td>
 											<td class="center">${sales.releaseDate }</td>
-											<td class="center">${sales.quantity }</td>
-											<td class="center">${sales.supplyValue }</td>
-											<td class="center">${sales.taxValue }</td>
+											<td><fmt:formatNumber value="${sales.quantity }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${sales.supplyValue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${sales.taxValue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${sales.totalPrice }" pattern="#,###" /></td>
 											<td class="center">${sales.taxbillNo }</td>
 										</tr>
 									</c:forEach>

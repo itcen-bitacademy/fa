@@ -11,6 +11,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
+<style>
+ .form-horizontal .control-label {
+    text-align: left
+ }
+ 
+ .acqPrice {
+    text-align: right
+ }
+ </style>
+ 
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -85,9 +96,8 @@
 									<div class="control-group">
 										<label class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" id="acqPrice" name="acqPrice"
-												placeholder="금액을 입력하세요" /> <input
-												style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
+											<input type="text" class="acqPrice" name="acqPrice" placeholder="금액을 입력하세요" /> 
+												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
 								</div>
@@ -104,8 +114,7 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1"
-											placeholder="날짜 범위를 지정하세요">
+											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1" placeholder="날짜 범위를 지정하세요">
 										</div>
 									</div>		
 									<div class="control-group">
@@ -136,12 +145,17 @@
 									
 									<div class="control-group" style="margin-bottom:0px;">
 										<div class="span3" style="float: right;">
-												<input type="checkbox" name="flag" id="flag" class="ace" value="d" onclick="checkDel()">
-												<span class="lbl">삭제포함</span>
-												
+											<c:choose>
+												<c:when test='${vo.flag eq ""}'>
+													<input type="checkbox" name="flag" id="flag" class="ace" value="" checked="checked">
+												</c:when>
+												<c:otherwise>
+													<input type="checkbox" name="flag" id="flag" class="ace" value="" >
+												</c:otherwise>
+											</c:choose>
+											<span class="lbl">삭제포함</span>
 											<button class="btn btn-info btn-small"
-												style="float: right; margin-right: 20px;"
-												type="submit"
+												style="float: right; margin-right: 20px;" type="submit" name="search"
 												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 										</div>
 									</div>
@@ -202,10 +216,10 @@
 										<td>${vo.managerName }</td>
 										<td>${vo.ownerName }</td>
 										<td>${vo.payDate }</td>
-										<td><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 										<td>${vo.combineNo }</td>
 										<td>${vo.taxbillNo }</td>
 										<td>${vo.taxKind }</td>
@@ -230,7 +244,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode } ${uri }&page=${dataResult.pagination.startPage - 1 }">
 								<i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
@@ -240,17 +254,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg}">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.endPage + 1 }">
 							<i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
@@ -280,6 +294,10 @@
 				$(this).next().focus();
 			});
 		});
+		
+		//date range picker
+		
+		
 	</script>
 	
 	<script>

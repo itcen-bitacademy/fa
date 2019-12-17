@@ -56,6 +56,13 @@
 									</div>
 								</div>
 								
+								<div class="control-group">
+									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표번호</label>
+									<div class="controls">
+										<input class="span8" type="text" id="no" name="no" placeholder="전표번호"/>
+									</div>
+								</div>
+								
 								<!-- 계정과목  -->
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >계정과목</label>
@@ -76,14 +83,7 @@
 									</div>
 								</div>
 								
-								<div class="control-group">
-									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
-									<div class="controls">
-										<input type="text" id="amount" name="amount">
-									</div>
-								</div>
-								
-						</div>
+							</div>
 	
 						<div class="span6">
 							<div class="tabbable">
@@ -106,8 +106,14 @@
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표사용목적</label>
 									<div class="controls">
 										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적"/>
-										<input class="span8" type="hidden" id="voucherNo" name="no" />
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
+									</div>
+								</div>
+								
+								<div class="control-group">
+									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
+									<div class="controls">
+										<input type="text" id="amount" name="amount" placeholder="0" onkeyup="inputNumberFormat(this)">
 									</div>
 								</div>
 								
@@ -156,7 +162,7 @@
 			<div class="row-fluid">
 				<div class="span8">
 						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
-							formaction="${pageContext.request.contextPath}/01/03/read">조회</button>
+							formaction="${pageContext.request.contextPath}/01/03/?a=1">조회</button>
 						<button class="btn btn-default btn-small" type="reset">취 소</button>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
@@ -209,12 +215,12 @@
 									<td>${voucherVo.accountName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
-								            <td>${voucherVo.amount }</td>
+								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								            <td></td>
 								        </c:when>
 								        <c:otherwise>
 								        	<td></td>
-								            <td>${voucherVo.amount }</td>
+								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								        </c:otherwise>
 								    </c:choose>
 								    <td>${voucherVo.customerNo }</td>
@@ -439,33 +445,27 @@ $(function(){
      var td = tr.children();
      $("input[name=customerNo]").val(td.eq(0).text());
      $("input[name=customerName]").val(td.eq(1).text());
-     $("input[name=bankCode]").val(td.eq(2).text());
-     $("input[name=bankName]").val(td.eq(3).text());
-     $("input[name=cardNo]").val(td.eq(4).text());
-     $("input[name=depositNo]").val(td.eq(5).text());
-     $("input[name=depositHost]").val(td.eq(6).text());
      $("#dialog-message").dialog('close');
   });
-	
-  
-  
-  // 금액 3자리 , 찍기
-  /**
-  function addCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
- }
- $("input[name=amount]").on('keyup', function(event){
- 	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
- });
- //
- $("#input-form").submit(function(event) {
-	 
- });
- */
- 
- 
 }); // $(function
 
+</script>
+<script>
+	function comma(str) {
+	  str = String(str);
+	  return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
+
+	//콤마풀기
+	function uncomma(str) {
+		str = String(str);
+	    return str.replace(/[^\d]+/g, '');
+	}
+
+	//값 입력시 콤마찍기
+	function inputNumberFormat(obj) {
+	    obj.value = comma(uncomma(obj.value));
+	}
 </script>
 </body>
 </html>

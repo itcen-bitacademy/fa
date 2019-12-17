@@ -13,7 +13,7 @@ import org.apache.ibatis.type.Alias;
 public class PurchaseitemVo {
 	private String no;						//품목코드
 	private String name;					//품목명
-	private Long price;						//단가
+	private String price;					//단가
 	private String producedate;				//생산일자
 	private String purpose;					//사용용도
 	private String standard;				//규격
@@ -73,10 +73,10 @@ public class PurchaseitemVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Long getPrice() {
+	public String getPrice() {
 		return price;
 	}
-	public void setPrice(Long price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 	public String getProducedate() {

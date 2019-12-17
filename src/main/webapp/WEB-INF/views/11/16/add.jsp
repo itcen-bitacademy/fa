@@ -77,17 +77,18 @@ tr td:first-child {
 								
 						<tr >
 							<td><h4>지점명</h4></td>
-							<td colspan="2">
+							<td colspan="2" align=left>
 								<input type="text" name="store" id="store" required />
 							</td>
 						</tr>
 							
 						<tr >
 							<td><h4>FAX</h4></td>
-							<td colspan="2">
-								<input type="text" name="fax" id="fax" maxlength="15"
-								 placeholder="팩스번호는 띄어쓰기로 구분." required
-									onKeyup="inputTelNumber(this);" />
+							<td colspan="2" >
+								<input type="text" name="fax" id="fax" maxlength="15" required
+								  onKeyup="inputTelNumber(this);"
+								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'
+								 />
 							</td>
 						</tr>
 							
@@ -123,9 +124,9 @@ tr td:first-child {
 						<tr >
 							<td><h4>담당자전화번호</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgrPhone" id="mgrPhone" maxlength="15"
-									placeholder="전화번호는 띄어쓰기로 구분." required
-									onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'  />
+								<input type="text" name="mgrPhone" id="mgrPhone" maxlength="15" required
+								  onKeyup="inputTelNumber(this);"
+								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 							</td>
 						</tr>
 						</table>
@@ -142,8 +143,9 @@ tr td:first-child {
 							<tr >
 								<td><h4>은행전화번호</h4></td>
 								<td colspan="2">
-									<input type="text" name="phone" id="phone" placeholder="전화번호는 띄어쓰기로 구분." maxlength="15"
-										onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' required />
+									<input type="text" name="phone" id="phone" maxlength="15" required
+								 	 onKeyup="inputTelNumber(this);"
+									 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								</td>
 							</tr>
 							
@@ -195,20 +197,21 @@ tr td:first-child {
 				</div>
 			
 			</div>
-			
+		
 			<hr>
-			
-			<div class="span8">
+			<div>
 				<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 				<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 				<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 				<button class="btn btn-primary btn-small" id="inputbtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
 				<button type="reset" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
+				<hr>
 			</div>
-					
+		
 		</form>			
+		
 		<!-- PAGE CONTENT ENDS -->
-			
+		<p>총 ${dataResult.pagination.totalCnt }건</p>	
 		<table id="simple-table" class="table  table-bordered table-hover">
              <thead>
                   <tr>
@@ -362,10 +365,10 @@ tr td:first-child {
 						$(this).prev().focus();
 					});
 					
-		///////////////////////////////////////////////////////////////////////////////////////////////
+					///////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
-		/////////////////////////////////////////////////////////////////
+					/////////////////////////////////////////////////////////////////
 					//은행코드 중복체크
 						$("#code").change(function(){
 							$("#img-checkcode").hide();
@@ -418,7 +421,7 @@ tr td:first-child {
 				        	      return;
 				        	   }
 				        	   else{
-				        	      $('#myform').submit();
+				        	      $('#myform').add();
 				        	   }
 				        	 });
 	        

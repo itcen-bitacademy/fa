@@ -9,6 +9,29 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
+<style>
+ .form-horizontal .control-label {
+    text-align: left
+ }
+ 
+ .publicValue {
+    text-align: right;
+ }
+ 
+  .acqTax {
+    text-align: right;
+ }
+ 
+  .acqPrice {
+    text-align: right;
+ }
+ 
+  .etcCost {
+    text-align: right;
+ }
+ </style>
+ 
 </head>
 <body class="skin-3">
  <input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
@@ -31,8 +54,9 @@
 						<div class="row-fluid">
 							<!-- PAGE CONTENT BEGINS -->
 
-							<!-- 좌측 -->
-							<form class="form-horizontal" method="post">
+							
+							<form class="form-horizontal" method="post" name="manageForm">
+								<!-- 좌측 -->
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물코드</label>
@@ -91,22 +115,22 @@
 										</div>
 										<div style="float: left; width: 40%">
 											<label style="width: 70px; margin-right: 10px;"
-												class="control-label" for="form-field-1">공시지가</label> <input
-												type="text" id="form-field-1" name="publicValue"
+												class="control-label" for="form-field-1">공시지가</label> 
+												<input type="text" id="form-field-1" name="publicValue" class="publicValue"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">등록세</label>
 										<div class="controls">
-											<input type="text" id="combine_no" name="acqTax"
+											<input type="text" id="combine_no" name="acqTax" class="acqTax"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">합병코드</label>
 										<div class="controls">
-											<input type="text" id="combine_no" name="combineNo"
+											<input type="text" id="combine_no" name="combineNo" 
 												placeholder="" />
 										</div>
 									</div>
@@ -123,10 +147,10 @@
 											</div>
 										</div>
 										<div style="float: left">
-											<label style="width: 60px; margin-right: 30px;"
+											<label style="width: 60px; margin-left: 10px; margin-right: 10px;"
 												class="control-label" for="form-field-1">층수</label>
 											<div style="width: 205px; margin-left:40px" class="controls">
-												<input style="width: 50px" type="text" id="form-field-1"
+												<input style="width: 50px; margin-left : 10px;" type="text" id="form-field-1"
 													name="floor" placeholder="지상" /> <input
 													style="width: 50px" type="text" id="form-field-1"
 													name="basement" placeholder="지하" />
@@ -172,21 +196,21 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">취득금액</label>
 											<div class="controls">
-												<input type="text" id="form-field-1" name="acqPrice"
+												<input type="text" id="form-field-1" name="acqPrice" class="acqPrice"
 													placeholder="금액을 입력하세요" />
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">기타비용</label> <input
-												type="text" id="form-field-1" name="etcCost"
+												type="text" id="form-field-1" name="etcCost" class="etcCost"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">세금계산서번호</label>
 										<div class="controls">
-											<input type="text" class="span7" name="taxbillNo">
+											<input type="text" class="span7" name="taxbillNo" id="taxbillNo">
 										</div>
 									</div>
 									<div class="control-group">
@@ -205,7 +229,7 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small" id="insert"
+												<button class="btn btn-primary btn-small" id="insert" onclick="check_blank()"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">등록</button>
 												<button class="btn btn-warning btn-small" id="update"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
@@ -214,7 +238,7 @@
 												<button class="btn btn-info btn-small" id="search" 
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 												<button class="btn btn-default btn-small" id="reset"
-													style="float: left; margin-right: 20px;" type="reset">취소</button>
+													style="float: left; margin-right: 20px;" type="reset">초기화</button>
 											</div>
 										</div>
 									</div>
@@ -278,10 +302,10 @@
 							<td>${vo.managerName }</td>
 							<td>${vo.ownerName }</td>
 							<td>${vo.payDate }</td>
-							<td><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
-							<td><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
-							<td><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
-							<td><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
+							<td style="text-align : right"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+							<td style="text-align : right"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+							<td style="text-align : right"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+							<td style="text-align : right"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 							<td>${vo.combineNo }</td>
 							<td>${vo.taxbillNo }</td>
 							<td>${vo.taxKind }</td>
@@ -341,9 +365,6 @@
 		</div><!-- /.main-content -->
 		
 	</div><!-- /.main-container -->
-		
-	
-	
 	
 <!-- basic scripts -->
 
@@ -450,12 +471,31 @@ $("input[name=id]").on("change", function() {
 		      }
 		      else if(td.eq(22).text() == "영세"){
 		          $("input[id=zeroTax]").prop('checked', true);
-		      } 
+		      }
+		     
+		     //CRUD button
+		      if($("#taxbillNo").val() != ''){
+		    	  $("#insert").hide();
+		    	  $("#search").hide();
+		    	  $("#update").hide();
+		      }
+		      if($("#taxbillNo").val() == ''){
+			   		$("#insert").hide();
+			   	 	$("#update").show();
+			   		$("#search").hide();
+			  }
 		      
 			});
 		      
 	});
-
+	//초기화 누를시 CRUD버튼 보임
+	$("#reset").click(function(){
+		$("#insert").show();
+   		$("#update").show();
+	  	$("#search").show();
+	  	$('#form-field-customer').val('초기값').trigger('chosen:updated');
+	  	$('#form-field-section').val('초기값').trigger('chosen:updated');
+	});
 	//엔터키 막기
 	document.addEventListener('keydown', function(event) {
 	    if (event.keyCode === 13) {
@@ -472,8 +512,6 @@ $(function() {
 	/* $("#insert").click(function() {
 		if(${closingDate } == true){
 			alert("마감일자를 확인해 주세요");
-		}else{
-			alert("마감일자 잘봤네");
 		}
 	});  */
 	
@@ -490,7 +528,10 @@ $(function() {
 	$("#delete").click(function() {
 	alert("삭제");
 	});
+	
 });
+
+
 </script>
 
 
@@ -508,6 +549,29 @@ function execDaumPostcode() {
            }
         }).open();
      }
+</script>
+
+<!-- 빈 값 check -->
+<script>
+function check_blank(){
+	
+	theForm = document.manageForm;
+	
+	if(theForm.sectionNo.value=="")
+	{
+		alert("대분류 코드를 선택해주세요.")
+		return;
+	}
+	
+	if(theForm.customerNo.value=="")
+	{
+		alert("거래처 코드를 선택해주세요.")
+		return;
+	}
+	
+	theForm.submit();
+	
+}
 </script>
 
 <!-- date picker -->
@@ -543,7 +607,7 @@ function execDaumPostcode() {
 				$(this).prev().focus();
 			});
 		})
-		
+			
 		
 	</script>
 </body>

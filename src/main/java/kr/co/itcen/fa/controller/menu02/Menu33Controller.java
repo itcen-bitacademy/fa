@@ -149,7 +149,7 @@ public class Menu33Controller {
 					  HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
-		
+		purchaseitemVo.setPrice(String.join("", purchaseitemVo.getPrice().split(",")));
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");
@@ -180,6 +180,7 @@ public class Menu33Controller {
 						  			   HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
+		purchaseitemVo.setPrice(String.join("", purchaseitemVo.getPrice().split(",")));
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");
@@ -212,6 +213,7 @@ public class Menu33Controller {
  			 			 			  HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
+		purchaseitemVo.setPrice(String.join("", purchaseitemVo.getPrice().split(",")));
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");

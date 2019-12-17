@@ -109,7 +109,7 @@
 	select 	code as code,
 			pay_princ as payPrinc,
 			int_amount as intAmount,
-			pay_date as payDate
+			date_format(pay_date,'%Y/%m/%d') as payDate
 	from tb_repay
 	where debt_type = 'L'
 		and debt_no = #{_parameter}
@@ -163,7 +163,24 @@
    		where code like #{_parameter}
 	]]>
 	</select>
-	
+	<!-- 해당 코드별 부채확인 -->
+	<select id="selectrepayAlllist" parameterType="list" resultType="repayvo">
+	<![CDATA[
+		select 	code as code,
+			pay_princ as payPrinc,
+			int_amount as intAmount,
+			date_format(pay_date,'%Y/%m/%d') as payDate
+		from tb_repay
+		where debt_type = 'L'
+			and debt_no in 
+	]]>
+		<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+			#{item } 
+		</foreach>
+	<![CDATA[
+		order by code
+	]]>
+	</select>
 	
 	
 	<!-- update -->

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu17.Menu20Service;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
@@ -31,7 +32,8 @@ public class Menu20Controller {
 	/**
 	 * 년도별 마감현황 관리 페이지
 	 */
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@NoAuth
+	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
 	public String closinStateManagementPage(Model model, Menu17SearchForm menu17SearchForm) {
 		List<String> closingYearList = menu20Service.selectClosingYear();
 		model.addAttribute("closingYearList", closingYearList);

@@ -28,18 +28,17 @@
 					<!-- PAGE CONTENT BEGINS -->
 						
 					<form class="form-horizontal" method="post" id="searchForm" action="${pageContext.request.contextPath }/12/54">
-					
 						<div class="span12">
 						<div class="row-fluid">
 									<div class="form-horizontal">
 										<div class="span6">
 											<label class="control-label" for="form-field-date">작 성 일 자</label>
 												<div class="controls">
-													<input class="span4 cl-date-picker" id="sales-date" name="startDate" type="text" data-date-format="yyyy-mm-dd"> 
-													<span class="add-on"><i class="icon-calendar"></i>
+													<input class="span4 cl-date-picker" id="sales-date" name="startDate" type="text" data-date-format="yyyy-mm-dd" value="${search.startDate }"> 
+														<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 													&nbsp; ~ &nbsp;															
-													<input class="span4 cl-date-picker" id="sales-date" name="endDate" type="text" data-date-format="yyyy-mm-dd"> 
+													<input class="span4 cl-date-picker" id="sales-date" name="endDate" type="text" data-date-format="yyyy-mm-dd" value="${search.endDate }"> 
 													<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 												</div>
@@ -61,10 +60,18 @@
 												<div class="controls">
 													<select class="span3 chosen-select" id="customerCode" name="customerCode" data-placeholder="거래처">
 														<option value="">거래처항목</option>
-														<c:forEach items="${customerlist }" var="clist">
-															<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
-														</c:forEach>
-														</select>
+															<c:forEach items="${customerlist }" var="clist">
+																<c:choose>
+																	<c:when test="${clist.customerCode eq search.customerCode }">
+																		<option value="${clist.customerCode }" selected>${clist.customerCode } [${clist.customerName }]</option>
+																	</c:when>
+																
+																	<c:otherwise>
+																			<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
+																	</c:otherwise>
+																</c:choose>
+															</c:forEach>
+													</select>
 												</div>
 											</div>
 										</div>
@@ -79,7 +86,14 @@
 													<select class="span3 chosen-select" id="taxbillNo" name="taxbillNo" data-placeholder="세금계산서">
 															<option value="">없음</option>
 															<c:forEach items="${taxlist }" var="tlist">
-																<option value="${tlist.taxbillNo }">${tlist.taxbillNo } [${tlist.salesNo }]</option>
+																<c:choose>
+																	<c:when test="${tlist.taxbillNo eq search.taxbillNo }">
+																		<option value="${tlist.taxbillNo }" selected>${tlist.taxbillNo } [${tlist.salesNo }]</option>
+																	</c:when>
+																	<c:otherwise>
+																		<option value="${tlist.taxbillNo }">${tlist.taxbillNo } [${tlist.salesNo }]</option>
+																	</c:otherwise>
+																</c:choose>
 															</c:forEach>
 													</select>
 											</div>
@@ -95,7 +109,14 @@
 													<select class="span3 chosen-select" id="itemCode" name="itemCode" data-placeholder="품목명">
 														<option value="">없음</option>
 														<c:forEach items="${itemlist }" var="ilist">
-															<option value="${ilist.itemCode }">${ilist.itemName }</option>
+															<c:choose>
+																<c:when test="${ilist.itemCode eq search.itemCode }">
+																	<option value="${ilist.itemCode }" selected>${ilist.itemName }</option>	
+																</c:when>
+																<c:otherwise>
+																	<option value="${ilist.itemCode }">${ilist.itemName }</option>
+																</c:otherwise>
+															</c:choose>
 														</c:forEach>
 													</select>
 												</div>
@@ -104,7 +125,6 @@
 									</div>
 									</div>
 									<div class="hr hr-18 dotted"></div>
-									
 									<div class="form-horizontal">
 										<div class="control-group">
 											<div class="span10">	
@@ -151,8 +171,7 @@
 		                     <option value="30">30</option>
 		                     <option value="50">50</option>
 	                    </select>
-						</form>
-							
+						</form> 
 						<div class="row-fluid">
 						<div class="span12">
 							<table class="table table-striped table-bordered table-hover">
@@ -193,14 +212,17 @@
 										<td>${rlist.bankName }</td>
 										<td>${rlist.depositNo }</td>
 										<td>${rlist.depositHost }</td>
-										<td>${rlist.totalSupplyValue }</td>
-										<td>${rlist.totalTaxValue }</td>
+										<td class="number"><fmt:formatNumber value="${rlist.totalSupplyValue }" pattern="#,###"></fmt:formatNumber></td>
+                                    	<td class="number"><fmt:formatNumber value="${rlist.totalTaxValue }" pattern="#,###"></fmt:formatNumber></td>
 										<td>${rlist.voucherUse }</td>
 										<td>${rlist.taxType }</td>
 									</tr>
 									</c:forEach>
 								</tbody>
 							</table>
+							<input type="hidden" value="${search.searchFlag }" name="searchFlag" id="searchFlag">
+                        	<input type="hidden" value="${search.startDate }" name="" id="startDate">
+                        	<input type="hidden" value="${search.endDate }" name="" id="endDate">
 							<input type="hidden" value="${pg }" name="" id="currentPage">
 						</div><!-- /span -->
 					</div><!-- /row -->
@@ -287,16 +309,15 @@
         	$("#searchForm").attr("action", url).submit();
         }
 		
+		// 페이지 이동 가능하게 하는 Javascript
 		function movePage(page) { // POST 페이지 이동 (검색 조건 있음)
-            //var searchFlag = $("#searchFlag").val();
+            var searchFlag = $("#searchFlag").val();
             var url = "${pageContext.request.contextPath }/12/54/" + page;
-            location.href = url;
-            
-            /* if (searchFlag == "true") {
+            if (searchFlag == "true") {
                 $("#searchForm").attr("action", url).submit();
             } else {
                 location.href = url;
-            } */
+            }
         }
 		
 	</script>

@@ -20,7 +20,7 @@
 			<![CDATA[
 				select ((select count(*) as count
 						   from tb_customer
-		   				  where name!='여비'
+			  			    and assets_flag!='e'
 			]]>	
 
 				<if test="deleteFlag!=null">		    
@@ -109,11 +109,12 @@
 		<![CDATA[
 			select count(*) as count
 			  from tb_customer
+			 where assets_flag!='e'
 		]]>
 		
 			<if test="deleteFlag!=null">		    
 				<![CDATA[
-					where delete_flag= #{deleteFlag }
+					and delete_flag= #{deleteFlag }
 				]]>
 			</if>
 			<if test="datepicker1=null and !datepicker1.equals('')">		    
@@ -226,7 +227,7 @@
 	               update_userid as updateUserid, 
 	               update_day as updateDay
 		      from tb_customer
-			   where name!='여비'
+			 where assets_flag!='e'
 		]]>
 			<if test="vo.deleteFlag!=null">
 				<![CDATA[
@@ -416,7 +417,7 @@
 	               update_userid as updateUserid, 
 	               update_day as updateDay
 		      from tb_customer
-			  where name!='여비'
+			 where assets_flag!='e'
 		      ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     

@@ -1,11 +1,16 @@
 package kr.co.itcen.fa.vo.menu12;
 
 import org.apache.ibatis.type.Alias;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Alias("salescustomervo")
 public class CustomerVo {
+	@NotEmpty
 	private String no;
 	private String preNo;
+	
+	@NotEmpty
 	private String name;
 	private String preName;
 	private String ceo;
@@ -14,12 +19,19 @@ public class CustomerVo {
 	private String address;
 	private String detailAddress;
 	private String addressAll;
+	
+	@NotEmpty
 	private String phone;
 	private String conditions;
 	private String item;
 	private String openDate;
 	private String jurisdictionOffice;
+	
+	@NotEmpty
 	private String managerName;
+	
+	@NotEmpty
+	@Email
 	private String managerEmail;
 	private String depositNo;
 	private String depositHost;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu57">
-	
+	<!-- 	페이지 수를 세기위한 count -->
 	<select id="count" parameterType="salesvo" resultType="int">
 		<![CDATA[
 		select count(*)
@@ -11,20 +11,21 @@
 		<if test="salesDate != null and !salesDate.equals('') ">
 			<![CDATA[
 			and date_format(sales_date, '%Y-%m') = #{salesDate }
-			]]>	
+			]]>
 		</if>
 		<if test="customerCode != null and !customerCode.equals('') ">
 			<![CDATA[
 			and substring(customer_code, 2) = #{customerCode }
-			]]>	
+			]]>
 		</if>
 	</select>
 	
+
 	<select id="list" parameterType="map" resultType="salesvo">
 		<![CDATA[
 		select sales_no as salesNo
 			  , number
-			  , date_format(sales_date, '%Y-%m-%d') as salesDate
+			  , date_format(sales_date, '%Y-%m-%d') as salesDate  
 			  , emp_manager as empManager
 			  , substring(customer_code, 2) as customerCode
 			  , customer_name as customerName
@@ -35,27 +36,31 @@
 		  	  , tax_value as taxValue
 		  	  , tax_type as taxType
 		  	  , taxbill_no as taxbillNo
+		  	  , total_price as totalPrice
 		  	  , date_format(release_date, '%Y-%m-%d') as releaseDate 
 		from tb_sales
 		where 1=1
 		]]>
-		<if test="sales.salesDate != null and !sales.salesDate .equals('') ">
+		<if
+			test="sales.salesDate != null and !sales.salesDate .equals('') ">
 			<![CDATA[
 			and date_format(sales_date, '%Y-%m') = #{sales.salesDate }
-			]]>	
+			]]>
 		</if>
-		<if test="sales.customerCode != null and !sales.customerCode.equals('') ">
+		<if
+			test="sales.customerCode != null and !sales.customerCode.equals('') ">
 			<![CDATA[
 			and substring(customer_code, 2) = #{sales.customerCode }
-			]]>	
+			]]>
 		</if>
 		<![CDATA[
 		order by salesDate
 		limit #{pagination.pageIndex }, #{pagination.listSize }		
 		]]>
 	</select>
-	
-	<select id="get" parameterType="string" resultType="salescustomervo">
+
+	<select id="get" parameterType="string"
+		resultType="salescustomervo">
 		<![CDATA[
 			select	substring(no, 2) as no, name
 			  from	tb_salescustomer

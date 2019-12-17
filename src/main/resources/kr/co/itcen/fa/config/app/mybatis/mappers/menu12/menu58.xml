@@ -23,8 +23,8 @@
 	<select id="list" parameterType="map" resultType="purchasemanagement06vo">
 		<![CDATA[
 		select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, substring(customer_code, 2) as customerCode, customer_name as customerName
-		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, tax_type as taxType, taxbill_no as taxbillNo,
-		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate 
+		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, tax_type as taxType, taxbill_no as taxbillNo
+		  , date_format(receipt_date, '%Y-%m-%d') as receiptDate, total_price as totalPrice, date_format(release_date, '%Y-%m-%d') as releaseDate 
 		from tb_purchasemanagement
 		where 1=1
 		]]>

@@ -36,13 +36,22 @@ public class Menu15Service {
 		if(customerVo.getOpenDate().equals("")) {
 			customerVo.setOpenDate(null);
 		}
-		System.out.println(customerVo);
+		
 		menu15Repository.saveCustomer(customerVo);
+		
+		customerVo.setNo(customerVo.getNo().substring(1));
+		System.out.println(customerVo);
 	}
 
 	public void modifyCustomer(CustomerVo customerVo) {
 		customerVo.setNo("S"+customerVo.getNo());
+		if(customerVo.getOpenDate().equals("")) {
+			customerVo.setOpenDate(null);
+		}
+		
 		menu15Repository.updateCustomer(customerVo);
+		
+		customerVo.setNo(customerVo.getNo().substring(1));
 	}
 
 	public Boolean existCustomer(String no) {

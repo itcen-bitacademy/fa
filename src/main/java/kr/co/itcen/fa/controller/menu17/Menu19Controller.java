@@ -39,7 +39,7 @@ public class Menu19Controller {
 	/**
 	 * 마감일자관리 페이지
 	 */
-	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String closingDateListPage(Model model, @RequestParam(defaultValue = "1") int page) {
 		model.addAttribute("dataResult", menu19Service.selectAllClosingDate(page));
 

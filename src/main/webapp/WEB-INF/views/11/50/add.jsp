@@ -91,7 +91,7 @@
 										<td class="first-span-first-padding-right"><h4>사채코드</h4></td>
 										<td class="second-td" colspan="2">
 										<input type="hidden" name="no" id = "no" />
-										<input type="text" id="pdebtcode-id" class="p-debt-code-input" name="code" placeholder="ex) I191128001 (I+연+월+일+번호)"  />
+										<input type="text" id="pdebtcode-id" class="p-debt-code-input" name="code" />
 										<input class="btn btn-primary btn-small" id="btn-check-code" type="button" value="중복확인">
 										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 										</td>
@@ -108,7 +108,7 @@
 										<td class="first-span-first-padding-right"><h4>차입일자 ~ 만기일자</h4></td>
 										<td class="second-td" colspan="2">
 											<div class="row-fluid input-prepend">
-												<input type="text" name="debtExpDate" name="date-range-picker" id="id-date-range-picker-1" /> <span class="add-on"> <i class="icon-calendar"></i>
+												<input type="text" name="debtExpDate" name="date-range-picker" id="id-date-range-picker-1" readonly/> <span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
 										</td>
@@ -139,14 +139,12 @@
 									<tr>
 										<td class="first-span-first-padding-right"><h4>은행코드</h4></td>
 										<td class="second-td" colspan="2">
-											<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드"/>
-											<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명"/>
-												<a href="#" id="a-bankinfo-dialog">
-													<span class="btn btn-small btn-info">
-														<i class="icon-search nav-search-icon"></i>
-													</span>
-												</a>
-												
+												<div class="input-append">
+													<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly/>
+														<span class="add-on">
+							                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+							                        	</span>
+												</div>
 												<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
 												<div id="dialog-message" title="은행코드" hidden="hidden">
 															<table id ="dialog-message-table" align="center">
@@ -181,7 +179,7 @@
 														</table>
 												</div>
 												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-											
+												<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly/>
 										</td>
 									</tr>
 									<tr>
@@ -207,14 +205,11 @@
 									<tr>
 										<td class="second-span-first-padding-right"><h4>차입금대분류</h4></td>
 										<td colspan="2">
-										<select class="chosen-select form-control" name="majorCode" id="majorcode-field-select">
-												<option value="초기값">선택해주세요.</option>
-												<option value="008001">국내은행</option>
-												<option value="008002">저축은행</option>
-												<option value="008003">신용금고</option>
-												<option value="008004">새마을금고</option>
-												<option value="008005">외국계은행</option>
-												<option value="008006">증권</option>
+										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
+											<option value="초기값">선택해주세요.</option>
+											<c:forEach items="${sectionlist}" var="sectionvo">
+												<option value="${sectionvo.code}">${sectionvo.classification }</option>
+											</c:forEach>
 										</select>
 										</td>
 									</tr>
@@ -254,13 +249,12 @@
 									<tr>
 										<td class="second-span-first-padding-right"><h4>계좌</h4></td>
 										<td colspan="2">
-											<input type="text" class="search-input-width-first" id="input-id-depositNo" name="depositNo" placeholder="계좌번호"/>
-											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주"/>
-												<a href="#" id="a-bankaccountinfo-dialog">
-													<span class="btn btn-small btn-info">
-														<i class="icon-search nav-search-icon"></i>
-													</span>
-												</a>
+											<div class="input-append">
+												<input type="text" class="search-input-width-first" id="input-id-depositNo" name="depositNo" placeholder="계좌번호" readonly/>
+													<span class="add-on">
+						                            	<a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+						                            </span>
+											</div>
 												
 												<!-- 계좌정보 Modal pop-up : start -->
 												<div id="dialog-account-message" title="계좌" hidden="hidden">
@@ -291,7 +285,7 @@
 													</table>
 												</div>
 												<!-- 계좌정보 Modal pop-up : end -->
-								
+												<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
 										</td>
 									</tr>
 								</table>
@@ -1002,7 +996,7 @@
 		
 		//--------------------------------------------------------------------------------------------------------------------------//
 		// 유효성 검사 코드 - (jQuery Validation) : validate the comment form when it is submitted
-		/* $("#input-form").validate({
+		$("#input-form").validate({
 			// 테스트를 위하여 유효성 검사가 완료되어도 submit을 처리하지 않음.
 			debug : true,
 			//검사할 필드와 검사 항목의 나열
@@ -1056,7 +1050,7 @@
 		    	alert("submitHandler");
 		    	return false;  // block the default submit action
 		    }
-		}); */
+		});
 		//--------------------------------------------------------------------------------------------------------------------------//
 		
 	});
