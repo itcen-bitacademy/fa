@@ -97,6 +97,11 @@ public class Menu03Service {
 	
 	// 전표삭제 (5팀)
 	public Long deleteVoucher(Long no, @AuthUser UserVo userVo) {
+//		for(int i = 0; i < voucherVo.size(); i++) {
+//		if(!menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
+//			return null;
+//		}
+//	}
 		menu03Repository.deleteVoucher(no, userVo);
 		return 0L;
 	}
