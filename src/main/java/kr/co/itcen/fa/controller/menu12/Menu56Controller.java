@@ -51,11 +51,15 @@ public class Menu56Controller {
 		DataResult<CurrentSituationVo> dataResult = menu56Service.getList(page, vo);
 		
 		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("vo",vo);
 		
 		// 대분류 목록을 보여주기 위한 코드
 		List<SectionVo> maincategory = menu56Service.getCategory();
 		model.addAttribute("gcategory",maincategory);
-
+		
+		//품목 목록을 보여주기 위한 코드
+		List<CurrentSituationVo> subcategory = menu56Service.getItemname(vo.getSectioncode());
+		model.addAttribute("subcategory",subcategory);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

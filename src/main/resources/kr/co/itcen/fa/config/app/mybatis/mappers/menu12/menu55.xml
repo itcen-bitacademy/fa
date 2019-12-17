@@ -78,7 +78,7 @@
 							 from tb_sales as s1
 							 where 1=1
 							]]>
-	 						<if test="searchdate!=null and !searchdate.equals('')">
+	 						<if test="vo.searchdate!=null and !vo.searchdate.equals('')">
 							<![CDATA[ 
 					         and date_format(s1.sales_date,'%Y-%m') <= #{vo.searchdate }
 					         ]]>
@@ -92,7 +92,7 @@
 							 from	tb_purchasemanagement as p1
 							 where 1=1
 							 ]]>
-							 <if test="searchdate!=null and !searchdate.equals('')">
+							 <if test="vo.searchdate!=null and !vo.searchdate.equals('')">
 							 <![CDATA[
 							  and date_format(p1.purchase_date,'%Y-%m') <= #{vo.searchdate }
 							 ]]>

@@ -47,7 +47,9 @@ public class Menu55Controller {
 		//전체 리스트를 가져오기 위한 코드, page
 		DataResult<CurrentSituationVo> dataResult = menu55Service.getList(page,vo);
 		model.addAttribute("dataResult",dataResult);
-
+		
+		model.addAttribute("vo",vo);
+		
 		//품목 을 가져 오기위한 코드		
 		List<CurrentSituationVo> iname = menu55Service.getitemcode(vo.getItemcode());
 		model.addAttribute("itemname",iname);
