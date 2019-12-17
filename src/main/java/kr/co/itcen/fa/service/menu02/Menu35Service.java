@@ -24,9 +24,9 @@ public class Menu35Service {
 //		menu35Repository.test();
 //	}
 	
-	public List<CustomerVo> list() {
-		return menu35Repository.getList();
-	}
+//	public List<CustomerVo> list() {
+//		return menu35Repository.getList();
+//	}
 	
 	public void insert(CustomerVo vo) {
 		menu35Repository.insert(vo);

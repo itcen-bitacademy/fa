@@ -380,7 +380,7 @@
 									<label class="control-label" for="depositNo">입금계좌번호</label>
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" id="depositNo" name="depositNo" style="width: 200px;"> 
+											<input type="text" id="depositNo" name="depositNo" readonly style="width: 200px;"> 
 											<span class="add-on">
 											<a href="#" id="a-bankaccountinfo-dialog">
 											<i class="icon-search icon-on-right bigger-110"></i></a></span>
