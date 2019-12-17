@@ -64,7 +64,7 @@
 			       update_day as updateDay
 			  from tb_customer
 			 where delete_flag = 'N'
-			   and name!='여비'
+			   and assets_flag!='e'
 		]]>
 		<if test="pagination.pageIndex >= 0 ">
 			<![CDATA[
@@ -151,7 +151,7 @@
 			       update_userid as updateUserid
 			  from tb_customer
 			 where delete_flag = "N"
-			   and name!='여비'
+			   and assets_flag!='e'
 			   and no like '%${no }%'
 		]]>
 	</select>
@@ -180,7 +180,7 @@
 				   update_userid = #{updateUserid },
 				   update_day = now()
 			 where no = concat('A', #{no})
-			   and name!='여비'
+			   and assets_flag!='e'
 		]]>
 	</update>
 	
@@ -190,7 +190,7 @@
 			update tb_customer
 			   set delete_flag = 'Y'
 			 where name =  #{name }
-			   and name!='여비'
+			   and assets_flag!='e'
 		]]>
 	</update>
 	
@@ -200,6 +200,7 @@
 			delete from tb_customer
 			 where no = concat('A', #{no})
 			   and delete_flag = "Y";
+			   and assets_flag!='e'
 		]]>
 	</delete>
 	
@@ -208,7 +209,7 @@
 		select	count(*)
 		 from	tb_customer 
 		 where	delete_flag = "N"
-		   and  name!='여비'
+		   and  assets_flag!='e'
 		]]>
 	</select>
 	
