@@ -112,7 +112,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		// 7-3. 메뉴매핑이 되어있으면 접근 메뉴 확인!
 //		if(!accessMenu.equals(mainMenuCode)) {
-		if(noAuth == null && !accessMenu.equals(mainMenuCode)) {
+		if(!"7".equals(authUser.getTeamNo()) && (noAuth == null && !accessMenu.equals(mainMenuCode))) {
 			response.sendRedirect( request.getContextPath() + "/error/403" );
 			return false;
 		}
