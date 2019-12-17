@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
-import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.StaffVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
@@ -161,5 +160,11 @@ public class Menu41Repository {
 		map.put("pagination", pagination);
 		List<VehicleVo> list = sqlSession.selectList("menu41.list", map);
 		return list;
+	}
+
+	//차량 코드 유효성 검사
+	public String checkId(String id) {
+		String check = sqlSession.selectOne("menu41.checkId", id);
+		return check;
 	}
 }

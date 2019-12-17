@@ -12,7 +12,6 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu41Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
-import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
@@ -149,6 +148,12 @@ public class Menu41Service {
 		dataResult.setDatas(list);
 		
 		return dataResult;
+	}
+
+	//차량코드 중복 확인
+	public boolean checkId(String id) {
+		menu41Repository.checkId(id);
+		return menu41Repository.checkId(id) != null;
 	}
 
 
