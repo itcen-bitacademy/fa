@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 
@@ -34,10 +35,17 @@ public class Menu59Repository {
 		return sqlSession.selectList("menu59.getList",menu17SearchForm);
 	}
 
-	//계정과목 조회 개수
-	public int selectCount(AccountManagementVo vo) {
-		return sqlSession.selectOne("menu59.selectCount",vo);
+	//계정과목 조회 총개수, 가장 높은 값
+	public DataResult<AccountManagementVo> selectCount(AccountManagementVo vo) {
+		DataResult<AccountManagementVo> dataResult = new DataResult<>();		
+		
+		List<AccountManagementVo> list = sqlSession.selectList("menu59.selectCount",vo);
+		
+		dataResult.setDatas(list);
+		
+		return dataResult;
 	}
+	
 	
 	//계정과목,순서 중복값 체크
 	public List<AccountManagementVo> chechedAccount(AccountManagementVo vo) {
