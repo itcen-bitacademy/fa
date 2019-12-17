@@ -34,7 +34,7 @@ public class Menu55Controller {
 	//@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model,
-			@ModelAttribute CurrentSituationVo vo,
+			@ModelAttribute("vo") CurrentSituationVo vo,
 			@RequestParam(value="page",required = false,defaultValue = "1")int page) {
 		
 		if(vo.getSearchdate()==null || "".equals(vo.getSearchdate()))
@@ -47,7 +47,8 @@ public class Menu55Controller {
 		//전체 리스트를 가져오기 위한 코드, page
 		DataResult<CurrentSituationVo> dataResult = menu55Service.getList(page,vo);
 		model.addAttribute("dataResult",dataResult);
-
+		
+		
 		//품목 을 가져 오기위한 코드		
 		List<CurrentSituationVo> iname = menu55Service.getitemcode(vo.getItemcode());
 		model.addAttribute("itemname",iname);

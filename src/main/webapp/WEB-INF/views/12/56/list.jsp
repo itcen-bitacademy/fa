@@ -33,17 +33,11 @@
 													<label class="control-label" for="cl-ym-date-picker"> 년 월</label>
 													<div class="controls" >
 														<div class="row-fluid input-append">
-															<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" />
+															<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" />
 															<span class="add-on">
 																<i class="icon-calendar"></i>
 															</span>
-														</div>
-													<!-- searchdate 상태 유지 -->
-													<script type="text/javascript">
-													var searchdate = "${param.searchdate}";
-													$("#searchdate").val(searchdate);
-													</script>
-													
+														</div>													
 													</div>
 											</div>
 										</div>
@@ -60,8 +54,8 @@
 														</select>
 													<!-- sectioncode 상태 유지  -->	
 													<script type="text/javascript">
-													var sectioncode = "${param.sectioncode}";
-													$("#sectioncode").val(sectioncode);
+													var itemcode = "${param.sectioncode}";
+													$("#gcategory").val(itemcode);
 													</script>
 													</div>
 											</div>
@@ -79,8 +73,8 @@
 														</select>
 													<!-- itemcode 상태 유지  -->	
 													<script type="text/javascript">
-													var itemcode = "${param.itemcode}";
-													$("#itemcode").val(itemcode);
+													var subcategory = "${param.itemcode}";
+													$("#subcategory").val(subcategory);
 													</script>
 													</div>
 											</div>
@@ -262,6 +256,8 @@ $(function() {
 			}
 		});
 	});
+
+	
 	
 	function createoption(list){
 		console.log(list);

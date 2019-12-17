@@ -37,7 +37,7 @@ public class Menu56Controller {
 	// 대분류를 가져오기 위한 코드
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model ,
-			@ModelAttribute CurrentSituationVo vo,
+			@ModelAttribute("vo") CurrentSituationVo vo,
 			@RequestParam(value="page",required = false, defaultValue = "1")int page) {
 		
 		
@@ -52,10 +52,14 @@ public class Menu56Controller {
 		
 		model.addAttribute("dataResult",dataResult);
 		
+		
 		// 대분류 목록을 보여주기 위한 코드
 		List<SectionVo> maincategory = menu56Service.getCategory();
 		model.addAttribute("gcategory",maincategory);
-
+		
+		//품목 목록을 보여주기 위한 코드
+		List<CurrentSituationVo> subcategory = menu56Service.getItemname(vo.getSectioncode());
+		model.addAttribute("subcategory",subcategory);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	

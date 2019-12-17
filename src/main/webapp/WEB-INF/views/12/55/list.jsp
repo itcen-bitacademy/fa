@@ -69,16 +69,10 @@ $(function() {
 											style="text-align: left; width: 120px;"> 년 월</label>
 										<div class="controls" style="margin-left: 120px;">
 											<div class="row-fluid input-append">
-												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" />
+												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" />
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
-
-											<!-- searchdate 상태 유지 -->
-											<script type="text/javascript">
-													var searchdate = "${param.searchdate}";
-													$("#searchdate").val(searchdate);
-													</script>
 										</div>
 									</div>
 								</div>
@@ -90,7 +84,7 @@ $(function() {
 											style="text-align: left; width: 120px;">품목명</label>
 										<div class="controls" style="margin-left: 120px;">
 											<select class="chosen-select" id="itemname" name="itemcode"
-												data-placeholder="품목명 선택">
+												data-placeholder="품목명 선택" >
 												<option value=""></option>
 												<c:forEach items='${itemname }' var='itemname'
 													varStatus='status'>
@@ -100,8 +94,8 @@ $(function() {
 											<!-- itemname 상태 유지 -->
 											<script type="text/javascript">
 													var itemcode = "${param.itemcode}";
-													$("#itemcode").val(itemcode);
-													</script>
+													$("#itemname").val(itemcode);
+											</script>
 										</div>
 									</div>
 								</div>
@@ -116,6 +110,7 @@ $(function() {
 							</div>
 						</div>
 					</div>
+	
 				</form>
 
 				<div class="hr hr-18 dotted"></div>
