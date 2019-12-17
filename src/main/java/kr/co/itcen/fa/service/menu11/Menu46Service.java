@@ -82,9 +82,16 @@ public class Menu46Service {
 		menu46Repository.update(sTermDebtVo);
 	}
 	
+	public Boolean exist(String code) {
+		return (menu46Repository.exist(code) > 0);
+	}
+	
+	public Boolean existRepay(String code) {
+		return menu46Repository.existRepay(code);
+	}
 	//-------------------상환------------------------//
-	public void updateRepayBal(RepayVo repayVo) {
-		menu46Repository.updateRepayBal(repayVo);
+	public void updateRepayBal(STermDebtVo vo) {
+		menu46Repository.updateRepayBal(vo);
 	}
 	
 	public void insertRepay(RepayVo repayVo) {
