@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.MenuService;
@@ -28,37 +30,48 @@ public class Menu54Controller {
 	public static final String SUBMENU = "54";
 
 	@Autowired
-	private MenuService menuService;
-
-	@Autowired
 	private Menu54Service menu54Service;
 	
 	
 	// 필터기능없이 조회되는 리스트 
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model) {
-		menu54Service.test();
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list", "/" + SUBMENU + "/{page }" }, method=RequestMethod.GET)
+	public String list(Model model, @PathVariable(name="page", required=false) String page) {
 		
-		List<SellTaxbillVo> customerlist = menu54Service.salesCustomer();
-		model.addAttribute("customerlist", customerlist);
+		int ipage = 1;
+		if(page!=null) { // pathvariable 페이지 없는경우 1페이지 세팅
+			ipage = Integer.parseInt(page);
+		} 
 		
-		List<SellTaxbillVo> itemlist = menu54Service.salesItems();
-		model.addAttribute("itemlist", itemlist);
+		// 거래처에 대한 리스트를 출력해주는 기능
+		//List<SellTaxbillVo> customerlist = menu54Service.salesCustomer();
+		model.addAttribute("customerlist", menu54Service.salesCustomer());
 		
-		List<SellTaxbillVo> taxlist = menu54Service.taxbillList();
-		model.addAttribute("taxlist", taxlist);
+		// 판매물품에 대한 리스트를 출력해주는 기능
+		//List<SellTaxbillVo> itemlist = menu54Service.salesItems();
+		model.addAttribute("itemlist", menu54Service.salesItems());
 		
-		List<SellTaxbillVo> resultlist = menu54Service.taxbillAllList();
-		model.addAttribute("resultlist", resultlist);
+		// 세금계산서에 대한 리스트를 출력해주는 기능
+		//List<SellTaxbillVo> taxlist = menu54Service.taxbillList();
+		model.addAttribute("taxlist", menu54Service.taxbillList());
+		
+		// 필터기능을 거치지 않고 전체 리스트가 조회되는 기능
+		model.addAttribute("resultlist", menu54Service.taxbillAllList(ipage));
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	// 조회기능을 구현한 Controller
 	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}"}, method=RequestMethod.POST)
-	public String list(TaxbillSearchVo tvo, Model model) {
+	public String list(TaxbillSearchVo tvo, Model model, 
+			@PathVariable(name="page", required=false)String page, 
+			@RequestParam(name="viewCount") int viewCount) {
 		
 		System.out.println("검색기능");
+		
+		int ipage = 1;
+		if(page!=null) { // pathvariable 페이지 없는경우 1페이지 세팅
+			ipage = Integer.parseInt(page);
+		}
 		
 		List<SellTaxbillVo> customerlist = menu54Service.salesCustomer();
 		model.addAttribute("customerlist", customerlist);
@@ -69,12 +82,13 @@ public class Menu54Controller {
 		List<SellTaxbillVo> taxlist = menu54Service.taxbillList();
 		model.addAttribute("taxlist", taxlist);
 		
-		List<SellTaxbillVo> alllist = menu54Service.taxbillAllList();
-		model.addAttribute("alllist", alllist);
+		//List<SellTaxbillVo> alllist = menu54Service.taxbillAllList(ipage);
+		model.addAttribute("alllist", menu54Service.taxbillAllList(ipage));
 		
-		List<SellTaxbillVo> resultlist = menu54Service.taxbillsearch(tvo);
+		List<SellTaxbillVo> resultlist = menu54Service.taxbillSearch(tvo, ipage, viewCount);
 		model.addAttribute("resultlist", resultlist);
-		System.out.println(resultlist.toString());
+		
+		System.out.println(tvo.toString());	// 객체에 값은 담겨있다.
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

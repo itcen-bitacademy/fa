@@ -6,11 +6,7 @@
 <html lang="ko">
 <head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-	<style>
-		.chosen-search {
-			display: none;
-			}
-	</style>
+	
 
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -22,13 +18,14 @@
 
 	<script type="text/javascript">
 		$(function() {
-			$(".chosen-select").chosen();
+			$(".chosen-select").chosen({no_results_text: "일치하는 계정코드가 존재하지 않습니다."});
 		})
 	</script>
 
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	
 	<c:import url="/WEB-INF/views/common/head.jsp" />
+	
 </head>
 
 <body class="skin-3">
@@ -51,11 +48,34 @@
 			
 				<div class="row-fluid"> <!-- 검색조건 -->
 					<form class="form-horizontal; center">
-					<div class="control-group" style="float: left">
-						<div class="controls" style="float: left">
-							계정코드/계정명
-							<select class="chosen-select" id="accountNo" name="accountNo" data-placeholder="계정과목코드" style="width:100px; float: left;">		
-								<option value="" data-accountName=""></option>		
+							
+							상호명/사업자등록번호:&nbsp;
+									<div class="input-append">
+										<a href="#" id="a-customerinfo-dialog">
+											<input type="text" class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width:150px;" readonly/>
+											<script type="text/javascript">
+												var customerName = "${param.customerName}";
+												$("#customerName").val(customerName);
+												</script>
+											<span class="add-on">
+				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            </span>
+				                    	</a>
+									</div>
+				
+						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						<script type="text/javascript">
+							var customerNo = "${param.customerNo}";
+							$("#customerNo").val(customerNo);
+						</script>
+							
+							
+							
+						
+					
+						&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명
+							<select class="chosen-select" id="accountCode" name="accountCode" data-placeholder="계정과목코드" style="width:150px; float: left;">		
+								<option value="" data-accountName="">선택안함</option>		
 								<c:choose>
 									<c:when test="${accountNo eq accountNo }">
 										<option value="${accountNo}" data-accountName="${accountNo }" selected>${accountNo }</option>
@@ -67,40 +87,15 @@
 							</select>
 								
 							<script type="text/javascript">
-								var accountNo = "${param.accountNo}";
-								$("#accountNo").val(accountNo);
+								var accountCode = "${param.accountCode}";
+								$("#accountCode").val(accountCode);
 							</script>
-						</div>
 						&nbsp; &nbsp; &nbsp;
-						<input type="text" id="accountName" name="accountName" placeholder="계정명"  style="text-align: center; width:100px;" readonly="readonly" />
+						<input type="text" id="accountName" name="accountName" placeholder="계정명"  style="text-align: center; width:150px;" readonly="readonly" />
 						<script type="text/javascript">
 							var accountName = "${param.accountName}";
 							$("#accountName").val(accountName);
 						</script>
-						
-					</div>
-					
-					<div class="form-group" style="float: left">
-						&nbsp; &nbsp;&nbsp; &nbsp;상호명/사업자등록번호:&nbsp;
-									<div class="input-append">
-										<a href="#" id="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" id="name" name="name" readonly/>
-											<script type="text/javascript">
-												var name = "${param.name}";
-												$("#name").val(name);
-												</script>
-											<span class="add-on">
-				                            <i class="icon-search icon-on-right bigger-110"></i>
-				                            </span>
-				                    	</a>
-									</div>
-				
-						<input type="text" id="no" name="no" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
-						<script type="text/javascript">
-							var no = "${param.no}";
-							$("#no").val(no);
-						</script>
-					</div>
 					
 					
 					<!-- 거래처 Modal pop-up : start -->
@@ -145,8 +140,7 @@
 					</div>
 					<!-- 거래처Modal pop-up : end -->
 					
-					<div class="form-group" style="float: left">
-						&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
+						&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
 							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px"/>
 							<span class="add-on">
@@ -171,13 +165,11 @@
 							var datepicker2 = "${param.datepicker2}";
 							$("#datepicker2").val(datepicker2);
 						</script>
-					</div>
 					&nbsp; &nbsp;&nbsp;
-					<button class="btn btn-small btn-info" id="search" name="search">조회</button>
-				</form>
+					<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+					</form>
 				
-				<div class="hr hr-18 dotted">
-				</div>
+				<div class="hr hr-18 dotted"></div>
 			</div><!-- 검색조건 END -->
 			
 			<div class="row-fluid">
@@ -200,12 +192,12 @@
 											<th class="center">카드번호/사용자</th>
 											<th class="center">은행명/계좌번호/예금주</th>
 											<th class="center">차대구분</th>
-											<th class="center">금액</th>
+											<th class="center">차변</th>
+											<th class="center">대변</th>
 										</tr>
 									</thead>
 									
 									<tbody>
-								
 										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 											<tr>
 												<td>${vo.accountName }</td>
@@ -214,10 +206,33 @@
 												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
 												<td>${vo.insertTeam }/${vo.insertUserid }</td>
 												<td>${vo.voucherUse }</td>
+												<c:choose>
+												<c:when test="${empty vo.cardNo }">
+												<td></td>
+												</c:when>
+												<c:otherwise>
 												<td>${vo.cardNo }/${vo.cardUser }</td>
+												</c:otherwise>
+												</c:choose>
+												<c:choose>
+												<c:when test="${empty vo.bankName}">
+												<td></td>
+												</c:when>
+												<c:otherwise>
 												<td>${vo.bankName }/${vo.depositNo }/${vo.depositHost }</td>
+												</c:otherwise>
+												</c:choose>
 												<td>${vo.amountFlag }</td>
-												<td>${vo.amount }</td>
+													<c:choose>
+												        <c:when test="${vo.amountFlag == '차변' }">
+												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												            <td></td>
+												        </c:when>
+												        <c:otherwise>
+												        	<td></td>
+												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												        </c:otherwise>
+												    </c:choose>
 											</tr>
 									</c:forEach>
 									</tbody>
@@ -228,28 +243,6 @@
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-	
-			<div class="pagination"><!-- 페이징 공통 -->
-				<ul>
-					<li class="disabled">
-						<a href="#">
-							<i class="icon-double-angle-left"></i>
-						</a>
-					</li>
-					
-					<li class="active"><a href="#">1</a></li>
-								
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li>
-						<a href="#">
-							<i class="icon-double-angle-right"></i>
-						</a>
-					</li>
-				</ul>
-			</div>
 			
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
@@ -388,8 +381,10 @@
 		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
 			var tr = $(this);
 			var td = tr.children();
-			$("input[name=no]").val(td.eq(1).text());
-			$("input[name=name]").val(td.eq(2).text());
+			var customerNo = td.eq(1).text();
+			var noArray = customerNo.split('-');
+			$("input[name=customerNo]").val(noArray[0]+noArray[1]+noArray[2]);
+			$("input[name=customerName]").val(td.eq(2).text());
 			$("#dialog-message").dialog('close');
 		});
 
@@ -397,7 +392,7 @@
 </script>
 
 				<script type="text/javascript">
-				$('#accountNo').change(function () {
+				$('#accountCode').change(function () {
 			    	var accountName =$(this).find('option:selected').attr('data-accountName');
 			    	$('#accountName').val(accountName);
 			   	});

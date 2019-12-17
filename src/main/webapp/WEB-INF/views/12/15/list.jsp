@@ -23,7 +23,7 @@
 	jQuery(function($) {
 		$(".td-hide").hide();
 		
-		$('table th input:checkbox').on('click' , function(){
+		/* $('table th input:checkbox').on('click' , function(){
 			var that = this;
 			$(this).closest('table').find('tr > td:first-child input:checkbox')
 			.each(function(){
@@ -31,7 +31,7 @@
 				$(this).closest('tr').toggleClass('selected');
 			});
 				
-		});
+		}); */
 		
 		$.fn.datepicker.dates['ko'] = {
 			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
@@ -58,6 +58,7 @@
 		});
 		
 		$("#btn-select").on("click", function(){
+			$(".input-validation").attr("required", false);
 			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?no="+$("#no").val();
 		});
 		
@@ -67,7 +68,30 @@
 		});
 		
 		$("#btn-clear").on("click", function(){
-			$("#form-customer input").val("");
+			$('#form-customer input').val("");
+		});
+		
+		$("#btn-delete").on("click", function(){
+			var checkArr = [];
+			$("#customer-table input[type=checkbox]:checked").each(function(i) {
+		        checkArr.push($(this).closest("td").next().text());
+		    });
+			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete?checkNoArr=" + checkArr;
+			/*
+			$.ajax({
+				url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+				type: "post",
+				data: {
+		            checkNoArr: checkArr
+		        },
+		        success: function(response) {
+		        	location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
+				},
+				error: function(xhr, error) {
+					console.error("error:"+error);
+				}
+			});
+			*/
 		});
 		
 		$("#customer-table tr.rows").on("click", function(event){
@@ -116,26 +140,6 @@
 			$("#depositHost").val(depositHost);
 			$("#bankCode").val(bankCode);
 			$("#bankName").val(bankName);
-		});
-		
-		$("#btn-delete").on("click", function(){
-			var checkArr = [];
-			$("#customer-table input[type=checkbox]:checked").each(function(i) {
-		        checkArr.push($(this).closest("td").next().text());
-		    });
-			$.ajax({
-				url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
-				type: "post",
-				data: {
-		            checkNoArr: checkArr
-		        },
-		        success: function(response) {
-		        	location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list";
-				},
-				error: function(xhr, error) {
-					console.error("error:"+error);
-				}
-			});	
 		});
 		
 	    $('#dialog-message-table').on('click', '#a-dialog-depositNo', function(event) {
@@ -189,6 +193,10 @@
 	       $("input[name=bankName]").val(td.eq(3).text());
 	       $("#dialog-message").dialog('close');
 	   	});
+	    
+	    $("#no").on("keyup", function(){
+	    	$("#invalid").hide();
+	    });
 
 	});	
 	
@@ -230,6 +238,7 @@
 			dataType: "json",
 			contentType:"application/json;charset=UTF-8",
 			success: function(response) {
+				console.log(response.data);
 				if(response.result == "fail") {
 					console.error(response.message);
 					return;
@@ -306,7 +315,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">사업자번호</label>
 										<div class="controls">
-											<input class="span6" type="text" id="no" name="no">
+											<input class="span6 input-validation" type="text" id="no" name="no" required>
 											<input class="span6" type="hidden" id="preNo" name="preNo">
 											<div id="invalid">
 												중복된 사업자번호 입니다.
@@ -352,7 +361,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">담당자명</label>
 										<div class="controls">
-											<input type="text" id="managerName" name="managerName">
+											<input type="text" class="input-validation" id="managerName" name="managerName" required>
 										</div>
 									</div>
 									<div class="control-group">
@@ -373,7 +382,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">상호</label>
 										<div class="controls">
-											<input class="span7" type="text" id="name" name="name">
+											<input class="span7" class="input-validation" type="text" id="name" name="name" required>
 										</div>
 									</div>
 									<div class="control-group">
@@ -385,7 +394,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">전화번호</label>
 										<div class="controls">
-											<input class="span5" type="text" id="phone" name="phone">
+											<input class="span5 input-validation" type="text" id="phone" name="phone">
 										</div>
 									</div>
 									<div class="control-group">
@@ -405,7 +414,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">메일</label>
 										<div class="controls">
-											<input class="span7" type="text" id="managerEmail" name="managerEmail">
+											<input class="span7 input-validation" type="text" id="managerEmail" name="managerEmail" required>
 										</div>
 									</div>
 									<div class="control-group">
@@ -475,10 +484,6 @@
 									<thead>
 										<tr role="row">
 											<th class="center">
-												<label>
-													<input type="checkbox" class="ace">
-													<span class="lbl"></span>
-												</label>
 											</th>
 											<th>사업자번호</th>
 											<th>상호</th>

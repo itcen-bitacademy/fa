@@ -40,8 +40,8 @@
 														</div>
 													<!-- searchdate 상태 유지 -->
 													<script type="text/javascript">
-													var datepicker = "${param.datepicker}";
-													$("#datepicker").val(datepicker);
+													var searchdate = "${param.searchdate}";
+													$("#searchdate").val(searchdate);
 													</script>
 													
 													</div>
@@ -53,14 +53,15 @@
 													<label class="control-label" for="form-field-select-2" >대분류명</label>
 													<div class="controls">
 														<select class="chosen-select" id="gcategory" name="sectioncode" data-placeholder="대분류명 선택">
+															<option value=""></option>	
 															<c:forEach items='${gcategory }' var='gcategory' varStatus='status'>
 																<option value="${gcategory.code }">${gcategory.classification }</option>
 															</c:forEach>
 														</select>
 													<!-- sectioncode 상태 유지  -->	
 													<script type="text/javascript">
-													var gcategory = "${param.gcategory}";
-													$("#gcategory").val(gcategory);
+													var sectioncode = "${param.sectioncode}";
+													$("#sectioncode").val(sectioncode);
 													</script>
 													</div>
 											</div>
@@ -71,15 +72,15 @@
 													<label class="control-label" for="form-field-select-2">품목명</label>
 													<div class="controls">
 														<select class="chosen-select" id="subcategory" name="itemcode" data-placeholder="품목명 선택">
-																
+															
 														<c:forEach items='${subcategory }' var='scategory' varStatus='status'>
 																<option value="${scategory.itemcode }">${scategory.itemname }</option>
 															</c:forEach>
 														</select>
 													<!-- itemcode 상태 유지  -->	
 													<script type="text/javascript">
-													var subcategory = "${param.subcategory}";
-													$("#subcategory").val(subcategory);
+													var itemcode = "${param.itemcode}";
+													$("#itemcode").val(itemcode);
 													</script>
 													</div>
 											</div>

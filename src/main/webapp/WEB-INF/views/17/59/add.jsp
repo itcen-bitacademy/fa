@@ -93,8 +93,7 @@ $(function(){
 				<div class="row-fluid">
 					<div class="span12">
 						<!-- PAGE CONTENT BEGINS -->
-						<form id="form-babo" class="form-horizontal" method="post" action="">	
-											
+						<form id="form-data" class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">									
 							<!-- 회계연도  -->
 							<div class="control-group">
 								<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >회계연도</label>
@@ -149,13 +148,9 @@ $(function(){
 								</div>
 							</div>
 							<div class="controls" style="margin-left: 0px;">
-								<button class="btn btn-info btn-small" type="submit" id="account-list-btn" name="account-list-btn"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
+								<button class="btn btn-info btn-small" type="submit" id="account-list-btn" name="account-list-btn" value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 								&nbsp;
-								<button class="btn btn-danger btn-small" type="submit" id="account-delete-btn" name="account-delete-btn"  value="delete" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
-								&nbsp;
-								<button class="btn btn-warning btn-small" type="submit" id="account-update-btn" name="account-update-btn"  value="update" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-								&nbsp;
-								<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="account-add-btn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
+								<button class="btn btn-danger btn-small" type="submit" id="account-delete-btn" name="account-delete-btn" value="delete" onclick="delete_data();" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 								&nbsp;
 								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >취소</button>
 							</div>	
@@ -171,9 +166,23 @@ $(function(){
 				<div class="hr hr-18 dotted"></div>
 				
 				<!-- 게시글 총 수 -->
-				<h6>총 ${dataResult.pagination.totalCnt }건</h6>
-			
-					<table id="tb_account_management" class="table table-striped table-bordered table-hover">
+				<h6>총 ${dataResult.pagination.totalCnt }건  
+				&nbsp;
+				<button class="btn btn-default btn-small" type="button" onclick="add_row();">행추가</button>
+				
+                <button class="btn btn-default btn-small" type="button" onclick="delete_row();">행삭제</button>
+                &nbsp;
+                
+                <!--  삭제할 예정
+    			<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="account-add-btn" value="add" onclick="add_data();"  formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>							
+				
+				<button class="btn btn-warning btn-small" type="submit" id="account-update-btn" name="account-update-btn" value="update" onclick="update_data();" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+				 -->
+				 
+				<button class="btn btn-primary btn-small" type="button" onclick="test_data();" >저장</button>
+				
+                </h6>
+					<table id="tb-account-management" class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
 								<th>순번</th>
@@ -188,24 +197,29 @@ $(function(){
 						</thead>
 
 						<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
-							<tbody>
-								<tr>
-									<td>${vo.accountOrder }</td>
-									<td>${vo.accountNo }</td>
-									<td>${vo.accountName }</td>
-									<c:if test="${vo.balanceType eq 'D' }">	
-									<td>차변</td>
-									</c:if>
-									<c:if test="${vo.balanceType eq 'C' }">	
-									<td>대변</td>
-									</c:if>
-									<td>${vo.insertUserid }</td>
-									<td>${vo.insertDay }</td>
-									<td>${vo.updateUserid }</td>
-									<td>${vo.updateDay }</td>
-									<td id="no" style="display:none;">${vo.no }</td>
-								</tr>
-							</tbody>				
+							<tr id="tr-account-management${vo.no }">
+								<td style="text-align:left;width:60px;"><input type="number" min="0001" max="1000" step="1" value="${vo.accountOrder }" id="accountOrder${vo.no }" name="accountOrder${vo.no }" placeholder="순번" style="text-align:left;width:60px;"></td>
+								<td style="text-align:left;width:160px;">
+  									<select class="chosen-select" id="selectedAccount${vo.no }" name="selectedAccount${vo.no }" data-placeholder="계정과목" style="text-align:left;width:160px;">	
+										<option value="${vo.accountNo}" data-accountName="${vo.accountName }" selected>${vo.accountNo }</option>		
+										<c:forEach items="${accountList }" var="list">									
+												<option value="${list.accountNo}" data-accountName="${list.accountName }" >${list.accountNo }</option>
+										</c:forEach>
+									</select>
+                                </td>
+								<td style="text-align: left; width: 300px; height: 18px;"><input type="text" id="accountName${vo.no }" name="accountName${vo.no }" placeholder="계정명칭" value="${vo.accountName }" style="text-align: left; width: 300px; height: 18px;" disabled></td>
+								<c:if test="${vo.balanceType eq 'D' }">	
+								<td>차변</td>
+								</c:if>
+								<c:if test="${vo.balanceType eq 'C' }">	
+								<td>대변</td>
+								</c:if>
+								<td>${vo.insertUserid }</td>
+								<td>${vo.insertDay }</td>
+								<td>${vo.updateUserid }</td>
+								<td>${vo.updateDay }</td>
+								<td id="no${vo.no }" style="display:none;">${vo.no }</td>
+							</tr>				
 						</c:forEach>
 					</table>
 				</div>
@@ -270,55 +284,64 @@ $(function(){
 		</div>
 	</div>
 	
-	
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	<script>
-		$(function() {
-			$(".chosen-select").chosen();
-		});
+		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js">
 	</script>
 	
 	<script>
+	$(function() {
+		$(".chosen-select").chosen();
+	});
 
+	//재무제표 계정 추가
+    function add_data(){
+    	var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add";
+		$("#form-data").attr("action",url).submit(); 
+    }
+    
+	//재무제표 계정 수정
+	function update_data() {
+    	var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update";
+		$("#form-data").attr("action",url).submit(); 
+    	
+	}
+	
+	//재무제표 계정 삭제
+	function delete_data() {
+    	var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete";
+		$("#form-data").attr("action",url).submit(); 
+    	
+	}	
+    
     // 테이블의 Row 클릭시 값 가져오기
-    $("#tb_account_management tr").dblclick(function(){     
-        var str = "";
-        var tdArr = new Array();    // 배열 선언
-        
+    $("#tb-account-management tr").dblclick(function(){    
+    	
         // 현재 클릭된 Row(<tr>)
         var tr = $(this);
         var td = tr.children();
         
-        // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
-        td.each(function(i){
-            tdArr.push(td.eq(i).text());
-        });
+        var hiddenNo     = td.eq(8).text(); // 해당 row의 실제 no
         
-        console.log("배열에 담긴 값 : "+tdArr);
+        var accountOrder = $("#accountOrder"+hiddenNo).val(); //순번
+        var accountNo    = td.eq(1).text();                   //계정과목
+            accountNo    = accountNo.substring(24,31);
+        var accountName  = $("#accountName"+hiddenNo).val();  //계정명칭
         
-        var accountOrder = td.eq(0).text();
-        var accountNo = td.eq(1).text();
-        var accountName = td.eq(2).text();
-        var hiddenNo = td.eq(8).text();
-     	
      	$('#selectedAccount').val(accountNo).trigger('chosen:updated');    	
         $("#accountOrder").val(accountOrder);
         $("#accountName").val(accountName);
         $("#no").val(hiddenNo);
-     
+        
     });
     
-    
-    //계정과목에 따른 계정명 불러오기
+    //계정과목에 따른 계정명칭 불러오기
     $('#selectedAccount').change(function () {
-    	var accountName =$(this).find('option:selected').attr('data-accountName');
+    	var accountName = $(this).find('option:selected').attr('data-accountName');
     	$('#accountName').val(accountName);
    	});
-    
     
     //리셋버튼 누를 시 초기화
     $("#account-reset-btn").click(function() {
@@ -332,12 +355,15 @@ $(function(){
     //조회버튼 누를 시 초기화
     $("#account-list-btn").click(function() {
     	console.log($('#selectedAccount').val());
-    	//$('#selectedAccount').val($('#selectedAccount').val()).trigger('chosen:updated');
     });
     
-	var validationMessage = ''
+	
 		
-	// validation check
+	
+	// validation check (보류)
+	/*
+	var validationMessage = ''
+	
 	function saveValidation() {
 		
 		let accountNo = $('#selectedAccount').val()
@@ -363,7 +389,7 @@ $(function(){
 		
 		return true;
 	}
-		
+	
     //입력버튼 누를 시 초기화
     $("#account-add-btn").click(function() {
     	console.log("입력 버튼 클릭")
@@ -372,6 +398,30 @@ $(function(){
 			//window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/59/list')
 		}
     });
+    */	
+    
+	
+ 	var result = "${param.result }";
+	
+ 	console.log("result : " + result);
+ 	
+	if('overlap' == result ){			
+		alert("이미 있는 데이터입니다.");
+		
+		result = "";
+	} else if('nullData' == result){
+		alert("저장할 데이터를 입력해주세요");
+		
+		result = "";
+	} else if('NPE' == result){
+		alert("데이터를 입력해주세요");
+		
+		result = "";
+	} else if('NPE2' == result){
+		alert("삭제할 데이터를 선택해주세요");
+		
+		result = "";
+	} 
     
 	$(function(){
 		// 모달 설정
@@ -387,32 +437,7 @@ $(function(){
 			openModal('Error', errorMessage.val())
 			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/59/list')
 		}
-
-	/* 	var result = "${param.result}";
-		
-		if('overlap' == result ){			
-			alert("이미 있는 데이터입니다.");
-			
-			result = "";
-			return;
-		} else if('nullData' == result){
-			alert("데이터가 없어서 저장하겠습니다.");
-			
-			result = "";
-			return;
-		} else if('NPE' == result){
-			alert("데이터를 입력해주세요");
-			
-			result = "";
-			return;
-		} else if('NPE2' == result){
-			alert("삭제할 데이터를 선택해주세요");
-			
-			result = "";
-			return;
-		} */
-		
-		
+	
 	});
 
 	// static backdrop modal
@@ -426,7 +451,129 @@ $(function(){
 	}
 	
 	
+    var max = Number("${dataResult.getDatas().get(0).getMax() }"); //가장 높은 순번
+    var maxCnt = Number("${dataResult.getDatas().get(0).getMaxcnt() }"); //가장 높은 no
+    var totalcnt = 0; //행 추가시 순번 자동 생성할 데이터
+    
+	// 테이블 행추가
+    function add_row() {
+        var table = document.getElementById("tb-account-management"); // 테이블 아이디 
+        var row = table.insertRow(table.rows.length); // 하단에 추가       
+        var cnt = table.rows.length-1; // 헤더를 뺀 테이블 길이 아이디에 부여용도
+       
+        if(max < 12){
+        	totalcnt = cnt
+        	maxCnt   = (maxCnt+cnt-(cnt-1));
+        	console.log(maxCnt);
+
+        }else {
+        	totalcnt = (max+cnt-11);
+        	maxCnt   = (maxCnt+cnt-(cnt-1));
+        	console.log(maxCnt);
+        }
+        
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+        
+        cell1.innerHTML = '<td style="text-align:left;width:60px;"><input type="number" min="0001" max="1000" step="1" value="'+totalcnt+'" id="accountOrder'+maxCnt+'" name="accountOrder'+maxCnt+'" placeholder="순번" style="text-align:left;width:60px;">'
+        				  +'<input type="hidden" id="no" name="no" value="'+totalcnt+'" ></td>';
+        				  
+        cell2.innerHTML = '<td style="text-align:left;width:160px;"><select class="chosen-select" id="selectedAccount'+maxCnt+'" name="selectedAccount'+maxCnt+'" data-placeholder="계정과목" style="text-align:left;width:160px;">'
+				           +'<option value=""></option>'
+				           +'<c:forEach items="${accountList }" var="vo" varStatus="status">'
+				           +'<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>'
+				           +'</c:forEach>'
+				           +'</select><td>';
+        cell3.innerHTML = '<td style="text-align: left; width: 300px; height: 18px;"><input type="text" id="accountName'+maxCnt+'" name="accountName'+maxCnt+'" placeholder="계정명칭" value="" style="text-align: left; width: 300px; height: 18px;" disabled></td>'; //
+
+
+        $(".chosen-select").chosen(); // 각 row에 품목코드 chosen 활성화
+    }
+    
+    var tablee = document.getElementById("tb-account-management"); // 테이블 아이디 
+    var tablecnt = tablee.rows.length+1; //기존 데이터 행삭제 방지
+    
+	//테이블 행삭제
+    function delete_row() {
+    	
+        var table = document.getElementById('tb-account-management');
+        if (table.rows.length < tablecnt) { // 헤더와 default row 1개 는 고정
+            return;
+        } else {
+            table.deleteRow(table.rows.length-1); // 하단부터 삭제
+        }
+    }
 	
+    //계정과목에 따른 계정명칭 불러오기
+    $('#selectedAccount'+totalcnt).change(function () {
+    	var accountName = $(this).find('option:selected').attr('data-accountName');
+    	$('#accountName'+totalcnt).val(accountName);
+   	});
+
+    var changedRows = [];//저장, 수정할 배열
+    
+    function test_data(){
+    	
+    	if(changedRows == ""){
+    		alert("저장 혹은 수정할 데이터를 입력해주세요");
+    	}else{
+    		
+        	$.ajax({
+        		url  : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/addorupdate",
+        		type : "POST",
+        		traditional : true,
+        		data : {"changedRows" : changedRows},
+        		success : function(data){
+					location.reload();
+        		}
+        		
+        	});
+    	}
+    }
+    
+    $(document).ready(function () {
+
+        $('#tb-account-management').delegate('input,select', 'change', function () {
+            var self = $(this);
+            var id = self.context.id;
+            var no = 0; 
+            var changedData = id.substring(0,1);
+            
+            //데이터 
+            // 기존 데이터 : no, 새로운 데이터 : maxNo + & 
+            if(changedData == 'a'){
+            	no = id.substring(12,14);
+            }else{
+            	no = id.substring(15,17);
+            }
+       
+            var accountNo                    = $("#selectedAccount"+no).find('option:selected').attr('value');            // accountNo 변경 시 accountNo 데이터 가져오기
+        	var accountName                  = $("#selectedAccount"+no).find('option:selected').attr('data-accountName'); // accountNo 변경 시 accountName 데이터 가져오기      	
+        	var accountOrder                 = $("#accountOrder"+ no).val();                                              //순번
+        	var accountUsedyear              = $("#accountUsedyear").val();                                               //회계연도
+        	var selectedAccountStatementType = $("#selectedAccountStatementType").val();                                  //구분
+        	
+        	$('#accountName'+no).val(accountName); //accountNo 변경 시 accountName 데이터 삽입
+            
+            //insert 혹은 update할 데이터 넣기            
+            if(accountNo != ''){
+            	changedRows.push(no + "/" + accountOrder + "/" + accountNo + "/" + accountUsedyear + "/" + selectedAccountStatementType);
+            	
+                for(var i=0; i < changedRows.length; i++){
+ 	               console.log(changedRows[i]);
+             	}
+            }
+            
+        });
+              
+
+    });
 	
 	</script>
 </body>

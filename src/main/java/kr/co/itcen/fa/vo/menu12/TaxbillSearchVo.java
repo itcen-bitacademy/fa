@@ -2,6 +2,8 @@ package kr.co.itcen.fa.vo.menu12;
 
 import org.apache.ibatis.type.Alias;
 
+import kr.co.itcen.fa.util.PaginationUtil;
+
 /**
  * 
  * @author 안태영 매출세금계산서현황조회
@@ -22,6 +24,34 @@ public class TaxbillSearchVo {
 	private String orderData; // 정렬기준
 	private long totalSupplyValue; // 총공급가액
 	private String writeDate; // 발행일
+
+	private boolean searchFlag; // 검색 유무
+	private PaginationUtil pagination; // 페이징
+	private int currentPage; // 현재 페이지
+
+	public boolean isSearchFlag() {
+		return searchFlag;
+	}
+
+	public void setSearchFlag(boolean searchFlag) {
+		this.searchFlag = searchFlag;
+	}
+
+	public PaginationUtil getPagination() {
+		return pagination;
+	}
+
+	public void setPagination(PaginationUtil pagination) {
+		this.pagination = pagination;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
 
 	public String getWriteDate() {
 		return writeDate;
@@ -115,7 +145,9 @@ public class TaxbillSearchVo {
 	public String toString() {
 		return "TaxbillSearchVo [startDate=" + startDate + ", endDate=" + endDate + ", customerCode=" + customerCode
 				+ ", customerName=" + customerName + ", taxbillNo=" + taxbillNo + ", itemCode=" + itemCode
-				+ ", itemName=" + itemName + ", taxType=" + taxType + ", orderData=" + orderData + "]";
+				+ ", itemName=" + itemName + ", taxType=" + taxType + ", orderData=" + orderData + ", totalSupplyValue="
+				+ totalSupplyValue + ", writeDate=" + writeDate + ", searchFlag=" + searchFlag + ", pagination="
+				+ pagination + ", currentPage=" + currentPage + "]";
 	}
 
 }

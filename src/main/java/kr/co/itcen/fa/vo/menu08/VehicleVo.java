@@ -13,19 +13,18 @@ public class VehicleVo {
 	private long voucherNo;
 	private String sectionNo;
 	private String classification;
-	private int staffNo; //직급번호
+	private Long staffNo; //직급번호
 	private String staffName; //직급명
 	private String ownerName;
 	private String wideAddress;
 	private String cityAddress;
 	private String detailAddress;
 	private int publicValue;
-	private int regTax;
 	private int acqTax;
 	private int etcCost;
 	private String payDate; //납부한 날
 	private String dueDate; //납부예정일
-	private int deposit; //보증금
+	private Long deposit; //보증금
 	private String depositDate; //보증금 납부일자
 	private int monthlyFee; //월사용료
 	private String feeDate; //사용료납부일
@@ -84,10 +83,10 @@ public class VehicleVo {
 	public void setClassification(String classification) {
 		this.classification = classification;
 	}
-	public int getStaffNo() {
+	public Long getStaffNo() {
 		return staffNo;
 	}
-	public void setStaffNo(int staffNo) {
+	public void setStaffNo(Long staffNo) {
 		this.staffNo = staffNo;
 	}
 	public String getStaffName() {
@@ -126,12 +125,7 @@ public class VehicleVo {
 	public void setPublicValue(int publicValue) {
 		this.publicValue = publicValue;
 	}
-	public int getRegTax() {
-		return regTax;
-	}
-	public void setRegTax(int regTax) {
-		this.regTax = regTax;
-	}
+	
 	public int getAcqTax() {
 		return acqTax;
 	}
@@ -156,10 +150,10 @@ public class VehicleVo {
 	public void setPayDate(String payDate) {
 		this.payDate = payDate;
 	}
-	public int getDeposit() {
+	public Long getDeposit() {
 		return deposit;
 	}
-	public void setDeposit(int deposit) {
+	public void setDeposit(Long deposit) {
 		this.deposit = deposit;
 	}
 	public String getDepositDate() {
@@ -225,7 +219,7 @@ public class VehicleVo {
 				+ ", sectionNo=" + sectionNo + ", classification=" + classification + ", staffNo=" + staffNo
 				+ ", staffName=" + staffName + ", ownerName=" + ownerName + ", wideAddress=" + wideAddress
 				+ ", cityAddress=" + cityAddress + ", detailAddress=" + detailAddress + ", publicValue=" + publicValue
-				+ ", regTax=" + regTax + ", acqTax=" + acqTax + ", etcCost=" + etcCost + ", dueDate=" + dueDate
+				+ ", acqTax=" + acqTax + ", etcCost=" + etcCost + ", dueDate=" + dueDate
 				+ ", payDate=" + payDate + ", deposit=" + deposit + ", depositDate=" + depositDate + ", monthlyFee="
 				+ monthlyFee + ", feeDate=" + feeDate + ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserId="
 				+ insertUserId + ", insertDay=" + insertDay + ", updateUserId=" + updateUserId + ", updateDay="

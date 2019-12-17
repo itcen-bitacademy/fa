@@ -68,9 +68,41 @@
 			}
 		}
 		
+		$("body").on("click", "#purchaseitem_search", function(e) {
+			e.preventDefault();
+			
+			if($("input:checkbox[id='id-delete-check']").is(":checked") == true) {
+				$("#id-delete-check").data("deleteflag", "Y");
+			} else {
+				$("#id-delete-check").data("deleteflag", "N");
+			}
+			
+			var page_num = 1;
+			var page_group = parseInt((page_num-1)/5);
+			var deleteflag = $("#id-delete-check").data("deleteflag");
+			var form_data = $("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag;
+			$("#form").data("formdata", form_data);
+			console.log($("#form").data("formdata"));
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+				type:"get",
+				dataType:"json",
+				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
+				success:function(data) {
+					updateTable(data.pagepurchaseitemList, page_num);
+					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
 		$("body").on("click",".page_go",function(e) {
 			var page_num = $(this).text();
 			var page_group = parseInt((page_num-1)/5);
+			var deleteflag = $("#id-delete-check").data("deleteflag");
+			var form_data = $("#form").data("formdata");
 			
 			console.log("page_num : " + page_num);
 			console.log("page_group : " + page_group);
@@ -79,7 +111,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:{"page" : page_num, "page_group" : page_group},
+				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -96,6 +128,9 @@
 			page_group = page_group - 1;
 			page_num = (page_group*5) + 5;
 			
+			var deleteflag = $("#id-delete-check").data("deleteflag");
+			var form_data = $("#form").data("formdata");
+			
 			console.log("page_num : " + page_num);
 			console.log("page_group : " + page_group);
 			
@@ -103,7 +138,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:{"page" : page_num, "page_group" : page_group},
+				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -120,6 +155,9 @@
 			page_group = page_group + 1;
 			page_num = (page_group*5) + 1;
 			
+			var deleteflag = $("#id-delete-check").data("deleteflag");
+			var form_data = $("#form").data("formdata");
+			
 			console.log("page_num : " + page_num);
 			console.log("page_group : " + page_group);
 			
@@ -127,7 +165,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:{"page" : page_num, "page_group" : page_group},
+				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -168,8 +206,8 @@
 			
 		function updatePagination(purchaseitemListall, purchaseitemList, page_num, page_group) {
 			$("#pagination_list").remove();
-			$newUl = $("<ul id='pagination_list'></ul>")
-			$(".pagination").append($newUl);
+			$newUl = $("<ul id='pagination_list'></ul>");
+			$("#purchase_pagination").append($newUl);
 			var page_all_count = parseInt((purchaseitemListall.length-1)/11) + 1;
 			var list_size = parseInt((purchaseitemList.length-1)/11) + 1;
 			var page_group_max = parseInt((page_all_count-1) / 5);
@@ -200,6 +238,309 @@
 				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
 			}
 		}
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+
+		$("#btn-search-section").click(function() {
+			var search_section = $("#search-section-name").val();
+			$("#search-section-name").data("searchsectionname", search_section);
+			
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
+			var section_page_num = 1;
+			var section_page_group = parseInt((section_page_num-1)/5);
+			
+			console.log("search_sectiondata : " + search_sectiondata);
+			console.log("section_page_num : " + section_page_num);
+			console.log("section_page_group : " + section_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
+				type:"get",
+				dataType:"json",
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
+				success:function(data) {
+					section_updateTable(data.pagesectionList, section_page_num);
+					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".section_page_go",function(e) {
+			var section_page_num = $(this).text();
+			var section_page_group = parseInt((section_page_num-1)/5);
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
+			
+			console.log("search_sectiondata : " + search_sectiondata);
+			console.log("section_page_num : " + section_page_num);
+			console.log("section_page_group : " + section_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
+				type:"get",
+				dataType:"json",
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
+				success:function(data) {
+					section_updateTable(data.pagesectionList, section_page_num);
+					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".section_page_go_prev",function(e) {
+			var section_page_num = $("#section_select_num").text();
+			var section_page_group = parseInt((section_page_num-1)/5);
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
+			
+			section_page_group = section_page_group - 1;
+			section_page_num = (section_page_group*5) + 5;
+			
+			console.log("section_page_num : " + section_page_num);
+			console.log("section_page_group : " + section_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
+				type:"get",
+				dataType:"json",
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
+				success:function(data) {
+					section_updateTable(data.pagesectionList, section_page_num);
+					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".section_page_go_next",function(e) {
+			var section_page_num = $("#section_select_num").text();
+			var section_page_group = parseInt((section_page_num-1)/5);
+			var search_sectiondata = $("#search-section-name").data("searchsectionname");
+			
+			section_page_group = section_page_group + 1;
+			section_page_num = (section_page_group*5) + 1;
+			
+			console.log("section_page_num : " + section_page_num);
+			console.log("section_page_group : " + section_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
+				type:"get",
+				dataType:"json",
+				data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
+				success:function(data) {
+					section_updateTable(data.pagesectionList, section_page_num);
+					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+	
+		function section_updateTable(pagesectionList, section_page_num) {
+			$("#tbody-section-list").remove();
+			$newTbody = $("<tbody id='tbody-section-list'></tbody>");
+			$("#section-table").append($newTbody);
+			
+			for(var sec in pagesectionList) {
+				$newTbody.append(
+					"<tr>" +
+					"<td class='center'>" + isEmpty(pagesectionList[sec].classification) + "</td>" +
+					"<td class='center'>" + isEmpty(pagesectionList[sec].code) + "</td>" +
+					"</tr>"
+				);
+			}
+		}
+		
+		function section_updatePagination(sectionListall, sectionList, section_page_num, section_page_group) {
+			$("#section_pagination_list").remove();
+			$newUl = $("<ul id='section_pagination_list'></ul>");
+			$("#section_pagination").append($newUl);
+			var section_page_all_count = parseInt((sectionListall.length-1)/6) + 1;
+			var section_list_size = parseInt((sectionList.length-1)/6) + 1;
+			var section_page_group_max = parseInt((section_page_all_count-1) / 5);
+			
+			console.log(section_page_group_max);
+			
+			if(0 < section_page_group) {
+				$newUl.append("<li><a class='section_page_go_prev' href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+			}
+			
+			for(var li = 1; li <= section_list_size; li++) {
+				if(section_page_num == (li + section_page_group*5)) {
+					$newUl.append(
+						"<li class='active'><a id='section_select_num' href='javascript:void(0);'>" + (li + section_page_group*5) + "</a></li>"
+					);
+				} else {
+					$newUl.append(
+						"<li><a class='section_page_go' href='javascript:void(0);'>" + (li + section_page_group*5) + "</a></li>"
+					);
+				}
+			}
+			
+			if(section_page_group_max > section_page_group) {
+				$newUl.append("<li><a class='section_page_go_next' href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+			}
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		$("#btn-search-factory").click(function() {
+			var search_factory = $("#search-factory-name").val();
+			$("#search-factory-name").data("searchfactoryname", search_factory);
+			
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
+			var factory_page_num = 1;
+			var factory_page_group = parseInt((factory_page_num-1)/5);
+			
+			console.log("search_factorydata : " + search_factorydata);
+			console.log("factory_page_num : " + factory_page_num);
+			console.log("factory_page_group : " + factory_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
+				type:"get",
+				dataType:"json",
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
+				success:function(data) {
+					factory_updateTable(data.pagefactoryList, factory_page_num);
+					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".factory_page_go",function(e) {
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
+			var factory_page_num = $(this).text();
+			var factory_page_group = parseInt((factory_page_num-1)/5);
+			
+			console.log("factory_page_num : " + factory_page_num);
+			console.log("factory_page_group : " + factory_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
+				type:"get",
+				dataType:"json",
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
+				success:function(data) {
+					factory_updateTable(data.pagefactoryList, factory_page_num);
+					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".factory_page_go_prev",function(e) {
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
+			var factory_page_num = $("#factory_select_num").text();
+			var factory_page_group = parseInt((factory_page_num-1)/5);
+			
+			factory_page_group = factory_page_group - 1;
+			factory_page_num = (factory_page_group*5) + 5;
+			
+			console.log("factory_page_num : " + factory_page_num);
+			console.log("factory_page_group : " + factory_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
+				type:"get",
+				dataType:"json",
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
+				success:function(data) {
+					factory_updateTable(data.pagefactoryList, factory_page_num);
+					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		$("body").on("click",".factory_page_go_next",function(e) {
+			var search_factorydata = $("#search-factory-name").data("searchfactoryname");
+			var factory_page_num = $("#factory_select_num").text();
+			var factory_page_group = parseInt((factory_page_num-1)/5);
+			
+			factory_page_group = factory_page_group + 1;
+			factory_page_num = (factory_page_group*5) + 1;
+			
+			console.log("factory_page_num : " + factory_page_num);
+			console.log("factory_page_group : " + factory_page_group);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
+				type:"get",
+				dataType:"json",
+				data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
+				success:function(data) {
+					factory_updateTable(data.pagefactoryList, factory_page_num);
+					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
+				}, error:function(error) {
+					alert("찾을 수 없는 품목입니다.");
+				}
+			});
+		});
+		
+		function factory_updateTable(pagefactoryList, factory_page_num) {
+			$("#tbody-factory-list").remove();
+			$newTbody = $("<tbody id='tbody-factory-list'></tbody>");
+			$("#factory-table").append($newTbody);
+			
+			for(var fac in pagefactoryList) {
+				$newTbody.append(
+					"<tr>" +
+					"<td class='center'>" + isEmpty(pagefactoryList[fac].classification) + "</td>" +
+					"<td class='center'>" + isEmpty(pagefactoryList[fac].code) + "</td>" +
+					"</tr>"
+				);
+			}
+		}
+		
+		function factory_updatePagination(factoryListall, factoryList, factory_page_num, factory_page_group) {
+			$("#factory_pagination_list").remove();
+			$newUl = $("<ul id='factory_pagination_list'></ul>");
+			$("#factory_pagination").append($newUl);
+			var factory_page_all_count = parseInt((factoryListall.length-1)/6) + 1;
+			var factory_list_size = parseInt((factoryList.length-1)/6) + 1;
+			var factory_page_group_max = parseInt((factory_page_all_count-1) / 5);
+			
+			console.log(factory_page_group_max);
+			
+			if(0 < factory_page_group) {
+				$newUl.append("<li><a class='factory_page_go_prev' href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+			}
+			
+			for(var li = 1; li <= factory_list_size; li++) {
+				if(factory_page_num == (li + factory_page_group*5)) {
+					$newUl.append(
+						"<li class='active'><a id='factory_select_num' href='javascript:void(0);'>" + (li + factory_page_group*5) + "</a></li>"
+					);
+				} else {
+					$newUl.append(
+						"<li><a class='factory_page_go' href='javascript:void(0);'>" + (li + factory_page_group*5) + "</a></li>"
+					);
+				}
+			}
+			
+			if(factory_page_group_max > factory_page_group) {
+				$newUl.append("<li><a class='factory_page_go_next' href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	});
 </script>
 
@@ -219,7 +560,7 @@
 				<!-- PAGE CONTENT BEGINS -->
 				<div class="span12">
 				<div class="row-fluid">
-					<form id="form" class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+					<form id="form" class="form-horizontal" data-formdata="" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 						<div style="height:200px">
 							<div class="span6">
 								<div class="control-group">
@@ -250,14 +591,13 @@
 									<table id ="dialog-message-section-table">
 										<tr>
 											<td>
-												&nbsp;품목 대분류명 &nbsp;&nbsp;
-												<input type="text" id="search-section-name" style="width:170px; margin: 0 0 0 0;"/>
-												
-												<a href="javascript:void(0);" id="btn-search-section">
-													<span class="btn btn-small btn-info">
-														<i class="icon-search nav-search-icon"></i>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;품목 대분류명&nbsp;&nbsp;
+												<div class="row-fluid input-append" style="width:200px">
+													<input class="span9" type="text" id="search-section-name" data-searchsectionname="" placeholder="품목 대분류명"/>
+													<span class="add-on">
+														<a href="javascript:void(0);" id="btn-search-section" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 													</span>
-												</a>
+												</div>
 											</td>
 										</tr>
 									</table>
@@ -270,7 +610,7 @@
 											</tr>
 										</thead>
 										<tbody id="tbody-section-list">
-										<c:forEach items="${sectionList}" var="sl" varStatus="status">
+										<c:forEach items="${pagesectionList}" var="sl" varStatus="status">
 											<tr>
 												<td class="center">${sl.classification}</td>
 												<td class="center">${sl.code}</td>
@@ -278,6 +618,43 @@
 										</c:forEach>
 										</tbody>
 									</table>
+									
+									<div class="pagination" id="section_pagination">
+										<ul id="section_pagination_list">
+											<fmt:parseNumber var="section_page_all_count" integerOnly="true" value="${((fn:length(sectionListall)-1)/6) + 1}" />
+											<fmt:parseNumber var="section_page_count" integerOnly="true" value="${((fn:length(sectionList)-1)/6) + 1}" />
+											<fmt:parseNumber var="section_page_group_max" integerOnly="true" value="${(section_page_all_count-1) / 5 }" />
+											
+											<c:choose>
+												<c:when test="${0 < section_page_group }">
+													<li><a class="section_page_go_prev" href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
+												</c:otherwise>
+											</c:choose>
+											
+											<c:forEach var="sec_size" begin="1" end="${section_page_count }" step="1">
+												<c:choose>
+													<c:when test="${section_cur_page == sec_size }">
+														<li class="active"><a id="section_select_num" href="javascript:void(0);">${sec_size }</a></li>
+													</c:when>
+													<c:otherwise>
+														<li><a class="section_page_go" href="javascript:void(0);">${sec_size }</a></li>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+											
+											<c:choose>
+												<c:when test="${section_page_group_max > section_page_group }">
+													<li><a class="section_page_go_next" href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+												</c:otherwise>
+											</c:choose>
+										</ul>
+									</div>
 								</div>
 								
 								
@@ -302,14 +679,13 @@
 									<table id ="dialog-message-factory-table">
 										<tr>
 											<td>
-												&nbsp;생산공장명 &nbsp;&nbsp;
-												<input type="text" id="search-factory-name" style="width:170px; margin: 0 0 0 0;"/>
-												
-												<a href="javascript:void(0);" id="btn-factory-factory">
-													<span class="btn btn-small btn-info">
-														<i class="icon-search nav-search-icon"></i>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;생산공장명&nbsp;&nbsp;
+												<div class="row-fluid input-append" style="width:200px">
+													<input class="span9" type="text" id="search-factory-name" data-searchfactoryname="" placeholder="생산공장명"/>
+													<span class="add-on">
+														<a href="javascript:void(0);" id="btn-search-factory" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 													</span>
-												</a>
+												</div>
 											</td>
 										</tr>
 									</table>
@@ -322,7 +698,7 @@
 											</tr>
 										</thead>
 										<tbody id="tbody-factory-list">
-										<c:forEach items="${factoryList}" var="fl" varStatus="status">
+										<c:forEach items="${pagefactoryList}" var="fl" varStatus="status">
 											<tr>
 												<td class="center">${fl.classification}</td>
 												<td class="center">${fl.code}</td>
@@ -330,6 +706,43 @@
 										</c:forEach>
 										</tbody>
 									</table>
+									
+									<div class="pagination" id="factory_pagination">
+										<ul id="factory_pagination_list">
+											<fmt:parseNumber var="factory_page_all_count" integerOnly="true" value="${((fn:length(factoryListall)-1)/6) + 1}" />
+											<fmt:parseNumber var="factory_page_count" integerOnly="true" value="${((fn:length(factoryList)-1)/6) + 1}" />
+											<fmt:parseNumber var="factory_page_group_max" integerOnly="true" value="${(factory_page_all_count-1) / 5 }" />
+											
+											<c:choose>
+												<c:when test="${0 < factory_page_group }">
+													<li><a class="factory_page_go_prev" href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
+												</c:otherwise>
+											</c:choose>
+											
+											<c:forEach var="fac_size" begin="1" end="${factory_page_count }" step="1">
+												<c:choose>
+													<c:when test="${factory_cur_page == fac_size }">
+														<li class="active"><a id="factory_select_num" href="javascript:void(0);">${fac_size }</a></li>
+													</c:when>
+													<c:otherwise>
+														<li><a class="factory_page_go" href="javascript:void(0);">${fac_size }</a></li>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+											
+											<c:choose>
+												<c:when test="${factory_page_group_max > factory_page_group }">
+													<li><a class="factory_page_go_next" href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
+												</c:otherwise>
+											</c:choose>
+										</ul>
+									</div>
 								</div>
 								
 								
@@ -341,9 +754,9 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-price">단가</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-price1" name="field-price"/>
+										<input class="span4" type="text" id="form-field-price1" name="price_start"/>
 										&nbsp;~&nbsp;
-										<input class="span4" type="text" id="form-field-price2" name="field-price"/> 원
+										<input class="span4" type="text" id="form-field-price2" name="price_end"/> 원
 									</div>
 								</div>
 							</div>
@@ -359,8 +772,8 @@
 										<label class="control-label" for="form-field-item-name">품목명</label>
 										<div class="controls">
 											<input class="span5" type="text" id="form-field-item-name" name="name" placeholder="품목명"/>&nbsp;&nbsp;&nbsp;
-											<input class="ace" type="checkbox" id="id-disable-check" style="display:inline">
-											<label class="lbl" for="id-disable-check" style="display:inline"> 삭제 품목 포함</label>
+											<input class="ace" type="checkbox" id="id-delete-check" data-deleteflag="N" style="display:inline">
+											<label class="lbl" for="id-delete-check" style="display:inline"> 삭제 품목 포함</label>
 										</div>
 									</div>
 									
@@ -383,20 +796,20 @@
 									<div class="controls">
 										<div class="control-group">
 											<div class="input-append">
-												<input class="span7 cl-date-picker" id="id-date-picker-1" type="text" data-date-format="yyyy-mm-dd" style="width:130px">
+												<input class="span7 cl-date-picker" id="id-date-picker-1" name="producedate_start" type="text" data-date-format="yyyy-mm-dd" style="width:130px">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
 											&nbsp; ~ &nbsp;
 											<div class="input-append">
-												<input class="span7 cl-date-picker" id="id-date-picker-2" type="text" data-date-format="yyyy-mm-dd" style="width:130px">
+												<input class="span7 cl-date-picker" id="id-date-picker-2" name="producedate_end" type="text" data-date-format="yyyy-mm-dd" style="width:130px">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<button class="btn btn-small btn-info" style="display:inline">조회</button>
+											<button class="btn btn-small btn-info" id="purchaseitem_search" style="display:inline">조회</button>
 										</div>
 									</div>
 								</div>
@@ -452,7 +865,7 @@
 							</table>
 						</div><!-- /span -->
 						
-						<div class="pagination">
+						<div class="pagination" id="purchase_pagination">
 							<ul id="pagination_list">
 								<fmt:parseNumber var="page_all_count" integerOnly="true" value="${((fn:length(purchaseitemListall)-1)/11) + 1}" />
 								<fmt:parseNumber var="page_count" integerOnly="true" value="${((fn:length(purchaseitemList)-1)/11) + 1}" />
@@ -530,14 +943,14 @@
 		});
 	})
 	
-	$("#section-table tr").click(function(){ 
+	$("body").on("click","#section-table tr",function(e) {
 		var tr = $(this);
 		var td = tr.children();
 		$("input[name=sectionname]").val(td.eq(0).text());
 		$("input[name=sectioncode]").val(td.eq(1).text());
 	});
 	
-	$("#factory-table tr").click(function(){ 
+	$("body").on("click","#factory-table tr",function(e) {
 		var tr = $(this);
 		var td = tr.children();
 		$("input[name=factoryname]").val(td.eq(0).text());

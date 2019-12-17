@@ -5,8 +5,9 @@ import org.apache.ibatis.type.Alias;
 @Alias("08taxVehicle")
 public class TaxbillVo {
 
+
 	private Long no;
-	private String taxbillNo;
+	private String taxbillNoPoP;
 	private Long voucherNo;
 	private String vehicleNo;
 	private Long pay;
@@ -17,20 +18,27 @@ public class TaxbillVo {
 	private String insertDay;
 	private String updateUserid;
 	private String updateDay;
+	private String flag;
 	
 	
 
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 	public Long getNo() {
 		return no;
 	}
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	public String getTaxbillNo() {
-		return taxbillNo;
+	public String getTaxbillNoPoP() {
+		return taxbillNoPoP;
 	}
-	public void setTaxbillNo(String taxbillNo) {
-		this.taxbillNo = taxbillNo;
+	public void setTaxbillNoPoP(String taxbillNoPoP) {
+		this.taxbillNoPoP = taxbillNoPoP;
 	}
 	public Long getVoucherNo() {
 		return voucherNo;
@@ -96,10 +104,10 @@ public class TaxbillVo {
 
 	@Override
 	public String toString() {
-		return "TaxbillVo [no=" + no + ", taxbillNo=" + taxbillNo + ", voucherNo=" + voucherNo + ", vehicleNo="
+		return "TaxbillVo [no=" + no + ", taxbillNoPoP=" + taxbillNoPoP + ", voucherNo=" + voucherNo + ", vehicleNo="
 				+ vehicleNo + ", pay=" + pay + ", paymentDate=" + paymentDate + ", dueDate=" + dueDate + ", gubun="
 				+ gubun + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + "]";
+				+ updateUserid + ", updateDay=" + updateDay + ", flag=" + flag + "]";
 	}
 	
 

@@ -61,9 +61,11 @@ public class Menu10Controller {
 		//dataresult 생성, 모델
 		if(gubun==null) {
 		System.out.println("기본화면");
-		dataResult = menu09Service.list(id, page);
+		dataResult = menu10Service.list(id, page);
 		}else { //조회버튼 클릭 리스트
+			
 			System.out.println("조회화면");
+			
 			//매입날짜 시작일, 종료일 구하기
 			String startDate = null;
 			String endDate = null;

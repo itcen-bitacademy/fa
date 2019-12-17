@@ -33,7 +33,7 @@
 	<![CDATA[
 		insert
 		  into tb_repay
-		values (null, #{debtNo},#{payPrinc},#{intAmount},#{payDate}, 'L', #{voucherNo},'N',#{insertId},now(),null,null)
+		values (null, #{debtNo},#{code},#{payPrinc},#{intAmount},#{payDate}, 'L', #{voucherNo},'N',#{insertId},now(),null,null)
 		]]>
 	<selectKey order="AFTER" resultType="long" keyProperty="no">
 	<![CDATA[
@@ -104,6 +104,20 @@
     ]]>
 	</if>
 	</select>
+	<!-- 상환내역 리스트 가지고 오기 -->
+	<select id="selectrepaylist" parameterType="long" resultType="repayvo">
+	select 	code as code,
+			pay_princ as payPrinc,
+			int_amount as intAmount,
+			pay_date as payDate
+	from tb_repay
+	where debt_type = 'L'
+		and debt_no = #{_parameter}
+	</select>
+	
+	
+	
+	
 	<select id="selectsection" resultType="sectionvo">
 	<![CDATA[
 		select no,

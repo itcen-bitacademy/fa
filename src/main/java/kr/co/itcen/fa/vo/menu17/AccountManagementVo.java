@@ -9,6 +9,10 @@ import org.apache.ibatis.type.Alias;
  * 
  */
 
+/**
+ * @author BIT
+ *
+ */
 @Alias("accountManagement17Vo")
 public class AccountManagementVo {
 
@@ -26,6 +30,10 @@ public class AccountManagementVo {
 	private String balanceType;          //잔액구분
 	private String accountName;          //계정명
 	 
+	private int cnt;                    //총개수
+	private int max;                    //가장 높은 order값
+	private int maxcnt;                 //가장 높은 no값
+	
 	public Long getNo() {
 		return no;
 	}
@@ -98,6 +106,25 @@ public class AccountManagementVo {
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public int getMax() {
+		return max;
+	}
+	public void setMax(int max) {
+		this.max = max;
+	}
+	
+	public int getMaxcnt() {
+		return maxcnt;
+	}
+	public void setMaxcnt(int maxcnt) {
+		this.maxcnt = maxcnt;
+	}
 	
 	@Override
 	public String toString() {
@@ -105,7 +132,7 @@ public class AccountManagementVo {
 				+ ", accountUsedyear=" + accountUsedyear + ", accountStatementType=" + accountStatementType + ", useYn="
 				+ useYn + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
 				+ updateUserid + ", updateDay=" + updateDay + ", balanceType=" + balanceType + ", accountName="
-				+ accountName + "]";
+				+ accountName + ", cnt=" + cnt + ", max=" + max + ", maxcnt=" + maxcnt + "]";
 	}
 
 }

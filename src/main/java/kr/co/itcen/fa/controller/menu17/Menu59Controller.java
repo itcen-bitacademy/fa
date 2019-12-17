@@ -2,6 +2,7 @@ package kr.co.itcen.fa.controller.menu17;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -35,6 +37,7 @@ public class Menu59Controller {
 	
 	public static final String MAINMENU = "17";
 	public static final String SUBMENU = "59";
+	//public String result = "";
 	
 	@Autowired
 	private Menu59Service menu59Service;
@@ -60,8 +63,6 @@ public class Menu59Controller {
 			accountManagement.setAccountNo(accountNo);
 		}
 
-		System.out.println(accountManagement);
-
 		//input부분 셋팅
 		model.addAttribute("accountUsedyear", accountUsedyear);
 		model.addAttribute("accountOrder", accountOrder);
@@ -69,12 +70,16 @@ public class Menu59Controller {
 		model.addAttribute("selectedAccount", accountNo);
 		model.addAttribute("accountList", menu59Service.getAllAccountList());
 		
+		DataResult<AccountManagementVo> dataResult = menu59Service.getList(accountManagement, page);
+
 		//테이블부분 셋팅
-		model.addAttribute("dataResult", menu59Service.getList(accountManagement, page));
-		
+		model.addAttribute("dataResult", dataResult);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
+	
+	/** 전 버전 저장, 수정 버튼에 대한 이벤트 메서드
 	
 	//재무제표 계정관리 저장
 	@RequestMapping(value="/" + SUBMENU + "/add", method=RequestMethod.POST)
@@ -136,18 +141,18 @@ public class Menu59Controller {
 		return uri;
 	}
 	
-	
+	 */
 	
 	//재무제표 계정관리 삭제
 	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
 	public String delete(@ModelAttribute AccountManagementVo accountManagement,
 						 @RequestParam("selectedAccountStatementType") String type,
+						 @RequestParam(value = "accountUsedyear", defaultValue = "2019") String accountUsedyear,
 						 Model model,
 						 @AuthUser UserVo authUser) {
 	
-	String result = "nono";
 	if(accountManagement.getNo() == null || accountManagement.getAccountUsedyear() == null || accountManagement.getAccountOrder() == null) {
-		result = "NPE2";
+		String result = "NPE2";
 		model.addAttribute("result", result);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
@@ -157,10 +162,62 @@ public class Menu59Controller {
 	menu59Service.delete(accountManagement.getNo());
 	
 	model.addAttribute("selectedAccountStatementType", type);
+	model.addAttribute("accountUsedyear", accountUsedyear);
 	
 	return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
-	
 
 	
+	//test
+	//@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/addorupdate", method=RequestMethod.POST)
+	public String test(@RequestParam(value = "changedRows", defaultValue = "") List<String> changedRows,
+					   Model model,
+					   @AuthUser UserVo authUser) throws UnsupportedEncodingException {
+		
+		DataResult<AccountManagementVo> dataResult = new DataResult<>();
+		List<AccountManagementVo> list = new ArrayList<AccountManagementVo>();
+		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
+		
+		String no     = null;
+		String order  = null;
+		String acount = null;
+		String year   = null;
+		String type   = null;
+		
+		if(changedRows.size() > 0) {			
+			year   = changedRows.get(0).split("/")[3];
+			type   = changedRows.get(0).split("/")[4];
+			
+			model.addAttribute("selectedAccountStatementType", type);
+			model.addAttribute("accountUsedyear", year);
+			
+			for(int i = 0; i < changedRows.size(); i++) {
+				AccountManagementVo vo = new AccountManagementVo();
+					
+				no     = changedRows.get(i).split("/")[0];
+				order  = changedRows.get(i).split("/")[1];
+				acount = changedRows.get(i).split("/")[2];
+				
+				vo.setNo(Long.parseLong(no));
+				vo.setAccountOrder(Long.parseLong(order));
+				vo.setAccountNo(Long.parseLong(acount));
+				vo.setAccountUsedyear(year);
+				vo.setAccountStatementType(type);
+				vo.setInsertUserid(authUser.getId());
+				vo.setUpdateUserid(authUser.getId());
+				
+				System.out.println("no : " + no + " order : " + order + " acount : " + acount + " year : " + year + " type : " + type);
+				
+				list.add(vo);
+					
+			}
+			
+			dataResult = menu59Service.testUpdate(list);
+			
+		}
+		
+		return uri;
+	}
+
 }

@@ -115,9 +115,36 @@ public class Menu41Repository {
 
 	//세금계산서 정보 조회
 	public List<TaxbillVo> selectTaxList(String id) {
-		//System.out.println(id);
 		List<TaxbillVo> list = sqlSession.selectList("menu41.selectTaxbill", id);
 		System.out.println("세금계산서 정보" + list);
 		return list;
 	}
+
+
+	public String selectTaxVo(String id) {
+		
+		String taxVo = sqlSession.selectOne("menu41.selectTaxVo", id);
+			
+		return taxVo;
+	}
+
+	public Long getVoucherNo(String id) {
+	
+		Long vNo = sqlSession.selectOne("menu41.selectVNO",id);
+		return vNo;
+	}
+
+	public List getTaxVoucherNo(String id) {
+		
+		List<Long> taxVNO = sqlSession.selectList("menu41.selectTaxVNO",id);
+		return taxVNO;
+	}
+
+	public boolean deleteTaxbill(String id) {
+		int count = sqlSession.delete("menu41.deleteTaxbill", id);
+		return count == 1;
+	}
+
+	
+
 }
