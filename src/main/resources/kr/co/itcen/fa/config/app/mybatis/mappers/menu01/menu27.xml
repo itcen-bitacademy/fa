@@ -19,8 +19,11 @@
 	<!-- 리스트 뽑기 -->
 	<select id="getList" parameterType="map" resultType="1customervo">
 		<![CDATA[
-			select concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
-     			   name as name, 
+			select  (CASE CHAR_LENGTH(no)
+						when "07" then no
+        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+					end) as no,
+					name as name, 
        			   ceo as ceo, 
 			       address as address,
 			       detail_address as detailAddress,
@@ -53,6 +56,8 @@
                       then "차량"
                       when assets_flag="d"
                       then "무형자산"
+                      when assets_flag="e"
+                      then "은행"
                       end) as assetsFlag,
 			       deposit_no as depositNo,
 			       deposit_host as depositHost,
@@ -64,7 +69,7 @@
 			       update_day as updateDay
 			  from tb_customer
 			 where delete_flag = 'N'
-			   and assets_flag!='e'
+			   and name!='여비'
 		]]>
 		<if test="pagination.pageIndex >= 0 ">
 			<![CDATA[
@@ -107,8 +112,11 @@
 	<!-- 거래처 검색(사업자등록번호로) -->
 	<select id="read" parameterType="1customervo" resultType="1customervo">
 		<![CDATA[
-			select concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
-     			   name as name, 
+			select (CASE CHAR_LENGTH(no)
+						when "07" then no
+        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+					end) as no,
+				   name as name, 
        			   ceo as ceo, 
 			       address as address,
 			       detail_address as detailAddress,
@@ -145,13 +153,15 @@
                       then "차량"
                       when assets_flag="d"
                       then "무형자산"
+                      when assets_flag="e"
+                      then "은행"
                       end) as assetsFlag,
 			       insert_userid as insertUserid,
 			       insert_day as insertDay, 
 			       update_userid as updateUserid
 			  from tb_customer
 			 where delete_flag = "N"
-			   and assets_flag!='e'
+			   and name!='여비'
 			   and no like '%${no }%'
 		]]>
 	</select>
@@ -180,7 +190,7 @@
 				   update_userid = #{updateUserid },
 				   update_day = now()
 			 where no = concat('A', #{no})
-			   and assets_flag!='e'
+			   and name!='여비'
 		]]>
 	</update>
 	
@@ -190,7 +200,7 @@
 			update tb_customer
 			   set delete_flag = 'Y'
 			 where name =  #{name }
-			   and assets_flag!='e'
+			   and name!='여비'
 		]]>
 	</update>
 	
@@ -200,7 +210,7 @@
 			delete from tb_customer
 			 where no = concat('A', #{no})
 			   and delete_flag = "Y";
-			   and assets_flag!='e'
+			   and name!='여비'
 		]]>
 	</delete>
 	
@@ -209,7 +219,7 @@
 		select	count(*)
 		 from	tb_customer 
 		 where	delete_flag = "N"
-		   and  assets_flag!='e'
+			   and name!='여비'
 		]]>
 	</select>
 	
