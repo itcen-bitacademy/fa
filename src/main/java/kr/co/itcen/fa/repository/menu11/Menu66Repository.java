@@ -64,6 +64,7 @@ public class Menu66Repository {
 	// 상환잔액을 수정되기 이전으로 돌리기
 	public Boolean restoreRepayBal(RepayVo vo) {
 		int count = sqlSession.update("menu66.restoreRepayBal", vo);
+		System.out.println("restoreRepayBal : " + count);
 		return count == 1;
 	}
 
@@ -88,6 +89,7 @@ public class Menu66Repository {
 	// 상환잔액 업데이트
 	public Boolean updateRepayVo(RepayVo vo) {
 		int count = sqlSession.update("menu66.repayUpdate", vo);
+		System.out.println("updateRepayVo : " + count);
 		return count == 1;
 	}
 

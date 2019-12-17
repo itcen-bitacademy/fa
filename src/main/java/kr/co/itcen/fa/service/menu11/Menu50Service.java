@@ -108,4 +108,15 @@ public class Menu50Service {
 	public PdebtVo existCode(String code) {
 		return menu50Repository.getCode(code);
 	}
+
+	//상환내역이 있을경우 수정불가
+	public List<RepayVo> getRepay(Long no) {
+		return menu50Repository.getRepay(no);
+	}
+
+	//상환내역이 있을경우 수정불가 (no를 배열로 전달)
+	public List<RepayVo> getRepay(Long[] no) {
+		return menu50Repository.getRepay(no);
+	}
+
 }
