@@ -31,8 +31,9 @@
 						<div class="row-fluid">
 							<!-- PAGE CONTENT BEGINS -->
 
-							<!-- 좌측 -->
-							<form class="form-horizontal" method="post">
+							
+							<form class="form-horizontal" method="post" name="manageForm">
+								<!-- 좌측 -->
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물코드</label>
@@ -186,7 +187,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">세금계산서번호</label>
 										<div class="controls">
-											<input type="text" class="span7" name="taxbillNo">
+											<input type="text" class="span7" name="taxbillNo" id="taxbillNo">
 										</div>
 									</div>
 									<div class="control-group">
@@ -205,7 +206,7 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small" id="insert"
+												<button class="btn btn-primary btn-small" id="insert" onclick="check_blank()"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">등록</button>
 												<button class="btn btn-warning btn-small" id="update"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
@@ -214,7 +215,7 @@
 												<button class="btn btn-info btn-small" id="search" 
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 												<button class="btn btn-default btn-small" id="reset"
-													style="float: left; margin-right: 20px;" type="reset">취소</button>
+													style="float: left; margin-right: 20px;" type="reset">초기화</button>
 											</div>
 										</div>
 									</div>
@@ -341,9 +342,6 @@
 		</div><!-- /.main-content -->
 		
 	</div><!-- /.main-container -->
-		
-	
-	
 	
 <!-- basic scripts -->
 
@@ -450,12 +448,31 @@ $("input[name=id]").on("change", function() {
 		      }
 		      else if(td.eq(22).text() == "영세"){
 		          $("input[id=zeroTax]").prop('checked', true);
-		      } 
+		      }
+		     
+		     //CRUD button
+		      if($("#taxbillNo").val() != ''){
+		    	  $("#insert").hide();
+		    	  $("#search").hide();
+		    	  $("#update").hide();
+		      }
+		      if($("#taxbillNo").val() == ''){
+			   		$("#insert").hide();
+			   	 	$("#update").show();
+			   		$("#search").hide();
+			  }
 		      
 			});
 		      
 	});
-
+	//초기화 누를시 CRUD버튼 보임
+	$("#reset").click(function(){
+		$("#insert").show();
+   		$("#update").show();
+	  	$("#search").show();
+	  	$('#form-field-customer').val('초기값').trigger('chosen:updated');
+	  	$('#form-field-section').val('초기값').trigger('chosen:updated');
+	});
 	//엔터키 막기
 	document.addEventListener('keydown', function(event) {
 	    if (event.keyCode === 13) {
@@ -472,8 +489,6 @@ $(function() {
 	/* $("#insert").click(function() {
 		if(${closingDate } == true){
 			alert("마감일자를 확인해 주세요");
-		}else{
-			alert("마감일자 잘봤네");
 		}
 	});  */
 	
@@ -490,7 +505,10 @@ $(function() {
 	$("#delete").click(function() {
 	alert("삭제");
 	});
+	
 });
+
+
 </script>
 
 
@@ -508,6 +526,29 @@ function execDaumPostcode() {
            }
         }).open();
      }
+</script>
+
+<!-- 빈 값 check -->
+<script>
+function check_blank(){
+	
+	theForm = document.manageForm;
+	
+	if(theForm.sectionNo.value=="")
+	{
+		alert("대분류 코드를 선택해주세요.")
+		return;
+	}
+	
+	if(theForm.customerNo.value=="")
+	{
+		alert("거래처 코드를 선택해주세요.")
+		return;
+	}
+	
+	theForm.submit();
+	
+}
 </script>
 
 <!-- date picker -->
@@ -543,7 +584,7 @@ function execDaumPostcode() {
 				$(this).prev().focus();
 			});
 		})
-		
+			
 		
 	</script>
 </body>

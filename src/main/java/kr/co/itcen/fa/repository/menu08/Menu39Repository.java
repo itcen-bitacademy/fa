@@ -37,7 +37,6 @@ public class Menu39Repository {
 		map.put("id", id);
 		map.put("pagination", pagination);
 		List<BuildingVo> list = sqlSession.selectList("menu39.list", map);
-		
 		return list;
 	}
 	

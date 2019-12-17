@@ -33,6 +33,7 @@ public class Menu39Service {
 	
 	//조회
 	public DataResult<BuildingVo> list(String id, int page) {
+		
 		DataResult<BuildingVo> dataResult = new DataResult<BuildingVo>();
 		
 		int totalCount = menu39Repository.listCount(id);
