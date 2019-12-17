@@ -11,6 +11,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
+<style>
+ .form-horizontal .control-label {
+    text-align: left
+ }
+ 
+ .acqPrice {
+    text-align: right
+ }
+ </style>
+ 
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -85,9 +96,8 @@
 									<div class="control-group">
 										<label class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" id="acqPrice" name="acqPrice"
-												placeholder="금액을 입력하세요" /> <input
-												style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
+											<input type="text" class="acqPrice" name="acqPrice" placeholder="금액을 입력하세요" /> 
+												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
 								</div>
@@ -206,10 +216,10 @@
 										<td>${vo.managerName }</td>
 										<td>${vo.ownerName }</td>
 										<td>${vo.payDate }</td>
-										<td><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 										<td>${vo.combineNo }</td>
 										<td>${vo.taxbillNo }</td>
 										<td>${vo.taxKind }</td>
