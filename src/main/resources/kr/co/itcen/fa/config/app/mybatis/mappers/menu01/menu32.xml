@@ -37,7 +37,6 @@
 		 	  from tb_salescustomer
 		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N" 
-		  order by name desc
 		]]>
 	</select>
 	
@@ -64,8 +63,31 @@
 				   name as name
 		 	  from tb_salescustomer
 		 	 where name like '${_parameter }'
-		 	   and delete_flag = "N" 
+		 	   and delete_flag = "N"
 		  order by name desc
+		  	 
+		]]>
+	</select>
+	
+	
+	
+	<select id="getBankCodeInfo" parameterType="String" resultType="bankvo">
+		<![CDATA[
+			select code as code,
+				   name as name,
+				   store as store
+				   from tb_bank
+			 where code like '${_parameter }'
+		]]>
+	</select>
+	
+	<select id="getBankNameInfo" parameterType="String" resultType="bankvo">
+		<![CDATA[
+			select code as code,
+				   name as name,
+				   store as store
+				   from tb_bank
+			 where name like '%${_parameter }%'
 		]]>
 	</select>
 	

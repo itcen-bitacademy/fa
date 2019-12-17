@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.AccountCustomerLedgerVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
 
 /**
@@ -59,6 +60,16 @@ public class Menu32Repository {
 		map.put("customerNo", customerNo);
 		List<AccountCustomerLedgerVo> list = sqlSession.selectList("menu32.optionSearch",map);
 		return list;
+	}
+
+	public List<BankVo> getBankCodeInfo(String bankCode) {
+		String code = "%" + bankCode +"%";
+		List<BankVo> result = sqlSession.selectList("menu32.getBankCodeInfo", code);
+		return result;
+	}
+
+	public List<BankVo> getBankNameInfo(String bankName) {
+		return sqlSession.selectList("menu32.getBankNameInfo", bankName);
 	}
 
 

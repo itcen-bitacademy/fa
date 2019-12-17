@@ -10,6 +10,7 @@ import kr.co.itcen.fa.repository.menu01.Menu32Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.AccountCustomerLedgerVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 
 /**
  * 
@@ -44,6 +45,14 @@ public class Menu32Service {
 		List<AccountCustomerLedgerVo> list = menu32Repository.list(/*pagination,*/ aclVo, accountCode, datepicker1, datepicker2, customerNo);
 		dataResult.setDatas(list);
 		return dataResult;
+	}
+
+	public List<BankVo> getBankCodeInfo(String bankCode) {
+		return menu32Repository.getBankCodeInfo(bankCode);
+	}
+
+	public List<BankVo> getBankNameInfo(String bankName) {
+		return menu32Repository.getBankNameInfo(bankName);
 	}
 
 }

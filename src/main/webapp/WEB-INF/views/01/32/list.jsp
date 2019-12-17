@@ -121,6 +121,26 @@
 										</span>
 									</a>
 								</td>
+								
+								<td>
+									<label>은행코드</label>
+									<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
+									<a href="#" id="a-dialog-bankcode">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search nav-search-icon"></i>
+										</span>
+									</a>
+								</td>
+								
+								<td>
+									<label>은행명</label>
+									<input type="text" id="input-dialog-bankname" style="width: 100px;" />
+									<a href="#" id="a-dialog-bankname">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search nav-search-icon"></i>
+										</span>
+									</a>
+								</td>
 							</tr>
 						</table>
 						
@@ -135,6 +155,19 @@
 							</thead>
 							
 							<tbody id="tbody-customerList">
+							</tbody>
+						</table>
+						
+						<table id="modal-bank-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">은행코드</th>
+									<th class="center">은행명</th>
+									<th class="center">지점</th>
+								</tr>
+							</thead>
+							
+							<tbody id="tbody-bankList">
 							</tbody>
 						</table>
 					</div>
@@ -197,10 +230,10 @@
 										</tr>
 									</thead>
 									
-									<tbody>
+									<tbody style="text-align: center;">
 										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
-											<tr>
-												<td>${vo.accountName }</td>
+											<tr style="text-align: center;">
+												<td class="">${vo.accountName }</td>
 												<td>${vo.customerName }</td>
 												<td>${vo.regDate }</td>
 												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
@@ -233,8 +266,24 @@
 												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
 												        </c:otherwise>
 												    </c:choose>
+												    
 											</tr>
+											
 									</c:forEach>
+									<tr>
+										<td>[합계]</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td id="dsum">차변합계</td>
+										<td id="csum">대변합계</td>
+										
+									</tr>
 									</tbody>
 								</table>
 							</div>
@@ -243,7 +292,7 @@
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-			
+			 
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -285,7 +334,7 @@
 			$("#tbody-customerList").find("tr").remove();
 		
 			var customerNoVal = $("#input-dialog-customerno").val();
-			console.log(customerNoVal);
+			console.log("djlfajldjal"+customerNoVal);
 			// ajax 통신
 			$.ajax({
 				url: "${pageContext.request.contextPath }/api/customer/getcustomerNo?customerNoVal=" + customerNoVal,
@@ -349,6 +398,77 @@
 				}
 			});
 		});
+		
+		//은행코드로 검색
+		$("#a-dialog-bankcode").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
+			var bankCodeVal = $("#input-dialog-bankcode").val();
+			console.log(bankCodeVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getbankCode?bankCodeVal=" + bankCodeVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-bankcode").val('');
+					 $.each(response.data,function(index, item){
+			                $("#tbody-bankList").append("<tr>" +
+			                		"<td class='center'>" + item.code + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "<td class='center'>" + item.store + "</td>" +
+							        "</tr>");
+			         })
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		// 은행명 검색
+		$("#a-dialog-bankname").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+		
+			var bankNameVal = $("#input-dialog-bankname").val();
+			console.log(bankNameVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getbankName?bankNameVal=" + bankNameVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json",
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-bankname").val('');
+					$.each(response.data,function(index, item){
+						$("#tbody-bankList").append("<tr>" +
+						        "<td class='center'>" + item.code + "</td>" +
+						        "<td class='center'>" + item.name + "</td>" +
+						        "<td class='center'>" + item.store + "</td>" +
+						        "</tr>");
+		        	 });
+				
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
 	</script>
 <script>
 	$(function() {
@@ -358,24 +478,52 @@
 
 		$("#a-customerinfo-dialog").click(function() {
 			$("#dialog-message").dialog('open');
+			
+			$("#modal-customer-table").hide();
+			$("#modal-bank-table").hide();
+			
 			$("#dialog-message").dialog({
 				title: "거래처정보",
 				title_html: true,
 			   	resizable: false,
 			    height: 500,
-			    width: 400,
+			    width: 700,
 			    modal: true,
 			    close: function() {
 			    	$('#tbody-customerList tr').remove();
+			    	$('#tbody-bankList tr').remove();
 			    },
 			    buttons: {
 			    "닫기" : function() {
 			          	$(this).dialog('close');
 			          	$('#tbody-customerList tr').remove();
+			          	$('#tbody-bank tr').remove();
 			        }
 			    }
 			});
 		});
+
+		$("#a-dialog-customerno").click(function(){
+			$("#modal-customer-table").show();
+			$("#modal-bank-table").hide();
+		});
+
+		$("#a-dialog-customername").click(function(){
+			$("#modal-customer-table").show();
+			$("#modal-bank-table").hide();
+		});
+		
+		$("#a-dialog-bankname").click(function(){
+			$("#modal-bank-table").show();
+			$("#modal-customer-table").hide();
+		});
+
+		$("#a-dialog-bankcode").click(function(){
+			$("#modal-bank-table").show();
+			$("#modal-customer-table").hide();
+		});
+		
+		
 
 		//거래처리스트(customerList)의 row의 해당 데이터 form에 추가
 		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
@@ -385,6 +533,14 @@
 			var noArray = customerNo.split('-');
 			$("input[name=customerNo]").val(noArray[0]+noArray[1]+noArray[2]);
 			$("input[name=customerName]").val(td.eq(2).text());
+			$("#dialog-message").dialog('close');
+		});
+
+		$(document.body).delegate('#tbody-bankList tr', 'click', function() {
+			var tr = $(this);
+			var td = tr.children();
+			$("input[name=customerNo]").val(td.eq(0).text());
+			$("input[name=customerName]").val(td.eq(1).text());
 			$("#dialog-message").dialog('close');
 		});
 
