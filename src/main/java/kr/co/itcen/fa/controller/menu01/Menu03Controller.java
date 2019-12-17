@@ -70,6 +70,7 @@ public class Menu03Controller {
 		System.out.println("asdf: " + voucherVo.getRegDate());
 		
 		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			voucherVo.setOrderNo(1);
 			menu03Service.createVoucher(voucherVo, userVo);
 		}
 		// 전표등록, 리스트
@@ -115,6 +116,7 @@ public class Menu03Controller {
 		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 		}
+		
 		menu03Service.updateVoucher(voucherVo);
 		
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";

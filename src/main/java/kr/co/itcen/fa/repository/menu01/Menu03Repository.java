@@ -61,6 +61,7 @@ public class Menu03Repository {
 
 	// 전표생성 (1팀)
 	public void createVoucher(VoucherVo voucherVo) {
+		System.out.println("111a : " + voucherVo.getOrderNo());
 		sqlSession.insert("menu03.insertVoucher2", voucherVo);
 		sqlSession.insert("menu03.insertItem2", voucherVo);
 		sqlSession.insert("menu03.insertMapping2", voucherVo);
