@@ -34,14 +34,14 @@ public class Menu32Controller {
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "accountCode", required = false, defaultValue = "") Long accountCode,
+			@RequestParam(value = "accountNo", required = false, defaultValue = "") Long accountNo,
 			@RequestParam(value = "datepicker1", required = true, defaultValue = "") String datepicker1,
 			@RequestParam(value = "datepicker2", required = true, defaultValue = "") String datepicker2,
 			@RequestParam(value = "customerNo", required = true, defaultValue = "All") String customerNo,
 			AccountCustomerLedgerVo aclVo) {
 		model.addAttribute("accountList", menu59Service.getAllAccountList());// 계정코드가져오기~
 		menu32Service.test();
-		DataResult<AccountCustomerLedgerVo> dataResult=menu32Service.list(/*page,*/aclVo,accountCode,datepicker1,datepicker2,customerNo);
+		DataResult<AccountCustomerLedgerVo> dataResult=menu32Service.list(/*page,*/aclVo,accountNo,datepicker1,datepicker2,customerNo);
 		model.addAttribute("dataResult", dataResult);
 
 		return MAINMENU + "/" + SUBMENU + "/list";

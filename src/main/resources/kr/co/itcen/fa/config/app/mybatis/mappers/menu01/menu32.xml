@@ -87,16 +87,35 @@
 				   name as name,
 				   store as store
 				   from tb_bank
+			 where concat(name, "은행", store) like '%${_parameter }%'
+		]]>
+	</select>
+	
+	<select id="getAccountCodeInfo" parameterType="String" resultType="accountManagement17Vo">
+		<![CDATA[
+			select no as accountNo,
+				   name as accountName
+				   from tb_account
+			 where no like '${_parameter }'
+		]]>
+	</select>
+	
+	<select id="getAccountNameInfo" parameterType="String" resultType="accountManagement17Vo">
+		<![CDATA[
+			select no as accountNo,
+				   name as accountName
+				   from tb_account
 			 where name like '%${_parameter }%'
 		]]>
 	</select>
 	
 	<select id="optionSearch" parameterType="map" resultType="1accountcustomerledgervo">
 		<![CDATA[
-			select a.no as accountCode,
+			select a.no as accountNo,
 				a.name as accountName,
 				cu.no as customerNo,
 		   	 	cu.name as customerName,
+		   	 	cu.store as store,
 		   	 	m.insert_day as regDate,
 			   v.no as voucherNo,
 			   i.order_no as voucherOrderNo,
@@ -123,16 +142,16 @@
             on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
-	 left join (select no, name
+	 left join (select no, name, concat("") as store
 				  from tb_customer
 				 union
-				select no, name
+				select no, name, concat("") as store
                   from tb_salescustomer
 				 union
-				select no, name
+				select no, name, concat("") as store
                   from tb_purchasecustomer
                  union
-                select code as no, name
+                select code as no, name, store as store
                   from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
@@ -154,9 +173,9 @@
 					and m.insert_day <= #{vo.datepicker2 }
 				]]>
 			</if>
-			<if test="vo.accountCode!=null and !vo.accountCode.equals('')">
+			<if test="vo.accountNo!=null and !vo.accountNo.equals('')">
 				<![CDATA[
-					and a.no = #{vo.accountCode }
+					and a.no = #{vo.accountNo }
 				]]>
 			</if>
 			<if test="vo.customerNo!=null and !vo.customerNo.equals('')">
