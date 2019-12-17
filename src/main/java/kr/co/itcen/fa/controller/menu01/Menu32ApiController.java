@@ -51,21 +51,21 @@ public class Menu32ApiController {
 	@ResponseBody
 	@RequestMapping("/getbankCode")
 	public JSONResult getbankCodeInfo(
-			@RequestParam("bankCodeVal") String bankCode){
+			@RequestParam("bankCodeVal") String customerNo){
 		
-		System.out.println(bankCode+"!!!");
-		List<BankVo> bankCodeList = menu32Service.getBankCodeInfo(bankCode);
-		return JSONResult.success(bankCodeList);
+		System.out.println(customerNo+"!!!");
+		List<CustomerVo> customerNoList = menu32Service.getBankCodeInfo(customerNo);
+		return JSONResult.success(customerNoList);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getbankName")
 	public JSONResult getbankNameInfo(
-			@RequestParam("bankNameVal") String bankName){
+			@RequestParam("bankNameVal") String name){
 		
-		System.out.println(bankName+"!!!");
-		List<BankVo> bankNameList = menu32Service.getBankNameInfo(bankName);
-		return JSONResult.success(bankNameList);
+		System.out.println(name+"!!!");
+		List<CustomerVo> nameList = menu32Service.getBankNameInfo(name);
+		return JSONResult.success(nameList);
 	}
 	
 

@@ -58,14 +58,14 @@ public class Menu32Repository {
 		return list;
 	}
 
-	public List<BankVo> getBankCodeInfo(String bankCode) {
-		String code = "%" + bankCode +"%";
-		List<BankVo> result = sqlSession.selectList("menu32.getBankCodeInfo", code);
+	public List<CustomerVo> getBankCodeInfo(String customerNo) {
+		String no = "%" + customerNo +"%";
+		List<CustomerVo> result = sqlSession.selectList("menu32.getBankCodeInfo", no);
 		return result;
 	}
 
-	public List<BankVo> getBankNameInfo(String bankName) {
-		return sqlSession.selectList("menu32.getBankNameInfo", bankName);
+	public List<CustomerVo> getBankNameInfo(String name) {
+		return sqlSession.selectList("menu32.getBankNameInfo", name);
 	}
 
 	public List<AccountManagementVo> getAccountNoInfo(String accountNo) {

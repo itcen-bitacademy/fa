@@ -158,7 +158,7 @@
 							<thead>
 								<tr>
 									<th class="center">은행코드</th>
-									<th class="center">은행명/지점</th>
+									<th class="center">은행명</th>
 								</tr>
 							</thead>
 							
@@ -276,35 +276,11 @@
 									<tbody style="text-align: center;">
 										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 											<tr style="text-align: center;">
+
 												<td class="">${vo.accountName }</td>
-												<c:choose>
-												<c:when test="${empty vo.store }">
 												<td>${vo.customerName } </td>
-												</c:when>
-												<c:otherwise>
-												<td>${vo.customerName }은행  ${vo.store }</td>
-												</c:otherwise>
-												</c:choose>
 												<td>${vo.regDate }</td>
 												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
-												<td>${vo.insertTeam }/${vo.insertUserid }</td>
-												<td>${vo.voucherUse }</td>
-												<c:choose>
-												<c:when test="${empty vo.cardNo }">
-												<td></td>
-												</c:when>
-												<c:otherwise>
-												<td>${vo.cardNo }/${vo.cardUser }</td>
-												</c:otherwise>
-												</c:choose>
-												<c:choose>
-												<c:when test="${empty vo.bankName}">
-												<td></td>
-												</c:when>
-												<c:otherwise>
-												<td>${vo.bankName }/${vo.depositNo }/${vo.depositHost }</td>
-												</c:otherwise>
-												</c:choose>
 												<td>${vo.amountFlag }</td>
 													<c:choose>
 												        <c:when test="${vo.amountFlag == '차변' }">
@@ -316,6 +292,19 @@
 												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
 												        </c:otherwise>
 												    </c:choose>
+												<td>${vo.bankName }</td>
+												<td>${vo.cardNo }</td>
+												<td>${vo.depositNo }</td>
+												<c:choose>
+												<c:when test="${empty vo.depositHost }">
+												<td>${vo.cardUser }</td>
+												</c:when>
+												<c:otherwise>
+												<td>${vo.depositHost }</td>
+												</c:otherwise>
+												</c:choose>
+												<td>${vo.voucherUse }</td>
+												<td>${vo.insertTeam }</td>
 												    
 											</tr>
 											
@@ -504,8 +493,8 @@
 					$("#input-dialog-bankcode").val('');
 					 $.each(response.data,function(index, item){
 			                $("#tbody-bankList").append("<tr>" +
-			                		"<td class='center'>" + item.code + "</td>" +
-							        "<td class='center'>" + item.name + "은행 " + item.store + "</td>" +
+			                		"<td class='center'>" + item.no + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
 							        "</tr>");
 			         })
 				},
@@ -514,8 +503,40 @@
 				}
 			});
 		});
-		
-		//거래처명 검색 :거래처목록 리스트로 가져오기
+		//은행명으로 검색
+		$("#a-dialog-bankname").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
+			var bankNameVal = $("#input-dialog-bankname").val();
+			console.log(bankNameVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getbankName?bankNameVal=" + bankNameVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-bankname").val('');
+					 $.each(response.data,function(index, item){
+			                $("#tbody-bankList").append("<tr>" +
+			                		"<td class='center'>" + item.no + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "</tr>");
+			         })
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		//계정명으로 검색
 		$("#a-dialog-accountname").click(function(event){
 			event.preventDefault();
 			$("#tbody-accountList").find("tr").remove();
@@ -549,7 +570,7 @@
 			});
 		});
 		
-		//은행코드로 검색
+		//계정코드로 검색
 		$("#a-dialog-accountno").click(function(event){
 			event.preventDefault();
 			$("#tbody-accountList").find("tr").remove();
@@ -612,7 +633,7 @@
 			    "닫기" : function() {
 			          	$(this).dialog('close');
 			          	$('#tbody-customerList tr').remove();
-			          	$('#tbody-bank tr').remove();
+			          	$('#tbody-bankList tr').remove();
 			        }
 			    }
 			});
@@ -646,7 +667,12 @@
 			var td = tr.children();
 			var customerNo = td.eq(1).text();
 			var noArray = customerNo.split('-');
-			$("input[name=customerNo]").val(noArray[0]+noArray[1]+noArray[2]);
+			if (noArray[1] !=null || noArray[2] !=null){
+				$("input[name=customerNo]").val(noArray[0]+noArray[1]+noArray[2]);
+			} else if (noArray[1]==null){
+				$("input[name=customerNo]").val(noArray[0]);
+				
+			}
 			$("input[name=customerName]").val(td.eq(2).text());
 			$("#dialog-message").dialog('close');
 		});

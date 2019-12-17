@@ -47,12 +47,12 @@ public class Menu32Service {
 		return dataResult;
 	}
 
-	public List<BankVo> getBankCodeInfo(String bankCode) {
-		return menu32Repository.getBankCodeInfo(bankCode);
+	public List<CustomerVo> getBankCodeInfo(String customerNo) {
+		return menu32Repository.getBankCodeInfo(customerNo);
 	}
 
-	public List<BankVo> getBankNameInfo(String bankName) {
-		return menu32Repository.getBankNameInfo(bankName);
+	public List<CustomerVo> getBankNameInfo(String name) {
+		return menu32Repository.getBankNameInfo(name);
 	}
 
 	public List<AccountManagementVo> getAccountNoInfo(String accountNo) {
