@@ -252,17 +252,21 @@
 									<thead>
 										<tr>
 											
-											<th class="center">계정명</th>
-											<th class="center">거래처명</th>
+											<th class="center">계정과목명</th>
+											<th class="center">거래처</th>
 											<th class="center">일자</th>
 											<th class="center">전표번호-순번</th>
-											<th class="center">사용팀/성명</th>
-											<th class="center">적요</th>
-											<th class="center">카드번호/사용자</th>
-											<th class="center">은행명/계좌번호/예금주</th>
 											<th class="center">차대구분</th>
 											<th class="center">차변</th>
 											<th class="center">대변</th>
+											<th class="center">은행명</th>
+											<th class="center">카드번호</th>
+											<th class="center">계좌번호</th>
+											<th class="center">소유자</th>
+											<th class="center">사용목적</th>
+											<th class="center">관리팀</th>
+											
+											
 										</tr>
 									</thead>
 									
@@ -335,7 +339,39 @@
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
-			 
+			 <!-- 페이징 영역 -->
+			<div class="pagination">
+				<ul>
+					<c:choose>
+						<c:when test="${dataResult.pagination.prev }">
+							<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${dataResult.pagination.startPage - 1 }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }"><i class="icon-double-angle-left"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+
+					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+						<c:choose>
+							<c:when test="${pg eq dataResult.pagination.page }">
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${pg }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }">${pg }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${pg }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }">${pg }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+							<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${dataResult.pagination.endPage + 1 }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }"><i class="icon-double-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+			</div>
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->

@@ -55,6 +55,10 @@
 										</div>
 									</div>
 								</div>
+								<script type="text/javascript">
+								var regDate = "${param.regDate}";
+								$("#regDate").val(regDate);
+								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표번호</label>
@@ -62,6 +66,10 @@
 										<input class="span8" type="text" id="no" name="no" placeholder="전표번호"/>
 									</div>
 								</div>
+								<script type="text/javascript">
+								var no = "${param.no}";
+								$("#no").val(no);
+								</script>
 								
 								<!-- 계정과목  -->
 								<div class="control-group">
@@ -79,10 +87,27 @@
 											</c:forEach>
 										</select> 
 										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
-									
 									</div>
 								</div>
+								<script type="text/javascript">
+								var accountNo = "${param.accountNo}";
+								$("#accountNo").val(accountNo);
+								</script>
 								
+								<!-- 삭제여부  -->
+								<div class="control-group">
+									<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >삭제여부</label>
+									<div class="controls">
+										<select class="chosen-select" id="useYn" name="useYn" data-placeholder="삭제여부">		
+											<option value="true">Y</option>
+											<option value="false">N</option>
+										</select> 
+									</div>
+								</div>
+								<script type="text/javascript">
+								var useYn = "${param.useYn}";
+								$("#useYn").val(useYn);
+								</script>
 							</div>
 	
 						<div class="span6">
@@ -101,6 +126,21 @@
 										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
 									</div>
 								</div>
+								<script type="text/javascript">
+								var customerNo = "${param.customerNo}";
+								$("#customerNo").val(customerNo);
+								</script>
+								
+								<div class="control-group">
+									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
+									<div class="controls">
+										<input type="text" id="amount" name="amount" placeholder="0" onkeyup="inputNumberFormat(this)">
+									</div>
+								</div>
+								<script type="text/javascript">
+								var amount = "${param.amount}";
+								$("#amount").val(amount);
+								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표사용목적</label>
@@ -109,13 +149,10 @@
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
-								
-								<div class="control-group">
-									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
-									<div class="controls">
-										<input type="text" id="amount" name="amount" placeholder="0" onkeyup="inputNumberFormat(this)">
-									</div>
-								</div>
+								<script type="text/javascript">
+								var voucherUse = "${param.voucherUse}";
+								$("#voucherUse").val(voucherUse);
+								</script>
 								
 								<!-- 거래처 Modal pop-up : start -->
 								<div id="dialog-message" title="거래처" hidden="hidden">
@@ -162,13 +199,15 @@
 			<div class="row-fluid">
 				<div class="span8">
 						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
-							formaction="${pageContext.request.contextPath}/01/03/?a=1">조회</button>
+							formaction="${pageContext.request.contextPath}/01/04/read">조회</button>
 						<button class="btn btn-default btn-small" type="reset">취 소</button>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 			<div class="hr hr-18 dotted"></div>
 			</form>
-
+			
+			<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 전표 ${dataResult.pagination.totalCnt } 건</p>
+			
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -176,24 +215,24 @@
 						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th>일자</th>
-								<th>전표번호</th>
-								<th>구분</th>
-								<th>계정과목코드</th>
-								<th>계정과목명</th>
-								<th>차변</th>
-								<th>대변</th>
-								<th>거래처번호</th>
-								<th>거래처</th>
-								<th>증빙종류</th>
-								<th>증빙코드</th>
-								<th>은행코드</th>
-								<th>은행명</th>
-								<th>카드번호</th>
-								<th>계좌번호</th>
-								<th>소유자</th>
-								<th>사용목적</th>
-								<th>관리팀</th>
+								<th class="center">일자</th>
+								<th class="center">전표번호</th>
+								<th class="center">구분</th>
+								<th class="center">계정과목코드</th>
+								<th class="center">계정과목명</th>
+								<th class="center">차변</th>
+								<th class="center">대변</th>
+								<th class="center">거래처번호</th>
+								<th class="center">거래처</th>
+								<th class="center">증빙종류</th>
+								<th class="center">증빙코드</th>
+								<th class="center">은행코드</th>
+								<th class="center">은행명</th>
+								<th class="center">카드번호</th>
+								<th class="center">계좌번호</th>
+								<th class="center">소유자</th>
+								<th class="center">사용목적</th>
+								<th class="center">관리팀</th>
 							</tr>
 						</thead>
 						
@@ -266,7 +305,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${dataResult.pagination.startPage - 1 }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }"><i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -276,17 +315,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${pg }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${pg }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${pg }">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${pg }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/04/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${dataResult.pagination.endPage + 1 }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }"><i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
