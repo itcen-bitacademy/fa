@@ -130,8 +130,13 @@ tr td:first-child {
 	margin: auto 0;
 }
 
-.repay-input-wrapper:last-child{}
+input::-webkit-outer-spin-button,			/* input type=number 화살표 제거*/
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+.input-num{text-align:right;}
 </style>
 </head>
 <body class="skin-3">
@@ -164,15 +169,16 @@ tr td:first-child {
 							<input type="hidden" name="isDuplicated" value="Y">
 						</div>
 						<div class="ia-left"><h4>단기차입금명</h4></div>
-						<div class="ia-right"><input type="text" id="name" name="name" placeholder="육하원칙으로 입력해주세요." required></div>
+						<div class="ia-right"><input type="text" name="name" placeholder="육하원칙으로 입력해주세요." required></div>
 						<div class="ia-left"><h4>차입금액</h4></div>
 						<div class="ia-right">
-							<input type="text" id="debtAmount" name="debtAmount" required>
+							<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
+							<input type="hidden" name="debtAmount" required>
 							<h5 style="display: inline-block;">(원)</h5>
 						</div>
 						<div class="ia-left"><h4>차입일자 ~ 만기일자</h4></div>
 						<div class="ia-right">
-							<input type="text" name="debtExpDate" id="debtExpDate" required>
+							<input type="text" name="debtExpDate" readonly="readonly" required>
 							<span class="add-on"><i class="icon-calendar"></i></span>
 						</div>
 						<div class="ia-left"><h4>이자지급방식</h4></div>
@@ -192,8 +198,8 @@ tr td:first-child {
 						</div>
 						<div class="ia-left"><h4>은행코드</h4></div>
 						<div class="ia-right">
-							<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" required/>
-							<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명"/>
+							<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly="readonly" required/>
+							<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly="readonly"/>
 							<a href="#" id="a-bankinfo-dialog" onclick="openBankDialog()">
 								<span class="btn btn-small btn-info">
 									<i class="icon-search nav-search-icon"></i>
@@ -268,7 +274,7 @@ tr td:first-child {
 						</div>
 						
 						<div class="ia-left"><h4>이율</h4></div>
-						<div class="ia-right"><input type="text" name="intRate" id="intRate" placeholder="(%) 정수로 입력하세요." required/><h5 style="display:inline">%</h5></div>
+						<div class="ia-right"><input type="number" name="intRate" min="0" max="100" id="intRate" placeholder="(%) 정수로 입력하세요." class="input-num" required/><h5 style="display:inline">%</h5></div>
 						
 						<div class="ia-left"><h4>담당자</h4></div>
 						<div class="ia-right">
@@ -279,7 +285,7 @@ tr td:first-child {
 						
 						<div class="ia-left"><h4>계좌</h4></div>
 						<div class="ia-right">
-							<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" placeholder="계좌번호"required/>
+							<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" placeholder="계좌번호" readonly="readonly" required/>
 							<span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span>
 							<input type="text" class="search-input-width-second" name="depositHost" disabled="disabled" placeholder="예금주"/>
 						</div>
@@ -461,6 +467,23 @@ $(function() {						//onload함수
 //Page ready시 table & paging list Rendering
 $(document).ready(function(){
 	getList();
+});
+
+$("#debt-amount-comma").on("focus", function() {
+    var x = $(this).val();
+    x = unComma(x);
+    $(this).val(x);
+}).on("focusout", function() {
+    var x = $(this).val();
+    if(x && x.length > 0) {
+        if(!$.isNumeric(x)) {
+            x = x.replace(/[^0-9]/g,"");
+        }
+        x = comma(x);
+        $(this).val(x);
+    }
+}).on("keyup", function() {
+    $(this).val($(this).val().replace(/[^0-9]/g,""));
 });
 </script>
 <script>
@@ -821,6 +844,7 @@ function selectRow(thisObj){
 	inputForm.code.value = vo.code;
 	inputForm.name.value = vo.name;
 	inputForm.debtAmount.value = vo.debtAmount;
+	inputForm.debtAmountComma.value = comma(vo.debtAmount);
 	inputForm.debtExpDate.value = vo.debtDate + " - " + vo.expDate;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
 	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
 		if($(this).val() == vo.intPayWay){
@@ -916,8 +940,8 @@ function renderingList(list){
 				 "<td class='center'>" + list[i].code + "</td>" +
 				 "<td class='center'>" + list[i].name + "</td>" +
 				 "<td class='center'>" + list[i].majorCode + "</td>" +
-				 "<td class='center'>" + list[i].debtAmount + "</td>" +
-				 "<td class='center'>" + list[i].repayBal + "</td>" +
+				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
+				 "<td class='center'>" + comma(list[i].repayBal) + "</td>" +
 				 "<td class='center'>" + list[i].repayWay + "</td>" +
 				 "<td class='center'>" + list[i].debtDate + "</td>" + 
 				 "<td class='center'>" + list[i].expDate + "</td>" +
@@ -1091,6 +1115,20 @@ function deleteChecked(){
 	console.log("------------------------------deleteChecked() end-------------------------");
 }
 
+//**---------------------------------------------숫자에 콤마 붙이기 -------------------------------------**//
+//var rgx3 = /,/gi;
+	
+// 1. 콤마찍기
+function comma(str) {
+    str = String(str);
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+
+// 2. 콤마풀기
+function uncomma(str) {
+    str = String(str);
+    return str.replace(/[^\d]+/g, '');
+}
 </script>
 </body>
 </html>

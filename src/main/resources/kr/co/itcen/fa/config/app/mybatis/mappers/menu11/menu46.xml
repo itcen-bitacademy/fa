@@ -30,23 +30,15 @@
 	</select>
 	<select id="getList" parameterType="Map" resultType="stermdebtvo" resultMap="stermdebtResult">
 		<![CDATA[
-			select 
-			no, code, major_code, name,
-			debt_amount, repay_bal, repay_way,
-			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
-			int_pay_way, mgr,
-			mgr_call, bank_code, deposit_no, 
-			voucher_no, delete_flag,
-			insert_id, insert_date, update_id,
-			update_date 
-			from tb_s_term_debt
-			where delete_flag="N" and repay_comple_flag="N"
+			select s.*, bc.deposit_host, b.name
+			from tb_s_term_debt s, tb_bank_account bc, tb_bank b
+			where s.deposit_no = bc.deposit_no and s.bank_code = b.code and s.delete_flag="N" and s.repay_comple_flag="N"
 		]]>
 		<if test='code != null and !"".equals(code)'>
-			and code LIKE CONCAT(#{code}, "%")
+			and s.code LIKE CONCAT(#{code}, "%")
 		</if>
 		<if test='financialYear != null and !"".equals(financialYear)'>
-			and year(debt_date) = #{financialYear} 
+			and year(s.debt_date) = #{financialYear} 
 		</if>
 		limit ${startRow}, ${pageSize}
 	</select>
