@@ -1,19 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/js/08/41/41.js" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/js/08/41/41.js" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-<link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -22,8 +18,6 @@
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
-
-
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">차량관리</h1>
@@ -49,99 +43,71 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">대분류 코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-section"
-												name="sectionNo" data-placeholder="전체">
+											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="전체">
+											
 												<c:forEach items="${sectionList }" var="sectionVo">
-													<option vehiclecode="${sectionVo.classification}"
-														value="${sectionVo.code }">${sectionVo.code }</option>
+													<option vehiclecode="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
 											</select>
-											<!-- <input readonly type="text" class="span6" id="form-input-readonly"  value="코드를 지정하면 대분류명이 등록됩니다"> -->
-											<!-- 	<input readonly type="text" class="span6" id="classification"  value="코드를 지정하면 대분류명이 등록됩니다"> -->
-											<input readonly type="text" class="span6" id="classification"
-												name="classification" value="1000CC"
-												placeholder="코드를 지정하면 대분류명이 등록됩니다">
+											<input readonly type="text" class="span6" id="classification" name="classification" value="코드를 지정하면 대분류명이 등록됩니다">
 										</div>
 									</div>
 
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">주소(광역)</label>
 										<div class="controls">
-											<input class="span2" onclick="execDaumPostcode()"
-												class="btn-primary box" type="button" value="주소 찾기">
-											<input class="span4" readonly type="text" id="wideAddr"
-												name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> <input
-												style="width: 230px" class="span5" readonly type="text"
-												id="cityAddr" name="cityAddress"
-												placeholder="주소를 선택하면 입력됩니다.">
+											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
+											<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
+											<input style="width:230px" class="span5" readonly type="text" id="cityAddr" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
 										</div>
 									</div>
 
-									<%-- 		<div class="control-group">
-									<label class="control-label" for="form-field-select-1">주소(읍/면/동)</label>
-									<div class="controls">
-										<select class="chosen-select" id="form-field-select-1" name="localAddr" data-placeholder="전체">
-											<c:forEach items="${listMainMenu }" var="sectionVo">
-												<option value="${sectionVo.no }">${sectionVo.name }</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div> --%>
-
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">거래처
-											코드</label>
+										<label class="control-label" for="form-field-select-1">거래처 코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-customerCode"
-												name="customerName" data-placeholder="전체">
+											<select class="chosen-select" id="form-field-customerCode" name="customerName" data-placeholder="전체">
+												<option></option>
 												<c:forEach items="${customerList }" var="customerVo">
-													<option managerName="${customerVo.managerName }"
-														customerCode="${customerVo.no }" value="${customerVo.no }">${customerVo.name }</option>
+													<option managerName="${customerVo.managerName }" customerCode="${customerVo.no }" value="${customerVo.no }">${customerVo.name }</option>
 												</c:forEach>
 											</select> <input readonly type="text" class="span6" id="customerNo"
 												name="customerNo" value="거래처명을 지정하면 코드가 등록됩니다">
 										</div>
 									</div>
 
-
 									<div class="control-group">
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">매입일자</label>
 											<div class="controls">
-												<input class="cl-date-picker" style="width: 150px"
-													type="text" id="form-field-1" name="payDate" placeholder="" />
+												<input class="cl-date-picker" style="width: 150px" type="text" id="form-field-1" name="payDate" placeholder="" />
 												<i class="icon-calendar"></i>
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
-												class="control-label" for="form-field-1">출시가</label> <input
-												style="width: 200px" type="text" id="form-field-1"
-												name="publicValue" placeholder="금액을 입력하세요" />
+												class="control-label" for="form-field-1">출시가</label>
+												 <input style="width: 200px" type="text" id="form-field-1" name="publicValue" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">부대비용</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="etcCost"
-												placeholder="금액을 입력하세요" />
+											<input type="text" id="etcCost" name="etcCost" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">보증금</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="deposit"
-												placeholder="금액을 입력하세요" />
+											<input type="text" id="deposit" name="deposit" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">월 사용료</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="monthlyFee"
-												placeholder="금액을 입력하세요" />
+											<input type="text" id="monthlyFee" name="monthlyFee" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
@@ -149,15 +115,13 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">사용 개월</label>
 											<div class="controls">
-												<input readonly type="text" class="span6" id="usingMonth"
-													name="usingMonth" value="최대 60개월">
+												<input readonly type="text" class="span6" id="usingMonth" name="usingMonth" value="최대 60개월">
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
-												class="control-label" for="form-field-1">월 사용료 납부금액</label>
-											<input readonly type="text" class="span6"
-												id="form-input-readonly" value="월 누적금액">
+												class="control-label" for="form-field-1">월 사용료 총 납부금액</label>
+											<input readonly type="text" class="span6" id="all-monthly-fee" value="월 누적금액">
 										</div>
 									</div>
 								</div>
@@ -166,17 +130,14 @@
 								<div class="span6">
 									<!-- 대변 -->
 
-
-
 									<div class="control-group" style="margin-top: 50px">
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width: 90%">
-												<select class="chosen-select" id="form-field-classification"
-													name="staffNo" data-placeholder="전체">
-													<!-- <select class="chosen-select-1" id="form-field-select-1" name="staffName" data-placeholder="전체"> -->
+												<select class="chosen-select" id="form-field-classification" name="staffNo" data-placeholder="전체">
+												
 													<c:forEach items="${jikNameList}" var="StaffVo">
-														<option value="${StaffVo.no }">${StaffVo.staffName }</option>
+														<option staffNo="${StaffVo.no }" value="${StaffVo.no }">${StaffVo.staffName }</option>
 													</c:forEach>
 												</select>
 											</div>
@@ -184,8 +145,7 @@
 										<div style="float: left; width: 50%">
 											<label style="width: 80px; margin-right: 10px;"
 												class="control-label" for="form-field-1">사용자</label> <input
-												type="text" id="form-field-1" name="ownerName"
-												placeholder="차량 사용자를 입력하세요" />
+												type="text" id="form-field-1" name="ownerName" placeholder="차량 사용자를 입력하세요" />
 										</div>
 									</div>
 
@@ -193,57 +153,44 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">상세주소</label>
 										<div class="controls">
-											<input type="text" id="detailAddr" name="detailAddress"
-												placeholder="상세주소를 입력하세요" />
+											<input type="text" id="detailAddr" name="detailAddress" placeholder="상세주소를 입력하세요" />
 										</div>
 									</div>
 
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">거래처
-											담당자</label>
+										<label class="control-label" for="form-field-1">거래처 담당자</label>
 										<div class="controls">
-											<input type="text" id="customerManager" name="managerName"
-												placeholder="이름을 입력하세요" />
+											<input type="text" id="customerManager" name="managerName" placeholder="이름을 입력하세요" />
 										</div>
 									</div>
+									
+									<div class="control-group">
+										<label class="control-label" for="form-field-1">취득세</label>
+										<div class="controls">
+											<input type="text" id="acqTax" name="acqTax" placeholder="금액을 입력하세요" />
+										</div>
+									</div>
+
 
 									<div class="control-group">
-										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">등록세</label>
-											<div class="controls" style="width: 90%">
-												<input type="text" id="form-field-1" name="regTax"
-													placeholder="금액을 입력하세요" />
-											</div>
-										</div>
-										<div style="float: left; width: 50%">
-											<label style="width: 80px; margin-right: 10px;"
-												class="control-label" for="form-field-1">취득세</label> <input
-												type="text" id="form-field-1" name="acqTax"
-												placeholder="금액을 입력하세요" />
-										</div>
-									</div>
-
-
-									<!-- 	<div class="control-group">
-									<label class="control-label" for="form-field-1">세금계산서 번호</label>
+									<label hidden class="control-label" for="form-field-1">세금계산서 번호</label>
 									<div class="controls">
-										<input type="text" class="span7" id="form-field-1" name="taxbillNo" placeholder="12자로 입력하세요"/>
+										<input  type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
 									</div>
 								</div> 
-								-->
+								
 
 									<div class="control-group">
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">보증금 납부 예정일</label>
 											<div class="controls" style="width: 90%">
-												<input class="cl-date-picker" type="text"
-													style="width: 150px" id="depositDate" name="depositDate"
-													placeholder="" /> <i class="icon-calendar"></i>
+												<input class="cl-date-picker" type="text" style="width: 150px" id="dueDate" name="dueDate" placeholder="" /> <i class="icon-calendar"></i>
 											</div>
 										</div>
 										<div style="float: left;">
-											<button class="btn btn-default btn-small" id="nabbu" style="float: right; margin-right: 20px;" type="reset">납부</button>
+											<button class="btn btn-default btn-small" id="nabbu" 
+												style="float: right; margin-right: 20px;" type="reset">납부</button>
 										</div>
 									</div>
 
@@ -252,13 +199,11 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">월 사용료 납부 예정일</label>
 											<div class="controls">
-												<input type="text" class="span10" id="feeDate"
-													name="feeDate" placeholder="일자 2자리를 입력하세요" />
+												<input type="text" class="span10" id="feeDate" name="feeDate" placeholder="일자 2자리를 입력하세요" />
 											</div>
 										</div>
 										<div style="float: left;">
-											<button class="btn btn-default btn-small" id="walsa"
-												style="float: right; margin-right: 20px;" type="reset">납부</button>
+											<button class="btn btn-default btn-small" id="walsa" style="float: right; margin-right: 20px;" type="reset">납부</button>
 										</div>
 									</div>
 
@@ -317,17 +262,12 @@
 								class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th class="center"><label> <input type="checkbox"
-												name="checkAll" id="th_checkAll" class="ace"
-												onclick="checkAll();" /> <span class="lbl"></span>
-										</label></th>
 										<th>NO</th>
 										<th>차량코드</th>
 										<th>차량대분류</th>
 										<th>차량배기량</th>
 										<th>직급</th>
 										<th>사용자</th>
-										<!-- 6번 -->
 										<th>주소(광역)</th>
 										<th>주소(시/군/구)</th>
 										<th>주소(상세)</th>
@@ -336,59 +276,49 @@
 										<th>매입거래처담당자</th>
 										<th>매입일자</th>
 										<th>출시가(원)</th>
-										<th>등록세(원)</th>
 										<th>취득세(원)</th>
 										<th>부대비용(원)</th>
-										<th>세금계산서번호</th>
 										<th>보증금(원)</th>
-										<th hidden="hidden">보증금 납부일자</th>
-										<!-- 20번 -->
+										<th hidden="hidden">보증금,월사용료 실제 납부일자</th>
 										<th>보증금 예정일자</th>
 										<th>월 사용료(원)</th>
 										<th>월 사용료 납부일</th>
 										<th>과세/영세</th>
 										<th>사용개월</th>
 										<th>월 사용료 납부금액</th>
-										<!-- <th>작성자</th>
-												<th>작성일자</th> -->
+										<th>세금계산서 번호</th>
+										
 									</tr>
 								</thead>
 
 								<tbody>
 									<c:forEach items="${list }" var="VehicleVo" varStatus="status">
 										<tr>
-											<td class="center"><label> <input
-													type="checkbox" class="ace" name="checkRow"
-													value="${content.IDX}" /> <span class="lbl"></span>
-											</label></td>
-
-											<td>${status.count }</td>
-											<td class="vehicle-id">${VehicleVo.id}</td>
-											<td>${VehicleVo.sectionNo}</td>
-											<td>${VehicleVo.classification}</td>
-											<td>${VehicleVo.staffName}</td>
-											<td>${VehicleVo.ownerName}</td>
-											<td>${VehicleVo.wideAddress}</td>
-											<td>${VehicleVo.cityAddress}</td>
-											<td>${VehicleVo.detailAddress}</td>
-											<td>${VehicleVo.customerNo}</td>
-											<td>${VehicleVo.customerName}</td>
-											<td>${VehicleVo.managerName}</td>
-											<td class="pay-date">${VehicleVo.payDate}</td>
-											<td><fmt:formatNumber value="${VehicleVo.publicValue}" pattern="#,###"></fmt:formatNumber></td>
-											<td><fmt:formatNumber value="${VehicleVo.regTax}" pattern="#,###"></fmt:formatNumber></td>
-											<td><fmt:formatNumber value="${VehicleVo.acqTax}" pattern="#,###"></fmt:formatNumber></td>
-											<td><fmt:formatNumber value="${VehicleVo.etcCost}" pattern="#,###"></fmt:formatNumber></td>
-											<td><button type="button" class="myBtn">세금계산서번호</button></td>
-											<td><fmt:formatNumber value="${VehicleVo.deposit}" pattern="#,###"></fmt:formatNumber></td>
-											<td hidden="hidden">${VehicleVo.depositDate}</td>
-											<td>${VehicleVo.dueDate}</td>
-											<td class="monthly-fee"><fmt:formatNumber value="${VehicleVo.monthlyFee}" pattern="#,###"></fmt:formatNumber></td>
-											<td>${VehicleVo.feeDate}</td>
-											<td>${VehicleVo.taxKind}</td>
-											<td class="using-month"></td>
-											<td class="month-cost"></td>
-
+											<td>${status.count }</td>  <!-- 0 -->
+											<td class="vehicle-id">${VehicleVo.id}</td>  <!-- 1 -->
+											<td>${VehicleVo.sectionNo}</td>  <!-- 2 -->
+											<td>${VehicleVo.classification}</td>  <!-- 3 -->
+											<td>${VehicleVo.staffName}</td>  <!-- 4 -->
+											<td>${VehicleVo.ownerName}</td>  <!-- 5 -->
+											<td>${VehicleVo.wideAddress}</td>  <!-- 6 -->
+											<td>${VehicleVo.cityAddress}</td>  <!-- 7 -->
+											<td>${VehicleVo.detailAddress}</td>  <!-- 8 -->
+											<td>${VehicleVo.customerNo}</td> <!-- 9 -->
+											<td>${VehicleVo.customerName}</td> <!-- 10 -->
+											<td>${VehicleVo.managerName}</td> <!-- 11 -->
+											<td class="pay-date">${VehicleVo.payDate}</td> <!-- 12 -->
+											<td><fmt:formatNumber value="${VehicleVo.publicValue}" pattern="#,###"></fmt:formatNumber></td> <!-- 13 -->
+											<td><fmt:formatNumber value="${VehicleVo.acqTax}" pattern="#,###"></fmt:formatNumber></td> <!-- 14 -->
+											<td><fmt:formatNumber value="${VehicleVo.etcCost}" pattern="#,###"></fmt:formatNumber></td> <!-- 15 -->
+											<td><fmt:formatNumber value="${VehicleVo.deposit}" pattern="#,###"></fmt:formatNumber></td> <!-- 16 -->
+											<td>${VehicleVo.dueDate}</td> <!-- 17 -->
+											<td class="monthly-fee"><fmt:formatNumber value="${VehicleVo.monthlyFee}" pattern="#,###"></fmt:formatNumber></td> <!-- 18 -->
+											<td>${VehicleVo.feeDate}</td> <!-- 19 -->
+											<td>${VehicleVo.taxKind}</td> <!-- 20 -->
+											<td class="using-month"></td> <!-- 21 -->
+											<td class="month-cost"></td> <!-- 22 -->
+											<td hidden>${VehicleVo.depositDate}</td> <!-- 보증금, 월사용료 실제 납부날짜 --> <!-- 23 -->
+											<td class= "taxbillNo">${VehicleVo.taxbillNo}</td> <!-- 24 -->
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -399,35 +329,44 @@
 									<tr>
 										<td>
 											<form action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
-												<label>세금계산서번호</label> 
-												<input type="text" id="input-dialog-bankname" name="taxbillNo" placeholder="세금계산서번호" /> 
+												
 												<label>차량코드</label> 
 												<input readonly type="text" id="vehicleNo" name="vehicleNo" value="차량코드">
-												<!-- <label>납부일</label>	 -->
-												<input readonly type="hidden" id="paymentDate" name="paymentDate" value="납부일"> 
-												<label>납부 예정일</label> 
-												<input readonly type="text" id="dueDate" name="dueDate" value="납부예정일"> 
+
+												<label id="bonapil-label">보증금 납부 예정일</label> 
+												<input readonly type="text" id="bonapil-input" name="bonapil" value="납부예정일">
+												
 												<label class="deposits">보증금</label>
-												<input readonly type="text" class="deposits" name="deposit" value="보증금">
+												<input readonly type="text" id="depositPop" name="depositPop" value="">
+												
+												<label id="walnapil-label">월사용료 납부 예정일</label>
+												<input readonly type="text" id="walnapil-input" name="walnapil" >
+												
 												<label class="monthfee">월 사용료</label>
-												<input readonly type="text" class="monthfee" name="monthlyFee" value="월 사용료"> <input readonly type="hidden" id="payDate-1" name="payDate-1">
-												<!-- 매입일자 -->
+												<input readonly type="text" id="monthlyFeePop" name="monthlyFeePop" value="">
+												
+												<label>세금계산서번호</label> 
+												<input type="text" id="input-dialog-bankname" name="taxbillNoPoP" placeholder="세금계산서번호" />
+										
 												<input type="hidden" id="cusNo" name="cusNo" value="">
 												<input type="hidden" id="gubun" name="gubun" value="">
-												<button class="btn btn-info btn-small" id="segum" style="float: right; margin-left: 10px;">입력</button>
+												
+												<br>
+												<br>
+												<br>
+												<button class="btn btn-info btn-small" id="segum" >입력</button>
+												
 											</form>
 										</td>
 									</tr>
 								</table>
 							</div>
 
-
 								<div id="segumList" title="차량 세금계산서" hidden="hidden">
 									<!-- 차량코드, 납부일, 세금계산서 번호 데이터 리스트 -->
 									<table id="segum-table"
 										class="table  table-bordered table-hover">
 										<thead>
-
 											<tr>
 												<th class="vehicle-code">차량코드</th>
 												<th class="pay">가격</th>
@@ -437,34 +376,11 @@
 												<th class="voucherno">전표번호</th>
 												<th class="gubun">구분</th>
 											</tr>
-											<c:forEach items="${segumList }" var="segumVo"
-												varStatus="status">
-												<tr>
-													<td>${segumVo.vehicleNo}</td>
-													<td>${segumVo.pay}</td>
-													<td>${segumVo.paymentDate}</td>
-													<td>${segumVo.taxbillNo}</td>
-													<td>${segumVo.voucherNo}</td>
-													<td>${segumVo.gubun}</td>
-												</tr>
-											</c:forEach>
 										</thead>
 										<tbody id="tbody-segumList">
 										</tbody>
 									</table>
 								</div>
-
-								<!-- 		<div class="pagination">
-											<ul>
-												<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-												<li class="active"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-											</ul>
-										</div> -->
 							</div>
 							<!-- PAGE CONTENT ENDS -->
 						</div>
@@ -479,10 +395,8 @@
 		<!-- /.main-container -->
 		<!-- basic scripts -->
 		<c:import url="/WEB-INF/views/common/footer.jsp" />
-		<script
-			src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-		<script
-			src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+		<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+		<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 		<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 		<script>
 
@@ -524,22 +438,7 @@ $(function() {
 });
 
 
-$(function checkAll(){
-    if( $("#th_checkAll").is(':checked') ){
-      $("input[name=checkRow]").prop("checked", true);
-    }else{
-      $("input[name=checkRow]").prop("checked", false);
-    }
-});
-
-/* //대분류코드 select box 변경시 이벤트
-$('#form-field-section').change(
-	function() { 
-      var sectionCode = $('#form-field-section option:selected').val(); //1000CC
-      alert("첫번째" + sectionCode)
-      var classification = $('#classification').val(); //1000cc
-      alert("두번째" + classification)
-}); */
+//차량 분류 변경시 이벤트 select Box
 $(function() {
 $('#form-field-section').change(
 		function() { 
@@ -549,6 +448,7 @@ $('#form-field-section').change(
 		});
 });
 
+//거래처 코드 변경시 이벤트 select Box
 $('#form-field-customerCode').change(function() {
 	var customerCode = $('#form-field-customerCode option:selected').attr('customerCode');
 	console.log(customerCode)
@@ -560,8 +460,9 @@ $('#form-field-customerCode').change(function() {
 
 });
 
+//사용개월 수 계산 함수
 function calcMonth(index, item) {
-	var payDate = $(item).text();
+	var payDate = $(item).text(); //매입날짜
 	
 	var today = new Date();	
 	var ddd = today.getDate();
@@ -576,47 +477,29 @@ function calcMonth(index, item) {
 	
 	var currentDate  = yyyy + mm + dd;
 	
-	var date1  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2));
-	var date2  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2));
+	var payDateString  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2)); //매입일자 20191201
+	var currentDateString  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2)); //현재날짜 20191213
 	
-	console.log("date1 : " + date1);
-	console.log("date2 : " + date2);
-	
-	var interval =  date2 - date1;
+	var interval =  currentDateString - payDateString;
 	var day   =  1000*60*60*24;
 	var month  =  day*30;
 	var year  =  month*12;
+	var usingMonthCnt = parseInt(interval/month); //기간 사용 개월수
 	
-	$(item).parent().find(".using-month").text(parseInt(interval/month));
-/* 	$(item).parent().find(".month-cost").text((parseInt(interval/month))*(td.eq(22).text()));
-	console.log((parseInt(interval/month))*(td.eq(22).text()));  */
+	$(item).parent().find(".using-month").text(usingMonthCnt);
 };
 
 function setMonth() {
 	$('tr .pay-date').each(calcMonth)
-	//$('tr .monthly-fee').each(calcMonth)
 };
-
-/* //여기서 월 사용료 납부 금액
-function calcMonthCost(index, item) {
-
-	
-	$(item).parent().find(".month-cost").text(parseInt(interval/month)*);
-}; 
-
-function setMonth() {
-	$('tr .pay-date').each(calcMonth)
-};
-*/
-
 //버튼 구현
 $(function(){
    $("#insert").click(function() {
-      alert("등록");
+      
    });
    
    $("#modify").click(function() {
-      alert("수정");
+      
    }); 
    
    $("#delete").click(function() {
@@ -630,147 +513,228 @@ $(function(){
    setMonth();
 });
 
-
  // 테이블의 Row 클릭시 값 가져오기
 $(document).on('click', '#sample-table-1 tr', function(event) {	
 	$("#nabbu").hide();
+	$("#walsa").hide();
 	$("#segumBtn").show();
+
+	
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
 	
 	// 현재 클릭된 Row(<tr>)
 	var tr = $(this); 
 	var td = tr.children();
-	
-	// tr.text()는 클릭된 Row 즉 tr에 있는 모든 값을 가져온다.
-	console.log("클릭한 Row의 모든 데이터 : "+tr.text());
-	
-	// 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
 
+	var vehicleNo = td.eq(1).text();
+	$("input[name=id]").val(vehicleNo);
+	$("#vehicleNo").val(vehicleNo); //납부 Pop - up 에 차량코드 넣기.
 	
-	//console.log("배열에 담긴 값 : "+tdArr);
+	var carSectionNo = td.eq(2).text();
+	$('#form_field_section_chosen').find('span').text(carSectionNo);
 	
-	//td.eq(index)를 통해 값을 가져올 수도 있다.
-	var vehicleNo = $("input[name=id]").val(td.eq(2).text());
-	$("#vehicleNo").val(td.eq(2).text()); //차량코드 납부버튼에 관련된 jquery
-	$('#form-field-section').val(td.eq(3).text()).trigger('chosen:updated');
-    $("input[name=classification]").val(td.eq(4).text());
-    //$('#form_field_classification_chosen').find('span').text(td.eq(5).text());
-    
+	var carSectionName = td.eq(3).text()
+    $("input[name=classification]").val(carSectionName);
+   
     // 직급
-    var staff='';
+    var staffName = td.eq(4).text();   
+    var staffNo='';
     
-	switch (td.eq(5).text()){
-    case '사원' :
-    	staff=1;
+	switch (staffName){
+    case "사원" :
+    	staffNo=1;
         break;
-    case '대리' :
-    	staff=2;
+    case "대리" :
+    	staffNo=2;
 	    break;
-    case '과장' :
-    	staff=3;
+    case "과장" :
+    	staffNo=3;
         break;
-    case '차장' :
-    	staff=4;
+    case "차장" :
+    	staffNo=4;
         break;
-    case '부장' :
-    	staff=5;
+    case "부장" :
+    	staffNo=5;
     	break;
-    case '이사' :
-    	staff=6;
+    case "이사" :
+    	staffNo=6;
     	break;
-    case '상무' :
-    	staff=7;
+    case "상무" :
+    	staffNo=7;
     	break;
-    case '전무' :
-    	staff=8;
+    case "전무" :
+    	staffNo=8;
     	break;
 	}
 
-	$('#form-field-classification').val(staff).trigger('chosen:updated');
-    $("input[name=ownerName]").val(td.eq(6).text());
-  	$("input[name=wideAddress]").val(td.eq(7).text());
-    $("input[name=cityAddress]").val(td.eq(8).text());
-    $("input[name=detailAddress]").val(td.eq(9).text()); 
-    $('#form_field_customerCode_chosen').find('span').text(td.eq(11).text())
-    $("input[name=customerNo]").val(td.eq(10).text());
-    $("input[name=managerName]").val(td.eq(12).text());
-    $("input[name=payDate]").val(td.eq(13).text());
-    $("input[name=publicValue]").val(td.eq(14).text().replace(/,/g, ""));
-    $("input[name=regTax]").val(td.eq(15).text().replace(/,/g, ""));
-    $("input[name=acqTax]").val(td.eq(16).text().replace(/,/g, ""));
-    $("input[name=etcCost]").val(td.eq(17).text().replace(/,/g, ""));
-   // $("input[name=taxbillNo]").val(td.eq(19).text());
-    $("input[name=deposit]").val(td.eq(19).text().replace(/,/g, "")); 
-    $("#deposits").val(td.eq(19).text()); //보증금 납부버튼에 관련된 jquery
-    $("#cusNo").val(td.eq(10).text());
+	/* var staffNumber = $("#form_field_classification_chosen").attr("value", staffNo); */
+	/* var staffNumber = $("#form_field_classification_chosen").attr(staffNo); */
+	$('#form_field_classification_chosen').find('span').text(staffName);
+	console.log("sttstststs : " + staffNo);
+	$("input[name=staffNo]").val(staffNo);
+	
+	//선택된 직급에 대한 No값을 value값으로 변경
+	$("#form_field_classification_chosen").attr("value", staffNo);
+	
+	console.log("aaaaaaaaaaaaaaa"+ $("#form_field_classification_chosen").attr("value") );
+	
+	
+	var ownerName = td.eq(5).text();
+    $("input[name=ownerName]").val(ownerName);
     
+    var wideAddress = td.eq(6).text();
+  	$("input[name=wideAddress]").val(td.eq(6).text());
+  	
+  	var cityAddress = td.eq(7).text();
+    $("input[name=cityAddress]").val(cityAddress);
+    
+    var detailAddress = td.eq(8).text()
+    $("input[name=detailAddress]").val(detailAddress); 
+    
+    var customerName = td.eq(10).text();
+    $('#form_field_customerCode_chosen').find('span').text(customerName);
+    
+    var customerCode = td.eq(9).text();
+    $("input[name=customerNo]").val(customerCode);
+    
+    var managerName = td.eq(11).text();
+    $("input[name=managerName]").val(managerName);
+    
+    var payDate = td.eq(12).text(); //매입일자
+    $("input[name=payDate]").val(payDate);
+    
+    var publicValue = td.eq(13).text();
+    $("input[name=publicValue]").val(publicValue.replace(/,/g, ""));
+    
+    var acqTax = td.eq(14).text();
+    $("input[name=acqTax]").val(acqTax.replace(/,/g, ""));
+    
+    var etcCost = td.eq(15).text();
+    $("input[name=etcCost]").val(etcCost.replace(/,/g, ""));
+    
+    var deposit = td.eq(16).text();
+    $("input[name=deposit]").val(deposit.replace(/,/g, ""));
+    $("#depositPop").val(deposit.replace(/,/g, "")); //보증금 납부버튼에 관련된 jquery
+    
+    var dueDate = td.eq(17).text(); // 납부예정일
+    $("#dueDate").val(dueDate); //보증금 납부 예정일에 들어감"input[name=dueDate]대신에 id준 경우
+    $("#bonapil-input").val(dueDate); //납부 버튼에 보증금 예정 납부일이 input에 넣어짐
+	//$("#walnapil-input").val(walnapil); //납부 버튼에 월사용료 예정 납부일이 input에 넣어짐
+    
+    var MonthFee= td.eq(18).text();
+    $("#monthlyFee").val(MonthFee.replace(/,/g, ""));
+    $("#monthlyFeePop").val(MonthFee.replace(/,/g, "")); //월사용료 납부버튼에 관련된 jquery
+    
+    var feeDate = td.eq(19).text();
+    $("#feeDate").val(feeDate);
+    
+    var taxkind = td.eq(20).text()
+    console.log("taxkind" + taxkind);
+    if(taxkind == "과세"){
+ 	   $("#tax").prop('checked', true);
+	}
+	else if(taxkind == "영세"){
+ 	   $("#zeroTax").prop('checked', true);
+	}
+    var taxbillNo = td.eq(24).text();
+    $("#taxbillNo").val(taxbillNo);
+    
+    
+	if(taxbillNo == "" ){
+		console.log("세금계산서 번호 없으면 버튼 보여주기.")
+		$("#modify").show(); //수정 버튼 보여주기
 
-    var a = td.eq(20).text();
-    
-    if(a == null || a.length === 0){ //값이있으면 > 납부를 했으면
-    	$("#nabbu").show();
-    }else{
-    	$("#nabbu").hide();
-    }
-    
-    $("input[name=depositDate]").val(td.eq(21).text());
-    $("#dueDate").val(td.eq(21).text()); //보증금 납부예정일 납부버튼에 관련된 jquery
-    
-    $("input[name=monthlyFee]").val(td.eq(22).text().replace(/,/g, ""));
-    $("#monthfee").val(td.eq(22).text()); //월 사용료 납부일 납부버튼에 관련된 jquery
-    $("input[name=feeDate]").val(td.eq(23).text());
-    $("input[name=payDate-1]").val(td.eq(13).text());
-    
-    //$("#dueDate").val(td.eq(18).text()); //보증금 납부예정일에 관련된 jquery
-    
-    
-    var today = new Date();	
-	var ddd = today.getDate();
-	var dd = "0"
-	var mmm = (today.getMonth() + 1); //January is 0!	
-	var mm = "0";
-	var yyyy = new String(today.getFullYear());
-	
-	if(mmm < 10 ){ mm = mm + new String(mmm); } else { mm = mmm; }
-	
-	if(ddd < 10 ){ dd = dd + new String(ddd); } else { dd = ddd; }
-	
-	var currentDate  = yyyy + mm + dd;
-	
-	// 보증금 날짜 비교하기 
-	var depositDate = $("#depositDate").val();
-	depositDate = depositDate.replace(/-/g, "");
-	console.log("C " + currentDate)
-	console.log("D " + depositDate)
-	
-	// 보증금 납부한 날짜와 비교하기 (dueDate)
-	/* var dueDate = $("#dueDate").val();
-	dueDate = dueDate.replace(/-/g, "");
-	console.log("DD " + dueDate) */
-	
-	//납부한 이후로 납부 버튼이 나오면 안되니까 [현재시간 > 납부한날짜 -> show / 현재시간 < 납부한날짜 -> hide]
-	/* if(dueDate < currentDate || dueDate == currentDate){
-		$("#nabbu").show();
-	}else{
-		$("#nabbu").hide();
+	}else {
+		console.log("세금계산서 번호 있으면 버튼 가리기.");
+		$("#insert").hide(); //등록 버튼 가리기
+		$("#modify").hide(); //수정 버튼 가리기
+		$("#search").hide(); //조회 버튼 가리기
 	} 
-	 */
-	// 월사용료 날짜 비교하기위해서. 현재날짜 + 월사용료 일수 가져오기
-	var walsaDate  = yyyy + mm + $("#feeDate").val();
-	
-	console.log("월 사용료" + walsaDate);
-	
-	if(walsaDate < currentDate || walsaDate == currentDate){ //보증금을 납부했고, 월사용료 날짜 자체가 데이터베이스에 들어가 있어야 됨.
-		$("#walsa").show();
-	}else{
-		$("#walsa").hide();
-	}
+    
+    $("#cusNo").val(customerCode); // 납부할때 거래처번호를 넘겨줘야 한다.
 
+    $.ajax({
+		url: "${pageContext.request.contextPath }/08/41/taxinfo",
+		contentType : "application/json; charset=utf-8",
+		type: "GET",
+		dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+		data: {id : vehicleNo},
+		success: function(response){
+			
+			lastnapil = response.lastnapbuDate;
+				
+			if(lastnapil== null ){
+				console.log("보증금 낸적이 없다.")
+				$("#nabbu").show(); //납부 버튼 보여주기
+                return false;
+		
+			}else {
+				console.log("보증금 낸적이 있다.");
+				$("#nabbu").hide(); //납부 버튼 숨기기
+				$("#walsa").show(); //월사용료 납부버튼 보이기
+				var wal = Number(lastnapil.substr(5,2))+1; //wal.length가 안됨. wal이 number타입이기떄문
+				var walString =  String(wal); //wal을 String으로 바꿔줌
+			
+			
+				//달이 13일이 될 경우 다시 1월로 변경
+			 	if(walString == 13)
+				{
+					walString = "1";
+					
+				} 
+				//달이 한자리 수일때 0을 붙여줘서 01월 의 형식으로 출력되야 하므로
+				if(walString.length==1){
+					walString = "0" + walString;
+					console.log("walnapil : "+ yyyy +"-"+ walString +"-"+ $("#feeDate").val());
+					var walnapil = yyyy +"-"+ walString +"-"+ $("#feeDate").val();
+					$("#walnapil-input").val(walnapil); 
+				}else{ //달이 11,12월일때까지는 그대로 출력해야 하므로
+					var walnapil = yyyy +"-"+ walString +"-"+ $("#feeDate").val();
+					$("#walnapil-input").val(walnapil); 
+				
+				}
+			
+			
+				var today = new Date();	
+				var mmm = (today.getMonth() + 1); //January is 0!	
+				var mm = "0";
+				
+				
+				if(mmm < 10 ){
+					mm = mm + new String(mmm);
+	
+				}else {
+					mm = mmm;
+				}
+			
+				var currentMonth  = mm;
+				console.log("현재달" + currentMonth);
+				console.log("월사용료 예정일 달" + walString);
+				//현재달 1월과 월사용료 예정일 1월 이 같기 때문에 $("#walsa").show();
+				if(walString == currentMonth){
+					console.log("월사용료 = 현재달이라서 월사용료 납부버튼 보이기");
+					$("#walsa").show();
+				}
+				//현재달 12월과 월사용료 예정일 1월이 다르기 때문에 $("#walsa").hide();
+				else{
+					console.log("월사용료 != 현재달이라서 월사용료 납부버튼 숨기기");
+					//$("#walsa").hide();
+				}
+			}
+		},
+		error: function(xhr, error){
+			console.error("error : " + error);
+		}
+	});
 
+    
+	var realPayDate = td.eq(23).text(); //실제로 납부한 날짜
+    console.log("realPayDate" + realPayDate);
+    
 
 	//사용 개월  
-	var payDate  =  td.eq(20).text();
+	var payDate  =  td.eq(12).text();
 	
 	var today = new Date();	
 	var ddd = today.getDate();
@@ -796,42 +760,16 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	
 	var currentDate  = yyyy + mm + dd;
 	
-//	console.log("today : " + today);
-//	console.log("mm : " + mm);
-//	console.log("dd : " + dd);
+	var payDateString  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2)); //매입일자 20191201
+	var currentDateString  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2)); //현재날짜 20191213
 	
-//	console.log("input1 : " + input1);
-//	console.log("input2 : " + input2);	
-	 
-	
-	
-	var date1  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2));
-	var date2  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2));
-	
-	console.log("date1 : " + date1);
-	console.log("date2 : " + date2);
-	
-	var interval =  date2 - date1;
+	var interval =  currentDateString - payDateString;
 	var day   =  1000*60*60*24;
 	var month  =  day*30;
 	var year  =  month*12;
+	var usingMonthCnt = parseInt(interval/month); //기간 사용 개월수
 	
-	//alert("기간 날짜수"+parseInt(interval/day));
-	//alert("기간 개월수"+parseInt(interval/month));
-	//alert("기간 년수"+parseInt(interval/year));
-	
-    $("input[name=usingMonth]").val(parseInt(interval/month)); //input의 name
-    $('#tdUsingMonth').val(parseInt(interval/month));  // input의 ID 
-     
-    if(td.eq(24).text() == "과세"){
-   	   $("input[id=tax]").prop('checked', true);
-     }
-    else if(td.eq(24).text() == "영세"){
-   	   $("input[id=zeroTax]").prop('checked', true);
-     } 
-    
-    
-    
+    $("input[name=usingMonth]").val(usingMonthCnt); //input의 name
     
 });
 
@@ -858,12 +796,19 @@ $(function() {
 		autoOpen : false
 	});
 
+	//보증금 납부버튼 클릭했을시
 	$("#nabbu").on( "click", function() {
-			$(".monthfee").hide();
-			$(".deposits").show();
-			/*  $(".dueDate").show();*/
-			$("#gubun").val("보증금");
-		/*  console.log("eeeee" + $(this).parent().find(".vehicle-id").text());*/
+		$("#monthlyFeePop").hide();
+		$(".monthfee").hide();
+		$("#walnapil-label").hide();
+		$("#walnapil-input").hide();
+		$("#depositPop").show();
+		$(".deposits").show();
+		$("#bonapil-label").show();
+		$("#bonapil-input").show();
+		
+		//보증금에 대한 납부 버튼
+		$("#gubun").val("보증금");
 		$("#dialog-message").dialog('open');
 		$("#dialog-message").dialog	({
 			title: "세금계산서정보",
@@ -885,29 +830,36 @@ $(function() {
 		});
 	});
 	
+	//월사용료 납부버튼 클릭했을시
 	$("#walsa").on( "click", function() {
+		$("#monthlyFeePop").show();
 		$(".monthfee").show();
+		$("#walnapil-label").show();
+		$("#walnapil-input").show();
+		$("#depositPop").hide();
 		$(".deposits").hide();
-	/* 	$(".dueDate").show();*/
+		$("#bonapil-label").hide();
+		$("#bonapil-input").hide();
+		
+	
  		$("#gubun").val("월사용료");
-	/*  console.log("eeeee" + $(this).parent().find(".vehicle-id").text());*/
-	$("#dialog-message").dialog('open');
-	$("#dialog-message").dialog	({
-		title: "세금계산서정보",
-		title_html: true,
-	   	resizable: false,
-	    height: 500,
-	    width: 400,
-	    modal: true,
-	    close: function() {
-	    	$('#tbody-bankList tr').remove();
-	    },
-	    buttons: {
-	    "닫기" : function() {
-	    		$("#walsa").hide();
-	          	$(this).dialog('close');
-	           	$('#tbody-bankList tr').remove();
-	        }
+		$("#dialog-message").dialog('open');
+		$("#dialog-message").dialog	({
+			title: "세금계산서정보",
+			title_html: true,
+		   	resizable: false,
+		    height: 500,
+		    width: 400,
+		    modal: true,
+		    close: function() {
+		    	$('#tbody-bankList tr').remove();
+		    },
+		    buttons: {
+		    "닫기" : function() {
+		    		$("#walsa").hide();
+		          	$(this).dialog('close');
+		           	$('#tbody-bankList tr').remove();
+		        }
 	    }
 	});
 });
@@ -917,18 +869,13 @@ $(function() {
 		
 		$("#tbody-segumList").find("tr").remove();
 		
-		var id =  $("input[name=id]").val();
-	/* 	var dueDate =  $("input[name=dueDate]").val(); */ //납부 예정일
-		/* alert(id); */
+		var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
 		
-		/*  alert(dueDate); */
-		
-		$("#gubun").val("월사용료");
 		$.ajax({
 			url: "${pageContext.request.contextPath }/08/41/taxinfo",
 			contentType : "application/json; charset=utf-8",
 			type: "GET",
-			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			dataType: "json", 
 			data: {id : id},
 			success: function(response){
 				console.log(response.taxlist);
@@ -939,7 +886,7 @@ $(function() {
 		                         "<td class='center'>" + data[k].pay + "</td>" +
 		                         "<td class='center'>" + data[k].paymentDate + "</td>" +
 		                         "<td class='center'>" + data[k].dueDate + "</td>" +
-		                         "<td class='center'>" + data[k].taxbillNo + "</td>" +
+		                         "<td class='center'>" + data[k].taxbillNoPoP + "</td>" +
 		                         "<td class='center'>" + data[k].voucherNo + "</td>" +
 		                         "<td class='center'>" + data[k].gubun + "</td>" +
 		                         "</tr>");
@@ -970,9 +917,6 @@ $(function() {
 	        }
 	    }
 	});
-	
-	
-
 });
 });
 </script>

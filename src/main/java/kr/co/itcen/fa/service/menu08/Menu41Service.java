@@ -2,6 +2,7 @@ package kr.co.itcen.fa.service.menu08;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +111,27 @@ public class Menu41Service {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("taxlist", menu41Repository.selectTaxList(id));
+		map.put("lastnapbuDate", menu41Repository.selectTaxVo(id)); // 보증금 납부일 가져오기
 		return map;
 		
 	}
+
+	//vehicle 전표번호 가져오기
+	public Long getVoucherNo(String id) {
+		Long vNo = menu41Repository.getVoucherNo(id);
+		return vNo;
+	}
+
+	//taxbill 전표번호 가져오기
+	public List getTaxVoucherNo(String id) {
+		List<Long> taxVNO = menu41Repository.getTaxVoucherNo(id);
+		return taxVNO;
+	}
+
+	//세금계산서에서 지우기
+	public void deleteTaxbill(String id) {
+		menu41Repository.deleteTaxbill(id);
+	}
+
+
 }
