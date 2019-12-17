@@ -27,7 +27,6 @@ import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
-import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
@@ -71,7 +70,6 @@ public class Menu41Controller {
 		 * 
 		 */
 		//페이징 처리 	dataresult 생성, 모델
-		//DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
 		DataResult<VehicleVo> dataResult = menu41Service.list(id, page);
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);
@@ -111,14 +109,9 @@ public class Menu41Controller {
 	
 	//등록기능
 	@RequestMapping(value = {"/" + SUBMENU + "/insert" }, method = RequestMethod.POST)
-	public String insert(@ModelAttribute VehicleVo vehicleVo, @SessionAttribute("authUser") UserVo userVo, Model model) throws ParseException{
-		/*
-		 * if(vehicleVo.getId() !=null || vehicleVo.getSectionNo() !=null ||
-		 * vehicleVo.getClassification() !=null || vehicleVo.getTaxbillNo() !=null ||
-		 * vehicleVo.getStaffName() !=null ) {
-		 * 
-		 * }
-		 */
+	public String insert(@ModelAttribute VehicleVo vehicleVo, 
+						 @SessionAttribute("authUser") UserVo userVo,
+						 Model model) throws ParseException{
 		
 		vehicleVo.setInsertUserId(userVo.getId());
 		vehicleVo.setId("e"+vehicleVo.getId());
@@ -136,84 +129,101 @@ public class Menu41Controller {
 
 	//수정기능
 	@RequestMapping(value = { "/" + SUBMENU + "/update" }, method =RequestMethod.POST) 
-	public String update(@ModelAttribute VehicleVo vehicleVo, @SessionAttribute("authUser") UserVo userVo){
-		System.out.println("ssssssssss" + vehicleVo.getSectionNo());
+	public String update(@ModelAttribute VehicleVo vehicleVo,
+						 @SessionAttribute("authUser") UserVo userVo,
+						 Model model) throws ParseException{
+		//System.out.println("ssssssssss" + vehicleVo.getSectionNo());
 		vehicleVo.setUpdateUserId(userVo.getId());
-		Long vehicleVno = menu41Service.getVoucherNo(vehicleVo.getId());
 		
-		System.out.println("전표번호 " + vehicleVno);
-		CustomerVo cus = menu41Service.getDepositNo(vehicleVo.getCustomerNo());
+		//마감 여부 체크
+	    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
+    	    model.addAttribute("closingDate", true);
+	    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+	    } else {
+	    	
+	    	Long vehicleVno = menu41Service.getVoucherNo(vehicleVo.getId());
+			
+			System.out.println("전표번호 " + vehicleVno);
+			CustomerVo cus = menu41Service.getDepositNo(vehicleVo.getCustomerNo());
+			
+			VoucherVo voucherVo = new VoucherVo();  //거래처 객체
+			List<ItemVo> itemVoList = new ArrayList<ItemVo>(); //차변대변나누기 위해서 배열선언
+			ItemVo itemVo = new ItemVo(); //차변대변나누기 위해서 객체선언
+			ItemVo itemVo2 = new ItemVo(); //차변대변나누기 위해서 객체선언
+			
+			
+			MappingVo mappingVo = new MappingVo();
+			voucherVo.setRegDate(vehicleVo.getPayDate()); // 매입일자
+			itemVo.setAmount(vehicleVo.getDeposit());   	// VehicleVo.getAcqPrice() : 거래금액 (보증금)
+			itemVo.setAmountFlag("d");      //d: 차변 왼쪽
+			itemVo.setAccountNo(1220501L);  //계정과목 : 차량운반구
+			itemVoList.add(itemVo);
+			
+			//대변
+			itemVo2.setAmount(vehicleVo.getDeposit());   // VehicleVo.getAcqPrice() : 거래금액 (보증금)
+			itemVo2.setAmountFlag("c");   // c: 대변 오른쪽
+			itemVo2.setAccountNo(1240501L); //계정과목 : 임차보증금
+			itemVoList.add(itemVo2);
 		
-		VoucherVo voucherVo = new VoucherVo();  //거래처 객체
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>(); //차변대변나누기 위해서 배열선언
-		ItemVo itemVo = new ItemVo(); //차변대변나누기 위해서 객체선언
-		ItemVo itemVo2 = new ItemVo(); //차변대변나누기 위해서 객체선언
-		
-		
-		MappingVo mappingVo = new MappingVo();
-		voucherVo.setRegDate(vehicleVo.getPayDate()); // 매입일자
-		itemVo.setAmount(vehicleVo.getDeposit());   	// VehicleVo.getAcqPrice() : 거래금액 (보증금)
-		itemVo.setAmountFlag("d");      //d: 차변 왼쪽
-		itemVo.setAccountNo(1220501L);  //계정과목 : 차량운반구
-		itemVoList.add(itemVo);
-		
-		//대변
-		itemVo2.setAmount(vehicleVo.getDeposit());   // VehicleVo.getAcqPrice() : 거래금액 (보증금)
-		itemVo2.setAmountFlag("c");   // c: 대변 오른쪽
-		itemVo2.setAccountNo(1240501L); //계정과목 : 임차보증금
-		itemVoList.add(itemVo2);
-	
-		
-		//매핑테이블
-		mappingVo.setVoucherUse("차량 구입 ");
-		mappingVo.setSystemCode(vehicleVo.getId());  // 차량 코드번호
-		mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
-		mappingVo.setCustomerNo(vehicleVo.getCustomerNo()); //거래처번호
-		mappingVo.setManageNo(vehicleVo.getTaxbillNo());//세금계산서번호
-		mappingVo.setBankCode(cus.getBankCode()); //은행코드
-		mappingVo.setBankName(cus.getBankName()); //은행명
-		mappingVo.setVoucherNo(vehicleVno);
-	         
-	    voucherVo.setNo(vehicleVno);
-	    long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
-	    vehicleVo.setVoucherNo(voucherNo);
-		
-		menu41Service.update(vehicleVo); 	
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
+			
+			//매핑테이블
+			mappingVo.setVoucherUse("차량 구입 ");
+			mappingVo.setSystemCode(vehicleVo.getId());  // 차량 코드번호
+			mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+			mappingVo.setCustomerNo(vehicleVo.getCustomerNo()); //거래처번호
+			mappingVo.setManageNo(vehicleVo.getTaxbillNo());//세금계산서번호
+			mappingVo.setBankCode(cus.getBankCode()); //은행코드
+			mappingVo.setBankName(cus.getBankName()); //은행명
+			mappingVo.setVoucherNo(vehicleVno);
+		         
+		    voucherVo.setNo(vehicleVno);
+		    long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
+		    vehicleVo.setVoucherNo(voucherNo);
+			
+	    	menu41Service.update(vehicleVo); 
+	    	
+	    return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
+	    }
 	}
 	
 	//삭제기능
 	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
-	public String delete(@ModelAttribute VehicleVo vehicleVo, @RequestParam(value="id") String id,  @SessionAttribute("authUser") UserVo userVo ) {
+	public String delete(@ModelAttribute VehicleVo vehicleVo,
+						 @RequestParam(value="id") String id,
+						 @SessionAttribute("authUser") UserVo userVo,
+						 Model model) throws ParseException {
 		
 		
-		  Long voucherNo = menu41Service.getVoucherNo(id);
-		  List<Long> taxVoucherNo = menu41Service.getTaxVoucherNo(id);
-		  if(voucherNo != null) {
-		  
-			  //전표삭제 
-			  List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); 
-			  VoucherVo v = new VoucherVo(); 
-			  v.setNo(voucherNo); 
-			  voucherVolist.add(v);
-			  menu03Service.deleteVoucher(voucherVolist, userVo); 
-		  
-			  for(Long no : taxVoucherNo) {
-				  System.out.println("나는 NO다 " + no);
-				  v.setNo(no);
-				  voucherVolist.add(v);
-				  menu03Service.deleteVoucher(voucherVolist, userVo); 
-			  }
-		  }
-		 
-		
-		//삭제한 사람도 남길때 set무엇으로 하는게 적당한지 모르겠음
-		
-		vehicleVo.setUpdateUserId(userVo.getId());
-		menu41Service.delete(id); //vehicle
-		menu41Service.deleteTaxbill(id);//taxbill
-		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
+			//마감 여부 체크
+		    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
+	    	    model.addAttribute("closingDate", true);
+		    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+		    } else {
+		    	  Long voucherNo = menu41Service.getVoucherNo(id);
+				  List<Long> taxVoucherNo = menu41Service.getTaxVoucherNo(id);
+				  if(voucherNo != null) {
+				  
+					  //전표삭제 
+					  List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); 
+					  VoucherVo v = new VoucherVo(); 
+					  v.setNo(voucherNo); 
+					  voucherVolist.add(v);
+					  menu03Service.deleteVoucher(voucherVolist, userVo); 
+				  
+					  for(Long no : taxVoucherNo) {
+						  System.out.println("나는 NO다 " + no);
+						  v.setNo(no);
+						  voucherVolist.add(v);
+						  menu03Service.deleteVoucher(voucherVolist, userVo); 
+					  }
+				  }
+				 
+				//삭제한 사람도 남길때 set무엇으로 하는게 적당한지 모르겠음
+				vehicleVo.setUpdateUserId(userVo.getId());
+				menu41Service.delete(id); //vehicle
+				menu41Service.deleteTaxbill(id);//taxbill
+				return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
+		    }
 	}
 	
 	//세금 계산서 차량 테이블 수정 기능 + 세금계산서 모달창 세금계산서 삽입기능

@@ -182,7 +182,11 @@
  	<!-- 검색  TEST -->
 	<select id="search" resultType="vehicle08vo">
 		<![CDATA[
-		select  	v.id as id,
+			select  
+					v.id as id,
+					v.customer_no as customerNo,
+					c.name as customerName,
+					c.manager_name as managerName, 
 					v.section_no as sectionNo,
 					s.classification as classification,
 					st.staff_name as staffName,
@@ -193,25 +197,35 @@
 					v.public_value as publicValue,
 					v.acq_tax as acqTax,
 					v.etc_cost as etcCost,
+					v.taxbill_no as taxbillNo,
 					v.pay_date as payDate,
 					v.deposit as deposit,
 					v.due_date as dueDate,
+					t.due_date as depositDate,
 					v.monthly_fee as monthlyFee,
 					v.fee_date as feeDate,
 					v.tax_kind as taxKind,
-					v.insert_day as insertDay
+					v.flag as flag,
+                    v.insert_userid as insertUserId,
+                    v.insert_day as insertDay
 		from tb_vehicle v 
 				 left outer join tb_staff st on v.staff_no = st.no
 				 left outer join tb_section s on v.section_no = s.code 
+                 left outer join user u on v.insert_userid = u.id
+                 left outer join tb_customer c on v.customer_no = c.no
+                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
 		 ]]>
 		 <![CDATA[
-		where s.parent_no=4 and v.insert_day > (NOW() - INTERVAL 3 DAY) and flag IN('s','o')
+		where s.parent_no=4 and v.flag IN('s','o')
 		]]>
 		<if test="_parameter.length()>0">
             <![CDATA[
               and id like concat('%',#{_parameter },'%') 
             ]]>
          </if>
+          <![CDATA[
+          order by v.insert_day desc
+         ]]>
 	</select>
 	
 	
@@ -376,5 +390,15 @@
     		]]>
 		</if>
 	</select> 
+	
+	
+	<!-- 차량코드중복확인 -->
+	<select id="checkId" parameterType="string" resultType="string">
+		<![CDATA[
+		select id
+		  from tb_vehicle
+		 where id = #{id }
+		]]>
+	</select>
 	
 </mapper>

@@ -35,8 +35,11 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">차량 코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id"
-												placeholder="9자로 입력하세요" />
+											<input type="text" id="form-field-1" name="id" placeholder="9자를 입력하세요" />
+											<input type="text" class="span6" id="default-vehiclecode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
+											<input type="text" class="span6" id="overlap-vehiclecode" style="border:none;color:red"  value="사용중인 품목코드입니다">
+											<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="차량코드는 숫자만 입력하세요.">
+											<input type="text" class="span6" id="null-vehiclecode" style="border:none;color:red"  value="품목코드는 필수 입력 사항입니다!">
 										</div>
 									</div>
 
@@ -107,7 +110,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">월 사용료</label>
 										<div class="controls">
-											<input type="text" id="monthlyFee" name="monthlyFee" placeholder="금액을 입력하세요" />
+											<input readonly type="text" id="monthlyFee" name="monthlyFee"  />
 										</div>
 									</div>
 
@@ -285,7 +288,7 @@
 										<th>월 사용료 납부일</th>
 										<th>과세/영세</th>
 										<th>사용개월</th>
-										<th>월 사용료 납부금액</th>
+										<th hidden="hidden">월 사용료 납부금액</th>
 										<th>세금계산서 번호</th>
 										
 									</tr>
@@ -316,7 +319,7 @@
 											<td>${VehicleVo.feeDate}</td> <!-- 19 -->
 											<td>${VehicleVo.taxKind}</td> <!-- 20 -->
 											<td class="using-month"></td> <!-- 21 -->
-											<td class="month-cost"></td> <!-- 22 -->
+											<td hidden class="month-cost"></td> <!-- 22 -->
 											<td hidden>${VehicleVo.depositDate}</td> <!-- 보증금, 월사용료 실제 납부날짜 --> <!-- 23 -->
 											<td class= "taxbillNo">${VehicleVo.taxbillNo}</td> <!-- 24 -->
 										</tr>
@@ -441,17 +444,76 @@
 		</div>
 		<!-- /.main-container -->
 		<!-- basic scripts -->
-		<c:import url="/WEB-INF/views/common/footer.jsp" />
-		<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-		<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-		<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-		<script>
+<c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script>
 
+
+//차량코드 유효성 검사
 $(document).ready(function(){
+	
 	$("#nabbu").hide();
 	$("#walsa").hide();
 	$("#segumBtn").hide();
+	
+	
+	$("#overlap-vehiclecode").hide();
+	$("#onlynumber").hide();
+	$("#null-vehiclecode").hide();
+	
+	$("#vehicle_code").focus();
+	
+	$("#vehicle_code").on("change", function(e){
+		
+		if(isNaN($("#vehicle_code").val()) /*=== true*/){
+			$("#default-vehiclecode").hide();
+			$("#overlap-vehiclecode").hide();
+			$("#null-vehiclecode").hide();
+			$("#onlynumber").show();
+			$("#vehicle_code").val(""); //text비우기
+			return;
+		}
+		var id = "e" + $("#vehicle_code").val();
+      
+	   $.ajax({
+	      url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
+	      type : "get",
+	      dataType : "json",
+	      data : "",
+	      success: function(response){
+	         if(response.result == "fail"){
+	            console.error(response.message);
+	            return;
+	         }
+	         
+	         if(response.data == true){
+	            $("#default-vehiclecode").hide();
+	            $("#null-vehiclecode").hide();
+	            $("#onlynumber").hide();
+	            $("#overlap-vehiclecode").show();
+	            $("#vehicle_code").val("");
+	            $("#vehicle_code").focus();
+	            return;
+	         
+	         } else if(id == "") {
+	            $("#default-vehiclecode").hide();
+	            $("#overlap-vehiclecode").hide();
+	            $("#onlynumber").hide();
+	            $("#null-vehiclecode").show();
+	            $("#vehicle_code").focus();
+	         }
+	      },
+	      error: function(xhr, error) {
+	         console.error("error: " + error);
+	      }
+	   });
+		
+	});
 });
+
+
 $(function(){
 	$(".chosen-select").chosen(); 
 });
@@ -485,13 +547,68 @@ $(function() {
 });
 
 
+//취득세 등록세 계산
+/* $(function() {
+	$("#acqPrice").change(function() {
+		$("#acqTax").val(Math.floor($("#acqPrice").val()*0.04));
+	});
+	
+}); */
+
+//빈칸 검사()
+function formCheck() {
+	
+	if($("#vehicle_code").val() == "")
+    {
+		 document.getElementById(next).focus();
+         alert("검색어를 입력해주시기 바랍니다.");
+    }
+
+	if(window.event.keyCode ==13) {
+		
+	}else{
+		return;
+	}
+}
+
+//엔터키 막기
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        $(this).next('.inputs').focus();
+        event.preventDefault();
+    }
+}, true);
+
+
 //차량 분류 변경시 이벤트 select Box
 $(function() {
 $('#form-field-section').change(
 		function() { 
 	      var classification = $('#form-field-section option:selected').attr('vehiclecode'); //1000CC
-	    
-	     $('#classification').val(classification); //val안에 classification안에 넣어야 한다.
+	      $('#classification').val(classification); //val안에 classification안에 넣어야 한다.
+	      
+	      
+		  	switch (classification){
+		      case "1000CC" :
+		    	  monthlyFee=1000000;
+		          break;
+		      case "1500CC" :
+		    	  monthlyFee=1500000;
+		  	    break;
+		      case "2000CC" :
+		    	  monthlyFee=2000000;
+		          break;
+		      case "2500CC" :
+		    	  monthlyFee=2500000;
+		          break;
+		      case "3000CC" :
+		    	  monthlyFee=3000000;
+		      	break;
+		  	}
+	      //월사용료 자동 입력 1000CC -> 1,000,000
+	      $('#monthlyFee').val(monthlyFee);
+	     
+	     
 		});
 });
 
@@ -690,13 +807,19 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
     
 	if(taxbillNo == "" ){
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
+		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
+		$("#delete").hide(); //삭제 버튼 가리기
+		$("#search").show(); //조회 버튼 가리기
+		$("#clear").show(); //초기화 버튼 가리기
 
 	}else {
 		console.log("세금계산서 번호 있으면 버튼 가리기.");
 		$("#insert").hide(); //등록 버튼 가리기
-		$("#modify").hide(); //수정 버튼 가리기
+		$("#modify").hide(); //수정 버튼 보여주기
+		$("#delete").show(); //삭제 버튼 가리기
 		$("#search").hide(); //조회 버튼 가리기
+		$("#clear").show(); //초기화 버튼 가리기
 	} 
     
     $("#cusNo").val(customerCode); // 납부할때 거래처번호를 넘겨줘야 한다.
@@ -814,9 +937,16 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	var day   =  1000*60*60*24;
 	var month  =  day*30;
 	var year  =  month*12;
+	
+	
 	var usingMonthCnt = parseInt(interval/month); //기간 사용 개월수
 	
-    $("input[name=usingMonth]").val(usingMonthCnt); //input의 name
+	
+	var monthlyFee = $('input[name=monthlyFee]').val();
+	
+	
+	$("input[name=usingMonth]").val(usingMonthCnt); //input의 name
+    $("#all-monthly-fee").val(monthlyFee*usingMonthCnt); // 월 사용료 총 납부액
     
 });
 
