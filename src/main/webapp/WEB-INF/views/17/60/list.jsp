@@ -30,7 +30,7 @@
 									<label class="control-label" for="form-field-1" style="text-align:left;width:100px;" >회계연도</label>
 									<div class="controls" style="margin-left:100px;">		
 										<input type="number" min="1900" max="2099" step="1"
-											value="2019" id="accountUsedyear" name="accountUsedyear"
+											value="${accountUsedyear }" id="accountUsedyear" name="accountUsedyear"
 											placeholder="회계연도"
 											style="text-align: left; width: 150px; height: 18px;" />
 									</div>

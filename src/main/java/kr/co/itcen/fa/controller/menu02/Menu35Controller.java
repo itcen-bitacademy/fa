@@ -36,13 +36,20 @@ public class Menu35Controller {
 	@Autowired
 	private Menu35Service menu35Service;
 
-	// 걍 페이지 들어가자마자 조회
-//	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-//	public String list(Model model) {
-//		List<CustomerVo> customerVo = menu35Service.list();
-//		model.addAttribute("customerVo", customerVo);
-//		return MAINMENU + "/" + SUBMENU + "/list";
-//	}
+	// 페이지 들어가자마자
+	@RequestMapping({"/" + SUBMENU})
+	public String list(Model model) {
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	// 사업자번호로 조회버튼으로 조회
+	@RequestMapping({"/" + SUBMENU + "/list" })
+	public String list(@RequestParam(value="no", required=false, defaultValue="") String no, Model model) {
+		List<CustomerVo> customerVo = menu35Service.search(no);
+		model.addAttribute("customerVo", customerVo);
+		
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
 	
 	@RequestMapping(value = "/" + SUBMENU + "/insert", method = RequestMethod.POST)
 	public String insert(@ModelAttribute CustomerVo vo, HttpSession session) {
@@ -51,7 +58,7 @@ public class Menu35Controller {
 		vo.setInsertUserid(userNo);
 		
 		menu35Service.insert(vo);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?no=" + vo.getNo();
 	}
 	
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
@@ -61,7 +68,7 @@ public class Menu35Controller {
 		vo.setUpdateUserid(userNo);
 		
 		menu35Service.update(vo);
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list?no=" + vo.getNo();
 	}
 	
 	@ResponseBody
@@ -73,16 +80,6 @@ public class Menu35Controller {
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
-	// 사업자번호로 조회버튼으로 조회
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(@RequestParam(value="no", required=false, defaultValue="") String no, Model model) {
-		List<CustomerVo> customerVo = menu35Service.search(no);
-		model.addAttribute("customerVo", customerVo);
-		
-		System.out.println("@@@@@@@@@@@@@예금주내놔:"+customerVo);
-		return MAINMENU + "/" + SUBMENU + "/list";
-	}
-	
 	// 사업자번호 중복체크
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/checkNo")
@@ -92,14 +89,4 @@ public class Menu35Controller {
 		System.out.println(exist);
 		return JSONResult.success(exist);
 	}
-	
-//	@ResponseBody
-//	@RequestMapping("/" + SUBMENU + "/gets")
-//	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
-//		System.out.println("gets");
-//		
-//		Map<String, Object> data = menu25Service.gets(depositNo);
-//		data.put("success", true);
-//		return data;
-//	}
 }

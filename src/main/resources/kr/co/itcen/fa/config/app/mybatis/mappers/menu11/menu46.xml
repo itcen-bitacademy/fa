@@ -21,6 +21,13 @@
 		<result column="update_date" property="updateDate" />
 	</resultMap>
 	
+	<select id="get" parameterType="Long" resultType="stermdebtvo">
+		<![CDATA[
+			select *
+			from tb_s_term_debt
+			where no = ${_parameter}
+		]]>
+	</select>
 	<select id="getList" parameterType="Map" resultType="stermdebtvo" resultMap="stermdebtResult">
 		<![CDATA[
 			select 
@@ -29,7 +36,7 @@
 			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
 			int_pay_way, mgr,
 			mgr_call, bank_code, deposit_no, 
-			account_no, voucher_no, delete_flag,
+			voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
@@ -57,17 +64,31 @@
 			and year(debt_date) = #{financialYear}
 		</if>
 	</select>
+	<select id="exist" parameterType="String" resultType="int">
+		<![CDATA[
+			select count(*)
+			from tb_s_term_debt
+			where code = #{_parameter} and delete_flag="N"
+		]]>
+	</select>
+	<select id="existRepay" parameterType="String" resultType="int">
+		<![CDATA[
+			select count(*)
+			from tb_repay
+			where code=#{_parameter}
+		]]>
+	</select>
 	<insert id="insert" parameterType="stermdebtvo">
 		<![CDATA[
 			insert into tb_s_term_debt(no, code, name, major_code, debt_amount, repay_bal, repay_way,
 			debt_date, exp_date, int_rate, int_pay_way, mgr,
-			mgr_call, bank_code, deposit_no, account_no, voucher_no, 
+			mgr_call, bank_code, deposit_no, voucher_no, 
 			delete_flag,insert_id, insert_date, update_id, update_date)
 			values (null, #{code }, #{name }, #{majorCode}, ${debtAmount }, 
 			${debtAmount }, #{repayWay }, #{debtDate}, #{expDate},
 			${intRate }, #{intPayWay }, #{mgr }, 
 			#{mgrCall }, #{bankCode },
-			#{depositNo }, 123, 123, 
+			#{depositNo }, ${voucherNo}, 
 			'N', #{insertId }, now(), null, null) 
 		]]>
 	</insert>
@@ -76,9 +97,17 @@
 		<![CDATA[
 			update tb_s_term_debt 
 			set code=#{code}, name=#{name}, major_code=#{majorCode}, debt_amount=${debtAmount}, repay_way=#{repayWay}, 
-			    debt_date=now(), exp_date=now(), int_rate=${intRate}, int_pay_way=#{intPayWay},
+			    debt_date=now(), exp_date=now(), int_rate=${intRate}, int_pay_way=#{intPayWay}, 
 			    mgr=#{mgr }, mgr_call=#{mgrCall}, bank_code=#{bankCode}, deposit_no=#{depositNo}, update_id=#{updateId}, update_date=now()
 			where no=${no }
+		]]>
+	</update>
+	
+	<update id="updateRepayBal" parameterType="stermdebtvo">
+		<![CDATA[
+			update tb_s_term_debt 
+			set repay_bal = ${repayBal}, repay_comple_flag= #{repayCompleFlag}
+			where no = ${no}
 		]]>
 	</update>
 	
@@ -93,18 +122,10 @@
 		</foreach>
 	</update>
 	
-	<update id="updateRepayBal" parameterType="repayvo">
-		<![CDATA[
-			update tb_s_term_debt 
-			set repay_bal = repay_bal - ${payPrinc} 
-			where no = ${debtNo}
-		]]>
-	</update>
-	
 	<insert id="insertRepay" parameterType="repayvo">
 		<![CDATA[
-			insert into tb_repay(no, debt_no, pay_prinv, int_amount, pay_date, debt_type, voucher_no, delete_flag, insert_id, insert_date)
-			values(null, ${debtNo}, ${payPrinc}, ${intAmount}, #{payDate}, #{debtType}, ${voucherNo}, "N", #{insertId}, now())
+			insert into tb_repay(no, debt_no, code, pay_princ, int_amount, pay_date, debt_type, voucher_no, delete_flag, insert_id, insert_date)
+			values(null, ${debtNo}, ${code}, ${payPrinc}, ${intAmount}, #{payDate}, "S", ${voucherNo}, "N", #{insertId}, now())
 		]]>
 	</insert>
 </mapper>

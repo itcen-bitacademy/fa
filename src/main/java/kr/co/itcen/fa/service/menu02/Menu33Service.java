@@ -59,18 +59,6 @@ public class Menu33Service {
 		
 		return purchaseitemList;
 	}
-
-	public List<SectionVo> getSectionList() {
-		List<SectionVo> sectionList = menu33Repository.getSectionList();
-		
-		return sectionList;
-	}
-	
-	public List<SectionVo> getFactorysectionList() {
-		List<SectionVo> factoryList = menu33Repository.getFactorysectionList();
-		
-		return factoryList;
-	}
 	
 	public List<SectionVo> getsearchSectionList(String sectionname) {
 		List<SectionVo> searchsectionList = menu33Repository.getsearchSectionList(sectionname);
@@ -90,6 +78,41 @@ public class Menu33Service {
 		return purchaseitemListall;
 	}
 
+	public List<SectionVo> getSectionListall(String searchdata) {
+		List<SectionVo> sectionListall = menu33Repository.getSectionListall(searchdata);
+		
+		return sectionListall;
+	}
+	
+	public List<SectionVo> getSectionList(int section_page_group, String searchdata) {
+		List<SectionVo> sectionList = menu33Repository.getSectionList(section_page_group, searchdata);
+		
+		return sectionList;
+	}
+	
+	public List<SectionVo> getpageSectionList(int section_page, String searchdata) {
+		List<SectionVo> pagesectionList = menu33Repository.getpageSectionList(section_page, searchdata);
+		
+		return pagesectionList;
+	}
+
+	public List<SectionVo> getFactoryListall(String searchdata) {
+		List<SectionVo> factoryListall = menu33Repository.getFactoryListall(searchdata);
+		
+		return factoryListall;
+	}
+
+	public List<SectionVo> getFactoryList(int factory_page_group, String searchdata) {
+		List<SectionVo> factoryList = menu33Repository.getFactoryList(factory_page_group, searchdata);
+		
+		return factoryList;
+	}
+
+	public List<SectionVo> getpageFactoryList(int factory_page, String searchdata) {
+		List<SectionVo> pagefactoryList = menu33Repository.getpageFactoryList(factory_page, searchdata);
+		
+		return pagefactoryList;
+	}
 	
 
 	

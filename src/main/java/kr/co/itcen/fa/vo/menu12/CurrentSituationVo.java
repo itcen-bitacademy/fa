@@ -23,7 +23,7 @@ public class CurrentSituationVo {
 	private Long salestaxvalue; //출고부가세
 	private Long salestotalprice; //출고금액
 	private Long stockquantity; //재고수량
-	private Long stocksupplyvalue; //재고 부가세
+	private Long stocksupplyvalue; //재고공급가액
 	private Long stocktaxvalue; //재고부가세
 	private Long stocktotalprice; //재고금액
 	

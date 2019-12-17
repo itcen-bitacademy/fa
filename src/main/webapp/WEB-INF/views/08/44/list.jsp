@@ -38,19 +38,19 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">품목 코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id"/>
+											<input type="text" id="form-field-1" name="id" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">거래처명</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="customerName"/>
+											<input type="text" id="form-field-1" name="customerName" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">설치주소</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="address"/>
+											<input type="text" id="form-field-1" name="address" />
 										</div>
 									</div>
 								</div>
@@ -73,7 +73,7 @@
 										<label class="control-label" for="form-field-1">거래처
 											담당자</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="customerManager"/>
+											<input type="text" id="form-field-1" name="customerManager" />
 										</div>
 									</div>
 								</div>
@@ -84,8 +84,8 @@
 										<div class="controls">
 											<div class="input-append">
 												<span class="add-on"> <i class="icon-calendar"></i>
-												</span>
-												<input class="span12" type="text" name="payDate" class="cl-date-range-picker"
+												</span> <input class="span12" type="text" name="payDate"
+													id="payDate" class="cl-date-range-picker"
 													id="id-date-range-picker-1">
 											</div>
 										</div>
@@ -122,7 +122,7 @@
 
 						<div class="row-fluid">
 							<div id="listCount" style="float: left;"></div>
-							
+
 							<div>
 								<table id="list-table"
 									class="table table-striped table-bordered table-hover">
@@ -253,12 +253,13 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
-			
+
 			$("#listCount").ready(function() {
 				var total = $('#list-table tbody tr').length;
 				$('#listCount').text('총 ' + total + '건');
 			});
-		});		
+
+		});
 	</script>
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
@@ -268,9 +269,10 @@
 		$(function() {
 			$("#id-date-range-picker-1").daterangepicker({
 				format : 'YYYY-MM-DD'
-			}).prev().on(ace.click_event, function() {
-				$(this).next().focus();
-			});
+			}).prev().on(
+					ace.click_event,
+					function() {
+						$(this).next().focus();
 		});
 	</script>
 </body>

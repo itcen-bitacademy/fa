@@ -10,6 +10,7 @@ import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillListVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
+import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
 /**
  * 
@@ -37,10 +38,23 @@ public class Menu38Service {
 		return getMatchTaxbillItemsList;
 	}
 
-	
-
 	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
 		List<BuyTaxbillVo> getSelectedBuyTaxbillList = menu38Repository.getSelectedBuyTaxbillList(buyTaxbillListVo);
 		return getSelectedBuyTaxbillList;
+	}
+
+	public List<BuyTaxbillVo> getBuyTaxbillAll() {
+		// TODO Auto-generated method stub
+		return menu38Repository.getBuyTaxbillAll();
+	}
+
+	public List<BuyTaxbillVo> getBuyTaxbillList(int page_group) {
+		page_group *= 55;
+		return menu38Repository.getBuyTaxbillList(page_group);
+	}
+
+	public List<BuyTaxbillVo> getpageBuyTaxbillList(int page) {
+		
+		return menu38Repository.getpageBuyTaxbillList(page);
 	}
 }

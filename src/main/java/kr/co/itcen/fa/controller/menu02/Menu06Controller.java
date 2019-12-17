@@ -61,7 +61,7 @@ public class Menu06Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public PurchasemanagementVo search(@RequestBody PurchasemanagementVo vo) {
 		PurchasemanagementVo result = menu06Service.getList(vo);
-			System.out.println(result);
+		System.out.println("search : " + result);
 		return result;
 	}
 	
@@ -147,7 +147,8 @@ public class Menu06Controller {
 		menu06Service.delete(vo);
 		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
 		//System.out.println(vo);
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		// 전표삭제
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); // 여러건 동시삭제 때문에 리스트형식으로 받아옴 근데 난 하나씩만 삭제가 가능해서 그냥 하나만 넣어 보내주면 됨
 		VoucherVo voucherVo = new VoucherVo();
 		voucherVo.setNo(vo.getVoucherNo());
 		voucherVolist.add(voucherVo);
@@ -159,7 +160,7 @@ public class Menu06Controller {
 	public String input(PurchasemanagementVo purchasemanagementVo, Long number[], int quantity[], String itemCode[],
 			String itemName[], Long supplyValue[], Long taxValue[], @AuthUser UserVo authUser, Model model)  throws ParseException  {
 
-		System.out.println(purchasemanagementVo);
+		System.out.println("input : " + purchasemanagementVo);
 		Long[] totalPrice = new Long[itemCode.length];
 		String[] date = { purchasemanagementVo.getPurchaseDate(), purchasemanagementVo.getReceiptDate(), purchasemanagementVo.getReleaseDate()};
 		for(int j = 0; j < date.length; j++) {
@@ -225,9 +226,9 @@ public class Menu06Controller {
 		
 		buyTaxbillVo = menu06Service.getTaxbillList(vo);
 		CustomerVo customerAccount = menu06Service.getAccount(vo);
-		System.out.println(vo);
-		System.out.println(buyTaxbillVo);
-		System.out.println(customerAccount);
+		System.out.println("voucher : " + vo);
+		System.out.println("voucher : " + buyTaxbillVo);
+		System.out.println("voucher : " + customerAccount);
 		ItemVo itemVo = new ItemVo();
 		ItemVo itemVo2 = new ItemVo();
 		ItemVo itemVo3 = new ItemVo();
@@ -253,7 +254,7 @@ public class Menu06Controller {
 		mappingVo.setManageNo(buyTaxbillVo.getManageNo());	 		   // 세금계산서 번호 입력
 		mappingVo.setDepositNo(customerAccount.getDepositNo());	 	   // 계좌번호 입력
 		//mappingVo.setDepositNo("14278-927129-62");	 	   		   // 계좌번호 입력
-		System.out.println(mappingVo);
+		System.out.println("voucher : " + mappingVo);
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
 		vo.setVoucherNo(no);
 		menu06Service.voucherUpdate(vo);

@@ -37,7 +37,6 @@ public class Menu39Repository {
 		map.put("id", id);
 		map.put("pagination", pagination);
 		List<BuildingVo> list = sqlSession.selectList("menu39.list", map);
-		
 		return list;
 	}
 	
@@ -72,5 +71,9 @@ public class Menu39Repository {
 	public Long getVoucherNo(String id) {
 		Long vocherNo = sqlSession.selectOne("menu39.getVoucherNo", id);
 		return vocherNo;
+	}
+
+	public String checkId(String id) {
+		return sqlSession.selectOne("menu39.checkId", id);
 	}
 }

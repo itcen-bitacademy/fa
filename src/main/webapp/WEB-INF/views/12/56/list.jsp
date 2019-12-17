@@ -40,8 +40,8 @@
 														</div>
 													<!-- searchdate 상태 유지 -->
 													<script type="text/javascript">
-													var datepicker = "${param.datepicker}";
-													$("#datepicker").val(datepicker);
+													var searchdate = "${param.searchdate}";
+													$("#searchdate").val(searchdate);
 													</script>
 													
 													</div>
@@ -53,14 +53,15 @@
 													<label class="control-label" for="form-field-select-2" >대분류명</label>
 													<div class="controls">
 														<select class="chosen-select" id="gcategory" name="sectioncode" data-placeholder="대분류명 선택">
+															<option value=""></option>	
 															<c:forEach items='${gcategory }' var='gcategory' varStatus='status'>
 																<option value="${gcategory.code }">${gcategory.classification }</option>
 															</c:forEach>
 														</select>
 													<!-- sectioncode 상태 유지  -->	
 													<script type="text/javascript">
-													var gcategory = "${param.gcategory}";
-													$("#gcategory").val(gcategory);
+													var sectioncode = "${param.sectioncode}";
+													$("#sectioncode").val(sectioncode);
 													</script>
 													</div>
 											</div>
@@ -71,15 +72,15 @@
 													<label class="control-label" for="form-field-select-2">품목명</label>
 													<div class="controls">
 														<select class="chosen-select" id="subcategory" name="itemcode" data-placeholder="품목명 선택">
-																
+															
 														<c:forEach items='${subcategory }' var='scategory' varStatus='status'>
 																<option value="${scategory.itemcode }">${scategory.itemname }</option>
 															</c:forEach>
 														</select>
 													<!-- itemcode 상태 유지  -->	
 													<script type="text/javascript">
-													var subcategory = "${param.subcategory}";
-													$("#subcategory").val(subcategory);
+													var itemcode = "${param.itemcode}";
+													$("#itemcode").val(itemcode);
 													</script>
 													</div>
 											</div>
@@ -119,42 +120,78 @@
 											<th>재고금액</th>
 										</tr>
 										</thead>
-										<c:forEach items='${list }' var='vo' varStatus='status'>
+										<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 										<tr>
 											<td>${vo.sectioncode }</td>
 											<td>${vo.sectionname }</td>
 											<td>${vo.itemcode }</td>
 											<td>${vo.itemname }</td>
-											<td>${vo.purchasemanagementquantity }</td>
-											<td>${vo.purchasemanagementsupplyvalue }</td>
-											<td>${vo.purchasemanagementtaxvalue }</td>
-											<td>${vo.purchasemanagementtotalprice }</td>
-											<td>${vo.salesquantity }</td>
-											<td>${vo.salessupplyvalue }</td>
-											<td>${vo.salestaxvalue }</td>
-											<td>${vo.salestotalprice }</td>
-											<td>${vo.stockquantity }</td>
-											<td>${vo.stocksupplyvalue }</td>
-											<td>${vo.stocktaxvalue }</td>
-											<td>${vo.stocktotalprice }</td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementquantity }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementsupplyvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementtaxvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.purchasemanagementtotalprice }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.salesquantity }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.salessupplyvalue }" pattern="#,###" />
+											<td><fmt:formatNumber value="${vo.salestaxvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.salestotalprice }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stockquantity }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stocksupplyvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stocktaxvalue }" pattern="#,###" /></td>
+											<td><fmt:formatNumber value="${vo.stocktotalprice }" pattern="#,###" /></td>
 										</tr>
 										</c:forEach>
 									</table>
 								</div>
-								
-								<div class="span12">
-								  <div class="pagination">
-									<ul>
-									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-									<li class="active"><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
-									</ul>
-								</div>
-								</div>
+							
+				<div class="pagination" id = "pagination">
+					<ul>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
+									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}
+										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
+									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
 							</div>
 						
 		</div><!-- /.page-content -->
@@ -210,6 +247,7 @@ $(function() {
 				var list= response.data;
 					//선택하지 않았을 때 빈 값이 설정되도록
 					$("#subcategory").append("<option value=null placeholder=전체 품목 선택></option>")	
+					//대분류에 알맞는 품목리스트를 가져오도록
 				for(let i in list){
 					$("#subcategory").append("<option value='"+list[i].itemcode+"'>"+list[i].itemname+"</option>");
 					$('#subcategory').trigger("chosen:updated");

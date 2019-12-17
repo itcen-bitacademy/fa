@@ -37,7 +37,6 @@
 		 	  from tb_salescustomer
 		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N" 
-		  order by name desc
 		]]>
 	</select>
 	
@@ -64,9 +63,112 @@
 				   name as name
 		 	  from tb_salescustomer
 		 	 where name like '${_parameter }'
-		 	   and delete_flag = "N" 
+		 	   and delete_flag = "N"
 		  order by name desc
+		  	 
 		]]>
+	</select>
+	
+	
+	
+	<select id="getBankCodeInfo" parameterType="String" resultType="bankvo">
+		<![CDATA[
+			select code as code,
+				   name as name,
+				   store as store
+				   from tb_bank
+			 where code like '${_parameter }'
+		]]>
+	</select>
+	
+	<select id="getBankNameInfo" parameterType="String" resultType="bankvo">
+		<![CDATA[
+			select code as code,
+				   name as name,
+				   store as store
+				   from tb_bank
+			 where name like '%${_parameter }%'
+		]]>
+	</select>
+	
+	<select id="optionSearch" parameterType="map" resultType="1accountcustomerledgervo">
+		<![CDATA[
+			select a.no as accountCode,
+				a.name as accountName,
+				cu.no as customerNo,
+		   	 	cu.name as customerName,
+		   	 	m.insert_day as regDate,
+			   v.no as voucherNo,
+			   i.order_no as voucherOrderNo,
+			   m.insert_team as insertTeam,
+			   m.insert_userid as insertUserid,
+		   	   m.voucher_use as voucherUse,
+		   	   c.card_no as cardNo,
+			   c.user as cardUser,
+			   ifnull(ba.bank_name, c.bank_name) as bankName,
+			   ifnull(ba.bank_code, c.bank_code) as bankCode,
+			   ba.deposit_no as depositNo,
+			   ba.deposit_host as depositHost,
+			   case 
+			   when amount_flag="c"
+			   then "대변"
+			   when amount_flag="d"
+			   then "차변"
+			   end as amountFlag,
+			   i.amount as amount
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+          join tb_voucher_system_mapping m
+            on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join (select no, name
+				  from tb_customer
+				 union
+				select no, name
+                  from tb_salescustomer
+				 union
+				select no, name
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
+           ]]>
+           
+			<if test="vo.datepicker1!=null and !vo.datepicker1.equals('')">		    
+				<![CDATA[
+					and m.insert_day >= #{vo.datepicker1 }
+				]]>
+			</if>
+			<if test="vo.datepicker2!=null and !vo.datepicker2.equals('')">		    
+				<![CDATA[
+					and m.insert_day <= #{vo.datepicker2 }
+				]]>
+			</if>
+			<if test="vo.accountCode!=null and !vo.accountCode.equals('')">
+				<![CDATA[
+					and a.no = #{vo.accountCode }
+				]]>
+			</if>
+			<if test="vo.customerNo!=null and !vo.customerNo.equals('')">
+				<![CDATA[
+					and cu.no like '%${vo.customerNo }%'
+				]]>
+			</if>
+			
+			
+			<![CDATA[
+		      order by v.no asc, i.order_no ;
+			]]>
 	</select>
 	
 	

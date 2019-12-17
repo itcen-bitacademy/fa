@@ -1,9 +1,7 @@
 package kr.co.itcen.fa.controller.menu08;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
@@ -28,6 +27,7 @@ import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
@@ -55,25 +55,35 @@ public class Menu41Controller {
 	private Menu19Service menu19Service;  // 6팀 결산
 
 	@Autowired
-	private Menu03Service menu03Service;
+	private Menu03Service menu03Service;  // 1팀 전표
 
 	//               /08   /   41     , /08/41/add
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(
 			Model model,
-			@RequestParam(value="id", required = false) String id ) {
+			@RequestParam(value="id", required=false, defaultValue = "") String id,
+			@RequestParam(value="page", required=false, defaultValue = "1") int page) 
+		{
 		//menu41Service.test();
 		/*
 		 *   JSP
 		 *   08/41/add.jsp
 		 * 
 		 */
+		//페이징 처리 	dataresult 생성, 모델
+		//DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
+		DataResult<VehicleVo> dataResult = menu41Service.list(id, page);
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page" , page);
+		
 		Map<String, Object> map = new HashMap<>();
 
 		//if 조회기능 else 검색기능
-		if(id == null) {			
+		if(id == null) {	
+			System.out.println("ID가 널");
 			map.putAll(menu41Service.selectList());
 		}else {
+			System.out.println("ID가 널이 아니다.");
 			map.putAll(menu41Service.search(id));
 		}
 		model.addAllAttributes(map);
@@ -92,7 +102,9 @@ public class Menu41Controller {
 		model.addAllAttributes(map);
 		
 		
-
+		
+		
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
@@ -107,6 +119,7 @@ public class Menu41Controller {
 		 * 
 		 * }
 		 */
+		
 		vehicleVo.setInsertUserId(userVo.getId());
 		vehicleVo.setId("e"+vehicleVo.getId());
 		
@@ -116,45 +129,110 @@ public class Menu41Controller {
     	    model.addAttribute("closingDate", true);
 	    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
-	       menu41Service.insert(vehicleVo);
-	       return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
+	    menu41Service.insert(vehicleVo);
+	    return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
 	    }
 	}
 
 	//수정기능
 	@RequestMapping(value = { "/" + SUBMENU + "/update" }, method =RequestMethod.POST) 
-	public String update(@ModelAttribute VehicleVo vehicleVo, @AuthUser UserVo userVo){
-		
+	public String update(@ModelAttribute VehicleVo vehicleVo, @SessionAttribute("authUser") UserVo userVo){
+		System.out.println("ssssssssss" + vehicleVo.getSectionNo());
 		vehicleVo.setUpdateUserId(userVo.getId());
+		Long vehicleVno = menu41Service.getVoucherNo(vehicleVo.getId());
+		
+		System.out.println("전표번호 " + vehicleVno);
+		CustomerVo cus = menu41Service.getDepositNo(vehicleVo.getCustomerNo());
+		
+		VoucherVo voucherVo = new VoucherVo();  //거래처 객체
+		List<ItemVo> itemVoList = new ArrayList<ItemVo>(); //차변대변나누기 위해서 배열선언
+		ItemVo itemVo = new ItemVo(); //차변대변나누기 위해서 객체선언
+		ItemVo itemVo2 = new ItemVo(); //차변대변나누기 위해서 객체선언
+		
+		
+		MappingVo mappingVo = new MappingVo();
+		voucherVo.setRegDate(vehicleVo.getPayDate()); // 매입일자
+		itemVo.setAmount(vehicleVo.getDeposit());   	// VehicleVo.getAcqPrice() : 거래금액 (보증금)
+		itemVo.setAmountFlag("d");      //d: 차변 왼쪽
+		itemVo.setAccountNo(1220501L);  //계정과목 : 차량운반구
+		itemVoList.add(itemVo);
+		
+		//대변
+		itemVo2.setAmount(vehicleVo.getDeposit());   // VehicleVo.getAcqPrice() : 거래금액 (보증금)
+		itemVo2.setAmountFlag("c");   // c: 대변 오른쪽
+		itemVo2.setAccountNo(1240501L); //계정과목 : 임차보증금
+		itemVoList.add(itemVo2);
+	
+		
+		//매핑테이블
+		mappingVo.setVoucherUse("차량 구입 ");
+		mappingVo.setSystemCode(vehicleVo.getId());  // 차량 코드번호
+		mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+		mappingVo.setCustomerNo(vehicleVo.getCustomerNo()); //거래처번호
+		mappingVo.setManageNo(vehicleVo.getTaxbillNo());//세금계산서번호
+		mappingVo.setBankCode(cus.getBankCode()); //은행코드
+		mappingVo.setBankName(cus.getBankName()); //은행명
+		mappingVo.setVoucherNo(vehicleVno);
+	         
+	    voucherVo.setNo(vehicleVno);
+	    long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
+	    vehicleVo.setVoucherNo(voucherNo);
+		
 		menu41Service.update(vehicleVo); 	
+		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
 	}
 	
 	//삭제기능
 	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
-	public String delete(@ModelAttribute VehicleVo vehicleVo, @RequestParam(value="id") String id, @AuthUser UserVo userVo ) {
+	public String delete(@ModelAttribute VehicleVo vehicleVo, @RequestParam(value="id") String id,  @SessionAttribute("authUser") UserVo userVo ) {
+		
+		
+		  Long voucherNo = menu41Service.getVoucherNo(id);
+		  List<Long> taxVoucherNo = menu41Service.getTaxVoucherNo(id);
+		  if(voucherNo != null) {
+		  
+			  //전표삭제 
+			  List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); 
+			  VoucherVo v = new VoucherVo(); 
+			  v.setNo(voucherNo); 
+			  voucherVolist.add(v);
+			  menu03Service.deleteVoucher(voucherVolist, userVo); 
+		  
+			  for(Long no : taxVoucherNo) {
+				  System.out.println("나는 NO다 " + no);
+				  v.setNo(no);
+				  voucherVolist.add(v);
+				  menu03Service.deleteVoucher(voucherVolist, userVo); 
+			  }
+		  }
+		 
 		
 		//삭제한 사람도 남길때 set무엇으로 하는게 적당한지 모르겠음
+		
 		vehicleVo.setUpdateUserId(userVo.getId());
-		menu41Service.delete(id);
+		menu41Service.delete(id); //vehicle
+		menu41Service.deleteTaxbill(id);//taxbill
 		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
 	}
-	
 	
 	//세금 계산서 차량 테이블 수정 기능 + 세금계산서 모달창 세금계산서 삽입기능
 	@RequestMapping(value = { "/" + SUBMENU + "/segum" }, method = RequestMethod.POST)
 	public String taxbill(@ModelAttribute TaxbillVo taxbillVo, @AuthUser UserVo userVo,
-						  @RequestParam(value="gubun" ) String gubun,
-						  @RequestParam(value="deposit" ) Long deposit,
-						  @RequestParam(value="monthlyFee") Long monthlyFee,
-						  @RequestParam(value="cusNo") String customerNo,
-						  @RequestParam(value="payDate-1") String maip
+						  @RequestParam(value="depositPop") Long deposit, //보증금
+						  @RequestParam(value="monthlyFeePop") Long monthlyFee, //월 사용료
+						  @RequestParam(value="bonapil") String bonapil, // 예정 보증금 납부일
+						  @RequestParam(value="walnapil") String walnapil, //예정 월 사용료 납부일 
+						  @RequestParam(value="cusNo") String customerNo, //거래처 번호
+						  @RequestParam(value="gubun" ) String gubun
 						  ) {
 		
-		
+		System.out.println("cusNo : " + customerNo);
 		taxbillVo.setInsertUserid(userVo.getId());
-		String taxno = taxbillVo.getTaxbillNo();
+		String taxno = taxbillVo.getTaxbillNoPoP();
 		String veno = taxbillVo.getVehicleNo();
+		
+		
 		
 		// 전표 관련
 		CustomerVo cus = menu41Service.getDepositNo(customerNo); // 거래처관련 정보 : 계좌번호, 은행코드, 은행명
@@ -164,69 +242,78 @@ public class Menu41Controller {
 		ItemVo itemVo2 = new ItemVo(); //차변대변나누기 위해서 객체선언
 		MappingVo mappingVo = new MappingVo();
 		//---
+
+		//왼쪽 : 얻은것(차변) 차량 가격  :::: 오른쪽(대변)  현금   가격 
 		
-		
-		
-		//왼쪽 : 얻은것(차변) 토지 가격  :::: 오른쪽(대변)  현금   가격 
-		
-		Date from = new Date();
-		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String paymentDay = transFormat.format(from);
-		
-		voucherVo.setRegDate(maip);   //매입일자로 바꾸기
-		
+
 		if(gubun.equals("보증금")) {
-			//차변
+			taxbillVo.setDueDate(bonapil);
 			taxbillVo.setPay(deposit);
-			System.out.println("보증금입니다");
-			itemVo.setAmount(deposit);   	// landVo.getAcqPrice() : 거래금액 (보증금)
+			voucherVo.setRegDate(bonapil); //
+			
+			
+			itemVo.setAmount(deposit);   	// VehicleVo.getAcqPrice() : 거래금액 (보증금)
 			itemVo.setAmountFlag("d");      //d: 차변 왼쪽
-			itemVo.setAccountNo(1220501L);  //계정과목 : 선급금
+			itemVo.setAccountNo(1240501L);  //계정과목 : 임차보증금
 			itemVoList.add(itemVo);
 			
 			//대변
-			itemVo2.setAmount(deposit);   // landVo.getAcqPrice() : 거래금액 (보증금)
+			itemVo2.setAmount(deposit);   // VehicleVo.getAcqPrice() : 거래금액 (보증금)
 			itemVo2.setAmountFlag("c");   // c: 대변 오른쪽
-			itemVo2.setAccountNo(1110101L); //현금
+			itemVo2.setAccountNo(1110103L); //계정과목 : 보통예금
 			itemVoList.add(itemVo2);
-			mappingVo.setVoucherUse("차량보증금");
+			mappingVo.setVoucherUse("보증금 납입 ");
 			
+			//매핑테이블
+			mappingVo.setSystemCode(taxbillVo.getVehicleNo());  // 차량 코드번호
+			mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+			mappingVo.setCustomerNo(customerNo); //거래처번호
+			mappingVo.setManageNo(taxbillVo.getTaxbillNoPoP());//세금계산서번호
+			mappingVo.setBankCode(cus.getBankCode()); //은행코드
+			mappingVo.setBankName(cus.getBankName()); //은행명
+
 			
 		}else if(gubun.equals("월사용료")) {
-			//차변
+			taxbillVo.setDueDate(walnapil);
 			taxbillVo.setPay(monthlyFee);
-			System.out.println("월사용료입니다");
-			itemVo.setAmount(monthlyFee);   // landVo.getAcqPrice() : 거래금액 (월사용료)
+			voucherVo.setRegDate(walnapil);
+			
+
+			itemVo.setAmount(monthlyFee);   	// VehicleVo.getAcqPrice() : 거래금액 (월사용료)
 			itemVo.setAmountFlag("d");      //d: 차변 왼쪽
-			itemVo.setAccountNo(8140104L);  //계정과목 : 미지급금
+			itemVo.setAccountNo(8140104L);  //계정과목 : 지급임차료 업무 차량
 			itemVoList.add(itemVo);
 			
 			//대변
-			itemVo2.setAmount(deposit);   // landVo.getAcqPrice() : 거래금액 (월사용료)
+			itemVo2.setAmount(monthlyFee);   // VehicleVo.getAcqPrice() : 거래금액 (월사용료)
 			itemVo2.setAmountFlag("c");   // c: 대변 오른쪽
-			itemVo2.setAccountNo(1110101L); //현금
+			itemVo2.setAccountNo(1110103L); //계정과목 : 보통예금
 			itemVoList.add(itemVo2);
-			mappingVo.setVoucherUse("차량월사용금");  // 왜 샀는지 적어준다.
+			mappingVo.setVoucherUse("월사용료 납입 ");
+			
+			//매핑테이블
+			mappingVo.setSystemCode(taxbillVo.getVehicleNo());  // 차량 코드번호
+			mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+			mappingVo.setCustomerNo(customerNo); //거래처번호
+			mappingVo.setManageNo(taxbillVo.getTaxbillNoPoP());//세금계산서번호
+			mappingVo.setBankCode(cus.getBankCode()); //은행코드
+			mappingVo.setBankName(cus.getBankName()); //은행명
+
+			
 		}
-		//매핑테이블
-		mappingVo.setSystemCode(taxbillVo.getVehicleNo());  // 차량 코드번호
-		mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
-		mappingVo.setCustomerNo(customerNo); //거래처번호
-		mappingVo.setManageNo(taxno);//세금계산서번호
-		mappingVo.setBankCode(cus.getBankCode()); //은행코드
-		mappingVo.setBankName(cus.getBankName()); //은행명
 		
-		long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo); //전표입력
-		
+		Long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo); //전표입력
 		taxbillVo.setVoucherNo(voucherNo); //전표번호 세팅
-		menu41Service.updateTax(taxno, veno, voucherNo, userVo.getId());  //차량 테이블 업데이트
+		
+//		menu41Service.updateTax(taxno, veno, voucherNo, userVo.getId());  //차량 테이블 업데이트
+		
 		menu41Service.taxbill(taxbillVo);   //차량세금 인서트
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
 	}
 	
 	
-	//세금계산서 정보 조회하기 RequestMethod를 GET메소드로 받아줘야지만 코드가 도는데?
+	//세금계산서 정보 조회하기 RequestMethod를 GET메소드로
 	@ResponseBody
 	@RequestMapping(value = {"/" + SUBMENU + "/taxinfo" }, method = RequestMethod.GET)
 	public Map<String, Object> taxlist(

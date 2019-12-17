@@ -188,7 +188,7 @@
 	<select id="getVoucher" resultType="Long" parameterType="string">
 		select voucher_no 
 		from tb_land 
-		where id =#{id}
+		where id = #{id}
 	</select>
 
 </mapper>

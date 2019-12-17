@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
@@ -24,7 +25,7 @@ import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 
 @Auth
-@Controller("Menu50RepayApiController")
+@RestController("Menu50RepayApiController")
 @RequestMapping("/" + Menu50Controller.MAINMENU)
 public class Menu50RepayApiController {
 	public static final String MAINMENU = "11";
@@ -51,7 +52,7 @@ public class Menu50RepayApiController {
 	@RequestMapping(value = "/" + SUBMENU + "/repay", method = RequestMethod.POST)
 	public JSONResult repay(
 			@RequestBody RepayVo vo, 
-			@AuthUser UserVo uservo) {
+			 @AuthUser UserVo uservo) {
 		vo.setInsertId(uservo.getId()); // 유저 아이디 셋팅
 		
 		// 상환금액 - 상환납입원금
@@ -72,26 +73,31 @@ public class Menu50RepayApiController {
 		itemVo.setAccountNo(9201101L);// 계정과목코드
 		itemVoList.add(itemVo);
 
-		itemVo2.setAmount(vo.getPayPrinc());// 장기차입금에서 빠진 금액
+		itemVo2.setAmount(vo.getPayPrinc());// 사채에서 빠진 금액
 		itemVo2.setAmountFlag("d");// 차변
-		itemVo2.setAccountNo(2401101L);
+		itemVo2.setAccountNo(2402101L);
 		itemVoList.add(itemVo2);
 
 		itemVo3.setAmount(vo.getPayPrinc() + vo.getIntAmount());// 보통예금 : 예금액= 상환액으로 입력한 값
 		itemVo3.setAmountFlag("c");// 대변
-		itemVo3.setAccountNo(1110103L);// dPrma
+		itemVo3.setAccountNo(1110103L);// tb_account 보통예금 - no:1110103
 		itemVoList.add(itemVo3);
 
 		mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
-		mappingVo.setSystemCode(pdebtVo.getCode());// 제코드l190
+		mappingVo.setSystemCode(pdebtVo.getCode());// 사채코드 삽입 ex) I191212001
 		mappingVo.setCustomerNo(pdebtVo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());// 계좌번호
+		mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
+		
 		vo.setVoucherNo(no);
-		menu50Service.insertRepayVo(vo);// 상환 테이블에 insert ->
+		System.out.println("납입금 : " + vo.getPayPrinc());
+		menu50Service.insertRepayVo(vo); // 상환 테이블에 insert
+		
+		System.out.println("차입금액 : " + pdebtVo.getDebtAmount());
+		System.out.println("상환잔액 : " + pdebtVo.getRepayBal());
 
-		if ((pdebtVo.getRepayBal() + pdebtVo.getIntAmount()) >= pdebtVo.getDebtAmount())
+		if(pdebtVo.getRepayBal() <= 0)
 			menu50Service.updateRepayFlag(pdebtVo.getNo());
 
 		return JSONResult.success(pdebtVo);

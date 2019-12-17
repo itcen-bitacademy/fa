@@ -439,6 +439,9 @@ $(function() {
 //클릭한 행 받아와서 text에 값넣어주기
 $(function() {
 	$(".clickme").click(function() {
+		$("#insert").hide();
+		$("#modify").show();
+		$("#search").hide();
 		
 		/* alert("등록") */
 		var str = ""
@@ -522,6 +525,13 @@ $(function() {
 		}
 		
 		console.log("코드 : " + code);
+		
+		//세금계산서가 있으면 수정 불가. 삭제만 가능
+		if(taxbillNo != ""){
+			$("#insert").hide();
+			$("#modify").hide();
+			$("#search").hide();
+		}
 	});
 });
 

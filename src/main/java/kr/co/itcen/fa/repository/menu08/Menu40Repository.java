@@ -30,10 +30,8 @@ public class Menu40Repository {
 	public List<BuildingVo> list(BuildingVo vo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("vo", vo);
-		System.out.println(vo);
 		map.put("pagination", pagination);
 		List<BuildingVo> list = sqlSession.selectList("menu40.list", map);
-		
 		return list;
 	}
 

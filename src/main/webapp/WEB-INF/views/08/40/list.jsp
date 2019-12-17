@@ -11,6 +11,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+
+<style>
+ .form-horizontal .control-label {
+    text-align: left
+ }
+ 
+ .acqPrice {
+    text-align: right
+ }
+ </style>
+ 
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -44,7 +55,8 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">대분류코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-section" name="sectionNo">
+											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="대분류코드">
+												<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
@@ -52,11 +64,25 @@
 											<input readonly type="text" class="span6" id="classification" name="sectionName" placeholder="코드를 지정하면 대분류명이 입력됩니다">
 										</div>
 									</div>
+									
+									<div class="control-group">
+										<label class="control-label" for="form-field-1">주소</label>
+										<div class="controls">
+											<input class="span2" onclick="execDaumPostcode()" 
+												class="btn-primary box" type="button" value="주소 찾기">
+											<input class="span4" readonly type="text" id="wideAddress"
+												name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
+											<input style="width: 230px" class="span5" readonly type="text"
+												id="cityAddress" name="cityAddress"
+												placeholder="주소를 선택하면 입력됩니다.">
+										</div>
+									</div>
 
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">거래처코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-customer" name="customerNo">
+											<select class="chosen-select" id="form-field-customer" name="customerNo" data-placeholder="거래처코드">
+												<option value=""></option>
 												<c:forEach items="${customerList }" var="customerVo">
 													<option customerName="${customerVo.name}" managerName="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
 												</c:forEach>
@@ -65,39 +91,13 @@
 										</div>
 									</div>
 
-									<div class="control-group">
-										<div style="float: left;">
-											<label class="control-label" for="form-field-1">주소</label>
-											<div class="controls">
-												<select style="width: 155px;" class="chosen-select"
-													id="form-field-select-1" name="sectionNo"
-													data-placeholder="광역">
-													<c:forEach items="${listMainMenu }" var="sectionVo">
-														<option value="${sectionVo.no }">${sectionVo.name }</option>
-													</c:forEach>
-												</select>
-											</div>
-										</div>
-										<div style="float: left; margin-left: 10px" class="controls">
-											<select style="width: 155px;" class="chosen-select"
-												id="form-field-select-1" name="sectionNo"
-												data-placeholder="시/군/구">
-												<c:forEach items="${listMainMenu }" var="sectionVo">
-													<option value="${sectionVo.no }">${sectionVo.name }</option>
-												</c:forEach>
-											</select>
-										</div>
-										<div style="float: left; margin-left: 10px" class="controls">
-											<input type="text" id="form-field-1" name="detailAddress" style="width: 290px;" placeholder="상세주소를 입력하세요" />
-										</div>
-									</div>
+									
 									
 									<div class="control-group">
 										<label class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" id="acqPrice" name="acqPrice"
-												placeholder="금액을 입력하세요" /> <input
-												style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
+											<input type="text" class="acqPrice" name="acqPrice" placeholder="금액을 입력하세요" /> 
+												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
 								</div>
@@ -114,8 +114,7 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1"
-											placeholder="날짜 범위를 지정하세요">
+											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1" placeholder="날짜 범위를 지정하세요">
 										</div>
 									</div>		
 									<div class="control-group">
@@ -126,20 +125,37 @@
 												style="border-style: none;" type="text" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
+									
+									<div class="control-group">
+										<label class="control-label" for="form-field-1">상세주소</label>
+										<div class="controls">
+											<input type="text" id="detailAddress" name="detailAddress"
+												placeholder="상세주소를 입력하세요" />
+										</div>
+									</div>
+									
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">거래처 담당자</label>
 										<div class="controls" id="form-input-customer">
 											<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" />
 										</div>
 									</div>
+									
 									<span style="line-height:550%"><br></span>
 									
 									<div class="control-group" style="margin-bottom:0px;">
 										<div class="span3" style="float: right;">
-												<input name="checkDel" type="checkbox" class="ace">
-												<span class="lbl">삭제포함</span>
+											<c:choose>
+												<c:when test='${vo.flag eq ""}'>
+													<input type="checkbox" name="flag" id="flag" class="ace" value="" checked="checked">
+												</c:when>
+												<c:otherwise>
+													<input type="checkbox" name="flag" id="flag" class="ace" value="" >
+												</c:otherwise>
+											</c:choose>
+											<span class="lbl">삭제포함</span>
 											<button class="btn btn-info btn-small"
-												style="float: right; margin-right: 20px;"
+												style="float: right; margin-right: 20px;" type="submit" name="search"
 												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 										</div>
 									</div>
@@ -200,10 +216,10 @@
 										<td>${vo.managerName }</td>
 										<td>${vo.ownerName }</td>
 										<td>${vo.payDate }</td>
-										<td><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
-										<td><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+										<td style="text-align : right"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 										<td>${vo.combineNo }</td>
 										<td>${vo.taxbillNo }</td>
 										<td>${vo.taxKind }</td>
@@ -228,7 +244,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode } ${uri }&page=${dataResult.pagination.startPage - 1 }">
 								<i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
@@ -238,17 +254,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg}">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.endPage + 1 }">
 							<i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
@@ -268,20 +284,40 @@
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
 			$('#id-date-range-picker-1').daterangepicker({
-				format: "yyyy-mm-dd"
+				format: 'YYYY-MM-DD'
 			}).prev().on(ace.click_event, function(){
 				$(this).next().focus();
 			});
 		});
+		
+		//date range picker
+		
+		
 	</script>
+	
 	<script>
-	$(function(){
-		$(".chosen-select").chosen(); 
-	});
+	//주소
+	function execDaumPostcode() {
+        new daum.Postcode({
+           oncomplete : function(data) {
+              var fullRoadAddr = data.roadAddress;
+              console.log(data)
+              $("#wideAddress").val(data.sido);
+              $("#cityAddress").val(data.sigungu); 
+              $("#detailAddress").val(data.roadname + " ");
+              $("#detailAddress").focus();
+           }
+        }).open();
+     }
+	
+	</script>
+	
+	<script>
 	
 	//select box 선택 시 값 등록
 	$('#form-field-section').change(function() {
@@ -297,33 +333,6 @@
 	});
 	
 	
-	$(function() {
-		//한행 클릭 >> 건물코드 가져오기
-		   $(".table-row").click(function() {
-		      var str = ""
-		      var tdArr = new Array();   // 배열 선언
-		      
-		      // 현재 클릭된 Row(<tr>)
-		      var tr = $(this);
-		      var td = tr.children();
-		      
-		      $("input[name=id]").val(td.eq(0).text());
-		      //sectionNo 에 대한 값(classification)을 select box에 표시
-		      $('#form-field-section').val(td.eq(1).text()).trigger('chosen:updated'); 
-		      $("input[name=sectionName]").val(td.eq(2).text()); 
-		      $("input[name=area]").val(td.eq(3).text());
-		      $("input[name=wideAddress]").val(td.eq(6).text());
-		      $("input[name=cityAddress]").val(td.eq(7).text());
-		      $("input[name=detailAddress]").val(td.eq(8).text());
-		      //customerNo 에 대한 값(name)을 select box에 표시
-		      $('#form-field-customer').val(td.eq(11).text()).trigger('chosen:updated'); 
-		      $("input[name=customerName]").val(td.eq(12).text());
-		      $("input[name=managerName]").val(td.eq(13).text());
-		      $("input[name=payDate]").val(td.eq(15).text());
-		      $("input[name=acqPrice]").val(td.eq(17).text().replace(/,/g, ""));
-		      
-			});
-	});
 	</script>
 </body>
 </html>

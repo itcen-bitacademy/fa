@@ -33,6 +33,7 @@ public class Menu39Service {
 	
 	//조회
 	public DataResult<BuildingVo> list(String id, int page) {
+		
 		DataResult<BuildingVo> dataResult = new DataResult<BuildingVo>();
 		
 		int totalCount = menu39Repository.listCount(id);
@@ -78,6 +79,11 @@ public class Menu39Service {
 	public Long getVoucherNo(String id) {
 		Long voucherNo = menu39Repository.getVoucherNo(id);
 		return voucherNo;
+	}
+
+	public boolean checkId(String id) {
+		menu39Repository.checkId(id);
+		return menu39Repository.checkId(id) != null;
 	}
 
 	

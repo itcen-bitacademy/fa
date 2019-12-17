@@ -27,12 +27,12 @@ public class Menu59Service {
 	//재무제표 계정관리 조회
 	public DataResult<AccountManagementVo> getList(AccountManagementVo vo, int page ){
 		DataResult<AccountManagementVo> dataResult = new DataResult<>();
-		
-		int totalCount = menu59Repository.selectCount(vo);
-		System.out.println(totalCount);
-		
-		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);	
-		if(totalCount == 0) {
+
+		DataResult<AccountManagementVo> data = menu59Repository.selectCount(vo);
+	
+		PaginationUtil paginationUtil = new PaginationUtil(page, data.getDatas().get(0).getCnt(), 11, 5);	
+
+		if(data.getDatas().get(0).getCnt() == 0) {
 			paginationUtil.setListSize(0);
 			paginationUtil.setPageSize(0);
 		}
@@ -47,8 +47,13 @@ public class Menu59Service {
 		menu17SearchForm.setAccountStatementType(vo.getAccountStatementType());
 		
 		List<AccountManagementVo> list = menu59Repository.getList(menu17SearchForm);
-		dataResult.setDatas(list);		
-		
+
+		if(list.size() > 0) {
+		list.get(0).setMax(data.getDatas().get(0).getMax());
+		list.get(0).setMaxcnt(data.getDatas().get(0).getMaxcnt());
+			dataResult.setDatas(list);	
+		}
+
 		return dataResult;
 	}
 	
@@ -58,6 +63,7 @@ public class Menu59Service {
 		return menu59Repository.getAllAccountList();
 	}
 	
+	/** 전 버전 저장, 수정 버튼에 대한 이벤트 메서드
 	//재무제표 계정관리 저장
 	public DataResult<AccountManagementVo> add(AccountManagementVo vo) {		
 		DataResult<AccountManagementVo> dataResult = new DataResult<>();
@@ -142,12 +148,42 @@ public class Menu59Service {
 		
 		return dataResult;	
 	}	
-	
+*/	
 	//삭제
 	public Boolean delete(Long no) {
 		Boolean count = menu59Repository.delete(no);
 		return count;	
 	}
 	
-	
+
+	public DataResult<AccountManagementVo> testUpdate(List<AccountManagementVo> vo) {
+		DataResult<AccountManagementVo> dataResult = new DataResult<>();
+		
+		for(int i = 0; i < vo.size(); i++) {
+			List<AccountManagementVo> list = menu59Repository.chechedAccount(vo.get(i));
+			
+			if(list.size() >= 1) {
+				if(list.get(0).getAccountOrder() != vo.get(i).getAccountOrder()) {		
+					if(list.get(0).getAccountNo().equals(vo.get(i).getAccountNo())) {
+						if(menu59Repository.chechedAccount3(vo.get(i)).size() < 1) {							
+							//수정
+							menu59Repository.update(vo.get(i));
+						}
+					}else {
+						if(menu59Repository.chechedAccount2(vo.get(i)).size() < 1) {
+							//수정
+							menu59Repository.update(vo.get(i));
+						}
+					}
+				}
+			}else {
+				//저장
+				menu59Repository.add(vo.get(i));
+			}
+		}
+		
+		
+		return dataResult;	
+
+	}	
 }

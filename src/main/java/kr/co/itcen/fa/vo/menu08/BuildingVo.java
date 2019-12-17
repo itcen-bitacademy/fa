@@ -221,12 +221,5 @@ public class BuildingVo {
 				+ taxKind + ", flag=" + flag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
 				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}
-
-	
-	
-	
-	
-	
-	
 	
 }

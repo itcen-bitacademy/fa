@@ -175,7 +175,7 @@
 										end="${ blockLastNum }">
 										<c:choose>
 											<c:when test="${ i > lastPage }">
-												<li class="disabled"><a href="#">${ i }</a></li>
+												<li class="disabled">${ i }</li>
 											</c:when>
 											<c:when test="${ i == curPage }">
 												<li class="selected"><a class="page_go" href="javascript:void(0);">${ i }</a></li>

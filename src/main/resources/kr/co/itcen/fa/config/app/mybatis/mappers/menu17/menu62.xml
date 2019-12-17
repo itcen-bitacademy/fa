@@ -49,6 +49,7 @@
 		    , update_day
 		  from	tb_closing_date
 		 where	closing_yn = true
+		   and	use_yn = true
 		 order	by closing_year_month desc
 		;
 	</select>

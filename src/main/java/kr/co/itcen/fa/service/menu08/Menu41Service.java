@@ -2,13 +2,17 @@ package kr.co.itcen.fa.service.menu08;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu41Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.TaxbillVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
@@ -110,7 +114,42 @@ public class Menu41Service {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("taxlist", menu41Repository.selectTaxList(id));
+		map.put("lastnapbuDate", menu41Repository.selectTaxVo(id)); // 보증금 납부일 가져오기
 		return map;
 		
 	}
+
+	//vehicle 전표번호 가져오기
+	public Long getVoucherNo(String id) {
+		Long vNo = menu41Repository.getVoucherNo(id);
+		return vNo;
+	}
+
+	//taxbill 전표번호 가져오기
+	public List getTaxVoucherNo(String id) {
+		List<Long> taxVNO = menu41Repository.getTaxVoucherNo(id);
+		return taxVNO;
+	}
+
+	//세금계산서에서 지우기
+	public void deleteTaxbill(String id) {
+		menu41Repository.deleteTaxbill(id);
+	}
+	
+	//페이징 하기
+	public DataResult<VehicleVo> list(String id, int page) {
+		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
+		
+		int totalCount = menu41Repository.listCount(id);
+		
+		//pagination
+		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(pagination);
+		List<VehicleVo> list = menu41Repository.list(id, pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
+	}
+
+
 }

@@ -1,13 +1,20 @@
 package kr.co.itcen.fa.controller.menu12;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.MenuService;
+import kr.co.itcen.fa.service.menu02.Menu36Service;
 import kr.co.itcen.fa.service.menu12.Menu57Service;
+import kr.co.itcen.fa.vo.menu12.SalesVo;
 
 /**
  * 
@@ -22,21 +29,44 @@ public class Menu57Controller {
 	public static final String MAINMENU = "12";
 	public static final String SUBMENU = "57";
 
-	@Autowired
-	private MenuService menuService;
 
 	@Autowired
 	private Menu57Service menu57Service;
 	
-	//@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@Autowired
+	private Menu36Service menu36Service;
+	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model) {
-		menu57Service.test();
-		/*
-		 * JSP
-		 * 12/57/list.jsp
-		 */
+	public String list(SalesVo vo, Model model, @RequestParam(defaultValue = "1") int page) {
+		model.addAttribute("dataResult", menu57Service.getAllSales(vo, page));
+		model.addAttribute("sales", vo);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+	
+	// 매입거래처 팝업
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/gets")
+	public Map<String, Object> gets(@RequestParam(value="no", required=false, defaultValue="") String no,
+									@RequestParam(value="name", required=false, defaultValue="") String name) {
+		
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("no", no);
+		parameters.put("name", name);
+		
+		Map<String, Object> data = menu36Service.gets(parameters);
+		data.put("success", true);
+		return data;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/get")
+	public Map<String, Object> get(@RequestParam(value="no", required=false, defaultValue="") String no	) {
+		System.out.println("get");
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("customer", menu57Service.get(no));
+		data.put("success", true);
+		return data;
+	}
+	
 }
 

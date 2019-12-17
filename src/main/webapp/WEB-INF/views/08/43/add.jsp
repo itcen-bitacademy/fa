@@ -144,8 +144,14 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">용도</label>
 										<div class="controls">
-											<input type="text" class="span11" id="form-field-1"
-												name="purpose" placeholder="용도를 입력하세요" />
+											<!-- <input type="text" class="span11" id="form-field-1"
+												name="purpose" placeholder="용도를 입력하세요" /> -->
+											<select class="chosen-select" id="form-field-purpose"
+												name="purpose" data-placeholder="전체">
+												<c:forEach items="${purposeList }" var="purposeVo">
+													<option value="${purposeVo.classification }">${purposeVo.classification }</option>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 									<div class="control-group">
@@ -190,7 +196,7 @@
 													id="update" style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" type="submit"
 													id="delete" style="float: left; margin-right: 20px;">삭제</button>
-												<button class="btn btn-default btn-small" type="reset"
+												<button class="btn btn-default btn-small" type="reset" id="reset"
 													style="float: left; margin-right: 20px;">
 													<i class="icon-undo bigger-110"></i>초기화
 												</button>
@@ -353,6 +359,16 @@
 				$("form").attr("action",
 						       "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 			});
+			
+			// 초기화 버튼
+			$("#reset").click(function() {
+				// 초기화 버튼 누루면 등록, 수정버튼 다시 보이기
+				document.getElementById('add').style.visibility='visible';
+				document.getElementById('update').style.visibility='visible';
+				
+				// 새로고침!
+				location.reload();
+			});
 	
 			// 행 클릭시 수정, 삭제
 			$("#sample-table-1 tr").click(function() {
@@ -380,18 +396,23 @@
 				$("input[name=user]").val(td.eq(11).text());
 				$("input[name=copyCount]").val(td.eq(12).text());
 				$("input[name=customerManager]").val(td.eq(13).text());
-				$("input[name=purpose]").val(td.eq(14).text());
+				$('#form_field_purpose_chosen').find('span').text(td.eq(14).text());
+				//$("input[name=purpose]").val(td.eq(14).text());
 				$("input[name=payDate]").val(td.eq(15).text());
 				$("input[name=taxKind]").val(td.eq(16).text());
 			    
-				if(td.eq(16).text() == "과세"){
+				if(td.eq(16).text() == "과세") {
 			         $("input[id=tax]").prop('checked', true);
-			     }
-			    
-				else if(td.eq(16).text() == "영세"){
+			     } else if(td.eq(16).text() == "영세") {
 			         $("input[id=zeroTax]").prop('checked', true);
 			     } 
 				
+				if(td.eq(9).text() == "") {
+					document.getElementById('add').style.visibility='hidden';
+				} else if(td.eq(9).text() != "") {
+					document.getElementById('add').style.visibility='hidden';
+					document.getElementById('update').style.visibility='hidden';
+				}
 			});
 			
 	

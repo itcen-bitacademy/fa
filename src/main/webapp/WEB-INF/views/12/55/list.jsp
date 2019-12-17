@@ -69,16 +69,15 @@ $(function() {
 											style="text-align: left; width: 120px;"> 년 월</label>
 										<div class="controls" style="margin-left: 120px;">
 											<div class="row-fluid input-append">
-												<input class="span11 date-picker" id="datepicker"
-													name="searchdate" type="text" data-date-format="yyyy-mm" />
+												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" />
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
 
 											<!-- searchdate 상태 유지 -->
 											<script type="text/javascript">
-													var datepicker = "${param.datepicker}";
-													$("#datepicker").val(datepicker);
+													var searchdate = "${param.searchdate}";
+													$("#searchdate").val(searchdate);
 													</script>
 										</div>
 									</div>
@@ -92,6 +91,7 @@ $(function() {
 										<div class="controls" style="margin-left: 120px;">
 											<select class="chosen-select" id="itemname" name="itemcode"
 												data-placeholder="품목명 선택">
+												<option value=""></option>
 												<c:forEach items='${itemname }' var='itemname'
 													varStatus='status'>
 													<option value="${itemname.itemcode }">${itemname.itemname }</option>
@@ -99,8 +99,8 @@ $(function() {
 											</select>
 											<!-- itemname 상태 유지 -->
 											<script type="text/javascript">
-													var itemname = "${param.itemname}";
-													$("#itemname").val(itemname);
+													var itemcode = "${param.itemcode}";
+													$("#itemcode").val(itemcode);
 													</script>
 										</div>
 									</div>
@@ -141,41 +141,76 @@ $(function() {
 								<th>재고금액</th>
 							</tr>
 						</thead>
-						<c:forEach items='${list }' var='vo' varStatus='status'>
+						<c:forEach items='${dataResult.datas  }' var='vo' varStatus='status'>
 							<tr>
 								<td>${vo.itemcode }</td>
 								<td>${vo.itemname }</td>
-								<td>${vo.purchasemanagementquantity }</td>
-								<td>${vo.purchasemanagementsupplyvalue }</td>
-								<td>${vo.purchasemanagementtaxvalue }</td>
-								<td>${vo.purchasemanagementtotalprice }</td>
-								<td>${vo.salesquantity }</td>
-								<td>${vo.salessupplyvalue }</td>
-								<td>${vo.salestaxvalue }</td>
-								<td>${vo.salestotalprice }</td>
-								<td>${vo.stockquantity }</td>
-								<td>${vo.stocksupplyvalue }</td>
-								<td>${vo.stocktaxvalue }</td>
-								<td>${vo.stocktotalprice }</td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementquantity }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementsupplyvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementtaxvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.purchasemanagementtotalprice }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.salesquantity }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.salessupplyvalue }" pattern="#,###" />
+								<td><fmt:formatNumber value="${vo.salestaxvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.salestotalprice }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stockquantity }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stocksupplyvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stocktaxvalue }" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${vo.stocktotalprice }" pattern="#,###" /></td>
 
 							</tr>
 						</c:forEach>
 					</table>
 				</div>
 				
-				<div class="span12">
-				<div class="pagination">
+				<div class="pagination" id = "pagination">
 					<ul>
-						<li class="disabled"><a href="#"><i
-								class="icon-double-angle-left"></i></a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#"><i class="icon-double-angle-right"></i></a></li>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
+									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}
+										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
+									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+									&deleteFlag=${param.deleteFlag}"><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a><i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
-				</div>
 				</div>
 			</div>
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu58">
+	
+	<select id="count" parameterType="purchasemanagement06vo" resultType="int">
+		<![CDATA[
+		select count(*)
+		from tb_purchasemanagement
+		where 1=1
+		]]>
+		<if test="purchaseDate != null and !purchaseDate.equals('') ">
+			<![CDATA[
+			and date_format(purchase_date, '%Y-%m') = #{purchaseDate }
+			]]>	
+		</if>
+		<if test="customerCode != null and !customerCode.equals('') ">
+			<![CDATA[
+			and substring(customer_code, 2) = #{customerCode }
+			]]>	
+		</if>
+	</select>
+	
+	<select id="list" parameterType="map" resultType="purchasemanagement06vo">
+		<![CDATA[
+		select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, substring(customer_code, 2) as customerCode, customer_name as customerName
+		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, tax_type as taxType, taxbill_no as taxbillNo,
+		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate 
+		from tb_purchasemanagement
+		where 1=1
+		]]>
+		<if test="purchase.purchaseDate != null and !purchase.purchaseDate.equals('') ">
+			<![CDATA[
+			and date_format(purchase_date, '%Y-%m') = #{purchase.purchaseDate }
+			]]>	
+		</if>
+		<if test="purchase.customerCode != null and !purchase.customerCode.equals('') ">
+			<![CDATA[
+			and substring(customer_code, 2) = #{purchase.customerCode }
+			]]>	
+		</if>
+		<![CDATA[
+		order by purchase_date
+		limit #{pagination.pageIndex }, #{pagination.listSize }		
+		]]>
+	</select>
+	
+	<select id="get" parameterType="string" resultType="purchasecustomer35vo">
+		<![CDATA[
+			select	substring(no, 2) as no, name
+			  from	tb_purchasecustomer
+			  where delete_flag = "N"
+			  and substring(no, 2) = #{_parameter }
+		]]>
+	</select>
+</mapper>

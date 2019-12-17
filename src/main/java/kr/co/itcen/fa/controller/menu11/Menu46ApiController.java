@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,6 @@ import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.ItemVo;
-import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
@@ -61,69 +60,92 @@ public class Menu46ApiController {
 	//배열로 넘어온거는 '[]' 붙여줘야한다.
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
-	public JSONResult deleteChecked(@RequestParam(value="sendData[]", required=true) List<Long> noList) {
+	public JSONResult deleteChecked(@RequestParam(value="noList[]", required=true) List<Long> noList,
+			@RequestParam(value="voucherNoList[]", required=true) List<Long> voucherNoList,
+			@AuthUser UserVo authUser){
+		//전표 삭제
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		
+		for(Long voucherNo : voucherNoList) {
+			VoucherVo vo = new VoucherVo();
+			vo.setNo(voucherNo);
+			voucherVolist.add(vo);
+		}
+		System.out.println(voucherVolist);
+		menu03Service.deleteVoucher(voucherVolist, authUser);
+		
+		//차입금 삭제
 		menu46Service.deleteChecked(noList);
+		
+		//삭제후 리스트 다시 얻음.
 		Map map = menu46Service.getListMap();
 		return JSONResult.success(map);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/" + Menu46Controller.SUBMENU + "/repay", method = RequestMethod.POST)
-	public JSONResult repay(@RequestBody RepayVo repayVo,@AuthUser UserVo uservo) {
+	public JSONResult repay(RepayVo repayVo,
+			@AuthUser UserVo uservo) {
 		STermDebtVo vo = menu46Service.get(repayVo.getDebtNo());	//단기 차입금 불러온다
 		
-		//단기차입금 update
+		//-----------------단기차입금 update----------------------//
 		System.out.println("상환잔액 : " + vo.getRepayBal() + " 납입금: " + repayVo.getPayPrinc());
-		if(vo.getRepayBal() < repayVo.getPayPrinc()) {
-			return JSONResult.success(false);
-		} 
 		
-		vo.setRepayBal(vo.getRepayBal() - repayVo.getPayPrinc());
-		if(vo.getRepayBal() == repayVo.getPayPrinc()) 
+		if(vo.getRepayBal()- repayVo.getPayPrinc() == 0 ) {			//모두 상환한 경우
+			System.out.println("모두상환");
 			vo.setRepayCompleFlag("Y");
+		}
+			
 		
-		menu46Service.update(vo);
+		vo.setRepayBal(vo.getRepayBal() - repayVo.getPayPrinc());		//상환잔액 update
+		menu46Service.updateRepayBal(vo);
 		
-		//전표입력
-		Long intAmount= (Long) (vo.getRepayBal()*vo.getIntRate()/100);//intAmount= 상환액 * 기존 이자 /100 ->즉 이자납입금
-		repayVo.setIntAmount(intAmount);
+		//-----------------전표입력----------------------//
+		Long voucherNo= menu46Service.insertVoucherWithRepay(vo, repayVo, uservo);	//전표번호를 받아온다.
 		
-		VoucherVo voucherVo = new VoucherVo();
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-		ItemVo itemVo = new ItemVo();
-		ItemVo itemVo2 = new ItemVo();
-		ItemVo itemVo3 = new ItemVo();
-		
-		MappingVo mappingVo = new MappingVo();
-		voucherVo.setRegDate(repayVo.getPayDate());
-		
-		itemVo.setAmount(repayVo.getIntAmount());		//이자납입금
-		itemVo.setAmountFlag("d");						//차변
-		itemVo.setAccountNo(repayVo.getAccountNo());	//이자비용 계정과목코드
-		itemVoList.add(itemVo);
-		
-		itemVo2.setAmount(repayVo.getPayPrinc());		//납입원금
-		itemVo2.setAmountFlag("d");						//차변
-		itemVo2.setAccountNo(vo.getAccountNo());		//단기차입금 계정과목코드					
-		itemVoList.add(itemVo2);
-		
-		itemVo3.setAmount(repayVo.getPayPrinc() + repayVo.getIntAmount());		//보통예금
-		itemVo3.setAmountFlag("c");//대변
-		itemVo3.setAccountNo(1110103L);//dPrma
-		itemVoList.add(itemVo3);
-		
-		mappingVo.setVoucherUse(vo.getName());//사용목적
-		mappingVo.setSystemCode(vo.getCode());//제코드l190
-		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
-		
-		//전표입력후 전표번호를 가져온다.
-		Long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
-		
-		//상환 입력
+		//-----------------상환 입력----------------------//
 		repayVo.setVoucherNo(voucherNo);
+		repayVo.setInsertId(uservo.getId());
 		menu46Service.insertRepay(repayVo);
 		
-		return JSONResult.success(vo);
+		Map map = menu46Service.getListMap();
+		
+		return JSONResult.success(map);
 	}
-}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/checkDuplication", method = RequestMethod.GET)
+	public JSONResult checkDuplication(@RequestParam(value="code", required=true) String code) {
+		System.out.println("code : " + code);
+		Boolean exist = menu46Service.exist(code);
+		return JSONResult.success(exist);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/update", method = RequestMethod.POST)
+	public JSONResult update(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
+		 String deptExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
+		 String saveDeptDate = deptExpDate.substring(0, 10);
+		 String saveExpDate = deptExpDate.substring(13);
+		 sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
+		 sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
+		  
+		 //상환내역 존재하는지 확인(by code)
+		 Boolean existRepay = menu46Service.existRepay(sTermDebtVo.getCode());
+		 
+		 //존재한다면
+		 if(existRepay)
+			 return JSONResult.success(existRepay);
+		 
+		 //전표입력
+		 Long voucherNo = menu46Service.updateVoucherWithDebt(sTermDebtVo, authUser);
+			
+		 //차입금 수정
+		 sTermDebtVo.setVoucherNo(voucherNo);
+		 menu46Service.update(sTermDebtVo);
+		
+		 //Map을 받아온다
+		 Map map = menu46Service.getListMap();
+		 return JSONResult.success(map);
+	}
+}	
