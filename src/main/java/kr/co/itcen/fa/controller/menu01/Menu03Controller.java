@@ -116,13 +116,10 @@ public class Menu03Controller {
 		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
-		
-		//String businessDateStr = menu03Service.businessDateStr();
+		System.out.println("orderNo : " + voucherVo.getOrderNo());
 		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			menu03Service.updateVoucher(voucherVo);
 		}
-		
-		
 		
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}

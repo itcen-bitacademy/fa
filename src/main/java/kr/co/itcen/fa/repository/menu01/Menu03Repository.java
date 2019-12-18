@@ -106,8 +106,8 @@ public class Menu03Repository {
 	
 	// 전표 1팀 수정
 	public Boolean updateVoucher(VoucherVo voucherVo) {
-		System.out.println("a : "  +voucherVo.getRegDate());
-		System.out.println("aa : "  +voucherVo.getUpdateUserid());
+		
+		
 		int count = sqlSession.update("menu03.updateVoucher2", voucherVo);
 		count += sqlSession.update("menu03.updateItem2", voucherVo);
 		count += sqlSession.update("menu03.updateMapping2", voucherVo);

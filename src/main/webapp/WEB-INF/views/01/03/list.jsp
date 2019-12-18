@@ -169,6 +169,7 @@
 									<div class="controls">
 										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적"/>
 										<input class="span8" type="hidden" id="voucherNo" name="no" />
+										<input class="span8" type="hidden" id="orderNo" name="orderNo" />
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
@@ -252,19 +253,18 @@
 			<!-- buttons -->
 			<button class="btn btn-info btn-small" type="submit" id="btn-read" name="btn-read"
 				formaction="${pageContext.request.contextPath}/01/03/read">조 회</button>
+			<button class="btn btn-warning btn-small" type="submit" id="btn-update" name="btn-update"
+				formaction="${pageContext.request.contextPath }/01/03/update">수 정</button>
+			
+			<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
+				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 			<button class="btn btn-default btn-small" type="reset">취 소</button>
 			</form>
 			<div class="row-fluid">
 				<div class="span8">
-						
 						<button class="btn btn-small" type="button" onclick="add();">입 력</button>
-						<button class="btn btn-warning btn-small" type="submit" id="btn-update" name="btn-update"
-							formaction="${pageContext.request.contextPath }/01/03/update">수 정</button>
-						<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
-							formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 						<button class="btn btn-primary btn-small" type="submit" id="btn-create" 
 							name="btn-create" onclick="save();">저 장</button>
-						
 						
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
@@ -542,15 +542,21 @@
 				var accountName =  td.eq(2).text();
 				var amountFlag =  td.eq(3).text();
 				var amount =  uncomma(td.eq(4).text());
-				var manageNo =  td.eq(5).text();
-				var customerNo =  td.eq(6).text();
-				var customerName =  td.eq(7).text();
-				var bankCode =  td.eq(8).text();
-				var bankName =  td.eq(9).text();
-				var cardNo =  td.eq(10).text();
-				var cardUser =  td.eq(11).text();
-				var depositNo =  td.eq(12).text();
-				var depositHost =  td.eq(13).text();
+				var customerNo =  td.eq(5).text();
+				var customerName =  td.eq(6).text();
+				var manageNo =  td.eq(8).text();
+				var bankCode =  td.eq(9).text();
+				var bankName =  td.eq(10).text();
+				if(td.eq(11).text() == '') {
+					var cardNo =  td.eq(11).text();
+					var depositNo =  td.eq(12).text();
+					var depositHost =  td.eq(13).text();
+				}
+				if(td.eq(12).text() == '') {
+					var cardNo =  td.eq(11).text();
+					var depositNo =  td.eq(12).text();
+					var cardUser =  td.eq(13).text();
+				}
 				var voucherUse =  td.eq(14).text();
 				
 				var voucherVo = {regDate:regDate, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
@@ -588,6 +594,7 @@
 			
 		}); // ajax
 	}
+	
 </script>
 <script>
 $(function(){
