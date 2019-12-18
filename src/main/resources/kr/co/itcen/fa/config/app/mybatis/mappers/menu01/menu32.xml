@@ -251,12 +251,12 @@
 			</if>
 			<if test="datepicker2!=null and !datepicker2.equals('')">		    
 				<![CDATA[
-					and m.insert_day <= #{vo.datepicker2 }
+					and m.insert_day <= #{datepicker2 }
 				]]>
 			</if>
 			<if test="accountNo!=null and !accountNo.equals('')">
 				<![CDATA[
-					and a.no = #{accountNo }
+					and a.no = #{vaccountNo }
 				]]>
 			</if>
 			<if test="customerNo!=null and !customerNo.equals('')">
