@@ -33,7 +33,7 @@ function execDaumPostcode() {
                 }
             
             } else {
-                document.getElementById("sample6_extraAddress").value = '';
+                document.getElementById("address").value = '';
             }
 
             document.getElementById("address").value = addr;
