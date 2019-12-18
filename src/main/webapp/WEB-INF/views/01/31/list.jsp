@@ -43,29 +43,28 @@
 				</div><!-- /.page-header -->
 			
 				<div class="row-fluid"> <!-- 검색조건 -->
-					<form class="form-horizontal; center">
+					<form class="form-horizontal;">
 							
-						&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명
-									<div class="input-append">
-										<a href="#" id="a-accountinfo-dialog">
-											<input type="text" class="search-input-width-first" id="accountNo" name="accountNo" style="text-align: center; width:150px;" readonly/>
-											<script type="text/javascript">
-												var accountNo = "${param.accountNo}";
-												$("#accountNo").val(accountNo);
-												</script>
-											<span class="add-on">
-				                            <i class="icon-search icon-on-right bigger-110"></i>
-				                            </span>
-				                    	</a>
-									</div>
+						계정코드/계정명
+						<div class="input-append">
+							<a href="#" id="a-accountinfo-dialog">
+								<input type="text" class="search-input-width-first" id="accountNo" name="accountNo" style="text-align: center; width:150px;" readonly/>
+								<script type="text/javascript">
+									var accountNo = "${param.accountNo}";
+									$("#accountNo").val(accountNo);
+									</script>
+								<span class="add-on">
+	                            <i class="icon-search icon-on-right bigger-110"></i>
+	                            </span>
+	                    	</a>
+						</div>
 				
 						<input type="text" id="accountName" name="accountName" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
 						<script type="text/javascript">
 							var accountName = "${param.accountName}";
 							$("#accountName").val(accountName);
 						</script>
-					
-					
+						
 					<!-- 계정 Modal pop-up : start -->
 					<div id="dialog-message2" title="계정" hidden="hidden">
 						<table id="dialog-message-table">
@@ -133,10 +132,12 @@
 							$("#datepicker2").val(datepicker2);
 						</script>
 					&nbsp; &nbsp;&nbsp;
+					<div class="hr hr-18 dotted"></div>
 					<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+					<button class="btn btn-default btn-small" type="reset">취 소</button>
+					<div class="hr hr-18 dotted"></div>
 					</form>
 				
-				<div class="hr hr-18 dotted"></div>
 				
 				<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 계정별 원장 ${dataResult.pagination.totalCnt } 건</p>
 				

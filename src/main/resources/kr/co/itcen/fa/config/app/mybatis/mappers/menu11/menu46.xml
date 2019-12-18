@@ -30,9 +30,10 @@
 	</select>
 	<select id="getList" parameterType="Map" resultType="stermdebtvo" resultMap="stermdebtResult">
 		<![CDATA[
-			select s.*, bc.deposit_host, b.name
+			select s.*, bc.deposit_host as depositHost, b.name as bankName
 			from tb_s_term_debt s, tb_bank_account bc, tb_bank b
-			where s.deposit_no = bc.deposit_no and s.bank_code = b.code and s.delete_flag="N" and s.repay_comple_flag="N"
+			where s.deposit_no = bc.deposit_no and s.bank_code = b.code and
+			      s.delete_flag="N" and s.repay_comple_flag="N"
 		]]>
 		<if test='code != null and !"".equals(code)'>
 			and s.code LIKE CONCAT(#{code}, "%")
@@ -117,7 +118,13 @@
 	<insert id="insertRepay" parameterType="repayvo">
 		<![CDATA[
 			insert into tb_repay(no, debt_no, code, pay_princ, int_amount, pay_date, debt_type, voucher_no, delete_flag, insert_id, insert_date)
-			values(null, ${debtNo}, ${code}, ${payPrinc}, ${intAmount}, #{payDate}, "S", ${voucherNo}, "N", #{insertId}, now())
+			values(null, ${debtNo}, #{code}, ${payPrinc}, ${intAmount}, #{payDate}, "S", ${voucherNo}, "N", #{insertId}, now())
 		]]>
 	</insert>
+	
+	<select id="getRepayList" parameterType="Long" resultType="repayvo">
+		select *
+		from tb_repay
+		where debt_no=${_parameter} and debt_type="S"
+	</select>
 </mapper>

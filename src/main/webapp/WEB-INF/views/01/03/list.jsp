@@ -9,10 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-.chosen-search {
-	display: none;
-}
-
 .search-input-width-first{
 	width: .span4;
 }

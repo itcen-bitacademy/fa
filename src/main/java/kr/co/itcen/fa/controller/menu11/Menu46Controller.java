@@ -53,6 +53,7 @@ public class Menu46Controller {
 		
 		sTermDebtVo.setInsertId(authUser.getId());
 		
+		System.out.println(sTermDebtVo);
 		//전표입력
 		Long voucherNo = menu46Service.insertVoucherWithDebt(sTermDebtVo, authUser);
 		

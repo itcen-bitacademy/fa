@@ -90,6 +90,9 @@ public class Menu46Service {
 		return menu46Repository.existRepay(code);
 	}
 	//-------------------상환------------------------//
+	public List<RepayVo> getRepayList(Long no){
+		return menu46Repository.getRepayList(no);
+	}
 	public void updateRepayBal(STermDebtVo vo) {
 		menu46Repository.updateRepayBal(vo);
 	}
@@ -193,7 +196,34 @@ public class Menu46Service {
 		return menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
 	}
 	
-	public void deleteVoucher() {
+	/**
+	 * 상환내역이 있는 차입금은 삭제 List에서 제외시킨다. 그리고 상환내역 리스트를 가져온다.
+	 */
+	public List<List<RepayVo>> possibleDelete(List<Long> noList) {
+		List<List<RepayVo>> repayLists = new ArrayList<>();					//각 차입금에 대한 상환내역 리스트를 담을 리스트
 		
+		for(int i=0; i < noList.size(); ++i) {
+			List<RepayVo> repayList = getRepayList(noList.get(i));
+			if(repayList != null && repayList.size() != 0) {
+				System.out.println("repayList : " + repayList);
+				repayLists.add(repayList);
+			}
+		}
+		return repayLists;
+	}
+	
+	/**
+	 * 	전표에서 삭제리스트 데이터 삭제
+	 */
+	public void deleteVoucerList(List<Long> voucherNoList, UserVo userVo) {
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		
+		for(Long voucherNo : voucherNoList) {
+			VoucherVo vo = new VoucherVo();
+			vo.setNo(voucherNo);
+			voucherVolist.add(vo);
+		}
+		
+		menu03Service.deleteVoucher(voucherVolist, userVo);
 	}
 }

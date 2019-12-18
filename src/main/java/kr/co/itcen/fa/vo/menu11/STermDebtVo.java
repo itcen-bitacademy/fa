@@ -26,6 +26,7 @@ public class STermDebtVo {
 	private String bankCode; // 은행코드
 	private String bankName;	//은행이름 , 은행코드를 통해 얻어온다
 	private String depositNo; // 계좌번호
+	private String depositHost;	//예금주
 	private Long accountNo = 2180101L; // 계정코드
 	private Long voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
@@ -147,6 +148,12 @@ public class STermDebtVo {
 	}
 	public void setDepositNo(String depositNo) {
 		this.depositNo = depositNo;
+	}
+	public String getDepositHost() {
+		return depositHost;
+	}
+	public void setDepositHost(String depositHost) {
+		this.depositHost = depositHost;
 	}
 	public Long getAccountNo() {
 		return accountNo;

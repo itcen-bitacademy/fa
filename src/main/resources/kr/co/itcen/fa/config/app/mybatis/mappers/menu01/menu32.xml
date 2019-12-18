@@ -137,7 +137,6 @@
 				a.name as accountName,
 				cu.no as customerNo,
 		   	 	cu.name as customerName,
-		   	 	cu.store as store,
 		   	 	m.insert_day as regDate,
 			   v.no as voucherNo,
 			   i.order_no as voucherOrderNo,
@@ -164,16 +163,16 @@
             on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
-	 left join (select no, name, concat("") as store
+	 left join (select no, name
 				  from tb_customer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_salescustomer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_purchasecustomer
                  union
-                select code as no, name, store as store
+                select code as no, name
                   from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
@@ -223,16 +222,16 @@
             on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
-	 left join (select no, name, concat("") as store
+	 left join (select no, name
 				  from tb_customer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_salescustomer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_purchasecustomer
                  union
-                select code as no, name, store as store
+                select code as no, name
                   from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c

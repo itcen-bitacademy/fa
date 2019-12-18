@@ -18,7 +18,7 @@
 	
 	<select id="pageAllCount" resultType="int">
 		select count(*)
-		from tb_land where flag in("s", "o")
+		from tb_land where tb_land.flag in("s", "o")
 	</select>
 	
 	<select id="pageCount" parameterType="map" resultType="int">
@@ -148,14 +148,14 @@
 				</if>
 				<if test='flag==null'>
 				<![CDATA[
-				 and tb_land.flag in("s", "o") 
+				 and tb_land.flag IN("s", "o") 
 				]]>
 				</if>
 			    <if test="pagination.pageIndex >= 0">
 				<![CDATA[
 					 and tb_section.parent_no=2 and tb_land.customer_no = tb_customer.no and tb_customer.assets_flag="a"
 			       	group by tb_land.id 
-			       	 order by tb_land.update_day asc, tb_land.insert_day asc 
+			       	 order by tb_land.update_day desc, tb_land.insert_day desc 
 			       	limit #{pagination.pageIndex }, #{pagination.listSize }
 			   	]]>
 				</if>
@@ -184,16 +184,15 @@
 					 tb_land.update_day as updateDay
 			from tb_land left outer join tb_section on tb_land.section_no=tb_section.code 
 			left outer join tb_customer on tb_land.customer_no=tb_customer.no 
-			where tb_section.parent_no=2 and tb_land.insert_day> (NOW() - INTERVAL 3 DAY)
-             and flag IN('s','o')
+			where tb_section.parent_no=2 and tb_land.flag IN('s','o')
 		]]>
-		<if test="id>0"><!-- "_parameter.length()>0" --> 
+		<if test="id"><!-- "_parameter.length()>0" --> 
             <![CDATA[
               and id like concat('%',#{id },'%') 
             ]]>
          </if>
          <![CDATA[
-          order by tb_land.update_day asc, tb_land.insert_day asc
+          order by tb_land.update_day desc, tb_land.insert_day desc
          ]]>
          <if test="pagination.pageIndex >= 0">
 			<![CDATA[
