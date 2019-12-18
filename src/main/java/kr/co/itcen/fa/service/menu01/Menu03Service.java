@@ -95,17 +95,18 @@ public class Menu03Service {
 	
 	// 전표삭제 (다른 팀)
 	public Long deleteVoucher(List<VoucherVo> voucherVo, @AuthUser UserVo userVo) {
-		for(int i = 0; i < voucherVo.size(); i++) {
+		
 			try {
-				if(menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
-					menu03Repository.deleteVoucher(voucherVo, userVo);
-					return 1L;
+				for(int i = 0; i < voucherVo.size(); i++) {
+					if(menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
+						menu03Repository.deleteVoucher(voucherVo, userVo);
+						return 1L;
+					}
 				}
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
 		return null;
 	}
 	
