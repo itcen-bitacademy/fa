@@ -34,7 +34,7 @@
 			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
 			today: "Today",
 			clear: "Clear",
-			format: "yyyy-mm-dd",
+			format: "yyyy-mm",
 			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
 			weekStart: 0
 			};
@@ -52,6 +52,41 @@
 				language: 'ko'
 			}).next().on(ace.click_event, function(){
 				$(this).prev().focus();
+			});
+			
+			$("#input-form").submit(function(event) {
+		        event.preventDefault();
+		        var queryString = $("form[name=input-form]").serializeArray();
+		        
+		        $.ajax({
+				    url: "${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/create",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(dataResult){
+				    	if(dataResult.fail) {
+				    		alert("다시 입력해주세요.");
+				    	}
+				    	if(dataResult.success) {
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
+				    		
+				    		alert("계좌 생성이 완료되었습니다."); 
+				    		
+				    		removeTable();
+				    		var bankList = dataResult.bankList;
+				    		createNewTable(bankList);
+				    		
+				    		$('#pagination ul').remove();
+				    		createNewPage(dataResult, a);
+				    		$('#pagination').show();
+				    	}
+				    },
+				    error: function( err ){
+				    	
+				    }
+				 })
 			});
 		})
 	</script>
@@ -75,7 +110,7 @@
 
 
 				<div class="row-fluid">
-					<form class="form-horizontal">
+					<form class="form-horizontal" name = "input-form">
 						입력 기간
 						<div class="input-append">
 							<input type="text" id="datepicker" class="cl-date-picker" /> <span
@@ -83,9 +118,7 @@
 							</span>
 						</div>
 
-						계정과목코드 : <input type="text" id="form-field-1" placeholder="계정과목코드" />
-
-
+						&nbsp;&nbsp;계정과목코드 : <input type="text" id="form-field-1" placeholder="계정과목코드" />
 
 						<button class="btn btn-small btn-info">조회</button>
 
@@ -114,7 +147,7 @@
 								</tr>
 							</thead>
 
-							<tbody>
+							<tbody class = "origin-tbody">
 								<tr>
 									<td>[전월이월]</td>
 									<td></td>
