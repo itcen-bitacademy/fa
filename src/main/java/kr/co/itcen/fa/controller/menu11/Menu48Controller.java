@@ -81,7 +81,7 @@ public class Menu48Controller {
 			vo.setInsertId(user.getId());
 			String businessDateStr = menu48Service.businessDateStr();
 			System.out.println("왜 안되냐4"+businessDateStr);
-			if(!menu19Service.checkClosingDate(user, businessDateStr)) { 
+			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 						
 				System.out.println("왜 안되냐");
 				
@@ -133,7 +133,7 @@ public class Menu48Controller {
 			vo.setDebtDate(dates[0]);
 			vo.setExpDate(dates[1]);
 			vo.setUpdateId(user.getId());
-			if(!menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
+			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 			
 				
 				
@@ -184,7 +184,7 @@ public class Menu48Controller {
 		List<LTermdebtVo> l_list=  menu48Service.selectList(no);
 		for(int i=0;i<l_list.size();++i) {
 			try {
-				if(!menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
+				if(menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
 					return "redirect:/"+MAINMENU+"/"+SUBMENU;
 				}
 			} catch (ParseException e) {
