@@ -51,7 +51,7 @@ public class Menu48ApiController {
 	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
 	public JSONResult repay(@RequestBody RepayVo vo,@AuthUser UserVo uservo) {
 		try {
-			if(!menu19Service.checkClosingDate(uservo, vo.getPayDate())) { 
+			if(menu19Service.checkClosingDate(uservo, vo.getPayDate())) { 
 				vo.setInsertId(uservo.getId());//유저 아이디 셋팅
 				menu48Service.update(vo);//기존 장기 차입금 수정
 				System.out.println(vo);

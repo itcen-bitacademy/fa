@@ -12,7 +12,6 @@ import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.BuildingVo;
-import kr.co.itcen.fa.vo.menu08.TestVo;
 
 
 /**
@@ -27,10 +26,13 @@ public class Menu40Repository {
 	private SqlSession sqlSession;
 	
 	//전체 리스트
-	public List<BuildingVo> list(BuildingVo vo, PaginationUtil pagination) {
+	public List<BuildingVo> list(BuildingVo vo, PaginationUtil pagination,String startDate, String endDate ) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("vo", vo);
 		map.put("pagination", pagination);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		
 		List<BuildingVo> list = sqlSession.selectList("menu40.list", map);
 		return list;
 	}
@@ -45,7 +47,14 @@ public class Menu40Repository {
 		return customerList;
 	}
 
-	public int listCount(BuildingVo vo) {
-		return sqlSession.selectOne("menu40.pageCount", vo);
+	public int listCount(BuildingVo vo, String startDate, String endDate) {
+		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("vo", vo);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		return sqlSession.selectOne("menu40.pageCount", map);
 	}
+
+
+	
 }
