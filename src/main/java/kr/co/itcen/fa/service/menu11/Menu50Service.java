@@ -130,4 +130,8 @@ public class Menu50Service {
 		return menu50Repository.selectNameFromCustomer(name);
 	}
 
+	public List<PdebtVo> selectList(Long[] no) {
+		return menu50Repository.selectList(no);
+	}
+
 }

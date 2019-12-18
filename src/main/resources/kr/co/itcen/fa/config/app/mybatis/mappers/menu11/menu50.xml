@@ -279,6 +279,18 @@
 		]]>
 	</select>
 	
+	<!-- 마감일 읽기위한 select -->
+	<select id="selectpdebtlist" resultType="pdebtvo" parameterType="list">
+		<![CDATA[
+			select date_format(debt_date,'%Y-%m-%d') as debtDate 
+			from tb_p_debt
+			where no in 
+		]]>
+		<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+			#{item } 
+		</foreach>
+	</select>
+	
 	<!-- ==================================================== -->
 	<!-- ==================================================== -->
 	<!-- ==================================================== -->
