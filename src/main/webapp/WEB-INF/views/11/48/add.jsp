@@ -867,7 +867,7 @@ $(function(){
 									var n = td.eq(0).attr('lterm-no');
 									if(n == response.data.no){
 										var m = response.data.repayBal
-										td.eq(5).html(m).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+										td.eq(5).html(m.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 									}
 								});
 								
@@ -1303,11 +1303,13 @@ $("form").on("submit", function() {
 	         	           modal: true,
 	         	           close: function() {
 	                       $('#dialog-repayment-delete table').remove();
+	                       $("input").attr('disabled',false);
 	                    },
 	                    buttons: {
 	                    "닫기" : function() {
 	                             $(this).dialog('close');
 	                             $('#dialog-repayment-delete table').remove();
+	                             $("input").attr('disabled',false);
 	                        }
 	                    }
 	                });
