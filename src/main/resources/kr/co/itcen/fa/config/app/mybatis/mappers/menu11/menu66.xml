@@ -217,6 +217,36 @@
 	</select>
 	
 	<!-- 상환관리 페이지에서 삭제를 눌렀을 때, 해당 정보 delete_flag='Y'로 업데이트 -->
+	<update id="deleteDebt" parameterType="list">
+			<![CDATA[
+				update 
+			]]>
+				<if test='no != null and "S".equals(debtType)'>
+				<![CDATA[
+					tb_s_term_debt 
+				]]>
+				</if>
+				<if test='no != null and "L".equals(debtType)'>
+				<![CDATA[
+					tb_l_term_debt 
+				]]>
+				</if>
+				<if test='no != null and "P".equals(debtType)'>
+				<![CDATA[
+					tb_p_debt 
+				]]>
+				</if>
+			<![CDATA[
+						set 
+						delete_flag='Y' and repay_bal + #{tempPayPrinc}
+							where no in 
+			]]>
+		<foreach item="item" index="index" collection="list" close=")" open="(" separator=",">
+			#{item }
+		</foreach>
+	</update>
+	
+	<!-- 상환관리 페이지에서 삭제를 눌렀을 때, 해당 정보 delete_flag='Y'로 업데이트 -->
 	<update id="delete" parameterType="list">
 		<![CDATA[
 			update tb_repay set delete_flag='Y' where no in 

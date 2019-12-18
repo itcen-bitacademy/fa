@@ -81,4 +81,8 @@ public class Menu66Service {
 		return menu66Repository.delete(no);
 	}
 
+	public Boolean deleteDebt(Long[] no, String[] debtType, Long[] tempPayPrinc) {
+		return menu66Repository.deleteDebt(no, debtType, tempPayPrinc);
+	}
+
 }

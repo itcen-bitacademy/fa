@@ -796,4 +796,11 @@
      
 	]]>
 	</select>
+	
+	<!-- 결산 / 현재시간 구하기 -->
+	<select id="businessDateStr" resultType="String">
+	<![CDATA[
+		select now();
+	]]>
+	</select>
 </mapper>

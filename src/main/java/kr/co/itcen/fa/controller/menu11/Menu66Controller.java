@@ -76,6 +76,8 @@ public class Menu66Controller {
 		// 단기, 장기, 사채 (debt_type)에 따라서 상환금액 업데이트
 		menu66Service.restoreRepayBal(vo);
 		menu66Service.updateRepayVo(vo); // 기존 사채 차입금액 수정
+		Long convertPayPrinc = vo.getPayPrinc() - vo.getIntAmount();
+		vo.setPayPrinc(convertPayPrinc);
 		
 		STermDebtVo sTermDebtVo = null;
 		LTermdebtVo lTermdebtVo = null;
@@ -157,6 +159,8 @@ public class Menu66Controller {
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
 	public String delete(
 			@RequestParam Long[] no, 
+			@RequestParam String[] debtType, 
+			@RequestParam Long[] tempPayPrinc,
 			@AuthUser UserVo uservo) {
 		System.out.println("delete");
 		List<Long> list = menu66Service.selectVoucherNo(no);
@@ -173,6 +177,7 @@ public class Menu66Controller {
 		}
 		
 		menu03Service.deleteVoucher(voucherVolist, uservo);
+		//menu66Service.deleteDebt(no, debtType, tempPayPrinc);
 		menu66Service.delete(no);
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;

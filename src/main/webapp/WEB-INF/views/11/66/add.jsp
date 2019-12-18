@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <!-- For Dialog -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath }/assets/ace/js/jquery.validate.min.js"></script> <!-- jQuery Validation Plugin -->
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 input[type="text"], input[type="date"], select {
@@ -313,63 +312,7 @@ $(function() {
  	//--------------------------------------------------------------------------------------------------------------------------//
   
   	//--------------------------------------------------------------------------------------------------------------------------//
-	// 유효성 검사 코드 - (jQuery Validation) : validate the comment form when it is submitted
-	/* $("#input-form").validate({
-		// 테스트를 위하여 유효성 검사가 완료되어도 submit을 처리하지 않음.
-		debug : true,
-		//검사할 필드와 검사 항목의 나열
-		rules : {
-			code : {
-				required : true,
-				maxlength : 10
-			},
-			name : "required",
-		    	textDebtAmount : "required",
-		    	debtExpDate : "required",
-		    	intPayWay : {
-		    		required : true
-		    	},
-		    	bankCode : "required",
-		    	bankName : "required",
-		    	dangerCode : "required",
-		    	financialYear : "required",
-		    	majorCode : "required",
-		    	repayWay : "required",
-		    	intRate : "required",
-		    	mgr : "required",
-		    	mgrCall : "required",
-		    	depositNo : "required",
-		    	depositHost : "required",
-		    },
-		    //검사를 충족하지 못할 경우 표시될 메시지의 나열
-		    messages : {
-		    	code : {
-		    		required : "사채코드를 입력해주세요.",
-		    		maxlength : "사채코드를 10자 이내로 입력해주세요."
-		    	},
-		    	name : {
-		    		required : "사채명을 입력해주세요."
-		    	}
-		    },
-		    invalidHandler: function(event, validator) {
-		    	var errors = validator.numberOfInvalids();
-		    	
-		    	if (errors) {
-		    		var message = errors == 1
-		    		? 'You missed 1 field. It has been highlighted'
-		    				: 'You missed ' + errors + ' fields. They have been highlighted';
-		    		$("div.error span").html(message);
-		    	    $("div.error").show();
-		    	    } else {
-		    	    	$("div.error").hide();
-		    	    }
-		   	},
-		   	submitHandler: function(form) {
-		    	alert("submitHandler");
-		    	return false;  // block the default submit action
-		    }
-		}); */
-		//--------------------------------------------------------------------------------------------------------------------------//
+	//--------------------------------------------------------------------------------------------------------------------------//
 });
 
 //--------------------------------------------------------------------------------------------------------------------------//

@@ -77,7 +77,7 @@
             cell2.innerHTML = '<td><select class="chosen-select" id="itemCode'+cnt+'" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id)">'
 					            +'<option value="">&nbsp;</option>'
 					            +'<c:forEach items="${itemlist }" var="list" varStatus="status">'
-					            +'<option value="${list.itemCode }" id="">${list.itemCode }(${list.itemName } 재고:${list.stock})</option>'
+					            +'<option value="${list.itemCode }" id="">${list.itemCode }(재고:${list.stock})</option>'
 					            +'</c:forEach>'
 					        	+'</select><td>';
             cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명" value="" readonly></td>';

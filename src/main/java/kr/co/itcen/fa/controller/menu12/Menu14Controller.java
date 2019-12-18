@@ -30,7 +30,7 @@ public class Menu14Controller {
 	private Menu14Service menu14Service;
 	
 	// 검색필터(조건) 없는 목록 조회
-	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}" }, method=RequestMethod.GET)
+	@RequestMapping(value={"","/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}" }, method=RequestMethod.GET)
 	public String list(Model model,
 						@PathVariable(name="page", required=false) String page) {
 		int ipage = 1;

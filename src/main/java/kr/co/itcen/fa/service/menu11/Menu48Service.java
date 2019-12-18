@@ -98,4 +98,13 @@ public class Menu48Service {
 		return menu48Repository.getRepay(no);
 	}
 
+	public List<LTermdebtVo> selectList(Long[] no) {
+		
+		return menu48Repository.selectList(no);
+	}
+
+	public String businessDateStr() {
+		return menu48Repository.businessDateStr();
+	}
+
 }

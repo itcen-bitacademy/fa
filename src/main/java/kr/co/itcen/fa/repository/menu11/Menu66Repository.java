@@ -117,5 +117,20 @@ public class Menu66Repository {
 		int count = sqlSession.update("menu66.delete", list);
 		return count >= 1;
 	}
+
+	public Boolean deleteDebt(Long[] no, String[] debtType, Long[] tempPayPrinc) {
+		List<Long> list = new ArrayList<Long>();
+		for (Long no1 : no) {
+			list.add(no1);
+		}
+		
+		int totalElements = list.size();
+		for (int index = 0; index < totalElements; index++) {
+			System.out.println(list.get(index));
+		}
+		
+		int count = sqlSession.update("menu66.deleteDebt", list);
+		return count >= 1;
+	}
 	
 }

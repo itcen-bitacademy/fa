@@ -84,6 +84,7 @@
 							 <option value="Purchase">매입 거래처</option>
 							 <option value="Sales">매출 거래처</option>
 							 <option value="Assets">자산 거래처</option>
+							 <option value="Bank">은행</option>
 						</select>
 						<script type="text/javascript">
 						var customerDiv = "${param.customerDiv}";
