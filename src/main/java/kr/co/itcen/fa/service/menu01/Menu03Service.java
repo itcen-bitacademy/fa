@@ -42,9 +42,9 @@ public class Menu03Service {
 	public Long createVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 		//마감 여부 체크
 		try {
-			//String businessDateStr = menu03Repository.businessDateStr();
+			String businessDateStr = menu03Repository.businessDateStr();
 			System.out.println("왜 안되냐2");
-			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
 				voucherVo.setInsertUserid(userVo.getId());
 				System.out.println("왜 안되냐3");
 				for(int i = 0; i < itemVo.size(); i++) {
@@ -70,8 +70,8 @@ public class Menu03Service {
 		
 		//마감 여부 체크
 		try {
-			//String businessDateStr = menu03Repository.businessDateStr();
-			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			String businessDateStr = menu03Repository.businessDateStr();
+			if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
 				voucherVo.setUpdateUserid(userVo.getId());
 				System.out.println("###########" + voucherVo.getNo());
 				System.out.println("service" + mappingVo.getVoucherNo());
@@ -102,8 +102,8 @@ public class Menu03Service {
 			try {
 				
 				for(int i = 0; i < voucherVo.size(); i++) {
-					//String businessDateStr = menu03Repository.businessDateStr();
-					if(menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
+					String businessDateStr = menu03Repository.businessDateStr();
+					if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
 						menu03Repository.deleteVoucher(voucherVo, userVo);
 						return 1L;
 					}
