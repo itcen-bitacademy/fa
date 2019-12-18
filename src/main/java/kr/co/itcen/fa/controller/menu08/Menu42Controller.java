@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu08.Menu42Service;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
@@ -38,6 +39,7 @@ public class Menu42Controller {
 	
 	
 	//               /08   /   42     , /08/42/list
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model,@ModelAttribute VehicleVo vehicleVo,
 					@RequestParam(value="payDate", required=false) String payDate,
