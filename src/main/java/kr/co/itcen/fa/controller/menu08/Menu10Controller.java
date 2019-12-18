@@ -51,6 +51,11 @@ public class Menu10Controller {
 			@RequestParam(value="searchGubun", required=false) String gubun) {
 		/* menu10Service.test(); */
 		
+		if(landVo.getAcqPrice()!=null) {
+		String acqPrice = landVo.getAcqPrice().replace("," ,"");
+		landVo.setAcqPrice(acqPrice);
+		}
+		
 		//대분류코드 select box
 		List<SectionVo> list = menu09Service.getSectionList();
 		model.addAttribute("sectionList2", list);

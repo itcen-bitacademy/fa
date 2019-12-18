@@ -177,10 +177,10 @@
 											<td>${sl.customerName }</td>
 											<td>${sl.managerName }</td>
 											<td>${sl.payDate }</td>
-											<td>${sl.publicValue }</td>
-											<td>${sl.acqPrice }</td>
-											<td>${sl.etcCost }</td>
-											<td>${sl.acqTax }</td>
+											<td><fmt:formatNumber value="${sl.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+											<td><fmt:formatNumber value="${sl.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+											<td><fmt:formatNumber value="${sl.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+											<td><fmt:formatNumber value="${sl.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 											<td>${sl.combineNo }</td>
 											<td>${sl.taxbillNo }</td>
 											<c:choose>
@@ -281,6 +281,16 @@ $(function() {
 		$(this).next().focus();
 	});
 	
+});
+
+function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+//금액에 3자리마다 , 넣기
+$(function() {
+	$("#acqPrice").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
 });
 
 

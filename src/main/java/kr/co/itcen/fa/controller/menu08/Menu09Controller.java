@@ -107,6 +107,19 @@ public class Menu09Controller {
 						 ,Model model
 						 ) throws ParseException {
 		
+		//, 빼기
+		String acqPrice = landVo.getAcqPrice().replace("," ,"");
+		landVo.setAcqPrice(acqPrice);
+		
+		String publicValue = landVo.getPublicValue().replace("," ,"");
+		landVo.setPublicValue(publicValue);
+		
+		String etcCost = landVo.getEtcCost().replace("," ,"");
+		landVo.setEtcCost(etcCost);
+		
+		String acqTax = landVo.getAcqTax().replace("," ,"");
+		landVo.setAcqTax(acqTax);
+		
 		
 		if(landVo.getCombineNo() == null) {
 			landVo.setCombineNo("00");
@@ -130,61 +143,86 @@ public class Menu09Controller {
 	@RequestMapping(value={"/" + SUBMENU + "/update" }, method=RequestMethod.POST)
 	public String update(@ModelAttribute LandVo landVo , @SessionAttribute("authUser") UserVo user
 						 ,@RequestParam(value="taxbillNo", required=false) String taxbillNo
-						 ,@RequestParam(value="customerNo", required=false) String customerNo) {
+						 ,@RequestParam(value="customerNo", required=false) String customerNo,
+						 Model model) throws ParseException {
 		
+		Long acqPrice = Long.parseLong(landVo.getAcqPrice().replace("," ,""));
+		Long publicValue = Long.parseLong(landVo.getPublicValue().replace("," ,""));
+		Long etcCost = Long.parseLong(landVo.getEtcCost().replace("," ,""));
+		Long acqTax = Long.parseLong(landVo.getAcqTax().replace("," ,""));
+		
+		landVo.setId("c"+landVo.getId());
 		landVo.setUpdateUserid(user.getId());
+		
 		Long landVno = menu09Service.getVoucherNo(landVo.getId());
 		
 		if(landVo.getCombineNo() == null) {
 			landVo.setCombineNo("00");
 		}
-
-		// 전표 시작
-		if(taxbillNo!=null && landVno==null) { //세금계산서번호가 있을때, 전표번호가 없을때
-		System.out.println("여기탐 !!");
-		CustomerVo cus = menu09Service.getDepositNo(customerNo);
 		
-		VoucherVo voucherVo = new VoucherVo();
-		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-		ItemVo itemVo = new ItemVo();
-		ItemVo itemVo2 = new ItemVo();
+		//마감 여부 체크
+		if(!menu19Service.checkClosingDate(user, landVo.getPayDate())) {
+			model.addAttribute("closingDate", true);
+			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+			
+		} else {
+			// 전표 시작
+			if(taxbillNo!=null && landVno==null) { //세금계산서번호가 있을때, 전표번호가 없을때
+			System.out.println("여기탐 !!");
+			CustomerVo cus = menu09Service.getDepositNo(customerNo);
+			
+			VoucherVo voucherVo = new VoucherVo();
+			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+			ItemVo itemVo = new ItemVo();
+			ItemVo itemVo2 = new ItemVo();
 
 
-		 //왼쪽 : 얻은것(차변) 토지 가격  :::: 오른쪽(대변)  현금   가격 
+			 //왼쪽 : 얻은것(차변) 토지 가격  :::: 오른쪽(대변)  현금   가격 
 
-		//거래금액
+			//거래금액
 
-		MappingVo mappingVo = new MappingVo();
-		//토지
-		voucherVo.setRegDate(landVo.getPayDate()); // landVo.getPayDate() : 거래날짜
-		itemVo.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getEtcCost());  // landVo.getAcqPrice() : 거래금액 (토지를 얻기 위해 세금을 포함한 금액)
-		itemVo.setAmountFlag("d");     //d: 차변 왼쪽
-		itemVo.setAccountNo(1220101L); //계정과목 : 자산인가 토지인가
-		itemVoList.add(itemVo);
+			MappingVo mappingVo = new MappingVo();
+			//토지
+			voucherVo.setRegDate(landVo.getPayDate()); // landVo.getPayDate() : 거래날짜
+			itemVo.setAmount(acqPrice+acqTax+etcCost);  // 거래금액 (토지를 얻기 위해 세금을 포함한 금액)
+			itemVo.setAmountFlag("d");     //d: 차변 왼쪽
+			itemVo.setAccountNo(1220101L); //계정과목 : 자산인가 토지인가
+			itemVoList.add(itemVo);
 
-		itemVo2.setAmount(landVo.getAcqPrice()+landVo.getAcqTax()+landVo.getEtcCost());
-		itemVo2.setAmountFlag("c");  // c: 대변 오른쪽
-		itemVo2.setAccountNo(1110101L); //현금
-		itemVoList.add(itemVo2);  
-		
-		
-		
+			itemVo2.setAmount(acqPrice+acqTax+etcCost);
+			itemVo2.setAmountFlag("c");  // c: 대변 오른쪽
+			itemVo2.setAccountNo(1110101L); //현금
+			itemVoList.add(itemVo2);  
+			
+			
+			
 
-		// 토지구입비용 + 부가세 = 지불금액 / 차변 대변 값으로
-		
-		//매핑테이블
-		mappingVo.setVoucherUse("투자");  // 왜 샀는지 적어준다.
-		mappingVo.setSystemCode(landVo.getId());  // 각 토지 코드번호
-		mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
-		mappingVo.setCustomerNo(customerNo); //거래처번호
-		mappingVo.setManageNo(taxbillNo);//세금계산서번호
-		mappingVo.setBankCode(cus.getBankCode()); //은행코드
-		mappingVo.setBankName(cus.getBankName()); //은행명
+			// 토지구입비용 + 부가세 = 지불금액 / 차변 대변 값으로
+			
+			//매핑테이블
+			mappingVo.setVoucherUse("투자");  // 왜 샀는지 적어준다.
+			mappingVo.setSystemCode(landVo.getId());  // 각 토지 코드번호
+			mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+			mappingVo.setCustomerNo(customerNo); //거래처번호
+			mappingVo.setManageNo(taxbillNo);//세금계산서번호
+			mappingVo.setBankCode(cus.getBankCode()); //은행코드
+			mappingVo.setBankName(cus.getBankName()); //은행명
 
-		long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-		landVo.setVoucherNo(voucherNo);
-		
+			long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
+			landVo.setVoucherNo(voucherNo);
+			
+			}
+			
+			landVo.setAcqPrice(Long.toString(acqPrice));
+			landVo.setAcqTax(Long.toString(acqTax));
+			landVo.setPublicValue(Long.toString(publicValue));
+			landVo.setEtcCost(Long.toString(etcCost));
+			menu09Service.updateLand(landVo);
+			
+			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		}
+
+		
 		/*
 		 * else if(landVno!=null) { //전표번호가 있을때 수정(전표수정) System.out.println("여기안타냐?");
 		 * 
@@ -219,32 +257,44 @@ public class Menu09Controller {
 		 * itemVoList, mappingVo, user); landVo.setVoucherNo(voucherNo); }
 		 */
 
-		menu09Service.updateLand(landVo);
 		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+		
+		
 	}
 	
 	//삭제
 	@RequestMapping(value = { "/" + SUBMENU + "/delete" }, method=RequestMethod.POST)
-	public String delete(@RequestParam(value="id") String id, @SessionAttribute("authUser") UserVo user) {
+	public String delete(@RequestParam(value="id") String id,
+						 @RequestParam(value="payDate") String payDate,
+						 @SessionAttribute("authUser") UserVo user, Model model) throws ParseException {
 		
+
+		id = "c" + id;
 		String userId = user.getId();
 		
-		
 		Long voucherNo = menu09Service.getVoucherNo(id);
-		if(voucherNo != null) {
+		
+		//마감 여부 체크
+		if(!menu19Service.checkClosingDate(user, payDate)) {
+
+			model.addAttribute("closingDate", true);
+			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+		} else {
 			
-		//전표삭제
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-		VoucherVo v = new VoucherVo();
-		v.setNo(voucherNo);
-		voucherVolist.add(v);
-		menu03Service.deleteVoucher(voucherVolist, user);
+			if(voucherNo != null) {
+				
+				//전표삭제
+				List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+				VoucherVo v = new VoucherVo();
+				v.setNo(voucherNo);
+				voucherVolist.add(v);
+				menu03Service.deleteVoucher(voucherVolist, user);
+				}
+				
+				menu09Service.delLand(id, userId);
+			
+				return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		}
-		
-		menu09Service.delLand(id, userId);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
 }
