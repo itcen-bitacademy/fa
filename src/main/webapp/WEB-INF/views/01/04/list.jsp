@@ -55,10 +55,6 @@
 										</div>
 									</div>
 								</div>
-								<script type="text/javascript">
-								var regDate = "${param.regDate}";
-								$("#regDate").val(regDate);
-								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표번호</label>
@@ -66,10 +62,6 @@
 										<input class="span8" type="text" id="no" name="no" placeholder="전표번호"/>
 									</div>
 								</div>
-								<script type="text/javascript">
-								var no = "${param.no}";
-								$("#no").val(no);
-								</script>
 								
 								<!-- 계정과목  -->
 								<div class="control-group">
@@ -89,11 +81,6 @@
 										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
 									</div>
 								</div>
-								<script type="text/javascript">
-								var accountNo = "${param.accountNo}";
-								$("#accountNo").val(accountNo);
-								</script>
-								
 								
 							</div>
 	
@@ -113,10 +100,6 @@
 										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
 									</div>
 								</div>
-								<script type="text/javascript">
-								var customerNo = "${param.customerNo}";
-								$("#customerNo").val(customerNo);
-								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표사용목적</label>
@@ -125,10 +108,6 @@
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
-								<script type="text/javascript">
-								var voucherUse = "${param.voucherUse}";
-								$("#voucherUse").val(voucherUse);
-								</script>
 								
 								<!-- 삭제여부  -->
 								<div class="control-group">
@@ -140,10 +119,6 @@
 										</select> 
 									</div>
 								</div>
-								<script type="text/javascript">
-								var useYn = "${param.useYn}";
-								$("#useYn").val(useYn);
-								</script>
 								
 								<!-- 거래처 Modal pop-up : start -->
 								<div id="dialog-message" title="거래처" hidden="hidden">
@@ -497,6 +472,30 @@ $(function(){
 	function inputNumberFormat(obj) {
 	    obj.value = comma(uncomma(obj.value));
 	}
+</script>
+<script type="text/javascript">
+var regDate = "${param.regDate}";
+$("#regDate").val(regDate);
+</script>
+<script type="text/javascript">
+var no = "${param.no}";
+$("#no").val(no);
+</script>
+<script type="text/javascript">
+var accountNo = "${param.accountNo}";
+$("#accountNo").val(accountNo);
+</script>
+<script type="text/javascript">
+var customerNo = "${param.customerNo}";
+$("#customerNo").val(customerNo);
+</script>
+<script type="text/javascript">
+var voucherUse = "${param.voucherUse}";
+$("#voucherUse").val(voucherUse);
+</script>
+<script type="text/javascript">
+var useYn = "${param.useYn}";
+$("#useYn").val(useYn);
 </script>
 </body>
 </html>
