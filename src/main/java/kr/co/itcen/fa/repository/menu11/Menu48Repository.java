@@ -130,6 +130,6 @@ public class Menu48Repository {
 			listNo.add(no1);
 		}
 		List<LTermdebtVo> list = sqlSession.selectList("menu48.selectLtermdebtlist",listNo);
-		return null;
+		return list;
 	}
 }

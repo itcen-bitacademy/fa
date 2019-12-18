@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu11.Menu49Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
@@ -22,7 +23,7 @@ import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
  * 장기차입금현황조회
  *
  */
-@Auth
+
 @Controller
 @RequestMapping("/" + Menu49Controller.MAINMENU)
 public class Menu49Controller {
@@ -32,7 +33,9 @@ public class Menu49Controller {
 	@Autowired
 	private Menu49Service menu49Service;
 	
-	                                   //   /11/49, /11/49/list
+	 
+	//   /11/49, /11/49/list
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,
