@@ -250,6 +250,7 @@ public class Menu39Controller {
 			VoucherVo voucherVo = new VoucherVo();
 			
 			voucherVo.setNo(bVoucherNo); // 수정뒤 전표no >> 전표vo의 no
+			voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo의 매입일자 >> 전표vo의 regdate (마감일자 check)
 			voucherVolist.add(voucherVo); // 전표vo의 no >> 전표list의 no
 			menu03Service.deleteVoucher(voucherVolist, authUser);
 		}

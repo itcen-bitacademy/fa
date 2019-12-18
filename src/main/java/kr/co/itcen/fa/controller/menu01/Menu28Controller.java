@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu28Service;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
@@ -27,7 +28,8 @@ public class Menu28Controller {
 
 	@Autowired
 	private Menu28Service menu28Service;
-
+	
+	@NoAuth
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "customerDiv", required = true, defaultValue = "All") String customerDiv,

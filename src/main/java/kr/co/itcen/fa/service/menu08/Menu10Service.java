@@ -28,7 +28,8 @@ public class Menu10Service {
 	public void test() {
 		menu10Repository.test();
 	}
-
+	
+	//조건조회
 	public DataResult<LandVo> getList(LandVo landVo, String startDate, String endDate, int page) {
 		DataResult<LandVo> dataResult = new DataResult<LandVo>();
 		
@@ -44,6 +45,7 @@ public class Menu10Service {
 		return dataResult;
 	}
 	
+	//기본조회
 	public DataResult<LandVo> list(String id, int page) {
 		DataResult<LandVo> dataResult = new DataResult<LandVo>();
 		
