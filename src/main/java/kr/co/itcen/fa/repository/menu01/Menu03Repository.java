@@ -200,5 +200,10 @@ public class Menu03Repository {
 		return map;
 	}
 	
+	// 현재시간 구하기
+	public String businessDateStr() {
+		return sqlSession.selectOne("menu03.businessDateStr");
+	}
+	
 
 }
