@@ -46,11 +46,17 @@ public class Menu03Controller {
 	private Menu59Service menu59Service;
 	
 	// 전표관리 페이지
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String view(@RequestParam(defaultValue = "1") int page, Model model) {
-		
-		// 조회 / 페이징
-		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
+	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
+		System.out.println("여기 1");
+		System.out.println("getUseYn1 : " + voucherVo.getUseYn() );
+		if(voucherVo.getUseYn() == null) {
+			voucherVo.setUseYn(true);
+			System.out.println("왜 안타니");
+		}
+		System.out.println("getUseYn2 : " + voucherVo.getUseYn() );
+		// 전표 검색
+		DataResult<VoucherVo> dataResult = menu03Service.selectVoucherCount(voucherVo, page);
 		
 		// 계정조회
 		model.addAttribute("accountList", menu59Service.getAllAccountList());
@@ -78,25 +84,6 @@ public class Menu03Controller {
 		model.addAttribute("dataResult", dataResult);
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 	}
-	
-	
-    // 전표 관리페이지 조회
-	@RequestMapping(value= "/" + SUBMENU + "/read", method=RequestMethod.POST)
-	public String read(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page , Model model) {
-		System.out.println("regDate : " + voucherVo.getRegDate());
-		System.out.println("amount : " + voucherVo.getAmount());
-		System.out.println("custoemrNo : " + voucherVo.getCustomerNo());
-		// 전표 검색
-		DataResult<VoucherVo> dataResult = menu03Service.selectVoucherCount(voucherVo, page);
-		
-		// 계정조회
-		model.addAttribute("accountList", menu59Service.getAllAccountList());
-		
-		// 테이블 셋팅
-		model.addAttribute("dataResult", dataResult);
-		return MAINMENU + "/" + SUBMENU + "/list";
-	}
-	 
 	
 	// 전표 삭제 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)

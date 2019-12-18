@@ -50,27 +50,22 @@ public class Menu32Repository {
 		return sqlSession.selectOne("menu28.searchCount",aclVo);
 	}*/
 
-	public List<AccountCustomerLedgerVo> list(/*PaginationUtil pagination,*/ AccountCustomerLedgerVo aclVo,
-			Long accountNo, String datepicker1, String datepicker2, String customerNo) {
+	public List<AccountCustomerLedgerVo> list(AccountCustomerLedgerVo aclVo, PaginationUtil pagination) {
 		Map<String,Object> map = new HashMap<String, Object>();
-		//map.put("pagination",pagination);
+		map.put("pagination", pagination);
 		map.put("vo", aclVo);
-		map.put("accountCode", accountNo);
-		map.put("datepicker1", datepicker1);
-		map.put("datepicker2", datepicker2);
-		map.put("customerNo", customerNo);
 		List<AccountCustomerLedgerVo> list = sqlSession.selectList("menu32.optionSearch",map);
 		return list;
 	}
 
-	public List<BankVo> getBankCodeInfo(String bankCode) {
-		String code = "%" + bankCode +"%";
-		List<BankVo> result = sqlSession.selectList("menu32.getBankCodeInfo", code);
+	public List<CustomerVo> getBankCodeInfo(String customerNo) {
+		String no = "%" + customerNo +"%";
+		List<CustomerVo> result = sqlSession.selectList("menu32.getBankCodeInfo", no);
 		return result;
 	}
 
-	public List<BankVo> getBankNameInfo(String bankName) {
-		return sqlSession.selectList("menu32.getBankNameInfo", bankName);
+	public List<CustomerVo> getBankNameInfo(String name) {
+		return sqlSession.selectList("menu32.getBankNameInfo", name);
 	}
 
 	public List<AccountManagementVo> getAccountNoInfo(String accountNo) {
@@ -81,6 +76,10 @@ public class Menu32Repository {
 
 	public List<AccountManagementVo> getAccountNameInfo(String accountName) {
 		return sqlSession.selectList("menu32.getAccountNameInfo", accountName);
+	}
+
+	public int listCount(AccountCustomerLedgerVo aclVo) {
+		return sqlSession.selectOne("menu32.listCount", aclVo);
 	}
 
 

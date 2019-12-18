@@ -86,17 +86,17 @@
 			<![CDATA[
 				update 
 			]]>
-				<if test='"S".equals(debtType)'>
+				<if test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					tb_s_term_debt 
 				]]>
 				</if>
-				<if test='"L".equals(debtType)'>
+				<if test='code != null and "L".equals(debtType)'>
 				<![CDATA[
 					tb_l_term_debt 
 				]]>
 				</if>
-				<if test='"P".equals(debtType)'>
+				<if test='code != null and "P".equals(debtType)'>
 				<![CDATA[
 					tb_p_debt 
 				]]>
@@ -113,24 +113,24 @@
 			<![CDATA[
 				update 
 			]]>
-				<if test='"S".equals(debtType)'>
+				<if test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					tb_s_term_debt 
 				]]>
 				</if>
-				<if test='"L".equals(debtType)'>
+				<if test='code != null and "L".equals(debtType)'>
 				<![CDATA[
 					tb_l_term_debt 
 				]]>
 				</if>
-				<if test='"P".equals(debtType)'>
+				<if test='code != null and "P".equals(debtType)'>
 				<![CDATA[
 					tb_p_debt 
 				]]>
 				</if>
 			<![CDATA[
 				set 
-					repay_bal = repay_bal - #{tempPayPrinc} 
+					repay_bal = repay_bal - #{payPrinc} 
 						where no=#{debtNo}
 			]]>
 	</update>

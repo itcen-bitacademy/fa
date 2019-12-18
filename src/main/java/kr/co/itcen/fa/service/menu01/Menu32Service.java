@@ -37,23 +37,22 @@ public class Menu32Service {
 		return menu32Repository.getCustomerNameInfo(customerName);
 	}
 
-	public DataResult<AccountCustomerLedgerVo> list(/*int page,*/ AccountCustomerLedgerVo aclVo, Long accountNo, String datepicker1,
-			String datepicker2, String customerNo) {
+	public DataResult<AccountCustomerLedgerVo> list(AccountCustomerLedgerVo aclVo, int page) {
 		DataResult<AccountCustomerLedgerVo> dataResult = new DataResult<AccountCustomerLedgerVo>();
-		//int totalCnt = menu32Repository.listCount(aclVo);
-		//PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		//dataResult.setPagination(pagination);
-		List<AccountCustomerLedgerVo> list = menu32Repository.list(/*pagination,*/ aclVo, accountNo, datepicker1, datepicker2, customerNo);
+		int totalCnt = menu32Repository.listCount(aclVo);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		dataResult.setPagination(pagination);
+		List<AccountCustomerLedgerVo> list = menu32Repository.list(aclVo, pagination);
 		dataResult.setDatas(list);
 		return dataResult;
 	}
 
-	public List<BankVo> getBankCodeInfo(String bankCode) {
-		return menu32Repository.getBankCodeInfo(bankCode);
+	public List<CustomerVo> getBankCodeInfo(String customerNo) {
+		return menu32Repository.getBankCodeInfo(customerNo);
 	}
 
-	public List<BankVo> getBankNameInfo(String bankName) {
-		return menu32Repository.getBankNameInfo(bankName);
+	public List<CustomerVo> getBankNameInfo(String name) {
+		return menu32Repository.getBankNameInfo(name);
 	}
 
 	public List<AccountManagementVo> getAccountNoInfo(String accountNo) {

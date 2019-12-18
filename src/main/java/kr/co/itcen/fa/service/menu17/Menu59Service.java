@@ -150,9 +150,20 @@ public class Menu59Service {
 	}	
 */	
 	//삭제
-	public Boolean delete(Long no) {
-		Boolean count = menu59Repository.delete(no);
-		return count;	
+	public DataResult<AccountManagementVo> delete(AccountManagementVo vo) {
+		DataResult<AccountManagementVo> dataResult = new DataResult<>();
+		
+		if(vo.getAccountNo() == null || vo.getAccountUsedyear() == null || vo.getAccountOrder() == null) {
+			dataResult.setStatus(false);
+			dataResult.setError("삭제할 데이터를 입력해주세요");
+			
+			return dataResult;
+		}
+		
+		
+		menu59Repository.delete(vo.getNo());
+		
+		return dataResult;	
 	}
 	
 
@@ -168,13 +179,22 @@ public class Menu59Service {
 						if(menu59Repository.chechedAccount3(vo.get(i)).size() < 1) {							
 							//수정
 							menu59Repository.update(vo.get(i));
+						}else {
+							dataResult.setStatus(false);
+							dataResult.setError("이미 존재하는 데이터는 저장 혹은 수정이 불가합니다.");
 						}
 					}else {
 						if(menu59Repository.chechedAccount2(vo.get(i)).size() < 1) {
 							//수정
 							menu59Repository.update(vo.get(i));
+						}else {
+							dataResult.setStatus(false);
+							dataResult.setError("이미 존재하는 데이터는 저장 혹은 수정이 불가합니다.");
 						}
 					}
+				}else {
+					dataResult.setStatus(false);
+					dataResult.setError("이미 존재하는 데이터는 저장 혹은 수정이 불가합니다.");
 				}
 			}else {
 				//저장
