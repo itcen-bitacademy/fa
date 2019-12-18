@@ -51,10 +51,10 @@ public class Menu07Controller {
 
 		int total = menu07Service.getCount();
 
-		if (total % countPage == 0) {
-			lastPage = (int) Math.floor(total / countPage);
+		if (total % 11 == 0) {
+			lastPage = (int) Math.floor(total / 11);
 		} else {
-			lastPage = (int) Math.floor(total / countPage) + 1;
+			lastPage = (int) Math.floor(total / 11) + 1;
 		}
 
 		
@@ -74,69 +74,18 @@ public class Menu07Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public List<PurchasemanagementVo> search(Model model, @RequestBody PurchasemanagementVo vo,
 			String[] purchaseDate, @RequestParam(defaultValue = "1") int page) {
-		int countPage = 5;
-		int curPage = page;
-		int lastPage;
-
-		int startPage = ((curPage - 1) / countPage) * countPage + 1;
-		int endPage = startPage + countPage - 1;
-
-		int blockNum = 0;
-
-		blockNum = (int) Math.floor((curPage - 1) / countPage);
-		int blockStartNum = (countPage * blockNum) + 1;
-		int blockLastNum = blockStartNum + (countPage - 1);
-
-		int total = menu07Service.getCount();
-
-		if (total % countPage == 0) {
-			lastPage = (int) Math.floor(total / countPage);
-		} else {
-			lastPage = (int) Math.floor(total / countPage) + 1;
-		}
-
-		vo.setPage(curPage);
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-		model.addAttribute("blockStartNum", blockStartNum);
-		model.addAttribute("blockLastNum", blockLastNum);
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("curPage", curPage);
-		List<PurchasemanagementVo> result = menu07Service.getList(vo);
-		System.out.println("vo : " + vo);
-		System.out.println("result : " + result);
 		
+		List<PurchasemanagementVo> result = menu07Service.getList(vo);
 		return result;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = {"/" + SUBMENU + "/paging"}, method = RequestMethod.POST)
-	public List<PurchasemanagementVo> paging(Model model, /* @RequestParam(value="page", required=false, defaultValue="1") int page, */
-			/*@RequestParam(value="searchFlag") boolean searchFlag,*/ @RequestBody PurchasemanagementVo vo) {
-		int countPage = 5;
-		int curPage = vo.getPage();
-		int lastPage;
-
+	public List<PurchasemanagementVo> paging(Model model,  @RequestBody PurchasemanagementVo vo) {
 		
-		int startPage = ((curPage - 1) / countPage) * countPage + 1;
-		int endPage = startPage + countPage - 1;
-
-		int blockNum = 0;
-
-		blockNum = (int) Math.floor((curPage - 1) / countPage);
-		int blockStartNum = (countPage * blockNum) + 1;
-		int blockLastNum = blockStartNum + (countPage - 1);
-
-		int total = menu07Service.getCount();
-
-		if (total % countPage == 0) {
-			lastPage = (int) Math.floor(total / countPage);
-		} else {
-			lastPage = (int) Math.floor(total / countPage) + 1;
-		}
-		System.out.println(vo.isSearchFlag());
-		System.out.println(vo);
+		int curPage = vo.getPage();
 		List<PurchasemanagementVo> result = null;
+		
 		if(vo.isSearchFlag() == false) {
 			vo.setPage((curPage - 1) * 11);
 			result = menu07Service.getList(vo);
@@ -144,15 +93,6 @@ public class Menu07Controller {
 			result = menu07Service.getList((curPage - 1) * 11);
 		}
 		
-		
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-		model.addAttribute("blockStartNum", blockStartNum);
-		model.addAttribute("blockLastNum", blockLastNum);
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("curPage", curPage);
-		System.out.println("startPage : " + startPage + "endPage : " + endPage + "blockStartNum : " + blockStartNum + "blockLastNum : " + blockLastNum +
-				"lastPage : " + lastPage + "curPage : " + curPage);
 		return result;
 	}
 }

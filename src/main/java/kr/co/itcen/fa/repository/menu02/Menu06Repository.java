@@ -89,4 +89,8 @@ public class Menu06Repository {
 		sqlSession.update("menu06.TaxbillUpdate", vo);
 		
 	}
+
+	public List<PurchasemanagementVo> getPriceList(PurchasemanagementVo vo) {
+		return sqlSession.selectList("menu06.getPriceList",vo);
+	}
 }

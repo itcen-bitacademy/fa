@@ -75,4 +75,9 @@ public class Menu06Service {
 		menu06Repository.TaxbillUpdate(vo);
 		
 	}
+
+	public List<PurchasemanagementVo> getPriceList(PurchasemanagementVo vo) {
+		
+		return menu06Repository.getPriceList(vo);
+	}
 }

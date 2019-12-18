@@ -93,8 +93,8 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 번 호</label>
 									<div class="controls">
-										<input class="input-mini" type="text" id="no" placeholder="" name="no">
-										
+										<input type="hidden" id="checkNo" value="${saleslist[0].salesNo }">
+										<input class="input-middle" type="text" id="no" placeholder="" name="no">
 									</div>
 							</div>
 							
@@ -136,9 +136,9 @@
 								<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
 								<button class="btn btn-warning btn-small" type="submit" id="update" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
 								<button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
-								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
-								<button class="btn btn-default btn-small" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
-								<button class="btn btn-default btn-small" type="submit" id="voucher" style="float:left;margin-right:20px;margin-bottom:20px;">전표 발행</button>
+								<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
+								<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
+								<!-- <button class="btn btn-default btn-small" type="submit" id="voucher" style="float:left;margin-right:20px;margin-bottom:20px;">전표 발행</button> -->
 							</div>
 							
 							<input type="hidden" id="rowCnt" name="rowCnt" value="1">
@@ -244,7 +244,6 @@
 		})
 		
 		 function checkClosing(){ // 마감일 세팅 여부
-			//console.log($("#closingDate").val());
         	if($("#closingDate").val()=="true"){
         		alert("마감일자가 지난 매입입니다.");
         	} 
@@ -323,8 +322,10 @@
 		        }
 		 $(window).load(function(){
 			 checkClosing();
-			 //location.reload();			 
+			 createPurchaseNo();
+			 indexButtonSet();		 
 		 });
+		
 		
 		jQuery(function($) {
 		$("#delete").click(function() {
@@ -336,9 +337,9 @@
 		});
 		
 		$("#input").click(function() {
-			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
-			
+			 $("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
 		});
+		
 		$("#voucher").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/voucher");
 		});
@@ -351,6 +352,7 @@
 					var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), number : $("#number1").val() };
 					console.log(vo);
 					event.preventDefault();
+					
 					// ajax 통신
 					$.ajax({
 						url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search",
@@ -371,23 +373,82 @@
 							$("#quantity1").val(result.quantity);
 							$("#supplyValue1").val(result.supplyValue);
 							$("#taxValue1").val(result.taxValue);
-							$("#taxbillNo").val(result.taxbillNo);
+							if (result.taxbillNo == null) {
+								$("#taxbillNo").val('');	
+							} else {
+								$("#taxbillNo").val(result.taxbillNo);
+							}
+							
 							if(result.taxType == 'tax'){
 								$("#taxType1").val(result.taxType).attr("checked", true);
 							} else{
 								$("#taxType2").val(result.taxType).attr("checked", true);
 							} 
 							$("#no").val(result.no);
+							
+							if(result.taxbillNo == null){
+								taxbillButtonSet();
+							}if(result.taxbillNo != null && result.voucherNo != null) {
+								deleteButtonSet();
+							} 
 							$(".chosen-select").chosen();
 						},
 						error: function(xhr, error){
-							alert("매입일자, 매입번호, 순번을 정확히 입력해 주세요.");
+							if($("#purchaseDate").val() == '' ||  $("#no").val() == '' || $("#number1").val() == '' ){
+								alert("매입일자, 매입번호, 순번을 정확히 입력해 주세요.");
+							}
 						}
 					});
 				});
 		});
-		
-		
+		 
+		 function createPurchaseNo(){ // 매출번호 랜덤 생성
+		       	var no = "";
+		       	var date = new Date();
+		  	 	var year = date.getFullYear().toString(); // 년
+		  	 	var month = (date.getMonth()+1).toString();	 // 월	
+		  		var day = date.getDate().toString(); // 일
+		  		if (month.length < 2) month = "0" + month; // 한자리 월 0
+		  	 	if (day.length < 2) day = "0" + day; // 한자리 일 0
+		  	 	no = "b"+year + month + day;
+		  	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		  	    for( var i=0; i < 3; i++ ) // 스펠링 난수
+		  	    	no += possible.charAt(Math.floor(Math.random() * possible.length)); // 스펠링 난수
+		  	    $("#no").val(no);
+			  	$("#checkNo").val(no);
+		  	   /*  if($("#flag").val()==''){ // 조회한 경우가 아닐때 생성된 매출번호 set
+		  	    	$("#no").val(no);
+			  	    $("#checkNo").val(no);    
+		  	    } */
+	        }
+		 
+			// 첫화면 버튼 세팅
+			function indexButtonSet() {
+				$('#update').hide()
+				$('#delete').hide()
+				$('#input').show()
+				$('#search').show()
+				$('#addRow').show()
+				$('#deleteRow').show()
+			}
+			// 세금계산서가 등록되지 않는 매입 버튼 세팅
+			function taxbillButtonSet() {
+				$('#update').show()
+				$('#delete').show()
+				$('#input').hide()
+				$('#search').show()
+				$('#addRow').hide()
+				$('#deleteRow').hide()
+			}
+			// 세금계산서가 등록된 매입 버튼 세팅
+			function deleteButtonSet() {
+				$('#update').hide()
+				$('#delete').show()
+				$('#input').hide()
+				$('#search').show()
+				$('#addRow').hide()
+				$('#deleteRow').hide()
+			}
 	</script>
 </body>
 </html>

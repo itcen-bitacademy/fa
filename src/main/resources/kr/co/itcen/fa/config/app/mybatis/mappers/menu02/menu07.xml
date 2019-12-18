@@ -17,20 +17,44 @@
 	
 	<select id="getlist" resultType="purchasemanagement06vo">
 		<![CDATA[
-		  select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
-		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, taxbill_no as taxbillNo,
-		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate
+		  select 
+		  	purchase_no as no
+		  , number
+		  , date_format(purchase_date, '%Y-%m-%d') as purchaseDate
+		  , purchase_manager as purchaseManager
+		  , customer_code as customerCode
+		  , customer_name as customerName
+		  , item_code as itemCode
+		  , item_name as itemName
+		  , quantity
+		  , supply_value as supplyValue
+		  , tax_value as taxValue
+		  , tax_type as taxType
+		  , taxbill_no as taxbillNo
+		  , date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate
 		  from tb_purchasemanagement
 		]]>
 	</select>
 	
 	<select id="getList" parameterType="int" resultType="purchasemanagement06vo">
 		<![CDATA[
-		  select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
-		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, taxbill_no as taxbillNo,
-		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate
+		  select 
+		  	purchase_no as no
+		  , number
+		  , date_format(purchase_date, '%Y-%m-%d') as purchaseDate
+		  , purchase_manager as purchaseManager
+		  , customer_code as customerCode
+		  , customer_name as customerName
+		  , item_code as itemCode
+		  , item_name as itemName
+		  , quantity, supply_value as supplyValue
+		  , tax_value as taxValue
+		  , tax_type as taxType
+		  , taxbill_no as taxbillNo
+		  , date_format(receipt_date, '%Y-%m-%d') as receiptDate
+		  , date_format(release_date, '%Y-%m-%d') as releaseDate
 		  from tb_purchasemanagement
-		  order by purchase_no
+		  order by purchase_date
 	      limit #{page},11
 		]]>
 	</select>
@@ -43,24 +67,35 @@
 	
 	<select id="getSearchList"  parameterType="purchasemanagement06vo" resultType="purchasemanagement06vo">
 	<![CDATA[
-	select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
-		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, taxbill_no as taxbillNo,
-		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate 
+	select 
+			  purchase_no as no
+			, number
+			, date_format(purchase_date, '%Y-%m-%d') as purchaseDate
+			, purchase_manager as purchaseManager
+			, customer_code as customerCode
+			, customer_name as customerName
+		  	, item_code as itemCode
+		  	, item_name as itemName
+		  	, quantity
+		  	, supply_value as supplyValue
+		  	, tax_value as taxValue
+		  	, tax_type as taxType
+		  	, taxbill_no as taxbillNo
+		  	, date_format(receipt_date, '%Y-%m-%d') as receiptDate
+		  	, date_format(release_date, '%Y-%m-%d') as releaseDate 
 	from tb_purchasemanagement
 	where delete_flag = #{deleteFlag }
 	]]>
-		<choose>
-		<when test="purchaseDate != ''">
-		<![CDATA[
-	    	and purchase_date = #{purchaseDate }
-	    ]]>
-	    </when>
-	  	</choose>
-	  	<if test="no != ''">
+		<if test='no != ""'>
 		<![CDATA[
 	    	and purchase_no = #{no }
 	    ]]>
 	  	</if>
+		<if test="purchaseDate != ''">
+		<![CDATA[
+	    	and purchase_date = #{purchaseDate }
+	    ]]>
+	    </if>
 	  	<if test="customerCode != ''">
 		<![CDATA[
 	    	and customer_code = #{customerCode }
