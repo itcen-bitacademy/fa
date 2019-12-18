@@ -69,38 +69,36 @@ public class Menu41Controller {
 		 *   08/41/add.jsp
 		 * 
 		 */
+
 		//페이징 처리 	dataresult 생성, 모델
+		System.out.println("id1" + id);
+		
 		DataResult<VehicleVo> dataResult = menu41Service.list(id, page);
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);
 		
 		Map<String, Object> map = new HashMap<>();
-
-		//if 조회기능 else 검색기능
-		if(id == null) {	
-			System.out.println("ID가 널");
-			map.putAll(menu41Service.selectList());
-		}else {
-			System.out.println("ID가 널이 아니다.");
-			map.putAll(menu41Service.search(id));
-		}
-		model.addAllAttributes(map);
-
+		//model.addAllAttributes(map);
+		
 		
 		//대분류 select box
 		map.putAll(menu41Service.getSection());
 		model.addAllAttributes(map);
 
+		System.out.println("1");
+		
 		//직급 select box
 		map.putAll(menu41Service.getName());
 		model.addAllAttributes(map);
+		
+		System.out.println("2");
 		
 		//거래처코드 select box
 		map.putAll(menu41Service.getCustomer());
 		model.addAllAttributes(map);
 		
 		
-		
+		System.out.println("왜안되세요.");
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -116,6 +114,7 @@ public class Menu41Controller {
 		vehicleVo.setInsertUserId(userVo.getId());
 		vehicleVo.setId("e"+vehicleVo.getId());
 		
+		System.out.println(vehicleVo);
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
@@ -201,7 +200,8 @@ public class Menu41Controller {
 		    } else {
 		    	  Long voucherNo = menu41Service.getVoucherNo(id);
 				  List<Long> taxVoucherNo = menu41Service.getTaxVoucherNo(id);
-				  if(voucherNo != null) {
+				  
+				  if(voucherNo != 0) {
 				  
 					  //전표삭제 
 					  List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); 

@@ -46,7 +46,7 @@ public class Menu03Controller {
 	private Menu59Service menu59Service;
 	
 	// 전표관리 페이지
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/read" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
 	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
 		System.out.println("여기 1");
 		System.out.println("getUseYn1 : " + voucherVo.getUseYn() );
@@ -87,8 +87,8 @@ public class Menu03Controller {
 	
 	// 전표 삭제 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
-	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
-		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
+	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
+		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName()) || menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 		}
 		menu03Service.deleteVoucher(voucherVo);
@@ -98,9 +98,9 @@ public class Menu03Controller {
 	
 	// 전표 수정 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
+	public String update(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
 		voucherVo.setUpdateUserid(userVo.getId());
-		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
+		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName()) || menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
 		}
 		

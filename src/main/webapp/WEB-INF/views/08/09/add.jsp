@@ -363,6 +363,15 @@ $(document).ready(function(){
 	            $("#onlynumber").hide();
 	            $("#null-landcode").show();
 	            $("#land_code").focus();
+	            return;
+	            
+	         } else {
+	        	 $("#default-landcode").show();
+		            $("#overlap-landcode").hide();
+		            $("#onlynumber").hide();
+		            $("#null-landcode").hide();
+		        return;
+		        
 	         }
 	      },
 	      error: function(xhr, error) {
@@ -380,13 +389,7 @@ $(function(){
 });
 
 
-//취득세 등록세 계산
-$(function() {
-	$("#acqPrice").change(function() {
-		$("#acqTax").val(Math.floor($("#acqPrice").val()*0.04));
-	});
-	
-});
+
 
 //빈칸 검사()
 function formCheck() {
@@ -461,7 +464,7 @@ $(function() {
 		
 		console.log("배열에 담긴 값 : "+ tdArr);
 		
-		var id = td.eq(1).text();
+		var id = td.eq(1).text().replace("c", "");
 		$('#land_code').val(id)
 		
 		var sectioncode = td.eq(2).text();
@@ -497,16 +500,16 @@ $(function() {
 		var payDate = td.eq(12).text();
 		$('#id-date-picker-1').val(payDate)
 		
-		var publicValue = td.eq(13).text().replace(/,/g, "");
+		var publicValue = td.eq(13).text();
 		$('#publicValue').val(publicValue)
 		
-		var acqPrice = td.eq(14).text().replace(/,/g, "");
+		var acqPrice = td.eq(14).text();
 		$('#acqPrice').val(acqPrice)
 		
-		var etcCost = td.eq(15).text().replace(/,/g, "");
+		var etcCost = td.eq(15).text();
 		$('#etcCost').val(etcCost)
 		
-		var acqTax = td.eq(16).text().replace(/,/g, "");
+		var acqTax = td.eq(16).text();
 		$('#acqTax').val(acqTax)
 		
 		var combineNo = td.eq(17).text();
@@ -534,6 +537,33 @@ $(function() {
 		}
 	});
 });
+function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+//금액에 3자리마다 , 넣기
+$(function() {
+	$("#publicValue").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	$("#etcCost").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	$("#acqPrice").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+});
+
+//취득세 등록세 계산
+$(function() {
+	$("#acqPrice").change(function() {
+		
+		var AcqPrice = $("#acqPrice").val();
+		var RealAcqPrice = AcqPrice.split(',').join('');
+		$("#acqTax").val(Math.floor(RealAcqPrice*0.04));
+		$("#acqTax").val(addCommas($("#acqTax").val().replace(/[^0-9]/g,"")));
+	});
+});
+
 
 
 //주소

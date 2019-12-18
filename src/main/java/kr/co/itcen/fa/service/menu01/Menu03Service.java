@@ -41,21 +41,25 @@ public class Menu03Service {
 	// 전표생성 (다른 팀)
 	public Long createVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 		//마감 여부 체크
-//		if(!menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-//			return null;
-//		}
-		voucherVo.setInsertUserid(userVo.getId());
-		
-		for(int i = 0; i < itemVo.size(); i++) {
-			itemVo.get(i).setInsertUserid(userVo.getId());
+		try {
+			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+				voucherVo.setInsertUserid(userVo.getId());
+				
+				for(int i = 0; i < itemVo.size(); i++) {
+					itemVo.get(i).setInsertUserid(userVo.getId());
+				}
+				System.out.println("!!!!!!!!!!!!" + userVo.getTeamName());
+				mappingVo.setInsertTeam(userVo.getTeamName());
+				mappingVo.setInsertUserid(userVo.getId());
+				
+				System.out.println("22222222222222222" + voucherVo.getRegDate());
+				menu03Repository.createVoucher(voucherVo, itemVo, mappingVo);
+				return voucherVo.getNo(); // 전표번호
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		System.out.println("!!!!!!!!!!!!" + userVo.getTeamName());
-		mappingVo.setInsertTeam(userVo.getTeamName());
-		mappingVo.setInsertUserid(userVo.getId());
-		
-		System.out.println("22222222222222222" + voucherVo.getRegDate());
-		menu03Repository.createVoucher(voucherVo, itemVo, mappingVo);
-		return voucherVo.getNo(); // 전표번호
+		return null;
 		
 	}
 	
@@ -63,47 +67,61 @@ public class Menu03Service {
 	public Long updateVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 		
 		//마감 여부 체크
-//		if(!menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-//			return null;
-//		}
-		voucherVo.setUpdateUserid(userVo.getId());
-		System.out.println("###########" + voucherVo.getNo());
-		System.out.println("service" + mappingVo.getVoucherNo());
-		for(int i = 0; i < itemVo.size(); i++) {
-			System.out.println("@@@@@@@@@@" + voucherVo.getNo());
-			itemVo.get(i).setUpdateUserid(userVo.getId());
+		try {
+			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+				voucherVo.setUpdateUserid(userVo.getId());
+				System.out.println("###########" + voucherVo.getNo());
+				System.out.println("service" + mappingVo.getVoucherNo());
+				for(int i = 0; i < itemVo.size(); i++) {
+					System.out.println("@@@@@@@@@@" + voucherVo.getNo());
+					itemVo.get(i).setUpdateUserid(userVo.getId());
+				}
+				System.out.println("^^^^^^^^^^" + voucherVo.getNo());
+				System.out.println("service" + mappingVo.getVoucherNo());
+				mappingVo.setInsertTeam(userVo.getTeamName());
+				mappingVo.setUpdateUserid(userVo.getId());
+				System.out.println("***********" + voucherVo.getNo());
+				System.out.println("service" + mappingVo.getVoucherNo());
+				voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo, userVo));
+				System.out.println("service : " + voucherVo.getNo());
+				return voucherVo.getNo();
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		System.out.println("^^^^^^^^^^" + voucherVo.getNo());
-		System.out.println("service" + mappingVo.getVoucherNo());
-		mappingVo.setInsertTeam(userVo.getTeamName());
-		mappingVo.setUpdateUserid(userVo.getId());
-		System.out.println("***********" + voucherVo.getNo());
-		System.out.println("service" + mappingVo.getVoucherNo());
-		voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo, userVo));
-		System.out.println("service : " + voucherVo.getNo());
-		return voucherVo.getNo();
+		
+		return null;
 	}
 	
 	// 전표삭제 (다른 팀)
 	public Long deleteVoucher(List<VoucherVo> voucherVo, @AuthUser UserVo userVo) {
-//		for(int i = 0; i < voucherVo.size(); i++) {
-//			if(!menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
-//				return null;
-//			}
-//		}
-		menu03Repository.deleteVoucher(voucherVo, userVo);
-		return 0L;
+		
+			try {
+				for(int i = 0; i < voucherVo.size(); i++) {
+					if(menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
+						menu03Repository.deleteVoucher(voucherVo, userVo);
+						return 1L;
+					}
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return null;
 	}
 	
 	// 전표삭제 (5팀)
-	public Long deleteVoucher(Long no, @AuthUser UserVo userVo) {
-//		for(int i = 0; i < voucherVo.size(); i++) {
-//		if(!menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
-//			return null;
-//		}
-//	}
-		menu03Repository.deleteVoucher(no, userVo);
-		return 0L;
+	public Long deleteVoucher(String date, Long no, @AuthUser UserVo userVo) {
+		try {
+			if(menu19Service.checkClosingDate(userVo, date)) {
+				menu03Repository.deleteVoucher(no, userVo);
+				return 1L;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 	
 	

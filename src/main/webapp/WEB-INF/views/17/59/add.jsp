@@ -78,7 +78,11 @@ $(function(){
 });
 </script>
  -->
-
+<style>
+#staticBackdrop {
+	z-index: -1;
+}
+</style>
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -330,8 +334,8 @@ $(function(){
             accountNo    = accountNo.substring(23,30);
         var accountName  = $("#accountName"+hiddenNo).val();  //계정명칭
 
-      
-        
+
+
      	$('#selectedAccount').val(accountNo).trigger('chosen:updated');
         $("#accountOrder").val(accountOrder);
         $("#accountName").val(accountName);
@@ -425,7 +429,7 @@ $(function(){
 		result = "";
 	}
 	*/
-	
+
 	$(function(){
 		// 모달 설정
 		backdrop = $('#staticBackdrop')
@@ -537,7 +541,7 @@ $(function(){
            		if(data.status == false){
            			openModal('Error', data.error);
            			data.status = true;
-           			
+
            		}
            		location.reload();
             }
