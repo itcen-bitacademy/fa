@@ -72,7 +72,6 @@
 			<div class="page-header position-relative">
 				<h1 class="pull-left">거래처 현황조회 [28]</h1>
 				
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid"> <!-- 검색조건 start -->
 					<form class="form-horizontal; center" name="searchOption" ><!--  -->
@@ -142,6 +141,8 @@
 					</form>
 					
 					<div class="hr hr-18 dotted"></div>
+				
+				<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 거래처 ${dataResult.pagination.totalCnt } 건</p>
 				
 					</div>
 				<div class="row-fluid">
