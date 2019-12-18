@@ -80,8 +80,10 @@
     		a.debt_amount as debtAmount,
     		a.repay_bal as repayBal,
     		a.repay_way as repayWay,
-    		concat(date_format(a.debt_date,'%Y/%m/%d'),'-',
-    		date_format(a.exp_date,'%Y/%m/%d')) as debtExpDate,
+    		concat(date_format(a.debt_date,'%Y-%m-%d'),'~',
+    		date_format(a.exp_date,'%Y-%m-%d')) as debtExpDate,
+    		date_format(a.exp_date,'%Y-%m-%d') as expDate,
+    		date_format(a.debt_date,'%Y-%m-%d') as debtDate,
     		a.int_rate as intRate,
     		a.int_pay_way as intPayWay,
    			a.mgr,
@@ -109,14 +111,23 @@
 	select 	code as code,
 			pay_princ as payPrinc,
 			int_amount as intAmount,
-			date_format(pay_date,'%Y/%m/%d') as payDate
+			date_format(pay_date,'%Y-%m-%d') as payDate
 	from tb_repay
 	where debt_type = 'L'
 		and debt_no = #{_parameter}
 	</select>
 	
-	
-	
+	<!-- 마감일 읽기위한 select -->
+	<select id="selectLtermdebtlist" resultType="ldebtvo" parameterType="list">
+	<![CDATA[
+		select date_format(debt_date,'%Y-%m-%d') as debtDate 
+		from tb_l_term_debt
+		where no in 
+	]]>
+	<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+		#{item } 
+	</foreach>
+	</select>
 	
 	<select id="selectsection" resultType="sectionvo">
 	<![CDATA[
@@ -139,8 +150,10 @@
     		debt_amount as debtAmount,
     		repay_bal as repayBal,
     		repay_way as repayWay,
-    		concat(date_format(debt_date,'%Y/%m/%d'),'-',
-    		date_format(exp_date,'%Y/%m/%d')) as debtExpDate,
+    		concat(date_format(debt_date,'%Y-%m-%d'),'~',
+    		date_format(exp_date,'%Y-%m-%d')) as debtExpDate,
+    		date_format(a.exp_date,'%Y-%m-%d') as expDate,
+    		date_format(a.debt_date,'%Y-%m-%d') as debtDate,
     		int_rate as intRate,
     		int_pay_way as intPayWay,
    			mgr,
@@ -169,7 +182,7 @@
 		select 	code as code,
 			pay_princ as payPrinc,
 			int_amount as intAmount,
-			date_format(pay_date,'%Y/%m/%d') as payDate
+			date_format(pay_date,'%Y-%m-%d') as payDate
 		from tb_repay
 		where debt_type = 'L'
 			and debt_no in 
