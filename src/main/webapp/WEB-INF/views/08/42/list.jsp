@@ -43,12 +43,12 @@
 							
 							
 								<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
-											<div class="controls">
-												<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
-												<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" value="" placeholder="주소를 선택하면 입력됩니다.">
-												<input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" value=""  placeholder="주소를 선택하면 입력됩니다.">
-											</div>
+									<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
+										<div class="controls">
+											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
+											<input class="span4" readonly type="text" id="wideAddress" name="wideAddress" placeholder="주소를 선택하면 입력됩니다.">
+											<input style="width:230px"class="span5" readonly type="text" id="cityAddress" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
+										</div>
 								</div>
 			
 						
@@ -63,7 +63,7 @@
 											<select class="chosen-select" id="sectionNo" name="sectionNo" data-placeholder="전체">
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option></option>
-													<option vehiclecode="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.classification }</option>
+													<option value="${sectionVo.code }">${sectionVo.classification }</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -301,10 +301,10 @@ function execDaumPostcode() {
 		oncomplete : function(data) {
 			var fullRoadAddr = data.roadAddress;
 			console.log(data)
-			$("#wideAddr").val(data.sido);
-			$("#cityAddr").val(data.sigungu); 
-			$("#detailAddr").val(data.roadname + " ");
-			$("#detailAddr").focus();
+			$("#wideAddress").val(data.sido);
+			$("#cityAddress").val(data.sigungu); 
+			$("#detailAddress").val(data.roadname + " ");
+			$("#detailAddress").focus(); 
 		}
 	}).open();
 };

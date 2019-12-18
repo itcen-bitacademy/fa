@@ -43,13 +43,6 @@ public class Menu42Service {
 		return map;
 	}
 
-	//리스트조회하기
-	public Map<String, Object> selectList() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", menu42Repository.selectList());
-		return map;
-		
-	}
 
 	//기본 페이징된 화면
 	public DataResult<VehicleVo> list(String id, int page) {

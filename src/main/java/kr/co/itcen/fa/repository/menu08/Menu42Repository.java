@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
-import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.StaffVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
@@ -43,13 +42,6 @@ public class Menu42Repository {
 	//직급 리스트 
 	public List<StaffVo> getJik() {
 		List<StaffVo> list = sqlSession.selectList("menu42.name");
-		System.out.println(list);
-		return list;
-	}
-
-	//리스트 조회하기
-	public List<VehicleVo> selectList() {
-		List<VehicleVo> list = sqlSession.selectList("menu42.select");
 		System.out.println(list);
 		return list;
 	}

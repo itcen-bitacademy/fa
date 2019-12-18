@@ -85,15 +85,11 @@ public class Menu42Controller {
 				String[] duedate = dueDate.split(" - ");
 				dueStartDate = duedate[0];
 				dueEndDate = duedate[1];
-				System.out.println("++++++++++++++++++++++++++++++++++");
-				System.out.println(dueStartDate + " ~ " + dueEndDate);
 			}
 			if(!payDate.equals("")) {
 			String[]date = payDate.split(" - ");
 			startDate = date[0];	
 			endDate = date[1];
-			System.out.println("++++++++++++++++++++++++++++++++++2");
-			System.out.println(startDate + " ~ " + endDate);
 			}
 			dataResult = menu42Service.getList(vehicleVo, startDate, endDate, dueStartDate, dueEndDate, page);
 		}
