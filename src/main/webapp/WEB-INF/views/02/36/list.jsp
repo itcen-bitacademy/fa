@@ -146,18 +146,18 @@
 		                           </div>
 		                        </div>
 		                     </div>
-						</form>
 						
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
 											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button><br>
-										<div class="hr hr-18 dotted"></div>
 									</div>
+									<div class="hr hr-18 dotted"></div>
 								</div>
 							</div>
-
+						</form>
+							
 							<div class="row-fluid">
 								<div class="span12">
 								<label>총 ${dataResult.pagination.totalCnt }건</label>
