@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu42Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
-import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
 
@@ -69,17 +68,17 @@ public class Menu42Service {
 	}
 
 	//검색된 화면
-	public DataResult<VehicleVo> getList(VehicleVo vehicleVo, String startDate, String endDate, int page) {
+	public DataResult<VehicleVo> getList(VehicleVo vehicleVo, String startDate, String endDate, String dueStartDate, String dueEndDate, int page) {
 		
 		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
 		
-		int totalCount = menu42Repository.listCount(vehicleVo, startDate, endDate);
+		int totalCount = menu42Repository.listCount(vehicleVo, startDate, endDate, dueStartDate, dueEndDate);
 		
 		//pagination
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(pagination);
 		
-		List<VehicleVo> list = menu42Repository.getList(vehicleVo, startDate, endDate, pagination);
+		List<VehicleVo> list = menu42Repository.getList(vehicleVo, startDate, endDate, dueStartDate, dueEndDate, pagination);
 		dataResult.setDatas(list);
 		
 		return dataResult;
