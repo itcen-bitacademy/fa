@@ -82,31 +82,37 @@ public class Menu03Controller {
 		// 전표등록, 리스트
 		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
 		model.addAttribute("dataResult", dataResult);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
 	
 	// 전표 삭제 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
 	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
-		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName()) || menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
+			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
-		menu03Service.deleteVoucher(voucherVo);
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			menu03Service.deleteVoucher(voucherVo);
+		}
 		
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
 	
 	// 전표 수정 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/update", method=RequestMethod.POST)
 	public String update(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
 		voucherVo.setUpdateUserid(userVo.getId());
-		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName()) || menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
+			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
 		
-		menu03Service.updateVoucher(voucherVo);
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			menu03Service.updateVoucher(voucherVo);
+		}
 		
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		
+		
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
 	
 	// 거래처, 은행, 계좌, 카드 조회
