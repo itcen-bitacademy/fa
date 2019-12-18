@@ -1140,6 +1140,7 @@ $(function() {
 <script type="text/javascript">
 
 jQuery(function(){
+	
     // 숫자 제외하고 모든 문자 삭제.
     $.fn.removeText = function(_v){
         //console.log("removeText: 숫자 제거 합니다.");
