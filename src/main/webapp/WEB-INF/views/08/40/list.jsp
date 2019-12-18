@@ -31,7 +31,7 @@
 			<div class="page-content">
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">토지현황조회</h1>
+					<h1 class="pull-left">건물현황조회</h1>
 				</div>
 				<!-- /.page-header -->
 				<div class="row-fluid">
