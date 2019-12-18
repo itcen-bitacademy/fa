@@ -38,8 +38,6 @@ public class Menu46Controller {
 	//기본
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String add(Model model) {
-		Map map = menu46Service.getListMap();
-		model.addAllAttributes(map);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	

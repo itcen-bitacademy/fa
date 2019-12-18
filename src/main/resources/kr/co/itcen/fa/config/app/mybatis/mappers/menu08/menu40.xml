@@ -54,11 +54,6 @@
         		and b.acq_price <= #{vo.acqPrice }
     		]]>
 		</if>
-		<if test='vo.flag == "d"'>
-			<![CDATA[
-        		b.flag like concat('%',#{vo.flag },'%')
-    		]]>
-		</if>
    		<![CDATA[	
 		order by b.insert_day desc
 		]]>
@@ -95,11 +90,6 @@
 		<if test='acqPrice != null'>
 			<![CDATA[
         		and b.acq_price <= #{acqPrice }
-    		]]>
-		</if>
-		<if test='flag == "d"'>
-			<![CDATA[
-        		and b.flag like concat('%',#{flag },'%')
     		]]>
 		</if>
 	</select>

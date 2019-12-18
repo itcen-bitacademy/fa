@@ -151,7 +151,8 @@
 		  			insert_day,
 		  			use_yn,
 		  			voucher_no,
-		  			account_no
+		  			account_no,
+		  			order_no
 		)
 		values (null,
 				#{amount },
@@ -160,7 +161,8 @@
 				now(),
 				true,
 				#{no },
-				#{accountNo }
+				#{accountNo },
+				#{orderNo }
 		)
 		]]>
 	</insert>
@@ -215,10 +217,7 @@
                   from tb_salescustomer
 				 union
 				select no, name
-                  from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                  from tb_purchasecustomer) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -285,7 +284,7 @@
 	  ]]>
 	</select>
 	
-	<!-- 검색된 점표 갯수 -->
+	<!-- 검색된 전표 갯수 -->
 	<select id="selectVoucherCount" resultType="int" parameterType="1vouchervo">
 		<![CDATA[
 		select count(*) as cnt
@@ -303,22 +302,36 @@
                   from tb_salescustomer
 				 union
 				select no, name
-                  from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                  from tb_purchasecustomer) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
 	 left join tb_bank_account ba
             on ba.deposit_no = m.deposit_no
-         where v.use_yn = 1
+         where
+         ]]>
+        <if test="useYn == true">
+    	   <![CDATA[
+               v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
-        ]]>
+    	   ]]>
+    	</if>
+        <if test="useYn == false">
+    	   <![CDATA[
+               v.use_yn = #{useYn }
+           and i.use_yn = #{useYn }
+           and m.use_yn = #{useYn }
+    	   ]]>
+    	</if>
     	<if test="regDate != null and !''.equals(regDate)">
     	   <![CDATA[
     	   and v.reg_date like concat('%',#{regDate },'%')
+    	   ]]>
+    	</if>
+    	<if test="no != null and !no.equals('')">
+    	   <![CDATA[
+    	   and v.no = #{no }
     	   ]]>
     	</if>
     	<if test="accountNo != null and !accountNo.equals('')">
@@ -333,7 +346,12 @@
     	</if>
     	<if test="customerNo != null and !customerNo.equals('')">
     	   <![CDATA[
-    	   and cu.no = #{customerNo };
+    	   and cu.no = #{customerNo }
+    	   ]]>
+    	</if>
+    	<if test="voucherUse != null and !voucherUse.equals('')">
+    	   <![CDATA[
+    	   and m.voucher_use = #{voucherUse };
     	   ]]>
     	</if>
 	</select>
@@ -385,13 +403,30 @@
             on c.card_no = m.card_no
 	 left join tb_bank_account ba
             on ba.deposit_no = m.deposit_no
-         where v.use_yn = 1
+         where
+         ]]>
+        <if test="vo.useYn == true">
+    	   <![CDATA[
+               v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
-        ]]>
+    	   ]]>
+    	</if>
+        <if test="vo.useYn == false">
+    	   <![CDATA[
+               v.use_yn = 0
+           and i.use_yn = 0
+           and m.use_yn = 0
+    	   ]]>
+    	</if>
     	<if test="vo.regDate != null and !vo.regDate.equals('')">
     	   <![CDATA[
     	   and v.reg_date = #{vo.regDate }
+    	   ]]>
+    	</if>
+    	<if test="vo.no != null and !vo.no.equals('')">
+    	   <![CDATA[
+    	   and v.no = #{vo.no }
     	   ]]>
     	</if>
     	<if test="vo.accountNo != null and !vo.accountNo.equals('')">
@@ -407,6 +442,11 @@
     	<if test="vo.customerNo != null and !vo.customerNo.equals('')">
     	   <![CDATA[
     	   and cu.no = #{vo.customerNo }
+    	   ]]>
+    	</if>
+    	<if test="vo.voucherUse != null and !vo.voucherUse.equals('')">
+    	   <![CDATA[
+    	   and m.voucher_use = #{vo.voucherUse }
     	   ]]>
     	</if>
       <![CDATA[
@@ -675,9 +715,11 @@
 		    , a.parent3 as parent3
 		    , a.parent4 as parent4
 		    , a.parent5 as parent5
+		    , m.customer_no as customerNo
 		  from tb_voucher_manager as v
 		  join tb_voucher_item as i on v.no = i.voucher_no
 		  join tb_account as a on a.no = i.account_no
+		  join tb_voucher_system_mapping m on m.voucher_no = v.no
 		 where v.reg_date >= #{startDate }
 		   and v.reg_date <= #{endDate }
 		   and v.use_yn = 1

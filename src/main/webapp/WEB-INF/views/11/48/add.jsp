@@ -311,6 +311,7 @@ tr td:first-child {
 					<div id="dialog-repayment-ischeck" title="상환정보여부" hidden="hidden">
 						<!-- 계좌정보 데이터 리스트 -->
 								<table id="modal-repayment-table" class="table  table-bordered table-hover">
+									<label id="repay-code"></label>
 									<thead>
 										<tr>
 											<th class="center">코드</th>
@@ -326,6 +327,12 @@ tr td:first-child {
 
 					</div>
 					
+					<!-- 상환 내역 리스트 -->
+					<div id="dialog-repayment-delete" title="상환정보여부" hidden="hidden">
+						<!-- 계좌정보 데이터 리스트 -->
+								
+
+					</div>
 					
 					<!-- 차입금코드,납입원금,납입이자,납입일자,부채유형 Modal pop-up : start -->
 					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
@@ -1073,15 +1080,16 @@ $(function() {
 						return;
 					}else{
 		         	  	var repayList = response.data;
-		         	  	
+		         	  	$("#repay-code").text(repayList[0].code);
 		         	  	for(let a in repayList) {
-		         	  		$("#tbody-repaymentList").append("<tr>" +
-		                           "<td class='center'>" + repayList[a].code + "</td>" +
-		                           "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-		                           "<td class='center'>" + repayList[a].intAmount + "</td>" +
-		                           "<td class='center'>" + repayList[a].payDate + "</td>" +
-		                           "</tr>");
-
+		         	  			
+			         	  	$("#tbody-repaymentList").append("<tr>" +
+			                          "<td class='center'>" + repayList[a].code + "</td>" +
+			                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
+			                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+			                          "<td class='center'>" + repayList[a].payDate + "</td>" +
+			                          "</tr>");
+			         	  	
 		         	  	}
 		         	  	
 		                $("#dialog-repayment-ischeck").dialog({
@@ -1213,13 +1221,114 @@ $("form").on("submit", function() {
 	 
  });
  $("#delete").click(function(){
-	 $('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
-	$('#myform').attr('method', 'POST');
+	
 	 $("input").attr('disabled',true);
 	 $("input[name=no]").attr('disabled',false);
-	 $('#myform').submit();
+	 var no = $('#no').val();
+	 
+	 $.ajax({
+			url: "${pageContext.servletContext.contextPath }/11/48/checkrepaylist?no=" + no,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json",
+			data: "",
+			success: function(response){
+				console.log(response);
+				
+				
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				
+				if(response.data.length === 0){
+					$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
+					$('#myform').attr('method', 'POST');
+					$('#myform').submit();
+					
+					return;
+				}else{
+	         	  	var repayList = response.data;
+	         	  	var code = 0;
+	         	  	for(let a in repayList) {
+	         	  		
+	         	  		if(code!=repayList[a].code){
+	         	  			
+		         	  		$("#dialog-repayment-delete").append(
+		         	  			"<table class='table  table-bordered table-hover'>"+
+		         	  			"<label id='repay-code'>"+repayList[a].code+"</label>"+
+									"<thead>"+
+										"<tr>"+
+											"<th class='center'>상환금액</th>" +
+											"<th class='center'>이자금액</th>" +
+											"<th class='center'>상환일</th>" +
+										"</tr>" +
+									"</thead>" +
+		         	  				
+		         	  				
+		         	  				"<tbody>"+
+		         	  			   "<tr>" +
+		                           "<td class='center'>" + repayList[a].payPrinc + "</td>" +
+		                           "<td class='center'>" + repayList[a].intAmount + "</td>" +
+		                           "<td class='center'>" + repayList[a].payDate + "</td>" +
+		                           "</tr>" +
+		                           "</tbody>"+
+		                          "</table>");
+		         	  		
+		         	  		code=repayList[a].code;
+	         	  		}else{
+	         	  			var dialog = $("#dialog-repayment-delete table:last tbody ");
+	         	  			
+	         	  			dialog.append(
+	         	  				  "<tr>" +
+		                           "<td class='center'>" + repayList[a].payPrinc + "</td>" +
+		                           "<td class='center'>" + repayList[a].intAmount + "</td>" +
+		                           "<td class='center'>" + repayList[a].payDate + "</td>" +
+		                           "</tr>"
+	         	  			);
+	         	  			
+	         	  			code=repayList[a].code;
+	         	  		}
+	         	  	}
+	         	  	
+	                $("#dialog-repayment-delete").dialog({
+	                	
+	                   title: "상환정보",
+	                   title_html: true,
+	                      	resizable: false,
+	         	           height: 500,
+	         	           width: 400,
+	         	           modal: true,
+	         	           close: function() {
+	                       $('#dialog-repayment-delete table').remove();
+	                    },
+	                    buttons: {
+	                    "닫기" : function() {
+	                             $(this).dialog('close');
+	                             $('#dialog-repayment-delete table').remove();
+	                        }
+	                    }
+	                });
+	                
+	                $("#dialog-repayment-delete").dialog('open');
+	         	  	
+	         	  	
+	         	  	
+				}
+				
+				},
+				error:function(xhr,error) {
+					console.err("error" + error);
+				}
+			});
+	 
 	 
  });
+ $(function() {
+	    $("#dialog-repayment-delete").dialog({
+	       autoOpen : false
+	    });
+	});
  $("#inputbtn").click(function(){
 	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add');
 	$('#myform').attr('method', 'POST');

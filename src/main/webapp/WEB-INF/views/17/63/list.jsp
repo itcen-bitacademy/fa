@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+.chosen-search {
+	display: none;
+}
+</style>
 </head>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -14,20 +19,20 @@
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-		
+
 			<%-- Page Header BEGIN --%>
 			<div class="page-header position-relative">
 				<h1 class="pull-left">대차대조표조회[63]</h1>
 			</div>
 			<%-- Page Header END --%>
-			
+
 			<%-- Page Content Header BEGIN--%>
 			<div class="row-fluid">
 				<div class="span12">
 					<h1 class="center">대차대조표</h1>
 				</div>
 			</div>
-			
+
 			<%-- 대차대조표 선택 --%>
 			<div class="row-fluid">
 				<div class="span6">
@@ -65,8 +70,8 @@
 				</div>
 			</div><!-- /.row-fluid -->
 			<%-- Page Content Header END --%>
-			
-			
+
+
 			<%-- 대차대조표 데이터 테이블 BEGINS --%>
 			<div class="row-fluid">
 				<div class="span12">
@@ -92,22 +97,41 @@
 											<td style="padding-left:6%;">${data.accountName }</td>
 										</c:otherwise>
 									</c:choose>
-									<td class="center">
+									<td style="text-align:right;">
 										<fmt:formatNumber value="${data.monthToAmount}" pattern="#,###"></fmt:formatNumber>
 									</td>
-									<td class="center">
+									<td style="text-align:right;">
 										<fmt:formatNumber value="${data.amount}" pattern="#,###"></fmt:formatNumber>
 									</td>
 								</tr>
-									
+
 							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 			</div>
 			<%-- 대차대조표 데이터 테이블 ENDS --%>
-			
-			
+
+			<%-- 에러 모달 --%>
+			<c:if test="${not empty param.error }">
+				<input type="hidden" id="errorMessage" value="${param.error }"/>
+			</c:if>
+
+			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel"></h5>
+						</div>
+						<div class="modal-body" id="staticBackdropBody"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -115,9 +139,34 @@
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
-$(function(){
-	$(".chosen-select").chosen();
-});
+	$(function(){
+		$(".chosen-select").chosen();
+
+		// 모달 설정
+		backdrop = $('#staticBackdrop')
+		backdrop.modal({
+			keyboard: false,
+			show: false
+		})
+
+		// 에러 모달 연결
+		var errorMessage = $('#errorMessage')
+		if (errorMessage.val()) {
+			openModal('Error', errorMessage.val())
+
+			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/63')
+		}
+	});
+
+	// static backdrop modal
+	var backdrop
+
+	function openModal(title, message) {
+		$('#staticBackdropLabel').text('Error')
+		$('#staticBackdropBody').text(message)
+
+		backdrop.modal('show')
+	}
 </script>
 </body>
 </html>

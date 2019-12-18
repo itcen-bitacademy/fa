@@ -55,9 +55,11 @@
 	</select>
 
 	<!-- 재무제표 계정과목 테이블 조회 카운트 가져오기 -->
-	<select id="selectCount" parameterType="accountManagement17Vo" resultType="int">
+	<select id="selectCount" parameterType="accountManagement17Vo" resultType="accountManagement17Vo">
 	<![CDATA[
-	  select count(m.no) as cnt
+ 	  select count(m.no)                     as cnt,
+ 	  	     max(m.no)                       as maxcnt, 
+             IFNULL(max(m.account_order), 0) as max
 	    from tb_account_management m, tb_account a
 	   where a.no = m.account_no
 	     and m.use_yn = 1

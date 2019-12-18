@@ -24,7 +24,7 @@
 					<div class="span12">
 						<div class="row-fluid">
 							<!-- PAGE CONTENT BEGINS -->
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">
+							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 								<div class="span6">
 									<!-- 차변 -->
 
@@ -37,7 +37,7 @@
 										</div>
 										<div style="float: left; width: 50%;">
 											<label  style="margin-right: 20px;" class="control-label" for="form-field-1">토지대분류명</label> 
-											<select class="chosen-select" id="classification" name="classification" data-placeholder="선택">
+											<select class="chosen-select" id="classification" name="sectionName" data-placeholder="선택">
 											<c:forEach items="${sectionList2 }" var="sectionVo">
 												<option></option>
 												<option value="${sectionVo.classification }">${sectionVo.classification }</option>
@@ -57,8 +57,7 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">거래처담당자명</label>
 											<div class="controls">
-												<input type="text" id="customerManager" name="customerManager"
-													placeholder="" />
+												<input type="text" id="customerManager" name="managerName" placeholder="" />
 											</div>
 										</div>
 									</div>
@@ -67,8 +66,8 @@
 										<label style="text-align:left;" class="control-label" for="form-field-1">조회</label>
 											<div class="controls">
 												<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
-												<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다.">
-												<input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
+												<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" value="" placeholder="주소를 선택하면 입력됩니다.">
+												<input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" value=""  placeholder="주소를 선택하면 입력됩니다.">
 											</div>
 									</div>
 
@@ -94,7 +93,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label">평수</label>
 										<div class="controls">
-											<input type="text" id="area" name="area" placeholder="숫자만 입력해주세요" /> 
+											<input type="text" id="area" name="landArea" placeholder="숫자만 입력해주세요" /> 
 												<input readonly style="border-style: none;" type="text" id="area" name="landArea" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
@@ -102,13 +101,14 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" id="area" name="area"placeholder="숫자만 입력해주세요" /> 
-											<input readonly style="border-style: none;" type="text" id="acqPrice" name="acqPrice" placeholder="입력된 금액이하로 검색됩니다." />
+											<input type="text" id="acqPrice" name="acqPrice"placeholder="숫자만 입력해주세요" /> 
+											<input readonly style="border-style: none;" type="text" placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
 									
 
 								</div>
+									<input type="hidden" name="searchGubun" value="조회">
 									<div class="control-group">
 										<div class="controls">
 											<div class="span3" style="float:right;width:120px">
@@ -116,7 +116,7 @@
 											</div>
 											<div class="span2" style="float:right">
 												<label style="float:right">
-													<input name="checkDel" type="checkbox" class="ace">
+													<input name="flag" type="checkbox" class="ace">
 														<span class="lbl"> 삭제포함</span>
 												</label>
 											</div>
@@ -183,12 +183,16 @@
 											<td>${sl.acqTax }</td>
 											<td>${sl.combineNo }</td>
 											<td>${sl.taxbillNo }</td>
-											<td>Y</td>
+											<c:choose>
+												<c:when test="${sl.flag eq 's'}"><td>작성</td></c:when>
+												<c:when test="${sl.flag eq 'o'}"><td>수정됨</td></c:when>
+												<c:when test="${sl.flag eq 'd'}"><td>삭제됨</td></c:when>
+											</c:choose>
 											 <%--
 											 <td>${sl.combineNo }</td>
 											 <td>${sl.insertUserid }</td>
 											<td>${sl.insertDay }</td>
-											<td>${sl.deleteFlag }</td>
+											
 											--%>
 										</tr>
 									</c:forEach>
@@ -296,7 +300,9 @@ function execDaumPostcode() {
 };
 
 //조회버튼  EV
-$(function() {
+/* $(function() {
+	var theDiv = $("#searchLandList");
+	
 	$("#searchBtn").click(function() {
 		var id = $("#id").val();  // 토지코드
 		var landKind = $("#classification").val();          //토지분류
@@ -316,6 +322,8 @@ $(function() {
 				      dataType : "json",
 				      data : {"id":id, "sectionName":landKind, "payDate":payDate, "customerName":customerName, "managerName":customerManager, "landArea":area, "wideAddress":wideAddr, "cityAddress":cityAddr, "acqPrice":acqPrice},
 				      success: function(response){
+				    	  
+				    	  
 				         if(response.result == "fail"){
 				            console.error(response.message);
 				            return;
@@ -324,7 +332,7 @@ $(function() {
 				      }
 			});
 	});
-});
+}); */
 
 </script>
 </body>

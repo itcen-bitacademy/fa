@@ -54,12 +54,15 @@ public class Menu34Controller {
 					   @RequestParam(value="search_sectiondata", required=false, defaultValue = "") String search_factorydata,
 			   		   Model model) {
 		Map<String, Object> bet_map = new HashMap<String, Object>();
+		
+		price_start = String.join("", price_start.split(","));
+		price_end = String.join("", price_end.split(","));
+		
 		bet_map.put("price_start", price_start);
 		bet_map.put("price_end", price_end);
 		bet_map.put("producedate_start", producedate_start);
 		bet_map.put("producedate_end", producedate_end);
 		
-		System.out.println("플레그 : " + deleteflag);
 		purchaseitemVo.setDeleteflag(deleteflag);
 		List<PurchaseitemVo> purchaseitemListall = menu34Service.getPurchaseitemListall(purchaseitemVo, bet_map);//모든 데이터
 		List<PurchaseitemVo> purchaseitemList = menu34Service.getPurchaseitemList(page_group, purchaseitemVo, bet_map);//5페이지씩 데이터 55개
@@ -111,11 +114,9 @@ public class Menu34Controller {
 							   		  @RequestParam(value="producedate_end", required=false, defaultValue="") String producedate_end,
 							   		  @RequestParam(value="deleteflag", required=false, defaultValue="N") String deleteflag,
 									  Model model) {
-		System.out.println(page);
-		System.out.println(page_group);
-		System.out.println(purchaseitemVo);
-		System.out.println("플레그 : " + deleteflag);
 		purchaseitemVo.setDeleteflag(deleteflag);
+		price_start = String.join("", price_start.split(","));
+		price_end = String.join("", price_end.split(","));
 		
 		Map<String, Object> bet_map = new HashMap<String, Object>();
 		bet_map.put("price_start", price_start);
@@ -144,9 +145,7 @@ public class Menu34Controller {
 									  		 @RequestParam(value="factory_page_group", required=false, defaultValue="0") int factory_page_group,
 									  		 @RequestParam(value="search_factorydata", required=false, defaultValue = "") String search_factorydata,
 									  		 Model model) {
-		System.out.println(factory_page);
 		search_factorydata = "%" + search_factorydata + "%";
-		System.out.println("search_factorydata : " + search_factorydata);
 		
 		List<SectionVo> factoryListall = menu34Service.getFactoryListall(search_factorydata);//모든 공장데이터
 		List<SectionVo> factoryList = menu34Service.getFactoryList(factory_page_group, search_factorydata);//5페이지씩 데이터 6개
@@ -169,9 +168,7 @@ public class Menu34Controller {
 									  		 @RequestParam(value="section_page_group", required=false, defaultValue="0") int section_page_group,
 									  		 @RequestParam(value="search_sectiondata", required=false, defaultValue = "") String search_sectiondata,
 									  		 Model model) {
-		System.out.println(section_page);
 		search_sectiondata = "%" + search_sectiondata + "%";
-		System.out.println("search_sectiondata : " + search_sectiondata);
 		
 		List<SectionVo> sectionListall = menu34Service.getSectionListall(search_sectiondata);//모든 대분류데이터
 		List<SectionVo> sectionList = menu34Service.getSectionList(section_page_group, search_sectiondata);//5페이지씩 데이터 6개

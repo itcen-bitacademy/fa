@@ -17,12 +17,22 @@
 	
 	<select id="getCustomerNoInfo" parameterType="String" resultType="1customervo">
 		<![CDATA[
-			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
+			select 
+				(case
+					when left(no,1) = "A"
+					then replace(left(no, 1), "A", "자산거래처")
+					when left(no,1) != "A"
+					then concat("은행")
+				 end) as customerDiv,
+				  (CASE CHAR_LENGTH(no)
+						when "07" then no
+        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+					end) as no,
 				   name as name
 		 	  from tb_customer
 		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N"
+		 	   and assets_flag != 'e'
 		 	 union
 			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
 				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
@@ -37,7 +47,6 @@
 		 	  from tb_salescustomer
 		 	 where no like '%${_parameter }%'
 		 	   and delete_flag = "N" 
-		  order by name desc
 		]]>
 	</select>
 	
@@ -45,12 +54,22 @@
 	
 	<select id="getCustomerNameInfo" parameterType="String" resultType="1customervo">
 		<![CDATA[
-			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
+			select 
+				(case
+					when left(no,1) = "A"
+					then replace(left(no, 1), "A", "자산거래처")
+					when left(no,1) != "A"
+					then concat("은행")
+				 end) as customerDiv,
+					(CASE CHAR_LENGTH(no)
+						when "07" then no
+        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+					end) as no,
 				   name as name
 		 	  from tb_customer
 		 	 where name like '${_parameter }'
 		 	   and delete_flag = "N"
+		 	   and assets_flag != 'e'
 		 	 union
 			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
 				   concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
@@ -64,17 +83,61 @@
 				   name as name
 		 	  from tb_salescustomer
 		 	 where name like '${_parameter }'
-		 	   and delete_flag = "N" 
+		 	   and delete_flag = "N"
 		  order by name desc
+		  	 
+		]]>
+	</select>
+	
+	
+	
+	<select id="getBankCodeInfo" parameterType="String" resultType="1customervo">
+		<![CDATA[
+			select no as no,
+				   name as name
+				   from tb_customer
+			 where no like '${_parameter }'
+			 and assets_flag = 'e'
+			 and name!='여비'
+		]]>
+	</select>
+	
+	<select id="getBankNameInfo" parameterType="String" resultType="1customervo">
+		<![CDATA[
+			select no as no,
+				   name as name 
+			  from tb_customer
+             where assets_flag = 'e'
+               and name!='여비'
+			   and name like '%${_parameter }%'
+		]]>
+	</select>
+	
+	<select id="getAccountCodeInfo" parameterType="String" resultType="accountManagement17Vo">
+		<![CDATA[
+			select no as accountNo,
+				   name as accountName
+				   from tb_account
+			 where no like '${_parameter }'
+		]]>
+	</select>
+	
+	<select id="getAccountNameInfo" parameterType="String" resultType="accountManagement17Vo">
+		<![CDATA[
+			select no as accountNo,
+				   name as accountName
+				   from tb_account
+			 where name like '%${_parameter }%'
 		]]>
 	</select>
 	
 	<select id="optionSearch" parameterType="map" resultType="1accountcustomerledgervo">
 		<![CDATA[
-			select a.no as accountCode,
+			select a.no as accountNo,
 				a.name as accountName,
 				cu.no as customerNo,
 		   	 	cu.name as customerName,
+		   	 	cu.store as store,
 		   	 	m.insert_day as regDate,
 			   v.no as voucherNo,
 			   i.order_no as voucherOrderNo,
@@ -101,16 +164,16 @@
             on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
-	 left join (select no, name
+	 left join (select no, name, concat("") as store
 				  from tb_customer
 				 union
-				select no, name
+				select no, name, concat("") as store
                   from tb_salescustomer
 				 union
-				select no, name
+				select no, name, concat("") as store
                   from tb_purchasecustomer
                  union
-                select code as no, name
+                select code as no, name, store as store
                   from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
@@ -132,9 +195,9 @@
 					and m.insert_day <= #{vo.datepicker2 }
 				]]>
 			</if>
-			<if test="vo.accountCode!=null and !vo.accountCode.equals('')">
+			<if test="vo.accountNo!=null and !vo.accountNo.equals('')">
 				<![CDATA[
-					and a.no = #{vo.accountCode }
+					and a.no = #{vo.accountNo }
 				]]>
 			</if>
 			<if test="vo.customerNo!=null and !vo.customerNo.equals('')">
@@ -145,7 +208,66 @@
 			
 			
 			<![CDATA[
-		      order by v.no asc, i.order_no ;
+		      order by v.no asc, i.order_no
+		      limit	#{pagination.pageIndex }, #{pagination.listSize };
+			]]>
+	</select>
+	
+	<select id="listCount" parameterType="1accountcustomerledgervo" resultType="int">
+		<![CDATA[
+			select count(*) as cnt
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+          join tb_voucher_system_mapping m
+            on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join (select no, name, concat("") as store
+				  from tb_customer
+				 union
+				select no, name, concat("") as store
+                  from tb_salescustomer
+				 union
+				select no, name, concat("") as store
+                  from tb_purchasecustomer
+                 union
+                select code as no, name, store as store
+                  from tb_bank) as cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
+           ]]>
+           
+			<if test="datepicker1!=null and !datepicker1.equals('')">		    
+				<![CDATA[
+					and m.insert_day >= #{datepicker1 }
+				]]>
+			</if>
+			<if test="datepicker2!=null and !datepicker2.equals('')">		    
+				<![CDATA[
+					and m.insert_day <= #{vo.datepicker2 }
+				]]>
+			</if>
+			<if test="accountNo!=null and !accountNo.equals('')">
+				<![CDATA[
+					and a.no = #{accountNo }
+				]]>
+			</if>
+			<if test="customerNo!=null and !customerNo.equals('')">
+				<![CDATA[
+					and cu.no like '%${customerNo }%'
+				]]>
+			</if>
+			
+			
+			<![CDATA[
+		      order by v.no asc, i.order_no;
 			]]>
 	</select>
 	

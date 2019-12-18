@@ -8,6 +8,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+#staticBackdrop {
+	z-index: -1;
+}
 .chosen-search {
 	display: none;
 }
@@ -24,7 +27,7 @@
 
 
 			<div class="page-header position-relative">
-				<h1 class="pull-left">마감현황관리[20] list</h1>
+				<h1 class="pull-left">마감현황조회[20] list</h1>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">

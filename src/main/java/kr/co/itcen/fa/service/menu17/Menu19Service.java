@@ -210,6 +210,9 @@ public class Menu19Service {
 		case "6":		// 결산팀 마감일
 			closingDate = closingDateVo.getClosingSettlementDate();
 			break;
+			
+		case "7":		// 최고관리자 접근시 검사안함
+			return true;
 		}
 		
 		Calendar now = Calendar.getInstance();

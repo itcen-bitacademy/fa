@@ -15,7 +15,8 @@
 		</selectKey>
 	</insert>
 	
-	<select id="getList" resultType="currentsituationvo" parameterType="currentsituationvo">
+	<!-- 	전체 리스트 조회, 검색 조건 추가 -->
+	<select id="getList" resultType="currentsituationvo" parameterType="map">
 	<![CDATA[
 		select  
 				  ifnull(s.section_code, p.section_code) as sectioncode
@@ -49,7 +50,7 @@
 					, s1.sales_date as sales_date
 				from tb_sales as s1
 		        where 1=1
-		        and date_format(s1.sales_date,'%Y-%m') like concat('%',#{searchdate },'%')
+		        and date_format(s1.sales_date,'%Y-%m') like concat('%',#{vo.searchdate },'%')
 				group by s1.item_name
 				)as s on pi.no = s.item_code
 		left join(
@@ -66,7 +67,7 @@
 					, p1.purchase_date as purchase_date
 				  from	tb_purchasemanagement as p1
 		          where 1=1
-		          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')
+		          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{vo.searchdate },'%')
 			     group	by p1.item_name
 		        )as p on pi.no = p.item_code
 		left join(
@@ -80,9 +81,9 @@
 							 from tb_sales as s1
 							 where 1=1
 							]]>
-	 						<if test="searchdate!=null and !searchdate.equals('')">
+	 						<if test="vo.searchdate!=null and !vo.searchdate.equals('')">
 							<![CDATA[ 
-					         and date_format(s1.sales_date,'%Y-%m') <= #{searchdate }
+					         and date_format(s1.sales_date,'%Y-%m') <= #{vo.searchdate }
 					         ]]>
 					        </if> 
 					        <![CDATA[
@@ -94,9 +95,9 @@
 							 from	tb_purchasemanagement as p1
 							 where 1=1
 							 ]]>
-							 <if test="searchdate!=null and !searchdate.equals('')">
+							 <if test="vo.searchdate!=null and !vo.searchdate.equals('')">
 							 <![CDATA[
-							  and date_format(p1.purchase_date,'%Y-%m') <= #{searchdate }
+							  and date_format(p1.purchase_date,'%Y-%m') <= #{vo.searchdate }
 							 ]]>
 							 </if>
 							 <![CDATA[
@@ -108,15 +109,19 @@
 		  where(p.quantity is not null 
 					or s.quantity is not null) 
       ]]>
-	 <if test="sectioncode!=null and !sectioncode.equals('')">
+	 <if test="vo.sectioncode!=null and !vo.sectioncode.equals('')">
 	 <![CDATA[
- 	 and ifnull(s.section_code, p.section_code) = #{sectioncode } 
+ 	 and ifnull(s.section_code, p.section_code) = #{vo.sectioncode } 
  	 ]]>
 	 </if>
 	 <![CDATA[
- 	 and pi.no like concat('%',#{itemcode },'%') 
+ 	 and pi.no like concat('%',#{vo.itemcode },'%') 
  	 ]]> 
-
+	 <if test="pagination.pageIndex >= 0">
+	 <![CDATA[
+	 limit	#{pagination.pageIndex }, #{pagination.listSize } 
+	 ]]>
+	 </if>	
 		
 	</select>		 
 	
@@ -136,5 +141,95 @@
 		    from tb_purchaseitem
 		    where section_code like #{sectioncode }
 	</select>
-
+	
+	<!-- 	전체 페이지를 카운트 하는 코드 -->
+		<select id="selectAllCount" resultType="int">
+		<![CDATA[
+			select  count(*) as cnt
+			from tb_purchaseitem as pi 
+			left join(
+			/* 매출 테이블을 품목명을 기준으로 select */
+						select 
+						s1.section_code 
+						, s1.section_name
+			            , s1.item_code 
+						, s1.item_name 
+						, sum(s1.quantity) as quantity
+						, s1.supply_value
+						, s1.tax_value 
+						, sum(s1.total_price) as total_price
+						, s1.sales_date as sales_date
+					from tb_sales as s1
+			        where 1=1
+			        and date_format(s1.sales_date,'%Y-%m') like concat('%',#{searchdate },'%')
+					group by s1.item_name
+					)as s on pi.no = s.item_code
+			left join(
+			/* 매입 테이블을 품목명을 기준으로 select */
+						select	
+			            p1.section_code
+			            , p1.section_name
+						, p1.item_code 
+						, p1.item_name 
+						, sum(p1.quantity) as quantity
+						, p1.supply_value 
+						, p1.tax_value 
+						, sum(p1.total_price) as total_price
+						, p1.purchase_date as purchase_date
+					  from	tb_purchasemanagement as p1
+			          where 1=1
+			          and date_format(p1.purchase_date,'%Y-%m') like concat('%',#{searchdate },'%')
+				     group	by p1.item_name
+			        )as p on pi.no = p.item_code
+			left join(
+	/* 재고수량을 구하기 위한 join */
+						select   pi.no as item_code  
+								, ifnull(p.quantity,0)-ifnull(s.quantity,0) as stock
+						from  tb_purchaseitem as pi
+						left join(
+								 select s1.item_code 
+			                            , sum(s1.quantity) as quantity
+								 from tb_sales as s1
+								 where 1=1
+								]]>
+		 						<if test="searchdate!=null and !searchdate.equals('')">
+								<![CDATA[ 
+						         and date_format(s1.sales_date,'%Y-%m') <= #{searchdate }
+						         ]]>
+						        </if> 
+						        <![CDATA[
+						         group by s1.item_name
+						         )as s on pi.no = s.item_code
+					    left join(
+						         select	p1.item_code
+			                            , sum(p1.quantity) as quantity
+								 from	tb_purchasemanagement as p1
+								 where 1=1
+								 ]]>
+								 <if test="searchdate!=null and !searchdate.equals('')">
+								 <![CDATA[
+								  and date_format(p1.purchase_date,'%Y-%m') <= #{searchdate }
+								 ]]>
+								 </if>
+								 <![CDATA[
+								 group	by p1.item_name
+			                    )as p on pi.no = p.item_code
+						where(p.quantity is not null 
+						      or s.quantity is not null)
+			) as st on pi.no = st.item_code
+			  where(p.quantity is not null 
+						or s.quantity is not null) 
+	      ]]>
+		 <if test="sectioncode!=null and !sectioncode.equals('')">
+		 <![CDATA[
+	 	 and ifnull(s.section_code, p.section_code) = #{sectioncode } 
+	 	 ]]>
+		 </if>
+		 <![CDATA[
+	 	 and pi.no like concat('%',#{itemcode },'%') 
+	 	 ]]> 
+		</select>
+	
+		 
+	
 </mapper>

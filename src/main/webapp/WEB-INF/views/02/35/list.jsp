@@ -380,7 +380,7 @@
 									<label class="control-label" for="depositNo">입금계좌번호</label>
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" id="depositNo" name="depositNo" style="width: 200px;"> 
+											<input type="text" id="depositNo" name="depositNo" readonly style="width: 200px;"> 
 											<span class="add-on">
 											<a href="#" id="a-bankaccountinfo-dialog">
 											<i class="icon-search icon-on-right bigger-110"></i></a></span>
@@ -485,7 +485,6 @@
 									</div>
 								</div>
 							</div>
-						</form>
 						
 							<div class="row-fluid">
 								<div class="span12">
@@ -495,11 +494,12 @@
 											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
 											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
 											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left; margin-left:20px;">입력</button>
-											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button><br>
-										<div class="hr hr-18 dotted"></div>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button>
 									</div>
+									<div class="hr hr-18 dotted"></div>
 								</div>
 							</div>
+						</form>
 							
 							<div class="row-fluid">
 								<div class="span12">

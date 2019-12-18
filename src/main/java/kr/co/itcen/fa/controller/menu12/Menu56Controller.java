@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu56Service;
@@ -34,7 +36,9 @@ public class Menu56Controller {
 	
 	// 대분류를 가져오기 위한 코드
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model ,CurrentSituationVo vo) {
+	public String list(Model model ,
+			@ModelAttribute("vo") CurrentSituationVo vo,
+			@RequestParam(value="page",required = false, defaultValue = "1")int page) {
 		
 		
 		if(vo.getItemcode() == null || "".equals(vo.getItemcode()))
@@ -43,24 +47,28 @@ public class Menu56Controller {
 			vo.setSearchdate("");
 
 		
-		//전체 리스트를 가져오기 위한 코드 
-		List<CurrentSituationVo> list = menu56Service.getList(vo);
-		model.addAttribute("list",list);
+		//전체 리스트를 가져오기 위한 코드  , page
+		DataResult<CurrentSituationVo> dataResult = menu56Service.getList(page, vo);
+		
+		model.addAttribute("dataResult",dataResult);
+		
 		
 		// 대분류 목록을 보여주기 위한 코드
 		List<SectionVo> maincategory = menu56Service.getCategory();
 		model.addAttribute("gcategory",maincategory);
-
+		
+		//품목 목록을 보여주기 위한 코드
+		List<CurrentSituationVo> subcategory = menu56Service.getItemname(vo.getSectioncode());
+		model.addAttribute("subcategory",subcategory);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	//대분류명을 선택하였을 때 품목명들이 따라오는 코드
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/api")
 	public JSONResult list(@RequestParam("sectioncode")String sectioncode) {
 
 		List<CurrentSituationVo> subcategory = menu56Service.getItemname(sectioncode);
-		
-		
 		
 		return JSONResult.success(subcategory);
 		

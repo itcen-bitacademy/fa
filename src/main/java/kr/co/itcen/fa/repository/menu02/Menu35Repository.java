@@ -27,10 +27,10 @@ public class Menu35Repository {
 //		sqlSession.insert("menu35.getList", customerVo);
 //	}
 	
-	public List<CustomerVo> getList(){
-		List<CustomerVo> result = sqlSession.selectList("menu35.getList");
-		return result;
-	}
+//	public List<CustomerVo> getList(){
+//		List<CustomerVo> result = sqlSession.selectList("menu35.getList");
+//		return result;
+//	}
 	
 	public Boolean insert(CustomerVo vo) {
 		int count = sqlSession.insert("menu35.insert", vo);

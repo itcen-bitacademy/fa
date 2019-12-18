@@ -54,18 +54,6 @@ public class Menu34Repository {
 		map.put("producedate_start", bet_map.get("producedate_start"));
 		map.put("producedate_end", bet_map.get("producedate_end"));
 		
-		System.out.println(no);
-		System.out.println(name);
-		System.out.println(sectionname);
-		System.out.println(sectioncode);
-		System.out.println(factoryname);
-		System.out.println(factorycode);
-		System.out.println(deleteflag);
-		System.out.println(bet_map.get("price_start"));
-		System.out.println(bet_map.get("price_end"));
-		System.out.println(bet_map.get("producedate_start"));
-		System.out.println(bet_map.get("producedate_end"));
-		
 		List<PurchaseitemVo> purchaseitemListall = sqlSession.selectList("menu34.getPurchaseitemListall", map);
 		
 		return purchaseitemListall;
@@ -96,20 +84,6 @@ public class Menu34Repository {
 		map.put("producedate_start", bet_map.get("producedate_start"));
 		map.put("producedate_end", bet_map.get("producedate_end"));
 		
-		System.out.println(no);
-		System.out.println(name);
-		System.out.println("pagegroup" + page_group);
-		System.out.println(sectionname);
-		System.out.println(sectioncode);
-		System.out.println(factoryname);
-		System.out.println(factorycode);
-		System.out.println(deleteflag);
-		System.out.println(bet_map.get("price_start"));
-		System.out.println(bet_map.get("price_end"));
-		System.out.println(bet_map.get("producedate_start"));
-		System.out.println(bet_map.get("producedate_end"));
-		
-		
 		List<PurchaseitemVo> purchaseitemList = sqlSession.selectList("menu34.getPurchaseitemList", map);
 		
 		return purchaseitemList;
@@ -139,21 +113,6 @@ public class Menu34Repository {
 		map.put("price_end", bet_map.get("price_end"));
 		map.put("producedate_start", bet_map.get("producedate_start"));
 		map.put("producedate_end", bet_map.get("producedate_end"));
-		
-		
-		System.out.println(no);
-		System.out.println(name);
-		System.out.println("page" + page);
-		System.out.println(sectionname);
-		System.out.println(sectioncode);
-		System.out.println(factoryname);
-		System.out.println(factorycode);
-		System.out.println(deleteflag);
-		System.out.println(bet_map.get("price_start"));
-		System.out.println(bet_map.get("price_end"));
-		System.out.println(bet_map.get("producedate_start"));
-		System.out.println(bet_map.get("producedate_end"));
-		
 		
 		List<PurchaseitemVo> pagepurchaseitemList = sqlSession.selectList("menu34.getpagePurchaseitemList", map);
 		

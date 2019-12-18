@@ -1,7 +1,5 @@
 package kr.co.itcen.fa.controller.menu12;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.service.MenuService;
 import kr.co.itcen.fa.service.menu12.Menu54Service;
-import kr.co.itcen.fa.vo.menu12.SellTaxbillVo;
 import kr.co.itcen.fa.vo.menu12.TaxbillSearchVo;
 
 /**
@@ -34,24 +30,26 @@ public class Menu54Controller {
 	
 	
 	// 필터기능없이 조회되는 리스트 
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list", "/" + SUBMENU + "/{page }" }, method=RequestMethod.GET)
+	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list", "/" + SUBMENU + "/{page}" }, method=RequestMethod.GET)
 	public String list(Model model, @PathVariable(name="page", required=false) String page) {
+		
+		System.out.println("검색기능없는 조회");
+		System.out.println("-----" + page + "넘어오는 페이지");
 		
 		int ipage = 1;
 		if(page!=null) { // pathvariable 페이지 없는경우 1페이지 세팅
 			ipage = Integer.parseInt(page);
 		} 
 		
+		System.out.println("-----" + ipage + "현재 페이지");
+		
 		// 거래처에 대한 리스트를 출력해주는 기능
-		//List<SellTaxbillVo> customerlist = menu54Service.salesCustomer();
 		model.addAttribute("customerlist", menu54Service.salesCustomer());
 		
 		// 판매물품에 대한 리스트를 출력해주는 기능
-		//List<SellTaxbillVo> itemlist = menu54Service.salesItems();
 		model.addAttribute("itemlist", menu54Service.salesItems());
 		
 		// 세금계산서에 대한 리스트를 출력해주는 기능
-		//List<SellTaxbillVo> taxlist = menu54Service.taxbillList();
 		model.addAttribute("taxlist", menu54Service.taxbillList());
 		
 		// 필터기능을 거치지 않고 전체 리스트가 조회되는 기능
@@ -67,28 +65,32 @@ public class Menu54Controller {
 			@RequestParam(name="viewCount") int viewCount) {
 		
 		System.out.println("검색기능");
+		System.out.println("-----" + page + "넘어오는 페이지");
 		
 		int ipage = 1;
 		if(page!=null) { // pathvariable 페이지 없는경우 1페이지 세팅
 			ipage = Integer.parseInt(page);
 		}
 		
-		List<SellTaxbillVo> customerlist = menu54Service.salesCustomer();
-		model.addAttribute("customerlist", customerlist);
+		System.out.println("-----" + ipage + "현재 페이지");
 		
-		List<SellTaxbillVo> itemlist = menu54Service.salesItems();
-		model.addAttribute("itemlist", itemlist);
+		tvo.setSearchFlag(true); // 검색 여부 플래그
 		
-		List<SellTaxbillVo> taxlist = menu54Service.taxbillList();
-		model.addAttribute("taxlist", taxlist);
+		// 거래처에 대한 리스트를 출력해주는 기능
+		model.addAttribute("customerlist", menu54Service.salesCustomer());
+				
+		// 판매물품에 대한 리스트를 출력해주는 기능
+		model.addAttribute("itemlist", menu54Service.salesItems());
+				
+		// 세금계산서에 대한 리스트를 출력해주는 기능
+		model.addAttribute("taxlist", menu54Service.taxbillList());
 		
-		//List<SellTaxbillVo> alllist = menu54Service.taxbillAllList(ipage);
-		model.addAttribute("alllist", menu54Service.taxbillAllList(ipage));
-		
-		List<SellTaxbillVo> resultlist = menu54Service.taxbillSearch(tvo, ipage, viewCount);
-		model.addAttribute("resultlist", resultlist);
+		model.addAttribute("resultlist", menu54Service.taxbillSearch(tvo, ipage, viewCount));
 		
 		System.out.println(tvo.toString());	// 객체에 값은 담겨있다.
+		
+		model.addAttribute("search", tvo);		// 검색 조건 데이터 저장
+		model.addAttribute("viewCount", viewCount);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

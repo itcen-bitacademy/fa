@@ -32,15 +32,7 @@ public class Menu36Controller {
 	@Autowired
 	private Menu36Service menu36Service;
 	
-	
-	// 걍 페이지 들어가자마자 조회
-//	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-//	public String list(Model model) {
-//		List<CustomerVo> customerVo = menu36Service.list();
-//		model.addAttribute("customerVo", customerVo);
-//		return MAINMENU + "/" + SUBMENU + "/list";
-//	}
-	
+	// 조회
 	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
 	public String closingDateListPage(CustomerVo customerVo, Model model, @RequestParam(defaultValue = "1") int page) {
 		

@@ -4,22 +4,22 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("repayvo")
 public class RepayVo {
-	private Long no;// 번호
-	private Long debtNo;// 사채,장기,단기 번호
-	private String code; // 각 사채, 장기, 단기 테이블과 비교하기 위한 변수
-	private Long payPrinc;// 상환액
-	private Long tempPayPrinc; // 상환잔액 수정시에 임시저장하는 변수
-	private Long intAmount; // 이자금액
-	private String payDate;// 상환 일
-	private String debtType;// 사채,장기,단기 구분
-	private Long voucherNo;// 전표번호
-	private String depositNo;// 계좌번호
-	private Long accountNo; // 계정코드
-	private String deleteFlag;// 식제여부
-	private String insertId;// 등록자
-	private String insertDate;// 등록일
-	private String updateId;// 수정자
-	private String updateDate;// 수정일
+	private Long no;			// 번호
+	private Long debtNo;		// 사채,장기,단기 번호
+	private String code; 		// 각 사채, 장기, 단기 테이블과 비교하기 위한 변수
+	private Long payPrinc;		// 상환액
+	private Long tempPayPrinc;  // 상환잔액 수정시에 임시저장하는 변수
+	private Long intAmount; 	// 이자금액
+	private String payDate;		// 상환 일
+	private String debtType;	// 사채,장기,단기 구분
+	private Long voucherNo;		// 전표번호
+	private String depositNo;	// 계좌번호
+	private Long accountNo = 9201101L; // 이자비용 계정코드
+	private String deleteFlag;	// 식제여부
+	private String insertId;	// 등록자
+	private String insertDate;	// 등록일
+	private String updateId;	// 수정자
+	private String updateDate;	// 수정일
 
 	public Long getNo() {
 		return no;
@@ -100,7 +100,7 @@ public class RepayVo {
 	public void setDepositNo(String depositNo) {
 		this.depositNo = depositNo;
 	}
-
+	
 	public Long getAccountNo() {
 		return accountNo;
 	}
@@ -108,7 +108,7 @@ public class RepayVo {
 	public void setAccountNo(Long accountNo) {
 		this.accountNo = accountNo;
 	}
-
+	
 	public String getDeleteFlag() {
 		return deleteFlag;
 	}
@@ -151,11 +151,10 @@ public class RepayVo {
 
 	@Override
 	public String toString() {
-		return "RepayVo [no=" + no + ", debtNo=" + debtNo + ", code=" + code + ", payPrinc=" + payPrinc
-				+ ", tempPayPrinc=" + tempPayPrinc + ", intAmount=" + intAmount + ", payDate=" + payDate + ", debtType="
-				+ debtType + ", voucherNo=" + voucherNo + ", depositNo=" + depositNo + ", accountNo=" + accountNo
-				+ ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate + ", updateId="
-				+ updateId + ", updateDate=" + updateDate + "]";
+		return "RepayVo [no=" + no + ", debtNo=" + debtNo + ", code=" + code + ", payPrinc=" + payPrinc + ", intAmount="
+				+ intAmount + ", payDate=" + payDate + ", debtType=" + debtType + ", voucherNo=" + voucherNo
+				+ ", depositNo=" + depositNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate="
+				+ insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
 	}
 
 }

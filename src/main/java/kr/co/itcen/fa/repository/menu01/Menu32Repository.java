@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.AccountCustomerLedgerVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
+import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 
 /**
  * 
@@ -48,17 +50,36 @@ public class Menu32Repository {
 		return sqlSession.selectOne("menu28.searchCount",aclVo);
 	}*/
 
-	public List<AccountCustomerLedgerVo> list(/*PaginationUtil pagination,*/ AccountCustomerLedgerVo aclVo,
-			Long accountCode, String datepicker1, String datepicker2, String customerNo) {
+	public List<AccountCustomerLedgerVo> list(AccountCustomerLedgerVo aclVo, PaginationUtil pagination) {
 		Map<String,Object> map = new HashMap<String, Object>();
-		//map.put("pagination",pagination);
+		map.put("pagination", pagination);
 		map.put("vo", aclVo);
-		map.put("accountCode", accountCode);
-		map.put("datepicker1", datepicker1);
-		map.put("datepicker2", datepicker2);
-		map.put("customerNo", customerNo);
 		List<AccountCustomerLedgerVo> list = sqlSession.selectList("menu32.optionSearch",map);
 		return list;
+	}
+
+	public List<CustomerVo> getBankCodeInfo(String customerNo) {
+		String no = "%" + customerNo +"%";
+		List<CustomerVo> result = sqlSession.selectList("menu32.getBankCodeInfo", no);
+		return result;
+	}
+
+	public List<CustomerVo> getBankNameInfo(String name) {
+		return sqlSession.selectList("menu32.getBankNameInfo", name);
+	}
+
+	public List<AccountManagementVo> getAccountNoInfo(String accountNo) {
+		String acno = "%" + accountNo +"%";
+		List<AccountManagementVo> result = sqlSession.selectList("menu32.getAccountCodeInfo", acno);
+		return result;
+	}
+
+	public List<AccountManagementVo> getAccountNameInfo(String accountName) {
+		return sqlSession.selectList("menu32.getAccountNameInfo", accountName);
+	}
+
+	public int listCount(AccountCustomerLedgerVo aclVo) {
+		return sqlSession.selectOne("menu32.listCount", aclVo);
 	}
 
 

@@ -8,6 +8,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+#staticBackdrop {
+	z-index: -1;
+}
 .chosen-search {
 	display: none;
 }

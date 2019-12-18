@@ -102,4 +102,22 @@ public class Menu50RepayApiController {
 
 		return JSONResult.success(pdebtVo);
 	}
+	
+	//상환내역이 있을경우 수정불가
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/checkrepay")
+	public JSONResult checkrepay(
+			@RequestParam(value = "no", required = true) Long no) {
+		List<RepayVo> list = menu50Service.getRepay(no);
+		return JSONResult.success(list);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/checkrepaylist")
+	public JSONResult checkrepay(
+			@RequestParam(value = "no", required = true) Long[] no) {
+		List<RepayVo> list = menu50Service.getRepay(no);
+		System.out.println(list);
+		return JSONResult.success(list);
+	}
 }

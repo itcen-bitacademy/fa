@@ -14,6 +14,10 @@
 .chosen-search {
 	display: none;
 }
+
+.control-group {
+	text-align:justify; 
+}
 </style>
 
 <script
@@ -51,6 +55,10 @@
 		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
+	        
+	        $("input[name=balance]").val($("input[name=balance]").val().replace(/[^0-9]/g,""));
+	        $("input[name=depositLimit]").val($("input[name=depositLimit]").val().replace(/[^0-9]/g,""));
+	        
 			if($("input[name=balance]").val() == "") {
 				$("input[name=balance]").val(0);		
 			}
@@ -226,9 +234,9 @@
 			        "<td>" + bankList[bankdeposit].depositHost + "</td>" +
 			        "<td>" + bankList[bankdeposit].makeDate + "</td>" +
 			        "<td>" + bankList[bankdeposit].enDate + "</td>" +
-			        "<td>" + bankList[bankdeposit].balance + "</td>" +	
-			        "<td>" + bankList[bankdeposit].depositLimit + "</td>" +
-			        "<td>" + bankList[bankdeposit].profit + "</td>" +
+			        "<td style ='text-align:right'>" + addCommas(bankList[bankdeposit].balance) + "</td>" +	
+			        "<td style ='text-align:right'>" + addCommas(bankList[bankdeposit].depositLimit) + "</td>" +
+			        "<td style ='text-align:right'>" + bankList[bankdeposit].profit + "</td>" +
 			        "<td>" + bankList[bankdeposit].bankName + "</td>" +
 			        "<td>" + bankList[bankdeposit].bankLocation + "</td>" +
 			        "<td>" + bankList[bankdeposit].banker + "</td>" +
@@ -313,7 +321,7 @@
 			console.log(bankcodeVal);
 			// ajax 통신
 			$.ajax({
-				url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+				url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcode=" + bankcodeVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
 				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -326,11 +334,11 @@
 				success: function(response){
 					$("#input-dialog-bankcode").val('');
 					$("#tbody-bankList").append("<tr>" +
-							"<td class='center'>" + item.code + "</td>" +
-					        "<td class='center'>" + item.name + "</td>" +
-					        "<td class='center'>" + item.store + "</td>" +
-					        "<td style='visibility:hidden;position:absolute;'>" + item.mgr + "</td>" +
-					        "<td style='visibility:hidden;position:absolute;'>" + item.mgrPhone + "</td>" +
+							"<td class='center'>" + response.data.code + "</td>" +
+					        "<td class='center'>" + response.data.name + "</td>" +
+					        "<td class='center'>" + response.data.store + "</td>" +
+					        "<td style='visibility:hidden;position:absolute;'>" + response.data.mgr + "</td>" +
+					        "<td style='visibility:hidden;position:absolute;'>" + response.data.mgrPhone + "</td>" +
 					        "</tr>");
 				},
 				error: function(xhr, error){
@@ -448,6 +456,18 @@
 		});
 
 	});
+	function addCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+   }
+
+   
+   $("input[name=balance]").on('keyup', function(event){
+   	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+   });
+   
+   $("input[name=depositLimit]").on('keyup', function(event){
+	   	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
 	  
 	
 </script>
@@ -460,9 +480,6 @@
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
-
-
-
 				<div class="page-header position-relative">
 					<h1 class="pull-left">계좌 관리</h1>
 					<a class="btn btn-link pull-right"
@@ -481,11 +498,11 @@
 							<div class="tabbable">
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">계좌 번호</label>
+									<label class="control-label" for="form-field-1" style="text-align=left">계 좌 번 호</label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" name="depositNo"
-											placeholder="계좌 번호" /> <input type="hidden"
+											placeholder="계좌 번호"  /> <input type="hidden"
 											name="depositOld" />
 									</div>
 								</div>
@@ -500,7 +517,7 @@
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">개설 일자</label>
+									<label class="control-label" for="form-field-1">개 설 일 자</label>
 
 									<div class="controls">
 										<div class="input-append">
@@ -509,7 +526,7 @@
 												class="icon-calendar"></i>
 											</span>
 										</div>
-										&nbsp; &nbsp; 만기 일자 &nbsp;
+										&nbsp; &nbsp; 만 기 일 자 &nbsp;
 										<div class="input-append">
 											<input type="text" id="datepicker" name="enDate"
 												class="cl-date-picker" /> <span class="add-on"> <i
@@ -520,7 +537,7 @@
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">잔액 </label>
+									<label class="control-label" for="form-field-1">잔 액 </label>
 
 									<div class="controls">
 										<input type="text" id="form-field-1" name="balance"
@@ -547,7 +564,7 @@
 						<!-- 4조에서 데이터 가져오는 부분 -->
 						<div class="span6">
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">은행 코드 </label>
+								<label class="control-label" for="form-field-1">은 행 코 드 </label>
 								<div class="controls">
 
 									<span class="btn btn-small btn-info"> <a href="#"
@@ -598,21 +615,21 @@
 							<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">개설 지점 </label>
+								<label class="control-label" for="form-field-1">개 설 지 점 </label>
 								<div class="controls">
 									<input type="text" id="form-field-2" name="bankLocation"
 										placeholder="Username" />
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">은행담당자 </label>
+								<label class="control-label" for="form-field-1">은 행 담 당 자 </label>
 								<div class="controls">
 									<input type="text" id="form-field-2" name="banker"
 										placeholder="Username" />
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">은행전화번호 </label>
+								<label class="control-label" for="form-field-1">은 행 전 화 번 호 </label>
 								<div class="controls">
 									<input type="text" id="form-field-2" name="bankPhoneCall"
 										placeholder="Username" />
@@ -685,9 +702,9 @@
 											<td>${vo.depositHost }</td>
 											<td>${vo.makeDate}</td>
 											<td>${vo.enDate}</td>
-											<td>${vo.balance}</td>
-											<td>${vo.depositLimit }</td>
-											<td>${vo.profit}</td>
+											<td style ="text-align:right"><fmt:formatNumber value="${vo.balance}" pattern="#,###"  /></td>
+											<td style ="text-align:right"><fmt:formatNumber value="${vo.depositLimit }" pattern="#,###"  /></td>
+											<td style ="text-align:right">${vo.profit}</td>
 											<td>${vo.bankName }</td>
 											<td>${vo.bankLocation }</td>
 											<td>${vo.banker }</td>

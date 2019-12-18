@@ -64,7 +64,8 @@
 			 from tb_purchasecustomer p left outer join tb_bank_account b
 			   on p.deposit_no = b.deposit_no
 			where p.no like CONCAT('%',#{no},'%')
-		 order by p.no;
+		 order by p.no
+		 limit 0,3;
 		]]>
 	</select>
 	
@@ -126,7 +127,8 @@
 				#{managerName}, 
 				#{managerEmail}, 
 				#{depositNo}, 
-				#{depositHost}, 
+				#{depositHost},
+				#{bankCode},
 				#{insertUserid}, 
 				now(), 
 				null, 

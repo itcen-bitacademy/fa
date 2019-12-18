@@ -175,6 +175,10 @@
 			});
 		});
 		
+		function numberFormat(number) {
+			return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
 		function updateTable(purchaseitemList, page_num) {
 			$("#select-purchaseitem-list").remove();
 			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>")
@@ -187,10 +191,10 @@
 					"<td>" + isEmpty((i + (page_num-1)*11)) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].no) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].name) + "</td>" +
-					"<td class='hidden-480'>" + isEmpty(purchaseitemList[pur].sectioncode) + "</td>" +
-					"<td class='hidden-phone'>" + isEmpty(purchaseitemList[pur].sectionname) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].sectioncode) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].sectionname) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].standard) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].price) + "</td>" +
+					"<td style='text-align:right'>" + isEmpty(numberFormat(purchaseitemList[pur].price)) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].purpose) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].factorycode) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].factoryname) + "</td>" +
@@ -541,6 +545,56 @@
 			}
 		}
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		$("#form-field-price1").on("focus", function() {
+			var price = $(this).val();
+			price = removeCommas(price);
+			$(this).val(price);
+		}).on("focusout", function() {
+			var price = $(this).val();
+			
+			if(price && price.length > 0) {
+				if(!$.isNumeric(price)) {
+					price = price.replace(/[^0-9]/g,"");
+				}
+				
+				price = addCommas(price);
+				$(this).val(price);
+			}
+		}).on("keyup", function() {
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+	    
+		$("#form-field-price2").on("focus", function() {
+			var price = $(this).val();
+			price = removeCommas(price);
+			$(this).val(price);
+		}).on("focusout", function() {
+			var price = $(this).val();
+			
+			if(price && price.length > 0) {
+				if(!$.isNumeric(price)) {
+					price = price.replace(/[^0-9]/g,"");
+				}
+				
+				price = addCommas(price);
+				$(this).val(price);
+			}
+		}).on("keyup", function() {
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+		
+	    function addCommas(price) {
+	    	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	    }
+	    
+	    function removeCommas(price) {
+	    	if(!price || price.length == 0) {
+	    		return "";
+	    	} else {
+	    		return price.split(",").join("");
+	    	}
+	    }
 	});
 </script>
 
@@ -754,9 +808,9 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-price">단가</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-price1" name="price_start"/>
+										<input class="span4" type="text" id="form-field-price1" style="text-align:right" name="price_start"/>
 										&nbsp;~&nbsp;
-										<input class="span4" type="text" id="form-field-price2" name="price_end"/> 원
+										<input class="span4" type="text" id="form-field-price2" style="text-align:right" name="price_end"/> 원
 									</div>
 								</div>
 							</div>
@@ -848,10 +902,10 @@
 											<td>${status.count}</td>
 											<td>${pl.no }</td>
 											<td>${pl.name }</td>
-											<td class="hidden-480">${pl.sectioncode }</td>
-											<td class="hidden-phone">${pl.sectionname }</td>
+											<td>${pl.sectioncode }</td>
+											<td>${pl.sectionname }</td>
 											<td>${pl.standard }</td>
-											<td>${pl.price }</td>
+											<td style="text-align:right"><fmt:formatNumber value="${pl.price }" pattern="#,###"/></td>
 											<td>${pl.purpose }</td>
 											<td>${pl.factorycode }</td>
 											<td>${pl.factoryname }</td>

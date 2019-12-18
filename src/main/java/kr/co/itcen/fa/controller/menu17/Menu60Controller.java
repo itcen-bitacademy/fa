@@ -52,6 +52,7 @@ public class Menu60Controller {
 		}
 
 		//조회할 값들 셋팅
+		accountManagement.setAccountUsedyear(accountUsedyear);
 		accountManagement.setAccountStatementType(type);
 		accountManagement.setInsertUserid(authUser.getName());		
 		if(accountNo != null) {

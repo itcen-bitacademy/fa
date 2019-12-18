@@ -115,5 +115,12 @@ public class Menu48Repository {
 		List<RepayVo> list = sqlSession.selectList("menu48.selectrepaylist",no);
 		return list;
 	}
-
+	public List<RepayVo> getRepay(Long[] no) {
+		List<Long>listRepay = new ArrayList<Long>();
+		for(Long no1: no) {
+			listRepay.add(no1);
+		}
+		List<RepayVo> list = sqlSession.selectList("menu48.selectrepayAlllist",listRepay);
+		return list;
+	}
 }

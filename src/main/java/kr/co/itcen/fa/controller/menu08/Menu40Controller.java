@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -41,7 +43,7 @@ public class Menu40Controller {
 	//               /08   /   40     , /08/40/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, @RequestParam(value="page", required=false,defaultValue = "1") int page, BuildingVo vo) {
-		System.out.println("조회 페이지 입성~" + vo);
+		
 		if(vo.getId() == null || "".equals(vo.getId()))
 			vo.setId("");
 		if(vo.getPayDate() == null || "".equals(vo.getPayDate()))
@@ -56,8 +58,10 @@ public class Menu40Controller {
 			vo.setCityAddress("");
 		if(vo.getDetailAddress() == null || "".equals(vo.getDetailAddress()))
 			vo.setDetailAddress("");
-		if(vo.getFlag() == null || "".equals(vo.getFlag()))
-			vo.setFlag("s");
+		if("".equals(vo.getFlag()))
+			vo.setFlag("");
+		else vo.setFlag("s");
+		
 		
 		//dataresult 생성
 		DataResult<BuildingVo> dataResult = menu40Service.list(vo, page); 
@@ -74,6 +78,21 @@ public class Menu40Controller {
 		//거래처
 		map.putAll(menu40Service.getCustomer());
 		model.addAllAttributes(map);
+		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance()
+				.queryParam("id",vo.getId())
+				.queryParam("payDate",vo.getPayDate())
+				.queryParam("sectionNo",vo.getSectionNo())
+				.queryParam("customerNo",vo.getCustomerNo())
+				.queryParam("cityAddress",vo.getCityAddress())
+				.queryParam("detailAddress",vo.getDetailAddress())
+				.queryParam("flag",vo.getFlag())
+				.build();
+		String uri = uriComponents.toUriString();
+		model.addAttribute("uri",uri);
+		model.addAttribute("vo",vo);
+				
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

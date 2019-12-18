@@ -3,6 +3,7 @@ package kr.co.itcen.fa.controller.menu01;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,15 +34,11 @@ public class Menu32Controller {
 
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
-			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "accountCode", required = false, defaultValue = "") Long accountCode,
-			@RequestParam(value = "datepicker1", required = true, defaultValue = "") String datepicker1,
-			@RequestParam(value = "datepicker2", required = true, defaultValue = "") String datepicker2,
-			@RequestParam(value = "customerNo", required = true, defaultValue = "All") String customerNo,
-			AccountCustomerLedgerVo aclVo) {
+			@RequestParam(defaultValue = "1") int page,
+			@ModelAttribute AccountCustomerLedgerVo aclVo) {
 		model.addAttribute("accountList", menu59Service.getAllAccountList());// 계정코드가져오기~
 		menu32Service.test();
-		DataResult<AccountCustomerLedgerVo> dataResult=menu32Service.list(/*page,*/aclVo,accountCode,datepicker1,datepicker2,customerNo);
+		DataResult<AccountCustomerLedgerVo> dataResult=menu32Service.list(aclVo, page);
 		model.addAttribute("dataResult", dataResult);
 
 		return MAINMENU + "/" + SUBMENU + "/list";

@@ -130,20 +130,20 @@ public class Menu61Service {
 	 * 시산표 데이터 적산
 	 */
 	private void addAccountAmount(TrialBalanceVo tbVo, StatementDataVo vo, String type) {
-		if (type.equalsIgnoreCase("C")) {	// 차변 계산
-			// 당월 차변 계산
+		if (type.equalsIgnoreCase("C")) {	// 대변 계산
+			// 당월 대변 계산
 			Long creditSpotMonth = (tbVo.getCreditSpotMonth() == null) ? 0 : tbVo.getCreditSpotMonth();
 			tbVo.setCreditSpotMonth(creditSpotMonth + vo.getAmount());
 			
-			// 차변 합계 계산
+			// 대변 합계 계산
 			Long creditTotal = (tbVo.getCreditTotal() == null) ? 0 : tbVo.getCreditTotal();
 			tbVo.setCreditTotal(creditTotal + vo.getAmount());
-		} else {							// 대변 계산
-			// 당월 대변 계산
+		} else {							// 차변 계산
+			// 당월 차변 계산
 			Long debtorSpotMonth = (tbVo.getDebtorSpotMonth() == null) ? 0 : tbVo.getDebtorSpotMonth();
 			tbVo.setDebtorSpotMonth(debtorSpotMonth + vo.getAmount());
 			
-			// 대변 합계 계산
+			// 차변 합계 계산
 			Long debtorTotal = (tbVo.getDebtorTotal() == null) ? 0 : tbVo.getDebtorTotal();
 			tbVo.setDebtorTotal(debtorTotal + vo.getAmount());
 			

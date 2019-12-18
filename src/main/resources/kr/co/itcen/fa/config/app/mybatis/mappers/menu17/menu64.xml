@@ -4,33 +4,47 @@
 
 	<select id="selectIncomeStatementDataList" parameterType="closingDate17Vo" resultType="financialStatementVo">
 		<![CDATA[
-			select	null as no, 
-					am.account_statement_type as accountStatementType, 
-					t.closing_date_no as closingDateNo, 
-					am.account_no as accountNo, 
-					am.account_order as accountOrder, 
-					a.name as accountName,
-					(case 
-					 when a.balance_type = "C" 
-					 then (ifnull(t.credit_spot_month, 0) - ifnull(t.debtor_spot_month, 0)) 
-					 else (ifnull(t.debtor_spot_month, 0) - ifnull(t.credit_spot_month, 0)) 
-					 end) as monthToAmount, 
+			select  null as no, 
+					 am.account_statement_type as accountStatementType, 
+					 ifnull(existCost.closing_date_no, #{no }) as closingDateNo, 
+					 am.account_no as accountNo, 
+					 am.account_order as accountOrder, 
+					 a.name as accountName, 
 					 (case 
-					 when a.balance_type = "C" 
-					 then (ifnull(t.credit_total, 0) - ifnull(t.debtor_total, 0)) 
-					 else (ifnull(t.debtor_total, 0) - ifnull(t.credit_total, 0)) 
-					 end) as amount, 
-					 t.insert_userid as insertUserid, 
-					 t.insert_day as insertDay, 
+					  when a.balance_type = "C" 
+					  then (ifnull(existCost.credit_spot_month, 0) - ifnull(existCost.debtor_spot_month, 0)) 
+					  else (ifnull(existCost.debtor_spot_month, 0) - ifnull(existCost.credit_spot_month, 0)) 
+					  end) as monthToAmount, 
+					 (case 
+					  when a.balance_type = "C" 
+					  then (ifnull(existCost.credit_total, 0) - ifnull(existCost.debtor_total, 0)) 
+					  else (ifnull(existCost.debtor_total, 0) - ifnull(existCost.credit_total, 0)) 
+					  end) as amount, 
+					 existCost.insert_userid as insertUserid, 
+					 existCost.insert_day as insertDay, 
 					 null as updateUserid, 
 					 null as updateDay
-			 from	tb_account_management as am 
-			 left join	tb_account as a on a.no = am.account_no 
-			 left join	tb_trial_balance as t on t.account_no = am.account_no 
-			 where	am.account_statement_type = 'I' 
-			   and	am.account_usedyear = substr(#{closingYearMonth }, 1, 4)
-			   and	am.use_yn = true 
-			   and	t.closing_date_no = #{no };
+			from	tb_account_management as am
+			left join	tb_account as a on am.account_no = a.no 
+			left join  (select  tb.closing_date_no,
+								tb.account_no, 
+								tb.debtor_total,
+								tb.credit_total,
+								tb.debtor_spot_month,
+								tb.credit_spot_month,
+								tb.insert_userid, 
+								tb.insert_day
+		  				 from	tb_trial_balance as tb, 
+							  	tb_account_management as am
+		  				 where  tb.account_no = am.account_no 
+		  				   and  am.account_usedyear = substr(#{closingYearMonth }, 1, 4)
+						   and	am.account_statement_type = 'I' 
+						   and	am.use_yn = true 
+						   and	tb.closing_date_no = #{no }
+						) as existCost on am.account_no = existCost.account_no 
+			where 	am.account_statement_type = 'I' 
+			  and	am.account_usedyear = substr(#{closingYearMonth }, 1, 4)
+			  and	am.use_yn = true;
 		]]>
 	</select>
 	

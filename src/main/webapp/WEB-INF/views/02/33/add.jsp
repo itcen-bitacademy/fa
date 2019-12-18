@@ -43,7 +43,7 @@
 						$("#form-field-factory-roadaddress").val(data.roadaddress);
 						$("#form-field-factory-detailaddress").val(data.detailaddress);
 						$("#form-field-standard").val(data.standard);
-						$("#form-field-price").val(data.price);
+						$("#form-field-price").val(numberFormat(data.price));
 						
 						$("#form-field-item-name").val(data.name);
 						$("#form-field-section-code").val(data.section_code);
@@ -213,7 +213,7 @@
 						$("#form-field-factory-roadaddress").val(data.roadaddress);
 						$("#form-field-factory-detailaddress").val(data.detailaddress);
 						$("#form-field-standard").val(data.standard);
-						$("#form-field-price").val(data.price);
+						$("#form-field-price").val(numberFormat(data.price));
 						
 						$("#form-field-item-name").val(data.name);
 						$("#form-field-section-code").val(data.section_code);
@@ -297,6 +297,10 @@
 			});
 		});
 		
+		function numberFormat(number) {
+			return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
 		function updateTable(purchaseitemList, page_num) {
 			$("#select-purchaseitem-list").remove();
 			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>");
@@ -309,10 +313,10 @@
 					"<td>" + isEmpty((i + (page_num-1)*11)) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].no) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].name) + "</td>" +
-					"<td class='hidden-480'>" + isEmpty(purchaseitemList[pur].sectioncode) + "</td>" +
-					"<td class='hidden-phone'>" + isEmpty(purchaseitemList[pur].sectionname) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].sectioncode) + "</td>" +
+					"<td>" + isEmpty(purchaseitemList[pur].sectionname) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].standard) + "</td>" +
-					"<td>" + isEmpty(purchaseitemList[pur].price) + "</td>" +
+					"<td style='text-align:right'>" + isEmpty(numberFormat(purchaseitemList[pur].price)) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].managername) + "</td>" +
 					"<td>" + isEmpty(purchaseitemList[pur].producedate) + "</td>" +
 					"</tr>"
@@ -657,10 +661,39 @@
 			}
 		}
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    
+		$("#form-field-price").on("focus", function() {
+			var price = $(this).val();
+			price = removeCommas(price);
+			$(this).val(price);
+		}).on("focusout", function() {
+			var price = $(this).val();
+			
+			if(price && price.length > 0) {
+				if(!$.isNumeric(price)) {
+					price = price.replace(/[^0-9]/g,"");
+				}
+				
+				price = addCommas(price);
+				$(this).val(price);
+			}
+		}).on("keyup", function() {
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+	    
+	    function addCommas(price) {
+	    	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	    }
+	    
+	    function removeCommas(price) {
+	    	if(!price || price.length == 0) {
+	    		return "";
+	    	} else {
+	    		return price.split(",").join("");
+	    	}
+	    }
 	});
-	
 </script>
-
 </head>
 <body class="skin-3" style="min-width:1500px">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -891,7 +924,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-price">단가</label>
 									<div class="controls">
-										<input class="span5" type="text" id="form-field-price" name="price"/>&nbsp;원
+										<input class="span5" type="text" id="form-field-price" style="text-align:right" name="price"/>&nbsp;원
 									</div>
 								</div>
 							</div>
@@ -982,15 +1015,17 @@
 
 							<tbody id="select-purchaseitem-list">
 								<fmt:parseNumber var="pc" integerOnly="true" value="${(fn:length(purchaseitemList)-1) / 11 }" />
+								
 								<c:forEach items="${pagepurchaseitemList }" var="pl" varStatus="status">
+								
 									<tr>
 										<td>${status.count}</td>
 										<td>${pl.no }</td>
 										<td>${pl.name }</td>
-										<td class="hidden-480">${pl.sectioncode }</td>
-										<td class="hidden-phone">${pl.sectionname }</td>
+										<td>${pl.sectioncode }</td>
+										<td>${pl.sectionname }</td>
 										<td>${pl.standard }</td>
-										<td>${pl.price }</td>
+										<td style="text-align:right"><fmt:formatNumber value="${pl.price }" pattern="#,###"/></td>
 										<td>${pl.managername }</td>
 										<td>${pl.producedate }</td>
 									</tr>

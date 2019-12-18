@@ -20,7 +20,7 @@
 			<![CDATA[
 				select ((select count(*) as count
 						   from tb_customer
-		   				  where name!='여비'
+			  			  where name!='여비'
 			]]>	
 
 				<if test="deleteFlag!=null">		    
@@ -109,11 +109,12 @@
 		<![CDATA[
 			select count(*) as count
 			  from tb_customer
+			  where name!='여비'
 		]]>
 		
 			<if test="deleteFlag!=null">		    
 				<![CDATA[
-					where delete_flag= #{deleteFlag }
+					and delete_flag= #{deleteFlag }
 				]]>
 			</if>
 			<if test="datepicker1=null and !datepicker1.equals('')">		    
@@ -194,7 +195,10 @@
 	<if test='vo.customerDiv == "All" or vo.customerDiv == ""'>
 	    <![CDATA[
 	    	select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
+			       (CASE CHAR_LENGTH(no)
+						when "07" then no
+        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+					end) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -226,7 +230,7 @@
 	               update_userid as updateUserid, 
 	               update_day as updateDay
 		      from tb_customer
-			   where name!='여비'
+			 where name!='여비'
 		]]>
 			<if test="vo.deleteFlag!=null">
 				<![CDATA[
@@ -384,7 +388,10 @@
 	<if test='vo.customerDiv == "Assets"'>
 	    <![CDATA[
 			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
+			       (CASE CHAR_LENGTH(no)
+						when "07" then no
+        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+					end) as no,
 	               name as name, 
 	               ceo as ceo, 
 	               address as address,
@@ -416,7 +423,7 @@
 	               update_userid as updateUserid, 
 	               update_day as updateDay
 		      from tb_customer
-			  where name!='여비'
+			 where name!='여비'
 		      ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     

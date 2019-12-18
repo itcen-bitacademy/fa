@@ -101,4 +101,11 @@ public class Menu48ApiController {
 		List<RepayVo> list = menu48Service.getRepay(no);
         return JSONResult.success(list);
 	}
+	@ResponseBody
+	@RequestMapping("/"+SUBMENU+"/checkrepaylist")
+	public JSONResult checkrepay(@RequestParam(value="no", required=true) Long[] no) {
+		List<RepayVo> list = menu48Service.getRepay(no);
+		System.out.println(list);
+        return JSONResult.success(list);
+	}
 }

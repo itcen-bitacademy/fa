@@ -413,7 +413,7 @@
 							</c:forEach>
 							
 							<c:choose>
-								<c:when test="${pagination.prev }">
+								<c:when test="${pagination.next }">
 									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>								
 								</c:when>
 								<c:otherwise>
