@@ -230,13 +230,103 @@
 						</div>
 
 					</div><!-- /.row-fluid -->
-
+					
+			<div class="hr hr-18 dotted"></div>
+			
+			<!-- 가저장 테이블 -->
+			<div class="row-fluid">
+				<div class="span12">
+                <input type="hidden" id="rowCnt" name="rowCnt" value="1">
+                    <table id="save-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="center">일자</th>
+                            <th class="center">계정과목코드</th>
+                            <th class="center">계정과목명</th>
+                            <th class="center">구분</th>
+                            <th class="center">금액</th>
+                            <th class="center">거래처번호</th>
+                            <th class="center">거래처명</th>
+                            <th class="center">증빙종류</th>
+							<th class="center">증빙코드</th>
+                            <th class="center">은행코드</th>
+                            <th class="center">은행명</th>
+                            <th class="center">카드번호</th>
+                            <th class="center">계좌번호</th>
+                            <th class="center">소유자</th>
+                            <th class="center">사용목적</th>
+                        </tr>
+                        </thead>
+                        
+                        <tbody id="voucher_save">
+                     	<c:forEach items='${voucherList }' var='voucherVo' varStatus='status'>
+                        <tr>
+                        	<td>${voucherVo.regDate }</td>
+                        	<td>${voucherVo.accountNo }</td>
+							<td>${voucherVo.accountName }</td>
+							<c:choose>
+						        <c:when test="${voucherVo.amountFlag == 'd' }">
+						            <td>차변</td>
+						        </c:when>
+						        <c:otherwise>
+						            <td>대변</td>
+						        </c:otherwise>
+						    </c:choose>
+							
+							<c:choose>
+						        <c:when test="${voucherVo.amountFlag == 'd' }">
+						            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+						            <td></td>
+						        </c:when>
+						        <c:otherwise>
+						        	<td></td>
+						            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+						        </c:otherwise>
+						    </c:choose>
+						    <td>${voucherVo.customerNo }</td>
+							<td>${voucherVo.customerName }</td>
+							<c:choose>
+								<c:when test="${voucherVo.manageNo == '' }">
+						            <td></td>
+						        </c:when>
+						        <c:when test="${voucherVo.manageNo != null }">
+						            <td>세금계산서</td>
+						        </c:when>
+						        <c:otherwise>
+						            <td></td>
+						        </c:otherwise>
+						    </c:choose>
+							<td>${voucherVo.manageNo }</td>
+							<td>${voucherVo.bankCode }</td>
+							<td>${voucherVo.bankName }</td>
+							<c:choose>
+								<c:when test="${voucherVo.customerName eq '여비' }">
+									<td>${voucherVo.cardNo }</td>
+						            <td></td>
+						            <td>${voucherVo.cardUser }</td>
+						        </c:when>
+						        <c:otherwise>
+						        	<td></td>
+						        	<td>${voucherVo.depositNo }</td>
+						            <td>${voucherVo.depositHost }</td>
+						        </c:otherwise>
+						    </c:choose>
+							<td>${voucherVo.voucherUse }</td>
+                        </tr>
+                        </c:forEach>
+                        
+                        </tbody>
+                        
+                    </table>
+                    <!-- PAGE CONTENT ENDS -->
+                </div>
+            </div>
 			
 			<div class="hr hr-18 dotted"></div>
 			<!-- buttons -->
 			<div class="row-fluid">
 				<div class="span8">
-						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
+						<button class="btn btn-info btn-small" type="submit" id="btn-read" name="btn-read"
 							formaction="${pageContext.request.contextPath}/01/03/read">조회</button>
 						<button class="btn btn-primary btn-small" type="submit" id="btn-create" name="btn-create"
 							formaction="${pageContext.request.contextPath }/01/03/add">입 력</button>
@@ -245,6 +335,7 @@
 						<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
 							formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 						<button class="btn btn-default btn-small" type="reset">취 소</button>
+                        <button class="btn btn-small" type="button" onclick="save();">저장</button>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 			<div class="hr hr-18 dotted"></div>
@@ -390,6 +481,55 @@
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
+<script>
+	//입력폼에서 입력한 값 가저장 테이블에 저장하기
+	var voucherList = new Array();
+	function save() {
+		var regDate = $('#regDate').val();
+		var accountNo = $('#accountNo').val();
+		var accountName = $('#accountName').val();
+		var amountFlag = $('#amountFlag').val();
+		var amount = $('#amount').val();
+		var manageNo = $('#manageNo').val();
+		var customerNo = $('#customerNo').val();
+		var customerName = $('#customerName').val();
+		var bankCode = $('#bankCode').val();
+		var bankName = $('#bankName').val();
+		var cardNo = $('#cardNo').val();
+		var cardUser = $('#cardUser').val();
+		var depositNo = $('#depositNo').val();
+		var depositHost = $('#depositHost').val();
+		var voucherUse = $('#voucherUse').val();
+		
+		if(regDate == '' || accountNo == '' || accountName == '' || amount == '' || amountFlag == '' || customerNo == '' || customerName == '') {
+			return;
+		}
+		
+		var voucherVo = {regDate:regDate, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
+				manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
+				cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
+			}
+		
+		voucherList.push(voucherVo);
+		
+		$('#regDate').val('');
+		$('#accountNo').val('');
+		$('#accountName').val('');
+		$('#amountFlag').val('');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
+		
+    }
+</script>
 <script>
 $(function(){
 	$(".chosen-select").chosen(); 
@@ -721,8 +861,10 @@ $(function(){
   $("#input-form").submit(function(event) {
 	  $("input[name=amount]").val($("input[name=amount]").val().replace(/[^0-9]/g,""));
   });
+  
 }); // $(function
 </script>
+
 <script>
 	function comma(str) {
 	  str = String(str);
