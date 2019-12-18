@@ -133,7 +133,7 @@ public class Menu50Repository {
 	
 	// 동일한 사채코드가 존재하는지 비교
 	public PdebtVo getCode(String code) {
-		PdebtVo vo = sqlSession.selectOne("menu50.getByCode", code);
+		PdebtVo vo = sqlSession.selectOne("menu50.getbycode", code);
 		return vo;
 	}
 
