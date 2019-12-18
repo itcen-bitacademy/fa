@@ -132,7 +132,6 @@ public class Menu13Controller {
 						 Long supplyValue[], Long taxValue[], int number[]) throws ParseException {
 		
 		System.out.println("매출 수정"+pathSalesNo);
-		
 		salesVo.setUpdateUserid(authUser.getId());
 		
 		ArrayList<SalesVo> list = arrayData(salesVo, quantity, itemCode, itemName, supplyValue, taxValue, number);
