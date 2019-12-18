@@ -803,4 +803,13 @@
 		select now();
 	]]>
 	</select>
+	
+	<!-- 결산 / 전표 등록 날짜 구하기 -->
+	<select id="getRegDate" resultType="String" parameterType="Long">
+	<![CDATA[
+		select reg_Date
+		  from tb_voucher_manager
+		 where no = #{no };
+	]]>
+	</select>
 </mapper>

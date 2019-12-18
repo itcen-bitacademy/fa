@@ -71,6 +71,7 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
+			voucherVo.setRegDate(menu03Repository.getRegDate(voucherVo.getNo()));
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 				voucherVo.setUpdateUserid(userVo.getId());
 				System.out.println("###########" + voucherVo.getNo());
@@ -100,8 +101,8 @@ public class Menu03Service {
 	public Long deleteVoucher(List<VoucherVo> voucherVo, @AuthUser UserVo userVo) {
 		
 			try {
-				
 				for(int i = 0; i < voucherVo.size(); i++) {
+					voucherVo.get(i).setRegDate(menu03Repository.getRegDate(voucherVo.get(i).getNo()));
 					//String businessDateStr = menu03Repository.businessDateStr();
 					if(menu19Service.checkClosingDate(userVo, voucherVo.get(i).getRegDate())) {
 						menu03Repository.deleteVoucher(voucherVo, userVo);

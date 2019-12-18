@@ -205,5 +205,11 @@ public class Menu03Repository {
 		return sqlSession.selectOne("menu03.businessDateStr");
 	}
 	
+	// 전표 등록 날짜 구하기
+	public String getRegDate(Long no) {
+		return sqlSession.selectOne("menu03.getRegDate", no);
+		
+	}
+	
 
 }
