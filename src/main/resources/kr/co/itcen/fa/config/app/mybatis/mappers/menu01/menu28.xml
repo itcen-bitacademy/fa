@@ -109,7 +109,37 @@
 		<![CDATA[
 			select count(*) as count
 			  from tb_customer
-			  where name!='여비'
+			  where assets_flag != "e"
+		]]>
+		
+			<if test="deleteFlag!=null">		    
+				<![CDATA[
+					and delete_flag= #{deleteFlag }
+				]]>
+			</if>
+			<if test="datepicker1=null and !datepicker1.equals('')">		    
+				<![CDATA[
+					and insert_day >= #{datepicker1 }
+				]]>
+			</if>
+			<if test="datepicker2!=null and !datepicker2.equals('')">		    
+				<![CDATA[
+					and insert_day <= #{datepicker2 }
+				]]>
+			</if>
+			<if test='no!=null and !no.equals("")'>
+				<![CDATA[
+					and no like '%${no }%'
+				]]>	   
+			</if>
+	</if>
+		
+	<if test='customerDiv == "Bank"'>
+		<![CDATA[
+			select count(*) as count
+			  from tb_customer
+			  where assets_flag = "e"
+			  and name != '여비'
 		]]>
 		
 			<if test="deleteFlag!=null">		    
@@ -230,7 +260,7 @@
 	               update_userid as updateUserid, 
 	               update_day as updateDay
 		      from tb_customer
-			 where name!='여비'
+			 where assets_flag != 'e'
 		]]>
 			<if test="vo.deleteFlag!=null">
 				<![CDATA[
@@ -296,7 +326,70 @@
 		    	
 		    	<if test="vo.deleteFlag!=null">     
 					<![CDATA[
-						where delete_flag = #{vo.deleteFlag }
+					  where delete_flag = #{vo.deleteFlag }
+					]]>
+				</if>
+				
+				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    	<![CDATA[
+			    		and insert_day >= #{vo.datepicker1 }
+			    	]]>
+			    </if>
+				
+			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+			    	<![CDATA[
+			        	and insert_day <= #{vo.datepicker2 }
+			        ]]>
+			    </if>
+			    
+			    <if test='vo.no!=null and !vo.no.equals("")'>
+				    <![CDATA[
+				    	and no like '%${vo.no }%'
+				    ]]>
+			    </if>
+			    
+			    <![CDATA[
+				union
+			   select concat('은행') as customerDiv,
+			   		  no as no,
+	               	  name as name, 
+	               	  ceo as ceo, 
+	               	  address as address,
+	               	  detail_address as detailAddress,
+	               	  conditions as conditions, 
+	               	  item as item, 
+	               	  corporation_no as corporationNo, 
+	               	  open_date as openDate, 
+	               	  jurisdiction_office as jurisdictionOffice, 
+				       (IFNULL(CASE LEFT(phone,2)
+				        WHEN "02" THEN
+				            CASE CHAR_LENGTH(phone)
+				                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+				                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+				            END
+				        ELSE
+				            CASE CHAR_LENGTH(phone)
+				                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+				                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+				                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+				            END
+				        END,"없음")) as phone,
+	               	  manager_name as managerName, 
+	               	  manager_email as managerEmail,
+	               	  deposit_no as depositNo,
+	               	  deposit_host as depositHost,
+	               	  insert_userid as insertUserid, 
+	               	  insert_day as insertDay, 
+	               	  update_userid as updateUserid, 
+	               	  update_day as updateDay
+		      	 from tb_customer
+		      	where assets_flag = 'e'
+		      	  and name != '여비'
+		    ]]>
+		    	
+		    	<if test="vo.deleteFlag!=null">     
+					<![CDATA[
+						and delete_flag = #{vo.deleteFlag }
 					]]>
 				</if>
 				
@@ -423,7 +516,7 @@
 	               update_userid as updateUserid, 
 	               update_day as updateDay
 		      from tb_customer
-			 where name!='여비'
+		     where assets_flag != 'e'
 		      ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     
@@ -455,6 +548,78 @@
 		 limit	#{pagination.pageIndex }, #{pagination.listSize }
 		]]>
 		</if>
+		
+	<if test='vo.customerDiv == "Bank"'>
+	    <![CDATA[
+			select concat('은행') as customerDiv,
+				   no as no,
+	               name as name, 
+	               ceo as ceo, 
+	               address as address,
+	               detail_address as detailAddress,
+	               conditions as conditions, 
+	               item as item, 
+	               corporation_no as corporationNo, 
+	               open_date as openDate, 
+	               jurisdiction_office as jurisdictionOffice, 
+			       (IFNULL(CASE LEFT(phone,2)
+			        WHEN "02" THEN
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            END
+			        ELSE
+			            CASE CHAR_LENGTH(phone)
+			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
+			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
+			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            END
+			        END,"없음")) as phone,
+	               manager_name as managerName, 
+	               manager_email as managerEmail,
+	               deposit_no as depositNo,
+	               deposit_host as depositHost,
+	               insert_userid as insertUserid, 
+	               insert_day as insertDay, 
+	               update_userid as updateUserid, 
+	               update_day as updateDay
+		      from tb_customer
+		     where assets_flag = 'e'
+		       and name != '여비'
+		      ]]>
+			         
+			    <if test="vo.deleteFlag!=null">     
+				<![CDATA[
+			         and delete_flag = #{vo.deleteFlag }
+				]]>
+				</if>
+				
+				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
+			    	<![CDATA[
+			    	and insert_day >= #{vo.datepicker1 }
+			    	
+			    	]]>
+			    </if>
+				
+			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
+			    	<![CDATA[
+			        and insert_day <= #{vo.datepicker2 }
+			        ]]>
+			    </if>
+			    
+			    <if test='vo.no!=null and !vo.no.equals("")'>
+				    <![CDATA[
+				    and no like '%${vo.no }%'
+				    ]]>
+			    </if>
+			    <![CDATA[
+		  order by corporationNo desc
+		 limit	#{pagination.pageIndex }, #{pagination.listSize }
+		]]>
+		</if>
+		
+		
+	
 		
 		
 	<if test='vo.customerDiv == "Purchase"'>

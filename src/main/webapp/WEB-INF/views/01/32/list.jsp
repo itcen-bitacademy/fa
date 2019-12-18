@@ -39,11 +39,7 @@
 		
 		
 				<div class="page-header position-relative">
-					<h1 class="pull-left">계정거래처원장조회[32]</h1>
-					<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-						<i class="icon-plus-sign bigger-120 green"></i>
-						팀 추가
-					</a>
+					<h1 class="pull-left">계정거래처원장조회 [32]</h1>
 				</div><!-- /.page-header -->
 			
 				<div class="row-fluid"> <!-- 검색조건 -->
@@ -277,40 +273,42 @@
 										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 											<tr style="text-align: center;">
 
-												<td class="">${vo.accountName }</td>
-												<td>${vo.customerName } </td>
-												<td>${vo.regDate }</td>
-												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
-												<td>${vo.amountFlag }</td>
+												<td class="center">${vo.accountName }</td>
+												<td class="center">${vo.customerName } </td>
+												<td class="center">${vo.regDate }</td>
+												<td class="center">${vo.voucherNo }-${vo.voucherOrderNo }</td>
+												<td class="center">${vo.amountFlag }</td>
 													<c:choose>
 												        <c:when test="${vo.amountFlag == '차변' }">
-												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
-												            <td></td>
+												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												            <td style="text-align: right;"></td>
 												        </c:when>
 												        <c:otherwise>
-												        	<td></td>
-												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												        	<td style="text-align: right;"></td>
+												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
 												        </c:otherwise>
 												    </c:choose>
-												<td>${vo.bankName }</td>
-												<td>${vo.cardNo }</td>
-												<td>${vo.depositNo }</td>
+												<td class="center">${vo.bankName }</td>
+												<td class="center">${vo.cardNo }</td>
+												<td class="center">${vo.depositNo }</td>
 												<c:choose>
 												<c:when test="${empty vo.depositHost }">
-												<td>${vo.cardUser }</td>
+												<td class="center">${vo.cardUser }</td>
 												</c:when>
 												<c:otherwise>
-												<td>${vo.depositHost }</td>
+												<td class="center">${vo.depositHost }</td>
 												</c:otherwise>
 												</c:choose>
-												<td>${vo.voucherUse }</td>
-												<td>${vo.insertTeam }</td>
+												<td class="center">${vo.voucherUse }</td>
+												<td class="center">${vo.insertTeam }</td>
 												    
 											</tr>
 											
 									</c:forEach>
 									<tr>
 										<td>[합계]</td>
+										<td></td>
+										<td></td>
 										<td></td>
 										<td></td>
 										<td></td>
@@ -336,7 +334,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${dataResult.pagination.startPage - 1 }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }"><i class="icon-double-angle-left"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${dataResult.pagination.startPage - 1 }&customerName=${param.customerName }&customerNo=${param.customerNo }&accountNo=${param.accountNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }"><i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -346,17 +344,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${pg }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${pg }&customerName=${param.customerName }&customerNo=${param.customerNo }&accountNo=${param.accountNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${pg }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${pg }&customerName=${param.customerName }&customerNo=${param.customerNo }&accountNo=${param.accountNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${dataResult.pagination.endPage + 1 }&customerNo=${param.customerNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }"><i class="icon-double-angle-right"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/32/list?page=${dataResult.pagination.endPage + 1 }&customerName=${param.customerName }&customerNo=${param.customerNo }&accountNo=${param.accountNo }&accountName=${param.accountName }&datepicker1=${param.datepicker1 }&datepicker2=${param.datepicker2 }"><i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>

@@ -71,34 +71,27 @@ public class Menu41Controller {
 		 */
 
 		//페이징 처리 	dataresult 생성, 모델
-		System.out.println("id1" + id);
 		
 		DataResult<VehicleVo> dataResult = menu41Service.list(id, page);
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);
 		
 		Map<String, Object> map = new HashMap<>();
-		//model.addAllAttributes(map);
 		
 		
 		//대분류 select box
 		map.putAll(menu41Service.getSection());
 		model.addAllAttributes(map);
 
-		System.out.println("1");
 		
 		//직급 select box
 		map.putAll(menu41Service.getName());
 		model.addAllAttributes(map);
 		
-		System.out.println("2");
 		
 		//거래처코드 select box
 		map.putAll(menu41Service.getCustomer());
 		model.addAllAttributes(map);
-		
-		
-		System.out.println("왜안되세요.");
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -131,7 +124,7 @@ public class Menu41Controller {
 	public String update(@ModelAttribute VehicleVo vehicleVo,
 						 @SessionAttribute("authUser") UserVo userVo,
 						 Model model) throws ParseException{
-		//System.out.println("ssssssssss" + vehicleVo.getSectionNo());
+		
 		vehicleVo.setUpdateUserId(userVo.getId());
 		
 		//마감 여부 체크
@@ -206,6 +199,7 @@ public class Menu41Controller {
 					  //전표삭제 
 					  List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); 
 					  VoucherVo v = new VoucherVo(); 
+					  v.setRegDate(vehicleVo.getPayDate()); // 매입일자
 					  v.setNo(voucherNo); 
 					  voucherVolist.add(v);
 					  menu03Service.deleteVoucher(voucherVolist, userVo); 

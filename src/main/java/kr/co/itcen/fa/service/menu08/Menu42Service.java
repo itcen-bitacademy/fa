@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu42Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
-import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
 
@@ -44,13 +43,6 @@ public class Menu42Service {
 		return map;
 	}
 
-	//리스트조회하기
-	public Map<String, Object> selectList() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", menu42Repository.selectList());
-		return map;
-		
-	}
 
 	//기본 페이징된 화면
 	public DataResult<VehicleVo> list(String id, int page) {
@@ -69,17 +61,17 @@ public class Menu42Service {
 	}
 
 	//검색된 화면
-	public DataResult<VehicleVo> getList(VehicleVo vehicleVo, String startDate, String endDate, int page) {
+	public DataResult<VehicleVo> getList(VehicleVo vehicleVo, String startDate, String endDate, String dueStartDate, String dueEndDate, int page) {
 		
 		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
 		
-		int totalCount = menu42Repository.listCount(vehicleVo, startDate, endDate);
+		int totalCount = menu42Repository.listCount(vehicleVo, startDate, endDate, dueStartDate, dueEndDate);
 		
 		//pagination
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(pagination);
 		
-		List<VehicleVo> list = menu42Repository.getList(vehicleVo, startDate, endDate, pagination);
+		List<VehicleVo> list = menu42Repository.getList(vehicleVo, startDate, endDate, dueStartDate, dueEndDate, pagination);
 		dataResult.setDatas(list);
 		
 		return dataResult;

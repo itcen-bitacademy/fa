@@ -165,6 +165,26 @@
 				height: 400,
 				width: 400,
 				modal: true,
+				close: function() {
+					$("#search-section-name").data("searchsectionname", "");
+					$("#search-section-name").val("");
+					var search_sectiondata = $("#search-section-name").data("searchsectionname");
+					var section_page_num = 1;
+					var section_page_group = parseInt((section_page_num-1)/5);
+					
+					$.ajax({
+						url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/sectionpaging",
+						type:"get",
+						dataType:"json",
+						data:{"section_page" : section_page_num, "section_page_group" : section_page_group, "search_sectiondata" : search_sectiondata},
+						success:function(data) {
+							section_updateTable(data.pagesectionList, section_page_num);
+							section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
+						}, error:function(error) {
+							alert("찾을 수 없는 품목입니다.");
+						}
+					});
+				},
 				buttons: {
 					"확인": function() {
 						$(this).dialog("close");
@@ -182,13 +202,33 @@
 			$("#dialog-factory-main").dialog({
 				resizable: false,
 			    height: 400,
-			      width: 400,
-			      modal: true,
-			      buttons: {
-			        "확인": function() {
-			          $(this).dialog("close");
-			        }
-			      }
+			    width: 400,
+			    modal: true,
+			    close: function() {
+			    	$("#search-factory-name").data("searchfactoryname", "");
+			    	$("#search-factory-name").val("");
+			    	var search_factorydata = $("#search-factory-name").data("searchfactoryname");
+			    	var factory_page_num = 1;
+			    	var factory_page_group = parseInt((factory_page_num-1)/5);
+			    	
+			    	$.ajax({
+			    		url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/factorypaging",
+			    		type:"get",
+			    		dataType:"json",
+			    		data:{"factory_page" : factory_page_num, "factory_page_group" : factory_page_group, "search_factorydata" : search_factorydata},
+			    		success:function(data) {
+			    			factory_updateTable(data.pagefactoryList, factory_page_num);
+			    			factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
+			    		}, error:function(error) {
+			    			alert("찾을 수 없는 품목입니다.");
+			    		}
+			    	});
+			    },
+			    buttons: {
+			    	"확인": function() {
+			    		$(this).dialog("close");
+			    	}
+			    }
 			});
 		});
 		
@@ -661,37 +701,14 @@
 			}
 		}
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    
-		$("#form-field-price").on("focus", function() {
-			var price = $(this).val();
-			price = removeCommas(price);
-			$(this).val(price);
-		}).on("focusout", function() {
-			var price = $(this).val();
-			
-			if(price && price.length > 0) {
-				if(!$.isNumeric(price)) {
-					price = price.replace(/[^0-9]/g,"");
-				}
-				
-				price = addCommas(price);
-				$(this).val(price);
-			}
-		}).on("keyup", function() {
-			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		
+		function addCommas(price) {
+			return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
+		$("#form-field-price").on('keyup', function(event){
+			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		});
-	    
-	    function addCommas(price) {
-	    	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	    }
-	    
-	    function removeCommas(price) {
-	    	if(!price || price.length == 0) {
-	    		return "";
-	    	} else {
-	    		return price.split(",").join("");
-	    	}
-	    }
 	});
 </script>
 </head>
@@ -1150,16 +1167,6 @@
 				
 				document.getElementById('form-field-factory-postaddress').value = data.zonecode;
 				document.getElementById('form-field-factory-roadaddress').value = fullRoadAddr;
-				
-				if (data.autoRoadAddress) {
-					var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-					document.getElementById('guide').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-				} else if (data.autoJibunAddress) {
-					var expJibunAddr = data.autoJibunAddress;
-					document.getElementById('guide').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-				} else {
-					document.getElementById('guide').innerHTML = '';
-				}
 			}
 		}).open();
 	};

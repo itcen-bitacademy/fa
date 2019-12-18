@@ -378,6 +378,7 @@
 		function update(){
 			var code = $("#salesNo").val();
 			alert($("#taxbillNo").val());
+			
 			if($("#taxbillNo").val().trim() == ""){
 				alert("세금계산서가 발행을 먼저 해주세요.");
 				console.log($("#taxbillNo").val() + "null");
