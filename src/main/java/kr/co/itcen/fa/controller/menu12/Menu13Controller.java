@@ -109,11 +109,11 @@ public class Menu13Controller {
 							 @SessionAttribute("authUser") UserVo authUser, Model model) {
 		System.out.println("매출 삭제"+salesNo);
 		menu13Service.deleteData(salesNo); // 매출데이터 flag Y
-		
+		String test = null;
 		
 		if(menu13Service.getVoucherNo(salesNo)!=null) {
 			Long voucherNo = Long.parseLong(menu13Service.getVoucherNo(salesNo)); // 전표 삭제를 위한 전표번호 get
-			menu03Service.deleteVoucher(voucherNo, authUser); // 전표 및 세금계산서 플래그(삭제) 처리
+			menu03Service.deleteVoucher(test, voucherNo, authUser); // 전표 및 세금계산서 플래그(삭제) 처리
 		}
 		return MAINMENU + "/" + SUBMENU + "/index"; 
 	}
