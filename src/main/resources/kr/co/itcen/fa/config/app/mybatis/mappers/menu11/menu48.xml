@@ -258,5 +258,11 @@
 	]]>
 	</update>
 	
+	<select id="businessDateStr" resultType="String">
+	<![CDATA[
+	select now();
+	]]>
+	</select>
+	
 	
 </mapper>

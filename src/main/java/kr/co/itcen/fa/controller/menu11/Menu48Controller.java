@@ -75,12 +75,15 @@ public class Menu48Controller {
 	public String add(LTermdebtVo vo,@AuthUser UserVo user) {
 		//마감 여부 체크
 		try {
-			if(!menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
+			String[] dates=vo.getDebtExpDate().split("~");
+			vo.setDebtDate(dates[0]);
+			vo.setExpDate(dates[1]);
+			vo.setInsertId(user.getId());
+			String businessDateStr = menu48Service.businessDateStr();
+			System.out.println("왜 안되냐4"+businessDateStr);
+			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 						
-				String[] dates=vo.getDebtExpDate().split("~");
-				vo.setDebtDate(dates[0]);
-				vo.setExpDate(dates[1]);
-				vo.setInsertId(user.getId());
+				System.out.println("왜 안되냐");
 				
 				VoucherVo voucherVo = new VoucherVo();
 				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -124,14 +127,15 @@ public class Menu48Controller {
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
 	public String update(LTermdebtVo vo,@AuthUser UserVo user) {
 		try {
-			if(!menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
+			String[] dates=vo.getDebtExpDate().split("~");
+			System.out.println(user);
+			System.out.println(vo);
+			vo.setDebtDate(dates[0]);
+			vo.setExpDate(dates[1]);
+			vo.setUpdateId(user.getId());
+			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 			
-				String[] dates=vo.getDebtExpDate().split("~");
-				System.out.println(user);
-				System.out.println(vo);
-				vo.setDebtDate(dates[0]);
-				vo.setExpDate(dates[1]);
-				vo.setUpdateId(user.getId());
+				
 				
 				vo.setVoucherNo(menu48Service.select(vo.getNo()));
 				VoucherVo voucherVo = new VoucherVo();
@@ -180,7 +184,7 @@ public class Menu48Controller {
 		List<LTermdebtVo> l_list=  menu48Service.selectList(no);
 		for(int i=0;i<l_list.size();++i) {
 			try {
-				if(!menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
+				if(menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
 					return "redirect:/"+MAINMENU+"/"+SUBMENU;
 				}
 			} catch (ParseException e) {

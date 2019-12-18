@@ -132,4 +132,9 @@ public class Menu48Repository {
 		List<LTermdebtVo> list = sqlSession.selectList("menu48.selectLtermdebtlist",listNo);
 		return list;
 	}
+
+	public String businessDateStr() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("menu48.businessDateStr");
+	}
 }
