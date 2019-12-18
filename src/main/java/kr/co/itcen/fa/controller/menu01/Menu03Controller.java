@@ -74,8 +74,8 @@ public class Menu03Controller {
 		// 마감 여부 체크
 		
 		System.out.println("asdf: " + voucherVo.getRegDate());
-		String businessDateStr = menu03Service.businessDateStr();
-		if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
+		//String businessDateStr = menu03Service.businessDateStr();
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			voucherVo.setOrderNo(1);
 			menu03Service.createVoucher(voucherVo, userVo);
 		}
@@ -92,8 +92,8 @@ public class Menu03Controller {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
 		
-		String businessDateStr = menu03Service.businessDateStr();
-		if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
+		//String businessDateStr = menu03Service.businessDateStr();
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			menu03Service.deleteVoucher(voucherVo);
 		}
 		
@@ -108,8 +108,8 @@ public class Menu03Controller {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
 		
-		String businessDateStr = menu03Service.businessDateStr();
-		if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
+		//String businessDateStr = menu03Service.businessDateStr();
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			menu03Service.updateVoucher(voucherVo);
 		}
 		
