@@ -147,28 +147,34 @@ public class Menu59Controller {
 	@RequestMapping(value="/" + SUBMENU + "/delete", method=RequestMethod.POST)
 	public String delete(@ModelAttribute AccountManagementVo accountManagement,
 						 @RequestParam("selectedAccountStatementType") String type,
+						 @RequestParam("selectedAccount") Long accountNo,
 						 @RequestParam(value = "accountUsedyear", defaultValue = "2019") String accountUsedyear,
 						 Model model,
-						 @AuthUser UserVo authUser) {
+						 @AuthUser UserVo authUser) throws UnsupportedEncodingException {
 	
-	if(accountManagement.getNo() == null || accountManagement.getAccountUsedyear() == null || accountManagement.getAccountOrder() == null) {
-		String result = "NPE2";
-		model.addAttribute("result", result);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
-	}
-		
+	DataResult<AccountManagementVo> dataResult = null;
+	String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
+	
+	accountManagement.setAccountNo(accountNo);
+	accountManagement.setAccountStatementType(type);
+	accountManagement.setAccountUsedyear(accountUsedyear);
+	
 	System.out.println(accountManagement);
-	menu59Service.delete(accountManagement.getNo());
+	
+	dataResult = menu59Service.delete(accountManagement);
 	
 	model.addAttribute("selectedAccountStatementType", type);
 	model.addAttribute("accountUsedyear", accountUsedyear);
 	
-	return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	if (!dataResult.isStatus()) {
+		uri = uri + "?error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");
+	}
+	
+	return uri;
 	}
 
 	
-	//test
+	//저장, 수정
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/addorupdate", method=RequestMethod.POST)
 	public DataResult<AccountManagementVo> test(@RequestParam(value = "changedRows", defaultValue = "") List<String> changedRows,
@@ -177,7 +183,6 @@ public class Menu59Controller {
 		
 		DataResult<AccountManagementVo> dataResult = new DataResult<>();
 		List<AccountManagementVo> list = new ArrayList<AccountManagementVo>();
-//		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
 		
 		String no     = null;
 		String order  = null;
@@ -208,16 +213,11 @@ public class Menu59Controller {
 				vo.setUpdateUserid(authUser.getId());
 				
 				System.out.println("no : " + no + " order : " + order + " acount : " + acount + " year : " + year + " type : " + type);
-				
 				list.add(vo);
-					
 			}
 			
 			dataResult = menu59Service.testUpdate(list);
-			
 		}
-		
-//		return uri;
 		
 		return dataResult;
 	}
