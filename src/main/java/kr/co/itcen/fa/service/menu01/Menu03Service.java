@@ -43,10 +43,10 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			String businessDateStr = menu03Repository.businessDateStr();
-			
+			System.out.println("왜 안되냐2");
 			if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
 				voucherVo.setInsertUserid(userVo.getId());
-				
+				System.out.println("왜 안되냐3");
 				for(int i = 0; i < itemVo.size(); i++) {
 					itemVo.get(i).setInsertUserid(userVo.getId());
 				}

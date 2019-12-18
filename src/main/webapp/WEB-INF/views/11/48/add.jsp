@@ -859,7 +859,7 @@ $(function(){
 									return;
 								}
 								if(response.data==null){
-									alert("값을 정확히 입력하지 않았습니다.");
+									alert("마감일이 지났습니다.");
 									return;
 								}
 								$("#tbody-list tr").each(function(i){
