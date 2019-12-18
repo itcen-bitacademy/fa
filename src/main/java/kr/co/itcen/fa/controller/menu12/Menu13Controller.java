@@ -1,7 +1,9 @@
 package kr.co.itcen.fa.controller.menu12;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,7 @@ public class Menu13Controller {
 	private Menu53Controller menu53Controller;
 	
 	// index
-	@RequestMapping(value = {"", "/" + SUBMENU}, method=RequestMethod.GET )
+	@RequestMapping(value = {"/" + SUBMENU}, method=RequestMethod.GET )
 	public String index(@SessionAttribute("authUser") UserVo authUser, Model model) {
 		System.out.println("index");
 		
@@ -86,11 +88,11 @@ public class Menu13Controller {
 	
 	//매출번호로 조회
 	@RequestMapping(value= {"/" + SUBMENU + "/{salesNo}"}, method=RequestMethod.GET )
-	public String getSales(@PathVariable("salesNo")String salesNo, Model model) {
+	public String getSales(@PathVariable("salesNo")String salesNo, Model model) throws ParseException {
 		System.out.println("매출 조회" + salesNo);
 		
-		System.out.println(salesNo.substring(1, 9));
-		
+		System.out.println(formatStringDate(salesNo.substring(1, 9)));
+	
 		List<CustomerVo> customerlist = menu13Service.getCustomerList(); // 거래처
 		List<SalesVo> itemlist = menu13Service.getItemList(); // 품목
 		List<SalesVo> sales = menu13Service.getSalesNo(salesNo); // 조회 매출
@@ -106,17 +108,21 @@ public class Menu13Controller {
 	//매출 삭제 (flag 데이터 변경)
 	@RequestMapping(value= {"/"+ SUBMENU + "/delete/{salesNo}"}, method=RequestMethod.GET)
 	public String deleteData(@PathVariable("salesNo")String salesNo, 
-							 @SessionAttribute("authUser") UserVo authUser, Model model) {
-		System.out.println("매출 삭제"+salesNo);
-		menu13Service.deleteData(salesNo); // 매출데이터 flag Y
-		String test = null;
+							 @SessionAttribute("authUser") UserVo authUser, Model model) throws ParseException {
 		
-		if(menu13Service.getVoucherNo(salesNo)!=null) {
-			Long voucherNo = Long.parseLong(menu13Service.getVoucherNo(salesNo)); // 전표 삭제를 위한 전표번호 get
-			menu03Service.deleteVoucher(test, voucherNo, authUser); // 전표 및 세금계산서 플래그(삭제) 처리
+		if(menu19Service.checkClosingDate(authUser, formatStringDate(salesNo.substring(1, 9)))) {  // 마감 여부 체크
+			
+			System.out.println("매출 삭제"+salesNo);
+			menu13Service.deleteData(salesNo); // 매출데이터 flag Y
+			
+			if(menu13Service.getVoucherNo(salesNo)!=null) {
+				Long voucherNo = Long.parseLong(menu13Service.getVoucherNo(salesNo)); // 전표 삭제를 위한 전표번호 get
+				menu03Service.deleteVoucher(formatStringDate(salesNo.substring(1, 9)), voucherNo, authUser); // 전표 및 세금계산서 플래그(삭제) 처리
+			}
+			
 		}
 		return MAINMENU + "/" + SUBMENU + "/index"; 
-	}
+	} 
 	
 	//매출 수정
 	@RequestMapping(value= {"/"+ SUBMENU + "/update/{pathSalesNo}"}, method=RequestMethod.POST)
@@ -169,5 +175,12 @@ public class Menu13Controller {
 			list.add(vo);
 		}
 		return list;
+	}
+	
+	private String formatStringDate(String date) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Date d1 = sdf.parse(date);
+		sdf.applyPattern("yyyy-MM-dd");
+		return sdf.format(d1);
 	}
 }
