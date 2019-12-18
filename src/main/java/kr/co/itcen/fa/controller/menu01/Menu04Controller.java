@@ -37,7 +37,7 @@ public class Menu04Controller {
 	private Menu59Service menu59Service;
 
 	// 전표 조회하기
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
+	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/read" })
 	public String VoucherMain(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue ="1") int page, Model model) {
 		if(voucherVo.getUseYn() == null) {
 			voucherVo.setUseYn(true);

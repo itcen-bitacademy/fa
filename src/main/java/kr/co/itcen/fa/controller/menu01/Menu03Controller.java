@@ -46,7 +46,7 @@ public class Menu03Controller {
 	private Menu59Service menu59Service;
 	
 	// 전표관리 페이지
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/read" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
 	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
 		System.out.println("여기 1");
 		System.out.println("getUseYn1 : " + voucherVo.getUseYn() );
