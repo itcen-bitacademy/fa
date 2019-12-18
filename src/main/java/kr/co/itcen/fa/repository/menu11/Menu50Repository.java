@@ -13,6 +13,7 @@ import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
+import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 /**
@@ -133,7 +134,7 @@ public class Menu50Repository {
 	
 	// 동일한 사채코드가 존재하는지 비교
 	public PdebtVo getCode(String code) {
-		PdebtVo vo = sqlSession.selectOne("menu50.getByCode", code);
+		PdebtVo vo = sqlSession.selectOne("menu50.getbycode", code);
 		return vo;
 	}
 
@@ -159,6 +160,15 @@ public class Menu50Repository {
 
 	public List<CustomerVo> selectNameFromCustomer(String name) {
 		return sqlSession.selectList("menu50.selectVoucherNo", name);
+	}
+
+	public List<PdebtVo> selectList(Long[] no) {
+		List<Long>listNo = new ArrayList<Long>();
+		for(Long no1: no) {
+			listNo.add(no1);
+		}
+		List<PdebtVo> list = sqlSession.selectList("menu50.selectpdebtlist",listNo);
+		return list;
 	}
 	
 }

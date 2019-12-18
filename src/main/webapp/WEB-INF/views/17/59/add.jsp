@@ -78,7 +78,11 @@ $(function(){
 });
 </script>
  -->
-
+<style>
+#staticBackdrop {
+	z-index: -1;
+}
+</style>
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -327,8 +331,10 @@ $(function(){
 
         var accountOrder = $("#accountOrder"+hiddenNo).val(); //순번
         var accountNo    = td.eq(1).text();                   //계정과목
-            accountNo    = accountNo.substring(24,31);
+            accountNo    = accountNo.substring(23,30);
         var accountName  = $("#accountName"+hiddenNo).val();  //계정명칭
+
+
 
      	$('#selectedAccount').val(accountNo).trigger('chosen:updated');
         $("#accountOrder").val(accountOrder);
@@ -400,7 +406,7 @@ $(function(){
     });
     */
 
-
+	/*
  	var result = "${param.result }";
 
  	console.log("result : " + result);
@@ -422,6 +428,7 @@ $(function(){
 
 		result = "";
 	}
+	*/
 
 	$(function(){
 		// 모달 설정
@@ -530,8 +537,13 @@ $(function(){
         		traditional : true,
         		data : {"changedRows" : changedRows},
         		success : function(data){
-              console.log(data)
-              openModal('Error', 'aaaa')
+              	//console.log(data)
+           		if(data.status == false){
+           			openModal('Error', data.error);
+           			data.status = true;
+
+           		}
+           		location.reload();
             }
 
         	});

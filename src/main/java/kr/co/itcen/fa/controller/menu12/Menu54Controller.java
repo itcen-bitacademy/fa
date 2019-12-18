@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu12.Menu54Service;
 import kr.co.itcen.fa.vo.menu12.TaxbillSearchVo;
 
@@ -30,6 +31,7 @@ public class Menu54Controller {
 	
 	
 	// 필터기능없이 조회되는 리스트 
+	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list", "/" + SUBMENU + "/{page}" }, method=RequestMethod.GET)
 	public String list(Model model, @PathVariable(name="page", required=false) String page) {
 		
@@ -59,6 +61,7 @@ public class Menu54Controller {
 	}
 	
 	// 조회기능을 구현한 Controller
+	@NoAuth
 	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}"}, method=RequestMethod.POST)
 	public String list(TaxbillSearchVo tvo, Model model, 
 			@PathVariable(name="page", required=false)String page, 

@@ -175,7 +175,6 @@ tr td:first-child {
 																<tr>
 																	<th class="center">은행코드</th>
 																	<th class="center">은행명</th>
-																	<th class="center">지점명</th>
 																</tr>
 															</thead>
 															<tbody id="tbody-bankList">
@@ -212,19 +211,19 @@ tr td:first-child {
 									<td colspan="2">
 											<div class="radio">
 												<label>
-													<input name="repayWay" type="radio" class="ace" value="Y"/>
+													<input name="repayWay" type="radio" class="ace" value="Y" required/>
 													<span class="lbl">년</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="repayWay" type="radio" class="ace"  value="M"/>
+													<input name="repayWay" type="radio" class="ace"  value="M" required/>
 													<span class="lbl">월</span>
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="repayWay" type="radio" class="ace"  value="E"/>
+													<input name="repayWay" type="radio" class="ace"  value="E" required/>
 													<span class="lbl">만기</span>
 												</label>
 											</div>
@@ -233,22 +232,22 @@ tr td:first-child {
 								<tr>
 									<td><h4>이율</h4></td>
 									<td colspan="2">
-										<input type="text" name="intRate" placeholder="(%)" class="number-input" />
+										<input type="text" name="intRate" placeholder="(%)" class="number-input" required/>
 									</td>
 								</tr>
 								<tr>
 									<td><h4>담당자</h4></td>
 									<td>
-										<input type="text" class="mgr-input" name="mgr" />
+										<input type="text" class="mgr-input" name="mgr" required/>
 										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
-										<input type="text" class="mgr-call-input" name="mgrCall" />
+										<input type="text" class="mgr-call-input" name="mgrCall" required />
 									</td>
 								</tr>
 								<tr>
 									<td><h4>계좌</h4></td>
 									<td colspan="2">
 									<div class="input-append">
-										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" readonly/>
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" readonly required/>
 												<span class="add-on">
 				                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 				                                    </a>
@@ -340,14 +339,14 @@ tr td:first-child {
 							<tr>
 								<td>
 									<label>차입금코드</label>
-									<input type="text" id="code" readonly= "readonly"/>
+									<input type="text" id="code" readonly= "readonly" />
 								</td>
 							</tr>
 							<tr>
 								<td>
 								<label>납입일자</label>
 								<div class="row-fluid input-prepend">
-				                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" />
+				                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" required/>
 				                    <span class="add-on">
 				                     <i class="icon-calendar"></i>
 				              	</span>
@@ -390,7 +389,8 @@ tr td:first-child {
 							<th class="center">차입금액</th>
 							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 - 만기일자</th>
+							<th class="center">차입일자</th>
+							<th class="center">만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -417,14 +417,15 @@ tr td:first-child {
 										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
 							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>		
-							<td class="center">${ltermvo.debtExpDate}</td>
+							<td class="center" debtExpDate="${ltermvo.debtExpDate}">${ltermvo.debtDate} </td>
+							<td class="center" >${ltermvo.expDate}</td>
 							<td class="center">${ltermvo.intRate}%</td>
 							<c:choose>
 										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
@@ -497,7 +498,8 @@ $(function(){
 	})
 	
 	$('#id-date-range-picker-1').daterangepicker({
-	    format: 'YYYY/MM/DD'
+	    format: 'YYYY-MM-DD',
+	    separator: '~'
 	  }).next().on(ace.click_event, function(){
 		$(this).prev().focus();
 	});
@@ -540,7 +542,7 @@ $(function(){
 		
 
 		$("input[name=debtAmount]").val(td.eq(4).text().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-		$("input[name=debtExpDate]").val(td.eq(7).text());
+		$("input[name=debtExpDate]").val(td.eq(7).attr('debtExpDate'));
 		var repayWay='';
 		switch (td.eq(6).text()){
 	    case '년' :
@@ -557,13 +559,13 @@ $(function(){
 		$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
 		
 		
-		var rate = td.eq(8).text().split('%');
+		var rate = td.eq(9).text().split('%');
 		
 		
 		$("input[name=intRate]").val(rate[0]);
 
 		var intPayWay='';
-		switch (td.eq(9).text()){
+		switch (td.eq(10).text()){
 	    case '년' :
 	    	intPayWay='Y';
 	        break;
@@ -576,14 +578,14 @@ $(function(){
 		}
 		
 		$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
-		$("input[name=mgr]").val(td.eq(10).text());
-		$("input[name=mgrCall]").val(td.eq(11).text());
-		$("input[name=bankCode]").val(td.eq(12).text());
-		$("input[name=depositNo]").val(td.eq(13).text());
+		$("input[name=mgr]").val(td.eq(11).text());
+		$("input[name=mgrCall]").val(td.eq(12).text());
+		$("input[name=bankCode]").val(td.eq(13).text());
+		$("input[name=depositNo]").val(td.eq(14).text());
 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
 		
-		$("input[name=bankName]").val(td.eq(12).attr('bank-name'));
-		$("input[name=depositHost]").val(td.eq(13).attr('deposit-host'));
+		$("input[name=bankName]").val(td.eq(13).attr('bank-name'));
+		$("input[name=depositHost]").val(td.eq(14).attr('deposit-host'));
 		
 		
 	});
@@ -617,7 +619,7 @@ $(function(){
 		console.log(bankcodeVal);
 		// ajax 통신
 		$.ajax({
-			url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcodeVal=" + bankcodeVal,
+			url: "${pageContext.request.contextPath }/api/customer/getbankCode?bankCodeVal=" + bankcodeVal,
 			contentType : "application/json; charset=utf-8",
 			type: "get",
 			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -630,12 +632,13 @@ $(function(){
 			success: function(response){
 				alert(response);
 				$("#input-dialog-bankcode").val('');
-				$("#tbody-bankList").append("<tr>" +
-				        "<td class='center'>" + response.code + "</td>" +
-				        "<td class='center'>" + response.name + "</td>" +
-				        "<td class='center'>" + response.store + "</td>" +
-				        "</tr>");
-			},
+				  $.each(response.data,function(index, item){
+                      $("#tbody-bankList").append("<tr>" +
+                            "<td class='center'>" + item.no + "</td>" +
+                          "<td class='center'>" + item.name + "</td>" +
+                          "</tr>");
+               })
+         	},
 			error: function(xhr, error){
 				console.error("error : " + error);
 			}
@@ -652,7 +655,7 @@ $(function(){
 		console.log(banknameVal);
 		// ajax 통신
 		$.ajax({
-			url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
+			url: "${pageContext.request.contextPath }/api/customer/getbankName?bankNameVal=" + banknameVal,
 			contentType : "application/json; charset=utf-8",
 			type: "get",
 			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -662,14 +665,13 @@ $(function(){
 			      alert("page not found");
 			    }
 			},
-			success: function(data){
-				alert(data);
+			success: function(response){
+				alert(response.data);
 				$("#input-dialog-bankname").val('');
-				 $.each(data,function(index, item){
+				 $.each(response.data,function(index, item){
 		                $("#tbody-bankList").append("<tr>" +
-		                		"<td class='center'>" + item.code + "</td>" +
+		                		"<td class='center'>" + item.no + "</td>" +
 						        "<td class='center'>" + item.name + "</td>" +
-						        "<td class='center'>" + item.store + "</td>" +
 						        "</tr>");
 		         })
 			},
@@ -744,13 +746,13 @@ $(function(){
 						
 						var k = parseInt(td.eq(5).text().replace(/,/g, ''));
 						
-						var intPayWay = td.eq(9).text();
+						var intPayWay = td.eq(10).text();
 						console.log("이자지급방식"+intPayWay);
 						if(intPayWay === "월"){
 							var intAmount= parseInt(
 									(
 											(k*
-											parseFloat(td.eq(8).text().replace('%', ''))
+											parseFloat(td.eq(9).text().replace('%', ''))
 											)
 											/12
 									)
@@ -759,7 +761,7 @@ $(function(){
 						}else if(intPayWay === "년"){
 							var intAmount= parseInt(
 									(		k*
-											parseFloat(td.eq(8).text().replace('%', '')))
+											parseFloat(td.eq(9).text().replace('%', '')))
 											/100
 									);
 						}else{
@@ -797,12 +799,12 @@ $(function(){
 								
 								k = parseInt(td.eq(5).text().replace(/,/g, ''));
 								
-								var intPayWay = td.eq(9).text();
+								var intPayWay = td.eq(10).text();
 								if(intPayWay === '월'){
 									intAmount= parseInt(
 											(
 													(k*
-													parseFloat(td.eq(8).text().replace('%', ''))
+													parseFloat(td.eq(9).text().replace('%', ''))
 													)
 													/12
 											)
@@ -811,7 +813,7 @@ $(function(){
 								}else if(intPayWay === '년'){
 									intAmount= parseInt(
 											(		k*
-													parseFloat(td.eq(8).text().replace('%', '')))
+													parseFloat(td.eq(9).text().replace('%', '')))
 													/100
 											);
 								}else{
@@ -857,7 +859,7 @@ $(function(){
 									return;
 								}
 								if(response.data==null){
-									alert("값을 정확히 입력하지 않았습니다.");
+									alert("마감일이 지났습니다.");
 									return;
 								}
 								$("#tbody-list tr").each(function(i){
@@ -1337,6 +1339,7 @@ $("form").on("submit", function() {
 		return;
 	}
 	else{
+		$('input').attr('required',true);
 		$('#myform').submit();
 	}
  });

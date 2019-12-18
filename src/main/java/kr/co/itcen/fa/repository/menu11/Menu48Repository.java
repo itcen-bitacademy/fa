@@ -123,4 +123,18 @@ public class Menu48Repository {
 		List<RepayVo> list = sqlSession.selectList("menu48.selectrepayAlllist",listRepay);
 		return list;
 	}
+
+	public List<LTermdebtVo> selectList(Long[] no) {
+		List<Long>listNo = new ArrayList<Long>();
+		for(Long no1: no) {
+			listNo.add(no1);
+		}
+		List<LTermdebtVo> list = sqlSession.selectList("menu48.selectLtermdebtlist",listNo);
+		return list;
+	}
+
+	public String businessDateStr() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("menu48.businessDateStr");
+	}
 }

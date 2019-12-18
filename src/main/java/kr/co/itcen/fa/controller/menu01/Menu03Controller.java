@@ -46,7 +46,7 @@ public class Menu03Controller {
 	private Menu59Service menu59Service;
 	
 	// 전표관리 페이지
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/read" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
 	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
 		System.out.println("여기 1");
 		System.out.println("getUseYn1 : " + voucherVo.getUseYn() );
@@ -74,7 +74,7 @@ public class Menu03Controller {
 		// 마감 여부 체크
 		
 		System.out.println("asdf: " + voucherVo.getRegDate());
-		
+		//String businessDateStr = menu03Service.businessDateStr();
 		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			voucherVo.setOrderNo(1);
 			menu03Service.createVoucher(voucherVo, userVo);
@@ -82,31 +82,40 @@ public class Menu03Controller {
 		// 전표등록, 리스트
 		DataResult<VoucherVo> dataResult = menu03Service.selectAllVoucherCount(page);
 		model.addAttribute("dataResult", dataResult);
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
 	
 	// 전표 삭제 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
-	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
+	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
 		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
-			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
-		menu03Service.deleteVoucher(voucherVo);
 		
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		//String businessDateStr = menu03Service.businessDateStr();
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			menu03Service.deleteVoucher(voucherVo);
+		}
+		
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
 	
 	// 전표 수정 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) {
+	public String update(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
 		voucherVo.setUpdateUserid(userVo.getId());
 		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
-			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
 		
-		menu03Service.updateVoucher(voucherVo);
+		//String businessDateStr = menu03Service.businessDateStr();
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			menu03Service.updateVoucher(voucherVo);
+		}
 		
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/list";
+		
+		
+		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
 	
 	// 거래처, 은행, 계좌, 카드 조회

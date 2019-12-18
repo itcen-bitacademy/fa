@@ -554,6 +554,14 @@ $(function() {
 	});
 	
 }); */
+/* function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+$("input[name=limitation]").on('keyup', function(event){
+	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+}); */
 
 //빈칸 검사()
 function formCheck() {
@@ -658,15 +666,15 @@ function setMonth() {
 };
 //버튼 구현
 $(function(){
-   $("#insert").click(function() {
-      
-   });
-   
+	$("#insert").click(function() {
+		$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
+	});
+	
    $("#modify").click(function() {
-      
    }); 
    
    $("#delete").click(function() {
+	   $("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
       alert("삭제");
    }); 
    
@@ -809,7 +817,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
 		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
-		$("#delete").hide(); //삭제 버튼 가리기
+		$("#delete").show(); //삭제 버튼 가리기
 		$("#search").show(); //조회 버튼 가리기
 		$("#clear").show(); //초기화 버튼 가리기
 
@@ -939,7 +947,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	var year  =  month*12;
 	
 	
-	var usingMonthCnt = parseInt(interval/month); //기간 사용 개월수
+	var usingMonthCnt = parseInt(interval/month);  //기간 사용 개월수
 	
 	
 	var monthlyFee = $('input[name=monthlyFee]').val();

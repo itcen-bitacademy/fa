@@ -64,25 +64,14 @@ public class Menu41Service {
 		menu41Repository.insert(vehicleVo);
 	}
 
-	//리스트 출력
-	public Map<String, Object> selectList() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", menu41Repository.selectList());
-		return map;
-		
-	}
+	
 	
 	//리스트 수정
 	public void update(VehicleVo vehicleVo) {
 		menu41Repository.update(vehicleVo);
 	}
 
-	//리스트 검색
-	public Map<String, Object> search(String id) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", menu41Repository.search(id));
-		return map;
-	}
+
 
 	//리스트 삭제
 	public void delete(String id) {
@@ -125,7 +114,7 @@ public class Menu41Service {
 	}
 
 	//taxbill 전표번호 가져오기
-	public List getTaxVoucherNo(String id) {
+	public List<Long> getTaxVoucherNo(String id) {
 		List<Long> taxVNO = menu41Repository.getTaxVoucherNo(id);
 		return taxVNO;
 	}
@@ -138,12 +127,15 @@ public class Menu41Service {
 	//페이징 하기
 	public DataResult<VehicleVo> list(String id, int page) {
 		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
-		
+		System.out.println("id2:" + id);
+
 		int totalCount = menu41Repository.listCount(id);
 		
 		//pagination
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(pagination);
+		System.out.println("id3:" + id);
+
 		List<VehicleVo> list = menu41Repository.list(id, pagination);
 		dataResult.setDatas(list);
 		

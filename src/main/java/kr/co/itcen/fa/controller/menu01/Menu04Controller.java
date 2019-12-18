@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu01.Menu04Service;
 import kr.co.itcen.fa.service.menu17.Menu59Service;
@@ -37,7 +38,8 @@ public class Menu04Controller {
 	private Menu59Service menu59Service;
 
 	// 전표 조회하기
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
+	@NoAuth
+	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/read" })
 	public String VoucherMain(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue ="1") int page, Model model) {
 		if(voucherVo.getUseYn() == null) {
 			voucherVo.setUseYn(true);

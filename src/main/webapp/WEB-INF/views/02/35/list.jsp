@@ -485,7 +485,6 @@
 									</div>
 								</div>
 							</div>
-						</form>
 						
 							<div class="row-fluid">
 								<div class="span12">
@@ -495,11 +494,12 @@
 											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
 											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
 											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left; margin-left:20px;">입력</button>
-											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button><br>
-										<div class="hr hr-18 dotted"></div>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button>
 									</div>
+									<div class="hr hr-18 dotted"></div>
 								</div>
 							</div>
+						</form>
 							
 							<div class="row-fluid">
 								<div class="span12">

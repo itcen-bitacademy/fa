@@ -9,6 +9,11 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+#staticBackdrop {
+	z-index: -1;
+}
+</style>
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -20,24 +25,24 @@
 					<h1 class="pull-left">재무제표계정관리</h1>
 				</div>
 				<!-- /.page-headerr -->
-				<div class="row-fluid">			
+				<div class="row-fluid">
 					<div class="span12">
 						<!-- PAGE CONTENT BEGINS -->
 						<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-							<!-- 회계연도  -->	
-							<div class="span3">								
+							<!-- 회계연도  -->
+							<div class="span3">
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:100px;" >회계연도</label>
-									<div class="controls" style="margin-left:100px;">		
+									<div class="controls" style="margin-left:100px;">
 										<input type="number" min="1900" max="2099" step="1"
 											value="${accountUsedyear }" id="accountUsedyear" name="accountUsedyear"
 											placeholder="회계연도"
 											style="text-align: left; width: 150px; height: 18px;" />
 									</div>
 								</div>
-							</div>	
-							<!-- 구분  -->						
-							<div class="span3">							
+							</div>
+							<!-- 구분  -->
+							<div class="span3">
 								<div class="control-group">
 								<label class="control-label" for="form-field-select-1" style="text-align:left;width:100px;" >구분</label>
 									<div class="controls" style="margin-left:100px;">
@@ -61,19 +66,19 @@
 								<div class="control-group">
 								<label class="control-label" for="form-field-select-1" style="text-align:left;width:100px;">계정과목</label>
 								<div class="controls" style="margin-left:100px;">
-									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목" style="text-align:left;width:160px;" >		
-										<option value="" data-accountName="" id ="firstSelectedAccount" ></option>		
+									<select class="chosen-select" id="selectedAccount" name="selectedAccount" data-placeholder="계정과목" style="text-align:left;width:160px;" >
+										<option value="" data-accountName="" id ="firstSelectedAccount" ></option>
 										<c:choose>
 											<c:when test="${selectedAccount eq selectedAccount }">
 												<option value="${selectedAccount}" data-accountName="${selectedAccount }" selected>${selectedAccount }</option>
-											</c:when>										
-										</c:choose>				
-										<c:forEach items="${accountList }" var="vo">									
+											</c:when>
+										</c:choose>
+										<c:forEach items="${accountList }" var="vo">
 												<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>
 										</c:forEach>
-									</select> 
+									</select>
 									<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 160px; height: 18px;" disabled />
-								
+
 								</div>
 								</div>
 							</div>
@@ -97,10 +102,10 @@
 				<div class="span12">
 				<!-- 선 -->
 				<div class="hr hr-18 dotted"></div>
-				
+
 				<!-- 게시글 총 수 -->
 				<h6>총 ${dataResult.pagination.totalCnt }건</h6>
-				
+
 					<table id="tb_account_management" class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
@@ -121,10 +126,10 @@
 									<td>${vo.accountOrder }</td>
 									<td>${vo.accountNo }</td>
 									<td>${vo.accountName }</td>
-									<c:if test="${vo.balanceType eq 'D' }">	
+									<c:if test="${vo.balanceType eq 'D' }">
 									<td>차변</td>
 									</c:if>
-									<c:if test="${vo.balanceType eq 'C' }">	
+									<c:if test="${vo.balanceType eq 'C' }">
 									<td>대변</td>
 									</c:if>
 									<td>${vo.insertUserid }</td>
@@ -133,7 +138,7 @@
 									<td>${vo.updateDay }</td>
 									<td id="no" style="display:none;">${vo.no }</td>
 								</tr>
-							</tbody>				
+							</tbody>
 						</c:forEach>
 					</table>
 				</div>
@@ -144,7 +149,7 @@
 		<!-- /.page-content -->
 	</div>
 	<!-- /.main-content -->
-	
+
 	<%-- 페이징 --%>
 	<div class="pagination">
 		<ul>
@@ -179,7 +184,7 @@
 		</ul>
 	</div>
 	<!-- PAGE CONTENT ENDS -->
-	
+
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
@@ -190,62 +195,62 @@
 			$(".chosen-select").chosen();
 		});
 	</script>
-	
+
 		<script>
 
     // 테이블의 Row 클릭시 값 가져오기
-    $("#tb_account_management tr").dblclick(function(){     
+    $("#tb_account_management tr").dblclick(function(){
         var str = "";
         var tdArr = new Array();    // 배열 선언
-        
+
         // 현재 클릭된 Row(<tr>)
         var tr = $(this);
         var td = tr.children();
-        
+
         // 반복문을 이용해서 배열에 값을 담아 사용할 수 도 있다.
         td.each(function(i){
             tdArr.push(td.eq(i).text());
         });
-        
+
         console.log("배열에 담긴 값 : "+tdArr);
-        
+
         var accountOrder = td.eq(0).text();
         var accountNo = td.eq(1).text();
         var accountName = td.eq(2).text();
         var hiddenNo = td.eq(8).text();
-             
-        //$(".selectedAccount").val(accountNo).trigger('change'); 
+
+        //$(".selectedAccount").val(accountNo).trigger('change');
         //$("#selectedAccount").val(accountNo).prop("selected", true);
-        //$("#selectedAccount").val("10230123").attr("selected", "selected");                       
+        //$("#selectedAccount").val("10230123").attr("selected", "selected");
        	//$("#selectedAccount").val(accountNo);
-        //$("#selectedAccount  option:contains(" + accountNo + ")").text(accountNo);  
+        //$("#selectedAccount  option:contains(" + accountNo + ")").text(accountNo);
      	//$('#selectedAccount').chosen().val(accountNo);
-     	
-     	$('#selectedAccount').val(accountNo).trigger('chosen:updated');    	
+
+     	$('#selectedAccount').val(accountNo).trigger('chosen:updated');
         $("#accountOrder").val(accountOrder);
         $("#accountName").val(accountName);
         $("#no").val(hiddenNo);
-     
+
     });
-    
-    
+
+
     //계정과목에 따른 계정명 불러오기
     $('#selectedAccount').change(function () {
     	var accountName =$(this).find('option:selected').attr('data-accountName');
     	$('#accountName').val(accountName);
    	});
-    
-    
+
+
     //리셋버튼 누를 시 초기화
     $("#account-reset-btn").click(function() {
     	$('#selectedAccountStatementType').val("B");
     	$('#accountOrder').val("");
     	$('#accountUsedyear').val("2019");
     	$('#accountName').val("");
-    	$('#selectedAccount').val(null).trigger('chosen:updated'); 
+    	$('#selectedAccount').val(null).trigger('chosen:updated');
     });
-    
-    
+
+
 	</script>
 </body>
 </html>

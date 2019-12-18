@@ -33,7 +33,7 @@ function execDaumPostcode() {
                 }
             
             } else {
-                document.getElementById("sample6_extraAddress").value = '';
+                document.getElementById("address").value = '';
             }
 
             document.getElementById("address").value = addr;
@@ -239,14 +239,24 @@ function execDaumPostcode() {
 		var customerConIt = td.eq(5).text();
 		var conitArray=customerConIt.split('/');
 		
-		$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
+		if (noArray[2] !=null){
+			$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
+		} else if (noArray[2]==null){
+			$("input[name=no]").val(noArray[0]);
+		}
 		$("input[name=name]").val(td.eq(2).text());
 		$("input[name=ceo]").val(td.eq(3).text());
 		$("input[name=address]").val(addrArray[0]);
 		$("input[name=detailAddress]").val(addrArray[1]);
 		$("input[name=conditions]").val(conitArray[0]);
 		$("input[name=item]").val(conitArray[1]);
-		$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
+		
+		if (noArray[2] !=null){
+			$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
+		} else if (noArray[2]==null){
+			$("input[name=corporationNo]").val(noArray[0]);
+		}
+		
 		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
 		if (phoneArray[2] !=null){
 			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
@@ -436,12 +446,7 @@ function execDaumPostcode() {
 
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">거래처관리</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-						<i class="icon-plus-sign bigger-120 green"></i>
-							팀 추가
-					</a>
+					<h1 class="pull-left">거래처 관리 [27]</h1>
 				</div>
 				
 				<!-- /.page-header -->
