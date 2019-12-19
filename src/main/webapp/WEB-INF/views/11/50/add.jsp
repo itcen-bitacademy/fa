@@ -327,13 +327,14 @@
 										<tr>
 											<td>
 												<label>납입금</label>
-												<input type="text" name="payPrinc" id= "payPrinc"/>
+												<input type="text" name="text-name-payPrinc" id= "text-id-payPrinc" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
+												<input type="hidden" name="payPrinc" id= "payPrinc" style="text-align:right;"/>
 											</td>
 										</tr>
 										<tr>
 											<td>
 												<label>이자금액</label>
-												<input type="text" name="intAmount" id= "intAmount" readonly="readonly"/>
+												<input type="text" name="intAmount" id= "intAmount" readonly="readonly" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
 											</td>
 										</tr>
 										</table>
@@ -569,15 +570,15 @@
 			// 차입금액 input 추가 (입력창에 보여지는 부분)
 			$("input[name=textDebtAmount]").val(td.eq(4).text()); // 차입금액
 			var debtHiddenVal = td.eq(4).text(); // 콤마가 붙지 않은 차입금액
-			var debtWithoutComma = removeCommaReturn(td.eq(4).text()); // 콤마가 붙은 차입금액
-			
-			// 콤마 제거 (제거값리턴)
+			// 4. 콤마 제거 (제거값리턴)
 			function removeCommaReturn(val){
 			   if(val != ""){
 			    	val = val.replace(/,/g, "");
 			   }
 			   return val;
 			}
+			var debtWithoutComma = removeCommaReturn(td.eq(4).text()); // 콤마가 붙은 차입금액
+			
 			$("input[name=debtAmount]").val(debtWithoutComma);
 			$("input[name=repayBal]").val(td.eq(5).text()); // 상환잔액
 			
@@ -781,11 +782,6 @@
 		//--------------------------------------------------------------------------------------------------------------------------//
 		
 		
-		
-		//--------------------------------------------------------------------------------------------------------------------------//
-		
-		//--------------------------------------------------------------------------------------------------------------------------//
-		
 		//--------------------------------------------------------------------------------------------------------------------------//
 		// 1. 계좌정보 테이블 Modal(dialog 생성)
 		$("#dialog-account-message").dialog({
@@ -880,17 +876,20 @@
 				var monthIntAmount = 0; // 월이자금액
 				var intRate = td.eq(9).text().replace('%', ''); // 연이율
 				var intRate12 = td.eq(9).text().replace('%', '') / 12; // 월이율
+				var convertTocommaIntAmount = 0; // 이자금액에 콤마를 추가해서 금액데이터 출력
 				
 				if (n == $("#no").val() && "연" === (td.eq(10).text())) {
 					// 연이자 지급방식
 					repayAmount = parseInt(td.eq(5).text().replace(/,/g, ''));
 					yearIntAmount = parseInt((repayAmount * intRate) / 100);
-					$('input[name=intAmount]').val(yearIntAmount);
+					convertTocommaIntAmount = comma(yearIntAmount);
+					$('input[name=intAmount]').val(convertTocommaIntAmount);
 				} else if (n == $("#no").val() && "월" === (td.eq(10).text())) {
 					// 월이자 지급방식
 					repayAmount = parseInt(td.eq(5).text().replace(/,/g, '')); 
 					monthIntAmount = parseInt((repayAmount * intRate12) / 100);
-					$('input[name=intAmount]').val(monthIntAmount);
+					convertTocommaIntAmount = comma(monthIntAmount);
+					$('input[name=intAmount]').val(convertTocommaIntAmount);
 				} else if (n == $("#no").val() && "해당없음" === (td.eq(10).text())){
 					$('input[name=intAmount]').val('0');
 				}
@@ -907,16 +906,27 @@
 				close: function() {
 					$('#code').val('');
 				    $('input[name=payDate]').val('');
-				    $('#payPrinc').val('');
+				    $('#payPrinc').val(''); // hidden 납입금
+				    $('#text-id-payPrinc').val(''); // 납입금
 				    $('#intAmount').val('');
 				},
 				buttons: {
 					// 상환버튼 클릭시
 					"상환": function() {
 						event.preventDefault();
-						var intAmount = $('input[name=intAmount]').val();
+						var commaExistIntAmount = $('input[name=intAmount]').val();
 				    	var repayBal; // 상환잔액
 						var remainmoney; // 남은돈
+						
+						function removeCommaIntAmount(val){
+							   if(val != ""){
+							    	val = val.replace(/,/g, "");
+							   }
+							   return val;
+						}
+						
+						var intAmount = removeCommaIntAmount(commaExistIntAmount); // 이자금액 controller로 전달하기 전 콤마 제거
+						console.log("intAmount : " + intAmount);
 				    	
 				    	$("#tbody-list tr").each(function(i){
 				    		var td = $(this).children();
@@ -932,7 +942,7 @@
 								"debtNo" : $("#no").val(), // 테이블 번호
 								"payPrinc" : parseInt($('input[name=payPrinc]').val()) - intAmount, //납입금 : 납입금 - 이자금액
 								"payDate" : $('input[name=payDate]').val(), // 상환일
-								"intAmount" : $('input[name=intAmount]').val() // 이자금액
+								"intAmount" : intAmount // 이자금액
 						}
 						
 						if (intAmount > parseInt($('input[name=payPrinc]').val())) {
@@ -944,8 +954,6 @@
 							alert("납입금이 상환 잔액보다 큽니다 납입금(" + repayBal +") "+"이자("+ intAmount+")보다 작게 입력해주세요");
 							return;
 						}
-						
-						console.log("intAmount : " + $('input[name=intAmount]').val());
 						
 						// ajax 통신
 						$.ajax({
@@ -969,9 +977,10 @@
 								$("#tbody-list tr").each(function(i) {
 									var td = $(this).children();
 									var n = td.eq(0).attr('data-no');
+									var m = 0;
 									if(n == response.data.no){
-										var m = response.data.repayBal;
-										td.eq(5).html(m).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+										m = response.data.repayBal;
+										td.eq(5).html(m.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 									}
 								});
 								alert("상환데이터가 성공적으로 입력되었습니다.")
@@ -1040,15 +1049,26 @@
 		//--------------------------------------------------------------------------------------------------------------------------//
 		
 		//--------------------------------------------------------------------------------------------------------------------------//
-		// 숫자에 콤마 적용해서 데이터 처리
+		// 숫자에 콤마 적용해서 데이터 처리 : 차입금액
 	    var rgx3 = /,/gi;
-	    $("#inputPrice").bind('keyup keydown', function(){
+	    $("#text-id-payPrinc").bind('keyup keydown', function(){
 	        inputNumberFormat(this);
-	        var amount = $('input[name=textDebtAmount]').val();
+	        var amount = $('input[name=text-name-payPrinc]').val();
+	        var coverAmount = amount.replace(/,/g, '');
+	        // hidden값에..콤마를 뺀 값을 넣어둔다.
+	        $('input[name="payPrinc"]').val(coverAmount);
+	    });
+	    
+	 // 숫자에 콤마 적용해서 데이터 처리 : 상환내역팝업창 - 납입금액
+	    var rgx3 = /,/gi;
+	    $("#payPrinc").bind('keyup keydown', function(){
+	        inputNumberFormat(this);
+	        var amount = $('input[name=payPrinc]').val();
 	        var coverAmount = amount.replace(/,/g, '');
 	        // hidden값에..콤마를 뺀 값을 넣어둔다.
 	        $('input[name="debtAmount"]').val(coverAmount);
 	    });
+	    
 		//--------------------------------------------------------------------------------------------------------------------------//
 		
 		$("#dialog-repayment-ischeck").dialog({
@@ -1241,6 +1261,7 @@ function uncomma(str) {
     str = String(str);
     return str.replace(/[^\d]+/g, '');
 }
+
 //--------------------------------------------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------------------------------------//

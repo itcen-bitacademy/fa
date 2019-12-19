@@ -151,7 +151,7 @@ input[type="text"], input[type="date"], select {
 								</label>
 							</th>
 							<th class="center">차입금코드</th>
-							<th class="center">상환코드</th>
+							<th class="center">총납입금</th>
 							<th class="center">납입금</th>
 							<th class="center">이자금액</th>
 							<th class="center">부채유형</th>
@@ -168,7 +168,7 @@ input[type="text"], input[type="date"], select {
 									<input type="checkbox" class="ace" name="no"  data-no="${vo.no }" /><span class="lbl"></span>
 								</td>
 								<td class="center">${vo.code}</td>
-								<td class="center">${vo.debtNo}</td>
+								<td class="center"><fmt:formatNumber value="${vo.totalPayPrinc}" pattern="#,###" /></td>	
 								<td class="center"><fmt:formatNumber value="${vo.payPrinc}" pattern="#,###" /><input type="hidden" value="${vo.payPrinc}" /></td>	
 								<td class="center"><fmt:formatNumber value="${vo.intAmount}" pattern="#,###" /><input type="hidden" value="${vo.intAmount}" /></td>
 								<c:choose>
