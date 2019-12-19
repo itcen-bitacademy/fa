@@ -297,7 +297,7 @@
             }
         }
 		 
-        // 
+        // 셀렉트박스 선택시 해당하는 정보값 세팅
 		 var setData = {
 		        	customer: function(){
 		        		var code = $("#customerCode").val();
