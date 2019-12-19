@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -51,8 +53,18 @@ public class Menu66Controller {
 			@ModelAttribute("vo") RepayVo vo) {
 		// tb_repay 의 debtNo를 통해 각 사채테이블의 PK인 no와 비교하여 데이터 호출
 		DataResult<RepayVo> dataResult = menu66Service.list(page, vo.getCode(), vo.getDebtType());
+		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance()
+					.queryParam("code", vo.getCode())
+					.queryParam("debtType", vo.getDebtType())
+					.build();
+		
+		String uri = uriComponents.toUriString();
+		model.addAttribute("uri",uri);
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("contentsCount", dataResult.getPagination().getTotalCnt()); // 게시물 수
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
