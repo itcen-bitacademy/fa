@@ -790,6 +790,7 @@ $(function(){
 		    		var totalAmount = parseInt($("#payPrinc").val())+parseInt(intAmount);
 		    		$("#totalAmount").val(totalAmount);
 		    	});
+		    	
 				$("#dialog-repayment").dialog('open');
 				$("#dialog-repayment").dialog({
 					title: "상환정보등록",
