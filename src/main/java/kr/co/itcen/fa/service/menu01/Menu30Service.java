@@ -41,7 +41,7 @@ public class Menu30Service {
 		return dataResult;
 	}
 	
-	public void closing_entries(StatementDataVo vo) {
+	public void closingEntries(List<StatementDataVo> vo) {
 		
 	}
 }
