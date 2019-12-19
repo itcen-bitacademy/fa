@@ -412,6 +412,7 @@
 				table.deleteRow(table.rows.length - 1);
 			}
 			addElementCommas();
+			sumAllSupplyAllTax();
 		}
 
 		// 금액이 콤마 생기고, focus없어지면 콤마 사라지게 하는 부분
@@ -445,10 +446,10 @@
 
 		//품목들의 수량과 공급가액 or 세액을 계산하여 총 공급가액 or 총 세액에 기입해주는 부분
 		function sumAllSupplyAllTax() {
-
 			var supplySum = 0;
 			var taxSum = 0;
-			for (var i = 1; i < cnt; i++) {
+			
+			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
 				var supplyValue = document.getElementById('supply-value' + i).value;
 				var taxValue = document.getElementById('tax-value' + i).value;
 				var amount = document.getElementById('amount' + i).value;
