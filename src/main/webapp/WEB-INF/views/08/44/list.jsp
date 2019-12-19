@@ -93,7 +93,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">취득금액</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="acqPrice"
+											<input type="text" id="acqPrice" name="acqPrice"
 												style="text-align: right;" value="0" />
 										</div>
 									</div>
@@ -107,7 +107,7 @@
 											</div>
 											<div class="span2" style="float: right">
 												<label style="float: right"> <input name="isChecked"
-													id="delete" value="삭제된 항목" type="checkbox" class="ace">
+													id="delete" value="d" type="checkbox" class="ace">
 													<span class="lbl"> 삭제포함</span>
 												</label>
 											</div>
@@ -121,7 +121,7 @@
 						<div class="hr hr-18 dotted"></div>
 
 						<div class="row-fluid">
-							<div id="listCount" style="float: left;"></div>
+							<label>총 ${dataResult.pagination.totalCnt }건</label>
 
 							<div>
 								<table id="list-table"
@@ -253,12 +253,6 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
-
-			$("#listCount").ready(function() {
-				var total = $('#list-table tbody tr').length;
-				$('#listCount').text('총 ' + total + '건');
-			});
-
 		});
 	</script>
 	<script
@@ -267,12 +261,23 @@
 		src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 	<script>
 		$(function() {
-			$("#id-date-range-picker-1").daterangepicker({
+			$("#payDate").daterangepicker({
 				format : 'YYYY-MM-DD'
-			}).prev().on(
-					ace.click_event,
-					function() {
-						$(this).next().focus();
+
+			}).prev().on(ace.click_event, function() {
+				$(this).next().focus();
+			});
+		});
+
+		function addCommas(x) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
+		// 금액에 3자리마다 ',' 넣기
+		$(function() {
+			$("#acqPrice").on('keyup', function(event) {
+				$(this).val(addCommas($(this).val().replace(/[^0-9]/g, "")));
+			});
 		});
 	</script>
 </body>
