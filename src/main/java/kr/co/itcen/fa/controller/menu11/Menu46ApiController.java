@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,8 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
@@ -33,6 +32,9 @@ public class Menu46ApiController {
 	
 	@Autowired
 	Menu03Service menu03Service;
+	
+	@Autowired
+	Menu19Service menu19Service;
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/search")
@@ -148,5 +150,13 @@ public class Menu46ApiController {
 		 //Map을 받아온다
 		 Map map = menu46Service.getListMap();
 		 return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/isClosedDate", method=RequestMethod.POST)
+	public JSONResult isClosedDate(@RequestParam(value="debtDate", required=true)String debtDate,
+			@AuthUser UserVo authUser) throws ParseException {
+		Boolean isClosed = menu19Service.checkClosingDate(authUser, debtDate);
+		return JSONResult.success(isClosed);
 	}
 }	
