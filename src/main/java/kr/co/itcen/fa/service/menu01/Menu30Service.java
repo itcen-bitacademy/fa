@@ -9,6 +9,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu30Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
  * 
@@ -38,5 +39,9 @@ public class Menu30Service {
 		System.out.println("결과 조회 :" + list.toString());
 		
 		return dataResult;
+	}
+	
+	public void closing_entries(StatementDataVo vo) {
+		
 	}
 }
