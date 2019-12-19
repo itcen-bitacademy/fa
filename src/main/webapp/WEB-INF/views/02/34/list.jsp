@@ -435,6 +435,11 @@
 			}
 		}
 		
+		$("body").on("click", "#search-section-dialog-refresh", function(e) {
+			$("#form-field-section-name").val("");
+			$("#form-field-section-code").val("");
+		});
+		
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		$("#btn-search-factory").click(function() {
@@ -584,6 +589,11 @@
 				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
 			}
 		}
+		
+		$("body").on("click", "#search-factory-dialog-refresh", function(e) {
+			$("#form-field-factory-name").val("");
+			$("#form-field-factory-code").val("");
+		});
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		function addCommas(price) {
@@ -638,6 +648,9 @@
 											<input class="span5" id="form-field-section-name" name="sectionname" type="text" placeholder="품목 대분류명" readonly/>
 											<span class="add-on">
 												<a href="javascript:void(0);" id="search-section-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
+											</span>
+											<span class="add-on">
+												<a href="javascript:void(0);" id="search-section-dialog-refresh" style="text-decoration:none"><i class="icon-refresh"></i></a>
 											</span>
 										</div>
 									</div>
@@ -726,6 +739,9 @@
 											<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명" readonly/>
 											<span class="add-on">
 												<a href="javascript:void(0);" id="search-factory-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
+											</span>
+											<span class="add-on">
+												<a href="javascript:void(0);" id="search-factory-dialog-refresh" style="text-decoration:none"><i class="icon-refresh"></i></a>
 											</span>
 										</div>
 									</div>
@@ -865,7 +881,9 @@
 												</span>
 											</div>
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<button class="btn btn-small btn-info" id="purchaseitem_search" style="display:inline">조회</button>
+											<button class="btn btn-info btn-small" id="purchaseitem_search" style="display:inline">조회</button>
+											&nbsp;
+											<button class="btn btn-default btn-small" type="reset" id="reset">초기화</button>
 										</div>
 									</div>
 								</div>
