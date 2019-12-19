@@ -91,9 +91,25 @@
 	<update id="update" parameterType="purchasemanagement06vo">
 		<![CDATA[
         update tb_purchasemanagement
-           set  purchase_no = #{no }, number = #{number }, purchase_date = #{purchaseDate }, purchase_manager = #{purchaseManager }, customer_code = #{customerCode }, 
-           customer_name = #{customerName }, item_code = #{itemCode }, item_name = #{itemName }, quantity = #{quantity }, supply_value = #{supplyValue },
-           tax_value = #{taxValue }, total_price = #{totalPrice }, tax_type = #{taxType }, taxbill_no = #{taxbillNo }, receipt_date = #{receiptDate }, release_date = #{releaseDate }, update_userid = #{updateUserid }, update_day = now()
+           set  
+             purchase_no = #{no }
+           , number = #{number }
+           , purchase_date = #{purchaseDate }
+           , purchase_manager = #{purchaseManager }
+           , customer_code = #{customerCode }
+           , customer_name = #{customerName }
+           , item_code = #{itemCode }
+           , item_name = #{itemName }
+           , quantity = #{quantity }
+           , supply_value = #{supplyValue }
+           , tax_value = #{taxValue }
+           , total_price = #{totalPrice }
+           , tax_type = #{taxType }
+           , taxbill_no = #{taxbillNo }
+           , receipt_date = #{receiptDate }
+           , release_date = #{releaseDate }
+           , update_userid = #{updateUserid }
+           , update_day = now()
          where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
 		]]>
 	</update>

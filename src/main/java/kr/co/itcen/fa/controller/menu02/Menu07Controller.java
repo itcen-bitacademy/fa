@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu02.Menu07Service;
 import kr.co.itcen.fa.vo.menu02.PurchasemanagementVo;
 
@@ -32,8 +33,8 @@ public class Menu07Controller {
 	@Autowired
 	private Menu07Service menu07Service;
 	
-
-	@RequestMapping(value = {"/" + SUBMENU}, method = RequestMethod.GET)
+	@NoAuth
+	@RequestMapping(value = { "", "/" + SUBMENU}, method = RequestMethod.GET)
 	public String index(Model model, @RequestParam(defaultValue = "1") int page) {
 		
 		int countPage = 5;
@@ -69,16 +70,19 @@ public class Menu07Controller {
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
-
+	
+	// 검색
+	@NoAuth
 	@ResponseBody
 	@RequestMapping(value = {"/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public List<PurchasemanagementVo> search(Model model, @RequestBody PurchasemanagementVo vo,
 			String[] purchaseDate, @RequestParam(defaultValue = "1") int page) {
-		
 		List<PurchasemanagementVo> result = menu07Service.getList(vo);
 		return result;
 	}
 	
+	// 페이징
+	@NoAuth
 	@ResponseBody
 	@RequestMapping(value = {"/" + SUBMENU + "/paging"}, method = RequestMethod.POST)
 	public List<PurchasemanagementVo> paging(Model model,  @RequestBody PurchasemanagementVo vo) {
@@ -86,10 +90,11 @@ public class Menu07Controller {
 		int curPage = vo.getPage();
 		List<PurchasemanagementVo> result = null;
 		
-		if(vo.isSearchFlag() == false) {
+		if(vo.isSearchFlag() == false) { 			// 기본 페이징
 			vo.setPage((curPage - 1) * 11);
 			result = menu07Service.getList(vo);
-		} else {
+		} else {									// 조회시 페이징
+			
 			result = menu07Service.getList((curPage - 1) * 11);
 		}
 		

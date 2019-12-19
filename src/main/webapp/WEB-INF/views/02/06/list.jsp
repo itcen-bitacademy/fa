@@ -36,7 +36,7 @@
 					<div class="row-fluid">
 						<div class="span12">
 						
-							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">
+							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }" id="form1">
 							<div class="span4">
 							
 							<div class="control-group">
@@ -53,11 +53,11 @@
 						
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">거래처코드</label>
-										<div class=" controls">
+										<div class=" controls" id="customerListDiv">
 										<select class="chosen-select span1" id="customerCode" name="customerCode" onchange="setData.customer();">
-										<c:forEach items='${customerList }' var='vo' varStatus='status'>
-											<option value="${vo.no }">${vo.no }</option>
-										</c:forEach>
+											<c:forEach items='${customerList }' var='vo' varStatus='status'>
+												<option value="${vo.no }" >${vo.no }</option>
+											</c:forEach>
 										</select>
 										</div>
 							</div>
@@ -138,8 +138,7 @@
 								<button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
 								<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
 								<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
-								<!-- <button class="btn btn-default btn-small" type="submit" id="voucher" style="float:left;margin-right:20px;margin-bottom:20px;">전표 발행</button> -->
-							</div>
+								</div>
 							
 							<input type="hidden" id="rowCnt" name="rowCnt" value="1">
 							<table id="item-table" class="table table-striped table-bordered table-hover">							
@@ -195,6 +194,9 @@
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<!-- bootstrap -->
+<script src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
@@ -273,8 +275,6 @@
 				        
 				        document.getElementById("rowCnt").value = cnt;
 				        $(".chosen-select").chosen();
-				        
-				        
 			 }
 		
 		/* function delete_row() {
@@ -297,6 +297,7 @@
             }
         }
 		 
+        // 
 		 var setData = {
 		        	customer: function(){
 		        		var code = $("#customerCode").val();
@@ -320,13 +321,14 @@
 		            	</c:forEach>  
 		        	}
 		        }
+		 // 페이지 로드시 실행하는 함수
 		 $(window).load(function(){
 			 checkClosing();
 			 createPurchaseNo();
-			 indexButtonSet();		 
+			 indexButtonSet();
 		 });
 		
-		
+		// 버튼 클릭 이벤트
 		jQuery(function($) {
 		$("#delete").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
@@ -344,13 +346,36 @@
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/voucher");
 		});
 		});
+		
+		// 조회시 셀렉트박스 값 고정 
+		 function updateCustomerCode(customer){
+			 var options = document.getElementById("customerCode");
+				for(var i=0 ; i < options.length; ++i){
+					if(options[i].value == customer){
+						options[i].selected = "selected";
+						$("#customerCode_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+					}
+				}
+		 }
+		 
+		 function updateItemCode(item){
+					 var options = document.getElementById("itemCode1");
+						for(var i=0 ; i < options.length; ++i){
+							if(options[i].value == item){
+								options[i].selected = "selected";
+								$("#itemCode1_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+							}
+						}
+		 }
+		 
+	
 		 
 		 $(function() {
 				var $search = $("#search");
 				$search.click(function(event) {
 					
 					var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), number : $("#number1").val() };
-					console.log(vo);
+					
 					event.preventDefault();
 					
 					// ajax 통신
@@ -361,14 +386,17 @@
 						contentType: 'application/json;charset=utf-8',
 						data: JSON.stringify(vo),
 						success: function(result) {
+							$("form").each(function() {  
+					            this.reset();  
+					         });
 							$("#purchaseDate").val(result.purchaseDate);
-							$(".chosen-single span").text(result.customerCode);
+							updateCustomerCode(result.customerCode);
 							$("#purchaseManager").val(result.purchaseManager);
 							$("#customerName").val(result.customerName);
 							$("#receiptDate").val(result.receiptDate);
 							$("#releaseDate").val(result.releaseDate);
-							$("#number").val(result.number);
-							$("#itemCode1_chosen a span").text(result.itemCode);
+							$("#number1").val(result.number);
+							updateItemCode(result.itemCode);
 							$("#itemName1").val(result.itemName);
 							$("#quantity1").val(result.quantity);
 							$("#supplyValue1").val(result.supplyValue);

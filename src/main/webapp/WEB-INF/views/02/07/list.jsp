@@ -274,6 +274,7 @@
 					data: JSON.stringify(vo),
 			        success : function(result){
 						createTable(result);
+						//updatePagination(page_num, blockStartNum, blockLastNum, lastPage)
 						searchFlag = false;
 			        },
 			        error : function(){
@@ -322,6 +323,7 @@
 			var id = $(this).attr('id');
 			
 			if(id == "gotoNext") {
+				console.log(blockLastNum);
 				page_num = parseInt(blockLastNum) + 1;
 				blockLastNum = parseInt(blockLastNum) + 5;
 				blockStartNum = parseInt(blockStartNum) + 5;
@@ -343,6 +345,7 @@
 				data:JSON.stringify(vo),
 				success:function(result) {
 					createTable(result);
+					updatePagination(page_num, blockStartNum, blockLastNum, lastPage);
 				}, error:function(error) {
 				}
 			});
@@ -352,7 +355,7 @@
 			$("#pagination").remove();
 			$newUl = $("<ul id='pagination'></ul>");
 			$("#paginationList").append($newUl);
-			
+			console.log(curPage);
 			if(curPage > 5) {
 				$newUl.append("<li><a class='page_go' id='gotoPrev'><i class='icon-double-angle-left'></i></a></li>");
 			} else {
