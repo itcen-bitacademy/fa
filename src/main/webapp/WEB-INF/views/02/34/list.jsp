@@ -108,6 +108,20 @@
 			}
 		}
 		
+		function form_datas(no, sectionname, factoryname, price_start, price_end, name, sectioncode, factorycode, producedate_start, producedate_end, deleteflag) {
+			$("#form").data("formdatasno", no);
+			$("#form").data("formdatassectionname", sectionname);
+			$("#form").data("formdatasfactoryname", factoryname);
+			$("#form").data("formdataspricestart", price_start);
+			$("#form").data("formdataspriceend", price_end);
+			$("#form").data("formdatasname", name);
+			$("#form").data("formdatassectioncode", sectioncode);
+			$("#form").data("formdatasfactorycode", factorycode);
+			$("#form").data("formdatasproducedatestart", producedate_start);
+			$("#form").data("formdatasproducedateend", producedate_end);
+			$("#form").data("formdatasdeleteflag", deleteflag);
+		}
+		
 		$("body").on("click", "#purchaseitem_search", function(e) {
 			e.preventDefault();
 			
@@ -117,19 +131,40 @@
 				$("#id-delete-check").data("deleteflag", "N");
 			}
 			
+			form_datas($("#form-field-item-id").val(),
+					   $("#form-field-section-name").val(),
+					   $("#form-field-factory-name").val(),
+					   $("#form-field-price1").val(),
+					   $("#form-field-price2").val(),
+					   $("#form-field-item-name").val(),
+					   $("#form-field-section-code").val(),
+					   $("#form-field-factory-code").val(),
+					   $("#id-date-picker-1").val(),
+					   $("#id-date-picker-2").val(),
+					   $("#id-delete-check").data("deleteflag"));
+			
 			var page_num = 1;
 			var page_group = parseInt((page_num-1)/5);
-			var deleteflag = $("#id-delete-check").data("deleteflag");
-			var form_data = $("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag;
-			$("#form").data("formdata", form_data);
-			console.log($("#form").data("formdata"));
 			
 			$.ajax({
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
+				data:{"no" : $("#form").data("formdatasno"),
+					  "sectionname" : $("#form").data("formdatassectionname"),
+					  "factoryname" : $("#form").data("formdatasfactoryname"),
+					  "price_start" : $("#form").data("formdataspricestart"),
+					  "price_end" : $("#form").data("formdataspriceend"),
+					  "name" : $("#form").data("formdatasname"),
+					  "sectioncode" : $("#form").data("formdatassectioncode"),
+					  "factorycode" : $("#form").data("formdatasfactorycode"),
+					  "producedate_start" : $("#form").data("formdatasproducedatestart"),
+					  "producedate_end" : $("#form").data("formdatasproducedateend"),
+					  "deleteflag" : $("#form").data("formdatasdeleteflag"),
+					  "page" : page_num,
+					  "page_group" : page_group},
 				success:function(data) {
+					console.log(data);
 					updateTable(data.pagepurchaseitemList, page_num);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
@@ -143,7 +178,6 @@
 			var page_group = parseInt((page_num-1)/5);
 			var deleteflag = $("#id-delete-check").data("deleteflag");
 			var form_data = $("#form").data("formdata");
-			
 			console.log("page_num : " + page_num);
 			console.log("page_group : " + page_group);
 			
@@ -151,8 +185,21 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
+				data:{"no" : $("#form").data("formdatasno"),
+					  "sectionname" : $("#form").data("formdatassectionname"),
+					  "factoryname" : $("#form").data("formdatasfactoryname"),
+					  "price_start" : $("#form").data("formdataspricestart"),
+					  "price_end" : $("#form").data("formdataspriceend"),
+					  "name" : $("#form").data("formdatasname"),
+					  "sectioncode" : $("#form").data("formdatassectioncode"),
+					  "factorycode" : $("#form").data("formdatasfactorycode"),
+					  "producedate_start" : $("#form").data("formdatasproducedatestart"),
+					  "producedate_end" : $("#form").data("formdatasproducedateend"),
+					  "deleteflag" : $("#form").data("formdatasdeleteflag"),
+					  "page" : page_num,
+					  "page_group" : page_group},
 				success:function(data) {
+					console.log(data);
 					updateTable(data.pagepurchaseitemList, page_num);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
@@ -178,7 +225,19 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
+				data:{"no" : $("#form").data("formdatasno"),
+					  "sectionname" : $("#form").data("formdatassectionname"),
+					  "factoryname" : $("#form").data("formdatasfactoryname"),
+					  "price_start" : $("#form").data("formdataspricestart"),
+					  "price_end" : $("#form").data("formdataspriceend"),
+					  "name" : $("#form").data("formdatasname"),
+					  "sectioncode" : $("#form").data("formdatassectioncode"),
+					  "factorycode" : $("#form").data("formdatasfactorycode"),
+					  "producedate_start" : $("#form").data("formdatasproducedatestart"),
+					  "producedate_end" : $("#form").data("formdatasproducedateend"),
+					  "deleteflag" : $("#form").data("formdatasdeleteflag"),
+					  "page" : page_num,
+					  "page_group" : page_group},
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -205,7 +264,19 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:$("#form").serialize() + "&page=" + page_num + "&page_group=" + page_group + "&deleteflag=" + deleteflag,
+				data:{"no" : $("#form").data("formdatasno"),
+					  "sectionname" : $("#form").data("formdatassectionname"),
+					  "factoryname" : $("#form").data("formdatasfactoryname"),
+					  "price_start" : $("#form").data("formdataspricestart"),
+					  "price_end" : $("#form").data("formdataspriceend"),
+					  "name" : $("#form").data("formdatasname"),
+					  "sectioncode" : $("#form").data("formdatassectioncode"),
+					  "factorycode" : $("#form").data("formdatasfactorycode"),
+					  "producedate_start" : $("#form").data("formdatasproducedatestart"),
+					  "producedate_end" : $("#form").data("formdatasproducedateend"),
+					  "deleteflag" : $("#form").data("formdatasdeleteflag"),
+					  "page" : page_num,
+					  "page_group" : page_group},
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -626,7 +697,19 @@
 				<!-- PAGE CONTENT BEGINS -->
 				<div class="span12">
 				<div class="row-fluid">
-					<form id="form" class="form-horizontal" data-formdata="" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
+					<form id="form" class="form-horizontal"
+					data-formdatasno=""
+					data-formdatassectionname=""
+					data-formdatasfactoryname=""
+					data-formdataspricestart=""
+					data-formdataspriceend=""
+					data-formdatasname=""
+					data-formdatasectioncode=""
+					data-formdatasfactorycode=""
+					data-formdatasproducedatestart=""
+					data-formdatasproducedateend=""
+					data-formdatasdeleteflag=""
+					 method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 						<div style="height:200px">
 							<div class="span6">
 								<div class="control-group">

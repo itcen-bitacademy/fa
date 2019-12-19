@@ -35,7 +35,6 @@ public class Menu34Controller {
 	@Autowired
 	private Menu34Service menu34Service;
 	
-	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
 					   @RequestParam(value="page", required=false, defaultValue="1") int page,
@@ -106,16 +105,29 @@ public class Menu34Controller {
 	
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
-	public Map<String, Object> paging(@ModelAttribute PurchaseitemVo purchaseitemVo,
-									  @RequestParam(value="page", required=false, defaultValue="1") int page,
-									  @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
+	public Map<String, Object> paging(@RequestParam(value="no", required=false, defaultValue="") String no,
+									  @RequestParam(value="sectionname", required=false, defaultValue="") String sectionname,
+									  @RequestParam(value="factoryname", required=false, defaultValue="") String factoryname,
 									  @RequestParam(value="price_start", required=false, defaultValue="") String price_start,
-							   		  @RequestParam(value="price_end", required=false, defaultValue="") String price_end,
-							   		  @RequestParam(value="producedate_start", required=false, defaultValue="") String producedate_start,
-							   		  @RequestParam(value="producedate_end", required=false, defaultValue="") String producedate_end,
-							   		  @RequestParam(value="deleteflag", required=false, defaultValue="N") String deleteflag,
-									  Model model) {
+									  @RequestParam(value="price_end", required=false, defaultValue="") String price_end,
+									  @RequestParam(value="name", required=false, defaultValue="") String name,
+									  @RequestParam(value="sectioncode", required=false, defaultValue="") String sectioncode,
+									  @RequestParam(value="factorycode", required=false, defaultValue="") String factorycode,
+									  @RequestParam(value="producedate_start", required=false, defaultValue="") String producedate_start,
+									  @RequestParam(value="producedate_end", required=false, defaultValue="") String producedate_end,
+									  @RequestParam(value="deleteflag", required=false, defaultValue="N") String deleteflag,
+									  @RequestParam(value="page", required=false, defaultValue="1") int page,
+									  @RequestParam(value="page_group", required=false, defaultValue="0") int page_group) {
+		PurchaseitemVo purchaseitemVo = new PurchaseitemVo();
+		
+		purchaseitemVo.setNo(no);
+		purchaseitemVo.setSectionname(sectionname);
+		purchaseitemVo.setFactoryname(factoryname);
+		purchaseitemVo.setName(name);
+		purchaseitemVo.setSectioncode(sectioncode);
+		purchaseitemVo.setFactorycode(factorycode);
 		purchaseitemVo.setDeleteflag(deleteflag);
+		
 		price_start = String.join("", price_start.split(","));
 		price_end = String.join("", price_end.split(","));
 		
