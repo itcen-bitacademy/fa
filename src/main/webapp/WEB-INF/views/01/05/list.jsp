@@ -313,9 +313,6 @@
 							class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th class="center"><label> <input type="checkbox"
-											class="ace" id="selectAll" /> <span class="lbl"></span>
-									</label></th>
 									<th>카드번호</th>
 									<th>유효기간</th>
 									<th>CVC</th>
@@ -342,10 +339,7 @@
 
 								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 									<tr>
-										<td class="center"><label> <input type="checkbox"
-												class="ace" /> <span class="lbl"></span>
-										</label></td>
-
+									
 										<td>${vo.cardNo }</td>
 										<td>${vo.validity }</td>
 										<td>${vo.cvc}</td>
@@ -596,7 +590,6 @@ $(function() {
 		  for(let card in cardList){
 			  $newTbody.append(
 				"<tr>" +
-				"<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
 				"<td>" + cardList[card].cardNo + "</td>" +
 				"<td>" + cardList[card].validity+ "</td>" +
 				"<td>" + cardList[card].cvc+ "</td>" +
@@ -657,10 +650,10 @@ $(function() {
 		var td = tr.children();
 		
 		
-		var cardNo1 = td.eq(1).text().substring(0,4);
-		var cardNo2 = td.eq(1).text().substring(5,9);
-		var cardNo3 = td.eq(1).text().substring(10,14);
-		var cardNo4 = td.eq(1).text().substring(15,20);
+		var cardNo1 = td.eq(0).text().substring(0,4);
+		var cardNo2 = td.eq(0).text().substring(5,9);
+		var cardNo3 = td.eq(0).text().substring(10,14);
+		var cardNo4 = td.eq(0).text().substring(15,20);
 			
 		$("input[id=cardNo1]").val(cardNo1);
 		$("input[id=cardNo2]").val(cardNo2);
@@ -668,26 +661,26 @@ $(function() {
 		$("input[id=cardNo4]").val(cardNo4);
 		
 		
-		$("input[name=cardNoOld]").val(td.eq(1).text());
+		$("input[name=cardNoOld]").val(td.eq(0).text());
 		
-		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
-		var year= td.eq(2).text().substring(3,5);
+		var month= td.eq(1).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
+		var year= td.eq(1).text().substring(3,5);
 		$("input[id=validityMM]").val(month);
 		$("input[id=validityYY]").val(year);
-		$("input[name=cvc]").val(td.eq(3).text());
-		$("input[name=user]").val(td.eq(4).text());
-		$("input[name=issuer]").val(td.eq(5).text());
-		$("input[name=depositNo]").val(td.eq(6).text());
-		$("input[name=depositHost]").val(td.eq(7).text());
-		$("input[name=password]").val(td.eq(8).text());	
-		$("input[name=bankCode]").val(td.eq(9).text());
-		$("input[name=bankName]").val(td.eq(10).text());
-		$("input[name=company]").val(td.eq(11).text());
-		$("input[name=limitation]").val(td.eq(12).text());
+		$("input[name=cvc]").val(td.eq(2).text());
+		$("input[name=user]").val(td.eq(3).text());
+		$("input[name=issuer]").val(td.eq(4).text());
+		$("input[name=depositNo]").val(td.eq(5).text());
+		$("input[name=depositHost]").val(td.eq(6).text());
+		$("input[name=password]").val(td.eq(7).text());	
+		$("input[name=bankCode]").val(td.eq(8).text());
+		$("input[name=bankName]").val(td.eq(9).text());
+		$("input[name=company]").val(td.eq(10).text());
+		$("input[name=limitation]").val(td.eq(11).text());
+		var td12 = td.eq(12).text();
 		var td13 = td.eq(13).text();
-		var td14 = td.eq(14).text();
-		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
-		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
+		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
+		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
 		
 	});
 	
@@ -697,10 +690,10 @@ $(function() {
 		var td = tr.children();
 		
 		
-		var cardNo1 = td.eq(1).text().substring(0,4);
-		var cardNo2 = td.eq(1).text().substring(5,9);
-		var cardNo3 = td.eq(1).text().substring(10,14);
-		var cardNo4 = td.eq(1).text().substring(15,20);
+		var cardNo1 = td.eq(0).text().substring(0,4);
+		var cardNo2 = td.eq(0).text().substring(5,9);
+		var cardNo3 = td.eq(0).text().substring(10,14);
+		var cardNo4 = td.eq(0).text().substring(15,20);
 			
 		$("input[id=cardNo1]").val(cardNo1);
 		$("input[id=cardNo2]").val(cardNo2);
@@ -708,42 +701,27 @@ $(function() {
 		$("input[id=cardNo4]").val(cardNo4);
 		
 		
-		$("input[name=cardNoOld]").val(td.eq(1).text());
+		$("input[name=cardNoOld]").val(td.eq(0).text());
 		
-		var month= td.eq(2).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
-		var year= td.eq(2).text().substring(3,5);
+		var month= td.eq(1).text().substring(0,2);			//MM YY가 두자로 고정되어야 한다.
+		var year= td.eq(1).text().substring(3,5);
 		$("input[id=validityMM]").val(month);
 		$("input[id=validityYY]").val(year);
-		$("input[name=cvc]").val(td.eq(3).text());
-		$("input[name=user]").val(td.eq(4).text());
-		$("input[name=issuer]").val(td.eq(5).text());
-		$("input[name=depositNo]").val(td.eq(6).text());
-		$("input[name=depositHost]").val(td.eq(7).text());
-		$("input[name=password]").val(td.eq(8).text());	
-		$("input[name=bankCode]").val(td.eq(9).text());
-		$("input[name=bankName]").val(td.eq(10).text());
-		$("input[name=company]").val(td.eq(11).text());
-		$("input[name=limitation]").val(td.eq(12).text());
+		$("input[name=cvc]").val(td.eq(2).text());
+		$("input[name=user]").val(td.eq(3).text());
+		$("input[name=issuer]").val(td.eq(4).text());
+		$("input[name=depositNo]").val(td.eq(5).text());
+		$("input[name=depositHost]").val(td.eq(6).text());
+		$("input[name=password]").val(td.eq(7).text());	
+		$("input[name=bankCode]").val(td.eq(8).text());
+		$("input[name=bankName]").val(td.eq(9).text());
+		$("input[name=company]").val(td.eq(10).text());
+		$("input[name=limitation]").val(td.eq(11).text());
+		var td12 = td.eq(12).text();
 		var td13 = td.eq(13).text();
-		var td14 = td.eq(14).text();
-		$('input:radio[name=transportation]:input[value=' + td13 + ']').prop("checked", true);
-		$('input:radio[name=abroad]:input[value=' + td14 + ']').prop("checked", true);
+		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
+		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
 	}
-	
-	
-	
-	$(document.body).delegate('#selectAll', 'click', function() {
-		if(this.checked) {
-	        // Iterate each checkbox
-	        $(':checkbox').each(function() {
-	            this.checked = true;                        
-	        });
-	    } else {
-	        $(':checkbox').each(function() {
-	            this.checked = false;                       
-	        });
-	    }
-	});
 	
 
 	$(function() {

@@ -357,7 +357,7 @@ $(function() {
 						&nbsp; &nbsp;
 						입력 기간
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" /> <span
+							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" readonly/> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
