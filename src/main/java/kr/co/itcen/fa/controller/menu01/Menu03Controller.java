@@ -143,9 +143,7 @@ public class Menu03Controller {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			
 			VoucherVo[] voucherList = mapper.readValue(itemList, VoucherVo[].class);
-			
 //			System.out.println(voucherList);
 //			System.out.println(voucherList[0]);
 //			System.out.println(voucherList[0].getAccountName());
@@ -155,26 +153,35 @@ public class Menu03Controller {
 			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
 				VoucherVo voucherVo = new VoucherVo();
 				voucherVo.setRegDate(voucherList[0].getRegDate());
+				voucherVo.setInsertUserid(userVo.getId());
 				
 				List<ItemVo> itemList2 = new ArrayList<ItemVo>();
-	 			
+				List<MappingVo> mappingList = new ArrayList<MappingVo>();
+				
 				for(int i = 0; i < voucherList.length; i++) {
 					ItemVo itemVo = new ItemVo();
 					itemVo.setAmount(voucherList[i].getAmount());
+					System.out.println("amount : " + itemVo.getAmount());
 					itemVo.setAmountFlag(voucherList[i].getAmountFlag());
 					itemVo.setAccountNo(voucherList[i].getAccountNo());
-					
+					itemVo.setInsertUserid(userVo.getId());
 					itemList2.add(itemVo);
 				}
 				
-				MappingVo mappingVo = new MappingVo();
-				
-				mappingVo.setVoucherUse(voucherList[0].getVoucherUse());
-				mappingVo.setCustomerNo(voucherList[0].getCustomerNo());
-				mappingVo.setDepositNo(voucherList[0].getDepositNo());
-				mappingVo.setManageNo(voucherList[0].getManageNo());
-				
-				menu03Service.createVoucher(voucherVo, itemList2, mappingVo, userVo);
+				for(int i = 0; i < voucherList.length; i++) {
+					MappingVo mappingVo = new MappingVo();
+					mappingVo.setVoucherUse(voucherList[i].getVoucherUse());
+					mappingVo.setCustomerNo(voucherList[i].getCustomerNo());
+					mappingVo.setDepositNo(voucherList[i].getDepositNo());
+					mappingVo.setManageNo(voucherList[i].getManageNo());
+					mappingVo.setCardNo(voucherList[i].getCardNo());
+					mappingVo.setInsertTeam(userVo.getTeamName());
+					mappingVo.setInsertUserid(userVo.getId());
+					
+					mappingList.add(mappingVo);
+				}
+				System.out.println("controller");
+				menu03Service.createVoucher(voucherVo, itemList2, mappingList, userVo);
 			}
 			
 		} catch (Exception e) {
