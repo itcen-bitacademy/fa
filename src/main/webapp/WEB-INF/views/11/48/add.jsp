@@ -53,6 +53,7 @@ tr td:first-child {
 .number-input{
 	text-align:right;
 }
+.mybtn{float:left;margin-right:20px;}
 </style>
 </head>
 <body class="skin-3">
@@ -112,7 +113,7 @@ tr td:first-child {
 										<div class="radio" >
 											<label>
 												<input name="intPayWay" type="radio" class="ace" value="Y" required/>
-												<span class="lbl">년</span>
+												<span class="lbl">연</span>
 											</label>
 										</div>
 										<div class="radio">
@@ -212,7 +213,7 @@ tr td:first-child {
 											<div class="radio">
 												<label>
 													<input name="repayWay" type="radio" class="ace" value="Y" required/>
-													<span class="lbl">년</span>
+													<span class="lbl">연</span>
 												</label>
 											</div>
 											<div class="radio">
@@ -294,17 +295,16 @@ tr td:first-child {
 					</div>
 				</div>
 				<hr>
-				<div>
-					<button type="button" class="btn btn-info btn-small" style="float:right;margin-right:20px;" id="inputbtn" >입력</button>
-					&nbsp;
-					<button class="btn btn-danger btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" type="submit" id="updatebtn">수정</button>
-					&nbsp;
-					<button class="btn btn-warning btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()" type="submit" id='delete' >삭제</button>
-					&nbsp;
-					<button class="btn btn-primary btn-small" style="float:right;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }" id= "search">조회</button>
-					&nbsp;
-					<button id="dialog-repayment-button" type="button" class="btn">상환</button>
-					&nbsp;
+				<div class="row-fluid">
+					<button  class="btn btn-primary btn-small mybtn" id="inputbtn" >입력</button>
+					
+					<button class="btn btn-danger btn-small mybtn" id="updatebtn">수정</button>
+					<button class="btn btn-warning btn-small mybtn" onclick="deleteChecked()"  id='delete' >삭제</button>
+					
+					<button class="btn btn-primary btn-small mybtn" id= "search">조회</button>
+				
+					<button class="btn btn-pink btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
+				
 					
 					<!-- 상환 내역 리스트 -->
 					<div id="dialog-repayment-ischeck" title="상환정보여부" hidden="hidden">
@@ -356,24 +356,37 @@ tr td:first-child {
 							</tr>
 							<tr>
 								<td>
-									<label>납입금</label>
+									<label>납입원금</label>
 									<input type="text" name="payPrinc" id= "payPrinc"/>
-									<h4 id="amount"></h4>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>이자금액</label>
+									<input type="text" id= "amount" readOnly/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>총액</label>
+									<input type="text" id= "totalAmount" readOnly/>
 									
 								</td>
 							</tr>
 							</table>
 							
 					</div>
-					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+					<!-- 상환 Modal pop-up : end -->
 					
-					<button type="button" class="btn" id="clear">초기화</button>
+					<button class="btn btn-success btn-small mybtn" id="clear">초기화</button>
+							
 				</div>
 				<hr>
 			</form>					
 			<!-- PAGE CONTENT ENDS -->
 				
 			<!-- list -->
+			<p>총 ${dataResult.pagination.totalCnt }건</p>
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
@@ -420,7 +433,7 @@ tr td:first-child {
 							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
 							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
-										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>		
@@ -428,7 +441,7 @@ tr td:first-child {
 							<td class="center" >${ltermvo.expDate}</td>
 							<td class="center">${ltermvo.intRate}%</td>
 							<c:choose>
-										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">해당없음</td></c:otherwise>
 							</c:choose>	
@@ -545,7 +558,7 @@ $(function(){
 		$("input[name=debtExpDate]").val(td.eq(7).attr('debtExpDate'));
 		var repayWay='';
 		switch (td.eq(6).text()){
-	    case '년' :
+	    case '연' :
 	    	repayWay='Y';
 	        break;
 	    case '월' :
@@ -566,7 +579,7 @@ $(function(){
 
 		var intPayWay='';
 		switch (td.eq(10).text()){
-	    case '년' :
+	    case '연' :
 	    	intPayWay='Y';
 	        break;
 	    case '월' :
@@ -758,7 +771,7 @@ $(function(){
 									)
 									/100
 									);
-						}else if(intPayWay === "년"){
+						}else if(intPayWay === "연"){
 							var intAmount= parseInt(
 									(		k*
 											parseFloat(td.eq(9).text().replace('%', '')))
@@ -767,10 +780,16 @@ $(function(){
 						}else{
 							intAmount=0;
 						}
-						console.log(intAmount);
-						$("#amount").text("이자금액: "+intAmount);
+						$("#amount").val(intAmount);
+						$("#totalAmount").val(intAmount);
+						
 					}
 				});
+		    	$("#payPrinc").on("change",function(){
+		    		var intAmount=$("#amount").val();
+		    		var totalAmount = parseInt($("#payPrinc").val())+parseInt(intAmount);
+		    		$("#totalAmount").val(totalAmount);
+		    	});
 				$("#dialog-repayment").dialog('open');
 				$("#dialog-repayment").dialog({
 					title: "상환정보등록",
@@ -789,60 +808,26 @@ $(function(){
 				    	//상환버튼 클릭시
 				    "상환": function(){
 				    	event.preventDefault();
-				    	var intAmount; 
-				    	var remainmoney;
 				    	var k;
 				    	$("#tbody-list tr").each(function(i){
 							var td = $(this).children();
 							var n = td.eq(0).attr('lterm-no');
 							if(n == $("#no").val()){
-								
-								k = parseInt(td.eq(5).text().replace(/,/g, ''));
-								
-								var intPayWay = td.eq(10).text();
-								if(intPayWay === '월'){
-									intAmount= parseInt(
-											(
-													(k*
-													parseFloat(td.eq(9).text().replace('%', ''))
-													)
-													/12
-											)
-											/100
-											);
-								}else if(intPayWay === '년'){
-									intAmount= parseInt(
-											(		k*
-													parseFloat(td.eq(9).text().replace('%', '')))
-													/100
-											);
-								}else{
-									intAmount=0;
-								}
-								console.log(intAmount);
-								remainmoney=parseInt(td.eq(5).text().replace(/,/g, ''))+intAmount;
+								k = parseInt(td.eq(5).text().replace(/,/g, ''));//상환잔액
 								
 							}
 						});
-				    	var payPrinc=parseInt($('input[name=payPrinc]').val())-intAmount;//납입금
-				    	console.log("이율"+intAmount);
-
-						console.log("납입금"+payPrinc);
-						console.log("총액 = "+remainmoney);
+				    	
 				    	var vo = {
 								"debtNo":$("#no").val(),//테이블 번호
-								"payPrinc":payPrinc,//낼돈 - 이자금
+								"payPrinc":$("#payPrinc").val(),//낼돈 - 이자금
 								"payDate":$('input[name=payDate]').val(),//상환일
-								"intAmount": intAmount,
+								"intAmount": $("#amount").val(),
 								"code":$('#code').val()
 						}
-						if(intAmount > parseInt($('input[name=payPrinc]').val())){
-							alert("이자 금액보다 납입금이 작습니다 납입금("+ intAmount+")보다 크게 입력해주세요");
-							
-							return;
-						}
-						if( remainmoney < parseInt($('input[name=payPrinc]').val())){
-							alert("납입금이 상환 잔액보다 큽니다 납입금("+k+") "+"이자("+ intAmount+")보다 작게 입력해주세요");
+						
+						if( k < vo.payPrinc){
+							alert("납입원금이 상환 잔액보다 큽니다. 상환잔액("+k+")보다 작게 입력해주세요");
 							return;
 						}
 						// ajax 통신
@@ -1303,13 +1288,13 @@ $("form").on("submit", function() {
 	         	           width: 400,
 	         	           modal: true,
 	         	           close: function() {
-	                       $('#dialog-repayment-delete table').remove();
+	                       $('#dialog-repayment-delete *').remove();
 	                       $("input").attr('disabled',false);
 	                    },
 	                    buttons: {
 	                    "닫기" : function() {
 	                             $(this).dialog('close');
-	                             $('#dialog-repayment-delete table').remove();
+	                             $('#dialog-repayment-delete *').remove();
 	                             $("input").attr('disabled',false);
 	                        }
 	                    }

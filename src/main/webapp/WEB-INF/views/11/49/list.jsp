@@ -206,6 +206,7 @@ form {
 					<!-- PAGE CONTENT ENDS -->
 			
 		<!-- list -->
+		<p>총 ${dataResult.pagination.totalCnt }건</p>
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
@@ -312,7 +313,7 @@ $(function() {
 		$('.date-picker').datepicker().next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
-	
+
 });
 
 
