@@ -15,5 +15,245 @@
 			]]>
 		</selectKey>
 	</insert>
+	
+	<!-- 대분류 리스트 TEST -->
+	<select id="section"  resultType="sectionvo">
+		<![CDATA[
+		select no as no,
+			   code as code,
+			   classification as classification
+		from tb_section
+		where parent_no = 4;  
+		]]>
+	</select>
+	
+	<!-- 직급 리스트 TEST -->
+	<select id="name"  resultType="name">
+		<![CDATA[
+		select no,
+			  staff_name as staffName 
+		from tb_staff;
+		]]>
+	</select>
+	
+	<!-- 전체페이지 총 건수구하기 -->
+	<select id="pageAllCount" resultType="int">
+		select count(*)
+		from tb_vehicle where flag in('s','o','d')
+	</select>
+	
+	<!-- 페이징 처리  -->
+	 <select id="list" resultType="vehicle08vo" parameterType="map">
+		<![CDATA[
+			select  
+					v.id as id,
+					v.customer_no as customerNo,
+					c.name as customerName,
+					c.manager_name as managerName, 
+					v.section_no as sectionNo,
+					s.classification as classification,
+					st.staff_name as staffName,
+					v.owner_name as ownerName,
+					v.wide_address as wideAddress,
+					v.city_address as cityAddress,
+					v.detail_address as detailAddress,
+					v.public_value as publicValue,
+					v.acq_tax as acqTax,
+					v.etc_cost as etcCost,
+					v.taxbill_no as taxbillNo,
+					v.pay_date as payDate,
+					v.deposit as deposit,
+					v.due_date as dueDate,
+					t.due_date as depositDate,
+					v.monthly_fee as monthlyFee,
+					v.fee_date as feeDate,
+					v.tax_kind as taxKind,
+					v.flag as flag,
+                    v.insert_userid as insertUserId,
+                    v.insert_day as insertDay
+		from tb_vehicle v 
+				 left outer join tb_staff st on v.staff_no = st.no
+				 left outer join tb_section s on v.section_no = s.code 
+                 left outer join user u on v.insert_userid = u.id
+                 left outer join tb_customer c on v.customer_no = c.no
+                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
+		where s.parent_no=4 and v.flag IN('s','o','d')
+		]]>
+		<if test="id">
+            <![CDATA[
+              and v.id like concat('%',#{id },'%') 
+            ]]>
+         </if>
+         <![CDATA[
+          order by v.insert_day desc
+         ]]>
+         <if test="pagination.pageIndex >= 0">
+			<![CDATA[
+        		limit #{pagination.pageIndex }, #{pagination.listSize }
+    		]]>
+		</if>
+	</select> 
+	
+	<!-- 조회 조건 페이지 COUNT  -->
+	<select id="pageCount" parameterType="map" resultType="int">
+				<![CDATA[
+				select  count(*) as cnt
+					from tb_vehicle v 
+							 left outer join tb_staff st on v.staff_no = st.no
+							 left outer join tb_section s on v.section_no = s.code 
+			                 left outer join user u on v.insert_userid = u.id
+			                 left outer join tb_customer c on v.customer_no = c.no
+			                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
+					where s.parent_no=4 and v.flag IN('s','o','d')  and v.customer_no = c.no and c.assets_flag="c"
+				]]>
+				<if test='id!=""'>
+				<![CDATA[
+				 and v.id like concat('%', #{id },'%')
+				]]>
+				</if>
+				<if test='sectionNo!=""'>
+				<![CDATA[
+				 and v.section_no = #{sectionNo }
+				]]>
+				</if>	
+				<if test='staffName!=""'>
+				<![CDATA[
+				 and st.staff_name = #{staffName }
+				]]>
+				</if>
+				<if test='customerName!=""'>
+				<![CDATA[
+				 and c.name like concat('%',#{customerName },'%')
+				]]>
+				</if>
+				<if test='managerName!=""'>
+				<![CDATA[
+				 and c.manager_name like concat('%',#{managerName },'%')
+				]]>
+				</if>
+				<if test='dueDate!=""'>
+				<![CDATA[
+				 and v.due_date >= '${dueStartDate } 00:00:00' and v.due_date <= '${dueEndDate } 23:59:59'
+				]]>
+				</if>
+				<if test='wideAddress!=""'>
+				<![CDATA[
+				 and v.wide_address=#{wideAddress }
+				]]>
+				</if>
+				<if test='cityAddress!=""'>
+				<![CDATA[
+				 and v.city_address=#{cityAddress }
+				]]>
+				</if>
+				<if test='payDate!=""'>
+				<![CDATA[
+				 and v.pay_date >= '${startDate } 00:00:00' and v.pay_date <= '${endDate } 23:59:59'
+				]]>
+				</if>
+				<if test='flag==null'>
+				<![CDATA[
+				 and v.flag in("s", "o") 
+				]]>
+				</if>
+	</select>
+	
+	
+	<!-- 조회 조건 페이지 select  -->
+	<select id="getList" parameterType="map" resultType="vehicle08vo">
+		<![CDATA[
+			select  
+					v.id as id,
+					v.customer_no as customerNo,
+					c.name as customerName,
+					c.manager_name as managerName, 
+					v.section_no as sectionNo,
+					s.classification as classification,
+					st.staff_name as staffName,
+					v.owner_name as ownerName,
+					v.wide_address as wideAddress,
+					v.city_address as cityAddress,
+					v.detail_address as detailAddress,
+					v.public_value as publicValue,
+					v.acq_tax as acqTax,
+					v.etc_cost as etcCost,
+					v.taxbill_no as taxbillNo,
+					v.pay_date as payDate,
+					v.deposit as deposit,
+					v.due_date as dueDate,
+					t.due_date as depositDate,
+					v.monthly_fee as monthlyFee,
+					v.fee_date as feeDate,
+					v.tax_kind as taxKind,
+					v.flag as flag,
+                    v.insert_userid as insertUserId,
+                    v.insert_day as insertDay
+		from tb_vehicle v 
+				 left outer join tb_staff st on v.staff_no = st.no
+				 left outer join tb_section s on v.section_no = s.code 
+                 left outer join user u on v.insert_userid = u.id
+                 left outer join tb_customer c on v.customer_no = c.no
+                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
+		where s.parent_no=4 and v.flag IN('s','o','d')
+			]]>
+			<if test='id!=""'>
+				<![CDATA[
+				 and v.id like concat('%', #{id },'%')
+				]]>
+				</if>
+				<if test='sectionNo!=""'>
+				<![CDATA[
+				 and v.section_no = #{sectionNo }
+				]]>
+				</if>	
+				<if test='staffName!=""'>
+				<![CDATA[
+			 	 and st.staff_name = #{staffName }
+				]]>
+				</if>
+				<if test='customerName!=""'>
+				<![CDATA[
+				 and c.name like concat('%',#{customerName },'%')
+				]]>
+				</if>
+				<if test='managerName!=""'>
+				<![CDATA[
+				 and c.manager_name like concat('%',#{managerName },'%')
+				]]>
+				</if>
+				<if test='dueDate!=""'>
+				<![CDATA[
+				and v.due_date >= '${dueStartDate } 00:00:00' and v.due_date <= '${dueEndDate } 23:59:59'
+				]]>
+				</if>
+				<if test='wideAddress!=""'>
+				<![CDATA[
+				 and v.wide_address=#{wideAddress }
+				]]>
+				</if>
+				<if test='cityAddress!=""'>
+				<![CDATA[
+				 and v.city_address=#{cityAddress }
+				]]>
+				</if>
+				<if test='payDate!=""'>
+				<![CDATA[
+				 and v.pay_date >= '${startDate } 00:00:00' and v.pay_date <= '${endDate } 23:59:59'
+				]]>
+				</if>
+				<if test='flag==null'>
+				<![CDATA[
+				 and v.flag in("s", "o") 
+				]]>
+				</if>
+			    <if test="pagination.pageIndex >= 0">
+				<![CDATA[
+					and v.customer_no = c.no and c.assets_flag="c"
+			       	group by v.id 
+			       	order by v.insert_day desc 
+			       	limit #{pagination.pageIndex }, #{pagination.listSize }
+			   	]]>
+				</if>
+	</select>
 
 </mapper>

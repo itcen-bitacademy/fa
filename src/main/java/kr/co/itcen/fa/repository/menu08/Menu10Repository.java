@@ -33,11 +33,7 @@ public class Menu10Repository {
 	public List<LandVo> getList(LandVo landVo, String startDate, String endDate, PaginationUtil pagination) {
 		System.out.println("조건조회");
 		System.out.println(landVo.getFlag());
-		if(landVo.getFlag()==null) {
-			System.out.println("flag가null이다 ");
-		}else {
-			System.out.println("flag가null이 아니다 ");
-		}
+		
 		Map<String, Object> map =new HashMap<String, Object>();
 		map.put("id", landVo.getId());
 		map.put("sectionName", landVo.getSectionName());
@@ -51,7 +47,6 @@ public class Menu10Repository {
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
 		map.put("flag", landVo.getFlag());
-		System.out.println("flag" + landVo.getFlag());
 		map.put("pagination", pagination);
 		
 		System.out.println("내가 검색한것 id : " + landVo.getId() + "sectionName : " + landVo.getSectionName() + " payDate : " + landVo.getPayDate() + " customerName : " +
@@ -75,6 +70,10 @@ public class Menu10Repository {
 		map.put("customerName", landVo.getCustomerName());
 		map.put("managerName", landVo.getManagerName());
 		map.put("landArea", landVo.getLandArea());
+		System.out.println("fddfdfdf");
+		System.out.println(landVo.getWideAddress());
+		System.out.println(landVo.getCityAddress());
+		System.out.println("dfdsdfsdfs");
 		map.put("wideAddress", landVo.getWideAddress());
 		map.put("cityAddress", landVo.getCityAddress());
 		map.put("acqPrice", landVo.getAcqPrice());
@@ -91,6 +90,7 @@ public class Menu10Repository {
 		map.put("id", id);
 		map.put("pagination", pagination);
 		List<LandVo> list = sqlSession.selectList("menu10.list", map);
+		
 		
 		return list;
 	}

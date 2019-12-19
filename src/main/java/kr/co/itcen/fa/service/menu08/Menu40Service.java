@@ -26,15 +26,15 @@ public class Menu40Service {
 	private Menu40Repository menu40Repository;
 	
 	//조회
-	public DataResult<BuildingVo> list(BuildingVo vo, int page) {
+	public DataResult<BuildingVo> list(BuildingVo vo, int page, String startDate, String endDate) {
 		DataResult<BuildingVo> dataResult = new DataResult<BuildingVo>();
 		
-		int totalCount = menu40Repository.listCount(vo);
+		int totalCount = menu40Repository.listCount(vo, startDate, endDate);
 		
 		//pagination
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(pagination);
-		List<BuildingVo> list = menu40Repository.list(vo, pagination);
+		List<BuildingVo> list = menu40Repository.list(vo, pagination, startDate, endDate);
 		dataResult.setDatas(list);
 		
 		return dataResult;

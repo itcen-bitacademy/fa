@@ -85,47 +85,7 @@
 		</selectKey>
 	</insert>
 	
-	<!-- 등록된거 조회 리스트 TEST -->
-	<select id="select"  resultType="vehicle08vo">
-		<![CDATA[
-			select  
-					v.id as id,
-					v.customer_no as customerNo,
-					c.name as customerName,
-					c.manager_name as managerName, 
-					v.section_no as sectionNo,
-					s.classification as classification,
-					st.staff_name as staffName,
-					v.owner_name as ownerName,
-					v.wide_address as wideAddress,
-					v.city_address as cityAddress,
-					v.detail_address as detailAddress,
-					v.public_value as publicValue,
-					v.acq_tax as acqTax,
-					v.etc_cost as etcCost,
-					v.taxbill_no as taxbillNo,
-					v.pay_date as payDate,
-					v.deposit as deposit,
-					v.due_date as dueDate,
-					t.due_date as depositDate,
-					v.monthly_fee as monthlyFee,
-					v.fee_date as feeDate,
-					v.tax_kind as taxKind,
-					v.flag as flag,
-                    v.insert_userid as insertUserId,
-                    v.insert_day as insertDay
-		from tb_vehicle v 
-				 left outer join tb_staff st on v.staff_no = st.no
-				 left outer join tb_section s on v.section_no = s.code 
-                 left outer join user u on v.insert_userid = u.id
-                 left outer join tb_customer c on v.customer_no = c.no
-                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
-		where s.parent_no=4 and v.flag IN('s','o')
-		order by v.insert_day desc;
-	
-		]]>
-	</select>
-		<!-- limit 0,3; -->
+
 	
 	<!-- 수정 TEST --><!-- where 조건절에 행이 선택되어있을경우 set flag="o"로 바꾸고 -->
 	<update id="update" parameterType="vehicle08vo">
@@ -179,56 +139,6 @@
 	</update>
  
  
- 	<!-- 검색  TEST -->
-	<select id="search" resultType="vehicle08vo">
-		<![CDATA[
-			select  
-					v.id as id,
-					v.customer_no as customerNo,
-					c.name as customerName,
-					c.manager_name as managerName, 
-					v.section_no as sectionNo,
-					s.classification as classification,
-					st.staff_name as staffName,
-					v.owner_name as ownerName,
-					v.wide_address as wideAddress,
-					v.city_address as cityAddress,
-					v.detail_address as detailAddress,
-					v.public_value as publicValue,
-					v.acq_tax as acqTax,
-					v.etc_cost as etcCost,
-					v.taxbill_no as taxbillNo,
-					v.pay_date as payDate,
-					v.deposit as deposit,
-					v.due_date as dueDate,
-					t.due_date as depositDate,
-					v.monthly_fee as monthlyFee,
-					v.fee_date as feeDate,
-					v.tax_kind as taxKind,
-					v.flag as flag,
-                    v.insert_userid as insertUserId,
-                    v.insert_day as insertDay
-		from tb_vehicle v 
-				 left outer join tb_staff st on v.staff_no = st.no
-				 left outer join tb_section s on v.section_no = s.code 
-                 left outer join user u on v.insert_userid = u.id
-                 left outer join tb_customer c on v.customer_no = c.no
-                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
-		 ]]>
-		 <![CDATA[
-		where s.parent_no=4 and v.flag IN('s','o')
-		]]>
-		<if test="_parameter.length()>0">
-            <![CDATA[
-              and id like concat('%',#{_parameter },'%') 
-            ]]>
-         </if>
-          <![CDATA[
-          order by v.insert_day desc
-         ]]>
-	</select>
-	
-	
 	<!-- 세금계산서 등록-->
 	<insert id="insertTaxbill" parameterType="08taxVehicle">
 		<![CDATA[
@@ -334,9 +244,24 @@
 	
 	<!-- pageCount -->
 	<select id="pageCount" resultType="int" parameterType="string">
-		select count(*)
-		from tb_vehicle
-		where id like concat('%',#{id},'%')
+		<![CDATA[
+		select  count(*) as cnt
+			from tb_vehicle v 
+					 left outer join tb_staff st on v.staff_no = st.no
+					 left outer join tb_section s on v.section_no = s.code 
+	                 left outer join user u on v.insert_userid = u.id
+	                 left outer join tb_customer c on v.customer_no = c.no
+	                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
+			where s.parent_no=4 and v.flag IN('s','o')
+		]]>
+		<if test="_parameter"><!-- "_parameter.length()>0" --> 
+            <![CDATA[
+            	 and v.id like concat('%',#{_parameter },'%') 
+            ]]>
+         </if>
+         <![CDATA[
+          order by v.insert_day desc
+         ]]>
 	</select>
 	
 	<!-- 페이징 처리  -->
@@ -376,9 +301,9 @@
                  left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
 		where s.parent_no=4 and v.flag IN('s','o')
 		]]>
-		<if test="id>0"><!-- "_parameter.length()>0" --> 
+		<if test="id"><!-- "_parameter.length()>0" --> 
             <![CDATA[
-              and id like concat('%',#{id },'%') 
+              and v.id like concat('%',#{id },'%') 
             ]]>
          </if>
          <![CDATA[

@@ -62,12 +62,8 @@ public class Menu41Repository {
 		return count == 1;
 	}
 
-	//등록 리스트 테이블에 조회
-	public List<VehicleVo> selectList() {
-		List<VehicleVo> list = sqlSession.selectList("menu41.select");
-		System.out.println(list);
-		return list;
-	}
+
+	 
 	
 	//수정 리스트
 	public boolean update(VehicleVo vehicleVo) {
@@ -75,11 +71,7 @@ public class Menu41Repository {
 		return count == 1;
 	}
 
-	//검색 리스트
-	public List<VehicleVo> search(String id) {
-		List<VehicleVo> list = sqlSession.selectList("menu41.search",id);
-		return list;
-	}
+
 	
 	//삭제 리스트 
 	public boolean delete(String id) {
@@ -135,7 +127,7 @@ public class Menu41Repository {
 	}
 
 	//세금계산서 전표번호 가져오기(차량코드id를 이용해서)
-	public List getTaxVoucherNo(String id) {
+	public List<Long> getTaxVoucherNo(String id) {
 		
 		List<Long> taxVNO = sqlSession.selectList("menu41.selectTaxVNO",id);
 		return taxVNO;
@@ -153,8 +145,8 @@ public class Menu41Repository {
 	}
 
 	//페이지 리스트 조회하기
+	//수정필요
 	public List<VehicleVo> list(String id, PaginationUtil pagination) {
-	
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
 		map.put("pagination", pagination);

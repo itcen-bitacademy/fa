@@ -43,13 +43,18 @@ public class Menu10Controller {
 	private Menu10Service menu10Service;
 
 	// /08 / 10 , /08/10/list
-	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, @ModelAttribute LandVo landVo,
 			@RequestParam(value="payDate", required=false) String payDate,
 			@RequestParam(value="id", required=false, defaultValue = "") String id,
 			@RequestParam(value="page", required=false, defaultValue = "1") int page,
 			@RequestParam(value="searchGubun", required=false) String gubun) {
 		/* menu10Service.test(); */
+		
+		if(landVo.getAcqPrice()!=null) {
+		String acqPrice = landVo.getAcqPrice().replace("," ,"");
+		landVo.setAcqPrice(acqPrice);
+		}
 		
 		//대분류코드 select box
 		List<SectionVo> list = menu09Service.getSectionList();
@@ -75,6 +80,7 @@ public class Menu10Controller {
 			endDate = date[1];
 			}
 			dataResult = menu10Service.getList(landVo, startDate, endDate, page);
+			System.out.println(dataResult);
 		}
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);

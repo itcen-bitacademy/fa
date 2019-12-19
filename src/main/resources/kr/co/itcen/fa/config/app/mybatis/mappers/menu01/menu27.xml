@@ -70,6 +70,7 @@
 			  from tb_customer
 			 where delete_flag = 'N'
 			   and name!='여비'
+			  order by assets_flag
 		]]>
 		<if test="pagination.pageIndex >= 0 ">
 			<![CDATA[

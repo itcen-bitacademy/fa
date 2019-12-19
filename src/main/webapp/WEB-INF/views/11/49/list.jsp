@@ -92,19 +92,43 @@ form {
 									<td>
 										<div class="radio">
 											<label>
+											<c:choose>
+											<c:when test='${vo.intPayWay eq "Y"}'>
+												<input name="intPayWay" type="radio" class="ace" value="Y" checked="checked"/>
+											</c:when>
+											<c:otherwise>
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
+											</c:otherwise>
+											</c:choose>
 												<span class="lbl">년</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
+											
+											<c:choose>
+											<c:when test='${vo.intPayWay eq "M"}'>
+												<input name="intPayWay" type="radio" class="ace" value="M" checked="checked"/>
+											</c:when>
+											<c:otherwise>
 												<input name="intPayWay" type="radio" class="ace" value="M"/>
+											</c:otherwise>
+											</c:choose>
+												
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label>
+											<c:choose>
+											<c:when test='${vo.intPayWay eq "E"}'>
+												<input name="intPayWay" type="radio" class="ace" value="E" checked="checked"/>
+											</c:when>
+											<c:otherwise>
 												<input name="intPayWay" type="radio" class="ace" value="E"/>
+											</c:otherwise>
+											</c:choose>
+												
 												<span class="lbl">만기</span>
 											</label>
 										</div>

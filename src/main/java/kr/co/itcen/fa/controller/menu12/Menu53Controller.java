@@ -77,8 +77,8 @@ public class Menu53Controller {
 	// 전표등록 메소드
 	public SellTaxbillVo voucher(SellTaxbillVo selltaxbillvo, UserVo authUser, boolean flag){
 		
-		// true / false
-		// 1 - 입력 / 2 - update / 3 - delete
+			// true / false
+			// 1 - 입력 / 2 - update / 3 - delete
 	
 			selltaxbillvo.setInsertUserid(authUser.getId());
 			selltaxbillvo.setDeleteFlag("N");
@@ -121,23 +121,27 @@ public class Menu53Controller {
 			mappingVo.setCustomerNo(selltaxbillvo.getCustomerCode());   // 거래처 코드
 			mappingVo.setManageNo(selltaxbillvo.getTaxbillNo());		// 세금계산서 번호 입력
 
-			System.out.println(selltaxbillvo.getTaxbillNo());
+			System.out.println("----- 세금계산서 번호 출력 :" + selltaxbillvo.getTaxbillNo() + "voucher method-----");
 			
 			Long voucherNo = Long.parseLong(selltaxbillvo.getVoucherNo()== null? "0" : selltaxbillvo.getVoucherNo());
-			System.out.println(voucherNo);
+			System.out.println("-----"+ voucherNo +"-----");
 			
 			if(flag) {
 				voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+				
 			} else {
 				voucherVo.setNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
+				
 				for(ItemVo list : itemVoList) {
 					list.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
 				}
+				
 				mappingVo.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
 				voucherNo = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
 				
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+				
 				System.out.println("수정이벤트 발생");
 				System.out.println(selltaxbillvo.toString());
 			}
@@ -155,9 +159,6 @@ public class Menu53Controller {
 //		selltaxbillvo.setDeleteFlag("N");
 //		selltaxbillvo.setAccountNo(1110101L);	// 계정코드 - 넣어주고 // 계좌 / 카드 / 거래처 / 계정 !!!! - 이거와 같은 데이터로 입력해야됨
 //		selltaxbillvo.setAmountFlag("d");		// select * from 
-		
-		
-		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, true));
 			
 /////////////////////////////////////////////
 // 		전표등록
@@ -201,7 +202,8 @@ public class Menu53Controller {
 /////////////////////////////////////////////
 		
 		menu53Service.insert(voucher(selltaxbillvo, authUser, true));
-			
+		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, false));
+		
 		System.out.println("추가 이벤트 발생");
 		
 		return MAINMENU + "/" + SUBMENU + "/list";

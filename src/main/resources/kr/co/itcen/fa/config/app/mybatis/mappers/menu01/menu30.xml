@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu30">
-	
-	
-	<select id="listCount" resultType="int" parameterType="receiptVo">
-	<!-- 페이징 가져오는거 쿼리 넣으세요 -->	
+
+
+	<select id="listCount" resultType="int"
+		parameterType="receiptVo">
+		<!-- 페이징 가져오는거 쿼리 넣으세요 -->	
 			<![CDATA[
 				select   count(*)
-        from tb_voucher_manager as v
-        join tb_voucher_item as i on v.no = i.voucher_no
-        join tb_account as a on a.no = i.account_no
-        join tb_voucher_system_mapping m on m.voucher_no = v.no
-    left join (select no, name
-              from tb_customer
-             union
-            select no, name
-                  from tb_salescustomer
-             union
-            select no, name
-                  from tb_purchasecustomer
-            ) as cu
-                on cu.no = m.customer_no
-       where v.use_yn = 1
-           and i.use_yn = 1   
+			        from tb_voucher_manager as v
+			        join tb_voucher_item as i on v.no = i.voucher_no
+			        join tb_account as a on a.no = i.account_no
+			        join tb_voucher_system_mapping m on m.voucher_no = v.no
+    			left join (select no, name
+             		 from tb_customer
+			             union
+			            select no, name
+			                  from tb_salescustomer
+			             union
+			            select no, name
+			                  from tb_purchasecustomer
+			            ) as cu
+			                on cu.no = m.customer_no
+			      where v.use_yn = 1
+			        and i.use_yn = 1   
            
            
 			]]>
-		 <if  test='accountNo!=null and !accountNo.equals("") '>		    
+		<if test='accountNo!=null and !accountNo.equals("") '>		    
 			<![CDATA[
 				and account_no = #{accountNo }
 			]]>
 		</if>
-		<if  test='customerNo!=null and !customerNo.equals("")' >		    
+		<if test='customerNo!=null and !customerNo.equals("")'>		    
 			<![CDATA[
-				and customer_no = #{customerNo }
+				and customer_no = '%#{customerNo }'
+			]]>
+		</if>
+		<if test="regDate!=null and !regDate.equals('')">
+			<![CDATA[ 
+				and date_format(v.reg_date,'%Y-%m') <= #{regDate }
 			]]>
 		</if>
 	</select>
-	
-	
+
+
 	<select id="list" resultType="receiptVo" parameterType="map">
-	<!-- 리스트 조회하는거 쿼리 넣으세요 -->
+		<!-- 리스트 조회하는거 쿼리 넣으세요 -->
 	
 	<![CDATA[
 			select   a.no as account_no
@@ -70,16 +76,19 @@
            
 		   
 	]]>
-	
-		
-		 <if  test='vo.accountNo!=null and !vo.accountNo.equals("") '>		    
+		<if test='vo.accountNo!=null and !vo.accountNo.equals("") '>		    
 			<![CDATA[
 				and account_no = #{vo.accountNo }
 			]]>
 		</if>
-		<if  test='vo.customerNo!=null and !vo.customerNo.equals("")' >		    
+		<if test='vo.customerNo!=null and !vo.customerNo.equals("")'>		    
 			<![CDATA[
-				and customer_no = #{vo.customerNo }
+				and customer_no like '%${vo.customerNo }'
+			]]>
+		</if>
+		<if test="vo.regDate!=null and !vo.regDate.equals('')">
+			<![CDATA[ 
+				and date_format(v.reg_date,'%Y-%m') <= #{vo.regDate }
 			]]>
 		</if>
 		<if test="pagination.pageIndex >= 0 ">

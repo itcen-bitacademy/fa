@@ -71,6 +71,7 @@ public class Menu09Repository {
 		map.put("id", id);
 		sqlSession.update("menu09.deleteLand", map);
 		
+		
 	}
 
 	public void updateLand(LandVo landVo) {

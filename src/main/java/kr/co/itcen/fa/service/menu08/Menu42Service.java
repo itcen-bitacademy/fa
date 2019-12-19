@@ -1,9 +1,16 @@
 package kr.co.itcen.fa.service.menu08;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu42Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
 
 /**
@@ -20,5 +27,53 @@ public class Menu42Service {
 	
 	public void test() {
 		menu42Repository.test();
+	}
+
+	//대분류 리스트 테스트
+	public Map<String, Object> getSection() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sectionList", menu42Repository.getSection());
+		return map;
+	}
+		
+	//직급 리스트 테스트
+	public Map<String, Object> getName() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("jikNameList", menu42Repository.getJik());
+		return map;
+	}
+
+
+	//기본 페이징된 화면
+	public DataResult<VehicleVo> list(String id, int page) {
+		
+		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
+		
+		int totalCount = menu42Repository.listCount(id);
+		
+		//pagination
+		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(pagination);
+		List<VehicleVo> list = menu42Repository.list(id, pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
+	}
+
+	//검색된 화면
+	public DataResult<VehicleVo> getList(VehicleVo vehicleVo, String startDate, String endDate, String dueStartDate, String dueEndDate, int page) {
+		
+		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
+		
+		int totalCount = menu42Repository.listCount(vehicleVo, startDate, endDate, dueStartDate, dueEndDate);
+		
+		//pagination
+		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(pagination);
+		
+		List<VehicleVo> list = menu42Repository.getList(vehicleVo, startDate, endDate, dueStartDate, dueEndDate, pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
 	}
 }

@@ -103,7 +103,7 @@
 	
 	<select id="getSectionListall" parameterType="String" resultType="sectionvo">
 		<![CDATA[
-		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1 and classification like #{searchdata } order by no asc
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1 and classification like #{searchdata } order by code asc
 		]]>
 	</select>
 	
@@ -112,7 +112,7 @@
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
 		where parent_no = 1 and classification like #{searchdata }
-		order by no asc
+		order by code asc
 		limit #{section_page_group }, 30
 		]]>
 	</select>
@@ -122,14 +122,14 @@
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
 		where parent_no = 1 and classification like #{searchdata }
-		order by no asc
+		order by code asc
 		limit #{section_page }, 6
 		]]>
 	</select>
 	
 	<select id="getFactoryListall" parameterType="String" resultType="sectionvo">
 		<![CDATA[
-		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 38 and classification like #{searchdata } order by no asc
+		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 38 and classification like #{searchdata } order by code asc
 		]]>
 	</select>
 	
@@ -138,7 +138,7 @@
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
 		where parent_no = 38 and classification like #{searchdata }
-		order by no asc
+		order by code asc
 		limit #{factory_page_group }, 30
 		]]>
 	</select>
@@ -148,7 +148,7 @@
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo
 		from tb_section
 		where parent_no = 38 and classification like #{searchdata }
-		order by no asc
+		order by code asc
 		limit #{factory_page }, 6
 		]]>
 	</select>

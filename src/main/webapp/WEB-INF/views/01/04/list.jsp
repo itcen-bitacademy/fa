@@ -55,10 +55,6 @@
 										</div>
 									</div>
 								</div>
-								<script type="text/javascript">
-								var regDate = "${param.regDate}";
-								$("#regDate").val(regDate);
-								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표번호</label>
@@ -66,10 +62,6 @@
 										<input class="span8" type="text" id="no" name="no" placeholder="전표번호"/>
 									</div>
 								</div>
-								<script type="text/javascript">
-								var no = "${param.no}";
-								$("#no").val(no);
-								</script>
 								
 								<!-- 계정과목  -->
 								<div class="control-group">
@@ -89,25 +81,7 @@
 										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
 									</div>
 								</div>
-								<script type="text/javascript">
-								var accountNo = "${param.accountNo}";
-								$("#accountNo").val(accountNo);
-								</script>
 								
-								<!-- 삭제여부  -->
-								<div class="control-group">
-									<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >삭제여부</label>
-									<div class="controls">
-										<select class="chosen-select" id="useYn" name="useYn" data-placeholder="삭제여부">		
-											<option value="true">Y</option>
-											<option value="false">N</option>
-										</select> 
-									</div>
-								</div>
-								<script type="text/javascript">
-								var useYn = "${param.useYn}";
-								$("#useYn").val(useYn);
-								</script>
 							</div>
 	
 						<div class="span6">
@@ -126,21 +100,6 @@
 										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
 									</div>
 								</div>
-								<script type="text/javascript">
-								var customerNo = "${param.customerNo}";
-								$("#customerNo").val(customerNo);
-								</script>
-								
-								<div class="control-group">
-									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >금액</label>
-									<div class="controls">
-										<input type="text" id="amount" name="amount" placeholder="0" onkeyup="inputNumberFormat(this)">
-									</div>
-								</div>
-								<script type="text/javascript">
-								var amount = "${param.amount}";
-								$("#amount").val(amount);
-								</script>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표사용목적</label>
@@ -149,10 +108,17 @@
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
-								<script type="text/javascript">
-								var voucherUse = "${param.voucherUse}";
-								$("#voucherUse").val(voucherUse);
-								</script>
+								
+								<!-- 삭제여부  -->
+								<div class="control-group">
+									<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >삭제여부</label>
+									<div class="controls">
+										<select class="chosen-select" id="useYn" name="useYn" data-placeholder="삭제여부">		
+											<option value="true">Y</option>
+											<option value="false">N</option>
+										</select> 
+									</div>
+								</div>
 								
 								<!-- 거래처 Modal pop-up : start -->
 								<div id="dialog-message" title="거래처" hidden="hidden">
@@ -305,7 +271,7 @@
 				<ul>
 					<c:choose>
 						<c:when test="${dataResult.pagination.prev }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${dataResult.pagination.startPage - 1 }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }"><i class="icon-double-angle-left"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${dataResult.pagination.startPage - 1 }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }"><i class="icon-double-angle-left"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -315,17 +281,17 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${pg }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }">${pg }</a></li>
+								<li class="active"><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${pg }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${pg }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }">${pg }</a></li>
+								<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${pg }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-							<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${dataResult.pagination.endPage + 1 }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&amount=${param.amount }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }"><i class="icon-double-angle-right"></i></a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/01/04/read?page=${dataResult.pagination.endPage + 1 }&regDate=${param.regDate }&no=${param.no }&accountNo=${param.accountNo }&customerNo=${param.customerNo }&voucherUse=${param.voucherUse }&useYn=${param.useYn }"><i class="icon-double-angle-right"></i></a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -356,6 +322,7 @@ $(function(){
 		var td = tr.children();
 		
 		$("input[name=regDate]").val(td.eq(0).text());
+		$("input[name=no]").val(td.eq(1).text());
 		$('#accountNo').val(td.eq(3).text()).trigger('chosen:updated');
 		$("input[name=accountName]").val(td.eq(4).text());
 		console.log($("input[name=no]").val());
@@ -375,7 +342,7 @@ $(function(){
 		} else {
 			$("input[name=cardUser]").val(td.eq(15).text());
 		}
-		
+		$("input[name=voucherUse]").val(td.eq(16).text());
 		$("input[name=insertTeam]").val(td.eq(17).text());
 		
 		$("input[name=bankName]").prop("readonly", true);
@@ -505,6 +472,30 @@ $(function(){
 	function inputNumberFormat(obj) {
 	    obj.value = comma(uncomma(obj.value));
 	}
+</script>
+<script type="text/javascript">
+var regDate = "${param.regDate}";
+$("#regDate").val(regDate);
+</script>
+<script type="text/javascript">
+var no = "${param.no}";
+$("#no").val(no);
+</script>
+<script type="text/javascript">
+var accountNo = "${param.accountNo}";
+$("#accountNo").val(accountNo);
+</script>
+<script type="text/javascript">
+var customerNo = "${param.customerNo}";
+$("#customerNo").val(customerNo);
+</script>
+<script type="text/javascript">
+var voucherUse = "${param.voucherUse}";
+$("#voucherUse").val(voucherUse);
+</script>
+<script type="text/javascript">
+var useYn = "${param.useYn}";
+$("#useYn").val(useYn);
 </script>
 </body>
 </html>

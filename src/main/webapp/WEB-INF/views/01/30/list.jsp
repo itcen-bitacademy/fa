@@ -339,6 +339,7 @@ $(function() {
             </div>
 
 
+<<<<<<< HEAD
             <div class="row-fluid">
                <form class="form-horizontal" id="input-form" name="input-form">
                   거래처/코드:
@@ -361,6 +362,30 @@ $(function() {
                         class="add-on"> <i class="icon-calendar"></i>
                      </span>
                   </div>
+=======
+				<div class="row-fluid">
+					<form class="form-horizontal" id="input-form" name="input-form">
+						거래처/코드:
+						
+						<div class="input-append">
+										<a href="#" id="a-customerinfo-dialog">
+											<input type="text" class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width:150px;" readonly/>
+											<span class="add-on">
+				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            </span>
+				                    	</a>
+									</div>
+						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						
+						
+						&nbsp; &nbsp;
+						입력 기간
+						<div class="input-append">
+							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" readonly/> <span
+								class="add-on"> <i class="icon-calendar"></i>
+							</span>
+						</div>
+>>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 
                   &nbsp;&nbsp;
                   계정코드/계정명
@@ -592,6 +617,7 @@ $(function() {
    <!-- /.main-container -->
    <!-- basic scripts -->
    <c:import url="/WEB-INF/views/common/footer.jsp" />
+
 
 
 </body>

@@ -47,7 +47,7 @@
 										<label class="control-label" for="form-field-select-1">대분류 코드</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="전체">
-											
+											<!-- 	<option></option> -->
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option vehiclecode="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
@@ -69,7 +69,7 @@
 										<label class="control-label" for="form-field-select-1">거래처 코드</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-customerCode" name="customerName" data-placeholder="전체">
-												<option></option>
+											<!-- 	<option></option> -->
 												<c:forEach items="${customerList }" var="customerVo">
 													<option managerName="${customerVo.managerName }" customerCode="${customerVo.no }" value="${customerVo.no }">${customerVo.name }</option>
 												</c:forEach>
@@ -138,7 +138,7 @@
 											<label class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width: 90%">
 												<select class="chosen-select" id="form-field-classification" name="staffNo" data-placeholder="전체">
-												
+											<!-- 		<option></option> -->
 													<c:forEach items="${jikNameList}" var="StaffVo">
 														<option staffNo="${StaffVo.no }" value="${StaffVo.no }">${StaffVo.staffName }</option>
 													</c:forEach>
@@ -554,6 +554,14 @@ $(function() {
 	});
 	
 }); */
+/* function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+$("input[name=limitation]").on('keyup', function(event){
+	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+}); */
 
 //빈칸 검사()
 function formCheck() {
@@ -658,15 +666,15 @@ function setMonth() {
 };
 //버튼 구현
 $(function(){
-   $("#insert").click(function() {
-      
-   });
-   
+	$("#insert").click(function() {
+		$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
+	});
+	
    $("#modify").click(function() {
-      
    }); 
    
    $("#delete").click(function() {
+	   $("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
       alert("삭제");
    }); 
    
@@ -732,12 +740,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
     	break;
 	}
 
-	/* var staffNumber = $("#form_field_classification_chosen").attr("value", staffNo); */
-	/* var staffNumber = $("#form_field_classification_chosen").attr(staffNo); */
-	$('#form_field_classification_chosen').find('span').text(staffName);
-	console.log("sttstststs : " + staffNo);
-	$("input[name=staffNo]").val(staffNo);
-	
 	//선택된 직급에 대한 No값을 value값으로 변경
 	$("#form_field_classification_chosen").attr("value", staffNo);
 	
@@ -809,7 +811,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
 		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
-		$("#delete").hide(); //삭제 버튼 가리기
+		$("#delete").show(); //삭제 버튼 가리기
 		$("#search").show(); //조회 버튼 가리기
 		$("#clear").show(); //초기화 버튼 가리기
 
@@ -939,7 +941,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	var year  =  month*12;
 	
 	
-	var usingMonthCnt = parseInt(interval/month); //기간 사용 개월수
+	var usingMonthCnt = parseInt(interval/month);  //기간 사용 개월수
 	
 	
 	var monthlyFee = $('input[name=monthlyFee]').val();
