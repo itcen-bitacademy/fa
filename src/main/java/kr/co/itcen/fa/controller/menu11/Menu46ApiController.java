@@ -64,9 +64,11 @@ public class Menu46ApiController {
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
 	public JSONResult deleteChecked(@RequestParam(value="noList[]", required=true) List<Long> noList,
 			@RequestParam(value="voucherNoList[]", required=true) List<Long> voucherNoList,
+			@RequestParam(value="debtDateList[]", required=true) List<String> debtDateList,
 			@AuthUser UserVo authUser){
 		Map map = new HashMap();
 		
+		System.out.println("debtDateList : " + debtDateList);
 		System.out.println("noList :" + noList + " voucherList : " + voucherNoList);
 		List<List<RepayVo>> repayLists = menu46Service.possibleDelete(noList);	//상환내역이 있는 차입금은 제외시킨다. 상환내역 리스트를 가져온다
 		map.put("repayLists", repayLists);
@@ -136,7 +138,7 @@ public class Menu46ApiController {
 		 Map map = new HashMap();
 		 //마감인지 확인
 		 System.out.println("마감인가? : " + menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate()));
-		 if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate())){	//마감이됬으면
+		 if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate())){			//마감이됬으면
 			 map.put("isClosed", true);
 			 return JSONResult.success(map);
 		 }
@@ -158,13 +160,5 @@ public class Menu46ApiController {
 		 //Map을 받아온다
 		 map = menu46Service.getListMap();
 		 return JSONResult.success(map);
-	}
-	
-	@ResponseBody
-	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/isClosedDate", method=RequestMethod.POST)
-	public JSONResult isClosedDate(@RequestParam(value="debtDate", required=true)String debtDate,
-			@AuthUser UserVo authUser) throws ParseException {
-		Boolean isClosed = menu19Service.checkClosingDate(authUser, debtDate);
-		return JSONResult.success(isClosed);
 	}
 }	

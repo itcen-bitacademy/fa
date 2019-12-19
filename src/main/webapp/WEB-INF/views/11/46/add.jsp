@@ -904,8 +904,10 @@ function selectRow(thisObj){
 	inputForm.debtAmountComma.value = comma(vo.debtAmount);
 	inputForm.debtExpDate.value = vo.debtDate + " - " + vo.expDate;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
 	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
+		$(this).prop("checked", false);
+		
 		if($(this).val() == vo.intPayWay){
-			$(this).attr("checked", true);
+			$(this).prop("checked", true);
 		}
 	});	
 	inputForm.bankCode.value = vo.bankCode;		
@@ -921,7 +923,8 @@ function selectRow(thisObj){
 	
 	$(inputForm).find("input[name='repayWay']").each(function(i, e){
 		if($(this).val() == vo.repayWay){
-			$(this).attr("checked", true);
+			$(this).prop("checked", true);
+			$(this).prop("checked", true);
 		}
 			
 	});		
@@ -1193,29 +1196,25 @@ function deleteChecked(){
 	console.log("voList 길이: " + voList.length);
 	var noList = [];
 	var voucherNoList = [];
+	var debtDateList = [];
 	
 	for(var i=0; i < voList.length; ++i){
 		noList.push(voList[i].no);
 		voucherNoList.push(voList[i].voucherNo);
-		
-		if(!isNotClosedDate(voList[i].debtDate)){				//마감이되었으면
-			alert("차입일자가 마감일 이전인 데이터는 입력할 수 없습니다.");
-			renderingClosedDateList(voList[i]);
-			return;
-		}
+		debtDateList.push(voList[i].debtDate);
 	}
 	
 	/* if(noList == null){
 		console.log("NoList null");
 		return; */
 		
-	console.log("noList : " +  noList + " voucherNoList : " + voucherNoList);
+	console.log("noList : " +  noList + " voucherNoList : " + voucherNoList + " debtDateList : " + voList[0].code);
 	//각 배열을 넘겨준다.
 	$.ajax({
 		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
 		type : "POST",
 		dataType : "json",
-		data : {"noList" : noList, "voucherNoList" : voucherNoList},
+		data : {"noList" : noList, "voucherNoList" : voucherNoList, "debtDateList" : debtDateList},
 		success: function(response){
 			console.log(isEmpty(response.data.repayLists));
 			if(!isEmpty(response.data.repayLists)){					//상환내역이 있는경우 삭제가 안됨.
