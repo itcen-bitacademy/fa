@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu02.Menu34Service;
 import kr.co.itcen.fa.vo.SectionVo;
-import kr.co.itcen.fa.vo.menu02.FactoryVo;
 import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
 /**
@@ -35,6 +35,7 @@ public class Menu34Controller {
 	@Autowired
 	private Menu34Service menu34Service;
 	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
 					   @RequestParam(value="page", required=false, defaultValue="1") int page,
