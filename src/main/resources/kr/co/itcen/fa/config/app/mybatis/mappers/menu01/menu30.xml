@@ -34,7 +34,7 @@
 		</if>
 		<if test='customerNo!=null and !customerNo.equals("")'>		    
 			<![CDATA[
-				and customer_no = #{customerNo }
+				and customer_no = '%#{customerNo }'
 			]]>
 		</if>
 		<if test="regDate!=null and !regDate.equals('')">
@@ -83,7 +83,7 @@
 		</if>
 		<if test='vo.customerNo!=null and !vo.customerNo.equals("")'>		    
 			<![CDATA[
-				and customer_no = #{vo.customerNo }
+				and customer_no like '%${vo.customerNo }'
 			]]>
 		</if>
 		<if test="vo.regDate!=null and !vo.regDate.equals('')">
