@@ -74,7 +74,7 @@
 
 					</form>
 					<div class="hr hr-18 dotted"></div>
-					
+					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 카드 ${dataResult.pagination.totalCnt } 건</p>
 				</div>
 
 

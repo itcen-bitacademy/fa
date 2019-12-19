@@ -25,10 +25,11 @@ public class Menu30Service {
 
 	public DataResult<ReceiptVo> search(int page, ReceiptVo revo) {
 		DataResult<ReceiptVo> dataResult = new DataResult<ReceiptVo>();
-		System.out.println(page);
+	
+		System.out.println(revo);
 		int totalCnt = menu30Repository.listCount(revo);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		
+		System.out.println(totalCnt);
 		dataResult.setPagination(pagination);
 		List<ReceiptVo> list = menu30Repository.list(pagination,revo);
 		dataResult.setDatas(list);
