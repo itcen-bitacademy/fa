@@ -561,7 +561,6 @@ function insert(){
 		return;
 	}
 	
-	console.log("isNotClosedDate : " + isNotClosedDate(vo.debtDate));
 	if(!isNotClosedDate(vo.debtDate)){				//마감이되었으면
 		alert("차입일자가 마감일 이전인 데이터는 입력할 수 없습니다.");
 		return;
@@ -579,17 +578,19 @@ function update(){
 	var sendData = $("#input-form").serialize();
 	var vo = JSON.parse(inputForm.vo.value);
 	
-	if(!isNotClosedDate(vo.debtDate)){				//마감이되었으면
-		alert("차입일자가 마감일 이전인 데이터는 수정할 수 없습니다.");
-		return;
-	}
-	
 	$.ajax({
 		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
 		type:"POST",
 		dataType: "json",
 		data: sendData,
 		success: function(response){
+			console.log("isClosed : " + response.data.isClosed);
+			console.log("response.data : " + response.data);
+			if(response.data.isClosed == true){
+				alert("차입일자가 마감일자전인 데이터는 수정할 수 없습니다.");
+				return;
+			}
+			
 			if(response.data == true){			//상환내역이 존재하는경우
 				alert("상환내역이 존재하는 차입금은 수정할 수 없습니다");
 				return;
@@ -1258,22 +1259,6 @@ function isEmpty(value){
 };
 
 //---------------------------------------입력, 수정 마강확인------------------------------------------------//
-function isNotClosedDate(debtDate){
-	console.log("---------------------isNotClosedDate() called-------------------");
-	$.ajax({
-		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/isNotClosedDate",
-		type : "POST",
-		dataType : "json",
-		data : {"debtDate" : debtDate},
-		success: function(response){
-			return response.data;
-		},
-		error : function(xhr, error){
-			
-		}
-	});
-	console.log("---------------------isNotClosedDate() End-------------------");
-}
 
 </script>
 </body>
