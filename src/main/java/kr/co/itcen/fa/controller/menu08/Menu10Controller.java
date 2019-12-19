@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu08.Menu09Service;
 import kr.co.itcen.fa.service.menu08.Menu10Service;
 import kr.co.itcen.fa.vo.SectionVo;
@@ -43,6 +44,7 @@ public class Menu10Controller {
 	private Menu10Service menu10Service;
 
 	// /08 / 10 , /08/10/list
+	@NoAuth
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, @ModelAttribute LandVo landVo,
 			@RequestParam(value="payDate", required=false) String payDate,

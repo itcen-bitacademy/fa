@@ -65,6 +65,25 @@ public class Menu03Service {
 		
 	}
 	
+	// 전표 생성 1팀
+	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingList, UserVo userVo) {
+		//마감 여부 체크
+		try {
+			//String businessDateStr = menu03Repository.businessDateStr();
+			System.out.println("왜 안되냐2");
+			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+				System.out.println("Service");
+				menu03Repository.createVoucher(voucherVo, itemVo, mappingList, userVo);
+				
+				return voucherVo.getNo(); // 전표번호
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
 	// 전표수정 (다른 팀)
 	public Long updateVoucher(VoucherVo voucherVo,  List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
 		
@@ -199,5 +218,5 @@ public class Menu03Service {
 	public String businessDateStr() {
 		return menu03Repository.businessDateStr();
 	}
-	
+
 }

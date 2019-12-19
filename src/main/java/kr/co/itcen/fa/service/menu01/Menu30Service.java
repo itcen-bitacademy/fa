@@ -9,6 +9,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu30Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
  * 
@@ -25,10 +26,11 @@ public class Menu30Service {
 
 	public DataResult<ReceiptVo> search(int page, ReceiptVo revo) {
 		DataResult<ReceiptVo> dataResult = new DataResult<ReceiptVo>();
-		System.out.println(page);
+	
+		System.out.println(revo);
 		int totalCnt = menu30Repository.listCount(revo);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		
+		System.out.println(totalCnt);
 		dataResult.setPagination(pagination);
 		List<ReceiptVo> list = menu30Repository.list(pagination,revo);
 		dataResult.setDatas(list);
@@ -37,5 +39,9 @@ public class Menu30Service {
 		System.out.println("결과 조회 :" + list.toString());
 		
 		return dataResult;
+	}
+	
+	public void closingEntries(List<StatementDataVo> vo) {
+		
 	}
 }

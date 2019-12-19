@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -51,8 +53,18 @@ public class Menu66Controller {
 			@ModelAttribute("vo") RepayVo vo) {
 		// tb_repay 의 debtNo를 통해 각 사채테이블의 PK인 no와 비교하여 데이터 호출
 		DataResult<RepayVo> dataResult = menu66Service.list(page, vo.getCode(), vo.getDebtType());
+		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance()
+					.queryParam("code", vo.getCode())
+					.queryParam("debtType", vo.getDebtType())
+					.build();
+		
+		String uri = uriComponents.toUriString();
+		model.addAttribute("uri",uri);
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("contentsCount", dataResult.getPagination().getTotalCnt()); // 게시물 수
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
@@ -158,27 +170,27 @@ public class Menu66Controller {
 	
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
 	public String delete(
-			@RequestParam Long[] no, 
-			@RequestParam String[] debtType, 
-			@RequestParam Long[] tempPayPrinc,
+			@RequestParam("no") Long[] no, 
+			@RequestParam("hidden-debttype") String[] debtType, 
+			@RequestParam("hidden-payprinc") Long[] payPrinc,
 			@AuthUser UserVo uservo) {
 		System.out.println("delete");
-		List<Long> list = menu66Service.selectVoucherNo(no);
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-		
-		for(Long no1: list) {
-			VoucherVo v = new VoucherVo();
-			v.setNo(no1);
-			voucherVolist.add(v);
-		}
-		
-		for(VoucherVo v : voucherVolist) {
-			System.out.println("VoucherVo : " + v);
-		}
-		
-		menu03Service.deleteVoucher(voucherVolist, uservo);
-		//menu66Service.deleteDebt(no, debtType, tempPayPrinc);
-		menu66Service.delete(no);
+		System.out.println(no.toString());
+		System.out.println(debtType.toString());
+		System.out.println(payPrinc.toString());
+		/*
+		 * List<Long> list = menu66Service.selectVoucherNo(no); List<VoucherVo>
+		 * voucherVolist = new ArrayList<VoucherVo>();
+		 * 
+		 * for(Long no1: list) { VoucherVo v = new VoucherVo(); v.setNo(no1);
+		 * voucherVolist.add(v); }
+		 * 
+		 * for(VoucherVo v : voucherVolist) { System.out.println("VoucherVo : " + v); }
+		 * 
+		 * menu03Service.deleteVoucher(voucherVolist, uservo);
+		 * //menu66Service.deleteDebt(no, debtType, tempPayPrinc);
+		 * menu66Service.delete(no);
+		 */
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}

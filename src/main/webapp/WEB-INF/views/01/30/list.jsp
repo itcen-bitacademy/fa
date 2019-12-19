@@ -71,7 +71,6 @@ $(function() {
 	});
 
 	$("#a-customerinfo-dialog").click(function() {
-		alert('김승곤을 정지합니다');
 		$("#dialog-message").dialog('open');
 		
 		$("#modal-customer-table").hide();
@@ -215,6 +214,112 @@ $(function() {
 			});
 		});
 		
+		//거래처명 검색 :거래처목록 리스트로 가져오기
+		$("#a-dialog-customername").click(function(event){
+			event.preventDefault();
+			$("#tbody-customerList").find("tr").remove();
+			
+			var customerNameVal = $("#input-dialog-customername").val();
+			console.log(customerNameVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getcustomerName?customerNameVal=" + customerNameVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-customername").val('');
+					 $.each(response.data,function(index, item){
+			                $("#tbody-customerList").append("<tr>" +
+			                		"<td class='center'>" + item.customerDiv + "</td>" +
+							        "<td class='center'>" + item.no + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "</tr>");
+			         })
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		
+		
+		
+		//은행코드로 검색
+		$("#a-dialog-bankcode").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
+			var bankCodeVal = $("#input-dialog-bankcode").val();
+			console.log(bankCodeVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getbankCode?bankCodeVal=" + bankCodeVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-bankcode").val('');
+					 $.each(response.data,function(index, item){
+			                $("#tbody-bankList").append("<tr>" +
+			                		"<td class='center'>" + item.no + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "</tr>");
+			         })
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		//은행명으로 검색
+		$("#a-dialog-bankname").click(function(event){
+			event.preventDefault();
+			$("#tbody-bankList").find("tr").remove();
+			
+			var bankNameVal = $("#input-dialog-bankname").val();
+			console.log(bankNameVal);
+			// ajax 통신
+			$.ajax({
+				url: "${pageContext.request.contextPath }/api/customer/getbankName?bankNameVal=" + bankNameVal,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: "",
+				statusCode: {
+				    404: function() {
+				      alert("page not found");
+				    }
+				},
+				success: function(response){
+					$("#input-dialog-bankname").val('');
+					 $.each(response.data,function(index, item){
+			                $("#tbody-bankList").append("<tr>" +
+			                		"<td class='center'>" + item.no + "</td>" +
+							        "<td class='center'>" + item.name + "</td>" +
+							        "</tr>");
+			         })
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			});
+		});
+		
+		
 		// 계정 이름
 		$("#a-dialog-accountname").click(function(event){
 			event.preventDefault();
@@ -283,40 +388,7 @@ $(function() {
 			});
 		});
 		
-		//거래처명 검색 :거래처목록 리스트로 가져오기
-		$("#a-dialog-customername").click(function(event){
-			event.preventDefault();
-			$("#tbody-customerList").find("tr").remove();
-			
-			var customerNameVal = $("#input-dialog-customername").val();
-			console.log(customerNameVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getcustomerName?customerNameVal=" + customerNameVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					$("#input-dialog-customername").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-customerList").append("<tr>" +
-			                		"<td class='center'>" + item.customerDiv + "</td>" +
-							        "<td class='center'>" + item.no + "</td>" +
-							        "<td class='center'>" + item.name + "</td>" +
-							        "</tr>");
-			         })
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
+		
 	});
 </script>
 
@@ -335,51 +407,76 @@ $(function() {
 
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">계정 명세서 조회</h1>
+					<h1 class="pull-left">계정 거래처 명세서 조회</h1>
 				</div>
 
 
 				<div class="row-fluid">
 					<form class="form-horizontal" id="input-form" name="input-form">
-						거래처/코드:
 						
-						<div class="input-append">
-										<a href="#" id="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width:150px;" readonly/>
-											<span class="add-on">
-				                            <i class="icon-search icon-on-right bigger-110"></i>
-				                            </span>
-				                    	</a>
-									</div>
-						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
-						
-						
-						&nbsp; &nbsp;
 						입력 기간
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" /> <span
-								class="add-on"> <i class="icon-calendar"></i>
+							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" readonly/> 
+								
+							<span class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
+						<script type="text/javascript">
+							var regDate = "${param.regDate}";
+							$("#datepicker").val(regDate);
 
-						&nbsp;&nbsp;
-						계정코드/계정명
-									<div class="input-append">
-										<a href="#" id="a-accountinfo-dialog">
-											<input type="text" class="search-input-width-first" id="accountNo" name="accountNo" style="text-align: center; width:150px;" readonly/>
-											
-											<span class="add-on">
-				                            <i class="icon-search icon-on-right bigger-110"></i>
-				                            </span>
-				                    	</a>
-									</div>
-				
-						<input type="text" id="accountName" name="accountName" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
-						
-						<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/search">조회</button>
+						</script>
+
+
+
+
+						&nbsp; &nbsp; 거래처/코드:
+
+						<div class="input-append">
+							<a href="#" id="a-customerinfo-dialog"> <input type="text"
+								class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width: 150px;" readonly /> 
+								<script type="text/javascript">
+									var customerName = "${param.customerName}";
+									$("#customerName").val(customerName);
+								</script> 
+								<span class="add-on"> 
+								<i class="icon-search icon-on-right bigger-110"></i>
+							</span>
+							</a>
+						</div>
+						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width: 150px;" readonly />
+						<script type="text/javascript">
+							var customerNo = "${param.customerNo}";
+							$("#customerNo").val(customerNo);
+						</script>
+
+						&nbsp;&nbsp; 계정코드/계정명
+						<div class="input-append">
+							<a href="#" id="a-accountinfo-dialog"> <input type="text"
+								class="search-input-width-first" id="accountNo" name="accountNo"
+								style="text-align: center; width: 150px;" readonly /> <script
+									type="text/javascript">
+													var accountNo = "${param.accountNo}";
+													$("#accountNo").val(accountNo);
+												</script> <span class="add-on"> <i
+									class="icon-search icon-on-right bigger-110"></i>
+							</span>
+							</a>
+						</div>
+
+						<input type="text" id="accountName" name="accountName"
+							placeholder="자동입력" class="col-xs-10 col-sm-5"
+							style="text-align: center; width: 150px;" readonly />
+						<script type="text/javascript">
+							var accountName = "${param.accountName}";
+							$("#accountName").val(accountName);
+						</script>
+						<button class="btn btn-small btn-info" type="submit"
+							formaction="${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/search">조회</button>
 
 					</form>
 					<div class="hr hr-18 dotted"></div>
+					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 계정 거래처 명세서 ${dataResult.pagination.totalCnt } 건</p>
 				</div>
 				
 				
@@ -390,9 +487,9 @@ $(function() {
 								<td>
 									<label>사업자등록번호</label>
 									<input type="text" id="input-dialog-customerno" style="width: 100px;" />
-									<a href="#" id="a-dialog-customerno"> 
+									<a href="#" id="a-dialog-customerno">
 										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search nav-search-icon"></i>
+											<i class="icon-search icon-on-right bigger-110"></i>
 										</span>
 									</a>
 								</td>
@@ -402,11 +499,30 @@ $(function() {
 									<input type="text" id="input-dialog-customername" style="width: 100px;" />
 									<a href="#" id="a-dialog-customername">
 										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search nav-search-icon"></i>
+											<i class="icon-search icon-on-right bigger-110"></i>
 										</span>
 									</a>
 								</td>
 								
+								<td>
+									<label>은행코드</label>
+									<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
+									<a href="#" id="a-dialog-bankcode">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
+								
+								<td>
+									<label>은행명</label>
+									<input type="text" id="input-dialog-bankname" style="width: 100px;" />
+									<a href="#" id="a-dialog-bankname">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
 							</tr>
 						</table>
 						
@@ -424,6 +540,17 @@ $(function() {
 							</tbody>
 						</table>
 						
+						<table id="modal-bank-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">은행코드</th>
+									<th class="center">은행명</th>
+								</tr>
+							</thead>
+							
+							<tbody id="tbody-bankList">
+							</tbody>
+						</table>
 					</div>
 					<!-- 거래처Modal pop-up : end -->
 					
@@ -485,14 +612,12 @@ $(function() {
 									<th>적요</th>
 									<th>차변</th>
 									<th>대변</th>
-									<th>잔액</th>
 								</tr>
 							</thead>
 
 							<tbody class = "origin-tbody">
 								<tr>
 									<td>[전월이월]</td>
-									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -533,7 +658,6 @@ $(function() {
 									<td></td>
 									<td></td>
 									<td></td>
-									<td></td>
 								</tr>
 
 								<tr>
@@ -544,7 +668,7 @@ $(function() {
 									<td></td>
 									<td></td>
 									<td></td>
-									<td></td>
+									
 									<td></td>
 								</tr>
 							</tbody>
@@ -559,7 +683,9 @@ $(function() {
 				<ul>
 					<c:choose>
 					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}"
+						><i class="icon-double-angle-left"></i></a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -569,16 +695,20 @@ $(function() {
 					<c:choose>
 					<c:when test="${pg eq dataResult.pagination.page }">
 		
-						<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+						<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+						<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
 					</c:otherwise>
 					</c:choose>
 					</c:forEach>
 					<c:choose>
 						<c:when test="${dataResult.pagination.next }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">
+						<i class="icon-double-angle-right"></i></a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -592,6 +722,7 @@ $(function() {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+
 
 </body>
 </html>

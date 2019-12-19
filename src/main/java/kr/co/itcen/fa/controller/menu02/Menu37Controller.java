@@ -51,12 +51,15 @@ public class Menu37Controller {
 	// 입력 post
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String write(@ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
-			Long amount[], Long supplyValue[], Long taxValue[]) {
+			Long amount[], String supplyValue[], String taxValue[]) {
 
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		String insertUserid = authUser.getId();
 		vo.setInsertUserid(insertUserid);
-
+		
+		vo.setTotalSupplyValue(String.join("", vo.getTotalSupplyValue().split(",")));
+		vo.setTotalTaxValue(String.join("", vo.getTotalTaxValue().split(",")));
+		
 		ArrayList<BuyTaxbillItemsVo> list = new ArrayList<BuyTaxbillItemsVo>();
 
 		for (int i = 0; i < purchaseDate.length; i++) {
@@ -65,12 +68,12 @@ public class Menu37Controller {
 			buyTaxbillItemsVo.setPurchaseDate(purchaseDate[i]);
 			buyTaxbillItemsVo.setItemName(itemName[i]);
 			buyTaxbillItemsVo.setAmount(amount[i]);
-			buyTaxbillItemsVo.setSupplyValue(supplyValue[i]);
-			buyTaxbillItemsVo.setTaxValue(taxValue[i]);
+			buyTaxbillItemsVo.setSupplyValue(String.join("",supplyValue[i].split(",")));
+			buyTaxbillItemsVo.setTaxValue(String.join("",taxValue[i].split(",")));
 			buyTaxbillItemsVo.setInsertUserid(insertUserid);
 			list.add(buyTaxbillItemsVo);
 		}
-
+		vo.setTotalTaxValue(String.join("", vo.getTotalTaxValue().split(",")));
 		menu37Service.insertTax(vo);
 		for (int i = 0; i < purchaseDate.length; i++) {
 			menu37Service.insertItem(list.get(i));
@@ -106,11 +109,14 @@ public class Menu37Controller {
 	// 수정 post
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
 	public String update(@RequestParam(name = "originalNo") String originalNo, @ModelAttribute BuyTaxbillVo vo, HttpSession session, String purchaseDate[], String itemName[],
-			Long amount[], Long supplyValue[], Long taxValue[]) {
+			Long amount[], String supplyValue[], String taxValue[]) {
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		String updateUserid = authUser.getId();
 		vo.setUpdateUserid(updateUserid);
-
+		
+		vo.setTotalSupplyValue(String.join("", vo.getTotalSupplyValue().split(",")));
+		vo.setTotalTaxValue(String.join("", vo.getTotalTaxValue().split(",")));
+		
 		// 삭제하기전 처음 입력한 아이디와 입력일 저장
 		String getInsertDay = vo.getInsertDay();
 		String getInsertUserid = vo.getInsertUserid();
@@ -131,8 +137,8 @@ public class Menu37Controller {
 			buyTaxbillItemsVo.setPurchaseDate(purchaseDate[i]);
 			buyTaxbillItemsVo.setItemName(itemName[i]);
 			buyTaxbillItemsVo.setAmount(amount[i]);
-			buyTaxbillItemsVo.setSupplyValue(supplyValue[i]);
-			buyTaxbillItemsVo.setTaxValue(taxValue[i]);
+			buyTaxbillItemsVo.setSupplyValue(String.join("",supplyValue[i].split(",")));
+			buyTaxbillItemsVo.setTaxValue(String.join("",taxValue[i].split(",")));
 			buyTaxbillItemsVo.setInsertUserid(getInsertUserid);
 			buyTaxbillItemsVo.setInsertDay(getInsertDay);
 			buyTaxbillItemsVo.setUpdateUserid(updateUserid);

@@ -1,11 +1,14 @@
 package kr.co.itcen.fa.repository.menu08;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
 import kr.co.itcen.fa.vo.menu08.TestVo;
 
@@ -32,22 +35,35 @@ public class Menu44Repository {
 		return result;
 	}
 	
-	public int selectCount(IntangibleAssetsVo intangibleAssetsVo) {
-		return sqlSession.selectOne("menu44.selectCount", intangibleAssetsVo);
+	public int selectCount(IntangibleAssetsVo intangibleAssetsVo, String startDate, String endDate) {
+		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("id", intangibleAssetsVo.getId());
+		map.put("customerName", intangibleAssetsVo.getCustomerName());
+		map.put("address", intangibleAssetsVo.getAddress());
+		map.put("classification", intangibleAssetsVo.getClassification());
+		map.put("customerManager", intangibleAssetsVo.getCustomerManager());
+		map.put("payDate", intangibleAssetsVo.getPayDate());
+		map.put("acqPrice", intangibleAssetsVo.getAcqPrice());
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("isChecked", intangibleAssetsVo.getIsChecked());
+		return sqlSession.selectOne("menu44.selectCount", map);
 	}
 
-	public int selectAllCount(IntangibleAssetsVo intangibleAssetsVo) {
-		return sqlSession.selectOne("menu44.selectAllCount", intangibleAssetsVo);
-	}
-
-	public List<IntangibleAssetsVo> getList(IntangibleAssetsVo intangibleAssetsVo) {
-		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList", intangibleAssetsVo);
+	public List<IntangibleAssetsVo> getList(PaginationUtil paginationUtil, IntangibleAssetsVo intangibleAssetsVo, String startDate, String endDate) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", intangibleAssetsVo.getId());
+		map.put("customerName", intangibleAssetsVo.getCustomerName());
+		map.put("address", intangibleAssetsVo.getAddress());
+		map.put("classification", intangibleAssetsVo.getClassification());
+		map.put("customerManager", intangibleAssetsVo.getCustomerManager());
+		map.put("payDate", intangibleAssetsVo.getPayDate());
+		map.put("acqPrice", intangibleAssetsVo.getAcqPrice());
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("isChecked", intangibleAssetsVo.getIsChecked());
+		map.put("pagination", paginationUtil);
+		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList", map);
 		return result;
 	}
-
-	public List<IntangibleAssetsVo> getAllList(IntangibleAssetsVo intangibleAssetsVo) {
-		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getAllList", intangibleAssetsVo);
-		return result;
-	}
-
 }

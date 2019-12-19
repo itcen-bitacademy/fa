@@ -18,7 +18,7 @@ public class PdebtVo {
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
 	private String debtDate; // 차입일자
 	private String expDate; // 만기일자
-	private int intRate; // 이율
+	private Double intRate; // 이율
 	private String intPayWay; // 이자지급방식
 	private Long intAmount; // 이자금액
 	private String mgr; // 차입금담당자
@@ -119,11 +119,11 @@ public class PdebtVo {
 		this.expDate = expDate;
 	}
 
-	public int getIntRate() {
+	public Double getIntRate() {
 		return intRate;
 	}
 
-	public void setIntRate(int intRate) {
+	public void setIntRate(Double intRate) {
 		this.intRate = intRate;
 	}
 

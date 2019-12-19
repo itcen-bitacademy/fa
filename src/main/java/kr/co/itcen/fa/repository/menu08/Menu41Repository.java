@@ -151,7 +151,6 @@ public class Menu41Repository {
 		map.put("id", id);
 		map.put("pagination", pagination);
 		List<VehicleVo> list = sqlSession.selectList("menu41.list", map);
-		System.out.println("아니면여기!");
 		return list;
 	}
 

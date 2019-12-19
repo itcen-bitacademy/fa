@@ -30,6 +30,7 @@
 			   	  no,
 			   	  code,
 		          debt_no as debtNo, 
+		          pay_princ + int_amount as totalPayPrinc, 
 		          pay_princ as payPrinc, 
 		          int_amount as intAmount, 
 		          date_format(pay_date,'%Y-%m-%d') as payDate, 

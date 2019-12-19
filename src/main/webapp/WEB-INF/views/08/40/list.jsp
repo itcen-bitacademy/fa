@@ -31,7 +31,7 @@
 			<div class="page-content">
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">토지현황조회</h1>
+					<h1 class="pull-left">건물현황조회</h1>
 				</div>
 				<!-- /.page-header -->
 				<div class="row-fluid">
@@ -190,7 +190,7 @@
 										<th>공시지가(원)</th>
 										<th>취득금액(원)</th>
 										<th>기타비용(원)</th>
-										<th>취득세(원)</th>
+										<th>등록세(원)</th>
 										<th>세금계산서번호</th>
 										<th>합병코드</th>
 										<th>구분</th>

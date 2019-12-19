@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu17.Menu59Service;
 import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 import kr.co.itcen.fa.vo.UserVo;
@@ -44,6 +45,7 @@ public class Menu59Controller {
 	
 	
 	//재무제표 계정관리 조회
+	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(@ModelAttribute AccountManagementVo accountManagement,
 					   @RequestParam(value = "accountUsedyear", defaultValue = "2019") String accountUsedyear,

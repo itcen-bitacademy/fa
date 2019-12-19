@@ -35,8 +35,8 @@
 		  		, #{taxValue }
 		  		, #{totalPrice }
 		  		, #{taxType }
-		  		, 0
-		  		, 0
+		  		, null
+		  		, null
 		  		, #{receiptDate }
 		  		, #{releaseDate }
 		  		,"N"
@@ -65,20 +65,51 @@
 	
 	<select id="getList" resultType="purchasemanagement06vo">
 		<![CDATA[
-		  select purchase_no as no, number, date_format(purchase_date, '%Y-%m-%d') as purchaseDate, purchase_manager as purchaseManager, customer_code as customerCode, customer_name as customerName
-		  , item_code as itemCode, item_name as itemName, quantity, supply_value as supplyValue, tax_value as taxValue, tax_type as taxType, taxbill_no as taxbillNo,
-		  date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate
+		  select 
+		    purchase_no as no
+		  , number
+		  , date_format(purchase_date, '%Y-%m-%d') as purchaseDate
+		  , purchase_manager as purchaseManager
+		  , customer_code as customerCode
+		  , customer_name as customerName
+		  , item_code as itemCode
+		  , item_name as itemName
+		  , quantity
+		  , supply_value as supplyValue
+		  , tax_value as taxValue
+		  , tax_type as taxType
+		  , taxbill_no as taxbillNo
+		  , date_format(receipt_date, '%Y-%m-%d') as receiptDate
+		  , date_format(release_date, '%Y-%m-%d') as releaseDate
+		  , delete_flag as deleteFlag
+		  , voucher_no as voucherNo
 		  from tb_purchasemanagement
-		  where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
+		  where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number } and delete_flag = "N"
 		]]>
 	</select>
 	
 	<update id="update" parameterType="purchasemanagement06vo">
 		<![CDATA[
         update tb_purchasemanagement
-           set  purchase_no = #{no }, number = #{number }, purchase_date = #{purchaseDate }, purchase_manager = #{purchaseManager }, customer_code = #{customerCode }, 
-           customer_name = #{customerName }, item_code = #{itemCode }, item_name = #{itemName }, quantity = #{quantity }, supply_value = #{supplyValue },
-           tax_value = #{taxValue }, total_price = #{totalPrice }, tax_type = #{taxType }, taxbill_no = #{taxbillNo }, receipt_date = #{receiptDate }, release_date = #{releaseDate }, update_userid = #{updateUserid }, update_day = now()
+           set  
+             purchase_no = #{no }
+           , number = #{number }
+           , purchase_date = #{purchaseDate }
+           , purchase_manager = #{purchaseManager }
+           , customer_code = #{customerCode }
+           , customer_name = #{customerName }
+           , item_code = #{itemCode }
+           , item_name = #{itemName }
+           , quantity = #{quantity }
+           , supply_value = #{supplyValue }
+           , tax_value = #{taxValue }
+           , total_price = #{totalPrice }
+           , tax_type = #{taxType }
+           , taxbill_no = #{taxbillNo }
+           , receipt_date = #{receiptDate }
+           , release_date = #{releaseDate }
+           , update_userid = #{updateUserid }
+           , update_day = now()
          where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
 		]]>
 	</update>
@@ -128,6 +159,29 @@
 		  select voucher_no as voucherNo
 		  from tb_purchasemanagement
 		  where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
+		]]>
+	</select>
+	
+	<select id="getPriceList" resultType="purchasemanagement06vo">
+		<![CDATA[
+		  select purchase_no as no, 
+		  		 number, 
+		  		 date_format(purchase_date, '%Y-%m-%d') as purchaseDate, 
+		  		 purchase_manager as purchaseManager, 
+		  		 customer_code as customerCode, 
+		  		 customer_name as customerName, 
+		  		 item_code as itemCode, 
+		  		 item_name as itemName, 
+		  		 quantity, 
+		  		 supply_value as supplyValue, 
+		  		 tax_value as taxValue, 
+		  		 total_price as totalPrice, 
+		  		 tax_type as taxType, 
+		  		 taxbill_no as taxbillNo,
+		  		 date_format(receipt_date, '%Y-%m-%d') as receiptDate, 
+		  		 date_format(release_date, '%Y-%m-%d') as releaseDate
+		  from tb_purchasemanagement
+		  where purchase_no = #{no }
 		]]>
 	</select>
 	

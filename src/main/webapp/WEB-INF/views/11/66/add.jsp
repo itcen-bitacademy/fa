@@ -151,7 +151,7 @@ input[type="text"], input[type="date"], select {
 								</label>
 							</th>
 							<th class="center">차입금코드</th>
-							<th class="center">상환코드</th>
+							<th class="center">총납입금</th>
 							<th class="center">납입금</th>
 							<th class="center">이자금액</th>
 							<th class="center">부채유형</th>
@@ -168,7 +168,7 @@ input[type="text"], input[type="date"], select {
 									<input type="checkbox" class="ace" name="no"  data-no="${vo.no }" /><span class="lbl"></span>
 								</td>
 								<td class="center">${vo.code}</td>
-								<td class="center">${vo.debtNo}</td>
+								<td class="center"><fmt:formatNumber value="${vo.totalPayPrinc}" pattern="#,###" /></td>	
 								<td class="center"><fmt:formatNumber value="${vo.payPrinc}" pattern="#,###" /><input type="hidden" value="${vo.payPrinc}" /></td>	
 								<td class="center"><fmt:formatNumber value="${vo.intAmount}" pattern="#,###" /><input type="hidden" value="${vo.intAmount}" /></td>
 								<c:choose>
@@ -184,15 +184,13 @@ input[type="text"], input[type="date"], select {
 						</tbody>
 				</table>
 				
+				<!-- 페이징 처리 코드 start -->
 				<div class="pagination">
 					<ul>
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
-								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
-										<i class="icon-double-angle-left"></i>
-									</a>
-								</li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.startPage - 1 }">
+								<i class="icon-double-angle-left"></i></a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -201,20 +199,16 @@ input[type="text"], input[type="date"], select {
 						<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 							<c:choose>
 								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg }">${pg }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg}">${pg }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:choose>
 							<c:when test="${dataResult.pagination.next }">
-								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
-										<i class="icon-double-angle-right"></i>
-									</a>
-								</li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -222,6 +216,8 @@ input[type="text"], input[type="date"], select {
 						</c:choose>
 					</ul>
 				</div>
+				<!-- 페이징 처리 코드 end -->
+				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->

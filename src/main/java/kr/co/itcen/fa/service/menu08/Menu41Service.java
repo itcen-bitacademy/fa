@@ -127,14 +127,12 @@ public class Menu41Service {
 	//페이징 하기
 	public DataResult<VehicleVo> list(String id, int page) {
 		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
-		System.out.println("id2:" + id);
 
 		int totalCount = menu41Repository.listCount(id);
 		
 		//pagination
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(pagination);
-		System.out.println("id3:" + id);
 
 		List<VehicleVo> list = menu41Repository.list(id, pagination);
 		dataResult.setDatas(list);

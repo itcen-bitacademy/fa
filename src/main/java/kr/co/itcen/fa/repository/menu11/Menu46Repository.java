@@ -68,4 +68,8 @@ public class Menu46Repository {
 	public void insertRepay(RepayVo vo) {
 		sqlSession.insert("menu46.insertRepay", vo);
 	}
+	
+	public List<RepayVo> getRepayList(Long no){
+		return sqlSession.selectList("menu46.getRepayList", no);
+	}
 }

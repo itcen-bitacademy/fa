@@ -119,6 +119,7 @@
 				   name as accountName
 				   from tb_account
 			 where no like '${_parameter }'
+			 and statement_yn = '1'
 		]]>
 	</select>
 	
@@ -128,6 +129,7 @@
 				   name as accountName
 				   from tb_account
 			 where name like '%${_parameter }%'
+			 and statement_yn = '1'
 		]]>
 	</select>
 	
@@ -137,7 +139,6 @@
 				a.name as accountName,
 				cu.no as customerNo,
 		   	 	cu.name as customerName,
-		   	 	cu.store as store,
 		   	 	m.insert_day as regDate,
 			   v.no as voucherNo,
 			   i.order_no as voucherOrderNo,
@@ -164,16 +165,16 @@
             on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
-	 left join (select no, name, concat("") as store
+	 left join (select no, name
 				  from tb_customer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_salescustomer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_purchasecustomer
                  union
-                select code as no, name, store as store
+                select code as no, name
                   from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
@@ -202,13 +203,16 @@
 			</if>
 			<if test="vo.customerNo!=null and !vo.customerNo.equals('')">
 				<![CDATA[
-					and cu.no like '%${vo.customerNo }%'
+			           and (case char_length(cu.no)
+			           when "07" then (cu.no like ]]><![CDATA['${vo.customerNo }']]><![CDATA[)
+			           when "11" then (cu.no like ]]><![CDATA['%${vo.customerNo }%']]><![CDATA[)
+			           end)
 				]]>
 			</if>
 			
 			
 			<![CDATA[
-		      order by v.no asc, i.order_no
+		      order by v.no desc, i.order_no
 		      limit	#{pagination.pageIndex }, #{pagination.listSize };
 			]]>
 	</select>
@@ -223,16 +227,16 @@
             on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
-	 left join (select no, name, concat("") as store
+	 left join (select no, name
 				  from tb_customer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_salescustomer
 				 union
-				select no, name, concat("") as store
+				select no, name
                   from tb_purchasecustomer
                  union
-                select code as no, name, store as store
+                select code as no, name
                   from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
@@ -256,7 +260,7 @@
 			</if>
 			<if test="accountNo!=null and !accountNo.equals('')">
 				<![CDATA[
-					and a.no = #{vaccountNo }
+					and a.no = #{accountNo }
 				]]>
 			</if>
 			<if test="customerNo!=null and !customerNo.equals('')">
@@ -267,7 +271,7 @@
 			
 			
 			<![CDATA[
-		      order by v.no asc, i.order_no;
+		      order by v.no desc, i.order_no;
 			]]>
 	</select>
 	

@@ -67,7 +67,7 @@
 				 and tb_land.city_address=#{cityAddress }
 				]]>
 				</if>
-				<if test='acqPrice!=null'>
+				<if test='acqPrice!=""'>
 				<![CDATA[
 				 and tb_land.acq_price <= #{acqPrice }
 				]]>
@@ -141,7 +141,7 @@
 				 and tb_land.city_address=#{cityAddress }
 				]]>
 				</if>
-				<if test='acqPrice!=null'>
+				<if test='acqPrice!=""'>
 				<![CDATA[
 				 and tb_land.acq_price <= #{acqPrice }
 				]]>
@@ -186,13 +186,13 @@
 			left outer join tb_customer on tb_land.customer_no=tb_customer.no 
 			where tb_section.parent_no=2 and tb_land.flag IN('s','o')
 		]]>
-		<if test="id"><!-- "_parameter.length()>0" --> 
+		<if test="id!=null"><!-- "_parameter.length()>0" --> 
             <![CDATA[
               and id like concat('%',#{id },'%') 
             ]]>
          </if>
          <![CDATA[
-          order by tb_land.update_day desc, tb_land.insert_day desc
+          order by tb_land.update_day asc, tb_land.insert_day asc
          ]]>
          <if test="pagination.pageIndex >= 0">
 			<![CDATA[

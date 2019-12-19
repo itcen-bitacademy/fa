@@ -224,251 +224,260 @@
 	<select id="optionSearch" parameterType="map" resultType="1customervo">
 	<if test='vo.customerDiv == "All" or vo.customerDiv == ""'>
 	    <![CDATA[
-	    	select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       (CASE CHAR_LENGTH(no)
-						when "07" then no
-        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+	    	select replace(left(c.no, 1), "A", "자산거래처") as customerDiv,
+			       (CASE CHAR_LENGTH(c.no)
+						when "07" then c.no
+        				when "11" then concat(substr(substr(c.no, 2), 1, 3), "-", substr(substr(c.no,2), 4, 2), "-" , substr(substr(c.no, 2), 6, 5))
 					end) as no,
-	               name as name, 
-	               ceo as ceo, 
-	               address as address,
-	               detail_address as detailAddress,
-	               conditions as conditions, 
-	               item as item, 
-	               corporation_no as corporationNo, 
-	               open_date as openDate, 
-	               jurisdiction_office as jurisdictionOffice,
-			       (IFNULL(CASE LEFT(phone,2)
+	               c.name as name, 
+	               c.ceo as ceo, 
+	               c.address as address,
+	               c.detail_address as detailAddress,
+	               c.conditions as conditions, 
+	               c.item as item, 
+	               c.corporation_no as corporationNo, 
+	               c.open_date as openDate, 
+	               c.jurisdiction_office as jurisdictionOffice,
+			       (IFNULL(CASE LEFT(c.phone,2)
 			        WHEN "02" THEN
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            CASE CHAR_LENGTH(c.phone)
+			                WHEN "10" THEN concat("02","-",substring(c.phone,3,4),"-",RIGHT(c.phone,4))
+			                WHEN "11" THEN concat("02","-",substring(c.phone,3,3),"-",RIGHT(c.phone,4))
 			            END
 			        ELSE
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            CASE CHAR_LENGTH(c.phone)
+			                WHEN "10" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,3),"-",RIGHT(c.phone,4))
+			                WHEN "11" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,4),"-",RIGHT(c.phone,4))
+			                WHEN "8" THEN concat(LEFT(c.phone,4),"-",substring(c.phone,4,4))
 			            END
 			        END,"없음")) as phone,
-	               manager_name as managerName, 
-	               manager_email as managerEmail,
-	               deposit_no as depositNo,
-	               deposit_host as depositHost,
-	               insert_userid as insertUserid, 
-	               insert_day as insertDay, 
-	               update_userid as updateUserid, 
-	               update_day as updateDay
-		      from tb_customer
-			 where assets_flag != 'e'
+	               c.manager_name as managerName, 
+	               c.manager_email as managerEmail,
+	               b.deposit_no as depositNo,
+	               b.deposit_host as depositHost,
+	               c.insert_userid as insertUserid, 
+	               c.insert_day as insertDay, 
+	               c.update_userid as updateUserid, 
+	               c.update_day as updateDay
+		      from tb_customer c
+		      left join tb_bank_account b
+        		on c.deposit_no = b.deposit_no
+			 where c.assets_flag != 'e'
 		]]>
 			<if test="vo.deleteFlag!=null">
 				<![CDATA[
-					and delete_flag = #{vo.deleteFlag }
+					and c.delete_flag = #{vo.deleteFlag }
 				]]>
 			</if>
 				
 			<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    <![CDATA[
-			    	and insert_day >= #{vo.datepicker1 }
+			    	and c.insert_day >= #{vo.datepicker1 }
 			    ]]>
 			</if>
 				
 			<if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 				<![CDATA[
-					and insert_day <= #{vo.datepicker2 }
+					and c.insert_day <= #{vo.datepicker2 }
 				]]>
 			</if>
 			    
 			<if test='vo.no!=null and !vo.no.equals("")'>
 				<![CDATA[
-					and no like '%${vo.no }%'
+					and c.no like '%${vo.no }%'
 				]]>
 				
 			</if>
 			
 			<![CDATA[
 				union
-			   select replace(left(no, 1), "P", "매입 거래처") as customerDiv,
-			          concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
-	               	  name as name, 
-	               	  ceo as ceo, 
-	               	  address as address,
-	               	  detail_address as detailAddress,
-	               	  conditions as conditions, 
-	               	  item as item, 
-	               	  corporation_no as corporationNo, 
-	               	  open_date as openDate, 
-	               	  jurisdiction_office as jurisdictionOffice, 
-				       (IFNULL(CASE LEFT(phone,2)
+			   select replace(left(p.no, 1), "P", "매입 거래처") as customerDiv,
+			          concat(substr(substr(p.no, 2), 1, 3), "-", substr(substr(p.no,2), 4, 2), "-" , substr(substr(p.no, 2), 6, 5)) as no,
+	               	  p.name as name, 
+	               	  p.ceo as ceo, 
+	               	  p.address as address,
+	               	  p.detail_address as detailAddress,
+	               	  p.conditions as conditions, 
+	               	  p.item as item, 
+	               	  p.corporation_no as corporationNo, 
+	               	  p.open_date as openDate, 
+	               	  p.jurisdiction_office as jurisdictionOffice, 
+				       (IFNULL(CASE LEFT(p.phone,2)
 				        WHEN "02" THEN
-				            CASE CHAR_LENGTH(phone)
-				                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-				                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+				            CASE CHAR_LENGTH(p.phone)
+				                WHEN "10" THEN concat("02","-",substring(p.phone,3,4),"-",RIGHT(p.phone,4))
+				                WHEN "11" THEN concat("02","-",substring(p.phone,3,3),"-",RIGHT(p.phone,4))
 				            END
 				        ELSE
-				            CASE CHAR_LENGTH(phone)
-				                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-				                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-				                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+				            CASE CHAR_LENGTH(p.phone)
+				                WHEN "10" THEN concat(LEFT(p.phone,3),"-",substring(p.phone,4,3),"-",RIGHT(p.phone,4))
+				                WHEN "11" THEN concat(LEFT(p.phone,3),"-",substring(p.phone,4,4),"-",RIGHT(p.phone,4))
+				                WHEN "8" THEN concat(LEFT(p.phone,4),"-",substring(p.phone,4,4))
 				            END
 				        END,"없음")) as phone,
-	               	  manager_name as managerName, 
-	               	  manager_email as managerEmail,
-	               	  deposit_no as depositNo,
-	               	  deposit_host as depositHost,
-	               	  insert_userid as insertUserid, 
-	               	  insert_day as insertDay, 
-	               	  update_userid as updateUserid, 
-	               	  update_day as updateDay
-		      	 from tb_purchasecustomer
+	               	  p.manager_name as managerName, 
+	               	  p.manager_email as managerEmail,
+	               	  b.deposit_no as depositNo,
+	               	  b.deposit_host as depositHost,
+	               	  p.insert_userid as insertUserid, 
+	               	  p.insert_day as insertDay, 
+	               	  p.update_userid as updateUserid, 
+	               	  p.update_day as updateDay
+		      	 from tb_purchasecustomer p
+		      	 left join tb_bank_account b
+		      	 on p.deposit_no = b.deposit_no
+		      	 
 		    ]]>
 		    	
 		    	<if test="vo.deleteFlag!=null">     
 					<![CDATA[
-					  where delete_flag = #{vo.deleteFlag }
+					  where p.delete_flag = #{vo.deleteFlag }
 					]]>
 				</if>
 				
 				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    	<![CDATA[
-			    		and insert_day >= #{vo.datepicker1 }
+			    		and p.insert_day >= #{vo.datepicker1 }
 			    	]]>
 			    </if>
 				
 			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 			    	<![CDATA[
-			        	and insert_day <= #{vo.datepicker2 }
+			        	and p.insert_day <= #{vo.datepicker2 }
 			        ]]>
 			    </if>
 			    
 			    <if test='vo.no!=null and !vo.no.equals("")'>
 				    <![CDATA[
-				    	and no like '%${vo.no }%'
+				    	and p.no like '%${vo.no }%'
 				    ]]>
 			    </if>
 			    
 			    <![CDATA[
 				union
 			   select concat('은행') as customerDiv,
-			   		  no as no,
-	               	  name as name, 
-	               	  ceo as ceo, 
-	               	  address as address,
-	               	  detail_address as detailAddress,
-	               	  conditions as conditions, 
-	               	  item as item, 
-	               	  corporation_no as corporationNo, 
-	               	  open_date as openDate, 
-	               	  jurisdiction_office as jurisdictionOffice, 
-				       (IFNULL(CASE LEFT(phone,2)
+			   		  c.no as no,
+	               	  c.name as name, 
+	               	  c.ceo as ceo, 
+	               	  c.address as address,
+	               	  c.detail_address as detailAddress,
+	               	  c.conditions as conditions, 
+	               	  c.item as item, 
+	               	  c.corporation_no as corporationNo, 
+	               	  c.open_date as openDate, 
+	               	  c.jurisdiction_office as jurisdictionOffice, 
+				       (IFNULL(CASE LEFT(c.phone,2)
 				        WHEN "02" THEN
-				            CASE CHAR_LENGTH(phone)
-				                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-				                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+				            CASE CHAR_LENGTH(c.phone)
+				                WHEN "10" THEN concat("02","-",substring(c.phone,3,4),"-",RIGHT(c.phone,4))
+				                WHEN "11" THEN concat("02","-",substring(c.phone,3,3),"-",RIGHT(c.phone,4))
 				            END
 				        ELSE
-				            CASE CHAR_LENGTH(phone)
-				                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-				                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-				                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+				            CASE CHAR_LENGTH(c.phone)
+				                WHEN "10" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,3),"-",RIGHT(c.phone,4))
+				                WHEN "11" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,4),"-",RIGHT(c.phone,4))
+				                WHEN "8" THEN concat(LEFT(c.phone,4),"-",substring(c.phone,4,4))
 				            END
 				        END,"없음")) as phone,
-	               	  manager_name as managerName, 
-	               	  manager_email as managerEmail,
-	               	  deposit_no as depositNo,
-	               	  deposit_host as depositHost,
-	               	  insert_userid as insertUserid, 
-	               	  insert_day as insertDay, 
-	               	  update_userid as updateUserid, 
-	               	  update_day as updateDay
-		      	 from tb_customer
-		      	where assets_flag = 'e'
-		      	  and name != '여비'
+	               	  c.manager_name as managerName, 
+	               	  c.manager_email as managerEmail,
+	               	  b.deposit_no as depositNo,
+	               	  b.deposit_host as depositHost,
+	               	  c.insert_userid as insertUserid, 
+	               	  c.insert_day as insertDay, 
+	               	  c.update_userid as updateUserid, 
+	               	  c.update_day as updateDay
+		      	 from tb_customer c
+		      	 left join tb_bank_account b
+		      	 on c.deposit_no = b.deposit_no
+		      	where c.assets_flag = 'e'
+		      	  and c.name != '여비'
 		    ]]>
 		    	
 		    	<if test="vo.deleteFlag!=null">     
 					<![CDATA[
-						and delete_flag = #{vo.deleteFlag }
+						and c.delete_flag = #{vo.deleteFlag }
 					]]>
 				</if>
 				
 				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    	<![CDATA[
-			    		and insert_day >= #{vo.datepicker1 }
+			    		and c.insert_day >= #{vo.datepicker1 }
 			    	]]>
 			    </if>
 				
 			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 			    	<![CDATA[
-			        	and insert_day <= #{vo.datepicker2 }
+			        	and c.insert_day <= #{vo.datepicker2 }
 			        ]]>
 			    </if>
 			    
 			    <if test='vo.no!=null and !vo.no.equals("")'>
 				    <![CDATA[
-				    	and no like '%${vo.no }%'
+				    	and c.no like '%${vo.no }%'
 				    ]]>
 			    </if>
 			    
 			    <![CDATA[
 			    	union
-			       select replace(left(no, 1), "S", "매출 거래처") as customerDiv,
-			              concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
-			       		  name as name,
-			       		  ceo as ceo,
-			       		  address as address,
-			       		  detail_address as detailAddress,
-			       		  conditions as conditions,
-			       		  item as item,
-			       		  corporation_no as corporationNo,
-			       		  open_date as openDate,
-			       		  jurisdiction_office as jurisdictionOffice, 
-					       (IFNULL(CASE LEFT(phone,2)
+			       select replace(left(s.no, 1), "S", "매출 거래처") as customerDiv,
+			              concat(substr(substr(s.no, 2), 1, 3), "-", substr(substr(s.no,2), 4, 2), "-" , substr(substr(s.no, 2), 6, 5)) as no,
+			       		  s.name as name,
+			       		  s.ceo as ceo,
+			       		  s.address as address,
+			       		  s.detail_address as detailAddress,
+			       		  s.conditions as conditions,
+			       		  s.item as item,
+			       		  s.corporation_no as corporationNo,
+			       		  s.open_date as openDate,
+			       		  s.jurisdiction_office as jurisdictionOffice, 
+					       (IFNULL(CASE LEFT(s.phone,2)
 					        WHEN "02" THEN
-					            CASE CHAR_LENGTH(phone)
-					                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-					                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+					            CASE CHAR_LENGTH(s.phone)
+					                WHEN "10" THEN concat("02","-",substring(s.phone,3,4),"-",RIGHT(s.phone,4))
+					                WHEN "11" THEN concat("02","-",substring(s.phone,3,3),"-",RIGHT(s.phone,4))
 					            END
 					        ELSE
-					            CASE CHAR_LENGTH(phone)
-					                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-					                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-					                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+					            CASE CHAR_LENGTH(s.phone)
+					                WHEN "10" THEN concat(LEFT(s.phone,3),"-",substring(s.phone,4,3),"-",RIGHT(s.phone,4))
+					                WHEN "11" THEN concat(LEFT(s.phone,3),"-",substring(s.phone,4,4),"-",RIGHT(s.phone,4))
+					                WHEN "8" THEN concat(LEFT(s.phone,4),"-",substring(s.phone,4,4))
 					            END
 					        END,"없음")) as phone,
-			       		  manager_name as managerName,
-			       		  manager_email as managerEmail,
-			       		  deposit_no as depositNo,
-			       		  deposit_host as depositHost,
-			       		  insert_userid as insertUserid,
-			       		  insert_day as insertDay,
-			       		  update_userid as updateUserid,
-			       		  update_day as updateDay
-			       	 from tb_salescustomer
+			       		  s.manager_name as managerName,
+			       		  s.manager_email as managerEmail,
+			       		  b.deposit_no as depositNo,
+			       		  b.deposit_host as depositHost,
+			       		  s.insert_userid as insertUserid,
+			       		  s.insert_day as insertDay,
+			       		  s.update_userid as updateUserid,
+			       		  s.update_day as updateDay
+			       	 from tb_salescustomer s
+			       	 left join tb_bank_account b
+			       	 on s.deposit_no = b.deposit_no
 			    ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     
 					<![CDATA[
-						where delete_flag = #{vo.deleteFlag }
+						where s.delete_flag = #{vo.deleteFlag }
 					]]>
 				</if>
 				
 				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    	<![CDATA[
-			    		and insert_day >= #{vo.datepicker1 }
+			    		and s.insert_day >= #{vo.datepicker1 }
 			    	]]>
 			    </if>
 				
 			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 			    	<![CDATA[
-			        	and insert_day <= #{vo.datepicker2 }
+			        	and s.insert_day <= #{vo.datepicker2 }
 			        ]]>
 			    </if>
 			    
 			    <if test='vo.no!=null and !vo.no.equals("")'>
 				    <![CDATA[
-				    	and no like '%${vo.no }%'
+				    	and s.no like '%${vo.no }%'
 				    ]]>
 			    </if>
 			    
@@ -480,67 +489,69 @@
 		
 	<if test='vo.customerDiv == "Assets"'>
 	    <![CDATA[
-			select replace(left(no, 1), "A", "자산거래처") as customerDiv,
-			       (CASE CHAR_LENGTH(no)
-						when "07" then no
-        				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
+			select replace(left(c.no, 1), "A", "자산거래처") as customerDiv,
+			       (CASE CHAR_LENGTH(c.no)
+						when "07" then c.no
+        				when "11" then concat(substr(substr(c.no, 2), 1, 3), "-", substr(substr(c.no,2), 4, 2), "-" , substr(substr(c.no, 2), 6, 5))
 					end) as no,
-	               name as name, 
-	               ceo as ceo, 
-	               address as address,
-	               detail_address as detailAddress,
-	               conditions as conditions, 
-	               item as item, 
-	               corporation_no as corporationNo, 
-	               open_date as openDate, 
-	               jurisdiction_office as jurisdictionOffice, 
-			       (IFNULL(CASE LEFT(phone,2)
+	               c.name as name, 
+	               c.ceo as ceo, 
+	               c.address as address,
+	               c.detail_address as detailAddress,
+	               c.conditions as conditions, 
+	               c.item as item, 
+	               c.corporation_no as corporationNo, 
+	               c.open_date as openDate, 
+	               c.jurisdiction_office as jurisdictionOffice,
+			       (IFNULL(CASE LEFT(c.phone,2)
 			        WHEN "02" THEN
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
+			            CASE CHAR_LENGTH(c.phone)
+			                WHEN "10" THEN concat("02","-",substring(c.phone,3,4),"-",RIGHT(c.phone,4))
+			                WHEN "11" THEN concat("02","-",substring(c.phone,3,3),"-",RIGHT(c.phone,4))
 			            END
 			        ELSE
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
+			            CASE CHAR_LENGTH(c.phone)
+			                WHEN "10" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,3),"-",RIGHT(c.phone,4))
+			                WHEN "11" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,4),"-",RIGHT(c.phone,4))
+			                WHEN "8" THEN concat(LEFT(c.phone,4),"-",substring(c.phone,4,4))
 			            END
 			        END,"없음")) as phone,
-	               manager_name as managerName, 
-	               manager_email as managerEmail,
-	               deposit_no as depositNo,
-	               deposit_host as depositHost,
-	               insert_userid as insertUserid, 
-	               insert_day as insertDay, 
-	               update_userid as updateUserid, 
-	               update_day as updateDay
-		      from tb_customer
-		     where assets_flag != 'e'
+	               c.manager_name as managerName, 
+	               c.manager_email as managerEmail,
+	               b.deposit_no as depositNo,
+	               b.deposit_host as depositHost,
+	               c.insert_userid as insertUserid, 
+	               c.insert_day as insertDay, 
+	               c.update_userid as updateUserid, 
+	               c.update_day as updateDay
+		      from tb_customer c
+		      left join tb_bank_account b
+        		on c.deposit_no = b.deposit_no
+			 where c.assets_flag != 'e'
 		      ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     
 				<![CDATA[
-			         and delete_flag = #{vo.deleteFlag }
+			         and c.delete_flag = #{vo.deleteFlag }
 				]]>
 				</if>
 				
 				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    	<![CDATA[
-			    	and insert_day >= #{vo.datepicker1 }
+			    	and c.insert_day >= #{vo.datepicker1 }
 			    	
 			    	]]>
 			    </if>
 				
 			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 			    	<![CDATA[
-			        and insert_day <= #{vo.datepicker2 }
+			        and c.insert_day <= #{vo.datepicker2 }
 			        ]]>
 			    </if>
 			    
 			    <if test='vo.no!=null and !vo.no.equals("")'>
 				    <![CDATA[
-				    and no like '%${vo.no }%'
+				    and c.no like '%${vo.no }%'
 				    ]]>
 			    </if>
 			    <![CDATA[
@@ -552,64 +563,66 @@
 	<if test='vo.customerDiv == "Bank"'>
 	    <![CDATA[
 			select concat('은행') as customerDiv,
-				   no as no,
-	               name as name, 
-	               ceo as ceo, 
-	               address as address,
-	               detail_address as detailAddress,
-	               conditions as conditions, 
-	               item as item, 
-	               corporation_no as corporationNo, 
-	               open_date as openDate, 
-	               jurisdiction_office as jurisdictionOffice, 
-			       (IFNULL(CASE LEFT(phone,2)
-			        WHEN "02" THEN
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
-			            END
-			        ELSE
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
-			            END
-			        END,"없음")) as phone,
-	               manager_name as managerName, 
-	               manager_email as managerEmail,
-	               deposit_no as depositNo,
-	               deposit_host as depositHost,
-	               insert_userid as insertUserid, 
-	               insert_day as insertDay, 
-	               update_userid as updateUserid, 
-	               update_day as updateDay
-		      from tb_customer
-		     where assets_flag = 'e'
-		       and name != '여비'
+			   		  c.no as no,
+	               	  c.name as name, 
+	               	  c.ceo as ceo, 
+	               	  c.address as address,
+	               	  c.detail_address as detailAddress,
+	               	  c.conditions as conditions, 
+	               	  c.item as item, 
+	               	  c.corporation_no as corporationNo, 
+	               	  c.open_date as openDate, 
+	               	  c.jurisdiction_office as jurisdictionOffice, 
+				       (IFNULL(CASE LEFT(c.phone,2)
+				        WHEN "02" THEN
+				            CASE CHAR_LENGTH(c.phone)
+				                WHEN "10" THEN concat("02","-",substring(c.phone,3,4),"-",RIGHT(c.phone,4))
+				                WHEN "11" THEN concat("02","-",substring(c.phone,3,3),"-",RIGHT(c.phone,4))
+				            END
+				        ELSE
+				            CASE CHAR_LENGTH(c.phone)
+				                WHEN "10" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,3),"-",RIGHT(c.phone,4))
+				                WHEN "11" THEN concat(LEFT(c.phone,3),"-",substring(c.phone,4,4),"-",RIGHT(c.phone,4))
+				                WHEN "8" THEN concat(LEFT(c.phone,4),"-",substring(c.phone,4,4))
+				            END
+				        END,"없음")) as phone,
+	               	  c.manager_name as managerName, 
+	               	  c.manager_email as managerEmail,
+	               	  b.deposit_no as depositNo,
+	               	  b.deposit_host as depositHost,
+	               	  c.insert_userid as insertUserid, 
+	               	  c.insert_day as insertDay, 
+	               	  c.update_userid as updateUserid, 
+	               	  c.update_day as updateDay
+		      	 from tb_customer c
+		      	 left join tb_bank_account b
+		      	 on c.deposit_no = b.deposit_no
+		      	where c.assets_flag = 'e'
+		      	  and c.name != '여비'
 		      ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     
 				<![CDATA[
-			         and delete_flag = #{vo.deleteFlag }
+			         and c.delete_flag = #{vo.deleteFlag }
 				]]>
 				</if>
 				
 				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    	<![CDATA[
-			    	and insert_day >= #{vo.datepicker1 }
+			    	and c.insert_day >= #{vo.datepicker1 }
 			    	
 			    	]]>
 			    </if>
 				
 			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 			    	<![CDATA[
-			        and insert_day <= #{vo.datepicker2 }
+			        and c.insert_day <= #{vo.datepicker2 }
 			        ]]>
 			    </if>
 			    
 			    <if test='vo.no!=null and !vo.no.equals("")'>
 				    <![CDATA[
-				    and no like '%${vo.no }%'
+				    and c.no like '%${vo.no }%'
 				    ]]>
 			    </if>
 			    <![CDATA[
@@ -624,63 +637,65 @@
 		
 	<if test='vo.customerDiv == "Purchase"'>
 	    <![CDATA[
-			select replace(left(no, 1), "P", "매입거래처") as customerDiv,
-			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
-	               name as name, 
-	               ceo as ceo, 
-	               address as address,
-	               detail_address as detailAddress,
-	               conditions as conditions, 
-	               item as item, 
-	               corporation_no as corporationNo, 
-	               open_date as openDate, 
-	               jurisdiction_office as jurisdictionOffice, 
-			       (IFNULL(CASE LEFT(phone,2)
-			        WHEN "02" THEN
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
-			            END
-			        ELSE
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
-			            END
-			        END,"없음")) as phone,
-	               manager_name as managerName, 
-	               manager_email as managerEmail,
-	               deposit_no as depositNo,
-	               deposit_host as depositHost,
-	               insert_userid as insertUserid, 
-	               insert_day as insertDay, 
-	               update_userid as updateUserid, 
-	               update_day as updateDay
-		      from tb_purchasecustomer
+			select replace(left(p.no, 1), "P", "매입 거래처") as customerDiv,
+			          concat(substr(substr(p.no, 2), 1, 3), "-", substr(substr(p.no,2), 4, 2), "-" , substr(substr(p.no, 2), 6, 5)) as no,
+	               	  p.name as name, 
+	               	  p.ceo as ceo, 
+	               	  p.address as address,
+	               	  p.detail_address as detailAddress,
+	               	  p.conditions as conditions, 
+	               	  p.item as item, 
+	               	  p.corporation_no as corporationNo, 
+	               	  p.open_date as openDate, 
+	               	  p.jurisdiction_office as jurisdictionOffice, 
+				       (IFNULL(CASE LEFT(p.phone,2)
+				        WHEN "02" THEN
+				            CASE CHAR_LENGTH(p.phone)
+				                WHEN "10" THEN concat("02","-",substring(p.phone,3,4),"-",RIGHT(p.phone,4))
+				                WHEN "11" THEN concat("02","-",substring(p.phone,3,3),"-",RIGHT(p.phone,4))
+				            END
+				        ELSE
+				            CASE CHAR_LENGTH(p.phone)
+				                WHEN "10" THEN concat(LEFT(p.phone,3),"-",substring(p.phone,4,3),"-",RIGHT(p.phone,4))
+				                WHEN "11" THEN concat(LEFT(p.phone,3),"-",substring(p.phone,4,4),"-",RIGHT(p.phone,4))
+				                WHEN "8" THEN concat(LEFT(p.phone,4),"-",substring(p.phone,4,4))
+				            END
+				        END,"없음")) as phone,
+	               	  p.manager_name as managerName, 
+	               	  p.manager_email as managerEmail,
+	               	  b.deposit_no as depositNo,
+	               	  b.deposit_host as depositHost,
+	               	  p.insert_userid as insertUserid, 
+	               	  p.insert_day as insertDay, 
+	               	  p.update_userid as updateUserid, 
+	               	  p.update_day as updateDay
+		      	 from tb_purchasecustomer p
+		      	 left join tb_bank_account b
+		      	 on p.deposit_no = b.deposit_no
 		      ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     
 				<![CDATA[
-			         where delete_flag = #{vo.deleteFlag }
+			         where p.delete_flag = #{vo.deleteFlag }
 				]]>
 				</if>
 				
 				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    	<![CDATA[
-			    	and insert_day >= #{vo.datepicker1 }
+			    	and p.insert_day >= #{vo.datepicker1 }
 			    	
 			    	]]>
 			    </if>
 				
 			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 			    	<![CDATA[
-			        and insert_day <= #{vo.datepicker2 }
+			        and p.insert_day <= #{vo.datepicker2 }
 			        ]]>
 			    </if>
 			    
 			    <if test='vo.no!=null and !vo.no.equals("")'>
 				    <![CDATA[
-				    and no like '%${vo.no }%'
+				    and p.no like '%${vo.no }%'
 				    ]]>
 			    </if>
 			    <![CDATA[
@@ -691,63 +706,65 @@
 		
 	<if test='vo.customerDiv == "Sales"'>
 	    <![CDATA[
-			select replace(left(no, 1), "S", "매출거래처") as customerDiv,
-			       concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5)) as no,
-	               name as name,
-	               ceo as ceo, 
-	               address as address,
-	               detail_address as detailAddress,
-	               conditions as conditions, 
-	               item as item, 
-	               corporation_no as corporationNo, 
-	               open_date as openDate, 
-	               jurisdiction_office as jurisdictionOffice, 
-			       (IFNULL(CASE LEFT(phone,2)
-			        WHEN "02" THEN
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat("02","-",substring(phone,3,3),"-",RIGHT(phone,4))
-			            END
-			        ELSE
-			            CASE CHAR_LENGTH(phone)
-			                WHEN "10" THEN concat(LEFT(phone,3),"-",substring(phone,4,3),"-",RIGHT(phone,4))
-			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
-			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
-			            END
-			        END,"없음")) as phone,
-	               manager_name as managerName, 
-	               manager_email as managerEmail,
-	               deposit_no as depositNo,
-	               deposit_host as depositHost,
-	               insert_userid as insertUserid, 
-	               insert_day as insertDay, 
-	               update_userid as updateUserid, 
-	               update_day as updateDay
-		      from tb_salescustomer
+			select replace(left(s.no, 1), "S", "매출 거래처") as customerDiv,
+			              concat(substr(substr(s.no, 2), 1, 3), "-", substr(substr(s.no,2), 4, 2), "-" , substr(substr(s.no, 2), 6, 5)) as no,
+			       		  s.name as name,
+			       		  s.ceo as ceo,
+			       		  s.address as address,
+			       		  s.detail_address as detailAddress,
+			       		  s.conditions as conditions,
+			       		  s.item as item,
+			       		  s.corporation_no as corporationNo,
+			       		  s.open_date as openDate,
+			       		  s.jurisdiction_office as jurisdictionOffice, 
+					       (IFNULL(CASE LEFT(s.phone,2)
+					        WHEN "02" THEN
+					            CASE CHAR_LENGTH(s.phone)
+					                WHEN "10" THEN concat("02","-",substring(s.phone,3,4),"-",RIGHT(s.phone,4))
+					                WHEN "11" THEN concat("02","-",substring(s.phone,3,3),"-",RIGHT(s.phone,4))
+					            END
+					        ELSE
+					            CASE CHAR_LENGTH(s.phone)
+					                WHEN "10" THEN concat(LEFT(s.phone,3),"-",substring(s.phone,4,3),"-",RIGHT(s.phone,4))
+					                WHEN "11" THEN concat(LEFT(s.phone,3),"-",substring(s.phone,4,4),"-",RIGHT(s.phone,4))
+					                WHEN "8" THEN concat(LEFT(s.phone,4),"-",substring(s.phone,4,4))
+					            END
+					        END,"없음")) as phone,
+			       		  s.manager_name as managerName,
+			       		  s.manager_email as managerEmail,
+			       		  b.deposit_no as depositNo,
+			       		  b.deposit_host as depositHost,
+			       		  s.insert_userid as insertUserid,
+			       		  s.insert_day as insertDay,
+			       		  s.update_userid as updateUserid,
+			       		  s.update_day as updateDay
+			       	 from tb_salescustomer s
+			       	 left join tb_bank_account b
+			       	 on s.deposit_no = b.deposit_no
 		      ]]>
 			         
 			    <if test="vo.deleteFlag!=null">     
 				<![CDATA[
-			         where delete_flag = #{vo.deleteFlag }
+			         where s.delete_flag = #{vo.deleteFlag }
 				]]>
 				</if>
 				
 				<if test='vo.datepicker1!=null and !vo.datepicker1.equals("")'>
 			    	<![CDATA[
-			    	and insert_day >= #{vo.datepicker1 }
+			    	and s.insert_day >= #{vo.datepicker1 }
 			    	
 			    	]]>
 			    </if>
 				
 			    <if test='vo.datepicker2!=null and !vo.datepicker2.equals("")'>
 			    	<![CDATA[
-			        and insert_day <= #{vo.datepicker2 }
+			        and s.insert_day <= #{vo.datepicker2 }
 			        ]]>
 			    </if>
 			    
 			    <if test='vo.no!=null and !vo.no.equals("")'>
 				    <![CDATA[
-				    and no like '%${vo.no }%'
+				    and s.no like '%${vo.no }%'
 				    ]]>
 			    </if>
 			    <![CDATA[
