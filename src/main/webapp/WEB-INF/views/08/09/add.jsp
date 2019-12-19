@@ -27,8 +27,7 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid"><!-- 차변 대변 나누기 위한 row-fluid -->
-						<form class="form-horizontal" method="post" name="sendform" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add" 
-							onkeypress="if(event.keyCode == 13) formCheck();">
+						<form class="form-horizontal" method="post" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();">
 							<div class="span6"><!-- 차변 -->
 								
 								<div class="control-group">
