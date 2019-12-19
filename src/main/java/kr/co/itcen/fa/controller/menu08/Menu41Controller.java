@@ -72,6 +72,7 @@ public class Menu41Controller {
 
 		//페이징 처리 	dataresult 생성, 모델
 		
+		
 		DataResult<VehicleVo> dataResult = menu41Service.list(id, page);
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);
@@ -104,6 +105,9 @@ public class Menu41Controller {
 						 @SessionAttribute("authUser") UserVo userVo,
 						 Model model) throws ParseException{
 		
+		System.out.println("새로입력 합니다.");
+		
+		
 		vehicleVo.setInsertUserId(userVo.getId());
 		vehicleVo.setId("e"+vehicleVo.getId());
 		
@@ -111,9 +115,10 @@ public class Menu41Controller {
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
+	    	System.out.println("마감되었습니다.");
     	    model.addAttribute("closingDate", true);
 	    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
-	    } else {
+	    } else {System.out.println("등록되었습니다.");
 	    menu41Service.insert(vehicleVo);
 	    return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
 	    }
@@ -124,6 +129,8 @@ public class Menu41Controller {
 	public String update(@ModelAttribute VehicleVo vehicleVo,
 						 @SessionAttribute("authUser") UserVo userVo,
 						 Model model) throws ParseException{
+		
+		System.out.println("수정합니다.");
 		
 		vehicleVo.setUpdateUserId(userVo.getId());
 		
@@ -226,13 +233,19 @@ public class Menu41Controller {
 	//세금 계산서 차량 테이블 수정 기능 + 세금계산서 모달창 세금계산서 삽입기능
 	@RequestMapping(value = { "/" + SUBMENU + "/segum" }, method = RequestMethod.POST)
 	public String taxbill(@ModelAttribute TaxbillVo taxbillVo, @AuthUser UserVo userVo,
-						  @RequestParam(value="depositPop") Long deposit, //보증금
-						  @RequestParam(value="monthlyFeePop") Long monthlyFee, //월 사용료
+						  @RequestParam(value="depositPop") String deposit2, //보증금
+						  @RequestParam(value="monthlyFeePop") String monthlyFee2, //월 사용료
 						  @RequestParam(value="bonapil") String bonapil, // 예정 보증금 납부일
 						  @RequestParam(value="walnapil") String walnapil, //예정 월 사용료 납부일 
 						  @RequestParam(value="cusNo") String customerNo, //거래처 번호
 						  @RequestParam(value="gubun" ) String gubun
 						  ) {
+		
+		deposit2=deposit2.replace(",", "");
+		Long deposit = Long.parseLong(deposit2);
+		
+		monthlyFee2=monthlyFee2.replace(",", "");
+		Long monthlyFee = Long.parseLong(monthlyFee2);
 		
 		System.out.println("cusNo : " + customerNo);
 		taxbillVo.setInsertUserid(userVo.getId());
