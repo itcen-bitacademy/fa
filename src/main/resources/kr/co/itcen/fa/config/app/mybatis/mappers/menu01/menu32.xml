@@ -119,6 +119,7 @@
 				   name as accountName
 				   from tb_account
 			 where no like '${_parameter }'
+			 and statement_yn = '1'
 		]]>
 	</select>
 	
@@ -128,6 +129,7 @@
 				   name as accountName
 				   from tb_account
 			 where name like '%${_parameter }%'
+			 and statement_yn = '1'
 		]]>
 	</select>
 	
