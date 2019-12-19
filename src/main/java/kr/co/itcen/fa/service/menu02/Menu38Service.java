@@ -38,8 +38,8 @@ public class Menu38Service {
 		return getMatchTaxbillItemsList;
 	}
 
-	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
-		List<BuyTaxbillVo> getSelectedBuyTaxbillList = menu38Repository.getSelectedBuyTaxbillList(buyTaxbillListVo);
+	public List<BuyTaxbillVo> getSelectedBuyTaxbillListAll(BuyTaxbillListVo buyTaxbillListVo) {
+		List<BuyTaxbillVo> getSelectedBuyTaxbillList = menu38Repository.getSelectedBuyTaxbillListAll(buyTaxbillListVo);
 		return getSelectedBuyTaxbillList;
 	}
 
@@ -56,5 +56,17 @@ public class Menu38Service {
 	public List<BuyTaxbillVo> getpageBuyTaxbillList(int page) {
 		
 		return menu38Repository.getpageBuyTaxbillList(page);
+	}
+
+	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+		int pageGroup = buyTaxbillListVo.getPageGroup();
+		pageGroup *= 55;
+		buyTaxbillListVo.setPageGroup(pageGroup);
+		return  menu38Repository.getSelectedBuyTaxbillList(buyTaxbillListVo);
+	}
+
+	public List<BuyTaxbillVo> getSelectedpageBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+		
+		return menu38Repository.getSelectedpageBuyTaxbillList(buyTaxbillListVo);
 	}
 }

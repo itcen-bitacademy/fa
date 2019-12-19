@@ -9,8 +9,8 @@ public class BuyTaxbillItemsVo {
 	private String purchaseDate;
 	private String itemName;
 	private Long amount;
-	private Long supplyValue;
-	private Long taxValue;
+	private String supplyValue;
+	private String taxValue;
 	private String insertUserid;
 	private String insertDay;
 	private String updateUserid;
@@ -19,8 +19,8 @@ public class BuyTaxbillItemsVo {
 	public String toString() {
 		return "BuyTaxbillItemsVo [no=" + no + ", taxbillNo=" + taxbillNo + ", purchaseDate=" + purchaseDate
 				+ ", itemName=" + itemName + ", amount=" + amount + ", supplyValue=" + supplyValue + ", taxValue="
-				+ taxValue + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay
-				+ ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
+				+ taxValue + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
+				+ updateUserid + ", updateDay=" + updateDay + "]";
 	}
 	public Long getNo() {
 		return no;
@@ -28,7 +28,6 @@ public class BuyTaxbillItemsVo {
 	public void setNo(Long no) {
 		this.no = no;
 	}
-	
 	public String getTaxbillNo() {
 		return taxbillNo;
 	}
@@ -53,16 +52,16 @@ public class BuyTaxbillItemsVo {
 	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
-	public Long getSupplyValue() {
+	public String getSupplyValue() {
 		return supplyValue;
 	}
-	public void setSupplyValue(Long supplyValue) {
+	public void setSupplyValue(String supplyValue) {
 		this.supplyValue = supplyValue;
 	}
-	public Long getTaxValue() {
+	public String getTaxValue() {
 		return taxValue;
 	}
-	public void setTaxValue(Long taxValue) {
+	public void setTaxValue(String taxValue) {
 		this.taxValue = taxValue;
 	}
 	public String getInsertUserid() {
@@ -89,6 +88,7 @@ public class BuyTaxbillItemsVo {
 	public void setUpdateDay(String updateDay) {
 		this.updateDay = updateDay;
 	}
+	
 	
 
 }

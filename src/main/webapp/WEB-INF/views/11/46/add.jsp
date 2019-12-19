@@ -89,8 +89,6 @@ tr td:first-child {
 	grid-template-columns: repeat(2, 50%);
 	height: 30px;
 }
-.above-table>*{grid-column: auto;}
-.above-table-right>*{float: right; margin:0;}
 
 .btn-list{float: left; }
 .btn-list>button{ 
@@ -273,7 +271,7 @@ input::-webkit-inner-spin-button {
 						</div>
 						
 						<div class="ia-left"><h4>이율</h4></div>
-						<div class="ia-right"><input type="number" name="intRate" min="0" max="100" id="intRate" placeholder="(%) 정수로 입력하세요." class="input-num" required/><h5 style="display:inline">%</h5></div>
+						<div class="ia-right"><input type="number" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/><h5 style="display:inline">%</h5></div>
 						
 						<div class="ia-left"><h4>담당자</h4></div>
 						<div class="ia-right">
@@ -327,9 +325,6 @@ input::-webkit-inner-spin-button {
 							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
 						</div>
 					</section>
-					<section class="above-table-right" id="above-table-right">
-						<h5>총  ${pagination.totalCnt }건</h5>
-					</section>
 				</section>
 				<hr>
 			</form>					
@@ -369,6 +364,8 @@ input::-webkit-inner-spin-button {
 					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 					
 			<!-- list -->
+				<section class="above-table-right" id="above-table-right">
+				</section>
 				<table  class="table table-bordered table-hover">
 					<thead>
 						<tr>
@@ -502,6 +499,16 @@ $("#debt-amount-comma").on("focus", function() {
     var inputForm = $("#input-form")[0];
     inputForm.debtAmount.value = $(this).val();
 });
+
+$("#int-rate").on("keyup",function(){
+	var pattern = /^(\d{1,2}([.]\d{0,2})?)?$/;
+    var value = $(this).val();
+    if (!pattern.test(value)) {
+        alert("100 이하의 숫자만 입력가능하며,\n소수점 둘째자리까지만 허용됩니다.");
+        $(this).val(value.substring(0,value.length - 1));
+        $(this).focus();
+    }
+})
 </script>
 <script>
 //-----------------------------------중복 확인 메서드 -----------------------------------//
@@ -546,25 +553,30 @@ function checkDuplication(){
 function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
+	var vo = JSON.parse(inputForm.vo.value);
 	
 	console.log("isDuplicated : " + inputForm.isDuplicated.value);
 	if(inputForm.isDuplicated.value == "Y"){
 		alert("중복확인을 해주세요");
 		return;
 	}
-		
+	
+	if(!isNotClosedDate(vo.debtDate)){				//마감이되었으면
+		alert("차입일자가 마감일 이전인 데이터는 입력할 수 없습니다.");
+		return;
+	}
+	
 	inputForm.action = $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/insert";
 	inputForm.submit();
 	
-	//insert 후 다시 중복확인값 변경
-	$('#img-checkcode').css("display", "none");
-	$("#btn-chk-duplication").css("display", "inline-block");
-	inputForm.isDuplicated.value = "Y";
+	
 	console.log("---------------------insert() end ---------------------------------");
 }
 
 function update(){
+	var inputForm = $("#input-form")[0];
 	var sendData = $("#input-form").serialize();
+	var vo = JSON.parse(inputForm.vo.value);
 	
 	$.ajax({
 		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
@@ -572,6 +584,13 @@ function update(){
 		dataType: "json",
 		data: sendData,
 		success: function(response){
+			console.log("isClosed : " + response.data.isClosed);
+			console.log("response.data : " + response.data);
+			if(response.data.isClosed == true){
+				alert("차입일자가 마감일자전인 데이터는 수정할 수 없습니다.");
+				return;
+			}
+			
 			if(response.data == true){			//상환내역이 존재하는경우
 				alert("상환내역이 존재하는 차입금은 수정할 수 없습니다");
 				return;
@@ -685,9 +704,10 @@ function searchByBankname(){
        success: function(response){
           $("#input-dialog-bankname").val('');
            $.each(response.data,function(index, item){
-                    $("#tbody-bankList").append("<tr>" +
-                          "<td class='center'>" + item.no + "</td>" +
-                        "<td class='center'>" + item.name + "</td>" +
+                    $("#tbody-bankList").append("<tr onclick='selectBankRow(this)'>" +
+                    		 "<input type='hidden' name='vo' value='" + JSON.stringify(item) + "'>" +
+                         	 "<td class='center'>" + item.no + "</td>" +
+                        	 "<td class='center'>" + item.name + "</td>" +
                         "</tr>");
              })
        },
@@ -704,7 +724,7 @@ function selectBankRow(thisObj){
 	console.log("inputVo" + inputVo);
 	var vo = JSON.parse(inputVo.val());
 	console.log("vo " + vo);
-	inputForm.bankCode.value = vo.code;
+	inputForm.bankCode.value = vo.no;
 	inputForm.bankName.value = vo.name;
 	$("#dialog-message").dialog('close');
 }
@@ -884,8 +904,10 @@ function selectRow(thisObj){
 	inputForm.debtAmountComma.value = comma(vo.debtAmount);
 	inputForm.debtExpDate.value = vo.debtDate + " - " + vo.expDate;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
 	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
+		$(this).prop("checked", false);
+		
 		if($(this).val() == vo.intPayWay){
-			$(this).attr("checked", true);
+			$(this).prop("checked", true);
 		}
 	});	
 	inputForm.bankCode.value = vo.bankCode;		
@@ -901,7 +923,8 @@ function selectRow(thisObj){
 	
 	$(inputForm).find("input[name='repayWay']").each(function(i, e){
 		if($(this).val() == vo.repayWay){
-			$(this).attr("checked", true);
+			$(this).prop("checked", true);
+			$(this).prop("checked", true);
 		}
 			
 	});		
@@ -1025,7 +1048,7 @@ function renderingPage(pagination){
 	}
 	
 	$("#above-table-right>*").remove();
-	$("#above-table-right").append("<h5>총  " + pagination.totalCnt +"건</h5>")
+	$("#above-table-right").append("<p>" +pagination.totalCnt + "건</p>")
 }
 
 function renderingRepayLists(repayLists){
@@ -1060,6 +1083,19 @@ function renderingRepayLists(repayLists){
 		console.log("--------------------renderingRepayLists End --------------------------");
 	}
 }
+
+function renderingClosedDateList(closedDateList){
+	console.log("--------------------renderingClosedDateList Called --------------------------");
+	console.log("closedDateList : " + closedDateList);
+	
+	$("#dialog-repayment-delete").append("<label>코드정보</label>");
+	
+	for(let i in closedDateList)
+		$("#dialog-repayment-delete").append("<label>" + closedDateList[i].code + "</label>");
+		
+		openRepayListDialog();
+		console.log("--------------------renderingClosedDateList End --------------------------");
+	}
 //-----------------------------------조회 및 페이지 클릭 Event Method ---------------------------------//
 function getList(){							//패이지 onload event에서 사용될 rendering 함수, 전체 list를 가져온다
 	console.log("----------------getList() called----------------");
@@ -1119,7 +1155,7 @@ function rowChecked(thisObj){
 	var tr = $(thisObj).closest("tr");
 	var voInput = $(tr).find("input[name=vo]");
 	var vo = JSON.parse(voInput.val());
-	
+	var voList = [];
 	var checkedData;										//JSON 객체 변수
 	var noList = [];
 	var voucherNoList = [];
@@ -1128,25 +1164,21 @@ function rowChecked(thisObj){
 	console.log("voucherNo : " + vo.voucherNo);
 	
 	if($("#checkedData").val() == "")									//최초 클릭인 경우
-		checkedData = {"noList" : noList, "voucherNoList" : voucherNoList};
+		checkedData = {"voList" : voList};
 	
 	else
 		checkedData = JSON.parse($("#checkedData").val());
 	
 	if(!$(thisObj).is(":checked")){										//check 해제인 경우
-		noList = checkedData.noList;
-		voucherNoList = checkedData.voucherNoList;
+		voList = checkedData.voList;
 		
-		noList.splice(noList.indexOf(vo.no),1);								//값 제거
-		voucherNoList.splice(voucherNoList.indexOf(vo.voucherNo),1);		
+		voList.splice(voList.indexOf(vo),1);								//값 제거
 	}		
 		
 	else{																//check를 한 경우
-		noList = checkedData.noList;										//List 추출
-		voucherNoList = checkedData.voucherNoList;
+		voList = checkedData.voList;										//List 추출
 		
-		noList.push(vo.no);													//값 입력
-		voucherNoList.push(vo.voucherNo);
+		voList.push(vo);													//값 입력
 	}//else : check된 경우
 	
 	$("#checkedData").val(JSON.stringify(checkedData));					//해당 객체를 String으로 변환후 저장
@@ -1160,21 +1192,29 @@ function deleteChecked(){
 		return;
 	
 	var checkedData = JSON.parse($("#checkedData").val());			//JSON 객체
-	var noList = checkedData.noList;
-	var voucherNoList = checkedData.voucherNoList;
+	var voList = checkedData.voList;
+	console.log("voList 길이: " + voList.length);
+	var noList = [];
+	var voucherNoList = [];
+	var debtDateList = [];
 	
-	if(noList == null){
-		console.log("NoList null");
-		return;
+	for(var i=0; i < voList.length; ++i){
+		noList.push(voList[i].no);
+		voucherNoList.push(voList[i].voucherNo);
+		debtDateList.push(voList[i].debtDate);
 	}
+	
+	/* if(noList == null){
+		console.log("NoList null");
+		return; */
 		
-	console.log("noList : " +  noList + " voucherNoList : " + voucherNoList);
+	console.log("noList : " +  noList + " voucherNoList : " + voucherNoList + " debtDateList : " + voList[0].code);
 	//각 배열을 넘겨준다.
 	$.ajax({
 		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
 		type : "POST",
 		dataType : "json",
-		data : {"noList" : noList, "voucherNoList" : voucherNoList},
+		data : {"noList" : noList, "voucherNoList" : voucherNoList, "debtDateList" : debtDateList},
 		success: function(response){
 			console.log(isEmpty(response.data.repayLists));
 			if(!isEmpty(response.data.repayLists)){					//상환내역이 있는경우 삭제가 안됨.
@@ -1216,6 +1256,8 @@ function isEmpty(value){
 			return false ;
 		}
 };
+
+//---------------------------------------입력, 수정 마강확인------------------------------------------------//
 
 </script>
 </body>

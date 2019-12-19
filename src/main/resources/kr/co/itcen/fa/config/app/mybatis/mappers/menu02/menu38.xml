@@ -16,7 +16,8 @@
 		]]>
 	</select>
 	<!-- 세금계산서의 11개를 가져오는 select -->
-	<select id="getBuyTaxbillList" resultType="buytaxbillvo">
+	<select id="getBuyTaxbillList" parameterType="int"
+		resultType="buytaxbillvo">
 		<![CDATA[
 			select no,
 				   manage_no as manageNo,
@@ -31,7 +32,8 @@
 		]]>
 	</select>
 	<!-- 세금계산서의 5page 가져오는 select -->
-	<select id="getpageBuyTaxbillList" resultType="buytaxbillvo">
+	<select id="getpageBuyTaxbillList" parameterType="int"
+		resultType="buytaxbillvo">
 		<![CDATA[
 			select no,
 				   manage_no as manageNo,
@@ -63,11 +65,19 @@
 	  
 		]]>
 	</select>
+
 	<!-- 조회 데이터에 맞는 세금계산서 리스트 가져오는 select -->
-	<select id="getSelectedBuyTaxbillList"
+	<select id="getSelectedBuyTaxbillListAll"
 		parameterType="buytaxbilllistvo" resultType="buytaxbillvo">
 		<![CDATA[
-		select *
+		select no,
+			   manage_no as manageNo,
+			   company_name as companyName,
+			   date_format(write_date, '%Y-%m-%d') as writeDate,
+			   total_supply_value as totalSupplyValue,
+			   total_tax_value as totalTaxValue,
+			   tax_type as taxType,
+			   delete_flag as deleteFlag
 		  from tb_buy_taxbill
 		 where 1
 		]]>
@@ -123,6 +133,149 @@
 				]]>
 			</otherwise>
 		</choose>
+	</select>
 
+	<!-- 세금계산서의 11개를 가져오는 select -->
+	<select id="getSelectedBuyTaxbillList" parameterType="buytaxbilllistvo"
+		resultType="buytaxbillvo">
+		<![CDATA[
+			select no,
+				   manage_no as manageNo,
+				   company_name as companyName,
+				   date_format(write_date, '%Y-%m-%d') as writeDate,
+				   total_supply_value as totalSupplyValue,
+				   total_tax_value as totalTaxValue,
+				   tax_type as taxType,
+				   delete_flag as deleteFlag	  	 
+			from tb_buy_taxbill
+		   where 1
+		]]>
+		<if test='startDate!="" and endDate!=""'>
+				<![CDATA[
+					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
+				]]>
+		</if>
+		<if test='no!=null'>
+				<![CDATA[
+					 and no = #{no }
+				]]>
+		</if>
+		<if test='companyName!=""'>
+				<![CDATA[
+					 and company_name = #{companyName }
+				]]>
+		</if>
+		<if test='taxType!=""'>
+				<![CDATA[
+					 and tax_type = #{taxType }
+				]]>
+		</if>
+		<if test='deleteFlag!=""'>
+				<![CDATA[
+					 and delete_flag = #{deleteFlag }
+				]]>
+		</if>
+		<choose>
+			<when test='order=="writeDate"'>
+				<![CDATA[
+					order by write_date desc
+				]]>
+			</when>
+			<when test='order=="rowValue"'>
+				<![CDATA[
+					order by total_supply_value asc
+				]]>
+			</when>
+			<when test='order=="highValue"'>
+				<![CDATA[
+					order by  total_supply_value desc
+				]]>
+			</when>
+			<when test='order=="companyName"'>
+				<![CDATA[
+					order by company_name asc
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+					
+				]]>
+			</otherwise>
+		</choose>
+		<![CDATA[
+			limit #{pageGroup }, 55
+		]]>
+	</select>
+
+	<!-- 세금계산서의 5page 가져오는 select -->
+	<select id="getSelectedpageBuyTaxbillList" parameterType="buytaxbilllistvo"
+		resultType="buytaxbillvo">
+		<![CDATA[
+			select no,
+				   manage_no as manageNo,
+				   company_name as companyName,
+				   date_format(write_date, '%Y-%m-%d') as writeDate,
+				   total_supply_value as totalSupplyValue,
+				   total_tax_value as totalTaxValue,
+				   tax_type as taxType,
+				   delete_flag as deleteFlag	  	 
+			from tb_buy_taxbill
+			 where 1
+		]]>
+		<if test='startDate!="" and endDate!=""'>
+				<![CDATA[
+					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
+				]]>
+		</if>
+		<if test='no!=null'>
+				<![CDATA[
+					 and no = #{no }
+				]]>
+		</if>
+		<if test='companyName!=""'>
+				<![CDATA[
+					 and company_name = #{companyName }
+				]]>
+		</if>
+		<if test='taxType!=""'>
+				<![CDATA[
+					 and tax_type = #{taxType }
+				]]>
+		</if>
+		<if test='deleteFlag!=""'>
+				<![CDATA[
+					 and delete_flag = #{deleteFlag }
+				]]>
+		</if>
+		<choose>
+			<when test='order=="writeDate"'>
+				<![CDATA[
+					order by write_date desc
+				]]>
+			</when>
+			<when test='order=="rowValue"'>
+				<![CDATA[
+					order by total_supply_value asc
+				]]>
+			</when>
+			<when test='order=="highValue"'>
+				<![CDATA[
+					order by  total_supply_value desc
+				]]>
+			</when>
+			<when test='order=="companyName"'>
+				<![CDATA[
+					order by company_name asc
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+					
+				]]>
+			</otherwise>
+		</choose>
+		<![CDATA[
+			limit #{page }, 11
+		]]>
 	</select>
 </mapper>

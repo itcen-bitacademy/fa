@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu09Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
@@ -62,8 +63,8 @@ public class Menu09Controller {
 	//               /08   /   09     , /08/09/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model, 
-						@RequestParam(value="id", required=false, defaultValue = "") String id
-						, @RequestParam(value="page", required=false, defaultValue = "1") int page) {
+						@RequestParam(value="id", required=false, defaultValue = "") String id,
+						@RequestParam(value="page", required=false, defaultValue = "1") int page) {
 		
 
 		
@@ -131,7 +132,6 @@ public class Menu09Controller {
 			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		} else {
 			menu09Service.insertLand(landVo);
-			
 			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		}
 	}
@@ -164,9 +164,11 @@ public class Menu09Controller {
 			
 		} else {
 			// 전표 시작
-			if(taxbillNo!=null && landVno==null) { //세금계산서번호가 있을때, 전표번호가 없을때
+			if(taxbillNo != "" && taxbillNo != null && landVno == null) { //세금계산서번호가 있을때, 전표번호가 없을때
 			System.out.println("여기탐 !!");
+			System.out.println("taxbillNo" + taxbillNo);
 			CustomerVo cus = menu09Service.getDepositNo(customerNo);
+			System.out.println(cus);
 			
 			VoucherVo voucherVo = new VoucherVo();
 			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -204,6 +206,8 @@ public class Menu09Controller {
 			mappingVo.setManageNo(taxbillNo);//세금계산서번호
 			mappingVo.setBankCode(cus.getBankCode()); //은행코드
 			mappingVo.setBankName(cus.getBankName()); //은행명
+			System.out.println("매핑브이오---------------------------");
+			System.out.println(mappingVo);
 
 			long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
 			landVo.setVoucherNo(voucherNo);

@@ -357,7 +357,7 @@ $(function() {
 						&nbsp; &nbsp;
 						입력 기간
 						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" /> <span
+							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" readonly/> <span
 								class="add-on"> <i class="icon-calendar"></i>
 							</span>
 						</div>
@@ -545,6 +545,7 @@ $(function() {
 									<td></td>
 									<td></td>
 									<td></td>
+									
 									<td></td>
 								</tr>
 							</tbody>
@@ -592,6 +593,7 @@ $(function() {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+
 
 </body>
 </html>

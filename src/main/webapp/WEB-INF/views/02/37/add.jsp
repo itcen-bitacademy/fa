@@ -9,7 +9,6 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
-
 <style>
 #sample-table-1 tr td {
 	padding: 0;
@@ -27,9 +26,8 @@
 	border: 0
 }
 </style>
-
 </head>
-<body class="skin-3" style="min-width: 1920px">
+<body class="skin-3" style="min-width: 1920px" onload="startFunctions();">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -53,15 +51,17 @@
 								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="no" name="no"
-										value="${getAboutNoData.no }" placeholder="승인번호" /> <input
-										style="width: 100%" type="hidden" id="no" name="originalNo"
+										value="${getAboutNoData.no }"
+										placeholder="ex) 20190420-44231234-57644467"
+										autocomplete="off" /> <input style="width: 100%"
+										type="hidden" id="no" name="originalNo"
 										value="${getAboutNoData.no }" />
 								</div>
 								<label class="control-label span1" for="manage-no">관리번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="manage-no"
 										value="${getAboutNoData.manageNo }" name="manageNo"
-										placeholder="관리번호" />
+										placeholder="ex) TX2019116301143" autocomplete="off" />
 								</div>
 							</div>
 
@@ -70,13 +70,13 @@
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-no"
 										value="${getAboutNoCustomerData.no }" name="id"
-										placeholder="등록번호" />
+										placeholder="ex) P1018147345" autocomplete="off" />
 								</div>
 								<label class="control-label span1" for="deposit-no">입금계좌번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-no"
 										value="${getAboutNoBankData.depositNo }" name="id"
-										placeholder="입금계좌번호" />
+										placeholder="ex) 14278-927129-62331231" autocomplete="off" />
 								</div>
 							</div>
 
@@ -85,20 +85,20 @@
 								<div class="controls span2">
 
 									<select id="company-name" name="companyName"
-										style="width: 100%;" onchange="load_customer_imfo();">
+										style="width: 100%;" onchange="load_customer_imfo();" required>
 										<c:choose>
 											<c:when test="${flag == 'true'}">
 												<option value="${getAboutNoCustomerData.name }" selected
 													style="display: none">${getAboutNoCustomerData.name }</option>
 											</c:when>
 											<c:otherwise>
-												<option value="">&nbsp;</option>
+												<option style="display: none;" value="" disabled selected>ex)
+													아이티센</option>
 											</c:otherwise>
 										</c:choose>
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
-
 										</c:forEach>
 									</select>
 
@@ -107,13 +107,13 @@
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="customer-name"
 										value="${getAboutNoCustomerData.ceo }" name="id"
-										placeholder="성명" />
+										placeholder="ex) 김기태" autocomplete="off" autocomplete="off" />
 								</div>
 								<label class="control-label span1" for="deposit-host">예금주</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-host"
 										value="${getAboutNoCustomerData.depositHost }"
-										placeholder="예금주" />
+										placeholder="ex) 이제구" autocomplete="off" />
 								</div>
 							</div>
 
@@ -122,19 +122,19 @@
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-address"
 										value="${getAboutNoCustomerData.address }" name="id"
-										placeholder="주소" />
+										placeholder="ex) 대구광역시 수성구 청수로 260(황금동)" autocomplete="off" />
 								</div>
 								<label class="control-label span1" for="bank">은행</label>
 								<div class="controls span5">
 									<div class="controls span2">
 										<input style="width: 80%" type="text" id="bank-code"
 											value="${getAboutNoBankData.bankCode }" name="id"
-											placeholder="은행" />
+											placeholder="ex) 0023320" autocomplete="off" />
 									</div>
 									<div class="controls span3">
 										<input style="width: 100%" type="text" id="bank-name"
 											value="${getAboutNoBankData.bankName }" name="id"
-											placeholder="은행" />
+											placeholder="ex) 산업" autocomplete="off" />
 									</div>
 
 								</div>
@@ -144,12 +144,13 @@
 								<div class="controls span2">
 									<input style="width: 94%;" type="text" id="conditions"
 										value="${getAboutNoCustomerData.conditions }" name="id"
-										placeholder="업태" />
+										placeholder="ex) 제조업" autocomplete="off" />
 								</div>
 								<label class="control-label span1" for="items">종목</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="items" name="id"
-										value="${getAboutNoCustomerData.item }" placeholder="종목" />
+										value="${getAboutNoCustomerData.item }"
+										placeholder="ex) 제조 / 과실및채소절임식품" autocomplete="off" />
 								</div>
 								<label class="control-label span1" for="taxType">과세구분</label>
 								<div class="controls span2">
@@ -215,17 +216,23 @@
 								<label class="control-label span1" for="form-field-14">총
 									공급가액</label>
 								<div class="controls span4">
-									<input style="width: 100%" type="text" id="form-field-14"
-										value="${getAboutNoData.totalSupplyValue }"
-										name="totalSupplyValue" placeholder="총 공급가액" />
+									<input style="width: 100%; text-align: right;" type="text"
+										id="form-field-14"
+										value="<fmt:formatNumber value="${getAboutNoData.totalSupplyValue }" pattern="#,###"/>"
+										name="totalSupplyValue" autocomplete="off" placeholder="0"
+										readonly />
 								</div>
 								<label class="control-label span1" for="form-field-15">총
 									세액</label>
 								<div class="controls span3">
-									<input style="width: 100%" type="text" id="form-field-15"
-										value="${getAboutNoData.totalTaxValue }" name="totalTaxValue"
-										placeholder="총 세액" />
+									<input style="width: 100%; text-align: right;" type="text"
+										id="form-field-15"
+										value="<fmt:formatNumber value="${getAboutNoData.totalTaxValue }"
+										pattern="#,###"/>"
+										name="totalTaxValue" autocomplete="off" placeholder="0"
+										readonly />
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -260,18 +267,24 @@
 												<tr>
 													<td><p>${status.count }</p></td>
 													<td><input type="text" id="date1" class="calender"
-														name="purchaseDate" value="${items.purchaseDate }" autocomplete="off"></td>
+														name="purchaseDate" value="${items.purchaseDate }"
+														autocomplete="off"></td>
 													<td><input type="text" id="item1" name="itemName"
-														value="${items.itemName }"></td>
-													<td><input type="text" id="amount1"
-														onkeyup="sum_allsupply_alltax();" name="amount"
-														value="${items.amount }"></td>
-													<td><input type="text" id="supply-value1"
-														onkeyup="sum_allsupply_alltax();" name="supplyValue"
-														value="${items.supplyValue }"></td>
-													<td><input type="text" id="tax-value1" name="taxValue"
-														value="${items.taxValue }"></td>
+														value="${items.itemName }" autocomplete="off"></td>
+													<td><input style="text-align: right;" type="text"
+														id="amount1" name="amount" value="${items.amount }"
+														onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+													<td><input style="text-align: right;" type="text"
+														id="supply-value1" onkeyup="sumAllSupplyAllTax();"
+														name="supplyValue"
+														value="<fmt:formatNumber value="${items.supplyValue }" pattern="#,###"/>"
+														autocomplete="off"></td>
+													<td><input style="text-align: right;" type="text"
+														id="tax-value1" name="taxValue"
+														value="<fmt:formatNumber value="${items.taxValue }" pattern="#,###"/>"
+														onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 												</tr>
+
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
@@ -279,12 +292,17 @@
 												<td><p>1</p></td>
 												<td><input type="text" id="date1" class="calender"
 													name="purchaseDate" autocomplete="off"></td>
-												<td><input type="text" id="item1" name="itemName"></td>
-												<td><input type="text" id="amount1"
-													onkeyup="sum_allsupply_alltax();" name="amount"></td>
-												<td><input type="text" id="supply-value1"
-													onkeyup="sum_allsupply_alltax();" name="supplyValue"></td>
-												<td><input type="text" id="tax-value1" name="taxValue"></td>
+												<td><input type="text" id="item1" name="itemName"
+													autocomplete="off"></td>
+												<td><input style="text-align: right;" type="text"
+													id="amount1" name="amount" onkeyup="sumAllSupplyAllTax();"
+													autocomplete="off"></td>
+												<td><input style="text-align: right;" type="text"
+													id="supply-value1" onkeyup="sumAllSupplyAllTax();"
+													name="supplyValue" autocomplete="off"></td>
+												<td><input style="text-align: right;" type="text"
+													id="tax-value1" name="taxValue"
+													onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 											</tr>
 										</c:otherwise>
 									</c:choose>
@@ -325,31 +343,51 @@
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js">
+		
+	</script>
 	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-				days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
-				daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
-				daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
-				months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-						"9월", "10월", "11월", "12월" ],
-				monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-						"9월", "10월", "11월", "12월" ],
-				today : "Today",
-				clear : "Clear",
-				format : "yyyy-mm-dd",
-				titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
-				weekStart : 0
-			};
+	function startFunctions(){
+		addElementCommas();
+		addElementCalender();
+	}
+	// 달력 한글버젼 패치 
+	function addElementCalender(){
+		
+		for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
+			$("#")
+			$("#supply-value" + i).on(
+					'keyup',
+					function(event) {
+						$(this).val(
+								addCommas($(this).val().replace(/[^0-9]/g,
+										"")));
+					});
+		
+		}
+		
+		$('.calender').datepicker({
+			language : 'ko'
+		}).next().on(ace.click_event, function() {
+			$(this).prev().focus();
+		});
+	}
+	$.fn.datepicker.dates['ko'] = {
+			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
+			daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
+			daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
+			months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+					"9월", "10월", "11월", "12월" ],
+			monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+					"9월", "10월", "11월", "12월" ],
+			today : "Today",
+			clear : "Clear",
+			format : "yyyy-mm-dd",
+			titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart : 0
+		};
 
-			$('.calender').datepicker({
-				language : 'ko'
-			}).next().on(ace.click_event, function() {
-				$(this).prev().focus();
-			});
-		})
-
+		// 품목 행 추가할 때
 		var cnt = 2;
 		function add_row() {
 			var table = document.getElementById("sample-table-1");
@@ -364,45 +402,89 @@
 
 			cell1.innerHTML = '<td><p>' + cnt + '</p></td>';
 			cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" class="calender" name="purchaseDate" autocomplete="off"></td>';
-			cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName"></td>';
-			cell4.innerHTML = '<td><input type="text" id="amount'+cnt+'" name="amount"></td>';
-			cell5.innerHTML = '<td><input type="text" id="supply-value'
+			cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName" autocomplete="off"></td>';
+			cell4.innerHTML = '<td><input style="text-align:right;" type="text" id="amount'
 					+ cnt
-					+ '" name="supplyValue" onkeyup="sum_allsupply_alltax();"></td>';
-			cell6.innerHTML = '<td><input type="text" id="tax-value'+cnt+'" name="taxValue"></td>';
+					+ '" name="amount" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>';
+			cell5.innerHTML = '<td><input style="text-align:right;" type="text" id="supply-value'
+					+ cnt
+					+ '"name="supplyValue" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>';
+			cell6.innerHTML = '<td><input style="text-align:right;" type="text" id="tax-value'
+					+ cnt
+					+ '"name="taxValue" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>';
 			cnt++;
-
+			addElementCommas();
 		}
 
+		// 품목 행 삭제할 때 
 		function delete_row() {
 
 			var table = document.getElementById('sample-table-1');
 			if (table.rows.length < 3) {
 				return;
 			} else {
-				cnt--
+				cnt--;
 				table.deleteRow(table.rows.length - 1);
 			}
+			addElementCommas();
+			sumAllSupplyAllTax();
 		}
-	</script>
 
-	<script>
-		function sum_allsupply_alltax() {
-			var sum = 0;
-			for (var i = 1; i < cnt; i++) {
-				var supply_value = document.getElementById('supply-value' + i).value;
-				var amount = document.getElementById('amount' + i).value;
-				sum = sum + (supply_value * amount);
+		// 금액이 콤마 생기고, focus없어지면 콤마 사라지게 하는 부분
+		function addElementCommas() {
+			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
+				
+				$("#supply-value" + i).on(
+						'keyup',
+						function(event) {
+							$(this).val(
+									addCommas($(this).val().replace(/[^0-9]/g,
+											"")));
+						});
+				$("#tax-value" + i).on(
+						'keyup',
+						function(event) {
+							$(this).val(
+									addCommas($(this).val().replace(/[^0-9]/g,
+											"")));
+						});
 			}
-			document.getElementById('form-field-14').value = sum;
-			document.getElementById('form-field-15').value = sum * 0.1;
-
 		}
 
+		function addCommas(price) {
+			return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
+		function numberFormat(number) {
+			return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
+		//품목들의 수량과 공급가액 or 세액을 계산하여 총 공급가액 or 총 세액에 기입해주는 부분
+		function sumAllSupplyAllTax() {
+			var supplySum = 0;
+			var taxSum = 0;
+			
+			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
+				var supplyValue = document.getElementById('supply-value' + i).value;
+				var taxValue = document.getElementById('tax-value' + i).value;
+				var amount = document.getElementById('amount' + i).value;
+			
+
+				supplyValue = supplyValue.replace(/,/g , "");
+				taxValue = taxValue.replace(/,/g , "");
+				
+				supplySum = supplySum + (supplyValue * amount);
+				taxSum = taxSum + (taxValue * amount);
+			}
+			document.getElementById('form-field-14').value = numberFormat(supplySum);
+			document.getElementById('form-field-15').value = numberFormat(taxSum);
+		}
+
+		// 거래처 이름을 받으면 관련된 정보를 땡겨오는 부분
 		function load_customer_imfo() {
 			var company_name = document.getElementById("company-name").value;
 			var deposit_no;
-			alert(company_name);
+			alert('"' + company_name + '"과(와) 관련된 정보를 가져옵니다.');
 			if (company_name == "") {
 				$("#customer-name").val("");
 				$("#customer-address").val("");
@@ -422,7 +504,6 @@
 					$("#items").val("${list.item}");
 					$("#customer-no").val("${list.no}");
 					deposit_no = "${list.depositNo }";
-					alert(deposit_no);
 				}
 				</c:forEach>
 				<c:forEach items="${customerBankList }" var="list" varStatus="status">
@@ -436,6 +517,7 @@
 			}
 		}
 
+		// 수정버튼 클릭시 
 		function update_button() {
 			$("#manage-form")
 					.attr(
@@ -443,6 +525,7 @@
 							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update")
 					.submit();
 		}
+		// 삭제버튼 클릭시 
 		function delete_button() {
 			$("#manage-form")
 					.attr(
@@ -450,6 +533,7 @@
 							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
 					.submit();
 		}
+		// 조회버튼 클릭시 
 		function lookup_button() {
 			$("#manage-form")
 					.attr(

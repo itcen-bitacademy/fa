@@ -112,7 +112,7 @@
 									<div class="control-group">
 										<div class="controls">
 											<div class="span3" style="float:right;width:120px">
-												<button class="btn btn-info btn-small" id="searchBtn" style="float:right;margin-right:20px;"><i class="icon-ok bigger-80"></i>상세조회</button>
+												<button class="btn btn-info btn-small" id="searchBtn" style="float:right;margin-right:20px;">조회</button>
 											</div>
 											<div class="span2" style="float:right">
 												<label style="float:right">

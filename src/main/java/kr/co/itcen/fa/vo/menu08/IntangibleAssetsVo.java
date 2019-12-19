@@ -17,12 +17,12 @@ public class IntangibleAssetsVo {
 	private String code;
 	private String classification;
 	private String name;
-	private int copyCount;
+	private Long copyCount;
 	private String purpose;
 	private String address;
 	private String user;
-	private int acqPrice;
-	private int addiFee;
+	private String acqPrice;
+	private String addiFee;
 	private String payDate;
 	private String taxKind;
 	private String flag;
@@ -118,11 +118,11 @@ public class IntangibleAssetsVo {
 		this.name = name;
 	}
 
-	public int getCopyCount() {
+	public Long getCopyCount() {
 		return copyCount;
 	}
 
-	public void setCopyCount(int copyCount) {
+	public void setCopyCount(Long copyCount) {
 		this.copyCount = copyCount;
 	}
 
@@ -150,19 +150,19 @@ public class IntangibleAssetsVo {
 		this.user = user;
 	}
 
-	public int getAcqPrice() {
+	public String getAcqPrice() {
 		return acqPrice;
 	}
 
-	public void setAcqPrice(int acqPrice) {
+	public void setAcqPrice(String acqPrice) {
 		this.acqPrice = acqPrice;
 	}
 
-	public int getAddiFee() {
+	public String getAddiFee() {
 		return addiFee;
 	}
 
-	public void setAddiFee(int addiFee) {
+	public void setAddiFee(String addiFee) {
 		this.addiFee = addiFee;
 	}
 

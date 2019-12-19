@@ -1,16 +1,15 @@
 package kr.co.itcen.fa.repository.menu02;
 
-import java.util.List;
 
+import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillListVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
-import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
+
 
 /**
  * 
@@ -38,7 +37,7 @@ public class Menu38Repository {
 		return getMatchTaxbillItemsList;
 	}
 
-	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+	public List<BuyTaxbillVo> getSelectedBuyTaxbillListAll(BuyTaxbillListVo buyTaxbillListVo) {
 		List<BuyTaxbillVo> getSelectedBuyTaxbillList = sqlSession.selectList("menu38.getSelectedBuyTaxbillList",
 				buyTaxbillListVo);
 		return getSelectedBuyTaxbillList;
@@ -56,5 +55,17 @@ public class Menu38Repository {
 		page = (page - 1) * 11;
 
 		return sqlSession.selectList("menu38.getpageBuyTaxbillList", page);
+	}
+
+	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+		
+		return sqlSession.selectList("menu38.getSelectedBuyTaxbillList",buyTaxbillListVo);
+	}
+
+	public List<BuyTaxbillVo> getSelectedpageBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+		int page = buyTaxbillListVo.getPage();
+		page = (page - 1) * 11;
+		buyTaxbillListVo.setPage(page);
+		return sqlSession.selectList("menu38.getSelectedpageBuyTaxbillList", buyTaxbillListVo);
 	}
 }

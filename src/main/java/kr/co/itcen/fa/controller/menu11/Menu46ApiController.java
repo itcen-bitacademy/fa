@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,8 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
@@ -33,6 +32,9 @@ public class Menu46ApiController {
 	
 	@Autowired
 	Menu03Service menu03Service;
+	
+	@Autowired
+	Menu19Service menu19Service;
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/search")
@@ -62,9 +64,11 @@ public class Menu46ApiController {
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
 	public JSONResult deleteChecked(@RequestParam(value="noList[]", required=true) List<Long> noList,
 			@RequestParam(value="voucherNoList[]", required=true) List<Long> voucherNoList,
+			@RequestParam(value="debtDateList[]", required=true) List<String> debtDateList,
 			@AuthUser UserVo authUser){
 		Map map = new HashMap();
 		
+		System.out.println("debtDateList : " + debtDateList);
 		System.out.println("noList :" + noList + " voucherList : " + voucherNoList);
 		List<List<RepayVo>> repayLists = menu46Service.possibleDelete(noList);	//상환내역이 있는 차입금은 제외시킨다. 상환내역 리스트를 가져온다
 		map.put("repayLists", repayLists);
@@ -131,6 +135,14 @@ public class Menu46ApiController {
 		 sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
 		 sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
 		  
+		 Map map = new HashMap();
+		 //마감인지 확인
+		 System.out.println("마감인가? : " + menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate()));
+		 if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate())){			//마감이됬으면
+			 map.put("isClosed", true);
+			 return JSONResult.success(map);
+		 }
+		 
 		 //상환내역 존재하는지 확인(by code)
 		 Boolean existRepay = menu46Service.existRepay(sTermDebtVo.getCode());
 		 
@@ -146,7 +158,7 @@ public class Menu46ApiController {
 		 menu46Service.update(sTermDebtVo);
 		
 		 //Map을 받아온다
-		 Map map = menu46Service.getListMap();
+		 map = menu46Service.getListMap();
 		 return JSONResult.success(map);
 	}
 }	
