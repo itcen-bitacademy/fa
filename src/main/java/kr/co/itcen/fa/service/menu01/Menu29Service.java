@@ -1,13 +1,19 @@
 package kr.co.itcen.fa.service.menu01;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu29Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 
 /**
  * 
- * @author 황슬기 
- * 계좌조회
+ * @author 김승곤 황슬기
+ * 계정거래처명세서조회
  *
  */
 @Service
@@ -16,7 +22,20 @@ public class Menu29Service {
 	@Autowired
 	private Menu29Repository menu29Repository;
 	
-	public void test() {
-		menu29Repository.test();
+
+	public DataResult<ReceiptVo> search(int page, ReceiptVo revo) {
+		DataResult<ReceiptVo> dataResult = new DataResult<ReceiptVo>();
+		System.out.println(page);
+		int totalCnt = menu29Repository.listCount(revo);
+		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
+		
+		dataResult.setPagination(pagination);
+		List<ReceiptVo> list = menu29Repository.list(pagination,revo);
+		dataResult.setDatas(list);
+		
+		//테스트용
+		System.out.println("결과 조회 :" + list.toString());
+		
+		return dataResult;
 	}
 }
