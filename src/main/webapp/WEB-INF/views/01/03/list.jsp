@@ -110,7 +110,7 @@
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >거래처 코드</label>
 									<div class="controls">
 										<span class="btn btn-small btn-info">
-										<a href="#" id="a-customerinfo-dialog"> 
+										<a href="#" id="a-customerinfo-dialog">
 										<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
 										<i class="icon-search nav-search-icon"></i> 
 										</a> 
@@ -488,12 +488,12 @@
 		}
 		cell15.innerHTML = '<td>' + voucherUse + '</td>';
 		
-		$('#regDate').val('');
+		$('#regDate').val(regDate);
 		$('#accountNo').val('');
 		$('#accountName').val('');
 		$('#amountFlag').val('');
 		$('#amount').val('');
-		$('#manageNo').val('');
+		$('#manageNo').val(manageNo);
 		$('#customerNo').val('');
 		$('#customerName').val('');
 		$('#bankCode').val('');
@@ -503,6 +503,21 @@
 		$('#depositNo').val('');
 		$('#depositHost').val('');
 		$('#voucherUse').val('');
+		
+		//$(".date-picker").datepicker("destroy");
+		//$("#regDate").removeClass('hasDatepicker').datepicker();
+		
+		$("#regDate").attr( 'disabled', true );
+		
+		$("input[name=regDate]").prop("readonly", true);
+		$("input[name=manageNo]").prop("readonly", true);
+		$("input[name=customerName]").prop("readonly", true);
+		$("input[name=bankCode]").prop("readonly", true);
+		$("input[name=cardNo]").prop("readonly", true);
+		$("input[name=cardUser]").prop("readonly", true);
+		$("input[name=depositNo]").prop("readonly", true);
+		$("input[name=depositHost]").prop("readonly", true);
+		
 		
     }
 	
@@ -605,6 +620,8 @@ $(function(){
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 		var tr = $(this);
+		console.log("$(this)" + $(this));
+		console.log($(this));
 		var td = tr.children();
 		
 		$("input[name=regDate]").val(td.eq(0).text());
@@ -783,7 +800,7 @@ var accountNo = "${param.accountNo}";
 $("#accountNo").val(accountNo);
 </script>
 <script type="text/javascript">
-var accountNo = "${param.amount}";
+var amount = "${param.amount}";
 $("#amount").val(amount);
 </script>
 <script type="text/javascript">

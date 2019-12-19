@@ -1,7 +1,5 @@
 package kr.co.itcen.fa.vo.menu01;
 
-import java.util.Date;
-
 import org.apache.ibatis.type.Alias;
 
 /**
