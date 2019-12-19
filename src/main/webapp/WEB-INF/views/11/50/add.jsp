@@ -648,6 +648,8 @@
 			}
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
 			
+			$("#simple-table").find("tr").css("background-color", "inherit");
+			$(this).css("background-color", "#ddd");
 		});
 		
 		// form에 입력한 모든 데이터 초기화
@@ -1093,6 +1095,7 @@
 						$('#input-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
 						$('#input-form').attr('method', 'POST');
 						$('#input-form').submit();
+						alert("차입금정보가 수정이 완료되었습니다.");
 						return;
 					} else {
 						alert("해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");

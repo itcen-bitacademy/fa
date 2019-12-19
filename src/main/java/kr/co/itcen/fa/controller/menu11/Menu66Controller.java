@@ -158,27 +158,27 @@ public class Menu66Controller {
 	
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
 	public String delete(
-			@RequestParam Long[] no, 
-			@RequestParam String[] debtType, 
-			@RequestParam Long[] tempPayPrinc,
+			@RequestParam("no") Long[] no, 
+			@RequestParam("hidden-debttype") String[] debtType, 
+			@RequestParam("hidden-payprinc") Long[] payPrinc,
 			@AuthUser UserVo uservo) {
 		System.out.println("delete");
-		List<Long> list = menu66Service.selectVoucherNo(no);
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-		
-		for(Long no1: list) {
-			VoucherVo v = new VoucherVo();
-			v.setNo(no1);
-			voucherVolist.add(v);
-		}
-		
-		for(VoucherVo v : voucherVolist) {
-			System.out.println("VoucherVo : " + v);
-		}
-		
-		menu03Service.deleteVoucher(voucherVolist, uservo);
-		//menu66Service.deleteDebt(no, debtType, tempPayPrinc);
-		menu66Service.delete(no);
+		System.out.println(no.toString());
+		System.out.println(debtType.toString());
+		System.out.println(payPrinc.toString());
+		/*
+		 * List<Long> list = menu66Service.selectVoucherNo(no); List<VoucherVo>
+		 * voucherVolist = new ArrayList<VoucherVo>();
+		 * 
+		 * for(Long no1: list) { VoucherVo v = new VoucherVo(); v.setNo(no1);
+		 * voucherVolist.add(v); }
+		 * 
+		 * for(VoucherVo v : voucherVolist) { System.out.println("VoucherVo : " + v); }
+		 * 
+		 * menu03Service.deleteVoucher(voucherVolist, uservo);
+		 * //menu66Service.deleteDebt(no, debtType, tempPayPrinc);
+		 * menu66Service.delete(no);
+		 */
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
