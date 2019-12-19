@@ -30,7 +30,7 @@ public class MappingVo {
 	private String bankCode;	 // 은행코드
 	private String bankName;	 // 은행명
 	private String manageNo; 	 // 증빙코드(세금계산서)
-	
+	private int orderNo;		 // 순번
 	public Long getNo() {
 		return no;
 	}
@@ -145,7 +145,12 @@ public class MappingVo {
 	public void setManageNo(String manageNo) {
 		this.manageNo = manageNo;
 	}
-	
+	public int getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
+	}
 	@Override
 	public String toString() {
 		return "MappingVo [no=" + no + ", systemCode=" + systemCode + ", voucherUse=" + voucherUse + ", insertTeam="
@@ -153,7 +158,8 @@ public class MappingVo {
 				+ updateUserid + ", updateDay=" + updateDay + ", useYn=" + useYn + ", voucherNo=" + voucherNo
 				+ ", cardNo=" + cardNo + ", cardUser=" + cardUser + ", depositNo=" + depositNo + ", depositHost="
 				+ depositHost + ", customerNo=" + customerNo + ", customerName=" + customerName + ", bankCode="
-				+ bankCode + ", bankName=" + bankName + ", manageNo=" + manageNo + "]";
+				+ bankCode + ", bankName=" + bankName + ", manageNo=" + manageNo + ", orderNo=" + orderNo + "]";
 	}
+	
 	
 }

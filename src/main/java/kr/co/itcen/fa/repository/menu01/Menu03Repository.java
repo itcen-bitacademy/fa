@@ -83,12 +83,17 @@ public class Menu03Repository {
 				
 				int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
 				System.out.println("order : " + order);
-				itemVo.get(i).setOrderNo(order);
+				
 				System.out.println("repo3");
-				sqlSession.update("menu03.updateOrder", itemVo.get(i));
+				
+				
 				mappingVo.get(i).setVoucherNo(voucherVo.getNo());
 				System.out.println("repo4");
 				sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
+				itemVo.get(i).setOrderNo(order);
+				sqlSession.update("menu03.updateOrder", itemVo.get(i));
+				mappingVo.get(i).setOrderNo(order);
+				sqlSession.update("menu03.updateOrder2", mappingVo.get(i));
 			}
 			
 			return voucherVo.getNo();	// 전표번호

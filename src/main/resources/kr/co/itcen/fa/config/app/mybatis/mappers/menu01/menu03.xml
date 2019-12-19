@@ -32,6 +32,16 @@
 		]]>
 	</update>
 	
+	<!-- 순번 업데이트 -->
+	<update id="updateOrder2" parameterType="1itemvo">
+		<![CDATA[
+		update tb_voucher_system_mapping
+		   set order_no = order_no+1
+		 where voucher_no = #{voucherNo }
+		   and order_no <= #{orderNo };
+		]]>
+	</update>
+	
 	<!-- 전표테이블 입력 -->
 	<insert id="insertVoucher" parameterType="1vouchervo">
 		<![CDATA[
@@ -225,7 +235,8 @@
             on ba.deposit_no = m.deposit_no
          where v.use_yn = 1
            and i.use_yn = 1
-           and m.use_yn = 1;
+           and m.use_yn = 1
+           and i.order_no = m.order_no;
 	</select>
 	
 	<!-- 전표조회 페이징 -->
@@ -278,6 +289,7 @@
          where v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
+           and i.order_no = m.order_no
       order by v.no desc,
                i.order_no
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
@@ -351,7 +363,8 @@
     	</if>
     	<if test="voucherUse != null and !voucherUse.equals('')">
     	   <![CDATA[
-    	   and m.voucher_use = #{voucherUse };
+    	   and m.voucher_use = #{voucherUse }
+    	   and i.order_no = m.order_no;
     	   ]]>
     	</if>
 	</select>
@@ -447,6 +460,7 @@
     	<if test="vo.voucherUse != null and !vo.voucherUse.equals('')">
     	   <![CDATA[
     	   and m.voucher_use = #{vo.voucherUse }
+    	   and i.order_no = m.order_no
     	   ]]>
     	</if>
       <![CDATA[
