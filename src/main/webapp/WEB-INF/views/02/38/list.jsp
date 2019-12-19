@@ -520,7 +520,7 @@ input:focus {
 					</div>
 					<div class="hr hr-10 dotted"></div>
 				</form>
-
+				<p>총  ${fn:length(buyTaxbillListAll)}건</p>
 				<div class="control-group"
 					style="overflow-x: scroll; max-width: 1400px">
 					<table id="sample-table-1"

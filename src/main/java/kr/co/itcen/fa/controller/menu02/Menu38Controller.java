@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu02.Menu38Service;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillListVo;
@@ -35,6 +36,7 @@ public class Menu38Controller {
 	@Autowired
 	private Menu38Service menu38Service;
 
+	@NoAuth
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "page_group", required = false, defaultValue = "0") int page_group) {
@@ -55,6 +57,7 @@ public class Menu38Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
 	public Map<String, Object> paging(@RequestParam(value="page_num", required=false, defaultValue="1") int page,
@@ -132,6 +135,7 @@ public class Menu38Controller {
 		return map;
 	}
 
+	@NoAuth
 	@RequestMapping(value = "/" + SUBMENU + "/list", method = RequestMethod.POST)
 	public String list(Model model, BuyTaxbillListVo buyTaxbillListVo,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,

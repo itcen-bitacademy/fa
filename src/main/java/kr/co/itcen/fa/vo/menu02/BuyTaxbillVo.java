@@ -8,8 +8,8 @@ public class BuyTaxbillVo {
 	private String manageNo;
 	private String companyName;
 	private String writeDate;
-	private Long totalSupplyValue;
-	private Long totalTaxValue;
+	private String totalSupplyValue;
+	private String totalTaxValue;
 	private String taxType;
 	private String deleteFlag;
 	private String insertUserid;
@@ -47,16 +47,16 @@ public class BuyTaxbillVo {
 	public void setWriteDate(String writeDate) {
 		this.writeDate = writeDate;
 	}
-	public Long getTotalSupplyValue() {
+	public String getTotalSupplyValue() {
 		return totalSupplyValue;
 	}
-	public void setTotalSupplyValue(Long totalSupplyValue) {
+	public void setTotalSupplyValue(String totalSupplyValue) {
 		this.totalSupplyValue = totalSupplyValue;
 	}
-	public Long getTotalTaxValue() {
+	public String getTotalTaxValue() {
 		return totalTaxValue;
 	}
-	public void setTotalTaxValue(Long totalTaxValue) {
+	public void setTotalTaxValue(String totalTaxValue) {
 		this.totalTaxValue = totalTaxValue;
 	}
 	public String getTaxType() {
