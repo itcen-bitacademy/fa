@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu02.Menu07Service;
 import kr.co.itcen.fa.vo.menu02.PurchasemanagementVo;
 
@@ -32,8 +33,8 @@ public class Menu07Controller {
 	@Autowired
 	private Menu07Service menu07Service;
 	
-
-	@RequestMapping(value = {"/" + SUBMENU}, method = RequestMethod.GET)
+	@NoAuth
+	@RequestMapping(value = { "", "/" + SUBMENU}, method = RequestMethod.GET)
 	public String index(Model model, @RequestParam(defaultValue = "1") int page) {
 		
 		int countPage = 5;
@@ -51,10 +52,10 @@ public class Menu07Controller {
 
 		int total = menu07Service.getCount();
 
-		if (total % countPage == 0) {
-			lastPage = (int) Math.floor(total / countPage);
+		if (total % 11 == 0) {
+			lastPage = (int) Math.floor(total / 11);
 		} else {
-			lastPage = (int) Math.floor(total / countPage) + 1;
+			lastPage = (int) Math.floor(total / 11) + 1;
 		}
 
 		
@@ -69,90 +70,34 @@ public class Menu07Controller {
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
-
+	
+	// 검색
+	@NoAuth
 	@ResponseBody
 	@RequestMapping(value = {"/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public List<PurchasemanagementVo> search(Model model, @RequestBody PurchasemanagementVo vo,
 			String[] purchaseDate, @RequestParam(defaultValue = "1") int page) {
-		int countPage = 5;
-		int curPage = page;
-		int lastPage;
-
-		int startPage = ((curPage - 1) / countPage) * countPage + 1;
-		int endPage = startPage + countPage - 1;
-
-		int blockNum = 0;
-
-		blockNum = (int) Math.floor((curPage - 1) / countPage);
-		int blockStartNum = (countPage * blockNum) + 1;
-		int blockLastNum = blockStartNum + (countPage - 1);
-
-		int total = menu07Service.getCount();
-
-		if (total % countPage == 0) {
-			lastPage = (int) Math.floor(total / countPage);
-		} else {
-			lastPage = (int) Math.floor(total / countPage) + 1;
-		}
-
-		vo.setPage(curPage);
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-		model.addAttribute("blockStartNum", blockStartNum);
-		model.addAttribute("blockLastNum", blockLastNum);
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("curPage", curPage);
 		List<PurchasemanagementVo> result = menu07Service.getList(vo);
-		System.out.println("vo : " + vo);
-		System.out.println("result : " + result);
-		
 		return result;
 	}
 	
+	// 페이징
+	@NoAuth
 	@ResponseBody
 	@RequestMapping(value = {"/" + SUBMENU + "/paging"}, method = RequestMethod.POST)
-	public List<PurchasemanagementVo> paging(Model model, /* @RequestParam(value="page", required=false, defaultValue="1") int page, */
-			/*@RequestParam(value="searchFlag") boolean searchFlag,*/ @RequestBody PurchasemanagementVo vo) {
-		int countPage = 5;
-		int curPage = vo.getPage();
-		int lastPage;
-
+	public List<PurchasemanagementVo> paging(Model model,  @RequestBody PurchasemanagementVo vo) {
 		
-		int startPage = ((curPage - 1) / countPage) * countPage + 1;
-		int endPage = startPage + countPage - 1;
-
-		int blockNum = 0;
-
-		blockNum = (int) Math.floor((curPage - 1) / countPage);
-		int blockStartNum = (countPage * blockNum) + 1;
-		int blockLastNum = blockStartNum + (countPage - 1);
-
-		int total = menu07Service.getCount();
-
-		if (total % countPage == 0) {
-			lastPage = (int) Math.floor(total / countPage);
-		} else {
-			lastPage = (int) Math.floor(total / countPage) + 1;
-		}
-		System.out.println(vo.isSearchFlag());
-		System.out.println(vo);
+		int curPage = vo.getPage();
 		List<PurchasemanagementVo> result = null;
-		if(vo.isSearchFlag() == false) {
+		
+		if(vo.isSearchFlag() == false) { 			// 기본 페이징
 			vo.setPage((curPage - 1) * 11);
 			result = menu07Service.getList(vo);
-		} else {
+		} else {									// 조회시 페이징
+			
 			result = menu07Service.getList((curPage - 1) * 11);
 		}
 		
-		
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-		model.addAttribute("blockStartNum", blockStartNum);
-		model.addAttribute("blockLastNum", blockLastNum);
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("curPage", curPage);
-		System.out.println("startPage : " + startPage + "endPage : " + endPage + "blockStartNum : " + blockStartNum + "blockLastNum : " + blockLastNum +
-				"lastPage : " + lastPage + "curPage : " + curPage);
 		return result;
 	}
 }

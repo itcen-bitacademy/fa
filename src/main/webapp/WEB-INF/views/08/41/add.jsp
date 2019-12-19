@@ -47,7 +47,7 @@
 										<label class="control-label" for="form-field-select-1">대분류 코드</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="전체">
-											
+											<!-- 	<option></option> -->
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option vehiclecode="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
 												</c:forEach>
@@ -69,7 +69,7 @@
 										<label class="control-label" for="form-field-select-1">거래처 코드</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-customerCode" name="customerName" data-placeholder="전체">
-												<option></option>
+											<!-- 	<option></option> -->
 												<c:forEach items="${customerList }" var="customerVo">
 													<option managerName="${customerVo.managerName }" customerCode="${customerVo.no }" value="${customerVo.no }">${customerVo.name }</option>
 												</c:forEach>
@@ -138,7 +138,7 @@
 											<label class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width: 90%">
 												<select class="chosen-select" id="form-field-classification" name="staffNo" data-placeholder="전체">
-												
+											<!-- 		<option></option> -->
 													<c:forEach items="${jikNameList}" var="StaffVo">
 														<option staffNo="${StaffVo.no }" value="${StaffVo.no }">${StaffVo.staffName }</option>
 													</c:forEach>
@@ -740,12 +740,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
     	break;
 	}
 
-	/* var staffNumber = $("#form_field_classification_chosen").attr("value", staffNo); */
-	/* var staffNumber = $("#form_field_classification_chosen").attr(staffNo); */
-	$('#form_field_classification_chosen').find('span').text(staffName);
-	console.log("sttstststs : " + staffNo);
-	$("input[name=staffNo]").val(staffNo);
-	
 	//선택된 직급에 대한 No값을 value값으로 변경
 	$("#form_field_classification_chosen").attr("value", staffNo);
 	

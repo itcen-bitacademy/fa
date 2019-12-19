@@ -2,7 +2,12 @@ package kr.co.itcen.fa.controller.menu01;
 
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
@@ -20,6 +27,8 @@ import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.service.menu17.Menu59Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.ItemVo;
+import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 
 
@@ -74,8 +83,8 @@ public class Menu03Controller {
 		// 마감 여부 체크
 		
 		System.out.println("asdf: " + voucherVo.getRegDate());
-		String businessDateStr = menu03Service.businessDateStr();
-		if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
+		//String businessDateStr = menu03Service.businessDateStr();
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			voucherVo.setOrderNo(1);
 			menu03Service.createVoucher(voucherVo, userVo);
 		}
@@ -92,8 +101,8 @@ public class Menu03Controller {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
 		
-		String businessDateStr = menu03Service.businessDateStr();
-		if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
+		//String businessDateStr = menu03Service.businessDateStr();
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			menu03Service.deleteVoucher(voucherVo);
 		}
 		
@@ -107,13 +116,10 @@ public class Menu03Controller {
 		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
-		
-		String businessDateStr = menu03Service.businessDateStr();
-		if(menu19Service.checkClosingDate(userVo, businessDateStr)) {
+		System.out.println("orderNo : " + voucherVo.getOrderNo());
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			menu03Service.updateVoucher(voucherVo);
 		}
-		
-		
 		
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
@@ -126,5 +132,57 @@ public class Menu03Controller {
 		data.put("success", true);
 		return data;
 	}
+	
+	// 전표 추가
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/save", method=RequestMethod.POST)
+	public Map<String, Object> save(HttpServletRequest request, @AuthUser UserVo userVo) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String itemList = request.getParameter("itemList");
+		System.out.println(itemList);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			
+			VoucherVo[] voucherList = mapper.readValue(itemList, VoucherVo[].class);
+			
+//			System.out.println(voucherList);
+//			System.out.println(voucherList[0]);
+//			System.out.println(voucherList[0].getAccountName());
+//			System.out.println(voucherList[1]);
+//			System.out.println(voucherList[1].getAccountName());
+			
+			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
+				VoucherVo voucherVo = new VoucherVo();
+				voucherVo.setRegDate(voucherList[0].getRegDate());
+				
+				List<ItemVo> itemList2 = new ArrayList<ItemVo>();
+	 			
+				for(int i = 0; i < voucherList.length; i++) {
+					ItemVo itemVo = new ItemVo();
+					itemVo.setAmount(voucherList[i].getAmount());
+					itemVo.setAmountFlag(voucherList[i].getAmountFlag());
+					itemVo.setAccountNo(voucherList[i].getAccountNo());
+					
+					itemList2.add(itemVo);
+				}
+				
+				MappingVo mappingVo = new MappingVo();
+				
+				mappingVo.setVoucherUse(voucherList[0].getVoucherUse());
+				mappingVo.setCustomerNo(voucherList[0].getCustomerNo());
+				mappingVo.setDepositNo(voucherList[0].getDepositNo());
+				mappingVo.setManageNo(voucherList[0].getManageNo());
+				
+				menu03Service.createVoucher(voucherVo, itemList2, mappingVo, userVo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("111");
+		return resultMap;
+	}
+	
 	
 }

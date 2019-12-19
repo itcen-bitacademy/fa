@@ -60,7 +60,7 @@ public class Menu09Controller {
 	
 	//조회
 	//               /08   /   09     , /08/09/list
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
+	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model, 
 						@RequestParam(value="id", required=false, defaultValue = "") String id
 						, @RequestParam(value="page", required=false, defaultValue = "1") int page) {
@@ -73,14 +73,6 @@ public class Menu09Controller {
 		 *   08/09/list.jsp
 		 * 
 		 */
-		
-		//dataresult 생성, 모델
-		DataResult<LandVo> dataResult = menu09Service.list(id, page); 
-		model.addAttribute("dataResult",dataResult);
-		model.addAttribute("page" , page);
-		
-		
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		//대분류코드 select box
@@ -94,6 +86,11 @@ public class Menu09Controller {
 //		if(id != null) {
 //			map.putAll(menu09Service.getsearchList(id));		
 //		}
+		//dataresult 생성, 모델
+		DataResult<LandVo> dataResult = menu09Service.list(id, page); 
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page" , page);
+		
 		model.addAttribute("sectionList", list);
 		model.addAllAttributes(map);
 		
@@ -287,6 +284,7 @@ public class Menu09Controller {
 				List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
 				VoucherVo v = new VoucherVo();
 				v.setNo(voucherNo);
+				v.setRegDate(payDate);
 				voucherVolist.add(v);
 				menu03Service.deleteVoucher(voucherVolist, user);
 				}

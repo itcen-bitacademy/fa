@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu08.Menu42Service;
-import kr.co.itcen.fa.vo.menu08.LandVo;
 import kr.co.itcen.fa.vo.menu08.VehicleVo;
 
 
@@ -39,13 +39,17 @@ public class Menu42Controller {
 	
 	
 	//               /08   /   42     , /08/42/list
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model,@ModelAttribute VehicleVo vehicleVo,
 					@RequestParam(value="payDate", required=false) String payDate,
+					@RequestParam(value="dueDate", required=false) String dueDate,
 					@RequestParam(value="id", required=false, defaultValue = "") String id,
 					@RequestParam(value="page", required=false, defaultValue = "1") int page,
 					@RequestParam(value="searchGubun", required=false) String gubun
 					  ) {
+		
+		System.out.println(vehicleVo);
 		//menu42Service.test();
 		/*
 		 *   JSP
@@ -76,12 +80,20 @@ public class Menu42Controller {
 			//매입날짜 시작일, 종료일 구하기
 			String startDate = null;
 			String endDate = null;
+			String dueStartDate = null;
+			String dueEndDate = null;
+			
+			if(!dueDate.equals("")) {
+				String[] duedate = dueDate.split(" - ");
+				dueStartDate = duedate[0];
+				dueEndDate = duedate[1];
+			}
 			if(!payDate.equals("")) {
-			String[] date = payDate.split(" - ");
+			String[]date = payDate.split(" - ");
 			startDate = date[0];	
 			endDate = date[1];
 			}
-			dataResult = menu42Service.getList(vehicleVo, startDate, endDate, page);
+			dataResult = menu42Service.getList(vehicleVo, startDate, endDate, dueStartDate, dueEndDate, page);
 		}
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);

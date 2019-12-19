@@ -182,9 +182,13 @@ public class Menu48Controller {
 	@RequestMapping(value = "/"+SUBMENU+"/delete", method = RequestMethod.POST)
 	public String delete(@RequestParam Long[] no,@AuthUser UserVo uservo) {
 		List<LTermdebtVo> l_list=  menu48Service.selectList(no);
+		System.out.println("좀 되자");
 		for(int i=0;i<l_list.size();++i) {
 			try {
-				if(menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
+				System.out.println(l_list.get(i)+"d");
+				if(!menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
+
+					System.out.println(l_list.get(i)+"dd");
 					return "redirect:/"+MAINMENU+"/"+SUBMENU;
 				}
 			} catch (ParseException e) {
@@ -198,6 +202,7 @@ public class Menu48Controller {
 		for(Long no1: list) {
 			VoucherVo v = new VoucherVo();
 			v.setNo(no1);
+			
 			voucherVolist.add(v);
 		}
 		for(VoucherVo v : voucherVolist) {

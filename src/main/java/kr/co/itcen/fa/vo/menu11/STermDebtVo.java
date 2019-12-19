@@ -18,7 +18,7 @@ public class STermDebtVo {
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
 	private String debtDate; // 차입일자
 	private String expDate; // 만기일자
-	private Long intRate; // 이율
+	private Double intRate; // 이율
 	private String intPayWay; // 이자지급방식
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
@@ -26,6 +26,7 @@ public class STermDebtVo {
 	private String bankCode; // 은행코드
 	private String bankName;	//은행이름 , 은행코드를 통해 얻어온다
 	private String depositNo; // 계좌번호
+	private String depositHost;	//예금주
 	private Long accountNo = 2180101L; // 계정코드
 	private Long voucherNo; // 전표번호
 	private String deleteFlag; // 삭제여부
@@ -100,10 +101,10 @@ public class STermDebtVo {
 	public void setExpDate(String expDate) {
 		this.expDate = expDate;
 	}
-	public Long getIntRate() {
+	public Double getIntRate() {
 		return intRate;
 	}
-	public void setIntRate(Long intRate) {
+	public void setIntRate(Double intRate) {
 		this.intRate = intRate;
 	}
 	public String getIntPayWay() {
@@ -147,6 +148,12 @@ public class STermDebtVo {
 	}
 	public void setDepositNo(String depositNo) {
 		this.depositNo = depositNo;
+	}
+	public String getDepositHost() {
+		return depositHost;
+	}
+	public void setDepositHost(String depositHost) {
+		this.depositHost = depositHost;
 	}
 	public Long getAccountNo() {
 		return accountNo;

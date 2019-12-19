@@ -90,7 +90,7 @@ form {
 										<div class="radio">
 											<label>
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
-												<span class="lbl">년</span>
+												<span class="lbl">연</span>
 											</label>
 										</div>
 										<div class="radio">
@@ -192,16 +192,16 @@ form {
 										<c:when test="${vo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center">${vo.debtAmount}</td>
+							<td class="center"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /></td>
 							<c:choose>
-										<c:when test="${vo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${vo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>		
 							<td class="center">${vo.debtExpDate}</td>
 							<td class="center">${vo.intRate}%</td>
 							<c:choose>
-										<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${vo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>	
@@ -214,15 +214,13 @@ form {
 					</tbody>
 				</table>
 
+				<!-- 페이징 처리 코드 start -->
 				<div class="pagination">
 					<ul>
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
-								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
-										<i class="icon-double-angle-left"></i>
-									</a>
-								</li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.startPage - 1 }">
+								<i class="icon-double-angle-left"></i></a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -231,20 +229,16 @@ form {
 						<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 							<c:choose>
 								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg }">${pg }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg}">${pg }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:choose>
 							<c:when test="${dataResult.pagination.next }">
-								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
-										<i class="icon-double-angle-right"></i>
-									</a>
-								</li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -252,7 +246,8 @@ form {
 						</c:choose>
 					</ul>
 				</div>
-
+				<!-- 페이징 처리 코드 end -->
+				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->

@@ -1,13 +1,12 @@
 package kr.co.itcen.fa.controller.menu11;
 
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +17,8 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
@@ -33,6 +32,9 @@ public class Menu46ApiController {
 	
 	@Autowired
 	Menu03Service menu03Service;
+	
+	@Autowired
+	Menu19Service menu19Service;
 	
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/search")
@@ -63,22 +65,23 @@ public class Menu46ApiController {
 	public JSONResult deleteChecked(@RequestParam(value="noList[]", required=true) List<Long> noList,
 			@RequestParam(value="voucherNoList[]", required=true) List<Long> voucherNoList,
 			@AuthUser UserVo authUser){
+		Map map = new HashMap();
+		
+		System.out.println("noList :" + noList + " voucherList : " + voucherNoList);
+		List<List<RepayVo>> repayLists = menu46Service.possibleDelete(noList);	//상환내역이 있는 차입금은 제외시킨다. 상환내역 리스트를 가져온다
+		map.put("repayLists", repayLists);
+		System.out.println("repayLists");
+		if(repayLists.size() != 0)						//삭제가 안되는경우
+			return JSONResult.success(map);
+		
 		//전표 삭제
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-		
-		for(Long voucherNo : voucherNoList) {
-			VoucherVo vo = new VoucherVo();
-			vo.setNo(voucherNo);
-			voucherVolist.add(vo);
-		}
-		System.out.println(voucherVolist);
-		menu03Service.deleteVoucher(voucherVolist, authUser);
-		
-		//차입금 삭제
-		menu46Service.deleteChecked(noList);
+		menu46Service.deleteVoucerList(voucherNoList, authUser);
+		menu46Service.deleteChecked(noList);						//차입금 삭제
 		
 		//삭제후 리스트 다시 얻음.
-		Map map = menu46Service.getListMap();
+		map.putAll(menu46Service.getListMap());
+		map.put("repayLists", null);								//해당 List로 삭제할수있는지 없는지를 비교한다.
+		
 		return JSONResult.success(map);
 	}
 	
@@ -90,7 +93,7 @@ public class Menu46ApiController {
 		
 		//-----------------단기차입금 update----------------------//
 		System.out.println("상환잔액 : " + vo.getRepayBal() + " 납입금: " + repayVo.getPayPrinc());
-		
+		System.out.println("repayVo :" + repayVo);
 		if(vo.getRepayBal()- repayVo.getPayPrinc() == 0 ) {			//모두 상환한 경우
 			System.out.println("모두상환");
 			vo.setRepayCompleFlag("Y");
@@ -147,5 +150,13 @@ public class Menu46ApiController {
 		 //Map을 받아온다
 		 Map map = menu46Service.getListMap();
 		 return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/isClosedDate", method=RequestMethod.POST)
+	public JSONResult isClosedDate(@RequestParam(value="debtDate", required=true)String debtDate,
+			@AuthUser UserVo authUser) throws ParseException {
+		Boolean isClosed = menu19Service.checkClosingDate(authUser, debtDate);
+		return JSONResult.success(isClosed);
 	}
 }	

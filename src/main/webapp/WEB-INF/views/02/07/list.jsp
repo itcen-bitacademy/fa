@@ -86,18 +86,22 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 일 자</label>
 									<div class="controls">
+									<div class="input-append">
 										<input class="cl-date-picker1 input-small" id="purchaseDate" name="purchaseDate" type="text" data-date-format="yyyy-mm-dd"  value="">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
-										</span>										
-									<span>
-									<!-- 	~
+										</span>	
+									</div>									
+									<!-- <span>
+									~
 									</span>
+									<div class="input-append">
 									<input class="cl-date-picker2 input-small" id="purchaseDate1" name="purchaseDate" type="text" data-date-format="yyyy-mm-dd">
 										<span class="add-on">
 											<i class="icon-calendar"></i>
-										</span> -->
-										</div>
+										</span> 
+									</div> -->
+									</div>
 									
 							</div>
 							
@@ -121,7 +125,6 @@
 							
 							<table id="searchList" class="table table-striped table-bordered table-hover">
 								<thead>
-								<tr>총 매입 건수</tr>
 									<tr>
 										<th class="center">매입일자</th>
 										<th class="center">매입번호</th>
@@ -136,6 +139,7 @@
 										<th class="center">수량</th>
 										<th class="center">공급가액</th>
 										<th class="center">부가세</th>
+										<th class="center">과세 여부</th>
 										<th class="center">세금계산서번호</th>
 									</tr>
 								</thead>
@@ -156,26 +160,27 @@
 											<td class="center">${vo.quantity }</td>
 											<td class="center">${vo.supplyValue }</td>
 											<td class="center">${vo.taxValue }</td>
+											<td class="center">${vo.taxType }</td>
 											<td class="center">${vo.taxbillNo }</td>
 										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
-							<div class="pagination">
-								<ul>
+							<div class="pagination" id = "paginationList">
+								<ul id="pagination">
 								<c:choose>
 									<c:when test="${ curPage > 5 }">
-										<li><a class="page_go" href="javascript:void(0);" id="gotoPrev"><i class="icon-double-angle-left"></i></a></li>
+										<li><a class="page_go" id="gotoPrev"><i class="icon-double-angle-left"></i></a></li>
 									</c:when>
 									<c:otherwise>
-										<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+										<li class="disabled"><a><i class="icon-double-angle-left"></i></a></li>
 									</c:otherwise>
 								</c:choose>
 									<c:forEach var="i" begin="${ blockStartNum }"
 										end="${ blockLastNum }">
 										<c:choose>
 											<c:when test="${ i > lastPage }">
-												<li class="disabled">${ i }</li>
+												<li class="disabled"><a>${ i }</a></li>
 											</c:when>
 											<c:when test="${ i == curPage }">
 												<li class="selected"><a class="page_go" href="javascript:void(0);">${ i }</a></li>
@@ -191,25 +196,11 @@
 										<li><a class="page_go" href="javascript:void(0);" id="gotoNext"><i class="icon-double-angle-right"></i></a></li>
 									</c:when>
 									<c:otherwise>
-										<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+										<li class="disabled"><a><i class="icon-double-angle-right"></i></a></li>
 									</c:otherwise>
 								</c:choose>
 								</ul>
 							</div>
-						<%-- <div class="pagination">
-						<ul>
-							<c:set var="page_count" value="${fn:length(result)}"></c:set>
-							
-							<li class="disabled"><a href="javascript:void(0);"><i class="icon-double-angle-left"></i></a></li>
-							<c:forEach var="pur_size" begin="1" end="${((page_count-1)/11)+1 }" step="1">
-								<li><a class="page_go" href="javascript:void(0);">${pur_size }</a></li>
-							</c:forEach>
-							
-							<!-- <li class="active"><a href="#">1</a></li> -->
-							<li><a href="javascript:void(0);"><i class="icon-double-angle-right"></i></a></li>
-						</ul>
-					</div>  --%>
-							
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
@@ -227,6 +218,9 @@
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
+	var blockStartNum = "${blockStartNum}";
+	var blockLastNum = "${blockLastNum}";
+	var lastPage = parseInt("${lastPage }");
 		$(function() {
 			$.fn.datepicker.dates['ko'] = {
 			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
@@ -266,9 +260,10 @@
 		
 		var searchFlag = true;
 		$("#search").click(function(event) {
+			
 			var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
 					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val()};
-			console.log(vo);
+			
 			event.preventDefault();
 			
 			 $.ajax({
@@ -278,8 +273,8 @@
 			        contentType: 'application/json;charset=utf-8',
 					data: JSON.stringify(vo),
 			        success : function(result){
-			        	console.log(result);
 						createTable(result);
+						//updatePagination(page_num, blockStartNum, blockLastNum, lastPage)
 						searchFlag = false;
 			        },
 			        error : function(){
@@ -308,6 +303,7 @@
 			            "<td class='center'>" + isEmpty(result[i].quantity) + "</td>" +
 			            "<td class='center'>" + isEmpty(result[i].supplyValue)  + "</td>" +
 			            "<td class='center'>" + isEmpty(result[i].taxValue)  + "</td>" +
+			            "<td class='center'>" + isEmpty(result[i].taxType)  + "</td>" +
 			            "<td class='center'>" + isEmpty(result[i].taxbillNo)  + "</td>" +
 			            "</tr>");
 			}
@@ -323,23 +319,23 @@
 		
 		$("body").on("click",".page_go",function(e) {
 			var page_num = $(this).text();
-			console.log("now " +page_num);
 			
 			var id = $(this).attr('id');
-		    //alert(id);
 			
 			if(id == "gotoNext") {
-				page_num = "${blockLastNum +1}";
-				console.log("next " + page_num);
+				console.log(blockLastNum);
+				page_num = parseInt(blockLastNum) + 1;
+				blockLastNum = parseInt(blockLastNum) + 5;
+				blockStartNum = parseInt(blockStartNum) + 5;
 			} else if(id == "gotoPrev"){
-				page_num = "${blockStartNum - 1}";
-				console.log("prev " +page_num);
+				page_num = parseInt(blockStartNum) - 1;
+				blockStartNum = parseInt(blockStartNum) - 5;
+				blockLastNum = parseInt(blockLastNum) - 5;
 			}
 			
 			var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
 					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val(), 
 					  page : page_num, searchFlag : searchFlag};
-			console.log(vo);
 			
 			$.ajax({
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
@@ -349,10 +345,43 @@
 				data:JSON.stringify(vo),
 				success:function(result) {
 					createTable(result);
+					updatePagination(page_num, blockStartNum, blockLastNum, lastPage);
 				}, error:function(error) {
 				}
 			});
 		});
+		
+		function updatePagination(curPage, blockStartNum, blockLastNum, lastPage) {
+			$("#pagination").remove();
+			$newUl = $("<ul id='pagination'></ul>");
+			$("#paginationList").append($newUl);
+			console.log(curPage);
+			if(curPage > 5) {
+				$newUl.append("<li><a class='page_go' id='gotoPrev'><i class='icon-double-angle-left'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+			}
+			for(var li = blockStartNum; li <= blockLastNum; li++) {
+				if(li > lastPage) {
+					$newUl.append(
+						"<li class='disabled'><a>"+li+"</a></li>"
+					);
+				} else if(li == curPage) {
+					$newUl.append(
+						"<li class='selected'><a class='page_go' href='javascript:void(0);'>"+ li + "</a></li>"
+					);
+				} else {
+					$newUl.append(
+							"<li><a class='page_go' href='javascript:void(0);'>" + li + "</a></li>"
+						);
+				}
+			}
+			if(lastPage > blockLastNum) {
+				$newUl.append("<li><a class='page_go' href='javascript:void(0);' id='gotoNext'><i class='icon-double-angle-right'></i></a></li>");
+			} else {
+				$newUl.append("<li class='disabled'><a><i class='icon-double-angle-right'></i></a></li>");
+			}
+		}
 	</script>
 </body>
 </html>

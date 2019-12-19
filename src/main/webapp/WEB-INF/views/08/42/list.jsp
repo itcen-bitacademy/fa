@@ -25,73 +25,45 @@
 				<div class="span12">
 					<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
-					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 						<div class="span5"><!-- 차변 -->
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">차량 코드</label>
+									<label style="text-align:left;" class="control-label" for="form-field-1">차량 코드</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="id" placeholder="10자로 입력하세요"/>
+										<input type="text" id="id" name="id" placeholder="10자로 입력하세요"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">거래처 명</label>
+									<label style="text-align:left;" class="control-label" for="form-field-1">거래처 명</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="customerName" placeholder="10자로 입력하세요"/>
+										<input type="text" id="customerName" name="customerName" placeholder="거래처명을 입력하세요"/>
 									</div>
 								</div>
 							
-							<div class="control-group">
-                              <div style="float:left;">                                 
-                                 <label class="control-label" for="form-field-1">주소</label>
-                                 <div class="controls">
-                                    <select style="width:150px;" class="chosen-select" id="form-field-select-1" name="wideAddr" data-placeholder="시/도">
-                                       <c:forEach items="${listMainMenu }" var="sectionVo">
-                                          <option value="${sectionVo.no }">${sectionVo.name }</option>
-                                       </c:forEach>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div style="float:left; margin-left:10px" class="controls">
-                                 <select style="width:150px;" class="chosen-select" id="form-field-select-1" name="cityAddr" data-placeholder="시/군/구">
-                                    <c:forEach items="${listMainMenu }" var="sectionVo">
-                                       <option value="${sectionVo.no }">${sectionVo.name }</option>
-                                    </c:forEach>
-                                 </select>
-                              </div>
-                              <div style="float:left; margin-left:10px" class="controls">
-                                 <select style="width:150px;" class="chosen-select" id="form-field-select-1" name="localAddr" data-placeholder="읍/면/동">
-                                    <c:forEach items="${listMainMenu }" var="sectionVo">
-                                       <option value="${sectionVo.no }">${sectionVo.name }</option>
-                                    </c:forEach>
-                                 </select>
-                              </div>
-                        </div>
-			
-						<div class="control-group">
-								<label class="control-label" for="id-date-range-picker-1">매입일자</label>
-								<div class="controls">
-									<div class="input-append">
-										<span class="add-on">
-											<i class="icon-calendar"></i>
-										</span>
-									</div>
-									<input class="id-date-range-picker-1" type="text" name="acqPrice" >
-									
+							
+								<div class="control-group">
+									<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
+										<div class="controls">
+											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
+											<input class="span4" readonly type="text" id="wideAddress" name="wideAddress" placeholder="주소를 선택하면 입력됩니다.">
+											<input style="width:230px"class="span5" readonly type="text" id="cityAddress" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
+										</div>
 								</div>
-							</div>
+			
+						
  	
 					</div><!-- 차변 span -->
 							
 						<div class="span3"><!-- 대변 -->
 					
 							<div class="control-group">
-										<label class="control-label" for="form-field-select-1">차량 분류</label>
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">차량 분류</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="전체">
-											
+											<select class="chosen-select" id="sectionNo" name="sectionNo" data-placeholder="전체">
 												<c:forEach items="${sectionList }" var="sectionVo">
-													<option vehiclecode="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.classification }</option>
+													<option></option>
+													<option value="${sectionVo.code }">${sectionVo.classification }</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -99,9 +71,9 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-1">거래처 담당자</label>
+									<label style="text-align:left;" class="control-label" for="form-field-1">거래처 담당자</label>
 									<div class="controls">
-										<input type="text" id="form-field-1" name="customerManager" placeholder="이름을 입력하세요"/>
+										<input type="text" id="managerName" name="managerName" placeholder="이름을 입력하세요"/>
 									</div>
 								</div>
 							
@@ -111,11 +83,12 @@
 						
 						
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">직급</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">직급</label>
 										<div class="controls" style="width: 90%">
-											<select class="chosen-select" id="form-field-classification" name="staffNo" data-placeholder="전체">
+											<select class="chosen-select" id="staffName" name="staffName" data-placeholder="전체">
+												<option></option>
 												<c:forEach items="${jikNameList}" var="StaffVo">
-													<option staffNo="${StaffVo.no }" value="${StaffVo.no }">${StaffVo.staffName }</option>
+													<option value="${StaffVo.staffName }">${StaffVo.staffName }</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -123,26 +96,32 @@
 							
 								
 									<div class="control-group">
-										<label class="control-label" for="id-date-range-picker-1">납부일자</label>
+										<label style="text-align:left;" class="control-label" for="id-date-range-picker-1">납부일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="id-date-range-picker-2" type="text" name="payDate" >
+											<input class="id-date-range-picker-2" type="text" name="dueDate" >
 							
 										</div>
 									</div>
 								
-								<div class="control-group">
-								<div style="float:left;width:50%">											
-									<label class="control-label" for="form-field-3">납부금액</label>
+									<div class="control-group">
+										<label style="text-align:left;" class="control-label" for="id-date-range-picker-1">매입일자</label>
 										<div class="controls">
-											<input style="width:200px" type="text" id="form-field-1" name="payPrice" placeholder="작성된 금액이하로 검색됩니다."/>
+											<div class="input-append">
+												<span class="add-on">
+													<i class="icon-calendar"></i>
+												</span>
+											</div>
+											<input class="id-date-range-picker-1" type="text" name="payDate" >
+											
 										</div>
-									</div>	
-								</div>
+									</div>
+								
+								<input type="hidden" name="searchGubun" value="조회">
 								<div class="control-group">
                               <div class="controls">
                                  <div class="span4" style="float:right">
@@ -150,7 +129,7 @@
                                  </div>
                                  <div class="span2" style="float:right">
                                     <label style="float:right">
-                                       <input name="checkDel" type="checkbox" class="ace">
+                                       <input name="flag" type="checkbox" class="ace">
                                           <span class="lbl" style="width:72px; margin-right:0px">삭제포함</span>
                                     </label>
                                  </div>
@@ -221,12 +200,12 @@
 													<td class="monthly-fee"><fmt:formatNumber value="${VehicleVo.monthlyFee}" pattern="#,###"></fmt:formatNumber></td> <!-- 18 -->
 													<td>${VehicleVo.feeDate}</td> <!-- 19 -->
 													<td>${VehicleVo.taxKind}</td> <!-- 20 -->
-													<td class="using-month"></td> <!-- 21 -->
+													<td hidden class="using-month"></td> <!-- 21 -->
 													<td hidden class="month-cost"></td> <!-- 22 -->
 													<td hidden>${VehicleVo.depositDate}</td> <!-- 보증금, 월사용료 실제 납부날짜 --> <!-- 23 -->
 													<td class= "taxbillNo">${VehicleVo.taxbillNo}</td> <!-- 24 -->
 													<c:choose>
-														<c:when test="${VehicleVo.flag eq 's'}"><td>작성</td></c:when>
+														<c:when test="${VehicleVo.flag eq 's'}"><td>작성됨</td></c:when>
 														<c:when test="${VehicleVo.flag eq 'o'}"><td>수정됨</td></c:when>
 														<c:when test="${VehicleVo.flag eq 'd'}"><td>삭제됨</td></c:when>
 													</c:choose>
@@ -294,6 +273,7 @@ $(function(){
 	$(".chosen-select").chosen(); 
 });
 </script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script>
@@ -314,6 +294,22 @@ $(function() {
       $(this).next().focus();
    });
 });
+
+//주소
+function execDaumPostcode() {
+	new daum.Postcode({
+		oncomplete : function(data) {
+			var fullRoadAddr = data.roadAddress;
+			console.log(data)
+			$("#wideAddress").val(data.sido);
+			$("#cityAddress").val(data.sigungu); 
+			$("#detailAddress").val(data.roadname + " ");
+			$("#detailAddress").focus(); 
+		}
+	}).open();
+};
+
+
 </script>
 </body>
 </html>

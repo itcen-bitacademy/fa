@@ -30,7 +30,6 @@ public class Menu30Repository {
 
 	public List<ReceiptVo> list(PaginationUtil pagination, ReceiptVo revo) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		revo.setCustomerNo("0200017");
 		map.put("pagination", pagination);
 		map.put("vo", revo);
 		List<ReceiptVo> list= sqlSession.selectList("menu30.list",map);

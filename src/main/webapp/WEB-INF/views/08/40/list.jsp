@@ -31,7 +31,7 @@
 			<div class="page-content">
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">토지현황조회</h1>
+					<h1 class="pull-left">건물현황조회</h1>
 				</div>
 				<!-- /.page-header -->
 				<div class="row-fluid">
@@ -53,15 +53,15 @@
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">대분류코드</label>
+										<label class="control-label" for="form-field-select-1">대분류</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-section" name="sectionNo" data-placeholder="대분류코드">
-												<option value=""></option>
+											<select class="chosen-select" id="form-field-section" name="sectionName" data-placeholder="대분류">
+											<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
-													<option sectionList="${sectionVo.classification}" value="${sectionVo.code }">${sectionVo.code }</option>
+													<option sectionList="${sectionVo.code }" value="${sectionVo.classification}">${sectionVo.classification}</option>
 												</c:forEach>
 											</select> 
-											<input readonly type="text" class="span6" id="classification" name="sectionName" placeholder="코드를 지정하면 대분류명이 입력됩니다">
+											<input readonly type="text" class="span6" id="code" name="sectionNo" placeholder="대분류명을 지정하면 코드가 입력됩니다">
 										</div>
 									</div>
 									
@@ -79,15 +79,15 @@
 									</div>
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">거래처코드</label>
+										<label class="control-label" for="form-field-select-1">거래처</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-customer" name="customerNo" data-placeholder="거래처코드">
+											<select class="chosen-select" id="form-field-customer" data-placeholder="거래처" name="customerName">
 												<option value=""></option>
 												<c:forEach items="${customerList }" var="customerVo">
-													<option customerName="${customerVo.name}" managerName="${customerVo.managerName }" value="${customerVo.no }">${customerVo.no }</option>
+													<option customerNo="${customerVo.no}" managerName="${customerVo.managerName }" value="${customerVo.name }">${customerVo.name }</option>
 												</c:forEach>
 											</select> 
-											<input readonly type="text" class="span6" name="customerName" id="customerName" placeholder="코드를 지정하면 거래처명이 입력됩니다">
+											<input readonly type="text" class="span6" name="customerNo" id="customerNo" placeholder="거래처명을 지정하면 코드가 입력됩니다">
 										</div>
 									</div>
 
@@ -129,7 +129,7 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">상세주소</label>
 										<div class="controls">
-											<input type="text" id="detailAddress" name="detailAddress"
+											<input type="text" id="detailAddress" name="detailAddress" class="span8"
 												placeholder="상세주소를 입력하세요" />
 										</div>
 									</div>
@@ -190,7 +190,7 @@
 										<th>공시지가(원)</th>
 										<th>취득금액(원)</th>
 										<th>기타비용(원)</th>
-										<th>취득세(원)</th>
+										<th>등록세(원)</th>
 										<th>세금계산서번호</th>
 										<th>합병코드</th>
 										<th>구분</th>
@@ -289,14 +289,14 @@
 		$(function() {
 			$(".chosen-select").chosen();
 			$('#id-date-range-picker-1').daterangepicker({
-				format: 'YYYY-MM-DD'
+				format: 'YYYY-MM-DD',
+				separator: '~'
 			}).prev().on(ace.click_event, function(){
 				$(this).next().focus();
 			});
 		});
 		
 		//date range picker
-		
 		
 	</script>
 	
@@ -320,15 +320,18 @@
 	<script>
 	
 	//select box 선택 시 값 등록
+	
+	//대분류
 	$('#form-field-section').change(function() {
-  		var classification = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.classification}
- 		$('#classification').val(classification); 
+  		var code = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.code}
+ 		$('#code').val(code); 
 	});
 	
+	//거래처-담당자
 	$('#form-field-customer').change(function() {
-  		var customername = $('#form-field-customer option:selected').attr('customerName'); // ${customerVo.name}
-  		$('#customerName').val(customername);
- 		var managername = $('#form-field-customer option:selected').attr('managerName'); // ${customerVo.manager_name}
+  		var customerno = $('#form-field-customer option:selected').attr('customerNo'); // ${customerVo.no}
+  		$('#customerNo').val(customerno);
+  		var managername = $('#form-field-customer option:selected').attr('managerName'); // ${customerVo.manager_name}
  		$('#managerName').val(managername);
 	});
 	

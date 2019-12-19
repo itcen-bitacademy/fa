@@ -867,7 +867,7 @@ $(function(){
 									var n = td.eq(0).attr('lterm-no');
 									if(n == response.data.no){
 										var m = response.data.repayBal
-										td.eq(5).html(m).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+										td.eq(5).html(m.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 									}
 								});
 								
@@ -1140,6 +1140,7 @@ $(function() {
 <script type="text/javascript">
 
 jQuery(function(){
+	
     // 숫자 제외하고 모든 문자 삭제.
     $.fn.removeText = function(_v){
         //console.log("removeText: 숫자 제거 합니다.");
@@ -1303,11 +1304,13 @@ $("form").on("submit", function() {
 	         	           modal: true,
 	         	           close: function() {
 	                       $('#dialog-repayment-delete table').remove();
+	                       $("input").attr('disabled',false);
 	                    },
 	                    buttons: {
 	                    "닫기" : function() {
 	                             $(this).dialog('close');
 	                             $('#dialog-repayment-delete table').remove();
+	                             $("input").attr('disabled',false);
 	                        }
 	                    }
 	                });

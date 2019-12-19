@@ -530,7 +530,8 @@
 			update_userid = #{updateUserid },
 			update_day = now(),
 			account_no = #{accountNo }
-		where voucher_no = #{no };
+		where voucher_no = #{no }
+		  and order_no = #{orderNo };
 	]]>
 	</update>
 	
@@ -801,6 +802,15 @@
 	<select id="businessDateStr" resultType="String">
 	<![CDATA[
 		select now();
+	]]>
+	</select>
+	
+	<!-- 결산 / 전표 등록 날짜 구하기 -->
+	<select id="getRegDate" resultType="String" parameterType="Long">
+	<![CDATA[
+		select reg_Date
+		  from tb_voucher_manager
+		 where no = #{no };
 	]]>
 	</select>
 </mapper>

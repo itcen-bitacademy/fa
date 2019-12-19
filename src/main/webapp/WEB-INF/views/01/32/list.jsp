@@ -39,11 +39,7 @@
 		
 		
 				<div class="page-header position-relative">
-					<h1 class="pull-left">계정거래처원장조회[32]</h1>
-					<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-						<i class="icon-plus-sign bigger-120 green"></i>
-						팀 추가
-					</a>
+					<h1 class="pull-left">계정거래처원장조회 [32]</h1>
 				</div><!-- /.page-header -->
 			
 				<div class="row-fluid"> <!-- 검색조건 -->
@@ -277,40 +273,44 @@
 										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 											<tr style="text-align: center;">
 
-												<td class="">${vo.accountName }</td>
-												<td>${vo.customerName } </td>
-												<td>${vo.regDate }</td>
-												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
-												<td>${vo.amountFlag }</td>
+												<td class="center">${vo.accountName }</td>
+												<td class="center">${vo.customerName } </td>
+												<td class="center">${vo.regDate }</td>
+												<td class="center">${vo.voucherNo }-${vo.voucherOrderNo }</td>
+												<td class="center">${vo.amountFlag }</td>
 													<c:choose>
 												        <c:when test="${vo.amountFlag == '차변' }">
-												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												            <td style="text-align: right;"></td>
+												        </c:when>
+												        <c:otherwise>
+												        	<td style="text-align: right;"></td>
+												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												        </c:otherwise>
+												    </c:choose>
+												<td class="center">${vo.bankName }</td>
+													<c:choose>
+														<c:when test="${vo.customerName eq '여비' }">
+															<td>${vo.cardNo }</td>
 												            <td></td>
+												            <td>${vo.cardUser }</td>
 												        </c:when>
 												        <c:otherwise>
 												        	<td></td>
-												            <td><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												        	<td>${vo.depositNo }</td>
+												            <td>${vo.depositHost }</td>
 												        </c:otherwise>
 												    </c:choose>
-												<td>${vo.bankName }</td>
-												<td>${vo.cardNo }</td>
-												<td>${vo.depositNo }</td>
-												<c:choose>
-												<c:when test="${empty vo.depositHost }">
-												<td>${vo.cardUser }</td>
-												</c:when>
-												<c:otherwise>
-												<td>${vo.depositHost }</td>
-												</c:otherwise>
-												</c:choose>
-												<td>${vo.voucherUse }</td>
-												<td>${vo.insertTeam }</td>
+												<td class="center">${vo.voucherUse }</td>
+												<td class="center">${vo.insertTeam }</td>
 												    
 											</tr>
 											
 									</c:forEach>
 									<tr>
 										<td>[합계]</td>
+										<td></td>
+										<td></td>
 										<td></td>
 										<td></td>
 										<td></td>
