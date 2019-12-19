@@ -35,6 +35,7 @@ public class Menu34Controller {
 	@Autowired
 	private Menu34Service menu34Service;
 	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
 					   @RequestParam(value="page", required=false, defaultValue="1") int page,
@@ -103,6 +104,7 @@ public class Menu34Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
 	public Map<String, Object> paging(@RequestParam(value="no", required=false, defaultValue="") String no,
@@ -152,6 +154,7 @@ public class Menu34Controller {
 		return map;
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/factorypaging")
 	public Map<String, Object> factorypaging(@RequestParam(value="factory_page", required=false, defaultValue="1") int factory_page,
@@ -175,6 +178,7 @@ public class Menu34Controller {
 		return map;
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/sectionpaging")
 	public Map<String, Object> sectionpaging(@RequestParam(value="section_page", required=false, defaultValue="1") int section_page,
