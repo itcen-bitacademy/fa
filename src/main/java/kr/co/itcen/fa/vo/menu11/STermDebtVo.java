@@ -18,7 +18,7 @@ public class STermDebtVo {
 	private String debtExpDate; // 차입 - 만기일자 한번에 받기
 	private String debtDate; // 차입일자
 	private String expDate; // 만기일자
-	private Long intRate; // 이율
+	private Double intRate; // 이율
 	private String intPayWay; // 이자지급방식
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
@@ -101,10 +101,10 @@ public class STermDebtVo {
 	public void setExpDate(String expDate) {
 		this.expDate = expDate;
 	}
-	public Long getIntRate() {
+	public Double getIntRate() {
 		return intRate;
 	}
-	public void setIntRate(Long intRate) {
+	public void setIntRate(Double intRate) {
 		this.intRate = intRate;
 	}
 	public String getIntPayWay() {
