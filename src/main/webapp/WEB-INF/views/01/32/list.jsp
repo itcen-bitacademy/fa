@@ -289,16 +289,18 @@
 												        </c:otherwise>
 												    </c:choose>
 												<td class="center">${vo.bankName }</td>
-												<td class="center">${vo.cardNo }</td>
-												<td class="center">${vo.depositNo }</td>
-												<c:choose>
-												<c:when test="${empty vo.depositHost }">
-												<td class="center">${vo.cardUser }</td>
-												</c:when>
-												<c:otherwise>
-												<td class="center">${vo.depositHost }</td>
-												</c:otherwise>
-												</c:choose>
+													<c:choose>
+														<c:when test="${vo.customerName eq '여비' }">
+															<td>${vo.cardNo }</td>
+												            <td></td>
+												            <td>${vo.cardUser }</td>
+												        </c:when>
+												        <c:otherwise>
+												        	<td></td>
+												        	<td>${vo.depositNo }</td>
+												            <td>${vo.depositHost }</td>
+												        </c:otherwise>
+												    </c:choose>
 												<td class="center">${vo.voucherUse }</td>
 												<td class="center">${vo.insertTeam }</td>
 												    

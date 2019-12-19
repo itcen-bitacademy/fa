@@ -23,7 +23,7 @@ import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
  * 장기차입금현황조회
  *
  */
-
+@Auth
 @Controller
 @RequestMapping("/" + Menu49Controller.MAINMENU)
 public class Menu49Controller {

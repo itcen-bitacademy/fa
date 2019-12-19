@@ -12,7 +12,7 @@ public class VehicleVo {
 	private String taxbillNo; 
 	private long voucherNo;
 	private String sectionNo;
-	private String classification;
+	private String classification; //1000CC대분류
 	private Long staffNo; //직급번호
 	private String staffName; //직급명
 	private String ownerName;

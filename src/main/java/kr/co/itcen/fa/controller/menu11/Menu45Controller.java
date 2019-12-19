@@ -11,6 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu11.Menu45Service;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 
@@ -31,6 +32,9 @@ public class Menu45Controller {
 	@Autowired
 	private Menu45Service menu45Service;
 	
+	
+	
+	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method=RequestMethod.GET)
 	public String list(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,

@@ -139,9 +139,6 @@
 	</update>
  
  
-
-	
-	
 	<!-- 세금계산서 등록-->
 	<insert id="insertTaxbill" parameterType="08taxVehicle">
 		<![CDATA[
@@ -248,14 +245,14 @@
 	<!-- pageCount -->
 	<select id="pageCount" resultType="int" parameterType="string">
 		<![CDATA[
-			select  count(*) as cnt
-		from tb_vehicle v 
-				 left outer join tb_staff st on v.staff_no = st.no
-				 left outer join tb_section s on v.section_no = s.code 
-                 left outer join user u on v.insert_userid = u.id
-                 left outer join tb_customer c on v.customer_no = c.no
-                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
-		where s.parent_no=4 and v.flag IN('s','o')
+		select  count(*) as cnt
+			from tb_vehicle v 
+					 left outer join tb_staff st on v.staff_no = st.no
+					 left outer join tb_section s on v.section_no = s.code 
+	                 left outer join user u on v.insert_userid = u.id
+	                 left outer join tb_customer c on v.customer_no = c.no
+	                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
+			where s.parent_no=4 and v.flag IN('s','o')
 		]]>
 		<if test="_parameter"><!-- "_parameter.length()>0" --> 
             <![CDATA[

@@ -530,7 +530,8 @@
 			update_userid = #{updateUserid },
 			update_day = now(),
 			account_no = #{accountNo }
-		where voucher_no = #{no };
+		where voucher_no = #{no }
+		  and order_no = #{orderNo };
 	]]>
 	</update>
 	
