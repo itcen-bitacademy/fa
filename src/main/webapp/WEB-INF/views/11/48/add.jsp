@@ -492,18 +492,21 @@ tr td:first-child {
 			</div>
 			
 			<!-- error Modal pop-up : start -->
-			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel"></h5>
-						</div>
-						<div class="modal-body" id="staticBackdropBody"></div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary btn-small" data-dismiss="modal">확인</button>
-						</div>
-					</div>
-				</div>
+			<div id="staticBackdrop"   title="Error-Message" hidden="hidden" >
+			<table align="center">
+				<tr>
+					<td>
+						<label>ERROR : </label>
+						<h3 id="staticBackdropLabel"></h3>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>ERROR Contents : </label>
+						<div id="staticBackdropBody"></div>	
+					</td>
+				</tr>
+			</table>
 			</div>
 			<!-- error Modal pop-up : end -->
 			
@@ -521,55 +524,91 @@ tr td:first-child {
 <script>
 	var ischecked = false; //중복체크 하지 않을 경우를 확인하기 위한 변수
 	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
 	//에러 모달 띄우기
-	function openErrorModal(title, message) { //validation 체크 후 에러 메시지 모달을 띄우기 위한 함수
-		$('#staticBackdropLabel').text('Error');//에러
+	function openErrorModal(title, message,errorfield) { //validation 체크 후 에러 메시지 모달을 띄우기 위한 함수
+		$('#staticBackdropLabel').html(title);//에러
 		$('#staticBackdropBody').text(message);//에러내용
 		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
 		
-		$("#staticBackdrop").dialog('open');//모델창 띄운다
 		$("#staticBackdrop").dialog({
 			title: "Eroor-Message",
 			title_html: true,
-		   	resizable: false,
-		    modal: true,
+          	resizable: false,
+	           height: 300,
+	           width: 400,
+	           modal: true,
 		    close: function() {
 		    	$('#staticBackdropLabel').text('');//에러
 				$('#staticBackdropBody').text('');//에러내용
+				$(errorfield).focus();//에러난곳으로 포커싱
 		    },
 		    buttons: {
 		    "확인" : function() {
 		          	$(this).dialog('close');
 		          	$('#staticBackdropLabel').text('');//에러
 					$('#staticBackdropBody').text('');//에러내용
+					$(errorfield).focus();
 		        }
 		    }
 		});
+		
+		$("#staticBackdrop").dialog('open');//모델창 띄운다
 	}
-	//insert Validation
-	function insertValidation(){
-		let code =$('code').val();//코드
-		let name =$('name').val();//차입이유
-		let debtAmount =$('debtAmount').val();//차입금
-		let debtExpDate =$('id-date-range-picker-1').val();//차입일,만기일
-		let intPayWay =$('input[name=intPayWay]').val();//이자지급방식
-		let bankCode =$('bank_code').val();//은행코드
-		let majorCode=$('form-field-select-3').val();//차입금대분류
-		let repayWay=$('input[name=repayWay]').val();//상환방법
-		let intRate=$('int_rate').val();//이율
-		let mgr=$('mgr').val();//담당자
-		let mgrCall=$('mgrCall').val();//담당자 번호
-		let depositNo=$('depositNo').val();//계좌번호
+	
+	//code Validation
+	function codeValid(code){
 		if('' === code){
+			errortitle = 'CODE ERROR';	
 			validationMessage = '장기차입금 코드는 반드시 입력하셔야 합니다(10자)';
+			errorfield='#code';
 			return false;
 		}
 		if('H' !== code.charAt(0)){
+			errortitle = 'CODE ERROR';
 			validationMessage = '장기차입금 코드는 반드시 H로 시작하여야 합니다';
+			errorfield='#code';
 			return false;
 		}
-		if(code.length === 10){
+		if(code.length<10 || code.length >10){
+			errortitle = 'CODE ERROR';
 			validationMessage = '장기차입금 코드는 10자리를 입력하셔야 합니다';
+			errorfield='#code';
+			return false;
+		}
+		return true;
+	}
+	
+	
+	
+	//insert Validation
+	function insertValidation(){
+		//코드는  중복체크에서 확인해준다
+		let name =$('#name').val();//차입이유
+		let debtAmount =$('#debtAmount').val();//차입금
+		let debtExpDate =$('#id-date-range-picker-1').val();//차입일,만기일
+		let intPayWay =$('input[name=intPayWay]').val();//이자지급방식
+		let bankCode =$('#bank_code').val();//은행코드
+		let majorCode=$('#form-field-select-3').val();//차입금대분류
+		let repayWay=$('input[name=repayWay]').val();//상환방법
+		let intRate=$('#int_rate').val();//이율
+		let mgr=$('#mgr').val();//담당자
+		let mgrCall=$('#mgrCall').val();//담당자 번호
+		let depositNo=$('#depositNo').val();//계좌번호
+		
+		if('' === name){
+			errortitle = 'NAME ERROR';	
+			validationMessage = '장기차입금명은 반드시 입력하셔야 합니다(최대50자)';
+			errorfield='#name';
+			return false;
+		}
+		if(code.length > 50){
+			errortitle = 'NAME ERROR';
+			validationMessage = '장기차입금명은 50 이하로 입력하셔야 합니다';
+			errorfield='#name';
 			return false;
 		}
 		return true;
@@ -919,10 +958,12 @@ tr td:first-child {
 	$("#btn-check-code").click(function(){//코드 중복체크 ajax
 		
 		var code = $("#code").val();
-		if(code == ""){
+		if(!codeValid(code)){
+			openErrorModal(errortitle,validationMessage,errorfield);
 			return;
 		}
-	
+		
+		
 	// ajax 통신
 	$.ajax({
 		url: "${pageContext.servletContext.contextPath }/11/48/checkcode?code=" + code,
@@ -1313,23 +1354,20 @@ tr td:first-child {
 			 
 		 });
 	 $("#inputbtn").click(function(){
-			$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add');
-			$('#myform').attr('method', 'POST');
+			
 			if(ischecked == false){
 				alert("중복체크 하고오세요~~");
 				return;
 			}
 			else{
 				
-				console.log("1111");
 				//validation
 				if(!insertValidation()){
-					console.log("111");
-					openModal('Error',validationMessage);
+					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
 				}
-				console.log("11111");
-				
+				$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add');
+				$('#myform').attr('method', 'POST');
 				$('#myform').submit();
 			}
 		 });	 
@@ -1363,12 +1401,7 @@ tr td:first-child {
 		$("#dialog-repayment-ischeck").dialog({
 	       autoOpen : false
 	    });
-		$("#dialog-message").dialog({
-			autoOpen : false
-		});
-		 $("#dialog-repayment-ischeck").dialog({
-	       autoOpen : false
-	    });
+		
 		 $("#dialog-repayment-delete").dialog({
 		       autoOpen : false
 		  });
