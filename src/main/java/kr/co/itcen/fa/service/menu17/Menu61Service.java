@@ -113,8 +113,8 @@ public class Menu61Service {
 			addAccountAmount(tbVo, vo, vo.getAmountFlag());
 		}
 		
-		// 이월데이터 전표 저장 
-		menu30Service.closingEntries(forwardDataList);
+		// TODO: 이월데이터 전표 저장 
+//		menu30Service.closingEntries(forwardDataList);
 		
 		// 빈값 계정 제거 
 		List<TrialBalanceVo> insertTrialBalanceList = emptyTrialBalance.stream().filter(t -> t.getCreditTotal() != null || t.getCreditSpotMonth() != null || t.getDebtorTotal() != null || t.getDebtorSpotMonth() != null).collect(Collectors.toList());
