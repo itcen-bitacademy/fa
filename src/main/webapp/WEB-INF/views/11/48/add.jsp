@@ -575,6 +575,7 @@ tr td:first-child {
 		return true;
 	}
 	
+	
 	function deleteChecked(){
 		var sendData = [];
 		var checkedList = $("#tbody-list input[type=checkbox]:checked");
