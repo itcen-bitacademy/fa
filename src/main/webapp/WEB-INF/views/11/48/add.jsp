@@ -629,6 +629,7 @@ tr td:first-child {
 	function numberWithCommas(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+	
 	$("#tbody-list tr").click(function(){ 
 		var tr = $(this);
 		var td = tr.children();
