@@ -79,11 +79,8 @@ public class Menu48Controller {
 			vo.setDebtDate(dates[0]);
 			vo.setExpDate(dates[1]);
 			vo.setInsertId(user.getId());
-			String businessDateStr = menu48Service.businessDateStr();
-			System.out.println("왜 안되냐4"+businessDateStr);
+			
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
-						
-				System.out.println("왜 안되냐");
 				
 				VoucherVo voucherVo = new VoucherVo();
 				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
