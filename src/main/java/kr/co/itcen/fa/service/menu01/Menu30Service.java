@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu30Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.ItemVo;
+import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
@@ -49,7 +52,7 @@ public class Menu30Service {
 		}
 		List<PreviousVo> pVo = new ArrayList<PreviousVo>();
 		
-		for(int i=0; i<sVo.size();i++) {
+		for(int i=0; i<sVo.size();i++) {				//거래처 계정별 amount 계산
 			if(sVo.get(i).getAccountNo()>=4000000) {
 				continue;
 			}
@@ -81,10 +84,82 @@ public class Menu30Service {
 				pVo.add(vo);
 			}
 		}
-		for(int i=0 ;i<pVo.size();i++) {
-			System.out.print(pVo.get(i).toString());
-			System.out.println();
+		
+		
+		for(int i=0; i<pVo.size(); i++) {						// 잔액큰 기준으로 차대변 변환
+			if(pVo.get(i).getAmount()<0) {
+				pVo.get(i).setAmount(-pVo.get(i).getAmount());
+				if(pVo.get(i).getAmountFlag().equals("c")) {
+					pVo.get(i).setAmountFlag("d");
+				}else {
+					pVo.get(i).setAmountFlag("c");
+				}
+			}
 		}
+		
+		for(int i=0; i<pVo.size(); i++) {						//전표 입력
+			VoucherVo voucherVo = new VoucherVo();
+			VoucherVo voucherVo2 = new VoucherVo();
+			ItemVo itemVo = new ItemVo();
+			ItemVo itemVo2 = new ItemVo();
+			MappingVo mappingVo = new MappingVo();
+			MappingVo mappingVo2 = new MappingVo();
+			
+			if(pVo.get(i).getAmountFlag().equals("c")) {
+
+				voucherVo.setRegDate("2019-11-30");				//->regdate기준으로 수정예정
+				
+				itemVo.setAmount(pVo.get(i).getAmount());
+				itemVo.setAmountFlag("d");
+				itemVo.setAccountNo(pVo.get(i).getAccountNo());
+				
+				mappingVo.setVoucherUse("차월이월");						//적요		
+				mappingVo.setCustomerNo(pVo.get(i).getCustomerNo());		
+			
+//				Long no=menu03Service.createVoucher(voucherVo, itemVo, mappingVo, user);
+				
+				voucherVo2.setRegDate("2019-12-01");
+				itemVo2.setAmount(pVo.get(i).getAmount());//예금
+				itemVo2.setAmountFlag("c");//차변
+				itemVo2.setAccountNo(pVo.get(i).getAccountNo());//계정과목코드
+				
+				mappingVo2.setVoucherUse("전월이월");						//적요
+				mappingVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
+				
+				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate());
+				System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate());
+//				Long no=menu03Service.createVoucher(voucherVo2, itemVo2, mappingVo2, user);
+				
+			}else {
+				voucherVo.setRegDate("2019-11-30");
+				
+				itemVo.setAmount(pVo.get(i).getAmount());
+				itemVo.setAmountFlag("c");
+				itemVo.setAccountNo(pVo.get(i).getAccountNo());
+				
+				mappingVo.setVoucherUse("차월이월");						//적요		
+				mappingVo.setCustomerNo(pVo.get(i).getCustomerNo());		
+			
+//				Long no=menu03Service.createVoucher(voucherVo, itemVo, mappingVo, user);
+				
+				voucherVo2.setRegDate("2019-12-01");
+				itemVo2.setAmount(pVo.get(i).getAmount());//예금
+				itemVo2.setAmountFlag("d");//차변
+				itemVo2.setAccountNo(pVo.get(i).getAccountNo());//계정과목코드
+				
+				mappingVo2.setVoucherUse("전월이월");						//적요
+				mappingVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
+				
+//				Long no=menu03Service.createVoucher(voucherVo2, itemVo2, mappingVo2, user);
+			
+				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate());
+				System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate());
+			}
+			
+			
+		}
+		
+		
 	}	
 	
 	
