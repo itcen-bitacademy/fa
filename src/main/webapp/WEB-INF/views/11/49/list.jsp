@@ -100,7 +100,7 @@ form {
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
 											</c:otherwise>
 											</c:choose>
-												<span class="lbl">년</span>
+												<span class="lbl">연</span>
 											</label>
 										</div>
 										<div class="radio">
@@ -243,14 +243,14 @@ form {
 							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
 							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount-ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
-										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>		
 							<td class="center">${ltermvo.debtExpDate}</td>
 							<td class="center">${ltermvo.intRate}%</td>
 							<c:choose>
-										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>	
