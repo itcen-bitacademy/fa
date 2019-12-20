@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu30Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
@@ -41,12 +43,13 @@ public class Menu30Service {
 		dataResult.setDatas(list);
 		
 		List<StatementDataVo> statementDataList = menu30Repository.statementData();
-		closingEntries(statementDataList);
+		UserVo vo = new UserVo();
+		closingEntries(statementDataList, vo );
 		
 		return dataResult;
 	}
 	
-	public void closingEntries(List<StatementDataVo> sVo) {
+	public void closingEntries(List<StatementDataVo> sVo, UserVo authUser) {
 		if(sVo==null) {								//전달값이 없을경우 그냥 반환
 			return;
 		}
@@ -161,6 +164,14 @@ public class Menu30Service {
 		
 		
 	}	
+	
+	public void closingEntriesDelete(ClosingDateVo vo, UserVo authUser ) {
+		
+	}
+	
+	
+	
+	
 	
 	
 	public boolean exist(List<PreviousVo> pVo, StatementDataVo sVo) {			//존재하는지 여부
