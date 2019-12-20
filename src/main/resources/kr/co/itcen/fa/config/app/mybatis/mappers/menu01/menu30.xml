@@ -108,4 +108,40 @@
 		</if>
 	</select>
 
+
+	<select id="statementData" resultType="statementData17Vo">
+		<![CDATA[
+		select	
+				a.no as account_no
+				, a.name as account_name
+				, sum(i.amount) as amount
+				, i.amount_flag as amount_flag
+				, a.parent1 as parent1
+				, a.parent2 as parent2
+				, a.parent3 as parent3
+				, a.parent4 as parent4
+				, a.parent5 as parent5
+				, m.customer_no as customerNo
+		  from tb_voucher_manager as v
+		  join tb_voucher_item as i on v.no = i.voucher_no
+		  join tb_account as a on a.no = i.account_no
+		  join tb_voucher_system_mapping m on m.voucher_no = v.no
+		 where v.reg_date >= '2019-11-01'
+		   and v.reg_date <= '2019-11-31'
+		   and v.use_yn = 1
+		   and i.use_yn = 1
+	  group by 
+				a.no
+				, a.name
+				, i.amount
+				, i.amount_flag
+				, a.parent1
+				, a.parent2
+				, a.parent3
+				, a.parent4
+				, a.parent5
+				, m.customer_no
+		;
+		]]>
+	</select>
 </mapper>
