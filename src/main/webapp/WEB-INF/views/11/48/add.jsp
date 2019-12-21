@@ -435,7 +435,7 @@ tr td:first-child {
 					<tbody id= "tbody-list">
 						<c:forEach items="${dataResult.datas }" var="ltermvo">
 						<tr>
-							<td class="center" lterm-no ="${ltermvo.no}" ><label class="pos-rel" > <input
+							<td class="center" lterm-no ="${ltermvo.no}" ><label class="pos-rel" onclick='event.cancelBubble=true' > <input
 								type="checkbox" class="ace" lterm-no ="${ltermvo.no}" name="checkBox" /> <span class="lbl"></span>
 							</label></td>
 							<td class="center">${ltermvo.code}</td>
