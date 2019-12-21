@@ -53,8 +53,6 @@ public class Menu48ApiController {
 		try {
 			if(menu19Service.checkClosingDate(uservo, vo.getPayDate())) { 
 				vo.setInsertId(uservo.getId());//유저 아이디 셋팅
-				menu48Service.update(vo);//기존 장기 차입금 수정
-				System.out.println(vo);
 				LTermdebtVo lvo = menu48Service.getOne(vo.getDebtNo());//기존 장기차입금 컬럼 값 읽기
 				
 				
@@ -94,16 +92,17 @@ public class Menu48ApiController {
 				Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
 				
 				vo.setVoucherNo(no);
-				menu48Service.insert(vo);//상환 테이블에 insert -> 
-				System.out.println(lvo.getDebtAmount());
-				System.out.println(lvo.getRepayBal());
 				
-				if(lvo.getRepayBal() <= 0)
+				
+				menu48Service.update(vo);//기존 장기 차입금 수정
+				lvo = menu48Service.getOne(vo.getDebtNo());//기존 장기차입금 컬럼 값 읽기
+				menu48Service.insert(vo);//상환 테이블에 insert -> 
+				
+				if(lvo.getRepayBal() == 0)
 					menu48Service.updateRepayFlag(lvo.getNo());
 				return JSONResult.success(lvo);
 				}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return JSONResult.success(null);

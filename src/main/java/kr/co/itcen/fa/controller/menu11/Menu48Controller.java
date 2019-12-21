@@ -49,7 +49,7 @@ public class Menu48Controller {
 	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year,
+			@RequestParam(value="financialYear",required = false, defaultValue = "") String year,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page
 			) {
 		
@@ -58,6 +58,7 @@ public class Menu48Controller {
 		
 		
 		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("code",code);
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("year",year);
 		
@@ -66,8 +67,10 @@ public class Menu48Controller {
 	}
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
 	public String list(@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") int year,
+			@RequestParam(value="financialYear",required = false, defaultValue ="") String year,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
+		System.out.println(code+"search");
+		System.out.println(year+"search");
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code+"&page"+page;
 	}
