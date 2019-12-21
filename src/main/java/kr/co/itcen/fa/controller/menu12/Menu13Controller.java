@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu12.Menu13Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
@@ -51,6 +52,7 @@ public class Menu13Controller {
 	private Menu53Controller menu53Controller;
 	
 	// index
+	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU}, method=RequestMethod.GET )
 	public String index(@SessionAttribute("authUser") UserVo authUser, Model model) {
 		System.out.println("index");
