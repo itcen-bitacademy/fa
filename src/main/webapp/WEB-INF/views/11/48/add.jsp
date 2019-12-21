@@ -1373,6 +1373,7 @@ tr td:first-child {
 		         	  	$("#repay-code").text(repayList[0].code);
 		         	  	for(let a in repayList) {
 		         	  			
+		         	  		
 			         	  	$("#tbody-repaymentList").append("<tr>" +
 			                          "<td class='center'>" + repayList[a].code + "</td>" +
 			                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
