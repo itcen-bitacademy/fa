@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,21 @@ public class Menu66ApiController {
 	public JSONResult deleteChecked(@AuthUser UserVo authUser,
 			@RequestBody List<RepayVo> voList) {
 		System.out.println("voList:" + voList);
+		//전표 삭제
+		Map map = new HashMap();
 		
-		return JSONResult.success(null);
+		
+		//차입금 수정 : 상환금을 잔액에 다시 더해준다.
+		menu66Service.updateDebt(voList, authUser);
+		
+		//전표 삭제
+		menu66Service.deleteVoucerList(voList, authUser);
+		menu66Service.deleteChecked(voList);						//상환내역 삭제
+		
+		//삭제후 리스트 다시 얻음.
+		map = menu66Service.getList(new RepayVo(), 1, 8);			//기본 리스트를 불러온다
+		
+		//삭제
+		return JSONResult.success(map);
 	}
 }

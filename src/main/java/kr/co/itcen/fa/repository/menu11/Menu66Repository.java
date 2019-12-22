@@ -68,7 +68,11 @@ public class Menu66Repository {
 		Long longNo = sqlSession.selectOne("menu66.selectByVoucherNo", no);
 		return longNo;
 	}
-
+	
+	public Boolean restoreRepayBal4Delete(RepayVo vo) {
+		int count = sqlSession.update("menu66.restoreRepayBal4Delete", vo);
+		return count == 1;
+	}
 	// 상환잔액을 수정되기 이전으로 돌리기
 	public Boolean restoreRepayBal(RepayVo vo) {
 		int count = sqlSession.update("menu66.restoreRepayBal", vo);
@@ -139,6 +143,10 @@ public class Menu66Repository {
 		
 		int count = sqlSession.update("menu66.deleteDebt", list);
 		return count >= 1;
+	}
+	public Boolean updateDeleteFlag(List<RepayVo> voList) {
+		int count = sqlSession.update("menu66.updateDeleteFlag", voList);
+		return (count == voList.size());
 	}
 	
 }

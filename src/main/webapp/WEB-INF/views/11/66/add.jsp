@@ -462,7 +462,7 @@ function deleteChecked(){
 		contentType : 'application/json',
 		data: JSON.stringify(voList),
 		success: function(response){
-			console.log("Ajax 성공");
+			console.log("삭제가 완료 되었습니다.");
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
 			
