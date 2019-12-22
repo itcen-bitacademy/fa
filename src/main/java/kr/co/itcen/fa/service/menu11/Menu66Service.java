@@ -1,12 +1,14 @@
 package kr.co.itcen.fa.service.menu11;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu66Repository;
+import kr.co.itcen.fa.util.Pagination;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
@@ -36,7 +38,23 @@ public class Menu66Service {
 
 		return dataResult;
 	}
-
+	
+	public Map getList(RepayVo vo, int page, int pageSize){
+		int totalCnt = menu66Repository.getTotalCnt(vo);
+		System.out.println("totalCnt : " + totalCnt);
+		Pagination pagination = new Pagination(page, totalCnt);
+		Map map = pagination.getRowRangeMap();
+		map.put("vo", vo);
+		System.out.println("Service map : " + map);
+		List<RepayVo> list = menu66Repository.getList(map);
+		
+		System.out.println("list : " + list);
+		map.clear();
+		map.put("list", list);
+		map.put("pagination", pagination);
+		
+		return map;
+	}
 	public Boolean update(RepayVo vo) {
 		return menu66Repository.update(vo);
 	}

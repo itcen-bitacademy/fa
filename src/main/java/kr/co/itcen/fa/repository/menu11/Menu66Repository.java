@@ -27,7 +27,15 @@ public class Menu66Repository {
 
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	//조건에 해당하는 총 건수 반환
+	public int getTotalCnt(RepayVo vo){
+		return sqlSession.selectOne("menu66.getTotalCnt",vo);
+	}
+	//해당 리스트를 반환
+	public List<RepayVo> getList(Map map){
+		return sqlSession.selectList("menu66.getList", map);
+	}
 	// 상환테이블 데이터 카운트
 	public int listCount(String code, String debtType) {
 		Map<String, Object> map = new HashMap<String, Object>();

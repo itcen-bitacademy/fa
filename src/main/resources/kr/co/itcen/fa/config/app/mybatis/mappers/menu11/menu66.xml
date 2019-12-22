@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu66">
-		
+	
+	<resultMap type="repayvo" id="repayResult">
+		<result column="debt_no" property="debtNo"/>
+		<result column="pay_princ" property="payPrinc"/>
+		<result column="int_amount" property="intAmount"/>
+		<result column="pay_date" property="payDate"/>
+		<result column="debt_type" property="debtType"/>
+		<result column="voucher_no" property="voucherNo"/>
+		<result column="insert_id" property="insertId"/>
+		<result column="insert_date" property="insertDate"/>
+		<result column="update_id" property="updateId"/>
+		<result column="update_date" property="updateDate"/>
+	</resultMap>
+	<select id="getTotalCnt" parameterType="repayvo" resultType="int">
+		<![CDATA[
+			select count(*)
+			from tb_repay
+			where delete_flag="N"
+		]]>
+		<if test='code != null and !"".equals(code)'>
+			and code = #{code}
+		</if>
+		<if test='debtType != null and !"".equals(debtType)'>
+			and debt_type=#{debtType}
+		</if>
+	</select>
+	<select id="getList" parameterType="map" resultType="repayvo" resultMap="repayResult">
+		<![CDATA[
+			select *
+			from tb_repay
+			where delete_flag="N"
+		]]>
+		<if test='vo.code != null and !"".equals(vo.code)'>
+			and code = #{vo.code}
+		</if>
+		<if test='vo.debtType != null and !"".equals(vo.debtType)'>
+			and debt_type=#{vo.debtType}
+		</if>
+		limit ${startRow}, ${pageSize}
+	</select>
 	<select id="selectAllCount" resultType="int" parameterType="map">
 		<![CDATA[
 			select count(*) 
