@@ -435,7 +435,7 @@ tr td:first-child {
 					<tbody id= "tbody-list">
 						<c:forEach items="${dataResult.datas }" var="ltermvo">
 						<tr>
-							<td class="center" lterm-no ="${ltermvo.no}" ><label class="pos-rel" onclick='event.cancelBubble=true' > <input
+							<td class="center" lterm-no ="${ltermvo.no}" ><label class="pos-rel"  onclick='event.cancelBubble=true'> <input
 								type="checkbox" class="ace" lterm-no ="${ltermvo.no}" name="checkBox" /> <span class="lbl"></span>
 							</label></td>
 							<td class="center">${ltermvo.code}</td>
@@ -816,7 +816,7 @@ tr td:first-child {
 	    //{숫자}를 값을 변경시 자리수 조정 가능
 	    if(_pattern1.test(_value)){
 	        if(charCode != 46){
-	        	openErrorModal('INTRATE ERROR',"두자리 이하의 숫자만 입력 가능합니다",'#int_rate');
+	        	openErrorModal('INTRATE ERROR',"100 이하의 숫자만 입력 가능합니다",'#int_rate');
 	            return false;
 	        }
 	    } 
@@ -932,6 +932,17 @@ tr td:first-child {
 		$("input[name=bankName]").val(td.eq(13).attr('bank-name'));
 		$("input[name=depositHost]").val(td.eq(14).attr('deposit-host'));
 		
+		console.log(td.eq(0).children().children().prop('checked'));
+		if(td.eq(0).children().children().prop('checked')== false){
+			$(td.eq(0).children().children()).prop('checked',true);
+		}else{
+			$('input').val('');
+			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
+			$('#code').attr('readonly',false);
+			$('#form-field-1').val(2019); 
+			$('#btn-check-code').val('중복확인');
+			$(td.eq(0).children().children()).prop('checked',false);
+		}
 		
 	});
 	$("#clear").click(function(){ 
@@ -942,6 +953,13 @@ tr td:first-child {
 		 
 		 $('#btn-check-code').val('중복확인');
 		 
+		 
+		 $("#tbody-list tr").each(function(i){
+				var td = $(this).children();
+				if($(td.eq(0).children().children()).prop('checked') == true){
+					$(td.eq(0).children().children()).prop('checked',false);
+				}
+		 });
 	});
 	
 	$("#checkall").click(function(){
@@ -1167,6 +1185,53 @@ tr td:first-child {
 							
 							return;
 						}
+						if(response.data.repayBal == 0){
+							var no = response.data.no;
+							$.ajax({
+								url: "${pageContext.servletContext.contextPath }/11/48/checkrepay?no=" + no,
+								contentType : "application/json; charset=utf-8",
+								type: "get",
+								dataType: "json",
+								data: "",
+								success: function(response){
+									if(response.result == "fail"){
+										console.error(response.message);
+										return;
+									}
+						         	var repayList = response.data;
+						         	for(let a in repayList) {  			
+						         	$("#tbody-repaymentList").append("<tr>" +
+							             "<td class='center'>" + repayList[a].code + "</td>" +
+				                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
+				                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                          "<td class='center'>" + repayList[a].payDate + "</td>" +
+				                          "</tr>");
+					         	  	}
+						         	$("#dialog-repayment-ischeck").dialog({
+						              title: "상환정보",
+					                   title_html: true,
+					                      	resizable: false,
+					         	           height: 500,
+					         	           width: 400,
+					         	           modal: true,
+					         	           close: function() {
+					                       $('#tbody-repaymentList tr').remove();
+					                    },
+					                    buttons: {
+					                    "닫기" : function() {
+					                             $(this).dialog('close');
+					                             $('#tbody-repaymentList tr').remove();
+					                        }
+					                    }
+					                });     
+					                $("#dialog-repayment-ischeck").dialog('open');
+									
+									},
+									error:function(xhr,error) {
+										console.err("error" + error);
+									}
+								});
+						}
 						$("#tbody-list tr").each(function(i){
 							var td = $(this).children();
 							var n = td.eq(0).attr('lterm-no');
@@ -1174,6 +1239,7 @@ tr td:first-child {
 								var m = response.data.repayBal
 								td.eq(5).html(m.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 							}
+							
 						});
 						
 					},
@@ -1338,6 +1404,18 @@ tr td:first-child {
 	});
 	//상환내역이 있을경우 수정 안되게 하는 코드
 	 $("#updatebtn").click(function(){
+		 
+		 var count = $("input:checkbox[name=checkBox]:checked").length;
+		if(count>1){
+			openErrorModal('UPDATE ERROR','하나의 내용만 수정할 수 있습니다','');
+			return;
+		}
+		if(count<=0){
+			openErrorModal('UPDATE ERROR','수정할 리스트를 선택하여 주세요','');
+			return;
+		}	
+		 
+		 
 		 var no = $('#no').val();
 		 $.ajax({
 				url: "${pageContext.servletContext.contextPath }/11/48/checkrepay?no=" + no,
@@ -1403,8 +1481,7 @@ tr td:first-child {
 		                });
 		                
 		                $("#dialog-repayment-ischeck").dialog('open');
-		         	  	
-		         	  	
+	
 		         	  	
 					}
 					
@@ -1617,7 +1694,7 @@ tr td:first-child {
 			
 			if(ischecked == false){
 				openErrorModal('DUPLICATE CHECK ERROR',"중복체크 하고 오세요",'#code');
-		
+
 				return;
 			}
 			else{

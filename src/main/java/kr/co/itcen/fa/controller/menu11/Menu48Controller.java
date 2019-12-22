@@ -114,7 +114,7 @@ public class Menu48Controller {
 				
 				
 				Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-				
+				System.out.println(vo);
 				vo.setVoucherNo(no);
 				menu48Service.insert(vo);
 			}
