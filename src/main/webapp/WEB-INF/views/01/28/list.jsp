@@ -157,7 +157,6 @@
 										<th class="center">대표자</th>
 										<th class="center">주소</th>
 										<th class="center">업태/종목</th>
-										<th class="center">관할영업소</th>
 										<th class="center">거래처 전화번호</th>
 										<th class="center">거래처 담당자 성명</th>
 										<th class="center">e-mail</th>
@@ -180,7 +179,6 @@
 												<td>${vo.ceo }</td>
 												<td>${vo.address } ${vo.detailAddress }</td>
 												<td>${vo.conditions }/${vo.item }</td>
-												<td>${vo.jurisdictionOffice }</td>
 												<td>${vo.phone }</td>
 												<td>${vo.managerName }</td>
 												<td>${vo.managerEmail }</td>

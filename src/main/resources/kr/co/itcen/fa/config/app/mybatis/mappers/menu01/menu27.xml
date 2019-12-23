@@ -176,8 +176,7 @@
 	<update id="update" parameterType="1customervo">
 		<![CDATA[
 			update tb_customer
-			   set no = concat('A' ,#{no }),
-				   name = #{name },
+			   set name = #{name },
 				   ceo = #{ceo },
 				   address = #{address }, 
 				   detail_address = #{detailAddress },
@@ -228,5 +227,11 @@
 			   and name!='여비'
 		]]>
 	</select>
+	
+	<update id="updateBankAccount" parameterType="bankaccountvo">
+      update tb_customer
+      set deposit_no = #{depositNo}
+      where deposit_no = #{depositOld}
+   </update>
 	
 </mapper>

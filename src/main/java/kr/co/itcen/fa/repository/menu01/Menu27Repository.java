@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
 
@@ -88,5 +89,14 @@ public class Menu27Repository {
 		int res = sqlSession.selectOne("menu27.getCount");
 		return res;
 	}
+
+	
+	//update deposit_no from 슬기형
+	public Map<String, Object> updateBankAccount(BankAccountVo bankAccountVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		sqlSession.update("menu27.updateBankAccount", bankAccountVo);
+		return map;
+	}
+	
 
 }

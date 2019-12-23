@@ -64,6 +64,9 @@ function execDaumPostcode() {
 		$("#btn-delete").click(function(){
 			a = "delete";
 		});
+		$("#btn-reset").click(function(){
+			$("#no").attr("readonly",false);
+		});
 		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
@@ -221,6 +224,7 @@ function execDaumPostcode() {
 		  $(".chosen-select").chosen();
 	}
 	
+	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
@@ -285,7 +289,8 @@ function execDaumPostcode() {
 		} else if (td6 =="무형자산"){
 		$('input:radio[name=assetsFlag]:input[value="d"]').prop("checked", true);
 		}
-		});
+		$("#no").attr("readonly",true);
+	});
 	
 	function settingInput(customerList) {
 		$("input[name=no]").val(customerList[0].no);

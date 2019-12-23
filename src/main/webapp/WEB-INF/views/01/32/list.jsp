@@ -48,7 +48,7 @@
 							거래처/코드:&nbsp;
 									<div class="input-append">
 										<a href="#" id="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width:150px;" readonly/>
+											<input type="text" class="search-input-width-first" id="customerName" placeholder="거래처명" name="customerName" style="text-align: center; width:150px;" readonly/>
 											<script type="text/javascript">
 												var customerName = "${param.customerName}";
 												$("#customerName").val(customerName);
@@ -59,7 +59,7 @@
 				                    	</a>
 									</div>
 				
-						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						<input type="text" id="customerNo" name="customerNo" placeholder="거래처 코드" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
 						<script type="text/javascript">
 							var customerNo = "${param.customerNo}";
 							$("#customerNo").val(customerNo);
@@ -72,7 +72,7 @@
 						&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명
 									<div class="input-append">
 										<a href="#" id="a-accountinfo-dialog">
-											<input type="text" class="search-input-width-first" id="accountNo" name="accountNo" style="text-align: center; width:150px;" readonly/>
+											<input type="text" class="search-input-width-first" placeholder="계정코드" id="accountNo" name="accountNo" style="text-align: center; width:150px;" readonly/>
 											<script type="text/javascript">
 												var accountNo = "${param.accountNo}";
 												$("#accountNo").val(accountNo);
@@ -83,7 +83,7 @@
 				                    	</a>
 									</div>
 				
-						<input type="text" id="accountName" name="accountName" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						<input type="text" id="accountName" name="accountName" placeholder="계정명" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
 						<script type="text/javascript">
 							var accountName = "${param.accountName}";
 							$("#accountName").val(accountName);
@@ -207,7 +207,7 @@
 					
 						&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px"/>
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px" readonly="readonly"/>
 							<span class="add-on">
 								<i class="icon-calendar"></i>
 							</span>
@@ -220,7 +220,7 @@
 						
 						&nbsp; &nbsp; ~ &nbsp; &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px"/> 
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px" readonly="readonly"/> 
 							<span class="add-on"> 
 								<i class="icon-calendar"></i>
 							</span>
@@ -232,6 +232,8 @@
 						</script>
 					&nbsp; &nbsp;&nbsp;
 					<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+					&nbsp;
+					<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 					</form>
 				
 				<div class="hr hr-18 dotted"></div>
