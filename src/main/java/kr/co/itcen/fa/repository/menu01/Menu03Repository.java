@@ -195,11 +195,11 @@ public class Menu03Repository {
 			sqlSession.update("menu03.updateOrder", itemVo.get(i));
 		
 		
-			mappingVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
-			mappingVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
-			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
-			mappingVo.get(i).setOrderNo(order);
-			sqlSession.insert("menu03.newMapping", mappingVo.get(i)); // 매핑테이블 입력
+			mappingVo.get(0).setInsertUserid(voucherVoTemp.getInsertUserid());
+			mappingVo.get(0).setInsertDay(voucherVoTemp.getInsertDay());
+			mappingVo.get(0).setVoucherNo(voucherVo.getNo());
+			mappingVo.get(0).setOrderNo(order);
+			sqlSession.insert("menu03.newMapping", mappingVo.get(0)); // 매핑테이블 입력
 		}
 		
 		

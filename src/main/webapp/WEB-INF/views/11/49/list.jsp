@@ -55,6 +55,9 @@ form {
 /* second row */
 .span2 {padding-left:40px; padding-top:20px;}
 
+
+#tbody_list { overflow-x:scroll;}
+
 </style>
 </head>
 <body class="skin-3">

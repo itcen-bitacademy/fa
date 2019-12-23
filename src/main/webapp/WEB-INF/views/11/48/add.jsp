@@ -857,86 +857,87 @@ tr td:first-child {
 		var tr = $(this);
 		var td = tr.children();
 		
-		$("input[name=code]").val(td.eq(1).text());
-		$("input[name=code]").attr('readonly',true);
-		
-		$("input[name=name]").val(td.eq(2).text());
-		var major='';
-		switch (td.eq(3).text()){
-	    case '국내은행' :
-	    	major='001';
-	        break;
-	    case '저축은행' :
-	    	major='002';
-		    break;
-	    case '신용금고' :
-	    	major='003';
-	        break;
-	    case '새마을금고' :
-	    	major='004';
-	        break;
-	    case '외국계은행' :
-	    	major='005';
-	    	break;
-	    case '증권' :
-	    	major='006';
-	    	break;
-		}
-	
-		$('#form-field-select-3').val(major).trigger('chosen:updated');  
-		
-	
-		$("input[name=debtAmount]").val(td.eq(4).text().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-		$("input[name=debtExpDate]").val(td.eq(7).attr('debtExpDate'));
-		var repayWay='';
-		switch (td.eq(6).text()){
-	    case '연' :
-	    	repayWay='Y';
-	        break;
-	    case '월' :
-	    	repayWay='M';
-		    break;
-	    case '만기' :
-	    	repayWay='E';
-	        break;
-		}
-		
-		$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
-		
-		
-		var rate = td.eq(9).text().split('%');
-		
-		
-		$("input[name=intRate]").val(rate[0]);
-	
-		var intPayWay='';
-		switch (td.eq(10).text()){
-	    case '연' :
-	    	intPayWay='Y';
-	        break;
-	    case '월' :
-	    	intPayWay='M';
-		    break;
-	    case '해당없음' :
-	    	intPayWay='E';
-	        break;
-		}
-		
-		$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
-		$("input[name=mgr]").val(td.eq(11).text());
-		$("input[name=mgrCall]").val(td.eq(12).text());
-		$("input[name=bankCode]").val(td.eq(13).text());
-		$("input[name=depositNo]").val(td.eq(14).text());
-		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
-		
-		$("input[name=bankName]").val(td.eq(13).attr('bank-name'));
-		$("input[name=depositHost]").val(td.eq(14).attr('deposit-host'));
 		
 		console.log(td.eq(0).children().children().prop('checked'));
 		if(td.eq(0).children().children().prop('checked')== false){
 			$(td.eq(0).children().children()).prop('checked',true);
 			$("#tbody-list").find("tr").css("background-color", "inherit");
 	         $(this).css("background-color", "#ddd");
+	         $("input[name=code]").val(td.eq(1).text());
+	 		$("input[name=code]").attr('readonly',true);
+	 		
+	 		$("input[name=name]").val(td.eq(2).text());
+	 		var major='';
+	 		switch (td.eq(3).text()){
+	 	    case '국내은행' :
+	 	    	major='001';
+	 	        break;
+	 	    case '저축은행' :
+	 	    	major='002';
+	 		    break;
+	 	    case '신용금고' :
+	 	    	major='003';
+	 	        break;
+	 	    case '새마을금고' :
+	 	    	major='004';
+	 	        break;
+	 	    case '외국계은행' :
+	 	    	major='005';
+	 	    	break;
+	 	    case '증권' :
+	 	    	major='006';
+	 	    	break;
+	 		}
+	 	
+	 		$('#form-field-select-3').val(major).trigger('chosen:updated');  
+	 		
+	 	
+	 		$("input[name=debtAmount]").val(td.eq(4).text().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+	 		$("input[name=debtExpDate]").val(td.eq(7).attr('debtExpDate'));
+	 		var repayWay='';
+	 		switch (td.eq(6).text()){
+	 	    case '연' :
+	 	    	repayWay='Y';
+	 	        break;
+	 	    case '월' :
+	 	    	repayWay='M';
+	 		    break;
+	 	    case '만기' :
+	 	    	repayWay='E';
+	 	        break;
+	 		}
+	 		
+	 		$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true);
+	 		
+	 		
+	 		var rate = td.eq(9).text().split('%');
+	 		
+	 		
+	 		$("input[name=intRate]").val(rate[0]);
+	 	
+	 		var intPayWay='';
+	 		switch (td.eq(10).text()){
+	 	    case '연' :
+	 	    	intPayWay='Y';
+	 	        break;
+	 	    case '월' :
+	 	    	intPayWay='M';
+	 		    break;
+	 	    case '해당없음' :
+	 	    	intPayWay='E';
+	 	        break;
+	 		}
+	 		
+	 		$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
+	 		$("input[name=mgr]").val(td.eq(11).text());
+	 		$("input[name=mgrCall]").val(td.eq(12).text());
+	 		$("input[name=bankCode]").val(td.eq(13).text());
+	 		$("input[name=depositNo]").val(td.eq(14).text());
+	 		$("input[name=no]").val(td.eq(0).attr('lterm-no'));
+	 		
+	 		$("input[name=bankName]").val(td.eq(13).attr('bank-name'));
+	 		$("input[name=depositHost]").val(td.eq(14).attr('deposit-host'));
+	 		
 		}else{
 			$('input').val('');
 			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
@@ -947,6 +948,9 @@ tr td:first-child {
 			$("#tbody-list").find("tr").css("background-color", "inherit");
 			$(this).css("background-color", "#ddd");
 			$(td.eq(0).children().children()).prop('checked',false);
+			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked',false);
+			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked',false);
+			
 		}
 		
 	});
@@ -955,7 +959,16 @@ tr td:first-child {
 		 $('#form-field-select-3').val('초기값').trigger('chosen:updated');
 		 $('#code').attr('readonly',false);
 		 $('#form-field-1').val(2019);
-		 
+		$('input[name=intPayWay]').each(function(index,	item){
+			if($(item).prop('checked') == true){
+				$(item).prop('checked',false);
+			}	
+		});
+		$('input[name=repayWay]').each(function(index,	item){
+			if($(item).prop('checked') == true){
+				$(item).prop('checked',false);
+			}	
+		});
 		 $('#btn-check-code').val('중복확인');
 		 
 		 

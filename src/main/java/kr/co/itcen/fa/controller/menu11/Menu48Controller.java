@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
-import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu48Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
@@ -31,6 +30,7 @@ import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
  * 장기차입금관리
  *
  */
+
 @Auth
 @Controller
 @RequestMapping("/" + Menu48Controller.MAINMENU)
