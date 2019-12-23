@@ -241,5 +241,10 @@ public class Menu03Service {
 	public String businessDateStr() {
 		return menu03Repository.businessDateStr();
 	}
+	
+	// 전표번호로 전표정보 조회하기
+	public Map<String, Object> getVoucher(Long voucherNo) {
+		return menu03Repository.getVoucher(voucherNo);
+	}
 
 }

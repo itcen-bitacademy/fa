@@ -257,6 +257,14 @@ public class Menu03Repository {
 		return sqlSession.selectOne("menu03.getRegDate", no);
 		
 	}
+	
+	// 전표번호로 전표정보 조회하기
+	public Map<String, Object> getVoucher(Long voucherNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<VoucherVo> voucherList = sqlSession.selectList("menu03.getVoucher", voucherNo);
+		map.put("voucherList", voucherList);
+		return map;
+	}
 
 	
 	

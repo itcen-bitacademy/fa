@@ -622,80 +622,6 @@
 	    my_tbody.deleteRow( my_tbody.rows.length-1 ); // 하단부터 삭제
 	  }
 	
-	// 저장된 테이블에서 클릭시 가저장 테이블에 값 보여주기
-	$(document.body).delegate('#save-table tr', 'click', function() {
-		var tr = $(this);
-		console.log("$(this)" + $(this));
-		console.log($(this));
-		var td = tr.children();
-		
-		var regDate = $('#regDate').val();
-		var accountNo = $('#accountNo').val();
-		var accountName = $('#accountName').val();
-		var amountFlag = $('#amountFlag').val();
-		var amount = $('#amount').val();
-		var manageNo = $('#manageNo').val();
-		var customerNo = $('#customerNo').val();
-		var customerName = $('#customerName').val();
-		var bankCode = $('#bankCode').val();
-		var bankName = $('#bankName').val();
-		var cardNo = $('#cardNo').val();
-		var cardUser = $('#cardUser').val();
-		var depositNo = $('#depositNo').val();
-		var depositHost = $('#depositHost').val();
-		var voucherUse = $('#voucherUse').val();
-		
-		var table = document.getElementById("save-table"); // 테이블 아이디
-		var row = table.insertRow(table.rows.length); // 하단에 추가
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-		var cell3 = row.insertCell(2);
-		var cell4 = row.insertCell(3);
-		var cell5 = row.insertCell(4);
-		var cell6 = row.insertCell(5);
-		var cell7 = row.insertCell(6);
-		var cell8 = row.insertCell(7);
-		var cell9 = row.insertCell(8);
-		var cell10 = row.insertCell(9);
-		var cell11 = row.insertCell(10);
-		var cell12 = row.insertCell(11);
-		var cell13 = row.insertCell(12);
-		var cell14 = row.insertCell(13);
-		var cell15 = row.insertCell(14);
-		var cell16 = row.insertCell(15);
-		
-		cell1.innerHTML = '<td>' + td.eq(0).text() + '</td>';
-		cell2.innerHTML = '<td>' + td.eq(1).text() + '</td>';
-		cell3.innerHTML = '<td>' + td.eq(2).text() + '</td>';
-		cell4.innerHTML = '<td>' + td.eq(3).text() + '</td>';
-		cell5.innerHTML = '<td>' + amountFlag + '</td>';
-		cell6.innerHTML = '<td>' + comma(amount) + '</td>';
-		cell7.innerHTML = '<td>' + customerNo + '</td>';
-		cell8.innerHTML = '<td>' + customerName + '</td>';
-		if(manageNo == '') {
-			cell9.innerHTML = '<td>' + '</td>';
-			cell10.innerHTML = '<td>' + '</td>';
-		} else if (manageNo != null) {
-			cell9.innerHTML = '<td>' + '세금계산서' + '</td>';
-			cell10.innerHTML = '<td>' + manageNo + '</td>';
-		} else {
-			cell9.innerHTML = '<td>' + '</td>';
-			cell10.innerHTML = '<td>' + '</td>';
-		}
-		cell11.innerHTML = '<td>' + bankCode + '</td>';
-		cell12.innerHTML = '<td>' + bankName + '</td>';
-		if(customerName == '여비') {
-			cell13.innerHTML = '<td>' + cardNo + '</td>';
-			cell14.innerHTML = '<td>' + '</td>';
-			cell15.innerHTML = '<td>' + cardUser + '</td>';
-		} else {
-			cell13.innerHTML = '<td>' + '</td>';
-			cell14.innerHTML = '<td>' + depositNo + '</td>';
-			cell15.innerHTML = '<td>' + depositHost + '</td>';
-		}
-		cell16.innerHTML = '<td>' + voucherUse + '</td>';
-	});
-	
 </script>
 <script>
 $(function(){
@@ -705,6 +631,7 @@ $(function(){
 	});
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		// input창에 값 셋팅해주기
 		var tr = $(this);
 		console.log("$(this)" + $(this));
 		console.log($(this));
@@ -743,6 +670,82 @@ $(function(){
 		$("input[name='bankLocation']").prop("readonly", true);
 		$("input[name='banker']").prop("readonly", true);
 		$("input[name='bankPhoneCall']").prop("readonly", true);
+		
+		
+		// 저장된 테이블에서 클릭시 가저장 테이블에 값 보여주기
+		var tr = $(this);
+		console.log("$(this)" + $(this));
+		console.log($(this));
+		var td = tr.children();
+		
+		var voucherNo = td.eq(1).text(); // 테이블 클릭 시 전표번호 가져오기
+		console.log("voucherNo : " + voucherNo);
+		console.log(voucherNo);
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/getVoucher?voucherNo=" + voucherNo,
+			type: "get",
+			dataType: "json",
+			data: "",
+			success: function(response) {
+				console.log("success");
+				console.log(response);
+				var voucherList = response.voucherList;
+				console.log(response.voucherList);
+	      	  	for(let a in voucherList) {
+	      	  		if(voucherList[a].cardNo != null) { // 카드번호값 셋팅
+	      	  			var cardNo = voucherList[a].cardNo;
+	      	  		} else {
+	      	  			cardNo = '';
+	      	  		}
+	      	  		
+		      	  	if(voucherList[a].depositNo != null) {
+		  	  			var depositNo = voucherList[a].depositNo;
+		  	  		} else {
+		  	  			depositNo = '';
+		  	  		}
+		      	  	
+	      	  		if(voucherList[a].customerName == '여비') {
+	      	  			var host = voucherList[a].cardUser;
+	      	  		} else {
+	      	  			host = voucherList[a].depositHost
+	      	  		}
+	      	  		
+		      	  	if(voucherList[a].manageNo != null) {
+	      	  			var manageName = '세금계산서';
+	      	  			var manageNo = voucherList[a].manageNo;
+	      	  		} else {
+	      	  			manageName = '';
+	      	  			manageNo = '';
+	      	  		}
+	      	  		
+	      	  		$("#voucher_save").append("<tr>" +
+	                        "<td class='center'>" + voucherList[a].regDate + "</td>" +
+	                        "<td class='center'>" + voucherList[a].orderNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].accountNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].accountName + "</td>" +
+	                        "<td class='center'>" + voucherList[a].amountFlag + "</td>" +
+	                        "<td class='center'>" + voucherList[a].amount + "</td>" +
+	                        "<td class='center'>" + voucherList[a].customerNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].customerName + "</td>" +
+	                        "<td class='center'>" + manageName + "</td>" +
+	                        "<td class='center'>" + manageNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].bankCode + "</td>" +
+	                        "<td class='center'>" + voucherList[a].bankName + "</td>" +
+	                        "<td class='center'>" + cardNo + "</td>" +
+	                        "<td class='center'>" + depositNo + "</td>" +
+	                        "<td class='center'>" + host + "</td>" +
+	                        "<td class='center'>" + voucherList[a].voucherUse + "</td>" +
+	                        "</tr>");
+	      	  	}
+	        },
+			error: function(response) {
+				console.log("error");
+				console.log(response);
+			}
+			
+		}); // ajax
+		
 	});
 	
 	//계정과목에 따른 계정명 불러오기

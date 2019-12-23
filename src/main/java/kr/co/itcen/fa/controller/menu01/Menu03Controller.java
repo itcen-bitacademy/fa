@@ -191,5 +191,16 @@ public class Menu03Controller {
 		return resultMap;
 	}
 	
+	// 전표번호로 전표정보 조회하기
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/getVoucher", method=RequestMethod.GET)
+	public Map<String, Object> voucherList(@RequestParam Long voucherNo) {
+		System.out.println("voucherNo : " + voucherNo);
+		System.out.println(voucherNo);
+		Map<String, Object> data = menu03Service.getVoucher(voucherNo);
+		data.put("success", true);
+		return data;
+	}
+	
 	
 }
