@@ -42,6 +42,7 @@ public class Menu36Controller {
 			customerVo.setDeleteFlag("N");
 		}
 
+		
 		DataResult<CustomerVo> dataResult = menu36Service.selectAll(page, customerVo);
 		model.addAttribute("inputCustomer", customerVo);
 		model.addAttribute("dataResult", dataResult);
