@@ -113,7 +113,6 @@ public class Menu03Service {
 					mappingList.get(i).setInsertUserid(userVo.getId());
 					mappingList.get(i).setOrderNo(i+1);
 					
-					
 					voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingList, userVo));
 					System.out.println("service : " + voucherVo.getNo());
 				}

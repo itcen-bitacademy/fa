@@ -199,9 +199,10 @@ public class Menu03Repository {
 			mappingVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
 			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
 			mappingVo.get(i).setOrderNo(order);
+			sqlSession.insert("menu03.newMapping", mappingVo.get(i)); // 매핑테이블 입력
 		}
 		
-		sqlSession.insert("menu03.newMapping", mappingVo); // 매핑테이블 입력
+		
 		System.out.println("repository2 : " + voucherVo.getNo());
 		return voucherVo.getNo();
 		
