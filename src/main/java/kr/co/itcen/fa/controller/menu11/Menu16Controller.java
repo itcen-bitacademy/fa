@@ -50,6 +50,7 @@ public class Menu16Controller {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
+	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.POST)
 	public String list(@RequestParam(value="page", required=false, defaultValue = "1") int page,	
 	@RequestParam(value="code", required=false,defaultValue = "") String code ) {
