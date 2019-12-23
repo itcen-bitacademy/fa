@@ -649,6 +649,7 @@
 			select insert_team
 			  from tb_voucher_system_mapping
 			 where voucher_no = #{no }
+			  limt 1
 		]]>
 	</select>
 	
