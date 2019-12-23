@@ -53,6 +53,7 @@ public class Menu50Controller {
 			@RequestParam(value = "code", required = false, defaultValue = "") String code,
 			@RequestParam(value = "financialYear", required = false, defaultValue = "2019") String year,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+		System.out.println("50 add controller!!");
 		DataResult<PdebtVo> dataResult = menu50Service.list(page, year, code);
 		List<SectionVo> sectionlist = menu50Service.selectSection();
 		model.addAttribute("dataResult", dataResult);
@@ -71,7 +72,7 @@ public class Menu50Controller {
 	}
 	
 	// 11/50/add.jsp
-	@RequestMapping(value = "/" + SUBMENU + "/insert", method = RequestMethod.POST)
+	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String insert(
 			@ModelAttribute PdebtVo vo, 
 			@AuthUser UserVo userVo) {

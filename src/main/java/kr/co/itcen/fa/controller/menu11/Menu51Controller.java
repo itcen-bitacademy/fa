@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu11.Menu51Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
@@ -32,6 +33,7 @@ public class Menu51Controller {
 	private Menu51Service menu51Service;
 
 	// /11/51, /11/51/list
+	@NoAuth
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(
 			Model model, 
