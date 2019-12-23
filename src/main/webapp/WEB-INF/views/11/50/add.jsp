@@ -1568,19 +1568,13 @@ function MyValidation(){
 	if ('' === depositNo && '' === bankName) {
 		validationMessage = '은행코드와 은행이름은 반드시 입력하셔야 합니다';
 		return false;
-	}
-	
-	if ('' === depositNo && '' === depositHost){
+	} else if ('' === depositNo && '' === depositHost){
 		validationMessage = '계좌번호는 반드시 입력하셔야 합니다';
 		return false;
-	}
-	
-	if ('' === dangerCode){
+	} else if ('' === dangerCode){
 		validationMessage = '위험등급은 반드시 입력하셔야 합니다';
 		return false;
-	}
-	
-	if (ischecked == false) {
+	} else if (ischecked == false) {
 		validationMessage = '중복체크 하고 오세요';
 		return false;
 	}
