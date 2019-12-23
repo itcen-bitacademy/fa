@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu29Service;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 
@@ -18,7 +19,7 @@ import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 /**
  * 
  * @author 김승곤 황슬기
- * 계정 거래처 명세서 조회
+ * 계정 명세서 조회
  *
  */
 @Auth
@@ -31,6 +32,7 @@ public class Menu29Controller {
 	@Autowired
 	private Menu29Service menu29Service;
 
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/search"})
 	public String search(Model model,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
