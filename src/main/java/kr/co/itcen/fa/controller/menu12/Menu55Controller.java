@@ -35,7 +35,9 @@ public class Menu55Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model,
 			@ModelAttribute("vo") CurrentSituationVo vo,
-			@RequestParam(value="page",required = false,defaultValue = "1")int page) {
+			@RequestParam(value="page", required = false, defaultValue = "1")int page,
+			@RequestParam(value="searchdate", required=false)String searchdate,
+			@RequestParam(value="itemcode",required=false)String itemcode) {
 		
 		if(vo.getSearchdate()==null || "".equals(vo.getSearchdate()))
 			vo.setSearchdate("");

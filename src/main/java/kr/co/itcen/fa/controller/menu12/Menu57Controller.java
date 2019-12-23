@@ -36,7 +36,9 @@ public class Menu57Controller {
 	private Menu36Service menu36Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(SalesVo vo, Model model, @RequestParam(defaultValue = "1") int page) {
+	public String list(SalesVo vo, Model model, @RequestParam(defaultValue = "1") int page,
+			@RequestParam(value="salesDate", required=false)String salesDate,
+			@RequestParam(value="customerCode", required=false)String customerCode) {
 		model.addAttribute("dataResult", menu57Service.getAllSales(vo, page));
 		model.addAttribute("sales", vo);
 		return MAINMENU + "/" + SUBMENU + "/list";

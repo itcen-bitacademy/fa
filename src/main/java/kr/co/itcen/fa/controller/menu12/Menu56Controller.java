@@ -38,7 +38,10 @@ public class Menu56Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model ,
 			@ModelAttribute("vo") CurrentSituationVo vo,
-			@RequestParam(value="page",required = false, defaultValue = "1")int page) {
+			@RequestParam(value="page",required = false, defaultValue = "1")int page,
+			@RequestParam(value="searchdate", required=false)String searchdate,
+			@RequestParam(value = "sectioncode",required = false)String sectioncode,
+			@RequestParam(value="itemcode",required=false)String itemcode) {
 		
 		
 		if(vo.getItemcode() == null || "".equals(vo.getItemcode()))
