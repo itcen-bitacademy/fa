@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.service.menu01;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,7 @@ public class Menu03Service {
 				mappingVo.setInsertTeam(userVo.getTeamName());
 				mappingVo.setInsertUserid(userVo.getId());
 				
+				
 				System.out.println("22222222222222222" + voucherVo.getRegDate());
 				menu03Repository.createVoucher(voucherVo, itemVo, mappingVo);
 				return voucherVo.getNo(); // 전표번호
@@ -91,23 +93,30 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
-			voucherVo.setRegDate(menu03Repository.getRegDate(voucherVo.getNo()));
-			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			voucherVo.setRegDate2(menu03Repository.getRegDate(voucherVo.getNo()));
+			List<MappingVo> mappingList = new ArrayList<MappingVo>();
+			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate2())) {
 				voucherVo.setUpdateUserid(userVo.getId());
 				System.out.println("###########" + voucherVo.getNo());
 				System.out.println("service" + mappingVo.getVoucherNo());
 				for(int i = 0; i < itemVo.size(); i++) {
-					System.out.println("@@@@@@@@@@" + voucherVo.getNo());
+					
+					
 					itemVo.get(i).setUpdateUserid(userVo.getId());
+					
+					mappingList.get(i).setVoucherUse(mappingVo.getVoucherUse());
+					mappingList.get(i).setCustomerNo(mappingVo.getCustomerNo());
+					mappingList.get(i).setDepositNo(mappingVo.getDepositNo());
+					mappingList.get(i).setManageNo(mappingVo.getManageNo());
+					mappingList.get(i).setCardNo(mappingVo.getCardNo());
+					mappingList.get(i).setInsertTeam(userVo.getTeamName());
+					mappingList.get(i).setInsertUserid(userVo.getId());
+					mappingList.get(i).setOrderNo(i+1);
+					
+					
+					voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingList, userVo));
+					System.out.println("service : " + voucherVo.getNo());
 				}
-				System.out.println("^^^^^^^^^^" + voucherVo.getNo());
-				System.out.println("service" + mappingVo.getVoucherNo());
-				mappingVo.setInsertTeam(userVo.getTeamName());
-				mappingVo.setUpdateUserid(userVo.getId());
-				System.out.println("***********" + voucherVo.getNo());
-				System.out.println("service" + mappingVo.getVoucherNo());
-				voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo, userVo));
-				System.out.println("service : " + voucherVo.getNo());
 				return voucherVo.getNo();
 			}
 		} catch (ParseException e) {

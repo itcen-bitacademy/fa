@@ -155,7 +155,7 @@ public class Menu03Repository {
 	}
 	
 	// 전표 다른 팀 수정
-	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
+	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingVo, @AuthUser UserVo userVo) {
 		VoucherVo voucherVoTemp = new VoucherVo();
 		VoucherVo insertTeam = new VoucherVo();
 		insertTeam = sqlSession.selectOne("menu03.selectTeam", voucherVo);
@@ -171,11 +171,11 @@ public class Menu03Repository {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			System.out.println("@ : " + itemVo.get(i).getVoucherNo());
 			sqlSession.delete("menu03.deleteItem", itemVo.get(i));
-		}
-		mappingVo.setVoucherNo(voucherVo.getNo());
-		System.out.println("# :" + mappingVo.getVoucherNo());
-		sqlSession.delete("menu03.deleteMapping", mappingVo);
 		
+			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
+			System.out.println("# :" + mappingVo.get(i).getVoucherNo());
+			sqlSession.delete("menu03.deleteMapping", mappingVo);
+		}
 		voucherVo.setInsertUserid(voucherVoTemp.getInsertUserid());
 		voucherVo.setInsertDay(voucherVoTemp.getInsertDay());
 		sqlSession.insert("menu03.newVoucher", voucherVo); // 전표테이블 입력
@@ -185,16 +185,22 @@ public class Menu03Repository {
 			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			itemVo.get(i).setGroupNo(voucherVo.getNo());
+			
+			
+			
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
 			
 			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
 			itemVo.get(i).setOrderNo(order);
 			sqlSession.update("menu03.updateOrder", itemVo.get(i));
+		
+		
+			mappingVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
+			mappingVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
+			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
+			mappingVo.get(i).setOrderNo(order);
 		}
 		
-		mappingVo.setInsertUserid(voucherVoTemp.getInsertUserid());
-		mappingVo.setInsertDay(voucherVoTemp.getInsertDay());
-		mappingVo.setVoucherNo(voucherVo.getNo());
 		sqlSession.insert("menu03.newMapping", mappingVo); // 매핑테이블 입력
 		System.out.println("repository2 : " + voucherVo.getNo());
 		return voucherVo.getNo();
