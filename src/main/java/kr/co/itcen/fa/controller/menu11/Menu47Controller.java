@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu11.Menu47Service;
 
 /**
@@ -26,7 +27,7 @@ public class Menu47Controller {
 	@Autowired
 	private Menu47Service menu47Service;
 	
-	                                   //   /11/47, /11/47/list
+	@NoAuth                                  //   /11/47, /11/47/list
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
 		Map map = menu47Service.getListMap();
