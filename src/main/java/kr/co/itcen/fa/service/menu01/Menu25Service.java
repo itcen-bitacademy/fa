@@ -23,7 +23,7 @@ public class Menu25Service {
 	
 	@Autowired
 	private Menu25Repository menu25Repository;
-	
+		
 	public void test() {
 		menu25Repository.test();
 	}

@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
+import kr.co.itcen.fa.repository.menu12.Menu15Repository;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu25Service;
+import kr.co.itcen.fa.service.menu01.Menu27Service;
+import kr.co.itcen.fa.service.menu02.Menu35Service;
+import kr.co.itcen.fa.service.menu12.Menu15Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 
@@ -36,6 +40,12 @@ public class Menu25Controller {
 
 	@Autowired
 	private Menu25Service menu25Service;
+	@Autowired
+	private Menu27Service menu27Service; 
+	@Autowired
+	private Menu15Service menu15Service;
+	@Autowired
+	private Menu35Service menu35Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
@@ -90,6 +100,11 @@ public class Menu25Controller {
 		System.out.println(bavo.toString());
 		
 		Map<String, Object> dataResult = menu25Service.update(bavo, page);
+		
+		menu27Service.updateBankAccount(bavo);
+		menu15Service.updateBankAccount(bavo);
+		menu35Service.updateBankAccount(bavo);
+		
 		return dataResult;
 	}
 	
