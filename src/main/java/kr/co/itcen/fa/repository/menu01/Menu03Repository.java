@@ -172,10 +172,10 @@ public class Menu03Repository {
 			System.out.println("@ : " + itemVo.get(i).getVoucherNo());
 			sqlSession.delete("menu03.deleteItem", itemVo.get(i));
 		
-			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
-			System.out.println("# :" + mappingVo.get(i).getVoucherNo());
-			sqlSession.delete("menu03.deleteMapping", mappingVo.get(i));
+			
 		}
+		mappingVo.get(0).setVoucherNo(voucherVo.getNo());
+		sqlSession.delete("menu03.deleteMapping", mappingVo.get(0));
 		voucherVo.setInsertUserid(voucherVoTemp.getInsertUserid());
 		voucherVo.setInsertDay(voucherVoTemp.getInsertDay());
 		sqlSession.insert("menu03.newVoucher", voucherVo); // 전표테이블 입력
