@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu02.Menu36Service;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 
@@ -33,6 +34,7 @@ public class Menu36Controller {
 	private Menu36Service menu36Service;
 	
 	// 조회
+	@NoAuth
 	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
 	public String closingDateListPage(CustomerVo customerVo, Model model, @RequestParam(defaultValue = "1") int page) {
 		
@@ -40,6 +42,7 @@ public class Menu36Controller {
 			customerVo.setDeleteFlag("N");
 		}
 
+		
 		DataResult<CustomerVo> dataResult = menu36Service.selectAll(page, customerVo);
 		model.addAttribute("inputCustomer", customerVo);
 		model.addAttribute("dataResult", dataResult);

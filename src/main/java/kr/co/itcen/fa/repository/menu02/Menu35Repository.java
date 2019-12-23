@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 
 /**
@@ -50,6 +51,10 @@ public class Menu35Repository {
 		List<CustomerVo> result = sqlSession.selectList("menu35.search", no);
 		return result;
 	}
+	
+	public void updateBankAccount(BankAccountVo bankAccount) {
+	      sqlSession.update("menu35.updateBankAccount", bankAccount);
+	   }
 	
 	public CustomerVo getCustomer(String no) {
 		return sqlSession.selectOne("menu35.findByNo", no);

@@ -42,7 +42,7 @@
 								<div class="span6">
 									<!-- 차변 -->
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">차량 코드</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">차량 코드</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="id" placeholder="9자를 입력하세요" />
 											<input type="text" class="span6" id="default-vehiclecode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
@@ -53,7 +53,7 @@
 									</div>
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">대분류 코드</label>
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">대분류 코드</label>
 										<div class="controls">
 											<select class="chosen-select" id="sectionNo" name="sectionNo" data-placeholder="전체">
 											 	<option></option>  
@@ -66,7 +66,7 @@
 									</div>
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">주소(광역)</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">주소(광역)</label>
 										<div class="controls">
 											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 											<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
@@ -75,7 +75,7 @@
 									</div>
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">거래처 코드</label>
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">거래처 코드</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-customerCode" name="customerName" data-placeholder="전체">
 											 	<option></option> 
@@ -89,35 +89,34 @@
 
 									<div class="control-group">
 										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">매입일자</label>
+											<label style="text-align:left;" class="control-label" for="form-field-1">매입일자</label>
 											<div class="controls">
 												<input class="cl-date-picker" style="width: 150px" type="text" id="form-field-1" name="payDate" placeholder="" />
 												<i class="icon-calendar"></i>
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
-											<label style="width: 70px; margin-right: 10px;"
-												class="control-label" for="form-field-1">출시가</label>
-												 <input class=limitation type="text" id="form-field-1" name="publicValue" placeholder="금액을 입력하세요" />
+											<label style="width: 60px; margin-left: 10px; margin-right: 10px;" class="control-label" for="form-field-1">출시가</label>
+												 <input style="width: 200px; margin-left : 10px;" class=limitation type="text" id="form-field-1" name="publicValue" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">부대비용</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">부대비용</label>
 										<div class="controls">
 											<input type="text" class=limitation id="etcCost" name="etcCost" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">보증금</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">보증금</label>
 										<div class="controls">
 											<input type="text" class=limitation id="deposit" name="deposit" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">월 사용료</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">월 사용료</label>
 										<div class="controls">
 											<input readonly type="text" class=limitation id="monthlyFee" name="monthlyFee"  />
 										</div>
@@ -125,13 +124,13 @@
 
 									<div class="control-group">
 										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">사용 개월</label>
+											<label style="text-align:left;" class="control-label" for="form-field-1">사용 개월</label>
 											<div class="controls">
 												<input readonly type="text" class="span6" id="usingMonth" name="usingMonth" value="최대 60개월">
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
-											<label style="width: 70px; margin-right: 10px;"
+											<label style="text-align:left;" style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">월 사용료 총 납부금액</label>
 											<input readonly type="text" class="span6" id="all-monthly-fee" value="월 누적금액">
 										</div>
@@ -144,7 +143,7 @@
 
 									<div class="control-group" style="margin-top: 50px">
 										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">직급</label>
+											<label style="text-align:left;" class="control-label" for="form-field-1">직급</label>
 											<div class="controls" style="width: 90%">
 												<select class="chosen-select" id="staffNoId" name="staffNo" data-placeholder="전체">
 												 	<option></option>  
@@ -155,15 +154,15 @@
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
-											<label style="width: 80px; margin-right: 10px;"
+											<label style="width: 60px; margin-left: 10px; margin-right: 10px;"
 												class="control-label" for="form-field-1">사용자</label> <input
-												type="text" id="form-field-1" name="ownerName" placeholder="차량 사용자를 입력하세요" />
+												style="width: 200px; margin-left : 10px;" type="text" id="form-field-1" name="ownerName" placeholder="차량 사용자를 입력하세요" />
 										</div>
 									</div>
 
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">상세주소</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">상세주소</label>
 										<div class="controls">
 											<input type="text" id="detailAddr" name="detailAddress" placeholder="상세주소를 입력하세요" />
 										</div>
@@ -171,14 +170,14 @@
 
 
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">거래처 담당자</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">거래처 담당자</label>
 										<div class="controls">
 											<input type="text" id="customerManager" name="managerName" placeholder="이름을 입력하세요" />
 										</div>
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득세</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">취득세</label>
 										<div class="controls">
 											<input type="text" class=limitation id="acqTax" name="acqTax"   placeholder="금액을 입력하세요" />
 										</div>
@@ -186,7 +185,7 @@
 
 
 									<div class="control-group">
-									<label hidden class="control-label" for="form-field-1">세금계산서 번호</label>
+									<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서 번호</label>
 									<div class="controls">
 										<input  type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
 									</div>
@@ -195,7 +194,7 @@
 
 									<div class="control-group">
 										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">보증금 납부 예정일</label>
+											<label style="text-align:left;" class="control-label" for="form-field-1">보증금 납부 예정일</label>
 											<div class="controls" style="width: 90%">
 												<input class="cl-date-picker" type="text" style="width: 150px" id="dueDate" name="dueDate" placeholder="" /> <i class="icon-calendar"></i>
 											</div>
@@ -209,7 +208,7 @@
 
 									<div class="control-group">
 										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">월 사용료 납부 예정일</label>
+											<label style="text-align:left;" class="control-label" for="form-field-1">월 사용료 납부 예정일</label>
 											<div class="controls">
 												<input type="text" class="span10" id="feeDate" name="feeDate" placeholder="일자 2자리를 입력하세요" />
 											</div>
@@ -221,7 +220,7 @@
 
 									<div class="control-group">
 										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">구분</label>
+											<label style="text-align:left;" class="control-label" for="form-field-1">구분</label>
 											<div class="controls">
 												<input type="radio" name="taxKind" id="tax" value="과세">과세
 												<input type="radio" name="taxKind" id="zeroTax" value="영세">영세

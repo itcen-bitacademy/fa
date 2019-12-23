@@ -395,7 +395,6 @@ $("input[name=id]").click(function(event) {
 		    }
 		},
        success: function(response){
-    	   
           if(response.result == "fail"){
              console.error(response.message);
              return;
