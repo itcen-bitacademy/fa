@@ -47,7 +47,7 @@ public class Menu48Controller {
 	@Autowired
 	private Menu19Service menu19Service;
 	
-	@NoAuth                                   //   /11/48, /11/48/add
+	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
 			@RequestParam(value="financialYear",required = false, defaultValue = "") String year,
@@ -67,7 +67,6 @@ public class Menu48Controller {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
-	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
 	public String list(@RequestParam(value="code",required = false, defaultValue = "") String code,
 			@RequestParam(value="financialYear",required = false, defaultValue ="") String year,
