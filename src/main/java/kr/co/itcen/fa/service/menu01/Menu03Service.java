@@ -45,19 +45,24 @@ public class Menu03Service {
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
 			System.out.println("왜 안되냐2");
+			List<MappingVo> mappingList = new ArrayList<MappingVo>();
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 				voucherVo.setInsertUserid(userVo.getId());
 				System.out.println("왜 안되냐3");
 				for(int i = 0; i < itemVo.size(); i++) {
 					itemVo.get(i).setInsertUserid(userVo.getId());
+					mappingList.get(i).setVoucherUse(mappingVo.getVoucherUse());
+					mappingList.get(i).setCustomerNo(mappingVo.getCustomerNo());
+					mappingList.get(i).setDepositNo(mappingVo.getDepositNo());
+					mappingList.get(i).setManageNo(mappingVo.getManageNo());
+					mappingList.get(i).setCardNo(mappingVo.getCardNo());
+					mappingList.get(i).setInsertTeam(userVo.getTeamName());
+					mappingList.get(i).setInsertUserid(userVo.getId());
+					mappingList.get(i).setOrderNo(i+1);
 				}
-				System.out.println("!!!!!!!!!!!!" + userVo.getTeamName());
-				mappingVo.setInsertTeam(userVo.getTeamName());
-				mappingVo.setInsertUserid(userVo.getId());
-				
 				
 				System.out.println("22222222222222222" + voucherVo.getRegDate());
-				menu03Repository.createVoucher(voucherVo, itemVo, mappingVo);
+				menu03Repository.createVoucher(voucherVo, itemVo, mappingList);
 				return voucherVo.getNo(); // 전표번호
 			}
 		} catch (ParseException e) {
