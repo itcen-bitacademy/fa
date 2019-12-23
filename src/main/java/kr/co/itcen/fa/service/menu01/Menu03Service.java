@@ -51,14 +51,19 @@ public class Menu03Service {
 				System.out.println("왜 안되냐3");
 				for(int i = 0; i < itemVo.size(); i++) {
 					itemVo.get(i).setInsertUserid(userVo.getId());
-					mappingList.get(i).setVoucherUse(mappingVo.getVoucherUse());
-					mappingList.get(i).setCustomerNo(mappingVo.getCustomerNo());
-					mappingList.get(i).setDepositNo(mappingVo.getDepositNo());
-					mappingList.get(i).setManageNo(mappingVo.getManageNo());
-					mappingList.get(i).setCardNo(mappingVo.getCardNo());
-					mappingList.get(i).setInsertTeam(userVo.getTeamName());
-					mappingList.get(i).setInsertUserid(userVo.getId());
-					mappingList.get(i).setOrderNo(i+1);
+					
+					MappingVo mappingVoTemp = new MappingVo();
+					
+					mappingVoTemp.setVoucherUse(mappingVo.getVoucherUse());
+					mappingVoTemp.setCustomerNo(mappingVo.getCustomerNo());
+					mappingVoTemp.setDepositNo(mappingVo.getDepositNo());
+					mappingVoTemp.setManageNo(mappingVo.getManageNo());
+					mappingVoTemp.setCardNo(mappingVo.getCardNo());
+					mappingVoTemp.setInsertTeam(userVo.getTeamName());
+					mappingVoTemp.setInsertUserid(userVo.getId());
+					mappingVoTemp.setOrderNo(i+1);
+					
+					mappingList.add(mappingVoTemp);
 				}
 				
 				System.out.println("22222222222222222" + voucherVo.getRegDate());
