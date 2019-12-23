@@ -73,6 +73,7 @@ public class Menu03Service {
 			System.out.println("왜 안되냐2");
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 				System.out.println("Service");
+				System.out.println("@@@" + itemVo.get(0).getOrderNo());
 				menu03Repository.createVoucher(voucherVo, itemVo, mappingList, userVo);
 				
 				return voucherVo.getNo(); // 전표번호

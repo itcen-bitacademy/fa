@@ -223,6 +223,7 @@
                         <thead>
                         <tr>
                             <th class="center">일자</th>
+                            <th class="center">순번</th>
                             <th class="center">계정과목코드</th>
                             <th class="center">계정과목명</th>
                             <th class="center">구분</th>
@@ -433,13 +434,8 @@
 			return;
 		}
 		
-		var voucherVo = {regDate:regDate, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
-				manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
-				cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
-			}
-		
 		//voucherList.push(voucherVo);
-		
+		// 여기
 		var table = document.getElementById("save-table"); // 테이블 아이디
 		var row = table.insertRow(table.rows.length); // 하단에 추가
 		var cell1 = row.insertCell(0);
@@ -457,36 +453,43 @@
 		var cell13 = row.insertCell(12);
 		var cell14 = row.insertCell(13);
 		var cell15 = row.insertCell(14);
+		var cell16 = row.insertCell(15);
 		
 		cell1.innerHTML = '<td>' + regDate + '</td>';
-		cell2.innerHTML = '<td>' + accountNo + '</td>';
-		cell3.innerHTML = '<td>' + accountName + '</td>';
-		cell4.innerHTML = '<td>' + amountFlag + '</td>';
-		cell5.innerHTML = '<td>' + comma(amount) + '</td>';
-		cell6.innerHTML = '<td>' + customerNo + '</td>';
-		cell7.innerHTML = '<td>' + customerName + '</td>';
+		cell2.innerHTML = '<td>' + (table.rows.length-1) + '</td>';
+		cell3.innerHTML = '<td>' + accountNo + '</td>';
+		cell4.innerHTML = '<td>' + accountName + '</td>';
+		cell5.innerHTML = '<td>' + amountFlag + '</td>';
+		cell6.innerHTML = '<td>' + comma(amount) + '</td>';
+		cell7.innerHTML = '<td>' + customerNo + '</td>';
+		cell8.innerHTML = '<td>' + customerName + '</td>';
 		if(manageNo == '') {
-			cell8.innerHTML = '<td>' + '</td>';
 			cell9.innerHTML = '<td>' + '</td>';
+			cell10.innerHTML = '<td>' + '</td>';
 		} else if (manageNo != null) {
-			cell8.innerHTML = '<td>' + '세금계산서' + '</td>';
-			cell9.innerHTML = '<td>' + manageNo + '</td>';
+			cell9.innerHTML = '<td>' + '세금계산서' + '</td>';
+			cell10.innerHTML = '<td>' + manageNo + '</td>';
 		} else {
-			cell8.innerHTML = '<td>' + '</td>';
 			cell9.innerHTML = '<td>' + '</td>';
+			cell10.innerHTML = '<td>' + '</td>';
 		}
-		cell10.innerHTML = '<td>' + bankCode + '</td>';
-		cell11.innerHTML = '<td>' + bankName + '</td>';
+		cell11.innerHTML = '<td>' + bankCode + '</td>';
+		cell12.innerHTML = '<td>' + bankName + '</td>';
 		if(customerName == '여비') {
-			cell12.innerHTML = '<td>' + cardNo + '</td>';
-			cell13.innerHTML = '<td>' + '</td>';
-			cell14.innerHTML = '<td>' + cardUser + '</td>';
+			cell13.innerHTML = '<td>' + cardNo + '</td>';
+			cell14.innerHTML = '<td>' + '</td>';
+			cell15.innerHTML = '<td>' + cardUser + '</td>';
 		} else {
-			cell12.innerHTML = '<td>' + '</td>';
-			cell13.innerHTML = '<td>' + depositNo + '</td>';
-			cell14.innerHTML = '<td>' + depositHost + '</td>';
+			cell13.innerHTML = '<td>' + '</td>';
+			cell14.innerHTML = '<td>' + depositNo + '</td>';
+			cell15.innerHTML = '<td>' + depositHost + '</td>';
 		}
-		cell15.innerHTML = '<td>' + voucherUse + '</td>';
+		cell16.innerHTML = '<td>' + voucherUse + '</td>';
+		
+		var voucherVo = {regDate:regDate, orderNo:(table.rows.length-1), accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
+				manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
+				cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
+			}
 		
 		$('#regDate').val(regDate);
 		$('#accountNo').val('');
@@ -553,28 +556,29 @@
 				$('#voucherUse').val('');
 				
 				var regDate =  td.eq(0).text();
-				var accountNo =  td.eq(1).text();
-				var accountName =  td.eq(2).text();
-				var amountFlag =  td.eq(3).text();
-				var amount =  uncomma(td.eq(4).text());
-				var customerNo =  td.eq(5).text();
-				var customerName =  td.eq(6).text();
+				var orderNo = td.eq(1).text();
+				var accountNo =  td.eq(2).text();
+				var accountName =  td.eq(3).text();
+				var amountFlag =  td.eq(4).text();
+				var amount =  uncomma(td.eq(5).text());
+				var customerNo =  td.eq(6).text();
+				var customerName =  td.eq(7).text();
 				var manageNo =  td.eq(8).text();
-				var bankCode =  td.eq(9).text();
-				var bankName =  td.eq(10).text();
-				if(td.eq(11).text() == '') {
-					var cardNo =  td.eq(11).text();
-					var depositNo =  td.eq(12).text();
-					var depositHost =  td.eq(13).text();
-				}
+				var bankCode =  td.eq(10).text();
+				var bankName =  td.eq(11).text();
 				if(td.eq(12).text() == '') {
-					var cardNo =  td.eq(11).text();
-					var depositNo =  td.eq(12).text();
-					var cardUser =  td.eq(13).text();
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var depositHost =  td.eq(14).text();
 				}
-				var voucherUse =  td.eq(14).text();
+				if(td.eq(13).text() == '') {
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var cardUser =  td.eq(14).text();
+				}
+				var voucherUse =  td.eq(15).text();
 				
-				var voucherVo = {regDate:regDate, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
+				var voucherVo = {regDate:regDate, orderNo:orderNo, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
 						manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
 						cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
 					};
@@ -609,6 +613,88 @@
 			
 		}); // ajax
 	}
+	
+	// 행 삭제
+	function delete_row() {
+		var my_tbody = document.getElementById('voucher_save');
+	    if (my_tbody.rows.length < 1) return;
+	    // my_tbody.deleteRow(0); // 상단부터 삭제
+	    my_tbody.deleteRow( my_tbody.rows.length-1 ); // 하단부터 삭제
+	  }
+	
+	// 저장된 테이블에서 클릭시 가저장 테이블에 값 보여주기
+	$(document.body).delegate('#save-table tr', 'click', function() {
+		var tr = $(this);
+		console.log("$(this)" + $(this));
+		console.log($(this));
+		var td = tr.children();
+		
+		var regDate = $('#regDate').val();
+		var accountNo = $('#accountNo').val();
+		var accountName = $('#accountName').val();
+		var amountFlag = $('#amountFlag').val();
+		var amount = $('#amount').val();
+		var manageNo = $('#manageNo').val();
+		var customerNo = $('#customerNo').val();
+		var customerName = $('#customerName').val();
+		var bankCode = $('#bankCode').val();
+		var bankName = $('#bankName').val();
+		var cardNo = $('#cardNo').val();
+		var cardUser = $('#cardUser').val();
+		var depositNo = $('#depositNo').val();
+		var depositHost = $('#depositHost').val();
+		var voucherUse = $('#voucherUse').val();
+		
+		var table = document.getElementById("save-table"); // 테이블 아이디
+		var row = table.insertRow(table.rows.length); // 하단에 추가
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);
+		var cell5 = row.insertCell(4);
+		var cell6 = row.insertCell(5);
+		var cell7 = row.insertCell(6);
+		var cell8 = row.insertCell(7);
+		var cell9 = row.insertCell(8);
+		var cell10 = row.insertCell(9);
+		var cell11 = row.insertCell(10);
+		var cell12 = row.insertCell(11);
+		var cell13 = row.insertCell(12);
+		var cell14 = row.insertCell(13);
+		var cell15 = row.insertCell(14);
+		var cell16 = row.insertCell(15);
+		
+		cell1.innerHTML = '<td>' + td.eq(0).text() + '</td>';
+		cell2.innerHTML = '<td>' + td.eq(1).text() + '</td>';
+		cell3.innerHTML = '<td>' + td.eq(2).text() + '</td>';
+		cell4.innerHTML = '<td>' + td.eq(3).text() + '</td>';
+		cell5.innerHTML = '<td>' + amountFlag + '</td>';
+		cell6.innerHTML = '<td>' + comma(amount) + '</td>';
+		cell7.innerHTML = '<td>' + customerNo + '</td>';
+		cell8.innerHTML = '<td>' + customerName + '</td>';
+		if(manageNo == '') {
+			cell9.innerHTML = '<td>' + '</td>';
+			cell10.innerHTML = '<td>' + '</td>';
+		} else if (manageNo != null) {
+			cell9.innerHTML = '<td>' + '세금계산서' + '</td>';
+			cell10.innerHTML = '<td>' + manageNo + '</td>';
+		} else {
+			cell9.innerHTML = '<td>' + '</td>';
+			cell10.innerHTML = '<td>' + '</td>';
+		}
+		cell11.innerHTML = '<td>' + bankCode + '</td>';
+		cell12.innerHTML = '<td>' + bankName + '</td>';
+		if(customerName == '여비') {
+			cell13.innerHTML = '<td>' + cardNo + '</td>';
+			cell14.innerHTML = '<td>' + '</td>';
+			cell15.innerHTML = '<td>' + cardUser + '</td>';
+		} else {
+			cell13.innerHTML = '<td>' + '</td>';
+			cell14.innerHTML = '<td>' + depositNo + '</td>';
+			cell15.innerHTML = '<td>' + depositHost + '</td>';
+		}
+		cell16.innerHTML = '<td>' + voucherUse + '</td>';
+	});
 	
 </script>
 <script>

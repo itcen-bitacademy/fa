@@ -145,8 +145,8 @@ public class Menu03Controller {
 		try {
 			VoucherVo[] voucherList = mapper.readValue(itemList, VoucherVo[].class);
 //			System.out.println(voucherList);
-//			System.out.println(voucherList[0]);
-//			System.out.println(voucherList[0].getAccountName());
+			System.out.println(voucherList[0]);
+			System.out.println(voucherList[0].getOrderNo());
 //			System.out.println(voucherList[1]);
 //			System.out.println(voucherList[1].getAccountName());
 			
@@ -165,10 +165,9 @@ public class Menu03Controller {
 					itemVo.setAmountFlag(voucherList[i].getAmountFlag());
 					itemVo.setAccountNo(voucherList[i].getAccountNo());
 					itemVo.setInsertUserid(userVo.getId());
+					itemVo.setOrderNo(voucherList[i].getOrderNo());
 					itemList2.add(itemVo);
-				}
 				
-				for(int i = 0; i < voucherList.length; i++) {
 					MappingVo mappingVo = new MappingVo();
 					mappingVo.setVoucherUse(voucherList[i].getVoucherUse());
 					mappingVo.setCustomerNo(voucherList[i].getCustomerNo());
@@ -177,6 +176,7 @@ public class Menu03Controller {
 					mappingVo.setCardNo(voucherList[i].getCardNo());
 					mappingVo.setInsertTeam(userVo.getTeamName());
 					mappingVo.setInsertUserid(userVo.getId());
+					mappingVo.setOrderNo(voucherList[i].getOrderNo());
 					
 					mappingList.add(mappingVo);
 				}

@@ -79,10 +79,10 @@ public class Menu03Repository {
 				System.out.println("itemVo.get groupNo : " + itemVo.get(i).getGroupNo());
 				itemVo.get(i).setGroupNo(voucherVo.getNo());
 				System.out.println("repo2");
-				sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
+				sqlSession.insert("menu03.insertItem3", itemVo.get(i)); // 항목테이블 입력
 				
-				int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
-				System.out.println("order : " + order);
+				//int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+				//System.out.println("order : " + order);
 				
 				System.out.println("repo3");
 				
@@ -90,10 +90,6 @@ public class Menu03Repository {
 				mappingVo.get(i).setVoucherNo(voucherVo.getNo());
 				System.out.println("repo4");
 				sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
-				itemVo.get(i).setOrderNo(order);
-				sqlSession.update("menu03.updateOrder", itemVo.get(i));
-				mappingVo.get(i).setOrderNo(order);
-				sqlSession.update("menu03.updateOrder2", mappingVo.get(i));
 			}
 			
 			return voucherVo.getNo();	// 전표번호
