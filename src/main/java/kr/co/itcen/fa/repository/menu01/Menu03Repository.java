@@ -174,7 +174,7 @@ public class Menu03Repository {
 		
 			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
 			System.out.println("# :" + mappingVo.get(i).getVoucherNo());
-			sqlSession.delete("menu03.deleteMapping", mappingVo);
+			sqlSession.delete("menu03.deleteMapping", mappingVo.get(i));
 		}
 		voucherVo.setInsertUserid(voucherVoTemp.getInsertUserid());
 		voucherVo.setInsertDay(voucherVoTemp.getInsertDay());
