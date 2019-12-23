@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.service.menu01;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class Menu30Service {
 	private Menu30Repository menu30Repository;
 	
 
+	@Autowired
+	private Menu03Service menu03Service;
+	
 	public DataResult<ReceiptVo> search(int page, ReceiptVo revo) {
 		DataResult<ReceiptVo> dataResult = new DataResult<ReceiptVo>();
 	
@@ -43,17 +48,39 @@ public class Menu30Service {
 		dataResult.setDatas(list);
 		
 		List<StatementDataVo> statementDataList = menu30Repository.statementData();
-		UserVo vo = new UserVo();
-		closingEntries(statementDataList, vo );
+		UserVo authUser = new UserVo();
+		ClosingDateVo cVo =new ClosingDateVo();
+		cVo.setClosingYearMonth("2019-11");
+		
+		closingEntries(statementDataList, authUser, cVo );
 		
 		return dataResult;
 	}
 	
-	public void closingEntries(List<StatementDataVo> sVo, UserVo authUser) {
+	public void closingEntries(List<StatementDataVo> sVo, UserVo authUser, ClosingDateVo cVo) {	//월별마감일때 해당
+		
 		if(sVo==null) {								//전달값이 없을경우 그냥 반환
 			return;
 		}
 		List<PreviousVo> pVo = new ArrayList<PreviousVo>();
+		
+		Calendar cal = Calendar.getInstance();				//전월이월
+        cal.setTime(cVo.getStartDate());
+        cal.add(Calendar.MONTH, 1);
+
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String End = transFormat.format(cVo.getEndDate());	//차월이월 date
+		String Start = transFormat.format(cal.getTime());	//전월이월 date
+		
+		String carry1;
+		String carry2;
+		if(cVo.getClosingYearMonth().substring(5,7).equals("12")) {
+			carry1= "차기이월";
+			carry2= "전기이월";
+		}else {
+			carry1= "차월이월";
+			carry2= "전월이월";
+		}
 		
 		for(int i=0; i<sVo.size();i++) {				//거래처 계정별 amount 계산
 			if(sVo.get(i).getAccountNo()>=4000000) {
@@ -99,7 +126,8 @@ public class Menu30Service {
 				}
 			}
 		}
-		
+
+
 		for(int i=0; i<pVo.size(); i++) {						//전표 입력
 			VoucherVo voucherVo = new VoucherVo();
 			VoucherVo voucherVo2 = new VoucherVo();
@@ -108,55 +136,61 @@ public class Menu30Service {
 			MappingVo mappingVo = new MappingVo();
 			MappingVo mappingVo2 = new MappingVo();
 			
+			
+			
 			if(pVo.get(i).getAmountFlag().equals("c")) {
-
-				voucherVo.setRegDate("2019-11-30");				//->regdate기준으로 수정예정
+				
+				voucherVo.setRegDate(End);				// 차월이월
 				
 				itemVo.setAmount(pVo.get(i).getAmount());
 				itemVo.setAmountFlag("d");
 				itemVo.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo.setVoucherUse("차월이월");						//적요		
+				mappingVo.setVoucherUse(carry1);						//적요		
 				mappingVo.setCustomerNo(pVo.get(i).getCustomerNo());		
 			
-//				Long no=menu03Service.createVoucher(voucherVo, itemVo, mappingVo, user);
+//				Long no=menu03Service.createVoucher(voucherVo, itemVo, mappingVo, authUser);
 				
-				voucherVo2.setRegDate("2019-12-01");
-				itemVo2.setAmount(pVo.get(i).getAmount());//예금
-				itemVo2.setAmountFlag("c");//차변
-				itemVo2.setAccountNo(pVo.get(i).getAccountNo());//계정과목코드
+				voucherVo2.setRegDate(Start);
+				itemVo2.setAmount(pVo.get(i).getAmount());
+				itemVo2.setAmountFlag("c");
+				itemVo2.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo2.setVoucherUse("전월이월");						//적요
+				mappingVo2.setVoucherUse(carry2);						//적요
 				mappingVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
 				
-				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate());
-				System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate());
+				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	
+				+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate()+ mappingVo.getVoucherUse());
+				System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"
+				+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate()+ mappingVo2.getVoucherUse());
 //				Long no=menu03Service.createVoucher(voucherVo2, itemVo2, mappingVo2, user);
 				
 			}else {
-				voucherVo.setRegDate("2019-11-30");
+				voucherVo.setRegDate(End);
 				
 				itemVo.setAmount(pVo.get(i).getAmount());
 				itemVo.setAmountFlag("c");
 				itemVo.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo.setVoucherUse("차월이월");						//적요		
+				mappingVo.setVoucherUse(carry1);						//적요		
 				mappingVo.setCustomerNo(pVo.get(i).getCustomerNo());		
 			
 //				Long no=menu03Service.createVoucher(voucherVo, itemVo, mappingVo, user);
 				
-				voucherVo2.setRegDate("2019-12-01");
-				itemVo2.setAmount(pVo.get(i).getAmount());//예금
-				itemVo2.setAmountFlag("d");//차변
-				itemVo2.setAccountNo(pVo.get(i).getAccountNo());//계정과목코드
+				voucherVo2.setRegDate(Start);
+				itemVo2.setAmount(pVo.get(i).getAmount());
+				itemVo2.setAmountFlag("d");
+				itemVo2.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo2.setVoucherUse("전월이월");						//적요
+				mappingVo2.setVoucherUse(carry2);						//적요
 				mappingVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
 				
 //				Long no=menu03Service.createVoucher(voucherVo2, itemVo2, mappingVo2, user);
 			
-				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate());
-				System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate());
+				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	
+						+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate()+ mappingVo.getVoucherUse());
+						System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"
+						+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate()+ mappingVo2.getVoucherUse());
 			}
 			
 			
@@ -165,12 +199,26 @@ public class Menu30Service {
 		
 	}	
 	
-	public void closingEntriesDelete(ClosingDateVo vo, UserVo authUser ) {
+	public void closingEntriesDelete(ClosingDateVo cVo, UserVo authUser ) {
+		previousDelete(cVo, authUser);
 		
 	}
 	
+	public void previousDelete(ClosingDateVo cVo, UserVo authUser){
+		Calendar cal = Calendar.getInstance();				//전월이월
+        cal.setTime(cVo.getStartDate());
+        cal.add(Calendar.MONTH, 1);
+
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String End = transFormat.format(cVo.getEndDate());								//차월이월 date
+		String Start = transFormat.format(cal.getTime());								//전월이월 date
+		
+		
+	}
 	
-	
+	public void Repository() {
+		
+	}
 	
 	
 	

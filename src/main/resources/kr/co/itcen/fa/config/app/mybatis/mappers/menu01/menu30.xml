@@ -126,8 +126,8 @@
 		  join tb_voucher_item as i on v.no = i.voucher_no
 		  join tb_account as a on a.no = i.account_no
 		  join tb_voucher_system_mapping m on m.voucher_no = v.no
-		 where v.reg_date >= '2019-11-01'
-		   and v.reg_date <= '2019-11-31'
+		 where v.reg_date >= '2019-12-01'
+		   and v.reg_date <= '2019-12-31'
 		   and v.use_yn = 1
 		   and i.use_yn = 1
 	  group by 
