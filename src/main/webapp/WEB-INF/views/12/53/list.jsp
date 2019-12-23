@@ -10,9 +10,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-.chosen-search {
-	display: none;
-}
+		.chosen-search {
+			display: none;
+		}
+		
+		.number{
+    		text-align:right;
+    	}
+		
+		.form-horizontal .control-label {
+            text-align: left
+        }
 </style>
 </head>
 <body class="skin-3">
@@ -70,8 +78,8 @@
 									<div class="span6">
 										<label class="control-label span2" for="form-field-1">거래처코드</label>
 										<div class="controls">
-											<input class="span5" type="text" readonly id="customerName" name="customerName" value="${list[0].customerName }"> 
-											<input class="span5" type="text" readonly id="customerCode" name="customerCode" value="${list[0].customerCode }">
+											<input class="span5" type="text" readonly id="customerName" placeholder="거래처명" name="customerName" value="${list[0].customerName }"> 
+											<input class="span5" type="text" readonly id="customerCode" placeholder="거래처코드" name="customerCode" value="${list[0].customerCode }">
 											<input class="span5" type="hidden" readonly id="sales_date" name="salesDate" value="${list[0].salesDate }">
 										</div>
 									</div>
@@ -79,7 +87,7 @@
 									<div class="span6">
 										<label class="control-label span6" for="ceo">대표자</label>
 										<div class="controls">
-											<input class="span5" type="text" readonly id="ceo" name="ceo" value="${list[0].ceo }">
+											<input class="span5" type="text" placeholder="대표자명" readonly id="ceo" name="ceo" value="${list[0].ceo }">
 										</div>
 									</div>
 								</div>
@@ -89,9 +97,9 @@
 									<div class="control-group">
 			                              <label class="control-label form-field-1">주소</label>
 				                              <div class="controls">
-				                                 <input class="span2" type="text" id="zipCode" name="zipCode" readonly value="${list[0].zipCode }">
-				                                 <input class="span6" type="text" id="address" name="address" readonly value="${list[0].address }">
-				                                 <input class="span9" type="text" id="detailAddress" name="detailAddress" readonly value="${list[0].detailAddress }">
+				                                 <input class="span2" type="text" id="zipCode" placeholder="우편번호" name="zipCode" readonly value="${list[0].zipCode }">
+				                                 <input class="span6" type="text" id="address" placeholder="주소" name="address" readonly value="${list[0].address }">
+				                                 <input class="span9" type="text" style="margin-top: 5px" id="detailAddress" placeholder="상세주소" name="detailAddress" readonly value="${list[0].detailAddress }">
 				                              </div>
 			                           </div>
 									</div>
@@ -100,13 +108,13 @@
 										<div class="span5">
 											<label class="control-label span1" for="form-field-1">담당자</label>
 											<div class="controls">
-												<input class="span12" type="text" id="managerName" name="managerName" readonly value="${list[0].managerName }">
+												<input class="span12" type="text" id="managerName" placeholder="담당자명" name="managerName" readonly value="${list[0].managerName }">
 											</div>
 										</div>
 										<div class="span7">
-											<label class="control-label span1" for="form-field-1">메일</label>
+											<label class="control-label span1" for="form-field-1" style="padding-left: 110px;">메일</label>
 											<div class="controls">
-												<input class="span12" type="text" id="managerEmail" name="managerEmail" readonly value="${list[0].managerEmail }">
+												<input class="span12"  type="text" id="managerEmail" name="managerEmail" placeholder="담당자 메일" readonly value="${list[0].managerEmail }">
 											</div>
 										</div>
 									</div>
@@ -118,14 +126,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">수량합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="totalQuantity" value="0" name="totalQuantity" readonly>
+												<input class="number span6" type="text" id="totalQuantity" value="0" name="totalQuantity" readonly>
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">공급가액합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="totalSupplyValue" value="0" name="totalSupplyValue" readonly>
+												<input class="number span5" type="text" id="totalSupplyValue" value="0" name="totalSupplyValue" readonly>
 											</div>
 										</div>
 									</div>
@@ -136,14 +144,14 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서번호</label>
 											<div class="controls">
-												<input class="span5" type="text" id="taxbillNo" name="taxbillNo" value="${list[0].taxbillNo }">
+												<input class="span6" type="text" id="taxbillNo" name="taxbillNo" readonly value="${list[0].taxbillNo }">
 											</div>
 										</div>
 	
 										<div class="span6">
 											<label class="control-label span6" for="form-field-1">부가세합계</label>
 											<div class="controls">
-												<input class="span5" type="text" id="totaltaxValue" name="totalTaxValue" value="0" readonly>
+												<input class="number span5" type="text" id="totaltaxValue" name="totalTaxValue" value="0" readonly>
 											</div>
 										</div>
 									</div>
@@ -155,7 +163,7 @@
 										<div class="span6">
 											<label class="control-label span2" for="form-field-1">세금계산서발행일</label>
 											<div class="controls">
-												<input class="span9" type="text" id="write_date" name="writeDate" value="${list[0].writeDate }" readonly>
+												<input class="span9" type="text" id="write_date" placeholder="발행일" name="writeDate" value="${list[0].writeDate }" readonly>
 											</div>
 										</div>
 	
@@ -176,7 +184,7 @@
 										<div class="span6">
 											<label class="control-label" for="form-field-1">입금계좌번호</label>
 											<div class="controls">
-											<input class="span9" type="text" readonly id="depositNo" name="depositNo" value="${list[0].depositNo }">
+											<input class="span9" type="text" readonly id="depositNo" placeholder="계좌번호" name="depositNo" value="${list[0].depositNo }">
 										</div>
 											
 										</div>
@@ -184,7 +192,7 @@
 										<div class="span6">
 												<label class="control-label" for="form-field-1">출고일자</label>
 												<div class="controls">
-													<input class="span8" type="text" readonly id="releaseDate" name="releaseDate" value="${list[0].releaseDate }">
+													<input class="span8" type="text" readonly id="releaseDate" placeholder="출고일자" name="releaseDate" value="${list[0].releaseDate }">
 										</div>
 										</div>
 									</div>
@@ -195,15 +203,15 @@
 											<div class="span6">
 													<label class="control-label form-field-1">예금주</label>
 													<div class="controls">
-													<input type="text" id="banker" name="depositHost" readonly value="${list[0].depositHost }">
+													<input type="text" id="banker" name="depositHost" readonly placeholder="예금주" value="${list[0].depositHost }">
 													</div>
 											</div>
 
 											<div class="span6">
 													<label class="control-label form-field-1">은행</label>
 													<div class="controls">
-														<input class="span2" type="text" id="bankName" name="bankName" readonly value="${list[0].bankName }">
-														<input class="span6" type="text" id="bankCode" name="bankCode" readonly value="${list[0].bankCode }">
+														<input class="span2" type="text" id="bankName" placeholder="은행명" name="bankName" readonly value="${list[0].bankName }">
+														<input class="span6" type="text" id="bankCode" placeholder="은행코드" name="bankCode" readonly value="${list[0].bankCode }">
 													</div>
 											</div>
 										</div>
@@ -221,7 +229,7 @@
 										<div class="control-group">
 											<label class="control-label form-field-1">매출번호</label>
 										<div class="controls">
-											<input class="span8" type="text" id="salesNo" name="salesNo" value="${list[0].salesNo}" readonly>
+											<input class="span8" type="text" id="salesNo" placeholder="매출" name="salesNo" value="${list[0].salesNo}" readonly>
 										</div>
 										</div>
 									</div>
@@ -267,9 +275,9 @@
 										<td>${status.count}</td>
 										<td>${list.itemCode}</td>
 										<td>${list.itemName}</td>
-										<td><input id="quantity${status.index+1 }" readonly value="${list.quantity}" style="text-align: center;"></td>
-										<td><input id="supplyValue${status.index+1 }" readonly value="${list.supplyValue}" style="text-align: center;"></td>
-										<td><input id="taxValue${status.index+1 }" readonly value="${list.taxValue}" style="text-align: center;"></td>
+										<td><input id="quantity${status.index+1 }" readonly value="${list.quantity}" style="text-align: right;"></td>
+										<td><input id="supplyValue${status.index+1 }" readonly value="${list.supplyValue}" style="text-align: right;"></td>
+										<td><input id="taxValue${status.index+1 }" readonly value="${list.taxValue}" style="text-align: right;"></td>
 									</tr>
 								</c:forEach>
 								</tbody>
@@ -322,6 +330,7 @@
 			$(".chosen-select").chosen();
 			
 			checkFlag();
+			createtaxbillNo();
 			//showTime();
 		})
 		
@@ -394,6 +403,40 @@
 				/* } */
 			}
 		}
+		
+		// 세금계산서 번호 자동생성 함수
+		function createtaxbillNo(){ 
+	       	var taxbill = "";   // 전체 번호를 저장할 변수
+			var taxbillNo = "";	// ex) 20191223 - 년도 + 월 + 일
+			var middleNo = "";	// ex) 42 - ERP - 6자리 난수
+			var lastNo = "";	// ex) 8자리 난수
+			
+	       	var date = new Date();
+	  	 	var year = date.getFullYear().toString(); // 년
+	  	 	var month = (date.getMonth()+1).toString();	 // 월	
+	  		var day = date.getDate().toString(); // 일
+	  		
+	  		if (month.length < 2) month = "0" + month; // 한자리 월 0
+	  	 	if (day.length < 2) day = "0" + day; // 한자리 일 0
+	  	 	
+	  	 	taxbillNo = year + month + day;	// ex)20191223
+	  	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	  	 	
+	  		// 스펠링 난수
+	  	    for( var i=0; i < 7; i++ ){ 
+	  	    	middleNo += possible.charAt(Math.floor(Math.random() * possible.length)); // 난수
+	  	    }
+	  		
+	  		for( var i=0; i < 9; i++ ){
+	  			lastNo += possible.charAt(Math.floor(Math.random() * possible.length)); // 난수
+	  		}
+	  		
+	  	    if($("#taxbillNo").val() == ''){ // 조회한 경우가 아닐때 생성된 매출번호 set
+	  	    	taxbill = taxbillNo + 42 + middleNo + lastNo;
+	  	    	$("#taxbillNo").val(taxbill);		  	        
+	  	    }
+        }
+		
 	</script>
 </body>
 </html>

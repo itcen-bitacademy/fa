@@ -74,13 +74,19 @@
 	
 	<update id="salesupdate" parameterType="selltaxbill12vo">
 		<![CDATA[ 
-			update tb_sales set taxbill_no = #{taxbillNo }, voucher_use = #{voucherUse }, write_date = now()  where sales_no = #{salesNo};
+			update tb_sales set voucher_use = #{voucherUse }, write_date = now()  where sales_no = #{salesNo};
 		]]>
 	</update>
 	
 	<update id="taxbillupdate" parameterType="selltaxbill12vo">
 		<![CDATA[
 			update tb_sell_taxbill set voucher_use = #{voucherUse } where sales_no = #{salesNo };
+		]]>
+	</update>
+	
+	<update id="vouchersystem" parameterType="selltaxbill12vo">
+		<![CDATA[
+			update tb_voucher_system_mapping set voucher_use = #{voucherUse } where system_code = #{salesNo };
 		]]>
 	</update>
 	

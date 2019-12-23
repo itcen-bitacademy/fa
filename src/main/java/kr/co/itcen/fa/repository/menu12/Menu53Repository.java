@@ -54,6 +54,11 @@ public class Menu53Repository {
 		sqlSession.update("menu53.taxbillupdate", sellTaxbillVo);
 	}
 	
+	// 매출세금계산서 항목 중 비고를 업데이트 했을때, 전표에 사용목적도 함께 업데이트 되도록 하는 기능
+	public void voucherSystem(SellTaxbillVo sellTaxbillVo) {
+		sqlSession.update("menu53.vouchersystem", sellTaxbillVo);
+	}
+	
 	
 	
 	
