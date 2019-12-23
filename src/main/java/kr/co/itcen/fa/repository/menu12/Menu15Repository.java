@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
 
 /**
@@ -46,5 +47,7 @@ public class Menu15Repository {
 		return sqlSession.update("menu15.deleteByNo", map);
 	}
 	
-	
+	public void updateBankAccount(BankAccountVo bankAccount) {
+		sqlSession.update("menu15.updateBankAccount", bankAccount);
+	}
 }

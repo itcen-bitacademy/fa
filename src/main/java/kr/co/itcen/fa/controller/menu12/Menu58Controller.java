@@ -35,7 +35,7 @@ public class Menu58Controller {
 	private Menu36Service menu36Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(PurchasemanagementVo purchasemanagementVo, Model model, @RequestParam(defaultValue = "1") int page) {
+	public String list(PurchasemanagementVo purchasemanagementVo, Model model, @RequestParam(value="page", required=false, defaultValue="1") int page) {
 		model.addAttribute("dataResult", menu58Service.getAllPurchase(purchasemanagementVo, page));
 		model.addAttribute("purchase", purchasemanagementVo);
 		return MAINMENU + "/" + SUBMENU + "/list";

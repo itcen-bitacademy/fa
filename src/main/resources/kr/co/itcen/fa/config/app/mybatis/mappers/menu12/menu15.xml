@@ -90,4 +90,13 @@
 	        #{item }
 	    </foreach>
 	</update>
+	
+	<update id="updateBankAccount" parameterType="bankaccountvo">
+		<![CDATA[
+		update tb_salescustomer
+		set deposit_no = #{depositNo }, deposit_host = #{depositHost }, bank_code = #{bankCode }
+		where deposit_no = #{depositOld }
+		]]>
+	</update>
+	
 </mapper>
