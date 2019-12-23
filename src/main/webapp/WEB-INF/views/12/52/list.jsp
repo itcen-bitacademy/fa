@@ -55,9 +55,18 @@
 		});
 		
 		$("#btn-submit").on("click", function(){
+			$("#form-customer input[name=page]").val("1");
 			$("#form-customer").submit();
 		});
 		
+		$(".pagination li a").on("click", function(event){
+			event.preventDefault();
+			
+			$("#form-customer input[name=page]").val($(this).parent().val());
+			$("#form-customer").submit();
+		});
+		
+		/*
 		$(".pagination li a").on("click", function(event){
 			event.preventDefault();
 			var activePage = $(this).parent().attr("class");
@@ -77,6 +86,7 @@
 			$("#form-customer input[name=page]").val(page);
 			$("#form-customer").submit();
 		});
+		*/
 		
 		$("#dialog-message").dialog({
 		       autoOpen : false
@@ -393,7 +403,7 @@
 						<ul>
 							<c:choose>
 								<c:when test="${pagination.prev }">
-									<li><a href="#"><i class="icon-double-angle-left"></i></a></li>								
+									<li value="${pagination.startPage - 1 }"><a href="#"><i class="icon-double-angle-left"></i></a></li>								
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -404,17 +414,17 @@
 							<c:forEach var="pageNum" begin="${pagination.startPage }" end="${pagination.endPage }">
 								<c:choose>
 									<c:when test="${pageNum eq  pagination.page}">
-										<li class="active"><a href="#">${pageNum }</a></li>		
+										<li class="active" value="${pageNum }"><a href="#">${pageNum }</a></li>		
 									</c:when>
 									<c:otherwise>
-										<li><a href="#">${pageNum }</a></li>
+										<li value="${pageNum }"><a href="#">${pageNum }</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							
 							<c:choose>
 								<c:when test="${pagination.next }">
-									<li><a href="#"><i class="icon-double-angle-right"></i></a></li>								
+									<li value="${pagination.endPage + 1 }"><a href="#"><i class="icon-double-angle-right"></i></a></li>								
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>

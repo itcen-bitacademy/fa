@@ -184,7 +184,7 @@
 					<div class="row-fluid">
 						<div class="span10">
 							<form class="form-horizontal" id="form-purchase" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-								<input type="hidden" name="page" value="${dataResult.pagination.page }">
+								<input type="hidden" name="page">
 								<div class="span4">
 									<div class="control-group">
 										<label class="control-label form-field-1">년 월</label>
