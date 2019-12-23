@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -326,7 +327,7 @@
 										</tr>
 										<tr>
 											<td>
-												<label>납입금</label>
+												<label>납입원금</label>
 												<input type="text" name="text-name-payPrinc" id= "text-id-payPrinc" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
 												<input type="hidden" name="payPrinc" id= "payPrinc" style="text-align:right;"/>
 											</td>
@@ -335,6 +336,12 @@
 											<td>
 												<label>이자금액</label>
 												<input type="text" name="intAmount" id= "intAmount" readonly="readonly" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label>총액</label>
+												<input type="text" name="totalAmount" id= "totalAmount" readonly="readonly" style="text-align:right;" value="0"/> <h5 style="display: inline-block;">(원)</h5>
 											</td>
 										</tr>
 										</table>
@@ -942,7 +949,7 @@
 						var vo = {
 								"code" : $('input[name=debtcode]').val(),
 								"debtNo" : $("#no").val(), // 테이블 번호
-								"payPrinc" : parseInt($('input[name=payPrinc]').val()) - intAmount, //납입금 : 납입금 - 이자금액
+								"payPrinc" : parseInt($('input[name=payPrinc]').val()), //납입원금
 								"payDate" : $('input[name=payDate]').val(), // 상환일
 								"intAmount" : intAmount // 이자금액
 						}
@@ -1052,17 +1059,28 @@
 		
 		//--------------------------------------------------------------------------------------------------------------------------//
 		// 숫자에 콤마 적용해서 데이터 처리 : 차입금액
-	    var rgx3 = /,/gi;
 	    $("#text-id-payPrinc").bind('keyup keydown', function(){
 	        inputNumberFormat(this);
 	        var amount = $('input[name=text-name-payPrinc]').val();
 	        var coverAmount = amount.replace(/,/g, '');
-	        // hidden값에..콤마를 뺀 값을 넣어둔다.
 	        $('input[name="payPrinc"]').val(coverAmount);
+	        
+	        var intAmount=removeCommaReturn($("#intAmount").val());
+	        console.log("intAmount : " + intAmount);
+	     	
+    		var totalAmount = parseInt($("#payPrinc").val()) + parseInt(intAmount);
+    		console.log("totalAmount : " + totalAmount);
+    		
+    		var convertTotalAmount = numberFormat(totalAmount);
+    		
+    		function numberFormat(inputNumber) {
+    			   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    		}
+    		
+    		$('input[name="totalAmount"]').val(convertTotalAmount);
 	    });
 	    
-	 // 숫자에 콤마 적용해서 데이터 처리 : 상환내역팝업창 - 납입금액
-	    var rgx3 = /,/gi;
+	 	// 숫자에 콤마 적용해서 데이터 처리 : 상환내역팝업창 - 납입금액
 	    $("#payPrinc").bind('keyup keydown', function(){
 	        inputNumberFormat(this);
 	        var amount = $('input[name=payPrinc]').val();
@@ -1263,6 +1281,14 @@ function comma(str) {
 function uncomma(str) {
     str = String(str);
     return str.replace(/[^\d]+/g, '');
+}
+
+//4. 콤마 제거 (제거값리턴)
+function removeCommaReturn(val){
+   if(val != ""){
+    	val = val.replace(/,/g, "");
+   }
+   return val;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------//
