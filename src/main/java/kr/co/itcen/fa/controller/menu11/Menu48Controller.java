@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu48Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
@@ -46,7 +47,7 @@ public class Menu48Controller {
 	@Autowired
 	private Menu19Service menu19Service;
 	
-	                                   //   /11/48, /11/48/add
+	@NoAuth                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
 			@RequestParam(value="financialYear",required = false, defaultValue = "") String year,
@@ -65,6 +66,8 @@ public class Menu48Controller {
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
+	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
 	public String list(@RequestParam(value="code",required = false, defaultValue = "") String code,
 			@RequestParam(value="financialYear",required = false, defaultValue ="") String year,
@@ -74,6 +77,7 @@ public class Menu48Controller {
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code+"&page"+page;
 	}
+	
 	@RequestMapping(value = "/"+SUBMENU+"/add", method = RequestMethod.POST)
 	public String add(LTermdebtVo vo,@AuthUser UserVo user) {
 		//마감 여부 체크
@@ -124,6 +128,7 @@ public class Menu48Controller {
 		}
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
+	
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
 	public String update(LTermdebtVo vo,@AuthUser UserVo user) {
 		try {
@@ -179,6 +184,7 @@ public class Menu48Controller {
 		}
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
+	
 	@RequestMapping(value = "/"+SUBMENU+"/delete", method = RequestMethod.POST)
 	public String delete(@RequestParam Long[] no,@AuthUser UserVo uservo) {
 		List<LTermdebtVo> l_list=  menu48Service.selectList(no);

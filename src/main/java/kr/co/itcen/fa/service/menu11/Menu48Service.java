@@ -9,6 +9,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu48Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 
@@ -103,8 +104,10 @@ public class Menu48Service {
 		return menu48Repository.selectList(no);
 	}
 
-	public String businessDateStr() {
-		return menu48Repository.businessDateStr();
+	
+	
+	public Boolean updateBankAccount(BankAccountVo bankAccount) {
+		return menu48Repository.updateBankAccount(bankAccount);
 	}
 
 }

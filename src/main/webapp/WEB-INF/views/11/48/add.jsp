@@ -935,12 +935,17 @@ tr td:first-child {
 		console.log(td.eq(0).children().children().prop('checked'));
 		if(td.eq(0).children().children().prop('checked')== false){
 			$(td.eq(0).children().children()).prop('checked',true);
+			$("#tbody-list").find("tr").css("background-color", "inherit");
+	         $(this).css("background-color", "#ddd");
 		}else{
 			$('input').val('');
 			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
 			$('#code').attr('readonly',false);
 			$('#form-field-1').val(2019); 
 			$('#btn-check-code').val('중복확인');
+
+			$("#tbody-list").find("tr").css("background-color", "inherit");
+			$(this).css("background-color", "#ddd");
 			$(td.eq(0).children().children()).prop('checked',false);
 		}
 		
@@ -1113,13 +1118,15 @@ tr td:first-child {
 				
 			}	
 		});
-    	$("#payPrinc").on("change",function(){
-    		var intAmount=getNumString($("#amount").val());
+		$("#payPrinc").bind('keyup keydown',function(){
+			var intAmount=getNumString($("#amount").val());
 
     		var totalAmount = (parseInt(getNumString($("#payPrinc").val()))
     				+parseInt(intAmount)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     		$("#totalAmount").val(totalAmount);
-    	});
+	    });
+		
+		
     	
 		$("#dialog-repayment").dialog('open');
 		$("#dialog-repayment").dialog({

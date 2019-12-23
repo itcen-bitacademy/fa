@@ -263,6 +263,10 @@
 	select now();
 	]]>
 	</select>
-	
+	<update id="updateBankAccount" parameterType="bankaccountvo">
+		update tb_l_term_debt
+		set deposit_no = #{depositNo}
+		where deposit_no = #{depositOld}
+	</update>
 	
 </mapper>
