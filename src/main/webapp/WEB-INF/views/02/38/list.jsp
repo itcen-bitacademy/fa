@@ -50,13 +50,15 @@ input:focus {
 						function(e) {
 							var page_num = $(this).text();
 							var page_group = parseInt((page_num - 1) / 5);
-							
+
 							$
 									.ajax({
 										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 										type : "get",
 										dataType : "json",
-										data : $("#search-form").serialize() + "&page_num=" + page_num + "&page_group=" + page_group,
+										data : $("#search-form").serialize()
+												+ "&page_num=" + page_num
+												+ "&page_group=" + page_group,
 										success : function(data) {
 											console.log(data);
 											updateTable(
@@ -520,9 +522,8 @@ input:focus {
 					</div>
 					<div class="hr hr-10 dotted"></div>
 				</form>
-				<p>총  ${fn:length(buyTaxbillListAll)}건</p>
-				<div class="control-group"
-					style="overflow-x: scroll; max-width: 1400px">
+				<p>총 ${fn:length(buyTaxbillListAll)}건</p>
+				<div class="control-group" style="overflow-x: scroll;">
 					<table id="sample-table-1"
 						class="table table-striped table-bordered table-hover"
 						style="width: 1700px">

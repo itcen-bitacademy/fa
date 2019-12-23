@@ -28,7 +28,14 @@
 	<select id="getAboutNoData" parameterType="String"
 		resultType="buytaxbillvo">
 		<![CDATA[
-			select * 
+			select no, 
+				   manage_no as manageNo, 
+				   company_name as companyName, 
+				   date_format(write_date, '%Y-%m-%d') as WriteDate,
+				   total_supply_value as totalSupplyValue,
+				   total_tax_value as totalSupplyValue,
+				   tax_type as taxType,
+				   delete_flag as deleteFlag
 			  from tb_buy_taxbill
 			 where no = #{values }
 		]]>
@@ -74,7 +81,14 @@
 	<select id="getAboutItmes" parameterType="String"
 		resultType="buytaxbillitems">
 		<![CDATA[
-		  	select *
+		  	select no, 
+		  		   taxbill_no as taxbillNo, 
+		  		   date_format(purchase_date, '%Y-%m-%d') as purchaseDate,
+		  		   item_name as itemName, 
+		  		   amount,
+		  		   supply_value as supplyValue,
+		  		   tax_value as taxValue,
+		  		   delete_flag as deleteFlag
 		      from tb_buy_taxbill_items
 		     where taxbill_no = #{values }
 		 ]]>
