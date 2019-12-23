@@ -307,22 +307,6 @@
 											</tr>
 											
 									</c:forEach>
-									<tr>
-										<td>[합계]</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td id="dsum">차변합계</td>
-										<td id="csum">대변합계</td>
-										
-									</tr>
 									</tbody>
 								</table>
 							</div>

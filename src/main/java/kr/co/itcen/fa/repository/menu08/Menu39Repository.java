@@ -31,11 +31,14 @@ public class Menu39Repository {
 		int count = sqlSession.insert("menu39.add", vo);
 		return count == 1;
 	}
-
+	
+	//전체리스트
 	public List<BuildingVo> list(String id, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		
 		map.put("id", id);
 		map.put("pagination", pagination);
+		
 		List<BuildingVo> list = sqlSession.selectList("menu39.list", map);
 		return list;
 	}

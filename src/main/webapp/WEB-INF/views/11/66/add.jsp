@@ -84,7 +84,8 @@ input[type="text"], input[type="date"], select {
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-
+			<input type="hidden" id="search-condition"/>
+			<input type="hidden" id="checked-voList"/>
 			<div class="page-header position-relative">
 				<h1 class="pull-left">상환내역관리</h1>
 			</div>
@@ -94,14 +95,15 @@ input[type="text"], input[type="date"], select {
 				<form class="form-horizontal" id="input-form" method="post" action="">
 				<input type="hidden" name="no"/> <!-- tb_repay 테이블의 PK인 no값 전달 -->
 				<input type="hidden" name="debtNo"/>
+				<input type="hidden" name="vo"/>
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>차입금코드</h4></div>
 						<div class="ia-right"><input type="text" id="code" name="code" ></div>
 						<div class="ia-left"><h4>납입금</h4></div>
-						<div class="ia-right"><input type="text" id="id-payPrinc" name="name-payPrinc"  style="text-align:right;"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
+						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
 						<div class="ia-left"><h4>이자금액</h4></div>
-						<div class="ia-right"><input type="text" id="id-intAmount" name="name-intAmount" style="text-align:right;" readonly="readonly"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="intAmount" /></div>
+						<div class="ia-right"><input type="text" id="id-intAmount" name="commaIntAmount" style="text-align:right;" readonly="readonly"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="intAmount" /></div>
 					</section>
 					
 					<section>
@@ -125,9 +127,9 @@ input[type="text"], input[type="date"], select {
 				<section class="above-table">
 					<section class="above-table-left">
 						<div class="btn-list">
-							<button type="submit" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" onclick="return payPrincCheck()">수정</button>
-							<button type="submit" class="btn btn-danger btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete" onclick="deleteChecked()">삭제</button>
-							<button type="submit" class="btn btn-info btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button type="button" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" onclick="update()">수정</button>
+							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
+							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
 							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
 						</div>
 					</section>
@@ -135,7 +137,7 @@ input[type="text"], input[type="date"], select {
 				<hr>
 			</form>
 			<div>
-				<h5>총  ${contentsCount }건</h5>
+				<h5 id="total-cnt">총  ${contentsCount }건</h5>
 			</div>
 			<br>				
 			<!-- PAGE CONTENT ENDS -->
@@ -151,7 +153,7 @@ input[type="text"], input[type="date"], select {
 								</label>
 							</th>
 							<th class="center">차입금코드</th>
-							<th class="center">상환코드</th>
+							<th class="center">총납입금</th>
 							<th class="center">납입금</th>
 							<th class="center">이자금액</th>
 							<th class="center">부채유형</th>
@@ -163,12 +165,13 @@ input[type="text"], input[type="date"], select {
 						<tbody id="tbody-list">
 						<c:forEach items="${dataResult.datas}" var="vo" varStatus="status">
 							<tr>
-								<td class="center" data-no="${vo.no }">
+								<input type="hidden" name="vo"/>
+								<td class="center">
 									<label class="pos-rel"></label>
-									<input type="checkbox" class="ace" name="no"  data-no="${vo.no }" /><span class="lbl"></span>
+									<input type="checkbox" class="ace" name="no" /><span class="lbl"></span>
 								</td>
 								<td class="center">${vo.code}</td>
-								<td class="center">${vo.debtNo}</td>
+								<td class="center"><fmt:formatNumber value="${vo.totalPayPrinc}" pattern="#,###" /></td>	
 								<td class="center"><fmt:formatNumber value="${vo.payPrinc}" pattern="#,###" /><input type="hidden" value="${vo.payPrinc}" /></td>	
 								<td class="center"><fmt:formatNumber value="${vo.intAmount}" pattern="#,###" /><input type="hidden" value="${vo.intAmount}" /></td>
 								<c:choose>
@@ -184,15 +187,13 @@ input[type="text"], input[type="date"], select {
 						</tbody>
 				</table>
 				
+				<!-- 페이징 처리 코드 start -->
 				<div class="pagination">
-					<ul>
+					<ul id="pg-list">
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
-								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
-										<i class="icon-double-angle-left"></i>
-									</a>
-								</li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.startPage - 1 }">
+								<i class="icon-double-angle-left"></i></a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
@@ -201,20 +202,16 @@ input[type="text"], input[type="date"], select {
 						<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 							<c:choose>
 								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+									<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg }">${pg }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+									<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${pg}">${pg }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:choose>
 							<c:when test="${dataResult.pagination.next }">
-								<li>
-									<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
-										<i class="icon-double-angle-right"></i>
-									</a>
-								</li>
+								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri}&page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
@@ -222,6 +219,8 @@ input[type="text"], input[type="date"], select {
 						</c:choose>
 					</ul>
 				</div>
+				<!-- 페이징 처리 코드 end -->
+				
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -242,44 +241,6 @@ $(function() {
 	$(".chosen-select").chosen();
 	
 	//--------------------------------------------------------------------------------------------------------------------------//
-	// 상환내역관리 리스트에서 row를 선택하면 row의 해당 데이터 form에 추가
-	$("#tbody-list tr").click(function(){ 
-		var tr = $(this);
-		var td = tr.children();
-		
-		$("input[name=no]").val(td.eq(0).attr('data-no')); // 상환테이블 PK : no
-		$("input[name=code]").val(td.eq(1).text()); // 차입금코드
-		$("input[name=debtNo]").val(td.eq(2).text()); // 차입금코드
-		
-		// 상환금액 input 추가 (입력창에 보여지는 부분)
-		$("input[name=name-payPrinc]").val(td.eq(3).text()); // 상환금액
-		var payPrincWithoutComma = removeCommaReturn(td.eq(3).text()); // 콤마가 붙은 차입금액
-		$("input[name=tempPayPrinc]").val(payPrincWithoutComma);
-		
-		// 상환금액 input 추가 (입력창에 보여지는 부분)
-		$("input[name=name-intAmount]").val(td.eq(4).text()); // 이자금액
-		var intAmountWithoutComma = removeCommaReturn(td.eq(4).text()); // 콤마가 붙은 차입금액
-		$("input[name=intAmount]").val(intAmountWithoutComma);
-		
-		var debtType='';
-		switch (td.eq(5).text()){
-	    case '단기차입금' :
-	    	debtType = 'S';
-	        break;
-	    case '장기차입금' :
-	    	debtType = 'L';
-		    break;
-	    case '사채' :
-	    	debtType = 'P';
-	        break;
-		}
-		$('#debtType').val(debtType).trigger('chosen:updated'); // 부채유형
-		
-		$("input[name=payDate]").val(td.eq(6).text()); // 상환일자
-	});
-	//--------------------------------------------------------------------------------------------------------------------------//
-	
-	//--------------------------------------------------------------------------------------------------------------------------//
 	// form에 입력한 모든 데이터 초기화
 	$("#formReset").bind("click", function () {
 		$('#input-form')[0].reset(); // form의 모든 데이터 초기화
@@ -292,7 +253,7 @@ $(function() {
     var rgx3 = /,/gi;
     $("#id-payPrinc").bind('keyup keydown', function(){
         inputNumberFormat(this);
-        var amount = $('input[name=name-payPrinc]').val();
+        var amount = $('input[name=commaPayPrinc]').val();
         var coverAmount = amount.replace(/,/g, '');
         // hidden값에..콤마를 뺀 값을 넣어둔다.
         $('input[name="payPrinc"]').val(coverAmount);
@@ -303,20 +264,154 @@ $(function() {
     // 삭제하기 위해 체크박스 눌렀을 때, row 전체선택 및 해제
 	$("#checkall").click(function(){
 		if ($(this).hasClass('allChecked')) {
-			$('input[type="checkbox"]', '#simple-table').prop('checked', false);
+			$('input[type="checkbox"]', '#simple-table').prop('checked', false).change();
 		} else {
-			$('input[type="checkbox"]', '#simple-table').prop('checked', true);
+			$('input[type="checkbox"]', '#simple-table').prop('checked', true).change();
 		}
 		$(this).toggleClass('allChecked');
 	});
  	//--------------------------------------------------------------------------------------------------------------------------//
   
-  	//--------------------------------------------------------------------------------------------------------------------------//
 	//--------------------------------------------------------------------------------------------------------------------------//
+	getList();
 });
 
 //--------------------------------------------------------------------------------------------------------------------------//
 //javascript function
+//-------------------------------------------getList(), search(), paging() 처리 -----------------------------------------//
+function convertDebtType(debtType){
+	var convertedDebtType;
+	if(debtType == "S")
+		convertedDebtType = "단기차입금";
+	else if(debtType == "L")
+		convertedDebtType = "장기차입금";
+	else if(debtType == "P")
+		convertedDebtType = "사채";
+	return convertedDebtType;
+}
+
+function renderingPage(pagination){
+	console.log("--------------------() renderingPage Called------------------------");
+$("#pg-list li").remove();
+	
+	//이전버튼 Rendering
+	if(pagination.prev){
+		$("#pg-list").append("<li onclick='paging(this)'> id='" + (pagination.endPage + 1) + "'>" + 
+								"<a>" + "<i class='icon-double-angle-left'></i>" + "</a>" +
+							"</li>");
+	}else{
+		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>");
+	}
+	//페이지 Rendering
+	for(var i=pagination.startPage; i<=pagination.endPage ; ++i){
+		if(i == pagination.page)
+			$("#pg-list").append("<li class='active' onclick='paging(this)' id='" + i + "'><a>" + i + "</a></li>");
+		else
+			$("#pg-list").append("<li onclick='paging(this)' id='" + i + "'><a>" + i + "</a></li>");
+	}
+	//다음 버튼 Rendering
+	if(pagination.prev){
+		$("#pg-list").append("<li onclick='paging(this)'> id='" + (pagination.endPage + 1) + "'>" +
+								"<a><i class='icon-double-angle-right'></i></a>"+
+							"</li>");
+	}else{
+		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
+	}
+	
+	$("#total-cnt").text("총 " + pagination.totalCnt + "건");
+	console.log("--------------------() renderingPage End------------------------");
+}
+
+function renderingList(list){
+	console.log("--------------------() renderingListCalled------------------------");
+	$("#tbody-list > *").remove();
+	
+	console.log("list length : " + list.length);
+	for(var i=0; i < list.length; ++i){
+		$("#tbody-list").append("<tr onclick='selectRow(this)'>" +
+				 "<input type='hidden' name='vo' value='" + JSON.stringify(list[i]) + "'>" +
+				 "<td class='center'>" +
+					"<label class='pos-rel'></label>" +
+					"<input type='checkbox' class='ace' name='no'  value='" + list[i].no + "' onchange='rowChecked(this)'/><span class='lbl'></span>" +
+				"</td>" +
+				 "<td class='center'>" + list[i].code + "</td>" +
+				 "<td class='center'>" + comma(list[i].payPrinc + list[i].intAmount) + "</td>" +
+				 "<td class='center'>" + comma(list[i].payPrinc) + "</td>" +
+				 "<td class='center'>" + comma(list[i].intAmount) + "</td>" +
+				 "<td class='center'>" + convertDebtType(list[i].debtType) + "</td>" +
+				 "<td class='center'>" + list[i].payDate + "</td>" +
+				 "<td class='center'>" + list[i].voucherNo + "</td>" + 
+				 "<td class='center'>" + list[i].insertDate + "</td>" +
+			"</tr>");
+	}
+	console.log("--------------------() renderingLIst End------------------------");
+}
+
+function getList(){
+	console.log("--------------------getList() Called------------------------");
+	getListAjax(1);		
+}
+
+function search(){
+	console.log("--------------------() search() Called------------------------");
+	var inputForm = $("#input-form")[0];
+	var vo = {"code":inputForm.code.value, "debtType": inputForm.debtType.value};
+	$("#search-condition").val(JSON.stringify(vo));
+	console.log("search-condition : " + $("#search-condition").val());
+	
+	getListAjax(1);
+}
+
+function paging(thisObj){
+	console.log("--------------------() paging()Called------------------------");
+	getListAjax($(thisObj).text());
+}
+
+function getListAjax(page){
+	console.log("--------------------() getListAjax Called------------------------");
+	var inputForm = $("#input-form")[0];
+	
+	if($("#search-condition").val() == "")			//빈값일떄
+		$("#search-condition").val("{}");			//parse에러를 막기위한 빈객체 삽입
+	
+	var vo = JSON.parse($("#search-condition").val());
+	vo["page"] = page;
+	
+	$.ajax({
+		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/getList",
+		type: "POST",
+		dataType: "json",
+		data: vo,
+		success: function(response){
+			console.log("Ajax 성공");
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
+			
+		},
+		error: function(xhr,error){
+			console.log("Ajax 실패");
+		}
+	});
+	console.log("--------------------() getListAjax End------------------------");
+}
+
+//----------------------테이블에서 Row선택시 처리 함수----------------------//
+function selectRow(thisObj){
+	var inputForm = $("#input-form")[0];
+	var vo = JSON.parse($(thisObj).find("input[name=vo]").val());
+	
+	inputForm.vo.value = JSON.stringify(vo); // 상환테이블 PK : no
+	inputForm.code.value = vo.code;
+	inputForm.debtNo.value = vo.debtNo;
+	inputForm.payPrinc.value = vo.payPrinc;
+	inputForm.commaPayPrinc.value = comma(vo.payPrinc);
+	inputForm.tempPayPrinc.value = vo.payPrinc;
+	inputForm.intAmount.value = vo.intAmount;
+	inputForm.commaIntAmount.value = comma(vo.intAmount);
+	$('#debtType').val(vo.debtType).trigger('chosen:updated');
+	inputForm.payDate.value = vo.payDate;
+}
+
 //<숫자에 콤마 적용해서 데이터 처리>
 //1. 입력한 문자열 전달
 function inputNumberFormat(obj) {
@@ -345,7 +440,7 @@ function removeCommaReturn(val){
 //--------------------------------------------------------------------------------------------------------------------------//
 
 // 상환내역 금액 수정 확인
-function payPrincCheck(){
+function update(){
 	var intAmount = $("input[name=intAmount]").val();
 	if (intAmount > parseInt($("input[name=payPrinc]").val())) {
 		alert("이자 금액보다 납입금이 작습니다 납입금(" + intAmount + ")보다 크게 입력해주세요");
@@ -357,14 +452,47 @@ function payPrincCheck(){
 
 // 상환내역리스트에서 선택한 row 삭제
 function deleteChecked(){
-	var sendData = [];
-	var checkedList = $("#tbody-list input[type=checkbox]:checked");
-	checkedList.each(function(i, e){
-		sendData.push($(this).attr('data-no'));
-	});
+	console.log("--------------------deleteChecked() End------------------------");
+	var voList = JSON.parse($("#checked-voList").val());
 	
-	$("input[name=no]").val(sendData);
-	alert(sendData);
+	$.ajax({
+		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
+		type: "POST",
+		dataType: "json",
+		contentType : 'application/json',
+		data: JSON.stringify(voList),
+		success: function(response){
+			console.log("삭제가 완료 되었습니다.");
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
+			
+		},
+		error: function(xhr,error){
+			console.log("Ajax 실패");
+		}
+	});
+	console.log("--------------------deleteChecked() End------------------------");
+}
+
+function rowChecked(thisObj){
+	if($("#checked-voList").val() == "")
+		$("#checked-voList").val("[]");
+	
+	var tr = $(thisObj).closest("tr");
+	var vo = JSON.parse(tr.find("input[name=vo]").val());
+	var voList = JSON.parse($("#checked-voList").val());
+	
+	console.log("vo : " + vo);
+	
+	if(!$(thisObj).is(":checked")){
+		voList.splice(voList.indexOf(vo), 1);				//해당  vo를 check 리스트에서 제거
+	} else{
+		voList.push(vo);
+	}
+	console.log("voList : " + voList);
+	
+	$("#checked-voList").val(JSON.stringify(voList));
+	
 }
 
 

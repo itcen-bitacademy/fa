@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.repository.menu01;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
@@ -29,6 +31,9 @@ import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 public class Menu03Repository {
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Autowired
+	private Menu19Service menu19Service;
 	
 	
 	public void test (){
@@ -57,6 +62,45 @@ public class Menu03Repository {
 		sqlSession.insert("menu03.insertMapping", mappingVo); // 매핑테이블 입력
 		
 		return voucherVo.getNo();	// 전표번호
+	}
+	
+	// 전표생성 (1팀)
+	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingVo, UserVo userVo) throws ParseException {
+		
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			System.out.println("repo1");
+			sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
+			for(int i = 0; i < itemVo.size(); i++) {
+				System.out.println("itemVo.size : " + itemVo.size());
+				itemVo.get(i).setVoucherNo(voucherVo.getNo());
+				System.out.println("itemVo.get(i) : " + itemVo.get(i).getVoucherNo());
+				System.out.println("itemVo.get(i)amount : " + itemVo.get(i).getAmount());
+				System.out.println("itemVo.get(i)amountflag : " + itemVo.get(i).getAmountFlag());
+				System.out.println("itemVo.get groupNo : " + itemVo.get(i).getGroupNo());
+				itemVo.get(i).setGroupNo(voucherVo.getNo());
+				System.out.println("repo2");
+				sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
+				
+				int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+				System.out.println("order : " + order);
+				
+				System.out.println("repo3");
+				
+				
+				mappingVo.get(i).setVoucherNo(voucherVo.getNo());
+				System.out.println("repo4");
+				sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
+				itemVo.get(i).setOrderNo(order);
+				sqlSession.update("menu03.updateOrder", itemVo.get(i));
+				mappingVo.get(i).setOrderNo(order);
+				sqlSession.update("menu03.updateOrder2", mappingVo.get(i));
+			}
+			
+			return voucherVo.getNo();	// 전표번호
+		}
+		
+		return null;
+		
 	}
 
 	// 전표생성 (1팀)
@@ -210,6 +254,8 @@ public class Menu03Repository {
 		return sqlSession.selectOne("menu03.getRegDate", no);
 		
 	}
+
+	
 	
 
 }

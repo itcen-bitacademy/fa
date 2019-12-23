@@ -9,6 +9,9 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 /* tr td:first-child { */
@@ -56,7 +59,7 @@
 		</div><!-- /.page-header -->
 			
 		<!-- PAGE CONTENT BEGINS -->
-		<form id="myform" class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+		<form id="myform" class="form-horizontal">
 		<div class="container-fluid">
 
 		<!-- Example row of columns -->
@@ -67,8 +70,8 @@
 							<td><h4>은행코드</h4></td>
 							<td>
 								<input type="text" name="code" class="code" id="code" 
-								 maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) " required 
-								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'/>
+								 maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) "  
+								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								 
 								<input id="btn-check-code" type="button" value="중복확인" /> 
 								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
@@ -78,14 +81,14 @@
 						<tr >
 							<td><h4>지점명</h4></td>
 							<td colspan="2" align=left>
-								<input type="text" name="store" id="store" required />
+								<input type="text" name="store" id="store"  />
 							</td>
 						</tr>
 							
 						<tr >
 							<td><h4>FAX</h4></td>
 							<td colspan="2" >
-								<input type="text" name="fax" id="fax" maxlength="15" required
+								<input type="text" name="fax" id="fax" maxlength="15" 
 								  onKeyup="inputTelNumber(this);"
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'
 								 />
@@ -97,7 +100,7 @@
  							<td colspan="2"> 
 								<div class="control-group">
 									<div class="row-fluid input-append">
-										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" readOnly required/>
+										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" readOnly />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
@@ -117,14 +120,14 @@
 						<tr >
 							<td><h4>담당자</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgr" id="mgr" required />
+								<input type="text" name="mgr" id="mgr"  />
 							</td>
 						</tr>
 						
 						<tr >
 							<td><h4>담당자전화번호</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgrPhone" id="mgrPhone" maxlength="15" required
+								<input type="text" name="mgrPhone" id="mgrPhone" maxlength="15" 
 								  onKeyup="inputTelNumber(this);"
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 							</td>
@@ -137,13 +140,13 @@
 							<tr>
 								<td><h4>은행명</h4></td>
 								<td colspan="2">
-									<input type="text" name="name" id="name" required />
+									<input type="text" name="name" id="name"  />
 								</td>
 							</tr>
 							<tr >
 								<td><h4>은행전화번호</h4></td>
 								<td colspan="2">
-									<input type="text" name="phone" id="phone" maxlength="15" required
+									<input type="text" name="phone" id="phone" maxlength="15" 
 								 	 onKeyup="inputTelNumber(this);"
 									 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								</td>
@@ -156,16 +159,16 @@
 								<div class="control-group"> 
 			                       <div>
 									<input type="button" class="btn-primary box"
-			                            onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+			                            onclick="execDaumPostcode()" value="우편번호 찾기" id='addressSearch'><br>
 			                       </div>
 									<div>
 			                        
 			                      		<input type="text" name="post" class="box" id="postcode"
-			                           		placeholder="우편번호" readOnly required>
+			                           		placeholder="우편번호" readOnly >
 									</div>			
 									<div>
 			                       		<input  type="text" name="roadAddress" class="box"
-			                           		id="roadAddress" placeholder="도로명주소" readOnly required>
+			                           		id="roadAddress" placeholder="도로명주소" readOnly >
 									</div>                     
 									<div>
 					                 		<input  type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
@@ -187,7 +190,7 @@
 							<tr >
 								<td><h4>담당자이메일</h4></td>
 								<td colspan="2">
-									<input type="email" name="mgrEmail" id="email" required />
+									<input type="email" name="mgrEmail" id="email"  />
 										ex) jisu@naver.com
 								</td>
 							</tr>
@@ -200,11 +203,11 @@
 		
 			<hr>
 			<div>
-				<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-				<button class="btn btn-danger btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
-				<button class="btn btn-warning btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-				<button class="btn btn-primary btn-small" id="inputbtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
-				<button type="reset" class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
+				<button id="search" class="btn btn-info btn-small" >조회</button>
+				<button id='deletebtn' class="btn btn-danger btn-small" >삭제</button>
+				<button id='updatebtn' class="btn btn-warning btn-small">수정</button>
+				<button class="btn btn-primary btn-small" id="inputbtn">입력</button>
+				<button class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
 				<hr>
 			</div>
 		
@@ -284,16 +287,43 @@
 			</c:choose>
 		</ul>
 	</div>
+			<!-- error Modal pop-up : start -->
+			<div id="staticBackdrop"   title="Error-Message" hidden="hidden" >
+			<table align="center">
+				<tr>
+					<td>
+						<label>ERROR : </label>
+						<h3 id="staticBackdropLabel"></h3>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>ERROR Contents : </label>
+						<div id="staticBackdropBody"></div>	
+					</td>
+				</tr>
+			</table>
+			</div>
+			<!-- error Modal pop-up : end -->
+			
+	
+	
 			
    </div>/.main-content -->
  </div>/.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
-  <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-  <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
-  <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>	
+
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>	
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script>
+
+<script>
+  	var idchecked= false;//중복체크를 했는지 안했는지 체크하는 변수
+  	var validationMessage ='';//에러 메시지
+	var errortitle='';//에러 타이틀
+	var errorfield ='';//에러 난 부분->fucus할거임
     function execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -342,221 +372,245 @@
         }).open();
     }
    		    
-   		    /////////////////////////////////////////////////////////////////////////////////////////
-   	
-	        $(function() {
-	        	  $(".chosen-select").chosen();
-					
-					$('.date-picker').datepicker().next().on(ace.click_event,function(){
-						$(this).prev().focus();
-					});
-	       
-					///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+//에러 팝업
+function openErrorModal(title, message,errorfield) { //validation 체크 후 에러 메시지 모달을 띄우기 위한 함수
+		$('#staticBackdropLabel').html(title);//에러
+		$('#staticBackdropBody').text(message);//에러내용
 		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
 		
-					/////////////////////////////////////////////////////////////////
-					//은행코드 중복체크
-						$("#code").change(function(){
-							$("#img-checkcode").hide();
-							$("#btn-check-code").show();
-						});	
-					
-						$("#btn-check-code").click(function(){
-							
-							var code = $("#code").val();
-							if(code == ""){
-								return;
-							}
-						
-							// ajax 통신
-							$.ajax({
-								url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/checkcode?code=" + code,
-								type: "get",
-								dataType: "json",
-								data: "",
-								success: function(response){
-									if(response.result == "fail"){
-										console.error(response.message);
-										return;
-									}
-									console.log(response);
-									
-									if(response.data == true){
-										alert("이미 존재하는 은행코드입니다.");
-										$("#input-code").val("");
-										$("#input-code").focus();
-										return;
-									}else{
-										$("#btn-check-code").hide();
-										$("#img-checkcode").show();
-										ischecked = true;
-									}
-									},
-									error:function(xhr,error) {
-										console.err("error" + error);
-									}
-								});
-							});	
-					
-				  		});
-   		    
-			   		    
-				        $("#inputbtn").click(function(){
-				        	   if(ischecked == false){
-				        	      alert("은행코드를 중복체크 해야합니다.");
-				        	      return;
-				        	   }
-				        	   else{
-				        	      $('#myform').add();
-				        	   }
-				        	 });
-	        
-			////////////////////////////////////////////////////////////////////////////////////////
-			
-			$("#simple-table tr").click(function(){ 
-				
-				var tr = $(this);
-				var td = tr.children();
-				
-				$("input[name=code]").val(td.eq(0).text());
-			    $("input[name=name]").val(td.eq(1).text());
-			    $("input[name=store]").val(td.eq(2).text());
-			    $("input[name=dealDate]").val(td.eq(3).text());
-			    $("input[name=phone]").val(td.eq(4).text());
-			    $("input[name=fax]").val(td.eq(5).text());
-			    $("input[name=post]").val(td.eq(6).text());
-			    $("input[name=roadAddress]").val(td.eq(7).text());
-			    $("input[name=mgr]").val(td.eq(8).text());
-			    $("input[name=mgrPhone]").val(td.eq(9).text());
-			    $("input[name=mgrEmail]").val(td.eq(10).text());
-			});
-			
-		/////////////////////////////////////////////////////////////////
-		//조회시 필요없는 정보 입력 X
-			$("#search").click(function(){
-				$("#name").attr("disabled",true);
-				$("#store").attr("disabled",true);
-				$("#id-date-picker-1").attr("disabled",true);
-				$("#phone").attr("disabled",true);
-				$("#fax").attr("disabled",true);
-				$("#postcode").attr("disabled",true);
-				$("#roadAddress").attr("disabled",true);
-				$("#detailAddress").attr("disabled",true);
-				$("#mgr").attr("disabled",true);
-				$("#mgrPhone").attr("disabled",true);
-				$("#mgrEmail").attr("disabled",true);
-				
-				
-				$("#name").val('');
-				$("#store").val('');
-				$("#id-date-picker-1").val('');
-				$("#phone").val('');
-				$("#fax").val('');
-				$("#postcode").val('');
-				$("#roadAddress").val('');
-				$("#detailAddress").val('');
-				$("#mgr").val('');
-				$("#mgrPhone").val('');
-				$("#mgrEmail").val('');
-				});
-		
-		///////////////////////////////////////////////////////////////
-		//이메일 유효성 검사
-		$("#email").change(function(){
-			function validateEmail(email) {
-				var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-				return re.test(email);
-				}
-							
-			
-				var email = $("#email").val();
-				if (email == '' || !re.test($mgrEmail)) {
-					alert("올바른 이메일 주소를 입력하세요")
-				return false;
-				}
-			
+		$("#staticBackdrop").dialog({
+			title: "Eroor-Message",
+			title_html: true,
+          	resizable: false,
+	           height: 300,
+	           width: 400,
+	           modal: true,
+		    close: function() {
+		    	$('#staticBackdropLabel').text('');//에러
+				$('#staticBackdropBody').text('');//에러내용
+				$(errorfield).focus();//에러난곳으로 포커싱
+		    },
+		    buttons: {
+		    "확인" : function() {
+		          	$(this).dialog('close');
+		          	$('#staticBackdropLabel').text('');//에러
+					$('#staticBackdropBody').text('');//에러내용
+					$(errorfield).focus();
+		        }
+		    }
 		});
 		
-		
-		
-		/////////////////////////////////////////////////////////////////
-		//전화번호 자동 하이픈
-			function inputTelNumber(obj) {
-			    var number = obj.value.replace(/[^0-9]/g, "");
-			    var tel = "";
+		$("#staticBackdrop").dialog('open');//모델창 띄운다
+	}
+/////////////////////////////////////////////////////////////////
+function Myvalidation(){
+	return true;
+}
+/////////////////////////////////////////////////////////////////
+//은행코드 중복체크
+$("#code").change(function(){
+	$("#img-checkcode").hide();
+	$("#btn-check-code").show();
+});	
+
+$("#btn-check-code").click(function(){
+	var code = $("#code").val();
+	if(code == ""){
+		return;
+	}
+
+	// ajax 통신
+	$.ajax({
+		url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/checkcode?code=" + code,
+		type: "get",
+		dataType: "json",
+		data: "",
+		success: function(response){
+			if(response.result == "fail"){
+				console.error(response.message);
+				return;
+			}
+			console.log(response);
 			
-			    // 서울 지역번호(02)가 들어오는 경우
-			    if(number.substring(0, 2).indexOf('02') == 0) {
-			        if(number.length < 3) {
-			            return number;
-			        } else if(number.length < 6) {
-			            tel += number.substr(0, 2);
-			            tel += "-";
-			            tel += number.substr(2);
-			        } else if(number.length < 10) {
-			            tel += number.substr(0, 2);
-			            tel += "-";
-			            tel += number.substr(2, 3);
-			            tel += "-";
-			            tel += number.substr(5);
-			        } else {
-			            tel += number.substr(0, 2);
-			            tel += "-";
-			            tel += number.substr(2, 4);
-			            tel += "-";
-			            tel += number.substr(6);
-			        }
-			    
-			    // 서울 지역번호(02)가 아닌경우
-			    } else {
-			        if(number.length < 4) {
-			            return number;
-			        } else if(number.length < 7) {
-			            tel += number.substr(0, 3);
-			            tel += "-";
-			            tel += number.substr(3);
-			        } else if(number.length < 11) {
-			            tel += number.substr(0, 3);
-			            tel += "-";
-			            tel += number.substr(3, 3);
-			            tel += "-";
-			            tel += number.substr(6);
-			        } else {
-			            tel += number.substr(0, 3);
-			            tel += "-";
-			            tel += number.substr(3, 4);
-			            tel += "-";
-			            tel += number.substr(7);
-			        }
-			    }
+			if(response.data == true){
+				alert("이미 존재하는 은행코드입니다.");
+				$("#input-code").val("");
+				$("#input-code").focus();
+				return;
+			}else{
+				$("#btn-check-code").hide();
+				$("#img-checkcode").show();
+				ischecked = true;
+			}
+			},
+			error:function(xhr,error) {
+				console.err("error" + error);
+			}
+	});
+});			    
+//requied제거후 각각 validation 추가 해라			   		    
+$("#inputbtn").click(function(){//입력버튼 클릭시      	
+	if(ischecked == false){
+		alert("은행코드를 중복체크 해야합니다.");
+ 	    return;
+ 	}else{
+ 		if(!Myvalidation()){
+ 			openErrorModal(errortitle,validationMessage,errorfield);
+ 			return;
+ 		}
+		$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add');
+	  	$('#myform').attr('method', 'POST');
+	  	$('#myform').submit();
+  	}
+});
+$('#formReset').click(function(){//초기화 버튼 클릭시
+ 	$('input').val(''); 
+  	$('#btn-check-code').val('중복확인');
+  	$('#addressSearch').val('우편번호찾기');
+});	        
+ $('#updatebtn').click(function(){
+  	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
+	$('#myform').attr('method', 'POST');
+	$('#myform').submit();
+ });
+ $('#deletebtn').click(function(){
+  	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
+	$('#myform').attr('method', 'POST');
+	$('#myform').submit();
+ });
+ 
+//조회시 필요없는 정보 입력 X
+$("#search").click(function(){
+	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
+	$('#myform').attr('method', 'POST');
+	$('#myform').submit();
+});
+			  
+			  
+////////////////////////////////////////////////////////////////////////////////////////
+$("#simple-table tr").click(function(){ 
+	var tr = $(this);
+	var td = tr.children();
+	$("input[name=code]").val(td.eq(0).text());
+    $("input[name=name]").val(td.eq(1).text());
+    $("input[name=store]").val(td.eq(2).text());
+    $("input[name=dealDate]").val(td.eq(3).text());
+    $("input[name=phone]").val(td.eq(4).text());
+    $("input[name=fax]").val(td.eq(5).text());
+    $("input[name=post]").val(td.eq(6).text());
+    $("input[name=roadAddress]").val(td.eq(7).text());
+    $("input[name=mgr]").val(td.eq(8).text());
+    $("input[name=mgrPhone]").val(td.eq(9).text());
+    $("input[name=mgrEmail]").val(td.eq(10).text());
+});
 			
-			    obj.value = tel;
-			}	
 		
+///////////////////////////////////////////////////////////////
+//이메일 유효성 검사
+$("#email").change(function(){
+	function validateEmail(email) {
+		var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		return re.test(email);
+		}
+		var email = $("#email").val();
+		if (email == '' || !re.test($mgrEmail)) {
+			openErrorModal('EMAIL ERROR',"올바른 이메일 주소를 입력하세요",'#email');
+			return false;
+		}
 	
-	    /////////////////////////////////////////////////////////////////
-		//은행코드 유효성검사
-		function onlyNumber(event){
-		    event = event || window.event;
-		    var keyID = (event.which) ? event.which : event.keyCode;
-		    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
-		        return;
-		    else
-		        return false;
-		}
+});
+		
+/////////////////////////////////////////////////////////////////
+//전화번호 자동 하이픈
+function inputTelNumber(obj) {
+    var number = obj.value.replace(/[^0-9]/g, "");
+    var tel = "";
+
+    // 서울 지역번호(02)가 들어오는 경우
+    if(number.substring(0, 2).indexOf('02') == 0) {
+        if(number.length < 3) {
+            return number;
+        } else if(number.length < 6) {
+            tel += number.substr(0, 2);
+            tel += "-";
+            tel += number.substr(2);
+        } else if(number.length < 10) {
+            tel += number.substr(0, 2);
+            tel += "-";
+            tel += number.substr(2, 3);
+            tel += "-";
+            tel += number.substr(5);
+        } else {
+            tel += number.substr(0, 2);
+            tel += "-";
+            tel += number.substr(2, 4);
+            tel += "-";
+            tel += number.substr(6);
+        }
+    
+    // 서울 지역번호(02)가 아닌경우
+    } else {
+        if(number.length < 4) {
+            return number;
+        } else if(number.length < 7) {
+            tel += number.substr(0, 3);
+            tel += "-";
+            tel += number.substr(3);
+        } else if(number.length < 11) {
+            tel += number.substr(0, 3);
+            tel += "-";
+            tel += number.substr(3, 3);
+            tel += "-";
+            tel += number.substr(6);
+        } else {
+            tel += number.substr(0, 3);
+            tel += "-";
+            tel += number.substr(3, 4);
+            tel += "-";
+            tel += number.substr(7);
+        }
+    }
+
+    obj.value = tel;
+}		
+/////////////////////////////////////////////////////////////////
+//은행코드 유효성검사
+function onlyNumber(event){
+    event = event || window.event;
+    var keyID = (event.which) ? event.which : event.keyCode;
+    if ( (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+        return;
+    else
+        return false;
+}
 		 
-		function removeChar(event) {
-		    event = event || window.event;
-		    var keyID = (event.which) ? event.which : event.keyCode;
-		    if ( keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
-		        return;
-		    else
-		        event.target.value = event.target.value.replace(/[^0-9]/g, "");
-		}
+function removeChar(event) {
+    event = event || window.event;
+    var keyID = (event.which) ? event.which : event.keyCode;
+    if ( keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 ) 
+        return;
+    else
+        event.target.value = event.target.value.replace(/[^0-9]/g, "");
+}
+/////////////////////////////////////////////////////////////////////////////////////////
+$(function(){
+	$('button').on('click', function(e) {
+		e.preventDefault();
+	});
+	$(".chosen-select").chosen();
+	$('.date-picker').datepicker().next().on(ace.click_event,function(){
+		$(this).prev().focus();
+	});
+	$("#staticBackdrop").dialog({
+		autoOpen : false	
+	});
+});
+	
+///////////////////////////////////////////////////////////////////////////////////////////////
 		
-		
-		
-		
-		</script>
+</script>
 </body>
 </html>

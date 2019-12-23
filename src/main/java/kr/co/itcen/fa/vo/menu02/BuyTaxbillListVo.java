@@ -11,6 +11,21 @@ public class BuyTaxbillListVo {
 	private String taxType;
 	private String deleteFlag;
 	private String order;
+	private int pageGroup;
+	private int page;
+	
+	public int getPageGroup() {
+		return pageGroup;
+	}
+	public void setPageGroup(int pageGroup) {
+		this.pageGroup = pageGroup;
+	}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
@@ -56,7 +71,8 @@ public class BuyTaxbillListVo {
 	@Override
 	public String toString() {
 		return "BuyTaxbillListVo [startDate=" + startDate + ", endDate=" + endDate + ", no=" + no + ", companyName="
-				+ companyName + ", taxType=" + taxType + ", deleteFlag=" + deleteFlag + ", order=" + order + "]";
+				+ companyName + ", taxType=" + taxType + ", deleteFlag=" + deleteFlag + ", order=" + order
+				+ ", pageGroup=" + pageGroup + ", page=" + page + "]";
 	}
 	
 }

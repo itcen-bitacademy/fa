@@ -49,7 +49,7 @@ public class Menu48Controller {
 	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year,
+			@RequestParam(value="financialYear",required = false, defaultValue = "") String year,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page
 			) {
 		
@@ -58,6 +58,7 @@ public class Menu48Controller {
 		
 		
 		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("code",code);
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("year",year);
 		
@@ -66,8 +67,10 @@ public class Menu48Controller {
 	}
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
 	public String list(@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") int year,
+			@RequestParam(value="financialYear",required = false, defaultValue ="") String year,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
+		System.out.println(code+"search");
+		System.out.println(year+"search");
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code+"&page"+page;
 	}
@@ -79,11 +82,8 @@ public class Menu48Controller {
 			vo.setDebtDate(dates[0]);
 			vo.setExpDate(dates[1]);
 			vo.setInsertId(user.getId());
-			String businessDateStr = menu48Service.businessDateStr();
-			System.out.println("왜 안되냐4"+businessDateStr);
+			
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
-						
-				System.out.println("왜 안되냐");
 				
 				VoucherVo voucherVo = new VoucherVo();
 				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -114,7 +114,7 @@ public class Menu48Controller {
 				
 				
 				Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-				
+				System.out.println(vo);
 				vo.setVoucherNo(no);
 				menu48Service.insert(vo);
 			}

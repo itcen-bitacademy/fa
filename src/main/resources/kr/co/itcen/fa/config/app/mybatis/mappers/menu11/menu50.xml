@@ -117,12 +117,25 @@
 	<update id="pdebtupdate" parameterType="pdebtvo">
 		<![CDATA[
 			update tb_p_debt 
-			set name = #{name}, major_code = #{majorCode}, debt_amount = #{debtAmount}, 
-			repay_way=#{repayWay}, debt_date=#{debtDate}, exp_date=#{expDate}, 
-			int_rate=#{intRate}, int_pay_way=#{intPayWay}, mgr=#{mgr}, 
-			mgr_call=#{mgrCall}, bank_code=#{bankCode}, deposit_no=#{depositNo}, 
-			update_id=#{updateId}, update_date=now() , voucher_no=#{voucherNo}
-			where no=#{no}
+				set 
+					name = #{name}, 
+					major_code = #{majorCode}, 
+					debt_amount = #{debtAmount}, 
+					repay_way=#{repayWay}, 
+					debt_date=#{debtDate}, 
+					exp_date=#{expDate}, 
+					int_rate=#{intRate}, 
+					int_pay_way=#{intPayWay}, 
+					mgr=#{mgr}, 
+					mgr_call=#{mgrCall}, 
+					danger_code=#{dangerCode}, 
+					danger_name=#{dangerName}, 
+					bank_code=#{bankCode}, 
+					deposit_no=#{depositNo}, 
+					update_id=#{updateId}, 
+					update_date=now() , 
+					voucher_no=#{voucherNo}
+						where no=#{no}
 		]]>
 	</update>
 	

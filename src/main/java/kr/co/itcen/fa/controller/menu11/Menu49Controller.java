@@ -42,13 +42,13 @@ public class Menu49Controller {
 		LTermdebtVo vo,
 		@RequestParam(value="sort", required=false) String sort) {
 		System.out.println(vo);
-		if(vo.getDebtDate() == null || "".equals(vo.getDebtDate()))
+		if(vo.getDebtDate() == null)
 			vo.setDebtDate("");
-		if(vo.getIntPayWay() ==null || "".equals(vo.getIntPayWay()))
+		if(vo.getIntPayWay() ==null )
 			vo.setIntPayWay("");
-		if(vo.getBankName() == null || "".equals(vo.getBankName()))
+		if(vo.getBankName() == null)
 			vo.setBankName("");
-		if(vo.getExpDate() == null || "".equals(vo.getExpDate()))
+		if(vo.getExpDate() == null)
 			vo.setExpDate("");
 		if("".equals(vo.getDeleteFlag()))
 			vo.setDeleteFlag("");

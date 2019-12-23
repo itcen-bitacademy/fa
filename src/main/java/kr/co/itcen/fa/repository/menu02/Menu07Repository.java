@@ -46,7 +46,7 @@ public class Menu07Repository {
 
 	public List<PurchasemanagementVo> getList(PurchasemanagementVo vo) {
 		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getSearchList", vo);
-		System.out.println("service : " + result);
+		System.out.println("Repository : " + result);
 		return result;
 	}
 }

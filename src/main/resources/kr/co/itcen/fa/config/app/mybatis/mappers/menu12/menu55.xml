@@ -30,8 +30,8 @@
 		          , s.total_price as salestotalprice
 		          , st.stock as stockquantity
 		          ,	if(st.stock=0,0,pi.price) as stocksupplyvalue
-		          , if(st.stock=0,0,p.tax_value) as stocktaxvalue
-		          , st.stock*(pi.price+p.tax_value) as stocktotalprice
+		          , if(st.stock=0,0,pi.price*1/10) as stocktaxvalue
+		          , st.stock*(pi.price+(pi.price*1/10)) as stocktotalprice
 		from tb_purchaseitem as pi 
 		left join(
 		/* 매출 테이블을 품목명을 기준으로 select */

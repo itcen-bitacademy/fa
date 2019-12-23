@@ -27,7 +27,15 @@ public class Menu66Repository {
 
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	//조건에 해당하는 총 건수 반환
+	public int getTotalCnt(RepayVo vo){
+		return sqlSession.selectOne("menu66.getTotalCnt",vo);
+	}
+	//해당 리스트를 반환
+	public List<RepayVo> getList(Map map){
+		return sqlSession.selectList("menu66.getList", map);
+	}
 	// 상환테이블 데이터 카운트
 	public int listCount(String code, String debtType) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -60,7 +68,11 @@ public class Menu66Repository {
 		Long longNo = sqlSession.selectOne("menu66.selectByVoucherNo", no);
 		return longNo;
 	}
-
+	
+	public Boolean restoreRepayBal4Delete(RepayVo vo) {
+		int count = sqlSession.update("menu66.restoreRepayBal4Delete", vo);
+		return count == 1;
+	}
 	// 상환잔액을 수정되기 이전으로 돌리기
 	public Boolean restoreRepayBal(RepayVo vo) {
 		int count = sqlSession.update("menu66.restoreRepayBal", vo);
@@ -131,6 +143,10 @@ public class Menu66Repository {
 		
 		int count = sqlSession.update("menu66.deleteDebt", list);
 		return count >= 1;
+	}
+	public Boolean updateDeleteFlag(List<RepayVo> voList) {
+		int count = sqlSession.update("menu66.updateDeleteFlag", voList);
+		return (count == voList.size());
 	}
 	
 }

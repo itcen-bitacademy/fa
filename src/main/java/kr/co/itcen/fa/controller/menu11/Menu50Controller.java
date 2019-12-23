@@ -17,7 +17,6 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
-import kr.co.itcen.fa.service.menu12.Menu13Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.UserVo;
@@ -76,30 +75,30 @@ public class Menu50Controller {
 	public String insert(
 			@ModelAttribute PdebtVo vo, 
 			@AuthUser UserVo userVo) {
-		//마감 여부 체크
+		// 마감 여부 체크
 		try {
-			if (!menu19Service.checkClosingDate(userVo, vo.getDebtDate())) {
-				vo.setInsertId(userVo.getId()); // 등록자 아이디 삽입
+			vo.setInsertId(userVo.getId()); // 등록자 아이디 삽입
 
-				String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-				String saveDeptDate = deptExpDate.substring(0, 10);
-				String saveExpDate = deptExpDate.substring(13);
-				vo.setDebtDate(saveDeptDate); // 차입일자 등록
-				vo.setExpDate(saveExpDate); // 만기일지 등록
+			String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
+			String saveDeptDate = deptExpDate.substring(0, 10);
+			String saveExpDate = deptExpDate.substring(13);
+			vo.setDebtDate(saveDeptDate); // 차입일자 등록
+			vo.setExpDate(saveExpDate); // 만기일지 등록
 
-				// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - start
-				String dangerCode = vo.getDangerCode(); // 위험등급코드 가져오기
-				String[] dangerArray = dangerCode.split("-");
-				vo.setDangerCode(dangerArray[0]);
-				vo.setDangerName(dangerArray[1]);
-				// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - end
+			// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - start
+			String dangerCode = vo.getDangerCode(); // 위험등급코드 가져오기
+			String[] dangerArray = dangerCode.split("-");
+			vo.setDangerCode(dangerArray[0]);
+			vo.setDangerName(dangerArray[1]);
+			// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - end
 
-				/////////////////////////////////////
-				// 전표등록
-				// G: 단기차입금
-				// H: 장기차입금
-				// I: 사채
-				// 객체 생성
+			/////////////////////////////////////
+			// 전표등록
+			// G: 단기차입금
+			// H: 장기차입금
+			// I: 사채
+			// 객체 생성
+			if (menu19Service.checkClosingDate(userVo, vo.getDebtDate())) {
 				VoucherVo voucherVo = new VoucherVo();
 				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
 				ItemVo itemVo = new ItemVo();
@@ -139,20 +138,30 @@ public class Menu50Controller {
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
 	public String update(
 			@ModelAttribute PdebtVo vo, 
+			@RequestParam String majorCode,
 			SalesVo salesVo, 
 			@AuthUser UserVo userVo, 
 			Model model) throws ParseException {
 		// 마감 여부 체크
 		try {
-			if (!menu19Service.checkClosingDate(userVo, vo.getDebtDate())) {
+			String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
+			String saveDeptDate = deptExpDate.substring(0, 10);
+			String saveExpDate = deptExpDate.substring(13);
+			vo.setDebtDate(saveDeptDate);
+			vo.setExpDate(saveExpDate);
+			vo.setUpdateId(userVo.getId()); // 수정자 아이디 삽입
+			
+			// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - start
+			String dangerCode = vo.getDangerCode(); // 위험등급코드 가져오기
+			String[] dangerArray = dangerCode.split("-");
+			vo.setDangerCode(dangerArray[0]);
+			vo.setDangerName(dangerArray[1]);
+			
+			System.out.println(vo.getMajorCode());
+			System.out.println(vo.getDangerCode());
+			vo.setMajorCode(majorCode);
 
-				String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-				String saveDeptDate = deptExpDate.substring(0, 10);
-				String saveExpDate = deptExpDate.substring(13);
-				vo.setDebtDate(saveDeptDate);
-				vo.setExpDate(saveExpDate);
-
-				vo.setUpdateId(userVo.getId()); // 수정자 아이디 삽입
+			if (menu19Service.checkClosingDate(userVo, vo.getDebtDate())) {
 
 				vo.setVoucherNo(menu50Service.select(vo.getNo()));
 				VoucherVo voucherVo = new VoucherVo();
@@ -204,7 +213,7 @@ public class Menu50Controller {
 
 		for (int i = 0; i < pdebtVoList.size(); ++i) {
 			try {
-				if (!menu19Service.checkClosingDate(uservo, pdebtVoList.get(i).getDebtDate())) {
+				if (menu19Service.checkClosingDate(uservo, pdebtVoList.get(i).getDebtDate())) {
 					return "redirect:/" + MAINMENU + "/" + SUBMENU;
 				}
 			} catch (ParseException e) {

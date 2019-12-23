@@ -91,8 +91,14 @@ public class Menu39Controller {
 		if("".equals(buildingvo.getCombineNo())) {
 			buildingvo.setCombineNo("00");
 		}
+		if(buildingvo.getEtcCost() == null) {
+			buildingvo.setEtcCost(0L);
+		}
+		if(buildingvo.getAcqTax() == null) {
+			buildingvo.setAcqTax(0L);
+		}
 		if("".equals(buildingvo.getSectionNo())) {
-			buildingvo.setCustomerNo(null);
+			buildingvo.setSectionNo(null);
 		}
 		if("".equals(buildingvo.getCustomerNo())) {
 			buildingvo.setCustomerNo(null);
@@ -128,9 +134,21 @@ public class Menu39Controller {
 		
 		Long bVoucherNo = menu39Service.getVoucherNo(buildingvo.getId());
 		
-		if(buildingvo.getCombineNo() == null || "".equals(buildingvo.getCombineNo())) {
+		if(buildingvo.getCombineNo() == null) {
 			buildingvo.setCombineNo("00");
 	    }
+		if(buildingvo.getEtcCost() == null) {
+			buildingvo.setEtcCost(0L);
+		}
+		if(buildingvo.getAcqTax() == null) {
+			buildingvo.setAcqTax(0L);
+		}
+		if("".equals(buildingvo.getSectionNo())) {
+			buildingvo.setSectionNo(null);
+		}
+		if("".equals(buildingvo.getCustomerNo())) {
+			buildingvo.setCustomerNo(null);
+		}
 		
 		//전표추가
 		if (taxbillNo != null && bVoucherNo == null) {

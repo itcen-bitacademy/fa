@@ -70,10 +70,6 @@ public class Menu10Repository {
 		map.put("customerName", landVo.getCustomerName());
 		map.put("managerName", landVo.getManagerName());
 		map.put("landArea", landVo.getLandArea());
-		System.out.println("fddfdfdf");
-		System.out.println(landVo.getWideAddress());
-		System.out.println(landVo.getCityAddress());
-		System.out.println("dfdsdfsdfs");
 		map.put("wideAddress", landVo.getWideAddress());
 		map.put("cityAddress", landVo.getCityAddress());
 		map.put("acqPrice", landVo.getAcqPrice());
@@ -90,8 +86,7 @@ public class Menu10Repository {
 		map.put("id", id);
 		map.put("pagination", pagination);
 		List<LandVo> list = sqlSession.selectList("menu10.list", map);
-		
-		
+
 		return list;
 	}
 	

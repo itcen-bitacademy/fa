@@ -41,7 +41,6 @@ public class Menu30Controller {
 			return MAINMENU + "/" + SUBMENU + "/list";
 		}
 		
-		System.out.println("승곤이를 정지합니다2");
 		System.out.println(revo.toString());
 		
 		DataResult<ReceiptVo> dataResult = menu30Service.search(page,revo);

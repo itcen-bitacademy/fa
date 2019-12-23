@@ -1,13 +1,19 @@
 package kr.co.itcen.fa.service.menu11;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu66Repository;
+import kr.co.itcen.fa.service.menu01.Menu03Service;
+import kr.co.itcen.fa.util.Pagination;
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
@@ -24,6 +30,9 @@ public class Menu66Service {
 	
 	@Autowired
 	private Menu66Repository menu66Repository;
+	
+	@Autowired
+	private Menu03Service menu03Service;
 
 	public DataResult<RepayVo> list(int page, String code, String debtType) {
 		DataResult<RepayVo> dataResult = new DataResult<RepayVo>();
@@ -36,7 +45,23 @@ public class Menu66Service {
 
 		return dataResult;
 	}
-
+	
+	public Map getList(RepayVo vo, int page, int pageSize){
+		int totalCnt = menu66Repository.getTotalCnt(vo);
+		System.out.println("totalCnt : " + totalCnt);
+		Pagination pagination = new Pagination(page, totalCnt);
+		Map map = pagination.getRowRangeMap();
+		map.put("vo", vo);
+		System.out.println("Service map : " + map);
+		List<RepayVo> list = menu66Repository.getList(map);
+		
+		System.out.println("list : " + list);
+		map.clear();
+		map.put("list", list);
+		map.put("pagination", pagination);
+		
+		return map;
+	}
 	public Boolean update(RepayVo vo) {
 		return menu66Repository.update(vo);
 	}
@@ -83,6 +108,28 @@ public class Menu66Service {
 
 	public Boolean deleteDebt(Long[] no, String[] debtType, Long[] tempPayPrinc) {
 		return menu66Repository.deleteDebt(no, debtType, tempPayPrinc);
+	}
+
+	public void updateDebt(List<RepayVo> voList, UserVo authUser) {
+		for(RepayVo vo : voList) {					//잔액을 원래대로 돌린다.
+			menu66Repository.restoreRepayBal4Delete(vo);
+		}
+	}
+
+	public void deleteVoucerList(List<RepayVo> voList, UserVo authUser) {
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		
+		for(RepayVo repayVo : voList) {
+			VoucherVo vo = new VoucherVo();
+			vo.setNo(repayVo.getVoucherNo());
+			voucherVolist.add(vo);
+		}
+		
+		menu03Service.deleteVoucher(voucherVolist, authUser);	
+	}
+
+	public void deleteChecked(List<RepayVo> voList) {
+		menu66Repository.updateDeleteFlag(voList);
 	}
 
 }

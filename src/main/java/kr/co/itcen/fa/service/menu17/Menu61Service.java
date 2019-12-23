@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.service.menu17;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu61Repository;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
+import kr.co.itcen.fa.service.menu01.Menu30Service;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
@@ -31,6 +33,9 @@ public class Menu61Service {
 	
 	@Autowired
 	private Menu03Service menu03Service;
+	
+	@Autowired
+	private Menu30Service menu30Service;
 	
 	@Autowired
 	private Menu63Service menu63Service;
@@ -74,12 +79,18 @@ public class Menu61Service {
 		// 전표 데이터 조회
 		List<StatementDataVo> statementDataList = menu03Service.statementData(lastestUnclosingDateVo);
 		
+		// 전월이월 데이터 
+		List<StatementDataVo> forwardDataList = new ArrayList<>();
+		
 		// 시산표 값 적산
 		for (StatementDataVo vo : statementDataList) {
 			TrialBalanceVo tbVo = null;
 			if (vo.getAccountNo() >= 5000000) {
 				tbVo = trialBalanceMap.get(vo.getAccountNo());
 				addAccountAmount(tbVo, vo, vo.getAmountFlag());
+			} else {
+				// 이월데이터 저장 
+				forwardDataList.add(vo);
 			}
 			
 			tbVo = trialBalanceMap.get(vo.getParent1());
@@ -101,6 +112,9 @@ public class Menu61Service {
 			tbVo = trialBalanceMap.get(vo.getParent5());
 			addAccountAmount(tbVo, vo, vo.getAmountFlag());
 		}
+		
+		// TODO: 이월데이터 전표 저장 
+//		menu30Service.closingEntries(forwardDataList);
 		
 		// 빈값 계정 제거 
 		List<TrialBalanceVo> insertTrialBalanceList = emptyTrialBalance.stream().filter(t -> t.getCreditTotal() != null || t.getCreditSpotMonth() != null || t.getDebtorTotal() != null || t.getDebtorSpotMonth() != null).collect(Collectors.toList());

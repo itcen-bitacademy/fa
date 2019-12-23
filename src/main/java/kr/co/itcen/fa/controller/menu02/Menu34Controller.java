@@ -104,18 +104,32 @@ public class Menu34Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
-	public Map<String, Object> paging(@ModelAttribute PurchaseitemVo purchaseitemVo,
-									  @RequestParam(value="page", required=false, defaultValue="1") int page,
-									  @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
+	public Map<String, Object> paging(@RequestParam(value="no", required=false, defaultValue="") String no,
+									  @RequestParam(value="sectionname", required=false, defaultValue="") String sectionname,
+									  @RequestParam(value="factoryname", required=false, defaultValue="") String factoryname,
 									  @RequestParam(value="price_start", required=false, defaultValue="") String price_start,
-							   		  @RequestParam(value="price_end", required=false, defaultValue="") String price_end,
-							   		  @RequestParam(value="producedate_start", required=false, defaultValue="") String producedate_start,
-							   		  @RequestParam(value="producedate_end", required=false, defaultValue="") String producedate_end,
-							   		  @RequestParam(value="deleteflag", required=false, defaultValue="N") String deleteflag,
-									  Model model) {
+									  @RequestParam(value="price_end", required=false, defaultValue="") String price_end,
+									  @RequestParam(value="name", required=false, defaultValue="") String name,
+									  @RequestParam(value="sectioncode", required=false, defaultValue="") String sectioncode,
+									  @RequestParam(value="factorycode", required=false, defaultValue="") String factorycode,
+									  @RequestParam(value="producedate_start", required=false, defaultValue="") String producedate_start,
+									  @RequestParam(value="producedate_end", required=false, defaultValue="") String producedate_end,
+									  @RequestParam(value="deleteflag", required=false, defaultValue="N") String deleteflag,
+									  @RequestParam(value="page", required=false, defaultValue="1") int page,
+									  @RequestParam(value="page_group", required=false, defaultValue="0") int page_group) {
+		PurchaseitemVo purchaseitemVo = new PurchaseitemVo();
+		
+		purchaseitemVo.setNo(no);
+		purchaseitemVo.setSectionname(sectionname);
+		purchaseitemVo.setFactoryname(factoryname);
+		purchaseitemVo.setName(name);
+		purchaseitemVo.setSectioncode(sectioncode);
+		purchaseitemVo.setFactorycode(factorycode);
 		purchaseitemVo.setDeleteflag(deleteflag);
+		
 		price_start = String.join("", price_start.split(","));
 		price_end = String.join("", price_end.split(","));
 		
@@ -140,6 +154,7 @@ public class Menu34Controller {
 		return map;
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/factorypaging")
 	public Map<String, Object> factorypaging(@RequestParam(value="factory_page", required=false, defaultValue="1") int factory_page,
@@ -163,6 +178,7 @@ public class Menu34Controller {
 		return map;
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/sectionpaging")
 	public Map<String, Object> sectionpaging(@RequestParam(value="section_page", required=false, defaultValue="1") int section_page,

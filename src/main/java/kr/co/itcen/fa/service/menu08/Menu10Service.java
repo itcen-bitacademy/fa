@@ -33,7 +33,7 @@ public class Menu10Service {
 	public DataResult<LandVo> getList(LandVo landVo, String startDate, String endDate, int page) {
 		DataResult<LandVo> dataResult = new DataResult<LandVo>();
 		
-		int totalCount = menu10Repository.listCount(landVo, startDate, endDate);
+		int totalCount = menu10Repository.listCount(landVo, startDate, endDate); //총개수
 		
 		//pagination
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
