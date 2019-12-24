@@ -110,8 +110,8 @@
 			set delete_flag = "Y"
 			where no IN 	
 		]]>
-		<foreach collection="list" item="item" open="(" close=")" separator=",">
-			${item}
+		<foreach collection="list" item="vo" open="(" close=")" separator=",">
+			${vo.no}
 		</foreach>
 	</update>
 	

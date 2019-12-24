@@ -41,17 +41,11 @@ public class Menu46Service {
 		return menu46Repository.get(no);
 	}
 	//기본
-	public Map getListMap() {
-		return search(null, null, 5);
+	public Map getList() {
+		return getList(null, null, 8, 1);
 	}
 	
-	//조회
-	public Map search(String code, String financialYear, int pageSize){
-		return paging(code, financialYear, pageSize, 1);
-	}
-	
-	//페이징
-	public Map paging(String code, String financialYear, int pageSize, int page) {
+	public Map getList(String code, String financialYear, int pageSize, int page) {
 		Map map = new HashMap<>();
 		map.put("code", code);
 		map.put("financialYear", financialYear);
@@ -70,8 +64,8 @@ public class Menu46Service {
 		return map;
 	}
 	
-	public void deleteChecked(List<Long> noList) {
-		menu46Repository.updateDeleteFlag(noList);
+	public void deleteChecked(List<STermDebtVo> list) {
+		menu46Repository.updateDeleteFlag(list);
 	}
 	
 	public void insert(STermDebtVo sTermDebtVo) throws ParseException {
@@ -199,11 +193,11 @@ public class Menu46Service {
 	/**
 	 * 상환내역이 있는 차입금은 삭제 List에서 제외시킨다. 그리고 상환내역 리스트를 가져온다.
 	 */
-	public List<List<RepayVo>> possibleDelete(List<Long> noList) {
+	public List<List<RepayVo>> possibleDelete(List<STermDebtVo> list) {
 		List<List<RepayVo>> repayLists = new ArrayList<>();					//각 차입금에 대한 상환내역 리스트를 담을 리스트
 		
-		for(int i=0; i < noList.size(); ++i) {
-			List<RepayVo> repayList = getRepayList(noList.get(i));
+		for(STermDebtVo vo : list) {
+			List<RepayVo> repayList = getRepayList(vo.getNo());
 			if(repayList != null && repayList.size() != 0) {
 				System.out.println("repayList : " + repayList);
 				repayLists.add(repayList);
@@ -215,15 +209,17 @@ public class Menu46Service {
 	/**
 	 * 	전표에서 삭제리스트 데이터 삭제
 	 */
-	public void deleteVoucerList(List<Long> voucherNoList, UserVo userVo) {
+	public void deleteVoucerList(List<STermDebtVo> list, UserVo userVo) {
 		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
 		
-		for(Long voucherNo : voucherNoList) {
+		for(STermDebtVo sTermDebtvo : list) {
 			VoucherVo vo = new VoucherVo();
-			vo.setNo(voucherNo);
+			vo.setNo(sTermDebtvo.getVoucherNo());
 			voucherVolist.add(vo);
 		}
 		
 		menu03Service.deleteVoucher(voucherVolist, userVo);
 	}
+	
+	
 }
