@@ -23,16 +23,12 @@
 						when "07" then no
         				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
 					end) as no,
-					name as name, 
-       			   ceo as ceo, 
-			       address as address,
-			       detail_address as detailAddress,
-			       conditions as conditions, 
-			       item as item, 
-			       corporation_no as corporationNo, 
-			       open_date as openDate, 
-			       jurisdiction_office as jurisdictionOffice, 
-			       (IFNULL(CASE LEFT(phone,2)
+					name as name,
+               c.ceo as ceo,
+               c.corporation_no as corporationNo,
+               c.address as address, 
+               c.detail_address as detailAddress,
+			   (IFNULL(CASE LEFT(phone,2)
 			        WHEN "02" THEN
 			            CASE CHAR_LENGTH(phone)
 			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
@@ -45,9 +41,13 @@
 			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
 			            END
 			        END,"없음")) as phone,
-			       manager_name as managerName, 
-			       manager_email as managerEmail,
-			       (case 
+               c.conditions as conditions,
+               c.item as item, 
+               date_format(c.open_date, "%Y-%m-%d") as openDate,
+		       c.jurisdiction_office as jurisdictionOffice, 
+               c.manager_name as managerName, 
+               c.manager_email as managerEmail,
+                (case 
 					  when assets_flag="a"
                       then "토지"
                       when assets_flag="b"
@@ -59,18 +59,20 @@
                       when assets_flag="e"
                       then "은행"
                       end) as assetsFlag,
-			       deposit_no as depositNo,
-			       deposit_host as depositHost,
-			       bank_code as bankCode,
-			       bank_name as bankName,
-			       insert_userid as insertUserid, 
-			       insert_day as insertDay, 
-			       update_userid as updateUserid, 
-			       update_day as updateDay
-			  from tb_customer
-			 where delete_flag = 'N'
-			   and name!='여비'
-			  order by assets_flag
+		       b.deposit_no as depositNo, 
+               b.deposit_host as depositHost,
+               b.bank_code as bankCode,
+               b.bank_name as bankName,
+		       c.insert_userid as insertUserid,
+               date_format(c.insert_day, "%Y-%m-%d %T") as insertDay,
+		       c.update_userid as updateUserid,
+               date_format(c.update_day, "%Y-%m-%d %T") as updateDay
+		from tb_customer c
+		 		left join tb_bank_account b
+        		on c.deposit_no = b.deposit_no
+			 where c.delete_flag = 'N'
+			   and c.name!='여비'
+			  order by c.assets_flag
 		]]>
 		<if test="pagination.pageIndex >= 0 ">
 			<![CDATA[
@@ -113,20 +115,16 @@
 	<!-- 거래처 검색(사업자등록번호로) -->
 	<select id="read" parameterType="1customervo" resultType="1customervo">
 		<![CDATA[
-			select (CASE CHAR_LENGTH(no)
+			select  (CASE CHAR_LENGTH(no)
 						when "07" then no
         				when "11" then concat(substr(substr(no, 2), 1, 3), "-", substr(substr(no,2), 4, 2), "-" , substr(substr(no, 2), 6, 5))
 					end) as no,
-				   name as name, 
-       			   ceo as ceo, 
-			       address as address,
-			       detail_address as detailAddress,
-			       conditions as conditions, 
-			       item as item, 
-			       corporation_no as corporationNo, 
-			       open_date as openDate, 
-			       jurisdiction_office as jurisdictionOffice, 
-			       (IFNULL(CASE LEFT(phone,2)
+					name as name,
+               c.ceo as ceo,
+               c.corporation_no as corporationNo,
+               c.address as address, 
+               c.detail_address as detailAddress,
+			   (IFNULL(CASE LEFT(phone,2)
 			        WHEN "02" THEN
 			            CASE CHAR_LENGTH(phone)
 			                WHEN "10" THEN concat("02","-",substring(phone,3,4),"-",RIGHT(phone,4))
@@ -138,14 +136,14 @@
 			                WHEN "11" THEN concat(LEFT(phone,3),"-",substring(phone,4,4),"-",RIGHT(phone,4))
 			                WHEN "8" THEN concat(LEFT(phone,4),"-",substring(phone,4,4))
 			            END
-			        END,"없음")) as phone, 
-			       manager_name as managerName, 
-			       manager_email as managerEmail,
-			       deposit_no as depositNo,
-			       deposit_host as depositHost,
-			       bank_code as bankCode,
-			       bank_name as bankName,
-			       (case 
+			        END,"없음")) as phone,
+               c.conditions as conditions,
+               c.item as item, 
+               date_format(c.open_date, "%Y-%m-%d") as openDate,
+		       c.jurisdiction_office as jurisdictionOffice, 
+               c.manager_name as managerName, 
+               c.manager_email as managerEmail,
+                (case 
 					  when assets_flag="a"
                       then "토지"
                       when assets_flag="b"
@@ -157,12 +155,19 @@
                       when assets_flag="e"
                       then "은행"
                       end) as assetsFlag,
-			       insert_userid as insertUserid,
-			       insert_day as insertDay, 
-			       update_userid as updateUserid
-			  from tb_customer
-			 where delete_flag = "N"
-			   and name!='여비'
+		       b.deposit_no as depositNo, 
+               b.deposit_host as depositHost,
+               b.bank_code as bankCode,
+               b.bank_name as bankName,
+		       c.insert_userid as insertUserid,
+               date_format(c.insert_day, "%Y-%m-%d %T") as insertDay,
+		       c.update_userid as updateUserid,
+               date_format(c.update_day, "%Y-%m-%d %T") as updateDay
+		from tb_customer c
+		 		left join tb_bank_account b
+        		on c.deposit_no = b.deposit_no
+			 where c.delete_flag = 'N'
+			   and c.name!='여비'
 			   and no like '%${no }%'
 		]]>
 	</select>
@@ -171,8 +176,7 @@
 	<update id="update" parameterType="1customervo">
 		<![CDATA[
 			update tb_customer
-			   set no = concat('A' ,#{no }),
-				   name = #{name },
+			   set name = #{name },
 				   ceo = #{ceo },
 				   address = #{address }, 
 				   detail_address = #{detailAddress },
@@ -223,5 +227,11 @@
 			   and name!='여비'
 		]]>
 	</select>
+	
+	<update id="updateBankAccount" parameterType="bankaccountvo">
+      update tb_customer
+      set deposit_no = #{depositNo}
+      where deposit_no = #{depositOld}
+   </update>
 	
 </mapper>

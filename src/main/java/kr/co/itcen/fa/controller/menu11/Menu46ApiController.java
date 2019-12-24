@@ -146,11 +146,11 @@ public class Menu46ApiController {
 		 //상환내역 존재하는지 확인(by code)
 		 Boolean existRepay = menu46Service.existRepay(sTermDebtVo.getCode());
 		 
-		 //존재한다면
+		 //존재한다면 업데이트 불가, 상환내역 리스트 반환
 		 if(existRepay)
 			 return JSONResult.success(existRepay);
 		 
-		 //전표입력
+		 //전표입력후 전표번호를 가지고온다.
 		 Long voucherNo = menu46Service.updateVoucherWithDebt(sTermDebtVo, authUser);
 			
 		 //차입금 수정

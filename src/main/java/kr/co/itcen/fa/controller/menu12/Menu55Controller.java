@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
-
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu12.Menu55Service;
 import kr.co.itcen.fa.vo.menu12.CurrentSituationVo;
 
@@ -31,11 +31,13 @@ public class Menu55Controller {
 	@Autowired
 	private Menu55Service menu55Service;
 	
-	//@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model,
 			@ModelAttribute("vo") CurrentSituationVo vo,
-			@RequestParam(value="page",required = false,defaultValue = "1")int page) {
+			@RequestParam(value="page", required = false, defaultValue = "1")int page,
+			@RequestParam(value="searchdate", required=false)String searchdate,
+			@RequestParam(value="itemcode",required=false)String itemcode) {
 		
 		if(vo.getSearchdate()==null || "".equals(vo.getSearchdate()))
 			vo.setSearchdate("");

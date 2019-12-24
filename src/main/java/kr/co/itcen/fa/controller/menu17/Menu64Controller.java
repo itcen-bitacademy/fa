@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu17.Menu62Service;
 import kr.co.itcen.fa.service.menu17.Menu64Service;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
@@ -35,6 +36,7 @@ public class Menu64Controller {
 	@Autowired
 	private Menu64Service menu64Service;
 
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, Menu17SearchForm menu17SearchForm) {
 		

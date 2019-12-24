@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu12.Menu56Service;
 import kr.co.itcen.fa.vo.SectionVo;
 import kr.co.itcen.fa.vo.menu12.CurrentSituationVo;
@@ -34,11 +35,15 @@ public class Menu56Controller {
 	@Autowired
 	private Menu56Service menu56Service;
 	
+	@NoAuth
 	// 대분류를 가져오기 위한 코드
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model ,
 			@ModelAttribute("vo") CurrentSituationVo vo,
-			@RequestParam(value="page",required = false, defaultValue = "1")int page) {
+			@RequestParam(value="page",required = false, defaultValue = "1")int page,
+			@RequestParam(value="searchdate", required=false)String searchdate,
+			@RequestParam(value = "sectioncode",required = false)String sectioncode,
+			@RequestParam(value="itemcode",required=false)String itemcode) {
 		
 		
 		if(vo.getItemcode() == null || "".equals(vo.getItemcode()))

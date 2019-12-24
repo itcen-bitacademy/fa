@@ -70,7 +70,7 @@
 			pay_date as payDate,
 			tax_kind as taxKind,
 			b.flag
-		from tb_building b left outer join tb_section on b.section_no = tb_section.code
+		from tb_building as b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
         where tb_section.parent_no = 3 
            and b.insert_day > (NOW() - INTERVAL 3 DAY) 
@@ -82,7 +82,7 @@
    			]]>
    		</if>
    		<![CDATA[	
-		order by b.insert_day desc
+			order by b.insert_day desc
 		]]>
 		<if test="pagination.pageIndex >= 0">
 			<![CDATA[

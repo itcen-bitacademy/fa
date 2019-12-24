@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu17.Menu62Service;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
@@ -30,6 +31,7 @@ public class Menu62Controller {
 	@Autowired
 	private Menu62Service menu62Service;
 	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String trialBalanceView(Model model, Menu17SearchForm menu17SearchForm) {
 		List<ClosingDateVo> closingDateList = menu62Service.selectAllClosedDate();

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.SectionVo;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.TestVo;
@@ -133,8 +134,15 @@ public class Menu48Repository {
 		return list;
 	}
 
-	public String businessDateStr() {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("menu48.businessDateStr");
+
+	public Boolean updateBankAccount(BankAccountVo bankAccount) {
+		int count = sqlSession.update("menu48.updateBankAccount",bankAccount);
+		return count ==1;
+	}
+
+	public void error() {
+		int count = sqlSession.update("menu48.error");
+		
+		
 	}
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu02.Menu35Repository;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
 
 /**
@@ -43,6 +44,10 @@ public class Menu35Service {
 	public List<CustomerVo> search(String no) {
 		return menu35Repository.search(no);
 	}
+	
+	public void updateBankAccount(BankAccountVo bankAccount) {
+		menu35Repository.updateBankAccount(bankAccount);
+	   }
 	
 	public Boolean existCustomer(String no) {
 		return menu35Repository.getCustomer(no) != null;

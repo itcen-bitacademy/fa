@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu30Service;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 
@@ -30,7 +31,8 @@ public class Menu30Controller {
 
 	@Autowired
 	private Menu30Service menu30Service;
-
+	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/search"})
 	public String search(Model model,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
@@ -41,7 +43,6 @@ public class Menu30Controller {
 			return MAINMENU + "/" + SUBMENU + "/list";
 		}
 		
-		System.out.println("승곤이를 정지합니다2");
 		System.out.println(revo.toString());
 		
 		DataResult<ReceiptVo> dataResult = menu30Service.search(page,revo);

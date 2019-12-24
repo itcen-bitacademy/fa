@@ -30,6 +30,7 @@ import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
  * 장기차입금관리
  *
  */
+
 @Auth
 @Controller
 @RequestMapping("/" + Menu48Controller.MAINMENU)
@@ -49,7 +50,7 @@ public class Menu48Controller {
 	                                   //   /11/48, /11/48/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") String year,
+			@RequestParam(value="financialYear",required = false, defaultValue = "") String year,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page
 			) {
 		
@@ -58,19 +59,22 @@ public class Menu48Controller {
 		
 		
 		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("code",code);
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("year",year);
 		
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
+	
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
 	public String list(@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") int year,
+			@RequestParam(value="financialYear",required = false, defaultValue ="") String year,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
 		
 		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code+"&page"+page;
 	}
+	
 	@RequestMapping(value = "/"+SUBMENU+"/add", method = RequestMethod.POST)
 	public String add(LTermdebtVo vo,@AuthUser UserVo user) {
 		//마감 여부 체크
@@ -79,44 +83,10 @@ public class Menu48Controller {
 			vo.setDebtDate(dates[0]);
 			vo.setExpDate(dates[1]);
 			vo.setInsertId(user.getId());
-			String businessDateStr = menu48Service.businessDateStr();
-			System.out.println("왜 안되냐4"+businessDateStr);
+			
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
-						
-				System.out.println("왜 안되냐");
 				
-				VoucherVo voucherVo = new VoucherVo();
-				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-				ItemVo itemVo = new ItemVo();
-				ItemVo itemVo2 = new ItemVo();
-				
-				MappingVo mappingVo = new MappingVo();
-				voucherVo.setRegDate(vo.getDebtDate());
-				
-				
-				
-				itemVo.setAmount(vo.getDebtAmount());//예금
-				itemVo.setAmountFlag("d");//차변
-				itemVo.setAccountNo(1110103L);//계정과목코드
-				itemVoList.add(itemVo);
-				
-				itemVo2.setAmount(vo.getDebtAmount());//장기차입금
-				itemVo2.setAmountFlag("c");
-				itemVo2.setAccountNo(2401101L);
-				itemVoList.add(itemVo2);
-				
-				
-				mappingVo.setVoucherUse(vo.getName());//사용목적
-				mappingVo.setSystemCode(vo.getCode());//제코드l190
-				mappingVo.setCustomerNo(vo.getBankCode());
-				mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
-				
-				
-				
-				Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-				
-				vo.setVoucherNo(no);
-				menu48Service.insert(vo);
+				menu48Service.insert(vo,user);
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -124,54 +94,16 @@ public class Menu48Controller {
 		}
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
+	
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
 	public String update(LTermdebtVo vo,@AuthUser UserVo user) {
+		String[] dates=vo.getDebtExpDate().split("~");
+		vo.setDebtDate(dates[0]);
+		vo.setExpDate(dates[1]);
+		vo.setUpdateId(user.getId());
 		try {
-			String[] dates=vo.getDebtExpDate().split("~");
-			System.out.println(user);
-			System.out.println(vo);
-			vo.setDebtDate(dates[0]);
-			vo.setExpDate(dates[1]);
-			vo.setUpdateId(user.getId());
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
-			
-				
-				
-				vo.setVoucherNo(menu48Service.select(vo.getNo()));
-				VoucherVo voucherVo = new VoucherVo();
-				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-				ItemVo itemVo = new ItemVo();
-				ItemVo itemVo2 = new ItemVo();
-				
-				
-				MappingVo mappingVo = new MappingVo();
-				voucherVo.setNo(vo.getVoucherNo());
-				
-				
-				voucherVo.setRegDate(vo.getDebtDate());
-				itemVo.setAmount(vo.getDebtAmount());//장기차입금 금액
-				itemVo.setAmountFlag("c");//차변
-				itemVo.setAccountNo(2401101L);
-				itemVo.setVoucherNo(vo.getVoucherNo());
-				itemVoList.add(itemVo);
-				
-					
-				itemVo2.setAmount(vo.getDebtAmount());//예금
-				itemVo2.setAmountFlag("d");
-				itemVo2.setAccountNo(1110103L);
-				itemVo2.setVoucherNo(vo.getVoucherNo());
-				itemVoList.add(itemVo2);
-				
-				mappingVo.setVoucherUse(vo.getName());//사용목적
-				mappingVo.setSystemCode(vo.getCode());//제코드l190
-				mappingVo.setCustomerNo(vo.getBankCode());
-				mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
-				mappingVo.setVoucherNo(vo.getVoucherNo());
-				
-				
-				Long n=menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
-				vo.setVoucherNo(n);
-				menu48Service.update(vo);
+				menu48Service.update(vo,user);
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -179,16 +111,13 @@ public class Menu48Controller {
 		}
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 	}
+	
 	@RequestMapping(value = "/"+SUBMENU+"/delete", method = RequestMethod.POST)
 	public String delete(@RequestParam Long[] no,@AuthUser UserVo uservo) {
 		List<LTermdebtVo> l_list=  menu48Service.selectList(no);
-		System.out.println("좀 되자");
 		for(int i=0;i<l_list.size();++i) {
 			try {
-				System.out.println(l_list.get(i)+"d");
 				if(!menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
-
-					System.out.println(l_list.get(i)+"dd");
 					return "redirect:/"+MAINMENU+"/"+SUBMENU;
 				}
 			} catch (ParseException e) {
@@ -196,22 +125,8 @@ public class Menu48Controller {
 				e.printStackTrace();
 			}
 		}
-		List<Long> list = menu48Service.selectVoucherNo(no);
 		
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-		for(Long no1: list) {
-			VoucherVo v = new VoucherVo();
-			v.setNo(no1);
-			
-			voucherVolist.add(v);
-		}
-		for(VoucherVo v : voucherVolist) {
-			System.out.println(v);
-		}
-		
-		
-		menu03Service.deleteVoucher(voucherVolist, uservo);
-		menu48Service.delete(no);
+		menu48Service.delete(no,uservo);
 
 		return "redirect:/"+MAINMENU+"/"+SUBMENU;
 		

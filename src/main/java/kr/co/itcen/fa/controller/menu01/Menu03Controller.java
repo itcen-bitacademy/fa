@@ -143,38 +143,45 @@ public class Menu03Controller {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			
 			VoucherVo[] voucherList = mapper.readValue(itemList, VoucherVo[].class);
-			
 //			System.out.println(voucherList);
-//			System.out.println(voucherList[0]);
-//			System.out.println(voucherList[0].getAccountName());
+			System.out.println(voucherList[0]);
+			System.out.println(voucherList[0].getOrderNo());
 //			System.out.println(voucherList[1]);
 //			System.out.println(voucherList[1].getAccountName());
 			
 			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
 				VoucherVo voucherVo = new VoucherVo();
 				voucherVo.setRegDate(voucherList[0].getRegDate());
+				voucherVo.setInsertUserid(userVo.getId());
 				
 				List<ItemVo> itemList2 = new ArrayList<ItemVo>();
-	 			
+				List<MappingVo> mappingList = new ArrayList<MappingVo>();
+				
 				for(int i = 0; i < voucherList.length; i++) {
 					ItemVo itemVo = new ItemVo();
 					itemVo.setAmount(voucherList[i].getAmount());
+					System.out.println("amount : " + itemVo.getAmount());
 					itemVo.setAmountFlag(voucherList[i].getAmountFlag());
 					itemVo.setAccountNo(voucherList[i].getAccountNo());
-					
+					itemVo.setInsertUserid(userVo.getId());
+					itemVo.setOrderNo(voucherList[i].getOrderNo());
 					itemList2.add(itemVo);
+				
+					MappingVo mappingVo = new MappingVo();
+					mappingVo.setVoucherUse(voucherList[i].getVoucherUse());
+					mappingVo.setCustomerNo(voucherList[i].getCustomerNo());
+					mappingVo.setDepositNo(voucherList[i].getDepositNo());
+					mappingVo.setManageNo(voucherList[i].getManageNo());
+					mappingVo.setCardNo(voucherList[i].getCardNo());
+					mappingVo.setInsertTeam(userVo.getTeamName());
+					mappingVo.setInsertUserid(userVo.getId());
+					mappingVo.setOrderNo(voucherList[i].getOrderNo());
+					
+					mappingList.add(mappingVo);
 				}
-				
-				MappingVo mappingVo = new MappingVo();
-				
-				mappingVo.setVoucherUse(voucherList[0].getVoucherUse());
-				mappingVo.setCustomerNo(voucherList[0].getCustomerNo());
-				mappingVo.setDepositNo(voucherList[0].getDepositNo());
-				mappingVo.setManageNo(voucherList[0].getManageNo());
-				
-				menu03Service.createVoucher(voucherVo, itemList2, mappingVo, userVo);
+				System.out.println("controller");
+				menu03Service.createVoucher(voucherVo, itemList2, mappingList, userVo);
 			}
 			
 		} catch (Exception e) {
@@ -182,6 +189,17 @@ public class Menu03Controller {
 		}
 		System.out.println("111");
 		return resultMap;
+	}
+	
+	// 전표번호로 전표정보 조회하기
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/getVoucher", method=RequestMethod.GET)
+	public Map<String, Object> voucherList(@RequestParam Long voucherNo) {
+		System.out.println("voucherNo : " + voucherNo);
+		System.out.println(voucherNo);
+		Map<String, Object> data = menu03Service.getVoucher(voucherNo);
+		data.put("success", true);
+		return data;
 	}
 	
 	

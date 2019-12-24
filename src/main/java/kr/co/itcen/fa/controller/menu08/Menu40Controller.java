@@ -48,8 +48,6 @@ public class Menu40Controller {
 		String startDate = null;
 		String endDate = null;
 		
-		
-		
 		if(vo.getId() == null || "".equals(vo.getId()))
 			vo.setId("");
 		if(vo.getPayDate() == null || "".equals(vo.getPayDate())) {
@@ -75,14 +73,9 @@ public class Menu40Controller {
 		
 		
 		//dataresult 생성
-		
-		System.out.println("startDate : " + startDate);
-		System.out.println("endDate : " + endDate);
-		
 		DataResult<BuildingVo> dataResult = menu40Service.list(vo, page, startDate, endDate); 
 		model.addAttribute("dataResult",dataResult);
 		
-		System.out.println("model : " + model);
 		//map 생성
 		Map<String, Object> map = new HashMap<>();
 		

@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.service.menu01;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,18 +45,49 @@ public class Menu03Service {
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
 			System.out.println("왜 안되냐2");
+			List<MappingVo> mappingList = new ArrayList<MappingVo>();
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 				voucherVo.setInsertUserid(userVo.getId());
 				System.out.println("왜 안되냐3");
 				for(int i = 0; i < itemVo.size(); i++) {
 					itemVo.get(i).setInsertUserid(userVo.getId());
+					
+					MappingVo mappingVoTemp = new MappingVo();
+					
+					mappingVoTemp.setVoucherUse(mappingVo.getVoucherUse());
+					mappingVoTemp.setCustomerNo(mappingVo.getCustomerNo());
+					mappingVoTemp.setDepositNo(mappingVo.getDepositNo());
+					mappingVoTemp.setManageNo(mappingVo.getManageNo());
+					mappingVoTemp.setCardNo(mappingVo.getCardNo());
+					mappingVoTemp.setInsertTeam(userVo.getTeamName());
+					mappingVoTemp.setInsertUserid(userVo.getId());
+					mappingVoTemp.setOrderNo(i+1);
+					
+					mappingList.add(mappingVoTemp);
 				}
-				System.out.println("!!!!!!!!!!!!" + userVo.getTeamName());
-				mappingVo.setInsertTeam(userVo.getTeamName());
-				mappingVo.setInsertUserid(userVo.getId());
 				
 				System.out.println("22222222222222222" + voucherVo.getRegDate());
-				menu03Repository.createVoucher(voucherVo, itemVo, mappingVo);
+				menu03Repository.createVoucher(voucherVo, itemVo, mappingList);
+				return voucherVo.getNo(); // 전표번호
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	// 전표 생성 1팀
+	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingList, UserVo userVo) {
+		//마감 여부 체크
+		try {
+			//String businessDateStr = menu03Repository.businessDateStr();
+			System.out.println("왜 안되냐2");
+			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+				System.out.println("Service");
+				System.out.println("@@@" + itemVo.get(0).getOrderNo());
+				menu03Repository.createVoucher(voucherVo, itemVo, mappingList, userVo);
+				
 				return voucherVo.getNo(); // 전표번호
 			}
 		} catch (ParseException e) {
@@ -71,23 +103,33 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
-			voucherVo.setRegDate(menu03Repository.getRegDate(voucherVo.getNo()));
-			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			voucherVo.setRegDate2(menu03Repository.getRegDate(voucherVo.getNo()));
+			List<MappingVo> mappingList = new ArrayList<MappingVo>();
+			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate2())) {
 				voucherVo.setUpdateUserid(userVo.getId());
 				System.out.println("###########" + voucherVo.getNo());
 				System.out.println("service" + mappingVo.getVoucherNo());
 				for(int i = 0; i < itemVo.size(); i++) {
-					System.out.println("@@@@@@@@@@" + voucherVo.getNo());
+					
+					
 					itemVo.get(i).setUpdateUserid(userVo.getId());
+					
+					MappingVo mappingVoTemp = new MappingVo();
+					
+					mappingVoTemp.setVoucherUse(mappingVo.getVoucherUse());
+					mappingVoTemp.setCustomerNo(mappingVo.getCustomerNo());
+					mappingVoTemp.setDepositNo(mappingVo.getDepositNo());
+					mappingVoTemp.setManageNo(mappingVo.getManageNo());
+					mappingVoTemp.setCardNo(mappingVo.getCardNo());
+					mappingVoTemp.setInsertTeam(userVo.getTeamName());
+					mappingVoTemp.setInsertUserid(userVo.getId());
+					mappingVoTemp.setOrderNo(i+1);
+					
+					mappingList.add(mappingVoTemp);
+					
+					voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingList, userVo));
+					System.out.println("service : " + voucherVo.getNo());
 				}
-				System.out.println("^^^^^^^^^^" + voucherVo.getNo());
-				System.out.println("service" + mappingVo.getVoucherNo());
-				mappingVo.setInsertTeam(userVo.getTeamName());
-				mappingVo.setUpdateUserid(userVo.getId());
-				System.out.println("***********" + voucherVo.getNo());
-				System.out.println("service" + mappingVo.getVoucherNo());
-				voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingVo, userVo));
-				System.out.println("service : " + voucherVo.getNo());
 				return voucherVo.getNo();
 			}
 		} catch (ParseException e) {
@@ -200,4 +242,9 @@ public class Menu03Service {
 		return menu03Repository.businessDateStr();
 	}
 	
+	// 전표번호로 전표정보 조회하기
+	public Map<String, Object> getVoucher(Long voucherNo) {
+		return menu03Repository.getVoucher(voucherNo);
+	}
+
 }

@@ -40,27 +40,17 @@
 		});
 		
 		$("#btn-submit").on("click", function(){
+			$("#form-purchase input[name=page]").val("1");
 			$("#form-purchase").submit();
 		});
-		/* 
+		
 		$(".pagination li a").on("click", function(event){
 			event.preventDefault();
-			var activePage = $(this).parent().attr("class");
-			if(activePage == "disabled" || activePage == "active") {
-				return;
-			}
-			var page = $(".pagination li").attr("class", "active").children().text();
-			var icon = $(this).children().attr("class");
-			if(icon == "icon-double-angle-left") {
-				page += 1;
-			} else if(icon == "icon-double-angle-right") {
-				page -= 1;
-			}
 			
-			$("#form-purchase input[name=page]").val(page);
+			$("#form-purchase input[name=page]").val($(this).parent().val());
 			$("#form-purchase").submit();
 		});
-		 */
+		
 		$("#dialog-message").dialog({
 		       autoOpen : false
 		});
@@ -223,6 +213,7 @@
 								<div class="span2">
 									<button class="btn btn-small btn-info" id="btn-submit">조회</button>
 								</div>
+								<input type="hidden" name="page">
 			        		</form>
 			        		<!-- 매입거래처 사업자번호, 상호명 Modal pop-up : start -->
 							<div id="dialog-message" title="매입거래처" hidden="hidden">
@@ -310,6 +301,7 @@
 								</div>
 								<div class="pagination">
 									<ul>
+										<!-- 
 										<c:choose>
 											<c:when test="${dataResult.pagination.prev }">
 												<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
@@ -333,6 +325,67 @@
 										<c:choose>
 											<c:when test="${dataResult.pagination.next }">
 												<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+											</c:when>
+											<c:otherwise>
+												<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+											</c:otherwise>
+										</c:choose>
+										-->
+										<!--  
+										<c:choose>
+											<c:when test="${dataResult.pagination.prev }">
+												<li><a href="#"><i class="icon-double-angle-left"></i></a></li>								
+											</c:when>
+											<c:otherwise>
+												<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+											</c:otherwise>
+										</c:choose>
+											
+										
+										<c:forEach var="pageNum" begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }">
+											<c:choose>
+												<c:when test="${pageNum eq  dataResult.pagination.page}">
+													<li class="active"><a href="#">${pageNum }</a></li>		
+												</c:when>
+												<c:otherwise>
+													<li><a href="#">${pageNum }</a></li>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+										
+										<c:choose>
+											<c:when test="${dataResult.pagination.next }">
+												<li><a href="#"><i class="icon-double-angle-right"></i></a></li>								
+											</c:when>
+											<c:otherwise>
+												<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+											</c:otherwise>
+										</c:choose>
+										-->
+										<c:choose>
+											<c:when test="${dataResult.pagination.prev }">
+												<li value="${dataResult.pagination.startPage - 1 }"><a href="#"><i class="icon-double-angle-left"></i></a></li>								
+											</c:when>
+											<c:otherwise>
+												<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+											</c:otherwise>
+										</c:choose>
+											
+										
+										<c:forEach var="pageNum" begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }">
+											<c:choose>
+												<c:when test="${pageNum eq  dataResult.pagination.page}">
+													<li class="active" value="${pageNum }"><a href="#">${pageNum }</a></li>		
+												</c:when>
+												<c:otherwise>
+													<li value="${pageNum }"><a href="#">${pageNum }</a></li>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+										
+										<c:choose>
+											<c:when test="${dataResult.pagination.next }">
+												<li value="${dataResult.pagination.endPage + 1 }"><a href="#"><i class="icon-double-angle-right"></i></a></li>								
 											</c:when>
 											<c:otherwise>
 												<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>

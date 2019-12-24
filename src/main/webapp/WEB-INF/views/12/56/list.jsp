@@ -143,8 +143,7 @@
 							<c:when test="${dataResult.pagination.prev }">
 								<li><a
 									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
-									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}">
+									&searchdate=${param.searchdate}&sectioncode=${param.sectioncode}&itemcode=${param.itemcode}">
 										<i class="icon-double-angle-left"></i>
 								</a></li>
 							</c:when>
@@ -159,14 +158,12 @@
 								<c:when test="${pg eq dataResult.pagination.page }">
 									<li class="active"><a
 										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
-										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+										&searchdate=${param.searchdate}&sectioncode=${param.sectioncode}&itemcode=${param.itemcode}">${pg }</a></li>
 								</c:when>
 								<c:otherwise>
 									<li><a
 										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}
-										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+										&searchdate=${param.searchdate}&sectioncode=${param.sectioncode}&itemcode=${param.itemcode}">${pg }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -175,8 +172,7 @@
 							<c:when test="${dataResult.pagination.next }">
 								<li><a
 									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
-									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}"><i
+									&searchdate=${param.searchdate}&sectioncode=${param.sectioncode}&itemcode=${param.itemcode}"><i
 										class="icon-double-angle-right"></i></a></li>
 							</c:when>
 							<c:otherwise>

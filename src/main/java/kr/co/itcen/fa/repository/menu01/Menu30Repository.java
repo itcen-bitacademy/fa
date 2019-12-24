@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
+import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
  * 
@@ -34,5 +35,9 @@ public class Menu30Repository {
 		map.put("vo", revo);
 		List<ReceiptVo> list= sqlSession.selectList("menu30.list",map);
 		return list;
+	}
+
+	public List<StatementDataVo> statementData() {
+		return sqlSession.selectList("menu30.statementData");
 	}
 }

@@ -90,7 +90,7 @@
 						$("#id-date-picker-1").val("");
 						$("#form-field-purpose").val("");
 						
-						updateTable(data.pagepurchaseitemList, data.page_num);
+						updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 						updatePagination(data.purchaseitemListall, data.purchaseitemList, data.page_num, data.page_group);
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
@@ -115,7 +115,7 @@
 					success:function(data) {
 						alert("수정 완료");
 						
-						updateTable(data, page_num);
+						updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					}, error:function(error) {
 						alert("찾을 수 없는 품목입니다.");
 					}
@@ -281,7 +281,7 @@
 				dataType:"json",
 				data:{"page" : page_num, "page_group" : page_group},
 				success:function(data) {
-					updateTable(data.pagepurchaseitemList, page_num);
+					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
 					alert("찾을 수 없는 품목입니다.");
@@ -305,7 +305,7 @@
 				dataType:"json",
 				data:{"page" : page_num, "page_group" : page_group},
 				success:function(data) {
-					updateTable(data.pagepurchaseitemList, page_num);
+					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
 					alert("찾을 수 없는 품목입니다.");
@@ -329,7 +329,7 @@
 				dataType:"json",
 				data:{"page" : page_num, "page_group" : page_group},
 				success:function(data) {
-					updateTable(data.pagepurchaseitemList, page_num);
+					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
 					alert("찾을 수 없는 품목입니다.");
@@ -341,8 +341,10 @@
 			return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 		
-		function updateTable(purchaseitemList, page_num) {
+		function updateTable(purchaseitemList, page_num, purchaseitemListall) {
 			$("#select-purchaseitem-list").remove();
+			$("#purchaseitem_allcount").text("총 " + purchaseitemListall.length + "건");
+			
 			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>");
 			$("#sample-table-1").append($newTbody);
 			var i = 1;
@@ -1015,6 +1017,7 @@
 				
 				<div class="row-fluid">
 					<div class="span12">
+						<label id="purchaseitem_allcount">총 ${fn:length(purchaseitemListall) }건</label>
 						<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>

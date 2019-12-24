@@ -193,7 +193,7 @@ public class Menu46Service {
 		VoucherVo voucherVo = new VoucherVo();
 		voucherVo.setRegDate(vo.getDebtDate());
 		
-		return menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
+		return menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, userVo);
 	}
 	
 	/**

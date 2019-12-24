@@ -168,6 +168,14 @@
 		where right(no, 10) = #{_parameter }
 	</select>
 	
+	<update id="updateBankAccount" parameterType="bankaccountvo">
+      <![CDATA[
+	      update tb_purchasecustomer
+	      set deposit_no = #{depositNo }, deposit_host = #{depositHost }, bank_code = #{bankCode }
+	      where deposit_no = #{depositOld }
+      ]]>
+   </update>
+   
 	<update id="delete" parameterType="list">
 		<![CDATA[
 			update tb_purchasecustomer

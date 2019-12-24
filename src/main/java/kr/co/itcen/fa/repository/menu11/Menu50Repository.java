@@ -163,7 +163,7 @@ public class Menu50Repository {
 	}
 
 	public List<PdebtVo> selectList(Long[] no) {
-		List<Long>listNo = new ArrayList<Long>();
+		List<Long> listNo = new ArrayList<Long>();
 		for(Long no1: no) {
 			listNo.add(no1);
 		}

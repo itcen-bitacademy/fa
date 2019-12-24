@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu66">
-		
+	
+	<resultMap type="repayvo" id="repayResult">
+		<result column="debt_no" property="debtNo"/>
+		<result column="pay_princ" property="payPrinc"/>
+		<result column="int_amount" property="intAmount"/>
+		<result column="pay_date" property="payDate"/>
+		<result column="debt_type" property="debtType"/>
+		<result column="voucher_no" property="voucherNo"/>
+		<result column="insert_id" property="insertId"/>
+		<result column="insert_date" property="insertDate"/>
+		<result column="update_id" property="updateId"/>
+		<result column="update_date" property="updateDate"/>
+	</resultMap>
+	<select id="getTotalCnt" parameterType="repayvo" resultType="int">
+		<![CDATA[
+			select count(*)
+			from tb_repay
+			where delete_flag="N"
+		]]>
+		<if test='code != null and !"".equals(code)'>
+			and code = #{code}
+		</if>
+		<if test='debtType != null and !"".equals(debtType)'>
+			and debt_type=#{debtType}
+		</if>
+	</select>
+	<select id="getList" parameterType="map" resultType="repayvo" resultMap="repayResult">
+		<![CDATA[
+			select *
+			from tb_repay
+			where delete_flag="N"
+		]]>
+		<if test='vo.code != null and !"".equals(vo.code)'>
+			and code = #{vo.code}
+		</if>
+		<if test='vo.debtType != null and !"".equals(vo.debtType)'>
+			and debt_type=#{vo.debtType}
+		</if>
+		limit ${startRow}, ${pageSize}
+	</select>
 	<select id="selectAllCount" resultType="int" parameterType="map">
 		<![CDATA[
 			select count(*) 
@@ -82,30 +121,68 @@
 		]]>
 	</select>
 	
+	<!-- 삭제시 기존 상환금을 잔액에 더해준다. -->
+	<update id="restoreRepayBal4Delete" parameterType="repayvo">
+		<![CDATA[
+			update
+		]]>
+		<choose>		<!--  debtType에 따라 테이블이 달라진다. -->
+			<when test='code != null and "S".equals(debtType)'>
+				<![CDATA[
+					tb_s_term_debt 
+				]]>
+			</when>
+			<when test='code != null and "l".equals(debtType)'>
+				<![CDATA[
+					tb_l_term_debt 
+				]]>
+			</when>
+			<when test='code != null and "P".equals(debtType)'>
+				<![CDATA[
+					tb_p_debt 
+				]]>
+			</when>
+		</choose>
+		<![CDATA[
+			set repay_bal=repay_bal + ${payPrinc}
+			where no=#{debtNo}
+		]]>
+	</update>
+	<update id="updateDeleteFlag" parameterType="List">
+		<![CDATA[
+			update tb_repay
+			set delete_flag = "Y"
+			where no IN
+		]]>
+		<foreach collection="list" item="vo" open="(" close=")" separator=",">
+			${vo.no}
+		</foreach>
+	</update>
 	<!-- 상환잔액을 업데이트 하기 전 이전으로 돌리기 -->
 	<update id="restoreRepayBal" parameterType="repayvo">
 			<![CDATA[
 				update 
 			]]>
-				<if test='code != null and "S".equals(debtType)'>
-				<![CDATA[
-					tb_s_term_debt 
-				]]>
-				</if>
-				<if test='code != null and "L".equals(debtType)'>
-				<![CDATA[
-					tb_l_term_debt 
-				]]>
-				</if>
-				<if test='code != null and "P".equals(debtType)'>
-				<![CDATA[
-					tb_p_debt 
-				]]>
-				</if>
+			<choose>
+				<when test='code != null and "S".equals(debtType)'>
+					<![CDATA[
+						tb_s_term_debt 
+					]]>
+				</when>
+				<when test='code != null and "l".equals(debtType)'>
+					<![CDATA[
+						tb_l_term_debt 
+					]]>
+				</when>
+				<when test='code != null and "P".equals(debtType)'>
+					<![CDATA[
+						tb_p_debt 
+					]]>
+				</when>
+			</choose>
 			<![CDATA[
-				set 
-					repay_bal = repay_bal + #{tempPayPrinc} 
-						where no=#{debtNo}
+				set repay_bal = repay_bal + #{tempPayPrinc} 
+				where no=#{debtNo}
 			]]>
 	</update>
 	

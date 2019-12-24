@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu24Service;
 import kr.co.itcen.fa.vo.menu01.CardVo;
 
@@ -30,7 +31,8 @@ public class Menu24Controller {
 
 	@Autowired
 	private Menu24Service menu24Service;
-
+	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model,
 			@RequestParam(value="page", required=false,defaultValue = "1") int page,

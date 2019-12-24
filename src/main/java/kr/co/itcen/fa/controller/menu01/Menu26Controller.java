@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu26Service;
 import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 
@@ -33,6 +34,7 @@ public class Menu26Controller {
 	@Autowired
 	private Menu26Service menu26Service;
 	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page,

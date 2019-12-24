@@ -296,8 +296,6 @@
 			});
 		});
 		
-		//date range picker
-		
 	</script>
 	
 	<script>

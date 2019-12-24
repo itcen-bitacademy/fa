@@ -120,6 +120,7 @@ public class Menu19Service {
 		// 손익계산서 데이터 삭제
 		menu64Service.deleteIncomeStatement(closingDate);
 		
+		// TODO: 이월데이터 삭제 
 		
 		// 마감일 수정 처리
 		menu19Repository.updateClosingDate(closingDate);
@@ -156,6 +157,8 @@ public class Menu19Service {
 		// 손익계산서 데이터 삭제
 		menu64Service.deleteIncomeStatement(closingDate);
 
+		// TODO: 이월데이터 삭제 
+		
 		// 마감일 삭제처리 
 		menu19Repository.deleteClosingDate(closingDate);
 		

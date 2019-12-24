@@ -32,6 +32,16 @@
 		]]>
 	</update>
 	
+	<!-- 순번 업데이트 -->
+	<update id="updateOrder2" parameterType="1mappingvo">
+		<![CDATA[
+		update tb_voucher_system_mapping
+		   set order_no = order_no+1
+		 where voucher_no = #{voucherNo }
+		   and order_no <= #{orderNo };
+		]]>
+	</update>
+	
 	<!-- 전표테이블 입력 -->
 	<insert id="insertVoucher" parameterType="1vouchervo">
 		<![CDATA[
@@ -98,7 +108,8 @@
 		  			   manage_no,
 		  			   card_no,
 		  			   deposit_no,
-		  			   customer_no
+		  			   customer_no,
+		  			   order_no
 		)
 		values (null,
 				#{voucherUse },
@@ -111,7 +122,37 @@
 		  		#{manageNo },
 		  		#{cardNo },
 		  		#{depositNo },
-		  		#{customerNo }
+		  		#{customerNo },
+		  		#{orderNo }
+		)
+		]]>
+	</insert>
+	
+	<!-- 항목테이블 입력 -->
+	<insert id="insertItem3" parameterType="1itemvo">
+		<![CDATA[
+		insert
+		  into tb_voucher_item(no,
+		  			amount,
+		  			amount_flag,
+		  			insert_userid,
+		  			insert_day,
+		  			use_yn,
+		  			voucher_no,
+		  			account_no,
+		  			group_no,
+		  			order_no
+		)
+		values (null,
+				#{amount },
+				#{amountFlag },
+				#{insertUserid },
+				now(),
+				true,
+				#{voucherNo },
+				#{accountNo },
+				#{groupNo },
+				#{orderNo }
 		)
 		]]>
 	</insert>
@@ -124,13 +165,15 @@
 		  			   reg_date,
 		  			   insert_userid,
 		  			   insert_day,
-		  			   use_yn
+		  			   use_yn,
+		  			   closing_yn
 		  )
 		values (no,
 				#{regDate },
 		  		#{insertUserid },
 		  		now(),
-		  		true
+		  		true,
+		  		'y'
 		  		)
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
@@ -152,7 +195,8 @@
 		  			use_yn,
 		  			voucher_no,
 		  			account_no,
-		  			order_no
+		  			order_no,
+		  			closing_yn
 		)
 		values (null,
 				#{amount },
@@ -162,7 +206,8 @@
 				true,
 				#{no },
 				#{accountNo },
-				#{orderNo }
+				#{orderNo },
+				'y'
 		)
 		]]>
 	</insert>
@@ -182,7 +227,8 @@
 		  			   manage_no,
 		  			   card_no,
 		  			   deposit_no,
-		  			   customer_no
+		  			   customer_no,
+		  			   closing_yn
 		)
 		values (null,
 				#{voucherUse },
@@ -195,7 +241,8 @@
 		  		#{manageNo },
 		  		#{cardNo },
 		  		#{depositNo },
-		  		#{customerNo }
+		  		#{customerNo },
+		  		'y'
 		)
 		]]>
 	</insert>
@@ -206,8 +253,8 @@
           from tb_voucher_manager v
           join tb_voucher_item i
             on v.no = i.voucher_no
-          join tb_voucher_system_mapping m
-            on i.voucher_no = m.voucher_no
+		  join tb_voucher_system_mapping m
+			on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
 	 left join (select no, name
@@ -217,7 +264,10 @@
                   from tb_salescustomer
 				 union
 				select no, name
-                  from tb_purchasecustomer) as cu
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -225,7 +275,8 @@
             on ba.deposit_no = m.deposit_no
          where v.use_yn = 1
            and i.use_yn = 1
-           and m.use_yn = 1;
+           and m.use_yn = 1
+           and i.order_no in (m.order_no)
 	</select>
 	
 	<!-- 전표조회 페이징 -->
@@ -255,8 +306,8 @@
           from tb_voucher_manager v
           join tb_voucher_item i
             on v.no = i.voucher_no
-          join tb_voucher_system_mapping m
-            on i.voucher_no = m.voucher_no
+		  join tb_voucher_system_mapping m
+			on i.voucher_no = m.voucher_no
           join tb_account a
             on a.no = i.account_no
 	 left join (select no, name
@@ -278,6 +329,7 @@
          where v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
+           and i.order_no in (m.order_no)
       order by v.no desc,
                i.order_no
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
@@ -315,6 +367,7 @@
                v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
+           and i.order_no in (m.order_no)
     	   ]]>
     	</if>
         <if test="useYn == false">
@@ -322,6 +375,7 @@
                v.use_yn = #{useYn }
            and i.use_yn = #{useYn }
            and m.use_yn = #{useYn }
+           and i.order_no in (m.order_no in)
     	   ]]>
     	</if>
     	<if test="regDate != null and !''.equals(regDate)">
@@ -351,7 +405,7 @@
     	</if>
     	<if test="voucherUse != null and !voucherUse.equals('')">
     	   <![CDATA[
-    	   and m.voucher_use = #{voucherUse };
+    	   and m.voucher_use = #{voucherUse }
     	   ]]>
     	</if>
 	</select>
@@ -410,6 +464,7 @@
                v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
+           and i.order_no in (m.order_no)
     	   ]]>
     	</if>
         <if test="vo.useYn == false">
@@ -417,6 +472,7 @@
                v.use_yn = 0
            and i.use_yn = 0
            and m.use_yn = 0
+           and i.order_no in (m.order_no)
     	   ]]>
     	</if>
     	<if test="vo.regDate != null and !vo.regDate.equals('')">
@@ -455,6 +511,63 @@
       limit	#{paginationUtil.pageIndex }, #{paginationUtil.listSize };
 	  ]]>
 	</select>
+	
+	<!-- 전표번호로 전표조회 -->
+	<select id="getVoucher" parameterType="Long" resultType="1vouchervo">
+		<![CDATA[
+		select reg_date as regDate,
+			   v.no as no,
+			   i.order_no as orderNo,
+			   i.amount_flag as amountFlag,
+			   m.insert_team as insertTeam,
+			   m.insert_userid as insertUserid,
+			   m.insert_day as insertDay,
+			   m.system_code as systemCode,
+			   a.no as accountNo,
+			   a.name as accountName,
+			   i.amount as amount,
+			   cu.no as customerNo,
+		   	   cu.name as customerName,
+			   m.manage_no as manageNo,
+		   	   c.card_no as cardNo,
+			   c.user as cardUser,
+		   	   ba.deposit_no as depositNo,
+			   ba.deposit_host as depositHost,
+			   ifnull(ba.bank_code, c.bank_code) as bankCode,
+			   ifnull(ba.bank_name, c.bank_name) as bankName,
+		   	   m.voucher_use as voucherUse
+          from tb_voucher_manager v
+          join tb_voucher_item i
+            on v.no = i.voucher_no
+		  join tb_voucher_system_mapping m
+			on i.voucher_no = m.voucher_no
+          join tb_account a
+            on a.no = i.account_no
+	 left join (select no, name
+				  from tb_customer
+				 union
+				select no, name
+                  from tb_salescustomer
+				 union
+				select no, name
+                  from tb_purchasecustomer
+                 union
+                select code as no, name
+                  from tb_bank) as cu
+            on cu.no = m.customer_no
+	 left join tb_cardmanager c
+            on c.card_no = m.card_no
+	 left join tb_bank_account ba
+            on ba.deposit_no = m.deposit_no
+         where v.use_yn = 1
+           and i.use_yn = 1
+           and m.use_yn = 1
+           and i.order_no in (m.order_no)
+           and v.no = ${_parameter }
+      order by i.order_no
+	  ]]>
+	</select>
+	
 	
 	<!-- delete 다른팀 -->
 	<delete id="deleteVoucher" parameterType="1vouchervo">
@@ -593,6 +706,7 @@
 			select insert_team
 			  from tb_voucher_system_mapping
 			 where voucher_no = #{no }
+			  limit 1
 		]]>
 	</select>
 	
@@ -808,7 +922,7 @@
 	<!-- 결산 / 전표 등록 날짜 구하기 -->
 	<select id="getRegDate" resultType="String" parameterType="Long">
 	<![CDATA[
-		select reg_Date
+		select reg_date
 		  from tb_voucher_manager
 		 where no = #{no };
 	]]>

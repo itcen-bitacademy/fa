@@ -37,8 +37,6 @@ public class Menu53Controller {
 	public static final String MAINMENU = "12";
 	public static final String SUBMENU = "53";
 
-	@Autowired
-	private MenuService menuService;
 
 	@Autowired
 	private Menu53Service menu53Service;
@@ -46,14 +44,13 @@ public class Menu53Controller {
 	@Autowired
 	private Menu03Service menu03Service;
 	
-	//@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model) {
 		//menu53Service.test();
-		/*
-		 * JSP
-		 * 12/15/list.jsp
-		 */
+		
+		 //* JSP
+		 //* 12/15/list.jsp
+		 
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
@@ -219,8 +216,10 @@ public class Menu53Controller {
 		
 		System.out.println(selltaxbillvo.getVoucherUse());
 		
-		menu53Service.taxbillupdate(selltaxbillvo);
-		menu53Service.salesUpdate(selltaxbillvo);
+		menu53Service.taxbillupdate(selltaxbillvo);	// 세금계산서
+		menu53Service.salesUpdate(selltaxbillvo);	// 매출관리 테이블
+		menu53Service.voucherSystem(selltaxbillvo); // 전표관리 테이블
+		
 		System.out.println("업데이트 이벤트 발생");
 		
 		return MAINMENU + "/" + SUBMENU + "/list"; 

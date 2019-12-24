@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu12.Menu52Service;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
@@ -32,6 +33,7 @@ public class Menu52Controller {
 	@Autowired
 	private Menu52Service menu52Service;
 	
+	@NoAuth
 	@RequestMapping("/" + SUBMENU)
 	public String list(Model model, @RequestParam(value="page", required=false, defaultValue="1") int page) {
 		CustomerVo customerVo = new CustomerVo();
@@ -43,6 +45,7 @@ public class Menu52Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	@NoAuth
 	@RequestMapping(value="/" + SUBMENU + "/list", method=RequestMethod.POST)
 	public String list(Model model, CustomerVo customerVo, @RequestParam(value="page", required=false, defaultValue="1") int page) {
 		System.out.println(customerVo);
@@ -56,6 +59,7 @@ public class Menu52Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/gets")
 	public Map<String, Object> gets(@RequestParam(value="no", required=false, defaultValue="") String no,
@@ -71,6 +75,7 @@ public class Menu52Controller {
 		return data;
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/get")
 	public Map<String, Object> get(@RequestParam(value="no", required=false, defaultValue="") String no	) {

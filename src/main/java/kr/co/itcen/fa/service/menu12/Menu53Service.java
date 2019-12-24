@@ -45,6 +45,11 @@ public class Menu53Service {
 	public void taxbillupdate(SellTaxbillVo selltaxbillvo) {
 		menu53Repository.taxbillupdate(selltaxbillvo);
 	}
+	
+	// 매출세금계산서 항목 중 비고를 업데이트 했을때, 전표에 사용목적도 함께 업데이트 되도록 하는 기능
+	public void voucherSystem(SellTaxbillVo sellTaxbillVo) {
+		menu53Repository.voucherSystem(sellTaxbillVo);
+	}
 		
 }
 

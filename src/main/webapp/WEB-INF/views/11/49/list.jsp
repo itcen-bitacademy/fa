@@ -55,6 +55,9 @@ form {
 /* second row */
 .span2 {padding-left:40px; padding-top:20px;}
 
+
+#tbody_list { overflow-x:scroll;}
+
 </style>
 </head>
 <body class="skin-3">
@@ -72,14 +75,14 @@ form {
 					<!-- PAGE CONTENT BEGINS -->
 					<div>
 						<div>
-						<form class="form-horizontal">
+						<form id='myform' class="form-horizontal">
 							<table style="width:100%;">
 								<tbody>
 								<tr>
 									<td class="first-column"><h4>차입일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" value="${vo.debtDate }" readonly/>
+				                           <input class="date-picker" type="text" name="debtDate" id="debtDate"  data-date-format="yyyy-mm-dd" value="${vo.debtDate }" readonly/>
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -100,7 +103,7 @@ form {
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
 											</c:otherwise>
 											</c:choose>
-												<span class="lbl">년</span>
+												<span class="lbl">연</span>
 											</label>
 										</div>
 										<div class="radio">
@@ -138,7 +141,7 @@ form {
 										<input type="text" name="bankName" value="${vo.bankName }"/>
 									</td>
 									<td class="sixth-column">
-										<button type="submit" class="btn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+										<button class="btn" id='search'>조회</button>
 				
 									</td>
 								</tr>
@@ -146,7 +149,7 @@ form {
 								<td class="first-column"><h4>만기일자</h4></td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" value="${vo.expDate }" readonly />
+				                           <input class="date-picker" type="text" name="expDate" id="expDate"  data-date-format="yyyy-mm-dd" value="${vo.expDate }" readonly />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -206,6 +209,7 @@ form {
 					<!-- PAGE CONTENT ENDS -->
 			
 		<!-- list -->
+		<p>총 ${dataResult.pagination.totalCnt }건</p>
 				<table id="simple-table" class="table  table-bordered table-hover">
 					<thead>
 						<tr>
@@ -216,7 +220,8 @@ form {
 							<th class="center">차입금액</th>
 							<th class="center">상환액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자</th>
+							<th class="center">만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -240,16 +245,17 @@ form {
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
 							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
-							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount-ltermvo.repayBal}" pattern="#,###" /></td>
+							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
-										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>		
-							<td class="center">${ltermvo.debtExpDate}</td>
+							<td class="center">${ltermvo.debtDate}</td>
+							<td class="center">${ltermvo.expDate}</td>
 							<td class="center">${ltermvo.intRate}%</td>
 							<c:choose>
-										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">년</td></c:when>
+										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>	
@@ -312,9 +318,25 @@ $(function() {
 		$('.date-picker').datepicker().next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
-	
-});
 
+});
+$('#search').click(function(){
+	var isIntPayWayCheck=false;
+	$('input[name=intPayWay]').each(function(index,	item){
+		if($(item).prop('checked') == true){
+			isIntPayWayCheck = true;
+		}
+	});
+	if(!isIntPayWayCheck){
+		$('input[name=intPayWay]').val('');
+	}
+	
+	
+	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
+	$('#myform').attr('method', 'GET');
+	$('#myform').submit();
+	return;
+});
 
 
 </script>

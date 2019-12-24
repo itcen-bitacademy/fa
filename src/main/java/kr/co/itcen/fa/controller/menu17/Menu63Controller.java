@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu17.Menu62Service;
 import kr.co.itcen.fa.service.menu17.Menu63Service;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
@@ -32,6 +33,7 @@ public class Menu63Controller {
 	@Autowired
 	private Menu63Service menu63Service;
 	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String test(Model model, Menu17SearchForm menu17SearchForm) {
 		

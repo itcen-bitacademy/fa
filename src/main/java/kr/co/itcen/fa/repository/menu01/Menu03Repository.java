@@ -1,5 +1,6 @@
 package kr.co.itcen.fa.repository.menu01;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
@@ -30,6 +32,9 @@ public class Menu03Repository {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@Autowired
+	private Menu19Service menu19Service;
+	
 	
 	public void test (){
 		TestVo testVo = new TestVo();
@@ -38,25 +43,60 @@ public class Menu03Repository {
 	}
 	
 	// 전표생성 (다른팀)
-	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo) {
-		System.out.println("#################" + voucherVo.getRegDate());
+	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingVo) {
 		sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
 		
-		System.out.println("222233333333" + voucherVo.getNo());
 		for(int i = 0; i < itemVo.size(); i++) {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
-			System.out.println("33333333" + voucherVo.getNo());
 			itemVo.get(i).setGroupNo(voucherVo.getNo());
 			sqlSession.insert("menu03.insertItem", itemVo.get(i)); // 항목테이블 입력
 			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
 			itemVo.get(i).setOrderNo(order);
 			sqlSession.update("menu03.updateOrder", itemVo.get(i));
+			
+			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
+			mappingVo.get(i).setOrderNo(order);
+			sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
 		}
 		
-		mappingVo.setVoucherNo(voucherVo.getNo());
-		sqlSession.insert("menu03.insertMapping", mappingVo); // 매핑테이블 입력
+		
 		
 		return voucherVo.getNo();	// 전표번호
+	}
+	
+	// 전표생성 (1팀)
+	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingVo, UserVo userVo) throws ParseException {
+		
+		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+			System.out.println("repo1");
+			sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
+			for(int i = 0; i < itemVo.size(); i++) {
+				System.out.println("itemVo.size : " + itemVo.size());
+				itemVo.get(i).setVoucherNo(voucherVo.getNo());
+				System.out.println("itemVo.get(i) : " + itemVo.get(i).getVoucherNo());
+				System.out.println("itemVo.get(i)amount : " + itemVo.get(i).getAmount());
+				System.out.println("itemVo.get(i)amountflag : " + itemVo.get(i).getAmountFlag());
+				System.out.println("itemVo.get groupNo : " + itemVo.get(i).getGroupNo());
+				itemVo.get(i).setGroupNo(voucherVo.getNo());
+				System.out.println("repo2");
+				sqlSession.insert("menu03.insertItem3", itemVo.get(i)); // 항목테이블 입력
+				
+				//int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+				//System.out.println("order : " + order);
+				
+				System.out.println("repo3");
+				
+				
+				mappingVo.get(i).setVoucherNo(voucherVo.getNo());
+				System.out.println("repo4");
+				sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
+			}
+			
+			return voucherVo.getNo();	// 전표번호
+		}
+		
+		return null;
+		
 	}
 
 	// 전표생성 (1팀)
@@ -115,7 +155,7 @@ public class Menu03Repository {
 	}
 	
 	// 전표 다른 팀 수정
-	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, MappingVo mappingVo, @AuthUser UserVo userVo) {
+	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingVo, @AuthUser UserVo userVo) {
 		VoucherVo voucherVoTemp = new VoucherVo();
 		VoucherVo insertTeam = new VoucherVo();
 		insertTeam = sqlSession.selectOne("menu03.selectTeam", voucherVo);
@@ -131,11 +171,11 @@ public class Menu03Repository {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			System.out.println("@ : " + itemVo.get(i).getVoucherNo());
 			sqlSession.delete("menu03.deleteItem", itemVo.get(i));
-		}
-		mappingVo.setVoucherNo(voucherVo.getNo());
-		System.out.println("# :" + mappingVo.getVoucherNo());
-		sqlSession.delete("menu03.deleteMapping", mappingVo);
 		
+			
+		}
+		mappingVo.get(0).setVoucherNo(voucherVo.getNo());
+		sqlSession.delete("menu03.deleteMapping", mappingVo.get(0));
 		voucherVo.setInsertUserid(voucherVoTemp.getInsertUserid());
 		voucherVo.setInsertDay(voucherVoTemp.getInsertDay());
 		sqlSession.insert("menu03.newVoucher", voucherVo); // 전표테이블 입력
@@ -145,17 +185,24 @@ public class Menu03Repository {
 			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			itemVo.get(i).setGroupNo(voucherVo.getNo());
+			
+			
+			
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
 			
 			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
 			itemVo.get(i).setOrderNo(order);
 			sqlSession.update("menu03.updateOrder", itemVo.get(i));
+		
+		
+			mappingVo.get(0).setInsertUserid(voucherVoTemp.getInsertUserid());
+			mappingVo.get(0).setInsertDay(voucherVoTemp.getInsertDay());
+			mappingVo.get(0).setVoucherNo(voucherVo.getNo());
+			mappingVo.get(0).setOrderNo(order);
+			sqlSession.insert("menu03.newMapping", mappingVo.get(0)); // 매핑테이블 입력
 		}
 		
-		mappingVo.setInsertUserid(voucherVoTemp.getInsertUserid());
-		mappingVo.setInsertDay(voucherVoTemp.getInsertDay());
-		mappingVo.setVoucherNo(voucherVo.getNo());
-		sqlSession.insert("menu03.newMapping", mappingVo); // 매핑테이블 입력
+		
 		System.out.println("repository2 : " + voucherVo.getNo());
 		return voucherVo.getNo();
 		
@@ -210,6 +257,16 @@ public class Menu03Repository {
 		return sqlSession.selectOne("menu03.getRegDate", no);
 		
 	}
+	
+	// 전표번호로 전표정보 조회하기
+	public Map<String, Object> getVoucher(Long voucherNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<VoucherVo> voucherList = sqlSession.selectList("menu03.getVoucher", voucherNo);
+		map.put("voucherList", voucherList);
+		return map;
+	}
+
+	
 	
 
 }

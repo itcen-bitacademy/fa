@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.repository.menu12.Menu15Repository;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu12.CustomerVo;
 
 /**
@@ -65,5 +66,8 @@ public class Menu15Service {
 		
 		return menu15Repository.deleteCustomer(map) != 0;
 	}
-
+	
+	public void updateBankAccount(BankAccountVo bankAccount) {
+		menu15Repository.updateBankAccount(bankAccount);
+	}
 }

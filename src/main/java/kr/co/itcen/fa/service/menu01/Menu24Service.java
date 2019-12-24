@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu24Repository;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CardVo;
 
@@ -16,13 +17,14 @@ import kr.co.itcen.fa.vo.menu01.CardVo;
  * 카드현황조회
  *
  */
+
 @Service
 public class Menu24Service {
 	
 	@Autowired
 	private Menu24Repository menu24Repository;
 	
-
+	@NoAuth
 	public DataResult<CardVo> list(int page, CardVo vo) {
 		DataResult<CardVo> dataResult = new DataResult<CardVo>();
 		System.out.println(page);

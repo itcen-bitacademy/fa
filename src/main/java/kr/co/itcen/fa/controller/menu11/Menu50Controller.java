@@ -53,10 +53,14 @@ public class Menu50Controller {
 			@RequestParam(value = "code", required = false, defaultValue = "") String code,
 			@RequestParam(value = "financialYear", required = false, defaultValue = "2019") String year,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+		
 		DataResult<PdebtVo> dataResult = menu50Service.list(page, year, code);
 		List<SectionVo> sectionlist = menu50Service.selectSection();
+		
 		model.addAttribute("dataResult", dataResult);
+		model.addAttribute("code", code);
 		model.addAttribute("sectionlist", sectionlist);
+		model.addAttribute("year", year);
 		model.addAttribute("contentsCount", dataResult.getPagination().getTotalCnt()); // 게시물 수
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
@@ -71,14 +75,14 @@ public class Menu50Controller {
 	}
 	
 	// 11/50/add.jsp
-	@RequestMapping(value = "/" + SUBMENU + "/insert", method = RequestMethod.POST)
+	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String insert(
 			@ModelAttribute PdebtVo vo, 
 			@AuthUser UserVo userVo) {
 		// 마감 여부 체크
 		try {
 			vo.setInsertId(userVo.getId()); // 등록자 아이디 삽입
-
+			System.out.println(vo);
 			String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
 			String saveDeptDate = deptExpDate.substring(0, 10);
 			String saveExpDate = deptExpDate.substring(13);
@@ -135,13 +139,10 @@ public class Menu50Controller {
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
 	
-	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
 	public String update(
 			@ModelAttribute PdebtVo vo, 
-			@RequestParam String majorCode,
-			SalesVo salesVo, 
-			@AuthUser UserVo userVo, 
-			Model model) throws ParseException {
+			@AuthUser UserVo userVo) {
 		// 마감 여부 체크
 		try {
 			String deptExpDate = vo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
@@ -157,10 +158,7 @@ public class Menu50Controller {
 			vo.setDangerCode(dangerArray[0]);
 			vo.setDangerName(dangerArray[1]);
 			
-			System.out.println(vo.getMajorCode());
-			System.out.println(vo.getDangerCode());
-			vo.setMajorCode(majorCode);
-
+			System.out.println("update debtdate : " + vo.getDebtDate());
 			if (menu19Service.checkClosingDate(userVo, vo.getDebtDate())) {
 
 				vo.setVoucherNo(menu50Service.select(vo.getNo()));
@@ -209,18 +207,25 @@ public class Menu50Controller {
 	public String delete(
 			@RequestParam Long[] no, 
 			@AuthUser UserVo uservo) throws ParseException {
+		for (Long long1 : no) {
+			System.out.println("50 controller long : " + long1);
+		}
+		
 		List<PdebtVo> pdebtVoList = menu50Service.selectList(no);
-
+		for(PdebtVo v:pdebtVoList) {
+			System.out.println(v.getDebtDate());
+		}
 		for (int i = 0; i < pdebtVoList.size(); ++i) {
 			try {
-				if (menu19Service.checkClosingDate(uservo, pdebtVoList.get(i).getDebtDate())) {
+				if (!menu19Service.checkClosingDate(uservo, pdebtVoList.get(i).getDebtDate())) {
+					System.out.println("마감입니다!!! 삭제불가능!!!");
 					return "redirect:/" + MAINMENU + "/" + SUBMENU;
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}
-
+	
 		List<Long> list = menu50Service.selectVoucherNo(no);
 		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
 		

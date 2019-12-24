@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu02.Menu36Service;
 import kr.co.itcen.fa.service.menu12.Menu58Service;
 import kr.co.itcen.fa.vo.menu02.PurchasemanagementVo;
@@ -34,14 +35,16 @@ public class Menu58Controller {
 	@Autowired
 	private Menu36Service menu36Service;
 	
+	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(PurchasemanagementVo purchasemanagementVo, Model model, @RequestParam(defaultValue = "1") int page) {
+	public String list(PurchasemanagementVo purchasemanagementVo, Model model, @RequestParam(value="page", required=false, defaultValue="1") int page) {
 		model.addAttribute("dataResult", menu58Service.getAllPurchase(purchasemanagementVo, page));
 		model.addAttribute("purchase", purchasemanagementVo);
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 	
 	// 매입거래처 팝업
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/gets")
 	public Map<String, Object> gets(@RequestParam(value="no", required=false, defaultValue="") String no,
@@ -57,6 +60,7 @@ public class Menu58Controller {
 		return data;
 	}
 	
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/get")
 	public Map<String, Object> get(@RequestParam(value="no", required=false, defaultValue="") String no	) {

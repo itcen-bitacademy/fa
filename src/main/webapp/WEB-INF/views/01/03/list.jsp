@@ -110,7 +110,7 @@
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >거래처 코드</label>
 									<div class="controls">
 										<span class="btn btn-small btn-info">
-										<a href="#" id="a-customerinfo-dialog"> 
+										<a href="#" id="a-customerinfo-dialog">
 										<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
 										<i class="icon-search nav-search-icon"></i> 
 										</a> 
@@ -223,6 +223,7 @@
                         <thead>
                         <tr>
                             <th class="center">일자</th>
+                            <th class="center">순번</th>
                             <th class="center">계정과목코드</th>
                             <th class="center">계정과목명</th>
                             <th class="center">구분</th>
@@ -433,13 +434,8 @@
 			return;
 		}
 		
-		var voucherVo = {regDate:regDate, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
-				manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
-				cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
-			}
-		
 		//voucherList.push(voucherVo);
-		
+		// 여기
 		var table = document.getElementById("save-table"); // 테이블 아이디
 		var row = table.insertRow(table.rows.length); // 하단에 추가
 		var cell1 = row.insertCell(0);
@@ -457,43 +453,50 @@
 		var cell13 = row.insertCell(12);
 		var cell14 = row.insertCell(13);
 		var cell15 = row.insertCell(14);
+		var cell16 = row.insertCell(15);
 		
 		cell1.innerHTML = '<td>' + regDate + '</td>';
-		cell2.innerHTML = '<td>' + accountNo + '</td>';
-		cell3.innerHTML = '<td>' + accountName + '</td>';
-		cell4.innerHTML = '<td>' + amountFlag + '</td>';
-		cell5.innerHTML = '<td>' + comma(amount) + '</td>';
-		cell6.innerHTML = '<td>' + customerNo + '</td>';
-		cell7.innerHTML = '<td>' + customerName + '</td>';
+		cell2.innerHTML = '<td>' + (table.rows.length-1) + '</td>';
+		cell3.innerHTML = '<td>' + accountNo + '</td>';
+		cell4.innerHTML = '<td>' + accountName + '</td>';
+		cell5.innerHTML = '<td>' + amountFlag + '</td>';
+		cell6.innerHTML = '<td>' + comma(amount) + '</td>';
+		cell7.innerHTML = '<td>' + customerNo + '</td>';
+		cell8.innerHTML = '<td>' + customerName + '</td>';
 		if(manageNo == '') {
-			cell8.innerHTML = '<td>' + '</td>';
 			cell9.innerHTML = '<td>' + '</td>';
+			cell10.innerHTML = '<td>' + '</td>';
 		} else if (manageNo != null) {
-			cell8.innerHTML = '<td>' + '세금계산서' + '</td>';
-			cell9.innerHTML = '<td>' + manageNo + '</td>';
+			cell9.innerHTML = '<td>' + '세금계산서' + '</td>';
+			cell10.innerHTML = '<td>' + manageNo + '</td>';
 		} else {
-			cell8.innerHTML = '<td>' + '</td>';
 			cell9.innerHTML = '<td>' + '</td>';
+			cell10.innerHTML = '<td>' + '</td>';
 		}
-		cell10.innerHTML = '<td>' + bankCode + '</td>';
-		cell11.innerHTML = '<td>' + bankName + '</td>';
+		cell11.innerHTML = '<td>' + bankCode + '</td>';
+		cell12.innerHTML = '<td>' + bankName + '</td>';
 		if(customerName == '여비') {
-			cell12.innerHTML = '<td>' + cardNo + '</td>';
-			cell13.innerHTML = '<td>' + '</td>';
-			cell14.innerHTML = '<td>' + cardUser + '</td>';
+			cell13.innerHTML = '<td>' + cardNo + '</td>';
+			cell14.innerHTML = '<td>' + '</td>';
+			cell15.innerHTML = '<td>' + cardUser + '</td>';
 		} else {
-			cell12.innerHTML = '<td>' + '</td>';
-			cell13.innerHTML = '<td>' + depositNo + '</td>';
-			cell14.innerHTML = '<td>' + depositHost + '</td>';
+			cell13.innerHTML = '<td>' + '</td>';
+			cell14.innerHTML = '<td>' + depositNo + '</td>';
+			cell15.innerHTML = '<td>' + depositHost + '</td>';
 		}
-		cell15.innerHTML = '<td>' + voucherUse + '</td>';
+		cell16.innerHTML = '<td>' + voucherUse + '</td>';
 		
-		$('#regDate').val('');
+		var voucherVo = {regDate:regDate, orderNo:(table.rows.length-1), accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
+				manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
+				cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
+			}
+		
+		$('#regDate').val(regDate);
 		$('#accountNo').val('');
 		$('#accountName').val('');
 		$('#amountFlag').val('');
 		$('#amount').val('');
-		$('#manageNo').val('');
+		$('#manageNo').val(manageNo);
 		$('#customerNo').val('');
 		$('#customerName').val('');
 		$('#bankCode').val('');
@@ -503,6 +506,21 @@
 		$('#depositNo').val('');
 		$('#depositHost').val('');
 		$('#voucherUse').val('');
+		
+		//$(".date-picker").datepicker("destroy");
+		//$("#regDate").removeClass('hasDatepicker').datepicker();
+		
+		$("#regDate").attr( 'disabled', true );
+		
+		$("input[name=regDate]").prop("readonly", true);
+		$("input[name=manageNo]").prop("readonly", true);
+		$("input[name=customerName]").prop("readonly", true);
+		$("input[name=bankCode]").prop("readonly", true);
+		$("input[name=cardNo]").prop("readonly", true);
+		$("input[name=cardUser]").prop("readonly", true);
+		$("input[name=depositNo]").prop("readonly", true);
+		$("input[name=depositHost]").prop("readonly", true);
+		
 		
     }
 	
@@ -538,28 +556,29 @@
 				$('#voucherUse').val('');
 				
 				var regDate =  td.eq(0).text();
-				var accountNo =  td.eq(1).text();
-				var accountName =  td.eq(2).text();
-				var amountFlag =  td.eq(3).text();
-				var amount =  uncomma(td.eq(4).text());
-				var customerNo =  td.eq(5).text();
-				var customerName =  td.eq(6).text();
+				var orderNo = td.eq(1).text();
+				var accountNo =  td.eq(2).text();
+				var accountName =  td.eq(3).text();
+				var amountFlag =  td.eq(4).text();
+				var amount =  uncomma(td.eq(5).text());
+				var customerNo =  td.eq(6).text();
+				var customerName =  td.eq(7).text();
 				var manageNo =  td.eq(8).text();
-				var bankCode =  td.eq(9).text();
-				var bankName =  td.eq(10).text();
-				if(td.eq(11).text() == '') {
-					var cardNo =  td.eq(11).text();
-					var depositNo =  td.eq(12).text();
-					var depositHost =  td.eq(13).text();
-				}
+				var bankCode =  td.eq(10).text();
+				var bankName =  td.eq(11).text();
 				if(td.eq(12).text() == '') {
-					var cardNo =  td.eq(11).text();
-					var depositNo =  td.eq(12).text();
-					var cardUser =  td.eq(13).text();
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var depositHost =  td.eq(14).text();
 				}
-				var voucherUse =  td.eq(14).text();
+				if(td.eq(13).text() == '') {
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var cardUser =  td.eq(14).text();
+				}
+				var voucherUse =  td.eq(15).text();
 				
-				var voucherVo = {regDate:regDate, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
+				var voucherVo = {regDate:regDate, orderNo:orderNo, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
 						manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
 						cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
 					};
@@ -595,6 +614,14 @@
 		}); // ajax
 	}
 	
+	// 행 삭제
+	function delete_row() {
+		var my_tbody = document.getElementById('voucher_save');
+	    if (my_tbody.rows.length < 1) return;
+	    // my_tbody.deleteRow(0); // 상단부터 삭제
+	    my_tbody.deleteRow( my_tbody.rows.length-1 ); // 하단부터 삭제
+	  }
+	
 </script>
 <script>
 $(function(){
@@ -604,7 +631,10 @@ $(function(){
 	});
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		// input창에 값 셋팅해주기
 		var tr = $(this);
+		console.log("$(this)" + $(this));
+		console.log($(this));
 		var td = tr.children();
 		
 		$("input[name=regDate]").val(td.eq(0).text());
@@ -640,6 +670,82 @@ $(function(){
 		$("input[name='bankLocation']").prop("readonly", true);
 		$("input[name='banker']").prop("readonly", true);
 		$("input[name='bankPhoneCall']").prop("readonly", true);
+		
+		
+		// 저장된 테이블에서 클릭시 가저장 테이블에 값 보여주기
+		var tr = $(this);
+		console.log("$(this)" + $(this));
+		console.log($(this));
+		var td = tr.children();
+		
+		var voucherNo = td.eq(1).text(); // 테이블 클릭 시 전표번호 가져오기
+		console.log("voucherNo : " + voucherNo);
+		console.log(voucherNo);
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/getVoucher?voucherNo=" + voucherNo,
+			type: "get",
+			dataType: "json",
+			data: "",
+			success: function(response) {
+				console.log("success");
+				console.log(response);
+				var voucherList = response.voucherList;
+				console.log(response.voucherList);
+	      	  	for(let a in voucherList) {
+	      	  		if(voucherList[a].cardNo != null) { // 카드번호값 셋팅
+	      	  			var cardNo = voucherList[a].cardNo;
+	      	  		} else {
+	      	  			cardNo = '';
+	      	  		}
+	      	  		
+		      	  	if(voucherList[a].depositNo != null) {
+		  	  			var depositNo = voucherList[a].depositNo;
+		  	  		} else {
+		  	  			depositNo = '';
+		  	  		}
+		      	  	
+	      	  		if(voucherList[a].customerName == '여비') {
+	      	  			var host = voucherList[a].cardUser;
+	      	  		} else {
+	      	  			host = voucherList[a].depositHost
+	      	  		}
+	      	  		
+		      	  	if(voucherList[a].manageNo != null) {
+	      	  			var manageName = '세금계산서';
+	      	  			var manageNo = voucherList[a].manageNo;
+	      	  		} else {
+	      	  			manageName = '';
+	      	  			manageNo = '';
+	      	  		}
+	      	  		
+	      	  		$("#voucher_save").append("<tr>" +
+	                        "<td class='center'>" + voucherList[a].regDate + "</td>" +
+	                        "<td class='center'>" + voucherList[a].orderNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].accountNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].accountName + "</td>" +
+	                        "<td class='center'>" + voucherList[a].amountFlag + "</td>" +
+	                        "<td class='center'>" + voucherList[a].amount + "</td>" +
+	                        "<td class='center'>" + voucherList[a].customerNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].customerName + "</td>" +
+	                        "<td class='center'>" + manageName + "</td>" +
+	                        "<td class='center'>" + manageNo + "</td>" +
+	                        "<td class='center'>" + voucherList[a].bankCode + "</td>" +
+	                        "<td class='center'>" + voucherList[a].bankName + "</td>" +
+	                        "<td class='center'>" + cardNo + "</td>" +
+	                        "<td class='center'>" + depositNo + "</td>" +
+	                        "<td class='center'>" + host + "</td>" +
+	                        "<td class='center'>" + voucherList[a].voucherUse + "</td>" +
+	                        "</tr>");
+	      	  	}
+	        },
+			error: function(response) {
+				console.log("error");
+				console.log(response);
+			}
+			
+		}); // ajax
+		
 	});
 	
 	//계정과목에 따른 계정명 불러오기
@@ -783,7 +889,7 @@ var accountNo = "${param.accountNo}";
 $("#accountNo").val(accountNo);
 </script>
 <script type="text/javascript">
-var accountNo = "${param.amount}";
+var amount = "${param.amount}";
 $("#amount").val(amount);
 </script>
 <script type="text/javascript">

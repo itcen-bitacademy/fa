@@ -53,7 +53,7 @@
         		and b.acq_price <= #{vo.acqPrice }
     		]]>
 		</if>
-		<if test='vo.payDate!=""'>
+		<if test='vo.payDate != ""'>
 			<![CDATA[
 	        	and b.pay_date >= '${startDate } 00:00:00' and b.pay_date <= '${endDate } 23:59:59'
 	    	]]>

@@ -173,7 +173,7 @@ public class Menu33Controller {
 	
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/update")
-	public List<PurchaseitemVo> update(@ModelAttribute PurchaseitemVo purchaseitemVo,
+	public Map<String, Object> update(@ModelAttribute PurchaseitemVo purchaseitemVo,
 						  			   @ModelAttribute FactoryVo factoryVo,
 						  			   @RequestParam(value="factoryname", required=false) String factory_name,
 						  			   @RequestParam(value="page", required=false, defaultValue="1") int page,
@@ -191,7 +191,6 @@ public class Menu33Controller {
 				factoryVo.setPurchaseitemcode(purchaseitemVo.getNo());
 				purchaseitemVo.setUpdateuserid(userVo.getId());
 				factoryVo.setUpdateuserid(userVo.getId());
-				
 				System.out.println(purchaseitemVo);
 				System.out.println(factoryVo);
 				
@@ -199,9 +198,12 @@ public class Menu33Controller {
 			}
 		}
 		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
 		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
-		
-		return pagepurchaseitemList;
+		map.put("purchaseitemListall", purchaseitemListall);
+		map.put("pagepurchaseitemList", pagepurchaseitemList);
+		return map;
 	}
 	
 	@ResponseBody

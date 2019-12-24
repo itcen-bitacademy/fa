@@ -119,6 +119,7 @@
 				   name as accountName
 				   from tb_account
 			 where no like '${_parameter }'
+			 and statement_yn = '1'
 		]]>
 	</select>
 	
@@ -128,6 +129,7 @@
 				   name as accountName
 				   from tb_account
 			 where name like '%${_parameter }%'
+			 and statement_yn = '1'
 		]]>
 	</select>
 	
@@ -201,13 +203,16 @@
 			</if>
 			<if test="vo.customerNo!=null and !vo.customerNo.equals('')">
 				<![CDATA[
-					and cu.no like '%${vo.customerNo }%'
+			           and (case char_length(cu.no)
+			           when "07" then (cu.no like ]]><![CDATA['${vo.customerNo }']]><![CDATA[)
+			           when "11" then (cu.no like ]]><![CDATA['%${vo.customerNo }%']]><![CDATA[)
+			           end)
 				]]>
 			</if>
 			
 			
 			<![CDATA[
-		      order by v.no asc, i.order_no
+		      order by v.no desc, i.order_no
 		      limit	#{pagination.pageIndex }, #{pagination.listSize };
 			]]>
 	</select>
@@ -255,7 +260,7 @@
 			</if>
 			<if test="accountNo!=null and !accountNo.equals('')">
 				<![CDATA[
-					and a.no = #{vaccountNo }
+					and a.no = #{accountNo }
 				]]>
 			</if>
 			<if test="customerNo!=null and !customerNo.equals('')">
@@ -266,7 +271,7 @@
 			
 			
 			<![CDATA[
-		      order by v.no asc, i.order_no;
+		      order by v.no desc, i.order_no;
 			]]>
 	</select>
 	
