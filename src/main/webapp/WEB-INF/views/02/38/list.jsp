@@ -87,19 +87,16 @@ input:focus {
 							page_group = page_group - 1;
 							page_num = (page_group * 5) + 5;
 
-							console.log("page_num : " + page_num);
-							console.log("page_group : " + page_group);
-
 							$
 									.ajax({
 										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 										type : "get",
 										dataType : "json",
-										data : {
-											"page" : page_num,
-											"page_group" : page_group
-										},
+										data : $("#search-form").serialize()
+												+ "&page_num=" + page_num
+												+ "&page_group=" + page_group,
 										success : function(data) {
+											console.log(data);
 											updateTable(
 													data.pagebuyTaxbillList,
 													data.customerList,
@@ -126,19 +123,16 @@ input:focus {
 							page_group = page_group + 1;
 							page_num = (page_group * 5) + 1;
 
-							console.log("page_num : " + page_num);
-							console.log("page_group : " + page_group);
-
 							$
 									.ajax({
 										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 										type : "get",
 										dataType : "json",
-										data : {
-											"page" : page_num,
-											"page_group" : page_group
-										},
+										data : $("#search-form").serialize()
+												+ "&page_num=" + page_num
+												+ "&page_group=" + page_group,
 										success : function(data) {
+
 											updateTable(
 													data.pagebuyTaxbillList,
 													data.customerList,

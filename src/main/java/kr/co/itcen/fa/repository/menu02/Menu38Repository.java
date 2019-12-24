@@ -38,8 +38,9 @@ public class Menu38Repository {
 	}
 
 	public List<BuyTaxbillVo> getSelectedBuyTaxbillListAll(BuyTaxbillListVo buyTaxbillListVo) {
-		List<BuyTaxbillVo> getSelectedBuyTaxbillList = sqlSession.selectList("menu38.getSelectedBuyTaxbillList",
+		List<BuyTaxbillVo> getSelectedBuyTaxbillList = sqlSession.selectList("menu38.getSelectedBuyTaxbillListAll",
 				buyTaxbillListVo);
+		System.out.println("조건조회 repository");
 		return getSelectedBuyTaxbillList;
 	}
 

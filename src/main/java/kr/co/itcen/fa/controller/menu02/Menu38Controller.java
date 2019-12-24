@@ -141,6 +141,7 @@ public class Menu38Controller {
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "page_group", required = false, defaultValue = "0") int pageGroup) {
 
+		System.out.println("조건조회");
 		buyTaxbillListVo.setPage(page);
 		buyTaxbillListVo.setPageGroup(pageGroup);
 		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillListAll(buyTaxbillListVo); // 전체리스트
@@ -156,7 +157,9 @@ public class Menu38Controller {
 		model.addAttribute("pagebuyTaxbillList", pagebuyTaxbillList);
 		model.addAttribute("customerList", getMatchTaxbillCustomerList);
 		model.addAttribute("itemsList", getMatchTaxbillItemsList);
-
+		model.addAttribute("cur_page", page);
+		model.addAttribute("page_group", pageGroup);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }
