@@ -26,7 +26,7 @@
 	<update id="updateOrder" parameterType="1itemvo">
 		<![CDATA[
 		update tb_voucher_item
-		   set order_no = order_no+1
+		   set order_no = order_no
 		 where group_no = #{groupNo }
 		   and order_no <= #{orderNo };
 		]]>

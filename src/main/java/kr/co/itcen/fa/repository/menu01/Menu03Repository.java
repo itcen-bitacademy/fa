@@ -218,13 +218,14 @@ public class Menu03Repository {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			itemVo.get(i).setGroupNo(voucherVo.getNo());
 			
-			
+			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+			itemVo.get(i).setOrderNo(order);
+			System.out.println("order : " + order);
+			System.out.println(order);
 			
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
 			
-			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
-			itemVo.get(i).setOrderNo(order);
-			sqlSession.update("menu03.updateOrder", itemVo.get(i));
+			
 		
 		
 			mappingVo.get(0).setInsertUserid(voucherVoTemp.getInsertUserid());
