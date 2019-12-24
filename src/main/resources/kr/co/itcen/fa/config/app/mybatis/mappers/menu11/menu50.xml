@@ -121,6 +121,7 @@
 					name = #{name}, 
 					major_code = #{majorCode}, 
 					debt_amount = #{debtAmount}, 
+					repay_bal = #{debtAmount}, 
 					repay_way=#{repayWay}, 
 					debt_date=#{debtDate}, 
 					exp_date=#{expDate}, 
@@ -133,7 +134,7 @@
 					bank_code=#{bankCode}, 
 					deposit_no=#{depositNo}, 
 					update_id=#{updateId}, 
-					update_date=now() , 
+					update_date=now(), 
 					voucher_no=#{voucherNo}
 						where no=#{no}
 		]]>
