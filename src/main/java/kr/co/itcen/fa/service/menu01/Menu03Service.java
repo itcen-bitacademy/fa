@@ -119,8 +119,12 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
+			System.out.println("voucherVo : " + voucherVo.getNo());
 			voucherVo.setRegDate2(menu03Repository.getRegDate(voucherVo.getNo()));
 			List<MappingVo> mappingList = new ArrayList<MappingVo>();
+			System.out.println("setRegDate : " + voucherVo.getRegDate());
+			System.out.println("setRegDate2 : " + voucherVo.getRegDate2());
+			
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate2())) {
 				voucherVo.setUpdateUserid(userVo.getId());
 				System.out.println("###########" + voucherVo.getNo());

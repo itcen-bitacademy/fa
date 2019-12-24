@@ -125,7 +125,9 @@ public class Menu53Controller {
 			
 			if(flag) {
 				voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+				System.out.println("53Controller/voucherNo : " + voucherNo);
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+				System.out.println("53Controller/voucherNo2 : " + selltaxbillvo.getVoucherNo());
 				
 			} else {
 				voucherVo.setNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
@@ -203,7 +205,10 @@ public class Menu53Controller {
 //		selltaxbillvo.setVoucherNo(String.valueOf(voucherNo)); 
 /////////////////////////////////////////////
 		
+		System.out.println("inserVoucherNo1 : " + selltaxbillvo.getVoucherNo());
 		menu53Service.insert(voucher(selltaxbillvo, authUser, true));
+		
+		System.out.println("inserVoucherNo2 : " + selltaxbillvo.getVoucherNo());
 		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, false));
 		
 		System.out.println("추가 이벤트 발생");
