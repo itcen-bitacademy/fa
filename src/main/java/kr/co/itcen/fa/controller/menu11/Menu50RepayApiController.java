@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.controller.menu11;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
-import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.ItemVo;
-import kr.co.itcen.fa.vo.menu01.MappingVo;
-import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 
@@ -31,14 +26,11 @@ import kr.co.itcen.fa.vo.menu11.RepayVo;
 public class Menu50RepayApiController {
 	public static final String MAINMENU = "11";
 	public static final String SUBMENU = "50";
-	
+
 	@Autowired
 	private Menu50Service menu50Service;
 
 	@Autowired
-	private Menu03Service menu03Service;
-	
-	@Autowired 
 	private Menu19Service menu19Service;
 
 	// 사채코드 중복값 확인
@@ -47,65 +39,18 @@ public class Menu50RepayApiController {
 	public JSONResult checkCode(
 			@RequestParam(value = "code", required = true, defaultValue = "") String code) {
 		PdebtVo pdebtVo = menu50Service.existCode(code);
-		System.out.println(pdebtVo);
-        return JSONResult.success(pdebtVo);
+		return JSONResult.success(pdebtVo);
 	}
 
 	// 상환테이블 데이터 추가
 	@ResponseBody
 	@RequestMapping(value = "/" + SUBMENU + "/repay", method = RequestMethod.POST)
 	public JSONResult repay(
-			@RequestBody RepayVo vo, 
-			 @AuthUser UserVo uservo) {
+			@RequestBody RepayVo repayVo, 
+			@AuthUser UserVo userVo) {
 		try {
-			if (menu19Service.checkClosingDate(uservo, vo.getPayDate())) {
-				vo.setInsertId(uservo.getId()); // 유저 아이디 셋팅
-
-				// 상환금액 - 상환납입원금
-				menu50Service.updateRepayVo(vo); // 기존 사채 차입금액 수정
-				PdebtVo pdebtVo = menu50Service.getOne(vo.getDebtNo()); // 기존 사채 컬럼 값 읽기
-
-				VoucherVo voucherVo = new VoucherVo();
-				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-				ItemVo itemVo = new ItemVo();
-				ItemVo itemVo2 = new ItemVo();
-				ItemVo itemVo3 = new ItemVo();
-
-				MappingVo mappingVo = new MappingVo();
-				voucherVo.setRegDate(vo.getPayDate());
-
-				itemVo.setAmount(vo.getIntAmount());// 이자납입금
-				itemVo.setAmountFlag("d");// 차변
-				itemVo.setAccountNo(9201101L);// 계정과목코드
-				itemVoList.add(itemVo);
-
-				itemVo2.setAmount(vo.getPayPrinc());// 사채에서 빠진 금액
-				itemVo2.setAmountFlag("d");// 차변
-				itemVo2.setAccountNo(2402101L);
-				itemVoList.add(itemVo2);
-
-				itemVo3.setAmount(vo.getPayPrinc() + vo.getIntAmount());// 보통예금 : 예금액= 상환액으로 입력한 값
-				itemVo3.setAmountFlag("c");// 대변
-				itemVo3.setAccountNo(1110103L);// tb_account 보통예금 - no:1110103
-				itemVoList.add(itemVo3);
-
-				mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
-				mappingVo.setSystemCode(pdebtVo.getCode());// 사채코드 삽입 ex) I191212001
-				mappingVo.setCustomerNo(pdebtVo.getBankCode());
-				mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
-
-				Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
-
-				vo.setVoucherNo(no);
-				System.out.println("납입금 : " + vo.getPayPrinc());
-				menu50Service.insertRepayVo(vo); // 상환 테이블에 insert
-
-				System.out.println("차입금액 : " + pdebtVo.getDebtAmount());
-				System.out.println("상환잔액 : " + pdebtVo.getRepayBal());
-
-				if (pdebtVo.getRepayBal() <= 0)
-					menu50Service.updateRepayFlag(pdebtVo.getNo());
-
+			if (menu19Service.checkClosingDate(userVo, repayVo.getPayDate())) {
+				PdebtVo pdebtVo = menu50Service.insertRepayVo(repayVo, userVo);
 				return JSONResult.success(pdebtVo);
 			}
 		} catch (ParseException e) {
@@ -113,8 +58,8 @@ public class Menu50RepayApiController {
 		}
 		return JSONResult.success(null);
 	}
-	
-	//상환내역이 있을경우 수정불가
+
+	// 상환내역이 있을경우 수정불가
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/checkrepay")
 	public JSONResult checkrepay(
@@ -122,13 +67,13 @@ public class Menu50RepayApiController {
 		List<RepayVo> list = menu50Service.getRepay(no);
 		return JSONResult.success(list);
 	}
-	
+
+	// 상환내역이 있을 경우 현재 선택된 사채정보에 담겨있는 상환내역 리스트로 출력
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/checkrepaylist")
-	public JSONResult checkrepay(
+	public JSONResult checkrepaylist(
 			@RequestParam(value = "no", required = true) Long[] no) {
 		List<RepayVo> list = menu50Service.getRepay(no);
-		System.out.println(list);
 		return JSONResult.success(list);
 	}
 }
