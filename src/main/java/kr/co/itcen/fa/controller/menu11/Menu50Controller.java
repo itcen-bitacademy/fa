@@ -64,7 +64,6 @@ public class Menu50Controller {
 		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code+"&page"+page;
 	}
 	
-	// 11/50/add.jsp
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String insert(
 			@ModelAttribute PdebtVo pdebtVo, 
