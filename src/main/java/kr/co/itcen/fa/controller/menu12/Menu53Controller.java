@@ -73,7 +73,7 @@ public class Menu53Controller {
 	
 	// 전표등록 메소드
 	public SellTaxbillVo voucher(SellTaxbillVo selltaxbillvo, UserVo authUser, boolean flag){
-		
+		System.out.println("Test");
 			// true / false
 			// 1 - 입력 / 2 - update / 3 - delete
 	
@@ -206,10 +206,9 @@ public class Menu53Controller {
 /////////////////////////////////////////////
 		
 		System.out.println("inserVoucherNo1 : " + selltaxbillvo.getVoucherNo());
-		menu53Service.insert(voucher(selltaxbillvo, authUser, true));
-		
-		System.out.println("inserVoucherNo2 : " + selltaxbillvo.getVoucherNo());
-		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, false));
+		SellTaxbillVo resultSelltaxbillvo = voucher(selltaxbillvo, authUser, true);
+		menu53Service.insert(resultSelltaxbillvo); // 세금계산서 테이블
+		menu53Service.salesUpdate(resultSelltaxbillvo); // 매출테이블
 		
 		System.out.println("추가 이벤트 발생");
 		
