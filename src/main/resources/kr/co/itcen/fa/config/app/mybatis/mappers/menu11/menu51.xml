@@ -6,13 +6,13 @@
 		<![CDATA[
 			select count(*)
 			    from tb_p_debt as a,tb_bank as b
-			    where a.bank_code=b.code
-			   	and 	a.delete_flag like concat('%',#{deleteFlag},'%')
-				and 	a.repay_comple_flag like concat('%',#{repayCompleFlag},'%')
-			    and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
-				and 	a.int_pay_way like concat('%',#{intPayWay},'%') 
-				and 	b.name like concat('%',#{bankName},'%') 
-				and 	date_format(a.exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
+				    where a.bank_code=b.code
+					   	and 	a.delete_flag like concat('%',#{deleteFlag},'%')
+						and 	a.repay_comple_flag like concat('%',#{repayCompleFlag},'%')
+					    and 	date_format(a.debt_date,'%Y-%m-%d') like concat('%',#{debtDate},'%') 
+						and 	a.int_pay_way like concat('%',#{intPayWay},'%') 
+						and 	b.name like concat('%',#{bankName},'%') 
+						and 	date_format(a.exp_date,'%Y-%m-%d') like concat('%',#{expDate},'%') 
 		]]>
 	</select>
 	
@@ -44,31 +44,31 @@
 						and 	b.name like concat('%',#{vo.bankName},'%')
 						and 	date_format(a.exp_date,'%Y-%m-%d') like concat('%',#{vo.expDate},'%') 
 		]]>
-				<if test='sort != null and "d".equals(sort)'>	
-					<![CDATA[
-						order by a.debt_date desc
-					]]>
-				</if>
-				<if test='sort != null and "e".equals(sort)'>	
-					<![CDATA[
-						order by a.exp_date desc
-					]]>
-				</if>
-				<if test='sort != null and "i".equals(sort)'>
-					<![CDATA[
-						order by a.insert_date desc
-					]]>
-				</if>
-				<if test='sort != null and "m".equals(sort)'>	
-					<![CDATA[
-						order by a.debt_amount
-					]]>
-				</if>
-				<if test="pagination.pageIndex >= 0">
-					<![CDATA[
-					     limit    #{pagination.pageIndex }, #{pagination.listSize }
-					]]>
-				</if>
+		<if test='sort != null and "d".equals(sort)'>	
+			<![CDATA[
+				order by a.debt_date desc
+			]]>
+		</if>
+		<if test='sort != null and "e".equals(sort)'>	
+			<![CDATA[
+				order by a.exp_date desc
+			]]>
+		</if>
+		<if test='sort != null and "i".equals(sort)'>
+			<![CDATA[
+				order by a.insert_date desc
+			]]>
+		</if>
+		<if test='sort != null and "m".equals(sort)'>	
+			<![CDATA[
+				order by a.debt_amount
+			]]>
+		</if>
+		<if test="pagination.pageIndex >= 0">
+			<![CDATA[
+			     limit #{pagination.pageIndex }, #{pagination.listSize }
+			]]>
+		</if>
 	</select>
 	
 	<select id="selectsection" resultType="sectionvo">
@@ -78,8 +78,8 @@
 				code,
 				last_update as lastUpdate,
 				parent_no as parentNo
-			    from tb_section
-			    where parent_no= 6
+			    	from tb_section
+			    		where parent_no= 6
 		]]>
 	</select>
 

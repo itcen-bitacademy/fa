@@ -170,8 +170,7 @@
 																	<td>
 																	<label>은행코드</label>
 																	<div class="input-append">
-
-																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
+																		<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
 																		<span class="add-on">
 										                                    <a href="#" id="a-dialog-bankcode" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 										                                    </a>
@@ -703,11 +702,8 @@
 				$(td.eq(0).children().children()).prop('checked', true);
 				$("#tbody-list").find("tr").css("background-color", "inherit");
 				$(this).css("background-color", "#ddd");
-				alert($('input:radio[name="repayWay"]').val());
-				
 			} else {
 				$('input').not('input:radio[name="repayWay"]').not('input:radio[name="intPayWay"]').val('');
-				alert($('input:radio[name="repayWay"]').val());
 				$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', false);
 				$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', false);
 				
@@ -719,25 +715,38 @@
 				$("#tbody-list").find("tr").css("background-color", "inherit");
 				$(this).css("background-color", "#ddd");
 				$(td.eq(0).children().children()).prop('checked',false);
+				
 			}
 		});
 		
 		// form에 입력한 모든 데이터 초기화
 		$("#clear").click(function(){ 
-			$('input').val('');
-			$('#majorcode-field-select').val('초기값').trigger('chosen:updated');
-			$('#dangercode-field-select').val('초기값').trigger('chosen:updated');
-			$('#code').attr('readonly',false);
-			$('#financialyearId').val(2019);
-			 
-			$('#btn-check-code').val('중복확인');
-			 
-			$("#tbody-list tr").each(function(i){
-				var td = $(this).children();
-				if($(td.eq(0).children().children()).prop('checked') == true){
-					$(td.eq(0).children().children()).prop('checked',false);
-				}
-			});
+			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
+			$('#majorcode-field-select').val('').trigger('chosen:updated');
+			$('#dangercode-field-select').val('').trigger('chosen:updated');
+		    $('#code').attr('readonly',false);
+		    $('#financialyearId').val(2019);
+		    
+		    $('input[name=intPayWay]').each(function(index, item){
+		    	if($(item).prop('checked') == true){
+		    		$(item).prop('checked', false);
+		    	}
+		    });
+		    
+		    $('input[name=repayWay]').each(function(index, item){
+		    	if($(item).prop('checked') == true){
+		    		$(item).prop('checked',false);
+		    	}
+		    });
+		    
+		    $('#btn-check-code').val('중복확인');
+		       
+		    $("#tbody-list tr").each(function(i){
+		    	var td = $(this).children();
+		    	if($(td.eq(0).children().children()).prop('checked') == true){
+		    		$(td.eq(0).children().children()).prop('checked', false);
+		    	}
+		    });
 		});
 		//--------------------------------------------------------------------------------------------------------------------------//
 		
@@ -1301,13 +1310,12 @@
 			var count = $("input:checkbox[name=checkBox]:checked").length;
 			
 			if(0 >= count){
-				openModal('Error','checkBox를 클릭해 주세요','');
+				openModal('Error','삭제할 데이터를 선택해 주세요','');
 				return;
 			}
 			 
 			 var no = $('#no').val();
 			 
-			 alert("no : " + no);
 			 $.ajax({
 					url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkrepaylist?no=" + no,
 					contentType : "application/json; charset=utf-8",
@@ -1487,12 +1495,12 @@ var validationMessage = ''
 
 // 입력하기 전 중복데이터 확인
 function insertDebtData(event) {
-	if(ischecked == false){
-		openModal('Error', '중복체크 하고 오세요');
-		return;
-	}
 	if (!MyValidation()) {
 		openModal('Error', validationMessage);
+		return;
+	}
+	if(ischecked == false){
+		openModal('Error', '중복체크 하고 오세요');
 		return;
 	}
 	$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add');
@@ -1503,6 +1511,7 @@ function insertDebtData(event) {
 //insert Validation
 function MyValidation(){
 	//코드는  중복체크에서 확인해준다
+	let code = $('input[name=code]').val();//차입코드
 	let name = $('input[name=name]').val();//차입명
 	let majorCode = $('#majorcode-field-select').val();//차입금대분류
 	let debtAmount = $('input[name=textDebtAmount]').val();//차입금
@@ -1522,7 +1531,10 @@ function MyValidation(){
 	var isIntPayWayCheck = false;
 	
 	//차입금명 valid
-	if('' === name) {
+	if ('' === code) {
+		validationMessage = '사채 코드는 반드시 입력하셔야 합니다(10자)';
+		return false;
+	} else if('' === name) {
 		validationMessage = '사채명은 반드시 입력하셔야 합니다(최대50자)';
 		return false;
 	} else if (name.length > 50) {

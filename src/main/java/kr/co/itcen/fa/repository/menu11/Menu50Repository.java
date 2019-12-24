@@ -29,8 +29,9 @@ public class Menu50Repository {
 	private SqlSession sqlSession;
 	
 	// 사채정보입력
-	public void insert(PdebtVo pdebtVo) {
-		sqlSession.insert("menu50.insert", pdebtVo);
+	public Boolean insert(PdebtVo pdebtVo) {
+		int count = sqlSession.insert("menu50.insert", pdebtVo);
+		return count == 1;
 	}
 	
 	// 사채테이블의 데이터 카운트

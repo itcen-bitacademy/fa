@@ -20,19 +20,19 @@ public class Menu51Service {
 	@Autowired
 	private Menu51Repository menu51Repository;
 
-	public DataResult<PdebtVo> list(int page,PdebtVo vo,String sort) {
+	public DataResult<PdebtVo> list(int page, PdebtVo vo, String sort) {
 		DataResult<PdebtVo> dataResult = new DataResult<PdebtVo>();
-		
+
 		int totalCnt = menu51Repository.listCount(vo);
-		
+
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		dataResult.setPagination(pagination);
-		List<PdebtVo> list = menu51Repository.list(pagination,vo,sort);
+		List<PdebtVo> list = menu51Repository.list(pagination, vo, sort);
 		dataResult.setDatas(list);
-		
+
 		return dataResult;
 	}
-	
+
 	public List<SectionVo> selectSection() {
 		return menu51Repository.selectSection();
 	}
