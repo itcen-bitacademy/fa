@@ -433,7 +433,7 @@
 
 <script>
 $(function() {
-	var a;
+	var a;//이게뭐 지 ~~~~~~~~~~~~~~~~~~~~~
 	$("#btn-create").click(function(){
 		a = "create";
 	});

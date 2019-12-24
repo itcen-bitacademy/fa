@@ -10,10 +10,9 @@ import org.springframework.stereotype.Service;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu30Repository;
+import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.UserVo;
-import kr.co.itcen.fa.vo.menu01.ItemVo;
-import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
@@ -36,7 +35,7 @@ public class Menu30Service {
 	@Autowired
 	private Menu03Service menu03Service;
 	
-	public DataResult<ReceiptVo> search(int page, ReceiptVo revo) {
+	public DataResult<ReceiptVo> search(int page, ReceiptVo revo, @AuthUser UserVo authUser) {
 		DataResult<ReceiptVo> dataResult = new DataResult<ReceiptVo>();
 	
 		System.out.println(revo);
@@ -48,16 +47,18 @@ public class Menu30Service {
 		dataResult.setDatas(list);
 		
 		List<StatementDataVo> statementDataList = menu30Repository.statementData();
-		UserVo authUser = new UserVo();
+		
 		ClosingDateVo cVo =new ClosingDateVo();
-		cVo.setClosingYearMonth("2019-11");
+		cVo.setClosingYearMonth("2019-12");
 		
-		closingEntries(statementDataList, authUser, cVo );
-		
+//		closingEntries(statementDataList, cVo, authUser );
+//		closingEntriesDelete(cVo, authUser);
 		return dataResult;
 	}
 	
-	public void closingEntries(List<StatementDataVo> sVo, UserVo authUser, ClosingDateVo cVo) {	//월별마감일때 해당
+	
+	//전월이월 입력
+	public void closingEntries(List<StatementDataVo> sVo, ClosingDateVo cVo, UserVo authUser) {	//월별마감일때 해당
 		
 		if(sVo==null) {								//전달값이 없을경우 그냥 반환
 			return;
@@ -131,10 +132,6 @@ public class Menu30Service {
 		for(int i=0; i<pVo.size(); i++) {						//전표 입력
 			VoucherVo voucherVo = new VoucherVo();
 			VoucherVo voucherVo2 = new VoucherVo();
-			ItemVo itemVo = new ItemVo();
-			ItemVo itemVo2 = new ItemVo();
-			MappingVo mappingVo = new MappingVo();
-			MappingVo mappingVo2 = new MappingVo();
 			
 			
 			
@@ -142,55 +139,49 @@ public class Menu30Service {
 				
 				voucherVo.setRegDate(End);				// 차월이월
 				
-				itemVo.setAmount(pVo.get(i).getAmount());
-				itemVo.setAmountFlag("d");
-				itemVo.setAccountNo(pVo.get(i).getAccountNo());
+				voucherVo.setAmount(pVo.get(i).getAmount());
+				voucherVo.setAmountFlag("d");
+				voucherVo.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo.setVoucherUse(carry1);						//적요		
-				mappingVo.setCustomerNo(pVo.get(i).getCustomerNo());		
+				voucherVo.setVoucherUse(carry1);						//적요		
+				voucherVo.setCustomerNo(pVo.get(i).getCustomerNo());		
 			
-//				Long no=menu03Service.createVoucher(voucherVo, itemVo, mappingVo, authUser);
+				menu03Service.createVoucher(voucherVo, authUser);
 				
 				voucherVo2.setRegDate(Start);
-				itemVo2.setAmount(pVo.get(i).getAmount());
-				itemVo2.setAmountFlag("c");
-				itemVo2.setAccountNo(pVo.get(i).getAccountNo());
+				voucherVo2.setAmount(pVo.get(i).getAmount());
+				voucherVo2.setAmountFlag("c");
+				voucherVo2.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo2.setVoucherUse(carry2);						//적요
-				mappingVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
+				voucherVo2.setVoucherUse(carry2);						//적요
+				voucherVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
 				
-				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	
-				+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate()+ mappingVo.getVoucherUse());
-				System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"
-				+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate()+ mappingVo2.getVoucherUse());
-//				Long no=menu03Service.createVoucher(voucherVo2, itemVo2, mappingVo2, user);
+				
+				menu03Service.createVoucher(voucherVo2, authUser);
 				
 			}else {
 				voucherVo.setRegDate(End);
 				
-				itemVo.setAmount(pVo.get(i).getAmount());
-				itemVo.setAmountFlag("c");
-				itemVo.setAccountNo(pVo.get(i).getAccountNo());
+				voucherVo.setAmount(pVo.get(i).getAmount());
+				voucherVo.setAmountFlag("c");
+				voucherVo.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo.setVoucherUse(carry1);						//적요		
-				mappingVo.setCustomerNo(pVo.get(i).getCustomerNo());		
+				voucherVo.setVoucherUse(carry1);						//적요		
+				voucherVo.setCustomerNo(pVo.get(i).getCustomerNo());		
 			
-//				Long no=menu03Service.createVoucher(voucherVo, itemVo, mappingVo, user);
+				menu03Service.createVoucher(voucherVo, authUser);
 				
 				voucherVo2.setRegDate(Start);
-				itemVo2.setAmount(pVo.get(i).getAmount());
-				itemVo2.setAmountFlag("d");
-				itemVo2.setAccountNo(pVo.get(i).getAccountNo());
+				voucherVo2.setAmount(pVo.get(i).getAmount());
+				voucherVo2.setAmountFlag("d");
+				voucherVo2.setAccountNo(pVo.get(i).getAccountNo());
 				
-				mappingVo2.setVoucherUse(carry2);						//적요
-				mappingVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
+				voucherVo2.setVoucherUse(carry2);						//적요
+				voucherVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
 				
-//				Long no=menu03Service.createVoucher(voucherVo2, itemVo2, mappingVo2, user);
+				menu03Service.createVoucher(voucherVo2, authUser);
 			
-				System.out.println( mappingVo.getCustomerNo()+":"+itemVo.getAccountNo() + ":"+itemVo.getAmount() +":"	
-						+ itemVo.getAmountFlag()+":"+voucherVo.getRegDate()+ mappingVo.getVoucherUse());
-						System.out.println( mappingVo2.getCustomerNo()+":"+itemVo2.getAccountNo() + ":"
-						+itemVo2.getAmount() +":"	+ itemVo2.getAmountFlag()+":"+voucherVo2.getRegDate()+ mappingVo2.getVoucherUse());
+				
 			}
 			
 			
@@ -199,25 +190,18 @@ public class Menu30Service {
 		
 	}	
 	
+	//전월이월 삭제
 	public void closingEntriesDelete(ClosingDateVo cVo, UserVo authUser ) {
-		previousDelete(cVo, authUser);
+		List<Long> list = menu30Repository.selectVoucherNo(cVo);
 		
-	}
-	
-	public void previousDelete(ClosingDateVo cVo, UserVo authUser){
-		Calendar cal = Calendar.getInstance();				//전월이월
-        cal.setTime(cVo.getStartDate());
-        cal.add(Calendar.MONTH, 1);
-
-		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String End = transFormat.format(cVo.getEndDate());								//차월이월 date
-		String Start = transFormat.format(cal.getTime());								//전월이월 date
-		
-		
-	}
-	
-	public void Repository() {
-		
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+		for(Long no1: list) {
+			VoucherVo v = new VoucherVo();
+			v.setNo(no1);
+			
+			voucherVolist.add(v);
+		}
+		menu03Service.deleteVoucher(voucherVolist, authUser);
 	}
 	
 	

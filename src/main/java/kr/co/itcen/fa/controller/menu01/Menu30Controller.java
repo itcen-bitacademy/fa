@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
+import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu30Service;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 
 
@@ -36,7 +38,7 @@ public class Menu30Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/search"})
 	public String search(Model model,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
-			@ModelAttribute ReceiptVo revo
+			@ModelAttribute ReceiptVo revo, @AuthUser UserVo authUser
 			) {
 		// 초기 페이지 이동
 		if(revo.getRegDate() == null && revo.getCustomerNo() == null) {
@@ -45,7 +47,7 @@ public class Menu30Controller {
 		
 		System.out.println(revo.toString());
 		
-		DataResult<ReceiptVo> dataResult = menu30Service.search(page,revo);
+		DataResult<ReceiptVo> dataResult = menu30Service.search(page,revo, authUser);
 		model.addAttribute("dataResult", dataResult);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
