@@ -623,6 +623,24 @@
 	]]>
 	</update>
 	
+	<!-- delete 1팀 최종 -->
+	<delete id="deleteItemFinal" parameterType="1vouchervo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_item
+		 where voucher_no = #{no };
+	]]>
+	</delete>
+	
+	<!-- delete 1팀 최종 -->
+	<delete id="deleteMappingFinal" parameterType="1vouchervo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_system_mapping
+		 where voucher_no = #{no };
+	]]>
+	</delete>
+	
 	<!-- update 1팀 -->
 	<update id="updateVoucher2" parameterType="1vouchervo">
 	<![CDATA[
@@ -710,6 +728,16 @@
 		]]>
 	</select>
 	
+	<!-- 전표 삭제 시 전표번호로 팀정보 받아오기 -->
+	<select id="getSelectTeam" parameterType="Long" resultType="String">
+		<![CDATA[
+			select insert_team
+			  from tb_voucher_system_mapping
+			 where voucher_no = #{_param }
+			  limit 1
+		]]>
+	</select>
+	
 	<!-- 5팀 전표 삭제 시 팀정보 받아오기 -->
 	<select id="selectTeam2" parameterType="Long" resultType="1vouchervo">
 		<![CDATA[
@@ -761,7 +789,8 @@
 		  			use_yn,
 		  			voucher_no,
 		  			account_no,
-		  			group_no
+		  			group_no,
+		  			order_no
 		)
 		values (null,
 				#{amount },
@@ -773,7 +802,8 @@
 				true,
 				#{voucherNo },
 				#{accountNo },
-				#{groupNo}
+				#{groupNo },
+				#{orderNo }
 		)
 		]]>
 	</insert>
@@ -795,7 +825,8 @@
 		  			   manage_no,
 		  			   card_no,
 		  			   deposit_no,
-		  			   customer_no
+		  			   customer_no,
+		  			   order_no
 		)
 		values (null,
 				#{voucherUse },
@@ -810,7 +841,8 @@
 		  		#{manageNo },
 		  		#{cardNo },
 		  		#{depositNo },
-		  		#{customerNo }
+		  		#{customerNo },
+		  		#{orderNo }
 		)
 		]]>
 	</insert>
