@@ -84,7 +84,6 @@ public class Menu50Repository {
 		for (int index = 0; index < totalElements; index++) {
 			System.out.println(list.get(index));
 		}
-		
 		int count = sqlSession.update("menu50.delete", list);
 		return count >= 1;
 	}
