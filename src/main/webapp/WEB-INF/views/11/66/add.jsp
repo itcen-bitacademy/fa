@@ -127,7 +127,7 @@ input[type="text"], input[type="date"], select {
 				<section class="above-table">
 					<section class="above-table-left">
 						<div class="btn-list">
-							<button type="button" class="btn btn-warning btn-small mybtn"  onclick="update()">수정</button>
+							<button type="button" id="updatebtn" class="btn btn-warning btn-small mybtn"  onclick="update()">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
 							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
@@ -238,7 +238,8 @@ input[type="text"], input[type="date"], select {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
+<script src="${pageContext.request.contextPath }/assets/ace/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/ace-elements.min.js"></script>
 <script>
 $(function() {
 	$(".chosen-select").chosen();
@@ -453,6 +454,8 @@ function removeCommaReturn(val){
 // 상환내역 금액 수정 확인
 function update(){
 	var sendData = $("#input-form").serialize();
+	console.log("sendData : " + sendData);
+	
 	$.ajax({
 		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
 		type: "POST",
