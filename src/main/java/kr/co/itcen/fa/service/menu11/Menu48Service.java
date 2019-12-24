@@ -81,6 +81,7 @@ public class Menu48Service {
 		
 	}
 	//상환 insert
+	
 	@Transactional
 	public LTermdebtVo insert(RepayVo vo,UserVo uservo) {
 		
