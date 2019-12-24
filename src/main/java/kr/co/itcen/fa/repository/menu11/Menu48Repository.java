@@ -139,4 +139,10 @@ public class Menu48Repository {
 		int count = sqlSession.update("menu48.updateBankAccount",bankAccount);
 		return count ==1;
 	}
+
+	public void error() {
+		int count = sqlSession.update("menu48.error");
+		
+		
+	}
 }
