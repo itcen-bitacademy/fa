@@ -82,11 +82,27 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
-			System.out.println("왜 안되냐2");
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-				System.out.println("Service");
-				System.out.println("@@@" + itemVo.get(0).getOrderNo());
 				menu03Repository.createVoucher(voucherVo, itemVo, mappingList, userVo);
+				
+				return voucherVo.getNo(); // 전표번호
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	// 전표수정 1팀(최종)
+	public Long updateVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingList, UserVo userVo) {
+		//마감 여부 체크
+		try {
+			//String businessDateStr = menu03Repository.businessDateStr();
+			System.out.println("Service");
+			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
+				System.out.println("Service2");
+				menu03Repository.updateVoucher2(voucherVo, itemVo, mappingList, userVo);
 				
 				return voucherVo.getNo(); // 전표번호
 			}
@@ -245,6 +261,11 @@ public class Menu03Service {
 	// 전표번호로 전표정보 조회하기
 	public Map<String, Object> getVoucher(Long voucherNo) {
 		return menu03Repository.getVoucher(voucherNo);
+	}
+	
+	// 전표번호로 팀정보 구하기
+	public String selectTeam(Long no) {
+		return menu03Repository.getSelectTeam(no);
 	}
 
 }
