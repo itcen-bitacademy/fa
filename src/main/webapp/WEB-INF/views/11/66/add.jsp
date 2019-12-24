@@ -110,7 +110,7 @@ input[type="text"], input[type="date"], select {
 						<div class="ia-left"><h4>부채유형</h4></div>
 						<div class="ia-right">
 							<select name="debtType"  id="debtType" >
-								<option >부채유형을 선택해주세요.</option>
+								<option value="">부채유형을 선택해주세요.</option>
 								<option value="S">단기차입금</option>
 								<option value="L">장기차입금</option>
 								<option value="P">사채</option>
