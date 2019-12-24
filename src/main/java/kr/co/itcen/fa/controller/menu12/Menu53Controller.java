@@ -135,6 +135,11 @@ public class Menu53Controller {
 				}
 				
 				mappingVo.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
+				
+				System.out.println("매출일자  :" + selltaxbillvo.getSalesDate());
+				System.out.println("매출일자2  :" + voucherVo.getRegDate());
+				System.out.println("전표번호 :" + voucherVo.getNo());
+				
 				voucherNo = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
 				
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
