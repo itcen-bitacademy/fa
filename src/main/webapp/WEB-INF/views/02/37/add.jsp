@@ -27,7 +27,8 @@
 }
 </style>
 </head>
-<body class="skin-3" style="min-width: 1920px" onload="startFunctions();">
+<body class="skin-3" style="min-width: 1920px"
+	onload="startFunctions();">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -266,25 +267,26 @@
 												varStatus="status">
 												<tr>
 													<td><p>${status.count }</p></td>
-													<td><input type="text" id="date1" class="calender"
-														name="purchaseDate" value="${items.purchaseDate }"
+													<td><input type="text" id="date${status.count }"
+														class="calender" name="purchaseDate"
+														value="${items.purchaseDate }" autocomplete="off"></td>
+													<td><input type="text" id="item${status.count }"
+														name="itemName" value="${items.itemName }"
 														autocomplete="off"></td>
-													<td><input type="text" id="item1" name="itemName"
-														value="${items.itemName }" autocomplete="off"></td>
 													<td><input style="text-align: right;" type="text"
-														id="amount1" name="amount" value="${items.amount }"
-														onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+														id="amount${status.count }" name="amount"
+														value="${items.amount }" onkeyup="sumAllSupplyAllTax();"
+														autocomplete="off"></td>
 													<td><input style="text-align: right;" type="text"
-														id="supply-value1" onkeyup="sumAllSupplyAllTax();"
-														name="supplyValue"
+														id="supply-value${status.count }"
+														onkeyup="sumAllSupplyAllTax();" name="supplyValue"
 														value="<fmt:formatNumber value="${items.supplyValue }" pattern="#,###"/>"
 														autocomplete="off"></td>
 													<td><input style="text-align: right;" type="text"
-														id="tax-value1" name="taxValue"
+														id="tax-value${status.count }" name="taxValue"
 														value="<fmt:formatNumber value="${items.taxValue }" pattern="#,###"/>"
 														onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 												</tr>
-
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
@@ -347,37 +349,28 @@
 		
 	</script>
 	<script>
-	function startFunctions(){
-		addElementCommas();
-		addElementCalender();
-	}
-	// 달력 한글버젼 패치 
-	function addElementCalender(){
-		
-		for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
-			$("#")
-			$("#supply-value" + i).on(
-					'keyup',
-					function(event) {
-						$(this).val(
-								addCommas($(this).val().replace(/[^0-9]/g,
-										"")));
-					});
-		
+		function startFunctions() {
+			addElementCommas();
+			addElementCalender();
 		}
-		
-		$('.calender').datepicker({
-			language : 'ko'
-		}).next().on(ace.click_event, function() {
-			$(this).prev().focus();
-		});
-	}
-	$.fn.datepicker.dates['ko'] = {
+		// 달력 한글버젼 패치 
+		function addElementCalender() {
+
+			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
+				$("#date" + i).datepicker({
+					language : 'ko'
+				}).next().on(ace.click_event, function() {
+					$(this).prev().focus();
+				});
+			}
+		}
+
+		$.fn.datepicker.dates['ko'] = {
 			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
 			daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
 			daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
-			months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-					"9월", "10월", "11월", "12월" ],
+			months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월",
+					"10월", "11월", "12월" ],
 			monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
 					"9월", "10월", "11월", "12월" ],
 			today : "Today",
@@ -388,10 +381,12 @@
 		};
 
 		// 품목 행 추가할 때
-		var cnt = 2;
+
 		function add_row() {
+
 			var table = document.getElementById("sample-table-1");
-			var row = table.insertRow(table.rows.length); // 하단에 추가
+			var cnt = table.rows.length;
+			var row = table.insertRow(cnt); // 하단에 추가
 
 			var cell1 = row.insertCell(0);
 			var cell2 = row.insertCell(1);
@@ -414,12 +409,14 @@
 					+ '"name="taxValue" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>';
 			cnt++;
 			addElementCommas();
+			addElementCalender();
 		}
 
 		// 품목 행 삭제할 때 
 		function delete_row() {
 
 			var table = document.getElementById('sample-table-1');
+			var cnt = table.rows.length;
 			if (table.rows.length < 3) {
 				return;
 			} else {
@@ -433,7 +430,7 @@
 		// 금액이 콤마 생기고, focus없어지면 콤마 사라지게 하는 부분
 		function addElementCommas() {
 			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
-				
+
 				$("#supply-value" + i).on(
 						'keyup',
 						function(event) {
@@ -463,16 +460,15 @@
 		function sumAllSupplyAllTax() {
 			var supplySum = 0;
 			var taxSum = 0;
-			
+
 			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
 				var supplyValue = document.getElementById('supply-value' + i).value;
 				var taxValue = document.getElementById('tax-value' + i).value;
 				var amount = document.getElementById('amount' + i).value;
-			
 
-				supplyValue = supplyValue.replace(/,/g , "");
-				taxValue = taxValue.replace(/,/g , "");
-				
+				supplyValue = supplyValue.replace(/,/g, "");
+				taxValue = taxValue.replace(/,/g, "");
+
 				supplySum = supplySum + (supplyValue * amount);
 				taxSum = taxSum + (taxValue * amount);
 			}

@@ -769,7 +769,7 @@ tr td:first-child {
 			errorfield='#id-date-picker-1';
 			return false;
 		}
-		if(0 >= parseInt(payPrinc)){
+		if(0 > parseInt(payPrinc)){
 			errortitle = 'PAYPRINC ERROR';	
 			validationMessage = '납입금은 0보다 커야 합니다';
 			errorfield='#payPrinc';
@@ -937,9 +937,11 @@ tr td:first-child {
 	 		
 	 		$("input[name=bankName]").val(td.eq(13).attr('bank-name'));
 	 		$("input[name=depositHost]").val(td.eq(14).attr('deposit-host'));
+	 		$('#btn-check-code').hide();
+	 		
 	 		
 		}else{
-			$('input').val('');
+			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
 			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
 			$('#code').attr('readonly',false);
 			$('#form-field-1').val(2019); 
@@ -950,13 +952,24 @@ tr td:first-child {
 			$(td.eq(0).children().children()).prop('checked',false);
 			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked',false);
 			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked',false);
-			
+			$('input[name=intPayWay]').each(function(index,	item){
+				if($(item).prop('checked') == true){
+					$(item).prop('checked',false);
+				}	
+			});
+			$('input[name=repayWay]').each(function(index,	item){
+				if($(item).prop('checked') == true){
+					$(item).prop('checked',false);
+				}	
+			});
+			$('#btn-check-code').show();
 		}
 		
 	});
 	$("#clear").click(function(){ 
-		 $('input').val('');
+		 $('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
 		 $('#form-field-select-3').val('초기값').trigger('chosen:updated');
+		 
 		 $('#code').attr('readonly',false);
 		 $('#form-field-1').val(2019);
 		$('input[name=intPayWay]').each(function(index,	item){
@@ -969,6 +982,7 @@ tr td:first-child {
 				$(item).prop('checked',false);
 			}	
 		});
+		
 		 $('#btn-check-code').val('중복확인');
 		 
 		 

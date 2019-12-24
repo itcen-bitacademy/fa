@@ -98,6 +98,38 @@ public class Menu03Repository {
 		return null;
 		
 	}
+	
+	// 전표수정 1팀(최종)
+	public Long updateVoucher2(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingVo, UserVo userVo) {
+		VoucherVo voucherVoTemp = new VoucherVo();
+		if(!mappingVo.get(0).getInsertTeam().equals(userVo.getTeamName())) {
+			return null;
+		}
+		voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
+		
+		sqlSession.update("menu03.updateVoucher2", voucherVo);
+		sqlSession.delete("menu03.deleteItemFinal", voucherVo);
+		sqlSession.delete("menu03.deleteMappingFinal", voucherVo);
+		
+		for(int i = 0; i < itemVo.size(); i++) {
+			itemVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
+			itemVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
+			itemVo.get(i).setVoucherNo(voucherVo.getNo());
+			itemVo.get(i).setGroupNo(voucherVo.getNo());
+			
+			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
+			
+			mappingVo.get(i).setInsertUserid(voucherVoTemp.getInsertUserid());
+			mappingVo.get(i).setInsertDay(voucherVoTemp.getInsertDay());
+			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
+			sqlSession.insert("menu03.newMapping", mappingVo.get(i)); // 매핑테이블 입력
+		}
+		
+		
+		System.out.println("repository2 : " + voucherVo.getNo());
+		return voucherVo.getNo();
+		
+	}
 
 	// 전표생성 (1팀)
 	public void createVoucher(VoucherVo voucherVo) {
@@ -186,13 +218,14 @@ public class Menu03Repository {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
 			itemVo.get(i).setGroupNo(voucherVo.getNo());
 			
-			
+			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
+			itemVo.get(i).setOrderNo(order);
+			System.out.println("order : " + order);
+			System.out.println(order);
 			
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
 			
-			int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
-			itemVo.get(i).setOrderNo(order);
-			sqlSession.update("menu03.updateOrder", itemVo.get(i));
+			
 		
 		
 			mappingVo.get(0).setInsertUserid(voucherVoTemp.getInsertUserid());
@@ -223,7 +256,7 @@ public class Menu03Repository {
 	}
 	
 	public Long deleteVoucher(Long no, UserVo userVo) {
-		VoucherVo voucherVoTeam = sqlSession.selectOne("menu03.selectTeam2", no);
+		VoucherVo voucherVoTeam = sqlSession.selectOne("menu03.selectTeam", no);
 		if (!userVo.getTeamName().equals(voucherVoTeam.getInsertTeam())) {
 			return null;
 		}
@@ -265,8 +298,10 @@ public class Menu03Repository {
 		map.put("voucherList", voucherList);
 		return map;
 	}
-
 	
-	
+	// 전표번호로 팀정보 구하기
+	public String getSelectTeam(Long no) {
+		return sqlSession.selectOne("menu03.getSelectTeam", no);
+	}
 
 }

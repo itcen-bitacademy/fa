@@ -38,46 +38,42 @@ public class Menu51Controller {
 	public String list(
 			Model model, 
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "sort", required = false) String sort, 
-			PdebtVo vo) {
-		if(vo.getDebtDate() == null || "".equals(vo.getDebtDate()))
+			@RequestParam(value = "sort", required = false) String sort, PdebtVo vo) {
+		if (vo.getDebtDate() == null || "".equals(vo.getDebtDate()))
 			vo.setDebtDate("");
-		
-		if(vo.getIntPayWay() == null || "".equals(vo.getIntPayWay()))
+
+		if (vo.getIntPayWay() == null || "".equals(vo.getIntPayWay()))
 			vo.setIntPayWay("");
-		
-		if(vo.getBankName() == null || "".equals(vo.getBankName()))
+
+		if (vo.getBankName() == null || "".equals(vo.getBankName()))
 			vo.setBankName("");
-		
-		if(vo.getExpDate() == null || "".equals(vo.getExpDate()))
+
+		if (vo.getExpDate() == null || "".equals(vo.getExpDate()))
 			vo.setExpDate("");
-		
-		if("Y".equals(vo.getDeleteFlag()))
+
+		if ("Y".equals(vo.getDeleteFlag()))
 			vo.setDeleteFlag("");
-		else vo.setDeleteFlag("N");
-		
-		if("Y".equals(vo.getRepayCompleFlag()))
+		else
+			vo.setDeleteFlag("N");
+
+		if ("Y".equals(vo.getRepayCompleFlag()))
 			vo.setRepayCompleFlag("");
-		else vo.setRepayCompleFlag("N");
-		
-		DataResult<PdebtVo> dataResult = menu51Service.list(page,vo,sort);
+		else
+			vo.setRepayCompleFlag("N");
+
+		DataResult<PdebtVo> dataResult = menu51Service.list(page, vo, sort);
 		List<SectionVo> sectionlist = menu51Service.selectSection();
-		
-		UriComponents uriComponents=
-				UriComponentsBuilder.newInstance()
-				.queryParam("sort",sort)
-				.queryParam("debtDate",vo.getDebtDate())
-				.queryParam("expDate",vo.getExpDate())
-				.queryParam("intPayWay",vo.getIntPayWay())
-				.queryParam("bankName",vo.getBankName())
-				.queryParam("deleteFlag",vo.getDeleteFlag())
-				.queryParam("repayCompleFlag",vo.getRepayCompleFlag())
+
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("sort", sort)
+				.queryParam("debtDate", vo.getDebtDate()).queryParam("expDate", vo.getExpDate())
+				.queryParam("intPayWay", vo.getIntPayWay()).queryParam("bankName", vo.getBankName())
+				.queryParam("deleteFlag", vo.getDeleteFlag()).queryParam("repayCompleFlag", vo.getRepayCompleFlag())
 				.build();
-		
+
 		String uri = uriComponents.toUriString();
-		model.addAttribute("uri",uri);
-		model.addAttribute("dataResult",dataResult);
-		model.addAttribute("sectionlist",sectionlist);
+		model.addAttribute("uri", uri);
+		model.addAttribute("dataResult", dataResult);
+		model.addAttribute("sectionlist", sectionlist);
 		model.addAttribute("sort", sort);
 		model.addAttribute("contentsCount", dataResult.getPagination().getTotalCnt()); // 게시물 수
 

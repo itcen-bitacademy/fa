@@ -56,8 +56,8 @@ public class Menu46Repository {
 		return (count==1);
 	}
 	
-	public void updateDeleteFlag(List<Long> noList) {
-		sqlSession.update("menu46.updateDeleteFlag", noList);
+	public void updateDeleteFlag(List<STermDebtVo> list) {
+		sqlSession.update("menu46.updateDeleteFlag", list);
 	}
 	
 	public Boolean updateRepayBal(STermDebtVo vo) {

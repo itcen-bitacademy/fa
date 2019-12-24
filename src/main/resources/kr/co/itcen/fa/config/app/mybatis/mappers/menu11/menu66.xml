@@ -132,7 +132,7 @@
 					tb_s_term_debt 
 				]]>
 			</when>
-			<when test='code != null and "l".equals(debtType)'>
+			<when test='code != null and "L".equals(debtType)'>
 				<![CDATA[
 					tb_l_term_debt 
 				]]>
@@ -144,8 +144,8 @@
 			</when>
 		</choose>
 		<![CDATA[
-			set repay_bal=repay_bal + ${payPrinc}
-			where no=#{debtNo}
+			set repay_bal = repay_bal + ${payPrinc}
+			where no=${debtNo}
 		]]>
 	</update>
 	<update id="updateDeleteFlag" parameterType="List">
@@ -169,7 +169,7 @@
 						tb_s_term_debt 
 					]]>
 				</when>
-				<when test='code != null and "l".equals(debtType)'>
+				<when test='code != null and "L".equals(debtType)'>
 					<![CDATA[
 						tb_l_term_debt 
 					]]>
@@ -182,7 +182,7 @@
 			</choose>
 			<![CDATA[
 				set repay_bal = repay_bal + #{tempPayPrinc} 
-				where no=#{debtNo}
+				where no=${debtNo}
 			]]>
 	</update>
 	

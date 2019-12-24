@@ -5,19 +5,19 @@
 	<!-- 사채정보입력 -->
 	<insert id="insert" parameterType="pdebtvo">
 		<![CDATA[
-		insert into tb_p_debt
-		values (null, #{code }, #{name }, #{majorCode }, 
-		#{debtAmount }, #{debtAmount }, 
-				#{repayWay }, 'N', 
-				#{debtDate }, #{expDate }, #{intRate }, 
-				#{intPayWay }, #{mgr }, 
-				#{mgrCall }, #{dangerCode }, #{dangerName }, 
-				#{bankCode }, #{depositNo }, '2402101', #{voucherNo }, 
-				'N', #{insertId }, now(), 0, now())
+			insert into tb_p_debt
+				values (null, #{code }, #{name }, #{majorCode }, 
+						#{debtAmount }, #{debtAmount }, 
+						#{repayWay }, 'N', 
+						#{debtDate }, #{expDate }, #{intRate }, 
+						#{intPayWay }, #{mgr }, 
+						#{mgrCall }, #{dangerCode }, #{dangerName }, 
+						#{bankCode }, #{depositNo }, '2402101', #{voucherNo }, 
+						'N', #{insertId }, now(), 0, now())
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			<![CDATA[
-			select last_insert_id()
+				select last_insert_id()
 			]]>
 		</selectKey>
 	</insert>
@@ -45,13 +45,13 @@
 		          c.deposit_host as depositHost, 
 		          date_format(a.insert_date,'%Y-%m-%d %H:%i:%S') as insertDate, 
 		          b.name as bankName
-		          from tb_p_debt as a, tb_bank as b, tb_bank_account as c
-			          where a.bank_code=b.code
-				   		and a.deposit_no = c.deposit_no
-				    	and a.delete_flag= 'N'
-				    	and a.repay_comple_flag = 'N'
-				    	and 	date_format(a.debt_date,'%Y') like concat('%',#{year},'%') 
-						and 	a.code like concat('%',#{code},'%') 
+			          from tb_p_debt as a, tb_bank as b, tb_bank_account as c
+				          where a.bank_code=b.code
+					   		and a.deposit_no = c.deposit_no
+					    	and a.delete_flag= 'N'
+					    	and a.repay_comple_flag = 'N'
+					    	and 	date_format(a.debt_date,'%Y') like concat('%',#{year},'%') 
+							and 	a.code like concat('%',#{code},'%') 
 		]]>
 		<if test="pagination.pageIndex >= 0">
 			<![CDATA[
@@ -63,25 +63,25 @@
 	<select id="getPdebtInfo" resultType="pdebtvo">
 		<![CDATA[
 			select 
-			no as no, 
-			code as code, 
-			name as name, 
-			major_code as majorCode, 
-			debt_amount as debtAmount,
-			repay_bal as repayBal, 
-			repay_way as repayWay, 
-			concat(date_format(debt_date,'%Y-%m-%d'),' - ', date_format(exp_date,'%Y-%m-%d')) as debtExpDate, 
-			int_rate as intRate, 
-			int_pay_way as intPayWay, 
-			int_amount as intAmount, 
-			mgr as mgr, mgr_call as mgrCall, danger_code as dangerCode, danger_name as dangerName, 
-			bank_code as bankCode, deposit_no as depositNo, account_no as accountNo, 
-			voucher_no as voucherNo, delete_flag as deleteFlag, 
-			insert_id as insertId, insert_date as insertDate, update_id as updateId,
-			update_date as updateDate, 
-			date_format(debt_date, '%Y') as financialYear
-			from tb_p_debt 
-			where code = #{debtcode } 
+				no as no, 
+				code as code, 
+				name as name, 
+				major_code as majorCode, 
+				debt_amount as debtAmount,
+				repay_bal as repayBal, 
+				repay_way as repayWay, 
+				concat(date_format(debt_date,'%Y-%m-%d'),' - ', date_format(exp_date,'%Y-%m-%d')) as debtExpDate, 
+				int_rate as intRate, 
+				int_pay_way as intPayWay, 
+				int_amount as intAmount, 
+				mgr as mgr, mgr_call as mgrCall, danger_code as dangerCode, danger_name as dangerName, 
+				bank_code as bankCode, deposit_no as depositNo, account_no as accountNo, 
+				voucher_no as voucherNo, delete_flag as deleteFlag, 
+				insert_id as insertId, insert_date as insertDate, update_id as updateId,
+				update_date as updateDate, 
+				date_format(debt_date, '%Y') as financialYear
+					from tb_p_debt 
+						where code = #{debtcode } 
 		]]>
 	</select>
 	
@@ -95,7 +95,9 @@
 	<!-- 은행 팝업창에서 은행명으로 데이터 리스트형식으로 조회 - 은행명으로 데이터 출력 -->
 	<select id="getBanknameList" parameterType="String" resultType="bankvo">
 		<![CDATA[
-			select code, name, store, mgr, mgr_phone as mgrPhone from tb_bank where name like '%#{bankname}%';
+			select code, name, store, mgr, mgr_phone as mgrPhone 
+				from tb_bank 
+					where name like '%#{bankname}%';
 		]]>
 	</select>
 	
@@ -143,7 +145,8 @@
 	<!-- 사채관리 페이지에서 삭제를 눌렀을 때, 해당 정보 delete_flag='Y'로 업데이트 -->
 	<update id="delete" parameterType="list">
 		<![CDATA[
-			update tb_p_debt set delete_flag='Y' where no in 
+			update tb_p_debt set delete_flag='Y' 
+				where no in 
 		]]>
 		<foreach item="item" index="index" collection="list" close=")" open="(" separator=",">
 			#{item }
@@ -158,8 +161,8 @@
 				code,
 				last_update as lastUpdate,
 				parent_no as parentNo
-			    from tb_section
-			    where parent_no= 6
+			   		from tb_section
+			    		where parent_no= 6
 		]]>
 	</select>
 	
@@ -277,28 +280,31 @@
 	
 	<select id="getBankCodeInfo" parameterType="String" resultType="1customervo">
 		<![CDATA[
-			select no as no,
-				   bank_name as bankName
-				   from tb_customer
-			 where code like '${_parameter }'
+			select 
+				no as no, 
+				bank_name as bankName 
+					from tb_customer 
+						where code like '${_parameter }'
 		]]>
 	</select>
 	
 	<select id="getBankNameInfo" parameterType="String" resultType="1customervo">
 		<![CDATA[
-			select no as no,
-				   bank_name as bankName
-				   from tb_customer
-			 where concat(name, "은행", store) like '%${_parameter }%'
+			select 
+				no as no,
+				bank_name as bankName 
+					from tb_customer 
+						where concat(name, "은행", store) like '%${_parameter }%'
 		]]>
 	</select>
 	
 	<!-- 마감일 읽기위한 select -->
 	<select id="selectpdebtlist" resultType="pdebtvo" parameterType="list">
 		<![CDATA[
-			select date_format(debt_date,'%Y-%m-%d') as debtDate 
-			from tb_p_debt
-			where no in 
+			select 
+				date_format(debt_date,'%Y-%m-%d') as debtDate 
+					from tb_p_debt
+						where no in 
 		]]>
 		<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
 			#{item } 
@@ -309,19 +315,13 @@
 	<!-- ==================================================== -->
 	<!-- ==================================================== -->
 	
-	
-	
 	<!-- 전표번호와 일치하는 사채테이블 데이터 조회 -->
 	<select id="selectByVoucherNo" parameterType="long" resultType="long">
 		<![CDATA[
-			select voucher_no from tb_p_debt where no=#{_parameter}
+			select voucher_no 
+				from tb_p_debt 
+					where no=#{_parameter}
 		]]>
 	</select>
-	
-	
-	
-	
-	
-	
 
 </mapper>

@@ -41,46 +41,4 @@ public class Menu46Controller {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
-	//입력
-	@RequestMapping("/" + SUBMENU + "/insert")
-	public String insert(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
-		String debtExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-		System.out.println(debtExpDate);
-	    String saveDeptDate = debtExpDate.substring(0, 10);
-	    String saveExpDate = debtExpDate.substring(13);
-	    sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
-	    sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
-		
-		sTermDebtVo.setInsertId(authUser.getId());
-		
-		System.out.println(sTermDebtVo);
-		//전표입력
-		Long voucherNo = menu46Service.insertVoucherWithDebt(sTermDebtVo, authUser);
-		
-		//차입금 입력
-		sTermDebtVo.setVoucherNo(voucherNo);
-		menu46Service.insert(sTermDebtVo);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
-	}
-	
-	//수정
-	@RequestMapping("/" + SUBMENU + "/update")
-	public String update(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
-		String deptExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
-	      String saveDeptDate = deptExpDate.substring(0, 10);
-	      String saveExpDate = deptExpDate.substring(13);
-	      sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
-	      sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
-		
-		//전표입력
-		Long voucherNo = menu46Service.updateVoucherWithDebt(sTermDebtVo, authUser);
-		
-		//차입금 수정
-		sTermDebtVo.setVoucherNo(voucherNo);
-		menu46Service.update(sTermDebtVo);
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
-	}
-	
 }

@@ -152,8 +152,8 @@ input::-webkit-inner-spin-button {
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
-				<input id="searchData" type="hidden">
-				<input id="checkedData" type="hidden">
+				<input id="search-condition" type="hidden">
+				<input id="deleteVoList" type="hidden">
 				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
 					<input type="hidden" name="vo"/>
 					<input type="hidden" name="no"/>
@@ -553,7 +553,6 @@ function checkDuplication(){
 function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
-	var vo = JSON.parse(inputForm.vo.value);
 	
 	console.log("isDuplicated : " + inputForm.isDuplicated.value);
 	if(inputForm.isDuplicated.value == "Y"){
@@ -561,14 +560,28 @@ function insert(){
 		return;
 	}
 	
-	if(!isNotClosedDate(vo.debtDate)){				//마감이되었으면
-		alert("차입일자가 마감일 이전인 데이터는 입력할 수 없습니다.");
-		return;
-	}
-	
-	inputForm.action = $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/insert";
-	inputForm.submit();
-	
+	var sendData = $("#input-form").serialize();
+	$.ajax({
+		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/insert",
+		type:"POST",
+		dataType: "json",
+		data: sendData,
+		success: function(response){
+			console.log("isClosed : " + response.data.isClosed);
+			console.log("response.data : " + response.data);
+			if(response.data.isClosed == true){
+				alert("차입일자가 마감일자전인 데이터는 수정할 수 없습니다.");
+				return;
+			}
+			
+			alert("입력이 완료 되었습니다.");
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
+		},
+		error: function(xhr, error){
+			
+		}
+	});
 	
 	console.log("---------------------insert() end ---------------------------------");
 }
@@ -576,7 +589,6 @@ function insert(){
 function update(){
 	var inputForm = $("#input-form")[0];
 	var sendData = $("#input-form").serialize();
-	var vo = JSON.parse(inputForm.vo.value);
 	
 	$.ajax({
 		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
@@ -890,11 +902,14 @@ function searchAccountByNo(){
 
 //-----------------------------------Row Click input 영역 채워지도록 ---------------------------------//
 function selectRow(thisObj){
-	console.log("selectRow() call");
+	console.log("--------------------------------selectRow() call--------------------------");
 	var inputVo = $(thisObj).find("input[name=vo]");	//해당vo에 대한 JSON객체 String 값을 가진 input을 반환
 	
 	var vo = JSON.parse(inputVo.val());					//JSON string형식을 JSON형식으로 변환, 객체 생성
 	var inputForm = $("#input-form")[0];
+	
+	$(thisObj).closest("table").find("tr").css("background-color", "inherit");
+	$(thisObj).css("background-color", "#ddd");
 	
 	inputForm.vo.value = inputVo.val();
 	inputForm.no.value = vo.no;
@@ -933,6 +948,7 @@ function selectRow(thisObj){
 	inputForm.mgrCall.value = vo.mgrCall;
 	inputForm.depositNo.value = vo.depositNo;		
 	inputForm.depositHost.value = vo.depositHost;		//조인한 값
+	console.log("--------------------------------selectRow() End--------------------------");
 }
 
 //-----------------------------------각 컬럼값 변환 함수 ---------------------------------//
@@ -1099,44 +1115,39 @@ function renderingClosedDateList(closedDateList){
 //-----------------------------------조회 및 페이지 클릭 Event Method ---------------------------------//
 function getList(){							//패이지 onload event에서 사용될 rendering 함수, 전체 list를 가져온다
 	console.log("----------------getList() called----------------");
-	ajaxProcessing("getList", null);		
+	getListAjax(1);		
 }
 function search() {
 	console.log("----------------search() called----------------");
-	ajaxProcessing("search", null);
+	var inputForm = $("#input-form")[0];
+	var conditionVo = {"code": inputForm.code.value, "financialYear":inputForm.financialYear.value};
+	$("#search-condition").val(JSON.stringify(conditionVo));
+	getListAjax(1);
 }
 
 function paging(thisObj){
 	console.log("----------------paging() called----------------");
-	ajaxProcessing("paging", thisObj)
+	
+	console.log("page : " + $(thisObj).attr("id"));
+	getListAjax($(thisObj).attr("id"))
 }
 
-function ajaxProcessing(urlStr, thisObj){
+function getListAjax(page){
 	var sendData;
 	
-	if($("#searchData").val() == "")											//최초접근시
-		$("#searchData").val(JSON.stringify({"none":0}));						//임의의 객체를 넣어준다	
+	if($("#search-condition").val() == "")											//최초접근시
+		$("#search-condition").val("{}");						//임의의 객체를 넣어준다	
 	
-	if(urlStr == "getList")								//조회조건이 없는 search로 분기, 전체 list를 가져온다.
-		urlStr = "search";
-		
-	else if(urlStr == "search"){
-		$("#searchData").val($("#input-form")[0].vo.value);					//조회조건 저장
-		var vo = JSON.parse($("#searchData").val());
-	}
+	var conditionVo = JSON.parse($("#search-condition").val());
 	
-	else if(urlStr == "paging"){
-		sendData = JSON.parse($("#searchData").val());
-		var page = $(thisObj).attr('id');					//page 값 
-		sendData["page"] = page;								//page 속성 추가
-		console.log(sendData);
-	}
+	conditionVo["page"] = page;								//page 속성 추가
+	console.log("conditionVo : " + conditionVo);
 	
 	$.ajax({
-		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/" + urlStr,
+		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/getList",
 		type : "POST",
 		dataType : "JSON",
-		data : sendData,
+		data : conditionVo,
 		success : function(response){
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
@@ -1154,67 +1165,38 @@ function rowChecked(thisObj){
 	
 	var tr = $(thisObj).closest("tr");
 	var voInput = $(tr).find("input[name=vo]");
+	
 	var vo = JSON.parse(voInput.val());
-	var voList = [];
-	var checkedData;										//JSON 객체 변수
-	var noList = [];
-	var voucherNoList = [];
 	
-	console.log("no : " + vo.no);
-	console.log("voucherNo : " + vo.voucherNo);
+	if($("#deleteVoList").val() == "")									//최초 클릭인 경우
+		$("#deleteVoList").val("[]");
 	
-	if($("#checkedData").val() == "")									//최초 클릭인 경우
-		checkedData = {"voList" : voList};
-	
-	else
-		checkedData = JSON.parse($("#checkedData").val());
+	deleteVoList = JSON.parse($("#deleteVoList").val());
 	
 	if(!$(thisObj).is(":checked")){										//check 해제인 경우
-		voList = checkedData.voList;
-		
-		voList.splice(voList.indexOf(vo),1);								//값 제거
-	}		
-		
-	else{																//check를 한 경우
-		voList = checkedData.voList;										//List 추출
-		
-		voList.push(vo);													//값 입력
+		deleteVoList.splice(deleteVoList.indexOf(vo),1);								//값 제거
+	}else{																//check를 한 경우
+		deleteVoList.push(vo);													//값 입력
 	}//else : check된 경우
 	
-	$("#checkedData").val(JSON.stringify(checkedData));					//해당 객체를 String으로 변환후 저장
-	console.log($("#checkedData").val());
+	console.log("deleteVoList : " + deleteVoList);
+	$("#deleteVoList").val(JSON.stringify(deleteVoList));					//해당 객체를 String으로 변환후 저장
 	console.log("---------------------rowChecked() End -------------------------");
 }
 function deleteChecked(){
 	$("#chkbox-select-all").prop("checked", false);
 	console.log("------------------------------deleteChecked() called-------------------------");
-	if( $("#checkedData").val() == "")					//체크된게 없는경우
+	if( $("#deleteVoList").val() == "" || $("#deleteVoList").val() == "[]")					//체크된게 없는경우
 		return;
 	
-	var checkedData = JSON.parse($("#checkedData").val());			//JSON 객체
-	var voList = checkedData.voList;
-	console.log("voList 길이: " + voList.length);
-	var noList = [];
-	var voucherNoList = [];
-	var debtDateList = [];
-	
-	for(var i=0; i < voList.length; ++i){
-		noList.push(voList[i].no);
-		voucherNoList.push(voList[i].voucherNo);
-		debtDateList.push(voList[i].debtDate);
-	}
-	
-	/* if(noList == null){
-		console.log("NoList null");
-		return; */
-		
-	console.log("noList : " +  noList + " voucherNoList : " + voucherNoList + " debtDateList : " + voList[0].code);
+	console.log("deleteVoList : " + deleteVoList);
 	//각 배열을 넘겨준다.
 	$.ajax({
 		url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/deleteChecked",
 		type : "POST",
 		dataType : "json",
-		data : {"noList" : noList, "voucherNoList" : voucherNoList, "debtDateList" : debtDateList},
+		contentType: "application/json",
+		data : $("#deleteVoList").val(),
 		success: function(response){
 			console.log(isEmpty(response.data.repayLists));
 			if(!isEmpty(response.data.repayLists)){					//상환내역이 있는경우 삭제가 안됨.
@@ -1226,7 +1208,7 @@ function deleteChecked(){
 			console.log("repayLists : " + response.data.repayLists);
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
-			$("#checkedData").val("");	
+			$("#deleteVoList").val("");	
 		},
 		error : function(xhr, error){
 			

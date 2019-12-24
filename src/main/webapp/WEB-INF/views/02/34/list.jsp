@@ -717,7 +717,7 @@
 						<div style="height:200px">
 							<div class="span6">
 								<div class="control-group">
-									<label class="control-label" for="form-field-item-id">품목코드</label>
+									<label class="control-label" for="form-field-item-id" style="text-align:initial; text-indent:72px;">품목코드</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드" maxlength="10"/>
 									</div>
@@ -820,7 +820,7 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-name">생산공장명</label>
+									<label class="control-label" for="form-field-factory-name" style="text-align:initial; text-indent:72px;">생산공장명</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
 											<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명" readonly/>
@@ -911,7 +911,7 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-price">단가</label>
+									<label class="control-label" for="form-field-price" style="text-align:initial; text-indent:72px;">단가</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-price1" style="text-align:right" name="price_start"/>
 										&nbsp;~&nbsp;
@@ -928,7 +928,7 @@
 							
 								<div class="span6">
 									<div class="control-group">
-										<label class="control-label" for="form-field-item-name">품목명</label>
+										<label class="control-label" for="form-field-item-name" style="text-align:initial; text-indent:57px;">품목명</label>
 										<div class="controls">
 											<input class="span5" type="text" id="form-field-item-name" name="name" placeholder="품목명"/>&nbsp;&nbsp;&nbsp;
 											<input class="ace" type="checkbox" id="id-delete-check" data-deleteflag="N" style="display:inline">
@@ -944,14 +944,14 @@
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-factory-code">생산공장코드</label>
+										<label class="control-label" for="form-field-factory-code" style="text-align:initial; text-indent:57px;">생산공장코드</label>
 										<div class="controls">
 											<input class="span4" type="text" id="form-field-factory-code" name="factorycode" readonly/>
 										</div>
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-date">생산 일자</label>
+										<label class="control-label" for="form-field-date" style="text-align:initial; text-indent:57px;">생산 일자</label>
 									<div class="controls">
 										<div class="control-group">
 											<div class="input-append">

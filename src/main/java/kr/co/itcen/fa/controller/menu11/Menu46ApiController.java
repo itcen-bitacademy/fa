@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,51 +38,38 @@ public class Menu46ApiController {
 	Menu19Service menu19Service;
 	
 	@ResponseBody
-	@RequestMapping("/" + Menu46Controller.SUBMENU + "/search")
-	public JSONResult search(@RequestParam(value="code", required=false) String code, 
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getList", method=RequestMethod.POST)
+	public JSONResult getList(@RequestParam(value="code", required=false) String code, 
 			@RequestParam(value="financialYear", required=false) String financialYear,
-			@RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize) {
+			@RequestParam(value="pageSize", required=false, defaultValue="8") int pageSize,
+			@RequestParam(value="page", required=true) int page){
 		
-		Map map = menu46Service.search(code, financialYear, pageSize);
+		System.out.println("pageSize : " + pageSize);
+		Map map = menu46Service.getList(code, financialYear, pageSize, page);
 		
 		return JSONResult.success(map);
 	}
 	
-	@ResponseBody
-	@RequestMapping("/" + Menu46Controller.SUBMENU + "/paging")
-	public JSONResult paging(@RequestParam(value="code", required=false) String code, 
-			@RequestParam(value="financialYear", required=false) String financialYear,
-			@RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize,
-			@RequestParam(value="page", required=true) int page){
-		
-		System.out.println("pageSize : " + pageSize);
-		Map map = menu46Service.paging(code, financialYear, pageSize, page);
-		
-		return JSONResult.success(map);
-	}
 	//배열로 넘어온거는 '[]' 붙여줘야한다.
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
-	public JSONResult deleteChecked(@RequestParam(value="noList[]", required=true) List<Long> noList,
-			@RequestParam(value="voucherNoList[]", required=true) List<Long> voucherNoList,
-			@RequestParam(value="debtDateList[]", required=true) List<String> debtDateList,
+	public JSONResult deleteChecked(@RequestBody List<STermDebtVo> list,
 			@AuthUser UserVo authUser){
 		Map map = new HashMap();
 		
-		System.out.println("debtDateList : " + debtDateList);
-		System.out.println("noList :" + noList + " voucherList : " + voucherNoList);
-		List<List<RepayVo>> repayLists = menu46Service.possibleDelete(noList);	//상환내역이 있는 차입금은 제외시킨다. 상환내역 리스트를 가져온다
+		System.out.println("list : " + list);
+		List<List<RepayVo>> repayLists = menu46Service.possibleDelete(list);	//상환내역이 있는 차입금은 제외시킨다. 상환내역 리스트를 가져온다
 		map.put("repayLists", repayLists);
 		System.out.println("repayLists");
 		if(repayLists.size() != 0)						//삭제가 안되는경우
 			return JSONResult.success(map);
 		
 		//전표 삭제
-		menu46Service.deleteVoucerList(voucherNoList, authUser);
-		menu46Service.deleteChecked(noList);						//차입금 삭제
+		menu46Service.deleteVoucerList(list, authUser);
+		menu46Service.deleteChecked(list);						//차입금 삭제
 		
 		//삭제후 리스트 다시 얻음.
-		map.putAll(menu46Service.getListMap());
+		map.putAll(menu46Service.getList());
 		map.put("repayLists", null);								//해당 List로 삭제할수있는지 없는지를 비교한다.
 		
 		return JSONResult.success(map);
@@ -113,7 +101,7 @@ public class Menu46ApiController {
 		repayVo.setInsertId(uservo.getId());
 		menu46Service.insertRepay(repayVo);
 		
-		Map map = menu46Service.getListMap();
+		Map map = menu46Service.getList();
 		
 		return JSONResult.success(map);
 	}
@@ -146,7 +134,7 @@ public class Menu46ApiController {
 		 //상환내역 존재하는지 확인(by code)
 		 Boolean existRepay = menu46Service.existRepay(sTermDebtVo.getCode());
 		 
-		 //존재한다면 업데이트 불가, 상환내역 리스트 반환
+		 //존재한다면 업데이트 불가
 		 if(existRepay)
 			 return JSONResult.success(existRepay);
 		 
@@ -158,7 +146,37 @@ public class Menu46ApiController {
 		 menu46Service.update(sTermDebtVo);
 		
 		 //Map을 받아온다
-		 map = menu46Service.getListMap();
+		 map = menu46Service.getList();
 		 return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/insert", method = RequestMethod.POST)
+	public JSONResult insert(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
+		String debtExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
+	    String saveDeptDate = debtExpDate.substring(0, 10);
+	    String saveExpDate = debtExpDate.substring(13);
+	    sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
+	    sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
+		sTermDebtVo.setInsertId(authUser.getId());
+		
+		System.out.println("sTermDebtVo : " + sTermDebtVo);
+		Map map= new HashMap();
+		//마감확인
+		if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate())) {
+			 map.put("isClosed", true);
+			 return JSONResult.success(map);
+		}
+		
+		//전표입력
+		Long voucherNo = menu46Service.insertVoucherWithDebt(sTermDebtVo, authUser);
+		
+		//차입금 입력
+		sTermDebtVo.setVoucherNo(voucherNo);
+		menu46Service.insert(sTermDebtVo);
+		
+		map = menu46Service.getList();
+		
+		return JSONResult.success(map);
 	}
 }	

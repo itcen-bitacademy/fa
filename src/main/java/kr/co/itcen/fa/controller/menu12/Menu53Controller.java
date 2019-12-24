@@ -73,7 +73,7 @@ public class Menu53Controller {
 	
 	// 전표등록 메소드
 	public SellTaxbillVo voucher(SellTaxbillVo selltaxbillvo, UserVo authUser, boolean flag){
-		
+		System.out.println("Test");
 			// true / false
 			// 1 - 입력 / 2 - update / 3 - delete
 	
@@ -125,7 +125,9 @@ public class Menu53Controller {
 			
 			if(flag) {
 				voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+				System.out.println("53Controller/voucherNo : " + voucherNo);
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
+				System.out.println("53Controller/voucherNo2 : " + selltaxbillvo.getVoucherNo());
 				
 			} else {
 				voucherVo.setNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
@@ -135,6 +137,11 @@ public class Menu53Controller {
 				}
 				
 				mappingVo.setVoucherNo(Long.parseLong(selltaxbillvo.getVoucherNo()));
+				
+				System.out.println("매출일자  :" + selltaxbillvo.getSalesDate());
+				System.out.println("매출일자2  :" + voucherVo.getRegDate());
+				System.out.println("전표번호 :" + voucherVo.getNo());
+				
 				voucherNo = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
 				
 				selltaxbillvo.setVoucherNo(String.valueOf(voucherNo));
@@ -198,8 +205,10 @@ public class Menu53Controller {
 //		selltaxbillvo.setVoucherNo(String.valueOf(voucherNo)); 
 /////////////////////////////////////////////
 		
-		menu53Service.insert(voucher(selltaxbillvo, authUser, true));
-		menu53Service.salesUpdate(voucher(selltaxbillvo, authUser, false));
+		System.out.println("inserVoucherNo1 : " + selltaxbillvo.getVoucherNo());
+		SellTaxbillVo resultSelltaxbillvo = voucher(selltaxbillvo, authUser, true);
+		menu53Service.insert(resultSelltaxbillvo); // 세금계산서 테이블
+		menu53Service.salesUpdate(resultSelltaxbillvo); // 매출테이블
 		
 		System.out.println("추가 이벤트 발생");
 		

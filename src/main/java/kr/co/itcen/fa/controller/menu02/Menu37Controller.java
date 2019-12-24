@@ -84,7 +84,7 @@ public class Menu37Controller {
 
 	// 조회 post
 	@RequestMapping(value = "/" + SUBMENU + "/lookUp", method = RequestMethod.POST)
-	public String lookUp(Model model, @ModelAttribute BuyTaxbillVo vo, HttpSession session) {
+	public String lookUp(Model model, BuyTaxbillVo vo) {
 		BuyTaxbillVo getAboutNoData = menu37Service.getAboutNoData(vo.getNo());
 		CustomerVo getAboutNoCustomerData = menu37Service.getAboutNoCustomerData(getAboutNoData.getCompanyName());
 		BankAccountVo getAboutNoBankData = menu37Service.getAboutNoBankData(getAboutNoCustomerData.getDepositNo());
