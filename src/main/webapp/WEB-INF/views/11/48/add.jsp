@@ -937,6 +937,8 @@ tr td:first-child {
 	 		
 	 		$("input[name=bankName]").val(td.eq(13).attr('bank-name'));
 	 		$("input[name=depositHost]").val(td.eq(14).attr('deposit-host'));
+	 		$('#btn-check-code').hide();
+	 		
 	 		
 		}else{
 			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
@@ -960,6 +962,7 @@ tr td:first-child {
 					$(item).prop('checked',false);
 				}	
 			});
+			$('#btn-check-code').show();
 		}
 		
 	});
