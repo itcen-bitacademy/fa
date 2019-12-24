@@ -34,19 +34,19 @@ public class Menu50Controller {
 
 	@Autowired
 	private Menu50Service menu50Service;
-	
+
 	@Autowired
 	private Menu19Service menu19Service;
 
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
+	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(
-			Model model,
+			Model model, 
 			@RequestParam(value = "code", required = false, defaultValue = "") String code,
 			@RequestParam(value = "financialYear", required = false, defaultValue = "2019") String year,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 		DataResult<PdebtVo> dataResult = menu50Service.list(page, year, code);
 		List<SectionVo> sectionlist = menu50Service.selectSection();
-		
+
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("code", code);
 		model.addAttribute("sectionlist", sectionlist);
@@ -54,16 +54,16 @@ public class Menu50Controller {
 		model.addAttribute("contentsCount", dataResult.getPagination().getTotalCnt()); // 게시물 수
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
-	
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" },method = RequestMethod.POST)
+
+	@RequestMapping(value = { "/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.POST)
 	public String list(
-			@RequestParam(value="code",required = false, defaultValue = "") String code,
-			@RequestParam(value="financialYear",required = false, defaultValue = "2019") int year,
-			@RequestParam(value="page", required=false,defaultValue = "1") int page) {
-		
-		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?financialYear="+year+"&code="+code+"&page"+page;
+			@RequestParam(value = "code", required = false, defaultValue = "") String code,
+			@RequestParam(value = "financialYear", required = false, defaultValue = "2019") int year,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+
+		return "redirect:/" + MAINMENU + "/" + SUBMENU + "?financialYear=" + year + "&code=" + code + "&page" + page;
 	}
-	
+
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String insert(
 			@ModelAttribute PdebtVo pdebtVo, 
@@ -92,7 +92,7 @@ public class Menu50Controller {
 		}
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
-	
+
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
 	public String update(
 			@ModelAttribute PdebtVo pdebtVo, 
@@ -105,13 +105,13 @@ public class Menu50Controller {
 			pdebtVo.setDebtDate(saveDeptDate);
 			pdebtVo.setExpDate(saveExpDate);
 			pdebtVo.setUpdateId(userVo.getId()); // 수정자 아이디 삽입
-			
+
 			// 위험등급코드 및 위험등급명 나누어서 데이터베이스에 전달 - start
 			String dangerCode = pdebtVo.getDangerCode(); // 위험등급코드 가져오기
 			String[] dangerArray = dangerCode.split("-");
 			pdebtVo.setDangerCode(dangerArray[0]);
 			pdebtVo.setDangerName(dangerArray[1]);
-			
+
 			if (menu19Service.checkClosingDate(userVo, pdebtVo.getDebtDate())) {
 				menu50Service.update(pdebtVo, userVo);
 			}
@@ -120,13 +120,13 @@ public class Menu50Controller {
 		}
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	}
-	
+
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
 	public String delete(
 			@RequestParam Long[] no, 
 			@AuthUser UserVo userVo) {
 		List<PdebtVo> pdebtVoList = menu50Service.selectList(no);
-		
+
 		for (int i = 0; i < pdebtVoList.size(); ++i) {
 			try {
 				if (!menu19Service.checkClosingDate(userVo, pdebtVoList.get(i).getDebtDate())) {
@@ -136,7 +136,7 @@ public class Menu50Controller {
 				e.printStackTrace();
 			}
 		}
-		
+
 		menu50Service.delete(no, userVo);
 
 		return "redirect:/" + MAINMENU + "/" + SUBMENU;
