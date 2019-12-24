@@ -95,7 +95,7 @@ input[type="text"], input[type="date"], select {
 				<form class="form-horizontal" id="input-form" method="post" action="">
 				<input type="hidden" name="no"/> <!-- tb_repay 테이블의 PK인 no값 전달 -->
 				<input type="hidden" name="debtNo"/>
-				<input type="hidden" name="vo"/>
+				<input type="hidden" name="voucherNo"/>
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>차입금코드</h4></div>
@@ -110,7 +110,7 @@ input[type="text"], input[type="date"], select {
 						<div class="ia-left"><h4>부채유형</h4></div>
 						<div class="ia-right">
 							<select name="debtType"  id="debtType" >
-								<option value="초기값">부채유형을 선택해주세요.</option>
+								<option >부채유형을 선택해주세요.</option>
 								<option value="S">단기차입금</option>
 								<option value="L">장기차입금</option>
 								<option value="P">사채</option>
@@ -127,7 +127,7 @@ input[type="text"], input[type="date"], select {
 				<section class="above-table">
 					<section class="above-table-left">
 						<div class="btn-list">
-							<button type="button" class="btn btn-warning btn-small mybtn" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update" onclick="update()">수정</button>
+							<button type="button" class="btn btn-warning btn-small mybtn"  onclick="update()">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
 							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
@@ -221,6 +221,9 @@ input[type="text"], input[type="date"], select {
 				</div>
 				<!-- 페이징 처리 코드 end -->
 				
+				<div id="dialog66" title="상환정보여부" hidden="hidden">
+						
+				</div>
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
@@ -274,6 +277,11 @@ $(function() {
   
 	//--------------------------------------------------------------------------------------------------------------------------//
 	getList();
+ 	
+ 	//-------------------------------------------------------------------------------------------------------------------------//
+	$("#dialog66").dialog({
+		autoOpen : false
+	});
 });
 
 //--------------------------------------------------------------------------------------------------------------------------//
@@ -400,7 +408,10 @@ function selectRow(thisObj){
 	var inputForm = $("#input-form")[0];
 	var vo = JSON.parse($(thisObj).find("input[name=vo]").val());
 	
-	inputForm.vo.value = JSON.stringify(vo); // 상환테이블 PK : no
+	$(thisObj).closest("table").find("tr").css("background-color", "inherit");
+	$(thisObj).css("background-color", "#ddd");
+	
+	inputForm.voucherNo.value = vo.voucherNo;
 	inputForm.code.value = vo.code;
 	inputForm.debtNo.value = vo.debtNo;
 	inputForm.payPrinc.value = vo.payPrinc;
@@ -441,13 +452,29 @@ function removeCommaReturn(val){
 
 // 상환내역 금액 수정 확인
 function update(){
-	var intAmount = $("input[name=intAmount]").val();
-	if (intAmount > parseInt($("input[name=payPrinc]").val())) {
-		alert("이자 금액보다 납입금이 작습니다 납입금(" + intAmount + ")보다 크게 입력해주세요");
-		return false;
-    } else {
-        return true;
-    }
+	var sendData = $("#input-form").serialize();
+	$.ajax({
+		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
+		type: "POST",
+		dataType: "json",
+		contentType : 'application/json',
+		data: sendData,
+		success: function(response){
+			
+			if(response.data.isClosed == true){
+				alert("해당 데이터는 마감이 되었습니다.");
+				return;
+			}
+			
+			console.log("수정이 완료 되었습니다.");
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
+			
+		},
+		error: function(xhr,error){
+			console.log("Ajax 실패");
+		}
+	});
 }
 
 // 상환내역리스트에서 선택한 row 삭제
@@ -462,10 +489,17 @@ function deleteChecked(){
 		contentType : 'application/json',
 		data: JSON.stringify(voList),
 		success: function(response){
+			console.log("isClosed" + response.data.isClosed);
+			if(response.data.isClosed == true){				//리스트가 존재하면
+				alert("마감날짜가 지난 데이터는 삭제할 수 없습니다.");
+				renderingRepayList4Dialog(response.data.passedAtClosingDateList);
+				openDialog66();
+				return;
+			}
+				
 			console.log("삭제가 완료 되었습니다.");
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
-			
 		},
 		error: function(xhr,error){
 			console.log("Ajax 실패");
@@ -495,7 +529,42 @@ function rowChecked(thisObj){
 	
 }
 
+//--------------------------------------------------------------------Dialog---------------------------------------------//
+function openDialog66(){
+	$("#dialog66").dialog('open');
+	$("#dialog66").dialog({
+        	title: "상환정보",
+        	title_html: true,
+          	resizable: false,
+	        height: 500,
+	        width: 400,
+	        modal: true,
+	        close: function() {
+            $('#dialog66 *').remove();
+         },
+         buttons: {
+         "닫기" : function() {
+                  $(this).dialog('close');
+                  $('#dialog66 *').remove();
+             }
+         }
+     });
+}
 
+function renderingRepayList4Dialog(list){
+	$("#dialog66").append("<label>마감 : 상환내역 리스트<label");
+	list.forEach(vo => {
+		$("#dialog66").append("<p>" + vo.code + " : " + vo.no + "<p>")	
+	});
+}
+
+function isEmpty(value){
+	if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){ 
+		return true ;
+		}else{ 
+			return false ;
+		}
+};
 </script>
 </body>
 </html>
