@@ -8,6 +8,7 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 		.chosen-search {
@@ -21,6 +22,23 @@
 		.form-horizontal .control-label {
             text-align: left
         }
+        
+        html,body{
+         	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
 </style>
 </head>
 <body class="skin-3">
@@ -32,6 +50,7 @@
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매출세금계산서</h1>
 					<input type="hidden" value="${flag }" id="flag">
+					<input type="hidden" value="${dataflag }" id="dataflag">
 				</div>
 				<!-- /.page-header -->
 				
@@ -56,7 +75,7 @@
 										<label class="control-label" for="form-field-1">매 출 번 호 </label>
 										<div class="controls">
 											<input class="span5" type="text" id="sales-no" name="sales-no">
-											<button class="btn btn-small btn-info" type="submit">조회</button>
+											<button class="btn btn-small btn-info" type="submit" id="searchbtn">조회</button>
 										</div>
 									</div>
 								</div>
@@ -64,6 +83,10 @@
 						
 						<!-- Line -->
 						<div class="hr hr-18 dotted"></div>
+					</div>
+					<div id="dialog-confirm" class="hide">
+						<p id="dialog-txt" class="bolder grey">
+						</p>
 					</div>
 					</form>
 				</div>
@@ -296,8 +319,11 @@
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 	<!-- basic scripts -->
+	<script src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
+	
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	
 	<script>
 		$(function() {
 			$.fn.datepicker.dates['ko'] = {
@@ -331,8 +357,17 @@
 			
 			checkFlag();
 			createtaxbillNo();
-			//showTime();
+			dataEmptyCheck();
 		})
+		
+		function dataEmptyCheck() {
+			dialog("발생되지 않은 매출 입니다.", true);
+			
+			if($('#dataflag').val()=="true"){
+				//alert($('#dataflag').val());
+				dialog("발생되지 않은 매출 입니다.", true);
+			}
+		}
 		
 		function showTime(){
 			var currentDate = new Date();
@@ -436,6 +471,29 @@
 	  	    	$("#taxbillNo").val(taxbill);		  	        
 	  	    }
         }
+		
+		// 유효성 검사시에 발생되는 Dialog - 화면
+	    function dialog(txt, flag) {
+	        $("#dialog-txt").html(txt);
+	    	var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$( this ).dialog( "close" ); 
+								location.href="${pageContext.request.contextPath }/12/53";
+							} else {
+								$( this ).dialog( "close" ); 
+							}
+						}
+					}
+				]
+			});
+	    }
 		
 	</script>
 </body>

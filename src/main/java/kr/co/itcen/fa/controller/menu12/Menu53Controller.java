@@ -60,9 +60,17 @@ public class Menu53Controller {
 	public String list(@RequestParam("sales-date")String date, @RequestParam("sales-no")String no, @RequestParam("sales-no")String salesNo,
 			Model model) {
 		 
+			
 			List<SellTaxbillVo> list = menu53Service.getAllList(date, no);
+			
 			model.addAttribute("flag", "true");
 			model.addAttribute("list", list);
+			
+			if(list.isEmpty()) {
+				System.out.println("조회되는 데이터 없음!!!");
+				model.addAttribute("dataflag", "true");
+			}
+			
 			System.out.println(list.toString());
 		
 		// model.addAttribute("flag", "true");
