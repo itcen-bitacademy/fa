@@ -45,9 +45,12 @@ public class Menu66ApiController {
 		return JSONResult.success(map);
 	}
 	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
 	public JSONResult update(RepayVo vo, 
 			@AuthUser UserVo authUser) throws ParseException {
 		
+		System.out.println("--------------update() called----------------");
+		System.out.println("vo : " + vo);
 		Map map = new HashMap();
 		//마감확인
 		if(!menu19Service.checkClosingDate(authUser, vo.getPayDate())){

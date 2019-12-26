@@ -161,7 +161,7 @@ input::-webkit-inner-spin-button {
 					<section>
 						<div class="ia-left"><h4>단기차입금코드</h4></div>
 						<div class="ia-right">
-							<input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" onkeydown="codeChanged()" required>
+							<input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" onkeydown="codeChanged()" onchange="codeChanged()" required>
 							<button type="button" id='btn-chk-duplication' class="btn btn-primary btn-small" onclick="checkDuplication()">중복확인</button>
 							<img id="img-checkcode" style="width: 20px; display:none" src="/fa/assets/images/check.png">
 							<input type="hidden" name="isDuplicated" value="Y">
@@ -913,7 +913,8 @@ function selectRow(thisObj){
 	
 	inputForm.vo.value = inputVo.val();
 	inputForm.no.value = vo.no;
-	inputForm.code.value = vo.code;
+	//inputForm.code.value = vo.code;
+	$(inputForm.code).val(vo.code).change();
 	inputForm.name.value = vo.name;
 	inputForm.debtAmount.value = vo.debtAmount;
 	inputForm.debtAmountComma.value = comma(vo.debtAmount);

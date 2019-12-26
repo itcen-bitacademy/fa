@@ -5,7 +5,6 @@
 
 	<select id="listCount" resultType="int"
 		parameterType="receiptVo">
-		<!-- 페이징 가져오는거 쿼리 넣으세요 -->	
 			<![CDATA[
 				select   count(*)
 			        from tb_voucher_manager as v
@@ -24,7 +23,8 @@
 			                on cu.no = m.customer_no
 			      where v.use_yn = 1
 			        and i.use_yn = 1   
-           
+        		    and m.use_yn = 1
+        		    and i.order_no = m.order_no
            
 			]]>
 		<if test='accountNo!=null and !accountNo.equals("") '>		    
@@ -49,7 +49,6 @@
 
 
 	<select id="list" resultType="receiptVo" parameterType="map">
-		<!-- 리스트 조회하는거 쿼리 넣으세요 -->
 	
 	<![CDATA[
 			select   a.no as accountNo
@@ -76,7 +75,8 @@
                 on cu.no = m.customer_no
        where v.use_yn = 1
            and i.use_yn = 1   
-           
+       	   and m.use_yn = 1
+           and i.order_no = m.order_no   
 		   
 	]]>
 		<if test='vo.accountNo!=null and !vo.accountNo.equals("") '>		    
@@ -122,16 +122,17 @@
 				, a.parent4 as parent4
 				, a.parent5 as parent5
 				, m.customer_no as customerNo
-		  from tb_voucher_manager as v
-		  join tb_voucher_item as i on v.no = i.voucher_no
-		  join tb_account as a on a.no = i.account_no
-		  join tb_voucher_system_mapping m on m.voucher_no = v.no
-		 where v.reg_date >= '2019-12-01'
-		   and v.reg_date <= '2019-12-31'
-		   and v.use_yn = 1
-		   and i.use_yn = 1
-	  group by 
-				a.no
+		  from  tb_voucher_manager as v
+		  join  tb_voucher_item as i on v.no = i.voucher_no
+		  join  tb_account as a on a.no = i.account_no
+		  join  tb_voucher_system_mapping m on m.voucher_no = v.no
+		 where  v.reg_date >= '2019-12-01'
+		   and  v.reg_date <= '2019-12-31'
+		   and  v.use_yn = 1
+		   and  i.use_yn = 1
+		   and  m.use_yn = 1
+           and  i.order_no = m.order_no
+	  group by  a.no
 				, a.name
 				, i.amount
 				, i.amount_flag
@@ -144,4 +145,18 @@
 		;
 		]]>
 	</select>
+	
+	
+	<select id="select" resultType="long" parameterType="map">
+		<![CDATA[
+		select	v.no
+		  from tb_voucher_manager as v
+		  join tb_voucher_system_mapping m on v.no = m.voucher_no
+		 where v.reg_date >= #{End }
+		   and v.reg_date <= #{Start }
+		   and m.closing_yn ='y'
+		;
+		]]>
+	</select>
+	
 </mapper>

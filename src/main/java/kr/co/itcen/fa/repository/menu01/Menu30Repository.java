@@ -1,5 +1,7 @@
 package kr.co.itcen.fa.repository.menu01;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
+import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
 /**
@@ -28,7 +31,7 @@ public class Menu30Repository {
 		
 		return sqlSession.selectOne("menu30.listCount",revo);
 	}
-
+	
 	public List<ReceiptVo> list(PaginationUtil pagination, ReceiptVo revo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
@@ -39,5 +42,22 @@ public class Menu30Repository {
 
 	public List<StatementDataVo> statementData() {
 		return sqlSession.selectList("menu30.statementData");
+	}
+
+	public List<Long> selectVoucherNo(ClosingDateVo cVo) {
+		Calendar cal = Calendar.getInstance();				//전월이월
+        cal.setTime(cVo.getStartDate());
+        cal.add(Calendar.MONTH, 1);
+
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String End = transFormat.format(cVo.getEndDate());								//차월이월 date
+		String Start = transFormat.format(cal.getTime());								//전월이월 date
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("End",End);
+		map.put("Start", Start);
+		System.out.println(End+":"+ Start);
+		System.out.println(sqlSession.selectList("menu30.select",map));
+		return sqlSession.selectList("menu30.select",map);
 	}
 }
