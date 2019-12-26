@@ -338,14 +338,10 @@
 											<td class="center">${sales.itemCode }</td>
 											<td class="center">${sales.itemName }</td>
 											<td class="center">${sales.releaseDate }</td>
-											<td><fmt:formatNumber value="${sales.quantity }"
-													pattern="#,###" /></td>
-											<td><fmt:formatNumber value="${sales.supplyValue }"
-													pattern="#,###" /></td>
-											<td><fmt:formatNumber value="${sales.taxValue }"
-													pattern="#,###" /></td>
-											<td><fmt:formatNumber value="${sales.totalPrice }"
-													pattern="#,###" /></td>
+											<td style="text-align: right;"><fmt:formatNumber value="${sales.quantity }"pattern="#,###" /></td>
+											<td style="text-align: right;"><fmt:formatNumber value="${sales.supplyValue }"pattern="#,###" /></td>
+											<td style="text-align: right;"><fmt:formatNumber value="${sales.taxValue }"pattern="#,###" /></td>
+											<td style="text-align: right;"><fmt:formatNumber value="${sales.totalPrice }"pattern="#,###" /></td>
 											<td class="center">${sales.taxbillNo }</td>
 										</tr>
 									</c:forEach>
