@@ -361,15 +361,13 @@
 		})
 		
 		function dataEmptyCheck() {
-			//dialog("발생되지 않은 매출 입니다.", true);
-			
 			if($('#dataflag').val()=="true"){
-				//alert($('#dataflag').val());
 				dialog("발생되지 않은 매출 입니다.", true);
 			}
 		}
 		
 		function showTime(){
+			
 			var currentDate = new Date();
 
 			var msg = currentDate.getFullYear()+ "-" + (currentDate.getMonth()+1) + "-" +

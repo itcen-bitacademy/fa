@@ -24,22 +24,16 @@ public class Menu47Service {
 	private Menu47Repository menu47Repository;
 	
 	public Map getListMap() {
-		System.out.println("getListMap Call");
+		System.out.println("-----------------getListMap() Called---------------");
 		STermDebtVo sTermDebtVo = new STermDebtVo();
 		sTermDebtVo.setDeleteFlag("N");
 		sTermDebtVo.setRepayCompleFlag("N");
-		return search(sTermDebtVo, 5);
+		
+		return getListMap(sTermDebtVo, 5, null, 1);
 	}
 	
-	public Map search(STermDebtVo sTermDebtVo, int pageSize){
-		return order(sTermDebtVo, pageSize, null);
-	}
-	
-	public Map order(STermDebtVo sTermDebtVo, int pageSize, String orderColumn){
-		return paging(sTermDebtVo, pageSize, orderColumn, 1);
-	}
-	
-	public Map paging(STermDebtVo sTermDebtVo, int pageSize, String orderColumn, int page) {
+	public Map getListMap(STermDebtVo sTermDebtVo, int pageSize, String orderColumn, int page) {
+		System.out.println("-----------------getListMap(4) Called---------------");
 		//조회조건에 따라 Row 총갯수를 구한다.
 		int totalCnt = menu47Repository.getTotalCnt(sTermDebtVo);
 		Pagination pagination = new Pagination(page, totalCnt, pageSize);
@@ -48,6 +42,7 @@ public class Menu47Service {
 		Map map = pagination.getRowRangeMap();
 		map.put("vo", sTermDebtVo);
 		map.put("orderColumn", orderColumn);
+		System.out.println("map: " + map);
 		
 		//리스트를 구한다
 		List<STermDebtVo> list = menu47Repository.getList(map);
@@ -56,6 +51,8 @@ public class Menu47Service {
 		map.clear();
 		map.put("list", list);
 		map.put("pagination", pagination);
+		
+		System.out.println("-----------------getListMap(4) End---------------");
 		return map;
 	}
 }

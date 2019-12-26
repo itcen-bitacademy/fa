@@ -94,7 +94,8 @@
 <input type="hidden" id="context-path" value="${pageContext.request.contextPath }">
 <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode}">
 <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }">
-<input type="hidden" id="order-column">		<!-- page값을 저장 -->
+<input type="hidden" id="order-column">		<!-- 정렬값을 저장 -->
+<input type="hidden" id="search-condition">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -177,7 +178,7 @@
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
 							<th class="center">담당자전화번호</th>
-							<th class="center">은행코드</th>
+							<th class="center">은행명</th>
 							<th class="center">계좌</th>
 						</tr>
 					</thead>
@@ -196,7 +197,7 @@
 								<td class="center">${vo.intPayWay }</td>
 								<td class="center">${vo.mgr }</td>
 								<td class="center">${vo.mgrCall }</td>
-								<td class="center">${vo.bankCode }</td>
+								<td class="center">${vo.bankName }</td>
 								<td class="center">${vo.depositNo }</td>
 							</tr>
 						</c:forEach>
@@ -252,6 +253,7 @@
 </body>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
+$(document).ready(getList());
 function convertMajorCode(majorCode){
 	var MajorName = "";
 	if(majorCode == "008001")
@@ -309,7 +311,7 @@ function renderingList(list){
 				 "<td class='center'>" + convertIntPayWay(list[i].intPayWay) + "</td>" +
 				 "<td class='center'>" + list[i].mgr + "</td>" +
 				 "<td class='center'>" + list[i].mgrCall + "</td>" +
-				 "<td class='center'>" + list[i].bankCode + "</td>" +
+				 "<td class='center'>" + list[i].bankName + "</td>" +
 				 "<td class='center'>" + list[i].depositNo + "</td>");
 	}
 }
@@ -349,35 +351,46 @@ function renderingPage(pagination){
 	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>")
 }
  
+ function getList(){
+	 getListAjax(1);
+ }
+ 
  //조회 버튼 Click Event Method, 조회 데이터들을 넘겨준다.
  function search(){
-	 console.log("search call");
-	 ajaxProcessing(1);
+	 console.log("---------------------search() Called-------------------------");
+	 var searchCondition = $("#filter-area").serialize()
+	 console.log("filter-area : " + $("#filter-area").serialize());
+	 
+	 if($("#filter-area")[0].repayCompleFlag.checked == false)
+		 searchCondition += "&repayCompleFlag=N";
+	 if($("#filter-area")[0].deleteFlag.checked == false)
+		 searchCondition += "&deleteFlag=N";
+	 
+	 $("#search-condition").val(searchCondition);
+	 getListAjax(1);
  }
  
  //정렬 버튼 Click Event Method, 정렬 컬럼을 넘겨준다. 기본페이지 1
  function order(thisObj){
-	 console.log("order call");
+	 console.log("---------------------order() Called-------------------------");
 	 $("#order-column").val($(thisObj).val());
-	 ajaxProcessing(1);
+	 getListAjax(1);
  }
  
  //page click Event Method, 검색조건에 따른 페이지를 보여준다.
  function paging(thisObj){
-	 ajaxProcessing($(thisObj).attr('id'));
+	 console.log("---------------------paging() Called-------------------------");
+	 getListAjax($(thisObj).attr('id'));
  }
  
- function ajaxProcessing(page) {
-	 var sendData = $("#filter-area").serialize();
+ function getListAjax(page) {
+	 console.log("---------------------getListAjax() Called-------------------------");
+	 var sendData = $("#search-condition").val();
 	 
-	 var orderColumn = $("#order-column").val();	
-	 sendData += "&orderColumn=" + orderColumn + "&page=" + page;
+	 console.log("order-column" + $("#order-column").val());
+	 sendData += "&orderColumn=" + $("#order-column").val() + "&page=" + page;
+	 
 	
-	 if($("#filter-area")[0].repayCompleFlag.checked == false)
-		 sendData += "&repayCompleFlag=N";
-	 if($("#filter-area")[0].deleteFlag.checked == false)
-		 sendData += "&deleteFlag=N";
-	 
 	 console.log("sendData : " + sendData);
 	 $.ajax({
 			url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/getList",
@@ -392,6 +405,8 @@ function renderingPage(pagination){
 				
 			}
 		 });
+	 
+	 console.log("---------------------getListAjax() End-------------------------");
  }
 </script>
 </html>

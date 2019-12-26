@@ -28,13 +28,13 @@ public class Menu47ApiController {
 	public Menu47Service menu47Service;
 	
 	@ResponseBody
-	@RequestMapping(value="/" + Menu47Controller.SUBMENU + "/paging", method=RequestMethod.POST)
-	public JSONResult paging(STermDebtVo sTermDebtVo,
-			@RequestParam(value="pageSize", required=true) int pageSize,
+	@RequestMapping(value="/" + Menu47Controller.SUBMENU + "/getList", method=RequestMethod.POST)
+	public JSONResult getList(STermDebtVo sTermDebtVo,
+			@RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize,
 			@RequestParam(value="orderColumn", required=false, defaultValue="") String orderColumn,
 			@RequestParam(value="page", required=true) int page) {
 		
-		Map map = menu47Service.paging(sTermDebtVo, pageSize, orderColumn, page);
+		Map map = menu47Service.getListMap(sTermDebtVo, pageSize, orderColumn, page);
 		System.out.println("paging : " + sTermDebtVo);
 		return JSONResult.success(map);
 	}
