@@ -184,6 +184,7 @@
          where v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
+           and i.order_no in (m.order_no)
            ]]>
            
 			<if test="vo.datepicker1!=null and !vo.datepicker1.equals('')">		    
@@ -246,6 +247,7 @@
          where v.use_yn = 1
            and i.use_yn = 1
            and m.use_yn = 1
+           and i.order_no in (m.order_no)
            ]]>
            
 			<if test="datepicker1!=null and !datepicker1.equals('')">		    
