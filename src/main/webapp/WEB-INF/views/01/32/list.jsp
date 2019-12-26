@@ -96,42 +96,50 @@
 							<tr>
 								<td>
 									<label>사업자등록번호</label>
-									<input type="text" id="input-dialog-customerno" style="width: 100px;" />
-									<a href="#" id="a-dialog-customerno">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
+									<div class="input-append">
+										<input type="text" id="input-dialog-customerno" style="width: 100px;" />
+										<a href="#" id="a-dialog-customerno">
+											<span class="add-on">
+												<i class="icon-search icon-on-right bigger-110"></i>
+											</span>
+										</a>
+									</div>
 								</td>
 								
 								<td>
 									<label>상호명</label>
+									<div class="input-append">
 									<input type="text" id="input-dialog-customername" style="width: 100px;" />
 									<a href="#" id="a-dialog-customername">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
+											<span class="add-on">
+												<i class="icon-search icon-on-right bigger-110"></i>
+											</span>
+										</a>
+									</div>
 								</td>
 								
 								<td>
 									<label>은행코드</label>
-									<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
-									<a href="#" id="a-dialog-bankcode">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
+									<div class="input-append">
+										<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
+										<a href="#" id="a-dialog-bankcode">
+											<span class="add-on">
+												<i class="icon-search icon-on-right bigger-110"></i>
+											</span>
+										</a>
+									</div>
 								</td>
 								
 								<td>
 									<label>은행명</label>
+									<div class="input-append">
 									<input type="text" id="input-dialog-bankname" style="width: 100px;" />
-									<a href="#" id="a-dialog-bankname">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
+										<a href="#" id="a-dialog-bankname">
+											<span class="add-on">
+												<i class="icon-search icon-on-right bigger-110"></i>
+											</span>
+										</a>
+									</div>
 								</td>
 							</tr>
 						</table>
@@ -170,22 +178,26 @@
 							<tr>
 								<td>
 									<label>계정명</label>
+									<div class="input-append">
 									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountname">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
+									<a href="#" id="a-dialog-accountname"> 
+                                    	<span class="add-on">
+                                        	<i class="icon-search icon-on-right bigger-110"></i>
+                                    	</span>
 									</a>
+									</div>
 								</td>
 								
 								<td>
 									<label>계정코드</label>
+									<div class="input-append">
 									<input type="text" id="input-dialog-accountno" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountno">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
+									<a href="#" id="a-dialog-accountno"> 
+                                    	<span class="add-on">
+                                        	<i class="icon-search icon-on-right bigger-110"></i>
+                                    	</span>
 									</a>
+									</div>
 								</td>
 							</tr>
 						</table>

@@ -5,13 +5,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
     <c:import url="/WEB-INF/views/common/head.jsp" />
     <style>
+		/* 스크롤 깨짐 css s */
+    	html,body{
+			height:100%;
+		}
+		.main-container{
+			height:calc(100% - 45px);
+			overflow-x: hidden;
+		}
+		.main-content{
+			overflow:auto;
+		}
+		.page-content{
+			min-width:1280px;
+		}
+		/* 스크롤 깨짐 css e */
+		
     	.number{
     		text-align:right;
     	}
@@ -77,14 +92,14 @@
             cell2.innerHTML = '<td><select class="chosen-select" id="itemCode'+cnt+'" data-placeholder="품목코드" name="itemCode" onchange="setData.item(this.id)">'
 					            +'<option value="">&nbsp;</option>'
 					            +'<c:forEach items="${itemlist }" var="list" varStatus="status">'
-					            +'<option value="${list.itemCode }" id="">${list.itemCode }(재고:${list.stock})</option>'
+					            +'<option value="${list.itemCode }" id="">${list.itemName }(${list.itemCode } 재고:${list.stock})</option>'
 					            +'</c:forEach>'
 					        	+'</select><td>';
             cell3.innerHTML = '<td><input type="text" id="itemName'+cnt+'" name="itemName" placeholder="품목명" value="" readonly></td>';
-            cell4.innerHTML = '<td><input class="number" type="number" id="quantity'+cnt+'" name="quantity" placeholder="수량" min="0" onkeyup="sumData.addQuantity()" required>'
+            cell4.innerHTML = '<td><input class="number" type="number" id="quantity'+cnt+'" name="quantity" placeholder="수량" min="0" autocomplete="off" onkeyup="sumData.addQuantity()" required>'
             				  	+'<input type="hidden" value="0" id="stock'+cnt+'"></td>';
-            cell5.innerHTML = '<td><input class="number" type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" onkeyup="sumData.addSupplyValue(this)" required></td>';
-            cell6.innerHTML = '<td><input class="number" type="text"" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" onkeyup="sumData.addTaxValue(this)" required></td>';
+            cell5.innerHTML = '<td><input class="number" type="text" id="supplyValue'+cnt+'" name="supplyValue" placeholder="공급가액" autocomplete="off" onkeyup="sumData.addSupplyValue(this)" required></td>';
+            cell6.innerHTML = '<td><input class="number" type="text"" id="taxValue'+cnt+'" name="taxValue" placeholder="부가세" autocomplete="off" onkeyup="sumData.addTaxValue(this)" required></td>';
            
             $("#rowCnt").val(cnt);
             $(".chosen-select").chosen(); // 각 row에 품목코드 chosen 활성화
@@ -172,7 +187,12 @@
                 </c:forEach>                
         	},
         	item : function(selectid){// 품목 코드 선택시 data 세팅(selectid 에서 row 가져옴)
-        		var rownum = selectid.substring(selectid.length-1, selectid.length); // 맨 뒷자리 만 자름
+        		var rownum = 0;
+	        	if(selectid.length==9){
+	        		rownum = selectid.substring(selectid.length-1, selectid.length); // 맨 뒷자리 만 자름
+	        	} else {
+	        		rownum = selectid.substring(selectid.length-2, selectid.length); 
+	        	}
         		var code = $("#"+selectid).val();
         		if(code==""){
         			$("#itemName"+rownum).val(""); // 선택 row에 데이터 세팅
@@ -326,10 +346,8 @@
     <c:import url="/WEB-INF/views/common/navbar.jsp" />
     <div class="main-container container-fluid">
         <c:import url="/WEB-INF/views/common/sidebar.jsp" />
-        <div class="main-content" >
-            <div class="page-content" style="min-width:1280px;">
-
-
+        <div class="main-content">
+            <div class="page-content">
                 <div class="page-header position-relative">
                     <h1 class="pull-left">매출관리</h1>
                     <input type="hidden" value="${flag }" id="flag">
@@ -347,7 +365,7 @@
                                     <label class="control-label" for="cl-total-date-picker">매출일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" autocomplete="off" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].salesDate }" required><span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="" required><span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -382,7 +400,7 @@
                                     <label class="control-label" for="cl-total-date-picker">출고일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" autocomplete="off" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].releaseDate }" name="releaseDate" required> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="" name="releaseDate" required> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -551,8 +569,7 @@
                 weekStart: 0
             };
             $('.cl-date-picker').datepicker({
-                language: 'ko',
-                setDate: new Date()
+                language: 'ko'
             }).next().on(ace.click_event, function() {
                 $(this).prev().focus();
             });

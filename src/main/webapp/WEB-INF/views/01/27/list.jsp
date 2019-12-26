@@ -246,7 +246,7 @@ function execDaumPostcode() {
 		if (noArray[2] !=null){
 			$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
 		} else if (noArray[2]==null){
-			$("input[name=no]").val(noArray[0]);
+			$("input[name=no]").val(noArray[0]);  
 		}
 		$("input[name=name]").val(td.eq(2).text());
 		$("input[name=ceo]").val(td.eq(3).text());
@@ -614,13 +614,17 @@ function execDaumPostcode() {
 								<div id="dialog-message" title="계좌" hidden="hidden">
 									<table id="dialog-message-table">
 										<tr>
-											<td><label>계좌번호</label> <input type="text"
-												id="input-dialog-depositNo" style="width: 100px;" /> <a
-												href="#" id="a-dialog-depositNo"> <span
-													class="btn btn-small btn-info" style="margin-bottom: 10px;">
-														<i class="icon-search nav-search-icon"></i>
-												</span>
-											</a></td>
+											<td>
+												<label>계좌번호</label>
+												<div class="input-append">
+													<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+													<a href="#" id="a-dialog-depositNo">
+														<span class="add-on">
+														<i class="icon-search icon-on-right bigger-110"></i>
+														</span>
+													</a>
+												</div>
+											</td>
 										</tr>
 									</table>
 									<!-- 은행코드 및 은행명 데이터 리스트 -->

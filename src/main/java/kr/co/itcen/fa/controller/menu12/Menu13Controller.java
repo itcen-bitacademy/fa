@@ -64,6 +64,7 @@ public class Menu13Controller {
 		model.addAttribute("itemlist", itemlist); // 품목 목록 세팅
 		
 		return MAINMENU + "/" + SUBMENU + "/index";
+		
 	}
 	
 	//매출 입력
