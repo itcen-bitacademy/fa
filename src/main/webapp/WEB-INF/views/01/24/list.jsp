@@ -16,7 +16,14 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 </head>
-
+<style>
+.chosen-search {
+	display: none;
+}
+input, textarea, .uneditable-input {
+    width: 100px;
+}
+</style>
 <body class="skin-3">
 
 
@@ -44,19 +51,22 @@
 								class="add-on" > <i class="icon-calendar"></i>
 							</span>
 						</div>
-						&nbsp; &nbsp; ~ &nbsp;
+						&nbsp; ~ &nbsp;
+						
 						<div class="input-append">
 							<input type="text" id="datepicker2" class="cl-date-picker" name="inputperiodEnd" value="${param.inputperiodEnd }" readonly/> <span
 								class="add-on" > <i class="icon-calendar"></i>
 							</span>
 						</div>
 
-
-						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호" name = "cardStartNo" value="${param.cardStartNo }" /> 
-						카드종료번호 : <input type="text" id="form-field-1" placeholder="종료번호" name = "cardEndNo" value="${param.cardEndNo }"  /> 
+							&nbsp; &nbsp; &nbsp;
+						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호" name = "cardStartNo" value="${param.cardStartNo }" maxlength=4/>
+						&nbsp; &nbsp; &nbsp; 
+						카드종료번호 : <input type="text" id="form-field-1" placeholder="종료번호" name = "cardEndNo" value="${param.cardEndNo }"  maxlength=4/> 
 						
+							&nbsp; &nbsp; &nbsp;
 						삭제여부 : 
-						<select class="chosen-select" id="form-field-select-1" name="deleteFlag" data-placeholder="상위메뉴 선택">
+						<select class="chosen-select" id="form-field-select-1" name="deleteFlag" data-placeholder="상위메뉴 선택" style="width:80px">
 							<option value="">  </option>
 							<c:choose>
 								<c:when test="${param.deleteFlag eq 'Y' }">
@@ -120,7 +130,7 @@
 										<td>${vo.bankCode }</td>
 										<td>${vo.bankName }</td>
 										<td>${vo.company }</td>
-										<td>${vo.limitation }</td>
+										<td style="text-align: right;"><fmt:formatNumber value="${vo.limitation}" pattern="#,###" /></td>
 										<td>${vo.transportation }</td>
 										<td>${vo.abroad }</td>
 										<td>${vo.insertDay }</td>

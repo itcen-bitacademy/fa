@@ -41,11 +41,11 @@ public class Menu30Controller {
 			@ModelAttribute ReceiptVo revo, @AuthUser UserVo authUser
 			) {
 		// 초기 페이지 이동
-		if(revo.getRegDate() == null && revo.getCustomerNo() == null) {
+		if(revo.getRegDate() == null || revo.getCustomerNo() == null || revo.getAccountNo() ==null 
+				|| revo.getRegDate().equals("") || revo.getCustomerNo().equals("") || revo.getAccountNo().equals("")
+				) {
 			return MAINMENU + "/" + SUBMENU + "/list";
 		}
-		
-		System.out.println(revo.toString());
 		
 		DataResult<ReceiptVo> dataResult = menu30Service.search(page,revo, authUser);
 		model.addAttribute("dataResult", dataResult);

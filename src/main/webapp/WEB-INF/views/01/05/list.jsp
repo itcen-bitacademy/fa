@@ -351,7 +351,7 @@
 										<td>${vo.bankCode }</td>
 										<td>${vo.bankName }</td>
 										<td>${vo.company }</td>
-										<td><fmt:formatNumber value="${vo.limitation }" pattern="#,###"  /></td>
+										<td style="text-align: right;"><fmt:formatNumber value="${vo.limitation }" pattern="#,###"  /></td>
 										<td>${vo.transportation }</td>
 										<td>${vo.abroad }</td>
 										<td>${vo.insertDay }</td>
@@ -433,7 +433,7 @@
 
 <script>
 $(function() {
-	var a;//이게뭐 지 ~~~~~~~~~~~~~~~~~~~~~
+	var a;
 	$("#btn-create").click(function(){
 		a = "create";
 	});
@@ -601,7 +601,7 @@ $(function() {
 		        "<td>" + cardList[card].bankCode+ "</td>" +
 		        "<td>" + cardList[card].bankName+ "</td>" +
 		        "<td>" + cardList[card].company+ "</td>" +
-		        "<td>" + addCommas(cardList[card].limitation)+ "</td>" +
+		        "<td style='text-align: right;'>" + addCommas(cardList[card].limitation)+ "</td>" +
 		        "<td>" + cardList[card].transportation+ "</td>" +
 		        "<td>" + cardList[card].abroad+ "</td>" +
 		        "<td>" + cardList[card].insertDay + "</td>" +

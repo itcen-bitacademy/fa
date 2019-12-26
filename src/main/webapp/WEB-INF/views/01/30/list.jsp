@@ -10,21 +10,354 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 	<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 
-	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<c:import url="/WEB-INF/views/common/head.jsp" />
+
+		
+<style>
+.chosen-search {
+	display: none;
+}
+
+</style>
+
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
 	<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
 	<script	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
-<style>
-.chosen-search {
-	display: none;
-}
-</style>
 
-	
-<!-- DatePicker -->
+</head>
+<body class="skin-3">
+	<c:import url="/WEB-INF/views/common/navbar.jsp" />
+	<div class="main-container container-fluid">
+		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+		<div class="main-content">
+			<div class="page-content">
+
+
+
+				<div class="page-header position-relative">
+					<h1 class="pull-left">계정 거래처 명세서 조회</h1>
+				</div>
+
+
+				<div class="row-fluid">
+					<form class="form-horizontal" id="input-form" name="input-form">
+						
+						조회 기간
+						<div class="input-append">
+							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" readonly style="width:100px"/> 
+								
+							<span class="add-on"> <i class="icon-calendar"></i>
+							</span>
+						</div>
+						<script type="text/javascript">
+							var regDate = "${param.regDate}";
+							$("#datepicker").val(regDate);
+
+						</script>
+
+
+
+
+						&nbsp; &nbsp; 거래처/코드:
+
+						<div class="input-append">
+							<a href="#" id="a-customerinfo-dialog"> <input type="text"
+								class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width: 150px;" readonly /> 
+								<script type="text/javascript">
+									var customerName = "${param.customerName}";
+									$("#customerName").val(customerName);
+								</script> 
+								<span class="add-on"> 
+								<i class="icon-search icon-on-right bigger-110"></i>
+							</span>
+							</a>
+						</div>
+						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width: 150px;" readonly />
+						<script type="text/javascript">
+							var customerNo = "${param.customerNo}";
+							$("#customerNo").val(customerNo);
+						</script>
+
+						&nbsp;&nbsp; 계정코드/계정명
+						<div class="input-append">
+							<a href="#" id="a-accountinfo-dialog"> <input type="text"
+								class="search-input-width-first" id="accountNo" name="accountNo"
+								style="text-align: center; width: 150px;" readonly /> <script
+									type="text/javascript">
+													var accountNo = "${param.accountNo}";
+													$("#accountNo").val(accountNo);
+												</script> <span class="add-on"> <i
+									class="icon-search icon-on-right bigger-110"></i>
+							</span>
+							</a>
+						</div>
+
+						<input type="text" id="accountName" name="accountName"
+							placeholder="자동입력" class="col-xs-10 col-sm-5"
+							style="text-align: center; width: 150px;" readonly />
+						<script type="text/javascript">
+							var accountName = "${param.accountName}";
+							$("#accountName").val(accountName);
+						</script>
+						<button class="btn btn-small btn-info" type="submit"
+							formaction="${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/search">조회</button>
+
+					</form>
+					<div class="hr hr-18 dotted"></div>
+					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 계정 거래처 명세서 ${dataResult.pagination.totalCnt } 건</p>
+				</div>
+				
+				
+				<!-- 거래처 Modal pop-up : start -->
+					<div id="dialog-message" title="계좌" hidden="hidden">
+						<table id="dialog-message-table">
+							<tr>
+								<td>
+									<label>사업자등록번호</label>
+									<input type="text" id="input-dialog-customerno" style="width: 100px;" />
+									<a href="#" id="a-dialog-customerno">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
+								
+								<td>
+									<label>상호명</label>
+									<input type="text" id="input-dialog-customername" style="width: 100px;" />
+									<a href="#" id="a-dialog-customername">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
+								
+								<td>
+									<label>은행코드</label>
+									<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
+									<a href="#" id="a-dialog-bankcode">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
+								
+								<td>
+									<label>은행명</label>
+									<input type="text" id="input-dialog-bankname" style="width: 100px;" />
+									<a href="#" id="a-dialog-bankname">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
+							</tr>
+						</table>
+						
+						<!-- 거래처 데이터 리스트 -->
+						<table id="modal-customer-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">구분</th>
+									<th class="center">사업자등록번호</th>
+									<th class="center">상호명</th>
+								</tr>
+							</thead>
+							
+							<tbody id="tbody-customerList">
+							</tbody>
+						</table>
+						
+						<table id="modal-bank-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">은행코드</th>
+									<th class="center">은행명</th>
+								</tr>
+							</thead>
+							
+							<tbody id="tbody-bankList">
+							</tbody>
+						</table>
+					</div>
+					<!-- 거래처Modal pop-up : end -->
+					
+					<!-- 계정 Modal pop-up : start -->
+					<div id="dialog-message2" title="계정" hidden="hidden">
+						<table id="dialog-message-table">
+							<tr>
+								<td>
+									<label>계정명</label>
+									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
+									<a href="#" id="a-dialog-accountname">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
+								
+								<td>
+									<label>계정코드</label>
+									<input type="text" id="input-dialog-accountno" style="width: 100px;" />
+									<a href="#" id="a-dialog-accountno">
+										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
+									</a>
+								</td>
+							</tr>
+						</table>
+						
+						<!-- 계정 데이터 리스트 -->
+						<table id="modal-account-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">계정명</th>
+									<th class="center">계정코드</th>
+								</tr>
+							</thead>
+							
+							<tbody id="tbody-accountList">
+							</tbody>
+						</table>
+					</div>
+					
+					<!-- 계정 Modal pop-up : end -->
+
+
+
+				<div class="row-fluid">
+					<div class="span12">
+						<table id="sample-table-1"
+							class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>날짜</th>
+									<th>거래처 코드</th>
+									<th>거래처명</th>
+									<th>계정과목코드</th>
+									<th>계정과목</th>
+									<th>적요</th>
+									<th>차변</th>
+									<th>대변</th>
+								</tr>
+							</thead>
+
+							<tbody class = "origin-tbody">
+								<tr>
+									<td>[전월이월]</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								
+								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
+										<tr>
+											<td>${vo.regDate }</td>
+											<td>${vo.customerNo}</td>
+											<td>${vo.customerName }</td>
+											<td>${vo.accountNo }</td>
+											<td>${vo.accountName }</td>
+											<td>${vo.voucherUse}</td>
+											<c:choose>
+												<c:when test="${ vo.amountFlag=='d' }">
+													<td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+													<td></td>
+												</c:when>
+												<c:otherwise>
+													<td></td>
+													<td style="text-align: right;" ><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+												</c:otherwise>
+											</c:choose>
+
+									</tr>
+								</c:forEach>
+
+								<tr>
+									<td>[합계]</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+
+								<tr>
+									<td>[누계]</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- /span -->
+				</div>
+
+			</div>
+			<!-- /.page-content -->
+			<div class="pagination">
+				<ul>
+					<c:choose>
+					<c:when test="${dataResult.pagination.prev }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}"
+						><i class="icon-double-angle-left"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+					</c:otherwise>
+					</c:choose>
+					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+					<c:choose>
+					<c:when test="${pg eq dataResult.pagination.page }">
+		
+						<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
+					</c:otherwise>
+					</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
+						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">
+						<i class="icon-double-angle-right"></i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+					</c:otherwise>
+					</c:choose>
+				</ul>
+			</div>
+		</div>
+		<!-- /.main-content -->
+	</div>
+	<!-- /.main-container -->
+	<!-- basic scripts -->
+	<c:import url="/WEB-INF/views/common/footer.jsp" />
+
+</body>
+
+	<!-- DatePicker -->
 <script>
 	$(function() {
 		// 데이트피커 한글설정
@@ -392,337 +725,5 @@ $(function() {
 	});
 </script>
 
-
-
-
-<c:import url="/WEB-INF/views/common/head.jsp" />
-</head>
-<body class="skin-3">
-	<c:import url="/WEB-INF/views/common/navbar.jsp" />
-	<div class="main-container container-fluid">
-		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
-		<div class="main-content">
-			<div class="page-content">
-
-
-
-				<div class="page-header position-relative">
-					<h1 class="pull-left">계정 거래처 명세서 조회</h1>
-				</div>
-
-
-				<div class="row-fluid">
-					<form class="form-horizontal" id="input-form" name="input-form">
-						
-						입력 기간
-						<div class="input-append">
-							<input type="text" id="datepicker" class="cl-date-picker" name="regDate" readonly/> 
-								
-							<span class="add-on"> <i class="icon-calendar"></i>
-							</span>
-						</div>
-						<script type="text/javascript">
-							var regDate = "${param.regDate}";
-							$("#datepicker").val(regDate);
-
-						</script>
-
-
-
-
-						&nbsp; &nbsp; 거래처/코드:
-
-						<div class="input-append">
-							<a href="#" id="a-customerinfo-dialog"> <input type="text"
-								class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width: 150px;" readonly /> 
-								<script type="text/javascript">
-									var customerName = "${param.customerName}";
-									$("#customerName").val(customerName);
-								</script> 
-								<span class="add-on"> 
-								<i class="icon-search icon-on-right bigger-110"></i>
-							</span>
-							</a>
-						</div>
-						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width: 150px;" readonly />
-						<script type="text/javascript">
-							var customerNo = "${param.customerNo}";
-							$("#customerNo").val(customerNo);
-						</script>
-
-						&nbsp;&nbsp; 계정코드/계정명
-						<div class="input-append">
-							<a href="#" id="a-accountinfo-dialog"> <input type="text"
-								class="search-input-width-first" id="accountNo" name="accountNo"
-								style="text-align: center; width: 150px;" readonly /> <script
-									type="text/javascript">
-													var accountNo = "${param.accountNo}";
-													$("#accountNo").val(accountNo);
-												</script> <span class="add-on"> <i
-									class="icon-search icon-on-right bigger-110"></i>
-							</span>
-							</a>
-						</div>
-
-						<input type="text" id="accountName" name="accountName"
-							placeholder="자동입력" class="col-xs-10 col-sm-5"
-							style="text-align: center; width: 150px;" readonly />
-						<script type="text/javascript">
-							var accountName = "${param.accountName}";
-							$("#accountName").val(accountName);
-						</script>
-						<button class="btn btn-small btn-info" type="submit"
-							formaction="${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/search">조회</button>
-
-					</form>
-					<div class="hr hr-18 dotted"></div>
-					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 계정 거래처 명세서 ${dataResult.pagination.totalCnt } 건</p>
-				</div>
-				
-				
-				<!-- 거래처 Modal pop-up : start -->
-					<div id="dialog-message" title="계좌" hidden="hidden">
-						<table id="dialog-message-table">
-							<tr>
-								<td>
-									<label>사업자등록번호</label>
-									<input type="text" id="input-dialog-customerno" style="width: 100px;" />
-									<a href="#" id="a-dialog-customerno">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>상호명</label>
-									<input type="text" id="input-dialog-customername" style="width: 100px;" />
-									<a href="#" id="a-dialog-customername">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>은행코드</label>
-									<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
-									<a href="#" id="a-dialog-bankcode">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>은행명</label>
-									<input type="text" id="input-dialog-bankname" style="width: 100px;" />
-									<a href="#" id="a-dialog-bankname">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-							</tr>
-						</table>
-						
-						<!-- 거래처 데이터 리스트 -->
-						<table id="modal-customer-table" class="table  table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center">구분</th>
-									<th class="center">사업자등록번호</th>
-									<th class="center">상호명</th>
-								</tr>
-							</thead>
-							
-							<tbody id="tbody-customerList">
-							</tbody>
-						</table>
-						
-						<table id="modal-bank-table" class="table  table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center">은행코드</th>
-									<th class="center">은행명</th>
-								</tr>
-							</thead>
-							
-							<tbody id="tbody-bankList">
-							</tbody>
-						</table>
-					</div>
-					<!-- 거래처Modal pop-up : end -->
-					
-					<!-- 계정 Modal pop-up : start -->
-					<div id="dialog-message2" title="계정" hidden="hidden">
-						<table id="dialog-message-table">
-							<tr>
-								<td>
-									<label>계정명</label>
-									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountname">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>계정코드</label>
-									<input type="text" id="input-dialog-accountno" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountno">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-							</tr>
-						</table>
-						
-						<!-- 계정 데이터 리스트 -->
-						<table id="modal-account-table" class="table  table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center">계정명</th>
-									<th class="center">계정코드</th>
-								</tr>
-							</thead>
-							
-							<tbody id="tbody-accountList">
-							</tbody>
-						</table>
-					</div>
-					
-					<!-- 계정 Modal pop-up : end -->
-
-
-
-				<div class="row-fluid">
-					<div class="span12">
-						<table id="sample-table-1"
-							class="table table-striped table-bordered table-hover">
-							<thead>
-								<tr>
-									<th>날짜</th>
-									<th>거래처 코드</th>
-									<th>거래처명</th>
-									<th>계정과목코드</th>
-									<th>계정과목</th>
-									<th>적요</th>
-									<th>차변</th>
-									<th>대변</th>
-								</tr>
-							</thead>
-
-							<tbody class = "origin-tbody">
-								<tr>
-									<td>[전월이월]</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								
-								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
-										<tr>
-											<td>${vo.regDate }</td>
-											<td>${vo.customerNo}</td>
-											<td>${vo.customerName }</td>
-											<td>${vo.accountNo }</td>
-											<td>${vo.accountName }</td>
-											<td>${vo.voucherUse}</td>
-											<c:choose>
-												<c:when test="${ vo.amountFlag=='d' }">
-													<td>${vo.amount }</td>
-													<td></td>
-												</c:when>
-												<c:otherwise>
-													<td></td>
-													<td>${vo.amount }</td>
-												</c:otherwise>
-											</c:choose>
-
-									</tr>
-								</c:forEach>
-
-								<tr>
-									<td>[합계]</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-
-								<tr>
-									<td>[누계]</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<!-- /span -->
-				</div>
-
-			</div>
-			<!-- /.page-content -->
-			<div class="pagination">
-				<ul>
-					<c:choose>
-					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}"
-						><i class="icon-double-angle-left"></i></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-					</c:otherwise>
-					</c:choose>
-					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
-					<c:choose>
-					<c:when test="${pg eq dataResult.pagination.page }">
-		
-						<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
-					</c:otherwise>
-					</c:choose>
-					</c:forEach>
-					<c:choose>
-						<c:when test="${dataResult.pagination.next }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">
-						<i class="icon-double-angle-right"></i></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
-					</c:otherwise>
-					</c:choose>
-				</ul>
-			</div>
-		</div>
-		<!-- /.main-content -->
-	</div>
-	<!-- /.main-container -->
-	<!-- basic scripts -->
-	<c:import url="/WEB-INF/views/common/footer.jsp" />
-
-
-</body>
+	
 </html>
