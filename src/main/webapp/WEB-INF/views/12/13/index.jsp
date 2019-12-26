@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
