@@ -329,20 +329,20 @@
 								<tr>
 									<c:forEach items='${dataResult.datas }' var='sales'>
 										<tr>
-											<td class="center">${sales.salesDate }</td>
-											<td class="center">${sales.salesNo }</td>
-											<td class="center">${sales.number }</td>
-											<td class="center">${sales.customerCode }</td>
-											<td class="center">${sales.customerName }</td>
-											<td class="center">${sales.empManager }</td>
-											<td class="center">${sales.itemCode }</td>
-											<td class="center">${sales.itemName }</td>
-											<td class="center">${sales.releaseDate }</td>
-											<td style="text-align: right;"><fmt:formatNumber value="${sales.quantity }"pattern="#,###" /></td>
-											<td style="text-align: right;"><fmt:formatNumber value="${sales.supplyValue }"pattern="#,###" /></td>
-											<td style="text-align: right;"><fmt:formatNumber value="${sales.taxValue }"pattern="#,###" /></td>
-											<td style="text-align: right;"><fmt:formatNumber value="${sales.totalPrice }"pattern="#,###" /></td>
-											<td class="center">${sales.taxbillNo }</td>
+											<td>${sales.salesDate }</td>
+											<td>${sales.salesNo }</td>
+											<td style="text-align:right">${sales.number }</td>
+											<td>${sales.customerCode }</td>
+											<td>${sales.customerName }</td>
+											<td>${sales.empManager }</td>
+											<td>${sales.itemCode }</td>
+											<td>${sales.itemName }</td>
+											<td>${sales.releaseDate }</td>
+											<td style="text-align:right"><fmt:formatNumber value="${sales.quantity }" pattern="#,###" /></td>
+											<td style="text-align:right"><fmt:formatNumber value="${sales.supplyValue }" pattern="#,###" /></td>
+											<td style="text-align:right"><fmt:formatNumber value="${sales.taxValue }" pattern="#,###" /></td>
+											<td style="text-align:right"><fmt:formatNumber value="${sales.totalPrice }" pattern="#,###" /></td>
+											<td>${sales.taxbillNo }</td>
 										</tr>
 									</c:forEach>
 								</tr>
