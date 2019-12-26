@@ -14,19 +14,32 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
+   		/* 스크롤 깨짐 css s */
+    	html,body{
+			height:100%;
+		}
+		.main-container{
+			height:calc(100% - 45px);
+			overflow-x: hidden;
+		}
+		.main-content{
+			overflow:auto;
+		}
+		.page-content{
+			min-width:1280px;
+		}
+		/* 스크롤 깨짐 css e */
+		
         .daterangepicker .drp-calendar {
             max-width: 300px;
         }
-
         .form-horizontal .control-label {
             text-align: left
         }
-
         .controls input[type=text] {
             width: 50%;
             min-width: 200px
         }
-
         #list-table tr .number {
             text-align: right;
         }
@@ -36,21 +49,17 @@
     </script>
 </head>
 
-<body class="skin-3" style="min-width:1280px;">
+<body class="skin-3">
     <c:import url="/WEB-INF/views/common/navbar.jsp" />
     <div class="main-container container-fluid">
         <c:import url="/WEB-INF/views/common/sidebar.jsp" />
         <div class="main-content">
-            <div class="page-content" style="min-width:1280px;">
+        <!-- PAGE CONTENT BEGINS -->
+            <div class="page-content">
                 <div class="page-header position-relative">
                     <h1 class="pull-left">매출현황조회</h1>
                 </div>
                 <!-- /.page-header -->
-
-                <!-- PAGE CONTENT BEGINS -->
-
-
-                <!-- PAGE CONTENT BEGINS -->
                 <form class="form-horizontal" method="post" id="searchForm" action="${pageContext.request.contextPath }/12/14">
                     <div class="row-fluid">
                         <div class="span12">
@@ -191,8 +200,8 @@
                     </select>
                 </form>
                 <div class="row-fluid">
-                    <div class="span12">
-                        <table id="list-table" class="table table-striped table-bordered table-hover">
+                    <div class="span12" style="overflow:auto">
+                        <table id="list-table" class="table table-striped table-bordered table-hover" style="min-width:1600px;margin-bottom:0;">
                             <tr>
                                 <th>매출번호</th>
                                 <th>매출일</th>
@@ -211,11 +220,11 @@
                             </tr>
                             <c:forEach items="${dataResult.datas }" var="list" varStatus="status">
                                 <tr>
-                                    <td>${list.salesNo }</td>
-                                    <td>${list.salesDate }</td>
-                                    <td>${list.releaseDate }</td>
-                                    <td>${list.customerCode }</td>
-                                    <td>${list.customerName }</td>
+                                    <td class="salesNo">${list.salesNo }</td>
+                                    <td class="salesDate">${list.salesDate }</td>
+                                    <td class="releaseDate">${list.releaseDate }</td>
+                                    <td class="customerCode">${list.customerCode }</td>
+                                    <td class="customerName">${list.customerName }</td>
                                     <td>${list.empManager }</td>
                                     <td>${list.customerPhone }</td>
                                     <td>${list.taxbillNo }</td>
@@ -279,11 +288,15 @@
     <c:import url="/WEB-INF/views/common/footer.jsp" />
     <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
     <script>
+	    $(document).ready(function(e){
+	        genRowspan("salesNo");
+	    });
         $(function() {
+        	var now = new Date();
             $(".chosen-select").chosen();
             $("#salesDate").daterangepicker({
-            	startDate: "2019-12-01",
-                endDate: "2019-12-31",
+            	startDate: new Date(now.getYear()+1900, now.getMonth(), 1),
+                endDate: new Date(now.getYear()+1900, now.getMonth()+1, 0),
                 locale: {
                     format: 'YYYY-MM-DD'
                 }
@@ -307,11 +320,20 @@
                 $("#salesDate").data("daterangepicker").setEndDate($("#endDate").val());
             }
         }
-
         
         function view(){
         	var url = "${pageContext.request.contextPath }/12/14/1";
         	$("#searchForm").attr("action", url).submit();
+        }
+         
+        function genRowspan(className){
+            $("." + className).each(function() {
+                var rows = $("." + className + ":contains('" + $(this).text() + "')");
+                if (rows.length > 1) {
+                    rows.eq(0).attr("rowspan", rows.length);
+                    rows.not(":eq(0)").remove();
+                }
+            });
         }
     </script>
 </body>
