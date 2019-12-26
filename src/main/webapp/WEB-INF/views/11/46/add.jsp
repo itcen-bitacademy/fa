@@ -13,6 +13,8 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 
+body{font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;}
+
 .input-area{
 	display: grid;
 	grid-template-columns: repeat(2, auto);
@@ -135,6 +137,8 @@ input::-webkit-inner-spin-button {
 }
 
 .input-num{text-align:right;}
+
+.label-name{font-size: 14px}
 </style>
 </head>
 <body class="skin-3">
@@ -155,31 +159,31 @@ input::-webkit-inner-spin-button {
 				<input id="search-condition" type="hidden">
 				<input id="deleteVoList" type="hidden">
 				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-					<input type="hidden" name="vo"/>
 					<input type="hidden" name="no"/>
+					<input type="hidden" name="voucherNo"/>
 				<div class="input-area">
 					<section>
-						<div class="ia-left"><h4>단기차입금코드</h4></div>
+						<div class="ia-left"><label class="label-name">단기차입금코드</label></div>
 						<div class="ia-right">
 							<input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" onkeydown="codeChanged()" onchange="codeChanged()" required>
 							<button type="button" id='btn-chk-duplication' class="btn btn-primary btn-small" onclick="checkDuplication()">중복확인</button>
 							<img id="img-checkcode" style="width: 20px; display:none" src="/fa/assets/images/check.png">
 							<input type="hidden" name="isDuplicated" value="Y">
 						</div>
-						<div class="ia-left"><h4>단기차입금명</h4></div>
+						<div class="ia-left"><label class="label-name">단기차입금명</label></div>
 						<div class="ia-right"><input type="text" name="name" placeholder="육하원칙으로 입력해주세요." required></div>
-						<div class="ia-left"><h4>차입금액</h4></div>
+						<div class="ia-left"><label class="label-name">차입금액</label></div>
 						<div class="ia-right">
 							<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
 							<input type="hidden" name="debtAmount" required>
-							<h5 style="display: inline-block;">(원)</h5>
+							<label class="label-name" style="display: inline-block;">(원)</label>
 						</div>
-						<div class="ia-left"><h4>차입일자 ~ 만기일자</h4></div>
+						<div class="ia-left"><label class="label-name">차입일자 ~ 만기일자</label></div>
 						<div class="ia-right">
 							<input type="text" name="debtExpDate" readonly="readonly" required>
 							<span class="add-on"><i class="icon-calendar"></i></span>
 						</div>
-						<div class="ia-left"><h4>이자지급방식</h4></div>
+						<div class="ia-left"><label class="label-name">이자지급방식</label></div>
 						<div class="ia-right la-radio-wrapper">
 							<div>
 								<input type="radio" name="intPayWay" value="Y" class="ace" checked="checked">
@@ -194,7 +198,7 @@ input::-webkit-inner-spin-button {
 								<span class="lbl">해당없음</span>
 							</div>
 						</div>
-						<div class="ia-left"><h4>은행코드</h4></div>
+						<div class="ia-left"><label class="label-name">은행코드</label></div>
 						<div class="ia-right">
 							<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly="readonly" required/>
 							<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly="readonly"/>
@@ -205,43 +209,12 @@ input::-webkit-inner-spin-button {
 							</a>
 						</div>
 						
-						<!-- 은행조회 Modal pop-up : start -->
-						<div id="dialog-message" title="은행코드" hidden="hidden">
-							<section class="dialog-area">
-								<section class="bda-top">
-									<div class="modal-input-area">
-										<label>은행코드</label>
-										<input type="text"  id="input-dialog-bankcode"/>
-										<button type="button" id="btn-dialog-bankcode" class="btn-search" onclick="searchByBankcode()">조회</button>
-									</div>
-									<div class="modal-input-area">
-										<label>은행명</label>
-										<input type="text"  id="input-dialog-bankname"/>
-										<button type="button" id="btn-dialog-bankname" class="btn-search" onclick="searchByBankname()">조회</button>
-									</div>
-								</section>
-								
-								<!-- 은행코드 및 은행명 데이터 리스트 -->
-								<table id="modal-bank-table" class="table  table-bordered table-hover">
-									<thead>
-										<tr>
-											<th class="center">은행코드</th>
-											<th class="center">은행명</th>
-										</tr>
-									</thead>
-									<tbody id="tbody-bankList">
-									</tbody>
-								</table>
-							</section>
-						</div>
-					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-						
 					</section>
 					<section>
-						<div class="ia-left"><h4>회계연도</h4></div>
+						<div class="ia-left"><label class="label-name">회계연도</label></div>
 						<div class="ia-right"><input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도"></div>
 						
-						<div class="ia-left"><h4>차입금대분류</h4></div>
+						<div class="ia-left"><label class="label-name">차입금대분류</label></div>
 						<div class="ia-right">
 							<select class="chosen-select form-control" name="majorCode" id="majorCode" data-placeholder="차입금대분류" required>
 								<option value=""></option>
@@ -254,7 +227,7 @@ input::-webkit-inner-spin-button {
 							</select>
 						</div>
 						
-						<div class="ia-left"><h4>상환방법</h4></div>
+						<div class="ia-left"><label class="label-name">상환방법</label></div>
 						<div class="ia-right la-radio-wrapper">
 							<div>
 								<input name="repayWay" type="radio" class="ace"  value="Y" checked="checked"/>
@@ -270,45 +243,25 @@ input::-webkit-inner-spin-button {
 							</div>
 						</div>
 						
-						<div class="ia-left"><h4>이율</h4></div>
+						<div class="ia-left"><label class="label-name">이율</label></div>
 						<div class="ia-right"><input type="number" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/><h5 style="display:inline">%</h5></div>
 						
-						<div class="ia-left"><h4>담당자</h4></div>
+						<div class="ia-left"><label class="label-name">담당자</label></div>
 						<div class="ia-right">
 							<input type="text" class="mgr-input" name="mgr" id="mgr" required/>
-							<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+							<label class="mgr-number-input-h4 label-name">담당자전화번호</label>
 							<input type="text" class="mgr-call-input" name="mgrCall" id="mgrCall" required/>
 						</div>
 						
-						<div class="ia-left"><h4>계좌</h4></div>
+						<div class="ia-left"><label class="label-name">계좌</label></div>
 						<div class="ia-right">
 							<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" placeholder="계좌번호" readonly="readonly" required/>
 							<span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span>
 							<input type="text" class="search-input-width-second" name="depositHost" disabled="disabled" placeholder="예금주"/>
 						</div>
 						<!-- 계좌정보 Modal pop-up : start -->
-						<div id="dialog-account-message" title="계좌" hidden="hidden">
-							<section class="dialog-area">
-								<section class="modal-input-area">
-									<label>계좌번호</label>
-									<input type="text" id="input-dialog-depositNo" />
-									<button type="button" class="btn-search" onclick="searchAccountByNo()">조회</button>
-								</section>
-								
-								<!-- 계좌정보 데이터 리스트 -->
-								<table id="modal-deposit-table" class="table  table-bordered table-hover">
-									<thead>
-										<tr>
-											<th class="center">계좌번호</th>
-											<th class="center">예금주</th>
-											<th class="center">은행코드</th>
-											<th class="center">은행명</th>
-										</tr>
-									</thead>
-									<tbody id="tbody-bankaccountList">
-									</tbody>
-								</table>
-							</section>
+						<div id="dialog46" title="계좌" hidden="hidden">
+							
 						</div>
 						<!-- 계좌정보 Modal pop-up : end -->
 					</section>
@@ -453,11 +406,7 @@ $(function() {						//onload함수
 	
 	//--------------------------------------------------------------------------------------------------------------------------//
 	//은행, 계좌 Dialog
-	$("#dialog-message").dialog({
-		autoOpen : false
-	});
-	
-	$("#dialog-account-message").dialog({
+	$("#dialog46").dialog({
 		autoOpen : false
 	});
 	
@@ -641,8 +590,12 @@ function openRepayListDialog(){
 }
 //Dialog Open하는 함수
 function openBankDialog(){
-	$("#dialog-message").dialog('open');
-	$("#dialog-message").dialog({
+	console.log("-------------------------openBankDialog() Called----------------------------------------");			
+	if($("#dialog46 > *").length == 0)
+		renderBankDialog();
+	
+	$("#dialog46").dialog('open');
+	$("#dialog46").dialog({
 		title: "은행정보",
 		title_html: true,
 	   	resizable: false,
@@ -659,8 +612,35 @@ function openBankDialog(){
 	        }
 	    }
 	});
+	console.log("-------------------------openBankDialog() End----------------------------------------");
 }
 
+function renderBankDialog(){
+	$("#dialog46").append("<section class='dialog-area'>" +
+							 "<section class='bda-top'>" +
+								"<div class='modal-input-area'>" +
+									"<label>은행코드</label>" +
+									"<input type='text' id='input-dialog-bankcode'/>" + 
+									"<button type='button' id='btn-dialog-bankcode' class='btn-search' onclick='searchByBankcode()'>조회</button>" +
+								"</div>" +
+								"<div class='modal-input-area'>" +
+									"<label>은행명</label>" +
+									"<input type='text'  id='input-dialog-bankname'/>" +
+									"<button type='button' id='btn-dialog-bankname' class='btn-search' onclick='searchByBankname()'>조회</button>" +
+								"</div>" +
+							"</section>" +
+							"<table id='modal-bank-table' class='table  table-bordered table-hover'>" +
+							"<thead>" + 
+								"<tr>" +
+									"<th class='center'>은행코드</th>" +
+									"<th class='center'>은행명</th>" +
+								"</tr>" + 
+							"</thead>" +
+							"<tbody id='tbody-bankList'>" +
+							"</tbody>" + 
+						"</table>" +
+						"</section>");
+}
 //은행코드 검색 : 최대 하나의 결과만 가져온다.
 function searchByBankcode(){
 	console.log("searchByBankcode called");
@@ -738,7 +718,7 @@ function selectBankRow(thisObj){
 	console.log("vo " + vo);
 	inputForm.bankCode.value = vo.no;
 	inputForm.bankName.value = vo.name;
-	$("#dialog-message").dialog('close');
+	$("#dialog46").dialog('close');
 }
 
 //-----------------------------------상환 Model 메서드 ---------------------------------//
@@ -827,8 +807,10 @@ function openAccountDialog(){
 	//var accountForm = $("#account-form")[0];
 	console.log("openAccountDialog() called");
 	
-	$("#dialog-account-message").dialog('open');
-	$("#dialog-account-message").dialog({
+	renderAcctDialog();
+	
+	$("#dialog46").dialog('open');
+	$("#dialog46").dialog({
 	   	title: "계좌정보",
 	   	title_html: true,
 			resizable: false,
@@ -845,6 +827,27 @@ function openAccountDialog(){
 			}
 		}
 	});
+}
+
+function renderAcctDialog(){
+	console.log("-------------------------------renderAcctDialog() Called ------------------------");
+	$("#dialog46").append("<section class='dialog-area'>" + 
+							"<section class='modal-input-area'>" + 
+								"<label>계좌번호</label>" + 
+								"<input type='text' id='input-dialog-depositNo' />" + 
+								"<button type='button' class='btn-search' onclick='searchAccountByNo()'>조회</button>" +
+							"</section>" +
+							"<table id='modal-deposit-table' class='table  table-bordered table-hover'>" + 
+							"<thead>" +
+								"<tr>" +
+									"<th class='center'>계좌번호</th>" + 
+									"<th class='center'>예금주</th>" +
+									"<th class='center'>은행코드</th>" + 
+									"<th class='center'>은행명</th>" + 
+								"</tr>" +
+							"</thead>" +
+						 "</section>");
+	console.log("-------------------------------renderAcctDialog() End ------------------------");
 }
 
 function searchAccountByNo(){
@@ -896,7 +899,7 @@ function searchAccountByNo(){
 	 
 	 inputForm.depositNo.value = vo.depositNo;
 	 inputForm.depositHost.value = vo.depositHost; 
-	 $("#dialog-account-message").dialog('close');
+	 $("#dialog46").dialog('close');
  }
 
 
@@ -911,9 +914,8 @@ function selectRow(thisObj){
 	$(thisObj).closest("table").find("tr").css("background-color", "inherit");
 	$(thisObj).css("background-color", "#ddd");
 	
-	inputForm.vo.value = inputVo.val();
+	inputForm.voucherNo.value = vo.voucherNo;
 	inputForm.no.value = vo.no;
-	//inputForm.code.value = vo.code;
 	$(inputForm.code).val(vo.code).change();
 	inputForm.name.value = vo.name;
 	inputForm.debtAmount.value = vo.debtAmount;

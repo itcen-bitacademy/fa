@@ -361,7 +361,7 @@
 		})
 		
 		function dataEmptyCheck() {
-			dialog("발생되지 않은 매출 입니다.", true);
+			//dialog("발생되지 않은 매출 입니다.", true);
 			
 			if($('#dataflag').val()=="true"){
 				//alert($('#dataflag').val());

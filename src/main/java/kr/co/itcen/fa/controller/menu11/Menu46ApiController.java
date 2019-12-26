@@ -133,9 +133,7 @@ public class Menu46ApiController {
 		 
 		 //상환내역 존재하는지 확인(by code)
 		 Boolean existRepay = menu46Service.existRepay(sTermDebtVo.getCode());
-		 
-		 //존재한다면 업데이트 불가
-		 if(existRepay)
+		 if(existRepay)															//존재한다면 업데이트 불가
 			 return JSONResult.success(existRepay);
 		 
 		 //전표입력후 전표번호를 가지고온다.
@@ -158,12 +156,14 @@ public class Menu46ApiController {
 	    String saveExpDate = debtExpDate.substring(13);
 	    sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
 	    sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
+	    
 		sTermDebtVo.setInsertId(authUser.getId());
 		
 		System.out.println("sTermDebtVo : " + sTermDebtVo);
 		Map map= new HashMap();
 		//마감확인
 		if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate())) {
+			System.out.println("마감됬다!!!!!!");
 			 map.put("isClosed", true);
 			 return JSONResult.success(map);
 		}

@@ -41,7 +41,7 @@
 	
 	.input-area-radio{
 		display: grid;
-		grid-template-columns: 120px 50px 50px 80px;
+		grid-template-columns: 100px 50px 50px 80px;
 	}
 	.radio-label{
 		margin-right: 5px;
@@ -49,34 +49,15 @@
 	.filter-left{
 		grid-column: 1;
 		grid-row: 2;
-		
-		display: grid;
 	}
 	
+	.filter-left>*{
+		margin: auto 0;
+	}	
 	.filter-right{
 		grid-column: 2;
 		grid-row: 2;
 		
-	}
-	
-	.order-list{
-		height: 80px;
-		margin: auto 0;
-		
-		display: grid;
-		grid-template-columns: repeat(4,80px);
-		gap: 10px;
-	}
-	
-	.order-list>li{
-		display: inline-block;
-		float: left;
-	}
-	.order-list h4{color:#08c}
-	.order-list h4:hover{
-	color: #005580;
-	text-decoration: underline;
-	cursor: pointer;
 	}
 	
 	.chkbox-list-area{
@@ -91,23 +72,6 @@
 	
 	.selectbox-wrapper>select{ width:60px; height: 25px;}
 
-.prod-list-opts {
-	padding: 10px 15px 9px 11px;
-	position: relative;
-}
-
-.prod-list-opts .order-list {
-    margin: 3px 0 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-
-.prod-list-opts li {
-    list-style: none;
-    float: left;
-}
-
 .checkbox {
 	float: left;
 }
@@ -120,6 +84,10 @@
  .pg-total-row{grid-column: 3}
  .pg-total-row>h5{float:right; margin:0}
 
+.label-name{
+	font-size: 14px;
+	margin-right: 3px;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -142,34 +110,35 @@
 				<section class="filter-top">
 					<div class="input-area-wrapper">
 						<div class="input-area">
-							<label for="debtDate"><h4>차입일자</h4></label> 
+							<label for="debtDate"><label class="label-name">차입일자</label></label> 
 							<input type="date" id="debtDate" name="debtDate">
 						</div>
 						<div class="input-area">
-							<label for="expDate"><h4>만기일자</h4></label> 
+							<label for="expDate"><label class="label-name">만기일자</label></label> 
 							<input type="date" id="expDate" name="expDate">
 						</div>
 						<div class="input-area input-area-radio">
-							<label><h4>이자지급방식</h4></label> 
-							<div class="radio-input"><label class="radio-label">년</label><input type="radio" name="intPayWay" value="Y"></div>
-							<div class="radio-input"><label class="radio-label">월</label><input type="radio" name="intPayWay" value="M"></div>
-							<div class="radio-input"><label class="radio-label">해당없음</label><input type="radio" name="intPayWay" value="E"></div>
+							<label class="label-name">이자지급방식</label>
+							<div class="radio-input"><label class="radio-label label-name">년</label><input type="radio" name="intPayWay" value="Y"></div>
+							<div class="radio-input"><label class="radio-label label-name">월</label><input type="radio" name="intPayWay" value="M"></div>
+							<div class="radio-input"><label class="radio-label label-name">해당없음</label><input type="radio" name="intPayWay" value="E"></div>
 						</div>
 						<div class="input-area">
 							<div class="input-area-last">
-								<label for="bankName"><h4>은행명</h4></label> 
+								<label for="bankName"><label class="label-name">은행명</label></label> 
 								<input type="text" name="bankName" id="bankName">
 								<input type="button" value="조회" onclick="search()">
 							</div>
 						</div>
 					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
 				<section class="filter-left">
-					<ul class="order-list">	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
-						<li><h4 id="debt_date" onclick="order(this)">차입일자</h4></button></li>
-						<li><h4 id="exp_date" onclick="order(this)" >만기일자</h4></button></li>
-						<li><h4 id="insert_date" onclick="order(this)">등록일자</h4></button></li>
-						<li><h4 id="debt_amount" onclick="order(this)">차입금액</h4></button></li>
-					</ul>
+					<label class="label-name">정렬</label>
+					<select name="orderColumn" class="order-list" onchange="order(this)">	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
+						<option value="debt_date">차입일자</option>
+						<option value="exp_date">만기일자</option>
+						<option value="insert_date">등록일자</option>
+						<option value="debt_amount">차입금액</option>
+					</select>
 				</section> <!-- filter-left end -->
 				<section class="filter-right">
 					<div class="chkbox-list-area">
@@ -283,7 +252,47 @@
 </body>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
-
+function convertMajorCode(majorCode){
+	var MajorName = "";
+	if(majorCode == "008001")
+		MajorName = "국내은행";
+	else if(majorCode == "008002")
+		MajorName = "저축은행";
+	else if(majorCode == "008003")
+		MajorName = "신용금고";
+	else if(majorCode == "008004")
+		MajorName = "새마을금고";
+	else
+		MajorName = "외국계은행";
+	return MajorName;
+}
+function convertRepayWay(repayWay){
+	var repayWayName = "";
+	
+	if(repayWay == "Y")
+		repayWayName="연";
+	else if(repayWay == "M")
+		repayWayName="월";
+	else if(repayWay =="E")
+		repayWayName="만기";
+	
+	return repayWayName;
+}
+function convertIntPayWay(intPayWay){
+	var intPayWayName = "";
+	
+	if(intPayWay == "Y")
+		intPayWayName = "연";
+	else if(intPayWay == "M")
+		intPayWayName = "월";
+	else if(intPayWay == "E")
+		intPayWayName = "해당없음";
+	
+	return intPayWayName;
+}
+function convertIntRate(intRate){
+	return intRate + "%";
+}
 //리스트를 받아서 Rendering 하는 함수
 function renderingList(list){
 	$("#tbody-list > *").remove();
@@ -291,19 +300,20 @@ function renderingList(list){
 		$("#tbody-list").append("<tr>" +
 				 "<td class='center'>" + list[i].code + "</td>" +
 				 "<td class='center'>" + list[i].name + "</td>" +
-				 "<td class='center'>" + list[i].majorCode + "</td>" +
+				 "<td class='center'>" + convertMajorCode(list[i].majorCode) + "</td>" +
 				 "<td class='center'>" + list[i].debtAmount + "</td>" +
-				 "<td class='center'>" + list[i].repayWay + "</td>" +
+				 "<td class='center'>" + convertRepayWay(list[i].repayWay) + "</td>" +
 				 "<td class='center'>" + list[i].debtDate + "</td>" + 
 				 "<td class='center'>" + list[i].expDate + "</td>" +
-				 "<td class='center'>" + list[i].intRate + "</td>" +
-				 "<td class='center'>" + list[i].intPayWay + "</td>" +
+				 "<td class='center'>" + convertIntRate(list[i].intRate) + "</td>" +
+				 "<td class='center'>" + convertIntPayWay(list[i].intPayWay) + "</td>" +
 				 "<td class='center'>" + list[i].mgr + "</td>" +
 				 "<td class='center'>" + list[i].mgrCall + "</td>" +
 				 "<td class='center'>" + list[i].bankCode + "</td>" +
 				 "<td class='center'>" + list[i].depositNo + "</td>");
 	}
 }
+
 
 //page 번호 Rendering 함수
 function renderingPage(pagination){
@@ -342,34 +352,26 @@ function renderingPage(pagination){
  //조회 버튼 Click Event Method, 조회 데이터들을 넘겨준다.
  function search(){
 	 console.log("search call");
-	 ajaxProcessing(null, "search");
+	 ajaxProcessing(1);
  }
  
  //정렬 버튼 Click Event Method, 정렬 컬럼을 넘겨준다. 기본페이지 1
  function order(thisObj){
-	 console.log("order call")
-	 ajaxProcessing(thisObj, "order");
+	 console.log("order call");
+	 $("#order-column").val($(thisObj).val());
+	 ajaxProcessing(1);
  }
  
  //page click Event Method, 검색조건에 따른 페이지를 보여준다.
  function paging(thisObj){
-	 console.log("paging call");
-	 ajaxProcessing(thisObj, "paging");
+	 ajaxProcessing($(thisObj).attr('id'));
  }
  
- function ajaxProcessing(thisObj, urlStr) {
+ function ajaxProcessing(page) {
 	 var sendData = $("#filter-area").serialize();
 	 
-	 if(urlStr == "order"){
-		 var orderColumn = $(thisObj).attr('id');							//클릭된 정렬값을 구해온다.
-		 $("#order-column").val(orderColumn);		 						//해당 값을 페이지에 저장한다.
-		 sendData += "&orderColumn=" + orderColumn;
-	 }
-	 else if(urlStr == "paging"){
-		 orderColumn = $("#order-column").val();							//페이지에 저장된 정렬값을 가져온다
-		 var page = $(thisObj).attr('id');									//클릭된 해당 페이지값을 가져온다
-		 sendData += "&orderColumn=" + orderColumn + "&page=" + page;
-	 }
+	 var orderColumn = $("#order-column").val();	
+	 sendData += "&orderColumn=" + orderColumn + "&page=" + page;
 	
 	 if($("#filter-area")[0].repayCompleFlag.checked == false)
 		 sendData += "&repayCompleFlag=N";
@@ -378,7 +380,7 @@ function renderingPage(pagination){
 	 
 	 console.log("sendData : " + sendData);
 	 $.ajax({
-			url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/" + urlStr,
+			url : $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/"  + $("#sub-menu-code").val() + "/getList",
 			type : "POST",
 			dataType : "json",
 			data : sendData,
