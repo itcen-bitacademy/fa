@@ -109,15 +109,18 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >거래처 코드</label>
 									<div class="controls">
-										<span class="btn btn-small btn-info">
+										<div class="input-append">
 										<a href="#" id="a-customerinfo-dialog">
-										<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
-										<i class="icon-search nav-search-icon"></i> 
-										</a> 
+											<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
+											<span class="add-on">
+												<i class="icon-search icon-on-right bigger-110"></i>
+											</span> 
+										</a>
 									
-										</span> 
+										</div>
 										&nbsp; &nbsp;
 										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
+									
 									</div>
 								</div>
 								
@@ -262,6 +265,7 @@
 				<div class="span8">
 						<button class="btn btn-small" type="button" onclick="add();">입 력</button>
 						<button class="btn btn-small" type="button" onclick="modify();">행 수정</button>
+						<button class="btn btn-small" type="button" onclick="delete_row();">행 삭제</button>
 						<button class="btn btn-primary btn-small" type="submit" id="btn-create" 
 							name="btn-create" onclick="save();">저 장</button>
 						<button class="btn btn-warning btn-small" type="submit" id="btn-update" 
