@@ -130,12 +130,15 @@
 									<table id="dialog-message-table">
 										<tr>
 											<td><label>거래처코드</label> <input type="text"
-												id="input-dialog-customerNo" style="width: 100px;" /> <a
-												href="#" id="a-dialog-customerNo"> <span
-													class="btn btn-small btn-info" style="margin-bottom: 10px;">
-														<i class="icon-search nav-search-icon"></i>
-												</span>
-											</a></td>
+												id="input-dialog-customerNo" style="width: 100px;" />
+												<div class="input-append">
+												<a href="#" id="a-dialog-customerNo">
+													<span class="add-on">
+														<i class="icon-search icon-on-right bigger-110"></i>
+													</span>
+												</a>
+												</div>
+											</td>
 										</tr>
 									</table>
 									<!-- 거래처코드 및 거래처명 데이터 리스트 -->

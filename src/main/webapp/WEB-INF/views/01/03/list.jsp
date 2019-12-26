@@ -182,12 +182,15 @@
 									<table id="dialog-message-table">
 										<tr>
 											<td><label>거래처코드</label> <input type="text"
-												id="input-dialog-customerNo" style="width: 100px;" /> <a
-												href="#" id="a-dialog-customerNo"> <span
-													class="btn btn-small btn-info" style="margin-bottom: 10px;">
-														<i class="icon-search nav-search-icon"></i>
-												</span>
-											</a></td>
+												id="input-dialog-customerNo" style="width: 100px;" />
+												<div class="input-append">
+													<a href="#" id="a-dialog-customerNo">
+														<span class="add-on">
+															<i class="icon-search icon-on-right bigger-110"></i>
+														</span>
+													</a>
+												</div>
+											</td>
 										</tr>
 									</table>
 									<!-- 거래처코드 및 거래처명 데이터 리스트 -->
@@ -618,7 +621,7 @@
 	
 	// 행 삭제
 	function delete_row() {
-		var my_tbody = document.getElementById('voucher_save');
+		var my_tbody = document.getElementById('save-table');
 	    if (my_tbody.rows.length < 1) return;
 	    // my_tbody.deleteRow(0); // 상단부터 삭제
 	    my_tbody.deleteRow( my_tbody.rows.length-1 ); // 하단부터 삭제
@@ -899,6 +902,8 @@ $(function(){
 		console.log("voucherNo : " + voucherNo);
 		console.log(voucherNo);
 		
+		$("#voucher_save").empty(); // 태그는 남기고 내용 지우기
+		
 		$.ajax({
 			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/getVoucher?voucherNo=" + voucherNo,
 			type: "get",
@@ -938,9 +943,12 @@ $(function(){
 		      	  	console.log("host2");
 	      	  		console.log(host);
 	      	  		
-		      	  	if(voucherList[a].manageNo != null) {
-	      	  			var manageName = '세금계산서';
-	      	  			var manageNo = voucherList[a].manageNo;
+		      	  	if(voucherList[a].manageNo == '') {
+		      	  		var manageName = '';
+		      	  		var manageNo = '';
+	      	  		} else if(voucherList[a].manageNo != null) {
+	      	  			manageName = '세금계산서';
+      	  				manageNo = voucherList[a].manageNo;
 	      	  		} else {
 	      	  			manageName = '';
 	      	  			manageNo = '';
