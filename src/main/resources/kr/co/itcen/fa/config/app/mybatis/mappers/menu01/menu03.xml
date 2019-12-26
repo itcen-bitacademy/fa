@@ -36,7 +36,7 @@
 	<update id="updateOrder2" parameterType="1mappingvo">
 		<![CDATA[
 		update tb_voucher_system_mapping
-		   set order_no = order_no+1
+		   set order_no = order_no
 		 where voucher_no = #{voucherNo }
 		   and order_no <= #{orderNo };
 		]]>
@@ -78,7 +78,8 @@
 		  			use_yn,
 		  			voucher_no,
 		  			account_no,
-		  			group_no
+		  			group_no,
+		  			order_no
 		)
 		values (null,
 				#{amount },
@@ -88,7 +89,8 @@
 				true,
 				#{voucherNo },
 				#{accountNo },
-				#{groupNo }
+				#{groupNo },
+				#{orderNo }
 		)
 		]]>
 	</insert>
