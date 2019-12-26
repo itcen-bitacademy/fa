@@ -51,9 +51,6 @@ public class Menu03Controller {
 	@Autowired
 	private Menu19Service menu19Service;
 	
-	@Autowired
-	private Menu59Service menu59Service;
-	
 	// 전표관리 페이지
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
 	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
@@ -68,7 +65,7 @@ public class Menu03Controller {
 		DataResult<VoucherVo> dataResult = menu03Service.selectVoucherCount(voucherVo, page);
 		
 		// 계정조회
-		model.addAttribute("accountList", menu59Service.getAllAccountList());
+		model.addAttribute("accountList", menu03Service.getAllAccountList());
 		
 		// 데이블 셋팅
 		model.addAttribute("dataResult", dataResult);

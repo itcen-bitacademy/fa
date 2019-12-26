@@ -17,6 +17,7 @@ import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.TestVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
@@ -301,6 +302,11 @@ public class Menu03Repository {
 	// 전표번호로 팀정보 구하기
 	public String getSelectTeam(Long no) {
 		return sqlSession.selectOne("menu03.getSelectTeam", no);
+	}
+	
+	// 계정과목 셀렉트 박스에 대한 데이터 출력
+	public List<AccountManagementVo> getAllAccountList() {
+		return sqlSession.selectList("menu03.getAllAccountList");
 	}
 
 }

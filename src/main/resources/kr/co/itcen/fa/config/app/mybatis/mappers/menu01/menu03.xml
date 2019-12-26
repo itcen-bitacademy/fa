@@ -961,4 +961,15 @@
 		 where no = #{no };
 	]]>
 	</select>
+	
+	<!--  재무제표 계정과목, 계정명 불러오기 -->
+	<select id="getAllAccountList" resultType="accountManagement17Vo">
+		<![CDATA[
+	  select no   as accountNo  
+	       , name as accountName
+ 		from tb_account
+ 	   where statement_yn = '1';
+		]]>
+	</select>
+	
 </mapper>

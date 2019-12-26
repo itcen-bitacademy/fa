@@ -17,6 +17,7 @@ import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
+import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
@@ -230,6 +231,7 @@ public class Menu03Service {
 		System.out.println("b : " + userVo.getId());
 		voucherVo.setInsertTeam(userVo.getTeamName());
 		voucherVo.setInsertUserid(userVo.getId());
+		voucherVo.setOrderNo(1);
 		
 		menu03Repository.createVoucher(voucherVo);
 	}
@@ -270,6 +272,11 @@ public class Menu03Service {
 	// 전표번호로 팀정보 구하기
 	public String selectTeam(Long no) {
 		return menu03Repository.getSelectTeam(no);
+	}
+	
+	// 계정과목, 계정명칭 조회
+	public List<AccountManagementVo> getAllAccountList() {
+		return menu03Repository.getAllAccountList();
 	}
 
 }

@@ -496,9 +496,9 @@
 			}
 		
 		$('#regDate').val(regDate);
-		$('#accountNo').val('');
-		$('#accountName').val('');
-		$('#amountFlag').val('');
+		$('#accountNo').val(accountNo);
+		$('#accountName').val(accountName);
+		$('#amountFlag').val(amountFlag);
 		$('#amount').val('');
 		$('#manageNo').val(manageNo);
 		$('#customerNo').val('');
@@ -725,9 +725,9 @@
 			}
 		
 		$('#regDate').val(regDate);
-		$('#accountNo').val('');
-		$('#accountName').val('');
-		$('#amountFlag').val('');
+		$('#accountNo').val(accountNo);
+		$('#accountName').val(accountName);
+		$('#amountFlag').val(amountFlag);
 		$('#amount').val('');
 		$('#manageNo').val(manageNo);
 		$('#customerNo').val('');
