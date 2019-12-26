@@ -66,7 +66,7 @@ form {
 									</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"  />
+				                           <input class="cl-date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"  />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -111,7 +111,7 @@ form {
 								</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd"  />
+				                           <input class="cl-date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd"  />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -252,7 +252,31 @@ form {
 <script>
 	$(function() {
 		$(".chosen-select").chosen();
-		$('.date-picker').datepicker().next().on(ace.click_event, function() {
+		
+		$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+		};
+		
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode: 4,
+			minViewMode: 1,
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		
+		$('.cl-date-picker').datepicker({
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
 	});

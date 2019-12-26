@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+.form-horizontal .control-label {text-align: left;}
+
 input[type="text"], input[type="date"], select {
 	width: 300px;
 }
@@ -89,7 +91,7 @@ input[type="text"], input[type="date"], select {
 			<div class="page-header position-relative">
 				<h1 class="pull-left">상환내역관리</h1>
 			</div>
-			<div class="code-search-info" ><h5>* 상환내역을 조회할 때, 코드와 유형을 같이 입력해주세요.</h5></div>
+			<div class="code-search-info" ><label class="control-label">* 상환내역을 조회할 때, 코드와 유형을 같이 입력해주세요.</label></div>
 			
 			<!-- PAGE CONTENT BEGINS -->
 				<form class="form-horizontal" id="input-form" method="post" action="">
@@ -98,16 +100,16 @@ input[type="text"], input[type="date"], select {
 				<input type="hidden" name="voucherNo"/>
 				<div class="input-area">
 					<section>
-						<div class="ia-left"><h4>차입금코드</h4></div>
+						<div class="ia-left"><label class="control-label">차입금코드</label></div>
 						<div class="ia-right"><input type="text" id="code" name="code"></div>
-						<div class="ia-left"><h4>납입금</h4></div>
-						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
-						<div class="ia-left"><h4>이자금액</h4></div>
-						<div class="ia-right"><input type="text" id="id-intAmount" name="commaIntAmount" style="text-align:right;" readonly="readonly"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="intAmount" /></div>
+						<div class="ia-left"><label class="control-label">납입금</label></div>
+						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> (원)<input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
+						<div class="ia-left"><label class="control-label">이자금액</label></div>
+						<div class="ia-right"><input type="text" id="id-intAmount" name="commaIntAmount" style="text-align:right;" readonly="readonly"> (원)<input type="hidden" name="intAmount" /></div>
 					</section>
 					
 					<section>
-						<div class="ia-left"><h4>부채유형</h4></div>
+						<div class="ia-left"><label class="control-label">부채유형</label></div>
 						<div class="ia-right">
 							<select name="debtType"  id="debtType" >
 								<option value="">부채유형을 선택해주세요.</option>
@@ -116,9 +118,14 @@ input[type="text"], input[type="date"], select {
 								<option value="P">사채</option>
 							</select>
 						</div>
-						<div class="ia-left"><h4>상환일자</h4></div>
+						<div class="ia-left"><label class="control-label">상환일자</label></div>
 						<div class="ia-right">
-							<input type="date" id="payDate" name="payDate">
+						<div class="row-fluid input-prepend">
+							<input class="cl-date-picker" type="text" id="payDate" name="payDate" data-date-format="yyyy-mm-dd" />
+							<span class="add-on">
+				            	<i class="icon-calendar"></i>
+				            </span>
+				        </div>
 						</div>
 					</section>
 				</div>	<!--  input area -->
@@ -243,6 +250,36 @@ input[type="text"], input[type="date"], select {
 <script>
 $(function() {
 	$(".chosen-select").chosen();
+	
+	//--------------------------------------------------------------------------------------------------------------------------//
+	// date picker 설정
+	$.fn.datepicker.dates['ko'] = {
+			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			today: "Today",
+			clear: "Clear",
+			format: "yyyy-mm-dd",
+			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+			weekStart: 0
+	};
+		
+	$('#cl-ym-date-picker').datepicker({
+		maxViewMode: 4,
+		minViewMode: 1,
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	
+	$('.cl-date-picker').datepicker({
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	//--------------------------------------------------------------------------------------------------------------------------//
 	
 	//--------------------------------------------------------------------------------------------------------------------------//
 	// form에 입력한 모든 데이터 초기화
