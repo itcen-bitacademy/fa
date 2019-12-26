@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
@@ -40,10 +41,6 @@ public class Menu30Repository {
 		return list;
 	}
 
-	public List<StatementDataVo> statementData() {
-		return sqlSession.selectList("menu30.statementData");
-	}
-
 	public List<Long> selectVoucherNo(ClosingDateVo cVo) {
 		Calendar cal = Calendar.getInstance();				//전월이월
         cal.setTime(cVo.getStartDate());
@@ -60,4 +57,19 @@ public class Menu30Repository {
 		System.out.println(sqlSession.selectList("menu30.select",map));
 		return sqlSession.selectList("menu30.select",map);
 	}
+
+	public List<PreviousVo> previous(ReceiptVo revo) {
+		return sqlSession.selectList("menu30.previous", revo);
+	}
+
+	public boolean previousexist(ReceiptVo revo) {
+		int a=sqlSession.selectOne("menu30.previousexist", revo);
+		return a==0;
+	}
+
+	public List<StatementDataVo> addprevious(ClosingDateVo cVo) {
+		return sqlSession.selectList("menu30.addprevious", cVo);
+	}
+	
+	
 }

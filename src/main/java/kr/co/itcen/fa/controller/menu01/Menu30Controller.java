@@ -1,7 +1,6 @@
 package kr.co.itcen.fa.controller.menu01;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +14,7 @@ import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu01.Menu30Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 
 
@@ -48,7 +48,11 @@ public class Menu30Controller {
 		}
 		
 		DataResult<ReceiptVo> dataResult = menu30Service.search(page,revo, authUser);
+		PreviousVo pVo = menu30Service.previous(revo);
 		model.addAttribute("dataResult", dataResult);
+		if(pVo!=null) {
+			model.addAttribute("pVo", pVo);
+		}
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

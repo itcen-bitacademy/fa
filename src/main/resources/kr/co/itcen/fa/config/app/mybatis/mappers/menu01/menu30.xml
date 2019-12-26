@@ -19,12 +19,16 @@
 			             union
 			            select no, name
 			                  from tb_purchasecustomer
+			             union
+               			 select code as no, name
+                		  from tb_bank
 			            ) as cu
 			                on cu.no = m.customer_no
 			      where v.use_yn = 1
 			        and i.use_yn = 1   
         		    and m.use_yn = 1
         		    and i.order_no = m.order_no
+        		    and m.closing_yn = 'n'
            
 			]]>
 		<if test='accountNo!=null and !accountNo.equals("") '>		    
@@ -42,7 +46,7 @@
 		</if>
 		<if test="regDate!=null and !regDate.equals('')">
 			<![CDATA[ 
-				and date_format(v.reg_date,'%Y-%m') <= #{regDate }
+				and date_format(v.reg_date,'%Y-%m') = #{regDate }
 			]]>
 		</if>
 	</select>
@@ -60,23 +64,27 @@
             , cu.name as customerName
             , m.voucher_use as voucherUse
         from tb_voucher_manager as v
-        join tb_voucher_item as i on v.no = i.voucher_no
-        join tb_account as a on a.no = i.account_no
-        join tb_voucher_system_mapping m on m.voucher_no = v.no
-    left join (select no, name
-              from tb_customer
-             union
-            select no, name
-                  from tb_salescustomer
-             union
-            select no, name
-                  from tb_purchasecustomer
-            ) as cu
-                on cu.no = m.customer_no
-       where v.use_yn = 1
-           and i.use_yn = 1   
-       	   and m.use_yn = 1
-           and i.order_no = m.order_no   
+			        join tb_voucher_item as i on v.no = i.voucher_no
+			        join tb_account as a on a.no = i.account_no
+			        join tb_voucher_system_mapping m on m.voucher_no = v.no
+    			left join (select no, name
+             		 from tb_customer
+			             union
+			            select no, name
+			                  from tb_salescustomer
+			             union
+			            select no, name
+			                  from tb_purchasecustomer
+			             union
+               			 select code as no, name
+                		  from tb_bank
+			            ) as cu
+			                on cu.no = m.customer_no
+			      where v.use_yn = 1
+			        and i.use_yn = 1   
+        		    and m.use_yn = 1
+        		    and i.order_no = m.order_no
+        		    and m.closing_yn = 'n' 
 		   
 	]]>
 		<if test='vo.accountNo!=null and !vo.accountNo.equals("") '>		    
@@ -94,7 +102,7 @@
 		</if>
 		<if test="vo.regDate!=null and !vo.regDate.equals('')">
 			<![CDATA[ 
-				and date_format(v.reg_date,'%Y-%m') <= #{vo.regDate }
+				and date_format(v.reg_date,'%Y-%m') = #{vo.regDate }
 			]]>
 		</if>
 		<![CDATA[
@@ -109,43 +117,6 @@
 	</select>
 
 
-	<select id="statementData" resultType="statementData17Vo">
-		<![CDATA[
-		select	
-				a.no as account_no
-				, a.name as account_name
-				, sum(i.amount) as amount
-				, i.amount_flag as amount_flag
-				, a.parent1 as parent1
-				, a.parent2 as parent2
-				, a.parent3 as parent3
-				, a.parent4 as parent4
-				, a.parent5 as parent5
-				, m.customer_no as customerNo
-		  from  tb_voucher_manager as v
-		  join  tb_voucher_item as i on v.no = i.voucher_no
-		  join  tb_account as a on a.no = i.account_no
-		  join  tb_voucher_system_mapping m on m.voucher_no = v.no
-		 where  v.reg_date >= '2019-12-01'
-		   and  v.reg_date <= '2019-12-31'
-		   and  v.use_yn = 1
-		   and  i.use_yn = 1
-		   and  m.use_yn = 1
-           and  i.order_no = m.order_no
-	  group by  a.no
-				, a.name
-				, i.amount
-				, i.amount_flag
-				, a.parent1
-				, a.parent2
-				, a.parent3
-				, a.parent4
-				, a.parent5
-				, m.customer_no
-		;
-		]]>
-	</select>
-	
 	
 	<select id="select" resultType="long" parameterType="map">
 		<![CDATA[
@@ -159,4 +130,123 @@
 		]]>
 	</select>
 	
+	<select id="previous" resultType="previousVo"
+		parameterType="receiptVo">
+			<![CDATA[
+				select  i.amount as amount
+						, i.amount_flag as amountFlag
+						, m.voucher_use as voucherUse
+			        from tb_voucher_manager as v
+			        join tb_voucher_item as i on v.no = i.voucher_no
+			        join tb_account as a on a.no = i.account_no
+			        join tb_voucher_system_mapping m on m.voucher_no = v.no
+    		   left join (select no, name
+             		 from tb_customer
+			             union
+			             select no, name
+			                  from tb_salescustomer
+			             union
+			             select no, name
+			                  from tb_purchasecustomer
+			             union
+               			 select code as no, name
+                		 	  from tb_bank
+			            ) as cu
+			                on cu.no = m.customer_no
+			      where v.use_yn = 1
+			        and i.use_yn = 1   
+        		    and m.use_yn = 1
+        		    and i.order_no = m.order_no
+                    and m.closing_yn = 'y'
+           			
+			]]>
+		<if test='accountNo!=null and !accountNo.equals("") '>		    
+			<![CDATA[
+				and account_no = #{accountNo }
+			]]>
+		</if>
+		<if test='customerNo!=null and !customerNo.equals("")'>		    
+			<![CDATA[
+					and (case char_length(cu.no)
+          			 when"07" then (cu.no like '${customerNo }')
+           			when "11" then (cu.no like '%${customerNo }%')
+           			end) 
+			]]>
+		</if>
+		<if test="regDate!=null and !regDate.equals('')">
+			<![CDATA[ 
+					and date_format(v.reg_date,'%Y-%m-%d') = concat(#{regDate },'-01')
+			]]>
+		</if>
+	</select>
+	
+	<select id="previousexist" resultType="int"
+		parameterType="receiptVo">
+			<![CDATA[
+				select  count(*)
+			        from tb_voucher_manager as v
+			        join tb_voucher_item as i on v.no = i.voucher_no
+			        join tb_account as a on a.no = i.account_no
+			        join tb_voucher_system_mapping m on m.voucher_no = v.no
+    		   left join (select no, name
+             		 from tb_customer
+			             union
+			             select no, name
+			                  from tb_salescustomer
+			             union
+			             select no, name
+			                  from tb_purchasecustomer
+			             union
+               			 select code as no, name
+                		 	  from tb_bank
+			            ) as cu
+			                on cu.no = m.customer_no
+			      where v.use_yn = 1
+			        and i.use_yn = 1   
+        		    and m.use_yn = 1
+        		    and i.order_no = m.order_no
+                    and m.closing_yn = 'y'
+           			
+			]]>
+		<if test='accountNo!=null and !accountNo.equals("") '>		    
+			<![CDATA[
+				and account_no = #{accountNo }
+			]]>
+		</if>
+		<if test='customerNo!=null and !customerNo.equals("")'>		    
+			<![CDATA[
+					and (case char_length(cu.no)
+          			 when"07" then (cu.no like '${customerNo }')
+           			when "11" then (cu.no like '%${customerNo }%')
+           			end) 
+			]]>
+		</if>
+		<if test="regDate!=null and !regDate.equals('')">
+			<![CDATA[ 
+					and date_format(v.reg_date,'%Y-%m-%d') = concat(#{regDate },'-01')
+			]]>
+		</if>
+	</select>
+	
+	<select id="addprevious" resultType="statementData17Vo"
+		parameterType="closingDate17Vo">
+			<![CDATA[
+				select	
+				a.no as account_no
+				, a.name as account_name
+				, sum(i.amount) as amount
+				, i.amount_flag as amount_flag
+				, m.customer_no as customerNo
+		  from tb_voucher_manager as v
+		  join tb_voucher_item as i on v.no = i.voucher_no
+		  join tb_account as a on a.no = i.account_no
+		  join tb_voucher_system_mapping m on m.voucher_no = v.no
+		 where v.reg_date = #{startDate }
+		   and v.use_yn = 1
+		   and i.use_yn = 1
+		   and i.order_no = m.order_no
+		   and m.closing_yn = 'y'
+        
+			]]>
+	</select>
 </mapper>

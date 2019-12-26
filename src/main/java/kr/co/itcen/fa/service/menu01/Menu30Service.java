@@ -41,21 +41,39 @@ public class Menu30Service {
 		System.out.println(revo);
 		int totalCnt = menu30Repository.listCount(revo);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
-		System.out.println(totalCnt);
 		dataResult.setPagination(pagination);
 		List<ReceiptVo> list = menu30Repository.list(pagination,revo);
-		dataResult.setDatas(list);
-		
-		List<StatementDataVo> statementDataList = menu30Repository.statementData();
-		
-		ClosingDateVo cVo =new ClosingDateVo();
-		cVo.setClosingYearMonth("2019-12");
-		
-//		closingEntries(statementDataList, cVo, authUser );
-//		closingEntriesDelete(cVo, authUser);
+	    dataResult.setDatas(list);
+	    
 		return dataResult;
 	}
 	
+	public PreviousVo previous(ReceiptVo revo) {
+		if(menu30Repository.previousexist(revo)) {
+			return null;
+		}
+		List<PreviousVo> previous = menu30Repository.previous(revo);
+		Long total=0L;
+		PreviousVo pVo = new PreviousVo(); 
+		pVo.setVoucherUse(previous.get(0).getVoucherUse());
+		for(int i=0; i<previous.size();i++) {
+			if(previous.get(i).getAmountFlag().equals("d")) {
+				total+=previous.get(i).getAmount();
+			}else {
+				total-=previous.get(i).getAmount();
+			}
+		}
+		
+		if(total<0) {
+			total= -total;
+			pVo.setAmountFlag("c");
+		}else {
+			pVo.setAmountFlag("d");
+		}
+		pVo.setAmount(total);
+		
+		return pVo;
+	}
 	
 	//전월이월 입력
 	public void closingEntries(List<StatementDataVo> sVo, ClosingDateVo cVo, UserVo authUser) {	//월별마감일때 해당
@@ -64,7 +82,7 @@ public class Menu30Service {
 			return;
 		}
 		List<PreviousVo> pVo = new ArrayList<PreviousVo>();
-		
+		// 전기이월 데이터 가지고 와서 연산
 		Calendar cal = Calendar.getInstance();				//전월이월
         cal.setTime(cVo.getStartDate());
         cal.add(Calendar.MONTH, 1);
@@ -82,6 +100,9 @@ public class Menu30Service {
 			carry1= "차월이월";
 			carry2= "전월이월";
 		}
+		
+		List<StatementDataVo> addsVo = menu30Repository.addprevious(cVo);
+		sVo.addAll(addsVo);
 		
 		for(int i=0; i<sVo.size();i++) {				//거래처 계정별 amount 계산
 			if(sVo.get(i).getAccountNo()>=4000000) {
@@ -227,6 +248,9 @@ public class Menu30Service {
 		}
 		return null;
 	}
+
+
+	
 	
 	
 	

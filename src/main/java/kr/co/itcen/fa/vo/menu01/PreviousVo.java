@@ -1,11 +1,23 @@
 package kr.co.itcen.fa.vo.menu01;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("previousVo")
 public class PreviousVo {
 	private String customerNo;
 	private Long accountNo;
 	private Long amount;
 	private String amountFlag;
+	private String voucherUse;
 	
+	public String getVoucherUse() {
+		return voucherUse;
+	}
+
+	public void setVoucherUse(String voucherUse) {
+		this.voucherUse = voucherUse;
+	}
+
 	public String getCustomerNo() {
 		return customerNo;
 	}
@@ -39,10 +51,12 @@ public class PreviousVo {
 	}
 	
 	
+	
+
 	@Override
 	public String toString() {
 		return "PreviousVo [customerNo=" + customerNo + ", accountNo=" + accountNo + ", amount=" + amount
-				+ ", amountFlag=" + amountFlag + "]";
+				+ ", amountFlag=" + amountFlag + ", voucherUse=" + voucherUse + "]";
 	}
 
 	public boolean exist(Long accountNo2, String customerNo2) {

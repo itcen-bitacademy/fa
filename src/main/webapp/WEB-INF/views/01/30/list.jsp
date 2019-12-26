@@ -135,16 +135,24 @@
 							</thead>
 
 							<tbody class = "origin-tbody">
-								<tr>
-									<td>[전월이월]</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
+									<tr>
+										<td>[ ${pVo.voucherUse } ]</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<c:choose>
+												<c:when test="${ pVo.amountFlag=='d' }">
+													<td style="text-align: right;"><fmt:formatNumber value="${pVo.amount}" pattern="#,###" /></td>
+													<td></td>
+												</c:when>
+												<c:otherwise>
+													<td></td>
+													<td style="text-align: right;" ><fmt:formatNumber value="${pVo.amount}" pattern="#,###" /></td>
+												</c:otherwise>
+											</c:choose>
+									</tr>
 								
 								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 										<tr>
@@ -564,8 +572,8 @@
 					$("#input-dialog-accountname").val('');
 					 $.each(response.data,function(index, item){
 			                $("#tbody-accountList").append("<tr>" +
-			                		"<td class='center'>" + item.accountName + "</td>" +
-							        "<td class='center'>" + item.accountNo + "</td>" +
+			                		"<td class='center'>" + item.accountNo + "</td>" +
+							        "<td class='center'>" + item.accountName + "</td>" +
 							        "</tr>");
 			         })
 				},
@@ -730,8 +738,8 @@ $(function() {
 	$(document.body).delegate('#tbody-accountList tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
-		$("input[name=accountNo]").val(td.eq(0).text());
-		$("input[name=accountName]").val(td.eq(1).text());
+		$("input[name=accountNo]").val(td.eq(1).text());
+		$("input[name=accountName]").val(td.eq(0).text());
 		$("#dialog-message2").dialog('close');
 	});
 
