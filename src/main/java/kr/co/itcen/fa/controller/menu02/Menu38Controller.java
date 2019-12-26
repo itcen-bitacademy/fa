@@ -142,6 +142,7 @@ public class Menu38Controller {
 			@RequestParam(value = "page_group", required = false, defaultValue = "0") int pageGroup) {
 
 		System.out.println("조건조회");
+		System.out.println(buyTaxbillListVo.getCompanyName());
 		buyTaxbillListVo.setPage(page);
 		buyTaxbillListVo.setPageGroup(pageGroup);
 		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillListAll(buyTaxbillListVo); // 전체리스트

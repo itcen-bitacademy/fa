@@ -91,7 +91,7 @@
 					 and no = #{no }
 				]]>
 		</if>
-		<if test='companyName!=""'>
+		<if test='companyName!=null'>
 				<![CDATA[
 					 and company_name = #{companyName }
 				]]>
@@ -160,7 +160,7 @@
 					 and no = #{no }
 				]]>
 		</if>
-		<if test='companyName!=""'>
+		<if test='companyName!=null'>
 				<![CDATA[
 					 and company_name = #{companyName }
 				]]>
@@ -232,7 +232,7 @@
 					 and no = #{no }
 				]]>
 		</if>
-		<if test='companyName!=""'>
+		<if test='companyName!=null'>
 				<![CDATA[
 					 and company_name = #{companyName }
 				]]>

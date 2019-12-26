@@ -49,7 +49,7 @@
 							<!-- PAGE CONTENT BEGINS -->
 
 							<div class="control-group">
-								<label class="control-label span1" for="no">승인번호</label>
+								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="no" name="no"
 										value="${getAboutNoData.no }"
@@ -58,7 +58,7 @@
 										type="hidden" id="no" name="originalNo"
 										value="${getAboutNoData.no }" />
 								</div>
-								<label class="control-label span1" for="manage-no">관리번호</label>
+								<label class="control-label span1" for="manage-no">관&emsp;리&emsp;번&emsp;호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="manage-no"
 										value="${getAboutNoData.manageNo }" name="manageNo"
@@ -67,13 +67,13 @@
 							</div>
 
 							<div class="control-group">
-								<label class="control-label span1" for="customer-no">등록번호</label>
+								<label class="control-label span1" for="customer-no">등&emsp;록&emsp;번&emsp;호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-no"
 										value="${getAboutNoCustomerData.no }" name="id"
 										placeholder="ex) P1018147345" autocomplete="off" />
 								</div>
-								<label class="control-label span1" for="deposit-no">입금계좌번호</label>
+								<label class="control-label span1" for="deposit-no">계&emsp;좌&emsp;번&emsp;호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-no"
 										value="${getAboutNoBankData.depositNo }" name="id"
@@ -82,9 +82,8 @@
 							</div>
 
 							<div class="control-group">
-								<label class="control-label span1" for="company-name">거래처명</label>
+								<label class="control-label span1" for="company-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span2">
-
 									<select id="company-name" name="companyName"
 										style="width: 100%;" onchange="load_customer_imfo();" required>
 										<c:choose>
@@ -104,13 +103,13 @@
 									</select>
 
 								</div>
-								<label class="control-label span1" for="customer-name">성명</label>
+								<label class="control-label span1" for="customer-name">성&emsp;&emsp;&emsp;&emsp;&emsp;명</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="customer-name"
 										value="${getAboutNoCustomerData.ceo }" name="id"
 										placeholder="ex) 김기태" autocomplete="off" autocomplete="off" />
 								</div>
-								<label class="control-label span1" for="deposit-host">예금주</label>
+								<label class="control-label span1" for="deposit-host">예&emsp;&emsp;금&emsp;&emsp;주</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-host"
 										value="${getAboutNoCustomerData.depositHost }"
@@ -119,13 +118,13 @@
 							</div>
 
 							<div class="control-group">
-								<label class="control-label span1" for="customer-address">주소</label>
+								<label class="control-label span1" for="customer-address">주&emsp;&emsp;&emsp;&emsp;&emsp;소</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-address"
 										value="${getAboutNoCustomerData.address }" name="id"
 										placeholder="ex) 대구광역시 수성구 청수로 260(황금동)" autocomplete="off" />
 								</div>
-								<label class="control-label span1" for="bank">은행</label>
+								<label class="control-label span1" for="bank">은&emsp;&emsp;&emsp;&emsp;&emsp;행</label>
 								<div class="controls span5">
 									<div class="controls span2">
 										<input style="width: 80%" type="text" id="bank-code"
@@ -141,19 +140,19 @@
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="conditions">업태</label>
+								<label class="control-label span1" for="conditions">업&emsp;&emsp;&emsp;&emsp;&emsp;태</label>
 								<div class="controls span2">
 									<input style="width: 94%;" type="text" id="conditions"
 										value="${getAboutNoCustomerData.conditions }" name="id"
 										placeholder="ex) 제조업" autocomplete="off" />
 								</div>
-								<label class="control-label span1" for="items">종목</label>
+								<label class="control-label span1" for="items">종&emsp;&emsp;&emsp;&emsp;&emsp;목</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="items" name="id"
 										value="${getAboutNoCustomerData.item }"
 										placeholder="ex) 제조 / 과실및채소절임식품" autocomplete="off" />
 								</div>
-								<label class="control-label span1" for="taxType">과세구분</label>
+								<label class="control-label span1" for="taxType">과&emsp;세&emsp;구&emsp;분</label>
 								<div class="controls span2">
 									<c:choose>
 										<c:when test="${flag == 'true'}">
@@ -204,7 +203,7 @@
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="id-date-picker-1">일자</label>
+								<label class="control-label span1" for="id-date-picker-1">일&emsp;&emsp;&emsp;&emsp;&emsp;자</label>
 								<div class="controls span2">
 									<div class="input-append" style="width: 100%">
 										<input id="id-date-picker-1" class="calender"
@@ -214,8 +213,7 @@
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="form-field-14">총
-									공급가액</label>
+								<label class="control-label span1" for="form-field-14">총&emsp;공&nbsp;급&nbsp;가&nbsp;액</label>
 								<div class="controls span4">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-14"
@@ -223,8 +221,7 @@
 										name="totalSupplyValue" autocomplete="off" placeholder="0"
 										readonly />
 								</div>
-								<label class="control-label span1" for="form-field-15">총
-									세액</label>
+								<label class="control-label span1" for="form-field-15">총&emsp;세&nbsp;액</label>
 								<div class="controls span3">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-15"
@@ -355,7 +352,11 @@
 		}
 		// 달력 한글버젼 패치 
 		function addElementCalender() {
-
+			$('#id-date-picker-1').datepicker({
+				language : 'ko'
+			}).next().on(ace.click_event, function() {
+				$(this).prev().focus();
+			});
 			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
 				$("#date" + i).datepicker({
 					language : 'ko'
@@ -364,7 +365,6 @@
 				});
 			}
 		}
-
 		$.fn.datepicker.dates['ko'] = {
 			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
 			daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
@@ -379,22 +379,17 @@
 			titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
 			weekStart : 0
 		};
-
 		// 품목 행 추가할 때
-
 		function add_row() {
-
 			var table = document.getElementById("sample-table-1");
 			var cnt = table.rows.length;
 			var row = table.insertRow(cnt); // 하단에 추가
-
 			var cell1 = row.insertCell(0);
 			var cell2 = row.insertCell(1);
 			var cell3 = row.insertCell(2);
 			var cell4 = row.insertCell(3);
 			var cell5 = row.insertCell(4);
 			var cell6 = row.insertCell(5);
-
 			cell1.innerHTML = '<td><p>' + cnt + '</p></td>';
 			cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" class="calender" name="purchaseDate" autocomplete="off"></td>';
 			cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName" autocomplete="off"></td>';
@@ -411,10 +406,8 @@
 			addElementCommas();
 			addElementCalender();
 		}
-
 		// 품목 행 삭제할 때 
 		function delete_row() {
-
 			var table = document.getElementById('sample-table-1');
 			var cnt = table.rows.length;
 			if (table.rows.length < 3) {
@@ -426,11 +419,9 @@
 			addElementCommas();
 			sumAllSupplyAllTax();
 		}
-
 		// 금액이 콤마 생기고, focus없어지면 콤마 사라지게 하는 부분
 		function addElementCommas() {
 			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
-
 				$("#supply-value" + i).on(
 						'keyup',
 						function(event) {
@@ -447,35 +438,28 @@
 						});
 			}
 		}
-
 		function addCommas(price) {
 			return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
-
 		function numberFormat(number) {
 			return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
-
 		//품목들의 수량과 공급가액 or 세액을 계산하여 총 공급가액 or 총 세액에 기입해주는 부분
 		function sumAllSupplyAllTax() {
 			var supplySum = 0;
 			var taxSum = 0;
-
 			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
 				var supplyValue = document.getElementById('supply-value' + i).value;
 				var taxValue = document.getElementById('tax-value' + i).value;
 				var amount = document.getElementById('amount' + i).value;
-
 				supplyValue = supplyValue.replace(/,/g, "");
 				taxValue = taxValue.replace(/,/g, "");
-
 				supplySum = supplySum + (supplyValue * amount);
 				taxSum = taxSum + (taxValue * amount);
 			}
 			document.getElementById('form-field-14').value = numberFormat(supplySum);
 			document.getElementById('form-field-15').value = numberFormat(taxSum);
 		}
-
 		// 거래처 이름을 받으면 관련된 정보를 땡겨오는 부분
 		function load_customer_imfo() {
 			var company_name = document.getElementById("company-name").value;
@@ -512,7 +496,6 @@
 				</c:forEach>
 			}
 		}
-
 		// 수정버튼 클릭시 
 		function update_button() {
 			$("#manage-form")

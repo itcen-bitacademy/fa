@@ -42,7 +42,7 @@ public class Menu37Controller {
 	public String add(@ModelAttribute UserVo authUser, Model model) {
 		List<CustomerVo> customerList = menu37Service.customerList();
 		List<BankAccountVo> customerBankList = menu37Service.customerBankList();
-
+		
 		model.addAttribute("customerList", customerList);
 		model.addAttribute("customerBankList", customerBankList);
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -89,7 +89,9 @@ public class Menu37Controller {
 		CustomerVo getAboutNoCustomerData = menu37Service.getAboutNoCustomerData(getAboutNoData.getCompanyName());
 		BankAccountVo getAboutNoBankData = menu37Service.getAboutNoBankData(getAboutNoCustomerData.getDepositNo());
 		List<BuyTaxbillItemsVo> getAboutItmes = menu37Service.getAboutItmes(vo.getNo());
-
+		List<CustomerVo> customerList = menu37Service.customerList();
+		
+		model.addAttribute("customerList", customerList);
 		model.addAttribute("flag", "true");
 		model.addAttribute("getAboutNoData", getAboutNoData);
 		model.addAttribute("getAboutItmesList", getAboutItmes);

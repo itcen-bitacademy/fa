@@ -299,7 +299,7 @@ input:focus {
 		<div class="main-content">
 			<div class="page-content">
 				<div class="page-header position-relative">
-					<h1 class="pull-left">매입세금계산서관리</h1>
+					<h1 class="pull-left">매입세금계산서현황조회</h1>
 					<a class="btn btn-link pull-right"
 						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
 						class="icon-plus-sign bigger-120 green"></i>메뉴 추가</a>
@@ -311,25 +311,25 @@ input:focus {
 						<div class="span12">
 							<!-- PAGE CONTENT BEGINS -->
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-date">작성일자</label>
+								<label class="control-label span1" for="form-field-date">작&emsp;성&emsp;일&emsp;자</label>
 								<div class="controls span5">
 									<div class="input-append">
 										<input class="cl-date-picker calender" id="calender1"
-											type="text" style="width: 70%" name="startDate"
+											type="text" style="width: 80%" name="startDate"
 											autocomplete="off" value="${searchData.startDate }">
 										<span class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
-									~ &nbsp;
+									&emsp;&emsp;~ &emsp;&emsp;
 									<div class="input-append">
 										<input class="cl-date-picker calender" id="calender2"
-											type="text" style="width: 70%" name="endDate"
+											type="text" style="width: 80%" name="endDate"
 											autocomplete="off" value="${searchData.endDate }"> <span
 											class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="tax-type">과세유형</label>
+								<label class="control-label span1" for="tax-type">과&emsp;세&emsp;유&emsp;형</label>
 								<div class="controls span5">
 									<select class="chosen-select" id="tax-type" name="taxType">
 										<c:choose>
@@ -360,12 +360,13 @@ input:focus {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="no">승인번호</label>
+								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
 								<div class="controls span5">
-									<input style="width: 93%" type="text" id="no" name="no"
-										value="${searchData.no }" placeholder="승인번호" />
+									<input style="width: 66%" type="text" id="no" name="no"
+										value="${searchData.no }" placeholder="ex) 20190420-44231234-57644467"
+										autocomplete="off" />
 								</div>
-								<label class="control-label span1" for="delete-flag">삭제여부</label>
+								<label class="control-label span1" for="delete-flag">삭&emsp;제&emsp;여&emsp;부</label>
 								<div class="controls span5">
 									<select class="chosen-select" id="delete-flag"
 										name="deleteFlag">
@@ -396,14 +397,16 @@ input:focus {
 						<div class="span12">
 							<div class="control-group">
 
-								<label class="control-label span1" for="customer-name">거래처명</label>
+								<label class="control-label span1" for="customer-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span5">
-									<div class="input-append">
-										<input class="date-picker" id="company-name" type="text"
-											name="companyName" value="${searchData.companyName }">
-										<span class="add-on"> <i class="icon-search"></i>
-										</span>
-									</div>
+									<select id="company-name" name="companyName"
+										style="width: 68%;" required >
+										<option style="display: none;" value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
+										<c:forEach items="${customerList }" var="list"
+											varStatus="status">
+											<option id="${status }" value="${list.name }">${list.name }</option>
+										</c:forEach>
+									</select>
 								</div>
 
 							</div>
@@ -412,7 +415,7 @@ input:focus {
 					<div class="row-fluid">
 
 						<div class="control-group span12">
-							<label class="control-label span1" for="order">정렬</label>
+							<label class="control-label span1" for="order">정&emsp;&emsp;&emsp;&emsp;&emsp;렬</label>
 							<div class="controls span4">
 								<c:choose>
 									<c:when test="${searchData.order == 'writeDate'}">
