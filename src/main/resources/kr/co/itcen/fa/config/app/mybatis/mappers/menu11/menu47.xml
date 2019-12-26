@@ -27,41 +27,33 @@
 			select 
 			no, code, major_code, name,
 			debt_amount, repay_bal, repay_way,
-			date_format(debt_date, "%Y-%m-%d") debt_date, date_format(exp_date, "%Y-%m-%d") exp_date, int_rate,
+			debt_date, exp_date, int_rate,
 			int_pay_way, mgr,
 			mgr_call, bank_code, deposit_no, 
 			voucher_no, delete_flag,
 			insert_id, insert_date, update_id,
 			update_date 
 			from tb_s_term_debt
+			where no > 0
 		]]>
-			<!-- 조회 조건 -->
-			<choose>
-				<when test='vo == null'>								<!-- vo가 Null이 찍히지만 타지 않는다...왜그러지 Controller에서 처리-->
-					where delete_flag=1 and repay_comple_flag=1
-				</when>
-				<when test='vo != null'>									<!-- no > 0은 조건문을 위해 삽입한 Cheat Code -->
-					where no > 0
-					<if test='"N".equals(vo.repayCompleFlag)'>					<!-- 포함인 경우 조건식을 적지 않는다 -->
-						and repay_comple_flag = #{vo.repayCompleFlag}
-					</if>
-					<if test='"N".equals(vo.deleteFlag)'>
-						and delete_flag = #{vo.deleteFlag}
-					</if>
-					<if test='vo.bankName != null and !"".equals(vo.bankName)'>
-					and bank_code = #{vo.bankName}
-					</if>
-					<if test='vo.debtDate != null and !"".equals(vo.debtDate)'>
-						and debt_date = #{vo.debtDate}
-					</if>
-					<if test='vo.expDate != null and !"".equals(vo.expDate)'>
-						and exp_date = #{vo.expDate}
-					</if>
-					<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>
-						and int_pay_way = #{vo.intPayWay}
-					</if>
-				</when>
-			</choose>
+			<if test='"N".equals(vo.repayCompleFlag)'>					<!-- 포함인 경우 조건식을 적지 않는다 -->
+				and repay_comple_flag = #{vo.repayCompleFlag}
+			</if>
+			<if test='"N".equals(vo.deleteFlag)'>
+				and delete_flag = #{vo.deleteFlag}
+			</if>
+			<if test='vo.bankName != null and !"".equals(vo.bankName)'>
+			and bank_code = #{vo.bankName}
+			</if>
+			<if test='vo.debtDate != null and !"".equals(vo.debtDate)'>
+				and debt_date = #{vo.debtDate}
+			</if>
+			<if test='vo.expDate != null and !"".equals(vo.expDate)'>
+				and exp_date = #{vo.expDate}
+			</if>
+			<if test='vo.intPayWay != null and !"".equals(vo.intPayWay)'>
+				and int_pay_way = #{vo.intPayWay}
+			</if>
 			
 			<!-- 정렬 조건 -->
 			<if test='orderColumn != null and orderColumn != ""'>
