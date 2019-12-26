@@ -62,31 +62,34 @@
 
 
 
-						&nbsp; &nbsp; 거래처/코드:
-
-						<div class="input-append">
-							<a href="#" id="a-customerinfo-dialog"> <input type="text"
-								class="search-input-width-first" id="customerName" name="customerName" style="text-align: center; width: 150px;" readonly /> 
-								<script type="text/javascript">
-									var customerName = "${param.customerName}";
-									$("#customerName").val(customerName);
-								</script> 
-								<span class="add-on"> 
-								<i class="icon-search icon-on-right bigger-110"></i>
-							</span>
-							</a>
-						</div>
-						<input type="text" id="customerNo" name="customerNo" placeholder="자동입력" class="col-xs-10 col-sm-5" style="text-align: center; width: 150px;" readonly />
+						&nbsp; &nbsp; 	
+						
+						거래처코드/거래처명 :&nbsp;
+									<div class="input-append">
+										<a href="#" id="a-customerinfo-dialog">
+											<input type="text" class="search-input-width-first" id="customerName" placeholder="거래처명" name="customerName" style="text-align: center; width:150px;" readonly/>
+											<script type="text/javascript">
+												var customerName = "${param.customerName}";
+												$("#customerName").val(customerName);
+												</script>
+											<span class="add-on">
+				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            </span>
+				                    	</a>
+									</div>
+				
+						<input type="text" id="customerNo" name="customerNo" placeholder="거래처 코드" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
 						<script type="text/javascript">
 							var customerNo = "${param.customerNo}";
 							$("#customerNo").val(customerNo);
 						</script>
-
-						&nbsp;&nbsp; 계정코드/계정명
+						
+						
+						&nbsp;&nbsp; 계정코드/계정명 :&nbsp;
 						<div class="input-append">
 							<a href="#" id="a-accountinfo-dialog"> <input type="text"
 								class="search-input-width-first" id="accountNo" name="accountNo"
-								style="text-align: center; width: 150px;" readonly /> <script
+								style="text-align: center; width: 150px;" readonly placeholder="계정 코드"/> <script
 									type="text/javascript">
 													var accountNo = "${param.accountNo}";
 													$("#accountNo").val(accountNo);
@@ -98,7 +101,7 @@
 
 						<input type="text" id="accountName" name="accountName"
 							placeholder="자동입력" class="col-xs-10 col-sm-5"
-							style="text-align: center; width: 150px;" readonly />
+							style="text-align: center; width: 150px;" readonly placeholder="계정명"/>
 						<script type="text/javascript">
 							var accountName = "${param.accountName}";
 							$("#accountName").val(accountName);
@@ -112,123 +115,7 @@
 				</div>
 				
 				
-				<!-- 거래처 Modal pop-up : start -->
-					<div id="dialog-message" title="계좌" hidden="hidden">
-						<table id="dialog-message-table">
-							<tr>
-								<td>
-									<label>사업자등록번호</label>
-									<input type="text" id="input-dialog-customerno" style="width: 100px;" />
-									<a href="#" id="a-dialog-customerno">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>상호명</label>
-									<input type="text" id="input-dialog-customername" style="width: 100px;" />
-									<a href="#" id="a-dialog-customername">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>은행코드</label>
-									<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
-									<a href="#" id="a-dialog-bankcode">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>은행명</label>
-									<input type="text" id="input-dialog-bankname" style="width: 100px;" />
-									<a href="#" id="a-dialog-bankname">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-							</tr>
-						</table>
-						
-						<!-- 거래처 데이터 리스트 -->
-						<table id="modal-customer-table" class="table  table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center">구분</th>
-									<th class="center">사업자등록번호</th>
-									<th class="center">상호명</th>
-								</tr>
-							</thead>
-							
-							<tbody id="tbody-customerList">
-							</tbody>
-						</table>
-						
-						<table id="modal-bank-table" class="table  table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center">은행코드</th>
-									<th class="center">은행명</th>
-								</tr>
-							</thead>
-							
-							<tbody id="tbody-bankList">
-							</tbody>
-						</table>
-					</div>
-					<!-- 거래처Modal pop-up : end -->
-					
-					<!-- 계정 Modal pop-up : start -->
-					<div id="dialog-message2" title="계정" hidden="hidden">
-						<table id="dialog-message-table">
-							<tr>
-								<td>
-									<label>계정명</label>
-									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountname">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-								
-								<td>
-									<label>계정코드</label>
-									<input type="text" id="input-dialog-accountno" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountno">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
-								</td>
-							</tr>
-						</table>
-						
-						<!-- 계정 데이터 리스트 -->
-						<table id="modal-account-table" class="table  table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="center">계정명</th>
-									<th class="center">계정코드</th>
-								</tr>
-							</thead>
-							
-							<tbody id="tbody-accountList">
-							</tbody>
-						</table>
-					</div>
-					
-					<!-- 계정 Modal pop-up : end -->
-
-
+				
 
 				<div class="row-fluid">
 					<div class="span12">
@@ -355,9 +242,130 @@
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 
+	<!-- 거래처 Modal pop-up : start -->
+	<div id="dialog-message" title="계좌" hidden="hidden">
+		<table id="dialog-message-table">
+			<tr>
+				<td><label>사업자등록번호</label> 
+					<div class="input-append">
+						<input type="text" id="input-dialog-customerno"
+							style="width: 100px;" /> <a href="#" id="a-dialog-customerno">
+							<span class="add-on"> <i
+								class="icon-search icon-on-right bigger-110"></i></span>
+						</a>
+					</div>
+				</td>
+
+				<td><label>상호명</label> 
+					<div class="input-append">
+						<input type="text" id="input-dialog-customername"
+							style="width: 100px;" /> <a href="#" id="a-dialog-customername">
+							<span class="add-on"> <i
+								class="icon-search icon-on-right bigger-110"></i></span>
+						</a>
+					</div>
+				
+				</td>
+
+				<td><label>은행코드</label>
+					<div class="input-append">
+						<input type="text" id="input-dialog-bankcode"
+							style="width: 100px;" /> <a href="#" id="a-dialog-bankcode">
+							<span class="add-on"> <i
+								class="icon-search icon-on-right bigger-110"></i>
+						</span>
+						</a>
+					</div></td>
+
+				<td><label>은행명</label>
+					<div class="input-append">
+						<input type="text" id="input-dialog-bankname"
+							style="width: 100px;" /> <a href="#" id="a-dialog-bankname">
+							<span class="add-on"> <i
+								class="icon-search icon-on-right bigger-110"></i>
+						</span>
+						</a>
+					</div></td>
+			</tr>
+		</table>
+
+		<!-- 거래처 데이터 리스트 -->
+		<table id="modal-customer-table"
+			class="table  table-bordered table-hover">
+			<thead>
+				<tr>
+					<th class="center">구분</th>
+					<th class="center">사업자등록번호</th>
+					<th class="center">상호명</th>
+				</tr>
+			</thead>
+
+			<tbody id="tbody-customerList">
+			</tbody>
+		</table>
+
+		<table id="modal-bank-table" class="table  table-bordered table-hover">
+			<thead>
+				<tr>
+					<th class="center">은행코드</th>
+					<th class="center">은행명</th>
+				</tr>
+			</thead>
+
+			<tbody id="tbody-bankList">
+			</tbody>
+		</table>
+	</div>
+	<!-- 거래처Modal pop-up : end -->
+
+	<!-- 계정 Modal pop-up : start -->
+	<div id="dialog-message2" title="계정" hidden="hidden">
+		<table id="dialog-message-table">
+			<tr>
+				<td><label>계정코드</label>
+					<div class="input-append">
+						<input type="text" id="input-dialog-accountno"
+							style="width: 100px;" /> <a href="#" id="a-dialog-accountno">
+							<span class="add-on"> <i
+								class="icon-search icon-on-right bigger-110"></i>
+						</span>
+						</a>
+					</div></td>
+					
+				<td><label>계정명</label>
+					<div class="input-append">
+						<input type="text" id="input-dialog-accountname"
+							style="width: 100px;" /> <a href="#" id="a-dialog-accountname">
+							<span class="add-on"> <i
+								class="icon-search icon-on-right bigger-110"></i>
+						</span>
+						</a>
+					</div></td>
+				
+			</tr>
+		</table>
+
+		<!-- 계정 데이터 리스트 -->
+		<table id="modal-account-table"
+			class="table  table-bordered table-hover">
+			<thead>
+				<tr>
+					<th class="center">계정명</th>
+					<th class="center">계정코드</th>
+				</tr>
+			</thead>
+
+			<tbody id="tbody-accountList">
+			</tbody>
+		</table>
+	</div>
+
+	<!-- 계정 Modal pop-up : end -->
+
+
+
 </body>
 
-	<!-- DatePicker -->
 <script>
 	$(function() {
 		// 데이트피커 한글설정
@@ -390,128 +398,8 @@
 		}).next().on(ace.click_event, function() {
 			$(this).prev().focus();
 		});
+
 		
-		
-	});
-</script>
-
-
-<!-- popup 실행 -->
-<script>
-$(function() {
-	$("#dialog-message").dialog({
-		autoOpen : false
-	});
-
-	$("#a-customerinfo-dialog").click(function() {
-		$("#dialog-message").dialog('open');
-		
-		$("#modal-customer-table").hide();
-		$("#modal-bank-table").hide();
-		
-		$("#dialog-message").dialog({
-			title: "거래처정보",
-			title_html: true,
-		   	resizable: false,
-		    height: 500,
-		    width: 700,
-		    modal: true,
-		    close: function() {
-		    	$('#tbody-customerList tr').remove();
-		    	$('#tbody-bankList tr').remove();
-		    },
-		    buttons: {
-		    "닫기" : function() {
-		          	$(this).dialog('close');
-		          	$('#tbody-customerList tr').remove();
-		          	$('#tbody-bank tr').remove();
-		        }
-		    }
-		});
-	});
-
-	$("#a-dialog-customerno").click(function(){
-		$("#modal-customer-table").show();
-		$("#modal-bank-table").hide();
-	});
-
-	$("#a-dialog-customername").click(function(){
-		$("#modal-customer-table").show();
-		$("#modal-bank-table").hide();
-	});
-		
-	
-
-	//거래처리스트(customerList)의 row의 해당 데이터 form에 추가
-	$(document.body).delegate('#tbody-customerList tr', 'click', function() {
-		var tr = $(this);
-		var td = tr.children();
-		var customerNo = td.eq(1).text();
-		var noArray = customerNo.split('-');
-		$("input[name=customerNo]").val(noArray[0]+noArray[1]+noArray[2]);
-		$("input[name=customerName]").val(td.eq(2).text());
-		$("#dialog-message").dialog('close');
-	});
-
-
-});
-</script>
-
-<script>
-	$(function() {
-		$("#dialog-message2").dialog({
-			autoOpen : false
-		});
-
-		$("#a-accountinfo-dialog").click(function() {
-			$("#dialog-message2").dialog('open');
-			
-			$("#modal-account-table").show();
-			
-			$("#dialog-message2").dialog({
-				title: "계정정보",
-				title_html: true,
-			   	resizable: false,
-			    height: 500,
-			    width: 350,
-			    modal: true,
-			    close: function() {
-			    	$('#tbody-accountList tr').remove();
-			    },
-			    buttons: {
-			    "닫기" : function() {
-			          	$(this).dialog('close');
-			          	$('#tbody-accountList tr').remove();
-			        }
-			    }
-			});
-		});
-
-		$("#a-dialog-accountno").click(function(){
-			$("#modal-account-table").show();
-		});
-
-		$("#a-dialog-accountname").click(function(){
-			$("#modal-account-table").show();
-		});
-
-		$(document.body).delegate('#tbody-accountList tr', 'click', function() {
-			var tr = $(this);
-			var td = tr.children();
-			$("input[name=accountNo]").val(td.eq(1).text());
-			$("input[name=accountName]").val(td.eq(0).text());
-			$("#dialog-message2").dialog('close');
-		});
-
-	});
-</script>
-
-
-
-<!-- popup ajax 처리 -->
-<script>
-	$(function() {
-		// 사업자번호 검색
 		$("#a-dialog-customerno").click(function(event){
 			event.preventDefault();
 			$("#tbody-customerList").find("tr").remove();
@@ -721,9 +609,135 @@ $(function() {
 			});
 		});
 		
-		
 	});
 </script>
+
+
+<!-- popup 실행 -->
+<script>
+$(function() {
+	$("#dialog-message").dialog({
+		autoOpen : false
+	});
+
+	$("#a-customerinfo-dialog").click(function() {
+		$("#dialog-message").dialog('open');
+		
+		$("#modal-customer-table").hide();
+		$("#modal-bank-table").hide();
+		
+		$("#dialog-message").dialog({
+			title: "거래처정보",
+			title_html: true,
+		   	resizable: false,
+		    height: 500,
+		    width: 700,
+		    modal: true,
+		    close: function() {
+		    	$('#tbody-customerList tr').remove();
+		    	$('#tbody-bankList tr').remove();
+		    },
+		    buttons: {
+		    "닫기" : function() {
+		          	$(this).dialog('close');
+		          	$('#tbody-customerList tr').remove();
+		          	$('#tbody-bank tr').remove();
+		        }
+		    }
+		});
+	});
+
+	$("#a-dialog-customerno").click(function(){
+		$("#modal-customer-table").show();
+		$("#modal-bank-table").hide();
+	});
+
+	$("#a-dialog-customername").click(function(){
+		$("#modal-customer-table").show();
+		$("#modal-bank-table").hide();
+	});
+		
+	$("#a-dialog-bankname").click(function(){
+		$("#modal-bank-table").show();
+		$("#modal-customer-table").hide();
+	});
+
+	$("#a-dialog-bankcode").click(function(){
+		$("#modal-bank-table").show();
+		$("#modal-customer-table").hide();
+	});
+
+	//거래처리스트(customerList)의 row의 해당 데이터 form에 추가
+	$(document.body).delegate('#tbody-customerList tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		var customerNo = td.eq(1).text();
+		var noArray = customerNo.split('-');
+		$("input[name=customerNo]").val(noArray[0]+noArray[1]+noArray[2]);
+		$("input[name=customerName]").val(td.eq(2).text());
+		$("#dialog-message").dialog('close');
+	});
+	
+	$(document.body).delegate('#tbody-bankList tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=customerNo]").val(td.eq(0).text());
+		$("input[name=customerName]").val(td.eq(1).text());
+		$("#dialog-message").dialog('close');
+	});
+
+});
+</script>
+
+<script>
+$(function() {
+	$("#dialog-message2").dialog({
+		autoOpen : false
+	});
+
+	$("#a-accountinfo-dialog").click(function() {
+		$("#dialog-message2").dialog('open');
+		
+		$("#modal-account-table").show();
+		
+		$("#dialog-message2").dialog({
+			title: "계정정보",
+			title_html: true,
+		   	resizable: false,
+		    height: 500,
+		    width: 350,
+		    modal: true,
+		    close: function() {
+		    	$('#tbody-accountList tr').remove();
+		    },
+		    buttons: {
+		    "닫기" : function() {
+		          	$(this).dialog('close');
+		          	$('#tbody-accountList tr').remove();
+		        }
+		    }
+		});
+	});
+
+	$("#a-dialog-accountno").click(function(){
+		$("#modal-account-table").show();
+	});
+
+	$("#a-dialog-accountname").click(function(){
+		$("#modal-account-table").show();
+	});
+
+	$(document.body).delegate('#tbody-accountList tr', 'click', function() {
+		var tr = $(this);
+		var td = tr.children();
+		$("input[name=accountNo]").val(td.eq(0).text());
+		$("input[name=accountName]").val(td.eq(1).text());
+		$("#dialog-message2").dialog('close');
+	});
+
+});
+</script>
+
 
 	
 </html>
