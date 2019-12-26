@@ -130,7 +130,7 @@
 										
 										<div class="input-append">
 										 <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
-										<input type="text" class="search-input-width-first" name="depositNo" readonly/>
+										<input type="text" class="search-input-width-first" name="depositNo" placeholder="계좌번호" readonly/>
 												<span class="add-on">
 				                                   <i class="icon-search icon-on-right bigger-110"></i>
 				                                  
@@ -163,16 +163,17 @@
 								<div id="dialog-message" title="계좌" hidden="hidden">
 									<table id="dialog-message-table">
 										<tr>
-											<td><label>계좌번호</label> <input type="text"
-												id="input-dialog-depositNo" style="width: 100px;" /> 
-												<a href="#" id="a-dialog-depositNo"> <span
-													class="btn btn-small btn-info" style="margin-bottom: 10px;">
-														<i class="icon-search nav-search-icon"></i>
-												</span>
+											<td>
+											
+											<label>계좌번호</label> 
 												
-
-
-											</a></td>
+												<div class="input-append">
+													<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+													<a href="#" id="a-dialog-depositNo"> 
+														<span class="add-on"> <i class="icon-search icon-on-right bigger-110"></i></span>
+													</a>
+												</div>
+											</td>
 										</tr>
 									</table>
 									<!-- 은행코드 및 은행명 데이터 리스트 -->
