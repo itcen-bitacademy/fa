@@ -234,7 +234,7 @@
 				select	
 				a.no as account_no
 				, a.name as account_name
-				, sum(i.amount) as amount
+				, i.amount as amount
 				, i.amount_flag as amount_flag
 				, m.customer_no as customerNo
 		  from tb_voucher_manager as v
