@@ -14,6 +14,11 @@
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+h4{
+	font-size:13px;
+	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
+}
+
 tr td:first-child {
 	padding-right: 10px;
 }
@@ -365,7 +370,7 @@ tr td:first-child {
 								<td>
 								<label>납입일자</label>
 								<div class="row-fluid input-prepend">
-				                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1" readonly data-date-format="yyyy-mm-dd" />
+				                 <input class="date-picker" type="text" name="payDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd" readonly/>
 				                    <span class="add-on">
 				                     <i class="icon-calendar"></i>
 				              	</span>
@@ -507,8 +512,15 @@ tr td:first-child {
 				</ul>
 			</div>
 			
+			
+			
+			
+			
+			
+			
+			
 			<!-- error Modal pop-up : start -->
-			<div id="staticBackdrop"   title="Error-Message" hidden="hidden" >
+			<!--  			<div id="staticBackdrop"   title="Error-Message" hidden="hidden" >
 			<table align="center">
 				<tr>
 					<td>
@@ -524,6 +536,13 @@ tr td:first-child {
 				</tr>
 			</table>
 			</div>
+			-->
+			
+			<div id="staticBackdrop" class="hide">
+				<p id="staticBackdropBody" class="bolder grey">
+				</p>
+			</div>
+			
 			<!-- error Modal pop-up : end -->
 			
 			
@@ -559,21 +578,19 @@ tr td:first-child {
 		
 		console.log($('#staticBackdropLabel').text());
 		console.log($('#staticBackdropBody').text());
-		
+		/*
 		$("#staticBackdrop").dialog({
-			title: "Eroor-Message",
-			title_html: true,
-          	resizable: false,
-	           height: 300,
-	           width: 400,
-	           modal: true,
+			resizable: false,
+			modal: true,
 		    close: function() {
 		    	$('#staticBackdropLabel').text('');//에러
 				$('#staticBackdropBody').text('');//에러내용
 				$(errorfield).focus();//에러난곳으로 포커싱
 		    },
 		    buttons: {
-		    "확인" : function() {
+		    text: "OK",
+			"class" : "btn btn-danger btn-mini",
+			click : function() {
 		          	$(this).dialog('close');
 		          	$('#staticBackdropLabel').text('');//에러
 					$('#staticBackdropBody').text('');//에러내용
@@ -582,6 +599,25 @@ tr td:first-child {
 		    }
 		});
 		
+		*/
+
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');//에러내용
+						$(errorfield).focus();
+					}
+				}
+			]
+		});
+	
 		$("#staticBackdrop").dialog('open');//모델창 띄운다
 	}
 	

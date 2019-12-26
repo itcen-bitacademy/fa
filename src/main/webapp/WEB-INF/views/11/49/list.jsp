@@ -14,8 +14,12 @@
 	width: 10%;
 }
 
+h4{
+	font-size:14px;
+	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
+}
 .prod-list-opts {
-	padding: 10px 15px 9px 11px;
+	padding: 10px 15px 9px 13px;
 	position: relative;
 }
 
@@ -32,8 +36,7 @@
 }
 
 .prod-list-opts li {
-    list-style: none;
-    float: left;
+    list-style: none;	
 }
 
 .checkbox {
@@ -42,6 +45,11 @@
 
 form {
 	margin-bottom: 0px;
+}
+
+.form-horizontal .control-label{
+	text-align:left;
+	padding-left: 7px;
 }
 
 /* table columns  */
@@ -53,7 +61,7 @@ form {
 .sixth-column {padding-left:20px;}
 
 /* second row */
-.span2 {padding-left:40px; padding-top:20px;}
+.span2 {padding-left:40px; padding-top:10px;}
 
 
 #tbody_list { overflow-x:scroll;}
@@ -164,44 +172,46 @@ form {
 							<div class="row-fluid">
 								<div class="span9">
 									<div class="prod-list-opts">
-										<div class="order-opt">
-											<ul class="order-list">
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=d">차입일자</a></h4></li>
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=e">만기일자</a></h4></li>
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=i">등록일자</a></h4></li>
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=m">차입금액</a></h4></li>
-											</ul>
-										</div>
+										<label class="control-label" style="padding-right: 12px;">차입금 선택정렬</label>
+										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." name="sort" >
+											<option value=""></option>
+											<option value="d">차입일자</option>
+											<option value="e">만기일자</option>
+											<option value="i">등록일자</option>
+											<option value="m">차입금액</option>
+										</select>
 									</div>
 								</div>
-								<div class="span2">
+							
+								<div class="span3">
 									<div class="checkbox">
-										<label>
-										<c:choose>
-										<c:when test='${vo.deleteFlag eq ""}'>
-											<input name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
-										</c:when>
-										<c:otherwise>
-											<input name="deleteFlag" type="checkbox" class="ace" value="" />
-										</c:otherwise>
-										</c:choose>
-											<span class="lbl">삭제포함</span>
+										<label >
+												<c:choose>
+												<c:when test='${vo.deleteFlag eq ""}'>
+													<input name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
+												</c:when>
+												<c:otherwise>
+													<input name="deleteFlag" type="checkbox" class="ace" value="" />
+												</c:otherwise>
+												</c:choose>
+													<span class="lbl">삭제포함</span>
 										</label>
 									</div>
 									<div class="checkbox">
-										<label>
-										<c:choose>
-										<c:when test='${vo.repayCompleFlag eq ""}'>
-											<input name="repayCompleFlag" type="checkbox" class="ace" value="" checked="checked"/>
-										</c:when>
-										<c:otherwise>
-											<input name="repayCompleFlag" type="checkbox" class="ace" value=""/>
-										</c:otherwise>
-										</c:choose>
-											<span class="lbl">상환완료포함</span>
-										</label>
+										<label>	
+												<c:choose>
+												<c:when test='${vo.repayCompleFlag eq ""}'>
+													<input name="repayCompleFlag" type="checkbox" class="ace" value="" checked="checked"/>
+												</c:when>
+												<c:otherwise>
+													<input name="repayCompleFlag" type="checkbox" class="ace" value=""/>
+												</c:otherwise>
+												</c:choose>
+													<span class="lbl">상환완료포함</span>
+											</label>
 									</div>
 								</div>
+								
 							</div>
 						</form>								
 						</div><!-- /span -->
