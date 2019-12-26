@@ -10,31 +10,16 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <style>
+.form-horizontal .control-label {text-align: left;}
+
 .radio {
 	float: left;
 	width: 10%;
 }
 
 .prod-list-opts {
-	padding: 10px 15px 9px 11px;
+	padding: 10px 15px 9px 20px;
 	position: relative;
-}
-
-.prod-list-opts .order-list {
-    margin: 3px 0 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-.prod-list-opts .order-item {
-    float: left;
-    padding: 0 9px 0 8px;
-    
-}
-
-.prod-list-opts li {
-    list-style: none;
-    float: left;
 }
 
 .checkbox {
@@ -51,7 +36,7 @@ form {
 .third-column {width:120px;}
 .fourth-column {width:70px;}
 .fifth-column {width:200px;}
-.sixth-column {padding-left:20px;}
+.sixth-column {padding-left:10px;}
 
 /* second row */
 .span2 {padding-left:40px; padding-top:20px;}
@@ -76,7 +61,9 @@ form {
 							<table style="width:100%;">
 								<tbody>
 								<tr>
-									<td class="first-column"><h4>차입일자</h4></td>
+									<td class="first-column">
+										<label class="control-label">차입일자</label>
+									</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
 				                           <input class="date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"  />
@@ -85,37 +72,43 @@ form {
 				                           </span>
 				                         </div>
 									</td>
-									<td class="third-column"><h4>이자지급방식</h4></td>
+									<td class="third-column">
+										<label class="control-label">이자지급방식</label>
+									</td>
 									<td>
 										<div class="radio">
-											<label>
+											<label class="control-label">
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
 												<span class="lbl">연</span>
 											</label>
 										</div>
 										<div class="radio">
-											<label>
+											<label class="control-label">
 												<input name="intPayWay" type="radio" class="ace" value="M"/>
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio">
-											<label>
+											<label class="control-label">
 												<input name="intPayWay" type="radio" class="ace" value="E"/>
 												<span class="lbl">만기</span>
 											</label>
 										</div>
 									</td>
-									<td class="fourth-column"><h4>은행명</h4></td>
+									<td class="fourth-column">
+										<label class="control-label">은행명</label>
+									</td>
 									<td class="fifth-column">
 										<input type="text" name="bankName"/>
 									</td>
 									<td class="sixth-column">
-										<button type="submit" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+										<button type="submit" class="btn btn-primary btn-small" style="width: 50px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 									</td>
 								</tr>
 								<tr>
-								<td class="first-column"><h4>만기일자</h4></td>
+								<td class="first-column">
+									<label class="control-label">만기일자</label>
+								</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
 				                           <input class="date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd"  />
@@ -130,14 +123,14 @@ form {
 							<div class="row-fluid">
 								<div class="span9">
 									<div class="prod-list-opts">
-										<div class="order-opt">
-											<ul class="order-list">
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=d">차입일자</a></h4></li>
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=e">만기일자</a></h4></li>
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=i">등록일자</a></h4></li>
-												<li class="order-item"><h4><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?sort=m">차입금액</a></h4></li>
-											</ul>
-										</div>
+										<label class="control-label" style="padding-right: 12px;">차입금 선택정렬</label>
+										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." name="sort" >
+											<option value=""></option>
+											<option value="d">차입일자</option>
+											<option value="e">만기일자</option>
+											<option value="i">등록일자</option>
+											<option value="m">차입금액</option>
+										</select>
 									</div>
 								</div>
 								<div class="span2">
