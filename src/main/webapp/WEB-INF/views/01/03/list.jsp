@@ -910,23 +910,33 @@ $(function(){
 				var voucherList = response.voucherList;
 				console.log(response.voucherList);
 	      	  	for(let a in voucherList) {
-	      	  		if(voucherList[a].cardNo != null) { // 카드번호값 셋팅
-	      	  			var cardNo = voucherList[a].cardNo;
-	      	  		} else {
-	      	  			cardNo = '';
-	      	  		}
-	      	  		
-		      	  	if(voucherList[a].depositNo != null) {
-		  	  			var depositNo = voucherList[a].depositNo;
-		  	  		} else {
-		  	  			depositNo = '';
-		  	  		}
-		      	  	
-	      	  		if(voucherList[a].customerName == '여비') {
-	      	  			var host = voucherList[a].cardUser;
+		      	  	if(voucherList[a].customerName == '여비') {
+	      	  			host = voucherList[a].cardUser;
 	      	  		} else {
 	      	  			host = voucherList[a].depositHost
 	      	  		}
+		      	  	console.log("host3");
+	      	  		console.log(host);
+	      	  		
+	      	  		if(voucherList[a].cardNo != null) { // 카드번호값 셋팅
+	      	  			var cardNo = voucherList[a].cardNo;
+	      	  			var host = voucherList[a].cardUser;
+	      	  		} else {
+	      	  			cardNo = '';
+	      	  			host = '';
+	      	  		}
+	      	  		console.log("host1");
+	      	  		console.log(host);
+	      	  		
+		      	  	if(voucherList[a].depositNo != null) {
+		  	  			var depositNo = voucherList[a].depositNo;
+		  	  			host = voucherList[a].depositHost;
+		  	  		} else {
+		  	  			depositNo = '';
+		  	  			host = '';
+		  	  		}
+		      	  	console.log("host2");
+	      	  		console.log(host);
 	      	  		
 		      	  	if(voucherList[a].manageNo != null) {
 	      	  			var manageName = '세금계산서';
@@ -935,6 +945,18 @@ $(function(){
 	      	  			manageName = '';
 	      	  			manageNo = '';
 	      	  		}
+		      	  	
+		      	  	if(voucherList[a].bankCode != null) {
+		      	  		var bankCode = voucherList[a].bankCode;
+		      	  	} else {
+		      	  		bankCode = '';
+		      	  	}
+		      	  	
+		      	  if(voucherList[a].bankName != null) {
+		      	  		var bankName = voucherList[a].bankName;
+		      	  	} else {
+		      	  		bankName = '';
+		      	  	}
 		      	  	
 	      	  		$("#voucher_save").append("<tr>" +
 	                        "<td>" + voucherList[a].regDate + "</td>" +
@@ -947,8 +969,8 @@ $(function(){
 	                        "<td>" + voucherList[a].customerName + "</td>" +
 	                        "<td>" + manageName + "</td>" +
 	                        "<td>" + manageNo + "</td>" +
-	                        "<td>" + voucherList[a].bankCode + "</td>" +
-	                        "<td>" + voucherList[a].bankName + "</td>" +
+	                        "<td>" + bankCode + "</td>" +
+	                        "<td>" + bankName + "</td>" +
 	                        "<td>" + cardNo + "</td>" +
 	                        "<td>" + depositNo + "</td>" +
 	                        "<td>" + host + "</td>" +
