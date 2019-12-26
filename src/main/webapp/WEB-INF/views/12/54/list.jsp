@@ -173,8 +173,8 @@
 	                    </select>
 						</form> 
 						<div class="row-fluid">
-						<div class="span12">
-							<table class="table table-striped table-bordered table-hover">
+						<div class="span12" style="overflow: auto;">
+							<table class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 								<thead>
 									<tr>
 										<th>번 호</th>
