@@ -53,16 +53,17 @@ public class Menu66ApiController {
 		System.out.println("vo : " + vo);
 		Map map = new HashMap();
 		//마감확인
+		System.out.println("payDate : " + vo.getPayDate());
 		if(!menu19Service.checkClosingDate(authUser, vo.getPayDate())){
 			map.put("isClosed", true);
 			return JSONResult.success(map);
 		}
 		
-		//차입금 상환잔액 수정
-		menu66Service.updateDebt(vo);
-		
 		//전표 수정
 		Long no = menu66Service.updateVoucher(vo, authUser);
+		
+		//차입금 상환잔액 수정
+		menu66Service.updateDebt(vo);
 		
 		//전표번호 새로 부여받고, 상환 update
 		vo.setUpdateId(authUser.getId());

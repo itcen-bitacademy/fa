@@ -99,7 +99,7 @@ input[type="text"], input[type="date"], select {
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><h4>차입금코드</h4></div>
-						<div class="ia-right"><input type="text" id="code" name="code" ></div>
+						<div class="ia-right"><input type="text" id="code" name="code"></div>
 						<div class="ia-left"><h4>납입금</h4></div>
 						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> <h5 style="display: inline-block;">(원)</h5><input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
 						<div class="ia-left"><h4>이자금액</h4></div>
@@ -460,7 +460,6 @@ function update(){
 		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
 		type: "POST",
 		dataType: "json",
-		contentType : 'application/json',
 		data: sendData,
 		success: function(response){
 			
@@ -556,9 +555,7 @@ function openDialog66(){
 
 function renderingRepayList4Dialog(list){
 	$("#dialog66").append("<label>마감 : 상환내역 리스트<label");
-	list.forEach(vo => {
-		$("#dialog66").append("<p>" + vo.code + " : " + vo.no + "<p>")	
-	});
+	list.forEach(vo => $("#dialog66").append("<p>" + vo.code + " : " + vo.no + "<p>"));
 }
 
 function isEmpty(value){

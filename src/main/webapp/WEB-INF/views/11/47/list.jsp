@@ -50,33 +50,12 @@
 		grid-column: 1;
 		grid-row: 2;
 		
-		display: grid;
 	}
 	
 	.filter-right{
 		grid-column: 2;
 		grid-row: 2;
 		
-	}
-	
-	.order-list{
-		height: 80px;
-		margin: auto 0;
-		
-		display: grid;
-		grid-template-columns: repeat(4,80px);
-		gap: 10px;
-	}
-	
-	.order-list>li{
-		display: inline-block;
-		float: left;
-	}
-	.order-list h4{color:#08c}
-	.order-list h4:hover{
-	color: #005580;
-	text-decoration: underline;
-	cursor: pointer;
 	}
 	
 	.chkbox-list-area{
@@ -90,23 +69,6 @@
 	}
 	
 	.selectbox-wrapper>select{ width:60px; height: 25px;}
-
-.prod-list-opts {
-	padding: 10px 15px 9px 11px;
-	position: relative;
-}
-
-.prod-list-opts .order-list {
-    margin: 3px 0 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-
-.prod-list-opts li {
-    list-style: none;
-    float: left;
-}
 
 .checkbox {
 	float: left;
@@ -142,34 +104,35 @@
 				<section class="filter-top">
 					<div class="input-area-wrapper">
 						<div class="input-area">
-							<label for="debtDate"><h4>차입일자</h4></label> 
+							<label for="debtDate"><label class="label-name">차입일자</label></label> 
 							<input type="date" id="debtDate" name="debtDate">
 						</div>
 						<div class="input-area">
-							<label for="expDate"><h4>만기일자</h4></label> 
+							<label for="expDate"><label class="label-name">만기일자</label></label> 
 							<input type="date" id="expDate" name="expDate">
 						</div>
 						<div class="input-area input-area-radio">
-							<label><h4>이자지급방식</h4></label> 
+							<label class="label-name">이자지급방식</label>
 							<div class="radio-input"><label class="radio-label">년</label><input type="radio" name="intPayWay" value="Y"></div>
 							<div class="radio-input"><label class="radio-label">월</label><input type="radio" name="intPayWay" value="M"></div>
 							<div class="radio-input"><label class="radio-label">해당없음</label><input type="radio" name="intPayWay" value="E"></div>
 						</div>
 						<div class="input-area">
 							<div class="input-area-last">
-								<label for="bankName"><h4>은행명</h4></label> 
+								<label for="bankName"><label class="label-name">은행명</label></label> 
 								<input type="text" name="bankName" id="bankName">
 								<input type="button" value="조회" onclick="search()">
 							</div>
 						</div>
 					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
 				<section class="filter-left">
-					<ul class="order-list">	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
-						<li><h4 id="debt_date" onclick="order(this)">차입일자</h4></button></li>
-						<li><h4 id="exp_date" onclick="order(this)" >만기일자</h4></button></li>
-						<li><h4 id="insert_date" onclick="order(this)">등록일자</h4></button></li>
-						<li><h4 id="debt_amount" onclick="order(this)">차입금액</h4></button></li>
-					</ul>
+					<label class="label-name">정렬</label>
+					<select name="orderColumn" class="order-list" onchange="order(this)">	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
+						<option value="debt_date">차입일자</option>
+						<option value="exp_date">만기일자</option>
+						<option value="insert_date">등록일자</option>
+						<option value="debt_amount">차입금액</option>
+					</select>
 				</section> <!-- filter-left end -->
 				<section class="filter-right">
 					<div class="chkbox-list-area">
@@ -361,11 +324,10 @@ function renderingPage(pagination){
 	 var sendData = $("#filter-area").serialize();
 	 
 	 if(urlStr == "order"){
-		 var orderColumn = $(thisObj).attr('id');							//클릭된 정렬값을 구해온다.
+		 var orderColumn = $(thisObj).val();							//클릭된 정렬값을 구해온다.
 		 $("#order-column").val(orderColumn);		 						//해당 값을 페이지에 저장한다.
 		 sendData += "&orderColumn=" + orderColumn;
-	 }
-	 else if(urlStr == "paging"){
+	 }else if(urlStr == "paging"){
 		 orderColumn = $("#order-column").val();							//페이지에 저장된 정렬값을 가져온다
 		 var page = $(thisObj).attr('id');									//클릭된 해당 페이지값을 가져온다
 		 sendData += "&orderColumn=" + orderColumn + "&page=" + page;

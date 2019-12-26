@@ -161,6 +161,8 @@ public class Menu46Service {
 	
 	//차입금데이터 전표수정
 	public Long updateVoucherWithDebt(STermDebtVo vo, UserVo userVo) {
+		System.out.println("-------------updateVoucherWithDebt-------------");
+		System.out.println("vo : " + vo);
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
 		ItemVo itemVo1 = new ItemVo();
 		ItemVo itemVo2 = new ItemVo();
@@ -185,6 +187,7 @@ public class Menu46Service {
 		mappingVo.setVoucherNo(vo.getVoucherNo());			
 		
 		VoucherVo voucherVo = new VoucherVo();
+		voucherVo.setNo(vo.getVoucherNo());
 		voucherVo.setRegDate(vo.getDebtDate());
 		
 		return menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, userVo);
