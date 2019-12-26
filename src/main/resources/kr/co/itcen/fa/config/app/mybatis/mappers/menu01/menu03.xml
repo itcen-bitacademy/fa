@@ -901,6 +901,8 @@
 		   and v.reg_date <= #{endDate }
 		   and v.use_yn = 1
 		   and i.use_yn = 1
+		   and i.order_no = m.order_no
+		   and closing_yn = 'n'
 	  group by 
 				a.no
 				, a.name
