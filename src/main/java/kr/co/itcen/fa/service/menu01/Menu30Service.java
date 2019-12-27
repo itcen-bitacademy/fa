@@ -102,7 +102,10 @@ public class Menu30Service {
 		}
 		
 		List<StatementDataVo> addsVo = menu30Repository.addprevious(cVo);
-		sVo.addAll(addsVo);
+		
+		for(int i=0; i<addsVo.size(); i++) {
+			sVo.add(addsVo.get(i));
+		}
 		
 		for(int i=0; i<sVo.size();i++) {				//거래처 계정별 amount 계산
 			if(sVo.get(i).getAccountNo()>=4000000) {
