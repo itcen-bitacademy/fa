@@ -48,10 +48,42 @@ public class Menu30Controller {
 		}
 		
 		DataResult<ReceiptVo> dataResult = menu30Service.search(page,revo, authUser);
-		PreviousVo pVo = menu30Service.previous(revo);
 		model.addAttribute("dataResult", dataResult);
+		
+		PreviousVo pVo = menu30Service.previous(revo);
 		if(pVo!=null) {
 			model.addAttribute("pVo", pVo);
+		}
+		
+		ReceiptVo dsum = menu30Service.dsum(revo);
+		if(dsum!=null) {
+			model.addAttribute("dsum", dsum);
+		}
+		
+		ReceiptVo csum = menu30Service.csum(revo);
+		if(csum!=null) {
+			model.addAttribute("csum", csum);
+		}
+		
+		Long cumulative =0L;
+		
+		if(pVo!=null) {
+			if(pVo.getAmountFlag()=="d") {
+				cumulative += pVo.getAmount();
+			}else {
+				cumulative -= pVo.getAmount();
+			}
+		}
+		
+		if(dsum!=null) {
+			cumulative += dsum.getAmount();
+		}
+		if(csum!=null) {
+			cumulative -=csum.getAmount();
+		}
+		
+		if(pVo!=null) {
+			model.addAttribute("cumulative", cumulative);
 		}
 		
 		return MAINMENU + "/" + SUBMENU + "/list";

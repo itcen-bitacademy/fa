@@ -176,17 +176,18 @@
 
 									</tr>
 								</c:forEach>
-			
-								<tr>
-									<td>[합계]</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
+								<c:if test="${dsum!=null || csum!=null }">
+									<tr>
+										<td>[합계]</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td style="text-align: right;"><fmt:formatNumber value="${dsum.amount}" pattern="#,###" /></td>
+										<td style="text-align: right;"><fmt:formatNumber value="${csum.amount}" pattern="#,###" /></td>
+									</tr>
+								</c:if>
 								<c:if test="${pVo!=null }">
 								<tr>
 									<td>[누계]</td>
@@ -195,9 +196,16 @@
 									<td></td>
 									<td></td>
 									<td></td>
-									<td></td>
-									
-									<td></td>
+									<c:choose>
+										<c:when test="${ cumulative>0 }">
+											<td style="text-align: right;"><fmt:formatNumber value="${cumulative}" pattern="#,###" /></td>
+											<td></td>
+										</c:when>
+										<c:otherwise>
+											<td></td>
+											<td style="text-align: right;" ><fmt:formatNumber value="${-cumulative}" pattern="#,###" /></td>
+										</c:otherwise>
+									</c:choose>
 								</tr>
 								</c:if>
 							</tbody>

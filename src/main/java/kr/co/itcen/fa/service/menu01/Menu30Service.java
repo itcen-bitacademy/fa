@@ -252,4 +252,11 @@ public class Menu30Service {
 		return null;
 	}
 
+	public ReceiptVo dsum(ReceiptVo revo) {
+		return menu30Repository.dsum(revo);
+	}
+	
+	public ReceiptVo csum(ReceiptVo revo) {
+		return menu30Repository.csum(revo);
+	}
 }

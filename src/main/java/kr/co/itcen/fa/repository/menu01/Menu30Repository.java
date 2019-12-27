@@ -70,6 +70,12 @@ public class Menu30Repository {
 	public List<StatementDataVo> addprevious(ClosingDateVo cVo) {
 		return sqlSession.selectList("menu30.addprevious", cVo);
 	}
+
+	public ReceiptVo dsum(ReceiptVo revo) {
+		return sqlSession.selectOne("menu30.dsum", revo);
+	}
 	
-	
+	public ReceiptVo csum(ReceiptVo revo) {
+		return sqlSession.selectOne("menu30.csum", revo);
+	}
 }
