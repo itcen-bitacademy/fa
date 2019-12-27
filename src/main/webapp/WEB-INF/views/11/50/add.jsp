@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+#dialog-confirm{z-index: 2222!important;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal 생성 */
 .p-debt-code-input {width: 270px;}
 .p-debt-name-input {width: 420px;}
@@ -90,7 +91,7 @@
 										</td>
 										<td colspan="2">
 											<div class="row-fluid input-prepend">
-												<input type="text" name="debtExpDate" id="id-date-range-picker-1"/><span class="add-on"> <i class="icon-calendar"></i>
+												<input type="text" name="debtExpDate" id="id-date-range-picker-1" readonly="readonly"/><span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
 										</td>
@@ -431,7 +432,7 @@
 							<tr>
 								<td class="center" data-no="${vo.no }">
 									<label class="pos-rel" onclick='event.cancelBubble=true'>
-										<input type="checkbox" class="ace" data-no="${vo.no }" name="checkBox"/>
+										<input type="checkbox" class="ace checkboxtable" data-no="${vo.no }" name="checkBox" id="checkboxId"/>
 										<span class="lbl"></span>
 									</label>
 								</td>
@@ -555,7 +556,7 @@
 			$("input[name=no]").val(td.eq(0).attr('data-no'));
 			
 			$("input[name=code]").val(td.eq(1).text()); // 사채코드
-			//$("input[name=code]").attr('readonly', true);
+			$("input[name=code]").attr('readonly', true);
 			
 			$("input[name=name]").val(td.eq(2).text()); // 사채명
 			
@@ -663,7 +664,7 @@
 				$("#tbody-list").find("tr").css("background-color", "inherit");
 				$(this).css("background-color", "#ddd");
 				$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
-				$("#img-checkcode").show(); // '중복확인' 체크 이미지
+				//$("#img-checkcode").show(); // '중복확인' 체크 이미지
 			} else {
 				$('input').not('input:radio[name="repayWay"]').not('input:radio[name="intPayWay"]').val('');
 				$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', false);
@@ -677,7 +678,7 @@
 				$("#tbody-list").find("tr").css("background-color", "inherit");
 				$(this).css("background-color", "#ddd");
 				$(td.eq(0).children().children()).prop('checked', false);
-				$("#img-checkcode").hide(); // '중복확인' 체크 이미지
+				//$("#img-checkcode").hide(); // '중복확인' 체크 이미지
 				$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 			}
 		});
@@ -882,11 +883,11 @@
 					$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
 					$('#inputForm').attr('method', 'POST');
 					$('#inputForm').submit();
-					alert("차입금정보가 수정이 완료되었습니다.");
+					openModal('Error', "차입금정보가 수정이 완료되었습니다.");
 					return;
 					
 				} else {
-					alert("해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
+					openModal('Error', "해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
 					var repayList = response.data;
 	         	  	$("#repay-code").text(repayList[0].code);
 	         	  	
@@ -1069,9 +1070,9 @@
 			var intRate = td.eq(9).text().replace('%', ''); // 연이율
 			var intRate12 = td.eq(9).text().replace('%', '') / 12; // 월이율
 			var convertTocommaIntAmount = 0; // 이자금액에 콤마를 추가해서 금액데이터 출력
-			console.log($("#no").val());
-			console.log(td.eq(5).text());
-			console.log(td.eq(10).text());
+			//console.log($("#no").val());
+			//console.log(td.eq(5).text());
+			//console.log(td.eq(10).text());
 				
 			if (n == $("#no").val() && "연" === (td.eq(10).text())) {
 				// 연이자 지급방식
@@ -1089,7 +1090,7 @@
 				console.log("월이자 : " + convertTocommaIntAmount);
 			} else if (n == $("#no").val() && "해당없음" === (td.eq(10).text())){
 				$('input[name=intAmount]').val('0');
-				console.log();
+				console.log("이자해당없음");
 			}
 		});
 			
@@ -1167,7 +1168,7 @@
 							}
 							
 							if (response.data == null) {
-								alert("값을 정확히 입력하지 않았습니다.");
+								openModal('Error', "값을 정확히 입력하지 않았습니다.");
 								return;
 							}
 								
@@ -1180,7 +1181,7 @@
 									td.eq(5).html(m.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 								}
 							});
-							alert("상환데이터가 성공적으로 입력되었습니다.")
+							openModal('Error', "상환데이터가 성공적으로 입력되었습니다.")
 						},
 						error: function(xhr, error) {
 							console.error("error : " + error);
@@ -1543,7 +1544,7 @@
 			return false;
 		}
 		if ('I' !== code.charAt(0)) {
-			validationMessage = '사채 코드는 반드시 I로 시작하여야 합니다';
+			validationMessage = '사채 코드는 반드시 대문자 I로 시작하여야 합니다';
 			return false;
 		}
 		if (code.length < 10) {
@@ -1617,7 +1618,7 @@
 		if(_pattern1.test(_value)){
 			if(charCode != 46){
 				openModal('Error','100 이하의 숫자만 입력 가능합니다');
-			return false;
+				return false;
 			}
 		}
 	
@@ -1629,6 +1630,14 @@
 			openModal('Error','소수점 둘째자리까지만 입력 가능합니다');
 			return false;
 		}
+		
+		var objTarger = evt.srcElement || evt.target;
+		var val = event.srcElement.value;
+		
+		if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+			objTarger.value = null;
+		}
+		
 		return true;
 	}
 	

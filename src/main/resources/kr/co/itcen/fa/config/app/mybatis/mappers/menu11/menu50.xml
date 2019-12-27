@@ -208,7 +208,9 @@
 	   			mgr,
 	    		mgr_call as mgrCall,
 			    bank_code as bankCode,
-			    deposit_no as depositNo
+			    deposit_no as depositNo, 
+			    danger_code as dangerCode, 
+			    danger_name as dangerName 
 			    	from tb_p_debt
 			    		where no = #{_parameter}
 		]]>

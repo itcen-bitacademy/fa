@@ -210,7 +210,7 @@ public class Menu50Service {
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
 		repayVo.setVoucherNo(no);
 		
-		menu50Repository.update(pdebtVo); // 이전 사채 정보 수정
+		menu50Repository.updateRepayVo(repayVo); // 이전 사채 정보 수정
 		pdebtVo = menu50Repository.getOne(repayVo.getDebtNo());
 		menu50Repository.insertRepayVo(repayVo); // 상환 테이블에 insert
 
