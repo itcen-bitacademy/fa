@@ -230,7 +230,8 @@
 		  			   card_no,
 		  			   deposit_no,
 		  			   customer_no,
-		  			   closing_yn
+		  			   closing_yn,
+		  			   order_no
 		)
 		values (null,
 				#{voucherUse },
@@ -244,7 +245,8 @@
 		  		#{cardNo },
 		  		#{depositNo },
 		  		#{customerNo },
-		  		'y'
+		  		'y',
+		  		#{orderNo }
 		)
 		]]>
 	</insert>

@@ -135,6 +135,7 @@
 							</thead>
 
 							<tbody class = "origin-tbody">
+								<c:if test="${pVo!=null }">
 									<tr>
 										<td>[ ${pVo.voucherUse } ]</td>
 										<td></td>
@@ -153,7 +154,7 @@
 												</c:otherwise>
 											</c:choose>
 									</tr>
-								
+								</c:if>
 								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 										<tr>
 											<td>${vo.regDate }</td>
@@ -175,7 +176,7 @@
 
 									</tr>
 								</c:forEach>
-
+			
 								<tr>
 									<td>[합계]</td>
 									<td></td>
@@ -186,7 +187,7 @@
 									<td></td>
 									<td></td>
 								</tr>
-
+								<c:if test="${pVo!=null }">
 								<tr>
 									<td>[누계]</td>
 									<td></td>
@@ -198,6 +199,7 @@
 									
 									<td></td>
 								</tr>
+								</c:if>
 							</tbody>
 						</table>
 					</div>
