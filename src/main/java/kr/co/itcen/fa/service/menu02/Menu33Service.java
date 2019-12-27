@@ -113,6 +113,18 @@ public class Menu33Service {
 		
 		return pagefactoryList;
 	}
+
+	public int getcheckNo(String checkNo) {
+		int check = menu33Repository.getcheckNo(checkNo);
+		
+		return check;
+	}
+
+	public int getcheckNodeleteX(String no) {
+		int check = menu33Repository.getcheckNodeleteX(no);
+		
+		return check;
+	}
 	
 
 	

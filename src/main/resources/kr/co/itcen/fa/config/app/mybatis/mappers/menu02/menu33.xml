@@ -152,6 +152,22 @@
 		limit #{factory_page }, 6
 		]]>
 	</select>
+	
+	<select id="getcheckNodeleteX" parameterType="String" resultType="int">
+		<![CDATA[
+		select count(*)
+		from tb_purchaseitem
+		where no = #{checkNo } and delete_flag = "N"
+		]]>
+	</select>
+	
+	<select id="getcheckNo" parameterType="String" resultType="int">
+		<![CDATA[
+		select count(*)
+		from tb_purchaseitem
+		where no = #{checkNo }
+		]]>
+	</select>
 </mapper>
 
 

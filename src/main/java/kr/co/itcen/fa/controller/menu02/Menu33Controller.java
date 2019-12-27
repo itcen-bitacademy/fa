@@ -113,30 +113,34 @@ public class Menu33Controller {
 	
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/search", method=RequestMethod.GET)
-	public Map<String, Object> search(@RequestParam(value="itemcode", required=false) String no) {
+	public Map<String, Object> search(@RequestParam(value="itemcode", required=false, defaultValue = "") String no) {
 		System.out.println(no);
-		
-		PurchaseitemVo searchpurchaseitemVo = menu33Service.searchpurchaseitem(no);
-		FactoryVo searchfactoryVo = menu33Service.searchfactory(searchpurchaseitemVo.getNo(), searchpurchaseitemVo.getFactorycode());
-		SectionVo searchsectionVo = menu33Service.searchsection(searchpurchaseitemVo.getSectioncode());
-		
 		Map<String, Object> map = new HashMap<String, Object>();
-		
-		map.put("no", searchpurchaseitemVo.getNo());
-		map.put("section_name", searchsectionVo.getClassification());
-		map.put("factory_name", searchfactoryVo.getName());
-		map.put("postaddress", searchfactoryVo.getPostaddress());
-		map.put("roadaddress", searchfactoryVo.getRoadaddress());
-		map.put("detailaddress", searchfactoryVo.getDetailaddress());
-		map.put("standard", searchpurchaseitemVo.getStandard());
-		map.put("price", searchpurchaseitemVo.getPrice());
-		
-		map.put("name", searchpurchaseitemVo.getName());
-		map.put("section_code", searchpurchaseitemVo.getSectioncode());
-		map.put("factory_code", searchfactoryVo.getNo());
-		map.put("manager_name", searchfactoryVo.getManagername());
-		map.put("produce_date", searchpurchaseitemVo.getProducedate());
-		map.put("purpose", searchpurchaseitemVo.getPurpose());
+		PurchaseitemVo searchpurchaseitemVo = menu33Service.searchpurchaseitem(no);
+
+		if(searchpurchaseitemVo != null) {
+			FactoryVo searchfactoryVo = menu33Service.searchfactory(searchpurchaseitemVo.getNo(), searchpurchaseitemVo.getFactorycode());
+			SectionVo searchsectionVo = menu33Service.searchsection(searchpurchaseitemVo.getSectioncode());
+			
+			map.put("no", searchpurchaseitemVo.getNo());
+			map.put("section_name", searchsectionVo.getClassification());
+			map.put("factory_name", searchfactoryVo.getName());
+			map.put("postaddress", searchfactoryVo.getPostaddress());
+			map.put("roadaddress", searchfactoryVo.getRoadaddress());
+			map.put("detailaddress", searchfactoryVo.getDetailaddress());
+			map.put("standard", searchpurchaseitemVo.getStandard());
+			map.put("price", searchpurchaseitemVo.getPrice());
+			
+			map.put("name", searchpurchaseitemVo.getName());
+			map.put("section_code", searchpurchaseitemVo.getSectioncode());
+			map.put("factory_code", searchfactoryVo.getNo());
+			map.put("manager_name", searchfactoryVo.getManagername());
+			map.put("produce_date", searchpurchaseitemVo.getProducedate());
+			map.put("purpose", searchpurchaseitemVo.getPurpose());
+			map.put("dataflag", "ok");
+		} else {
+			map.put("dataflag", "no");
+		}
 		
 		return map;
 	}
@@ -181,6 +185,7 @@ public class Menu33Controller {
 		
 		HttpSession session = request.getSession();
 		purchaseitemVo.setPrice(String.join("", purchaseitemVo.getPrice().split(",")));
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");
@@ -194,11 +199,17 @@ public class Menu33Controller {
 				System.out.println(purchaseitemVo);
 				System.out.println(factoryVo);
 				
-				menu33Service.update(purchaseitemVo, factoryVo);
+				int ch = menu33Service.getcheckNodeleteX(purchaseitemVo.getNo());
+				
+				if(ch == 1) {
+					menu33Service.update(purchaseitemVo, factoryVo);
+					map.put("updateflag", "ok");
+				} else {
+					map.put("updateflag", "no");
+				}
 			}
 		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
 		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
 		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
 		map.put("purchaseitemListall", purchaseitemListall);
@@ -216,6 +227,7 @@ public class Menu33Controller {
 		
 		HttpSession session = request.getSession();
 		purchaseitemVo.setPrice(String.join("", purchaseitemVo.getPrice().split(",")));
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(session != null && session.getAttribute("authUser") != null) {
 			UserVo userVo = (UserVo)session.getAttribute("authUser");
@@ -229,7 +241,15 @@ public class Menu33Controller {
 				
 				System.out.println(purchaseitemVo);
 				System.out.println(factoryVo);
-				menu33Service.delete(purchaseitemVo, factoryVo);
+				
+				int ch = menu33Service.getcheckNodeleteX(purchaseitemVo.getNo());
+				
+				if(ch == 1) {
+					menu33Service.delete(purchaseitemVo, factoryVo);
+					map.put("delflag", "ok");
+				} else {
+					map.put("delflag", "no");
+				}
 			}
 		}
 		
@@ -246,15 +266,11 @@ public class Menu33Controller {
 		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
 		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
 		map.put("page_num", page);
 		map.put("page_group", page_group);
 		map.put("purchaseitemListall", purchaseitemListall);
 		map.put("pagepurchaseitemList", pagepurchaseitemList);
 		map.put("purchaseitemList", purchaseitemList);
-		
-		System.out.println("gdgd");
 		
 		return map;
 	}
@@ -309,6 +325,23 @@ public class Menu33Controller {
 		return map;
 	}
 	
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/checkNo")
+	public String checkNo(@RequestParam(value="checkNo", required=false, defaultValue="") String checkNo) {
+		String check = "false";
+		
+		if(checkNo.length() == 10) {
+			int ch = menu33Service.getcheckNo(checkNo);
+			
+			if(ch == 0) {
+				check = "true";
+			}
+		} else {
+			check = "none";
+		}
+		
+		return check;
+	}
 }
 
 

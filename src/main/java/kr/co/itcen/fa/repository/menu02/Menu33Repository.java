@@ -155,6 +155,17 @@ public class Menu33Repository {
 		
 		return pagefactoryList;
 	}
+
+	public int getcheckNo(String checkNo) {
+		int count = sqlSession.selectOne("menu33.getcheckNo", checkNo);
+
+		return count;
+	}
+
+	public int getcheckNodeleteX(String no) {
+		int count = sqlSession.selectOne("menu33.getcheckNodeleteX", no);
+		return count;
+	}
 	
 }
 

@@ -27,15 +27,15 @@
 			var itemcode = $("#form-field-item-id").val();
 			console.log(itemcode);
 			
-			if(itemcode != null && itemcode.length > 0) {
-				event.preventDefault();
-				
-				$.ajax({
-					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search",
-					type:"get",
-					dataType:"json",
-					data:{"itemcode" : itemcode},
-					success:function(data) {
+			event.preventDefault();
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search",
+				type:"get",
+				dataType:"json",
+				data:{"itemcode" : itemcode},
+				success:function(data) {
+					if(data.dataflag === "ok") {
 						$("#form-field-item-id").val(data.no);
 						$("#form-field-section-name").val(data.section_name);
 						$("#form-field-factory-name").val(data.factory_name);
@@ -51,11 +51,13 @@
 						$("#form-field-factory-manager").val(data.manager_name);
 						$("#id-date-picker-1").val(data.produce_date);
 						$("#form-field-purpose").val(data.purpose);
-					}, error:function(error) {
-						alert("찾을 수 없는 품목입니다.");
+					} else if(data.dataflag === "no") {
+						dialog("찾을 수 없는 품목입니다.", true);
 					}
-				});
-			}
+				}, error:function(error) {
+					dialog("찾을 수 없는 품목입니다.", true);
+				}
+			});
 		});
 		
 		$("#delete").click(function(event) {
@@ -72,28 +74,32 @@
 					dataType:"json",
 					data:$("#form").serialize() + "&page=" + page_num,
 					success:function(data) {
-						alert("삭제 완료");
-						
-						$("#form-field-item-id").val("");
-						$("#form-field-section-name").val("");
-						$("#form-field-factory-name").val("");
-						$("#form-field-factory-postaddress").val("");
-						$("#form-field-factory-roadaddress").val("");
-						$("#form-field-factory-detailaddress").val("");
-						$("#form-field-standard").val("");
-						$("#form-field-price").val("");
-						
-						$("#form-field-item-name").val("");
-						$("#form-field-section-code").val("");
-						$("#form-field-factory-code").val("");
-						$("#form-field-factory-manager").val("");
-						$("#id-date-picker-1").val("");
-						$("#form-field-purpose").val("");
+						if(data.delflag === "ok") {
+							dialog("삭제 완료", false);
+							
+							$("#form-field-item-id").val("");
+							$("#form-field-section-name").val("");
+							$("#form-field-factory-name").val("");
+							$("#form-field-factory-postaddress").val("");
+							$("#form-field-factory-roadaddress").val("");
+							$("#form-field-factory-detailaddress").val("");
+							$("#form-field-standard").val("");
+							$("#form-field-price").val("");
+							
+							$("#form-field-item-name").val("");
+							$("#form-field-section-code").val("");
+							$("#form-field-factory-code").val("");
+							$("#form-field-factory-manager").val("");
+							$("#id-date-picker-1").val("");
+							$("#form-field-purpose").val("");
+						} else if(data.delflag === "no") {
+							dialog("품목코드를 확인해주세요.", false);
+						}
 						
 						updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 						updatePagination(data.purchaseitemListall, data.purchaseitemList, data.page_num, data.page_group);
 					}, error:function(error) {
-						alert("찾을 수 없는 품목입니다.");
+						dialog("찾을 수 없는 품목입니다.", false);
 					}
 				});
 			}
@@ -107,40 +113,102 @@
 			if(itemcode != null && itemcode.length > 0) {
 				event.preventDefault();
 				
-				$.ajax({
-					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
-					type:"get",
-					dataType:"json",
-					data:$("#form").serialize() + "&page=" + page_num,
-					success:function(data) {
-						alert("수정 완료");
-						
-						updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
-					}, error:function(error) {
-						alert("찾을 수 없는 품목입니다.");
-					}
-				});
+				var purchasename = $("#form-field-item-name").val();
+				
+				var sectionname = $("#form-field-section-name").val();
+				var sectioncode = $("#form-field-section-code").val();
+				
+				var factoryname = $("#form-field-factory-name").val();
+				var factorycode = $("#form-field-factory-code").val();
+				
+				var manager = $("#form-field-factory-manager").val();
+				
+				var producedate = $("#id-date-picker-1").val();
+				
+				var price = $("#form-field-price").val();
+				
+				if(purchasename.length === 0) {
+					dialog("품목명을 입력해주세요.", false);
+				} else if(sectionname.length === 0 || sectioncode.length === 0) {
+					dialog("품목대분류를 선택해주세요.", false);
+				} else if(factoryname.length === 0 || factorycode.length === 0) {
+					dialog("공장을 선택해주세요.", false);
+				} else if(manager.length === 0) {
+					dialog("생산담당자를 입력해주세요.", false);
+				} else if(producedate.length === 0) {
+					dialog("생산일자를 선택해주세요.", false);
+				} else if(price.length === 0) {
+					dialog("단가를 입력해주세요.", false);
+				} else {
+					$.ajax({
+						url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
+						type:"get",
+						dataType:"json",
+						data:$("#form").serialize() + "&page=" + page_num,
+						success:function(data) {
+							if(data.updateflag === "ok") {
+								dialog("수정 완료", false);
+							} else if(data.updateflag === "no") {
+								dialog("품목코드를 확인해주세요.", false);
+							}
+							
+							updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
+						}, error:function(error) {
+							dialog("찾을 수 없는 품목입니다.", false);
+						}
+					});
+				}
 			}
 		});
 		
 		$("#add").click(function(event) {
 			var itemcode = $("#form-field-item-id").val();
 			console.log(itemcode);
-			console.log();
+			console.log($("form").data("checkpurchaseno"));
+			event.preventDefault();
 			
-			if(itemcode != null && itemcode.length > 0) {
-				event.preventDefault();
+			var checkpurchaseno = $("#form").data("checkpurchaseno");
+			var purchaseid = $("#form-field-item-id").val();
+			var purchasename = $("#form-field-item-name").val();
+			
+			var sectionname = $("#form-field-section-name").val();
+			var sectioncode = $("#form-field-section-code").val();
+			
+			var factoryname = $("#form-field-factory-name").val();
+			var factorycode = $("#form-field-factory-code").val();
+			
+			var manager = $("#form-field-factory-manager").val();
+			
+			var producedate = $("#id-date-picker-1").val();
+			
+			var price = $("#form-field-price").val();
+			
+			if(checkpurchaseno === "no" || purchaseid.length < 10) {
+				$("#form").data("checkpurchaseno", "no");
 				
+				dialog("품목코드를 중복확인 해주세요.", false);
+			} else if(purchasename.length === 0) {
+				dialog("품목명을 입력해주세요.", false);
+			} else if(sectionname.length === 0 || sectioncode.length === 0) {
+				dialog("품목대분류를 선택해주세요.", false);
+			} else if(factoryname.length === 0 || factorycode.length === 0) {
+				dialog("공장을 선택해주세요.", false);
+			} else if(manager.length === 0) {
+				dialog("생산담당자를 입력해주세요.", false);
+			} else if(producedate.length === 0) {
+				dialog("생산일자를 선택해주세요.", false);
+			} else if(price.length === 0) {
+				dialog("단가를 입력해주세요.", false);
+			} else {
 				$.ajax({
 					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add",
 					type:"get",
 					dataType:"json",
 					data:$("#form").serialize(),
 					success:function(data) {
-						alert("등록 완료");
-						location.reload();
+						dialog("등록 완료", true);
 					}, error:function(error) {
-						alert("찾을 수 없는 품목입니다.");
+						dialog("등록할 수 없는 품목입니다.", false);
 					}
 				});
 			}
@@ -181,7 +249,7 @@
 							section_updateTable(data.pagesectionList, section_page_num);
 							section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 						}, error:function(error) {
-							alert("찾을 수 없는 품목입니다.");
+							dialog("찾을 수 없는 대분류명입니다.", false);
 						}
 					});
 				},
@@ -220,7 +288,7 @@
 			    			factory_updateTable(data.pagefactoryList, factory_page_num);
 			    			factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 			    		}, error:function(error) {
-			    			alert("찾을 수 없는 품목입니다.");
+			    			dialog("찾을 수 없는 공장명입니다.", false);
 			    		}
 			    	});
 			    },
@@ -262,7 +330,7 @@
 						$("#id-date-picker-1").val(data.produce_date);
 						$("#form-field-purpose").val(data.purpose);
 					}, error:function(error) {
-						alert("찾을 수 없는 품목입니다.");
+						dialog("찾을 수 없는 품목입니다.", false);
 					}
 				});
 			}
@@ -284,7 +352,7 @@
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 품목입니다.", false);
 				}
 			});
 		});
@@ -308,7 +376,7 @@
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 품목입니다.", false);
 				}
 			});
 		});
@@ -332,7 +400,7 @@
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 품목입니다.", false);
 				}
 			});
 		});
@@ -425,7 +493,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -448,7 +516,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -473,7 +541,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -498,7 +566,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -553,6 +621,10 @@
 			}
 		}
 		
+		$("body").on("click", "#search-section-dialog-refresh", function(e) {
+			$("#form-field-section-name").val("");
+			$("#form-field-section-code").val("");
+		});
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		$("#btn-search-factory").click(function() {
@@ -576,7 +648,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -598,7 +670,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -623,7 +695,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -648,7 +720,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -702,6 +774,11 @@
 				$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
 			}
 		}
+		
+		$("body").on("click", "#search-factory-dialog-refresh", function(e) {
+			$("#form-field-factory-name").val("");
+			$("#form-field-factory-code").val("");
+		});
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		function addCommas(price) {
@@ -711,6 +788,55 @@
 		$("#form-field-price").on('keyup', function(event){
 			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		});
+		
+		$("body").on("click", "#check_no", function(e) {
+			e.preventDefault();
+			
+			var no = $("#form-field-item-id").val();
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo",
+				type:"get",
+				dataType:"json",
+				data:{"checkNo" : no},
+				success:function(data) {
+					if(data === "true") {
+						dialog("사용가능한 품목코드입니다.", false);
+						$("#form").data("checkpurchaseno", "ok");
+					} else if(data === "false") {
+						dialog("중복된 품목코드입니다.", false);
+						$("#form").data("checkpurchaseno", "no");
+					} else if(data === "none") {
+						dialog("품목코드를 10자를 입력해주세요.", false);
+						$("#form").data("checkpurchaseno", "no");
+					}
+				}, error:function(error) {
+					dialog("찾을 수 없는 품목입니다.", true);
+				}
+			});
+		});
+		
+		function dialog(txt, flag) {
+	        $("#dialog-txt").html(txt);
+	    	var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$(this).dialog("close");
+								location.reload();
+							} else {
+								$(this).dialog("close");
+							}
+						}
+					}
+				]
+			});
+	    }
 	});
 </script>
 </head>
@@ -729,18 +855,24 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
-						<form id="form" class="form-horizontal" method="post">
+						<form id="form" class="form-horizontal" data-checkpurchaseno="no" method="post">
 						<div style="height:335px">
 							<div class="span6">
 								<div class="control-group">
 									<label class="control-label" for="form-field-item-id" style="text-align:initial; text-indent:72px;">품목코드</label>
 									<div class="controls">
-										<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드" maxlength="10"/>
+										<div class="row-fluid input-append">
+											<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드" maxlength="10"/>
+											<span class="add-on">
+												<a href="javascript:void(0);" id="check_no" style="text-decoration:none"><i class="icon-ok bigger-110"></i></a>
+											</span>
+										</div>
 									</div>
 								</div>
 								
-								
-								
+								<div id="dialog-confirm" class="hide">
+									<p id="dialog-txt" class="bolder grey"></p>
+								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-section-name">품목 대분류명</label>
@@ -749,6 +881,9 @@
 											<input class="span5" id="form-field-section-name" name="sectionname" type="text" placeholder="품목 대분류명" readonly/>
 											<span class="add-on">
 												<a href="javascript:void(0);" id="search-section-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
+											</span>
+											<span class="add-on">
+												<a href="javascript:void(0);" id="search-section-dialog-refresh" style="text-decoration:none"><i class="icon-refresh"></i></a>
 											</span>
 										</div>
 									</div>
@@ -838,6 +973,9 @@
 											<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명" readonly/>
 											<span class="add-on">
 												<a href="javascript:void(0);" id="search-factory-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
+											</span>
+											<span class="add-on">
+												<a href="javascript:void(0);" id="search-factory-dialog-refresh" style="text-decoration:none"><i class="icon-refresh"></i></a>
 											</span>
 										</div>
 									</div>
