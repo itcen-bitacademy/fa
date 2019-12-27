@@ -37,7 +37,7 @@ public class Menu47Service {
 		//조회조건에 따라 Row 총갯수를 구한다.
 		int totalCnt = menu47Repository.getTotalCnt(sTermDebtVo);
 		Pagination pagination = new Pagination(page, totalCnt, pageSize);
-		
+		System.out.println("page : " + pagination.getPage() + "startPage : " + pagination.getStartPage());
 		//Mybatis로 전달할 데이터를 삽입
 		Map map = pagination.getRowRangeMap();
 		map.put("vo", sTermDebtVo);

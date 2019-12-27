@@ -159,6 +159,7 @@ input::-webkit-inner-spin-button {
 				<input id="search-condition" type="hidden">
 				<input id="deleteVoList" type="hidden">
 				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+					<input type="hidden" name="vo"/>				
 					<input type="hidden" name="no"/>
 					<input type="hidden" name="voucherNo"/>
 				<div class="input-area">
@@ -913,10 +914,13 @@ function selectRow(thisObj){
 	
 	$(thisObj).closest("table").find("tr").css("background-color", "inherit");
 	$(thisObj).css("background-color", "#ddd");
+	$("#btn-chk-duplication").css("display", "none");
+	$(inputForm.code).attr("readonly");
 	
+	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;
 	inputForm.no.value = vo.no;
-	$(inputForm.code).val(vo.code).change();
+	$(inputForm.code).val(vo.code);
 	inputForm.name.value = vo.name;
 	inputForm.debtAmount.value = vo.debtAmount;
 	inputForm.debtAmountComma.value = comma(vo.debtAmount);

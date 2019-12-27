@@ -35,7 +35,8 @@ public class Menu47ApiController {
 			@RequestParam(value="page", required=true) int page) {
 		
 		Map map = menu47Service.getListMap(sTermDebtVo, pageSize, orderColumn, page);
-		System.out.println("paging : " + sTermDebtVo);
+		System.out.println("getList : " + sTermDebtVo);
+		System.out.println("page : " + page);
 		return JSONResult.success(map);
 	}
 	

@@ -5,21 +5,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+	*{margin:0; padding:0}
 	label, h4{display: inline-block}
 	
 	#filter-area{
 		display: grid;
-		grid-template-columns: 50% 50%;
-		grid-template-rows: 70px 35px;
+		grid-template-rows: 50px 70px 25px;
 	}
 	
 	.filter-top{
-		grid-column: 1 / 3;
-		grid-row: 1;
-		
 		display: grid;
+		grid-template-columns: repeat(3, auto);
 	}
 	
 	.input-area-wrapper{
@@ -31,34 +31,42 @@
 		margin: auto 0;
 	}
 	
-	.input-area{grid-column: auto;}
+	.input-area{
+		display: grid;
+		grid-template-columns: 200px auto;
+	}
 	.input-area:not(:first-child):not(:last-child){
 		margin: 0 auto;
 	}
-	
-	.input-area-last{ float: right; }
-	.input-area>*, .input-area>input, .input-area-last>*, .input-area-last>input { margin: auto 0;}
-	
+	.input-area>*{
+		margin: auto 0;
+		display: inline-block;
+	}
+
+	.input-area>*, .input-area>div>*{
+		margin: auto 0;
+	}
 	.input-area-radio{
 		display: grid;
-		grid-template-columns: 100px 50px 50px 80px;
-	}
-	.radio-label{
-		margin-right: 5px;
+		grid-template-columns: 150px 50px 50px 80px;
 	}
 	.filter-left{
-		grid-column: 1;
-		grid-row: 2;
+		grid-row: 3;
 	}
 	
 	.filter-left>*{
 		margin: auto 0;
 	}	
 	.filter-right{
-		grid-column: 2;
-		grid-row: 2;
-		
+		grid-row: 3;
 	}
+	
+	.filter-bottom{
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+	}
+	
+	.filter-bottom>div:last-child{}
 	
 	.chkbox-list-area{
 		margin: auto 0;		/** **/
@@ -80,14 +88,54 @@
  	display:grid;
  	grid-template-columns: repeat(3,auto);
  }
+ 
+ .page-info{
+ 	display: grid;
+ 	grid-template-columns: repeat(2, auto);
+ }
+ 
+ .page-info>div:last-child>div{
+ 	float: right;
+ }
  .pg-list{grid-column: 2;}
- .pg-total-row{grid-column: 3}
- .pg-total-row>h5{float:right; margin:0}
+ .pg-total-row>h5{float:left; margin:0}
 
-.label-name{
-	font-size: 14px;
+
+.add-on {
+    display: inline-block;
+    width: auto;
+    height: 20px;
+    min-width: 16px;
+    padding: 4px 5px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    vertical-align: top;
+    margin-left: -4px;
+}
+
+
+.div-float-right{
+	float: right;
+}
+
+.div-float-right>*{
+	margin: auto 0;
+	display: inline-block;
+}
+
+div > input[type=radio]{
+	margin-top: 1px;
+	margin-right: 10px;
+}
+div > .label-radio{
 	margin-right: 3px;
 }
+
 </style>
 </head>
 <body class="skin-3">
@@ -109,59 +157,85 @@
 			<!-- PAGE CONTENT BEGINS -->
 			<form id="filter-area" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">
 				<section class="filter-top">
-					<div class="input-area-wrapper">
 						<div class="input-area">
-							<label for="debtDate"><label class="label-name">차입일자</label></label> 
-							<input type="date" id="debtDate" name="debtDate">
-						</div>
-						<div class="input-area">
-							<label for="expDate"><label class="label-name">만기일자</label></label> 
-							<input type="date" id="expDate" name="expDate">
-						</div>
-						<div class="input-area input-area-radio">
-							<label class="label-name">이자지급방식</label>
-							<div class="radio-input"><label class="radio-label label-name">년</label><input type="radio" name="intPayWay" value="Y"></div>
-							<div class="radio-input"><label class="radio-label label-name">월</label><input type="radio" name="intPayWay" value="M"></div>
-							<div class="radio-input"><label class="radio-label label-name">해당없음</label><input type="radio" name="intPayWay" value="E"></div>
-						</div>
-						<div class="input-area">
-							<div class="input-area-last">
-								<label for="bankName"><label class="label-name">은행명</label></label> 
-								<input type="text" name="bankName" id="bankName">
-								<input type="button" value="조회" onclick="search()">
+							<label class="label-name" >차입일자</label>
+							<div>
+								<input type="text" name="debtDate" class="cl-date-picker" id="id-date-picker-1" readOnly>
+								<span class="add-on">
+	                              <i class="icon-calendar"></i>	
+	                           	</span>	
 							</div>
 						</div>
-					</div> <!-- input-area-wrapper end -->	</section> <!-- filter-top end -->
-				<section class="filter-left">
-					<label class="label-name">정렬</label>
-					<select name="orderColumn" class="order-list" onchange="order(this)">	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
-						<option value="debt_date">차입일자</option>
-						<option value="exp_date">만기일자</option>
-						<option value="insert_date">등록일자</option>
-						<option value="debt_amount">차입금액</option>
-					</select>
-				</section> <!-- filter-left end -->
-				<section class="filter-right">
-					<div class="chkbox-list-area">
-						<div class="chkbox-list">
-							<label>삭제포함</label>
-							<input type="checkbox" name="deleteFlag" value="Y">
+						<div class="input-area">
+							<label class="label-name">이자지급방식</label>
+							<div class="radio-area">
+								<label class="label-radio">년</label><input type="radio" name="intPayWay" value="Y">
+								<label class="label-radio">월</label><input type="radio" name="intPayWay" value="M">
+								<label class="label-radio">해당없음</label><input type="radio" name="intPayWay" value="E">
+							</div>
 						</div>
-						<div class="chkbox-list">
-							<label>상환완료포함</label>
-							<input type="checkbox" name="repayCompleFlag" value="Y">
+						<div>
+							<div class="div-float-right input-area">
+								<label for="bankName" class="label-name">은행명</label>
+								<div>
+									<input type="text" name="bankName" id="bankName">
+									<input type="button" value="조회" onclick="search()">
+								</div>
+							</div>
 						</div>
-						<div class="selectbox-wrapper">
-							<label for="pageSize">페이지내 건수</label>
-							<select id="pageSize" name="pageSize">
-								<option value="5" selected="selected">5</option>
-								<option value="10">10</option>
-								<option value="15">15</option>
-							</select>
+				</section> <!-- filter-top end -->
+				<section class="filter-mid">
+					<div class="input-area">
+						<label class="label-name">만기일자</label>
+						<div>
+							<input type="text" name="expDate" class="cl-date-picker" id="id-date-picker-1" readOnly>
+							<span class="add-on">
+                              <i class="icon-calendar"></i>	
+                           	</span>	
 						</div>
 					</div>
-				</section> <!-- filter-right end -->
+				</section>
+				<section class="filter-bottom">
+					<div class="input-area">
+						<label class="label-name">차입금 선택정렬</label>
+						<select class="order-list chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." onchange="order(this)" >	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
+							<option value=""></option>
+							<option value="debt_date">차입일자</option>
+							<option value="exp_date">만기일자</option>
+							<option value="insert_date">등록일자</option>
+							<option value="debt_amount">차입금액</option>
+						</select>
+					</div>
+					<div>
+						<div class="div-float-right">
+							<div class="chkbox-list">
+								<label>삭제포함</label>
+								<input type="checkbox" name="deleteFlag" value="Y">
+							</div>
+							<div class="chkbox-list">
+								<label>상환완료포함</label>
+								<input type="checkbox" name="repayCompleFlag" value="Y">
+							</div>	
+						</div>	
+					</div>	
+				</section> <!-- filter-left end -->
 			</form>
+			<hr/>
+			<section id="page-info" class="page-info">
+				<div id="pg-total-row" class="pg-total-row">
+					<h5>총  ${pagination.totalCnt }건</h5>
+				</div>
+				<div>
+					<div class="selectbox-wrapper">
+						<label for="pageSize">페이지내 건수</label>
+						<select id="pageSize" name="pageSize">
+							<option value="5" selected="selected">5</option>
+							<option value="10">10</option>
+							<option value="15">15</option>
+						</select>
+					</div>
+				</div>
+			</section>
 			<!-- PAGE CONTENT ENDS -->
 			<!-- list -->
 				<table id="simple-table" class="table  table-bordered table-hover">
@@ -241,9 +315,6 @@
 							</c:otherwise>
 						</c:choose>
 					</ul>
-					<section id="pg-total-row" class="pg-total-row">
-						<h5>총  ${pagination.totalCnt }건</h5>
-					</section>
 				</section>
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
@@ -252,6 +323,40 @@
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
+<script>
+$(function() {
+	$(".chosen-select").chosen();
+	
+	$.fn.datepicker.dates['ko'] = {
+		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		today: "Today",
+		clear: "Clear",
+		format: "yyyy-mm-dd",
+		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+		weekStart: 0
+	};
+	
+	$('#cl-ym-date-picker').datepicker({
+		maxViewMode: 4,
+		minViewMode: 1,
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	
+	$('.cl-date-picker').datepicker({
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+});
+</script>
 <script>
 $(document).ready(getList());
 function convertMajorCode(majorCode){
@@ -295,6 +400,10 @@ function convertIntPayWay(intPayWay){
 function convertIntRate(intRate){
 	return intRate + "%";
 }
+function comma(str) {
+	str = String(str);
+	return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
 //리스트를 받아서 Rendering 하는 함수
 function renderingList(list){
 	$("#tbody-list > *").remove();
@@ -303,7 +412,7 @@ function renderingList(list){
 				 "<td class='center'>" + list[i].code + "</td>" +
 				 "<td class='center'>" + list[i].name + "</td>" +
 				 "<td class='center'>" + convertMajorCode(list[i].majorCode) + "</td>" +
-				 "<td class='center'>" + list[i].debtAmount + "</td>" +
+				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
 				 "<td class='center'>" + convertRepayWay(list[i].repayWay) + "</td>" +
 				 "<td class='center'>" + list[i].debtDate + "</td>" + 
 				 "<td class='center'>" + list[i].expDate + "</td>" +
@@ -319,6 +428,8 @@ function renderingList(list){
 
 //page 번호 Rendering 함수
 function renderingPage(pagination){
+	console.log("------------------------------------renderingPage() Called ----------------------------------------");
+	console.log("startPage : " + pagination.startPage + " endPage : " + pagination.endPage);
 	//페이징 리스트 삭제
 	$("#pg-list li").remove();
 	
@@ -348,7 +459,8 @@ function renderingPage(pagination){
 	}
 	
 	$("#pg-total-row>*").remove();
-	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>")
+	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>");
+	console.log("------------------------------------renderingPage() End ----------------------------------------");
 }
  
  function getList(){

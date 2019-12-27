@@ -81,7 +81,9 @@
 		]]>
 			where no > 0
 			<if test='bankName != null and !"".equals(bankName)'>
-				and bank_code = #{bankName}
+				and bank_code IN (select code
+							 	  from tb_bank
+							 	  where name like concat(#{bankName},'%')) 
 			</if>
 			<if test='debtDate != null and !"".equals(debtDate)'>
 				and debt_date = #{debtDate}
