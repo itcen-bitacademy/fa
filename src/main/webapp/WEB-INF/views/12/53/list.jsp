@@ -320,10 +320,8 @@
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 	<!-- basic scripts -->
 	<script src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
-	
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	
 	<script>
 		$(function() {
 			$.fn.datepicker.dates['ko'] = {
@@ -360,6 +358,7 @@
 			dataEmptyCheck();
 		})
 		
+		// 화면에 dialog가 뜨게 하는 기능
 		function dataEmptyCheck() {
 			if($('#dataflag').val()=="true"){
 				dialog("발생되지 않은 매출 입니다.", true);
@@ -385,13 +384,13 @@
             }
         }
 		
+		// 테이블에서 각 항목들을 더하는 기능
 		var sumData = {
 				
         	addQuantity: function(){
         		var sum = 0;
         		
         		for(var i=1; i<=document.getElementById("item-table").rows.length-1; i++){
-        			
         			sum = sum + Number($("#quantity"+i).val());
         			console.log(sum);
         			$("#totalQuantity").val(sum);
@@ -417,6 +416,7 @@
         	}
         }
 		
+		// 비고항목에 대한 업데이트 처리
 		function update(){
 			var code = $("#salesNo").val();
 			alert($("#taxbillNo").val());
@@ -428,12 +428,10 @@
 			
 			if($("#taxbillNo").val().trim() != ""){
 				console.log($("#taxbillNo").val() + "not null");
-				/* 				if($("#write_date").val() != null){ */
 					var url = "${pageContext.request.contextPath }/12/53/update/"+code;
 					if($("#flag").val() == "true"&&code!=""){
 						$("#insert-form").attr("action",url).submit();
 					}
-				/* } */
 			}
 		}
 		
