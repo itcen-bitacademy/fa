@@ -255,6 +255,11 @@
                     <!-- PAGE CONTENT ENDS -->
                 </div>
             </div>
+            
+            <div id="dialog-confirm" class="hide">
+				<p id="dialog-txt" class="bolder grey">
+				</p>
+			</div>
 			
 			<div class="hr hr-18 dotted"></div>
 			<!-- buttons -->
@@ -837,6 +842,53 @@
 			
 		}); // ajax
 	}
+	
+	// 유효성 검사시 Dialog Popup 창이 모달로 띄움
+	function dialog(txt, flag) {
+    	$("#dialog-txt").html(txt);
+		var dialog = $( "#dialog-confirm" ).dialog({
+			resizable: false,
+			modal: true,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						if(flag){
+							$( this ).dialog( "close" ); 
+							location.href="${pageContext.request.contextPath }/12/13";
+						} else {
+							$( this ).dialog( "close" ); 
+						}
+					}
+				}
+			]
+		});
+	}
+	
+	var valid = {
+    		nullCheck: function(id, msg){ // null 체크
+    			if($("#"+id).val()==""){
+    				dialog(msg+" 을(를) 입력 해 주세요.");
+    				return false;
+    			} else {
+    				return true;
+    			}
+    		},
+			strCheck: function(id){  // 문자열 체크 
+    			
+    		}, 
+			numberCheck: function(id, msg){  // 숫자 체크
+    			if(!$.isNumeric($("#"+id).val())){        	
+    				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
+    				$("#"+id).focus();
+    				return false;
+    			} else {
+    				return true;
+    			}
+    		}
+    
+    }
 		
 	
 </script>

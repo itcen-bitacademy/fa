@@ -68,13 +68,19 @@ function execDaumPostcode() {
 			$("#no").attr("readonly",false);
 		});
 		
-		$("#input-form").submit(function(event) {
+		$("#inputform").submit(function(event) {
 	        event.preventDefault();
-			var queryString = $("form[name=input-form]").serializeArray();
+			var queryString = $("form[name=inputform]").serializeArray();
 			if("${param.page}") {
 				queryString.push({name: 'page', value: "${param.page}"});
 			}
+			
 			if(a == "create") {
+				if(!InsertValidation()){
+					openErrorModal(errortitle,validationMessage,errorfield);
+					return;
+				}
+				
 				$.ajax({
 				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
 				    type: "POST",
@@ -85,7 +91,7 @@ function execDaumPostcode() {
 				    		alert("다시 입력해주세요.");
 				    	}
 				    	if(result.success) {
-				    		$('#input-form').each(function(){
+				    		$('#inputform').each(function(){
 				    		    this.reset();
 				    		});
 				    		alert("거래처 등록이 완료되었습니다."); 
@@ -99,6 +105,7 @@ function execDaumPostcode() {
 				    		
 				    		$('#pagination').show();
 				    	}
+						
 				    },
 				    error: function( err ){
 				    	
@@ -114,7 +121,7 @@ function execDaumPostcode() {
 				    	if(result.success) {
 				    		alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
-				    		$('#input-form').each(function(){
+				    		$('#inputform').each(function(){
 				    		    this.reset();
 				    		});
 				    		
@@ -129,6 +136,10 @@ function execDaumPostcode() {
 				    }
 				 })
 			} else if(a == "update") {
+				if(!InsertValidation()){
+					openErrorModal(errortitle,validationMessage,errorfield);
+					return;
+				}
 				$.ajax({
 				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
 				    type: "POST",
@@ -164,7 +175,7 @@ function execDaumPostcode() {
 				    	if(result.success) {
 				    		alert("거래처 삭제가 완료되었습니다."); 
 				    		removeTable();
-				    		$('#input-form').each(function(){
+				    		$('#inputform').each(function(){
 				    		    this.reset();
 				    		});
 				    		
@@ -437,6 +448,220 @@ function execDaumPostcode() {
    };
 });
 </script>
+
+<script type="text/javascript">
+var validationMessage ='';
+var errortitle='';
+var errorfield ='';
+// errormodal
+function openErrorModal(title, message,errorfield) { //valid후 modal 띄우기
+	$('#staticBackdropLabel').html(title);//에러
+	$('#staticBackdropBody').text(message);//에러내용
+	
+	console.log($('#staticBackdropLabel').text());
+	console.log($('#staticBackdropBody').text());
+
+	$( "#staticBackdrop" ).dialog({
+		resizable: false,
+		modal: true,
+		title: title,
+		buttons: [
+			{
+				text: "OK",
+				"class" : "btn btn-danger btn-mini",
+				click: function() {
+					$(this).dialog('close');
+		          	$('#staticBackdropBody').text('');//에러내용
+					$(errorfield).focus();
+				}
+			}
+		]
+	});
+
+	$("#staticBackdrop").dialog('open');//모델창 띄운다
+}
+
+//insert Validation
+function InsertValidation(){
+	let no =$('#no').val();//사업자등록번호
+	let name =$('#name').val();//상호명
+	let ceo =$('#ceo').val();//대표자
+	let address =$('#address').val();//종목
+	let conditions =$('#conditions').val();//종목
+	let item =$('#item').val();//업태
+	let corporationNo=$('#corporationNo').val();//법인번호
+	let phone=$('#phone').val();//거래처전화번호
+	let assetsFlag=$('#assetsFlag').val();//종류
+	let managerName=$('#managerName').val();//담당자 성명
+	let bankCode=$('#bankCode').val();//은행코드
+	let bankName=$('#bankName').val();//은행명
+	let depositNo=$('#depositNo').val();//계좌번호
+	let depositHost=$('#depositHost').val();//예금주
+	
+	
+	//사업자등록번호 Valid
+	if('' === no){
+		errortitle = 'CUSTOEMR_NO ERROR';	
+		validationMessage = '사업자 등록번호는 필수입력항목입니다.';
+		errorfield='#no';
+		return false;
+	}
+	if(no.length<10 || no.length >10){
+		errortitle = 'CUSTOEMR_NO ERROR';
+		validationMessage = '사업자등록번호는 10자리를 입력하셔야 합니다.';
+		errorfield='#no';
+		return false;
+	}
+	
+	//상호명 Valid
+	if(''=== name){
+		errortitle = 'CUSTOMER_NAME ERROR';
+		validationMessage = '상호명은 필수입력항목입니다.';
+		errorfield='#name';
+		return false;
+		
+	}
+	if(name.length > 20){
+		errortitle = 'CUSTOMER_NAME ERROR';
+		validationMessage = '상호명은 20자 이하로 입력하셔야 합니다.';
+		errorfield='#name';
+		return false;
+	}
+	
+	//대표자 Valid
+	if(''=== ceo){
+		errortitle = 'CUSTOMER_CEO ERROR';
+		validationMessage = '대표자는 필수입력항목입니다.';
+		errorfield='#ceo';
+		return false;
+		
+	}
+	if(ceo.length > 6){
+		errortitle = 'CUSTOMER_CEO ERROR';
+		validationMessage = '대표자는 6자 이하로 입력하셔야 합니다.';
+		errorfield='#ceo';
+		return false;
+	}
+	//주소 Valid
+
+	if(''=== address){
+		errortitle = 'CUSTOMER_ADDRESS ERROR';
+		validationMessage = '주소는 필수입력항목입니다.';
+		errorfield='#address';
+		return false;
+		
+	}
+	//업태 Valid
+	if(''=== conditions){
+		errortitle = 'CUSTOMER_CONDITIONS ERROR';
+		validationMessage = '업태는 필수입력항목입니다.';
+		errorfield='#conditions';
+		console.log(conditions.length);
+		return false;
+		
+	}
+	if(conditions.length > 10){
+		errortitle = 'CUSTOMER_CONDITIONS ERROR';
+		validationMessage = '업태는 10자 이하로 입력하셔야 합니다.';
+		errorfield='#conditions';
+		return false;
+	}
+	
+	//종목 Valid
+	if(''=== item){
+		errortitle = 'CUSTOMER_ITEM ERROR';
+		validationMessage = '종목은 필수입력항목입니다.';
+		errorfield='#item';
+		return false;
+		
+	}
+	if(item.length > 10){
+		errortitle = 'CUSTOMER_ITEM ERROR';
+		validationMessage = '종목은 10자 이하로 입력하셔야 합니다.';
+		errorfield='#item';
+		return false;
+	}
+	
+	//법인번호 Valid
+	if(''=== corporationNo){
+		errortitle = 'CUSTOMER_CORPORATIONNO ERROR';
+		validationMessage = '법인번호는 필수입력항목입니다.';
+		errorfield='#corporationNo';
+		return false;
+		
+	}
+	if(corporationNo.length<10 || corporationNo.length >10){
+		errortitle = 'CUSTOEMR_CORPORATIONNO ERROR';
+		validationMessage = '법인번호는 10자리를 입력하셔야 합니다.';
+		errorfield='#corporationNo';
+		return false;
+	}
+	
+	//거래처 전화번호 Valid (11자)
+	if(''=== phone){
+		errortitle = 'CUSTOMER_PHONE ERROR';
+		validationMessage = '거래처 전화번호는 필수입력항목입니다.';
+		errorfield='#phone';
+		return false;
+	}
+	if(phone.length > 11){
+		errortitle = 'CUSTOMER_PHONE ERROR';
+		validationMessage = '거래처 전화번호는 11자리 이하로 입력하셔야 합니다.';
+		errorfield='#phone';
+		return false;
+	}
+	
+	//Email Valid
+	if(''=== managerEmail){
+		errortitle = 'CUSTOMER_Email ERROR';
+		validationMessage = '이메일은 필수입력항목입니다.';
+		errorfield='#managerEmail';
+		return false;
+	}
+	
+	//계좌번호, 은행코드, 은행명, 예금주 Valid
+	if(''=== depositNo){
+		errortitle = 'CUSTOMER_DEPOSITNO ERROR';
+		validationMessage = '계좌번호, 은행코드, 은행명, 예금주는 필수입력항목입니다.';
+		errorfield='#depositNo';
+		return false;
+	}
+	
+	//거래처 담당자 성명 Valid
+	if(''=== managerName){
+		errortitle = 'CUSTOMER_DEPOSITNO ERROR';
+		validationMessage = '거래처 담당자 성명은 필수입력항목입니다.';
+		errorfield='#managerName';
+		return false;
+	}
+	
+	//자산플래그
+
+	if(''=== assetsFlag){
+		errortitle = 'CUSTOMER_ASSETSFLAG ERROR';
+		validationMessage = '자산 종류는 필수입력항목입니다.';
+		errorfield='#assetsFlag';
+		return false;
+		
+	}
+
+	return true;
+}
+//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다
+function isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    var _value = event.srcElement.value;
+
+    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+        if(event.keyCode != 46){//delete
+             return false;
+        } 
+     }
+    return true;
+    
+}
+
+</script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 
@@ -458,7 +683,7 @@ function execDaumPostcode() {
 				<div class="row-fluid">
 
 					<!-- PAGE CONTENT BEGINS -->
-					<form class="form-horizontal" id="input-form" name="input-form" method="post">
+					<form class="form-horizontal" id="inputform" name="inputform" method="post">
 						<div class="row-fluid" style="float: left">
 							<div class="span6">
 								<div class="form-group" style="float: left">
@@ -466,7 +691,7 @@ function execDaumPostcode() {
 										사업자 등록번호:&nbsp;
 									</label>
 									
-									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" />
+									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" />
 								</div>
 								
 								<div class="form-group">
@@ -525,15 +750,15 @@ function execDaumPostcode() {
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										법인번호:&nbsp;
 									</label>
-									<input type="text" id="corporationNo" name="corporationNo" placeholder="법인번호" class="col-xs-10 col-sm-5" />
+									<input type="text" id="corporationNo" name="corporationNo" placeholder="법인번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" />
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group" id="assetsFlag">
 									<label class="control-label" for="form-field-1">
 										종류:&nbsp;&nbsp;
 									</label> 
 								
-									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="토지" class="ace" value="a" checked /> 
+									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="토지" class="ace" value="a" /> 
 									<span class="lbl">토지</span> 
 									&nbsp;
 									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="건물" class="ace" value="b" />
@@ -563,7 +788,7 @@ function execDaumPostcode() {
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										거래처 전화번호:&nbsp;
 									</label>
-									<input type="text" id="phone" name="phone" placeholder="거래처 전화번호" class="col-xs-10 col-sm-5" />
+									<input type="text" id="phone" name="phone" placeholder="거래처 전화번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" />
 								</div>
 
 								<div class="form-group">
@@ -582,7 +807,7 @@ function execDaumPostcode() {
 									</label>
 									<div class="input-append">
 										 <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
-										<input type="text" class="search-input-width-first" name="depositNo" readonly/>
+										<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" readonly/>
 												<span class="add-on">
 				                                   <i class="icon-search icon-on-right bigger-110"></i>
 				                                  
@@ -798,7 +1023,17 @@ function execDaumPostcode() {
 						</c:choose>
 					</ul>
 				</div>
+				
+				
+			<!-- Validation Modal Start -->
+			<div id="staticBackdrop" class="hide">
+			<br>
+				<p id="staticBackdropBody" class="bolder grey" style="text-align: center;">
+				</p>
+			</div>
+			<!-- Validation Modal End -->
 		</div>
+		
 	<!-- /.page-content -->
 	
 	<!-- basic scripts -->

@@ -13,14 +13,9 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
-<!-- plugin 참조-->
-<script type="text/javascript" src="${pageContext.request.contextPath }/assets/ace/js/jquery.validate.min.js"></script>
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal 생성 */
-#staticBackdrop {z-index: 2222; position: absolute; top: 300px;}
-
 .p-debt-code-input {width: 270px;}
 .p-debt-name-input {width: 420px;}
 
@@ -67,10 +62,10 @@
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
 											<c:when test='${code eq ""}'>
-												<input type="text" name="code" id ="code" class="p-debt-code-input"/>
+												<input type="text" name="code" id ="code" class="p-debt-code-input" maxlength="10"/>
 											</c:when>
 											<c:otherwise>
-												<input type="text" name="code" id="code" class="p-debt-code-input" value="${code}" />
+												<input type="text" name="code" id="code" class="p-debt-code-input" value="${code}" maxlength="10"/>
 											</c:otherwise>
 										</c:choose>
 										<input class="btn btn-primary btn-small" id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
@@ -81,7 +76,7 @@
 										<td>
 											<label class="control-label">사채명</label>
 										</td>
-										<td colspan="2"><input type="text" id="onlyHangulAndNumber" class="p-debt-name-input" name="name" placeholder="육하원칙으로 입력해주세요."  /></td>
+										<td colspan="2"><input type="text" id="onlyHangulAndNumber" class="p-debt-name-input" name="name" placeholder="육하원칙으로 입력해주세요." maxlength="70" /></td>
 									</tr>
 									<tr>
 										<td>
@@ -95,7 +90,7 @@
 										</td>
 										<td colspan="2">
 											<div class="row-fluid input-prepend">
-												<input type="text" name="debtExpDate" name="date-range-picker" id="id-date-range-picker-1" readonly/> <span class="add-on"> <i class="icon-calendar"></i>
+												<input type="text" name="debtExpDate" id="id-date-range-picker-1"/><span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
 										</td>
@@ -133,50 +128,9 @@
 												<div class="input-append">
 													<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly/>
 														<span class="add-on">
-							                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+							                                    <a href="#" id="a-bankinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
 							                        	</span>
 												</div>
-												
-												<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
-												<div id="dialog-bankinfo-message" title="은행코드" hidden="hidden">
-															<table id ="dialog-message-table" align="center">
-																<tr>
-																	<td>
-																	<label class="control-label">은행코드</label>
-																	<div class="input-append">
-																		<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
-																		<span class="add-on">
-										                                    <a href="#" id="a-dialog-bankcode" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                                    </a>
-										                                 </span>
-																		</div>
-																	</td>
-																	<td>
-																	<label class="control-label">은행명</label>
-																	<div class="input-append">
-																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
-																		<span class="add-on">
-										                                    <a href="#" id="a-dialog-bankname" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                                    </a>
-										                                 </span>
-																	</div>
-																	</td>
-																</tr>
-															</table>
-														<!-- 은행코드 및 은행명 데이터 리스트 -->
-														<table id="modal-bank-table" class="table  table-bordered table-hover">
-															<thead>
-																<tr>
-																	<th class="center">은행코드</th>
-																	<th class="center">은행명</th>
-																</tr>
-															</thead>
-															<tbody id="tbody-bankList">
-															</tbody>
-														</table>
-												</div>
-												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-												
 												<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly/>
 										</td>
 									</tr>
@@ -290,34 +244,71 @@
 										</td>
 									</tr>
 								</table>
+								
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+								<div id="dialog-bankinfo-message" title="은행코드" hidden="hidden">
+									<table id ="dialog-message-table" align="center">
+										<tr>
+											<td>
+												<label class="control-label">은행코드</label>
+													<div class="input-append">
+														<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
+															<span class="add-on">
+								                            	<a href="#" id="a-dialog-bankcode"><i class="icon-search icon-on-right bigger-110"></i></a>
+										                    </span>
+													</div>
+											</td>
+											<td>
+												<label class="control-label">은행명</label>
+													<div class="input-append">
+														<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
+															<span class="add-on">
+										                    	<a href="#" id="a-dialog-bankname"><i class="icon-search icon-on-right bigger-110"></i></a>
+										                    </span>
+													</div>
+											</td>
+										</tr>
+									</table>
+									<!-- 은행코드 및 은행명 데이터 리스트 -->
+									<table id="modal-bank-table" class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-bankList">
+										</tbody>
+									</table>
+								</div>
+								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+												
+												
 								<!-- 계좌정보 Modal pop-up : start -->
-												<div id="dialog-account-message" title="계좌" hidden="hidden">
-													<table id="dialog-account-message-table">
-														<tr>
-															<td>
-																<label class="control-label">계좌번호</label>
-																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-																<a href="#" id="a-dialog-depositNo">
-																<span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span>
-															</a>
-															</td>
-														</tr>
-													</table>
-													<!-- 계좌정보 데이터 리스트 -->
-													<table id="modal-deposit-table" class="table  table-bordered table-hover">
-														<thead>
-															<tr>
-																<th class="center">계좌번호</th>
-																<th class="center">예금주</th>
-																<th class="center">은행코드</th>
-																<th class="center">은행명</th>
-															</tr>
-														</thead>
-														<tbody id="tbody-bankaccountList">
-															
-														</tbody>
-													</table>
-												</div>
+								<div id="dialog-account-message" title="계좌" hidden="hidden">
+									<table id="dialog-account-message-table">
+										<tr>
+											<td>
+												<label class="control-label">계좌번호</label>
+												<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+													<a href="#" id="a-dialog-depositNo"><span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span></a>
+											</td>
+										</tr>
+									</table>
+									<!-- 계좌정보 데이터 리스트 -->
+									<table id="modal-deposit-table" class="table  table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center">계좌번호</th>
+												<th class="center">예금주</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+											</tr>
+										</thead>
+										<tbody id="tbody-bankaccountList">
+										</tbody>
+									</table>
+								</div>
 								
 								<!-- 차입금코드,납입원금,납입이자,납입일자,부채유형 Modal pop-up : start -->
 								<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
@@ -383,6 +374,11 @@
 								<!-- 상환 내역 리스트 -->
 								<div id="dialog-repayment-delete" title="상환정보여부" hidden="hidden">
 									<!-- 계좌정보 데이터 리스트 -->
+								</div>
+								
+								<div id="dialog-confirm" class="hide">
+									<p id="dialog-txt" class="bolder grey">
+									</p>
 								</div>
 					
 							</div>
@@ -525,25 +521,6 @@
 		<!-- /.main-content -->
 	</div>
 	<!-- /.main-container -->
-	
-			<%-- 에러 모달  --%>
-			<c:if test="${not empty param.error }">
-				<input type="hidden" id="errorMessage" value="${param.error }"/>
-			</c:if>
-
-			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-				<div class="modal-dialog " role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel"></h5>
-						</div>
-						<div class="modal-body" id="staticBackdropBody"></div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary btn-small" data-dismiss="modal">확인</button>
-						</div>
-					</div>
-				</div>
-			</div>
 			
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
@@ -552,8 +529,6 @@
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
-	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
-	
 	<script src="${pageContext.request.contextPath }/assets/ace/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/ace-elements.min.js"></script>
 	<script>
@@ -820,7 +795,7 @@
 			var td = tr.children();
 			$("input[name=bankCode]").val(td.eq(0).text());
 			$("input[name=bankName]").val(td.eq(1).text());
-			$("#dialog-bankinfo-message").dialog('close');
+			$("#dialog-bankinfo-message").dialog('close'); // 데이터를 선택하면, 창이 닫힘
 		});
 	  
 		// 모달 설정
@@ -842,10 +817,12 @@
 	var backdrop
 	
 	function openModal(title, message) {
-		$('#staticBackdropLabel').text('Error')
-		$('#staticBackdropBody').text(message)
+		//$('#staticBackdropLabel').text('Error')
+		//$('#staticBackdropBody').text(message)
 	
-		backdrop.modal('show')
+		//backdrop.modal('show')
+		
+		dialog(message, true);
 	}
 	
 	// 버튼 prevent default 설정
@@ -856,7 +833,7 @@
 	var validationMessage = ''
 	
 	// 사채데이터 입력 - 입력하기 전 중복데이터 확인
-	function insertDebtData(event) {
+	function insertDebtData() {
 		if (!MyValidation()) {
 			openModal('Error', validationMessage);
 			return;
@@ -875,11 +852,11 @@
 		var count = $("input:checkbox[name=checkBox]:checked").length;
 		
 		if (count > 1){
-			openModal('Error', '하나의 내용만 수정할 수 있습니다');
+			dialog('하나의 내용만 수정할 수 있습니다');
 			return;
 		}
 		if (count <= 0){
-			openModal('Error', '수정할 리스트를 선택하여 주세요');
+			dialog('수정할 리스트를 선택하여 주세요');
 			return;
 		}
 		
@@ -1259,12 +1236,13 @@
 	// 사채코드 중복 확인
 	function checkCodeDebtData() {
 		var code = $("#code").val();
-			
+		
 		// 사채코드 형식 확인 Validation
 		if (!codeValid(code)) {
 			openModal('Error', validationMessage);
 			return;
 		}
+		
 		// ajax 통신
 		$.ajax({
 			url: "${pageContext.servletContext.contextPath }/11/50/checkcode?code=" + code,
@@ -1376,7 +1354,7 @@
 	
 	// 거래처를 검색하기 위한 dialog 생성
 	function showCustomerDialog() {
-		$("#dialog-bankinfo-message").dialog('open');
+		//$("#dialog-bankinfo-message").dialog('open');
 		$("#dialog-bankinfo-message").dialog({
 			title: "은행정보",
 			title_html: true,
@@ -1484,9 +1462,6 @@
 			return false;
 		} else if('' === name) {
 			validationMessage = '사채명은 반드시 입력하셔야 합니다(최대50자)';
-			return false;
-		} else if (name.length > 50) {
-			validationMessage = '사채명은 50 이하로 입력하셔야 합니다';
 			return false;
 		} else if('' === majorCode){
 			validationMessage = '차입금대분류는 반드시 입력하셔야 합니다';
@@ -1598,7 +1573,8 @@
 			validationMessage = '납입원금이 상환 잔액보다 큽니다. 상환잔액(' + repay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ')보다 작게 입력해주세요';
 			return false;
 		} else if (intAmount > payPrinc) {
-			validationMessage = '이자 금액보다 납입금이 작습니다 납입금('+ intAmount + ')보다 크게 입력해주세요';
+			var noCommaIntAmount = comma(intAmount);
+			validationMessage = '이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요';
 			return false;
 		}
 		return true;
@@ -1685,6 +1661,29 @@
 	}
 	//--------------------------------------------------------------------------------------------------------------------------//
 
+	 // 핵심소스
+	 // 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+	 function dialog(txt, flag) {
+	        $("#dialog-txt").html(txt);
+	    	var dialog = $("#dialog-confirm").dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$(this).dialog("close"); 
+								//location.href="${pageContext.request.contextPath }/11/50";
+							} else {
+								$(this).dialog("close"); 
+							}
+						}
+					}
+				]
+			});
+	    }
 </script>
 </body>
 </html>

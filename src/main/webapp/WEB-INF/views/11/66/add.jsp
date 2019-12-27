@@ -101,7 +101,7 @@ input[type="text"], input[type="date"], select {
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><label class="control-label">차입금코드</label></div>
-						<div class="ia-right"><input type="text" id="code" name="code"></div>
+						<div class="ia-right"><input type="text" id="code" name="code" readonly="readonly"></div>
 						<div class="ia-left"><label class="control-label">납입금</label></div>
 						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> (원)<input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
 						<div class="ia-left"><label class="control-label">이자금액</label></div>
@@ -230,6 +230,12 @@ input[type="text"], input[type="date"], select {
 				
 				<div id="dialog66" title="상환정보여부" hidden="hidden">
 						
+				</div>
+				
+				<%-- validation dialog --%>
+				<div id="dialog-confirm" class="hide">
+					<p id="dialog-txt" class="bolder grey">
+					</p>
 				</div>
 			</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
@@ -493,6 +499,15 @@ function update(){
 	var sendData = $("#input-form").serialize();
 	console.log("sendData : " + sendData);
 	
+	var intAmount = $('input[name=intAmount]').val();
+	var payPrinc = $('input[name=tempPayPrinc]').val();
+	
+	if (intAmount > payPrinc) {
+		var noCommaIntAmount = comma(intAmount);
+		dialog('이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요');
+		return false;
+	}
+	
 	$.ajax({
 		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
 		type: "POST",
@@ -602,6 +617,32 @@ function isEmpty(value){
 			return false ;
 		}
 };
+
+//--------------------------------------------------------------------validation---------------------------------------------//
+// 핵심소스
+// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+function dialog(txt, flag) {
+	$("#dialog-txt").html(txt);
+	var dialog = $( "#dialog-confirm" ).dialog({
+		resizable: false,
+		modal: true,
+		buttons: 
+		[
+			{
+				text: "OK",
+				"class" : "btn btn-danger btn-mini",
+				click: function() {
+					if(flag){
+						$( this ).dialog( "close" );
+						//location.href="${pageContext.request.contextPath }/12/53";
+					} else {
+						$( this ).dialog( "close" ); 
+					}
+				}
+			}
+		]
+	});
+}
 </script>
 </body>
 </html>

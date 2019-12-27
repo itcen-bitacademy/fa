@@ -49,7 +49,7 @@
 							section_updateTable(data.pagesectionList, section_page_num);
 							section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 						}, error:function(error) {
-							alert("찾을 수 없는 품목입니다.");
+							dialog("찾을 수 없는 대분류명입니다.", false);
 						}
 					});
 				},
@@ -88,7 +88,7 @@
 			    			factory_updateTable(data.pagefactoryList, factory_page_num);
 			    			factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 			    		}, error:function(error) {
-			    			alert("찾을 수 없는 품목입니다.");
+			    			alert("찾을 수 없는 공장명입니다.");
 			    		}
 			    	});
 			    },
@@ -168,7 +168,7 @@
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 품목입니다.", false);
 				}
 			});
 		});
@@ -203,7 +203,7 @@
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 품목입니다.", false);
 				}
 			});
 		});
@@ -242,7 +242,7 @@
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 품목입니다.", false);
 				}
 			});
 		});
@@ -281,7 +281,7 @@
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 품목입니다.", false);
 				}
 			});
 		});
@@ -382,7 +382,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -405,7 +405,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -430,7 +430,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -455,7 +455,7 @@
 					section_updateTable(data.pagesectionList, section_page_num);
 					section_updatePagination(data.sectionListall, data.sectionList, section_page_num, section_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 대분류명입니다.", false);
 				}
 			});
 		});
@@ -538,7 +538,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -560,7 +560,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -585,7 +585,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -610,7 +610,7 @@
 					factory_updateTable(data.pagefactoryList, factory_page_num);
 					factory_updatePagination(data.factoryListall, data.factoryList, factory_page_num, factory_page_group);
 				}, error:function(error) {
-					alert("찾을 수 없는 품목입니다.");
+					dialog("찾을 수 없는 공장명입니다.", false);
 				}
 			});
 		});
@@ -682,6 +682,28 @@
 		$("#form-field-price2").on('keyup', function(event){
 			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		});
+		
+		function dialog(txt, flag) {
+	        $("#dialog-txt").html(txt);
+	    	var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$(this).dialog("close");
+								location.reload();
+							} else {
+								$(this).dialog("close");
+							}
+						}
+					}
+				]
+			});
+	    }
 	});
 </script>
 
@@ -724,7 +746,9 @@
 								</div>
 								
 								
-								
+								<div id="dialog-confirm" class="hide">
+									<p id="dialog-txt" class="bolder grey"></p>
+								</div>
 								
 								
 								

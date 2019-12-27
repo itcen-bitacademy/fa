@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .chosen-search {
@@ -158,7 +159,7 @@
 				<input type="hidden" id="errorMessage" value="${param.error }"/>
 			</c:if>
 
-			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<%-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -170,6 +171,9 @@
 						</div>
 					</div>
 				</div>
+			</div> --%>
+			<div id="dialog-confirm" class="hide">
+				<p id="dialog-txt" class="bolder grey"></p>
 			</div>
 
 
@@ -178,6 +182,7 @@
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script>
 	$(function(){
@@ -209,10 +214,12 @@
 	var backdrop
 
 	function openModal(title, message) {
-		$('#staticBackdropLabel').text('Error')
-		$('#staticBackdropBody').text(message)
+		// $('#staticBackdropLabel').text('Error')
+		// $('#staticBackdropBody').text(message)
 
-		backdrop.modal('show')
+		// backdrop.modal('show')
+
+		dialog(message, true)
 	}
 
 	// 버튼 prevent default 설정
@@ -225,6 +232,28 @@
 		var form = $('#closing-year-form')[0]
 		$(form).attr('action', '${pageContext.request.contextPath }/17/20/list')
 		form.submit();
+	}
+
+	function dialog(txt, flag) {
+		$("#dialog-txt").html(txt);
+		var dialog = $( "#dialog-confirm" ).dialog({
+			resizable: false,
+			modal: true,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						if(flag){
+							$( this ).dialog( "close" );
+							location.href="${pageContext.request.contextPath }/17/20";
+						} else {
+							$( this ).dialog( "close" );
+						}
+					}
+				}
+			]
+		});
 	}
 </script>
 </body>
