@@ -87,7 +87,7 @@ public class Menu61Controller {
 			menu17SearchForm.setUpdateUserid(authUser.getId());
 			
 			// 결산작업 실행 
-			DataResult<Object> dataResult = menu61Service.executeSettlement(menu17SearchForm);
+			DataResult<Object> dataResult = menu61Service.executeSettlement(menu17SearchForm, authUser);
 			
 			if (!dataResult.isStatus()) {
 				uri = uri + "?year=" + year + "&error=" + URLEncoder.encode(dataResult.getError(), "UTF-8");

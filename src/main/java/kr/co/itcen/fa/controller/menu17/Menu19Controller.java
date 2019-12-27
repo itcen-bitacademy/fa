@@ -74,7 +74,7 @@ public class Menu19Controller {
 	public String updateClosingDate(ClosingDateVo closingDate, @SessionAttribute("authUser") UserVo authUser) throws UnsupportedEncodingException {
 		closingDate.setUpdateUserid(authUser.getId());
 		
-		DataResult<Object> dataResult = menu19Service.updateClosingDate(closingDate);
+		DataResult<Object> dataResult = menu19Service.updateClosingDate(closingDate, authUser);
 		
 		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
 		
@@ -94,7 +94,7 @@ public class Menu19Controller {
 	public String deleteClosingDate(ClosingDateVo closingDate, @SessionAttribute("authUser") UserVo authUser) throws UnsupportedEncodingException {
 		closingDate.setUpdateUserid(authUser.getId());
 		
-		DataResult<Object> dataResult = menu19Service.deleteClosingDate(closingDate);
+		DataResult<Object> dataResult = menu19Service.deleteClosingDate(closingDate, authUser);
 		
 		String uri = "redirect:/" + MAINMENU + "/" + SUBMENU;
 		
