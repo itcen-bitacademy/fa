@@ -453,10 +453,11 @@ function execDaumPostcode() {
 var validationMessage ='';
 var errortitle='';
 var errorfield ='';
-// errormodal
-function openErrorModal(title, message,errorfield) { //valid후 modal 띄우기
-	$('#staticBackdropLabel').html(title);//에러
-	$('#staticBackdropBody').text(message);//에러내용
+
+
+function openErrorModal(title, message,errorfield) {
+	$('#staticBackdropLabel').html(title);
+	$('#staticBackdropBody').text(message);
 	
 	console.log($('#staticBackdropLabel').text());
 	console.log($('#staticBackdropBody').text());
@@ -471,7 +472,7 @@ function openErrorModal(title, message,errorfield) { //valid후 modal 띄우기
 				"class" : "btn btn-danger btn-mini",
 				click: function() {
 					$(this).dialog('close');
-		          	$('#staticBackdropBody').text('');//에러내용
+		          	$('#staticBackdropBody').text('');
 					$(errorfield).focus();
 				}
 			}
@@ -493,6 +494,7 @@ function InsertValidation(){
 	let phone=$('#phone').val();//거래처전화번호
 	let assetsFlag=$('#assetsFlag').val();//종류
 	let managerName=$('#managerName').val();//담당자 성명
+	let managerEmail=$('#managerEmail').val();//이메일
 	let bankCode=$('#bankCode').val();//은행코드
 	let bankName=$('#bankName').val();//은행명
 	let depositNo=$('#depositNo').val();//계좌번호
@@ -501,14 +503,14 @@ function InsertValidation(){
 	
 	//사업자등록번호 Valid
 	if('' === no){
-		errortitle = 'CUSTOEMR_NO ERROR';	
-		validationMessage = '사업자 등록번호는 필수입력항목입니다.';
+		errortitle = 'CUSTOEMR_NO ERROR';
+		validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
 		errorfield='#no';
 		return false;
 	}
 	if(no.length<10 || no.length >10){
 		errortitle = 'CUSTOEMR_NO ERROR';
-		validationMessage = '사업자등록번호는 10자리를 입력하셔야 합니다.';
+		validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
 		errorfield='#no';
 		return false;
 	}
@@ -523,7 +525,7 @@ function InsertValidation(){
 	}
 	if(name.length > 20){
 		errortitle = 'CUSTOMER_NAME ERROR';
-		validationMessage = '상호명은 20자 이하로 입력하셔야 합니다.';
+		validationMessage = '상호명은\r\n20자 이하로 입력하셔야 합니다.';
 		errorfield='#name';
 		return false;
 	}
@@ -538,7 +540,7 @@ function InsertValidation(){
 	}
 	if(ceo.length > 6){
 		errortitle = 'CUSTOMER_CEO ERROR';
-		validationMessage = '대표자는 6자 이하로 입력하셔야 합니다.';
+		validationMessage = '대표자는\r\n6자 이하로 입력하셔야 합니다.';
 		errorfield='#ceo';
 		return false;
 	}
@@ -546,11 +548,11 @@ function InsertValidation(){
 
 	if(''=== address){
 		errortitle = 'CUSTOMER_ADDRESS ERROR';
-		validationMessage = '주소는 필수입력항목입니다.';
+		validationMessage = '주소는 필수입력항목입니다.\r\n 팝업창을 통해 입력해주세요.';
 		errorfield='#address';
 		return false;
-		
 	}
+	
 	//업태 Valid
 	if(''=== conditions){
 		errortitle = 'CUSTOMER_CONDITIONS ERROR';
@@ -558,11 +560,10 @@ function InsertValidation(){
 		errorfield='#conditions';
 		console.log(conditions.length);
 		return false;
-		
 	}
 	if(conditions.length > 10){
 		errortitle = 'CUSTOMER_CONDITIONS ERROR';
-		validationMessage = '업태는 10자 이하로 입력하셔야 합니다.';
+		validationMessage = '업태는\r\n10자 이하로 입력하셔야 합니다.';
 		errorfield='#conditions';
 		return false;
 	}
@@ -573,11 +574,10 @@ function InsertValidation(){
 		validationMessage = '종목은 필수입력항목입니다.';
 		errorfield='#item';
 		return false;
-		
 	}
 	if(item.length > 10){
 		errortitle = 'CUSTOMER_ITEM ERROR';
-		validationMessage = '종목은 10자 이하로 입력하셔야 합니다.';
+		validationMessage = '종목은\r\n10자 이하로 입력하셔야 합니다.';
 		errorfield='#item';
 		return false;
 	}
@@ -588,25 +588,32 @@ function InsertValidation(){
 		validationMessage = '법인번호는 필수입력항목입니다.';
 		errorfield='#corporationNo';
 		return false;
-		
 	}
 	if(corporationNo.length<10 || corporationNo.length >10){
 		errortitle = 'CUSTOEMR_CORPORATIONNO ERROR';
-		validationMessage = '법인번호는 10자리를 입력하셔야 합니다.';
+		validationMessage = '법인번호는\r\n10자리를 입력하셔야 합니다.';
 		errorfield='#corporationNo';
+		return false;
+	}
+	
+	//자산플래그 Valid
+	if($(':radio[name=assetsFlag]:checked').length < 1){
+		errortitle = 'CUSTOMER_ASSETSFLAG ERROR';
+		validationMessage = '자산 종류는 필수입력항목입니다.';
+		errorfield='#assetsFlag';
 		return false;
 	}
 	
 	//거래처 전화번호 Valid (11자)
 	if(''=== phone){
 		errortitle = 'CUSTOMER_PHONE ERROR';
-		validationMessage = '거래처 전화번호는 필수입력항목입니다.';
+		validationMessage = '거래처 전화번호는\r\n필수입력항목입니다.';
 		errorfield='#phone';
 		return false;
 	}
 	if(phone.length > 11){
 		errortitle = 'CUSTOMER_PHONE ERROR';
-		validationMessage = '거래처 전화번호는 11자리 이하로 입력하셔야 합니다.';
+		validationMessage = '거래처 전화번호는\r\n11자리 이하로 입력하셔야 합니다.';
 		errorfield='#phone';
 		return false;
 	}
@@ -619,34 +626,40 @@ function InsertValidation(){
 		return false;
 	}
 	
+	var re=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+	var email = document.getElementById('managerEmail').value;
+	if (email = !re.test(email)) {
+		errortitle = 'CUSTOMER_Email ERROR';
+		validationMessage = '이메일 형식에 맞게 입력해주세요.\r\n 예)example@test.com';
+		errorfield='#managerEmail';
+		return false;
+		} 
+	
 	//계좌번호, 은행코드, 은행명, 예금주 Valid
 	if(''=== depositNo){
 		errortitle = 'CUSTOMER_DEPOSITNO ERROR';
-		validationMessage = '계좌번호, 은행코드, 은행명, 예금주는 필수입력항목입니다.';
+		validationMessage = '계좌번호, 은행코드, 은행명, 예금주\r\n는 필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요.';
 		errorfield='#depositNo';
 		return false;
 	}
 	
 	//거래처 담당자 성명 Valid
 	if(''=== managerName){
-		errortitle = 'CUSTOMER_DEPOSITNO ERROR';
-		validationMessage = '거래처 담당자 성명은 필수입력항목입니다.';
+		errortitle = 'CUSTOMER_MANAGERNAME ERROR';
+		validationMessage = '거래처 담당자 성명은\r\n필수입력항목입니다.';
 		errorfield='#managerName';
 		return false;
 	}
-	
-	//자산플래그
-
-	if(''=== assetsFlag){
-		errortitle = 'CUSTOMER_ASSETSFLAG ERROR';
-		validationMessage = '자산 종류는 필수입력항목입니다.';
-		errorfield='#assetsFlag';
+	if(ceo.managerName > 6){
+		errortitle = 'CUSTOMER_MANAGERNAME ERROR';
+		validationMessage = '거래처 담당자 성명은\r\n6자 이하로 입력하셔야 합니다.';
+		errorfield='#managerName';
 		return false;
-		
 	}
 
 	return true;
 }
+
 //사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다
 function isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -660,6 +673,13 @@ function isNumberKey(evt){
     return true;
     
 }
+function delHangle(evt){
+    var objTarger = evt.srcElement || evt.target;
+    var val = event.srcElement.value;
+    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+        objTarger.value = null;
+    	}
+    }
 
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -691,14 +711,14 @@ function isNumberKey(evt){
 										사업자 등록번호:&nbsp;
 									</label>
 									
-									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" />
+									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 								</div>
 								
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										상호명:&nbsp;
 									</label>
-									<input type="text" id="name" name="name" placeholder="상호명" class="col-xs-10 col-sm-5" />
+									<input type="text" id="name" name="name" placeholder="상호명" maxlength="20" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br/>
@@ -707,7 +727,7 @@ function isNumberKey(evt){
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										대표자:&nbsp;
 									</label>
-									<input type="text" id="ceo" name="ceo" placeholder="대표자" class="col-xs-10 col-sm-5" />
+									<input type="text" id="ceo" name="ceo" placeholder="대표자" maxlength="6" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br/>
@@ -734,14 +754,14 @@ function isNumberKey(evt){
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										업태:&nbsp;
 									</label>
-									<input type="text" id="conditions" name="conditions" placeholder="업태" class="col-xs-10 col-sm-5" />
+									<input type="text" id="conditions" name="conditions" maxlength="10" placeholder="업태" class="col-xs-10 col-sm-5" />
 								</div>
 								
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										종목:&nbsp;
 									</label>
-									<input type="text" id="item" name="item" placeholder="종목" class="col-xs-10 col-sm-5" />
+									<input type="text" id="item" name="item" placeholder="종목" maxlength="10" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br/>
@@ -750,14 +770,13 @@ function isNumberKey(evt){
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										법인번호:&nbsp;
 									</label>
-									<input type="text" id="corporationNo" name="corporationNo" placeholder="법인번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" />
+									<input type="text" id="corporationNo" name="corporationNo" maxlength="10" placeholder="법인번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 								</div>
 								
-								<div class="form-group" id="assetsFlag">
+								<div class="form-group" >
 									<label class="control-label" for="form-field-1">
 										종류:&nbsp;&nbsp;
 									</label> 
-								
 									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="토지" class="ace" value="a" /> 
 									<span class="lbl">토지</span> 
 									&nbsp;
@@ -769,7 +788,6 @@ function isNumberKey(evt){
 									&nbsp;
 									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="무형자산" class="ace" value="d" />
 									<span class="lbl">무형자산</span>
-
 								</div>
 								
 							</div><!-- /span6 -->
@@ -788,7 +806,7 @@ function isNumberKey(evt){
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										거래처 전화번호:&nbsp;
 									</label>
-									<input type="text" id="phone" name="phone" placeholder="거래처 전화번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" />
+									<input type="text" id="phone" name="phone" maxlength="11" placeholder="거래처 전화번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" />
 								</div>
 
 								<div class="form-group">
@@ -876,7 +894,7 @@ function isNumberKey(evt){
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
 										거래처 담당자 성명:&nbsp;
 									</label>
-									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" />
+									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" maxlength="6"/>
 								</div>
 
 								<br/>
@@ -1028,8 +1046,8 @@ function isNumberKey(evt){
 			<!-- Validation Modal Start -->
 			<div id="staticBackdrop" class="hide">
 			<br>
-				<p id="staticBackdropBody" class="bolder grey" style="text-align: center;">
-				</p>
+				<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
+				</pre>
 			</div>
 			<!-- Validation Modal End -->
 		</div>
