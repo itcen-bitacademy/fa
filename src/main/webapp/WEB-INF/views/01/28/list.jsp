@@ -57,6 +57,30 @@
 			
 		})
 	</script>
+	<script type="text/javascript">
+	// 사업자등록번호에서 숫자와 delete 키만 동작하도록한다.
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode;
+	    var _value = event.srcElement.value;
+	
+	    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+	        if(event.keyCode != 46){//delete
+	             return false;
+	        } 
+	     }
+	    return true;
+	    
+	}
+	
+	// 사업자등록번호에서 한글이 입력 되었을시 지운다.
+	function delHangle(evt){
+	    var objTarger = evt.srcElement || evt.target;
+	    var val = event.srcElement.value;
+	    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+	        objTarger.value = null;
+	    	}
+	    }
+	</script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -93,7 +117,7 @@
 						
 						&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px"/>
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px" readonly="readonly"/>
 							
 							<span class="add-on">
 								<i class="icon-calendar"></i>
@@ -105,7 +129,7 @@
 						</script>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker" style="width:100px"/>
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker" style="width:100px" readonly="readonly"/>
 								<span class="add-on">
 								<i class="icon-calendar"></i>
 							</span>
@@ -117,7 +141,7 @@
 						
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;사업자등록번호 :&nbsp; 
-						<input type="text" id="no" name="no" placeholder="ex)000-00-00000" size=4 style="width:150px" style="width:100px;"/>
+						<input type="text" id="no" name="no" placeholder="사업자등록번호" size=4 style="width:150px" style="width:100px;"maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 						<script type="text/javascript">
 						var no = "${param.no}";
 						$("#no").val(no);
@@ -138,6 +162,9 @@
 						
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+						&nbsp;
+						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+					
 					</form>
 					
 					<div class="hr hr-18 dotted"></div>

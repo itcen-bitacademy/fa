@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu01.Menu32Service;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
-import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 
 /**
  * 
  * @author 이종윤 
  * 매입, 매출, 자산 거래처 팝업창
+ * 계정 코드, 계정명 팝업창
  *
  */
 @RestController("Menu32Controller")
