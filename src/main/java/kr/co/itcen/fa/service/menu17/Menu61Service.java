@@ -13,6 +13,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu17.Menu61Repository;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu01.Menu30Service;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.Menu17SearchForm;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
@@ -48,7 +49,7 @@ public class Menu61Service {
 	 * 해당 마감일 결산처리
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public DataResult<Object> executeSettlement(Menu17SearchForm menu17SearchForm) {
+	public DataResult<Object> executeSettlement(Menu17SearchForm menu17SearchForm, UserVo authUser) {
 		DataResult<Object> dataResult = new DataResult<>();
 		
 		// 결산 순서 유효성검사 
@@ -113,8 +114,8 @@ public class Menu61Service {
 			addAccountAmount(tbVo, vo, vo.getAmountFlag());
 		}
 		
-		// TODO: 이월데이터 전표 저장 
-//		menu30Service.closingEntries(forwardDataList);
+		// 이월데이터 전표 저장 
+		menu30Service.closingEntries(forwardDataList, lastestUnclosingDateVo, authUser);
 		
 		// 빈값 계정 제거 
 		List<TrialBalanceVo> insertTrialBalanceList = emptyTrialBalance.stream().filter(t -> t.getCreditTotal() != null || t.getCreditSpotMonth() != null || t.getDebtorTotal() != null || t.getDebtorSpotMonth() != null).collect(Collectors.toList());
