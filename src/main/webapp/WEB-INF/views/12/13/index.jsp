@@ -207,47 +207,7 @@
         	}
         }
         
-        function insert(){
-   			if($("#salesNo").val()==$("#checkSalesNo").val()){ // 기존 제공된 매출번호를 수정한 경우 체크
-   				if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
-   				for(var i=1; i<=$("#item-table tr").length-1; i++){
-   					if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
-   					if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
-   					if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
-   					if(!valid.numberCheck("taxValue"+i, "부가세")) return;
-   				}
-   				
-   				
-   				$("#insert-form").submit(); 
-   			} else {
-   				dialog("매출번호가 수정되어 입력이 불가능합니다.<br>새 매출번호를 생성합니다.", false); 
-   				createSalesNo();
-   			}
-        }
         
-        var valid = {
-        		nullCheck: function(id, msg){ // null 체크
-        			if($("#"+id).val()==""){
-        				dialog(msg+" 을(를) 입력 해 주세요.");
-        				return false;
-        			} else {
-        				return true;
-        			}
-        		},
-				strCheck: function(id){  // 문자열 체크 
-        			
-        		}, 
-				numberCheck: function(id, msg){  // 숫자 체크
-        			if(!$.isNumeric($("#"+id).val())){        	
-        				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
-        				$("#"+id).focus();
-        				return false;
-        			} else {
-        				return true;
-        			}
-        		}
-        
-        }
         
         function checkNo(){  // 매출번호 입력 확인
 	        var code = $("#salesNo").val();
@@ -317,6 +277,45 @@
 	  	    }
         }
         
+        function insert(){
+   			if($("#salesNo").val()==$("#checkSalesNo").val()){ // 기존 제공된 매출번호를 수정한 경우 체크
+   				if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
+   				for(var i=1; i<=$("#item-table tr").length-1; i++){
+   					if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
+   					if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
+   					if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
+   					if(!valid.numberCheck("taxValue"+i, "부가세")) return;
+   				}
+   				$("#insert-form").submit(); 
+   			} else {
+   				dialog("매출번호가 수정되어 입력이 불가능합니다.<br>새 매출번호를 생성합니다.", false); 
+   				createSalesNo();
+   			}
+        }
+        
+        var valid = {
+       		nullCheck: function(id, msg){ // null 체크
+       			if($("#"+id).val()==""){
+       				dialog(msg+" 을(를) 입력 해 주세요.");
+       				return false;
+       			} else {
+       				return true;
+       			}
+       		},
+			strCheck: function(id){  // 문자열 체크 
+       			
+       		}, 
+			numberCheck: function(id, msg){  // 숫자 체크
+       			if(!$.isNumeric($("#"+id).val())){        	
+       				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
+       				$("#"+id).focus();
+       				return false;
+       			} else {
+       				return true;
+       			}
+       		}
+        }
+        
         function dialog(txt, flag) {
         	$("#dialog-txt").html(txt);
     		var dialog = $( "#dialog-confirm" ).dialog({
@@ -365,7 +364,7 @@
                                     <label class="control-label" for="cl-total-date-picker">매출일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" autocomplete="off" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="" required><span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="salesDate" name="salesDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].salesDate }" required><span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -400,7 +399,7 @@
                                     <label class="control-label" for="cl-total-date-picker">출고일</label>
                                     <div class="controls">
                                         <div class="input-append">
-                                            <input class="cl-date-picker" autocomplete="off" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="" name="releaseDate" required> <span class="add-on"> <i class="icon-calendar"></i>
+                                            <input class="cl-date-picker" autocomplete="off" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" value="${saleslist[0].releaseDate }" name="releaseDate" required> <span class="add-on"> <i class="icon-calendar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -555,6 +554,7 @@
 		
     <script>
         $(function() {
+        	
             $(".chosen-select").chosen();
             $.fn.datepicker.dates['ko'] = {
                 days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
@@ -576,7 +576,9 @@
             $('.cl-date-picker').on('changeDate', function(ev){
                 $(this).datepicker('hide');
             });
-            $(".cl-date-picker").datepicker( "setDate" , new Date());
+            if(!($("#flag").val()=="true")){
+            	$(".cl-date-picker").datepicker( "setDate" , new Date());
+            }
             
             setData.customer(); // 거래처 목록 세팅
             checkFlag(); // 조회 확인 플래그  + 기본행 삽입
