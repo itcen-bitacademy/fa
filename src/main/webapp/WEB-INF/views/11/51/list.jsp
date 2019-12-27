@@ -39,7 +39,7 @@ form {
 .sixth-column {padding-left:10px;}
 
 /* second row */
-.span2 {padding-left:40px; padding-top:20px;}
+.span3 {padding-left:40px; padding-top:20px;}
 
 </style>
 </head>
@@ -133,7 +133,7 @@ form {
 										</select>
 									</div>
 								</div>
-								<div class="span2">
+								<div class="span3">
 									<div class="checkbox">
 										<label>
 											<input name="form-field-checkbox" type="checkbox" class="ace" />

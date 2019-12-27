@@ -29,9 +29,19 @@
 	</select>
 	<select id="getList" parameterType="map" resultType="repayvo" resultMap="repayResult">
 		<![CDATA[
-			select *
-			from tb_repay
-			where delete_flag="N"
+			select 
+				no,
+			   	  code,
+		          debt_no as debtNo, 
+		          pay_princ + int_amount as totalPayPrinc, 
+		          pay_princ as payPrinc, 
+		          int_amount as intAmount, 
+		          date_format(pay_date,'%Y-%m-%d') as payDate, 
+		          debt_type as debtType, 
+		          voucher_no as voucherNo, 
+		          date_format(insert_date,'%Y-%m-%d') as insertDate 
+					from tb_repay
+						where delete_flag="N"
 		]]>
 		<if test='vo.code != null and !"".equals(vo.code)'>
 			and code = #{vo.code}
@@ -75,7 +85,7 @@
 		          date_format(pay_date,'%Y-%m-%d') as payDate, 
 		          debt_type as debtType, 
 		          voucher_no as voucherNo, 
-		          date_format(insert_date,'%Y-%m-%d %H:%i:%S') as insertDate 
+		          date_format(insert_date,'%Y-%m-%d') as insertDate 
 		          	from tb_repay where delete_flag = 'N' 
 		  ]]>        
 		          			
