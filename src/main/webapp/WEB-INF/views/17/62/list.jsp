@@ -8,9 +8,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-#staticBackdrop {
-	z-index: -1;
-}
 .chosen-search {
 	display: none;
 }
@@ -139,7 +136,7 @@
 				<input type="hidden" id="errorMessage" value="${param.error }"/>
 			</c:if>
 
-			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
+			<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
