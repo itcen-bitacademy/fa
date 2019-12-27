@@ -100,7 +100,7 @@ public class Menu30Service {
 			carry1= "차월이월";
 			carry2= "전월이월";
 		}
-		
+			
 		List<StatementDataVo> addsVo = menu30Repository.addprevious(cVo);
 		
 		for(int i=0; i<addsVo.size(); i++) {
@@ -252,19 +252,4 @@ public class Menu30Service {
 		return null;
 	}
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

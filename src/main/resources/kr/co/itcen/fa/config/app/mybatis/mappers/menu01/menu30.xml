@@ -56,13 +56,13 @@
 	
 	<![CDATA[
 			select   a.no as accountNo
-          , a.name as accountName
-          , v.reg_date as regDate
-          , i.amount as amount
-          , i.amount_flag as amountFlag
-          , m.customer_no as customerNo
-            , cu.name as customerName
-            , m.voucher_use as voucherUse
+    		      , a.name as accountName
+        		  , v.reg_date as regDate
+        		  , i.amount as amount
+        		  , i.amount_flag as amountFlag
+        		  , m.customer_no as customerNo
+           		  , cu.name as customerName
+          		  , m.voucher_use as voucherUse
         from tb_voucher_manager as v
 			        join tb_voucher_item as i on v.no = i.voucher_no
 			        join tb_account as a on a.no = i.account_no
