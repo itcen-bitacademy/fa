@@ -902,7 +902,7 @@
 						<div style="height:335px">
 							<div class="span6">
 								<div class="control-group">
-									<label class="control-label" for="form-field-item-id" style="text-align:initial; text-indent:72px;">품목코드</label>
+									<label class="control-label" for="form-field-item-id" style="text-align:initial; text-indent:40px;">품목코드</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
 											<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드" maxlength="10"/>
@@ -918,7 +918,7 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-section-name">품목 대분류명</label>
+									<label class="control-label" for="form-field-section-name" style="text-align:initial; text-indent:40px;">품목 대분류명</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
 											<input class="span5" id="form-field-section-name" name="sectionname" type="text" placeholder="품목 대분류명" readonly/>
@@ -1010,7 +1010,7 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-name" style="text-align:initial; text-indent:72px;">생산공장명</label>
+									<label class="control-label" for="form-field-factory-name" style="text-align:initial; text-indent:40px;">생산공장명</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
 											<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명" readonly/>
@@ -1101,7 +1101,7 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-postaddress">생산공장 주소</label>
+									<label class="control-label" for="form-field-factory-postaddress" style="text-align:initial; text-indent:40px;">생산공장 주소</label>
 									<div class="controls">
 										<div class="row-fluid input-append" style="margin:0 0 5px 0">
 											<input class="span3" id="form-field-factory-postaddress" name="postaddress" type="text" style="margin:0 10px 0 0;" placeholder="우편번호" readonly/>
@@ -1115,14 +1115,14 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-standard" style="text-align:initial; text-indent:72px;">규격</label>
+									<label class="control-label" for="form-field-standard" style="text-align:initial; text-indent:40px;">규격</label>
 									<div class="controls">
 										<input class="span5" type="text" id="form-field-standard" name="standard" placeholder="ex) 20 x 35 cm"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-price" style="text-align:initial; text-indent:72px;">단가</label>
+									<label class="control-label" for="form-field-price" style="text-align:initial; text-indent:40px;">단가</label>
 									<div class="controls">
 										<input class="span5" type="text" id="form-field-price" style="text-align:right" name="price"/>&nbsp;원
 									</div>
@@ -1131,35 +1131,35 @@
 							
 							<div class="span6">
 								<div class="control-group">
-									<label class="control-label" for="form-field-item-name" style="text-align:initial; text-indent:58px;">품목명</label>
+									<label class="control-label" for="form-field-item-name" style="text-align:initial; text-indent:35px;">품목명</label>
 									<div class="controls">
 										<input class="span5" type="text" id="form-field-item-name" name="name" placeholder="품목명"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-section-code">품목 대분류코드</label>
+									<label class="control-label" for="form-field-section-code" style="text-align:initial; text-indent:35px;">품목 대분류코드</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-section-code" name="sectioncode" readonly/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-code" style="text-align:initial; text-indent:58px;">생산공장코드</label>
+									<label class="control-label" for="form-field-factory-code" style="text-align:initial; text-indent:35px;">생산공장코드</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-factory-code" name="factorycode" readonly/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-manager" style="text-align:initial; text-indent:58px;">생산담당자</label>
+									<label class="control-label" for="form-field-factory-manager" style="text-align:initial; text-indent:35px;">생산담당자</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-factory-manager" name="managername" placeholder="생산담당자"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="id-date-picker-1" style="text-align:initial; text-indent:58px;">생산 일자</label>
+									<label class="control-label" for="id-date-picker-1" style="text-align:initial; text-indent:35px;">생산 일자</label>
 									<div class="controls">
 											<div class="row-fluid input-append" style="margin: 0 0 10px 0">
 												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="producedate" data-date-format="yyyy-mm-dd">
@@ -1171,7 +1171,7 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-purpose" style="text-align:initial; text-indent:58px;">사용용도</label>
+									<label class="control-label" for="form-field-purpose" style="text-align:initial; text-indent:35px;">사용용도</label>
 									<div class="controls">
 										<input class="span5" type="text" id="form-field-purpose" name="purpose"/>
 									</div>
