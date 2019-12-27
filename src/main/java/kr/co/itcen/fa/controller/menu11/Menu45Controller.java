@@ -35,7 +35,7 @@ public class Menu45Controller {
 	
 	
 	@NoAuth
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method=RequestMethod.GET)
+	@RequestMapping(value = {"", "/" + SUBMENU, "/" + SUBMENU + "/list" }, method=RequestMethod.GET)
 	public String list(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			BankVo vo, Model model) {
@@ -51,6 +51,8 @@ public class Menu45Controller {
 		String uri = uriComponents.toUriString();
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("uri", uri);
+		model.addAttribute("vo", vo);
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 }

@@ -1061,7 +1061,6 @@ tr td:first-child {
 			    }
 			},
 			success: function(response){
-				alert(response);
 				$("#input-dialog-bankcode").val('');
 				  $.each(response.data,function(index, item){
 	                 $("#tbody-bankList").append("<tr>" +

@@ -39,7 +39,10 @@
 .checkbox {
 	float: left;
 }
-
+h4{
+   font-size:14px;
+   font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
+}
 form {
 	margin-bottom: 0px;
 }
@@ -48,9 +51,9 @@ form {
 .first-column {width:120px; padding-left:20px;}
 .second-column {width:70px;}
 .third-column {width:140px;}
-.fourth-column {width:300px;}
-.fifth-column {width:140px;}
-.sixth-column {width:70px;}
+.fourth-column {width:80px;}
+.fifth-column {width:170px;}
+.sixth-column {width:60px;}
 .seventh-column {padding-left:20px;}
 .eight-column {}
 
@@ -79,7 +82,9 @@ form {
 						<tr>
 							<td class="first-column center"><h4>은행명</h4></td>
 							<td class="second-column">
-				                <input type="text" name="name" />
+						
+				               		<input type="text" name="name"  value='${vo.name }'/>
+						
 				            </td>
 				            
 							<td class="third-column center"><h4>지점명</h4></td>
@@ -102,21 +107,12 @@ form {
 							</td>
 							</tr>
 							
-<!-- 					<tr> -->
-<!-- 						<td class="eight-column" style="float:right"> -->
-<!-- 							<div class="checkbox" style="float:right"> -->
-<!-- 								<label > -->
-<!-- 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/>  -->
-<!-- 									<span class="lbl">삭제포함</span> -->
-<!-- 								</label> -->
-<!-- 							</div> -->
-<!-- 						</td> -->
-<!-- 					</tr>					 -->
+
 						
 						</tbody>
 					</table>
 					<div class="row-fluid">
-						<div class="span8"> 
+						<div class="span7"> 
 							<div class="checkbox" style="float:right">
 								<label>
 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 

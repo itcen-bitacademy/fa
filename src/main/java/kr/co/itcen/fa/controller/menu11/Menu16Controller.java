@@ -1,14 +1,10 @@
 package kr.co.itcen.fa.controller.menu11;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
-import kr.co.itcen.fa.security.NoAuth;
 import kr.co.itcen.fa.service.menu11.Menu16Service;
 import kr.co.itcen.fa.vo.menu11.BankVo;
 
@@ -37,8 +32,8 @@ public class Menu16Controller {
 	private Menu16Service menu16Service;
 	
 	// /11  /11/16, /11/16/add
-	@NoAuth
-	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/add" })
+	
+	@RequestMapping(value = { "/" + SUBMENU, "/" + SUBMENU + "/add" }, method = RequestMethod.GET)
 		public String list(  
 				@RequestParam(value="page", required=false,defaultValue = "1") int page,
 				@RequestParam(value="code", required=false,defaultValue = "") String code,
@@ -50,7 +45,6 @@ public class Menu16Controller {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
-	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.POST)
 	public String list(@RequestParam(value="page", required=false, defaultValue = "1") int page,	
 	@RequestParam(value="code", required=false,defaultValue = "") String code ) {
@@ -59,7 +53,7 @@ public class Menu16Controller {
 }
 	
 	@RequestMapping(value= "/" + SUBMENU + "/add" , method = RequestMethod.POST)
-	public String add(@ModelAttribute @Valid BankVo vo,
+	public String add(@ModelAttribute BankVo vo,
 			/* BindingResult result, */
 					Model model) {
 		

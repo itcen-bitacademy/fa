@@ -21,6 +21,10 @@
 	float: left;
 	width: 10%;
 }
+h4{
+   font-size:14px;
+   font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
+}
 .search-input-width-first {
 	width: 130px;
 }
@@ -46,6 +50,7 @@
 .number-input{
 	text-align:right;
 }
+
 </style>
 </head>
 <body class="skin-3">
@@ -81,14 +86,14 @@
 						<tr >
 							<td><h4>지점명</h4></td>
 							<td colspan="2" align=left>
-								<input type="text" name="store" id="store"  />
+								<input type="text" name="store" id="store" />
 							</td>
 						</tr>
 							
 						<tr >
 							<td><h4>FAX</h4></td>
 							<td colspan="2" >
-								<input type="text" name="fax" id="fax" maxlength="15" 
+								<input type="text" name="fax" id="fax" placeholder=" 숫자만입력하세요. "
 								  onKeyup="inputTelNumber(this);"
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'
 								 />
@@ -120,14 +125,14 @@
 						<tr >
 							<td><h4>담당자</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgr" id="mgr"  />
+								<input type="text" name="mgr" id="mgr" />
 							</td>
 						</tr>
 						
 						<tr >
 							<td><h4>담당자전화번호</h4></td>
 							<td colspan="2">
-								<input type="text" name="mgrPhone" id="mgrPhone" maxlength="15" 
+								<input type="text" name="mgrPhone" id="mgrPhone"  
 								  onKeyup="inputTelNumber(this);"
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 							</td>
@@ -140,13 +145,13 @@
 							<tr>
 								<td><h4>은행명</h4></td>
 								<td colspan="2">
-									<input type="text" name="name" id="name"  />
+									<input type="text" name="name" id="name" />
 								</td>
 							</tr>
 							<tr >
 								<td><h4>은행전화번호</h4></td>
 								<td colspan="2">
-									<input type="text" name="phone" id="phone" maxlength="15" 
+									<input type="text" name="phone" id="phone"  placeholder=" 숫자만입력하세요. "
 								 	 onKeyup="inputTelNumber(this);"
 									 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								</td>
@@ -288,6 +293,7 @@
 		</ul>
 	</div>
 			<!-- error Modal pop-up : start -->
+			<!-- 
 			<div id="staticBackdrop"   title="Error-Message" hidden="hidden" >
 			<table align="center">
 				<tr>
@@ -303,6 +309,11 @@
 					</td>
 				</tr>
 			</table>
+			</div>
+			 -->
+			 <div id="staticBackdrop" class="hide">
+				<p id="staticBackdropBody" class="bolder grey">
+				</p>
 			</div>
 			<!-- error Modal pop-up : end -->
 			
@@ -320,7 +331,7 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-  	var idchecked= false;//중복체크를 했는지 안했는지 체크하는 변수
+  	var ischecked= false;//중복체크를 했는지 안했는지 체크하는 변수
   	var validationMessage ='';//에러 메시지
 	var errortitle='';//에러 타이틀
 	var errorfield ='';//에러 난 부분->fucus할거임
@@ -381,34 +392,170 @@ function openErrorModal(title, message,errorfield) { //validation 체크 후 에
 		console.log($('#staticBackdropLabel').text());
 		console.log($('#staticBackdropBody').text());
 		
-		$("#staticBackdrop").dialog({
-			title: "Eroor-Message",
-			title_html: true,
-          	resizable: false,
-	           height: 300,
-	           width: 400,
-	           modal: true,
-		    close: function() {
-		    	$('#staticBackdropLabel').text('');//에러
-				$('#staticBackdropBody').text('');//에러내용
-				$(errorfield).focus();//에러난곳으로 포커싱
-		    },
-		    buttons: {
-		    "확인" : function() {
-		          	$(this).dialog('close');
-		          	$('#staticBackdropLabel').text('');//에러
-					$('#staticBackdropBody').text('');//에러내용
-					$(errorfield).focus();
-		        }
-		    }
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');//에러내용
+						$(errorfield).focus();
+					}
+				}
+			]
 		});
 		
 		$("#staticBackdrop").dialog('open');//모델창 띄운다
 	}
-/////////////////////////////////////////////////////////////////
-function Myvalidation(){
+	
+function CodeValidation() {
+	let code = $('#code').val();
+	if('' === code){
+		errortitle='CODE ERROR';
+		validationMessage = '코드를 반드시 입력해야 합니다.(7자)';
+		errorfield='#code';
+		return false;
+	}
+	if(code.length > 7 || code.length <= 6){
+		errortitle='CODE ERROR';
+		validationMessage = '코드는 7자리를 입력해야 합니다.(7자)';
+		errorfield='#code';
+		return false;
+	}
 	return true;
 }
+/////////////////////////////////////////////////////////////////
+function Myvalidation(){
+	let code = $('#code').val();//코드
+	let name=$('#name').val(); //은행이름
+	let store=$('#store').val(); //지점명
+	let dealDate=$('#id-date-picker-1').val(); //거래시작일
+	let phone=$('#phone').val(); //은행전화번호
+	let fax=$('#fax').val(); //팩스번호
+	let post=$('#postcode').val(); //우편번호
+	let address=$('#address').val(); //은행주소
+	let mgr=$('#mgr').val(); //담당자
+	let mgrPhone=$('#mgrPhone').val(); //담당자전화번호
+	let mgrEmail=$('#mgrEmail').val(); //담당자 이메일
+	if(code === ''){
+		errortitle='CODE ERROR';
+		validationMessage = '은행코드를 반드시 입력해야 합니다.';
+		errorfield='#code';
+		return false;
+		
+	}
+	if('' === name) {
+		errortitle='NAME ERROR';
+		validationMessage = '은행명을 반드시 입력해야 합니다. (최대 10자)';
+		errorfield='#name';
+		return false;
+	}
+	if(name.length > 10) {
+		errortitle = 'NAME ERROR';
+		validationMessage = '은행명은 반드시 10자 이하로 입력해야 합니다.';
+		errorfield='#name';
+		return false;
+	}
+	if('' === store) {
+		errortitle = 'STORE ERROR';
+		validationMessage = '지점명은 반드시 입력해야 합니다. (최대 15자)';
+		errorfield='#store';
+		return false;
+	}
+	if(store.length > 15) {
+		errortitle = 'STORE ERROR';
+		validationMessage = '지점명은 반드시 15자 이하로  입력해야 합니다.';
+		errorfield='#store';
+		return false;
+	}
+	if('' === dealDate) {
+		errortitle = 'dealDate ERROR';
+		validationMessage = '거래일은 반드시 입력해야 합니다.';
+		errorfield='#id-date-picker-1';
+		return false;
+	}
+	
+	if('' === phone) {
+		errortitle = 'PHONE ERROR';
+		validationMessage = '은행 전화번호는 반드시 입력해야 합니다.';
+		errorfield='#phone';
+		return false;
+	}
+	if(phone.length > 15) {
+		errortitle = 'PHONE ERROR';
+		validationMessage = '은행 전화번호는 반드시 15자 이하로 입력해야 합니다.';
+		errorfield='#phone';
+		return false;
+	}
+	if('' === fax) {
+		errortitle = 'FAX ERROR';
+		validationMessage = '팩스 전화번호는 반드시 입력해야 합니다.';
+		errorfield='#fax';
+		return false;
+	}
+	if(fax.length > 15) {
+		errortitle = 'FAX ERROR';
+		validationMessage = '팩스 전화번호는 반드시 15자 이하로 입력해야 합니다.';
+		errorfield='#fax';
+		return false;
+	}
+	if('' === post) {
+		errortitle = 'POST ERROR';
+		validationMessage = '우편번호는 우편번호 찾기를 통해 반드시 입력되야 합니다.'
+		errorfield='#post';
+		return false;
+	}
+	if('' === detailAddress) {
+		errortitle = 'DETAILADDRESS ERROR';
+		validationMessage = '상세주소는 반드시 입력해야 합니다.'
+		errorfield='#detailAddress';
+		return false;
+	}
+	if(address.length > 500) {
+		errortitle = 'ADDRESS ERROR';
+		validationMessage = '도로명 주소 + 상세주소는 500자 이하로 입력해야 합니다.'
+		errorfield='#address';
+		return false;
+	}
+	if('' === mgr) {
+		errortitle = 'MGR ERROR';
+		validationMessage = '담당자는 반드시 입력해야 합니다.';
+		errorfield='#mgr';
+		return false;
+	}
+	if(mgr.length > 10) {
+		errortitle = 'MGR ERROR';
+		validationMessage = '담당자명은 반드시 10자 이하로  입력해야 합니다.';
+		errorfield='#mgr';
+		return false;
+	}
+	if('' === mgrPhone) {
+		errortitle = 'MGRPHONE ERROR';
+		validationMessage = '담당자 전화번호는 반드시 입력해야 합니다.';
+		errorfield='#mgrPhone';
+		return false;
+	}
+	if(mgrPhone.length > 15) {
+		errortitle = 'MGRPHONE ERROR';
+		validationMessage = '담당자 전화번호는 반드시 15자 이하로  입력해야 합니다.';
+		errorfield='#mgrPhone';
+		return false;
+	}
+	if('' === mgrEmail) {
+		errortitle = 'MGREMAIL ERROR';
+		validationMessage = '담당자 이메일은 반드시 입력해야 합니다.';
+		errorfield='#mgrphone';
+		return false;
+	}
+	
+	return true;
+}
+
+
 /////////////////////////////////////////////////////////////////
 //은행코드 중복체크
 $("#code").change(function(){
@@ -421,7 +568,10 @@ $("#btn-check-code").click(function(){
 	if(code == ""){
 		return;
 	}
-
+	if(!CodeValidation()){
+		openErrorModal(errortitle,validationMessage,errorfield);
+		return;
+	}
 	// ajax 통신
 	$.ajax({
 		url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/api/checkcode?code=" + code,
@@ -450,28 +600,37 @@ $("#btn-check-code").click(function(){
 				console.err("error" + error);
 			}
 	});
-});			    
+});		
+
 //requied제거후 각각 validation 추가 해라			   		    
-$("#inputbtn").click(function(){//입력버튼 클릭시      	
+$("#inputbtn").click(function(){//입력버튼 클릭시      
 	if(ischecked == false){
-		alert("은행코드를 중복체크 해야합니다.");
- 	    return;
- 	}else{
- 		if(!Myvalidation()){
- 			openErrorModal(errortitle,validationMessage,errorfield);
- 			return;
- 		}
+ 		alert("은행코드를 중복체크 해야합니다.");
+ 		   return;
+ 	 }
+	else{
+		if(!Myvalidation()){
+	 			openErrorModal(errortitle,validationMessage,errorfield);
+	 			return;
+	 	}
+	}
 		$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add');
 	  	$('#myform').attr('method', 'POST');
 	  	$('#myform').submit();
-  	}
-});
+  	});
+
+
 $('#formReset').click(function(){//초기화 버튼 클릭시
  	$('input').val(''); 
+ 	 $('#code').attr('readOnly',false);
   	$('#btn-check-code').val('중복확인');
   	$('#addressSearch').val('우편번호찾기');
 });	        
  $('#updatebtn').click(function(){
+	 if(!Myvalidation()){
+			openErrorModal(errortitle,validationMessage,errorfield);
+			return;
+	}
   	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
 	$('#myform').attr('method', 'POST');
 	$('#myform').submit();
@@ -482,7 +641,6 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
 	$('#myform').submit();
  });
  
-//조회시 필요없는 정보 입력 X
 $("#search").click(function(){
 	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
 	$('#myform').attr('method', 'POST');
@@ -505,6 +663,7 @@ $("#simple-table tr").click(function(){
     $("input[name=mgr]").val(td.eq(8).text());
     $("input[name=mgrPhone]").val(td.eq(9).text());
     $("input[name=mgrEmail]").val(td.eq(10).text());
+    $('#code').attr('readOnly',true);
 });
 			
 		
