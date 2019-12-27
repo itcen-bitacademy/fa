@@ -482,7 +482,7 @@
 			    </if>
 			    
 			    <![CDATA[
-			    	order by corporationNo desc
+			    	order by customerDiv desc
 		   			   limit #{pagination.pageIndex }, #{pagination.listSize }
 			   	]]>
 			</if>
