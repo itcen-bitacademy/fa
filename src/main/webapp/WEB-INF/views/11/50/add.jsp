@@ -1573,7 +1573,8 @@
 			validationMessage = '납입원금이 상환 잔액보다 큽니다. 상환잔액(' + repay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ')보다 작게 입력해주세요';
 			return false;
 		} else if (intAmount > payPrinc) {
-			validationMessage = '이자 금액보다 납입금이 작습니다 납입금('+ intAmount + ')보다 크게 입력해주세요';
+			var noCommaIntAmount = comma(intAmount);
+			validationMessage = '이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요';
 			return false;
 		}
 		return true;
