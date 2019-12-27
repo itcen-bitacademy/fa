@@ -426,6 +426,12 @@
 	//입력폼에서 입력한 값 가저장 테이블에 저장하기
 	//var voucherList = new Array();
 	function add() {
+		
+		if(!valid.nullCheck("regDate", "일자")) return;
+		if(!valid.nullCheck("accountNo", "계정과목 코드")) return;
+		if(!valid.nullCheck("amount", "금액")) return;
+		if(!valid.nullCheck("customerNo", "거래처 코드")) return;
+		
 		var regDate = $('#regDate').val();
 		var accountNo = $('#accountNo').val();
 		var accountName = $('#accountName').val();
@@ -601,7 +607,6 @@
 		var jsonString = JSON.stringify(voucherList);
 		console.log("jsonString : " + jsonString);
 		console.log(jsonString);
-		
 		
 		$.ajax({
 			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/save",
@@ -856,7 +861,7 @@
 					click: function() {
 						if(flag){
 							$( this ).dialog( "close" ); 
-							location.href="${pageContext.request.contextPath }/12/13";
+							location.href="${pageContext.request.contextPath }/01/03";
 						} else {
 							$( this ).dialog( "close" ); 
 						}
