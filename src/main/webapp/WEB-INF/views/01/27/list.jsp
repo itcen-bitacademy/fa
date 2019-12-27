@@ -6,41 +6,41 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<!-- 다음 주소 api -->
+<!-- 다음 주소 팝업창 api -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-/*주소검색 api*/
-function execDaumPostcode() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            var addr = ''; 
-            var extraAddr = ''; 
-            if (data.userSelectedType === 'R') { 
-                addr = data.roadAddress;
-            } else {
-                addr = data.jibunAddress;
-            }
-            if(data.userSelectedType === 'R'){
-                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                    extraAddr += data.bname;
-                }
-                if(data.buildingName !== '' && data.apartment === 'Y'){
-                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                if(extraAddr !== ''){
-                    extraAddr = ' (' + extraAddr + ')';
-                }
-            
-            } else {
-                document.getElementById("address").value = '';
-            }
-
-            document.getElementById("address").value = addr;
-            document.getElementById("detailAddress").focus();
-        }
-    }).open();
-};
+	/*주소검색 api*/
+	function execDaumPostcode() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            var addr = ''; 
+	            var extraAddr = ''; 
+	            if (data.userSelectedType === 'R') { 
+	                addr = data.roadAddress;
+	            } else {
+	                addr = data.jibunAddress;
+	            }
+	            if(data.userSelectedType === 'R'){
+	                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                    extraAddr += data.bname;
+	                }
+	                if(data.buildingName !== '' && data.apartment === 'Y'){
+	                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                }
+	                if(extraAddr !== ''){
+	                    extraAddr = ' (' + extraAddr + ')';
+	                }
+	            
+	            } else {
+	                document.getElementById("address").value = '';
+	            }
+	
+	            document.getElementById("address").value = addr;
+	            document.getElementById("detailAddress").focus();
+	        }
+	    }).open();
+	};
 </script>
 
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -76,6 +76,7 @@ function execDaumPostcode() {
 			}
 			
 			if(a == "create") {
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!InsertValidation()){
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
@@ -136,6 +137,7 @@ function execDaumPostcode() {
 				    }
 				 })
 			} else if(a == "update") {
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!InsertValidation()){
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
@@ -203,6 +205,7 @@ function execDaumPostcode() {
 		  // ajax로 추가했던 테이블 제거
 		  $(".new-tbody").remove();
 	}
+	
 	function createNewTable(customerList){
 		  var $newTbody = $("<tbody class='new-tbody'>")
 		  $("#simple-table-1").append($newTbody)
@@ -239,57 +242,82 @@ function execDaumPostcode() {
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
-		//var customerNo1=td.eq(1).text().substring(0,2);
-		//var customerNo2=td.eq(1).text().substring(4,5);
-		//var customerNo3=td.eq(1).text().substring(7,11);
+		
+		//사업자 등록번호와 법인번호 => - 를 제거한다.
 		var customerNo = td.eq(1).text();
 		var noArray=customerNo.split('-');
-		
-		var customerPhone = td.eq(8).text();
-		var phoneArray=customerPhone.split('-');
-		
-		var customerAddr = td.eq(4).text();
-		var addrArray=customerAddr.split('/');
-		
-		var customerConIt = td.eq(5).text();
-		var conitArray=customerConIt.split('/');
-		
-		if (noArray[2] !=null){
-			$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
-		} else if (noArray[2]==null){
-			$("input[name=no]").val(noArray[0]);  
-		}
-		$("input[name=name]").val(td.eq(2).text());
-		$("input[name=ceo]").val(td.eq(3).text());
-		$("input[name=address]").val(addrArray[0]);
-		$("input[name=detailAddress]").val(addrArray[1]);
-		$("input[name=conditions]").val(conitArray[0]);
-		$("input[name=item]").val(conitArray[1]);
-		
+		//법인번호
 		if (noArray[2] !=null){
 			$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
 		} else if (noArray[2]==null){
 			$("input[name=corporationNo]").val(noArray[0]);
 		}
+		//사업자등록번호
+		if (noArray[2] !=null){
+			$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
+		} else if (noArray[2]==null){
+			$("input[name=no]").val(noArray[0]);  
+		}
 		
-		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
+		//거래처 번호 => - 를 제거한다.
+		var customerPhone = td.eq(8).text();
+		var phoneArray=customerPhone.split('-');
+		
 		if (phoneArray[2] !=null){
 			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
 		} else if (phoneArray[2]==null){
 			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]);
 		}
-		//$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
+		
+		//거래처 주소를 '/'를 기준으로 끊어 주소와 상세주소로 구분한다.
+		var customerAddr = td.eq(4).text();
+		var addrArray=customerAddr.split('/');
+
+		$("input[name=address]").val(addrArray[0]);//주소
+		$("input[name=detailAddress]").val(addrArray[1]);//상세주소
+		
+		// '/'를기준으로 끊어 업태와 종목을 구분한다.
+		var customerConIt = td.eq(5).text();
+		var conitArray=customerConIt.split('/');
+		
+		$("input[name=conditions]").val(conitArray[0]);//업태
+		$("input[name=item]").val(conitArray[1]);//업종
+		
+		//거래처명
+		$("input[name=name]").val(td.eq(2).text());
+		
+		//대표자명
+		$("input[name=ceo]").val(td.eq(3).text());
+		
+		//관할영업소
+		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
+		
+		//담당자 이메일
 		$("input[name=managerEmail]").val(td.eq(10).text());
+		
+		//은행명
 		$("input[name=bankName]").val(td.eq(12).text());
+		
+		//은행코드
 		$("input[name=bankCode]").val(td.eq(11).text());
+		
+		//계좌번호
 		$("input[name=depositNo]").val(td.eq(13).text());
+		
+		//거래처 담당자명
 		$("input[name=managerName]").val(td.eq(9).text());
+		
+		//예금주
 		$("input[name=depositHost]").val(td.eq(14).text());
+		
+		
 		$("input[name=address]").prop("readonly", true);
 		$("input[name=depositNo]").prop("readonly", true);
 		$("input[name='bankCode']").prop("readonly", true);
 		$("input[name='bankName']").prop("readonly", true);
-		$("input[name='depositHost']").prop("readonly", true);  
+		$("input[name='depositHost']").prop("readonly", true);
+		
+		//assets_flag(자산 거래처 종류) 값에 따라  radio 박스의 체크 상태가 변화한다.
 		var td6 = td.eq(6).text();
 		if(td6 == "토지"){
 		$('input:radio[name=assetsFlag]:input[value="a"]').prop("checked", true);
@@ -300,6 +328,8 @@ function execDaumPostcode() {
 		} else if (td6 =="무형자산"){
 		$('input:radio[name=assetsFlag]:input[value="d"]').prop("checked", true);
 		}
+		
+		//PK인 사업자 등록번호의  input box가 readonly 상태로 바뀌어 수정불가한 상태가 된다.
 		$("#no").attr("readonly",true);
 	});
 	
@@ -378,7 +408,7 @@ function execDaumPostcode() {
           url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
           contentType : "application/json; charset=utf-8",
           type: "get",
-          dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+          dataType: "json",
           data : "",
           statusCode: {
               404: function() {
@@ -407,13 +437,20 @@ function execDaumPostcode() {
        });
     });
     
-    // 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+    // 은행리스트에서 row를 선택면 해당하는 form 에 반영된다.
     $(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
        var tr = $(this);
        var td = tr.children();
+       //계좌번호
        $("input[name=depositNo]").val(td.eq(0).text());
+       
+       //예금주
        $("input[name=depositHost]").val(td.eq(1).text());
+       
+       //은행코드
        $("input[name=bankCode]").val(td.eq(2).text());
+       
+       //은행명
        $("input[name=bankName]").val(td.eq(3).text());
        $("#dialog-message").dialog('close');
     });
@@ -450,236 +487,237 @@ function execDaumPostcode() {
 </script>
 
 <script type="text/javascript">
-var validationMessage ='';
-var errortitle='';
-var errorfield ='';
-
-
-function openErrorModal(title, message,errorfield) {
-	$('#staticBackdropLabel').html(title);
-	$('#staticBackdropBody').text(message);
+	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
 	
-	console.log($('#staticBackdropLabel').text());
-	console.log($('#staticBackdropBody').text());
-
-	$( "#staticBackdrop" ).dialog({
-		resizable: false,
-		modal: true,
-		title: title,
-		buttons: [
-			{
-				text: "OK",
-				"class" : "btn btn-danger btn-mini",
-				click: function() {
-					$(this).dialog('close');
-		          	$('#staticBackdropBody').text('');
-					$(errorfield).focus();
+	
+	function openErrorModal(title, message,errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');
+						$(errorfield).focus();
+					}
 				}
-			}
-		]
-	});
-
-	$("#staticBackdrop").dialog('open');//모델창 띄운다
-}
-
-//insert Validation
-function InsertValidation(){
-	let no =$('#no').val();//사업자등록번호
-	let name =$('#name').val();//상호명
-	let ceo =$('#ceo').val();//대표자
-	let address =$('#address').val();//종목
-	let conditions =$('#conditions').val();//종목
-	let item =$('#item').val();//업태
-	let corporationNo=$('#corporationNo').val();//법인번호
-	let phone=$('#phone').val();//거래처전화번호
-	let assetsFlag=$('#assetsFlag').val();//종류
-	let managerName=$('#managerName').val();//담당자 성명
-	let managerEmail=$('#managerEmail').val();//이메일
-	let bankCode=$('#bankCode').val();//은행코드
-	let bankName=$('#bankName').val();//은행명
-	let depositNo=$('#depositNo').val();//계좌번호
-	let depositHost=$('#depositHost').val();//예금주
+			]
+		});
 	
-	
-	//사업자등록번호 Valid
-	if('' === no){
-		errortitle = 'CUSTOEMR_NO ERROR';
-		validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
-		errorfield='#no';
-		return false;
-	}
-	if(no.length<10 || no.length >10){
-		errortitle = 'CUSTOEMR_NO ERROR';
-		validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
-		errorfield='#no';
-		return false;
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
 	}
 	
-	//상호명 Valid
-	if(''=== name){
-		errortitle = 'CUSTOMER_NAME ERROR';
-		validationMessage = '상호명은 필수입력항목입니다.';
-		errorfield='#name';
-		return false;
+	//insert Validation
+	function InsertValidation(){
+		let no =$('#no').val();//사업자등록번호
+		let name =$('#name').val();//상호명
+		let ceo =$('#ceo').val();//대표자
+		let address =$('#address').val();//종목
+		let conditions =$('#conditions').val();//종목
+		let item =$('#item').val();//업태
+		let corporationNo=$('#corporationNo').val();//법인번호
+		let phone=$('#phone').val();//거래처전화번호
+		let assetsFlag=$('#assetsFlag').val();//종류
+		let managerName=$('#managerName').val();//담당자 성명
+		let managerEmail=$('#managerEmail').val();//이메일
+		let bankCode=$('#bankCode').val();//은행코드
+		let bankName=$('#bankName').val();//은행명
+		let depositNo=$('#depositNo').val();//계좌번호
+		let depositHost=$('#depositHost').val();//예금주
 		
-	}
-	if(name.length > 20){
-		errortitle = 'CUSTOMER_NAME ERROR';
-		validationMessage = '상호명은\r\n20자 이하로 입력하셔야 합니다.';
-		errorfield='#name';
-		return false;
-	}
-	
-	//대표자 Valid
-	if(''=== ceo){
-		errortitle = 'CUSTOMER_CEO ERROR';
-		validationMessage = '대표자는 필수입력항목입니다.';
-		errorfield='#ceo';
-		return false;
+		//사업자등록번호 Valid
+		if('' === no){
+			errortitle = 'CUSTOEMR_NO ERROR';
+			validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
+			errorfield='#no';
+			return false;
+		}
+		if(no.length<10 || no.length >10){
+			errortitle = 'CUSTOEMR_NO ERROR';
+			validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
+			errorfield='#no';
+			return false;
+		}
 		
-	}
-	if(ceo.length > 6){
-		errortitle = 'CUSTOMER_CEO ERROR';
-		validationMessage = '대표자는\r\n6자 이하로 입력하셔야 합니다.';
-		errorfield='#ceo';
-		return false;
-	}
-	//주소 Valid
-
-	if(''=== address){
-		errortitle = 'CUSTOMER_ADDRESS ERROR';
-		validationMessage = '주소는 필수입력항목입니다.\r\n 팝업창을 통해 입력해주세요.';
-		errorfield='#address';
-		return false;
+		//상호명 Valid
+		if(''=== name){
+			errortitle = 'CUSTOMER_NAME ERROR';
+			validationMessage = '상호명은 필수입력항목입니다.';
+			errorfield='#name';
+			return false;
+			
+		}
+		if(name.length > 20){
+			errortitle = 'CUSTOMER_NAME ERROR';
+			validationMessage = '상호명은\r\n20자 이하로 입력하셔야 합니다.';
+			errorfield='#name';
+			return false;
+		}
+		
+		//대표자 Valid
+		if(''=== ceo){
+			errortitle = 'CUSTOMER_CEO ERROR';
+			validationMessage = '대표자는 필수입력항목입니다.';
+			errorfield='#ceo';
+			return false;
+			
+		}
+		if(ceo.length > 6){
+			errortitle = 'CUSTOMER_CEO ERROR';
+			validationMessage = '대표자는\r\n6자 이하로 입력하셔야 합니다.';
+			errorfield='#ceo';
+			return false;
+		}
+		
+		//주소 Valid
+		if(''=== address){
+			errortitle = 'CUSTOMER_ADDRESS ERROR';
+			validationMessage = '주소는 필수입력항목입니다.\r\n 팝업창을 통해 입력해주세요.';
+			errorfield='#address';
+			return false;
+		}
+		
+		//업태 Valid
+		if(''=== conditions){
+			errortitle = 'CUSTOMER_CONDITIONS ERROR';
+			validationMessage = '업태는 필수입력항목입니다.';
+			errorfield='#conditions';
+			console.log(conditions.length);
+			return false;
+		}
+		if(conditions.length > 10){
+			errortitle = 'CUSTOMER_CONDITIONS ERROR';
+			validationMessage = '업태는\r\n10자 이하로 입력하셔야 합니다.';
+			errorfield='#conditions';
+			return false;
+		}
+		
+		//종목 Valid
+		if(''=== item){
+			errortitle = 'CUSTOMER_ITEM ERROR';
+			validationMessage = '종목은 필수입력항목입니다.';
+			errorfield='#item';
+			return false;
+		}
+		if(item.length > 10){
+			errortitle = 'CUSTOMER_ITEM ERROR';
+			validationMessage = '종목은\r\n10자 이하로 입력하셔야 합니다.';
+			errorfield='#item';
+			return false;
+		}
+		
+		//법인번호 Valid
+		if(''=== corporationNo){
+			errortitle = 'CUSTOMER_CORPORATIONNO ERROR';
+			validationMessage = '법인번호는 필수입력항목입니다.';
+			errorfield='#corporationNo';
+			return false;
+		}
+		if(corporationNo.length<10 || corporationNo.length >10){
+			errortitle = 'CUSTOEMR_CORPORATIONNO ERROR';
+			validationMessage = '법인번호는\r\n10자리를 입력하셔야 합니다.';
+			errorfield='#corporationNo';
+			return false;
+		}
+		
+		//자산플래그 Valid
+		if($(':radio[name=assetsFlag]:checked').length < 1){
+			errortitle = 'CUSTOMER_ASSETSFLAG ERROR';
+			validationMessage = '자산 종류는 필수입력항목입니다.';
+			errorfield='#assetsFlag';
+			return false;
+		}
+		
+		//거래처 전화번호 Valid (11자)
+		if(''=== phone){
+			errortitle = 'CUSTOMER_PHONE ERROR';
+			validationMessage = '거래처 전화번호는\r\n필수입력항목입니다.';
+			errorfield='#phone';
+			return false;
+		}
+		if(phone.length > 11){
+			errortitle = 'CUSTOMER_PHONE ERROR';
+			validationMessage = '거래처 전화번호는\r\n11자리 이하로 입력하셔야 합니다.';
+			errorfield='#phone';
+			return false;
+		}
+		
+		//Email Valid
+		if(''=== managerEmail){
+			errortitle = 'CUSTOMER_Email ERROR';
+			validationMessage = '이메일은 필수입력항목입니다.';
+			errorfield='#managerEmail';
+			return false;
+		}
+		//정규식에 따른 email 형식검사
+		var re=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+		var email = document.getElementById('managerEmail').value;
+		if (email = !re.test(email)) {
+			errortitle = 'CUSTOMER_Email ERROR';
+			validationMessage = '이메일 형식에 맞게 입력해주세요.\r\n 예)example@test.com';
+			errorfield='#managerEmail';
+			return false;
+			} 
+		
+		//계좌번호, 은행코드, 은행명, 예금주 Valid (팝업창으로 유도)
+		if(''=== depositNo){
+			errortitle = 'CUSTOMER_DEPOSITNO ERROR';
+			validationMessage = '계좌번호, 은행코드, 은행명, 예금주\r\n는 필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요.';
+			errorfield='#depositNo';
+			return false;
+		}
+		
+		//거래처 담당자 성명 Valid
+		if(''=== managerName){
+			errortitle = 'CUSTOMER_MANAGERNAME ERROR';
+			validationMessage = '거래처 담당자 성명은\r\n필수입력항목입니다.';
+			errorfield='#managerName';
+			return false;
+		}
+		if(ceo.managerName > 6){
+			errortitle = 'CUSTOMER_MANAGERNAME ERROR';
+			validationMessage = '거래처 담당자 성명은\r\n6자 이하로 입력하셔야 합니다.';
+			errorfield='#managerName';
+			return false;
+		}
+	
+		return true;
 	}
 	
-	//업태 Valid
-	if(''=== conditions){
-		errortitle = 'CUSTOMER_CONDITIONS ERROR';
-		validationMessage = '업태는 필수입력항목입니다.';
-		errorfield='#conditions';
-		console.log(conditions.length);
-		return false;
-	}
-	if(conditions.length > 10){
-		errortitle = 'CUSTOMER_CONDITIONS ERROR';
-		validationMessage = '업태는\r\n10자 이하로 입력하셔야 합니다.';
-		errorfield='#conditions';
-		return false;
+	//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다.
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode;
+	    var _value = event.srcElement.value;
+	
+	    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+	        if(event.keyCode != 46){//delete
+	             return false;
+	        } 
+	     }
+	    return true;
+	    
 	}
 	
-	//종목 Valid
-	if(''=== item){
-		errortitle = 'CUSTOMER_ITEM ERROR';
-		validationMessage = '종목은 필수입력항목입니다.';
-		errorfield='#item';
-		return false;
-	}
-	if(item.length > 10){
-		errortitle = 'CUSTOMER_ITEM ERROR';
-		validationMessage = '종목은\r\n10자 이하로 입력하셔야 합니다.';
-		errorfield='#item';
-		return false;
-	}
-	
-	//법인번호 Valid
-	if(''=== corporationNo){
-		errortitle = 'CUSTOMER_CORPORATIONNO ERROR';
-		validationMessage = '법인번호는 필수입력항목입니다.';
-		errorfield='#corporationNo';
-		return false;
-	}
-	if(corporationNo.length<10 || corporationNo.length >10){
-		errortitle = 'CUSTOEMR_CORPORATIONNO ERROR';
-		validationMessage = '법인번호는\r\n10자리를 입력하셔야 합니다.';
-		errorfield='#corporationNo';
-		return false;
-	}
-	
-	//자산플래그 Valid
-	if($(':radio[name=assetsFlag]:checked').length < 1){
-		errortitle = 'CUSTOMER_ASSETSFLAG ERROR';
-		validationMessage = '자산 종류는 필수입력항목입니다.';
-		errorfield='#assetsFlag';
-		return false;
-	}
-	
-	//거래처 전화번호 Valid (11자)
-	if(''=== phone){
-		errortitle = 'CUSTOMER_PHONE ERROR';
-		validationMessage = '거래처 전화번호는\r\n필수입력항목입니다.';
-		errorfield='#phone';
-		return false;
-	}
-	if(phone.length > 11){
-		errortitle = 'CUSTOMER_PHONE ERROR';
-		validationMessage = '거래처 전화번호는\r\n11자리 이하로 입력하셔야 합니다.';
-		errorfield='#phone';
-		return false;
-	}
-	
-	//Email Valid
-	if(''=== managerEmail){
-		errortitle = 'CUSTOMER_Email ERROR';
-		validationMessage = '이메일은 필수입력항목입니다.';
-		errorfield='#managerEmail';
-		return false;
-	}
-	
-	var re=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-	var email = document.getElementById('managerEmail').value;
-	if (email = !re.test(email)) {
-		errortitle = 'CUSTOMER_Email ERROR';
-		validationMessage = '이메일 형식에 맞게 입력해주세요.\r\n 예)example@test.com';
-		errorfield='#managerEmail';
-		return false;
-		} 
-	
-	//계좌번호, 은행코드, 은행명, 예금주 Valid
-	if(''=== depositNo){
-		errortitle = 'CUSTOMER_DEPOSITNO ERROR';
-		validationMessage = '계좌번호, 은행코드, 은행명, 예금주\r\n는 필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요.';
-		errorfield='#depositNo';
-		return false;
-	}
-	
-	//거래처 담당자 성명 Valid
-	if(''=== managerName){
-		errortitle = 'CUSTOMER_MANAGERNAME ERROR';
-		validationMessage = '거래처 담당자 성명은\r\n필수입력항목입니다.';
-		errorfield='#managerName';
-		return false;
-	}
-	if(ceo.managerName > 6){
-		errortitle = 'CUSTOMER_MANAGERNAME ERROR';
-		validationMessage = '거래처 담당자 성명은\r\n6자 이하로 입력하셔야 합니다.';
-		errorfield='#managerName';
-		return false;
-	}
-
-	return true;
-}
-
-//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다
-function isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : event.keyCode;
-    var _value = event.srcElement.value;
-
-    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
-        if(event.keyCode != 46){//delete
-             return false;
-        } 
-     }
-    return true;
-    
-}
-function delHangle(evt){
-    var objTarger = evt.srcElement || evt.target;
-    var val = event.srcElement.value;
-    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
-        objTarger.value = null;
-    	}
-    }
+	//사업자등록번호, 법인번호, 전화번호에서 한글이 입력 되었을시 지운다.
+	function delHangle(evt){
+	    var objTarger = evt.srcElement || evt.target;
+	    var val = event.srcElement.value;
+	    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+	        objTarger.value = null;
+	    	}
+	    }
 
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -691,9 +729,6 @@ function delHangle(evt){
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
-
-
-
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">거래처 관리 [27]</h1>
@@ -824,14 +859,13 @@ function delHangle(evt){
 										계좌번호:&nbsp;
 									</label>
 									<div class="input-append">
-										 <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
-										<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" readonly/>
-												<span class="add-on">
-				                                   <i class="icon-search icon-on-right bigger-110"></i>
-				                                  
-				                                 </span>
-				                                   </a>
-										</div>
+										<a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
+											<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" readonly/>
+											<span class="add-on">
+					                        	<i class="icon-search icon-on-right bigger-110"></i>
+					                        </span>
+					                    </a>
+									</div>
 									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
@@ -916,8 +950,6 @@ function delHangle(evt){
 						<br/>
 					
 						</form>
-
-
 
 						<div class="row-fluid">
 							<div class="span12">
@@ -1042,15 +1074,14 @@ function delHangle(evt){
 					</ul>
 				</div>
 				
-				
-			<!-- Validation Modal Start -->
-			<div id="staticBackdrop" class="hide">
-			<br>
-				<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
-				</pre>
+				<!-- Validation Modal Start -->
+				<div id="staticBackdrop" class="hide">
+					<br>
+					<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
+					</pre>
+				</div>
+				<!-- Validation Modal End -->
 			</div>
-			<!-- Validation Modal End -->
-		</div>
 		
 	<!-- /.page-content -->
 	
