@@ -8,76 +8,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
-<!--
-<script src="${pageContext.servletContext.contextPath }/assets/ace/js/uncompressed/jquery-2.0.3.js" type="text/javascript"></script>
-<script>
-$(function(){
-
-	$("#account-add-btn").click(function(){
-
-		var AccountManagement = {
-				"account_order" : $("#account_order").val(),                   //계정과목 순서
-				"account_no" : $("#account_no").val(),                         //계정과목 코드
-				"account_statement_type" : $("#account_statement_type option:selected").val(), //제무재표 구분
-				"account_usedyear" : $("#account_usedyear").val()              //계정과목 사용년도
-		};
-
-		if(AccountManagement == ''){
-			alert("항목을 모두 입력해주세요.");
-			return;
-		}
-
-
-		// ajax 통신
-		$.ajax({
-			url: "${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add",
-			type: "post",
-			dataType: "json",
-			contentType: 'application/json',
-			data: JSON.stringify(AccountManagement),
-
-         	error : function(xhr, error) {
-	        	console.error("error : " + error);
-	        }
-
-		});
-
-	});
-
-
-
-	$(document).on("click", ".delete-category", function(event) {
-		  event.preventDefault();
-
-		  var con_test = confirm("정말 삭제하시겠습니까?");
-		  if(con_test == true){
-			  var no = $(this).attr('id');
-		      let clikedRow = $(this);
-
-		      $.ajax({
-		         url : "${pageContext.servletContext.contextPath }/api/blog/delete?no=" + no,
-		         type : "post",
-		         dataType : "json",
-		         success : function(data) {
-		         	$(clikedRow).parent().parent().remove();
-		         },
-		         error : function(xhr, error) {
-		            console.error("error : " + error);
-		         }
-		      });
-		  }
-		  else if(con_test == false){
-		    return;
-		  }
-
-
-
-	   });
-
-
-});
-</script>
- -->
 <style>
 #staticBackdrop {
 	z-index: -1;
@@ -164,8 +94,10 @@ $(function(){
 
 				<!-- /.row-fluid -->
 				<div class="row-fluid">
+				
 				<!-- 제무재표 계정과목 테이블  -->
 				<div class="span12">
+				
 				<!-- 선 -->
 				<div class="hr hr-18 dotted"></div>
 
@@ -176,12 +108,6 @@ $(function(){
 
                 <button class="btn btn-default btn-small" type="button" onclick="delete_row();">행삭제</button>
                 &nbsp;
-
-                <!--  삭제할 예정
-    			<button class="btn btn-primary btn-small" type="submit" id="account-add-btn" name="account-add-btn" value="add" onclick="add_data();"  formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">입력</button>
-
-				<button class="btn btn-warning btn-small" type="submit" id="account-update-btn" name="account-update-btn" value="update" onclick="update_data();" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
-				 -->
 
 				<button class="btn btn-primary btn-small" type="button" onclick="test_data();" >저장</button>
 
@@ -273,7 +199,12 @@ $(function(){
 	<c:if test="${not empty param.error }">
 		<input type="hidden" id="errorMessage" value="${param.error }"/>
 	</c:if>
-
+	
+	<div id="dialog-confirm" class="hide">
+		<p id="dialog-txt" class="bolder grey"></p>
+	</div>
+		
+	<!-- 	
 	<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 180px;">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -287,14 +218,14 @@ $(function(){
 			</div>
 		</div>
 	</div>
-
+ 	-->
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js">
 	</script>
-
+	<script src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
 	<script>
 	$(function() {
 		$(".chosen-select").chosen();
@@ -362,8 +293,6 @@ $(function(){
     $("#account-list-btn").click(function() {
     	console.log($('#selectedAccount').val());
     });
-
-
 
 
 	// validation check (보류)
@@ -451,10 +380,12 @@ $(function(){
 	var backdrop
 
 	function openModal(title, message) {
-		$('#staticBackdropLabel').text('Error')
-		$('#staticBackdropBody').text(message)
+		//$('#staticBackdropLabel').text('Error')
+		//$('#staticBackdropBody').text(message)
 
-		backdrop.modal('show')
+		//backdrop.modal('show')
+		
+		dialog(message, true);
 	}
 
 
@@ -522,13 +453,39 @@ $(function(){
     	var accountName = $(this).find('option:selected').attr('data-accountName');
     	$('#accountName'+totalcnt).val(accountName);
    	});
+    
+    
+	 // 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+	 function dialog(txt, flag) {
+        $("#dialog-txt").html(txt);
+    	var dialog = $( "#dialog-confirm" ).dialog({
+			resizable: false,
+			modal: true,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						if(flag){
+							$( this ).dialog( "close" ); 
+							location.href="${pageContext.request.contextPath }/17/59";
+						} else {
+							$( this ).dialog( "close" ); 
+						}
+					}
+				}
+			]
+		});
+    }
 
     var changedRows = [];//저장, 수정할 배열
 
     function test_data(){
 
     	if(changedRows == ""){
-    		alert("저장 혹은 수정할 데이터를 입력해주세요");
+    		console.log(changedRows);
+    		openModal('Error',"저장 혹은 수정할 데이터를 입력해주세요");
+    		
     	}else{
 
         	$.ajax({
@@ -537,12 +494,13 @@ $(function(){
         		traditional : true,
         		data : {"changedRows" : changedRows},
         		success : function(data){
-              	//console.log(data)
+        			
            		if(data.status == false){
            			openModal('Error', data.error);
            			data.status = true;
 
            		}
+           		
            		location.reload();
             }
 
