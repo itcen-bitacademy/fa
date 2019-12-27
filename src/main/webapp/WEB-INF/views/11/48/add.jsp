@@ -18,7 +18,11 @@ h4{
 	font-size:13px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
-
+.textarea{
+	resize: none;
+	width: 282px;
+	height: 84px;
+}
 tr td:first-child {
 	padding-right: 10px;
 }
@@ -102,8 +106,9 @@ tr td:first-child {
 								<tr >
 									<td><h4>장기차입금명</h4></td>
 									<td colspan="2">
-										<input type="text" name="name" id="name"/>
+										<textarea class='textarea' name="name" id="name" ></textarea>
 									</td>
+									
 								</tr>
 								<tr>
 									<td><h4>차입금액</h4></td>
@@ -898,11 +903,11 @@ tr td:first-child {
 		if(td.eq(0).children().children().prop('checked')== false){
 			$(td.eq(0).children().children()).prop('checked',true);
 			$("#tbody-list").find("tr").css("background-color", "inherit");
-	         $(this).css("background-color", "#ddd");
-	         $("input[name=code]").val(td.eq(1).text());
+	        $(this).css("background-color", "#ddd");
+	        $("input[name=code]").val(td.eq(1).text());
 	 		$("input[name=code]").attr('readonly',true);
 	 		
-	 		$("input[name=name]").val(td.eq(2).text());
+	 		$("#name").val(td.eq(2).text());
 	 		var major='';
 	 		switch (td.eq(3).text()){
 	 	    case '국내은행' :
@@ -978,6 +983,7 @@ tr td:first-child {
 	 		
 		}else{
 			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
+			$('#name').val('');
 			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
 			$('#code').attr('readonly',false);
 			$('#form-field-1').val(2019); 
@@ -1020,7 +1026,7 @@ tr td:first-child {
 		});
 		
 		 $('#btn-check-code').val('중복확인');
-		 
+		 $('#name').val('');
 		 
 		 $("#tbody-list tr").each(function(i){
 				var td = $(this).children();
@@ -1798,6 +1804,7 @@ tr td:first-child {
 		$("#dialog-message").dialog({
 			autoOpen : false
 		});
+		
 		//상환 다이얼 로그
 		$("#dialog-repayment").dialog({
 			autoOpen : false
