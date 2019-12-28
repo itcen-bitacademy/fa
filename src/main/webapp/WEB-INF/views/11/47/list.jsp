@@ -115,8 +115,9 @@
     background-color: #eee;
     border: 1px solid #ccc;
     vertical-align: top;
-    margin-left: -4px;
 }
+
+div > span.add-on{margin-left:-5px}
 
 
 .div-float-right{

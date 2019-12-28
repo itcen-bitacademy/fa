@@ -276,7 +276,7 @@ input::-webkit-inner-spin-button {
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
 							<button type="button" class="btn btn-small mybtn" onclick="openRepayDialog()">상환</button>
-							<button type="reset" class="btn btn-success btn-small mybtn">초기화</button>
+							<button type="reset" class="btn btn-success btn-small mybtn" onclick="resetForm()">초기화</button>
 						</div>
 					</section>
 				</section>
@@ -566,6 +566,12 @@ function update(){
 			
 		}
 	});
+}
+
+function resetForm(){
+	var inputForm = $("#input-form")[0];
+	$(inputForm.code).attr("readonly", false);
+	$("#btn-chk-duplication").css("display", "inline-block");
 }
 //-----------------------------------은행 Model 메서드 ---------------------------------//
 function openRepayListDialog(){
@@ -915,7 +921,7 @@ function selectRow(thisObj){
 	$(thisObj).closest("table").find("tr").css("background-color", "inherit");
 	$(thisObj).css("background-color", "#ddd");
 	$("#btn-chk-duplication").css("display", "none");
-	$(inputForm.code).attr("readonly");
+	$(inputForm.code).attr("readonly", true);
 	
 	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;
