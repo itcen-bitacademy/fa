@@ -779,7 +779,7 @@
 				                            </span>
 				                    	</a>
 									</div>
-									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
+									&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;상세주소:
 									<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"/>
 								</div>
 
@@ -866,7 +866,7 @@
 					                        </span>
 					                    </a>
 									</div>
-									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;은행코드:
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 

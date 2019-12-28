@@ -203,8 +203,10 @@
 	<update id="delete" parameterType="1customervo">
 		<![CDATA[
 			update tb_customer
-			   set delete_flag = 'Y'
-			 where name =  #{name }
+			   set delete_flag = 'Y',
+				   update_userid = #{updateUserid },
+				   update_day = now()
+			 where no = concat('A', #{no})
 			   and assets_flag!='e'
 		]]>
 	</update>
