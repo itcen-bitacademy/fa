@@ -74,7 +74,7 @@ tr td:first-child {
 .mgr-call-input {
 	width: 150px;
 	display: inline;
-	}
+}
 	
 .mybtn{float:right;margin-right:20px;}
 
@@ -260,11 +260,6 @@ input::-webkit-inner-spin-button {
 							<span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span>
 							<input type="text" class="search-input-width-second" name="depositHost" disabled="disabled" placeholder="예금주"/>
 						</div>
-						<!-- 계좌정보 Modal pop-up : start -->
-						<div id="dialog46" title="계좌" hidden="hidden">
-							
-						</div>
-						<!-- 계좌정보 Modal pop-up : end -->
 					</section>
 				</div>	<!--  input area -->
 				<hr>
@@ -286,34 +281,7 @@ input::-webkit-inner-spin-button {
 			
 			<!-- 상환  Modal pop-up : start -->
 					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
-						<form id="repay-form">
-							<input type="hidden" name="debtNo">
-							<input type="hidden" name="code">
-							<section class="repay-input-wrapper">
-								<label>차입금코드</label>
-								<input type="text" name="debtCode" readonly= "readonly"/>
-							</section>
-							<section class="repay-input-wrapper">
-								<label>납입금</label>
-								<input type="text" name="payPrinc" id= "repay_bal"/>
-							</section>
-							<section class="repay-input-wrapper">
-								<label>이자금액</label>
-								<input type="text" name="intAmount" readonly= "readonly"/>
-							</section>
-							<section class="repay-input-wrapper">
-								<label>납입일자</label>
-								<section>
-									<input class="date-picker" type="text" name="payDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"/>
-									<span class="add-on">
-			                  	    <i class="icon-calendar"></i>
-								</section>
-							</section>
-							<section class="repay-input-wrapper">
-								<label>계좌번호</label>
-								<input type="text" name="depositNo" readonly= "readonly"/>
-							</section>
-						</form>
+						
 					</div>
 					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 					
@@ -356,13 +324,11 @@ input::-webkit-inner-spin-button {
 					</ul> <!-- pg-list end -->
 				</section>
 			</div><!-- /.page-content -->
-			
-			<!-- 상환 내역 리스트 -->
-			<div id="dialog-repayment-delete" title="상환정보여부" hidden="hidden">
-				<!-- 계좌정보 데이터 리스트 -->
-						
-
+			<!-- 모달 -->
+			<div id="dialog46" hidden="hidden">
+							
 			</div>
+			<!-- 모달 end -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
 <!-- basic scripts -->
@@ -406,19 +372,10 @@ $(function() {						//onload함수
 	});
 	
 	//--------------------------------------------------------------------------------------------------------------------------//
-	//은행, 계좌 Dialog
+	// Dialog
 	$("#dialog46").dialog({
 		autoOpen : false
 	});
-	
-	$("#dialog-repayment").dialog({
-		autoOpen : false
-	});
-	
-	$("#dialog-repayment-delete").dialog({			//삭제시 상환내역
-	       autoOpen : false
-	    });
-	
 });
 
 //Page ready시 table & paging list Rendering
@@ -575,8 +532,8 @@ function resetForm(){
 }
 //-----------------------------------은행 Model 메서드 ---------------------------------//
 function openRepayListDialog(){
-	$("#dialog-repayment-delete").dialog('open');
-	$("#dialog-repayment-delete").dialog({
+	$("#dialog46").dialog('open');
+	$("#dialog46").dialog({
      	
         title: "상환정보",
         title_html: true,
@@ -585,12 +542,12 @@ function openRepayListDialog(){
 	           width: 400,
 	           modal: true,
 	           close: function() {
-            $('#dialog-repayment-delete *').remove();
+            $('#dialog46 *').remove();
          },
          buttons: {
          "닫기" : function() {
                   $(this).dialog('close');
-                  $('#dialog-repayment-delete *').remove();
+                  $('#dialog46 *').remove();
              }
          }
      });
@@ -770,17 +727,8 @@ function repay(repayForm, repayBal){									//상환버튼 클릭시
 
 function openRepayDialog(){
 	console.log("---------------------------openRepayDialog() called--------------------------");
-	var repayForm = $("#repay-form")[0];			//상환폼
-	var inputForm = $("#input-form")[0];			//선택된 차입금 form
-	var vo = JSON.parse(inputForm.vo.value);
-	//초깃값 지정
-	repayForm.debtNo.value = vo.no;
-	repayForm.code.value = vo.code;
-	repayForm.debtCode.value = vo.code;
-	repayForm.intAmount.value = (vo.repayBal * vo.intRate / 100);	
-	repayForm.depositNo.value = vo.depositNo;
 	
-	$("#dialog-repayment").dialog('open');
+	$("#'").dialog('open');
 	$("#dialog-repayment").dialog({
 		title: "상환정보등록",
 		title_html: true,
@@ -809,6 +757,51 @@ function openRepayDialog(){
 	});
 }//openRepayDailog() end
 
+function renderRepayDialog(){
+	console.log("------------------------------------renderRepayDialog() Called----------------------------------");
+	$("#dialog46").append("<form id='repay-form'"> + 
+							"<input type='hidden' name='debtNo'>" +
+							"<input type='hidden' name='code'>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>차입금코드</label>"
+								"<input type='text' name='debtCode' readonly= 'readonly'/>" +
+							"</section>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>납입금</label>" +
+								"<input type='text' name='payPrinc' id= 'repay_bal'/>" +
+							"</section>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>이자금액</label>" +
+								"<input type='text' name='intAmount' readonly= 'readonly'/>" +
+							"</section>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>납입일자</label>" +
+								"<section>" +
+									"<input class='date-picker' type='text' name='payDate' id='id-date-picker-1'  data-date-format='yyyy-mm-dd'/>" +
+									"<span class='add-on'>" +
+									"<i class='icon-calendar'></i>" +
+								"</section>" + 
+							"</section>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>계좌번호</label>" +
+								"<input type='text' name='depositNo' readonly= 'readonly'/>" +
+							"</section>" +
+						"</form>");
+	
+	var repayForm = $("#repay-form")[0];			//상환폼
+	var inputForm = $("#input-form")[0];			//선택된 차입금 form
+	var vo = JSON.parse(inputForm.vo.value);
+	//초깃값 지정
+	repayForm.debtNo.value = vo.no;
+	repayForm.code.value = vo.code;
+	repayForm.debtCode.value = vo.code;
+	repayForm.intAmount.value = (vo.repayBal * vo.intRate / 100);	
+	repayForm.depositNo.value = vo.depositNo;
+	
+	//open
+	openRepayDialog();
+	console.log("------------------------------------renderRepayDialog() End----------------------------------");
+}
 
 function openAccountDialog(){
 	//var accountForm = $("#account-form")[0];
@@ -1086,7 +1079,7 @@ function renderingRepayLists(repayLists){
 		var repayList = repayLists[i];
 		console.log("repayList : " + repayList);
 		
-		$("#dialog-repayment-delete").append(
+		$("#dialog46").append(
 				"<label id='repay-code'>" + repayList[0].code + "</label>" +
 				"<table class='table  table-bordered table-hover'>" + 
 					"<thead>"+
@@ -1100,7 +1093,7 @@ function renderingRepayLists(repayLists){
 	               "</tbody>"+
              "</table>");
 		for(let j in repayList){
-			$("#dialog-repayment-delete tbody").append(
+			$("#dialog46 tbody").append(
 					 "<tr>" +
 	                   "<td class='center'>" + repayList[j].payPrinc + "</td>" +
 	                   "<td class='center'>" + repayList[j].intAmount + "</td>" +
@@ -1117,10 +1110,10 @@ function renderingClosedDateList(closedDateList){
 	console.log("--------------------renderingClosedDateList Called --------------------------");
 	console.log("closedDateList : " + closedDateList);
 	
-	$("#dialog-repayment-delete").append("<label>코드정보</label>");
+	$("#dialog46").append("<label>코드정보</label>");
 	
 	for(let i in closedDateList)
-		$("#dialog-repayment-delete").append("<label>" + closedDateList[i].code + "</label>");
+		$("#dialog46").append("<label>" + closedDateList[i].code + "</label>");
 		
 		openRepayListDialog();
 		console.log("--------------------renderingClosedDateList End --------------------------");
