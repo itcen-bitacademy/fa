@@ -89,13 +89,15 @@
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.fail) {
-				    		alert("다시 입력해주세요.");
+				    		//alert("다시 입력해주세요.");
+				    		openErrorModal("CREATE FAIL","거래처 등록에 실패하였습니다. \r\n 다시입력해주세요.");
 				    	}
 				    	if(result.success) {
 				    		$('#inputform').each(function(){
 				    		    this.reset();
 				    		});
-				    		alert("거래처 등록이 완료되었습니다."); 
+				    		openErrorModal("CREATE SUCCESS","거래처 등록에 성공하였습니다.");
+				    		//alert("거래처 등록이 완료되었습니다."); 
 				    		
 				    		removeTable();
 				    		var customerList = result.customerList;
@@ -120,7 +122,8 @@
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.success) {
-				    		alert("거래처 조회가 완료되었습니다."); 
+				    		openErrorModal("READ SUCCESS","거래처 조회가 완료되었습니다.");
+				    		//alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#inputform').each(function(){
 				    		    this.reset();
@@ -149,7 +152,9 @@
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.success) {
-				    		alert("거래처 수정이 완료되었습니다."); 
+
+							openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
+				    		//alert("거래처 수정이 완료되었습니다."); 
 				    		removeTable();
 				    		
 				    		var customerList = result.customerList;
@@ -168,33 +173,56 @@
 				    }
 				 })
 			} else if(a == "delete") {
-				$.ajax({
-				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
-				    type: "POST",
-				    data: queryString,
-				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
-				    		alert("거래처 삭제가 완료되었습니다."); 
-				    		removeTable();
-				    		$('#inputform').each(function(){
-				    		    this.reset();
-				    		});
-				    		
-				    		var customerList = result.customerList;
-				    		createNewTable(customerList);
-				    	}
-				    	
-				    	$('#pagination ul').remove();
-			    		createNewPage(result, a);
-			    		$('#pagination').show();
-				    },
-				    error: function( err ){
-				      	console.log(err)
-				    }
-				 })
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+				if(!DeleteValidation()){
+					openErrorModal(errortitle,validationMessage,errorfield);
+					return;
+				}
+				
+				// 삭제확인창을 띄운다.
+				openDeleteModal('DELETE CHECK',"삭제하시겠습니까?");
+				
+				// 삭제확인창 - 취소 버튼을 누르면 삭제 X
+				$("#deletecancel").click(function(){
+					console.log("cancel");
+					return;
+				});
+				
+				// 삭제확인창 - 확인 버튼을 누르면 삭제O
+				$("#deleteok").click(function(){
+					console.log("deleteok");
+					$.ajax({
+					    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+					    type: "POST",
+					    data: queryString,
+					    dataType: "json",
+					    success: function(result){
+					    	if(result.success) {
+					    		//alert("거래처 삭제가 완료되었습니다."); 
+								openErrorModal("DELETE SUCCESS","거래처 삭제가 완료되었습니다.");
+					    		removeTable();
+					    		$('#inputform').each(function(){
+					    		    this.reset();
+					    		});
+					    		
+					    		var customerList = result.customerList;
+					    		createNewTable(customerList);
+					    	}
+					    	
+					    	$('#pagination ul').remove();
+				    		createNewPage(result, a);
+				    		$('#pagination').show();
+					    },
+					    error: function( err ){
+					      	console.log(err)
+					    }
+					 })
+				});
+				
 			} else {
-				alert("예외사항 발생");
+
+	    		openErrorModal("UNKNOWN ERROR","알수없는 에러입니다 \r\n 다시 시도해주세요.");
+				//alert("예외사항 발생");
 			}
 		
 	});
@@ -696,6 +724,126 @@
 		return true;
 	}
 	
+	//delete Validation
+	function DeleteValidation(){
+		let no =$('#no').val();//사업자등록번호
+		let name =$('#name').val();//상호명
+		let ceo =$('#ceo').val();//대표자
+		let address =$('#address').val();//종목
+		let conditions =$('#conditions').val();//종목
+		let item =$('#item').val();//업태
+		let corporationNo=$('#corporationNo').val();//법인번호
+		let phone=$('#phone').val();//거래처전화번호
+		let assetsFlag=$('#assetsFlag').val();//종류
+		let managerName=$('#managerName').val();//담당자 성명
+		let managerEmail=$('#managerEmail').val();//이메일
+		let bankCode=$('#bankCode').val();//은행코드
+		let bankName=$('#bankName').val();//은행명
+		let depositNo=$('#depositNo').val();//계좌번호
+		let depositHost=$('#depositHost').val();//예금주
+		
+		//사업자등록번호 Valid
+		if('' === no){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#no';
+			return false;
+		}
+		
+		//상호명 Valid
+		if(''=== name){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#name';
+			return false;
+			
+		}
+		
+		//대표자 Valid
+		if(''=== ceo){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#ceo';
+			return false;
+			
+		}
+		
+		//주소 Valid
+		if(''=== address){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#address';
+			return false;
+		}
+		
+		//업태 Valid
+		if(''=== conditions){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#conditions';
+			console.log(conditions.length);
+			return false;
+		}
+		
+		//종목 Valid
+		if(''=== item){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#item';
+			return false;
+		}
+		
+		//법인번호 Valid
+		if(''=== corporationNo){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#corporationNo';
+			return false;
+		}
+		
+		//자산플래그 Valid
+		if($(':radio[name=assetsFlag]:checked').length < 1){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#assetsFlag';
+			return false;
+		}
+		
+		//거래처 전화번호 Valid (11자)
+		if(''=== phone){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#phone';
+			return false;
+		}
+		
+		//Email Valid
+		if(''=== managerEmail){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#managerEmail';
+			return false;
+		}
+		
+		//계좌번호, 은행코드, 은행명, 예금주 Valid (팝업창으로 유도)
+		if(''=== depositNo){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#depositNo';
+			return false;
+		}
+		
+		//거래처 담당자 성명 Valid
+		if(''=== managerName){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#managerName';
+			return false;
+		}
+	
+		return true;
+	}
+	
 	//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다.
 	function isNumberKey(evt){
 	    var charCode = (evt.which) ? evt.which : event.keyCode;
@@ -718,7 +866,47 @@
 	        objTarger.value = null;
 	    	}
 	    }
-
+	
+	//삭제확인모달창 띄우기
+	var Deletecheckmessage ='';
+	var deletetitle='';
+	
+	function openDeleteModal(title, message) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "확인",
+					"class" : "btn btn-danger btn-mini",
+					"name" : "deleteok",
+					"id" : "deleteok",
+					click: function() {
+						$(this).dialog('close');
+					}
+				},
+				{
+					text: "취소",
+					"class" : "btn btn-inverse btn-mini",
+					"name" : "deletecancel",
+					"id" : "deletecancel",
+					click: function() {
+						$(this).dialog('close');
+					}
+				}
+				
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
