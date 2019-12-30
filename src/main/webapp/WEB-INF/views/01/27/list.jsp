@@ -66,6 +66,7 @@
 		});
 		$("#btn-reset").click(function(){
 			$("#no").attr("readonly",false);
+			$("#btn-check-no").show();
 		});
 		
 		$("#inputform").submit(function(event) {
@@ -77,9 +78,17 @@
 			
 			if(a == "create") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
-				if(!InsertValidation()){
-					openErrorModal(errortitle,validationMessage,errorfield);
+				if(nochecked==false){
+
+					openErrorModal("CHECK NO DUPLICATE","중복체크는 필수입니다.",'#no');
+					$("#btn-check-no").show();
 					return;
+				}
+				else{
+					if(!InsertValidation()){
+						openErrorModal(errortitle,validationMessage,errorfield);
+						return;
+					}
 				}
 				
 				$.ajax({
@@ -122,6 +131,7 @@
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.success) {
+							$("#btn-check-no").hide();
 				    		openErrorModal("READ SUCCESS","거래처 조회가 완료되었습니다.");
 				    		//alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
@@ -131,7 +141,7 @@
 				    		
 				    		var customerList = result.customerList;
 				    		createNewTable(customerList);
-				    		settingInput(customerList);
+				    		//settingInput(customerList);
 				    		$('#pagination').hide();
 				    	}
 				    },
@@ -184,6 +194,7 @@
 				
 				// 삭제확인창 - 취소 버튼을 누르면 삭제 X
 				$("#deletecancel").click(function(){
+					openErrorModal("DELETE_CANCEL SUCCESS","거래처 삭제가 취소 되었습니다.");
 					console.log("cancel");
 					return;
 				});
@@ -359,9 +370,23 @@
 		
 		//PK인 사업자 등록번호의  input box가 readonly 상태로 바뀌어 수정불가한 상태가 된다.
 		$("#no").attr("readonly",true);
+
+		$("#btn-check-no").hide();
+		$("#img-checkno").hide();
 	});
 	
 	function settingInput(customerList) {
+		//var customerNo = td.eq(1).text();
+		//var noArray=customerNo.split('-');
+		//법인번호
+		//if (noArray[2] !=null){
+	//		$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
+	//	} else if (noArray[2]==null){
+	//		$("input[name=corporationNo]").val(noArray[0]);
+	//	}
+	//	$("input[name=name]").val(td.eq(2).text());
+		
+	
 		$("input[name=no]").val(customerList[0].no);
 		$("input[name=name]").val(customerList[0].name);
 		$("input[name=ceo]").val(customerList[0].ceo);
@@ -518,7 +543,7 @@
 	var validationMessage ='';
 	var errortitle='';
 	var errorfield ='';
-	
+	var nochecked = false;
 	
 	function openErrorModal(title, message,errorfield) {
 		$('#staticBackdropLabel').html(title);
@@ -546,10 +571,26 @@
 	
 		$("#staticBackdrop").dialog('open');//모달을 띄운다
 	}
+
+	//사업자등록번호 Valid
+	function noValid(no){
+			if('' === no){
+				errortitle = 'NO ERROR';	
+				validationMessage = '사업자등록번호는 반드시 입력해야합니다.';
+				errorfield='#no';
+				return false;
+			}
+			if(no.length<10 || no.length >10){
+				errortitle = 'NO ERROR';
+				validationMessage = '사업자등록번호는 10자리를 입력하셔야 합니다';
+				errorfield='#no';
+				return false;
+			}
+			return true;
+		}
 	
 	//insert Validation
 	function InsertValidation(){
-		let no =$('#no').val();//사업자등록번호
 		let name =$('#name').val();//상호명
 		let ceo =$('#ceo').val();//대표자
 		let address =$('#address').val();//종목
@@ -566,18 +607,18 @@
 		let depositHost=$('#depositHost').val();//예금주
 		
 		//사업자등록번호 Valid
-		if('' === no){
-			errortitle = 'CUSTOEMR_NO ERROR';
-			validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
-			errorfield='#no';
-			return false;
-		}
-		if(no.length<10 || no.length >10){
-			errortitle = 'CUSTOEMR_NO ERROR';
-			validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
-			errorfield='#no';
-			return false;
-		}
+		//if('' === no){
+		//	errortitle = 'CUSTOEMR_NO ERROR';
+		//	validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
+		//	errorfield='#no';
+		//	return false;
+		//}
+		//if(no.length<10 || no.length >10){
+		//	errortitle = 'CUSTOEMR_NO ERROR';
+		//	validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
+		//	errorfield='#no';
+		//	return false;
+		//}
 		
 		//상호명 Valid
 		if(''=== name){
@@ -908,6 +949,8 @@
 		$("#staticBackdrop").dialog('open');//모달을 띄운다
 	}
 </script>
+
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 
@@ -929,18 +972,20 @@
 					<form class="form-horizontal" id="inputform" name="inputform" method="post">
 						<div class="row-fluid" style="float: left">
 							<div class="span6">
-								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										사업자 등록번호:&nbsp;
-									</label>
-									
-									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
-								</div>
 								
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										상호명:&nbsp;
+										사업자등록번호:&nbsp;
 									</label>
+									<div class="input-append">
+									
+									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
+									
+									
+									<input id="btn-check-no" type="button" value="중복확인">
+										<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+									</div>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;상호명:
 									<input type="text" id="name" name="name" placeholder="상호명" maxlength="20" class="col-xs-10 col-sm-5" />
 								</div>
 
@@ -1054,7 +1099,7 @@
 					                        </span>
 					                    </a>
 									</div>
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;은행코드:
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;은행코드:
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 
@@ -1130,7 +1175,7 @@
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
+							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 						</div>	<!-- /.span -->
 						
 						</div>
@@ -1276,4 +1321,54 @@
 	<!-- basic scripts -->
 		<c:import url="/WEB-INF/views/common/footer.jsp" />
 	</body>
+	<script type="text/javascript">
+	//사업자등록번호 중복체크
+	$("#no").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+	});	
+	
+	$("#btn-check-no").click(function(){
+		
+		var no = $("#no").val();
+		if(!noValid(no)){
+			openErrorModal(errortitle,validationMessage,errorfield);
+			return;
+		}
+		
+		
+	// 사업자등록번호 중복체크
+	$.ajax({
+		url: "${pageContext.servletContext.contextPath }/01/27/checkno?no=" + no,
+		contentType : "application/json; charset=utf-8",
+		type: "get",
+		dataType: "json",
+		data: "",
+		success: function(response){
+			console.log(response);
+			if(response.result == "fail"){
+				console.error(response.message);
+				return;
+			}
+			
+			if(response.data == null){
+				nochecked = true;
+				$("#btn-check-no").hide();
+				$("#img-checkno").show();
+				return;
+			}else if(response.data.deleteFlag == "Y"){
+				$("#no").val("");
+				openErrorModal('No ERROR',"삭제된 사업자등록번호입니다.",'#no');
+			}else{
+				$("#no").val("");
+				openErrorModal('No ERROR',"이미 존재하는 사업자등록번호입니다.",'#no');
+			}
+			
+			},
+			error:function(xhr,error) {
+				console.err("error" + error);
+			}
+		});
+	});
+	</script>
 </html>

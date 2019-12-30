@@ -97,6 +97,11 @@ public class Menu27Repository {
 		sqlSession.update("menu27.updateBankAccount", bankAccountVo);
 		return map;
 	}
+
+	public CustomerVo existNo(String no) {
+		CustomerVo customerVo = sqlSession.selectOne("menu27.existNo",no);
+		return customerVo;
+	}
 	
 
 }
