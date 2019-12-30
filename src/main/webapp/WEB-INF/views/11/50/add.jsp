@@ -432,10 +432,10 @@
 					</thead>
 						<tbody id="tbody-list">
 						<c:forEach items="${dataResult.datas}" var="vo" varStatus="status">
-							<tr>
+							<tr class="row-select">
 								<td class="center" data-no="${vo.no }">
 									<label class="pos-rel" onclick='event.cancelBubble=true'>
-										<input type="checkbox" class="ace checkboxtable" data-no="${vo.no }" name="checkBox" id="checkboxId"/>
+										<input type="checkbox" class="ace checkboxtable" data-no="${vo.no }" name="checkBox" id="checkboxId" onchange='rowChecked(this)'/>
 										<span class="lbl"></span>
 									</label>
 								</td>
@@ -550,139 +550,15 @@
 		
 		// datepicker 호출
 		$('.date-picker').datepicker().next().on(ace.click_event, function(){ $(this).prev().focus(); });
-		
+	
 		// 리스트에서 row를 선택하면 row의 해당 데이터 form에 추가
 		$("#tbody-list tr").click(function(){ 
 			var tr = $(this);
 			var td = tr.children();
-			
-			$("input[name=no]").val(td.eq(0).attr('data-no'));
-			
-			$("input[name=code]").val(td.eq(1).text()); // 사채코드
-			$("input[name=code]").attr('readonly', true);
-			
-			$("input[name=name]").val(td.eq(2).text()); // 사채명
-			
-			var major='';
-			switch (td.eq(3).text()){
-		    case '국내은행' :
-		    	major='001';
-		        break;
-		    case '저축은행' :
-		    	major='002';
-			    break;
-		    case '신용금고' :
-		    	major='003';
-		        break;
-		    case '새마을금고' :
-		    	major='004';
-		        break;
-		    case '외국계은행' :
-		    	major='005';
-		    	break;
-		    case '증권' :
-		    	major='006';
-		    	break;
-			}
-			$('#majorcode-field-select').val(major).trigger('chosen:updated'); // 차입금대분류  
-			
-			// 차입금액 input 추가 (입력창에 보여지는 부분)
-			$("input[name=textDebtAmount]").val(td.eq(4).text()); // 차입금액
-			var debtHiddenVal = td.eq(4).text(); // 콤마가 붙지 않은 차입금액
-			var debtWithoutComma = removeCommaReturn(td.eq(4).text()); // 콤마가 붙은 차입금액
-			
-			$("input[name=debtAmount]").val(debtWithoutComma);
-			$("input[name=repayBal]").val(td.eq(5).text()); // 상환잔액
-			
-			var repayWay='';
-			switch (td.eq(6).text()){
-		    case '연' :
-		    	repayWay='Y';
-		        break;
-		    case '월' :
-		    	repayWay='M';
-			    break;
-		    case '만기' :
-		    	repayWay='E';
-		        break;
-			}
-			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true); // 상환방법
-			
-			// 차입일자 - 만기일자
-			$("input[name=debtExpDate]").val(td.eq(7).text() + " - " + td.eq(8).text());
-			
-			// 이율
-			// var rate = td.eq(8).text().split('%');
-			$("input[name=intRate]").val(td.eq(9).text());
-			
-			// 이자지급방식
-			var intPayWay='';
-			switch (td.eq(10).text()){
-		    case '연' :
-		    	intPayWay='Y';
-		        break;
-		    case '월' :
-		    	intPayWay='M';
-			    break;
-		    case '해당없음' :
-		    	intPayWay='E';
-		        break;
-			}
-			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
-			
-			$("input[name=mgr]").val(td.eq(11).text()); // 담당자
-			$("input[name=mgrCall]").val(td.eq(12).text()); // 담당자전화번호
-			
-			$("input[name=bankCode]").val(td.eq(13).text()); // 은행코드
-			$("input[name=bankName]").val(td.eq(13).attr('data-bankname')); // 은행명
-			
-			$("input[name=depositNo]").val(td.eq(14).text()); // 계좌
-			$("input[name=depositHost]").val(td.eq(14).attr('data-deposithost')); // 예금주
-			
-			// 위험등급 분류
-			var dangerCode='';
-			switch (td.eq(15).text()){
-		    case '초고위험' :
-		    	dangerCode='RED1-초고위험';
-		        break;
-		    case '고위험' :
-		    	dangerCode='ORANGE2-고위험';
-			    break;
-		    case '중위험' :
-		    	dangerCode='YELLOW3-중위험';
-		        break;
-		    case '저위험' :
-		    	dangerCode='GREEN4-저위험';
-		        break;
-		    case '초저위험' :
-		    	dangerCode='BLUE5-초저위험';
-		        break;
-			}
-			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
-			
-			console.log(td.eq(0).children().children().prop('checked'));
-			
-			if (td.eq(0).children().children().prop('checked') == false) {
-				$(td.eq(0).children().children()).prop('checked', true);
-				$("#tbody-list").find("tr").css("background-color", "inherit");
-				$(this).css("background-color", "#ddd");
-				$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
-				//$("#img-checkcode").show(); // '중복확인' 체크 이미지
+			if(td.eq(0).children().children().prop('checked') == false){
+				formInsertion(this);
 			} else {
-				$('input').not('input:radio[name="repayWay"]').not('input:radio[name="intPayWay"]').val('');
-				$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', false);
-				$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', false);
-				
-				$('#majorcode-field-select').val('').trigger('chosen:updated'); // major code select 선택
-				$('#code').attr('readonly', false); // 사채코드 입력 readonly 해제
-				$('#financialyearId').val(2019);  // 회계연도 2019 설정
-				$('#duplicatecode-checkbtn').val('중복확인'); // 중복확인 check
-
-				$("#tbody-list").find("tr").css("background-color", "inherit");
-				$(this).css("background-color", "#ddd");
-				$(td.eq(0).children().children()).prop('checked', false);
-				//$("#img-checkcode").hide(); // '중복확인' 체크 이미지
-				$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
+				formDeletion(this);
 			}
 		});
 	});
@@ -1073,9 +949,6 @@
 			var intRate = td.eq(9).text().replace('%', ''); // 연이율
 			var intRate12 = td.eq(9).text().replace('%', '') / 12; // 월이율
 			var convertTocommaIntAmount = 0; // 이자금액에 콤마를 추가해서 금액데이터 출력
-			//console.log($("#no").val());
-			//console.log(td.eq(5).text());
-			//console.log(td.eq(10).text());
 				
 			if (n == $("#no").val() && "연" === (td.eq(10).text())) {
 				// 연이자 지급방식
@@ -1225,6 +1098,7 @@
 	    	}
 	    });
 	    
+	    $('#onlyHangulAndNumber').val(''); // 사채명 clear
 	    $("#img-checkcode").hide(); // '중복확인' 체크 이미지
 	    $("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 	    $('#duplicatecode-checkbtn').val('중복확인');
@@ -1436,6 +1310,15 @@
 	          console.error("error : " + error);
 	       }
 	    });
+	}
+	
+	// checkbox를 선택했을 때, table의 row데이터 form input에 추가
+	function rowChecked(thisObj){
+		if (!$(thisObj).is(":checked")) {										//check 해제인 경우
+			formDeletion(thisObj);
+		} else {																//check를 한 경우
+			formInsertion(thisObj);
+		}
 	}
 	
 	//insert Validation
@@ -1696,6 +1579,156 @@
 				]
 			});
 	    }
+	
+		//--------------------------------------------------------------------------------------------------------------------------//
+		// form에 데이터 추가
+		function formInsertion(thisObj){
+			var tr = $(thisObj).closest("tr");
+			var td = tr.children();
+			
+			$(td.eq(0).children().children()).prop('checked',true);
+			$("#tbody-list").find("tr").css("background-color", "inherit");
+	        $(tr).css("background-color", "#ddd");
+		
+			$("input[name=no]").val(td.eq(0).attr('data-no'));
+			
+			$("input[name=code]").val(td.eq(1).text()); // 사채코드
+			$("input[name=code]").attr('readonly', true);
+			
+			$("#onlyHangulAndNumber").val(td.eq(2).text()); // 사채명
+			
+			var major='';
+			switch (td.eq(3).text()){
+		    case '국내은행' :
+		    	major='001';
+		        break;
+		    case '저축은행' :
+		    	major='002';
+			    break;
+		    case '신용금고' :
+		    	major='003';
+		        break;
+		    case '새마을금고' :
+		    	major='004';
+		        break;
+		    case '외국계은행' :
+		    	major='005';
+		    	break;
+		    case '증권' :
+		    	major='006';
+		    	break;
+			}
+			$('#majorcode-field-select').val(major).trigger('chosen:updated'); // 차입금대분류  
+			
+			// 차입금액 input 추가 (입력창에 보여지는 부분)
+			$("input[name=textDebtAmount]").val(td.eq(4).text()); // 차입금액
+			var debtHiddenVal = td.eq(4).text(); // 콤마가 붙지 않은 차입금액
+			var debtWithoutComma = removeCommaReturn(td.eq(4).text()); // 콤마가 붙은 차입금액
+			
+			$("input[name=debtAmount]").val(debtWithoutComma);
+			$("input[name=repayBal]").val(td.eq(5).text()); // 상환잔액
+			
+			var repayWay='';
+			switch (td.eq(6).text()){
+		    case '연' :
+		    	repayWay='Y';
+		        break;
+		    case '월' :
+		    	repayWay='M';
+			    break;
+		    case '만기' :
+		    	repayWay='E';
+		        break;
+			}
+			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', true); // 상환방법
+			
+			// 차입일자 - 만기일자
+			$("input[name=debtExpDate]").val(td.eq(7).text() + " - " + td.eq(8).text());
+			
+			// 이율
+			$("input[name=intRate]").val(td.eq(9).text());
+			
+			// 이자지급방식
+			var intPayWay='';
+			switch (td.eq(10).text()){
+		    case '연' :
+		    	intPayWay='Y';
+		        break;
+		    case '월' :
+		    	intPayWay='M';
+			    break;
+		    case '해당없음' :
+		    	intPayWay='E';
+		        break;
+			}
+			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', true);
+			
+			$("input[name=mgr]").val(td.eq(11).text()); // 담당자
+			$("input[name=mgrCall]").val(td.eq(12).text()); // 담당자전화번호
+			
+			$("input[name=bankCode]").val(td.eq(13).text()); // 은행코드
+			$("input[name=bankName]").val(td.eq(13).attr('data-bankname')); // 은행명
+			
+			$("input[name=depositNo]").val(td.eq(14).text()); // 계좌
+			$("input[name=depositHost]").val(td.eq(14).attr('data-deposithost')); // 예금주
+			
+			// 위험등급 분류
+			var dangerCode='';
+			switch (td.eq(15).text()){
+		    case '초고위험' :
+		    	dangerCode='RED1-초고위험';
+		        break;
+		    case '고위험' :
+		    	dangerCode='ORANGE2-고위험';
+			    break;
+		    case '중위험' :
+		    	dangerCode='YELLOW3-중위험';
+		        break;
+		    case '저위험' :
+		    	dangerCode='GREEN4-저위험';
+		        break;
+		    case '초저위험' :
+		    	dangerCode='BLUE5-초저위험';
+		        break;
+			}
+			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
+			$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
+		}
+		
+		function formDeletion(thisObj){
+			var tr = $(thisObj).closest("tr");
+			var td = tr.children();
+			var repayWay = '';
+			var intPayWay = '';
+			
+			$('input').not('input:radio[name="repayWay"]').not('input:radio[name="intPayWay"]').val('');
+			$('#onlyHangulAndNumber').val('');
+			$('#majorcode-field-select').val('').trigger('chosen:updated'); // major code select 선택
+			$('#dangercode-field-select').val('').trigger('chosen:updated'); // danger code select 선택
+			$('#code').attr('readonly', false); // 사채코드 입력 readonly 해제
+			$('#financialyearId').val(2019);  // 회계연도 2019 설정
+			$('#duplicatecode-checkbtn').val('중복확인'); // 중복확인 check
+			$("#tbody-list").find("tr").css("background-color", "inherit");
+			$(tr).css("background-color", "");
+			$(td.eq(0).children().children()).prop('checked', false);
+			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', false);
+			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', false);				
+			
+			$('input[name=intPayWay]').each(function(index,	item){
+				if($(item).prop('checked') == true){
+					$(item).prop('checked',false);
+				}	
+			});
+			$('input[name=repayWay]').each(function(index,	item){
+				if($(item).prop('checked') == true){
+					$(item).prop('checked',false);
+				}	
+			});
+				
+			$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
+		}
+		//--------------------------------------------------------------------------------------------------------------------------//
+
 </script>
 </body>
 </html>
