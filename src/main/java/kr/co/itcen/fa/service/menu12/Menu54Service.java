@@ -47,6 +47,7 @@ public class Menu54Service {
 		DataResult<SellTaxbillVo> dataResult = new DataResult<>();
 		
 		int totalCount = menu54Repository.taxbillAllCount(); // 전체 목록에 대한 갯수를 가져오는 기능 !!!
+		System.out.println("조회기능 없는 리스트 :" + totalCount);
 		
 		PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(paginationUtil);

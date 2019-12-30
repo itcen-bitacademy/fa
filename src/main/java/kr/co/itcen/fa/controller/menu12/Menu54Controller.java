@@ -45,6 +45,8 @@ public class Menu54Controller {
 		
 		System.out.println("-----" + ipage + "현재 페이지");
 		
+		model.addAttribute("order", null);
+		
 		// 거래처에 대한 리스트를 출력해주는 기능
 		model.addAttribute("customerlist", menu54Service.salesCustomer());
 		
@@ -64,7 +66,8 @@ public class Menu54Controller {
 	@NoAuth
 	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}"}, method=RequestMethod.POST)
 	public String list(TaxbillSearchVo tvo, Model model, 
-			@PathVariable(name="page", required=false)String page, 
+			@PathVariable(name="page", required=false)String page,
+			@RequestParam(name="orderData")String orderData,
 			@RequestParam(name="viewCount") int viewCount) {
 		
 		System.out.println("검색기능");
@@ -75,9 +78,13 @@ public class Menu54Controller {
 			ipage = Integer.parseInt(page);
 		}
 		
-		System.out.println("-----" + ipage + "현재 페이지");
-		
 		tvo.setSearchFlag(true); // 검색 여부 플래그
+		
+		System.out.println("-----" + ipage + "현재 페이지");
+		System.out.println("-----" + orderData + "정렬순서");
+		System.out.println("-----" + tvo.getStartDate() + "시작일");
+		System.out.println("-----" + tvo.getEndDate() + "종료일");
+		
 		
 		// 거래처에 대한 리스트를 출력해주는 기능
 		model.addAttribute("customerlist", menu54Service.salesCustomer());
@@ -87,6 +94,8 @@ public class Menu54Controller {
 				
 		// 세금계산서에 대한 리스트를 출력해주는 기능
 		model.addAttribute("taxlist", menu54Service.taxbillList());
+		
+		model.addAttribute("order", tvo.getOrderData());
 		
 		model.addAttribute("resultlist", menu54Service.taxbillSearch(tvo, ipage, viewCount));
 		
