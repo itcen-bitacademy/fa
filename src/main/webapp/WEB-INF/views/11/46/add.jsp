@@ -139,6 +139,22 @@ input::-webkit-inner-spin-button {
 .input-num{text-align:right;}
 
 .label-name{font-size: 14px}
+
+.add-on {
+    display: inline-block;
+    width: auto;
+    height: 20px;
+    min-width: 16px;
+    padding: 4px 5px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    vertical-align: top;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -342,6 +358,7 @@ input::-webkit-inner-spin-button {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
 
 <script>
@@ -376,14 +393,13 @@ $(function() {						//onload함수
 	$("#dialog46").dialog({
 		autoOpen : false
 	});
+	
 });
 
 //Page ready시 table & paging list Rendering
 $(document).ready(function(){
 	getList();
 });
-
-
 
 $("#debt-amount-comma").on("focus", function() {
     var x = $(this).val();
@@ -405,6 +421,7 @@ $("#debt-amount-comma").on("focus", function() {
     $(this).val($(this).val().replace(/[^0-9]/g,""));
     var inputForm = $("#input-form")[0];
     inputForm.debtAmount.value = $(this).val();
+    $(this).val(comma($(this).val()));
 });
 
 $("#int-rate").on("keyup",function(){
@@ -677,7 +694,7 @@ function openRepayDialog(){
 	var repayForm = $("#repay-form")[0];
 	var inputForm = $("#input-form")[0];			//선택된 차입금 form
 	var vo = JSON.parse(inputForm.vo.value);
-k	initRepayDialog(repayForm, vo);
+	initRepayDialog(repayForm, vo);
 	
 	$("#dialog46").dialog('open');
 	$("#dialog46").dialog({
@@ -717,26 +734,59 @@ function renderRepayDialog(){
 								"<input type='text' name='debtCode' readonly= 'readonly'/>" +
 							"</section>" +
 							"<section class='repay-input-wrapper'>" +
-								"<label>납입금</label>" +
-								"<input type='text' name='payPrinc' id= 'repay_bal'/>" +
+								"<label>납입일자</label>" +
+								"<section>" +
+									"<input class='cl-date-picker' type='text' name='payDate' id='id-date-picker-1'  data-date-format='yyyy-mm-dd'/>" +
+									"<span class='add-on'>" +
+									"<i class='icon-calendar'></i>" +
+								"</section>" + 
+							"</section>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>납입원금</label>" +
+								"<input type='text' id='pay-princ-comma' name='payPrincComma'/>" +
+								"<input type='hidden' name='payPrinc'/>" +
 							"</section>" +
 							"<section class='repay-input-wrapper'>" +
 								"<label>이자금액</label>" +
 								"<input type='text' name='intAmount' readonly= 'readonly'/>" +
 							"</section>" +
 							"<section class='repay-input-wrapper'>" +
-								"<label>납입일자</label>" +
-								"<section>" +
-									"<input class='date-picker' type='text' name='payDate' id='id-date-picker-1'  data-date-format='yyyy-mm-dd'/>" +
-									"<span class='add-on'>" +
-									"<i class='icon-calendar'></i>" +
-								"</section>" + 
-							"</section>" +
-							"<section class='repay-input-wrapper'>" +
-								"<label>계좌번호</label>" +
-								"<input type='text' name='depositNo' readonly= 'readonly'/>" +
+								"<label>총액</label>" +
+								"<input type='text' name='totalPayPrinc' readonly='readonly'/>" +
 							"</section>" + 
 						"</form>");
+	
+	//날짜 event추가
+	$('.cl-date-picker').datepicker({
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	
+	//납입금 추가
+	$("#pay-princ-comma").on("focus", function() {
+	    var x = $(this).val();
+	    x = unComma(x);
+	    $(this).val(x);
+	}).on("focusout", function() {
+	    var x = $(this).val();
+	    
+	    var repayForm = $("#repay-form")[0];
+	    repayForm.payPrinc.value = x;							//콤마를 안 붙힌 숫자의 값을 저장한다.
+	    if(x && x.length > 0) {								
+	        if(!$.isNumeric(x)) {
+	            x = x.replace(/[^0-9]/g,"");
+	        }
+	        x = comma(x);
+	        $(this).val(x);
+	    }
+	}).on("keyup", function() {
+	    $(this).val($(this).val().replace(/[^0-9]/g,""));
+	    var repayForm = $("#repay-form")[0];
+	    repayForm.payPrinc.value = $(this).val();
+	    $(this).val(comma($(this).val()));
+	    repayForm.totalPayPrinc.value = comma(parseInt(repayForm.intAmount.value) + parseInt(repayForm.payPrinc.value));
+	});
 }
 
 function initRepayDialog(repayForm, vo){
@@ -746,7 +796,7 @@ function initRepayDialog(repayForm, vo){
 	repayForm.code.value = vo.code;
 	repayForm.debtCode.value = vo.code;
 	repayForm.intAmount.value = (vo.repayBal * vo.intRate / 100);	
-	repayForm.depositNo.value = vo.depositNo;
+	repayForm.totalPayPrinc.value = repayForm.intAmount.value;
 	console.log("------------------------------------renderRepayDialog() End-----------------------------------");
 }
 
