@@ -35,7 +35,9 @@
 				   total_supply_value as totalSupplyValue,
 				   total_tax_value as totalTaxValue,
 				   tax_type as taxType,
-				   delete_flag as deleteFlag
+				   delete_flag as deleteFlag,
+				   insert_userid as insertUserid,
+				   insert_day as insertDay
 			  from tb_buy_taxbill
 			 where no = #{values }
 		]]>
@@ -118,6 +120,7 @@
 		 where no = #{values }
 		 ]]>
 	</delete>
+	
 	<delete id="taxbillItemsUpdateDelete" parameterType="String">
 		<![CDATA[
 		delete 
@@ -147,13 +150,4 @@
 		</selectKey>
 	</insert>
 	
-	<!-- update할 때 기존의 insertId와 insertDay를 가져오는 select -->
-	<select id="getInsertInfor" parameterType="String" resultType="buytaxbillvo">
-		<![CDATA[
-		select insert_userid as insertUserid,
-			   insert_day as insertDay
-		  from tb_buy_taxbill
-		 where no = #{values }
-		]]>
-	</select>
 </mapper>
