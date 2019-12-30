@@ -66,7 +66,10 @@
 		});
 		$("#btn-reset").click(function(){
 			$("#no").attr("readonly",false);
+			$("#corporationNo").attr("readonly",false);
 			$("#btn-check-no").show();
+			$("#img-checkno").hide();
+			
 		});
 		
 		$("#inputform").submit(function(event) {
@@ -1358,16 +1361,19 @@
 				nochecked = true;
 				$("#btn-check-no").hide();
 				$("#img-checkno").show();
+				$("#no").attr("readonly",true);
 				setTimeout(function(){
 					openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
 					$("#deleteok").click(function(){
 						var customerno = document.getElementById("no").value;
 						$("input[name=corporationNo]").val(customerno);
 						openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+						$("#corporationNo").attr("readonly",true);
 						return;
 					});
 					$("#deletecancel").click(function(){
 						openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+						$("#corporationNo").attr("readonly",false);
 						return;
 					});
 					
