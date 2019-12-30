@@ -11,30 +11,27 @@
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <style>
 /* 스크롤 깨짐 css s */
-html, body {
+  	html,body{
+  	overflow-x:hidden;
+	height:100%;
+}
+.main-container{
+	height:calc(100% - 45px);
 	overflow-x: hidden;
-	height: 100%;
 }
-
-.main-container {
-	height: calc(100% - 45px);
-	overflow-x: hidden;
+.main-content{
+	overflow:auto;
 }
-
-.main-content {
-	overflow: auto;
+.page-content{
+	min-width:1280px;
 }
-
-.page-content {
-	min-width: 1280px;
-}
-
-@media screen and (max-width: 930px) {
-	.main-container {
-		height: calc(100% - 84px);
+@media screen and (max-width: 920px) {
+	.main-container{
+		height:calc(100% - 84px);
 	}
 }
 /* 스크롤 깨짐 css e */
+
 #sample-table-1 tr td {
 	padding: 0;
 }
@@ -52,13 +49,14 @@ html, body {
 }
 </style>
 </head>
-<body class="skin-3" style="min-width: 1920px"
+<body class="skin-3"
 	onload="startFunctions();">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
+			
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입세금계산서관리</h1>
 					<a class="btn btn-link pull-right"
@@ -347,7 +345,7 @@ html, body {
 				</form>
 			</div>
 			<!-- PAGE CONTENT ENDS -->
-
+			
 		</div>
 		<!-- /.span -->
 	</div>

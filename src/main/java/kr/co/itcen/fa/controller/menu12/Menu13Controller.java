@@ -76,7 +76,7 @@ public class Menu13Controller {
 		System.out.println("매출 입력" + salesVo);
 		
 		salesVo.setInsertUserid(authUser.getId()); //세션 ID vo set
-		
+		System.out.println(salesVo.getUnit());
 		ArrayList<SalesVo> list = arrayData(salesVo, quantity, itemCode, itemName, supplyValue, taxValue, number);
 		
 		//마감 여부 체크
