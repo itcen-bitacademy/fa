@@ -235,5 +235,13 @@
       set deposit_no = #{depositNo}
       where deposit_no = #{depositOld}
    </update>
+   
+   <select id="existNo" parameterType="string" resultType="1customervo">
+   		select substr(no,2) as no,
+   			   delete_flag as deleteFlag
+   		from tb_customer
+   		where substr(no,2) like #{_parameter}
+			   and assets_flag!='e'
+   </select>
 	
 </mapper>

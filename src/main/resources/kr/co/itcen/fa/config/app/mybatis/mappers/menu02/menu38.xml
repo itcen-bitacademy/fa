@@ -60,9 +60,15 @@
 	<select id="getMatchTaxbillItemsList"
 		resultType="buytaxbillitems">
 		<![CDATA[
-		select *
+		select no,
+			   taxbill_no as taxbillNo,
+			   date_format(purchase_date, '%Y-%m-%d') as purchaseDate,
+			   item_name as itemName,
+			   amount,
+			   supply_value as supplyValue,
+			   tax_value as taxValue,
+			   delete_flag as deleteFlag
 		  from tb_buy_taxbill_items
-	  
 		]]>
 	</select>
 
