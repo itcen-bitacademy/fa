@@ -800,7 +800,7 @@ function renderRepayDialog(){
 	
 	//open
 	openRepayDialog();
-	console.log("------------------------------------renderRepayDialog() End----------------------------------");
+	console.log("------------------------------------renderRepayDialog() End-----------------------------------");
 }
 
 function openAccountDialog(){
