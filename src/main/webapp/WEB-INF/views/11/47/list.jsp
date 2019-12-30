@@ -180,7 +180,7 @@ div > .label-radio{
 								<label for="bankName" class="label-name">은행명</label>
 								<div>
 									<input type="text" name="bankName" id="bankName">
-									<input type="button" value="조회" onclick="search()">
+									<input type="button" class="btn btn-primary btn-small mybtn" value="조회" onclick="search()">
 								</div>
 							</div>
 						</div>
