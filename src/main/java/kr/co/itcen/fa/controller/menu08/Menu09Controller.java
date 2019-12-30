@@ -66,8 +66,6 @@ public class Menu09Controller {
 						@RequestParam(value="id", required=false, defaultValue = "") String id,
 						@RequestParam(value="page", required=false, defaultValue = "1") int page) {
 		
-
-		
 		menu09Service.test();
 		/*
 		 *   JSP
@@ -125,13 +123,16 @@ public class Menu09Controller {
 
 		landVo.setId("c"+landVo.getId());
 		landVo.setInsertUserid(user.getId());
-
+		
+		System.out.println("들어옵니다.");
 		//마감 여부 체크
 		if(!menu19Service.checkClosingDate(user, landVo.getPayDate())) {
 			model.addAttribute("closingDate", true);
+			System.out.println("마감되었습니다.");
 			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		} else {
 			menu09Service.insertLand(landVo);
+			System.out.println("insert 됩니다.");
 			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		}
 	}
