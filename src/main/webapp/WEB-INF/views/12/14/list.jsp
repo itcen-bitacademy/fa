@@ -16,6 +16,7 @@
     <style>
    		/* 스크롤 깨짐 css s */
     	html,body{
+    		overflow-x:hidden;
 			height:100%;
 		}
 		.main-container{
@@ -27,6 +28,11 @@
 		}
 		.page-content{
 			min-width:1280px;
+		}
+		@media screen and (max-width: 920px) {
+			.main-container{
+				height:calc(100% - 84px);
+			}
 		}
 		/* 스크롤 깨짐 css e */
 		

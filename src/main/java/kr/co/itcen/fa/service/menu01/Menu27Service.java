@@ -96,4 +96,9 @@ public class Menu27Service {
 		return map;
 	}
 
+
+	public CustomerVo existNo(String no) {
+		return menu27Repository.existNo(no);
+	}
+
 }

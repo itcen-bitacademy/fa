@@ -23,10 +23,11 @@ public class SalesVo {
 		this.empManager = vo.getEmpManager();
 		this.releaseDate = vo.getReleaseDate();
 		this.taxbillNo = vo.getTaxbillNo();
-		this.totalPrice = vo.getTotalPrice();
+		this.totalPrice = vo.getTotalPrice() * vo.getUnit();
 		this.insertUserid = vo.getInsertUserid();
 		this.insertDay = vo.getInsertDay();
 		this.updateUserid = vo.getUpdateUserid();
+		this.unit = vo.getUnit();
 	}
 	
 	private Long idx; // 번호
@@ -55,7 +56,15 @@ public class SalesVo {
 	private String insertDay; // 입력일
 	private String updateUserid; // 수정자
 	private String updateDay; // 수정일
+	private int unit = 1; // 금액단위
 	
+	public int getUnit() {
+		return unit;
+	}
+	public void setUnit(int unit) {
+		this.unit = unit;
+	}
+
 	// 3자리 콤마 
 	public Long getTotalPrice() {
 		return totalPrice;
@@ -63,17 +72,37 @@ public class SalesVo {
 	public void setTotalPrice(String totalPrice) {
 		this.totalPrice = Long.parseLong(totalPrice.replaceAll(",", ""));
 	}
-	//
-	
-	
-	public String getCustomerPhone() {
-		return customerPhone;
+
+	public Long getTaxValue() {
+		return taxValue;
 	}
+	public void setTaxValue(Long taxValue) {
+		this.taxValue = taxValue * unit;
+	}
+	
+	public Long getSupplyValue() {
+		return supplyValue;
+	}
+	public void setSupplyValue(Long supplyValue) {
+		this.supplyValue = supplyValue * unit;
+	}
+	
+	public Long getSellPrice() {
+		return sellPrice;
+	}
+	public void setSellPrice(Long sellPrice) {
+		this.sellPrice = sellPrice * unit;
+	}
+	//
+
 	public int getStock() {
 		return stock;
 	}
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+	public String getCustomerPhone() {
+		return customerPhone;
 	}
 	public void setCustomerPhone(String customerPhone) {
 		this.customerPhone = customerPhone;
@@ -150,12 +179,6 @@ public class SalesVo {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public Long getSupplyValue() {
-		return supplyValue;
-	}
-	public void setSupplyValue(Long supplyValue) {
-		this.supplyValue = supplyValue;
-	}
 	public String getTaxType() {
 		return taxType;
 	}
@@ -180,20 +203,8 @@ public class SalesVo {
 	public void setDeleteFlag(String deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
-	public Long getSellPrice() {
-		return sellPrice;
-	}
-	public void setSellPrice(Long sellPrice) {
-		this.sellPrice = sellPrice;
-	}
 	public String getInsertUserid() {
 		return insertUserid;
-	}
-	public Long getTaxValue() {
-		return taxValue;
-	}
-	public void setTaxValue(Long taxValue) {
-		this.taxValue = taxValue;
 	}
 	public void setInsertUserid(String insertUserid) {
 		this.insertUserid = insertUserid;

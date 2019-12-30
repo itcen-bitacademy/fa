@@ -64,9 +64,9 @@
                b.bank_code as bankCode,
                b.bank_name as bankName,
 		       c.insert_userid as insertUserid,
-               date_format(c.insert_day, "%Y-%m-%d %T") as insertDay,
+               date_format(c.insert_day, "%Y-%m-%d") as insertDay,
 		       c.update_userid as updateUserid,
-               date_format(c.update_day, "%Y-%m-%d %T") as updateDay
+               date_format(c.update_day, "%Y-%m-%d") as updateDay
 		from tb_customer c
 		 		left join tb_bank_account b
         		on c.deposit_no = b.deposit_no
@@ -160,9 +160,9 @@
                b.bank_code as bankCode,
                b.bank_name as bankName,
 		       c.insert_userid as insertUserid,
-               date_format(c.insert_day, "%Y-%m-%d %T") as insertDay,
+               date_format(c.insert_day, "%Y-%m-%d") as insertDay,
 		       c.update_userid as updateUserid,
-               date_format(c.update_day, "%Y-%m-%d %T") as updateDay
+               date_format(c.update_day, "%Y-%m-%d") as updateDay
 		from tb_customer c
 		 		left join tb_bank_account b
         		on c.deposit_no = b.deposit_no
@@ -235,5 +235,13 @@
       set deposit_no = #{depositNo}
       where deposit_no = #{depositOld}
    </update>
+   
+   <select id="existNo" parameterType="string" resultType="1customervo">
+   		select substr(no,2) as no,
+   			   delete_flag as deleteFlag
+   		from tb_customer
+   		where substr(no,2) like #{_parameter}
+			   and assets_flag!='e'
+   </select>
 	
 </mapper>

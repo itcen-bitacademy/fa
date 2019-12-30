@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
     <c:import url="/WEB-INF/views/common/head.jsp" />
     <style>
+    
 		/* 스크롤 깨짐 css s */
     	html,body{
+    		overflow-x:hidden;
 			height:100%;
 		}
 		.main-container{
@@ -24,6 +26,11 @@
 		}
 		.page-content{
 			min-width:1280px;
+		}
+		@media screen and (max-width: 920px) {
+			.main-container{
+				height:calc(100% - 84px);
+			}
 		}
 		/* 스크롤 깨짐 css e */
 		
@@ -132,25 +139,29 @@
   					this.addSupplyValue(); // 수량 변동시 공급가액 다시 계산
         		},
         		addSupplyValue: function(e){
+        			if(e!=null){
+        				e.value = this.setComma(e.value);
+        			}
 					var sum = 0;
 					for(var i=1; i<=$("#item-table tr").length-1; i++){ // 전체 row 돌며 총 합 계산
 						sum = sum + 
 								Number($("#quantity"+i).val()) *
-								Number($("#supplyValue"+i).val()); // 각 row의 수량과 공급가액 곱
-						$("#taxValue"+i).val(Math.round($("#supplyValue"+i).val()*0.1));
-						$("#totalSupplyValue").val(this.setComma(sum));
+								Number(this.removeComma($("#supplyValue"+i).val())); // 각 row의 수량과 공급가액 곱
+						var tax = Math.round(this.removeComma($("#supplyValue"+i).val())*0.1);
+						var newTax = this.setComma(tax.toString());
+						$("#taxValue"+i).val(newTax)
+						$("#totalSupplyValue").val(this.setComma(sum.toString()));
 					}
 					this.addTaxValue(); // 공급가액 변동시 부가세 다시계산
 					this.totalPrice();
-					
 				},
 				addTaxValue: function(e){
         			var sum = 0;
         			for(var i=1; i<=$("#item-table tr").length-1; i++){ // 전체 row 돌며 총 합 계산
         				sum = sum + 
         						Number($("#quantity"+i).val()) *
-        						Number($("#taxValue"+i).val()); // 각 row의 수량과 부가세 곱
-        				$("#totaltaxValue").val(this.setComma(sum));
+        						Number(this.removeComma($("#taxValue"+i).val())); // 각 row의 수량과 부가세 곱
+        				$("#totaltaxValue").val(this.setComma(sum.toString()));
         			}
         			this.totalPrice(); // 변동시 수량 > 공급가액 > 부가세 순으로 계산 후 합계금액
         		},
@@ -158,9 +169,10 @@
         			var tax = this.removeComma($("#totaltaxValue").val()); 
         			var supply = this.removeComma($("#totalSupplyValue").val());
         			var sum = Number(tax)+Number(supply); // 콤마 제거 후 연산
-        			$("#totalPrice").val(this.setComma(sum)); // 콤마 다시 세팅
+        			$("#totalPrice").val(this.setComma(sum.toString())); // 콤마 다시 세팅
         		},
         		setComma: function(x) { // 콤마 찍기
+        			x = this.removeComma(x);
         		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 콤마 정규식
         		},
         		removeComma: function(x){ // 콤마 제거
@@ -242,6 +254,19 @@
         	var code = $("#checkSalesNo").val();
         	var url = "${pageContext.request.contextPath }/12/13/update/"+code;
         	if($("#flag").val()=="true"&&code!=""){ // 조회 여부 및 매출번호 있는지 확인
+        		if(!$("#salesNo").val()==$("#checkSalesNo").val()) return;
+        		if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
+        		
+	   				for(var i=1; i<=$("#item-table tr").length-1; i++){
+	   					if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
+	   					if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
+	   					if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
+	   					if(!valid.numberCheck("taxValue"+i, "부가세")) return;
+	   					
+	   					$("#supplyValue"+i).val(sumData.removeComma($("#supplyValue"+i).val()));
+	   					$("#taxValue"+i).val(sumData.removeComma($("#taxValue"+i).val()));
+	   				}
+        		
         		$("#insert-form").attr("action",url).submit(); 
         	}
         }
@@ -285,6 +310,9 @@
    					if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
    					if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
    					if(!valid.numberCheck("taxValue"+i, "부가세")) return;
+   					
+   					$("#supplyValue"+i).val(sumData.removeComma($("#supplyValue"+i).val()));
+   					$("#taxValue"+i).val(sumData.removeComma($("#taxValue"+i).val()));
    				}
    				$("#insert-form").submit(); 
    			} else {
@@ -306,7 +334,7 @@
        			
        		}, 
 			numberCheck: function(id, msg){  // 숫자 체크
-       			if(!$.isNumeric($("#"+id).val())){        	
+       			if(!$.isNumeric(sumData.removeComma($("#"+id).val()))){        	
        				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
        				$("#"+id).focus();
        				return false;
@@ -483,6 +511,12 @@
                             <div class="btn-group">
                                 <button class="btn btn-small" type="button" onclick="delete_row();">행삭제</button>
                             </div>
+                            <select class="" id="unit" name="unit" style="float:right;width:100px;">
+                            	<option value="1" style="display:none"selected>금액단위</option>
+                            	<option value="1"></option>
+                            	<option value="1000">천 원</option>
+                            	<option value="1000000">백만 원</option>
+                           </select>
                         </div>
                     </div>
                     
@@ -517,8 +551,10 @@
                                     </td>
                                     <td><input type="text" id="itemName${sales.number }" name="itemName" placeholder="품목명" value="${sales.itemName }" readonly></td>
                                     <td><input type="number" class="number" id="quantity${sales.number }" name="quantity" placeholder="수량" value="${sales.quantity }" onkeyup="sumData.addQuantity()"></td>
-                                    <td><input type="number" class="number" id="supplyValue${sales.number }" name="supplyValue" placeholder="공급가액" value="${sales.supplyValue }" onkeyup="sumData.addSupplyValue()"></td>
-                                    <td><input type="number" class="number" id="taxValue${sales.number }" name="taxValue" placeholder="부가세" value="${sales.taxValue }" onkeyup="sumData.addTaxValue()"></td>
+                                    <td><input type="text" class="number" id="supplyValue${sales.number }" name="supplyValue" placeholder="공급가액" 
+                                    	value="<fmt:formatNumber value="${sales.supplyValue }" pattern="#,###"></fmt:formatNumber>" onkeyup="sumData.addSupplyValue(this)"></td>
+                                    <td><input type="text" class="number" id="taxValue${sales.number }" name="taxValue" placeholder="부가세" 
+                                    	value="<fmt:formatNumber value="${sales.taxValue }" pattern="#,###"></fmt:formatNumber>" onkeyup="sumData.addTaxValue(this)"></td>
                                 </tr>
                                 </c:forEach>
                             </table>
