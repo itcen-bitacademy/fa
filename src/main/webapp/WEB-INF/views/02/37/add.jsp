@@ -10,6 +10,31 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <style>
+/* 스크롤 깨짐 css s */
+html, body {
+	overflow-x: hidden;
+	height: 100%;
+}
+
+.main-container {
+	height: calc(100% - 45px);
+	overflow-x: hidden;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.page-content {
+	min-width: 1280px;
+}
+
+@media screen and (max-width: 930px) {
+	.main-container {
+		height: calc(100% - 84px);
+	}
+}
+/* 스크롤 깨짐 css e */
 #sample-table-1 tr td {
 	padding: 0;
 }
@@ -181,21 +206,15 @@
 										</c:when>
 										<c:otherwise>
 											<label style="display: inline"> <input name="taxType"
-												type="radio" value="tax" class="ace"> <span
+												type="radio" value="tax" class="ace" checked> <span
 												class="lbl">과세</span>
 											</label>
 											<label style="display: inline"> <input name="taxType"
-												type="radio" value="zero" class="ace" checked> <span
+												type="radio" value="zero" class="ace"> <span
 												class="lbl">영세</span>
 											</label>
 										</c:otherwise>
 									</c:choose>
-								</div>
-								<div class="controls span3">
-									<input style="width: 100%" type="hidden" id="insertUserid"
-										name="insertUserid" value="${getAboutNoData.insertUserid }" />
-									<input style="width: 100%" type="hidden" id="insertDay"
-										name="insertDay" value="${getAboutNoData.insertDay }" />
 								</div>
 							</div>
 						</div>

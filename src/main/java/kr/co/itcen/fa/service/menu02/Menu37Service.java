@@ -78,6 +78,9 @@ public class Menu37Service {
 		menu37Repository.insertUpdatedItem(buyTaxbillItemsVo);
 		
 	}
+	public BuyTaxbillVo getInsertInfor(String originalNo) {
+		return menu37Repository.getInsertInfor(originalNo);
+	}
 	
 
 	

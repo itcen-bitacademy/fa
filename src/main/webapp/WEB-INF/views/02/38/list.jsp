@@ -18,6 +18,31 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <style>
+/* 스크롤 깨짐 css s */
+html, body {
+	overflow-x: hidden;
+	height: 100%;
+}
+
+.main-container {
+	height: calc(100% - 45px);
+	overflow-x: hidden;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.page-content {
+	min-width: 1280px;
+}
+
+@media screen and (max-width: 930px) {
+	.main-container {
+		height: calc(100% - 84px);
+	}
+}
+/* 스크롤 깨짐 css e */
 .table-responsive {
 	width: 100%;
 	height: 100%;
@@ -32,265 +57,6 @@ input:focus {
 	display: none;
 }
 </style>
-<script type="text/javascript">
-	jQuery(function($) {
-		$("#id-date-picker-1").datepicker({
-			showOtherMonths : true,
-			selectOtherMonths : false,
-		});
-	});
-	$(function() {
-		$(".chosen-select").chosen();
-	});
-	$(function() {
-		$("body")
-				.on(
-						"click",
-						".page_go",
-						function(e) {
-							var page_num = $(this).text();
-							var page_group = parseInt((page_num - 1) / 5);
-
-							$
-									.ajax({
-										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
-										type : "get",
-										dataType : "json",
-										data : $("#search-form").serialize()
-												+ "&page_num=" + page_num
-												+ "&page_group=" + page_group,
-										success : function(data) {
-											console.log(data);
-											updateTable(
-													data.pagebuyTaxbillList,
-													data.customerList,
-													data.itemsList, page_num);
-											updatePagination(
-													data.buyTaxbillListAll,
-													data.buyTaxbillList,
-													page_num, page_group);
-										},
-										error : function(error) {
-											alert("값을 찾을 수 없습니다.");
-										}
-									});
-						});
-
-		$("body")
-				.on(
-						"click",
-						".page_go_prev",
-						function(e) {
-							var page_num = $("#select_num").text();
-							var page_group = parseInt((page_num - 1) / 5);
-
-							page_group = page_group - 1;
-							page_num = (page_group * 5) + 5;
-
-							$
-									.ajax({
-										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
-										type : "get",
-										dataType : "json",
-										data : $("#search-form").serialize()
-												+ "&page_num=" + page_num
-												+ "&page_group=" + page_group,
-										success : function(data) {
-											console.log(data);
-											updateTable(
-													data.pagebuyTaxbillList,
-													data.customerList,
-													data.itemsList, page_num);
-											updatePagination(
-													data.buyTaxbillListAll,
-													data.buyTaxbillList,
-													page_num, page_group);
-										},
-										error : function(error) {
-											alert("찾을 수 없는 품목입니다.");
-										}
-									});
-						});
-
-		$("body")
-				.on(
-						"click",
-						".page_go_next",
-						function(e) {
-							var page_num = $("#select_num").text();
-							var page_group = parseInt((page_num - 1) / 5);
-
-							page_group = page_group + 1;
-							page_num = (page_group * 5) + 1;
-
-							$
-									.ajax({
-										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
-										type : "get",
-										dataType : "json",
-										data : $("#search-form").serialize()
-												+ "&page_num=" + page_num
-												+ "&page_group=" + page_group,
-										success : function(data) {
-
-											updateTable(
-													data.pagebuyTaxbillList,
-													data.customerList,
-													data.itemsList, page_num);
-											updatePagination(
-													data.buyTaxbillListAll,
-													data.buyTaxbillList,
-													page_num, page_group);
-										},
-										error : function(error) {
-											alert("찾을 수 없는 품목입니다.");
-										}
-									});
-						});
-
-		function updateTable(buyTaxbillList, customerList, itemsList, page_num) {
-			$("#select-purchaseitem-list").remove();
-			$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>")
-			$("#sample-table-1").append($newTbody)
-			var i = 1;
-			if (buyTaxbillList.legnth == 0) {
-
-				$newTbody
-						.append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-
-			} else {
-
-				for ( var taxbill in buyTaxbillList) {
-					var count = 0;
-					var status = 0;
-					for ( var item in itemsList) {
-						if (buyTaxbillList[taxbill].no == itemsList[item].taxbillNo) {
-							count++;
-						}
-					}
-					console.log("count : " + count);
-					for ( var item in itemsList) {
-						if (buyTaxbillList[taxbill].no == itemsList[item].taxbillNo) {
-							$newTr = $('<tr></tr>');
-							$newTbody.append($newTr);
-							if (status == 0) {
-								$newTr.append('<td rowspan="'+count+'">'
-										+ buyTaxbillList[taxbill].no + '</td>'
-										+ '<td rowspan="'+count+'">'
-										+ buyTaxbillList[taxbill].writeDate
-										+ '</td>');
-							}
-
-							for ( var customer in customerList) {
-								if (buyTaxbillList[taxbill].companyName == customerList[customer].name) {
-									if (status == 0) {
-										$newTr
-												.append('<td rowspan="'+count+'">'
-														+ customerList[customer].no
-														+ '</td>'
-														+ '<td rowspan="'+count+'">'
-														+ customerList[customer].name
-														+ '</td>'
-														+ '<td rowspan="'+count+'">'
-														+ customerList[customer].ceo
-														+ '</td>'
-														+ '<td rowspan="'+count+'">'
-														+ customerList[customer].conditions
-														+ '</td>'
-														+ '<td rowspan="'+count+'">'
-														+ customerList[customer].item
-														+ '</td>');
-
-									}
-								}
-							}
-							$newTr.append('<td>' + itemsList[item].purchaseDate
-									+ '</td>' + '<td>'
-									+ itemsList[item].itemName + '</td>'
-									+ '<td>' + itemsList[item].amount + '</td>'
-									+ '<td>' + itemsList[item].supplyValue
-									+ '</td>' + '<td>'
-									+ itemsList[item].taxValue + '</td>');
-							if (status == 0) {
-								$newTr
-										.append('<td rowspan="'+count+'">'
-												+ buyTaxbillList[taxbill].totalSupplyValue
-												+ '</td>'
-												+ '<td rowspan="'+count+'">'
-												+ buyTaxbillList[taxbill].totalTaxValue
-												+ '</td>');
-								if (buyTaxbillList[taxbill].taxType == 'zero') {
-									$newTr.append('<td rowspan="'+count+'">'
-											+ '영세</td>');
-								} else {
-									$newTr.append('<td rowspan="'+count+'">'
-											+ '과세</td>');
-								}
-								$newTr.append('<td rowspan="'+count+'">'
-										+ buyTaxbillList[taxbill].deleteFlag
-										+ '</td>');
-							}
-
-							console.log('status : ' + status);
-							status++;
-						}
-					}
-				}
-			}
-		}
-
-		function updatePagination(buyTaxbillListAll, buyTaxbillList, page_num,
-				page_group) {
-			$("#pagination_list").remove();
-			$newUl = $("<ul id='pagination_list'></ul>")
-			$(".pagination").append($newUl);
-			var page_all_count = parseInt((buyTaxbillListAll.length - 1) / 11) + 1;
-			var list_size = parseInt((buyTaxbillList.length - 1) / 11) + 1;
-			var page_group_max = parseInt((page_all_count - 1) / 5);
-
-			console.log(page_group_max);
-
-			if (0 < page_group) {
-				$newUl
-						.append("<li><a class='page_go_prev' href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
-			} else {
-				$newUl
-						.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
-			}
-
-			for (var li = 1; li <= list_size; li++) {
-				if (page_num == (li + page_group * 5)) {
-					$newUl
-							.append("<li class='active'><a id='select_num' href='javascript:void(0);'>"
-									+ (li + page_group * 5) + "</a></li>");
-				} else {
-					$newUl
-							.append("<li><a class='page_go' href='javascript:void(0);'>"
-									+ (li + page_group * 5) + "</a></li>");
-				}
-			}
-
-			if (page_group_max > page_group) {
-				$newUl
-						.append("<li><a class='page_go_next' href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
-			} else {
-				$newUl
-						.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
-			}
-		}
-
-	});
-</script>
-<script>
-	function search_button() {
-		$("#search-form")
-				.attr(
-						"action",
-						"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list")
-				.submit();
-
-	}
-</script>
 </head>
 <body class="skin-3" style="min-width: 1920px">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -363,7 +129,8 @@ input:focus {
 								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
 								<div class="controls span5">
 									<input style="width: 66%" type="text" id="no" name="no"
-										value="${searchData.no }" placeholder="ex) 20190420-44231234-57644467"
+										value="${searchData.no }"
+										placeholder="ex) 20190420-44231234-57644467"
 										autocomplete="off" />
 								</div>
 								<label class="control-label span1" for="delete-flag">삭&emsp;제&emsp;여&emsp;부</label>
@@ -400,8 +167,9 @@ input:focus {
 								<label class="control-label span1" for="customer-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span5">
 									<select id="company-name" name="companyName"
-										style="width: 68%;" required >
-										<option style="display: none;" value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
+										style="width: 68%;" required>
+										<option style="display: none;"
+											value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
@@ -705,6 +473,284 @@ input:focus {
 				$(this).prev().focus();
 			});
 		});
+	</script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$("#id-date-picker-1").datepicker({
+				showOtherMonths : true,
+				selectOtherMonths : false,
+			});
+		});
+		$(function() {
+			$(".chosen-select").chosen();
+		});
+		$(function() {
+			$("body")
+					.on(
+							"click",
+							".page_go",
+							function(e) {
+								var page_num = $(this).text();
+								var page_group = parseInt((page_num - 1) / 5);
+
+								$
+										.ajax({
+											url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+											type : "get",
+											dataType : "json",
+											data : $("#search-form")
+													.serialize()
+													+ "&page_num="
+													+ page_num
+													+ "&page_group="
+													+ page_group,
+											success : function(data) {
+												console.log(data);
+												updateTable(
+														data.pagebuyTaxbillList,
+														data.customerList,
+														data.itemsList,
+														page_num);
+												updatePagination(
+														data.buyTaxbillListAll,
+														data.buyTaxbillList,
+														page_num, page_group);
+											},
+											error : function(error) {
+												alert("값을 찾을 수 없습니다.");
+											}
+										});
+							});
+
+			$("body")
+					.on(
+							"click",
+							".page_go_prev",
+							function(e) {
+								var page_num = $("#select_num").text();
+								var page_group = parseInt((page_num - 1) / 5);
+
+								page_group = page_group - 1;
+								page_num = (page_group * 5) + 5;
+
+								$
+										.ajax({
+											url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+											type : "get",
+											dataType : "json",
+											data : $("#search-form")
+													.serialize()
+													+ "&page_num="
+													+ page_num
+													+ "&page_group="
+													+ page_group,
+											success : function(data) {
+												console.log(data);
+												updateTable(
+														data.pagebuyTaxbillList,
+														data.customerList,
+														data.itemsList,
+														page_num);
+												updatePagination(
+														data.buyTaxbillListAll,
+														data.buyTaxbillList,
+														page_num, page_group);
+											},
+											error : function(error) {
+												alert("찾을 수 없는 품목입니다.");
+											}
+										});
+							});
+
+			$("body")
+					.on(
+							"click",
+							".page_go_next",
+							function(e) {
+								var page_num = $("#select_num").text();
+								var page_group = parseInt((page_num - 1) / 5);
+
+								page_group = page_group + 1;
+								page_num = (page_group * 5) + 1;
+
+								$
+										.ajax({
+											url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+											type : "get",
+											dataType : "json",
+											data : $("#search-form")
+													.serialize()
+													+ "&page_num="
+													+ page_num
+													+ "&page_group="
+													+ page_group,
+											success : function(data) {
+
+												updateTable(
+														data.pagebuyTaxbillList,
+														data.customerList,
+														data.itemsList,
+														page_num);
+												updatePagination(
+														data.buyTaxbillListAll,
+														data.buyTaxbillList,
+														page_num, page_group);
+											},
+											error : function(error) {
+												alert("찾을 수 없는 품목입니다.");
+											}
+										});
+							});
+
+			function updateTable(buyTaxbillList, customerList, itemsList,
+					page_num) {
+				$("#select-purchaseitem-list").remove();
+				$newTbody = $("<tbody id='select-purchaseitem-list'></tbody>")
+				$("#sample-table-1").append($newTbody)
+				var i = 1;
+				if (buyTaxbillList.legnth == 0) {
+
+					$newTbody
+							.append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+
+				} else {
+
+					for ( var taxbill in buyTaxbillList) {
+						var count = 0;
+						var status = 0;
+						for ( var item in itemsList) {
+							if (buyTaxbillList[taxbill].no == itemsList[item].taxbillNo) {
+								count++;
+							}
+						}
+						console.log("count : " + count);
+						for ( var item in itemsList) {
+							if (buyTaxbillList[taxbill].no == itemsList[item].taxbillNo) {
+								$newTr = $('<tr></tr>');
+								$newTbody.append($newTr);
+								if (status == 0) {
+									$newTr.append('<td rowspan="'+count+'">'
+											+ buyTaxbillList[taxbill].no
+											+ '</td>'
+											+ '<td rowspan="'+count+'">'
+											+ buyTaxbillList[taxbill].writeDate
+											+ '</td>');
+								}
+
+								for ( var customer in customerList) {
+									if (buyTaxbillList[taxbill].companyName == customerList[customer].name) {
+										if (status == 0) {
+											$newTr
+													.append('<td rowspan="'+count+'">'
+															+ customerList[customer].no
+															+ '</td>'
+															+ '<td rowspan="'+count+'">'
+															+ customerList[customer].name
+															+ '</td>'
+															+ '<td rowspan="'+count+'">'
+															+ customerList[customer].ceo
+															+ '</td>'
+															+ '<td rowspan="'+count+'">'
+															+ customerList[customer].conditions
+															+ '</td>'
+															+ '<td rowspan="'+count+'">'
+															+ customerList[customer].item
+															+ '</td>');
+
+										}
+									}
+								}
+								$newTr.append('<td>'
+										+ itemsList[item].purchaseDate
+										+ '</td>' + '<td>'
+										+ itemsList[item].itemName + '</td>'
+										+ '<td>' + itemsList[item].amount
+										+ '</td>' + '<td>'
+										+ itemsList[item].supplyValue + '</td>'
+										+ '<td>' + itemsList[item].taxValue
+										+ '</td>');
+								if (status == 0) {
+									$newTr
+											.append('<td rowspan="'+count+'">'
+													+ buyTaxbillList[taxbill].totalSupplyValue
+													+ '</td>'
+													+ '<td rowspan="'+count+'">'
+													+ buyTaxbillList[taxbill].totalTaxValue
+													+ '</td>');
+									if (buyTaxbillList[taxbill].taxType == 'zero') {
+										$newTr
+												.append('<td rowspan="'+count+'">'
+														+ '영세</td>');
+									} else {
+										$newTr
+												.append('<td rowspan="'+count+'">'
+														+ '과세</td>');
+									}
+									$newTr
+											.append('<td rowspan="'+count+'">'
+													+ buyTaxbillList[taxbill].deleteFlag
+													+ '</td>');
+								}
+
+								console.log('status : ' + status);
+								status++;
+							}
+						}
+					}
+				}
+			}
+
+			function updatePagination(buyTaxbillListAll, buyTaxbillList,
+					page_num, page_group) {
+				$("#pagination_list").remove();
+				$newUl = $("<ul id='pagination_list'></ul>")
+				$(".pagination").append($newUl);
+				var page_all_count = parseInt((buyTaxbillListAll.length - 1) / 11) + 1;
+				var list_size = parseInt((buyTaxbillList.length - 1) / 11) + 1;
+				var page_group_max = parseInt((page_all_count - 1) / 5);
+
+				console.log(page_group_max);
+
+				if (0 < page_group) {
+					$newUl
+							.append("<li><a class='page_go_prev' href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+				} else {
+					$newUl
+							.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+				}
+
+				for (var li = 1; li <= list_size; li++) {
+					if (page_num == (li + page_group * 5)) {
+						$newUl
+								.append("<li class='active'><a id='select_num' href='javascript:void(0);'>"
+										+ (li + page_group * 5) + "</a></li>");
+					} else {
+						$newUl
+								.append("<li><a class='page_go' href='javascript:void(0);'>"
+										+ (li + page_group * 5) + "</a></li>");
+					}
+				}
+
+				if (page_group_max > page_group) {
+					$newUl
+							.append("<li><a class='page_go_next' href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+				} else {
+					$newUl
+							.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+				}
+			}
+
+		});
+	</script>
+	<script>
+		function search_button() {
+			$("#search-form")
+					.attr(
+							"action",
+							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list")
+					.submit();
+
+		}
 	</script>
 </body>
 </html>
