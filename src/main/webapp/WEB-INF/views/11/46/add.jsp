@@ -401,15 +401,11 @@ $(document).ready(function(){
 	getList();
 });
 
-$("#debt-amount-comma").on("focus", function() {
-    var x = $(this).val();
-    x = unComma(x);
-    $(this).val(x);
-}).on("focusout", function() {
+$("#debt-amount-comma").on("focusout", function() {
     var x = $(this).val();
     
     var inputForm = $("#input-form")[0];
-    inputForm.debtAmount.value = x;							//콤마를 안 붙힌 숫자의 값을 저장한다.
+    inputForm.debtAmount.value = unComma(x);							//콤마를 안 붙힌 숫자의 값을 저장한다.
     if(x && x.length > 0) {								
         if(!$.isNumeric(x)) {
             x = x.replace(/[^0-9]/g,"");
@@ -420,7 +416,7 @@ $("#debt-amount-comma").on("focus", function() {
 }).on("keyup", function() {
     $(this).val($(this).val().replace(/[^0-9]/g,""));
     var inputForm = $("#input-form")[0];
-    inputForm.debtAmount.value = $(this).val();
+    inputForm.debtAmount.value = unComma($(this).val());
     $(this).val(comma($(this).val()));
 });
 
@@ -766,15 +762,9 @@ function renderRepayDialog(){
 	});
 	
 	//납입금 추가
-	$("#pay-princ-comma").on("focus", function() {
-	    var x = $(this).val();
-	    x = unComma(x);
-	    $(this).val(x);
-	}).on("focusout", function() {
+	$("#pay-princ-comma").on("focusout", function() {
 	    var x = unComma($(this).val());
 	    
-	    var repayForm = $("#repay-form")[0];
-	    repayForm.payPrinc.value = x;							//콤마를 안 붙힌 숫자의 값을 저장한다.
 	    if(x && x.length > 0) {								
 	        if(!$.isNumeric(x)) {
 	            x = x.replace(/[^0-9]/g,"");
@@ -783,12 +773,14 @@ function renderRepayDialog(){
 	    }
 	}).on("keyup", function() {
 	    $(this).val($(this).val().replace(/[^0-9]/g,""));
-	    var repayForm = $("#repay-form")[0];
-	    repayForm.payPrinc.value = unComma($(this).val());
 	    $(this).val(comma($(this).val()));
+	    var repayForm = $("#repay-form")[0];
 	    
-	    repayForm.totalPayPrinc.value = parseInt(repayForm.intAmount.value) + parseInt(repayForm.payPrinc.value);
-	    repayForm.totalPayPrincComma.value= comma(repayForm.totalPayPrinc.value);
+	    var totalPayPrinc = convertComma2Num(repayForm.payPrincComma.value) + convertComma2Num(repayForm.intAmountComma.value);
+	    if(!$.isNumeric(totalPayPrinc))
+	    	totalPayPrinc = repayForm.intAmountComma.value;
+	    
+	    repayForm.totalPayPrincComma.value= comma(totalPayPrinc);
 	});
 }
 
@@ -813,6 +805,10 @@ function repay(repayForm, repayBal){									//상환버튼 클릭시
 		alert("납입원금이 잔액보다 클 수 없습니다");
 		return;
 	}
+	
+	repayForm.intAmount.value = unComma(repayForm.intAmountComma.value);
+	repayForm.payPrinc.value = unComma(repayForm.payPrincComma.value);
+	repayForm.totalPayPrinc.value = unComma(repayForm.totalPayPrincComma.value);
 	
 	var sendData = $(repayForm).serialize();
 	console.log("sendData : " + sendData);
@@ -842,6 +838,10 @@ function repay(repayForm, repayBal){									//상환버튼 클릭시
 			console.error("error : " + error);
 		}
 	});
+}
+
+function convertComma2Num(commaNum){
+	return parseInt(unComma(commaNum));
 }
 
 function openAccountDialog(){
