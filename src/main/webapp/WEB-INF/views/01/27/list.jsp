@@ -80,7 +80,7 @@
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(nochecked==false){
 
-					openErrorModal("CHECK NO DUPLICATE","중복체크는 필수입니다.",'#no');
+					openErrorModal("DUPLICATE CHECK ERROR","사업자등록번호 중복검사는 필수입니다.",'#no');
 					$("#btn-check-no").show();
 					return;
 				}
@@ -575,13 +575,13 @@
 	//사업자등록번호 Valid
 	function noValid(no){
 			if('' === no){
-				errortitle = 'NO ERROR';	
+				errortitle = 'CUSTOMER_NO ERROR';	
 				validationMessage = '사업자등록번호는 반드시 입력해야합니다.';
 				errorfield='#no';
 				return false;
 			}
 			if(no.length<10 || no.length >10){
-				errortitle = 'NO ERROR';
+				errortitle = 'CUSTOMER_NO ERROR';
 				validationMessage = '사업자등록번호는 10자리를 입력하셔야 합니다';
 				errorfield='#no';
 				return false;
@@ -1358,10 +1358,10 @@
 				return;
 			}else if(response.data.deleteFlag == "Y"){
 				$("#no").val("");
-				openErrorModal('No ERROR',"삭제된 사업자등록번호입니다.",'#no');
+				openErrorModal('DELETED CUSTOMER_NO ERROR',"삭제된 사업자등록번호입니다.",'#no');
 			}else{
 				$("#no").val("");
-				openErrorModal('No ERROR',"이미 존재하는 사업자등록번호입니다.",'#no');
+				openErrorModal('DUPLICATED CUSTOMER_NO ERROR',"이미 존재하는 사업자등록번호입니다.",'#no');
 			}
 			
 			},
