@@ -256,6 +256,7 @@
         	if($("#flag").val()=="true"&&code!=""){ // 조회 여부 및 매출번호 있는지 확인
         		if(!$("#salesNo").val()==$("#checkSalesNo").val()) return;
         		if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
+        		
 	   				for(var i=1; i<=$("#item-table tr").length-1; i++){
 	   					if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
 	   					if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
@@ -265,6 +266,7 @@
 	   					$("#supplyValue"+i).val(sumData.removeComma($("#supplyValue"+i).val()));
 	   					$("#taxValue"+i).val(sumData.removeComma($("#taxValue"+i).val()));
 	   				}
+        		
         		$("#insert-form").attr("action",url).submit(); 
         	}
         }
