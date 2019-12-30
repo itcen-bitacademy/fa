@@ -106,6 +106,7 @@
 				    		    this.reset();
 				    		});
 				    		openErrorModal("CREATE SUCCESS","거래처 등록에 성공하였습니다.");
+							$("#btn-check-no").show();
 				    		//alert("거래처 등록이 완료되었습니다."); 
 				    		
 				    		removeTable();
@@ -133,6 +134,7 @@
 				    	if(result.success) {
 							$("#btn-check-no").hide();
 				    		openErrorModal("READ SUCCESS","거래처 조회가 완료되었습니다.");
+							$("#btn-check-no").show();
 				    		//alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#inputform').each(function(){
@@ -164,6 +166,7 @@
 				    	if(result.success) {
 
 							openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
+							$("#btn-check-no").show();
 				    		//alert("거래처 수정이 완료되었습니다."); 
 				    		removeTable();
 				    		
@@ -211,6 +214,7 @@
 					    	if(result.success) {
 					    		//alert("거래처 삭제가 완료되었습니다."); 
 								openErrorModal("DELETE SUCCESS","거래처 삭제가 완료되었습니다.");
+								$("#btn-check-no").show();
 					    		removeTable();
 					    		$('#inputform').each(function(){
 					    		    this.reset();
@@ -1354,17 +1358,21 @@
 				nochecked = true;
 				$("#btn-check-no").hide();
 				$("#img-checkno").show();
-				openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
-				$("#deleteok").click(function(){
-					var customerno = document.getElementById("no").value;
-					$("input[name=corporationNo]").val(customerno);
-					openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
-					return;
-				});
-				$("#deletecancel").click(function(){
-					openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
-					return;
-				});
+				setTimeout(function(){
+					openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
+					$("#deleteok").click(function(){
+						var customerno = document.getElementById("no").value;
+						$("input[name=corporationNo]").val(customerno);
+						openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+						return;
+					});
+					$("#deletecancel").click(function(){
+						openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+						return;
+					});
+					
+				},600);
+				
 				return;
 			}else if(response.data.deleteFlag == "Y"){
 				$("#no").val("");
