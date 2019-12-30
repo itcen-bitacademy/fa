@@ -107,6 +107,7 @@
 				    		});
 				    		openErrorModal("CREATE SUCCESS","거래처 등록에 성공하였습니다.");
 							$("#btn-check-no").show();
+							$("#img-checkno").hide();
 				    		//alert("거래처 등록이 완료되었습니다."); 
 				    		
 				    		removeTable();
@@ -132,7 +133,6 @@
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.success) {
-							$("#btn-check-no").hide();
 				    		openErrorModal("READ SUCCESS","거래처 조회가 완료되었습니다.");
 							$("#btn-check-no").show();
 				    		//alert("거래처 조회가 완료되었습니다."); 
