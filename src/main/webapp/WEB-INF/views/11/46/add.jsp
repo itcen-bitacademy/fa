@@ -748,11 +748,13 @@ function renderRepayDialog(){
 							"</section>" +
 							"<section class='repay-input-wrapper'>" +
 								"<label>이자금액</label>" +
-								"<input type='text' name='intAmount' readonly= 'readonly'/>" +
+								"<input type='text' name='intAmountComma' readonly= 'readonly'/>" +
+								"<input type='hidden' name='intAmount'/>" +
 							"</section>" +
 							"<section class='repay-input-wrapper'>" +
 								"<label>총액</label>" +
-								"<input type='text' name='totalPayPrinc' readonly='readonly'/>" +
+								"<input type='text' name='totalPayPrincComma' readonly='readonly'/>" +
+								"<input type='hidden' name='totalPayPrinc'/>" +
 							"</section>" + 
 						"</form>");
 	
@@ -769,7 +771,7 @@ function renderRepayDialog(){
 	    x = unComma(x);
 	    $(this).val(x);
 	}).on("focusout", function() {
-	    var x = $(this).val();
+	    var x = unComma($(this).val());
 	    
 	    var repayForm = $("#repay-form")[0];
 	    repayForm.payPrinc.value = x;							//콤마를 안 붙힌 숫자의 값을 저장한다.
@@ -777,15 +779,16 @@ function renderRepayDialog(){
 	        if(!$.isNumeric(x)) {
 	            x = x.replace(/[^0-9]/g,"");
 	        }
-	        x = comma(x);
-	        $(this).val(x);
+	        $(this).val(comma(x));
 	    }
 	}).on("keyup", function() {
 	    $(this).val($(this).val().replace(/[^0-9]/g,""));
 	    var repayForm = $("#repay-form")[0];
-	    repayForm.payPrinc.value = $(this).val();
+	    repayForm.payPrinc.value = unComma($(this).val());
 	    $(this).val(comma($(this).val()));
-	    repayForm.totalPayPrinc.value = comma(parseInt(repayForm.intAmount.value) + parseInt(repayForm.payPrinc.value));
+	    
+	    repayForm.totalPayPrinc.value = parseInt(repayForm.intAmount.value) + parseInt(repayForm.payPrinc.value);
+	    repayForm.totalPayPrincComma.value= comma(repayForm.totalPayPrinc.value);
 	});
 }
 
@@ -795,8 +798,10 @@ function initRepayDialog(repayForm, vo){
 	repayForm.debtNo.value = vo.no;
 	repayForm.code.value = vo.code;
 	repayForm.debtCode.value = vo.code;
-	repayForm.intAmount.value = (vo.repayBal * vo.intRate / 100);	
+	repayForm.intAmount.value = (vo.repayBal * vo.intRate / 100);
+	repayForm.intAmountComma.value= comma(repayForm.intAmount.value);
 	repayForm.totalPayPrinc.value = repayForm.intAmount.value;
+	repayForm.totalPayPrincComma.value= comma(repayForm.totalPayPrinc.value);
 	console.log("------------------------------------renderRepayDialog() End-----------------------------------");
 }
 
