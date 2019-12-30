@@ -7,6 +7,7 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .chosen-search {
@@ -93,7 +94,6 @@
 							<div class="control-group">
 									<label class="control-label" for="form-field-1">매 입 번 호</label>
 									<div class="controls">
-										<input type="hidden" id="checkNo" value="${saleslist[0].salesNo }">
 										<input class="input-middle" type="text" id="no" placeholder="" name="no">
 									</div>
 							</div>
@@ -135,14 +135,14 @@
 								<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
 								<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
 								<button class="btn btn-warning btn-small" type="submit" id="update" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
-								<button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button>
+								<!-- <button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button> -->
+								<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;margin-bottom:20px;" onclick="insert();">입력</button>
 								<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
 								<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
 								</div>
 							
 							<input type="hidden" id="rowCnt" name="rowCnt" value="1">
-							<table id="item-table" class="table table-striped table-bordered table-hover">							
-						
+							<table id="item-table" class="table table-striped table-bordered table-hover">
 									<tr>
 										<th class="left">
 											<label>
@@ -175,13 +175,20 @@
 									</select>
 								</td>
 								<td class="left"><input class="input-large" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
-								<td class="left"><input class="input-mini" style="text-align:right;" type="text" id="quantity1" placeholder="" name="quantity" value="0"></td>
-								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="supplyValue1" placeholder="" name="supplyValue" value="0" readonly></td>
-								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="taxValue1" placeholder="" name="taxValue" value="0" readonly ></td>															
+								<td class="left"><input class="input-mini" style="text-align:right;" type="text" id="quantity1" placeholder="" name="quantity" ></td>
+								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="supplyValue1" placeholder="" name="supplyValue" readonly></td>
+								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="taxValue1" placeholder="" name="taxValue" readonly ></td>															
 								</tr>	
 														
 							</table>
 							<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
+							<input type="hidden" value='${prePurchaseDate }' name="prePurchaseDate" id="prePurchaseDate">
+							<input type="hidden" value='${preNo }' name="preNo" id="preNo">
+							<input type="hidden" value='${preNumber }' name="preNumber" id="preNumber">
+							<div id="dialog-confirm" class="hide">
+								<p id="dialog-txt" class="bolder grey">
+								</p>
+							</div>
 							</form>
 						</div><!-- /span -->
 					</div><!-- /row -->
@@ -199,6 +206,7 @@
 <script src="${pageContext.request.contextPath }/assets/ace/js/ace.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+
 	<script>
 		$(function() {
 			$.fn.datepicker.dates['ko'] = {
@@ -251,6 +259,7 @@
         	} 
         }
 		
+		// 행 추가
 		function add_row() {
 			var table = document.getElementById("item-table");
 			 var row = table.insertRow(table.rows.length); // 하단에 추가
@@ -267,9 +276,9 @@
 				      		      		
 									"</select></td>" + 
 				      		        "<td class='left'><input class='input-large' type='text' id='itemName"+cnt+"' name='itemName' placeholder='' readonly value=''></td>" +
-				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='text' id='quantity"+cnt+"' name='quantity' placeholder=''  value='0'></td>" +
-				      		        "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='supplyValue"+cnt+"' name='supplyValue' placeholder='' value='0'readonly></td>" +
-				      			    "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='taxValue"+cnt+"' name='taxValue' placeholder='' value='0'readonly></td>" +
+				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='text' id='quantity"+cnt+"' name='quantity' placeholder=''  ></td>" +
+				      		        "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='supplyValue"+cnt+"' name='supplyValue' placeholder='' readonly></td>" +
+				      			    "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='taxValue"+cnt+"' name='taxValue' placeholder='' readonly></td>" +
 				      		       "</tr>"
 				      	);
 				        
@@ -287,7 +296,8 @@
 	            	table.deleteRow($('input:checkbox[name='+check[i]+']:checked').val());
 	            } 
             }
-        }   */       
+        }   */     
+       // 행 삭제
        function delete_row() {
             var table = document.getElementById('item-table');
             if (table.rows.length < 3) {
@@ -309,7 +319,11 @@
 		                </c:forEach>                
 		        	},
 		        	item : function(selectid){
-		        		var rownum = selectid.substring(selectid.length-1, selectid.length);
+		        		if(selectid.length < 10){
+		        			var rownum = selectid.substring(selectid.length-1, selectid.length);
+		        		} else {
+		        			var rownum = selectid.substring(selectid.length-2, selectid.length);
+		        		}
 		        		
 		        		var code = $("#"+selectid).val();
 		        		<c:forEach items="${itemList }" var="item" varStatus="status">
@@ -338,9 +352,10 @@
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
 		});
 		
-		$("#input").click(function() {
-			 $("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
-		});
+		/* $("#input").click(function() {
+			 //insert();
+			 //$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
+		}); */
 		
 		$("#voucher").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/voucher");
@@ -477,6 +492,79 @@
 				$('#addRow').hide()
 				$('#deleteRow').hide()
 			}
+			
+			function insert(){
+		   		//if($("#salesNo").val()==$("#checkSalesNo").val()){ // 기존 제공된 매출번호를 수정한 경우 체크
+		   			if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
+		   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
+		   			if(!valid.nullCheck("receiptDate", "입고 일자")) return;
+		   			if(!valid.nullCheck("releaseDate", "출고 일자")) return;
+		   			console.log("abcd : " + ($("#item-table tr").length-2));
+		   			for(var i=1; i<=($("#item-table tr").length-2); i++){
+		   				if(!valid.nullCheck("number"+i, "매입 순번")) return;
+		   				if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
+		   				if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
+		   				if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
+		   				if(!valid.numberCheck("taxValue"+i, "부가세")) return;
+		   			}
+		   					
+		   			$("#form1").submit();
+		   			/* } else {
+		   				dialog("매출번호가 수정되어 입력이 불가능합니다.<br>새 매출번호를 생성합니다.", false); 
+		   				createSalesNo();
+		   			} */
+		        	}
+
+			//// 핵심소스
+			var valid = {
+		        		nullCheck: function(id, msg){ // null 체크
+		        			if($("#"+id).val()==""){
+		        				dialog(msg+" 을(를) 입력 해 주세요.");
+		        				return false;
+		        			} else {
+		        				return true;
+		        			}
+		        		},
+						strCheck: function(id){  // 문자열 체크 
+		        			
+		        		}, 
+						numberCheck: function(id, msg){  // 숫자 체크
+							console.log(id);
+		        			if(!$.isNumeric($("#"+id).val())){        	
+		        				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
+		        				$("#"+id).focus();
+		        				return false;
+		        			} else {
+		        				return true;
+		        			}
+		        		}
+		        
+		        }
+
+			 // 핵심소스
+			 // 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+			 function dialog(txt, flag) {
+			        $("#dialog-txt").html(txt);
+			    	var dialog = $( "#dialog-confirm" ).dialog({
+						resizable: false,
+						modal: true,
+						buttons: [
+							{
+								text: "OK",
+								"class" : "btn btn-danger btn-mini",
+								click: function() {
+									if(flag){
+										$( this ).dialog( "close" ); 
+										location.href="${pageContext.request.contextPath }/02/06";
+									} else {
+										$( this ).dialog( "close" ); 
+									}
+								}
+							}
+						]
+					});
+			    }
+			
 	</script>
 </body>
 </html>
