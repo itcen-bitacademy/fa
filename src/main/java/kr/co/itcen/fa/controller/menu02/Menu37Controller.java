@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu02.Menu37Service;
@@ -40,7 +41,7 @@ public class Menu37Controller {
 
 	// 처음 매입세금계산서관리 화면 접속할 때
 	@RequestMapping(value = { "/" + SUBMENU, "/" + SUBMENU + "/add" }, method = RequestMethod.GET)
-	public String add(@ModelAttribute UserVo authUser, Model model) {
+	public String add(Model model) {
 		List<CustomerVo> customerList = menu37Service.customerList();
 		List<BankAccountVo> customerBankList = menu37Service.customerBankList();
 
@@ -51,16 +52,12 @@ public class Menu37Controller {
 
 	// 입력 post
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
-	public String write(HttpServletRequest request, BuyTaxbillVo vo, HttpSession session, Long amount[]) {
+	public String write(@SessionAttribute("authUser") UserVo authUser, HttpServletRequest request, BuyTaxbillVo vo, Long amount[]) {
 		String[] supplyValue = request.getParameterValues("supplyValue");
 		String[] taxValue = request.getParameterValues("taxValue");
 		String[] purchaseDate = request.getParameterValues("purchaseDate");
 		String[] itemName = request.getParameterValues("itemName");
-
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		String insertUserid = authUser.getId();
-		vo.setInsertUserid(insertUserid);
-
+		
 		vo.setTotalSupplyValue(String.join("", vo.getTotalSupplyValue().split(",")));
 		vo.setTotalTaxValue(String.join("", vo.getTotalTaxValue().split(",")));
 		ArrayList<BuyTaxbillItemsVo> list = new ArrayList<BuyTaxbillItemsVo>();
@@ -73,7 +70,7 @@ public class Menu37Controller {
 			buyTaxbillItemsVo.setAmount(amount[i]);
 			buyTaxbillItemsVo.setSupplyValue(String.join("", supplyValue[i].split(",")));
 			buyTaxbillItemsVo.setTaxValue(String.join("", taxValue[i].split(",")));
-			buyTaxbillItemsVo.setInsertUserid(insertUserid);
+			buyTaxbillItemsVo.setInsertUserid(authUser.getId());
 			list.add(buyTaxbillItemsVo);
 		}
 
@@ -105,7 +102,7 @@ public class Menu37Controller {
 
 	// 삭제 post
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
-	public String delete(@ModelAttribute BuyTaxbillVo vo, HttpSession session) {
+	public String delete(BuyTaxbillVo vo) {
 		menu37Service.taxbillDelete(vo.getNo());
 		menu37Service.taxbillItemDelete(vo.getNo());
 		return MAINMENU + "/" + SUBMENU + "/add";
@@ -113,13 +110,11 @@ public class Menu37Controller {
 
 	// 수정 post
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
-	public String update(@RequestParam(name = "originalNo") String originalNo, BuyTaxbillVo vo, HttpSession session,
+	public String update(@RequestParam(name = "originalNo") String originalNo, BuyTaxbillVo vo, @SessionAttribute("authUser") UserVo authUser,
 			String purchaseDate[], String itemName[], Long amount[], String supplyValue[], String taxValue[]) {
 
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		String updateUserid = authUser.getId();
-		vo.setUpdateUserid(updateUserid);
 
+		vo.setUpdateUserid(authUser.getId());
 		vo.setTotalSupplyValue(String.join("", vo.getTotalSupplyValue().split(",")));
 		vo.setTotalTaxValue(String.join("", vo.getTotalTaxValue().split(",")));
 
@@ -144,7 +139,7 @@ public class Menu37Controller {
 			buyTaxbillItemsVo.setTaxValue(String.join("", taxValue[i].split(",")));
 			buyTaxbillItemsVo.setInsertUserid(getinsertInfor.getInsertUserid());
 			buyTaxbillItemsVo.setInsertDay(getinsertInfor.getInsertDay());
-			buyTaxbillItemsVo.setUpdateUserid(updateUserid);
+			buyTaxbillItemsVo.setUpdateUserid(authUser.getId());
 			list.add(buyTaxbillItemsVo);
 		}
 		System.out.println(vo.toString());
