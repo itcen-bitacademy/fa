@@ -16,9 +16,8 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 #dialog-confirm{z-index: 2222!important;}
-/* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal 생성 */
+/* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
 .p-debt-code-input {width: 270px;}
-.p-debt-name-input {width: 420px;}
 
 /* 테이블의 첫 row 모두 padding right */
 .form-horizontal .control-label {text-align: left;}
@@ -35,6 +34,8 @@
 .mgr-call-input {width: 140px; display: inline;}
 
 .mybtn {float: left; margin-right: 10px;}
+
+.textarea{resize: none; width: 282px; height: 84px;}
 </style>
 </head>
 <body class="skin-3">
@@ -77,7 +78,9 @@
 										<td>
 											<label class="control-label">사채명</label>
 										</td>
-										<td colspan="2"><input type="text" id="onlyHangulAndNumber" class="p-debt-name-input" name="name" placeholder="육하원칙으로 입력해주세요." maxlength="70" /></td>
+										<td colspan="2">
+											<textarea id="onlyHangulAndNumber" class="textarea" name="name" maxlength="90" ></textarea>
+										</td>
 									</tr>
 									<tr>
 										<td>
