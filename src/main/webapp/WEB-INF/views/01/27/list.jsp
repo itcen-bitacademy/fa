@@ -1336,7 +1336,6 @@
 			return;
 		}
 		
-		
 	// 사업자등록번호 중복체크
 	$.ajax({
 		url: "${pageContext.servletContext.contextPath }/01/27/checkno?no=" + no,
@@ -1355,6 +1354,17 @@
 				nochecked = true;
 				$("#btn-check-no").hide();
 				$("#img-checkno").show();
+				openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
+				$("#deleteok").click(function(){
+					var customerno = document.getElementById("no").value;
+					$("input[name=corporationNo]").val(customerno);
+					openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+					return;
+				});
+				$("#deletecancel").click(function(){
+					openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+					return;
+				});
 				return;
 			}else if(response.data.deleteFlag == "Y"){
 				$("#no").val("");
