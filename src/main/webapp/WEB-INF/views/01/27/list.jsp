@@ -163,7 +163,7 @@
 				var customername = document.getElementById("name").value;
 				
 				// 수정확인창을 띄운다.
-				openDeleteModal('UPDATE CHECK',customername+"을(를) 수정하시겠습니까?");
+				openDeleteModal('UPDATE CHECK', customername+"에 대한 \r\n수정된 정보를 반영하시겠습니까?");
 				
 				// 수정확인창 - 취소 버튼을 누르면 수정 X
 				$("#deletecancel").click(function(){
@@ -212,7 +212,7 @@
 				var customername = document.getElementById("name").value;
 				
 				// 삭제확인창을 띄운다.
-				openDeleteModal('DELETE CHECK',customername+"을(를)삭제하시겠습니까?");
+				openDeleteModal('DELETE CHECK',customername+"에 대한\r\n 거래처정보를 삭제하시겠습니까?");
 				
 				// 삭제확인창 - 취소 버튼을 누르면 삭제 X
 				$("#deletecancel").click(function(){
