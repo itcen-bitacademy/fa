@@ -30,6 +30,9 @@ public class Menu35Service {
 //	}
 	
 	public void insert(CustomerVo vo) {
+		if(vo.getOpenDate() == "") {
+			vo.setOpenDate(null);
+		}
 		menu35Repository.insert(vo);
 	}
 	

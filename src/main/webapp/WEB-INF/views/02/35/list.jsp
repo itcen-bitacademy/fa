@@ -150,6 +150,8 @@
 		
 		// 입력 insert
 		$("#btn_insert").click(function(){
+			//event.preventDefault();
+
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
 			checkNo();
 	        return false;
@@ -219,6 +221,20 @@
 		// 사업자번호 중복체크
 		function checkNo() {
 			if($("#no").val() == $("#preNo").val()) {
+				// 유효성 검사
+				if(!valid.nullCheck("no", "사업자번호")) return;
+				if(!valid.numberCheck("no", "사업자번호")) return;
+				
+				if(!valid.nullCheck("bsname", "상호")) return;
+				
+				if(!valid.numberCheck("corporationNo", "법인번호")) return;
+				
+				if(!valid.nullCheck("phone", "전화번호")) return;
+				if(!valid.numberCheck("phone", "전화번호")) return;
+				
+				if(!valid.nullCheck("managerName", "담당자명")) return;
+				if(!valid.nullCheck("managerEmail", "메일")) return;
+				
 				$("#form-customer").submit();
 				return;
 			}
@@ -233,11 +249,26 @@
 						return;
 					}
 					if(response.data == true) {
-						document.getElementById("invalid").style.display="block";
+						//document.getElementById("invalid").style.display="block";
+						dialog("중복된 사업자번호 입니다.");
 						$("#no").val("");
 						$("#no").focus();
 						return;
 					} else {
+						// 유효성 검사
+						if(!valid.nullCheck("no", "사업자번호")) return;
+						if(!valid.numberCheck("no", "사업자번호")) return;
+						
+						if(!valid.nullCheck("bsname", "상호")) return;
+						
+						if(!valid.numberCheck("corporationNo", "법인번호")) return;
+						
+						if(!valid.nullCheck("phone", "전화번호")) return;
+						if(!valid.numberCheck("phone", "전화번호")) return;
+						
+						if(!valid.nullCheck("managerName", "담당자명")) return;
+						if(!valid.nullCheck("managerEmail", "메일")) return;
+						
 						$("#form-customer").submit();
 					}
 				},
@@ -247,6 +278,55 @@
 			});	
 		}
 	});
+	
+	////핵심소스
+	var valid = {
+        		nullCheck: function(id, msg){ // null 체크
+        			
+        			if($("#"+id).val()==""){
+        				dialog(msg+" 을(를) 입력 해 주세요.");
+        				return false;
+        			} else {
+        				return true;
+        			}
+        		},
+				strCheck: function(id){  // 문자열 체크 
+        			
+        		}, 
+				numberCheck: function(id, msg){  // 숫자 체크
+        			if(!$.isNumeric($("#"+id).val())){        	
+        				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
+        				$("#"+id).focus();
+        				return false;
+        			} else {
+        				return true;
+        			}
+        		}
+        
+    }
+	
+	// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+	function dialog(txt, flag) {
+	        $("#dialog-txt").html(txt);
+	    	var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$( this ).dialog( "close" ); 
+								location.href="${pageContext.request.contextPath }/02/35";
+							} else {
+								$( this ).dialog( "close" ); 
+							}
+						}
+					}
+				]
+			});
+	}
 	</script>
 	
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -321,18 +401,18 @@
 								<div class="control-group">
 									<label class="control-label" for="no">사업자번호</label>
 									<div class="controls">
-										<input type="text" id="no" name="no" style="width: 200px;">
+										<input type="text" id="no" name="no" maxlength="11" style="width: 200px;">
 										<input class="span6" type="hidden" id="preNo" name="preNo">
-										<div id="invalid" style="display:none">
+<!-- 										<div id="invalid" style="display:none">
 											중복된 사업자번호 입니다.
-										</div>
+										</div> -->
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="ceo">대표자</label>
 									<div class="controls">
-										<input type="text" id="ceo" name="ceo" style="width: 150px;">
+										<input type="text" id="ceo" name="ceo" maxlength="10" style="width: 150px;">
 									</div>
 								</div>
 
@@ -346,14 +426,14 @@
 										</div>	
 										<br>
 										<br> 
-										<input type="text" id="detailAddress" name="detailAddress" style="width: 330px;">
+										<input type="text" id="detailAddress" name="detailAddress" maxlength="60" style="width: 330px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="conditions">업태</label>
 									<div class="controls">
-										<input type="text" id="conditions" name="conditions" style="width: 150px;">
+										<input type="text" id="conditions" name="conditions" maxlength="10" style="width: 150px;">
 									</div>
 								</div>
 
@@ -372,7 +452,7 @@
 								<div class="control-group">
 									<label class="control-label" for="managerName">담당자명</label>
 									<div class="controls">
-										<input type="text" id="managerName" name="managerName" style="width: 150px;">
+										<input type="text" id="managerName" name="managerName" maxlength="10" style="width: 150px;">
 									</div>
 								</div>
 
@@ -428,21 +508,21 @@
 								<div class="control-group">
 									<label class="control-label" for="name">상호</label>
 									<div class="controls">
-										<input type="text" id="bsname" name="name" style="width: 250px;">
+										<input type="text" id="bsname" name="name" maxlength="30" style="width: 250px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="corporationNo">법인번호</label>
 									<div class="controls">
-										<input type="text" id="corporationNo" name="corporationNo" style="width: 200px;">
+										<input type="text" id="corporationNo" name="corporationNo" maxlength="15" style="width: 200px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="phone">전화번호</label>
 									<div class="controls">
-										<input type="text" id="phone" name="phone" style="width: 200px;">
+										<input type="text" id="phone" name="phone" maxlength="15" style="width: 200px;">
 										<br>
 										<br> 
 										<input type="text" id="" style="visibility: hidden;">
@@ -452,21 +532,21 @@
 								<div class="control-group">
 									<label class="control-label" for="item">종목</label>
 									<div class="controls">
-										<input type="text" id="item" name="item" style="width: 150px;">
+										<input type="text" id="item" name="item" maxlength="10" style="width: 150px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="jurisdictionOffice">관할사무소</label>
 									<div class="controls">
-										<input type="text" id="jurisdictionOffice" name="jurisdictionOffice" style="width: 200px;">
+										<input type="text" id="jurisdictionOffice" name="jurisdictionOffice" maxlength="30" style="width: 200px;">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="managerEmail">메일</label>
 									<div class="controls">
-										<input type="text" id="managerEmail" name="managerEmail" style="width: 250px;">
+										<input type="text" id="managerEmail" name="managerEmail" maxlength="50" style="width: 250px;">
 									</div>
 								</div>
 
@@ -494,7 +574,7 @@
 											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
 											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
 											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left; margin-left:20px;">입력</button>
-											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">초기화</button>
 									</div>
 									<div class="hr hr-18 dotted"></div>
 								</div>
@@ -575,7 +655,10 @@
 									</table>
 								</div>
 							</div>
-						
+							<div id="dialog-confirm" class="hide">
+								<p id="dialog-txt" class="bolder grey">
+								</p>
+							</div>
 
 						<!-- PAGE CONTENT ENDS -->
 
