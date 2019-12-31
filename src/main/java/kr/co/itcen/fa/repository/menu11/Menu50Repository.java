@@ -64,6 +64,8 @@ public class Menu50Repository {
 
 	// 은행 팝업창에서 은행명으로 데이터 리스트형식으로 조회 - 은행명으로 데이터 출력
 	public List<BankVo> selectOneBanknameInfo(String bankname) {
+		System.out.println("Get in the Bank Name Information : repository");
+		System.out.println("bankname : " + bankname);
 		return sqlSession.selectList("menu50.getBanknameList", bankname);
 	}
 
