@@ -130,7 +130,7 @@
 										</td>
 										<td colspan="2">
 												<div class="input-append">
-													<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly/>
+													<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" maxlength="7" readonly/>
 														<span class="add-on">
 							                                    <a href="#" id="a-bankinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
 							                        	</span>
@@ -681,30 +681,10 @@
 			$("#dialog-bankinfo-message").dialog('close'); // 데이터를 선택하면, 창이 닫힘
 		});
 	  
-		// 모달 설정
-		backdrop = $('#staticBackdrop')
-		backdrop.modal({
-			keyboard: false,
-			show: false
-		})
-
-		// 에러 모달 설정
-		var errorMessage = $('#errorMessage')
-		if (errorMessage.val()) {
-			openModal('Error', errorMessage.val())
-			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/11/50/add')
-		}
 	});
 	
-	//static backdrop modal
-	var backdrop
-	
+	// dialog 실행 Modal 메소드
 	function openModal(title, message) {
-		//$('#staticBackdropLabel').text('Error')
-		//$('#staticBackdropBody').text(message)
-	
-		//backdrop.modal('show')
-		
 		dialog(message, true);
 	}
 	
@@ -731,7 +711,8 @@
 	}
 	
 	// 사채데이터 수정
-	function updateDebtData() {
+	function updateDebtData(event) {
+		event.preventDefault();
 		var count = $("input:checkbox[name=checkBox]:checked").length;
 		
 		if (count > 1){
@@ -739,7 +720,7 @@
 			return;
 		}
 		if (count <= 0){
-			dialog('수정할 리스트를 선택하여 주세요');
+			dialog('수정할 데이터를 선택하여 주세요');
 			return;
 		}
 		
@@ -765,11 +746,8 @@
 					$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
 					$('#inputForm').attr('method', 'POST');
 					$('#inputForm').submit();
-					openModal('Error', "차입금정보가 수정이 완료되었습니다.");
 					return;
-					
 				} else {
-					openModal('Error', "해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
 					var repayList = response.data;
 	         	  	$("#repay-code").text(repayList[0].code);
 	         	  	
@@ -781,6 +759,7 @@
 		                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 		                          "</tr>");
 	         	  	}
+	         	  	openModal('Error', "해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
 	         	  	
 	         	  	$("#dialog-repayment-ischeck").dialog({
 	         	  		title: "상환정보",
@@ -802,6 +781,10 @@
 	         	  	$("#dialog-repayment-ischeck").dialog('open');
 	         	}
 			},
+			complete : function(data) {
+				// 통신이 실패했어도 완료가 되었을 때 이 함수를 타게 된다.
+				openModal('Error', "차입금정보가 수정이 완료되었습니다.");
+	        },
 			error : function(xhr,error) {
 				console.err("error" + error);
 			}
@@ -922,14 +905,23 @@
 	
 	// 사채정보 조회
 	function searchDebtData() {
-		$("input").attr('disabled',true);
-		console.log($("input[name=code]").val());
-		$("input[name=code]").attr('disabled',false);
-		$("input[name=financialYear]").attr('disabled',false);
-		
-		$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}');
-		$('#inputForm').attr('method', 'POST');
-		$('#inputForm').submit();
+		var code = $("input[name=code]").val();
+		if (code.charAt(0) !== 'I') {
+			openModal('Error', '사채 코드는 반드시 대문자 I로 시작하여야 합니다.');
+			return false;
+		} else if (code.length < 10) {
+			openModal('Error', '사채 코드는 10자리를 입력하셔야 합니다.');
+			return false;
+		} else {
+			$("input").attr('disabled',true);
+			console.log($("input[name=code]").val());
+			$("input[name=code]").attr('disabled',false);
+			$("input[name=financialYear]").attr('disabled',false);
+			
+			$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}');
+			$('#inputForm').attr('method', 'POST');
+			$('#inputForm').submit();
+		}
 	}
 	
 	// 상환정보 입력
@@ -939,7 +931,7 @@
 		var count = $("input:checkbox[name=checkBox]:checked").length;
 			
 		if (count > 1 || count == 0) {
-			openModal('Error', '한 개의 체크박스를 클릭 후 상환을 눌러주세요');
+			openModal('Error', '상환할 데이터를 선택해 주세요');
 			return;
 		}
 			
@@ -1171,9 +1163,16 @@
 	function searchCustomerByBankcode(event) {
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
-		
 		var bankcodeVal = $("#input-dialog-bankcode").val();
-		console.log(bankcodeVal);
+		
+		if(bankcodeVal === '') {
+			openModal('Error', '은행코드를 입력해주세요.');
+			return false;
+		} else if (bankcodeVal.length < 7){
+			openModal('Error', '은행코드를 7자 입력해주세요.');
+			return false;
+		}
+		
 		// ajax 통신
 		$.ajax({
 			url: "${pageContext.request.contextPath }/api/customer/getbankCode?bankCodeVal=" + bankcodeVal,
@@ -1187,13 +1186,20 @@
 			    }
 			},
 			success: function(response){
+				console.log(response.data);
+				if (response.data.length === 0) {
+					openModal('Error', '입력한 은행코드에 대한 결과를 찾을 수 없습니다.');
+					$("#input-dialog-bankcode").val('');
+					return;
+				}
+				
 				$("#input-dialog-bankcode").val('');
-				 $.each(response.data,function(index, item){
+				$.each(response.data,function(index, item){
 		                $("#tbody-bankList").append("<tr>" +
 		                		"<td class='center'>" + item.no + "</td>" +
 						        "<td class='center'>" + item.name + "</td>" +
 						        "</tr>");
-		         })
+		    	})
 			},
 			error: function(xhr, error){
 				console.error("error : " + error);
@@ -1206,6 +1212,11 @@
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
 		var banknameVal = $("#input-dialog-bankname").val();
+		
+		if(banknameVal === '') {
+			openModal('Error', '은행명을 입력해주세요.');
+			return false;
+		}
 		// ajax 통신
 		$.ajax({
 			url: "${pageContext.request.contextPath }/api/customer/getbankName?bankNameVal=" + banknameVal,
@@ -1219,13 +1230,20 @@
 			    }
 			},
 			success: function(response){
+				console.log(response.data);
+				if (response.data.length === 0) {
+					openModal('Error', '입력한 은행명에 대한 결과를 찾을 수 없습니다.');
+					$("#input-dialog-bankname").val('');
+					return;
+				}
+				
 				$("#input-dialog-bankname").val('');
-				 $.each(response.data,function(index, item){
+				$.each(response.data,function(index, item){
 		                $("#tbody-bankList").append("<tr>" +
 		                		"<td class='center'>" + item.no + "</td>" +
 						        "<td class='center'>" + item.name + "</td>" +
 						        "</tr>");
-		         })
+		        })
 			},
 			error: function(xhr, error){
 				console.error("error : " + error);
