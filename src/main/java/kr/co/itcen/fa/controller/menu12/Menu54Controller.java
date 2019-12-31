@@ -84,7 +84,7 @@ public class Menu54Controller {
 		System.out.println("-----" + orderData + "정렬순서");
 		System.out.println("-----" + tvo.getStartDate() + "시작일");
 		System.out.println("-----" + tvo.getEndDate() + "종료일");
-		
+		System.out.println("-----" + tvo.getItemName() + "아이템 이름");
 		
 		// 거래처에 대한 리스트를 출력해주는 기능
 		model.addAttribute("customerlist", menu54Service.salesCustomer());
