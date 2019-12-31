@@ -516,7 +516,12 @@ function update(){
 	var inputForm = $("#input-form")[0];
 	var sendData = $("#input-form").serialize();
 	
-	if(isValidDebt(inputForm))
+	if(isEmpty(inputForm.vo.value)){
+		dialog("하나의 차입금을 선택해주세요");
+		return;
+	}
+	
+	if(!isValidDebt(inputForm))			//유효성이 어긋나면
 		return;
 	
 	$.ajax({
@@ -551,29 +556,32 @@ function isValidDebt(inputForm){
 	if(inputForm.code.value == ''){
 		dialog("코드를 입력하세요.");
 	}else if(inputForm.name.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("차입금명을 입력하세요.");
 	}else if(inputForm.debtAmountComma.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("차입금액을 입력하세요.");
 	}else if(inputForm.debtExpDate.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("차입일자, 만기일자를 입력하세요.");
 	}else if(inputForm.bankCode.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("은행을 선택하세요.");
 	}else if(inputForm.majorCode.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("대분류를 선택하세요.");
 	}else if(inputForm.intRate.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("이율을 입력하세요.");
 	}else if(inputForm.mgr.value == ''){
-		dialog("납입원금을 입력하세요.");
-	}else if(inputForm.mgrCode.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("담당자를 입력하세요.");
+	}else if(inputForm.mgrCall.value == ''){
+		dialog("담당자 전화를 입력하세요.");
 	}else if(inputForm.depositNo.value == ''){
-		dialog("납입원금을 입력하세요.");
+		dialog("계좌를 선택하세요.");
 	}
 }
 function resetForm(){
 	var inputForm = $("#input-form")[0];
 	$(inputForm.code).attr("readonly", false);
 	$("#btn-chk-duplication").css("display", "inline-block");
+	$("#img-checkcode").css("display","none");
+	$("#tbody-list").find("tr").css("background-color", "inherit");
+	inputForm.vo.value = "";
 }
 //-----------------------------------은행 Model 메서드 ---------------------------------//
 //Dialog Open하는 함수
@@ -715,12 +723,16 @@ function selectBankRow(thisObj){
 //-----------------------------------상환 Model 메서드 ---------------------------------//
 function openRepayDialog(){
 	console.log("---------------------------openRepayDialog() called--------------------------");
-	
-	renderRepayDialog();
-	
-	var repayForm = $("#repay-form")[0];
 	var inputForm = $("#input-form")[0];			//선택된 차입금 form
+	
+	if(isEmpty(inputForm.vo.value)){
+		dialog("하나의 차입금을 선택해주세요");	
+		return;
+	}
 	var vo = JSON.parse(inputForm.vo.value);
+	
+	renderRepayDialog();								//그린다음
+	var repayForm = $("#repay-form")[0];				//해당 폼을 찾는다.
 	initRepayDialog(repayForm, vo);
 	
 	$("#dialog46").dialog({
@@ -813,9 +825,11 @@ function renderRepayDialog(){
 	    
 	    repayForm.totalPayPrincComma.value= comma(totalPayPrinc);
 	});
+	console.log("------------------------------------renderRepayDialog() End----------------------------------");
 }
 
 function initRepayDialog(repayForm, vo){
+	console.log("------------------------------------initRepayDialog() Call-----------------------------------");
 	console.log("repayForm : " + repayForm);
 	
 	repayForm.debtNo.value = vo.no;
@@ -825,12 +839,14 @@ function initRepayDialog(repayForm, vo){
 	repayForm.intAmountComma.value= comma(repayForm.intAmount.value);
 	repayForm.totalPayPrinc.value = repayForm.intAmount.value;
 	repayForm.totalPayPrincComma.value= comma(repayForm.totalPayPrinc.value);
-	console.log("------------------------------------renderRepayDialog() End-----------------------------------");
+	console.log("------------------------------------initRepayDialog() End-----------------------------------");
 }
 
 function repay(repayForm, repayBal){									//상환버튼 클릭시
 	repayBal = parseInt(repayBal);							//int로 변환
 	var payPrinc = parseInt(repayForm.payPrinc.value);		//int로 변환
+	
+	var inputForm = $("#input-form")[0];
 	
 	if(payPrinc > repayBal){
 		dialog("납입원금이 잔액보다 클 수 없습니다");
