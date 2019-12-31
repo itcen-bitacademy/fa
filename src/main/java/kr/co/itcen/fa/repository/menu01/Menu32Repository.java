@@ -82,6 +82,33 @@ public class Menu32Repository {
 		return sqlSession.selectOne("menu32.listCount", aclVo);
 	}
 
+	public Map<String, Object> searchOptionCustomerInfo(Map<String, String> customerparam) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<CustomerVo> s = sqlSession.selectList("menu32.searchOptionCustomerInfo", customerparam);
+		map.put("customerList", s);
+		
+		return map;
+	}
+
+	public Map<String, Object> searchOptionBankInfo(Map<String, String> bankparam) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<CustomerVo> s = sqlSession.selectList("menu32.searchOptionBankInfo", bankparam);
+		map.put("bankList", s);
+		
+		return map;
+	}
+
+	public Map<String, Object> searchOptionAccountInfo(Map<String, String> accountparam) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<AccountManagementVo> s = sqlSession.selectList("menu32.searchOptionAccountInfo", accountparam);
+		map.put("accountList", s);
+		
+		return map;
+	}
+
 
 
 }

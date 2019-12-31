@@ -64,10 +64,6 @@
 							var customerNo = "${param.customerNo}";
 							$("#customerNo").val(customerNo);
 						</script>
-							
-							
-							
-						
 					
 						&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명
 									<div class="input-append">
@@ -95,8 +91,12 @@
 						<table id="dialog-message-table">
 							<tr>
 								<td>
-									<label>사업자등록번호</label>
-									<div class="input-append">
+									<h3>상호 검색</h3>
+									<div class="input-append" style="text-align:center;">
+								<select id="searchCustomerOption" style="width:120px;">
+											<option value="no">사업자번호</option>
+											<option value="name">상호명</option>
+									</select>
 										<input type="text" id="input-dialog-customerno" style="width: 100px;" />
 										<a href="#" id="a-dialog-customerno">
 											<span class="add-on">
@@ -105,36 +105,15 @@
 										</a>
 									</div>
 								</td>
-								
 								<td>
-									<label>상호명</label>
+									<h3>은행검색</h3>
 									<div class="input-append">
-									<input type="text" id="input-dialog-customername" style="width: 100px;" />
-									<a href="#" id="a-dialog-customername">
-											<span class="add-on">
-												<i class="icon-search icon-on-right bigger-110"></i>
-											</span>
-										</a>
-									</div>
-								</td>
-								
-								<td>
-									<label>은행코드</label>
-									<div class="input-append">
+								<select id="searchBankOption" style="width:120px;">
+											<option value="no">은행코드</option>
+											<option value="name">은행명</option>
+									</select>
 										<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
 										<a href="#" id="a-dialog-bankcode">
-											<span class="add-on">
-												<i class="icon-search icon-on-right bigger-110"></i>
-											</span>
-										</a>
-									</div>
-								</td>
-								
-								<td>
-									<label>은행명</label>
-									<div class="input-append">
-									<input type="text" id="input-dialog-bankname" style="width: 100px;" />
-										<a href="#" id="a-dialog-bankname">
 											<span class="add-on">
 												<i class="icon-search icon-on-right bigger-110"></i>
 											</span>
@@ -175,24 +154,18 @@
 					<!-- 계정 Modal pop-up : start -->
 					<div id="dialog-message2" title="계정" hidden="hidden">
 						<table id="dialog-message-table">
+						<tr>
+						</tr>
+						
 							<tr>
 								<td>
-									<label>계정명</label>
-									<div class="input-append">
+									<div class="input-append" >
+										<select id="searchAccountOption" style="width:120px;">
+											<option value="accountNo">계정코드</option>
+											<option value="accountName">계정명</option>
+										</select>
 									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
 									<a href="#" id="a-dialog-accountname"> 
-                                    	<span class="add-on">
-                                        	<i class="icon-search icon-on-right bigger-110"></i>
-                                    	</span>
-									</a>
-									</div>
-								</td>
-								
-								<td>
-									<label>계정코드</label>
-									<div class="input-append">
-									<input type="text" id="input-dialog-accountno" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountno"> 
                                     	<span class="add-on">
                                         	<i class="icon-search icon-on-right bigger-110"></i>
                                     	</span>
@@ -397,16 +370,17 @@
 			});
 		});
 		
-		// 사업자번호 검색
+		// 사업자번호 및 상호명으로 검색
 		$("#a-dialog-customerno").click(function(event){
 			event.preventDefault();
 			$("#tbody-customerList").find("tr").remove();
-		
+			
+			var searchCustomerOption = $("#searchCustomerOption").val();
 			var customerNoVal = $("#input-dialog-customerno").val();
 			console.log("djlfajldjal"+customerNoVal);
 			// ajax 통신
 			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getcustomerNo?customerNoVal=" + customerNoVal,
+				url: "${pageContext.request.contextPath }/api/customer/searchOptionCustomer?"+searchCustomerOption+"="+customerNoVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
 				dataType: "json",
@@ -416,68 +390,38 @@
 				      alert("page not found");
 				    }
 				},
-				success: function(response){
-					$("#input-dialog-customerno").val('');
-					$.each(response.data,function(index, item){
-						$("#tbody-customerList").append("<tr>" +
-						        "<td class='center'>" + item.customerDiv + "</td>" +
-						        "<td class='center'>" + item.no + "</td>" +
-						        "<td class='center'>" + item.name + "</td>" +
-						        "</tr>");
-		        	 });
+			    success: function(data){
+				  	  if(data.success) {
+				  	  	$("#input-dialog-customerNo").val('');
+				  	  	var customerList = data.customerList;
+				  	  	console.log(data.customerList);
+				  	  	for(const c in customerList) {
+				  	  		$("#tbody-customerList").append("<tr>" +
+				                    "<td class='center'>" + customerList[c].customerDiv + "</td>" +
+				                    "<td class='center'>" + customerList[c].no + "</td>" +
+				                    "<td class='center'>" + customerList[c].name + "</td>" +
+				                    "</tr>");
 				
-				},
+				  	  	}
+				  	  }
+				    },
 				error: function(xhr, error){
 					console.error("error : " + error);
 				}
 			});
 		});
 		
-		//거래처명 검색 :거래처목록 리스트로 가져오기
-		$("#a-dialog-customername").click(function(event){
-			event.preventDefault();
-			$("#tbody-customerList").find("tr").remove();
-			
-			var customerNameVal = $("#input-dialog-customername").val();
-			console.log(customerNameVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getcustomerName?customerNameVal=" + customerNameVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					$("#input-dialog-customername").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-customerList").append("<tr>" +
-			                		"<td class='center'>" + item.customerDiv + "</td>" +
-							        "<td class='center'>" + item.no + "</td>" +
-							        "<td class='center'>" + item.name + "</td>" +
-							        "</tr>");
-			         })
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
-		//은행코드로 검색
+		//은행코드, 은행명을 선택적으로 검색
 		$("#a-dialog-bankcode").click(function(event){
 			event.preventDefault();
 			$("#tbody-bankList").find("tr").remove();
 			
+			var searchBankOption = $("#searchBankOption").val();
 			var bankCodeVal = $("#input-dialog-bankcode").val();
 			console.log(bankCodeVal);
 			// ajax 통신
 			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getbankCode?bankCodeVal=" + bankCodeVal,
+				url: "${pageContext.request.contextPath }/api/customer/searchOptionBank?"+searchBankOption+"="+bankCodeVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
 				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -487,63 +431,35 @@
 				      alert("page not found");
 				    }
 				},
-				success: function(response){
+				success: function(data){
+				  	  if(data.success) {
 					$("#input-dialog-bankcode").val('');
-					 $.each(response.data,function(index, item){
+			  	  	var bankList = data.bankList;
+			  	  	for(const b in bankList) {
 			                $("#tbody-bankList").append("<tr>" +
-			                		"<td class='center'>" + item.no + "</td>" +
-							        "<td class='center'>" + item.name + "</td>" +
-							        "</tr>");
-			         })
+				                    "<td class='center'>" + bankList[b].no + "</td>" +
+				                    "<td class='center'>" + bankList[b].name + "</td>" +
+				                    "</tr>");
+			  	  	}
+			         }
 				},
 				error: function(xhr, error){
 					console.error("error : " + error);
 				}
 			});
 		});
-		//은행명으로 검색
-		$("#a-dialog-bankname").click(function(event){
-			event.preventDefault();
-			$("#tbody-bankList").find("tr").remove();
-			
-			var bankNameVal = $("#input-dialog-bankname").val();
-			console.log(bankNameVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getbankName?bankNameVal=" + bankNameVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					$("#input-dialog-bankname").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-bankList").append("<tr>" +
-			                		"<td class='center'>" + item.no + "</td>" +
-							        "<td class='center'>" + item.name + "</td>" +
-							        "</tr>");
-			         })
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		//계정명으로 검색
+		
+		//계정명, 계정코드로 검색
 		$("#a-dialog-accountname").click(function(event){
 			event.preventDefault();
 			$("#tbody-accountList").find("tr").remove();
 			
 			var accountNameVal = $("#input-dialog-accountname").val();
+			var searchAccountOption = $("#searchAccountOption").val();
 			console.log(accountNameVal);
 			// ajax 통신
 			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getaccountName?accountNameVal=" + accountNameVal,
+				url: "${pageContext.request.contextPath }/api/customer/searchOptionAccount?"+searchAccountOption+"="+accountNameVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
 				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -553,56 +469,23 @@
 				      alert("page not found");
 				    }
 				},
-				success: function(response){
-					$("#input-dialog-accountname").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-accountList").append("<tr>" +
-			                		"<td class='center'>" + item.accountName + "</td>" +
-							        "<td class='center'>" + item.accountNo + "</td>" +
-							        "</tr>");
-			         })
-				},
+				success: function(data){
+				  	  if(data.success) {
+							$("#input-dialog-accountname").val('');
+					  	  	var accountList = data.accountList;
+					  	  	for(const a in accountList) {
+					                $("#tbody-accountList").append("<tr>" +
+						                    "<td class='center'>" + accountList[a].accountName + "</td>" +
+						                    "<td class='center'>" + accountList[a].accountNo + "</td>" +
+						                    "</tr>");
+					  	  	}
+					         }
+						},
 				error: function(xhr, error){
 					console.error("error : " + error);
 				}
 			});
 		});
-		
-		//계정코드로 검색
-		$("#a-dialog-accountno").click(function(event){
-			event.preventDefault();
-			$("#tbody-accountList").find("tr").remove();
-			
-			var accountNoVal = $("#input-dialog-accountno").val();
-			console.log(accountNoVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getaccountNo?accountNoVal=" + accountNoVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					$("#input-dialog-accountno").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-accountList").append("<tr>" +
-			                		"<td class='center'>" + item.accountName + "</td>" +
-							        "<td class='center'>" + item.accountNo + "</td>" +
-							        "</tr>");
-			         })
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
-		
 	</script>
 <script>
 	$(function() {
@@ -621,7 +504,7 @@
 				title_html: true,
 			   	resizable: false,
 			    height: 500,
-			    width: 700,
+			    width: 550,
 			    modal: true,
 			    close: function() {
 			    	$('#tbody-customerList tr').remove();
@@ -659,7 +542,7 @@
 		
 		
 
-		//거래처리스트(customerList)의 row의 해당 데이터 form에 추가
+		//거래처와 은행 리스트를 row의 해당 데이터 form에 추가
 		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
 			var tr = $(this);
 			var td = tr.children();

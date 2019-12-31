@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.service.menu01;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,18 @@ public class Menu32Service {
 
 	public List<AccountManagementVo> getAccountNameInfo(String accountName) {
 		return menu32Repository.getAccountNameInfo(accountName);
+	}
+
+	public Map<String, Object> searchOptionCustomerInfo(Map<String, String> customerparam) {
+		return menu32Repository.searchOptionCustomerInfo(customerparam);
+	}
+
+	public Map<String, Object> searchOptionBankInfo(Map<String, String> bankparam) {
+		return menu32Repository.searchOptionBankInfo(bankparam);
+	}
+
+	public Map<String, Object> searchOptionAccountInfo(Map<String, String> accountparam) {
+		return menu32Repository.searchOptionAccountInfo(accountparam);
 	}
 
 }
