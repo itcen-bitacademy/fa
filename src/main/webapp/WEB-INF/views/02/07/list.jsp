@@ -29,6 +29,7 @@
 				<h1 class="pull-left">매입현황조회</h1>
 				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
+			
 			<div class="row-fluid">
 				<div class="span12">
 				
@@ -121,51 +122,56 @@
 									</div>
 							</div>
 							</div>
+							</div>
 							</form>
-							
-							<table id="searchList" class="table table-striped table-bordered table-hover">
-								<thead>
-									<tr>
-										<th class="center">매입일자</th>
-										<th class="center">매입번호</th>
-										<th class="center">매입순번</th>
-										<th class="center">거래처코드</th>
-										<th class="center">거래처명</th>
-										<th class="center">담당자</th>
-										<th class="center">품목코드</th>
-										<th class="center">품목명</th>
-										<th class="center">입고일자</th>
-										<th class="center">출고일자</th>
-										<th class="center">수량</th>
-										<th class="center">공급가액</th>
-										<th class="center">부가세</th>
-										<th class="center">과세 여부</th>
-										<th class="center">세금계산서번호</th>
-									</tr>
-								</thead>
-								
-								<tbody id="searchListBody">
-									<c:forEach items='${result }' var='vo' varStatus='status'>
+							<div class="row-fluid">
+							<div class="span12" >
+								<label id="purchaseitem_allcount">총 ${total }건</label>
+								<table id="searchList" class="table table-striped table-bordered table-hover">
+									<thead>
 										<tr>
-											<td class="center">${vo.purchaseDate }</td>
-											<td class="center">${vo.no }</td>
-											<td class="center">${vo.number }</td>
-											<td class="center">${vo.customerCode }</td>
-											<td class="center">${vo.customerName }</td>
-											<td class="center">${vo.purchaseManager }</td>
-											<td class="center">${vo.itemCode }</td>
-											<td class="center">${vo.itemName }</td>
-											<td class="center">${vo.receiptDate }</td>
-											<td class="center">${vo.releaseDate }</td>
-											<td class="center">${vo.quantity }</td>
-											<td class="center">${vo.supplyValue }</td>
-											<td class="center">${vo.taxValue }</td>
-											<td class="center">${vo.taxType }</td>
-											<td class="center">${vo.taxbillNo }</td>
+											<th class="center">매입일자</th>
+											<th class="center">매입번호</th>
+											<th class="center">매입순번</th>
+											<th class="center">거래처코드</th>
+											<th class="center">거래처명</th>
+											<th class="center">담당자</th>
+											<th class="center">품목코드</th>
+											<th class="center">품목명</th>
+											<th class="center">입고일자</th>
+											<th class="center">출고일자</th>
+											<th class="center">수량</th>
+											<th class="center">공급가액</th>
+											<th class="center">부가세</th>
+											<th class="center">과세 여부</th>
+											<th class="center">세금계산서번호</th>
 										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
+									</thead>
+									
+									<tbody id="searchListBody">
+										<c:forEach items='${result }' var='vo' varStatus='status'>
+											<tr>
+												<td class="center">${vo.purchaseDate }</td>
+												<td class="center">${vo.no }</td>
+												<td class="center">${vo.number }</td>
+												<td class="center">${vo.customerCode }</td>
+												<td class="center">${vo.customerName }</td>
+												<td class="center">${vo.purchaseManager }</td>
+												<td class="center">${vo.itemCode }</td>
+												<td class="center">${vo.itemName }</td>
+												<td class="center">${vo.receiptDate }</td>
+												<td class="center">${vo.releaseDate }</td>
+												<td style="text-align:right"><fmt:formatNumber value="${vo.quantity }" pattern="#,###"/></td>
+												<td style="text-align:right"><fmt:formatNumber value="${vo.supplyValue }" pattern="#,###"/></td>
+												<td style="text-align:right"><fmt:formatNumber value="${vo.taxValue }" pattern="#,###"/></td>
+												<td class="center">${vo.taxType }</td>
+												<td class="center">${vo.taxbillNo }</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+							
 							<div class="pagination" id = "paginationList">
 								<ul id="pagination">
 								<c:choose>
@@ -200,12 +206,13 @@
 									</c:otherwise>
 								</c:choose>
 								</ul>
+								</div>
 							</div>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
 					
-				</div><!-- /.span -->
+				<!-- /.span -->
 			</div><!-- /.row-fluid -->
 			
 			
@@ -282,7 +289,9 @@
 			        }
 			});
 		});
-		
+		function numberFormat(number) {
+			return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 		function createTable(result){
 			$("#searchListBody").remove();
 			$newTbody = $("<tbody id='searchListBody'></tbody>")
@@ -300,12 +309,13 @@
 			            "<td class='center'>" + isEmpty(result[i].itemName)  + "</td>" +
 			            "<td class='center'>" + isEmpty(result[i].receiptDate)  + "</td>" +
 			            "<td class='center'>" + isEmpty(result[i].releaseDate)  + "</td>" +
-			            "<td class='center'>" + isEmpty(result[i].quantity) + "</td>" +
-			            "<td class='center'>" + isEmpty(result[i].supplyValue)  + "</td>" +
-			            "<td class='center'>" + isEmpty(result[i].taxValue)  + "</td>" +
+			            "<td style='text-align:right'>" + isEmpty(numberFormat(result[i].quantity)) + "</td>" +
+			            "<td style='text-align:right'>" + isEmpty(numberFormat(result[i].supplyValue)) + "</td>" +
+			            "<td style='text-align:right'>" + isEmpty(numberFormat(result[i].taxValue)) + "</td>" +
 			            "<td class='center'>" + isEmpty(result[i].taxType)  + "</td>" +
 			            "<td class='center'>" + isEmpty(result[i].taxbillNo)  + "</td>" +
 			            "</tr>");
+				
 			}
 		}
 		

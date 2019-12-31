@@ -60,6 +60,7 @@ public class Menu07Controller {
 
 		
 		List<PurchasemanagementVo> result = menu07Service.getList((curPage - 1) * 11);
+		model.addAttribute("total", total);
 		model.addAttribute("result", result);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);

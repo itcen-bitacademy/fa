@@ -55,13 +55,13 @@
 							<!-- PAGE CONTENT BEGINS -->
 
 							
-							<form class="form-horizontal" method="post" name="manageForm">
+							<form class="form-horizontal" name="manageForm" id="manage-building-form" onkeypress="if(event.keyCode == 13) formCheck();">
 								<!-- 좌측 -->
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물코드</label>
 										<div class="controls">
-											<input type="text" id="land_code" name="id" placeholder="10자로 입력하세요"/>
+											<input type="text" id="buildingCode" name="id" placeholder="9자를 입력하세요"/>
 										</div>
 									</div>
 									<div class="control-group">
@@ -116,21 +116,21 @@
 										<div style="float: left; width: 40%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">공시지가</label> 
-												<input type="text" id="form-field-1" name="publicValue" class="publicValue"
+												<input type="text" id="publicValue" name="publicValue" class="publicValue"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">등록세</label>
+										<label class="control-label" for="form-field-1">취득세</label>
 										<div class="controls">
-											<input type="text" id="combine_no" name="acqTax" class="acqTax"
-												placeholder="금액을 입력하세요" />
+											<input readonly type="text" id="acqTax" name="acqTax" class="acqTax"
+												placeholder="" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">합병코드</label>
 										<div class="controls">
-											<input type="text" id="combine_no" name="combineNo" 
+											<input type="text" id="combineNo" name="combineNo" 
 												placeholder="" />
 										</div>
 									</div>
@@ -142,7 +142,7 @@
 										<div style="float: left">
 											<label class="control-label" for="form-field-1">평수</label>
 											<div class="controls">
-												<input style="width: 206px" type="text" id="form-field-1"
+												<input style="width: 206px" type="text" id="area"
 													name="area" placeholder="숫자만 입력하세요" />
 											</div>
 										</div>
@@ -150,9 +150,9 @@
 											<label style="width: 60px; margin-left: 10px; margin-right: 10px;"
 												class="control-label" for="form-field-1">층수</label>
 											<div style="width: 205px; margin-left:40px" class="controls">
-												<input style="width: 50px; margin-left : 10px;" type="text" id="form-field-1"
+												<input style="width: 50px; margin-left : 10px;" type="text" id="floor"
 													name="floor" placeholder="지상" /> <input
-													style="width: 50px" type="text" id="form-field-1"
+													style="width: 50px" type="text" id="basement"
 													name="basement" placeholder="지하" />
 											</div>
 										</div>
@@ -161,13 +161,13 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">용도</label>
 											<div class="controls">
-												<input type="text" id="form-field-1" name="purpose" placeholder="내용을 입력하세요" />
+												<input type="text" id="purpose" name="purpose" placeholder="내용을 입력하세요" />
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">주 구조</label> 
-												<input type="text" id="form-field-1" name="material" placeholder="내용을 입력하세요" />
+												<input type="text" id="material" name="material" placeholder="내용을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -188,7 +188,7 @@
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">건물소유자</label> <input
-												type="text" id="form-field-1" name="ownerName"
+												type="text" id="ownerName" name="ownerName"
 												placeholder="내용을 입력하세요" />
 										</div>
 									</div>
@@ -196,14 +196,14 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">취득금액</label>
 											<div class="controls">
-												<input type="text" id="form-field-1" name="acqPrice" class="acqPrice"
+												<input type="text" id="acqPrice" name="acqPrice" class="acqPrice"
 													placeholder="금액을 입력하세요" />
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">기타비용</label> <input
-												type="text" id="form-field-1" name="etcCost" class="etcCost"
+												type="text" id="etcCost" name="etcCost" class="etcCost"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
@@ -229,8 +229,8 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small" id="insert" onclick="check_blank()"
-													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create">등록</button>
+												<button class="btn btn-primary btn-small" id="insert" onclick="insertValid();"
+													style="float: left; margin-right: 20px;" >등록</button>
 												<button class="btn btn-warning btn-small" id="update"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
@@ -315,13 +315,16 @@
 				</table>
 			</div>
 					
-					</div><!-- (row-fluid) PAGE CONTENT ENDS -->
-					
-				</div><!-- /.span -->
+			</div><!-- (row-fluid) PAGE CONTENT ENDS -->
+			<div id="dialog-confirm" class="hide">
+				<p id="dialog-txt" class="bolder grey">
+				</p>
+			</div>		
+		</div><!-- /.span -->
+						
+	</div><!-- 좌,우측  row-fluid -->
 				
-				</div><!-- 좌,우측  row-fluid -->
-				
-			</div><!-- /.page-content -->
+</div><!-- /.page-content -->
 			
 			<!-- 페이징 row-fluid -->
 			<div class="row-fluid">
@@ -372,57 +375,130 @@
 	
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
+
+<link
+	href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+	type="text/css" rel="stylesheet" />
+	
+<script
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
-
+<!-- Validation -->
 <script>
 
-//id 중복확인
-$("input[name=id]").click(function(event) {
-	
-    var id = $("#id").val();
-    
-    //ajax통신
-    $.ajax({
-       url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id="+id,
-       contentType : "application/json; charset=utf-8",
-       type : "get",
-       dataType : "json",
-       data : "",
-       statusCode: {
-		    404: function() {
-		      alert("page not found");
-		    }
+$("#insert").click(function() {
+	insertValid();
+});
+$("#modify").click(function() {
+	updateValid();
+});
+
+//// 핵심소스 - (예제)
+function insertValid(){
+	alert('왱안되');
+				if(!valid.nullCheck("buildingCode", "건물 코드")) return;
+				if(!valid.numberCheck("buildingCode", "건물 코드")) return;
+				if(!valid.nullCheck("code", "대분류")) return;
+				if(!valid.nullCheck("area", "평수")) return;
+	   			if(!valid.numberCheck("area", "평수")) return;
+	   			if(!valid.nullCheck("floor", "층수")) return;
+	   			if(!valid.numberCheck("floor", "층수")) return;
+	   			if(!valid.nullCheck("basement", "층수")) return;
+	   			if(!valid.numberCheck("basement", "층수")) return;
+	   			if(!valid.nullCheck("wideAddress", "주소")) return;
+	   			if(!valid.nullCheck("customerNo", "거래처")) return; 
+	   			if(!valid.nullCheck("ownerName", "건물소유자")) return; 
+				if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
+				if(!valid.nullCheck("publicValue", "공시지가")) return;
+	   			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
+	   			if(!valid.nullCheck("etcCost", "기타비용")) return;
+	   			if(!valid.radioCheck("taxKind", "구분")) return;
+	   			
+	   			
+	   			$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create');
+				
+	   			$('#manage-building-form').attr('method', 'POST');
+				
+				$('#manage-building-form').submit();
+			
+			}
+
+
+	var valid = {
+		nullCheck : function(id, msg) { // null 체크
+			if ($("#" + id).val() == "") {
+				dialog(msg + " 을(를) 입력 해 주세요.");
+				return false;
+			} else {
+				return true;
+			}
 		},
-       success: function(response){
-          if(response.result == "fail"){
-             console.error(response.message);
-             return;
-          }
-          
-          if(response.data == true){
-             alert("사용중인 품목코드입니다");
-             $("#id").val("");
-             $("#id").focus();
-             return;
-          
-          } else if(id == "") {
-             alert("품목코드는 필수 입력 사항입니다");
-             $("#id").focus();
-          }
-       },
-       error: function(xhr, error) {
-          console.error("error: " + error);
-       }
-    });
-    
- });
-</script>
+		strCheck : function(id) { // 문자열 체크 
 
+		},
+		radioCheck: function(name, msg){  // 문자열 체크 
+			if(!jQuery('input[name='+ name +']:checked').val()){
+			dialog(msg+" 를 선택해 주세요.");
+				return false;
+			} else {
+				return true;
+			}
+		},
+		numberCheck : function(id, msg) { // 숫자 체크
+			if (!$.isNumeric($("#" + id).val())) {
+				dialog(msg + " 은(는) 숫자만 입력 가능합니다.");
+				$("#" + id).focus();
+				return false;
+			} else {
+				return true;
+			}
+		}
 
-<script>
-
+	}
 	
+	// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+	function dialog(txt, flag) {
+		$("#dialog-txt").html(txt);
+		var dialog = $("#dialog-confirm")
+				.dialog(
+						{
+							resizable : false,
+							modal : true,
+							buttons : [ {
+								text : "OK",
+								"class" : "btn btn-danger btn-mini",
+								click : function() {
+									if (flag) {
+										$(this).dialog("close");
+										location.href = "${pageContext.request.contextPath }/08/39/add";
+									} else {
+										$(this).dialog("close");
+									}
+								}
+							} ]
+						});
+	}
+	
+	//빈칸 검사()
+	function formCheck() {
+		
+		if($("#buildingCode").val() == "")
+	    {
+			 document.getElementById(next).focus();
+	         alert("검색어를 입력해주시기 바랍니다.");
+	    }
+		
+		if(window.event.keyCode == 13) {
+			
+		}else{
+			return;
+		}
+	}
+	
+</script>
+<script>
 	$(function(){
 		$(".chosen-select").chosen(); 
 	});
@@ -444,7 +520,6 @@ $("input[name=id]").click(function(event) {
 	});
 	
 	
-	
 	//관리화면
 	$(function() {
 		//한행 클릭 >> 건물코드 가져오기
@@ -456,7 +531,7 @@ $("input[name=id]").click(function(event) {
 		      var tr = $(this);
 		      var td = tr.children();
 		      
-		      $("input[name=id]").val(td.eq(0).text());
+		      $("input[name=id]").val(td.eq(0).text().replace("c", ""));
 		      $("input[name=sectionNo]").val(td.eq(1).text());
 		      //sectionName 에 대한 값(classification)을 select box에 표시
 		      $('#form-field-section').val(td.eq(2).text()).trigger('chosen:updated');
@@ -474,10 +549,10 @@ $("input[name=id]").click(function(event) {
 		      $("input[name=managerName]").val(td.eq(13).text());
 		      $("input[name=ownerName]").val(td.eq(14).text());
 		      $("input[name=payDate]").val(td.eq(15).text());
-		      $("input[name=publicValue]").val(td.eq(16).text().replace(/,/g, ""));
-		      $("input[name=acqPrice]").val(td.eq(17).text().replace(/,/g, ""));
-		      $("input[name=etcCost]").val(td.eq(18).text().replace(/,/g, ""));
-		      $("input[name=acqTax]").val(td.eq(19).text().replace(/,/g, ""));
+		      $("input[name=publicValue]").val(td.eq(16).text());
+		      $("input[name=acqPrice]").val(td.eq(17).text());
+		      $("input[name=etcCost]").val(td.eq(18).text());
+		      $("input[name=acqTax]").val(td.eq(19).text());
 		      $("input[name=combineNo]").val(td.eq(20).text());
 		      $("input[name=taxbillNo]").val(td.eq(21).text());
 		      
@@ -519,75 +594,50 @@ $("input[name=id]").click(function(event) {
 	        event.preventDefault();
 	    }
 	}, true);
-</script>
-
-<script>
-//버튼 구현
-$(function() {
 	
-	/* $("#insert").click(function() {
-		if(${closingDate } == true){
-			alert("마감일자를 확인해 주세요");
-		}
-	});  */
-	
-	/*
-	$("#modify").click(function() {
-		alert("수정");
-	});
-
-	$("#search").click(function() {
-		alert("조회");
-	});
-	*/
-	
-	$("#delete").click(function() {
-	alert("삭제");
-	});
-	
-});
-
-
-</script>
-
-
-<script>
-//주소
-function execDaumPostcode() {
-        new daum.Postcode({
-           oncomplete : function(data) {
-              var fullRoadAddr = data.roadAddress;
-              console.log(data)
-              $("#wideAddress").val(data.sido);
-              $("#cityAddress").val(data.sigungu); 
-              $("#detailAddress").val(data.roadname + " ");
-              $("#detailAddress").focus();
-           }
-        }).open();
-     }
-</script>
-
-<!-- 빈 값 check -->
-<script>
-function check_blank(){
-	
-	theForm = document.manageForm;
-	
-	if(theForm.sectionNo.value=="")
-	{
-		alert("대분류 코드를 선택해주세요.")
-		return;
+	//금액에 3자리마다 , 넣기
+	function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	
-	if(theForm.customerNo.value=="")
-	{
-		alert("거래처 코드를 선택해주세요.")
-		return;
+	$(function() {
+		$("#publicValue").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		});
+		$("#etcCost").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		});
+		$("#acqPrice").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		});
+	});
+
+	//취득세 계산
+	$(function() {
+		$('button').on('click', function(e) {
+			e.preventDefault();
+		})
+		$("#acqPrice").change(function() {
+			var AcqPrice = $("#acqPrice").val();
+			var RealAcqPrice = AcqPrice.split(',').join('');
+			$("#acqTax").val(Math.floor(RealAcqPrice*0.04));
+			$("#acqTax").val(addCommas($("#acqTax").val().replace(/[^0-9]/g,"")));
+		});
+	});
+	
+	//주소 API
+	function execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete : function(data) {
+				var fullRoadAddr = data.roadAddress;
+				console.log(data)
+				$("#wideAddress").val(data.sido);
+				$("#cityAddress").val(data.sigungu);
+				$("#detailAddress").val(data.roadname + " ");
+				$("#detailAddress").focus();
+			}
+		}).open();
 	}
-	
-	theForm.submit();
-	
-}
 </script>
 
 <!-- date picker -->

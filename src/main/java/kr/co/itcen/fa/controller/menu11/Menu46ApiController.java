@@ -59,10 +59,11 @@ public class Menu46ApiController {
 		
 		System.out.println("list : " + list);
 		List<List<RepayVo>> repayLists = menu46Service.possibleDelete(list);	//상환내역이 있는 차입금은 제외시킨다. 상환내역 리스트를 가져온다
-		map.put("repayLists", repayLists);
-		System.out.println("repayLists");
-		if(repayLists.size() != 0)						//삭제가 안되는경우
+		if(repayLists.size() != 0) {
+			map.put("repayLists", repayLists);
+			map.put("isPossibleDelete", false);
 			return JSONResult.success(map);
+		}
 		
 		//전표 삭제
 		menu46Service.deleteVoucerList(list, authUser);
@@ -70,7 +71,6 @@ public class Menu46ApiController {
 		
 		//삭제후 리스트 다시 얻음.
 		map.putAll(menu46Service.getList());
-		map.put("repayLists", null);								//해당 List로 삭제할수있는지 없는지를 비교한다.
 		
 		return JSONResult.success(map);
 	}
@@ -78,8 +78,13 @@ public class Menu46ApiController {
 	@ResponseBody
 	@RequestMapping(value = "/" + Menu46Controller.SUBMENU + "/repay", method = RequestMethod.POST)
 	public JSONResult repay(RepayVo repayVo,
-			@AuthUser UserVo uservo) {
+			@AuthUser UserVo authUser) throws ParseException {
 		STermDebtVo vo = menu46Service.get(repayVo.getDebtNo());	//단기 차입금 불러온다
+		Map map = new HashMap();
+		
+		if(!menu19Service.checkClosingDate(authUser, repayVo.getPayDate())) {
+			map.put("isClosed", true);
+		}
 		
 		//-----------------단기차입금 update----------------------//
 		System.out.println("상환잔액 : " + vo.getRepayBal() + " 납입금: " + repayVo.getPayPrinc());
@@ -88,20 +93,19 @@ public class Menu46ApiController {
 			System.out.println("모두상환");
 			vo.setRepayCompleFlag("Y");
 		}
-			
 		
 		vo.setRepayBal(vo.getRepayBal() - repayVo.getPayPrinc());		//상환잔액 update
 		menu46Service.updateRepayBal(vo);
 		
 		//-----------------전표입력----------------------//
-		Long voucherNo= menu46Service.insertVoucherWithRepay(vo, repayVo, uservo);	//전표번호를 받아온다.
+		Long voucherNo= menu46Service.insertVoucherWithRepay(vo, repayVo, authUser);	//전표번호를 받아온다.
 		
 		//-----------------상환 입력----------------------//
 		repayVo.setVoucherNo(voucherNo);
-		repayVo.setInsertId(uservo.getId());
+		repayVo.setInsertId(authUser.getId());
 		menu46Service.insertRepay(repayVo);
 		
-		Map map = menu46Service.getList();
+		map = menu46Service.getList();
 		
 		return JSONResult.success(map);
 	}
