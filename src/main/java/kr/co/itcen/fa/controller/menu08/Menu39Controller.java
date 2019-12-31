@@ -88,14 +88,32 @@ public class Menu39Controller {
 		
 		buildingvo.setInsertUserid(authUser.getId());
 		
+		buildingvo.setId("b"+buildingvo.getId());
+		
+		//, 빼기
+		String acqPrice = buildingvo.getAcqPrice().replace("," ,"");
+		buildingvo.setAcqPrice(acqPrice);
+		
+		String publicValue = buildingvo.getPublicValue().replace("," ,"");
+		buildingvo.setPublicValue(publicValue);
+		
+		String etcCost = buildingvo.getEtcCost().replace("," ,"");
+		buildingvo.setEtcCost(etcCost);
+		
+		String acqTax = buildingvo.getAcqTax().replace("," ,"");
+		buildingvo.setAcqTax(acqTax);
+		
 		if("".equals(buildingvo.getCombineNo())) {
-			buildingvo.setCombineNo("00");
+			buildingvo.setCombineNo("0");
 		}
-		if(buildingvo.getEtcCost() == null) {
-			buildingvo.setEtcCost(0L);
+		if("".equals(buildingvo.getEtcCost())) {
+			buildingvo.setEtcCost("0");
 		}
-		if(buildingvo.getAcqTax() == null) {
-			buildingvo.setAcqTax(0L);
+		if("".equals(buildingvo.getAcqTax())) {
+			buildingvo.setAcqTax("0");
+		}
+		if("".equals(buildingvo.getPublicValue())) {
+			buildingvo.setPublicValue("0");
 		}
 		if("".equals(buildingvo.getSectionNo())) {
 			buildingvo.setSectionNo(null);
@@ -103,6 +121,8 @@ public class Menu39Controller {
 		if("".equals(buildingvo.getCustomerNo())) {
 			buildingvo.setCustomerNo(null);
 		}
+		
+		
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
@@ -134,14 +154,24 @@ public class Menu39Controller {
 		
 		Long bVoucherNo = menu39Service.getVoucherNo(buildingvo.getId());
 		
+		buildingvo.setId("b"+buildingvo.getId());
+		
+		Long acqPrice = Long.parseLong(buildingvo.getAcqPrice().replace("," ,""));
+		Long publicValue = Long.parseLong(buildingvo.getPublicValue().replace("," ,""));
+		Long etcCost = Long.parseLong(buildingvo.getEtcCost().replace("," ,""));
+		Long acqTax = Long.parseLong(buildingvo.getAcqTax().replace("," ,""));
+		
 		if(buildingvo.getCombineNo() == null) {
 			buildingvo.setCombineNo("00");
 	    }
-		if(buildingvo.getEtcCost() == null) {
-			buildingvo.setEtcCost(0L);
+		if("".equals(buildingvo.getEtcCost())) {
+			buildingvo.setEtcCost("0");
 		}
-		if(buildingvo.getAcqTax() == null) {
-			buildingvo.setAcqTax(0L);
+		if("".equals(buildingvo.getAcqTax())) {
+			buildingvo.setAcqTax("0");
+		}
+		if("".equals(buildingvo.getPublicValue())) {
+			buildingvo.setPublicValue("0");
 		}
 		if("".equals(buildingvo.getSectionNo())) {
 			buildingvo.setSectionNo(null);
@@ -170,12 +200,12 @@ public class Menu39Controller {
 			
 			voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo.getPayDate() : 거래날짜
 			
-			itemVo.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost()); //  거래금액
+			itemVo.setAmount(acqPrice + acqTax + etcCost); //  거래금액
 			itemVo.setAmountFlag("d"); // 차변
 			itemVo.setAccountNo(1220201L); //계정과목 : 건물
 			itemVoList.add(itemVo);
 
-			itemVo2.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost());
+			itemVo2.setAmount(acqPrice + acqTax + etcCost);
 			itemVo2.setAmountFlag("c"); // 대변
 			itemVo2.setAccountNo(1110103L); //계정과목 : 보통예끔
 			itemVoList.add(itemVo2);
