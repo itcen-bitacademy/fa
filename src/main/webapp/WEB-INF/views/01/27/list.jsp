@@ -160,47 +160,63 @@
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
 				}
-				$.ajax({
-				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
-				    type: "POST",
-				    data: queryString,
-				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				var customername = document.getElementById("name").value;
+				
+				// 수정확인창을 띄운다.
+				openDeleteModal('UPDATE CHECK',customername+"을(를) 수정하시겠습니까?");
+				
+				// 수정확인창 - 취소 버튼을 누르면 수정 X
+				$("#deletecancel").click(function(){
+					openErrorModal("UPDATE_CANCEL","거래처 수정이 취소 되었습니다.");
+					console.log("cancel");
+					return;
+				});
+				$("#deleteok").click(function(){
+				
+					$.ajax({
+					    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
+					    type: "POST",
+					    data: queryString,
+					    dataType: "json",
+					    success: function(result){
+					    	if(result.success) {
+	
+								openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
+								$("#btn-check-no").show();
+					    		//alert("거래처 수정이 완료되었습니다."); 
+					    		removeTable();
+					    		
+					    		var customerList = result.customerList;
+					    		createNewTable(customerList);
+					    	}
+					    	if(result.fail) {
+					    		alert("다시 입력해주세요.");
+					    	}
+					    	
+					    	$('#pagination ul').remove();
+				    		createNewPage(result, a);
+					    	$('#pagination').show();
+					    },
+					    error: function( err ){
+					      	console.log(err)
+					    }
+					 })
 
-							openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
-							$("#btn-check-no").show();
-				    		//alert("거래처 수정이 완료되었습니다."); 
-				    		removeTable();
-				    		
-				    		var customerList = result.customerList;
-				    		createNewTable(customerList);
-				    	}
-				    	if(result.fail) {
-				    		alert("다시 입력해주세요.");
-				    	}
-				    	
-				    	$('#pagination ul').remove();
-			    		createNewPage(result, a);
-				    	$('#pagination').show();
-				    },
-				    error: function( err ){
-				      	console.log(err)
-				    }
-				 })
+				});
 			} else if(a == "delete") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!DeleteValidation()){
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
 				}
+				var customername = document.getElementById("name").value;
 				
 				// 삭제확인창을 띄운다.
-				openDeleteModal('DELETE CHECK',"삭제하시겠습니까?");
+				openDeleteModal('DELETE CHECK',customername+"을(를)삭제하시겠습니까?");
 				
 				// 삭제확인창 - 취소 버튼을 누르면 삭제 X
 				$("#deletecancel").click(function(){
-					openErrorModal("DELETE_CANCEL SUCCESS","거래처 삭제가 취소 되었습니다.");
+					openErrorModal("DELETE_CANCEL","거래처 삭제가 취소 되었습니다.");
 					console.log("cancel");
 					return;
 				});
