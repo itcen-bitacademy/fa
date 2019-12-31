@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu43Service;
@@ -54,24 +55,38 @@ public class Menu43Controller {
 
 	// main page
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model, @RequestParam(value = "kwd", required = false, defaultValue = "") String kwd) {
+	public String list(IntangibleAssetsVo intangibleAssetsVo,
+			Model model, 
+			@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd,
+			@RequestParam(value="page", required=false, defaultValue = "1") int page) {
+		
 		// 대분류코드, 거래처명 리스트
 		Map<String, Object> map = new HashMap<>();
 		map.putAll(menu43Service.getSection());
 		map.putAll(menu43Service.getCustomer());
 		map.putAll(menu43Service.getPurpose());
 		model.addAllAttributes(map);
+		
+		//DataResult<IntangibleAssetsVo> dataResult = new DataResult<IntangibleAssetsVo>();
 
 		// 품목코드로 조회
 		if (kwd != null) {
 			List<IntangibleAssetsVo> list = menu43Service.getList(kwd);
-			model.addAttribute("kwd", kwd);
+			/*dataResult = menu43Service.list(page, kwd);
+			
+			model.addAttribute("dataResult",dataResult);
+			model.addAttribute("page" , page);*/
 			model.addAttribute("list", list);
+			model.addAttribute("kwd", kwd);
 
 			return MAINMENU + "/" + SUBMENU + "/add";
 		}
 
 		kwd = null;
+		/*dataResult = menu43Service.list(page, kwd); 
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page" , page);*/
+				
 		List<IntangibleAssetsVo> list = menu43Service.getList(kwd);
 		model.addAttribute("kwd", kwd);
 		model.addAttribute("list", list);

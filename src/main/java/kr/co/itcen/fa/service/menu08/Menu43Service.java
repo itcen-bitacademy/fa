@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu08.Menu43Repository;
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
 import kr.co.itcen.fa.vo.menu08.PurposeVo;
@@ -33,6 +35,21 @@ public class Menu43Service {
 		menu43Repository.insert(intangibleAssetsVo);
 	}
 
+	public DataResult<IntangibleAssetsVo> list(int page, String kwd) {
+		DataResult<IntangibleAssetsVo> dataResult = new DataResult<IntangibleAssetsVo>();
+		
+		int totalCount = menu43Repository.listCount(kwd);
+		
+		//pagination
+		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
+		dataResult.setPagination(pagination);
+		
+		List<IntangibleAssetsVo> list = menu43Repository.list(kwd, pagination);
+		dataResult.setDatas(list);
+		
+		return dataResult;
+	}
+	
 	public List<IntangibleAssetsVo> getList(String kwd) {
 		return menu43Repository.getList(kwd);
 	}
@@ -66,7 +83,6 @@ public class Menu43Service {
 		map.put("purposeList",menu43Repository.getPurpose());
 		return map;
 	}
-
 
 	public CustomerVo getCustomerInfo(String customerNo) {
 		return menu43Repository.getCustomerInfo(customerNo);

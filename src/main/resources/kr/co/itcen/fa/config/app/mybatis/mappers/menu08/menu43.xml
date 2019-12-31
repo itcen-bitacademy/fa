@@ -20,7 +20,7 @@
 		<![CDATA[
 		insert 
 		  into tb_intangible_assets
-		values (#{id }, #{customerNo }, #{taxbillNo }, #{voucherNo }, '007', #{code }, #{name }, #{copyCount },
+		values ( CONCAT('f', #{id }), #{customerNo }, #{taxbillNo }, #{voucherNo }, '007', #{code }, #{name }, #{copyCount },
 				#{purpose }, #{address }, #{user }, #{acqPrice }, #{addiFee }, #{payDate }, #{taxKind},
 				's', #{insertUserId }, now(), #{updateUserId }, #{updateDay })
 		]]>
@@ -56,6 +56,35 @@
 		 where id = #{id }
 		]]>
 	</select>
+	
+	<!-- 페이징 처리  -->
+	<select id="list" resultType="intangibleAssetsVo" parameterType="map">
+		<![CDATA[
+			select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
+		   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
+		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind, c.name as customerName, c.manager_name as customerManager,
+		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
+		   tb.update_day as updateDay
+	  from tb_intangible_assets tb
+left outer join tb_section s on tb.code = s.code
+left outer join tb_customer c on tb.customer_no = c.no
+	 where s.parent_no = 5
+	   and flag ='s'
+		]]>
+		<if test=' kwd != null '><!-- "_parameter.length()>0" --> 
+            <![CDATA[
+              and tb.id like CONCAT('%', #{id }, '%') 
+            ]]>
+         </if>
+         <![CDATA[
+          order by tb.update_day desc, tb.insert_day desc
+         ]]>
+         <if test=' pagination.pageIndex >= 0 '>
+			<![CDATA[
+        		limit #{pagination.pageIndex }, #{pagination.listSize }
+    		]]>
+		</if>
+	</select> 
 	
 	<select id="getList" parameterType="string" resultType="intangibleAssetsVo">
 	<![CDATA[
@@ -135,5 +164,11 @@ left outer join tb_customer c on tb.customer_no = c.no
 		where id = #{id }
 	]]>
 	</delete>
+	
+	<select id="listCount" resultType="int" parameterType="string">
+		select count(*)
+		from tb_intangible_assets
+		where id like CONCAT('%', #{id }, '%') and flag = 's'
+	</select>
 
 </mapper>

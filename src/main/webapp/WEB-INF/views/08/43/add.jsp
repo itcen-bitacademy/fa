@@ -6,20 +6,16 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
-	<input type="hidden" id="context-path"
-		value="${pageContext.request.contextPath }" />
-	<input type="hidden" id="main-menu-code"
-		value="${menuInfo.mainMenuCode }" />
-	<input type="hidden" id="sub-menu-code"
-		value="${menuInfo.subMenuCode }" />
+	<input type="hidden" id="context-path" value="${pageContext.request.contextPath }" />
+	<input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }" />
+	<input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }" />
+	<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
 	<input type="hidden" id="kwd" name="kwd" value="${kwd }">
 
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -41,7 +37,8 @@
 
 
 							<form class="form-horizontal" method="post"
-								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add" 
+								id="insert-intangibleAssets-form" method="post" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();">
 								<div class="span6">
 									<!-- 차변 -->
 									<div class="control-group">
@@ -49,7 +46,7 @@
 											코드</label>
 										<div class="controls">
 											<input type="text" class="span7" id="id" name="id"
-												placeholder="ex) f120400701 (f+월+일+007+번호)" />
+												placeholder="ex) 120400701 (월+일+007+번호)" />
 											<button class="btn btn-info btn-small" type="submit"
 												id="list" style="float: right; margin-right: 180px;">조회</button>
 										</div>
@@ -67,6 +64,7 @@
 										<div class="controls">
 											<select class="span2 chosen-select" id="form-field-section"
 												name="classification" data-placeholder="전체">
+												<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option sectionList="${sectionVo.code }"
 														value="${sectionVo.classification }">${sectionVo.classification }</option>
@@ -81,6 +79,7 @@
 										<div class="controls">
 											<select class="chosen-select" id="form-field-customer"
 												name="customerNo" data-placeholder="전체">
+												<option value=""></option>
 												<c:forEach items="${customerList }" var="customerVo">
 													<option customerName="${customerVo.name }"
 														customerManager="${customerVo.managerName }"
@@ -121,21 +120,21 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">무형자산 명</label>
 										<div class="controls">
-											<input type="text" class="span11" id="form-field-1"
+											<input type="text" class="span11" id="name"
 												name="name" placeholder="무형자산명을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">사용 담당자</label>
 										<div class="controls">
-											<input type="text" class="span7" id="form-field-1"
+											<input type="text" class="span7" id="user"
 												name="user" placeholder="이름을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">수량</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="copyCount"
+											<input type="text" id="copyCount" name="copyCount"
 												style="text-align: right;" placeholder="수량을 입력하세요" />
 										</div>
 									</div>
@@ -154,6 +153,7 @@
 												name="purpose" placeholder="용도를 입력하세요" /> -->
 											<select class="chosen-select" id="form-field-purpose"
 												name="purpose" data-placeholder="전체">
+												<option value=""></option>
 												<c:forEach items="${purposeList }" var="purposeVo">
 													<option value="${purposeVo.classification }">${purposeVo.classification }</option>
 												</c:forEach>
@@ -280,18 +280,177 @@
 
 			</div>
 			<!-- /.page-content -->
-		</div>
-		<!-- /.main-content -->
-
+			
+			<!--  <div class="pagination">
+				<ul>
+					<c:choose>
+						<c:when test="${dataResult.pagination.prev }">
+							<li><a
+								href="${pageContext.servletContext.contextPath }/08/44/list?page=${dataResult.pagination.startPage - 1 }"><i
+									class="icon-double-angle-left"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i
+									class="icon-double-angle-left"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+					<c:forEach begin="${dataResult.pagination.startPage }"
+						end="${dataResult.pagination.endPage }" var="pg">
+						<c:choose>
+							<c:when test="${pg eq dataResult.pagination.page }">
+								<li class="active"><a
+									href="${pageContext.servletContext.contextPath }/08/44/list?page=${pg }">${pg }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a
+									href="${pageContext.servletContext.contextPath }/08/44/list?page=${pg }&kwd=${kwd }">${pg }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${dataResult.pagination.next }">
+							<li><a
+								href="${pageContext.servletContext.contextPath }/08/44/list?page=${dataResult.pagination.endPage + 1 }"><i
+									class="icon-double-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i
+									class="icon-double-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+			</div> -->
+							
+				<!-- 유효성 검사 dialog -->
+				<div id="dialog-confirm" class="hide">
+					<p id="dialog-txt" class="bolder grey"></p>
+				</div>
+			</div>
+			<!-- /.main-content -->
 	</div>
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
+		// 마감일 세팅 여부
+		function checkClosing(){ 
+			if($("#closingDate").val()=="true"){
+				dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+			}
+		}
+		
+		// 입력 유효성 검사
+		function insert(){
+			if(!valid.nullCheck("id", "무형자산 코드")) return;
+			if(!valid.numberCheck("id", "무형자산 코드")) return;
+			if(!valid.nullCheck("address", "설치 주소")) return;
+			if(!valid.nullCheck("code", "무형자산 분류")) return;
+			if(!valid.nullCheck("customerNo", "거래처")) return;
+			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
+			if(!valid.nullCheck("addiFee", "부대 비용")) return;
+			if(!valid.nullCheck("code", "무형자산 명")) return;
+			if(!valid.nullCheck("user", "사용 담당자")) return;
+			if(!valid.nullCheck("copyCount", "수량")) return;
+			if(!valid.numberCheck("copyCount", "수량")) return;
+			if(!valid.nullCheck("customerManager", "담당자")) return;
+			if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
+			if(!valid.radioCheck("taxKind", "세금 종류")) return;
+			
+			$("#insert-intangibleAssets-form").submit();
+		}
+		
+		// 수정 유효성 검사
+		function update(){
+			if(!valid.nullCheck("id", "무형자산 코드")) return;
+			if(!valid.numberCheck("id", "무형자산 코드")) return;
+			if(!valid.nullCheck("address", "설치 주소")) return;
+			if(!valid.nullCheck("code", "무형자산 분류")) return;
+			if(!valid.nullCheck("customerNo", "거래처")) return;
+			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
+			if(!valid.nullCheck("addiFee", "부대 비용")) return;
+			if(!valid.nullCheck("code", "무형자산 명")) return;
+			if(!valid.nullCheck("user", "사용 담당자")) return;
+			if(!valid.nullCheck("copyCount", "수량")) return;
+			if(!valid.numberCheck("copyCount", "수량")) return;
+			if(!valid.nullCheck("customerManager", "담당자")) return;
+			if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
+			if(!valid.radioCheck("taxKind", "세금 종류")) return;
+			
+	    	var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update";
+	    		$("#insert-intangibleAssets-form").attr("action",url).submit();
+	    }
+		
+		var valid = {
+			// null 체크
+        	nullCheck: function(id, msg){
+	        	if($("#"+id).val()==""){
+	        		dialog(msg+" 을(를) 입력 해 주세요.");
+	        		$("#"+id).focus();
+	        		return false;
+	        	} else {
+	        		return true;
+	        	}
+        	},
+        	
+        	// 문자열 체크
+			strCheck: function(id){
+        			
+        	},
+        	
+        	// 문자열 체크 
+			radioCheck: function(name, msg){
+				if(!jQuery('input[name='+ name +']:checked').val()){
+        			dialog(msg+" 를 선택해 주세요.");
+					return false;
+				} else {
+					return true;
+				}
+        	},
+        	
+        	// 숫자 체크
+			numberCheck: function(id, msg){
+        		if(!$.isNumeric($("#"+id).val())){        	
+        			dialog(msg+"는 숫자만 입력 가능합니다.");
+        			$("#"+id).val("");
+        			$("#"+id).focus();
+        			return false;
+        		} else if($("#"+id).val().length > 10 || $("#"+id).val().length < 10) {
+        			dialog(msg+"는 9자리로 지정해야합니다.<br> ex: 110100701 (월+일+007+번호)");
+        			$("#"+id).val("");
+        			$("#"+id).focus();
+        			return false;
+        		} else {
+        			return true;
+        		}
+        	}
+        }
+		
+		// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+		function dialog(txt, flag) {
+	        $("#dialog-txt").html(txt);
+	    	var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+							"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$( this ).dialog( "close" ); 
+									location.href="${pageContext.request.contextPath }/08/43/add";
+							} else {
+								$( this ).dialog( "close" ); 
+							}
+						}
+					}
+				]
+			});
+	    }
+	
 		$(function() {
 			$(".chosen-select").chosen();
 
@@ -317,7 +476,9 @@
 						$('#customerManager').val(customerManager);
 					});
 
-			// 품목코드 중복 체크
+			// 품목코드 유효성 검사
+			console.log("clsosing" + $("#closingDate").val());
+			checkClosing();
 			$("input[name=id]").on(
 					"change",
 					function() {
@@ -354,11 +515,21 @@
 						});
 
 					});
+			
+			// 모든 입력항목 유효성 검사
+			$("#add").click(function() {
+				insert();
+			});
+			
+			$("#update").click(function() {
+				update();
+			});
 
 			// 무형자산 등록 : C
 			$('#add')
 					.click(
-							function() {
+							function(event) {
+								event.preventDefault();
 								$("form")
 										.attr(
 												"action",
@@ -405,7 +576,8 @@
 			// 무형자산 수정 : U
 			$("#update")
 					.click(
-							function() {
+							function(event) {
+								event.preventDefault();
 								$("form")
 										.attr(
 												"action",
@@ -415,7 +587,7 @@
 			// 무형자산 삭제 : D
 			$("#delete")
 					.click(
-							function() {
+							function(event) {
 								$("form")
 										.attr(
 												"action",

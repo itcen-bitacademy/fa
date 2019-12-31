@@ -62,6 +62,7 @@
 										<div class="controls">
 											<select class="span2 chosen-select" id="form-field-section"
 												name="classification" data-placeholder="전체">
+												<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option sectionList="${sectionVo.code }"
 														value="${sectionVo.classification }">${sectionVo.classification }</option>
