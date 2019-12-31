@@ -20,7 +20,6 @@
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 	jQuery(function($) {
@@ -232,7 +231,9 @@
 	
 	function checkNo() {
 		if($("#no").val() == $("#preNo").val()) {
-			$("#form-customer").submit();
+			if(checkValid()) {
+				$("#form-customer").submit();
+			}
 			return;
 		}
 		$.ajax({
@@ -247,9 +248,12 @@
 					return;
 				}
 				if(response.data == true) {
-					$("#invalid").show();
+					dialog("중복된 사업자번호 입니다.");
+					//$("#invalid").show();
 				} else {
-					$("#form-customer").submit();
+					if(checkValid()) {
+						$("#form-customer").submit();
+					}
 				}
 			},
 			error: function(xhr, error) {
@@ -257,6 +261,18 @@
 			}
 		});	
 		
+	}
+	
+	function checkValid() {
+		if(!valid.nullCheck("no", "사업자번호")) return false;
+		if(!valid.numberCheck("no", "사업자번호")) return false;
+		if(!valid.nullCheck("name", "상호")) return false;
+		if(!valid.numberCheck("corporationNo", "법인번호")) return false;
+		if(!valid.nullCheck("phone", "전화번호")) return false;
+		if(!valid.numberCheck("phone", "전화번호")) return false;
+		if(!valid.nullCheck("managerName", "담당자명")) return false;
+		if(!valid.nullCheck("managerEmail", "메일")) return false;
+		return true;
 	}
 	
 	function execDaumPostcode() {
@@ -294,6 +310,52 @@
                 document.getElementById("detailAddress").value = "";
             }
         }).open();
+    }
+	
+	var valid = {
+       	nullCheck: function(id, msg){ // null 체크
+    		if($("#"+id).val()==""){
+   				dialog(msg+" 을(를) 입력 해 주세요.");
+   				$("#"+id).focus();
+   				return false;
+   			} else {
+   				return true;
+   			}
+   		},
+		strCheck: function(id){  // 문자열 체크 
+       			
+       	}, 
+		numberCheck: function(id, msg){  // 숫자 체크
+			if(!($("#"+id).val()) == "" && !$.isNumeric($("#"+id).val())){        	
+       			dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
+       			$("#"+id).focus();
+       			return false;
+       		} else {
+       			return true;
+       		}
+       	}
+	}
+	// 유효성 검사시에 발생되는 Dialog - 화면
+    function dialog(txt, flag) {
+        $("#dialog-txt").html(txt);
+    	var dialog = $( "#dialog-confirm" ).dialog({
+			resizable: false,
+			modal: true,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						if(flag){
+							$( this ).dialog( "close" ); 
+							location.href="${pageContext.request.contextPath }/12/53";
+						} else {
+							$( this ).dialog( "close" ); 
+						}
+					}
+				}
+			]
+		});
     }
 </script>
 <body class="skin-3">
@@ -469,6 +531,10 @@
 									</table>
 								</div>
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+								<div id="dialog-confirm" class="hide">
+									<p id="dialog-txt" class="bolder grey">
+									</p>
+								</div>
 							</form:form>
 						</div>
 					</div>
