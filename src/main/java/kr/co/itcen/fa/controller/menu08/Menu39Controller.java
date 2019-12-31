@@ -90,6 +90,7 @@ public class Menu39Controller {
 		
 		buildingvo.setId("b"+buildingvo.getId());
 		
+		
 		//, 빼기
 		String acqPrice = buildingvo.getAcqPrice().replace("," ,"");
 		buildingvo.setAcqPrice(acqPrice);

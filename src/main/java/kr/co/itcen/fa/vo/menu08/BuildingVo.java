@@ -35,6 +35,7 @@ public class BuildingVo {
 	private String updateUserid;
 	private String updateDay;
 	
+	
 	public String getId() {
 		return id;
 	}
