@@ -96,8 +96,6 @@ public class Menu37Repository {
 
 	}
 
-	public BuyTaxbillVo getInsertInfor(String originalNo) {
-		return sqlSession.selectOne("menu37.getInsertInfor", originalNo);
-	}
+	
 
 }

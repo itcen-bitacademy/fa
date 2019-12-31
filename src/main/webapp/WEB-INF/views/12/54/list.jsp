@@ -9,9 +9,34 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-	.chosen-search {
-		display: none;
-	}
+		.chosen-search {
+			display: none;
+		}
+		
+		.number{
+    		text-align:right;
+    	}
+		
+		.form-horizontal .control-label {
+            text-align: left
+        }
+        
+        html,body{
+         	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
 </style>
 </head>
 <body class="skin-3" style="min-width:1500px">
@@ -132,22 +157,38 @@
 														<span class="lbl">&nbsp;정렬순서&nbsp;&nbsp;&nbsp;</span>
 														
 														<span class="lbl">&nbsp;최근순&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="writeDate">
-															
+														<input name="orderData" type="radio" class="ace" value="tst.write_date" checked="checked">
+																													
 														<span class="lbl">&nbsp;공급가액 순&nbsp;&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="totalSupplyValue">
+														<c:if test="${order eq 'tst.total_supply_value' }">	
+															<input name="orderData" type="radio" class="ace" value="tst.total_supply_value" checked="checked">
+														</c:if>
+														<c:if test="${order ne 'tst.total_supply_value' }">
+															<input name="orderData" type="radio" class="ace" value="tst.total_supply_value">
+														</c:if>
 															
 														<span class="lbl">&nbsp;품목명 순&nbsp;&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="itemCode">
-															
+														<c:if test="${order eq 'tbs.item_name' }">
+															<input name="orderData" type="radio" class="ace" value="tbs.item_name" checked="checked">
+														</c:if>
+														<c:if test="${order ne 'tbs.item_name' }">
+																<input name="orderData" type="radio" class="ace" value="tbs.item_name">
+														</c:if>
+														
 														<span class="lbl">&nbsp;거래처명 순&nbsp;&nbsp;</span>
-														<input name="orderData" type="radio" class="ace" value="customerName">
+														<c:if test="${order eq 'tst.customer_name' }">
+																<input name="orderData" type="radio" class="ace" value="tst.customer_name" checked="checked">
+														</c:if>
+														<c:if test="${order ne 'tst.customer_name' }">
+																<input name="orderData" type="radio" class="ace" value="tst.customer_name">
+														</c:if>
 															
 														<span class="lbl">&nbsp;과세구분&nbsp;&nbsp;</span>
 														<select class="chosen-select" id="zero" name="taxType" data-placeholder="영세/비영세">
 															<option value="tax">yes</option>
 															<option value="no">no</option>
 														</select>
+														
 														<button class="btn btn-small btn-info" type="submit">조회</button>
 											</div>
 										</div>
@@ -319,6 +360,29 @@
                 location.href = url;
             }
         }
+		
+		// 유효성 검사시에 발생되는 Dialog - 화면
+	    function dialog(txt, flag) {
+	        $("#dialog-txt").html(txt);
+	    	var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$( this ).dialog( "close" ); 
+								location.href="${pageContext.request.contextPath }/12/53";
+							} else {
+								$( this ).dialog( "close" ); 
+							}
+						}
+					}
+				]
+			});
+	    }
 		
 	</script>
 </body>

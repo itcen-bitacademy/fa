@@ -11,30 +11,40 @@
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <style>
 /* 스크롤 깨짐 css s */
-html, body {
+  	html,body{
+  	overflow-x:hidden;
+	height:100%;
+}
+.main-container{
+	height:calc(100% - 45px);
 	overflow-x: hidden;
-	height: 100%;
 }
-
-.main-container {
-	height: calc(100% - 45px);
-	overflow-x: hidden;
+.main-content{
+	overflow:auto;
 }
-
-.main-content {
-	overflow: auto;
-}
+<<<<<<< HEAD
 
 .page-content {
-	min-width: 1280px;
+	min-width: 1920px;
+=======
+.page-content{
+	min-width:1280px;
+>>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 }
+<<<<<<< HEAD
 
-@media screen and (max-width: 930px) {
+@media screen and (max-width: 920px) {
 	.main-container {
 		height: calc(100% - 84px);
+=======
+@media screen and (max-width: 920px) {
+	.main-container{
+		height:calc(100% - 84px);
+>>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 	}
 }
 /* 스크롤 깨짐 css e */
+
 #sample-table-1 tr td {
 	padding: 0;
 }
@@ -52,13 +62,18 @@ html, body {
 }
 </style>
 </head>
-<body class="skin-3" style="min-width: 1920px"
+<<<<<<< HEAD
+<body class="skin-3" onload="startFunctions();">
+=======
+<body class="skin-3"
 	onload="startFunctions();">
+>>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
+			
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입세금계산서관리</h1>
 					<a class="btn btn-link pull-right"
@@ -79,9 +94,7 @@ html, body {
 									<input style="width: 100%" type="text" id="no" name="no"
 										value="${getAboutNoData.no }"
 										placeholder="ex) 20190420-44231234-57644467"
-										autocomplete="off" /> <input style="width: 100%"
-										type="hidden" id="no" name="originalNo"
-										value="${getAboutNoData.no }" />
+										autocomplete="off" />
 								</div>
 								<label class="control-label span1" for="manage-no">관&emsp;리&emsp;번&emsp;호</label>
 								<div class="controls span5">
@@ -216,6 +229,13 @@ html, body {
 										</c:otherwise>
 									</c:choose>
 								</div>
+								<!-- 필요한 hiiden값-->
+								<div class="controls span3">
+									<input style="width: 100%" type="hidden" id="insertUserid"
+										name="insertUserid" value="${getAboutNoData.insertUserid }" />
+									<input style="width: 100%" type="hidden" id="insertDay"
+										name="insertDay" value="${getAboutNoData.insertDay }" />
+								</div>
 							</div>
 						</div>
 					</div>
@@ -330,7 +350,8 @@ html, body {
 							</div>
 							<div class="control-group">
 								<button class="btn btn-danger btn-small"
-									style="float: left; margin-left: 20px;">입력</button>
+									style="float: left; margin-left: 20px;"
+									onclick="insert_button();">입력</button>
 								<button class="btn btn-warning btn-small" type="button"
 									style="float: left; margin-left: 20px;"
 									onclick="update_button();">수정</button>
@@ -347,7 +368,7 @@ html, body {
 				</form>
 			</div>
 			<!-- PAGE CONTENT ENDS -->
-
+			
 		</div>
 		<!-- /.span -->
 	</div>
@@ -515,8 +536,41 @@ html, body {
 				</c:forEach>
 			}
 		}
+		function prevent_commas_error(){
+			var totalSupplyValue =  $("#form-field-14").val();
+			var totalTaxValue =  $("#form-field-15").val();
+			
+			totalSupplyValue = totalSupplyValue.replace(/,/gi, "");
+			totalTaxValue = totalTaxValue.replace(/,/gi, "");
+			
+			$("#form-field-14").val(totalSupplyValue);
+			$("#form-field-15").val(totalTaxValue);
+			
+			for (var i = 1; i < $("#sample-table-1 tr").length; i++) {
+				var supplyValue = $("#supply-value" + i).val();
+				var taxValue = $("#tax-value" + i).val();
+
+				supplyValue = supplyValue.replace(/,/gi, "");
+				taxValue = taxValue.replace(/,/gi, "");
+
+				$("#supply-value" + i).val(supplyValue);
+				$("#tax-value" + i).val(taxValue);
+			}
+		}
+		// 입력버튼 클릭시 
+		function insert_button() {
+			prevent_commas_error();
+	
+			$("#manage-form")
+					.attr(
+							"action",
+							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add")
+					.submit();
+		}
 		// 수정버튼 클릭시 
 		function update_button() {
+			prevent_commas_error();
+			
 			$("#manage-form")
 					.attr(
 							"action",

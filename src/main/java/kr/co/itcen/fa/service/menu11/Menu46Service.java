@@ -112,12 +112,12 @@ public class Menu46Service {
 		itemVo.setAccountNo(repayVo.getAccountNo());	//이자비용 계정과목코드
 		itemVoList.add(itemVo);
 		
-		itemVo2.setAmount(repayVo.getPayPrinc());		//납입원금
-		itemVo2.setAmountFlag("d");						//차변
+		itemVo2.setAmount(repayVo.getPayPrinc());				//납입원금
+		itemVo2.setAmountFlag("d");								//차변
 		itemVo2.setAccountNo(stermdebtVo.getAccountNo());		//단기차입금 계정과목코드					
 		itemVoList.add(itemVo2);
 		
-		itemVo3.setAmount(repayVo.getPayPrinc() + repayVo.getIntAmount());		//보통예금
+		itemVo3.setAmount(repayVo.getTotalPayPrinc());							//보통예금
 		itemVo3.setAmountFlag("c");												//대변
 		itemVo3.setAccountNo(new BankAccountVo().getAccountNo());				//보통예금 계정과목 코드
 		itemVoList.add(itemVo3);

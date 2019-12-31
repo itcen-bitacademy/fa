@@ -66,7 +66,10 @@
 		});
 		$("#btn-reset").click(function(){
 			$("#no").attr("readonly",false);
+			$("#corporationNo").attr("readonly",false);
 			$("#btn-check-no").show();
+			$("#img-checkno").hide();
+			
 		});
 		
 		$("#inputform").submit(function(event) {
@@ -80,7 +83,7 @@
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(nochecked==false){
 
-					openErrorModal("CHECK NO DUPLICATE","중복체크는 필수입니다.",'#no');
+					openErrorModal("DUPLICATE CHECK ERROR","사업자등록번호 중복검사는 필수입니다.",'#no');
 					$("#btn-check-no").show();
 					return;
 				}
@@ -106,6 +109,8 @@
 				    		    this.reset();
 				    		});
 				    		openErrorModal("CREATE SUCCESS","거래처 등록에 성공하였습니다.");
+							$("#btn-check-no").show();
+							$("#img-checkno").hide();
 				    		//alert("거래처 등록이 완료되었습니다."); 
 				    		
 				    		removeTable();
@@ -131,8 +136,8 @@
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.success) {
-							$("#btn-check-no").hide();
 				    		openErrorModal("READ SUCCESS","거래처 조회가 완료되었습니다.");
+							$("#btn-check-no").show();
 				    		//alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#inputform').each(function(){
@@ -164,6 +169,7 @@
 				    	if(result.success) {
 
 							openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
+							$("#btn-check-no").show();
 				    		//alert("거래처 수정이 완료되었습니다."); 
 				    		removeTable();
 				    		
@@ -211,6 +217,7 @@
 					    	if(result.success) {
 					    		//alert("거래처 삭제가 완료되었습니다."); 
 								openErrorModal("DELETE SUCCESS","거래처 삭제가 완료되었습니다.");
+								$("#btn-check-no").show();
 					    		removeTable();
 					    		$('#inputform').each(function(){
 					    		    this.reset();
@@ -575,13 +582,13 @@
 	//사업자등록번호 Valid
 	function noValid(no){
 			if('' === no){
-				errortitle = 'NO ERROR';	
+				errortitle = 'CUSTOMER_NO ERROR';	
 				validationMessage = '사업자등록번호는 반드시 입력해야합니다.';
 				errorfield='#no';
 				return false;
 			}
 			if(no.length<10 || no.length >10){
-				errortitle = 'NO ERROR';
+				errortitle = 'CUSTOMER_NO ERROR';
 				validationMessage = '사업자등록번호는 10자리를 입력하셔야 합니다';
 				errorfield='#no';
 				return false;
@@ -1336,7 +1343,6 @@
 			return;
 		}
 		
-		
 	// 사업자등록번호 중복체크
 	$.ajax({
 		url: "${pageContext.servletContext.contextPath }/01/27/checkno?no=" + no,
@@ -1355,13 +1361,31 @@
 				nochecked = true;
 				$("#btn-check-no").hide();
 				$("#img-checkno").show();
+				$("#no").attr("readonly",true);
+				setTimeout(function(){
+					openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
+					$("#deleteok").click(function(){
+						var customerno = document.getElementById("no").value;
+						$("input[name=corporationNo]").val(customerno);
+						openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+						$("#corporationNo").attr("readonly",true);
+						return;
+					});
+					$("#deletecancel").click(function(){
+						openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+						$("#corporationNo").attr("readonly",false);
+						return;
+					});
+					
+				},600);
+				
 				return;
 			}else if(response.data.deleteFlag == "Y"){
 				$("#no").val("");
-				openErrorModal('No ERROR',"삭제된 사업자등록번호입니다.",'#no');
+				openErrorModal('DELETED CUSTOMER_NO ERROR',"삭제된 사업자등록번호입니다.",'#no');
 			}else{
 				$("#no").val("");
-				openErrorModal('No ERROR',"이미 존재하는 사업자등록번호입니다.",'#no');
+				openErrorModal('DUPLICATED CUSTOMER_NO ERROR',"이미 존재하는 사업자등록번호입니다.",'#no');
 			}
 			
 			},

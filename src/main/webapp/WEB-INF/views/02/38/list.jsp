@@ -34,31 +34,21 @@ html, body {
 }
 
 .page-content {
-	min-width: 1280px;
+	min-width: 1920px;
 }
 
-@media screen and (max-width: 930px) {
+@media screen and (max-width: 920px) {
 	.main-container {
 		height: calc(100% - 84px);
 	}
 }
 /* 스크롤 깨짐 css e */
-.table-responsive {
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-}
-
 input:focus {
 	outline: none;
 }
-
-.chosen-search {
-	display: none;
-}
 </style>
 </head>
-<body class="skin-3" style="min-width: 1920px">
+<body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -288,10 +278,9 @@ input:focus {
 					<div class="hr hr-10 dotted"></div>
 				</form>
 				<p>총 ${fn:length(buyTaxbillListAll)}건</p>
-				<div class="control-group" style="overflow-x: scroll;">
+				<div class="control-group">
 					<table id="sample-table-1"
-						class="table table-striped table-bordered table-hover"
-						style="width: 1700px">
+						class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
 								<!-- 16개 -->

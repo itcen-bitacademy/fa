@@ -139,6 +139,22 @@ input::-webkit-inner-spin-button {
 .input-num{text-align:right;}
 
 .label-name{font-size: 14px}
+
+.add-on {
+    display: inline-block;
+    width: auto;
+    height: 20px;
+    min-width: 16px;
+    padding: 4px 5px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    vertical-align: top;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -172,7 +188,7 @@ input::-webkit-inner-spin-button {
 							<input type="hidden" name="isDuplicated" value="Y">
 						</div>
 						<div class="ia-left"><label class="label-name">단기차입금명</label></div>
-						<div class="ia-right"><input type="text" name="name" placeholder="육하원칙으로 입력해주세요." required></div>
+						<div class="ia-right"><textarea name="name" placeholder="육하원칙으로 입력해주세요."></textarea></div>
 						<div class="ia-left"><label class="label-name">차입금액</label></div>
 						<div class="ia-right">
 							<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
@@ -342,6 +358,7 @@ input::-webkit-inner-spin-button {
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
 
 <script>
@@ -376,6 +393,7 @@ $(function() {						//onload함수
 	$("#dialog46").dialog({
 		autoOpen : false
 	});
+	
 });
 
 //Page ready시 table & paging list Rendering
@@ -383,17 +401,11 @@ $(document).ready(function(){
 	getList();
 });
 
-
-
-$("#debt-amount-comma").on("focus", function() {
-    var x = $(this).val();
-    x = unComma(x);
-    $(this).val(x);
-}).on("focusout", function() {
+$("#debt-amount-comma").on("focusout", function() {
     var x = $(this).val();
     
     var inputForm = $("#input-form")[0];
-    inputForm.debtAmount.value = x;							//콤마를 안 붙힌 숫자의 값을 저장한다.
+    inputForm.debtAmount.value = unComma(x);							//콤마를 안 붙힌 숫자의 값을 저장한다.
     if(x && x.length > 0) {								
         if(!$.isNumeric(x)) {
             x = x.replace(/[^0-9]/g,"");
@@ -404,7 +416,8 @@ $("#debt-amount-comma").on("focus", function() {
 }).on("keyup", function() {
     $(this).val($(this).val().replace(/[^0-9]/g,""));
     var inputForm = $("#input-form")[0];
-    inputForm.debtAmount.value = $(this).val();
+    inputForm.debtAmount.value = unComma($(this).val());
+    $(this).val(comma($(this).val()));
 });
 
 $("#int-rate").on("keyup",function(){
@@ -531,32 +544,11 @@ function resetForm(){
 	$("#btn-chk-duplication").css("display", "inline-block");
 }
 //-----------------------------------은행 Model 메서드 ---------------------------------//
-function openRepayListDialog(){
-	$("#dialog46").dialog('open');
-	$("#dialog46").dialog({
-     	
-        title: "상환정보",
-        title_html: true,
-           	resizable: false,
-	           height: 500,
-	           width: 400,
-	           modal: true,
-	           close: function() {
-            $('#dialog46 *').remove();
-         },
-         buttons: {
-         "닫기" : function() {
-                  $(this).dialog('close');
-                  $('#dialog46 *').remove();
-             }
-         }
-     });
-}
 //Dialog Open하는 함수
 function openBankDialog(){
-	console.log("-------------------------openBankDialog() Called----------------------------------------");			
-	if($("#dialog46 > *").length == 0)
-		renderBankDialog();
+	console.log("-------------------------openBankDialog() Called----------------------------------------");	
+	
+	renderBankDialog();
 	
 	$("#dialog46").dialog('open');
 	$("#dialog46").dialog({
@@ -567,12 +559,12 @@ function openBankDialog(){
 	    width: 400,
 	    modal: true,
 	    close: function() {
-	    	$('#tbody-bankList tr').remove();
+	    	$('#dialog46>*').remove();
 	    },
 	    buttons: {
 	    "닫기" : function() {
+	    		$('#dialog46>*').remove();
 	          	$(this).dialog('close');
-	          	$('#tbody-bankList tr').remove();
 	        }
 	    }
 	});
@@ -627,7 +619,8 @@ function searchByBankcode(){
        success: function(response){
           $("#input-dialog-bankcode").val('');
            $.each(response.data,function(index, item){
-                    $("#tbody-bankList").append("<tr>" +
+                    $("#tbody-bankList").append("<tr onclick='selectBankRow(this)'>" +
+                    	 "<input type='hidden' name='vo' value='" + JSON.stringify(item) + "'>" + 
                           "<td class='center'>" + item.no + "</td>" +
                           "<td class='center'>" + item.name + "</td>" +
                         "</tr>");
@@ -675,61 +668,32 @@ function searchByBankname(){
 
 //은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 input form에 추가
 function selectBankRow(thisObj){
+	console.log("--------------------------------selectBaknkRow() Called ----------------------------");
+	
 	var inputForm = $("#input-form")[0];
 	var inputVo = $(thisObj).find("input[name=vo]");
-	console.log("inputVo" + inputVo);
 	var vo = JSON.parse(inputVo.val());
 	console.log("vo " + vo);
 	inputForm.bankCode.value = vo.no;
 	inputForm.bankName.value = vo.name;
 	$("#dialog46").dialog('close');
+	
+	console.log("--------------------------------selectBaknkRow() End ----------------------------");
 }
 
 //-----------------------------------상환 Model 메서드 ---------------------------------//
-function repay(repayForm, repayBal){									//상환버튼 클릭시
-	repayBal = parseInt(repayBal);							//int로 변환
-	var payPrinc = parseInt(repayForm.payPrinc.value);		//int로 변환
-	if(payPrinc > repayBal){
-		alert("납입원금이 잔액보다 클 수 없습니다");
-		return;
-	}
-	
-	var sendData = $(repayForm).serialize();
-	console.log("sendData : " + sendData);
-	// ajax 통신
-	$.ajax({
-		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/repay",
-		type: "POST",
-		dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-		data: sendData,
-		success: function(response){
-			
-			if(response.result =="fail"){
-				console.error(response.message);
-				return;
-			}
-			
-			if(payPrinc == repayBal){//상환완료인경우
-				alert("상환이 완료되었습니다");
-				console.log("상환이 완료되었습니다.")
-			}			
-			
-			alert("상환이 되었습니다.")
-			renderingList(response.data.list);
-			renderingPage(response.data.pagination);
-			
-		},
-		error: function(xhr, error){
-			console.error("error : " + error);
-		}
-	});
-}
-
 function openRepayDialog(){
 	console.log("---------------------------openRepayDialog() called--------------------------");
 	
-	$("#'").dialog('open');
-	$("#dialog-repayment").dialog({
+	renderRepayDialog();
+	
+	var repayForm = $("#repay-form")[0];
+	var inputForm = $("#input-form")[0];			//선택된 차입금 form
+	var vo = JSON.parse(inputForm.vo.value);
+	initRepayDialog(repayForm, vo);
+	
+	$("#dialog46").dialog('open');
+	$("#dialog46").dialog({
 		title: "상환정보등록",
 		title_html: true,
 	   	resizable: false,
@@ -737,11 +701,8 @@ function openRepayDialog(){
 	    width: 400,
 	    modal: true,
 	    close: function() {
-	    	repayForm.debtCode.value = '';
-	    	repayForm.payPrinc.value = '';
-	    	repayForm.intAmount.value= '';
-	    	repayForm.payDate.value = '';
-	    	repayForm.depositNo.value= '';
+	    	$("#dialog46>*").remove();
+	    	$(this).dialog('close');
 	    },
 	    buttons: {
 	    	//상환버튼 클릭시
@@ -751,56 +712,136 @@ function openRepayDialog(){
 			//상환내역 반영
 	    },
 	    "닫기" : function() {
+	    		$("#dialog46>*").remove();
 	          	$(this).dialog('close');
 	        }
 	    }
 	});
+	
 }//openRepayDailog() end
 
 function renderRepayDialog(){
 	console.log("------------------------------------renderRepayDialog() Called----------------------------------");
-	$("#dialog46").append("<form id='repay-form'"> + 
-							"<input type='hidden' name='debtNo'>" +
-							"<input type='hidden' name='code'>" +
+	$("#dialog46").append("<form id='repay-form'>" + 
+							"<input type='hidden' name='debtNo'/>" +
+							"<input type='hidden' name='code'/>" +
 							"<section class='repay-input-wrapper'>" +
-								"<label>차입금코드</label>"
+								"<label>차입금코드</label>" +
 								"<input type='text' name='debtCode' readonly= 'readonly'/>" +
-							"</section>" +
-							"<section class='repay-input-wrapper'>" +
-								"<label>납입금</label>" +
-								"<input type='text' name='payPrinc' id= 'repay_bal'/>" +
-							"</section>" +
-							"<section class='repay-input-wrapper'>" +
-								"<label>이자금액</label>" +
-								"<input type='text' name='intAmount' readonly= 'readonly'/>" +
 							"</section>" +
 							"<section class='repay-input-wrapper'>" +
 								"<label>납입일자</label>" +
 								"<section>" +
-									"<input class='date-picker' type='text' name='payDate' id='id-date-picker-1'  data-date-format='yyyy-mm-dd'/>" +
+									"<input class='cl-date-picker' type='text' name='payDate' id='id-date-picker-1'  data-date-format='yyyy-mm-dd'/>" +
 									"<span class='add-on'>" +
 									"<i class='icon-calendar'></i>" +
 								"</section>" + 
 							"</section>" +
 							"<section class='repay-input-wrapper'>" +
-								"<label>계좌번호</label>" +
-								"<input type='text' name='depositNo' readonly= 'readonly'/>" +
+								"<label>납입원금</label>" +
+								"<input type='text' id='pay-princ-comma' name='payPrincComma'/>" +
+								"<input type='hidden' name='payPrinc'/>" +
 							"</section>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>이자금액</label>" +
+								"<input type='text' name='intAmountComma' readonly= 'readonly'/>" +
+								"<input type='hidden' name='intAmount'/>" +
+							"</section>" +
+							"<section class='repay-input-wrapper'>" +
+								"<label>총액</label>" +
+								"<input type='text' name='totalPayPrincComma' readonly='readonly'/>" +
+								"<input type='hidden' name='totalPayPrinc'/>" +
+							"</section>" + 
 						"</form>");
 	
-	var repayForm = $("#repay-form")[0];			//상환폼
-	var inputForm = $("#input-form")[0];			//선택된 차입금 form
-	var vo = JSON.parse(inputForm.vo.value);
-	//초깃값 지정
+	//날짜 event추가
+	$('.cl-date-picker').datepicker({
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	
+	//납입금 추가
+	$("#pay-princ-comma").on("focusout", function() {
+	    var x = unComma($(this).val());
+	    
+	    if(x && x.length > 0) {								
+	        if(!$.isNumeric(x)) {
+	            x = x.replace(/[^0-9]/g,"");
+	        }
+	        $(this).val(comma(x));
+	    }
+	}).on("keyup", function() {
+	    $(this).val($(this).val().replace(/[^0-9]/g,""));
+	    $(this).val(comma($(this).val()));
+	    var repayForm = $("#repay-form")[0];
+	    
+	    var totalPayPrinc = convertComma2Num(repayForm.payPrincComma.value) + convertComma2Num(repayForm.intAmountComma.value);
+	    if(!$.isNumeric(totalPayPrinc))
+	    	totalPayPrinc = repayForm.intAmountComma.value;
+	    
+	    repayForm.totalPayPrincComma.value= comma(totalPayPrinc);
+	});
+}
+
+function initRepayDialog(repayForm, vo){
+	console.log("repayForm : " + repayForm);
+	
 	repayForm.debtNo.value = vo.no;
 	repayForm.code.value = vo.code;
 	repayForm.debtCode.value = vo.code;
-	repayForm.intAmount.value = (vo.repayBal * vo.intRate / 100);	
-	repayForm.depositNo.value = vo.depositNo;
-	
-	//open
-	openRepayDialog();
+	repayForm.intAmount.value = (vo.repayBal * vo.intRate / 100);
+	repayForm.intAmountComma.value= comma(repayForm.intAmount.value);
+	repayForm.totalPayPrinc.value = repayForm.intAmount.value;
+	repayForm.totalPayPrincComma.value= comma(repayForm.totalPayPrinc.value);
 	console.log("------------------------------------renderRepayDialog() End-----------------------------------");
+}
+
+function repay(repayForm, repayBal){									//상환버튼 클릭시
+	repayBal = parseInt(repayBal);							//int로 변환
+	var payPrinc = parseInt(repayForm.payPrinc.value);		//int로 변환
+	
+	if(payPrinc > repayBal){
+		alert("납입원금이 잔액보다 클 수 없습니다");
+		return;
+	}
+	
+	repayForm.intAmount.value = unComma(repayForm.intAmountComma.value);
+	repayForm.payPrinc.value = unComma(repayForm.payPrincComma.value);
+	repayForm.totalPayPrinc.value = unComma(repayForm.totalPayPrincComma.value);
+	
+	var sendData = $(repayForm).serialize();
+	console.log("sendData : " + sendData);
+	// ajax 통신
+	$.ajax({
+		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/repay",
+		type: "POST",
+		dataType: "json", 
+		data: sendData,
+		success: function(response){
+			
+			if(response.data.isClosed == true){
+				alert("마감일 이전 데이터는 넣을수 없습니다.");	
+				return;
+			}
+			
+			if(payPrinc == repayBal){//상환완료인경우
+				console.log("상환이 모두 완료되었습니다.")
+			}else{
+				alert("상환이 되었습니다.");
+			}			
+			
+			renderingList(response.data.list);
+			renderingPage(response.data.pagination);
+		},
+		error: function(xhr, error){
+			console.error("error : " + error);
+		}
+	});
+}
+
+function convertComma2Num(commaNum){
+	return parseInt(unComma(commaNum));
 }
 
 function openAccountDialog(){
@@ -818,12 +859,12 @@ function openAccountDialog(){
 			width: 400,
 			modal: true,
 			close: function() {
-		   	$('#tbody-bankacoountList tr').remove();
+		   	$('#dialog46>*').remove();
 		},
 		buttons: {
 		"닫기" : function() {
 				$(this).dialog('close');
-				$('#tbody-bankaccountList tr').remove();
+				$('#dialog46>*').remove();
 			}
 		}
 	});
@@ -846,6 +887,8 @@ function renderAcctDialog(){
 									"<th class='center'>은행명</th>" + 
 								"</tr>" +
 							"</thead>" +
+							"<tbody id='tbody-bankaccountList'>"+
+							"</tbody>" +
 						 "</section>");
 	console.log("-------------------------------renderAcctDialog() End ------------------------");
 }
@@ -1073,6 +1116,33 @@ function renderingPage(pagination){
 	$("#above-table-right").append("<p>" +pagination.totalCnt + "건</p>")
 }
 
+//---------------------------상환리스트 Dialog---------------------------//
+function openRepayListDialog(){
+	
+	//rendering
+	renderingRepayLists();
+	
+	$("#dialog46").dialog('open');
+	$("#dialog46").dialog({
+     	
+        title: "상환정보",
+        title_html: true,
+           	resizable: false,
+	           height: 500,
+	           width: 400,
+	           modal: true,
+	           close: function() {
+            $('#dialog46 *').remove();
+         },
+         buttons: {
+         "닫기" : function() {
+                  $(this).dialog('close');
+                  $('#dialog46 *').remove();
+             }
+         }
+     });
+}
+
 function renderingRepayLists(repayLists){
 	console.log("--------------------renderingRepayLists Called --------------------------");
 	for(let i in repayLists){
@@ -1101,13 +1171,38 @@ function renderingRepayLists(repayLists){
                  	"</tr>");
 		}//for end
 		
-		openRepayListDialog();
 		console.log("--------------------renderingRepayLists End --------------------------");
 	}
 }
 
-function renderingClosedDateList(closedDateList){
-	console.log("--------------------renderingClosedDateList Called --------------------------");
+//---------------------------삭제시 마감 Dialog---------------------------//
+function openClosingDateListDialog(){
+	//rendering
+	renderClosingDateList();
+	
+	$("#dialog46").dialog('open');
+	$("#dialog46").dialog({
+     	
+        title: "상환정보",
+        title_html: true,
+           	resizable: false,
+	           height: 500,
+	           width: 400,
+	           modal: true,
+	           close: function() {
+            $('#dialog46 *').remove();
+         },
+         buttons: {
+         "닫기" : function() {
+                  $(this).dialog('close');
+                  $('#dialog46 *').remove();
+             }
+         }
+     });
+}
+
+function renderClosingDateList(closedDateList){
+	console.log("--------------------renderClosingDateList Called --------------------------");
 	console.log("closedDateList : " + closedDateList);
 	
 	$("#dialog46").append("<label>코드정보</label>");
@@ -1115,8 +1210,7 @@ function renderingClosedDateList(closedDateList){
 	for(let i in closedDateList)
 		$("#dialog46").append("<label>" + closedDateList[i].code + "</label>");
 		
-		openRepayListDialog();
-		console.log("--------------------renderingClosedDateList End --------------------------");
+		console.log("--------------------renderClosingDateList End --------------------------");
 	}
 //-----------------------------------조회 및 페이지 클릭 Event Method ---------------------------------//
 function getList(){							//패이지 onload event에서 사용될 rendering 함수, 전체 list를 가져온다
@@ -1205,7 +1299,7 @@ function deleteChecked(){
 		data : $("#deleteVoList").val(),
 		success: function(response){
 			console.log(isEmpty(response.data.repayLists));
-			if(!isEmpty(response.data.repayLists)){					//상환내역이 있는경우 삭제가 안됨.
+			if(!isEmpty(response.data.isPossibleDelete == false)){					//상환내역이 있는경우 삭제가 안됨.
 				alert("상환내역이 있는 차입금은 삭제할 수 없습니다.");
 				renderingRepayLists(response.data.repayLists);
 				return;
