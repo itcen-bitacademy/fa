@@ -41,7 +41,7 @@ public class Menu46ApiController {
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getList", method=RequestMethod.POST)
 	public JSONResult getList(@RequestParam(value="code", required=false) String code, 
 			@RequestParam(value="financialYear", required=false) String financialYear,
-			@RequestParam(value="pageSize", required=false, defaultValue="8") int pageSize,
+			@RequestParam(value="pageSize", required=false, defaultValue="11") int pageSize,
 			@RequestParam(value="page", required=true) int page){
 		
 		System.out.println("pageSize : " + pageSize);
