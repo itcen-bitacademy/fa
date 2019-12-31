@@ -8,6 +8,7 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <style>
@@ -229,10 +230,10 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button class="btn btn-primary btn-small" id="insert" onclick="insertValid();"
-													style="float: left; margin-right: 20px;" >등록</button>
-												<button class="btn btn-warning btn-small" id="update"
-													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+												<button class="btn btn-primary btn-small" id="insert" 
+													style="float: left; margin-right: 20px;">등록</button>
+												<button class="btn btn-warning btn-small" id="modify"
+													style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
 													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 												<button class="btn btn-info btn-small" id="search" 
@@ -374,73 +375,171 @@
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 	
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
-
-<link
-	href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css"
-	type="text/css" rel="stylesheet" />
 	
-<script
-	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
-<!-- Validation -->
 <script>
 
+//건물코드 유효성 검사
+ $(document).ready(function(){
+	console.log("closing test" + $("#closingDate").val());
+	checkClosing();
+	
+	$("#buildingCode").on("change", function(e){
+		
+		var id = "b" + $("#buildingCode").val();
+        
+	   $.ajax({
+	      url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id=" + id,
+	      type : "get",
+	      dataType : "json",
+	      data : "",
+	      success: function(response){
+	         if(response.result == "fail"){
+	            console.error(response.message);
+	            return;
+	         }
+	         
+	         if(response.data == true){
+	        	 dialog("이미 존재하는 건물코드 입니다.");
+		         $("#buildingCode").val("");
+		         errorfocus='#buildingCode';
+	            return;
+	         
+	         }
+	      },
+	      error: function(xhr, error) {
+	         console.error("error: " + error);
+	      }
+	   });
+		
+	});
+
+}); 
+
+//Validation
 $("#insert").click(function() {
-	insertValid();
+	if(!manageValid()){
+		return;
+	}
+	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create');
+	$('#manage-building-form').attr('method', 'POST');
+	$('#manage-building-form').submit();
 });
 $("#modify").click(function() {
-	updateValid();
+	if(!manageValid()){
+		return;
+	}
+	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
+	$('#manage-building-form').attr('method', 'POST');
+	$('#manage-building-form').submit();
 });
 
-//// 핵심소스 - (예제)
-function insertValid(){
-	alert('왱안되');
-				if(!valid.nullCheck("buildingCode", "건물 코드")) return;
-				if(!valid.numberCheck("buildingCode", "건물 코드")) return;
-				if(!valid.nullCheck("code", "대분류")) return;
-				if(!valid.nullCheck("area", "평수")) return;
-	   			if(!valid.numberCheck("area", "평수")) return;
-	   			if(!valid.nullCheck("floor", "층수")) return;
-	   			if(!valid.numberCheck("floor", "층수")) return;
-	   			if(!valid.nullCheck("basement", "층수")) return;
-	   			if(!valid.numberCheck("basement", "층수")) return;
-	   			if(!valid.nullCheck("wideAddress", "주소")) return;
-	   			if(!valid.nullCheck("customerNo", "거래처")) return; 
-	   			if(!valid.nullCheck("ownerName", "건물소유자")) return; 
-				if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
-				if(!valid.nullCheck("publicValue", "공시지가")) return;
-	   			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
-	   			if(!valid.nullCheck("etcCost", "기타비용")) return;
-	   			if(!valid.radioCheck("taxKind", "구분")) return;
-	   			
-	   			
-	   			$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create');
-				
-	   			$('#manage-building-form').attr('method', 'POST');
-				
-				$('#manage-building-form').submit();
-			
-			}
+	//마감일 체크
+	function checkClosing(){ 
+		if($("#closingDate").val()=="true"){
+			dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+		}
+	}
 
+	//// 관리 validation
+	function manageValid() {
+		if (!valid.nullCheck("buildingCode", "건물 코드")){
+			errorfocus='#buildingCode';
+			return false;
+		}
+		if (!valid.strCheck("buildingCode", "건물 코드")){
+			errorfocus='#buildingCode';
+			return false;
+		}
+		if (!valid.numberCheck("buildingCode", "건물 코드")){
+			errorfocus='#buildingCode';
+			return false;
+		}
+		if (!valid.nullCheck("area", "평수")){
+			errorfocus='#area';
+			return false;
+		}
+		if (!valid.numberCheck("area", "평수")){
+			errorfocus='#area';
+			return false;
+		}
+		if (!valid.nullCheck("floor", "층수(지상)")){
+			errorfocus='#floor';
+			return false;
+		}
+		if (!valid.numberCheck("floor", "층수(지상)")){
+			errorfocus='#floor';
+			return false;
+		}
+		if (!valid.nullCheck("basement", "층수(지하)")){
+			errorfocus='#basement';
+			return false;
+		}
+		if (!valid.numberCheck("basement", "층수(지하)")){
+			errorfocus='#basement';
+			return false;
+		}
+		if (!valid.nullCheck("code", "대분류")){
+			return false;
+		}
+		if (!valid.nullCheck("purpose", "용도")){
+			errorfocus='#purpose';
+			return false;
+		}
+		if (!valid.nullCheck("material", "주 구조")){
+			errorfocus='#material';
+			return false;
+		}
+		if (!valid.nullCheck("wideAddress", "주소")){
+			return false;
+		}
+		if (!valid.nullCheck("customerNo", "거래처")){
+			return false;
+		}
+		if (!valid.nullCheck("ownerName", "건물소유자")){
+			errorfocus='#ownerName';
+			return false;
+		}
+		if (!valid.nullCheck("id-date-picker-1", "매입일자")){
+			return false;
+		}
+		if (!valid.nullCheck("publicValue", "공시지가")){
+			errorfocus='#publicValue';
+			return false;
+		}
+		if (!valid.nullCheck("acqPrice", "취득 금액")){
+			errorfocus='#acqPrice';
+			return false;
+		}
+		if (!valid.radioCheck("taxKind", "구분")){
+			return false;
+		}
+		return true;
+	}
 
 	var valid = {
 		nullCheck : function(id, msg) { // null 체크
 			if ($("#" + id).val() == "") {
-				dialog(msg + " 을(를) 입력 해 주세요.");
+				dialog(msg + "을(를) 입력 해 주세요.");
 				return false;
 			} else {
 				return true;
 			}
 		},
-		strCheck : function(id) { // 문자열 체크 
-
+		strCheck : function(id, msg) { // 글자 수 체크
+			if ($("#" + id).val().length != 9) {
+				dialog(msg + "은(는) 9자를 입력하셔야 합니다.");
+				return false;
+			} else {
+				return true;
+			}
 		},
-		radioCheck: function(name, msg){  // 문자열 체크 
-			if(!jQuery('input[name='+ name +']:checked').val()){
-			dialog(msg+" 를 선택해 주세요.");
+		radioCheck : function(name, msg) { // radio 버튼 체크 
+			if (!jQuery('input[name=' + name + ']:checked').val()) {
+				dialog(msg + "를 선택해 주세요.");
 				return false;
 			} else {
 				return true;
@@ -448,55 +547,51 @@ function insertValid(){
 		},
 		numberCheck : function(id, msg) { // 숫자 체크
 			if (!$.isNumeric($("#" + id).val())) {
-				dialog(msg + " 은(는) 숫자만 입력 가능합니다.");
-				$("#" + id).focus();
+				dialog(msg + "은(는) 숫자만 입력 가능합니다.");
 				return false;
 			} else {
 				return true;
 			}
 		}
+		/* closingCheck : function(id) { //마감일자 체크
+			if ($("#" + id).val() == "true"){
+				dialog("마감된 일자입니다. <br>저장되지 않았습니다.");
+			}
+		} */
 
 	}
-	
+
 	// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
-	function dialog(txt, flag) {
+	function dialog(txt) {
 		$("#dialog-txt").html(txt);
-		var dialog = $("#dialog-confirm")
-				.dialog(
-						{
-							resizable : false,
-							modal : true,
-							buttons : [ {
-								text : "OK",
-								"class" : "btn btn-danger btn-mini",
-								click : function() {
-									if (flag) {
-										$(this).dialog("close");
-										location.href = "${pageContext.request.contextPath }/08/39/add";
-									} else {
-										$(this).dialog("close");
-									}
-								}
-							} ]
-						});
+		var dialog = $("#dialog-confirm").dialog({
+			resizable : false,
+			modal : true,
+			buttons : [ {
+				text : "OK",
+				"class" : "btn btn-danger btn-mini",
+				click : function() {
+					$(this).dialog("close");
+					$(errorfocus).focus();		
+				}
+			} ]
+		});
 	}
-	
+
 	//빈칸 검사()
 	function formCheck() {
-		
-		if($("#buildingCode").val() == "")
-	    {
-			 document.getElementById(next).focus();
-	         alert("검색어를 입력해주시기 바랍니다.");
-	    }
-		
-		if(window.event.keyCode == 13) {
-			
-		}else{
+
+		if ($("#buildingCode").val() == "") {
+			document.getElementById(next).focus();
+			alert("검색어를 입력해주시기 바랍니다.");
+		}
+
+		if (window.event.keyCode == 13) {
+
+		} else {
 			return;
 		}
 	}
-	
 </script>
 <script>
 	$(function(){
@@ -531,7 +626,7 @@ function insertValid(){
 		      var tr = $(this);
 		      var td = tr.children();
 		      
-		      $("input[name=id]").val(td.eq(0).text().replace("c", ""));
+		      $("input[name=id]").val(td.eq(0).text().replace("b", ""));
 		      $("input[name=sectionNo]").val(td.eq(1).text());
 		      //sectionName 에 대한 값(classification)을 select box에 표시
 		      $('#form-field-section').val(td.eq(2).text()).trigger('chosen:updated');
@@ -565,12 +660,12 @@ function insertValid(){
 		      }
 		     
 		     //CRUD button
-		      if($("#taxbillNo").val() != ''){
+		      if($("#taxbillNo").val() != '-'){
 		    	  $("#insert").hide();
 		    	  $("#search").hide();
 		    	  $("#update").hide();
 		      }
-		      if($("#taxbillNo").val() == ''){
+		      if($("#taxbillNo").val() == '-'){
 			   		$("#insert").hide();
 			   	 	$("#update").show();
 			   		$("#search").hide();
@@ -602,7 +697,7 @@ function insertValid(){
 	
 	$(function() {
 		$("#publicValue").on('keyup', function(event){
-			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		});
 		$("#etcCost").on('keyup', function(event){
 			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));

@@ -85,12 +85,7 @@ public class Menu39Controller {
 	//등록(C)
 	@RequestMapping(value = "/" + SUBMENU + "/create" , method = RequestMethod.POST)
 	public String add(@ModelAttribute BuildingVo buildingvo, @SessionAttribute("authUser") UserVo authUser, Model model) throws ParseException{
-		
-		buildingvo.setInsertUserid(authUser.getId());
-		
-		buildingvo.setId("b"+buildingvo.getId());
-		
-		
+				
 		//, 빼기
 		String acqPrice = buildingvo.getAcqPrice().replace("," ,"");
 		buildingvo.setAcqPrice(acqPrice);
@@ -105,16 +100,10 @@ public class Menu39Controller {
 		buildingvo.setAcqTax(acqTax);
 		
 		if("".equals(buildingvo.getCombineNo())) {
-			buildingvo.setCombineNo("0");
+			buildingvo.setCombineNo("-");
 		}
 		if("".equals(buildingvo.getEtcCost())) {
 			buildingvo.setEtcCost("0");
-		}
-		if("".equals(buildingvo.getAcqTax())) {
-			buildingvo.setAcqTax("0");
-		}
-		if("".equals(buildingvo.getPublicValue())) {
-			buildingvo.setPublicValue("0");
 		}
 		if("".equals(buildingvo.getSectionNo())) {
 			buildingvo.setSectionNo(null);
@@ -122,17 +111,19 @@ public class Menu39Controller {
 		if("".equals(buildingvo.getCustomerNo())) {
 			buildingvo.setCustomerNo(null);
 		}
+
+		buildingvo.setInsertUserid(authUser.getId());
 		
-		
+		buildingvo.setId("b"+buildingvo.getId());
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
 	    	System.out.println("마감일 이상함");
-	    	return MAINMENU + "/" + SUBMENU + "/add";
-	    } else {
 	    	model.addAttribute("closingDate", true);
+	    	return "redirect:/" + MAINMENU + "/" + SUBMENU ;
+	    } else {
 		    menu39Service.add(buildingvo);
-		    return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		    return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 	    }
 	}
 	
@@ -151,28 +142,23 @@ public class Menu39Controller {
             ,@RequestParam(value="depositNo", required=false) String depositNo
             ,Model model) throws ParseException{
 		
-		buildingvo.setUpdateUserid(authUser.getId());
-		
-		Long bVoucherNo = menu39Service.getVoucherNo(buildingvo.getId());
-		
-		buildingvo.setId("b"+buildingvo.getId());
-		
+		//,빼기
 		Long acqPrice = Long.parseLong(buildingvo.getAcqPrice().replace("," ,""));
 		Long publicValue = Long.parseLong(buildingvo.getPublicValue().replace("," ,""));
 		Long etcCost = Long.parseLong(buildingvo.getEtcCost().replace("," ,""));
 		Long acqTax = Long.parseLong(buildingvo.getAcqTax().replace("," ,""));
+
+		buildingvo.setUpdateUserid(authUser.getId());
 		
-		if(buildingvo.getCombineNo() == null) {
-			buildingvo.setCombineNo("00");
-	    }
+		buildingvo.setId("b"+buildingvo.getId());
+		
+		Long bVoucherNo = menu39Service.getVoucherNo(buildingvo.getId());
+		
+		if("".equals(buildingvo.getCombineNo())) {
+			buildingvo.setCombineNo("-");
+		}
 		if("".equals(buildingvo.getEtcCost())) {
 			buildingvo.setEtcCost("0");
-		}
-		if("".equals(buildingvo.getAcqTax())) {
-			buildingvo.setAcqTax("0");
-		}
-		if("".equals(buildingvo.getPublicValue())) {
-			buildingvo.setPublicValue("0");
 		}
 		if("".equals(buildingvo.getSectionNo())) {
 			buildingvo.setSectionNo(null);
@@ -181,107 +167,112 @@ public class Menu39Controller {
 			buildingvo.setCustomerNo(null);
 		}
 		
-		//전표추가
-		if (taxbillNo != null && bVoucherNo == null) {
-			
-			//계좌(계좌번호, 은행코드, 은행이름)정보
-			CustomerVo bankInfo = menu39Service.getBankInfo(customerNo);
-			
-			//전표
-			VoucherVo voucherVo = new VoucherVo();
-			
-			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-			ItemVo itemVo = new ItemVo(); // 차변
-			ItemVo itemVo2 = new ItemVo(); // 대변
-
-			// 왼쪽 : 얻은 건물 가격 |||| 오른쪽 : 계좌 가격
-
-			// 거래금액
-			MappingVo mappingVo = new MappingVo();
-			
-			voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo.getPayDate() : 거래날짜
-			
-			itemVo.setAmount(acqPrice + acqTax + etcCost); //  거래금액
-			itemVo.setAmountFlag("d"); // 차변
-			itemVo.setAccountNo(1220201L); //계정과목 : 건물
-			itemVoList.add(itemVo);
-
-			itemVo2.setAmount(acqPrice + acqTax + etcCost);
-			itemVo2.setAmountFlag("c"); // 대변
-			itemVo2.setAccountNo(1110103L); //계정과목 : 보통예끔
-			itemVoList.add(itemVo2);
-
-			//매핑테이블
-		    mappingVo.setVoucherUse("민준용");  // 사용용도
-		    mappingVo.setSystemCode(buildingvo.getId());  // 각 건물코드
-		    mappingVo.setDepositNo(bankInfo.getDepositNo());  // 계좌번호
-		    mappingVo.setCustomerNo(customerNo); //거래처번호
-		    mappingVo.setManageNo(taxbillNo);//세금계산서번호
-		    mappingVo.setBankCode(bankInfo.getBankCode()); //은행코드
-			mappingVo.setBankName(bankInfo.getBankName()); //은행명
-		    
-		    //전표추가
-		    long voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
-		    
-		    buildingvo.setVoucherNo(voucherNo);
-		}
-		
-		//전표수정
-//		else if(bVoucherNo != null) {
-//			
-//			//계좌(계좌번호, 은행코드, 은행이름)정보
-//			CustomerVo bankInfo = menu39Service.getBankInfo(customerNo);
-//			
-//			System.out.println("계좌, 은행 : " + bankInfo);
-//			
-//			//전표
-//			VoucherVo voucherVo = new VoucherVo();
-//			
-//			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-//			ItemVo itemVo = new ItemVo(); // 차변
-//			ItemVo itemVo2 = new ItemVo(); // 대변
-//
-//			// 왼쪽 : 얻은 건물 가격 |||| 오른쪽 : 계좌 가격
-//
-//			// 거래금액
-//			MappingVo mappingVo = new MappingVo();
-//			
-//			voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo.getPayDate() : 거래날짜
-//			
-//			itemVo.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost()); //  거래금액
-//			itemVo.setAmountFlag("d"); // 차변
-//			itemVo.setAccountNo(1220201L); //계정과목 : 건물
-//			itemVoList.add(itemVo);
-//
-//			itemVo2.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost());
-//			itemVo2.setAmountFlag("c"); // 대변
-//			itemVo2.setAccountNo(1110101L); //계정과목 : 현금
-//			itemVoList.add(itemVo2);
-//
-//			//매핑테이블
-//		    mappingVo.setVoucherUse("민준용");  // 사용용도
-//		    mappingVo.setSystemCode(buildingvo.getId());  // 각 건물코드
-//		    mappingVo.setDepositNo(bankInfo.getDepositNo());  // 계좌번호
-//		    mappingVo.setCustomerNo(customerNo); //거래처번호
-//		    mappingVo.setManageNo(taxbillNo);//세금계산서번호
-//		    mappingVo.setVoucherNo(bVoucherNo); //전표번호 매핑
-//			
-//			voucherVo.setNo(bVoucherNo); //전표vo 에도 번호매핑
-//			
-//		    //전표수정
-//		    long voucherNo= menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
-//		    
-//		    buildingvo.setVoucherNo(voucherNo);
-//		}
-		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
 	    	System.out.println("마감일 이상함");
-	    	return MAINMENU + "/" + SUBMENU + "/add";
-	    } else {
 	    	model.addAttribute("closingDate", true);
+	    	return "redirect:/" + MAINMENU + "/" + SUBMENU ;
+	    } else {
+			//전표추가
+			if (taxbillNo != null && bVoucherNo == null) {
+				
+				//계좌(계좌번호, 은행코드, 은행이름)정보
+				CustomerVo bankInfo = menu39Service.getBankInfo(customerNo);
+				
+				//전표
+				VoucherVo voucherVo = new VoucherVo();
+				
+				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+				ItemVo itemVo = new ItemVo(); // 차변
+				ItemVo itemVo2 = new ItemVo(); // 대변
+
+				// 왼쪽 : 얻은 건물 가격 |||| 오른쪽 : 계좌 가격
+
+				// 거래금액
+				MappingVo mappingVo = new MappingVo();
+				
+				voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo.getPayDate() : 거래날짜
+				
+				itemVo.setAmount(acqPrice + acqTax + etcCost); //  거래금액
+				itemVo.setAmountFlag("d"); // 차변
+				itemVo.setAccountNo(1220201L); //계정과목 : 건물
+				itemVoList.add(itemVo);
+
+				itemVo2.setAmount(acqPrice + acqTax + etcCost);
+				itemVo2.setAmountFlag("c"); // 대변
+				itemVo2.setAccountNo(1110103L); //계정과목 : 보통예끔
+				itemVoList.add(itemVo2);
+
+				//매핑테이블
+			    mappingVo.setVoucherUse("민준용");  // 사용용도
+			    mappingVo.setSystemCode(buildingvo.getId());  // 각 건물코드
+			    mappingVo.setDepositNo(bankInfo.getDepositNo());  // 계좌번호
+			    mappingVo.setCustomerNo(customerNo); //거래처번호
+			    mappingVo.setManageNo(taxbillNo);//세금계산서번호
+			    mappingVo.setBankCode(bankInfo.getBankCode()); //은행코드
+				mappingVo.setBankName(bankInfo.getBankName()); //은행명
+			    
+			    //전표추가
+			    long voucherNo = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+			    
+			    buildingvo.setVoucherNo(voucherNo);
+			}
+			
+			//전표수정
+//			else if(bVoucherNo != null) {
+//				
+//				//계좌(계좌번호, 은행코드, 은행이름)정보
+//				CustomerVo bankInfo = menu39Service.getBankInfo(customerNo);
+//				
+//				System.out.println("계좌, 은행 : " + bankInfo);
+//				
+//				//전표
+//				VoucherVo voucherVo = new VoucherVo();
+//				
+//				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+//				ItemVo itemVo = new ItemVo(); // 차변
+//				ItemVo itemVo2 = new ItemVo(); // 대변
+	//
+//				// 왼쪽 : 얻은 건물 가격 |||| 오른쪽 : 계좌 가격
+	//
+//				// 거래금액
+//				MappingVo mappingVo = new MappingVo();
+//				
+//				voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo.getPayDate() : 거래날짜
+//				
+//				itemVo.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost()); //  거래금액
+//				itemVo.setAmountFlag("d"); // 차변
+//				itemVo.setAccountNo(1220201L); //계정과목 : 건물
+//				itemVoList.add(itemVo);
+	//
+//				itemVo2.setAmount(buildingvo.getAcqPrice()+buildingvo.getAcqTax()+buildingvo.getEtcCost());
+//				itemVo2.setAmountFlag("c"); // 대변
+//				itemVo2.setAccountNo(1110101L); //계정과목 : 현금
+//				itemVoList.add(itemVo2);
+	//
+//				//매핑테이블
+//			    mappingVo.setVoucherUse("민준용");  // 사용용도
+//			    mappingVo.setSystemCode(buildingvo.getId());  // 각 건물코드
+//			    mappingVo.setDepositNo(bankInfo.getDepositNo());  // 계좌번호
+//			    mappingVo.setCustomerNo(customerNo); //거래처번호
+//			    mappingVo.setManageNo(taxbillNo);//세금계산서번호
+//			    mappingVo.setVoucherNo(bVoucherNo); //전표번호 매핑
+//				
+//				voucherVo.setNo(bVoucherNo); //전표vo 에도 번호매핑
+//				
+//			    //전표수정
+//			    long voucherNo= menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
+//			    
+//			    buildingvo.setVoucherNo(voucherNo);
+//			}
+			
+	    	buildingvo.setAcqPrice(Long.toString(acqPrice));
+	    	buildingvo.setPublicValue(Long.toString(publicValue));
+	    	buildingvo.setEtcCost(Long.toString(etcCost));
+	    	buildingvo.setAcqTax(Long.toString(acqTax));
+	    	
 	    	menu39Service.modify(buildingvo);
-		    return "redirect:/" + MAINMENU + "/" + SUBMENU;
+	    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 	    }
 		
 	}
