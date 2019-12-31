@@ -97,7 +97,7 @@
 		<![CDATA[
 			select code, name, store, mgr, mgr_phone as mgrPhone 
 				from tb_bank 
-					where name like '%#{bankname}%';
+					where name like '%#{bankname}%'
 		]]>
 	</select>
 	

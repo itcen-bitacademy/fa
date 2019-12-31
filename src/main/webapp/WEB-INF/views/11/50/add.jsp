@@ -643,14 +643,17 @@
 	        var coverAmount = amount.replace(/,/g, '');
 	        $('input[name="payPrinc"]').val(coverAmount);
 	        
-	        var intAmount=removeCommaReturn($("#intAmount").val());
+	        var intAmount = removeCommaReturn($("#intAmount").val());
 	        console.log("intAmount : " + intAmount);
 	     	
-    		var totalAmount = 0;
-    		totalAmount = parseInt($("#payPrinc").val()) + parseInt(intAmount);
+    		var totalAmount = parseInt($("#payPrinc").val()) + parseInt(intAmount);
+    		var convertTotalAmount = numberFormat(totalAmount);
     		console.log("totalAmount : " + totalAmount);
     		
-    		var convertTotalAmount = numberFormat(totalAmount);
+    		if(!$.isNumeric(totalAmount)) {
+    			$('#totalAmount').val('0');
+    			return;
+    		}
     		
     		function numberFormat(inputNumber) {
     			return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1563,20 +1566,18 @@
 	    	var dialog = $("#dialog-confirm").dialog({
 				resizable: false,
 				modal: true,
-				buttons: [
-					{
-						text: "OK",
-						"class" : "btn btn-danger btn-mini",
-						click: function() {
-							if(flag){
-								$(this).dialog("close"); 
-								//location.href="${pageContext.request.contextPath }/11/50";
-							} else {
-								$(this).dialog("close"); 
-							}
+				buttons: [{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						if(flag){
+							$(this).dialog("close"); 
+							//location.href="${pageContext.request.contextPath }/11/50";
+						} else {
+							$(this).dialog("close"); 
 						}
 					}
-				]
+				}]
 			});
 	    }
 	
