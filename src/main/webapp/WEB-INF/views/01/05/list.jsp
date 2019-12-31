@@ -106,7 +106,7 @@
 									<label class="control-label" for="form-field-1">사용자</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="user" class="name" maxlength=6
+										<input type="text" id="user" name="user" class="name" maxlength=6
 											placeholder="사용자" />
 									</div>
 								</div>
@@ -117,7 +117,7 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="issuer" class="name" maxlength=6
+										<input type="text" id="issuer" name="issuer" class="name" maxlength=6
 											placeholder="카드발급자" />
 									</div>
 								</div>
@@ -131,7 +131,7 @@
 										<div class="input-append">
 											<a href="#" id="a-bankaccountinfo-dialog"
 												class="a-customerinfo-dialog"> <input type="text"
-												class="search-input-width-first" name="depositNo"
+												class="search-input-width-first" name="depositNo" id="depositNo"
 												placeholder="계좌번호" readonly /> <span class="add-on">
 													<i class="icon-search icon-on-right bigger-110"></i>
 
@@ -139,7 +139,7 @@
 											</a>
 										</div>
 										&nbsp; &nbsp;
-										<input type="text" id="form-field-1" name="depositHost"
+										<input type="text" id="depositHost" name="depositHost"
 											placeholder="예금주" readonly/>
 										
 									</div>
@@ -150,11 +150,11 @@
 									
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" name = "bankCode" value="" placeholder="은행코드" readonly /> 
+											<input type="text" id="bankCode"  name = "bankCode" value="" placeholder="은행코드" readonly /> 
 										</div>
 										&nbsp; &nbsp;
 										<div class="input-append">
-											<input type="text" name ="bankName" value="" placeholder="은행명" readonly />
+											<input type="text" id="bankName"  name ="bankName" value="" placeholder="은행명" readonly />
 										</div>
 									</div>
 								</div>
@@ -172,8 +172,8 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="limitation" class="limitation" 
-											placeholder="한도" value="" />
+										<input type="text" id="limitation" name="limitation" class="limitation" onkeypress="return isNumberKey(event)"
+											placeholder="한도" value=""  />
 									</div>
 								</div>
 								
@@ -205,7 +205,7 @@
 								<div>
 									<label class="control-label" for="form-field-1">CVC </label> 
 									<div class="controls">
-									<input type="text" class="validity" id="form-field-1" name="cvc" maxlength=3 placeholder="CVC" />
+									<input type="text" class="validity" id="cvc" name="cvc" maxlength=3 placeholder="CVC" />
 									</div>
 								</div>
 							</div>
@@ -213,7 +213,7 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">교통카드 유무 </label> 
 								<div class="controls">
-									<input name="transportation" type="radio" class="ace" value="true" checked  /> 
+									<input name="transportation" type="radio" class="ace" value="true"     /> 
 									<span class="lbl"> Yes</span> 
 									
 									<input name="transportation" type="radio" class="ace" value="false"  />
@@ -224,10 +224,10 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">해외사용 여부</label> 
 								<div class="controls">
-										<input name="abroad" type="radio" class="ace" value="true" checked /> 
+										<input name="abroad" type="radio" class="ace" value="true"   /> 
 										<span class="lbl"> Yes</span> 
 										
-										<input name="abroad" type="radio" class="ace" value="false" /> 
+										<input name="abroad" type="radio" class="ace" value="false"  /> 
 										<span class="lbl">No</span>
 								</div>
 							</div>
@@ -236,7 +236,7 @@
 								<label class="control-label" for="form-field-1">비밀번호 </label>
 
 								<div class="controls">
-									<input type="password" id="form-field-1" name="password" class="limit"
+									<input type="password" id="password" name="password" class="limit"
 										placeholder="비밀번호" />
 								</div>
 							</div>
@@ -245,7 +245,7 @@
 								<label class="control-label" for="form-field-1">카드사 </label>
 
 								<div class="controls">
-									<input type="text" id="form-field-1" name="company" class="bankname"
+									<input type="text" id="company" name="company" class="bankname"
 										placeholder="카드사" />
 								</div>
 							</div>
@@ -420,7 +420,14 @@
 	</div>
 	<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 
-
+	<!-- Validation Modal Start -->
+	<div id="staticBackdrop" class="hide">
+		<br>
+		<pre id="staticBackdropBody" class="bolder grey"
+			style="text-align: center; background-color: white; border-color: white">
+					</pre>
+	</div>
+	<!-- Validation Modal End -->
 </body>
 <script
 	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -465,6 +472,11 @@ $(function() {
 			queryString.push({name: 'page', value: "${param.page}"});
 		}
 		if(a == "create") {
+			// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+			if(!InsertValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
 			$.ajax({
 			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
 			    type: "POST",
@@ -520,6 +532,11 @@ $(function() {
 			    }
 			 })
 		} else if(a == "update") {
+			// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+			if(!InsertValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
 			$.ajax({
 			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
 			    type: "POST",
@@ -819,13 +836,267 @@ $(function() {
     
 	
 	$(".chosen-select").chosen();
+	
+	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
+	
+	
+	function openErrorModal(title, message,errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');
+						$(errorfield).focus();
+					}
+				}
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+	
+	//insert Validation
+	function InsertValidation(){
+		let cardNo1 =$('#cardNo1').val();
+		let cardNo2 =$('#cardNo2').val();
+		let cardNo3 =$('#cardNo3').val();
+		let cardNo4 =$('#cardNo4').val();
+		let validityMM =$('#validityMM').val();
+		let validityYY =$('#validityYY').val();
+		let cvc =$('#cvc').val();
+		let user =$('#user').val();
+		let issuer =$('#issuer').val();
+		let depositNo =$('#depositNo').val();
+		let depositHost=$('#depositHost').val();
+		let password=$('#password').val();
+		let bankCode=$('#bankCode').val();
+		let bankName=$('#bankName').val();
+		let company=$('#company').val();
+		let limitation=$('#limitation').val();
+		let transportation=$('#transportation').val();
+		let abroad=$('#abroad').val();
+		
+		
+		//카드번호 Valid
+		if('' === cardNo1){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo1.length<4 || cardNo1.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo2){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo2.length<4 || cardNo2.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo3){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo3.length<4 || cardNo3.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo4.length<4 || cardNo4.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		
+		//카드번호 Valid
+		if('' === validityMM){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\n필수입력항목입니다.';
+			errorfield='#validityMM';
+			return false;
+		}
+		if(validityMM.length<2 || validityMM.length >2){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\월은 2자리를 입력하셔야 합니다.';
+			errorfield='#validityMM';
+			return false;
+		}
+		if(validityMM>12 || validityMM<1){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간의\r\n월입력이 잘못되었습니다.';
+			errorfield='#validityYY';
+			return false;
+		}
+		
+		if('' === validityYY){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\n필수입력항목입니다.';
+			errorfield='#validityYY';
+			return false;
+		}
+		if(validityYY.length<2 || validityYY.length >2){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\n년은 2자리를 입력하셔야 합니다.';
+			errorfield='#validityYY';
+			return false;
+		}
+		if(validityYY<0){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간의\r\n년입력이 잘못되었습니다.';
+			errorfield='#validityYY';
+			return false;
+		}
+		//user Valid
+		if('' === user){
+			errortitle = 'user ERROR';
+			validationMessage = '사용자는\r\n필수입력항목입니다.';
+			errorfield='#user';
+			return false;
+		}
+		
+		//cvc Valid
+		if('' === cvc){
+			errortitle = 'cvc ERROR';
+			validationMessage = 'cvc는\r\n필수입력항목입니다.';
+			errorfield='#cvc';
+			return false;
+		}
+		if(cvc.length<3 || cvc.length >3){
+			errortitle = 'cvc ERROR';
+			validationMessage = 'cvc는\r\3자리를 입력하셔야 합니다.';
+			errorfield='#cvc';
+			return false;
+		}
+		
+		
+		//issuer  Valid
+		if('' === issuer ){
+			errortitle = 'issuer  ERROR';
+			validationMessage = '발급자는\r\n필수입력항목입니다.';
+			errorfield='#issuer ';
+			return false;
+		}
+		
+		//transportation Valid
+		if($(':radio[name=transportation]:checked').length < 1){
+			errortitle = 'transportation ERROR';
+			validationMessage = '교통카드 유무는\r\n필수입력항목입니다.';
+			errorfield='#transportation';
+			return false;
+		}
+		
+		//depositNo  Valid
+		if('' === depositNo ){
+			errortitle = 'depositNo  ERROR';
+			validationMessage = '계좌번호, 예금주, 은행코드 은행명은\r\n필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요';
+			errorfield='#depositNo ';
+			return false;
+		}
+		
+		//abroad= Valid
+		if($(':radio[name=abroad]:checked').length < 1){
+			errortitle = 'abroad ERROR';
+			validationMessage = '해외사용 여부는\r\n필수입력항목입니다.';
+			errorfield='#abroad';
+			return false;
+		}
+		//password Valid
+		if('' === password){
+			errortitle = 'password ERROR';
+			validationMessage = '비밀번호는\r\n필수입력항목입니다.';
+			errorfield='#password';
+			return false;
+		}
+		if(password.length<4){
+			errortitle = 'password ERROR';
+			validationMessage = '비밀번호는\r\4자리를 이상 입력하셔야 합니다.';
+			errorfield='#password';
+			return false;
+		}
+
+		//limitation Valid
+		if('' === limitation){
+			errortitle = 'limitation ERROR';
+			validationMessage = '한도는\r\n필수입력항목입니다.';
+			errorfield='#limitation';
+			return false;
+		}
+		//company Valid
+		if('' === company){
+			errortitle = 'company ERROR';
+			validationMessage = '카드사는\r\n필수입력항목입니다.';
+			errorfield='#company';
+			return false;
+		}
+		
+		
+		
+		
+		
+		return true;
+	}
+	
+	//숫자와 delete 키만 동작하도록한다.
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode;
+	    var _value = event.srcElement.value;
+	
+	    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+	        if(event.keyCode != 46){//delete
+	             return false;
+	        } 
+	     }
+	    return true;
+	    
+	}
+	
+	//한글입력 방지
+	function delHangle(evt){
+	    var objTarger = evt.srcElement || evt.target;
+	    var val = event.srcElement.value;
+	    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+	        objTarger.value = null;
+	    	}
+	    }
 })
  
 		
-		
+	
+
 </script>
-
-
 
 
 </html>

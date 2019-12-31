@@ -31,6 +31,7 @@ public class Menu24Repository {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagination", pagination);
 		map.put("vo", vo);
+		
 		List<CardVo> list= sqlSession.selectList("menu24.list",map);
 		return list;
 		

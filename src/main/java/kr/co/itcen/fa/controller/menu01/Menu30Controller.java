@@ -44,6 +44,7 @@ public class Menu30Controller {
 		if(revo.getRegDate() == null || revo.getCustomerNo() == null || revo.getAccountNo() ==null 
 				|| revo.getRegDate().equals("") || revo.getCustomerNo().equals("") || revo.getAccountNo().equals("")
 				) {
+			
 			return MAINMENU + "/" + SUBMENU + "/list";
 		}
 		

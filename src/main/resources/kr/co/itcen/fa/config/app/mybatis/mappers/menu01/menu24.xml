@@ -16,7 +16,7 @@
 		</if>
 		<if  test='inputperiodEnd!=null and !inputperiodEnd.equals("")' >		    
 			<![CDATA[
-				and insert_day <= #{inputperiodEnd }
+				and date_format(insert_day, "%Y-%m-%d %h:%m:%s") <= concat(#{inputperiodEnd }, " 24:59:59")
 			]]>
 		</if>
 		<if  test="cardStartNo!=null ">		    
@@ -26,7 +26,7 @@
 		</if>
 		<if  test="cardEndNo!=null ">		    
 			<![CDATA[
-				and card_no like concat("%", #{cardEndNo })
+				and substring(card_no,16,5) like concat(#{cardEndNo }, "%")
 			]]>
 		</if>
 	</select>
@@ -52,7 +52,7 @@
 		</if>
 		<if  test='vo.inputperiodEnd!=null and !vo.inputperiodEnd.equals("")'>		    
 			<![CDATA[
-				and insert_day <= #{vo.inputperiodEnd }
+				and date_format(insert_day, "%Y-%m-%d %h:%m:%s") <= concat(#{vo.inputperiodEnd }, " 24:59:59")
 			]]>
 		</if>
 		<if  test="vo.cardStartNo!=null ">		    
@@ -62,7 +62,7 @@
 		</if>
 		<if  test="vo.cardEndNo!=null ">		    
 			<![CDATA[
-				and card_no like concat("%", #{vo.cardEndNo })
+				and substring(card_no,16,5) like concat(#{vo.cardEndNo }, "%")
 			]]>
 		</if>
 		<if test="pagination.pageIndex >= 0 ">

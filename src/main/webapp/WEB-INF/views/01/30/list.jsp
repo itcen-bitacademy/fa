@@ -21,12 +21,11 @@
 </style>
 
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
-	<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-	<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
-	<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
-	<script	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/ace-elements.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/ace.min.js"></script>
+<script	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
 </head>
 <body class="skin-3">
@@ -62,29 +61,30 @@
 
 
 
-						&nbsp; &nbsp; 	
-						
-						거래처코드/거래처명 :&nbsp;
-									<div class="input-append">
-										<a href="#" id="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" id="customerName" placeholder="거래처명" name="customerName" style="text-align: center; width:150px;" readonly/>
-											<script type="text/javascript">
-												var customerName = "${param.customerName}";
-												$("#customerName").val(customerName);
-												</script>
-											<span class="add-on">
-				                            <i class="icon-search icon-on-right bigger-110"></i>
-				                            </span>
-				                    	</a>
-									</div>
-				
-						<input type="text" id="customerNo" name="customerNo" placeholder="거래처 코드" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						&nbsp; &nbsp; 거래처코드/거래처명 :&nbsp;
+						<div class="input-append">
+							<a href="#" id="a-customerinfo-dialog"> <input type="text"
+								id="customerNo" name="customerNo" placeholder="거래처 코드"
+								class="col-xs-10 col-sm-5"
+								style="text-align: center; width: 150px;" readonly /> <script
+									type="text/javascript">
+									var customerNo = "${param.customerNo}";
+									$("#customerNo").val(customerNo);
+								</script> <span class="add-on"> <i
+									class="icon-search icon-on-right bigger-110"></i>
+							</span>
+							</a>
+						</div>
+
+						<input type="text" class="search-input-width-first"
+							id="customerName" placeholder="거래처명" name="customerName"
+							style="text-align: center; width: 150px;" readonly />
 						<script type="text/javascript">
-							var customerNo = "${param.customerNo}";
-							$("#customerNo").val(customerNo);
+							var customerName = "${param.customerName}";
+							$("#customerName").val(customerName);
 						</script>
-						
-						
+
+
 						&nbsp;&nbsp; 계정코드/계정명 :&nbsp;
 						<div class="input-append">
 							<a href="#" id="a-accountinfo-dialog"> <input type="text"
@@ -217,41 +217,43 @@
 			</div>
 			<!-- /.page-content -->
 			<div class="pagination">
-				<ul>
-					<c:choose>
-					<c:when test="${dataResult.pagination.prev }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}"
-						><i class="icon-double-angle-left"></i></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-					</c:otherwise>
-					</c:choose>
-					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
-					<c:choose>
-					<c:when test="${pg eq dataResult.pagination.page }">
-		
-						<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
-					</c:otherwise>
-					</c:choose>
-					</c:forEach>
-					<c:choose>
-						<c:when test="${dataResult.pagination.next }">
-						<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
-						&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">
-						<i class="icon-double-angle-right"></i></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
-					</c:otherwise>
-					</c:choose>
-				</ul>
+				<c:if test="${dataResult.pagination != null && dataResult.pagination.totalCnt != 0 }">
+					<ul>
+						<c:choose>
+						<c:when test="${dataResult.pagination.prev }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
+							&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}"
+							><i class="icon-double-angle-left"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+						</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+						<c:choose>
+						<c:when test="${pg eq dataResult.pagination.page }">
+			
+							<li class="active"><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+							&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+							&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">${pg }</a></li>
+						</c:otherwise>
+						</c:choose>
+						</c:forEach>
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+							<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
+							&regDate=${param.regDate }&customerNo=${param.customerNo}&customerName=${param.customerName}&accountNo=${param.accountNo}&accountName=${param.accountName}">
+							<i class="icon-double-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+						</c:otherwise>
+						</c:choose>
+					</ul>
+				</c:if>
 			</div>
 		</div>
 		<!-- /.main-content -->
@@ -379,7 +381,15 @@
 	</div>
 
 	<!-- 계정 Modal pop-up : end -->
-
+	
+	<!-- Validation Modal Start -->
+	<div id="staticBackdrop" class="hide">
+		<br>
+		<pre id="staticBackdropBody" class="bolder grey"
+			style="text-align: center; background-color: white; border-color: white">
+					</pre>
+	</div>
+	<!-- Validation Modal End -->
 
 
 </body>
@@ -756,6 +766,79 @@ $(function() {
 });
 </script>
 
+<script>
 
+$("#input-form").submit(function(event){
+	event.preventDefault();
+
+	if(!InsertValidation()){
+		openErrorModal(errortitle,validationMessage,errorfield);
+		return;
+	}
+	this.submit();
+});
+
+var validationMessage ='';
+var errortitle='';
+var errorfield ='';
+
+
+function openErrorModal(title, message,errorfield) {
+	$('#staticBackdropLabel').html(title);
+	$('#staticBackdropBody').text(message);
+	
+	console.log($('#staticBackdropLabel').text());
+	console.log($('#staticBackdropBody').text());
+
+	$( "#staticBackdrop" ).dialog({
+		resizable: false,
+		modal: true,
+		title: title,
+		buttons: [
+			{
+				text: "OK",
+				"class" : "btn btn-danger btn-mini",
+				click: function() {
+					$(this).dialog('close');
+		          	$('#staticBackdropBody').text('');
+					$(errorfield).focus();
+				}
+			}
+		]
+	});
+
+	$("#staticBackdrop").dialog('open');//모달을 띄운다
+}
+
+//insert Validation
+function InsertValidation(){
+	let datepicker = $('#datepicker').val();
+	let customerNo =$('#customerNo').val();
+	let accountNo =$('#accountNo').val();
+	
+	//Valid
+	if('' === datepicker ){
+		errortitle = 'datepicker ERROR';
+		validationMessage = '조회기간은\r\n필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요';
+		errorfield='#datepicker ';
+		return false;
+	}
+	if('' === customerNo ){
+		errortitle = 'customerNo ERROR';
+		validationMessage = '거래처는\r\n필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요';
+		errorfield='#customerNo ';
+		return false;
+	}
+	if('' === accountNo ){
+		errortitle = 'accountNo ERROR';
+		validationMessage = '계정은\r\n필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요';
+		errorfield='#accountNo ';
+		return false;
+	}
+	
+	
+	return true;
+}
+</script>
 	
 </html>
