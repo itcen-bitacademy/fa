@@ -131,15 +131,15 @@
 											<div class="span6">
 												<label class="control-label" for="form-field-1">품목명</label>
 													<div class="controls">
-													<select class="span3 chosen-select" id="itemCode" name="itemCode" data-placeholder="품목명">
+													<select class="span3 chosen-select" id="itemName" name="itemName" data-placeholder="품목명">
 														<option value="">없음</option>
 														<c:forEach items="${itemlist }" var="ilist">
 															<c:choose>
-																<c:when test="${ilist.itemCode eq search.itemCode }">
-																	<option value="${ilist.itemCode }" selected>${ilist.itemName }</option>	
+																<c:when test="${ilist.itemName eq search.itemName }">
+																	<option value="${ilist.itemName }" selected>${ilist.itemName }</option>	
 																</c:when>
 																<c:otherwise>
-																	<option value="${ilist.itemCode }">${ilist.itemName }</option>
+																	<option value="${ilist.itemName }">${ilist.itemName }</option>
 																</c:otherwise>
 															</c:choose>
 														</c:forEach>

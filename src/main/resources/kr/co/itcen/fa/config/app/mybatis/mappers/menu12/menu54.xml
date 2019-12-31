@@ -95,6 +95,21 @@
             	and tst.taxbill_no = '${taxbillNo }'
             	]]>
             </if>
+            <if test='itemName!=""'>
+            	<![CDATA[
+            	and tbs.item_name = '${itemName }'
+            	]]>
+			</if>
+			<if test='customerCode!=""'>
+            	<![CDATA[
+            	and tst.customer_code = '${customerCode }'
+            	]]>
+            </if>
+            <if test='startDate!=""'>
+	        	<![CDATA[    
+	        	and tst.write_date between '${startDate }' and '${endDate }'    
+	            ]]>
+            </if>
             <if test='orderData!=""'>
 	            <![CDATA[
 	            order by ${orderData } desc
@@ -127,6 +142,21 @@
             	<![CDATA[
             	and tst.taxbill_no = '${taxbillNo }'
             	]]>
+            </if>
+            <if test='itemName!=""'>
+            	<![CDATA[
+            	and tbs.item_name = '${itemName }'
+            	]]>
+			</if>
+			<if test='customerCode!=""'>
+            	<![CDATA[
+            	and tst.customer_code = '${customerCode }'
+            	]]>
+            </if>
+            <if test='startDate!=""'>
+	        	<![CDATA[    
+	        	and tst.write_date between '${startDate }' and '${endDate }';
+	            ]]>
             </if>
 	</select>
 
