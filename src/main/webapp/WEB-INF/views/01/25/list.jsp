@@ -566,15 +566,18 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은 행 코 드 </label>
 								<div class="controls">
-
-									<span class="btn btn-small btn-info"> <a href="#"
-										id="a-bankinfo-dialog"> <i
-											class="icon-search nav-search-icon"></i> <input type="text"
+								<div class="input-append">
+									<a href="#"	id="a-bankinfo-dialog">  <input type="text"
 											class="search-input-width-first" name="bankCode" />
+										<span class="add-on">
+											<i class="icon-search icon-on-right bigger-110"></i>
+										</span>
 									</a>
-									</span> <input type="text" id="form-field-1" name="bankName"
-										placeholder="" />
-
+								</div>
+								&nbsp; &nbsp;
+									<input type="text" id="form-field-1" name="bankName"
+										placeholder="은행코드" readonly />
+										
 								</div>
 							</div>
 
@@ -582,20 +585,28 @@
 							<div id="dialog-message" title="은행코드" hidden="hidden">
 								<table id="dialog-message-table">
 									<tr>
-										<td><label>은행코드</label> <input type="text"
+										<td><label>은행코드</label>
+										<div class="input-append">
+										 <input type="text"
 											id="input-dialog-bankcode" style="width: 100px;" /> <a
-											href="#" id="a-dialog-bankcode"> <span
-												class="btn btn-small btn-info" style="margin-bottom: 10px;">
-													<i class="icon-search nav-search-icon"></i>
+											href="#" id="a-dialog-bankcode">
+											<span class="add-on">
+											<i class="icon-search icon-on-right bigger-110"></i>
 											</span>
-										</a></td>
-										<td><label>은행명</label> <input type="text"
+										</a>
+										</div>
+										</td>
+										<td><label>은행명</label> 
+										<div class="input-append">
+										<input type="text"
 											id="input-dialog-bankname" style="width: 100px;" /> <a
-											href="#" id="a-dialog-bankname"> <span
-												class="btn btn-small btn-info" style="margin-bottom: 10px;">
-													<i class="icon-search nav-search-icon"></i>
+											href="#" id="a-dialog-bankname">
+											<span class="add-on">
+											<i class="icon-search icon-on-right bigger-110"></i>
 											</span>
-										</a></td>
+										</a>
+										</div>
+										</td>
 									</tr>
 								</table>
 								<!-- 은행코드 및 은행명 데이터 리스트 -->
@@ -618,21 +629,21 @@
 								<label class="control-label" for="form-field-1">개 설 지 점 </label>
 								<div class="controls">
 									<input type="text" id="form-field-2" name="bankLocation"
-										placeholder="Username" />
+										placeholder="개설 지점" readonly/>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은 행 담 당 자 </label>
 								<div class="controls">
 									<input type="text" id="form-field-2" name="banker"
-										placeholder="Username" />
+										placeholder="은행 담당자" readonly/>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은 행 전 화 번 호 </label>
 								<div class="controls">
 									<input type="text" id="form-field-2" name="bankPhoneCall"
-										placeholder="Username" />
+										placeholder="은행 전화번호" readonly/>
 								</div>
 							</div>
 						</div>
