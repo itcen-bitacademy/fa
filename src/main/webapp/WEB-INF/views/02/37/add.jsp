@@ -11,40 +11,30 @@
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <style>
 /* 스크롤 깨짐 css s */
-  	html,body{
-  	overflow-x:hidden;
-	height:100%;
+html, body {
+	overflow-x: hidden;
+	height: 100%;
 }
-.main-container{
-	height:calc(100% - 45px);
+
+.main-container {
+	height: calc(100% - 45px);
 	overflow-x: hidden;
 }
-.main-content{
-	overflow:auto;
+
+.main-content {
+	overflow: auto;
 }
-<<<<<<< HEAD
 
 .page-content {
 	min-width: 1920px;
-=======
-.page-content{
-	min-width:1280px;
->>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 }
-<<<<<<< HEAD
 
 @media screen and (max-width: 920px) {
 	.main-container {
 		height: calc(100% - 84px);
-=======
-@media screen and (max-width: 920px) {
-	.main-container{
-		height:calc(100% - 84px);
->>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 	}
 }
 /* 스크롤 깨짐 css e */
-
 #sample-table-1 tr td {
 	padding: 0;
 }
@@ -62,18 +52,13 @@
 }
 </style>
 </head>
-<<<<<<< HEAD
+
 <body class="skin-3" onload="startFunctions();">
-=======
-<body class="skin-3"
-	onload="startFunctions();">
->>>>>>> branch 'master' of https://github.com/itcen-bitacademy/fa.git
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
-			
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입세금계산서관리</h1>
 					<a class="btn btn-link pull-right"
@@ -85,9 +70,7 @@
 					<!-- /.page-header -->
 					<div class="row-fluid">
 						<div class="span12">
-
 							<!-- PAGE CONTENT BEGINS -->
-
 							<div class="control-group">
 								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
 								<div class="controls span5">
@@ -103,7 +86,6 @@
 										placeholder="ex) TX2019116301143" autocomplete="off" />
 								</div>
 							</div>
-
 							<div class="control-group">
 								<label class="control-label span1" for="customer-no">등&emsp;록&emsp;번&emsp;호</label>
 								<div class="controls span5">
@@ -118,7 +100,6 @@
 										placeholder="ex) 14278-927129-62331231" autocomplete="off" />
 								</div>
 							</div>
-
 							<div class="control-group">
 								<label class="control-label span1" for="company-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span2">
@@ -139,7 +120,6 @@
 											<option id="${status }" value="${list.name }">${list.name }</option>
 										</c:forEach>
 									</select>
-
 								</div>
 								<label class="control-label span1" for="customer-name">성&emsp;&emsp;&emsp;&emsp;&emsp;명</label>
 								<div class="controls span2">
@@ -154,7 +134,6 @@
 										placeholder="ex) 이제구" autocomplete="off" />
 								</div>
 							</div>
-
 							<div class="control-group">
 								<label class="control-label span1" for="customer-address">주&emsp;&emsp;&emsp;&emsp;&emsp;소</label>
 								<div class="controls span5">
@@ -174,7 +153,6 @@
 											value="${getAboutNoBankData.bankName }" name="id"
 											placeholder="ex) 산업" autocomplete="off" />
 									</div>
-
 								</div>
 							</div>
 							<div class="control-group">
@@ -269,7 +247,6 @@
 										name="totalTaxValue" autocomplete="off" placeholder="0"
 										readonly />
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -345,8 +322,6 @@
 										</c:otherwise>
 									</c:choose>
 								</table>
-
-
 							</div>
 							<div class="control-group">
 								<button class="btn btn-danger btn-small"
@@ -368,16 +343,12 @@
 				</form>
 			</div>
 			<!-- PAGE CONTENT ENDS -->
-			
 		</div>
 		<!-- /.span -->
 	</div>
 	<!-- /.row-fluid -->
-
 	<!-- /.page-content -->
-
 	<!-- /.main-content -->
-
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
@@ -536,23 +507,21 @@
 				</c:forEach>
 			}
 		}
-		function prevent_commas_error(){
-			var totalSupplyValue =  $("#form-field-14").val();
-			var totalTaxValue =  $("#form-field-15").val();
-			
+		function prevent_commas_error() {
+			var totalSupplyValue = $("#form-field-14").val();
+			var totalTaxValue = $("#form-field-15").val();
+
 			totalSupplyValue = totalSupplyValue.replace(/,/gi, "");
 			totalTaxValue = totalTaxValue.replace(/,/gi, "");
-			
+
 			$("#form-field-14").val(totalSupplyValue);
 			$("#form-field-15").val(totalTaxValue);
-			
+
 			for (var i = 1; i < $("#sample-table-1 tr").length; i++) {
 				var supplyValue = $("#supply-value" + i).val();
 				var taxValue = $("#tax-value" + i).val();
-
 				supplyValue = supplyValue.replace(/,/gi, "");
 				taxValue = taxValue.replace(/,/gi, "");
-
 				$("#supply-value" + i).val(supplyValue);
 				$("#tax-value" + i).val(taxValue);
 			}
@@ -560,7 +529,7 @@
 		// 입력버튼 클릭시 
 		function insert_button() {
 			prevent_commas_error();
-	
+
 			$("#manage-form")
 					.attr(
 							"action",
@@ -570,7 +539,7 @@
 		// 수정버튼 클릭시 
 		function update_button() {
 			prevent_commas_error();
-			
+
 			$("#manage-form")
 					.attr(
 							"action",

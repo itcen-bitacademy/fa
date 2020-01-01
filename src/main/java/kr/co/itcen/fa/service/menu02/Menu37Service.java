@@ -78,8 +78,4 @@ public class Menu37Service {
 		menu37Repository.insertUpdatedItem(buyTaxbillItemsVo);
 		
 	}
-	
-	
-
-	
 }
