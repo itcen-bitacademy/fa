@@ -15,6 +15,7 @@
 			from tb_buy_taxbill
 		]]>
 	</select>
+	
 	<!-- 세금계산서의 11개를 가져오는 select -->
 	<select id="getBuyTaxbillList" parameterType="int"
 		resultType="buytaxbillvo">

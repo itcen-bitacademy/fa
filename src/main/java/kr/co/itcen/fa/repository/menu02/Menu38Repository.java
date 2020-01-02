@@ -14,6 +14,7 @@ import kr.co.itcen.fa.vo.menu02.CustomerVo;
  * @author 이제구 매입세금계산서현황조회
  *
  */
+
 @Repository
 public class Menu38Repository {
 	@Autowired

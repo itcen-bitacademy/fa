@@ -85,6 +85,7 @@ public class Menu38Controller {
 		return map;
 	}
 
+	
 	/* 조회버튼을 누를 때 발생하는 post 메소드*/
 	@NoAuth
 	@RequestMapping(value = "/" + SUBMENU + "/list", method = RequestMethod.POST)

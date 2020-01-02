@@ -52,6 +52,7 @@ html, body {
 }
 </style>
 </head>
+
 <body class="skin-3" onload="startFunctions();">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
