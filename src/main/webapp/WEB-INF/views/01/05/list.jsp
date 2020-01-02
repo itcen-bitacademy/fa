@@ -271,7 +271,6 @@
 
 					</div>
 					<div class="hr hr-18 dotted"></div>
-					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 카드 ${dataResult.pagination.totalCnt } 건</p>
 				</form>
 
 				<!-- Tables -->
@@ -456,8 +455,8 @@ $(function() {
 	$("#btn-delete").click(function(){
 		a = "delete";
 	});
-	$("#btn-delete").click(function(){
-		a = "delete";
+	$("#btn-reset").click(function(){
+		a = "reset";
 	});
 	
 	
@@ -562,34 +561,58 @@ $(function() {
 			    }
 			 })
 		} else if(a == "delete") {
-			$.ajax({
-			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
-			    type: "POST",
-			    data: queryString,
-			    dataType: "json",
-			    success: function(dataResult){
-			    	if(dataResult.success) {
-			    		alert("카드 삭제가 완료되었습니다."); 
-			    		removeTable();
-			    		$('#input-form').each(function(){
-			    		    this.reset();
-			    		});
-			    		
-			    		var cardList = dataResult.cardList;
-			    		createNewTable(cardList);
-			    	}
-			    	
-			    	$('#pagination ul').remove();
-		    		createNewPage(dataResult, a);
-		    		$('#pagination').show();
-			    },
-			    error: function( err ){
-			      	console.log(err)
-			    }
-			 })
+			// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+			if(!DeleteValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
+			
+			var cardNo1 =$('#cardNo1').val();
+			var cardNo2 =$('#cardNo2').val();
+			var cardNo3 =$('#cardNo3').val();
+			var cardNo4 =$('#cardNo4').val();
+			
+			// 삭제확인창을 띄운다.
+			openDeleteModal('DELETE CHECK', cardNo1+"-"+cardNo2+"-"+cardNo3+"-"+cardNo4+"에 대한\r\n 카드 정보를 삭제하시겠습니까?");
+			
+			// 삭제확인창 - 취소 버튼을 누르면 삭제 X
+			$("#deletecancel").click(function(){
+				openErrorModal("DELETE_CANCEL SUCCESS","카드 삭제가 취소 되었습니다.");
+				console.log("cancel");
+				return;
+			});
+			
+			// 삭제확인창 - 확인 버튼을 누르면 삭제O
+			$("#deleteok").click(function(){
+				$.ajax({
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(dataResult){
+				    	if(dataResult.success) {
+				    		alert("카드 삭제가 완료되었습니다."); 
+				    		removeTable();
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
+				    		
+				    		var cardList = dataResult.cardList;
+				    		createNewTable(cardList);
+				    	}
+				    	
+				    	$('#pagination ul').remove();
+			    		createNewPage(dataResult, a);
+			    		$('#pagination').show();
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			});
 		}
 		else {
-			alert("그외");
+			
 		}
 		
 	});
@@ -907,37 +930,37 @@ $(function() {
 		if('' === cardNo2){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n필수입력항목입니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo2';
 			return false;
 		}
 		if(cardNo2.length<4 || cardNo2.length >4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo2';
 			return false;
 		}
 		if('' === cardNo3){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n필수입력항목입니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo3';
 			return false;
 		}
 		if(cardNo3.length<4 || cardNo3.length >4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo3';
 			return false;
 		}
 		if('' === cardNo4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n필수입력항목입니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo4';
 			return false;
 		}
 		if(cardNo4.length<4 || cardNo4.length >4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo4';
 			return false;
 		}
 		
@@ -957,7 +980,7 @@ $(function() {
 		if(validityMM>12 || validityMM<1){
 			errortitle = 'validity ERROR';
 			validationMessage = '유효기간의\r\n월입력이 잘못되었습니다.';
-			errorfield='#validityYY';
+			errorfield='#validityMM';
 			return false;
 		}
 		
@@ -1091,10 +1114,104 @@ $(function() {
 	        objTarger.value = null;
 	    	}
 	    }
-})
- 
+	
+	function DeleteValidation(){
+		let cardNo1 =$('#cardNo1').val();
+		let cardNo2 =$('#cardNo2').val();
+		let cardNo3 =$('#cardNo3').val();
+		let cardNo4 =$('#cardNo4').val();
 		
 	
+		//카드번호 Valid
+		if('' === cardNo1){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo1.length<4 || cardNo1.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo2){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo2.length<4 || cardNo2.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo3){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo3.length<4 || cardNo3.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo4.length<4 || cardNo4.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+	
+		return true;
+	}
+	
+	function openDeleteModal(title, message) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "확인",
+					"class" : "btn btn-danger btn-mini",
+					"name" : "deleteok",
+					"id" : "deleteok",
+					click: function() {
+						$(this).dialog('close');
+					}
+				},
+				{
+					text: "취소",
+					"class" : "btn btn-inverse btn-mini",
+					"name" : "deletecancel",
+					"id" : "deletecancel",
+					click: function() {
+						$(this).dialog('close');
+					}
+				}
+				
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+})
 
 </script>
 

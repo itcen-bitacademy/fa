@@ -21,8 +21,12 @@
 			   delete_flag as deleteFlag
 		 from	tb_cardmanager
 		 where	delete_flag = "N"
-		 and    card_no = #{cardNo}
-		]]>
+		 and    substring(card_no,1,5) like concat(#{cardNo1 }, "%")
+		 and    substring(card_no,6,5) like concat(#{cardNo2 }, "%")
+		 and    substring(card_no,11,5) like concat(#{cardNo3 }, "%")
+		 and    substring(card_no,16,5) like concat(#{cardNo4 }, "%")
+		 ]]>
+		
 	</select>
 	
 
