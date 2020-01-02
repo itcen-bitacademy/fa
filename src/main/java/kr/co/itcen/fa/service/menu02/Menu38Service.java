@@ -23,50 +23,50 @@ public class Menu38Service {
 	@Autowired
 	private Menu38Repository menu38Repository;
 
-	public List<BuyTaxbillVo> getAllBuyTaxbill() {
-		List<BuyTaxbillVo> getAllBuyTaxbill = menu38Repository.getAllBuyTaxbill();
-		return getAllBuyTaxbill;
-	}
-
 	public List<CustomerVo> getMatchTaxbillCustomerList() {
+
 		List<CustomerVo> getMatchTaxbillCustomerList = menu38Repository.getMatchTaxbillCustomerList();
 		return getMatchTaxbillCustomerList;
 	}
 
 	public List<BuyTaxbillItemsVo> getMatchTaxbillItemsList() {
+
 		List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Repository.getMatchTaxbillItemsList();
 		return getMatchTaxbillItemsList;
 	}
 
 	public List<BuyTaxbillVo> getSelectedBuyTaxbillListAll(BuyTaxbillListVo buyTaxbillListVo) {
+
 		List<BuyTaxbillVo> getSelectedBuyTaxbillList = menu38Repository.getSelectedBuyTaxbillListAll(buyTaxbillListVo);
 		return getSelectedBuyTaxbillList;
 	}
 
 	public List<BuyTaxbillVo> getBuyTaxbillAll() {
-		// TODO Auto-generated method stub
+
 		return menu38Repository.getBuyTaxbillAll();
 	}
 
 	public List<BuyTaxbillVo> getBuyTaxbillList(int page_group) {
+
 		page_group *= 55;
 		return menu38Repository.getBuyTaxbillList(page_group);
 	}
 
 	public List<BuyTaxbillVo> getpageBuyTaxbillList(int page) {
-		
+
 		return menu38Repository.getpageBuyTaxbillList(page);
 	}
 
 	public List<BuyTaxbillVo> getSelectedBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
+
 		int pageGroup = buyTaxbillListVo.getPageGroup();
 		pageGroup *= 55;
 		buyTaxbillListVo.setPageGroup(pageGroup);
-		return  menu38Repository.getSelectedBuyTaxbillList(buyTaxbillListVo);
+		return menu38Repository.getSelectedBuyTaxbillList(buyTaxbillListVo);
 	}
 
 	public List<BuyTaxbillVo> getSelectedpageBuyTaxbillList(BuyTaxbillListVo buyTaxbillListVo) {
-		
+
 		return menu38Repository.getSelectedpageBuyTaxbillList(buyTaxbillListVo);
 	}
 }

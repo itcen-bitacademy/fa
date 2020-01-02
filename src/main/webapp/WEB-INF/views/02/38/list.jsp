@@ -7,16 +7,14 @@
 <html lang="ko">
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
-<!-- select List를 위한 StyleSheet -->
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
-	type="text/css" rel="stylesheet" />
-<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-<script
-	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
+<!-- 달력 -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<!-- select List를 위한 StyleSheet -->
+<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+	type="text/css" rel="stylesheet" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -43,9 +41,14 @@ html, body {
 	}
 }
 /* 스크롤 깨짐 css e */
+/* 기타 css s*/
 input:focus {
 	outline: none;
 }
+.chosen-search {
+	display: none;
+}
+/* 기타 css e*/
 </style>
 </head>
 <body class="skin-3">
@@ -105,10 +108,8 @@ input:focus {
 												<option value="zero">영세</option>
 											</c:otherwise>
 										</c:choose>
-
 									</select>
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -144,7 +145,6 @@ input:focus {
 												<option value="n">미삭제</option>
 											</c:otherwise>
 										</c:choose>
-
 									</select>
 								</div>
 							</div>
@@ -166,7 +166,6 @@ input:focus {
 										</c:forEach>
 									</select>
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -278,9 +277,10 @@ input:focus {
 					<div class="hr hr-10 dotted"></div>
 				</form>
 				<p>총 ${fn:length(buyTaxbillListAll)}건</p>
-				<div class="control-group" style ="width:80%; overflow-x:scroll;"  >
+				<div class="control-group" style="width: 80%; overflow-x: scroll;">
 					<table id="sample-table-1"
-						class="table table-striped table-bordered table-hover" style="width:1920px;">
+						class="table table-striped table-bordered table-hover"
+						style="width: 1920px;">
 						<thead>
 							<tr>
 								<!-- 16개 -->
@@ -438,6 +438,14 @@ input:focus {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	
+	<!-- jQeury관련 script -->
+	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	
+	<!-- 달력관련 script -->
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
@@ -463,6 +471,8 @@ input:focus {
 			});
 		});
 	</script>
+	
+	<!-- paging관련 ajax -->
 	<script type="text/javascript">
 		jQuery(function($) {
 			$("#id-date-picker-1").datepicker({
@@ -731,6 +741,8 @@ input:focus {
 
 		});
 	</script>
+	
+	<!-- 조회버튼  -->
 	<script>
 		function search_button() {
 			$("#search-form")
