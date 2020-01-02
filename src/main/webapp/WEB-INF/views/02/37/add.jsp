@@ -35,24 +35,25 @@ html, body {
 	}
 }
 /* 스크롤 깨짐 css e */
-#sample-table-1 tr td {
+/* table css s*/
+#item-table tr td {
 	padding: 0;
 }
 
-#sample-table-1 tr td p {
+#item-table tr td p {
 	padding: 8px;
 	margin: 0;
 }
 
-#sample-table-1 tr td input {
+#item-table tr td input {
 	padding: 8px;
 	margin: 0;
 	width: 94%;
 	border: 0
 }
+/* table css e*/
 </style>
 </head>
-
 <body class="skin-3" onload="startFunctions();">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
@@ -104,7 +105,7 @@ html, body {
 								<label class="control-label span1" for="company-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span2">
 									<select id="company-name" name="companyName"
-										style="width: 100%;" onchange="load_customer_imfo();" required>
+										style="width: 99%;" onchange="load_customer_imfo();" required>
 										<c:choose>
 											<c:when test="${flag == 'true'}">
 												<option value="${getAboutNoCustomerData.name }" selected
@@ -158,7 +159,7 @@ html, body {
 							<div class="control-group">
 								<label class="control-label span1" for="conditions">업&emsp;&emsp;&emsp;&emsp;&emsp;태</label>
 								<div class="controls span2">
-									<input style="width: 94%;" type="text" id="conditions"
+									<input style="width: 93%;" type="text" id="conditions"
 										value="${getAboutNoCustomerData.conditions }" name="id"
 										placeholder="ex) 제조업" autocomplete="off" />
 								</div>
@@ -264,7 +265,7 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<table id="sample-table-1"
+								<table id="item-table"
 									class="table table-striped table-bordered table-hover">
 									<tr>
 										<th>순번</th>
@@ -352,23 +353,25 @@ html, body {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js">
-		
-	</script>
+
+	<!-- 페이지로드될 때 발생하는 script함수 -->
 	<script>
 		function startFunctions() {
 			addElementCommas();
 			addElementCalender();
 		}
-		// 달력 한글버젼 패치 
+	</script>
+	<!-- 달련 관련 script -->
+	<script
+		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	<script>
 		function addElementCalender() {
 			$('#id-date-picker-1').datepicker({
 				language : 'ko'
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
-			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
+			for (var i = 1; i <= $("#item-table tr").length - 1; i++) {
 				$("#date" + i).datepicker({
 					language : 'ko'
 				}).next().on(ace.click_event, function() {
@@ -390,11 +393,13 @@ html, body {
 			titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
 			weekStart : 0
 		};
+	</script>
+	<script>
 		// 품목 행 추가할 때
 		function add_row() {
-			var table = document.getElementById("sample-table-1");
+			var table = document.getElementById("item-table");
 			var cnt = table.rows.length;
-			var row = table.insertRow(cnt); // 하단에 추가
+			var row = table.insertRow(cnt);
 			var cell1 = row.insertCell(0);
 			var cell2 = row.insertCell(1);
 			var cell3 = row.insertCell(2);
@@ -419,7 +424,7 @@ html, body {
 		}
 		// 품목 행 삭제할 때 
 		function delete_row() {
-			var table = document.getElementById('sample-table-1');
+			var table = document.getElementById('item-table');
 			var cnt = table.rows.length;
 			if (table.rows.length < 3) {
 				return;
@@ -432,7 +437,7 @@ html, body {
 		}
 		// 금액이 콤마 생기고, focus없어지면 콤마 사라지게 하는 부분
 		function addElementCommas() {
-			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
+			for (var i = 1; i <= $("#item-table tr").length - 1; i++) {
 				$("#supply-value" + i).on(
 						'keyup',
 						function(event) {
@@ -459,7 +464,7 @@ html, body {
 		function sumAllSupplyAllTax() {
 			var supplySum = 0;
 			var taxSum = 0;
-			for (var i = 1; i <= $("#sample-table-1 tr").length - 1; i++) {
+			for (var i = 1; i <= $("#item-table tr").length - 1; i++) {
 				var supplyValue = document.getElementById('supply-value' + i).value;
 				var taxValue = document.getElementById('tax-value' + i).value;
 				var amount = document.getElementById('amount' + i).value;
@@ -507,6 +512,7 @@ html, body {
 				</c:forEach>
 			}
 		}
+		// back단으로 넘길 때 콤마를 없애서 보내준다.
 		function prevent_commas_error() {
 			var totalSupplyValue = $("#form-field-14").val();
 			var totalTaxValue = $("#form-field-15").val();
@@ -517,7 +523,7 @@ html, body {
 			$("#form-field-14").val(totalSupplyValue);
 			$("#form-field-15").val(totalTaxValue);
 
-			for (var i = 1; i < $("#sample-table-1 tr").length; i++) {
+			for (var i = 1; i < $("#item-table tr").length; i++) {
 				var supplyValue = $("#supply-value" + i).val();
 				var taxValue = $("#tax-value" + i).val();
 				supplyValue = supplyValue.replace(/,/gi, "");
