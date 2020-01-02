@@ -275,7 +275,6 @@
 		  for(let customer in customerList){
 			  $newTbody.append(
 			   	"<tr>" +
-		        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
 		        "<td>" + customerList[customer].no + "</td>" +
 		        "<td>" + customerList[customer].name + "</td>" +
 		        "<td>" + customerList[customer].ceo + "</td>" +
@@ -306,7 +305,7 @@
 		var td = tr.children();
 		
 		//사업자 등록번호와 법인번호 => - 를 제거한다.
-		var customerNo = td.eq(1).text();
+		var customerNo = td.eq(0).text();
 		var noArray=customerNo.split('-');
 		//법인번호
 		if (noArray[2] !=null){
@@ -322,7 +321,7 @@
 		}
 		
 		//거래처 번호 => - 를 제거한다.
-		var customerPhone = td.eq(8).text();
+		var customerPhone = td.eq(7).text();
 		var phoneArray=customerPhone.split('-');
 		
 		if (phoneArray[2] !=null){
@@ -332,45 +331,45 @@
 		}
 		
 		//거래처 주소를 '/'를 기준으로 끊어 주소와 상세주소로 구분한다.
-		var customerAddr = td.eq(4).text();
+		var customerAddr = td.eq(3).text();
 		var addrArray=customerAddr.split('/');
 
 		$("input[name=address]").val(addrArray[0]);//주소
 		$("input[name=detailAddress]").val(addrArray[1]);//상세주소
 		
 		// '/'를기준으로 끊어 업태와 종목을 구분한다.
-		var customerConIt = td.eq(5).text();
+		var customerConIt = td.eq(4).text();
 		var conitArray=customerConIt.split('/');
 		
 		$("input[name=conditions]").val(conitArray[0]);//업태
 		$("input[name=item]").val(conitArray[1]);//업종
 		
 		//거래처명
-		$("input[name=name]").val(td.eq(2).text());
+		$("input[name=name]").val(td.eq(1).text());
 		
 		//대표자명
-		$("input[name=ceo]").val(td.eq(3).text());
+		$("input[name=ceo]").val(td.eq(2).text());
 		
 		//관할영업소
-		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
+		$("input[name=jurisdictionOffice]").val(td.eq(6).text());
 		
 		//담당자 이메일
-		$("input[name=managerEmail]").val(td.eq(10).text());
+		$("input[name=managerEmail]").val(td.eq(9).text());
 		
 		//은행명
-		$("input[name=bankName]").val(td.eq(12).text());
+		$("input[name=bankName]").val(td.eq(11).text());
 		
 		//은행코드
-		$("input[name=bankCode]").val(td.eq(11).text());
+		$("input[name=bankCode]").val(td.eq(10).text());
 		
 		//계좌번호
-		$("input[name=depositNo]").val(td.eq(13).text());
+		$("input[name=depositNo]").val(td.eq(12).text());
 		
 		//거래처 담당자명
-		$("input[name=managerName]").val(td.eq(9).text());
+		$("input[name=managerName]").val(td.eq(8).text());
 		
 		//예금주
-		$("input[name=depositHost]").val(td.eq(14).text());
+		$("input[name=depositHost]").val(td.eq(13).text());
 		
 		
 		$("input[name=address]").prop("readonly", true);
@@ -380,14 +379,14 @@
 		$("input[name='depositHost']").prop("readonly", true);
 		
 		//assets_flag(자산 거래처 종류) 값에 따라  radio 박스의 체크 상태가 변화한다.
-		var td6 = td.eq(6).text();
-		if(td6 == "토지"){
+		var td5 = td.eq(5).text();
+		if(td5 == "토지"){
 		$('input:radio[name=assetsFlag]:input[value="a"]').prop("checked", true);
-		} else if (td6 =="건물"){
+		} else if (td5 =="건물"){
 		$('input:radio[name=assetsFlag]:input[value="b"]').prop("checked", true);
-		} else if (td6 =="차량"){
+		} else if (td5 =="차량"){
 		$('input:radio[name=assetsFlag]:input[value="c"]').prop("checked", true);
-		} else if (td6 =="무형자산"){
+		} else if (td5 =="무형자산"){
 		$('input:radio[name=assetsFlag]:input[value="d"]').prop("checked", true);
 		}
 		
@@ -431,18 +430,6 @@
 		$("input[name='bankName']").prop("readonly", true);
 		$("input[name='depositHost']").prop("readonly", true);  
 	}
-	
-	$(document.body).delegate('#selectAll', 'click', function() {
-		if(this.checked) {
-	        $(':checkbox').each(function() {
-	            this.checked = true;                        
-	        });
-	    } else {
-	        $(':checkbox').each(function() {
-	            this.checked = false;                       
-	        });
-	    }
-	});
 	
 
 	$(function() {
@@ -985,7 +972,7 @@
 			<div class="page-content">
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">거래처 관리 [27]</h1>
+					<h1 class="pull-left">거래처 관리</h1>
 				</div>
 				
 				<!-- /.page-header -->
@@ -993,7 +980,7 @@
 
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" id="inputform" name="inputform" method="post">
-						<div class="row-fluid" style="float: left">
+						<div class="row-fluid">
 							<div class="span6">
 								
 								<div class="form-group">
@@ -1186,12 +1173,12 @@
 									</label>
 									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" maxlength="6"/>
 								</div>
-
 								<br/>
 							</div><!-- ./span6 -->
 						</div>
-							<!-- span -->
+						<br/>
 						<div class="hr hr-18 dotted"></div>
+							<!-- span -->
 						<div class="row-fluid">
 							<div class="span8">
 							<button class="btn btn-info btn-small" id="btn-read">조회</button>
@@ -1199,11 +1186,10 @@
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
 							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
-						</div>	<!-- /.span -->
+							</div>	<!-- /.span -->
 						
 						</div>
 						<div class="hr hr-18 dotted"></div>
-						<br/>
 					
 						</form>
 
@@ -1213,13 +1199,6 @@
 									<table id="simple-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th class="center">
-													<label>
-														<input type="checkbox" class="ace" id="selectAll" />
-														<span class="lbl">
-														</span>
-													</label>
-												</th>
 												<th>사업자등록번호</th>
 												<th>상호</th>
 												<th>대표자</th>
@@ -1244,13 +1223,6 @@
 										<tbody class = "origin-tbody">
 											<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 												<tr>
-													<td class="center">
-														<label>
-															<input type="checkbox" class="ace" />
-															<span class="lbl">
-															</span>
-														</label>
-													</td>
 													<td>${vo.no }</td>
 													<td>${vo.name }</td>
 													<td>${vo.ceo }</td>

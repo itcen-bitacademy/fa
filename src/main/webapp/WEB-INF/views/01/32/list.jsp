@@ -39,19 +39,19 @@
 		
 		
 				<div class="page-header position-relative">
-					<h1 class="pull-left">계정거래처원장조회 [32]</h1>
+					<h1 class="pull-left">계정거래처원장조회</h1>
 				</div><!-- /.page-header -->
 			
 				<div class="row-fluid"> <!-- 검색조건 -->
 					<form class="form-horizontal; center">
 							
-							거래처/코드:&nbsp;
+							거래처 코드/거래처명:&nbsp;
 									<div class="input-append">
 										<a href="#" id="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" id="customerName" placeholder="거래처명" name="customerName" style="text-align: center; width:150px;" readonly/>
+											<input type="text" class="search-input-width-first" id="customerNo" placeholder="거래처코드" name="customerNo" style="text-align: center; width:150px;" readonly/>
 											<script type="text/javascript">
-												var customerName = "${param.customerName}";
-												$("#customerName").val(customerName);
+												var customerNo = "${param.customerNo}";
+												$("#customerNo").val(customerNo);
 												</script>
 											<span class="add-on">
 				                            <i class="icon-search icon-on-right bigger-110"></i>
@@ -59,10 +59,10 @@
 				                    	</a>
 									</div>
 				
-						<input type="text" id="customerNo" name="customerNo" placeholder="거래처 코드" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						<input type="text" id="customerName" name="customerName" placeholder="거래처명" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
 						<script type="text/javascript">
-							var customerNo = "${param.customerNo}";
-							$("#customerNo").val(customerNo);
+							var customerName = "${param.customerName}";
+							$("#customerName").val(customerName);
 						</script>
 					
 						&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명
@@ -216,7 +216,7 @@
 							$("#datepicker2").val(datepicker2);
 						</script>
 					&nbsp; &nbsp;&nbsp;
-					<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+					<button class="btn btn-small btn-info" id="btn-submit" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					&nbsp;
 					<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 					</form>
@@ -300,6 +300,11 @@
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<div id="staticBackdrop" class="hide">
+					<br>
+					<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
+					</pre>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 			 <!-- 페이징 영역 -->
@@ -616,6 +621,87 @@
 		});
 
 	});
+	
+	
+	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
+	var nochecked = false;
+	
+	function openErrorModal(title, message,errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');
+						$(errorfield).focus();
+					}
+				}
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+	
+	//search Validation
+	function SearchValidation(){
+		let customerName =$('#customerNo').val();//거래처명
+		let accountNo =$('#accountNo').val();//계정코드
+		let datepicker1 =$('#datepicker1').val();//시작날짜
+		let datepicker2 =$('#datepicker2').val();//종료날짜
+		
+		//사업자등록번호
+		if("" == customerNo){
+			errortitle = 'CUSTOMER_SELECTED ERROR';
+			validationMessage = '거래처명, 거래처코드는 필수 입력항목입니다.\r\n팝업창을 통해 입력해주세요.';
+			errorfield='#customerNo';
+			return false;
+			
+		}
+
+		if("" == accountNo){
+			errortitle = 'ACCOUNT_SELECTED ERROR';
+			validationMessage = '계정명, 코드는 필수 입력항목입니다.\r\n팝업창을 통해 입력해주세요.';
+			errorfield='#accountNo';
+			return false;
+			
+		}
+		
+		//datepicker 관련 Valid
+		if(datepicker1 > datepicker2){
+			errortitle = 'DATE_RANGE_ERROR';
+			validationMessage = '조회기간 범위 오류입니다.\r\n 종료일을 시작일 이후로 설정해주세요';
+			errorfield='#datepicker2';
+			return false;
+			
+		}
+	
+		return true;
+	}
+	
+	$(function(){
+		$("#btn-submit").click(function(){
+			if(!SearchValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return false;
+			}
+			return true;
+		});
+	});
+	
+	
 </script>
 </body>
 </html>
