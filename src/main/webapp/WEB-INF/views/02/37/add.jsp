@@ -26,7 +26,7 @@ html, body {
 }
 
 .page-content {
-	min-width: 1920px;
+	min-width: 1600px;
 }
 
 @media screen and (max-width: 920px) {
