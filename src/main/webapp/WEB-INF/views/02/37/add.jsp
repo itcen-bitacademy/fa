@@ -9,6 +9,8 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+	type="text/css" rel="stylesheet" />
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -75,10 +77,20 @@ html, body {
 							<div class="control-group">
 								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
 								<div class="controls span5">
-									<input style="width: 100%" type="text" id="no" name="no"
-										value="${getAboutNoData.no }"
-										placeholder="ex) 20190420-44231234-57644467"
-										autocomplete="off" />
+									<c:choose>
+										<c:when test="${flag == 'true'}">
+											<input style="width: 100%" type="text" id="no" name="no"
+												value="${getAboutNoData.no }"
+												placeholder="ex) 20190420-44231234-57644467"
+												autocomplete="off" onclick="impossible_no();" readonly />
+										</c:when>
+										<c:otherwise>
+											<input style="width: 100%" type="text" id="no" name="no"
+												value="${getAboutNoData.no }"
+												placeholder="ex) 20190420-44231234-57644467"
+												autocomplete="off" />
+										</c:otherwise>
+									</c:choose>
 								</div>
 								<label class="control-label span1" for="manage-no">관&emsp;리&emsp;번&emsp;호</label>
 								<div class="controls span5">
@@ -325,7 +337,7 @@ html, body {
 								</table>
 							</div>
 							<div class="control-group">
-								<button class="btn btn-danger btn-small"
+								<button class="btn btn-danger btn-small" type="button"
 									style="float: left; margin-left: 20px;"
 									onclick="insert_button();">입력</button>
 								<button class="btn btn-warning btn-small" type="button"
@@ -338,10 +350,14 @@ html, body {
 									style="float: left; margin-left: 20px;"
 									onclick="lookup_button();">조회</button>
 							</div>
+
 							<!-- PAGE CONTENT ENDS -->
 						</div>
 					</div>
 				</form>
+				<div id="dialog-confirm" class="hide">
+					<p id="dialog-txt" class="bolder grey"></p>
+				</div>
 			</div>
 			<!-- PAGE CONTENT ENDS -->
 		</div>
@@ -353,6 +369,8 @@ html, body {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
+	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
 	<!-- 페이지로드될 때 발생하는 script함수 -->
 	<script>
@@ -481,36 +499,36 @@ html, body {
 			var company_name = document.getElementById("company-name").value;
 			var deposit_no;
 			alert('"' + company_name + '"과(와) 관련된 정보를 가져옵니다.');
-			if (company_name == "") {
-				$("#customer-name").val("");
-				$("#customer-address").val("");
-				$("#conditions").val("");
-				$("#items").val("");
-				$("#customer-no").val("");
-				$("#deposit-no").val("");
-				$("#deposit-host").val("");
-				$("#bank-code").val("");
-				$("#bank-name").val("");
-			} else {
-				<c:forEach items="${customerList }" var="list" varStatus="status">
-				if (company_name == "${list.name }") {
-					$("#customer-name").val("${list.ceo}");
-					$("#customer-address").val("${list.address}");
-					$("#conditions").val("${list.conditions}");
-					$("#items").val("${list.item}");
-					$("#customer-no").val("${list.no}");
-					deposit_no = "${list.depositNo }";
-				}
-				</c:forEach>
-				<c:forEach items="${customerBankList }" var="list" varStatus="status">
-				if (deposit_no == "${list.depositNo}") {
-					$("#deposit-no").val("${list.depositNo}");
-					$("#deposit-host").val("${list.depositHost}");
-					$("#bank-code").val("${list.bankCode}");
-					$("#bank-name").val("${list.bankName}");
-				}
-				</c:forEach>
+
+			$("#customer-name").val("");
+			$("#customer-address").val("");
+			$("#conditions").val("");
+			$("#items").val("");
+			$("#customer-no").val("");
+			$("#deposit-no").val("");
+			$("#deposit-host").val("");
+			$("#bank-code").val("");
+			$("#bank-name").val("");
+
+			<c:forEach items="${customerList }" var="list" varStatus="status">
+			if (company_name == "${list.name }") {
+				$("#customer-name").val("${list.ceo}");
+				$("#customer-address").val("${list.address}");
+				$("#conditions").val("${list.conditions}");
+				$("#items").val("${list.item}");
+				$("#customer-no").val("${list.no}");
+				deposit_no = "${list.depositNo }";
 			}
+			</c:forEach>
+			<c:forEach items="${customerBankList }" var="list" varStatus="status">
+			if (deposit_no == "${list.depositNo}") {
+				$("#deposit-no").val("${list.depositNo}");
+				$("#deposit-host").val("${list.depositHost}");
+				$("#bank-code").val("${list.bankCode}");
+				$("#bank-name").val("${list.bankName}");
+			}
+			</c:forEach>
+
 		}
 		// back단으로 넘길 때 콤마를 없애서 보내준다.
 		function prevent_commas_error() {
@@ -532,26 +550,111 @@ html, body {
 				$("#tax-value" + i).val(taxValue);
 			}
 		}
+
 		// 입력버튼 클릭시 
 		function insert_button() {
+
 			prevent_commas_error();
+
+			if (!valid.nullCheck("no", "승인번호"))
+				return; // 승인번호 널 체크
+			if (!valid.nullCheck("manage-no", "관리번호"))
+				return; // 관리번호 널 체크
+			if (!valid.nullCheck("customer-no", "등록번호"))
+				return; // 등록번호 널 체크
+			if (!valid.nullCheck("deposit-no", "계좌번호"))
+				return; // 계좌번호 널 체크
+			if (!valid.nullCheck("customer-name", "성명"))
+				return; // 성명 널 체크
+			if (!valid.nullCheck("deposit-host", "예금주"))
+				return; // 예금주 널 체크
+			if (!valid.nullCheck("customer-address", "주소"))
+				return; // 주소 널 체크
+			if (!valid.numberCheck("bank-code", "은행코드"))
+				return; // 은행코드 널 체크
+			if (!valid.nullCheck("bank-name", "은행이름"))
+				return; // 은행이름 널 체크
+			if (!valid.nullCheck("conditions", "업태"))
+				return; // 업태 널 체크
+			if (!valid.nullCheck("items", "종목"))
+				return; // 종목 널 체크
+			if (!valid.nullCheck("id-date-picker-1", "일자"))
+				return; // 일자 널 체크
+
+			for (var i = 1; i <= $("#item-table tr").length - 1; i++) {
+				if (!valid.nullCheck("date" + i, "매입일자"))
+					return;
+				if (!valid.nullCheck("item" + i, "품목명"))
+					return;
+				if (!valid.numberCheck("amount" + i, "수량"))
+					return;
+				if (!valid.numberCheck("supply-value" + i, "공급가액"))
+					return;
+				if (!valid.numberCheck("tax-value" + i, "부가세"))
+					return;
+			}
 
 			$("#manage-form")
 					.attr(
 							"action",
 							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add")
 					.submit();
+
 		}
+		// 세금계산서 수정 불가 alert
+		function impossible_no() {
+			alert("※주의\n\n세금계산서 번호는 수정할 수 없습니다.\n수정을 원하시면 삭제 후 재입력 해주시기를 바랍니다.");
+		}
+
 		// 수정버튼 클릭시 
 		function update_button() {
+
 			prevent_commas_error();
 
+			if (!valid.nullCheck("no", "승인번호"))
+				return; // 승인번호 널 체크
+			if (!valid.nullCheck("manage-no", "관리번호"))
+				return; // 관리번호 널 체크
+			if (!valid.nullCheck("customer-no", "등록번호"))
+				return; // 등록번호 널 체크
+			if (!valid.nullCheck("deposit-no", "계좌번호"))
+				return; // 계좌번호 널 체크
+			if (!valid.nullCheck("customer-name", "성명"))
+				return; // 성명 널 체크
+			if (!valid.nullCheck("deposit-host", "예금주"))
+				return; // 예금주 널 체크
+			if (!valid.nullCheck("customer-address", "주소"))
+				return; // 주소 널 체크
+			if (!valid.numberCheck("bank-code", "은행코드"))
+				return; // 은행코드 널 체크
+			if (!valid.nullCheck("bank-name", "은행이름"))
+				return; // 은행이름 널 체크
+			if (!valid.nullCheck("conditions", "업태"))
+				return; // 업태 널 체크
+			if (!valid.nullCheck("items", "종목"))
+				return; // 종목 널 체크
+			if (!valid.nullCheck("id-date-picker-1", "일자"))
+				return; // 일자 널 체크
+
+			for (var i = 1; i <= $("#item-table tr").length - 1; i++) {
+				if (!valid.nullCheck("date" + i, "매입일자"))
+					return;
+				if (!valid.nullCheck("item" + i, "품목명"))
+					return;
+				if (!valid.numberCheck("amount" + i, "수량"))
+					return;
+				if (!valid.numberCheck("supply-value" + i, "공급가액"))
+					return;
+				if (!valid.numberCheck("tax-value" + i, "부가세"))
+					return;
+			}
 			$("#manage-form")
 					.attr(
 							"action",
 							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update")
 					.submit();
 		}
+
 		// 삭제버튼 클릭시 
 		function delete_button() {
 			$("#manage-form")
@@ -560,6 +663,7 @@ html, body {
 							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
 					.submit();
 		}
+
 		// 조회버튼 클릭시 
 		function lookup_button() {
 			$("#manage-form")
@@ -569,5 +673,53 @@ html, body {
 					.submit();
 		}
 	</script>
+
+	<!-- 유효성 검사 -->
+	<script>
+		var valid = {
+			nullCheck : function(id, msg) { // null 체크
+				if ($("#" + id).val() == "") {
+					dialog(msg + " 을(를) 입력 해 주세요.");
+					return false;
+				} else {
+					return true;
+				}
+			},
+			numberCheck : function(id, msg) { // 숫자 체크
+				if (!$.isNumeric($("#" + id).val())) {
+					dialog(msg + "은(는) 숫자만 입력 가능합니다.");
+					$("#" + id).focus();
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+		}
+
+		// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
+		function dialog(txt, flag) {
+			$("#dialog-txt").html(txt);
+			var dialog = $("#dialog-confirm")
+					.dialog(
+							{
+								resizable : false,
+								modal : true,
+								buttons : [ {
+									text : "OK",
+									"class" : "btn btn-danger btn-mini",
+									click : function() {
+										if (flag) {
+											$(this).dialog("close");
+											location.href = "${pageContext.request.contextPath }/12/53";
+										} else {
+											$(this).dialog("close");
+										}
+									}
+								} ]
+							});
+		}
+	</script>
+
 </body>
 </html>

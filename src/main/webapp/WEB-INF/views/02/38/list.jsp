@@ -278,7 +278,7 @@ input:focus {
 				</form>
 				
 				<p>총 ${fn:length(buyTaxbillListAll)}건</p>
-				<div class="control-group" style="width: 80%; overflow-x: scroll;">
+				<div class="control-group" style="width: 85%; overflow-x: scroll;">
 					<table id="sample-table-1"
 						class="table table-striped table-bordered table-hover"
 						style="width: 1920px;">
