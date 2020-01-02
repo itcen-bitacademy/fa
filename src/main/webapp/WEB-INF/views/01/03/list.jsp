@@ -267,9 +267,15 @@
 				formaction="${pageContext.request.contextPath}/01/03/read">조 회</button>
 			<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
 				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
-			<button class="btn btn-default btn-small" type="reset">취 소</button>
+			<input class="btn btn-small" type="button" value="입력" onclick="add();">
+			<input class="btn btn-small" type="button" value="행 수정" onclick="modify();">
+			<input class="btn btn-small" type="button" value="행 삭제" onclick="delete_row();">
+			<input class="btn btn-primary btn btn-small" id="btn-create" name="btn-create" type="button" value="저 장" onclick="save();">
+			<input class="btn btn-warning btn btn-small" id="btn-update" name="btn-update" type="button" value="수 정" onclick="update();">
+			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
+
 			</form>
-			<div class="row-fluid">
+			<!-- <div class="row-fluid">
 				<div class="span8">
 						<button class="btn btn-small" type="button" onclick="add();">입 력</button>
 						<button class="btn btn-small" type="button" onclick="modify();">행 수정</button>
@@ -278,9 +284,9 @@
 							name="btn-create" onclick="save();">저 장</button>
 						<button class="btn btn-warning btn-small" type="submit" id="btn-update" 
 							name="btn-update" onclick="update();">수 정</button>
-						
-				</div><!-- /.span -->
-			</div><!-- /.row-fluid -->
+						<button class="btn btn-default btn-small" type="button" onclick="window.location.reload()">취 소</button>
+				</div>/.span
+			</div>/.row-fluid -->
 			<div class="hr hr-18 dotted"></div>
 			<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 전표 ${dataResult.pagination.totalCnt } 건</p>
 			
@@ -847,6 +853,11 @@
 			
 		}); // ajax
 	}
+	
+	/* // 리셋
+	function reset() {
+		
+	} */
 	
 	// 유효성 검사시 Dialog Popup 창이 모달로 띄움
 	function dialog(txt, flag) {
