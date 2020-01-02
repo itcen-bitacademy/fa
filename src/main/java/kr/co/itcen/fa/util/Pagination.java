@@ -21,7 +21,6 @@ public class Pagination {
 	private int startRow;			// 시작 Row
 	private boolean prev;			// 이전 버튼
 	private boolean next;			// 다음 버튼
-	
 	/**
 	 *  기본값 pageSize=11, pageBlockSize=5
 	 */

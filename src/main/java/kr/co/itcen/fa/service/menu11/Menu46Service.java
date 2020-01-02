@@ -42,7 +42,7 @@ public class Menu46Service {
 	}
 	//기본
 	public Map getList() {
-		return getList(null, null, 8, 1);
+		return getList(null, null, 11, 1);
 	}
 	
 	public Map getList(String code, String financialYear, int pageSize, int page) {

@@ -41,6 +41,7 @@
 		<if test='financialYear != null and !"".equals(financialYear)'>
 			and year(s.debt_date) = #{financialYear} 
 		</if>
+		order by insert_date desc
 		limit ${startRow}, ${pageSize}
 	</select>
 	

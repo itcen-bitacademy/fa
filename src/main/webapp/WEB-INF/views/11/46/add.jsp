@@ -126,7 +126,7 @@ tr td:first-child {
 }
 .repay-input-wrapper{
 	display: grid;
-	grid-template-columns: 30% auto;
+	grid-template-columns: 30% auto auto;
 	margin: auto 0;
 }
 
@@ -155,6 +155,8 @@ input::-webkit-inner-spin-button {
     border: 1px solid #ccc;
     vertical-align: top;
 }
+
+.textarea{resize: none; width: 282px; height: 84px;}
 </style>
 </head>
 <body class="skin-3">
@@ -188,7 +190,7 @@ input::-webkit-inner-spin-button {
 							<input type="hidden" name="isDuplicated" value="Y">
 						</div>
 						<div class="ia-left"><label class="label-name">단기차입금명</label></div>
-						<div class="ia-right"><textarea name="name" placeholder="육하원칙으로 입력해주세요."></textarea></div>
+						<div class="ia-right"><textarea name="name" class="textarea" maxlength="90" placeholder="육하원칙으로 입력해주세요."></textarea></div>
 						<div class="ia-left"><label class="label-name">차입금액</label></div>
 						<div class="ia-right">
 							<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
@@ -287,7 +289,7 @@ input::-webkit-inner-spin-button {
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
 							<button type="button" class="btn btn-small mybtn" onclick="openRepayDialog()">상환</button>
-							<button type="reset" class="btn btn-success btn-small mybtn" onclick="resetForm()">초기화</button>
+							<button type="button" class="btn btn-success btn-small mybtn" onclick="resetForm()">초기화</button>
 						</div>
 					</section>
 				</section>
@@ -327,6 +329,7 @@ input::-webkit-inner-spin-button {
 							<th class="center">담당자전화번호</th>	
 							<th class="center">은행코드</th>
 							<th class="center">계좌</th>
+							<th class="center">등록일자</th>
 						</tr>
 					</thead>
 					<tbody id="tbody-list">
@@ -477,8 +480,16 @@ function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	if(isValidDebt(inputForm))
+	if(inputForm.vo.value != ""){
+		dialog("새로운 데이터를 입력해주세요.");
+		resetForm();
 		return;
+	}
+	
+	if(!isValidDebt(inputForm)){
+		console.log("유효성 위반");
+		return;
+	}
 	
 	console.log("isDuplicated : " + inputForm.isDuplicated.value);
 	if(inputForm.isDuplicated.value == "Y"){
@@ -513,16 +524,21 @@ function insert(){
 }
 
 function update(){
+	console.log("-----------------------------update() Called --------------------------------");
 	var inputForm = $("#input-form")[0];
 	var sendData = $("#input-form").serialize();
 	
 	if(isEmpty(inputForm.vo.value)){
+		console.log("아무것도 선택하지 않음");
 		dialog("하나의 차입금을 선택해주세요");
 		return;
 	}
 	
-	if(!isValidDebt(inputForm))			//유효성이 어긋나면
+	if(!isValidDebt(inputForm)){ //유효성이 어긋나면
+		console.log("유효성 위반");
 		return;
+	}			
+		
 	
 	$.ajax({
 		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
@@ -550,9 +566,12 @@ function update(){
 			
 		}
 	});
+	console.log("-----------------------------update() End --------------------------------");
 }
 
 function isValidDebt(inputForm){
+	var isValid = false;
+	
 	if(inputForm.code.value == ''){
 		dialog("코드를 입력하세요.");
 	}else if(inputForm.name.value == ''){
@@ -573,7 +592,11 @@ function isValidDebt(inputForm){
 		dialog("담당자 전화를 입력하세요.");
 	}else if(inputForm.depositNo.value == ''){
 		dialog("계좌를 선택하세요.");
+	}else{
+		isValid = true;
 	}
+	
+	return isValid;
 }
 function resetForm(){
 	var inputForm = $("#input-form")[0];
@@ -582,6 +605,7 @@ function resetForm(){
 	$("#img-checkcode").css("display","none");
 	$("#tbody-list").find("tr").css("background-color", "inherit");
 	inputForm.vo.value = "";
+	inputForm.reset();	
 }
 //-----------------------------------은행 Model 메서드 ---------------------------------//
 //Dialog Open하는 함수
@@ -782,17 +806,17 @@ function renderRepayDialog(){
 			"</section>" +
 			"<section class='repay-input-wrapper'>" +
 				"<label>납입원금</label>" +
-				"<input type='text' id='pay-princ-comma' name='payPrincComma'/>" +
+				"<input type='text' id='pay-princ-comma' name='payPrincComma'/>(원)" +
 				"<input type='hidden' name='payPrinc'/>" +
 			"</section>" +
 			"<section class='repay-input-wrapper'>" +
 				"<label>이자금액</label>" +
-				"<input type='text' name='intAmountComma' readonly= 'readonly'/>" +
+				"<input type='text' name='intAmountComma' readonly= 'readonly'/>(원)" +
 				"<input type='hidden' name='intAmount'/>" +
 			"</section>" +
 			"<section class='repay-input-wrapper'>" +
 				"<label>총액</label>" +
-				"<input type='text' name='totalPayPrincComma' readonly='readonly'/>" +
+				"<input type='text' name='totalPayPrincComma' readonly='readonly'/>(원)" +
 				"<input type='hidden' name='totalPayPrinc'/>" +
 			"</section>" + 
 		"</form>");
@@ -1102,6 +1126,9 @@ function convertIntPayWay(intPayWay){
 function convertIntRate(intRate){
 	return intRate + "%";
 }
+function convertInsertDate(insertDate){
+	return insertDate.slice(0, insertDate.length -2);
+}
 
 //-----------------------------------리스트 및 페이지 Rendering ---------------------------------//
 //리스트를 받아서 Rendering 하는 함수
@@ -1138,6 +1165,7 @@ function renderingList(list){
 				 "<td class='center'>" + list[i].mgrCall + "</td>" +
 				 "<td class='center'>" + list[i].bankCode + "</td>" +
 				 "<td class='center'>" + list[i].depositNo + "</td>" +
+				 "<td class='center'>" + convertInsertDate(list[i].insertDate) + "</td>" +
 			"</tr>");
 	}
 }
@@ -1367,6 +1395,7 @@ function deleteChecked(){
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
 			$("#deleteVoList").val("");	
+			dialog("삭제가 완료되었습니다.");
 		},
 		error : function(xhr, error){
 			
