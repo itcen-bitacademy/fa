@@ -746,8 +746,11 @@
 					$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
 					$('#inputForm').attr('method', 'POST');
 					$('#inputForm').submit();
+					alert("사채 submit");
 					return;
 				} else {
+					openModal('Error', "해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
+					
 					var repayList = response.data;
 	         	  	$("#repay-code").text(repayList[0].code);
 	         	  	
@@ -759,7 +762,6 @@
 		                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 		                          "</tr>");
 	         	  	}
-	         	  	openModal('Error', "해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
 	         	  	
 	         	  	$("#dialog-repayment-ischeck").dialog({
 	         	  		title: "상환정보",
@@ -781,10 +783,6 @@
 	         	  	$("#dialog-repayment-ischeck").dialog('open');
 	         	}
 			},
-			complete : function(data) {
-				// 통신이 실패했어도 완료가 되었을 때 이 함수를 타게 된다.
-				openModal('Error', "차입금정보가 수정이 완료되었습니다.");
-	        },
 			error : function(xhr,error) {
 				console.err("error" + error);
 			}
@@ -907,21 +905,23 @@
 	function searchDebtData() {
 		var code = $("input[name=code]").val();
 		if (code.charAt(0) !== 'I') {
-			openModal('Error', '사채 코드는 반드시 대문자 I로 시작하여야 합니다.');
+			openModal('Error', '조회할 사채 코드는 반드시 대문자 I로 시작하여야 합니다.');
 			return false;
-		} else if (code.length < 10) {
-			openModal('Error', '사채 코드는 10자리를 입력하셔야 합니다.');
-			return false;
-		} else {
-			$("input").attr('disabled',true);
-			console.log($("input[name=code]").val());
-			$("input[name=code]").attr('disabled',false);
-			$("input[name=financialYear]").attr('disabled',false);
-			
-			$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}');
-			$('#inputForm').attr('method', 'POST');
-			$('#inputForm').submit();
 		}
+		
+		if (code.length < 10) {
+			openModal('Error', '조회할 사채 코드는 10자리를 입력하셔야 합니다.');
+			return false;
+		}
+		
+		$("input").attr('disabled',true);
+		console.log($("input[name=code]").val());
+		$("input[name=code]").attr('disabled',false);
+		$("input[name=financialYear]").attr('disabled',false);
+		
+		$('#inputForm').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}');
+		$('#inputForm').attr('method', 'POST');
+		$('#inputForm').submit();
 	}
 	
 	// 상환정보 입력
@@ -1614,7 +1614,7 @@
 			$("input[name=no]").val(td.eq(0).attr('data-no'));
 			
 			$("input[name=code]").val(td.eq(1).text()); // 사채코드
-			$("input[name=code]").attr('readonly', true);
+			//$("input[name=code]").attr('readonly', true);
 			
 			$("#onlyHangulAndNumber").val(td.eq(2).text()); // 사채명
 			
@@ -1713,7 +1713,7 @@
 		        break;
 			}
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
-			$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
+			//$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
 		}
 		
 		function formDeletion(thisObj){

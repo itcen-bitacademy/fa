@@ -42,11 +42,18 @@ public class Menu50Controller {
 	public String list(
 			Model model, 
 			@RequestParam(value = "code", required = false, defaultValue = "") String code,
-			@RequestParam(value = "financialYear", required = false, defaultValue = "2019") String year,
+			@RequestParam(value = "financialYear", required = false, defaultValue = "") String year,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 		DataResult<PdebtVo> dataResult = menu50Service.list(page, year, code);
 		List<SectionVo> sectionlist = menu50Service.selectSection();
-
+		System.out.println("=================== list ===================");
+		System.out.println("dataResult : " + dataResult);
+		System.out.println("code : " + code);
+		System.out.println("sectionlist : " + sectionlist);
+		System.out.println("year : " + year);
+		System.out.println("contentsCount : " + dataResult.getPagination().getTotalCnt());
+		System.out.println("=========================================");
+		
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("code", code);
 		model.addAttribute("sectionlist", sectionlist);
@@ -86,6 +93,7 @@ public class Menu50Controller {
 
 			if (menu19Service.checkClosingDate(userVo, pdebtVo.getDebtDate())) {
 				menu50Service.insert(pdebtVo, userVo); // 데이터베이스에 데이터 삽입
+				System.out.println("Insert 50 Controller");
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -111,9 +119,11 @@ public class Menu50Controller {
 			String[] dangerArray = dangerCode.split("-");
 			pdebtVo.setDangerCode(dangerArray[0]);
 			pdebtVo.setDangerName(dangerArray[1]);
-
+			System.out.println("Update 50 Controller 1");
+			
 			if (menu19Service.checkClosingDate(userVo, pdebtVo.getDebtDate())) {
 				menu50Service.update(pdebtVo, userVo);
+				System.out.println("Update 50 Controller 2");
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
