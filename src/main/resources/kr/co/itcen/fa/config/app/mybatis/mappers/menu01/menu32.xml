@@ -139,7 +139,7 @@
 				a.name as accountName,
 				cu.no as customerNo,
 		   	 	cu.name as customerName,
-		   	 	m.insert_day as regDate,
+		   	 	date_format(m.insert_day, "%Y-%m-%d") as regDate,
 			   v.no as voucherNo,
 			   i.order_no as voucherOrderNo,
 			   m.insert_team as insertTeam,

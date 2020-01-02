@@ -657,13 +657,13 @@
 	
 	//search Validation
 	function SearchValidation(){
-		let customerName =$('#customerNo').val();//거래처명
+		let customerName =$('#customerNo').val();//거래처코드
 		let accountNo =$('#accountNo').val();//계정코드
 		let datepicker1 =$('#datepicker1').val();//시작날짜
 		let datepicker2 =$('#datepicker2').val();//종료날짜
 		
 		//사업자등록번호
-		if("" == customerNo){
+		if(null == customerNo){
 			errortitle = 'CUSTOMER_SELECTED ERROR';
 			validationMessage = '거래처명, 거래처코드는 필수 입력항목입니다.\r\n팝업창을 통해 입력해주세요.';
 			errorfield='#customerNo';
