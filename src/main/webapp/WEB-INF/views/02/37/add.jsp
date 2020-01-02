@@ -657,11 +657,15 @@ html, body {
 
 		// 삭제버튼 클릭시 
 		function delete_button() {
-			$("#manage-form")
-					.attr(
-							"action",
-							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
-					.submit();
+			if (confirm("정말로 삭제하시겠습니까? 다시한번 확인해주세요")) {
+				$("#manage-form")
+						.attr(
+								"action",
+								"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
+						.submit();
+			} else {
+				return;
+			}
 		}
 
 		// 조회버튼 클릭시 
