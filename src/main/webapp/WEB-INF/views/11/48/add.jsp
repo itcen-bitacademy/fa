@@ -93,10 +93,10 @@ tr td:first-child {
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
 											<c:when test='${code eq ""}'>
-												<input type="text" name="code" id ="code" />
+												<input type="text" name="code" id ="code" maxlength="10"/>
 											</c:when>
 											<c:otherwise>
-												<input type="text" name="code" id ="code" value="${code}" />
+												<input type="text" name="code" id ="code" value="${code}" maxlength="10"/>
 											</c:otherwise>
 										</c:choose>
 										<input id="btn-check-code" type="button" value="중복확인">
@@ -106,7 +106,7 @@ tr td:first-child {
 								<tr >
 									<td><h4>장기차입금명</h4></td>
 									<td colspan="2">
-										<textarea class='textarea' name="name" id="name" ></textarea>
+										<textarea class='textarea' name="name" id="name" maxlength="50"></textarea>
 									</td>
 									
 								</tr>
@@ -215,7 +215,7 @@ tr td:first-child {
 									<td>
 										<c:choose>
 											<c:when test='${year eq ""}'>
-												<input type="number" min="1900" max="2099" step="1" value="2019" id="form-field-1" name="financialYear" placeholder="회계연도" />
+												<input type="number" min="1900" max="2099" step="1"  id="form-field-1" name="financialYear" placeholder="회계연도" />
 											</c:when>
 											<c:otherwise>
 												<input type="number" min="1900" max="2099" step="1" value="${year}" id="form-field-1" name="financialYear" placeholder="회계연도" />
@@ -268,9 +268,9 @@ tr td:first-child {
 								<tr>
 									<td><h4>담당자</h4></td>
 									<td>
-										<input type="text" class="mgr-input" name="mgr" id="mgr"/>
+										<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
 										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
-										<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" />
+										<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
 									</td>
 								</tr>
 								<tr>
@@ -856,7 +856,7 @@ tr td:first-child {
 	    var _pattern1 = /^\d{2}$/;//현재 value 값이 2자리 숫자면 .만 입력 가능
 	    //{숫자}를 값을 변경시 자리수 조정 가능
 	    if(_pattern1.test(_value)){
-	        if(charCode != 46){
+	        if(charCode != 46 ){
 	        	openErrorModal('INTRATE ERROR',"100 이하의 숫자만 입력 가능합니다",'#int_rate');
 	            return false;
 	        }
@@ -864,7 +864,7 @@ tr td:first-child {
 	    
 	  	   //소수점 2째 자리까지만 입력 가능
 	       var _pattern2 = /^\d*[.]\d{2}$/;//현재 value 값이 소수점 2쨰자리 숫자이면 더이상 입력 x
-
+	
 	       //{숫자}를 값을 변경시 자리수 조정 가능
 	       if(_pattern2.test(_value)){
 	    	 openErrorModal('INTRATE ERROR',"소수점 둘째자리까지만 입력 가능합니다",'#int_rate');
