@@ -131,57 +131,77 @@
 				$("#id-delete-check").data("deleteflag", "N");
 			}
 			
+			var check_price1 = $("#form-field-price1").val().replace(/[^0-9]/g,"");
+			var check_price2 = $("#form-field-price2").val().replace(/[^0-9]/g,"");
 			var price1 = Number($("#form-field-price1").val().replace(/[^0-9]/g,""));
 			var price2 = Number($("#form-field-price2").val().replace(/[^0-9]/g,""));
 			var date1 = $("#id-date-picker-1").val();
 			var date2 = $("#id-date-picker-2").val();
 			
-			if(price1 > price2) {
-				dialog("단가 범위를 다시 설정해주세요.", false);
-			} else if(date1 > date2) {
-				dialog("날짜 범위를 다시 설정해주세요.", false);
-			} else {
-				form_datas($("#form-field-item-id").val(),
-						   $("#form-field-section-name").val(),
-						   $("#form-field-factory-name").val(),
-						   $("#form-field-price1").val(),
-						   $("#form-field-price2").val(),
-						   $("#form-field-item-name").val(),
-						   $("#form-field-section-code").val(),
-						   $("#form-field-factory-code").val(),
-						   $("#id-date-picker-1").val(),
-						   $("#id-date-picker-2").val(),
-						   $("#id-delete-check").data("deleteflag"));
-				
-				var page_num = 1;
-				var page_group = parseInt((page_num-1)/5);
-				
-				$.ajax({
-					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
-					type:"get",
-					dataType:"json",
-					data:{"no" : $("#form").data("formdatasno"),
-						  "sectionname" : $("#form").data("formdatassectionname"),
-						  "factoryname" : $("#form").data("formdatasfactoryname"),
-						  "price_start" : $("#form").data("formdataspricestart"),
-						  "price_end" : $("#form").data("formdataspriceend"),
-						  "name" : $("#form").data("formdatasname"),
-						  "sectioncode" : $("#form").data("formdatassectioncode"),
-						  "factorycode" : $("#form").data("formdatasfactorycode"),
-						  "producedate_start" : $("#form").data("formdatasproducedatestart"),
-						  "producedate_end" : $("#form").data("formdatasproducedateend"),
-						  "deleteflag" : $("#form").data("formdatasdeleteflag"),
-						  "page" : page_num,
-						  "page_group" : page_group},
-					success:function(data) {
-						console.log(data);
-						updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
-						updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
-					}, error:function(error) {
-						dialog("찾을 수 없는 품목입니다.", false);
+			if((check_price1 != null && check_price1.length !== 0) || (check_price2 != null && check_price2.length !== 0)) {
+				if((check_price1 != null && check_price1.length !== 0) && (check_price2 != null && check_price2.length !== 0)) {
+					if(price1 > price2) {
+						dialog("단가 범위를 다시 설정해주세요.", false);
+						return;
 					}
-				});
+				} else {
+					dialog("단가 범위를 다시 설정해주세요.", false);
+					return;
+				}
 			}
+			
+			if((date1 != null && date1.length !== 0) || (date2 != null && date2.length !== 0)) {
+				if((date1 != null && date1.length !== 0) && (date2 != null && date2.length !== 0)) {
+					if(date1 > date2) {
+						dialog("생산 일자 범위를 다시 설정해주세요.", false);
+						return;
+					}
+				} else {
+					dialog("생산 일자 범위를 다시 설정해주세요.", false);
+					return;
+				}
+			}
+			
+			form_datas($("#form-field-item-id").val(),
+					   $("#form-field-section-name").val(),
+					   $("#form-field-factory-name").val(),
+					   $("#form-field-price1").val(),
+					   $("#form-field-price2").val(),
+					   $("#form-field-item-name").val(),
+					   $("#form-field-section-code").val(),
+					   $("#form-field-factory-code").val(),
+					   $("#id-date-picker-1").val(),
+					   $("#id-date-picker-2").val(),
+					   $("#id-delete-check").data("deleteflag"));
+			
+			var page_num = 1;
+			var page_group = parseInt((page_num-1)/5);
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+				type:"get",
+				dataType:"json",
+				data:{"no" : $("#form").data("formdatasno"),
+					  "sectionname" : $("#form").data("formdatassectionname"),
+					  "factoryname" : $("#form").data("formdatasfactoryname"),
+					  "price_start" : $("#form").data("formdataspricestart"),
+					  "price_end" : $("#form").data("formdataspriceend"),
+					  "name" : $("#form").data("formdatasname"),
+					  "sectioncode" : $("#form").data("formdatassectioncode"),
+					  "factorycode" : $("#form").data("formdatasfactorycode"),
+					  "producedate_start" : $("#form").data("formdatasproducedatestart"),
+					  "producedate_end" : $("#form").data("formdatasproducedateend"),
+					  "deleteflag" : $("#form").data("formdatasdeleteflag"),
+					  "page" : page_num,
+					  "page_group" : page_group},
+				success:function(data) {
+					console.log(data);
+					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
+					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
+				}, error:function(error) {
+					dialog("찾을 수 없는 품목입니다.", false);
+				}
+			});
 		});
 		
 		$("body").on("click",".page_go",function(e) {
