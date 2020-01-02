@@ -30,7 +30,9 @@ public class Menu50Repository {
 	
 	// 사채정보입력
 	public Boolean insert(PdebtVo pdebtVo) {
+		System.out.println("Insert 50 Repository PdebtVo : " + pdebtVo);
 		int count = sqlSession.insert("menu50.insert", pdebtVo);
+		System.out.println("Insert 50 Repository count : " + count);
 		return count == 1;
 	}
 	
@@ -71,7 +73,9 @@ public class Menu50Repository {
 
 	// 사채관리 페이지에서 수정을 눌렀을 때, 해당 사채정보 수정
 	public Boolean update(PdebtVo vo) {
+		System.out.println("Update 50 Repository PdebtVo : " + vo);
 		int count = sqlSession.update("menu50.pdebtupdate", vo);
+		System.out.println("Update 50 Repository count : " + count);
 		return count == 1;
 	}
 

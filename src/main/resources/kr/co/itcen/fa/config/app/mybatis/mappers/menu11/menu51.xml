@@ -33,7 +33,8 @@
 			    a.mgr,
 			    a.mgr_call as mgrCall,
 			    a.bank_code as bankCode,
-			    a.deposit_no as depositNo,
+			    a.deposit_no as depositNo, 
+			    date_format(a.insert_date,'%Y-%m-%d %H:%i:%S') as insertDate, 
 			    b.name as bankName
 			    from tb_p_debt as a, tb_bank as b
 			    where a.bank_code=b.code
@@ -66,7 +67,7 @@
 		</if>
 		<if test="pagination.pageIndex >= 0">
 			<![CDATA[
-			     limit #{pagination.pageIndex }, #{pagination.listSize }
+			    order by insertDate desc limit #{pagination.pageIndex }, #{pagination.listSize }
 			]]>
 		</if>
 	</select>

@@ -66,6 +66,7 @@ public class Menu50Service {
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
 		pdebtVo.setVoucherNo(no);
+		System.out.println("Insert 50 Service");
 
 		return menu50Repository.insert(pdebtVo);
 	}
@@ -105,6 +106,8 @@ public class Menu50Service {
 
 		Long no = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, userVo);
 		pdebtVo.setVoucherNo(no);
+		System.out.println("Update 50 Service");
+		
 		return menu50Repository.update(pdebtVo);
 	}
 
