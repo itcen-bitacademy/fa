@@ -36,8 +36,8 @@
 									<div class="controls">
 										<input type="text" id="land_code" name="id" placeholder="9자를 입력하세요"/>
 										<input readonly type="text" class="span6" id="default-landcode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
-										<!-- <input type="text" class="span6" id="overlap-landcode" style="border:none;color:red"  value="사용중인 품목코드입니다">
-										<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="토지코드는 숫자만 입력하세요.">
+										<input readonly type="text" class="span6" id="neverchange" style="border:none;color:#0067a3"  placeholder="토지코드는 변경할수 없습니다.">
+										<!--<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="토지코드는 숫자만 입력하세요.">
 										<input type="text" class="span6" id="null-landcode" style="border:none;color:red"  value="품목코드는 필수 입력 사항입니다!"> -->
 									</div>									
 								</div>
@@ -175,7 +175,7 @@
 	                               <button class="btn btn-warning btn-small" id="modify" style="float:left;margin-right:20px;" type="button">수정</button>
 	                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 	                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">조회</button>
-	                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;">초기화</button>
+	                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;" type="button">초기화</button>
 						</div>					
 					</div>
 					</div>
@@ -324,6 +324,9 @@
 <script>
 //토지코드 유효성 검사
  $(document).ready(function(){
+	 
+	$("#default-landcode").show();
+	$("#neverchange").hide();
 	console.log("clsosing" + $("#closingDate").val());
 	checkClosing();
 	$("#land_code").on("change", function(e){
@@ -368,11 +371,7 @@ $(function() {
 	});
 });
 
-	function checkClosing(){ // 마감일 세팅 여부
-		if($("#closingDate").val()=="true"){
-			dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-		}
-	}
+	
 	
 	function update(){ // 수정
 		if(!valid.nullCheck("land_code", "토지 코드")) return;
@@ -471,7 +470,12 @@ $(function() {
 				]
 			});
     	}
-
+	
+	function checkClosing(){ // 마감일 세팅 여부
+		if($("#closingDate").val()=="true"){
+			dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+		}
+	}
 
 
 //select Box 
@@ -480,25 +484,6 @@ $(function(){
 });
 
 
-
-
-//빈칸 검사()
-function formCheck() {
-	
-	if($("#land_code").val() == "")
-    {
-		 document.getElementById(next).focus();
-         alert("검색어를 입력해주시기 바랍니다.");
-    }
-	
-	
-	
-	if(window.event.keyCode ==13) {
-		
-	}else{
-		return;
-	}
-}
 
 //엔터키 막기
 document.addEventListener('keydown', function(event) {
@@ -524,7 +509,8 @@ $(function() {
 		console.log($('#land_code').val());
 		$('#land_code').val("");
 		console.log($('#land_code').val());
-		$('#clear').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add').submit();
+		var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add";
+		$("#insert-land-form").attr("action",url).submit();
 	});
 });
 
@@ -533,6 +519,9 @@ $(function() {
 //클릭한 행 받아와서 text에 값넣어주기
 $(function() {
 	$(".clickme").click(function() {
+		$('#land_code').prop('readonly', true);
+		$("#default-landcode").hide();
+		$("#neverchange").show();
 		$("#insert").hide();
 		$("#modify").show();
 		$("#search").hide();
