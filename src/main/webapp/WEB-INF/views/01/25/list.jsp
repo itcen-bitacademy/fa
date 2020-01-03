@@ -59,15 +59,6 @@
 	        $("input[name=balance]").val($("input[name=balance]").val().replace(/[^0-9]/g,""));
 	        $("input[name=depositLimit]").val($("input[name=depositLimit]").val().replace(/[^0-9]/g,""));
 	        
-			if($("input[name=balance]").val() == "") {
-				$("input[name=balance]").val(0);		
-			}
-			if($("input[name=depositLimit]").val() == "") {
-				$("input[name=depositLimit]").val(0);			
-			}
-			if($("input[name=profit]").val() == "") {
-				$("input[name=profit]").val(0);
-			}
 			var queryString = $("form[name=input-form]").serializeArray();
 			
 			if("${param.page}") {
@@ -75,6 +66,12 @@
 			}
 			
 			if(a == "create") {
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+				if(!InsertValidation()){
+					openErrorModal(errortitle,validationMessage,errorfield);
+					return;
+				}
+				
 				$.ajax({
 				    url: "${pageContext.request.contextPath}/${menuInfo.mainMenuCode}/${menuInfo.subMenuCode}/create",
 				    type: "POST",
@@ -129,6 +126,12 @@
 				    }
 				 })
 			} else if(a == "update") {
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+				if(!InsertValidation()){
+					openErrorModal(errortitle,validationMessage,errorfield);
+					return;
+				}
+				
 				$.ajax({
 				    url: "${pageContext.request.contextPath}/01/25/update",
 				    type: "POST",
@@ -251,10 +254,19 @@
 			  $(".chosen-select").chosen();
 		}
 		
+
+		$("input[name=balance]").on('keyup', function(event) {
+			$(this).val(addCommas($(this).val().replace(/[^0-9]/g, "")));
+		});
+
+		$("input[name=depositLimit]").on('keyup', function(event) {
+			$(this).val(addCommas($(this).val().replace(/[^0-9]/g, "")));
+		});
+
 		$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 			var tr = $(this);
 			var td = tr.children();
-			
+
 			$("input[name=depositNo]").val(td.eq(1).text());
 			$("input[name=depositOld]").val(td.eq(1).text());
 			$("input[name=bankCode]").val(td.eq(2).text());
@@ -263,18 +275,18 @@
 			$("input[name=enDate]").val(td.eq(5).text());
 			$("input[name=balance]").val(td.eq(6).text());
 			$("input[name=depositLimit]").val(td.eq(7).text());
-			$("input[name=profit]").val(td.eq(8).text());	
+			$("input[name=profit]").val(td.eq(8).text());
 			$("input[name=bankName]").val(td.eq(9).text());
 			$("input[name=bankLocation]").val(td.eq(10).text());
 			$("input[name=banker]").val(td.eq(11).text());
 			$("input[name=bankPhoneCall]").val(td.eq(12).text());
-			
+
 			$("input[name=bankName]").prop("readonly", true);
 			$("input[name='bankLocation']").prop("readonly", true);
 			$("input[name='banker']").prop("readonly", true);
-			$("input[name='bankPhoneCall']").prop("readonly", true);  
+			$("input[name='bankPhoneCall']").prop("readonly", true);
 		});
-		
+
 		function settingInput(bankList) {
 			$("input[name=depositNo]").val(bankList[0].depositNo);
 			$("input[name=depositOld]").val(bankList[0].depositNo);
@@ -284,106 +296,144 @@
 			$("input[name=enDate]").val(bankList[0].enDate);
 			$("input[name=balance]").val(bankList[0].balance);
 			$("input[name=depositLimit]").val(bankList[0].depositLimit);
-			$("input[name=profit]").val(bankList[0].profit);	
+			$("input[name=profit]").val(bankList[0].profit);
 			$("input[name=bankName]").val(bankList[0].bankName);
 			$("input[name=bankLocation]").val(bankList[0].bankLocation);
 			$("input[name=banker]").val(bankList[0].banker);
 			$("input[name=bankPhoneCall]").val(bankList[0].bankPhoneCall);
-			
+
 			$("input[name=bankName]").prop("readonly", true);
 			$("input[name='bankLocation']").prop("readonly", true);
 			$("input[name='banker']").prop("readonly", true);
-			$("input[name='bankPhoneCall']").prop("readonly", true);  
+			$("input[name='bankPhoneCall']").prop("readonly", true);
 		}
-		
+
 		$(document.body).delegate('#selectAll', 'click', function() {
-			if(this.checked) {
-		        // Iterate each checkbox
-		        $(':checkbox').each(function() {
-		            this.checked = true;                        
-		        });
-		    } else {
-		        $(':checkbox').each(function() {
-		            this.checked = false;                       
-		        });
-		    }
+			if (this.checked) {
+				// Iterate each checkbox
+				$(':checkbox').each(function() {
+					this.checked = true;
+				});
+			} else {
+				$(':checkbox').each(function() {
+					this.checked = false;
+				});
+			}
 		});
-		
+
 		$(".chosen-select").chosen();
-		
-		
+
 		// 4조 - 은행코드 검색
-		$("#a-dialog-bankcode").click(function(event){
-			event.preventDefault();
-			$("#tbody-bankList").find("tr").remove();
-			
-			var bankcodeVal = $("#input-dialog-bankcode").val();
-			console.log(bankcodeVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcode=" + bankcodeVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					$("#input-dialog-bankcode").val('');
-					$("#tbody-bankList").append("<tr>" +
-							"<td class='center'>" + response.data.code + "</td>" +
-					        "<td class='center'>" + response.data.name + "</td>" +
-					        "<td class='center'>" + response.data.store + "</td>" +
-					        "<td style='visibility:hidden;position:absolute;'>" + response.data.mgr + "</td>" +
-					        "<td style='visibility:hidden;position:absolute;'>" + response.data.mgrPhone + "</td>" +
-					        "</tr>");
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
+		$("#a-dialog-bankcode")
+				.click(
+						function(event) {
+							event.preventDefault();
+							$("#tbody-bankList").find("tr").remove();
+
+							var bankcodeVal = $("#input-dialog-bankcode").val();
+							console.log(bankcodeVal);
+							// ajax 통신
+							$
+									.ajax({
+										url : "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcode="
+												+ bankcodeVal,
+										contentType : "application/json; charset=utf-8",
+										type : "get",
+										dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
+										data : "",
+										statusCode : {
+											404 : function() {
+												alert("page not found");
+											}
+										},
+										success : function(response) {
+											$("#input-dialog-bankcode").val('');
+											$("#tbody-bankList")
+													.append(
+															"<tr>"
+																	+ "<td class='center'>"
+																	+ response.data.code
+																	+ "</td>"
+																	+ "<td class='center'>"
+																	+ response.data.name
+																	+ "</td>"
+																	+ "<td class='center'>"
+																	+ response.data.store
+																	+ "</td>"
+																	+ "<td style='visibility:hidden;position:absolute;'>"
+																	+ response.data.mgr
+																	+ "</td>"
+																	+ "<td style='visibility:hidden;position:absolute;'>"
+																	+ response.data.mgrPhone
+																	+ "</td>"
+																	+ "</tr>");
+										},
+										error : function(xhr, error) {
+											console.error("error : " + error);
+										}
+									});
+						});
+
 		// 은행명 검색 : 은행목록 리스트로 가져오기
-		$('#dialog-message-table').on('click', '#a-dialog-bankname', function(event) {
-			event.preventDefault();
-			$("#tbody-bankList").find("tr").remove();
-			
-			var banknameVal = $("#input-dialog-bankname").val();
-			console.log(banknameVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal=" + banknameVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(data){
-					$("#input-dialog-bankname").val('');
-					 $.each(data,function(index, item){
-			                $("#tbody-bankList").append("<tr>" +
-			                		"<td class='center'>" + item.code + "</td>" +
-							        "<td class='center'>" + item.name + "</td>" +
-							        "<td class='center'>" + item.store + "</td>" +
-							        "<td style='visibility:hidden;position:absolute;'>" + item.mgr + "</td>" +
-							        "<td style='visibility:hidden;position:absolute;'>" + item.mgrPhone + "</td>" +
-							        "</tr>");
-			         })
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
+		$('#dialog-message-table')
+				.on(
+						'click',
+						'#a-dialog-bankname',
+						function(event) {
+							event.preventDefault();
+							$("#tbody-bankList").find("tr").remove();
+
+							var banknameVal = $("#input-dialog-bankname").val();
+							console.log(banknameVal);
+							// ajax 통신
+							$
+									.ajax({
+										url : "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal="
+												+ banknameVal,
+										contentType : "application/json; charset=utf-8",
+										type : "get",
+										dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
+										data : "",
+										statusCode : {
+											404 : function() {
+												alert("page not found");
+											}
+										},
+										success : function(data) {
+											$("#input-dialog-bankname").val('');
+											$
+													.each(
+															data,
+															function(index,
+																	item) {
+																$(
+																		"#tbody-bankList")
+																		.append(
+																				"<tr>"
+																						+ "<td class='center'>"
+																						+ item.code
+																						+ "</td>"
+																						+ "<td class='center'>"
+																						+ item.name
+																						+ "</td>"
+																						+ "<td class='center'>"
+																						+ item.store
+																						+ "</td>"
+																						+ "<td style='visibility:hidden;position:absolute;'>"
+																						+ item.mgr
+																						+ "</td>"
+																						+ "<td style='visibility:hidden;position:absolute;'>"
+																						+ item.mgrPhone
+																						+ "</td>"
+																						+ "</tr>");
+															})
+										},
+										error : function(xhr, error) {
+											console.error("error : " + error);
+										}
+									});
+						});
+
 		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
 		$(document.body).delegate('#tbody-bankList tr', 'click', function() {
 			var tr = $(this);
@@ -395,39 +445,197 @@
 			$("input[name=bankPhoneCall]").val(td.eq(4).text());
 			$("#dialog-message").dialog('close');
 		});
-		
+
 	});
 	
-	function createNewPage(dataResult, a){
-		var inputString = "<ul>";
-		
-		// 앞
-		if(dataResult.pagination.prev != 0) {
-        	inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+ (dataResult.pagination.startPage - 1) +"'><i class='icon-double-angle-left'></i></a></li>";
-	       } else {
-	       	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
-	    }
-		
-		// 중간
-		for(var pg = dataResult.pagination.startPage ; pg <= dataResult.pagination.endPage;  pg++) {
-	      	if(dataResult.pagination.page == pg){
-	       		inputString +=	"<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-	       	} else {
-		      	inputString += 	"<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+pg+"'>"+pg+"</a></li>";
-		    }
-		}
-		
-		// 뒤        
-	    if (dataResult.pagination.next != 0) {
-	    	inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="+(dataResult.pagination.endPage + 1) +"'><i class='icon-double-angle-right'></i></a></li>";
-	    } else {
-	    	inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
-	    }
-		
-        inputString += "</ul>";
-        $("#pagination").append(inputString);
-   };
+
+	function addCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 	
+
+	var validationMessage = '';
+	var errortitle = '';
+	var errorfield = '';
+
+	function openErrorModal(title, message, errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+
+		$("#staticBackdrop").dialog({
+			resizable : false,
+			modal : true,
+			title : title,
+			buttons : [ {
+				text : "OK",
+				"class" : "btn btn-danger btn-mini",
+				click : function() {
+					$(this).dialog('close');
+					$('#staticBackdropBody').text('');
+					$(errorfield).focus();
+				}
+
+			} ]
+		});
+
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+
+	//insert Validation
+
+	function InsertValidation() {
+		let depositNo = $('#depositNo').val();
+		let depositHost = $('#depositHost').val();
+		let makeDate = $('#makeDate').val();
+		let enDate = $('#enDate').val();
+		let balance = $('#balance').val();
+		let depositLimit = $('#depositLimit').val();
+		let profit = $('#profit').val();
+		let bankCode = $('#bankCode').val();
+
+		//계좌번호 Valid
+		if ('' === depositNo) {
+			errortitle = 'DEPOSIT_NO ERROR';
+			validationMessage = '계좌번호는\r\n필수입력항목입니다.';
+			errorfield = '#depositNo';
+			return false;
+		}
+		//예금주 Valid
+		if ('' === depositHost) {
+			errortitle = 'DEPOSIT_HOST ERROR';
+			validationMessage = '예금주는\r\n필수입력항목입니다.';
+			errorfield = '#depositHost';
+			return false;
+		}
+
+		//기간 Valid
+		if ('' === makeDate) {
+			errortitle = 'makeDate ERROR';
+			validationMessage = '개설일자는\r\n필수입력항목입니다.';
+			errorfield = '#validityMM';
+			return false;
+		}
+		if ('' === enDate) {
+			errortitle = 'enDate ERROR';
+			validationMessage = '만기일자는\r\n필수입력항목입니다.';
+			errorfield = '#validityYY';
+			return false;
+		}
+
+		//balance Valid
+		if ('' === balance) {
+			errortitle = 'balance ERROR';
+			validationMessage = '잔액은\r\n필수입력항목입니다.';
+			errorfield = '#user';
+			return false;
+		}
+		//depositLimit  Valid
+		if ('' === depositLimit) {
+			errortitle = 'depositLimit  ERROR';
+			validationMessage = '예금한도는\r\n필수입력항목입니다.';
+			errorfield = '#issuer ';
+			return false;
+		}
+		//profit  Valid
+		if ('' === profit) {
+			errortitle = 'profit  ERROR';
+			validationMessage = '이율은\r\n필수입력항목입니다.';
+			errorfield = '#issuer ';
+			return false;
+		}
+		//bankCode Valid
+		if ('' === bankCode) {
+			errortitle = 'bankCode  ERROR';
+			validationMessage = '은행코드, 개설지점, 은행담당자, 은행전화번호는\r\n필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요';
+			errorfield = '#depositNo ';
+			return false;
+		}
+
+		return true;
+	}
+
+	//숫자, del, - 키만 동작하도록한다.
+	function isNumberKey(evt) {
+		var charCode = (evt.which) ? evt.which : event.keyCode;
+		var _value = event.srcElement.value;
+
+		if ((event.keyCode < 48) || (event.keyCode > 57)) {//1~0
+			if (event.keyCode != 46) {//delete
+				return false;
+			}
+		}
+		if (event.keyCode != 109) {//delete
+			return false;
+		}
+		if (event.keyCode != 189) {//delete
+			return false;
+		}
+		return true;
+
+	}
+
+	//숫자와 delete 키만 동작하도록한다.
+	function isNumberKey(evt) {
+		var charCode = (evt.which) ? evt.which : event.keyCode;
+		var _value = event.srcElement.value;
+
+		if ((event.keyCode < 48) || (event.keyCode > 57)) {//1~0
+			if (event.keyCode != 46) {//delete
+				return false;
+			}
+		}	
+		return true;
+
+	}
+
+	//한글입력 방지
+	function delHangle(evt) {
+		var objTarger = evt.srcElement || evt.target;
+		var val = event.srcElement.value;
+		if (/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)) {
+			objTarger.value = null;
+		}
+	}
+
+	function createNewPage(dataResult, a) {
+		var inputString = "<ul>";
+
+		// 앞
+		if (dataResult.pagination.prev != 0) {
+			inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="
+					+ (dataResult.pagination.startPage - 1)
+					+ "'><i class='icon-double-angle-left'></i></a></li>";
+		} else {
+			inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-left'></i></a></li>";
+		}
+
+		// 중간
+		for (var pg = dataResult.pagination.startPage; pg <= dataResult.pagination.endPage; pg++) {
+			if (dataResult.pagination.page == pg) {
+				inputString += "<li class='active'><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="
+						+ pg + "'>" + pg + "</a></li>";
+			} else {
+				inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="
+						+ pg + "'>" + pg + "</a></li>";
+			}
+		}
+
+		// 뒤        
+		if (dataResult.pagination.next != 0) {
+			inputString += "<li><a href='${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page="
+					+ (dataResult.pagination.endPage + 1)
+					+ "'><i class='icon-double-angle-right'></i></a></li>";
+		} else {
+			inputString += "<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>";
+		}
+
+		inputString += "</ul>";
+		$("#pagination").append(inputString);
+	};
+
 	// Popup
 	$(function() {
 		$("#dialog-message").dialog({
@@ -437,39 +645,25 @@
 		$("#a-bankinfo-dialog").click(function() {
 			$("#dialog-message").dialog('open');
 			$("#dialog-message").dialog({
-				title: "은행정보",
-				title_html: true,
-			   	resizable: false,
-			    height: 500,
-			    width: 400,
-			    modal: true,
-			    close: function() {
-			    	$('#tbody-bankList tr').remove();
-			    },
-			    buttons: {
-			    "닫기" : function() {
-			          	$(this).dialog('close');
-			          	$('#tbody-bankList tr').remove();
-			        }
-			    }
+				title : "은행정보",
+				title_html : true,
+				resizable : false,
+				height : 500,
+				width : 400,
+				modal : true,
+				close : function() {
+					$('#tbody-bankList tr').remove();
+				},
+				buttons : {
+					"닫기" : function() {
+						$(this).dialog('close');
+						$('#tbody-bankList tr').remove();
+					}
+				}
 			});
 		});
 
 	});
-	function addCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-   }
-
-   
-   $("input[name=balance]").on('keyup', function(event){
-   	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-   });
-   
-   $("input[name=depositLimit]").on('keyup', function(event){
-	   	 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	});
-	  
-	
 </script>
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -501,7 +695,7 @@
 									<label class="control-label" for="form-field-1" style="text-align=left">계 좌 번 호</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="depositNo"
+										<input type="text" id="depositNo" name="depositNo"
 											placeholder="계좌 번호"  /> <input type="hidden"
 											name="depositOld" />
 									</div>
@@ -511,7 +705,7 @@
 									<label class="control-label" for="form-field-1">예 금 주</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="depositHost"
+										<input type="text" id="depositHost" name="depositHost"
 											placeholder="예금주 (이름)" />
 									</div>
 								</div>
@@ -521,14 +715,14 @@
 
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" id="datepicker" name="makeDate"
+											<input type="text" id="makeDate" name="makeDate"
 												class="cl-date-picker" /> <span class="add-on"> <i
 												class="icon-calendar"></i>
 											</span>
 										</div>
 										&nbsp; &nbsp; 만 기 일 자 &nbsp;
 										<div class="input-append">
-											<input type="text" id="datepicker" name="enDate"
+											<input type="text" id="enDate" name="enDate"
 												class="cl-date-picker" /> <span class="add-on"> <i
 												class="icon-calendar"></i>
 											</span>
@@ -540,7 +734,7 @@
 									<label class="control-label" for="form-field-1">잔 액 </label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="balance"
+										<input type="text" id="balance" name="balance"
 											placeholder="잔액" />
 									</div>
 								</div>
@@ -549,9 +743,9 @@
 									<label class="control-label" for="form-field-1">이 율 </label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" placeholder="이율(%)"
+										<input type="text" id="profit" placeholder="이율(%)"
 											name="profit" /> &nbsp; &nbsp; 예금 한도 &nbsp; <input
-											type="text" id="form-field-1" name="depositLimit"
+											type="text" id="depositLimit" name="depositLimit"
 											placeholder="예금한도(만원)" />
 									</div>
 								</div>
@@ -568,7 +762,7 @@
 								<div class="controls">
 								<div class="input-append">
 									<a href="#"	id="a-bankinfo-dialog">  <input type="text"
-											class="search-input-width-first" name="bankCode" />
+											class="bankCode" name="bankCode" />
 										<span class="add-on">
 											<i class="icon-search icon-on-right bigger-110"></i>
 										</span>
@@ -628,21 +822,21 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">개 설 지 점 </label>
 								<div class="controls">
-									<input type="text" id="form-field-2" name="bankLocation"
+									<input type="text" id="bankLocation" name="bankLocation"
 										placeholder="개설 지점" readonly/>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은 행 담 당 자 </label>
 								<div class="controls">
-									<input type="text" id="form-field-2" name="banker"
+									<input type="text" id="banker" name="banker"
 										placeholder="은행 담당자" readonly/>
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">은 행 전 화 번 호 </label>
 								<div class="controls">
-									<input type="text" id="form-field-2" name="bankPhoneCall"
+									<input type="text" id="bankPhoneCall" name="bankPhoneCall"
 										placeholder="은행 전화번호" readonly/>
 								</div>
 							</div>
@@ -650,6 +844,14 @@
 						<!-- /.span -->
 					</div>
 					<!-- /row -->
+					
+					<!-- Validation Modal Start -->
+					<div id="staticBackdrop" class="hide">
+						<br>
+						<pre id="staticBackdropBody" class="bolder grey"
+							style="text-align: center; background-color: white; border-color: white">
+									</pre>
+					</div>
 
 
 					<!-- buttons -->
@@ -782,10 +984,6 @@
 			<!-- /.page-content -->
 		</div>	<!-- /.main-content -->
 	</div>	<!-- /.main-container -->
-
-
-
-
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
