@@ -1319,6 +1319,7 @@
 	$("#no").change(function(){
 		$("#btn-check-no").show();
 		$("#img-checkno").hide();
+		nochecked = false;
 	});	
 	
 	$("#btn-check-no").click(function(){
