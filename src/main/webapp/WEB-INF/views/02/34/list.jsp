@@ -358,8 +358,8 @@
 			$("#pagination_list").remove();
 			$newUl = $("<ul id='pagination_list'></ul>");
 			$("#purchase_pagination").append($newUl);
-			var page_all_count = parseInt((purchaseitemListall.length-1)/11) + 1;
-			var list_size = parseInt((purchaseitemList.length-1)/11) + 1;
+			var page_all_count = parseInt((purchaseitemListall.length-1)/11 + 1);
+			var list_size = parseInt((purchaseitemList.length-1)/11 + 1);
 			var page_group_max = parseInt((page_all_count-1) / 5);
 			
 			console.log(page_group_max);
@@ -510,8 +510,8 @@
 			$("#section_pagination_list").remove();
 			$newUl = $("<ul id='section_pagination_list'></ul>");
 			$("#section_pagination").append($newUl);
-			var section_page_all_count = parseInt((sectionListall.length-1)/6) + 1;
-			var section_list_size = parseInt((sectionList.length-1)/6) + 1;
+			var section_page_all_count = parseInt((sectionListall.length-1)/6 + 1);
+			var section_list_size = parseInt((sectionList.length-1)/6 + 1);
 			var section_page_group_max = parseInt((section_page_all_count-1) / 5);
 			
 			console.log(section_page_group_max);
@@ -665,8 +665,8 @@
 			$("#factory_pagination_list").remove();
 			$newUl = $("<ul id='factory_pagination_list'></ul>");
 			$("#factory_pagination").append($newUl);
-			var factory_page_all_count = parseInt((factoryListall.length-1)/6) + 1;
-			var factory_list_size = parseInt((factoryList.length-1)/6) + 1;
+			var factory_page_all_count = parseInt((factoryListall.length-1)/6 + 1);
+			var factory_list_size = parseInt((factoryList.length-1)/6 + 1);
 			var factory_page_group_max = parseInt((factory_page_all_count-1) / 5);
 			
 			console.log(factory_page_group_max);
