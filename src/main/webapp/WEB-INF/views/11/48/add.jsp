@@ -1154,18 +1154,22 @@ tr td:first-child {
 		});
 	});
 	$("#dialog-repayment-button").click(function() {
-		var count = $("input:checkbox[name=checkBox]:checked").length;
+		var count = 0;
+		 $("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		 });
 		
 		if(count > 1 || count == 0){
-			openErrorModal('MANY LIST CLICK ERROR',"한개의 체크박스를 클릭 후 상환을 눌러주세요 ",'');
+			openErrorModal('MANY LIST CLICK ERROR',"한개의 리스트를 클릭 후 상환을 눌러주세요 ",'');
 			return;
 		}
 		
 		$("#tbody-list tr").each(function(i){
 			var td = $(this).children();
-			var checkbutton = td.eq(0).children().children();
-			console.log(checkbutton);
-			if(checkbutton.prop('checked') == true){
+		
+			if($(this).hasClass('selected') === true){
 				$("#repaycode").val(td.eq(1).text());
 				var n = td.eq(0).attr('lterm-no');
 				var k = parseInt(td.eq(5).text().replace(/,/g, ''));
@@ -1231,7 +1235,7 @@ tr td:first-child {
 		    	$("#tbody-list tr").each(function(i){
 					var td = $(this).children();
 					var checkbutton = td.eq(0).children().children();
-					if(checkbutton.prop('checked') == true){
+					if($(this).hasClass('selected') === true){
 						k = parseInt(td.eq(5).text().replace(/,/g, ''));//상환잔액
 						debt_no = td.eq(0).attr('lterm-no');
 					}	
