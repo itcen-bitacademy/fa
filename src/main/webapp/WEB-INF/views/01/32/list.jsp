@@ -54,7 +54,7 @@
 												$("#customerNo").val(customerNo);
 												</script>
 											<span class="add-on">
-				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            <i class="icon-search icon-on-right bigger-110" id="search1"></i>
 				                            </span>
 				                    	</a>
 									</div>
