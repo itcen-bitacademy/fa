@@ -9,8 +9,11 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
 	type="text/css" rel="stylesheet" />
+
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -52,6 +55,30 @@ html, body {
 	margin: 0;
 	width: 94%;
 	border: 0
+}
+
+.chosen-single {
+	margin-top: 4px;
+}
+
+.chosen-container {
+	width: 260px !important;
+}
+
+.chosen-single div b:before {
+	display: none
+}
+
+.chosen-single div b:after {
+	display: none
+}
+
+.chosen-container-single .chosen-search:before {
+	display: none
+}
+
+.chosen-container-single .chosen-search:after {
+	display: none
 }
 /* table css e*/
 </style>
@@ -116,8 +143,9 @@ html, body {
 							<div class="control-group">
 								<label class="control-label span1" for="company-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span2">
-									<select id="company-name" name="companyName"
-										style="width: 99%;" onchange="load_customer_imfo();" required>
+									<select id="company-name" class="chosen-select"
+										name="companyName" style="width: 99%;"
+										onchange="load_customer_imfo();" required>
 										<c:choose>
 											<c:when test="${flag == 'true'}">
 												<option value="${getAboutNoCustomerData.name }" selected
@@ -378,6 +406,12 @@ html, body {
 			addElementCommas();
 			addElementCalender();
 		}
+	</script>
+	<!-- 거래처명 찾기기능 -->
+	<script
+		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script>
+		$(".chosen-select").chosen();
 	</script>
 	<!-- 달련 관련 script -->
 	<script
