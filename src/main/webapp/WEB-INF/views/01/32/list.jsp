@@ -508,7 +508,8 @@
 
 		$("#a-customerinfo-dialog").click(function() {
 			$("#dialog-message").dialog('open');
-			
+
+			$("#input-dialog-customerno").focus();
 			$("#modal-customer-table").hide();
 			$("#modal-bank-table").hide();
 			
@@ -590,7 +591,7 @@
 
 		$("#a-accountinfo-dialog").click(function() {
 			$("#dialog-message2").dialog('open');
-			
+			$("#input-dialog-accountname").focus();
 			$("#modal-account-table").show();
 			
 			$("#dialog-message2").dialog({
