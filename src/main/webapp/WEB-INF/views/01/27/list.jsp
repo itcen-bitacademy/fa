@@ -1329,6 +1329,7 @@
 			return;
 		}
 		
+		
 	// 사업자등록번호 중복체크
 	$.ajax({
 		url: "${pageContext.servletContext.contextPath }/01/27/checkno?no=" + no,
@@ -1347,7 +1348,7 @@
 				nochecked = true;
 				$("#btn-check-no").hide();
 				$("#img-checkno").show();
-				$("#no").attr("readonly",true);
+				//$("#no").attr("readonly",true);
 				setTimeout(function(){
 					openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
 					$("#deleteok").click(function(){
@@ -1364,7 +1365,27 @@
 					});
 					
 				},600);
-				
+// 				if($("#no").prop('readonly',true)){
+// 					$("#no").click(function(){
+// 						openDeleteModal("MODIFY_CUSTOMERNO","사업자등록번호를 다시 입력하시겠습니까?");
+// 						$("#deleteok").click(function(){
+// 							//var customerno = document.getElementById("no").value;
+// 							//$("input[name=corporationNo]").val(customerno);
+// 							openErrorModal("MODIFY ALLOW","사업자등록번호를 수정해주세요");
+// 							$("#no").attr("readonly",false);
+// 							$("#btn-check-no").show();
+// 							$("#img-checkno").hide();
+// 							return;
+// 						});
+// 						$("#deletecancel").click(function(){
+// 							openErrorModal("MODIFY CANCEL","사업자등록번호 수정이 취소되었습니다.");
+// 							$("#no").attr("readonly",true);
+// 							return;
+// 						});
+// 						return;
+// 						});
+					
+// 				}
 				return;
 			}else if(response.data.deleteFlag == "Y"){
 				$("#no").val("");
@@ -1380,5 +1401,7 @@
 			}
 		});
 	});
+	
+	
 	</script>
 </html>
