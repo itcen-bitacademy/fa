@@ -41,10 +41,36 @@ html, body {
 	}
 }
 /* 스크롤 깨짐 css e */
+/* list search css s*/
+.chosen-single {
+	margin-top: 4px;
+}
+
+.chosen-container {
+	width: 525px !important;
+}
+
+.chosen-single div b:before {
+	display: none
+}
+
+.chosen-single div b:after {
+	display: none
+}
+
+.chosen-container-single .chosen-search:before {
+	display: none
+}
+
+.chosen-container-single .chosen-search:after {
+	display: none
+}
+/* list search css e*/
 /* 기타 css s*/
 input:focus {
 	outline: none;
 }
+
 .chosen-search {
 	display: none;
 }
@@ -156,10 +182,12 @@ input:focus {
 
 								<label class="control-label span1" for="customer-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span5">
-									<select id="company-name" name="companyName"
+									<select id="company-name" name="companyName" class="chosen-select"
 										style="width: 68%;" required>
 										<option style="display: none;"
 											value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
+										<option style="display: none;" value="" disabled selected>ex)
+													아이티센</option>
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
@@ -276,7 +304,7 @@ input:focus {
 					</div>
 					<div class="hr hr-10 dotted"></div>
 				</form>
-				
+
 				<p>총 ${fn:length(buyTaxbillListAll)}건</p>
 				<div class="control-group" style="width: 85%; overflow-x: scroll;">
 					<table id="sample-table-1"
@@ -439,13 +467,18 @@ input:focus {
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	
+
 	<!-- jQeury관련 script -->
 	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	
+	<!-- 거래처명 찾기기능 -->
+	<script
+		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script>
+		$(".chosen-select").chosen();
+	</script>
 	<!-- 달력관련 script -->
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
@@ -472,7 +505,7 @@ input:focus {
 			});
 		});
 	</script>
-	
+
 	<!-- paging관련 ajax -->
 	<script type="text/javascript">
 		jQuery(function($) {
@@ -742,7 +775,7 @@ input:focus {
 
 		});
 	</script>
-	
+
 	<!-- 조회버튼  -->
 	<script>
 		function search_button() {
