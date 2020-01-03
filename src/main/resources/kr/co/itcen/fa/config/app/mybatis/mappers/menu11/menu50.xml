@@ -42,6 +42,7 @@
 		          a.danger_name as dangerName, 
 		          a.bank_code as bankCode,
 		          a.deposit_no as depositNo, 
+		          date_format(a.debt_date,'%Y') as financialYear, 
 		          c.deposit_host as depositHost, 
 		          date_format(a.insert_date,'%Y-%m-%d %H:%i:%S') as insertDate, 
 		          b.name as bankName
