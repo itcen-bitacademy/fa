@@ -1173,10 +1173,8 @@
 									</label>
 									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" maxlength="6"/>
 								</div>
-								<br/>
 							</div><!-- ./span6 -->
 						</div>
-						<br/>
 						<div class="hr hr-18 dotted"></div>
 							<!-- span -->
 						<div class="row-fluid">
