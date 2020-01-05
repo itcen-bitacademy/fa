@@ -67,7 +67,7 @@ public class Menu25Controller {
 		System.out.println(bavo.toString());
 				
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
-		bavo.setInsertUserId(uvo.getName());
+		bavo.setInsertUserId(uvo.getId());
 		bavo.setDepositOld(null);
 		
 		page = 1;
@@ -95,7 +95,7 @@ public class Menu25Controller {
 		System.out.println("update" );
 		
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
-		bavo.setUpdateUserId(uvo.getName());
+		bavo.setUpdateUserId(uvo.getId());
 		
 		System.out.println(bavo.toString());
 		

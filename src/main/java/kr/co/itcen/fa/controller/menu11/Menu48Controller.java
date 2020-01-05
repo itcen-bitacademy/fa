@@ -41,8 +41,6 @@ public class Menu48Controller {
 	@Autowired
 	private Menu48Service menu48Service;
 	
-	@Autowired
-	private Menu03Service menu03Service;
 	
 	@Autowired
 	private Menu19Service menu19Service;
@@ -51,7 +49,8 @@ public class Menu48Controller {
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
 	public String list(Model model,@RequestParam(value="code",required = false, defaultValue = "") String code,
 			@RequestParam(value="financialYear",required = false, defaultValue = "") String year,
-			@RequestParam(value="page", required=false,defaultValue = "1") int page
+			@RequestParam(value="page", required=false,defaultValue = "1") int page,
+			@RequestParam(value="closeDate", required=false,defaultValue= "true") boolean closeDate
 			) {
 		
 		DataResult<LTermdebtVo> dataResult = menu48Service.list(page, year,code);
@@ -62,8 +61,9 @@ public class Menu48Controller {
 		model.addAttribute("code",code);
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("year",year);
+		model.addAttribute("closeDate",closeDate);
 		
-		
+		System.out.println(closeDate);
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
@@ -87,12 +87,14 @@ public class Menu48Controller {
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 				
 				menu48Service.insert(vo,user);
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?closeDate=false";
+		
 	}
 	
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
@@ -104,12 +106,14 @@ public class Menu48Controller {
 		try {
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 				menu48Service.update(vo,user);
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+		return "redirect:/"+MAINMENU+"/"+SUBMENU + "?closeDate=false";
+		
 	}
 	
 	@RequestMapping(value = "/"+SUBMENU+"/delete", method = RequestMethod.POST)
@@ -118,7 +122,7 @@ public class Menu48Controller {
 		for(int i=0;i<l_list.size();++i) {
 			try {
 				if(!menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
-					return "redirect:/"+MAINMENU+"/"+SUBMENU;
+					return "redirect:/"+MAINMENU+"/"+SUBMENU + "?closeDate=false";
 				}
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block

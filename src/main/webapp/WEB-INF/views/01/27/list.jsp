@@ -431,7 +431,6 @@
 		$("input[name='depositHost']").prop("readonly", true);  
 	}
 	
-
 	$(function() {
 	      $("#dialog-message").dialog({
 	         autoOpen : false
@@ -894,6 +893,9 @@
 	
 		return true;
 	}
+	function enterdeposit(){
+		$("#a-dialog-depositNo").click();
+	}
 	
 	//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다.
 	function isNumberKey(evt){
@@ -1137,7 +1139,7 @@
 											<td>
 												<label>계좌번호</label>
 												<div class="input-append">
-													<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+													<input type="text" id="input-dialog-depositNo" style="width: 100px;" onkeypress="if( event.keyCode==13 ){enterdeposit();}"/>
 													<a href="#" id="a-dialog-depositNo">
 														<span class="add-on">
 														<i class="icon-search icon-on-right bigger-110"></i>
@@ -1319,6 +1321,7 @@
 	$("#no").change(function(){
 		$("#btn-check-no").show();
 		$("#img-checkno").hide();
+		nochecked = false;
 	});	
 	
 	$("#btn-check-no").click(function(){

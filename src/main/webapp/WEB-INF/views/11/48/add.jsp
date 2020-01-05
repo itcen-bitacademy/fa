@@ -66,6 +66,9 @@ tr td:first-child {
 #staticBackdrop {
 	z-index: -1;
 }
+.selected{
+	background-color:#ddd;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -90,6 +93,7 @@ tr td:first-child {
 								<tr>
 									<td><h4>장기차입금코드</h4></td>
 									<td>
+									<input type='hidden' id='closedate' value="${closeDate}">
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
 											<c:when test='${code eq ""}'>
@@ -899,11 +903,13 @@ tr td:first-child {
 		var td = tr.children();
 		
 		
-		console.log(td.eq(0).children().children().prop('checked'));
-		if(td.eq(0).children().children().prop('checked')== false){
-			$(td.eq(0).children().children()).prop('checked',true);
-			$("#tbody-list").find("tr").css("background-color", "inherit");
-	        $(this).css("background-color", "#ddd");
+		if($(this).hasClass('selected') === false){
+			
+			$("#tbody-list").find('tr').removeClass("selected");
+			
+			$(this).addClass('selected');
+			
+			
 	        $("input[name=code]").val(td.eq(1).text());
 	 		$("input[name=code]").attr('readonly',true);
 	 		
@@ -989,9 +995,8 @@ tr td:first-child {
 			$('#form-field-1').val(2019); 
 			$('#btn-check-code').val('중복확인');
 
-			$("#tbody-list").find("tr").css("background-color", "inherit");
-			$(this).css("background-color", "#ddd");
-			$(td.eq(0).children().children()).prop('checked',false);
+			$(this).removeClass("selected");
+			
 			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked',false);
 			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked',false);
 			$('input[name=intPayWay]').each(function(index,	item){
@@ -1034,6 +1039,9 @@ tr td:first-child {
 					$(td.eq(0).children().children()).prop('checked',false);
 				}
 		 });
+		 if($('#checkall').prop('checked')==true){
+			 $('#checkall').prop('checked',false);
+		 }
 	});
 	
 	$("#checkall").click(function(){
@@ -1146,18 +1154,22 @@ tr td:first-child {
 		});
 	});
 	$("#dialog-repayment-button").click(function() {
-		var count = $("input:checkbox[name=checkBox]:checked").length;
+		var count = 0;
+		 $("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		 });
 		
 		if(count > 1 || count == 0){
-			openErrorModal('MANY LIST CLICK ERROR',"한개의 체크박스를 클릭 후 상환을 눌러주세요 ",'');
+			openErrorModal('MANY LIST CLICK ERROR',"한개의 리스트를 클릭 후 상환을 눌러주세요 ",'');
 			return;
 		}
 		
 		$("#tbody-list tr").each(function(i){
 			var td = $(this).children();
-			var checkbutton = td.eq(0).children().children();
-			console.log(checkbutton);
-			if(checkbutton.prop('checked') == true){
+		
+			if($(this).hasClass('selected') === true){
 				$("#repaycode").val(td.eq(1).text());
 				var n = td.eq(0).attr('lterm-no');
 				var k = parseInt(td.eq(5).text().replace(/,/g, ''));
@@ -1223,7 +1235,7 @@ tr td:first-child {
 		    	$("#tbody-list tr").each(function(i){
 					var td = $(this).children();
 					var checkbutton = td.eq(0).children().children();
-					if(checkbutton.prop('checked') == true){
+					if($(this).hasClass('selected') === true){
 						k = parseInt(td.eq(5).text().replace(/,/g, ''));//상환잔액
 						debt_no = td.eq(0).attr('lterm-no');
 					}	
@@ -1480,8 +1492,14 @@ tr td:first-child {
 	});
 	//상환내역이 있을경우 수정 안되게 하는 코드
 	 $("#updatebtn").click(function(){
-		 
-		 var count = $("input:checkbox[name=checkBox]:checked").length;
+		var count = 0;
+		 $("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		 });
+		console.log(count);
+		
 		if(count>1){
 			openErrorModal('UPDATE ERROR','하나의 내용만 수정할 수 있습니다','');
 			return;
@@ -1823,6 +1841,12 @@ tr td:first-child {
 		 $("#staticBackdrop").dialog({
 		       autoOpen : false
 		  });
+		 
+		  if($("#closedate").val() == 'false'){
+		
+			openErrorModal('CLOSEDATE ERROR',"마감일이 지났습니다.",'');
+			$("#closedate").val('true'); 
+		  }
 	});
  
  

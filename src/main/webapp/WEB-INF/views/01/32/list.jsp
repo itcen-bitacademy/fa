@@ -54,7 +54,7 @@
 												$("#customerNo").val(customerNo);
 												</script>
 											<span class="add-on">
-				                            <i class="icon-search icon-on-right bigger-110"></i>
+				                            <i class="icon-search icon-on-right bigger-110" id="search1"></i>
 				                            </span>
 				                    	</a>
 									</div>
@@ -97,7 +97,7 @@
 											<option value="no">사업자번호</option>
 											<option value="name">상호명</option>
 									</select>
-										<input type="text" id="input-dialog-customerno" style="width: 100px;" />
+										<input type="text" id="input-dialog-customerno" style="width: 100px;" onkeypress="if( event.keyCode==13 ){entercustomer();}"/>
 										<a href="#" id="a-dialog-customerno">
 											<span class="add-on">
 												<i class="icon-search icon-on-right bigger-110"></i>
@@ -112,7 +112,7 @@
 											<option value="no">은행코드</option>
 											<option value="name">은행명</option>
 									</select>
-										<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
+										<input type="text" id="input-dialog-bankcode" style="width: 100px;" onkeypress="if( event.keyCode==13 ){enterbank();}"/>
 										<a href="#" id="a-dialog-bankcode">
 											<span class="add-on">
 												<i class="icon-search icon-on-right bigger-110"></i>
@@ -164,7 +164,7 @@
 											<option value="accountNo">계정코드</option>
 											<option value="accountName">계정명</option>
 										</select>
-									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
+									<input type="text" id="input-dialog-accountname" style="width: 100px;" onkeypress="if( event.keyCode==13 ){enteraccount();}"/>
 									<a href="#" id="a-dialog-accountname"> 
                                     	<span class="add-on">
                                         	<i class="icon-search icon-on-right bigger-110"></i>
@@ -376,6 +376,9 @@
 		});
 		
 		// 사업자번호 및 상호명으로 검색
+		function entercustomer(){
+			$("#a-dialog-customerno").click();
+		}
 		$("#a-dialog-customerno").click(function(event){
 			event.preventDefault();
 			$("#tbody-customerList").find("tr").remove();
@@ -415,7 +418,10 @@
 				}
 			});
 		});
-		
+
+		function enterbank(){
+			$("#a-dialog-bankcode").click();
+		}
 		//은행코드, 은행명을 선택적으로 검색
 		$("#a-dialog-bankcode").click(function(event){
 			event.preventDefault();
@@ -453,7 +459,9 @@
 				}
 			});
 		});
-		
+		function enteraccount(){
+			$("#a-dialog-accountname").click();
+		}
 		//계정명, 계정코드로 검색
 		$("#a-dialog-accountname").click(function(event){
 			event.preventDefault();
@@ -500,7 +508,8 @@
 
 		$("#a-customerinfo-dialog").click(function() {
 			$("#dialog-message").dialog('open');
-			
+
+			$("#input-dialog-customerno").focus();
 			$("#modal-customer-table").hide();
 			$("#modal-bank-table").hide();
 			
@@ -582,7 +591,7 @@
 
 		$("#a-accountinfo-dialog").click(function() {
 			$("#dialog-message2").dialog('open');
-			
+			$("#input-dialog-accountname").focus();
 			$("#modal-account-table").show();
 			
 			$("#dialog-message2").dialog({
