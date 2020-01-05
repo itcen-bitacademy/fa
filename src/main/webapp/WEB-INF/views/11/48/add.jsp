@@ -77,7 +77,7 @@ tr td:first-child {
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-		
+	<input type='hidden' id='closedate' value="${closeDate}">
 
 			<div class="page-header position-relative">
 				<h1 class="pull-left">장기차입금관리</h1>
@@ -93,7 +93,6 @@ tr td:first-child {
 								<tr>
 									<td><h4>장기차입금코드</h4></td>
 									<td>
-									<input type='hidden' id='closedate' value="${closeDate}">
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
 											<c:when test='${code eq ""}'>
@@ -110,7 +109,7 @@ tr td:first-child {
 								<tr >
 									<td><h4>장기차입금명</h4></td>
 									<td colspan="2">
-										<textarea class='textarea' name="name" id="name" maxlength="50"></textarea>
+										<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
 									</td>
 									
 								</tr>
@@ -567,7 +566,7 @@ tr td:first-child {
 
 <script>
 	var ischecked = false; //중복체크 하지 않을 경우를 확인하기 위한 변수
-
+	var flag = $('#closedate').val();
 	var validationMessage ='';
 	var errortitle='';
 	var errorfield ='';
@@ -619,9 +618,15 @@ tr td:first-child {
 					text: "OK",
 					"class" : "btn btn-danger btn-mini",
 					click: function() {
-						$(this).dialog('close');
-			          	$('#staticBackdropBody').text('');//에러내용
-						$(errorfield).focus();
+						if(flag){
+							$(this).dialog('close');
+							location.href="${pageContext.request.contextPath }/11/48";
+						}
+						else{
+							$(this).dialog('close');
+				          	$('#staticBackdropBody').text('');//에러내용
+							$(errorfield).focus();
+						}
 					}
 				}
 			]
@@ -1268,9 +1273,8 @@ tr td:first-child {
 							return;
 						}
 						if(response.data==null){
-
-							openErrorModal('REPAY ERROR',"마감일이 지났습니다.",'#code');
-							
+							flag = true;
+							openErrorModal('CLOSINGDATE ERROR','마감일이 지났습니다. 관리자에게 문의 주세요','');
 							return;
 						}
 						if(response.data.repayBal == 0){
@@ -1295,25 +1299,25 @@ tr td:first-child {
 				                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 				                          "</tr>");
 					         	  	}
-						         	$("#dialog-repayment-ischeck").dialog({
-						              title: "상환정보",
-					                   title_html: true,
-					                      	resizable: false,
-					         	           height: 500,
-					         	           width: 400,
-					         	           modal: true,
-					         	           close: function() {
-					                       $('#tbody-repaymentList tr').remove();
-					                    },
-					                    buttons: {
-					                    "닫기" : function() {
-					                             $(this).dialog('close');
-					                             $('#tbody-repaymentList tr').remove();
-					                        }
-					                    }
-					                });     
-					                $("#dialog-repayment-ischeck").dialog('open');
-									
+							         	$("#dialog-repayment-ischeck").dialog({
+							              title: "상환정보",
+						                   title_html: true,
+						                      	resizable: false,
+						         	           height: 500,
+						         	           width: 400,
+						         	           modal: true,
+						         	           close: function() {
+						                       $('#tbody-repaymentList tr').remove();
+						                    },
+						                    buttons: {
+						                    "닫기" : function() {
+						                             $(this).dialog('close');
+						                             $('#tbody-repaymentList tr').remove();
+						                        }
+						                    }
+						                });     
+						                $("#dialog-repayment-ischeck").dialog('open');
+										
 									},
 									error:function(xhr,error) {
 										console.err("error" + error);
@@ -1841,12 +1845,14 @@ tr td:first-child {
 		 $("#staticBackdrop").dialog({
 		       autoOpen : false
 		  });
-		 
-		  if($("#closedate").val() == 'false'){
-		
-			openErrorModal('CLOSEDATE ERROR',"마감일이 지났습니다.",'');
-			$("#closedate").val('true'); 
-		  }
+		// 회계연도 setting
+		var date = new Date();
+		var financialYear = date.getFullYear();
+		document.getElementById("form-field-1").value = financialYear;
+
+		if(flag){
+			openErrorModal('CLOSINGDATE ERROR','마감일이 지났습니다. 관리자에게 문의 주세요');
+		}
 	});
  
  

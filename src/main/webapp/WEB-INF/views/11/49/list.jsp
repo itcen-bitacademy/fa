@@ -175,10 +175,10 @@ form {
 										<label class="control-label" style="padding-right: 12px;">차입금 선택정렬</label>
 										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." name="sort" >
 											<option value=""></option>
-											<option value="d">차입일자</option>
-											<option value="e">만기일자</option>
-											<option value="i">등록일자</option>
-											<option value="m">차입금액</option>
+											<option value="d" <c:if test="${sort eq 'd'}"> selected </c:if>>차입일자</option>
+											<option value="e" <c:if test="${sort eq 'e'} ">selected</c:if>>만기일자</option>
+											<option value="i" <c:if test="${sort eq 'i'}">selected</c:if>>등록일자</option>
+											<option value="m" <c:if test="${sort eq 'm'}">selected</c:if>>차입금액</option>
 										</select>
 									</div>
 								</div>

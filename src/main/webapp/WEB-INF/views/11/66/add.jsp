@@ -75,6 +75,9 @@ input[type="text"], input[type="date"], select {
 .code-search-info {
 	padding: 0 0 10px 10px;
 }
+.selected{
+	background-color:#ddd;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -101,7 +104,7 @@ input[type="text"], input[type="date"], select {
 				<div class="input-area">
 					<section>
 						<div class="ia-left"><label class="control-label">차입금코드</label></div>
-						<div class="ia-right"><input type="text" id="code" name="code" readonly="readonly"></div>
+						<div class="ia-right"><input type="text" id="code" name="code" ></div>
 						<div class="ia-left"><label class="control-label">납입금</label></div>
 						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> (원)<input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
 						<div class="ia-left"><label class="control-label">이자금액</label></div>
@@ -292,6 +295,7 @@ $(function() {
 	$("#formReset").bind("click", function () {
 		$('#input-form')[0].reset(); // form의 모든 데이터 초기화
 		$('#debtType').val('초기값').trigger('chosen:updated'); // value 값으로 선택
+		$('#code').attr('readonly',false);
     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
@@ -449,23 +453,38 @@ function getListAjax(page){
 
 //----------------------테이블에서 Row선택시 처리 함수----------------------//
 function selectRow(thisObj){
-	var inputForm = $("#input-form")[0];
-	var vo = JSON.parse($(thisObj).find("input[name=vo]").val());
 	
-	$(thisObj).closest("table").find("tr").css("background-color", "inherit");
-	$(thisObj).css("background-color", "#ddd");
 	
-	inputForm.voucherNo.value = vo.voucherNo;
-	inputForm.code.value = vo.code;
-	inputForm.debtNo.value = vo.debtNo;
-	inputForm.payPrinc.value = vo.payPrinc;
-	inputForm.commaPayPrinc.value = comma(vo.payPrinc);
-	inputForm.tempPayPrinc.value = vo.payPrinc;
-	inputForm.intAmount.value = vo.intAmount;
-	inputForm.commaIntAmount.value = comma(vo.intAmount);
-	$('#debtType').val(vo.debtType).trigger('chosen:updated');
-	inputForm.payDate.value = vo.payDate;
+	if($(thisObj).hasClass('selected') === false){
+		$("#tbody-list").find('tr').removeClass("selected");
+		
+		$(thisObj).addClass('selected');
+		
+		var inputForm = $("#input-form")[0];
+		var vo = JSON.parse($(thisObj).find("input[name=vo]").val());
+		
+		
+		inputForm.voucherNo.value = vo.voucherNo;
+		inputForm.code.value = vo.code;
+		inputForm.debtNo.value = vo.debtNo;
+		inputForm.payPrinc.value = vo.payPrinc;
+		inputForm.commaPayPrinc.value = comma(vo.payPrinc);
+		inputForm.tempPayPrinc.value = vo.payPrinc;
+		inputForm.intAmount.value = vo.intAmount;
+		inputForm.commaIntAmount.value = comma(vo.intAmount);
+		$('#debtType').val(vo.debtType).trigger('chosen:updated');
+		inputForm.payDate.value = vo.payDate;
+		$('#code').attr('readonly',true);
+	}else{
+		
+		$('#input-form')[0].reset(); // form의 모든 데이터 초기화
+		$('#debtType').val('초기값').trigger('chosen:updated'); // value 값으로 선택
+		$('#code').attr('readonly',false);
+		$(thisObj).removeClass("selected");
+	}
+		
 }
+
 
 //<숫자에 콤마 적용해서 데이터 처리>
 //1. 입력한 문자열 전달

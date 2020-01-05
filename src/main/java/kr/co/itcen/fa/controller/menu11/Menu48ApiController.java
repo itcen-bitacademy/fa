@@ -34,9 +34,6 @@ public class Menu48ApiController {
 	@Autowired
 	private Menu48Service menu48Service;
 	
-	@Autowired
-	private Menu03Service menu03Service;
-	
 	@Autowired 
 	private Menu19Service menu19Service;
 	
@@ -47,6 +44,8 @@ public class Menu48ApiController {
 		System.out.println(lvo);
         return JSONResult.success(lvo);
 	}
+	
+	
 	@ResponseBody
 	@RequestMapping(value = "/"+SUBMENU+"/repay", method = RequestMethod.POST)
 	public JSONResult repay(@RequestBody RepayVo vo,@AuthUser UserVo uservo) {
@@ -62,6 +61,8 @@ public class Menu48ApiController {
 		}
 		return JSONResult.success(null);
 	}
+	
+	
 	@ResponseBody
 	@RequestMapping("/"+SUBMENU+"/checkrepay")
 	public JSONResult checkrepay(@RequestParam(value="no", required=true) Long no) {
