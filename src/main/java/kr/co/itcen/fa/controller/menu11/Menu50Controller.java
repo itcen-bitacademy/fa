@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.controller.menu11;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.List;
 
@@ -100,21 +101,21 @@ public class Menu50Controller {
 			if (menu19Service.checkClosingDate(userVo, pdebtVo.getDebtDate())) {
 				menu50Service.insert(pdebtVo, userVo); // 데이터베이스에 데이터 삽입
 				System.out.println("Insert 50 Controller");
-			} else {
-				model.addAttribute("closingDate", true); // 마감된 경우
-				return MAINMENU + "/" + SUBMENU + "/add"; 
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		model.addAttribute("closingDate", true); // 마감된 경우
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
 	public String update(
 			@ModelAttribute PdebtVo pdebtVo, 
 			@AuthUser UserVo userVo,
-			Model model, RedirectAttributes redirectAttributes) throws IOException {
+			Model model, RedirectAttributes redirectAttributes, 
+			HttpServletResponse response) throws IOException {
 		// 마감 여부 체크
 		try {
 			String deptExpDate = pdebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
@@ -129,24 +130,16 @@ public class Menu50Controller {
 			String[] dangerArray = dangerCode.split("-");
 			pdebtVo.setDangerCode(dangerArray[0]);
 			pdebtVo.setDangerName(dangerArray[1]);
-			System.out.println("=================== update ===================");
-			System.out.println("마감일이 지나서 데이터를 수정할 수 없습니다.");
-			System.out.println("============================================");
 			
 			if (menu19Service.checkClosingDate(userVo, pdebtVo.getDebtDate())) {
 				menu50Service.update(pdebtVo, userVo);
-				System.out.println("=================== update ===================");
-				System.out.println("데이터를 수정했습니다.");
-				System.out.println("============================================");
-			} else {
-				redirectAttributes.addFlashAttribute("closingDate", "closingDate"); // 마감된 경우
-				return "redirect:/" + MAINMENU + "/" + SUBMENU;
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
-
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		model.addAttribute("closingDate",true);
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
@@ -160,7 +153,7 @@ public class Menu50Controller {
 			try {
 				if (!menu19Service.checkClosingDate(userVo, pdebtVoList.get(i).getDebtDate())) {
 					model.addAttribute("closingDate", true); // 마감된 경우
-					return "redirect:/" + MAINMENU + "/" + SUBMENU;
+					return MAINMENU + "/" + SUBMENU + "/add";
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();

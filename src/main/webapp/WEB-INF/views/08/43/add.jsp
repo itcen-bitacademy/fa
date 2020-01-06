@@ -42,7 +42,7 @@
 								<div class="span6">
 									<!-- 차변 -->
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">무형자산
+										<label style="text-align:left;" class="control-label" for="form-field-1">무형자산
 											코드</label>
 										<div class="controls">
 											<input type="text" class="span7" id="id" name="id"
@@ -52,14 +52,14 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">설치주소</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">설치주소</label>
 										<div class="controls">
 											<input type="text" class="span11" id="form-field-1"
 												name="address" placeholder="주소를 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">대분류
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">대분류
 											코드</label>
 										<div class="controls">
 											<select class="span2 chosen-select" id="form-field-section"
@@ -74,7 +74,7 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">거래처
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">거래처
 											코드</label>
 										<div class="controls">
 											<select class="chosen-select" id="form-field-customer"
@@ -91,21 +91,21 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득금액</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">취득금액</label>
 										<div class="controls">
 											<input type="text" id="acqPrice" name="acqPrice"
 												style="text-align: right;" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">부대비용</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">부대비용</label>
 										<div class="controls">
 											<input type="text" id="addiFee" name="addiFee"
 												style="text-align: right;" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">세금계산서
+										<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서
 											번호</label>
 										<div class="controls">
 											<input type="text" class="span7" id="form-field-1"
@@ -118,28 +118,28 @@
 								<div class="span6">
 									<!-- 대변 -->
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">무형자산 명</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">무형자산 명</label>
 										<div class="controls">
 											<input type="text" class="span11" id="name"
 												name="name" placeholder="무형자산명을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">사용 담당자</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">사용 담당자</label>
 										<div class="controls">
 											<input type="text" class="span7" id="user"
 												name="user" placeholder="이름을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">수량</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">수량</label>
 										<div class="controls">
 											<input type="text" id="copyCount" name="copyCount"
 												style="text-align: right;" placeholder="수량을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">담당자</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">담당자</label>
 										<div class="controls">
 											<input readonly type="text" class="span7"
 												name="customerManager" id="customerManager"
@@ -147,7 +147,7 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">용도</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">용도</label>
 										<div class="controls">
 											<!-- <input type="text" class="span11" id="form-field-1"
 												name="purpose" placeholder="용도를 입력하세요" /> -->
@@ -161,7 +161,7 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="id-date-picker-1">매입일자</label>
+										<label style="text-align:left;" class="control-label" for="id-date-picker-1">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker" id="id-date-picker-1"
@@ -172,7 +172,7 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label">구분</label>
+										<label style="text-align:left;" class="control-label">구분</label>
 										<div class="controls">
 											<div class="span2">
 												<label> <input name="taxKind" type="radio" id="tax"
@@ -335,13 +335,6 @@
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
-		// 마감일 세팅 여부
-		function checkClosing(){ 
-			if($("#closingDate").val()=="true"){
-				dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-			}
-		}
-		
 		// 입력 유효성 검사
 		function insert(){
 			if(!valid.nullCheck("id", "무형자산 코드")) return;
@@ -350,7 +343,6 @@
 			if(!valid.nullCheck("code", "무형자산 분류")) return;
 			if(!valid.nullCheck("customerNo", "거래처")) return;
 			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
-			if(!valid.nullCheck("addiFee", "부대 비용")) return;
 			if(!valid.nullCheck("code", "무형자산 명")) return;
 			if(!valid.nullCheck("user", "사용 담당자")) return;
 			if(!valid.nullCheck("copyCount", "수량")) return;
@@ -370,7 +362,6 @@
 			if(!valid.nullCheck("code", "무형자산 분류")) return;
 			if(!valid.nullCheck("customerNo", "거래처")) return;
 			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
-			if(!valid.nullCheck("addiFee", "부대 비용")) return;
 			if(!valid.nullCheck("code", "무형자산 명")) return;
 			if(!valid.nullCheck("user", "사용 담당자")) return;
 			if(!valid.nullCheck("copyCount", "수량")) return;
@@ -417,11 +408,6 @@
         			$("#"+id).val("");
         			$("#"+id).focus();
         			return false;
-        		} else if($("#"+id).val().length > 10 || $("#"+id).val().length < 10) {
-        			dialog(msg+"는 9자리로 지정해야합니다.<br> ex: 110100701 (월+일+007+번호)");
-        			$("#"+id).val("");
-        			$("#"+id).focus();
-        			return false;
         		} else {
         			return true;
         		}
@@ -441,7 +427,7 @@
 						click: function() {
 							if(flag){
 								$( this ).dialog( "close" ); 
-									location.href="${pageContext.request.contextPath }/08/43/add";
+									location.href="${pageContext.request.contextPath }/08/43/list";
 							} else {
 								$( this ).dialog( "close" ); 
 							}
@@ -452,6 +438,18 @@
 	    }
 	
 		$(function() {
+			checkClosing();
+			console.log("clsosing" + $("#closingDate").val());
+			
+			
+			// 마감일 세팅 여부
+			function checkClosing(){ 
+				if($("#closingDate").val()=="true"){
+					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+				}
+			}
+			
+			
 			$(".chosen-select").chosen();
 
 			// 대분류명 선택시 대분류 코드 가져오기
@@ -477,8 +475,6 @@
 					});
 
 			// 품목코드 유효성 검사
-			console.log("clsosing" + $("#closingDate").val());
-			checkClosing();
 			$("input[name=id]").on(
 					"change",
 					function() {
@@ -499,13 +495,17 @@
 								}
 
 								if (response.data == true) {
-									alert("사용중인 품목코드입니다 :p");
+									dialog("사용중인 품목코드입니다 :p");
 									$("#id").val("");
 									$("#id").focus();
 									return;
 
 								} else if (id == "") {
-									alert("품목코드는 필수 입력 사항입니다!");
+									dialog("품목코드는 필수 입력 사항입니다!");
+									$("#id").focus();
+								} else if (id.length != 9) {
+									dialog("품목코드는 9자리로 지정해야합니다.<br> ex: 110100701 (월+일+007+번호)");
+									$("#id").val("");
 									$("#id").focus();
 								}
 							},

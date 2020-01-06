@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu43Service;
@@ -112,7 +111,7 @@ public class Menu43Controller {
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+			return MAINMENU + "/" + SUBMENU + "/add";
 		} else { // 입력 가능!
 			menu43Service.insert(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
@@ -226,7 +225,7 @@ public class Menu43Controller {
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+			return MAINMENU + "/" + SUBMENU;
 		} else { // 입력 가능!
 			menu43Service.update(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
