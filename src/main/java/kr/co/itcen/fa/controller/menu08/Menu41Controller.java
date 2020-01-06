@@ -140,6 +140,7 @@ public class Menu41Controller {
 		System.out.println("수정합니다.");
 		
 		vehicleVo.setUpdateUserId(userVo.getId());
+		vehicleVo.setId("e"+vehicleVo.getId());
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
@@ -255,6 +256,8 @@ public class Menu41Controller {
 		Long monthlyFee = Long.parseLong(monthlyFee2);
 		
 		System.out.println("cusNo : " + customerNo);
+		
+		System.out.println("차량코드" +taxbillVo.getVehicleNo() );
 		taxbillVo.setInsertUserid(userVo.getId());
 		String taxno = taxbillVo.getTaxbillNoPoP();
 		String veno = taxbillVo.getVehicleNo();
@@ -274,6 +277,8 @@ public class Menu41Controller {
 		
 
 		if(gubun.equals("보증금")) {
+			System.out.println("보증금");
+			
 			taxbillVo.setDueDate(bonapil);
 			taxbillVo.setPay(deposit);
 			voucherVo.setRegDate(bonapil); //
@@ -301,6 +306,7 @@ public class Menu41Controller {
 
 			
 		}else if(gubun.equals("월사용료")) {
+			System.out.println("월사용료");
 			taxbillVo.setDueDate(walnapil);
 			taxbillVo.setPay(monthlyFee);
 			voucherVo.setRegDate(walnapil);
@@ -348,10 +354,11 @@ public class Menu41Controller {
 			@RequestParam(value="id", required = false) String id, 
 			Model model
 			) {
-
+			System.out.println("여기타?");
+			System.out.println("ID : " + id);
 		//조회기능 
 		Map<String, Object> map = new HashMap<>();
-		map.putAll(menu41Service.selectTaxList(id));
+		map.putAll(menu41Service.selectTaxList("e"+id));
 		model.addAllAttributes(map);
 
 		return map;

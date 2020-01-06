@@ -11,8 +11,6 @@
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
-
-
 <style>
 .limitation{
 	width:200px;
@@ -189,7 +187,7 @@
 									<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서 번호</label>
 									<div class="controls">
-										<input  type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
+										<input type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
 									</div>
 								</div> 
 								
@@ -337,7 +335,7 @@
 								<table id="dialog-message-table" align="center">
 									<tr>
 										<td>
-											<form action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
+											<form id="segum-input-form" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
 												
 												<label>차량코드</label> 
 												<input readonly type="text" id="vehicleNo" name="vehicleNo" value="차량코드">
@@ -465,6 +463,12 @@
 	
 			//차량코드 유효성 검사
 			$(document).ready(function(){
+				
+				$("#insert").show(); //등록 버튼 보여기
+				$("#modify").hide(); //수정 버튼 가리기
+				$("#delete").show(); //삭제 버튼 가리기
+				$("#search").show(); //조회 버튼 가리기
+				$("#clear").show(); //초기화 버튼 가리기
 				
 				$("#nabbu").hide();
 				$("#walsa").hide();
@@ -856,7 +860,15 @@ $("#search").click(function() {
 	$("#input-form").attr("method","GET");
 	$("#input-form").submit();
 	//alert("조회");
-})
+});
+
+$("#segum").click(function() {
+	
+	$("#segum-input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum");
+	$("#segum-input-form").attr("method","POST"); 
+	$("#segum-input-form").submit();
+});
+
 
 
 
@@ -885,10 +897,10 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	// 현재 클릭된 Row(<tr>)
 	var tr = $(this); 
 	var td = tr.children();
-
-	var vehicleNo = td.eq(1).text();
+	
+	var vehicleNo = td.eq(1).text().replace('e','');
 	$("input[name=id]").val(vehicleNo);
-	$("#vehicleNo").val(vehicleNo); //납부 Pop - up 에 차량코드 넣기.
+	$("#vehicleNo").val(td.eq(1).text()); //납부 Pop - up 에 차량코드 넣기.
 	
 	var carSectionNo = updateSection(td.eq(2).text());
 	//var carSectionNo = td.eq(2).text();
@@ -902,30 +914,30 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
   var staffNo='';
   
 	switch (staffName){
-  case "사원" :
-  	staffNo=1;
-      break;
-  case "대리" :
-  	staffNo=2;
-	    break;
-  case "과장" :
-  	staffNo=3;
-      break;
-  case "차장" :
-  	staffNo=4;
-      break;
-  case "부장" :
-  	staffNo=5;
-  	break;
-  case "이사" :
-  	staffNo=6;
-  	break;
-  case "상무" :
-  	staffNo=7;
-  	break;
-  case "전무" :
-  	staffNo=8;
-  	break;
+	  case "사원" :
+	  	staffNo=1;
+	      break;
+	  case "대리" :
+	  	staffNo=2;
+		    break;
+	  case "과장" :
+	  	staffNo=3;
+	      break;
+	  case "차장" :
+	  	staffNo=4;
+	      break;
+	  case "부장" :
+	  	staffNo=5;
+	  	break;
+	  case "이사" :
+	  	staffNo=6;
+	  	break;
+	  case "상무" :
+	  	staffNo=7;
+	  	break;
+	  case "전무" :
+	  	staffNo=8;
+	  	break;
 	}
 
 	//선택된 직급에 대한 staffNo값을 value값으로 변경 
@@ -1089,7 +1101,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		
 		  
 			var realPayDate = td.eq(23).text(); //실제로 납부한 날짜
-		  console.log("realPayDate" + realPayDate);
+		  	console.log("realPayDate" + realPayDate);
 		  
 		
 			//사용 개월  
