@@ -229,7 +229,7 @@
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
 												<button class="btn btn-primary btn-small" id="insert" 
-													style="float: left; margin-right: 20px;">등록</button>
+													style="float: left; margin-right: 20px;">입력</button>
 												<button class="btn btn-warning btn-small" id="modify"
 													style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
@@ -384,6 +384,10 @@ var flag = $('#closingDate').val();
 
 //건물코드 유효성 검사
  $(document).ready(function(){
+	 
+	$("#modify").hide();
+	$("#delete").hide();
+	
 	console.log("closing test : " + $("#closingDate").val());
 	checkClosing(); // 마감일 체크
 	
@@ -405,7 +409,7 @@ var flag = $('#closingDate').val();
 	         if(response.data == true){
 	        	 dialog("이미 존재하는 건물코드 입니다.");
 		         $("#buildingCode").val("");
-		         errorfocus='#buildingCode';
+		        errorfocus='#buildingCode';
 	            return;
 	         
 	         }
@@ -437,6 +441,13 @@ $("#modify").click(function() {
 		return;
 	}
 	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
+	$('#manage-building-form').attr('method', 'POST');
+	$('#manage-building-form').submit();
+});
+
+//삭제 valid
+$("#delete").click(function() {
+	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
 	$('#manage-building-form').attr('method', 'POST');
 	$('#manage-building-form').submit();
 });
@@ -581,7 +592,8 @@ $("#modify").click(function() {
 						"class" : "btn btn-danger btn-mini",
 						click: function() {
 							if(flag){
-								$( this ).dialog( "close" ); 
+								$( this ).dialog( "close" );
+								$(errorfield).focus();
 								location.href="${pageContext.request.contextPath }/08/39/add";
 							} else {
 								$( this ).dialog( "close" );
@@ -628,11 +640,16 @@ $("#modify").click(function() {
  		$('#managerName').val(managername);
 	});
 	
-	
 	//관리화면
 	$(function() {
 		//한행 클릭 >> 건물코드 가져오기
 		   $(".table-row").click(function() {
+			   
+			  $("#modify").show();
+			  $("#delete").show();
+			  $("#insert").hide();
+			  $("#search").hide();
+			  
 		      var str = ""
 		      var tdArr = new Array();   // 배열 선언
 		      
@@ -674,28 +691,26 @@ $("#modify").click(function() {
 		      }
 		     
 		     //CRUD button
-		      if($("#taxbillNo").val() != '-'){
-		    	  $("#insert").hide();
-		    	  $("#search").hide();
-		    	  $("#update").hide();
+		      if($("#taxbillNo").val() != ''){
+		    	  $("#modify").hide();
 		      }
-		      if($("#taxbillNo").val() == '-'){
-			   		$("#insert").hide();
-			   	 	$("#update").show();
-			   		$("#search").hide();
+		      if($("#taxbillNo").val() == ''){
+			   	 	$("#modify").show();
 			  }
 		      
 			});
+		
+		 //초기화 누를시 CRUD버튼 보임
+			$("#reset").click(function(){
+				$("#insert").show();
+		   		$("#update").show();
+			  	$("#search").show();
+			  	$('#form-field-customer').val('초기값').trigger('chosen:updated');
+			  	$('#form-field-section').val('초기값').trigger('chosen:updated');
+			});
 		      
 	});
-	//초기화 누를시 CRUD버튼 보임
-	$("#reset").click(function(){
-		$("#insert").show();
-   		$("#update").show();
-	  	$("#search").show();
-	  	$('#form-field-customer').val('초기값').trigger('chosen:updated');
-	  	$('#form-field-section').val('초기값').trigger('chosen:updated');
-	});
+	
 	//엔터키 막기
 	document.addEventListener('keydown', function(event) {
 	    if (event.keyCode === 13) {

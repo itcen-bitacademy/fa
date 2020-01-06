@@ -1,6 +1,6 @@
 package kr.co.itcen.fa.controller.menu08;
 
-import java.sql.Date;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +48,13 @@ public class Menu40Controller {
 		String startDate = null;
 		String endDate = null;
 		
+		if(vo.getAcqPrice() == null || "".equals(vo.getAcqPrice())) {
+			vo.setAcqPrice("");
+		} else {
+			//, 빼기
+			String acqPrice = vo.getAcqPrice().replace("," ,"");
+			vo.setAcqPrice(acqPrice);
+		}
 		if(vo.getId() == null || "".equals(vo.getId()))
 			vo.setId("");
 		if(vo.getPayDate() == null || "".equals(vo.getPayDate())) {
@@ -57,21 +64,19 @@ public class Menu40Controller {
 			startDate = date[0];	
 			endDate = date[1];
 		}
-		if(vo.getSectionNo() == null || "".equals(vo.getSectionNo()))
+		if(vo.getSectionNo() == null)
 			vo.setSectionNo("");
-		if(vo.getCustomerNo() == null || "".equals(vo.getCustomerNo()))
+		if(vo.getCustomerNo() == null)
 			vo.setCustomerNo("");
 		if(vo.getWideAddress() == null || "".equals(vo.getWideAddress()))
 			vo.setWideAddress("");
 		if(vo.getCityAddress() == null || "".equals(vo.getCityAddress()))
 			vo.setCityAddress("");
-		if(vo.getDetailAddress() == null || "".equals(vo.getDetailAddress()))
-			vo.setDetailAddress("");
 		if("".equals(vo.getFlag()))
 			vo.setFlag("");
 		else vo.setFlag("s");
 		
-		
+		System.out.println(vo);
 		//dataresult 생성
 		DataResult<BuildingVo> dataResult = menu40Service.list(vo, page, startDate, endDate); 
 		model.addAttribute("dataResult",dataResult);
@@ -94,7 +99,6 @@ public class Menu40Controller {
 				.queryParam("sectionNo",vo.getSectionNo())
 				.queryParam("customerNo",vo.getCustomerNo())
 				.queryParam("cityAddress",vo.getCityAddress())
-				.queryParam("detailAddress",vo.getDetailAddress())
 				.queryParam("flag",vo.getFlag())
 				.build();
 		String uri = uriComponents.toUriString();
