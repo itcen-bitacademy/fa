@@ -21,6 +21,7 @@
 </style>
 </head>
 <body class="skin-3">
+	<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -468,13 +469,15 @@
 				$("#nabbu").hide();
 				$("#walsa").hide();
 				$("#segumBtn").hide();
-				
-				
+			
 				$("#overlap-vehiclecode").hide();
 				$("#onlynumber").hide();
 				$("#null-vehiclecode").hide();
 				
 				$("#vehicle_code").focus();
+				
+				console.log("closing" + $("#closingDate").val());
+				checkClosing();
 				
 				$("#vehicle_code").on("change", function(e){
 					
@@ -523,15 +526,8 @@
 				}); //$("#vehicle_code").on("change", function(e){ 의 마지막 
 			}); //$(document).ready(function() 의 마지막
 					
-			
 
-			function checkClosing(){ // 마감일 세팅 여부
-				if($("#closingDate").val()=="true"){
-					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-				}
-			}
-	
-			//// 등록,수정 같은 validation함수 insert()로 가능
+			//// 등록 validation함수 insert()로 가능
 			function insert(){
 		   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
 		   			if(!valid.numberCheck("vehicle_code", "차량 코드")) return false;
@@ -552,26 +548,26 @@
 	
 		   			return true;
 		        	}
-			
+			//// 수정 validation함수 update()로 가능
 			function update(){
-	   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
-	   			if(!valid.nullCheck("classification", "차량 분류")) return false;
-	   			if(!valid.nullCheck("staffNoId", "직급")) return false;
-	   			if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
-	   			if(!valid.nullCheck("wideAddr", "주소")) return false;
-	   			if(!valid.nullCheck("customerNo", "거래처")) return false;
-	   			if(!valid.nullCheck("payDate", "매입일자")) return false;
-	   			if(!valid.nullCheck("publicValue", "출시가")) return false;
-	   			if(!valid.nullCheck("acqTax", "취득세")) return false;
-	   			if(!valid.nullCheck("etcCost", "부대비용")) return false;
-	   			if(!valid.nullCheck("deposit", "보증금")) return false;
-	   			if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
-	   			if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
-	   			if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
-	   			if(!valid.radioCheck("taxKind", "세금 종류")) return false;
-
-	   			return true;
-	        	}
+		   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
+		   			if(!valid.nullCheck("classification", "차량 분류")) return false;
+		   			if(!valid.nullCheck("staffNoId", "직급")) return false;
+		   			if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
+		   			if(!valid.nullCheck("wideAddr", "주소")) return false;
+		   			if(!valid.nullCheck("customerNo", "거래처")) return false;
+		   			if(!valid.nullCheck("payDate", "매입일자")) return false;
+		   			if(!valid.nullCheck("publicValue", "출시가")) return false;
+		   			if(!valid.nullCheck("acqTax", "취득세")) return false;
+		   			if(!valid.nullCheck("etcCost", "부대비용")) return false;
+		   			if(!valid.nullCheck("deposit", "보증금")) return false;
+		   			if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
+		   			if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
+		   			if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
+		   			if(!valid.radioCheck("taxKind", "세금 종류")) return false;
+	
+		   			return true;
+		        	}
 			
 				//valid2
 		        var valid = {
@@ -628,8 +624,13 @@
 					]
 				});
 	    	} // valid dialog마지막
-					
-		
+				
+	    	//마감일자 validation
+	    	function checkClosing(){ // 마감일 세팅 여부
+				if($("#closingDate").val()=="true"){
+					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+				}
+			}
 	
 	$(function() {
 		$.fn.datepicker.dates['ko'] = {
@@ -846,7 +847,7 @@ $("#delete").click(function() {
 	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 	$("#input-form").attr("method","post");
 	$("#input-form").submit();
-   	alert("삭제");
+   	alert("삭제 하시겠습니까?");
 }); 
 
 $("#search").click(function() {
@@ -854,7 +855,7 @@ $("#search").click(function() {
 	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
 	$("#input-form").attr("method","GET");
 	$("#input-form").submit();
-	alert("조회");
+	//alert("조회");
 })
 
 
@@ -876,7 +877,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	$("#nabbu").hide();
 	$("#walsa").hide();
 	$("#segumBtn").show();
-
+	$("#vehicle_code").prop('readonly',true);
 	
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
