@@ -60,8 +60,10 @@ public class Menu39Controller {
 	
 	//               /08   /   39     , /08/39/add
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
-	public String list(Model model, @RequestParam(value="id", required = false, defaultValue = "") String id,
-			@RequestParam(value="page", required=false,defaultValue = "1") int page,
+	public String list(Model model, 
+			@RequestParam(value="id", required = false, defaultValue = "") String id,
+			@RequestParam(value="page", required=false, defaultValue = "1") int page,
+			//@RequestParam(value="closingDate", required = false, defaultValue = "false") boolean closingDate,
 			@SessionAttribute("authUser") UserVo authUser) {
 		
 		//dataresult 생성
@@ -78,6 +80,9 @@ public class Menu39Controller {
 		//거래처
 		map.putAll(menu39Service.getCustomer());
 		model.addAllAttributes(map);
+		
+		//마감일자
+		//model.addAttribute("closingDate",closingDate);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
@@ -118,9 +123,9 @@ public class Menu39Controller {
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
-	    	System.out.println("마감일 이상함");
+	    	//마감됨 (insert안하고 redirect)
 	    	model.addAttribute("closingDate", true);
-	    	return "redirect:/" + MAINMENU + "/" + SUBMENU ;
+	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
 		    menu39Service.add(buildingvo);
 		    return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
@@ -168,12 +173,12 @@ public class Menu39Controller {
 		}
 		
 		//마감 여부 체크
-	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
-	    	System.out.println("마감일 이상함");
+	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) { 
+	    	//마감됨 (insert안하고 redirect)
 	    	model.addAttribute("closingDate", true);
 	    	return "redirect:/" + MAINMENU + "/" + SUBMENU ;
 	    } else {
-			//전표추가
+			//전표추가(세금계산서번호가 not null)
 			if (taxbillNo != null && bVoucherNo == null) {
 				
 				//계좌(계좌번호, 은행코드, 은행이름)정보

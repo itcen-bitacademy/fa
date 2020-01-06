@@ -35,9 +35,7 @@
  
 </head>
 <body class="skin-3">
- <input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
- <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
- <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
+ <input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
 
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
@@ -381,11 +379,13 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script>
+var errorfocus = ""; // error 부분 focusing
+var flag = $('#closingDate').val();
 
 //건물코드 유효성 검사
  $(document).ready(function(){
-	console.log("closing test" + $("#closingDate").val());
-	checkClosing();
+	console.log("closing test : " + $("#closingDate").val());
+	checkClosing(); // 마감일 체크
 	
 	$("#buildingCode").on("change", function(e){
 		
@@ -420,6 +420,8 @@
 }); 
 
 //Validation
+
+//등록 valid
 $("#insert").click(function() {
 	if(!manageValid()){
 		return;
@@ -428,6 +430,8 @@ $("#insert").click(function() {
 	$('#manage-building-form').attr('method', 'POST');
 	$('#manage-building-form').submit();
 });
+
+//수정 valid
 $("#modify").click(function() {
 	if(!manageValid()){
 		return;
@@ -438,12 +442,14 @@ $("#modify").click(function() {
 });
 
 	//마감일 체크
-	function checkClosing(){ 
-		if($("#closingDate").val()=="true"){
-			dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+	function checkClosing(){
+		if (!valid.closingCheck("closingDate")){
+			return false;
 		}
+		return true;
 	}
-
+	
+	
 	//// 관리 validation
 	function manageValid() {
 		if (!valid.nullCheck("buildingCode", "건물 코드")){
@@ -552,33 +558,41 @@ $("#modify").click(function() {
 			} else {
 				return true;
 			}
-		}
-		/* closingCheck : function(id) { //마감일자 체크
-			if ($("#" + id).val() == "true"){
-				dialog("마감된 일자입니다. <br>저장되지 않았습니다.");
+		},
+		closingCheck : function(id) { // 마감일 체크
+			if($("#" + id).val() == "true"){
+				dialog("마감된 일자입니다. <br>저장되지 않았습니다.", true);
+				return false;
+			} else {
+				return true;
 			}
-		} */
-
+		}
 	}
 
 	// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
-	function dialog(txt) {
-		$("#dialog-txt").html(txt);
-		var dialog = $("#dialog-confirm").dialog({
-			resizable : false,
-			modal : true,
-			buttons : [ {
-				text : "OK",
-				"class" : "btn btn-danger btn-mini",
-				click : function() {
-					$(this).dialog("close");
-					$(errorfocus).focus();		
-				}
-			} ]
-		});
-	}
+	 function dialog(txt, flag) {
+        	$("#dialog-txt").html(txt);
+    		var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$( this ).dialog( "close" ); 
+								location.href="${pageContext.request.contextPath }/08/39/add";
+							} else {
+								$( this ).dialog( "close" );
+							}
+						}
+					}
+				]
+			});
+    	}
 
-	//빈칸 검사()
+	//빈칸 검사
 	function formCheck() {
 
 		if ($("#buildingCode").val() == "") {
@@ -738,38 +752,36 @@ $("#modify").click(function() {
 <!-- date picker -->
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			today: "Today",
-			clear: "Clear",
-			format: "yyyy-mm-dd",
-			timeFormat:'HH:mm:ss',
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart: 0
-			};
-			
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
-			
+<script>
+	$(function() {
+		$.fn.datepicker.dates['ko'] = {
+		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		today: "Today",
+		clear: "Clear",
+		format: "yyyy-mm-dd",
+		timeFormat:'HH:mm:ss',
+		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+		weekStart: 0
+		};
 		
-	</script>
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode: 4,
+			minViewMode: 1,
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+		$('.cl-date-picker').datepicker({
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	})
+</script>
 </body>
 </html>
