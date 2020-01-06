@@ -296,6 +296,8 @@ $(function() {
 		$('#input-form')[0].reset(); // form의 모든 데이터 초기화
 		$('#debtType').val('초기값').trigger('chosen:updated'); // value 값으로 선택
 		$('#code').attr('readonly',false);
+		$("#tbody-list").find('tr').removeClass("selected");
+		
     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
