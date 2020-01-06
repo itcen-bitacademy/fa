@@ -62,7 +62,7 @@
 										<label style="text-align:left;" class="control-label" for="form-field-select-1">대분류
 											코드</label>
 										<div class="controls">
-											<select class="span2 chosen-select" id="form-field-section"
+											<select class="span2 chosen-select" id="classification"
 												name="classification" data-placeholder="전체">
 												<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
@@ -77,7 +77,7 @@
 										<label style="text-align:left;" class="control-label" for="form-field-select-1">거래처
 											코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-customer"
+											<select class="chosen-select" id="customerNo"
 												name="customerNo" data-placeholder="전체">
 												<option value=""></option>
 												<c:forEach items="${customerList }" var="customerVo">
@@ -149,9 +149,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">용도</label>
 										<div class="controls">
-											<!-- <input type="text" class="span11" id="form-field-1"
-												name="purpose" placeholder="용도를 입력하세요" /> -->
-											<select class="chosen-select" id="form-field-purpose"
+											<select class="chosen-select" id="purpose"
 												name="purpose" data-placeholder="전체">
 												<option value=""></option>
 												<c:forEach items="${purposeList }" var="purposeVo">
@@ -250,7 +248,7 @@
 
 					<tbody>
 						<c:forEach items="${list }" var="vo" varStatus="status">
-							<tr>
+							<tr class="clickme">
 								<td>${status.count }</td>
 								<td>${vo.id }</td>
 								<td>${vo.address }</td>
@@ -343,6 +341,7 @@
 			if(!valid.nullCheck("code", "무형자산 분류")) return;
 			if(!valid.nullCheck("customerNo", "거래처")) return;
 			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
+			if(!valid.nullCheck("addiFee", "부대 비용")) return;
 			if(!valid.nullCheck("code", "무형자산 명")) return;
 			if(!valid.nullCheck("user", "사용 담당자")) return;
 			if(!valid.nullCheck("copyCount", "수량")) return;
@@ -362,6 +361,7 @@
 			if(!valid.nullCheck("code", "무형자산 분류")) return;
 			if(!valid.nullCheck("customerNo", "거래처")) return;
 			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
+			if(!valid.nullCheck("addiFee", "부대 비용")) return;
 			if(!valid.nullCheck("code", "무형자산 명")) return;
 			if(!valid.nullCheck("user", "사용 담당자")) return;
 			if(!valid.nullCheck("copyCount", "수량")) return;
@@ -370,6 +370,7 @@
 			if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
 			if(!valid.radioCheck("taxKind", "세금 종류")) return;
 			
+			// 무형자산 수정 : U
 	    	var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update";
 	    		$("#insert-intangibleAssets-form").attr("action",url).submit();
 	    }
@@ -453,21 +454,21 @@
 			$(".chosen-select").chosen();
 
 			// 대분류명 선택시 대분류 코드 가져오기
-			$('#form-field-section').change(
+			$('#classification').change(
 					function() {
-						var code = $('#form-field-section option:selected')
+						var code = $('#classification option:selected')
 								.attr('sectionList');
 						$('#code').val(code);
 					});
 
 			// 거래처 코드 선택시 거래처 명 가져오기
-			$('#form-field-customer').change(
+			$('#customerNo').change(
 					function() {
 						var customerName = $(
-								'#form-field-customer option:selected').attr(
+								'#customerNo option:selected').attr(
 								'customerName');
 						var customerManager = $(
-								'#form-field-customer option:selected').attr(
+								'#customerNo option:selected').attr(
 								'customerManager');
 
 						$('#customerName').val(customerName);
@@ -573,17 +574,6 @@
 
 							});
 
-			// 무형자산 수정 : U
-			$("#update")
-					.click(
-							function(event) {
-								event.preventDefault();
-								$("form")
-										.attr(
-												"action",
-												"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
-							});
-
 			// 무형자산 삭제 : D
 			$("#delete")
 					.click(
@@ -597,8 +587,8 @@
 			// 초기화 버튼
 			$("#reset").click(function() {
 				// 초기화 버튼 누루면 등록, 수정버튼 다시 보이기
-				document.getElementById('add').style.visibility = 'visible';
-				document.getElementById('update').style.visibility = 'visible';
+				$("#add").show();
+				$("#update").show();
 
 				// 새로고침!
 				location.reload();
@@ -611,11 +601,40 @@
 					event.preventDefault();
 				}
 			}, true);
+			
+			// 조회시 셀렉트박스 값 고정 
+			function updateClassification(sectionCode){
+				 var options = document.getElementById("classification");
+					for(var i=0 ; i < options.length; ++i){
+						if(options[i].value == sectionCode){
+							options[i].selected = "selected";
+							$("#classification_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+						}
+					}
+			 }
+			
+			function updateCustomerNo(customer){
+				 var options = document.getElementById("customerNo");
+					for(var i=0 ; i < options.length; ++i){
+						if(options[i].value == customer){
+							options[i].selected = "selected";
+							$("#customerNo_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+						}
+					}
+			 }
+			
+			function updatePurpose(purpose){
+				 var options = document.getElementById("purpose");
+					for(var i=0 ; i < options.length; ++i){
+						if(options[i].value == purpose){
+							options[i].selected = "selected";
+							$("#purpose_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+						}
+					}
+			 }
 
 			// 행 클릭시 수정, 삭제
-			$("#sample-table-1 tr")
-					.click(
-							function() {
+			$(".clickme").click(function() {
 								var str = ""
 								var tdArr = new Array(); // 배열 선언
 
@@ -625,32 +644,39 @@
 
 								console.log(tr.text());
 
-								$("input[name=id]").val(td.eq(1).text());
+								$("input[name=id]").val((td.eq(1).text()).replace('f',""));
+								
 								$("input[name=address]").val(td.eq(2).text());
-								//$("input[name=classification]").val(td.eq(3).text());
-								$('#form_field_section_chosen').find('span')
-										.text(td.eq(3).text());
+								
+								updateClassification(td.eq(3).text());
+								//$("#form_field_section_chosen").find("span").text(td.eq(3).text());
+								
 								$("input[name=code]").val(td.eq(4).text());
-								//$("input[name=customerNo]").val(td.eq(5).text());
-								$('#form_field_customer_chosen').find('span')
-										.text(td.eq(5).text());
-								$("input[name=customerName]").val(
-										td.eq(6).text());
-								$("input[name=acqPrice]").val(
-										(td.eq(7).text()).replace(/,/gi, ""));
-								$("input[name=addiFee]").val(
-										(td.eq(8).text()).replace(/,/gi, ""));
+								
+								updateCustomerNo(td.eq(5).text());
+								//$("#form_field_customer_chosen").find("span").text(td.eq(5).text());
+								
+								$("input[name=customerName]").val(td.eq(6).text());
+								
+								$("input[name=acqPrice]").val((td.eq(7).text()).replace(/,/gi, ""));
+								
+								$("input[name=addiFee]").val((td.eq(8).text()).replace(/,/gi, ""));
+								
 								$("input[name=taxbillNo]").val(td.eq(9).text());
+								
 								$("input[name=name]").val(td.eq(10).text());
+								
 								$("input[name=user]").val(td.eq(11).text());
-								$("input[name=copyCount]")
-										.val(td.eq(12).text());
-								$("input[name=customerManager]").val(
-										td.eq(13).text());
-								$('#form_field_purpose_chosen').find('span')
-										.text(td.eq(14).text());
-								//$("input[name=purpose]").val(td.eq(14).text());
+								
+								$("input[name=copyCount]").val(td.eq(12).text());
+								
+								$("input[name=customerManager]").val(td.eq(13).text());
+								
+								updatePurpose(td.eq(14).text());
+								//$("#form_field_purpose_chosen").find("span").text(td.eq(14).text());
+								
 								$("input[name=payDate]").val(td.eq(15).text());
+								
 								$("input[name=taxKind]").val(td.eq(16).text());
 
 								if (td.eq(16).text() == "과세") {
@@ -661,12 +687,12 @@
 								}
 
 								if (td.eq(9).text() == "") {
-									document.getElementById('add').style.visibility = 'hidden';
+									$("#add").hide();
 								} else if (td.eq(9).text() != "") {
-									document.getElementById('add').style.visibility = 'hidden';
-									document.getElementById('update').style.visibility = 'hidden';
+									$("#add").hide();
+									$("#update").hide();
 								}
-							});
+			});
 
 		});
 	</script>
