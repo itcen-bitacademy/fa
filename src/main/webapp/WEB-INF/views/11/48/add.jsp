@@ -1053,6 +1053,7 @@ tr td:first-child {
 		 if($('#checkall').prop('checked')==true){
 			 $('#checkall').prop('checked',false);
 		 }
+		 
 	});
 	
 	$("#checkall").click(function(){
