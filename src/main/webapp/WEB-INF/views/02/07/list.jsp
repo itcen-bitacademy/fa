@@ -298,7 +298,7 @@
 			
 			var vo = {startDate : $("#startDate").val(), endDate : $("#endDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
 					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val()};
-			
+			//페이징
 			var page_num = 1;
 			blockStartNum = 1;
 			blockLastNum = 5;
