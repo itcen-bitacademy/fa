@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu43Service;
@@ -112,7 +111,7 @@ public class Menu43Controller {
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+			return MAINMENU + "/" + SUBMENU + "/add";
 		} else { // 입력 가능!
 			menu43Service.insert(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
@@ -126,7 +125,10 @@ public class Menu43Controller {
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
 			@RequestParam(value = "customerNo", required = false) String customerNo,
 			@RequestParam(value = "purpose", required = false) String purpose) throws ParseException {
-
+		System.out.println("customerNo:" + intangibleAssetsVo.getCustomerNo());
+		System.out.println("classification:" + intangibleAssetsVo.getClassification());
+		System.out.println("purpose:" + intangibleAssetsVo.getPurpose());
+		
 		intangibleAssetsVo.setUpdateUserId(user.getId()); // session값으로 사용자 id가져오기
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo); // voucherNo는 db에서 직접 가져와야함
 		
@@ -135,7 +137,6 @@ public class Menu43Controller {
 
 		// 전표 등록
 		if (taxbillNo != null && voucherNo == null) {
-
 			CustomerVo customerVo = menu43Service.getCustomerInfo(customerNo);
 
 			VoucherVo voucherVo = new VoucherVo();
@@ -222,11 +223,11 @@ public class Menu43Controller {
 			Long updateVoucher = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
 			intangibleAssetsVo.setVoucherNo(updateVoucher);
 		}
-
+		
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+			return MAINMENU + "/" + SUBMENU;
 		} else { // 입력 가능!
 			menu43Service.update(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;

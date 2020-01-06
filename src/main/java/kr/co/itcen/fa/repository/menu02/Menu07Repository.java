@@ -46,7 +46,13 @@ public class Menu07Repository {
 
 	public List<PurchasemanagementVo> getList(PurchasemanagementVo vo) {
 		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getSearchList", vo);
-		System.out.println("Repository : " + result);
+		//System.out.println("Repository : " + result);
 		return result;
+	}
+
+	public int getSearchCount(PurchasemanagementVo vo) {
+		List<PurchasemanagementVo> result = sqlSession.selectList("menu07.getSearchCount", vo);
+		System.out.println(result.size());
+		return result.size();
 	}
 }

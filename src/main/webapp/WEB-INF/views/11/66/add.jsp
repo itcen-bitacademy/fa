@@ -109,13 +109,15 @@ input[type="text"], input[type="date"], select {
 						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> (원)<input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
 						<div class="ia-left"><label class="control-label">이자금액</label></div>
 						<div class="ia-right"><input type="text" id="id-intAmount" name="commaIntAmount" style="text-align:right;" readonly="readonly"> (원)<input type="hidden" name="intAmount" /></div>
+						<div class="ia-left"><label class="control-label">총액</label></div>
+						<div class="ia-right"><input type="text" id="totalAmount" name="totalAmount" style="text-align:right;" readonly="readonly"> (원)</div>
 					</section>
 					
 					<section>
 						<div class="ia-left"><label class="control-label">부채유형</label></div>
 						<div class="ia-right">
 							<select name="debtType"  id="debtType" >
-								<option value="">부채유형을 선택해주세요.</option>
+								<option value="초기값">부채유형을 선택해주세요.</option>
 								<option value="S">단기차입금</option>
 								<option value="L">장기차입금</option>
 								<option value="P">사채</option>
@@ -296,6 +298,8 @@ $(function() {
 		$('#input-form')[0].reset(); // form의 모든 데이터 초기화
 		$('#debtType').val('초기값').trigger('chosen:updated'); // value 값으로 선택
 		$('#code').attr('readonly',false);
+		$("#tbody-list").find('tr').removeClass("selected");
+		
     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
@@ -306,8 +310,26 @@ $(function() {
         inputNumberFormat(this);
         var amount = $('input[name=commaPayPrinc]').val();
         var coverAmount = amount.replace(/,/g, '');
-        // hidden값에..콤마를 뺀 값을 넣어둔다.
-        $('input[name="payPrinc"]').val(coverAmount);
+        $('input[name=payPrinc]').val(coverAmount);
+        console.log("coverAmount : " + coverAmount); // 차입금액
+        
+        var intAmount = removeCommaReturn($("input[name=commaIntAmount]").val()); // 이자금액
+        console.log("intAmount : " + intAmount);
+        
+        var totalAmount = parseInt(coverAmount) + parseInt(intAmount);
+        var convertTotalAmount = numberFormat(totalAmount);
+		console.log("totalAmount : " + totalAmount);
+        
+        if(!$.isNumeric(totalAmount)) {
+    		$('#totalAmount').val('0');
+    		return;
+    	}
+    	
+    	function numberFormat(inputNumber) {
+    		return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    	}
+    		
+    	$('input[name="totalAmount"]').val(convertTotalAmount);
     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
@@ -382,6 +404,11 @@ function renderingList(list){
 	console.log("--------------------() renderingListCalled------------------------");
 	$("#tbody-list > *").remove();
 	
+	if(list.length == 0) {
+		$('#code').val(''); // 차입금 코드 초기화
+		$('#debtType').val('초기값'); // 상환유형 초기화
+	}
+	
 	console.log("list length : " + list.length);
 	for(var i=0; i < list.length; ++i){
 		$("#tbody-list").append("<tr onclick='selectRow(this)'>" +
@@ -414,6 +441,14 @@ function search(){
 	var vo = {"code":inputForm.code.value, "debtType": inputForm.debtType.value};
 	$("#search-condition").val(JSON.stringify(vo));
 	console.log("search-condition : " + $("#search-condition").val());
+	console.log("vo.code : " + vo.code);
+	console.log("vo.debtType : " + vo.debtType);
+	
+	if(vo.code == '' && vo.debtType == '초기값')	{		//빈값일떄
+		$("#search-condition").val("{}");			//parse에러를 막기위한 빈객체 삽입
+		dialog('차입금코드와 부채유형을 입력해주세요.', true);
+		return;
+	}
 	
 	getListAjax(1);
 }
@@ -427,9 +462,10 @@ function getListAjax(page){
 	console.log("--------------------() getListAjax Called------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	if($("#search-condition").val() == "")			//빈값일떄
+	if($("#search-condition").val() == "")	{		//빈값일떄
 		$("#search-condition").val("{}");			//parse에러를 막기위한 빈객체 삽입
-	
+	}
+		
 	var vo = JSON.parse($("#search-condition").val());
 	vo["page"] = page;
 	
@@ -518,14 +554,19 @@ function update(){
 	var sendData = $("#input-form").serialize();
 	console.log("sendData : " + sendData);
 	
+	if($('input[name=code]').val() == '' && $('input[name=commaPayPrinc]').val() == '' && $('input[name=payDate]').val() == ''){
+		dialog('리스트에서 상환데이터를 선택해주세요.', true);
+		return;
+	}
+	
 	var intAmount = $('input[name=intAmount]').val();
 	var payPrinc = $('input[name=tempPayPrinc]').val();
 	
-	if (intAmount > payPrinc) {
-		var noCommaIntAmount = comma(intAmount);
-		dialog('이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요');
-		return false;
-	}
+	//if (intAmount > payPrinc) {
+	//	var noCommaIntAmount = comma(intAmount);
+	//	dialog('이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요');
+	//	return false;
+	//}
 	
 	$.ajax({
 		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
@@ -535,7 +576,7 @@ function update(){
 		success: function(response){
 			
 			if(response.data.isClosed == true){
-				alert("해당 데이터는 마감이 되었습니다.");
+				dialog('해당 데이터는 마감이 되었습니다.', true);
 				return;
 			}
 			
@@ -553,6 +594,12 @@ function update(){
 // 상환내역리스트에서 선택한 row 삭제
 function deleteChecked(){
 	console.log("--------------------deleteChecked() End------------------------");
+	
+	if($("#checked-voList").val() == ''){
+		dialog('삭제할 상환데이터를 선택해주세요.', true);
+		return;
+	}
+	
 	var voList = JSON.parse($("#checked-voList").val());
 	
 	$.ajax({

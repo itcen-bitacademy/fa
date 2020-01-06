@@ -42,4 +42,8 @@ public class Menu07Service {
 	public List<PurchasemanagementVo> getList(PurchasemanagementVo vo) {
 		return menu07Repository.getList(vo);
 	}
+
+	public int getSearchCount(PurchasemanagementVo vo) {
+		return menu07Repository.getSearchCount(vo);
+	}
 }

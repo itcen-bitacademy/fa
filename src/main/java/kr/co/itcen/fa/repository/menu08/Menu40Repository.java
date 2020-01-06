@@ -47,9 +47,9 @@ public class Menu40Repository {
 		return customerList;
 	}
 
-	public int listCount(BuildingVo vo, String startDate, String endDate) {
+	public int listCount(BuildingVo buildingvo, String startDate, String endDate) {
 		Map<String, Object> map =new HashMap<String, Object>();
-		map.put("vo", vo);
+		map.put("vo", buildingvo);
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
 		return sqlSession.selectOne("menu40.pageCount", map);

@@ -144,8 +144,7 @@
 		<![CDATA[
 		insert
 		  into tb_taxbill
-		values (
-				null,
+		values (null,
 				#{taxbillNoPoP},
 				#{voucherNo},
 				#{vehicleNo},
@@ -155,7 +154,7 @@
 				#{gubun},
 				#{insertUserid},
 				now(),
-				null, 
+				#{updateUserid}, 
 				null,
 				"s"
 				);

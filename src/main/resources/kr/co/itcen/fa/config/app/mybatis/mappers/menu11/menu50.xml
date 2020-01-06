@@ -259,10 +259,11 @@
 			select 	code as code, 
 				pay_princ as payPrinc, 
 				int_amount as intAmount, 
-				date_format(pay_date,'%Y/%m/%d') as payDate 
+				date_format(pay_date,'%Y-%m-%d') as payDate 
 					from tb_repay 
 						where debt_type = 'P' 
 							and debt_no = #{_parameter}
+							and delete_flag = 'N'
 		]]>
 	</select>
 	
@@ -274,7 +275,8 @@
 				int_amount as intAmount,
 				date_format(pay_date, '%Y-%m-%d') as payDate
 				from tb_repay
-					where debt_type = 'P'
+					where debt_type = 'P' 
+					and delete_flag = 'N' 
 						and debt_no in 
 		]]>
 			<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
