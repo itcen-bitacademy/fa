@@ -11,10 +11,11 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <!-- select List를 위한 StyleSheet -->
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
-	type="text/css" rel="stylesheet" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+	type="text/css" rel="stylesheet" />
+
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -66,13 +67,10 @@ html, body {
 	display: none
 }
 /* list search css e*/
+
 /* 기타 css s*/
 input:focus {
 	outline: none;
-}
-
-.chosen-search {
-	display: none;
 }
 /* 기타 css e*/
 </style>
@@ -148,7 +146,7 @@ input:focus {
 									<input style="width: 66%" type="text" id="no" name="no"
 										value="${searchData.no }"
 										placeholder="ex) 20190420-44231234-57644467"
-										autocomplete="off" />
+										autocomplete="off" maxlength="26"/>
 								</div>
 								<label class="control-label span1" for="delete-flag">삭&emsp;제&emsp;여&emsp;부</label>
 								<div class="controls span5">
@@ -182,12 +180,13 @@ input:focus {
 
 								<label class="control-label span1" for="customer-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span5">
-									<select id="company-name" name="companyName" class="chosen-select"
-										style="width: 68%;" required>
+									<select id="company-name" name="companyName"
+										class="chosen-select" style="width: 68%;" required>
 										<option style="display: none;"
 											value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
+
 										<option style="display: none;" value="" disabled selected>ex)
-													아이티센</option>
+											아이티센</option>
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
@@ -471,8 +470,6 @@ input:focus {
 	<!-- jQeury관련 script -->
 	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<!-- 거래처명 찾기기능 -->
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>

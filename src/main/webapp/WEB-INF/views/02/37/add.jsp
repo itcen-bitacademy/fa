@@ -115,7 +115,7 @@ html, body {
 											<input style="width: 100%" type="text" id="no" name="no"
 												value="${getAboutNoData.no }"
 												placeholder="ex) 20190420-44231234-57644467"
-												autocomplete="off" />
+												autocomplete="off" maxlength="26" />
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -123,7 +123,7 @@ html, body {
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="manage-no"
 										value="${getAboutNoData.manageNo }" name="manageNo"
-										placeholder="ex) TX2019116301143" autocomplete="off" />
+										placeholder="ex) TX2019116301143" autocomplete="off" maxlength="20"/>
 								</div>
 							</div>
 							<div class="control-group">
