@@ -66,7 +66,7 @@ form {
 									</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="cl-date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd"  />
+				                           <input class="cl-date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" readonly="readonly" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -111,7 +111,7 @@ form {
 								</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="cl-date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd"  />
+				                           <input class="cl-date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd" readonly="readonly" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -126,10 +126,10 @@ form {
 										<label class="control-label" style="padding-right: 12px;">차입금 선택정렬</label>
 										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." name="sort" >
 											<option value=""></option>
-											<option value="d">차입일자</option>
-											<option value="e">만기일자</option>
-											<option value="i">등록일자</option>
-											<option value="m">차입금액</option>
+											<option value="d" <c:if test="${sort eq 'd'}"> selected </c:if>>차입일자</option>
+											<option value="e" <c:if test="${sort eq 'e'}">selected</c:if>>만기일자</option>
+											<option value="i" <c:if test="${sort eq 'i'}">selected</c:if>>등록일자</option>
+											<option value="m" <c:if test="${sort eq 'm'}">selected</c:if>>차입금액</option>
 										</select>
 									</div>
 								</div>
@@ -163,7 +163,8 @@ form {
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
 							<th class="center">상환방법</th>
-							<th class="center">차입일자 ~ 만기일자</th>
+							<th class="center">차입일자</th>
+							<th class="center">만기일자</th>
 							<th class="center">이율</th>
 							<th class="center">이자지급방식</th>
 							<th class="center">담당자</th>
@@ -191,7 +192,8 @@ form {
 										<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>		
-							<td class="center">${vo.debtExpDate}</td>
+							<td class="center">${vo.debtDate}</td>
+							<td class="center">${vo.expDate}</td>
 							<td class="center">${vo.intRate}%</td>
 							<c:choose>
 										<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
