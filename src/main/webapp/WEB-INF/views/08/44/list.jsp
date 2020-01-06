@@ -34,30 +34,37 @@
 
 							<form class="form-horizontal" method="post"
 								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-								<div class="span3">
+								<div class="span6">
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">품목 코드</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">품목 코드</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="id" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">거래처명</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">거래처명</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="customerName" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">설치주소</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">설치주소</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="address" />
 										</div>
 									</div>
+									<div class="control-group">
+									<label style="text-align:left;" class="control-label" for="form-field-1">취득금액</label>
+										<div class="controls">
+											<input type="text" id="acqPrice" name="acqPrice"
+												style="text-align: right;" value="0" />
+										</div>
+									</div>
 								</div>
 
-								<div class="span3">
+								<div class="span6">
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">무형자산
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">무형자산
 											분류</label>
 										<div class="controls">
 											<select class="span2 chosen-select" id="form-field-section"
@@ -71,17 +78,7 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">거래처
-											담당자</label>
-										<div class="controls">
-											<input type="text" id="form-field-1" name="customerManager" />
-										</div>
-									</div>
-								</div>
-
-								<div class="span6">
-									<div class="control-group">
-										<label class="control-label" for="id-date-range-picker-1">매입일자</label>
+										<label style="text-align:left;" class="control-label" for="id-date-range-picker-1">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<span class="add-on"> <i class="icon-calendar"></i>
@@ -92,12 +89,15 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득금액</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">거래처
+											담당자</label>
 										<div class="controls">
-											<input type="text" id="acqPrice" name="acqPrice"
-												style="text-align: right;" value="0" />
+											<input type="text" id="form-field-1" name="customerManager" />
 										</div>
 									</div>
+								</div>
+
+								<div class="span6">
 									<div class="control-group">
 										<div class="controls">
 											<div class="span3" style="float: right">
