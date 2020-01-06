@@ -109,6 +109,8 @@ input[type="text"], input[type="date"], select {
 						<div class="ia-right"><input type="text" id="id-payPrinc" name="commaPayPrinc"  style="text-align:right;"> (원)<input type="hidden" name="payPrinc" /><input type="hidden" name="tempPayPrinc" /></div>
 						<div class="ia-left"><label class="control-label">이자금액</label></div>
 						<div class="ia-right"><input type="text" id="id-intAmount" name="commaIntAmount" style="text-align:right;" readonly="readonly"> (원)<input type="hidden" name="intAmount" /></div>
+						<div class="ia-left"><label class="control-label">총액</label></div>
+						<div class="ia-right"><input type="text" id="totalAmount" name="totalAmount" style="text-align:right;" readonly="readonly"> (원)</div>
 					</section>
 					
 					<section>
@@ -308,8 +310,26 @@ $(function() {
         inputNumberFormat(this);
         var amount = $('input[name=commaPayPrinc]').val();
         var coverAmount = amount.replace(/,/g, '');
-        // hidden값에..콤마를 뺀 값을 넣어둔다.
-        $('input[name="payPrinc"]').val(coverAmount);
+        $('input[name=payPrinc]').val(coverAmount);
+        console.log("coverAmount : " + coverAmount); // 차입금액
+        
+        var intAmount = removeCommaReturn($("input[name=commaIntAmount]").val()); // 이자금액
+        console.log("intAmount : " + intAmount);
+        
+        var totalAmount = parseInt(coverAmount) + parseInt(intAmount);
+        var convertTotalAmount = numberFormat(totalAmount);
+		console.log("totalAmount : " + totalAmount);
+        
+        if(!$.isNumeric(totalAmount)) {
+    		$('#totalAmount').val('0');
+    		return;
+    	}
+    	
+    	function numberFormat(inputNumber) {
+    		return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    	}
+    		
+    	$('input[name="totalAmount"]').val(convertTotalAmount);
     });
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
@@ -383,6 +403,11 @@ $("#pg-list li").remove();
 function renderingList(list){
 	console.log("--------------------() renderingListCalled------------------------");
 	$("#tbody-list > *").remove();
+	
+	if(list.length == 0) {
+		$('#code').val(''); // 차입금 코드 초기화
+		$('#debtType').val('초기값'); // 상환유형 초기화
+	}
 	
 	console.log("list length : " + list.length);
 	for(var i=0; i < list.length; ++i){
@@ -532,11 +557,11 @@ function update(){
 	var intAmount = $('input[name=intAmount]').val();
 	var payPrinc = $('input[name=tempPayPrinc]').val();
 	
-	if (intAmount > payPrinc) {
-		var noCommaIntAmount = comma(intAmount);
-		dialog('이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요');
-		return false;
-	}
+	//if (intAmount > payPrinc) {
+	//	var noCommaIntAmount = comma(intAmount);
+	//	dialog('이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요');
+	//	return false;
+	//}
 	
 	$.ajax({
 		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/update",
