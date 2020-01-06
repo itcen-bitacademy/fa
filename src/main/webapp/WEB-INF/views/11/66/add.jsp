@@ -115,7 +115,7 @@ input[type="text"], input[type="date"], select {
 						<div class="ia-left"><label class="control-label">부채유형</label></div>
 						<div class="ia-right">
 							<select name="debtType"  id="debtType" >
-								<option value="">부채유형을 선택해주세요.</option>
+								<option value="초기값">부채유형을 선택해주세요.</option>
 								<option value="S">단기차입금</option>
 								<option value="L">장기차입금</option>
 								<option value="P">사채</option>
@@ -416,6 +416,14 @@ function search(){
 	var vo = {"code":inputForm.code.value, "debtType": inputForm.debtType.value};
 	$("#search-condition").val(JSON.stringify(vo));
 	console.log("search-condition : " + $("#search-condition").val());
+	console.log("vo.code : " + vo.code);
+	console.log("vo.debtType : " + vo.debtType);
+	
+	if(vo.code == '' && vo.debtType == '초기값')	{		//빈값일떄
+		$("#search-condition").val("{}");			//parse에러를 막기위한 빈객체 삽입
+		dialog('차입금코드와 부채유형을 입력해주세요.', true);
+		return;
+	}
 	
 	getListAjax(1);
 }
@@ -429,9 +437,10 @@ function getListAjax(page){
 	console.log("--------------------() getListAjax Called------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	if($("#search-condition").val() == "")			//빈값일떄
+	if($("#search-condition").val() == "")	{		//빈값일떄
 		$("#search-condition").val("{}");			//parse에러를 막기위한 빈객체 삽입
-	
+	}
+		
 	var vo = JSON.parse($("#search-condition").val());
 	vo["page"] = page;
 	
