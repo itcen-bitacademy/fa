@@ -910,6 +910,8 @@ tr td:first-child {
 		
 		
 		if($(this).hasClass('selected') === false){
+			$('#updatebtn').show();
+			$('#inputbtn').hide();
 			
 			$("#tbody-list").find('tr').removeClass("selected");
 			
@@ -994,6 +996,9 @@ tr td:first-child {
 	 		
 	 		
 		}else{
+			$('#updatebtn').hide();
+			$('#inputbtn').show();
+			
 			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
 			$('#name').val('');
 			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
@@ -1810,6 +1815,8 @@ tr td:first-child {
 		 });	 
 	
 	$(function(){
+		$('#updatebtn').hide();
+		
 		$('button').on('click', function(e) {
 			e.preventDefault();
 		})
@@ -1855,10 +1862,6 @@ tr td:first-child {
 			openErrorModal('CLOSINGDATE ERROR','마감일이 지났습니다. 관리자에게 문의 주세요');
 		}
 	});
- 
- 
- 
-
  
  
 </script>
