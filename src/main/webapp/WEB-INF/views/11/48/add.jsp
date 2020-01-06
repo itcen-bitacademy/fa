@@ -12,6 +12,7 @@
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 h4{
