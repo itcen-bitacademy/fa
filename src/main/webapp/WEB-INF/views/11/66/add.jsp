@@ -554,6 +554,11 @@ function update(){
 	var sendData = $("#input-form").serialize();
 	console.log("sendData : " + sendData);
 	
+	if($('input[name=code]').val() == '' && $('input[name=commaPayPrinc]').val() == '' && $('input[name=payDate]').val() == ''){
+		dialog('리스트에서 상환데이터를 선택해주세요.', true);
+		return;
+	}
+	
 	var intAmount = $('input[name=intAmount]').val();
 	var payPrinc = $('input[name=tempPayPrinc]').val();
 	
@@ -571,7 +576,7 @@ function update(){
 		success: function(response){
 			
 			if(response.data.isClosed == true){
-				alert("해당 데이터는 마감이 되었습니다.");
+				dialog('해당 데이터는 마감이 되었습니다.', true);
 				return;
 			}
 			
@@ -589,6 +594,12 @@ function update(){
 // 상환내역리스트에서 선택한 row 삭제
 function deleteChecked(){
 	console.log("--------------------deleteChecked() End------------------------");
+	
+	if($("#checked-voList").val() == ''){
+		dialog('삭제할 상환데이터를 선택해주세요.', true);
+		return;
+	}
+	
 	var voList = JSON.parse($("#checked-voList").val());
 	
 	$.ajax({
