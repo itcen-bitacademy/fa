@@ -85,6 +85,10 @@ public class Menu05Repository {
 		return exist == 1;
 	}
 
+	public CardVo exist(CardVo vo) {
+		return sqlSession.selectOne("menu05.exist",vo);
+	}
+	
 	public boolean deleteAll(CardVo vo) {
 		int count = sqlSession.delete("menu05.deleteAll", vo);
 		

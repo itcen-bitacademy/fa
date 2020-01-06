@@ -120,7 +120,7 @@
 				<div class="row-fluid">
 					<div class="span12">
 						<table id="sample-table-1"
-							class="table table-striped table-bordered table-hover">
+							class="table table-bordered table-hover">
 							<thead>
 								<tr>
 									<th>날짜</th>
