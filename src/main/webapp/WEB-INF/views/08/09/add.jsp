@@ -28,16 +28,18 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid"><!-- 차변 대변 나누기 위한 row-fluid -->
-						<form class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert" id="insert-land-form" method="post" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();">
+						<form class="form-horizontal" id="insert-land-form" data-checkpurchaseno="no" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert" method="post" name="sendform" >
 							<div class="span6"><!-- 차변 -->
 								
 								<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-select-1">토지 코드</label>
 									<div class="controls">
-										<input type="text" id="land_code" name="id" placeholder="9자를 입력하세요"/>
+										<input type="text" id="land_code" name="id" style="margin:0 5px 0 0" placeholder="9자를 입력하세요" maxlength="9"/>
+										<input id="overlapBtn" style="height:28px" type="button" value="중복확인">
+										<i id="check-icon" class="icon-ok bigger-180 blue" style="display:none;"></i>
 										<input readonly type="text" class="span6" id="default-landcode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
-										<input readonly type="text" class="span6" id="neverchange" style="border:none;color:#0067a3"  placeholder="토지코드는 변경할수 없습니다.">
-										<!--<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="토지코드는 숫자만 입력하세요.">
+										<!--<input readonly type="text" class="span6" id="neverchange" style="border:none;color:#0067a3"  placeholder="토지코드는 변경할수 없습니다.">
+										<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="토지코드는 숫자만 입력하세요.">
 										<input type="text" class="span6" id="null-landcode" style="border:none;color:red"  value="품목코드는 필수 입력 사항입니다!"> -->
 									</div>									
 								</div>
@@ -172,8 +174,8 @@
 					<div class="controls" style="margin-left: 0px;">
 						<div class="controls" style="margin-left: 0px;">
 							 	   <button class="btn btn-primary btn-small" id="insert" style="float:left; margin-right:20px;" type="button">등록</button>
-	                               <button class="btn btn-warning btn-small" id="modify" style="float:left;margin-right:20px;" type="button">수정</button>
-	                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+	                               <button class="btn btn-warning btn-small" id="modify" style="float:left;margin-right:20px;display:none;" type="button">수정</button>
+	                               <button class="btn btn-danger btn-small" id="delete" style="float:left;margin-right:20px;display:none;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 	                               <button class="btn btn-info btn-small" id="search" style="float:left;margin-right:20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">조회</button>
 	                               <button class="btn btn-default btn-small" id="clear" style="float:left;margin-right:20px;" type="button">초기화</button>
 						</div>					
@@ -303,12 +305,11 @@
 									</c:choose>
 								</ul>
 							</div>
-							
-							<!-- 유효성 검사 dialog -->
-							<div id="dialog-confirm" class="hide">
-								<p id="dialog-txt" class="bolder grey">
-								</p>
-							</div>
+						</div>
+						<!-- 유효성 검사 dialog -->
+						<div id="dialog-confirm" class="hide">
+							<p id="dialog-txt" class="bolder grey">
+							</p>
 						</div>
 
 				</div><!-- /.span -->
@@ -324,41 +325,59 @@
 <script>
 //토지코드 유효성 검사
  $(document).ready(function(){
-	 
-	$("#default-landcode").show();
 	$("#neverchange").hide();
 	console.log("clsosing" + $("#closingDate").val());
 	checkClosing();
-	$("#land_code").on("change", function(e){
+}); 
+ //중복확인 버튼
+ $("#overlapBtn").on("click", function(e){
+		e.preventDefault();
 		
 		var id = "c" + $("#land_code").val();
-        
-	   $.ajax({
-	      url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
-	      type : "get",
-	      dataType : "json",
-	      data : "",
-	      success: function(response){
-	         if(response.result == "fail"){
-	            console.error(response.message);
-	            return;
-	         }
-	         
-	         if(response.data == true){
-	        	 dialog("토지코드가 이미 존재합니다.");
-		         $("#land_code").val("");
-	            return;
-	         
-	         }
-	      },
-	      error: function(xhr, error) {
-	         console.error("error: " + error);
-	      }
-	   });
 		
+		$.ajax({
+			url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
+		    type : "get",
+		    dataType : "json",
+		    data : "",
+			success:function(data) {
+				if(data === "true") {
+					dialog("사용가능한 품목코드입니다.", false);
+					$("#insert-land-form").data("checkpurchaseno", "ok");
+					$("#overlapBtn").hide();
+					$("#default-landcode").hide();
+					$("#check-icon").show();
+					var checkpurchaseno = $("#insert-land-form").data("checkpurchaseno");
+					console.log("사용가능한 품목코드입니다." + checkpurchaseno);
+				} else if(data === "false") {
+					dialog("중복된 품목코드입니다.", false);
+					$("#insert-land-form").data("checkpurchaseno", "no");
+					$("#land_code").val("");
+				} else if(data === "none") {
+					dialog("품목코드 9자를 입력해주세요.", false);
+					$("#insert-land-form").data("checkpurchaseno", "no");
+				}
+			}, error:function(error) {
+				dialog("찾을 수 없는 품목입니다.", true);
+			}
+		});
 	});
+    //토지코드 변화시 중복확인버튼 보이기.
+	$("#land_code").on('keyup', function(event){
+			var check = $("#insert-land-form").data("checkpurchaseno");
+			
+			if(check === "ok") {
+				if($("#land_code").val().length < 9) {
+				$("#insert-land-form").data("checkpurchaseno", "no");
+				$("#overlapBtn").show(); //중복확인버튼
+				$("#default-landcode").show(); //쓰는방법
+				$("#check-icon").hide(); //체크아이콘
+			}
+			}
+	});
+	
+	
 
-}); 
 
 //유효성 검사 시작.
 
@@ -394,21 +413,31 @@ $(function() {
 	
 	//// 핵심소스 - (예제)
 	function insert(){
-   			if(!valid.nullCheck("land_code", "토지 코드")) return;
-   			if(!valid.numberCheck("land_code", "토지 코드")) return;
-   			if(!valid.nullCheck("code", "토지 분류")) return;
-   			if(!valid.nullCheck("area", "평수")) return;
-   			if(!valid.numberCheck("area", "평수")) return;
-   			if(!valid.nullCheck("wideAddr", "주소")) return;
-   			if(!valid.nullCheck("customerNo", "거래처")) return;
-   			if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
-   			if(!valid.nullCheck("publicValue", "공시지가")) return;
-   			if(!valid.nullCheck("etcCost", "기타비용")) return;
-   			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
-   			if(!valid.nullCheck("ownerName", "토지 소유자")) return;
-   			if(!valid.radioCheck("taxKind", "세금 종류")) return;
-   			
-   			$("#insert-land-form").submit();
+			var checkpurchaseno = $("#insert-land-form").data("checkpurchaseno");
+			var landcode = $("#land_code").val();
+			console.log("품목코드를 중복확인 해주세요." + checkpurchaseno);
+			console.log($("#land_code").val.length);
+			if(checkpurchaseno === "no" || landcode.length < 9) {
+				$("#insert-land-form").data("checkpurchaseno", "no");
+				
+				dialog("품목코드를 중복확인 해주세요.", false);
+			}
+			else if(!valid.nullCheck("land_code", "토지 코드")) return;
+			else if(!valid.numberCheck("land_code", "토지 코드")) return;
+			else if(!valid.nullCheck("code", "토지 분류")) return;
+			else if(!valid.nullCheck("area", "평수")) return;
+			else if(!valid.numberCheck("area", "평수")) return;
+			else if(!valid.nullCheck("wideAddr", "주소")) return;
+   			else if(!valid.nullCheck("customerNo", "거래처")) return;
+   			else if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
+   			else if(!valid.nullCheck("publicValue", "공시지가")) return;
+   			else if(!valid.nullCheck("etcCost", "기타비용")) return;
+   			else if(!valid.nullCheck("acqPrice", "취득 금액")) return;
+   			else if(!valid.nullCheck("ownerName", "토지 소유자")) return;
+   			else if(!valid.radioCheck("taxKind", "세금 종류")) return;
+   			else{
+   				$("#insert-land-form").submit();
+   			}
    			
         	}
 
@@ -525,7 +554,9 @@ $(function() {
 		$("#insert").hide();
 		$("#modify").show();
 		$("#search").hide();
-		
+		$("#delete").show();
+		$("#check-icon").hide();
+		$("#overlapBtn").hide();
 		/* alert("등록") */
 		var str = ""
 		var tdArr = new Array();	// 배열 선언
