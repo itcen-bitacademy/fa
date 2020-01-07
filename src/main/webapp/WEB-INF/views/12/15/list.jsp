@@ -13,6 +13,9 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 	div#invalid {display: none;}
+	.form-horizontal .control-label {
+	    text-align: left
+	}
 </style>
 </head>
 
@@ -406,7 +409,7 @@
 						                        	</a>
 					                            </span>
 			                                </div>
-											<input class="span8" type="text" id="detailAddress" name="detailAddress">
+											<input class="span8" type="text" id="detailAddress" name="detailAddress" style="margin-top: 5px">
 										</div>
 									</div>
 									<div class="control-group">
