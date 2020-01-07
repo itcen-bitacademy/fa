@@ -42,7 +42,7 @@
 								<div class="span6">
 									<!-- 차변 -->
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">무형자산
+										<label style="text-align:left;" class="control-label" for="form-field-1">무형자산
 											코드</label>
 										<div class="controls">
 											<input type="text" class="span7" id="id" name="id"
@@ -52,17 +52,17 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">설치주소</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">설치주소</label>
 										<div class="controls">
 											<input type="text" class="span11" id="form-field-1"
 												name="address" placeholder="주소를 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">대분류
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">대분류
 											코드</label>
 										<div class="controls">
-											<select class="span2 chosen-select" id="form-field-section"
+											<select class="span2 chosen-select" id="classification"
 												name="classification" data-placeholder="전체">
 												<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
@@ -74,10 +74,10 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">거래처
+										<label style="text-align:left;" class="control-label" for="form-field-select-1">거래처
 											코드</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-customer"
+											<select class="chosen-select" id="customerNo"
 												name="customerNo" data-placeholder="전체">
 												<option value=""></option>
 												<c:forEach items="${customerList }" var="customerVo">
@@ -91,21 +91,21 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득금액</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">취득금액</label>
 										<div class="controls">
 											<input type="text" id="acqPrice" name="acqPrice"
 												style="text-align: right;" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">부대비용</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">부대비용</label>
 										<div class="controls">
 											<input type="text" id="addiFee" name="addiFee"
 												style="text-align: right;" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">세금계산서
+										<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서
 											번호</label>
 										<div class="controls">
 											<input type="text" class="span7" id="form-field-1"
@@ -118,28 +118,28 @@
 								<div class="span6">
 									<!-- 대변 -->
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">무형자산 명</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">무형자산 명</label>
 										<div class="controls">
 											<input type="text" class="span11" id="name"
 												name="name" placeholder="무형자산명을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">사용 담당자</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">사용 담당자</label>
 										<div class="controls">
 											<input type="text" class="span7" id="user"
 												name="user" placeholder="이름을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">수량</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">수량</label>
 										<div class="controls">
 											<input type="text" id="copyCount" name="copyCount"
 												style="text-align: right;" placeholder="수량을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">담당자</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">담당자</label>
 										<div class="controls">
 											<input readonly type="text" class="span7"
 												name="customerManager" id="customerManager"
@@ -147,11 +147,9 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">용도</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">용도</label>
 										<div class="controls">
-											<!-- <input type="text" class="span11" id="form-field-1"
-												name="purpose" placeholder="용도를 입력하세요" /> -->
-											<select class="chosen-select" id="form-field-purpose"
+											<select class="chosen-select" id="purpose"
 												name="purpose" data-placeholder="전체">
 												<option value=""></option>
 												<c:forEach items="${purposeList }" var="purposeVo">
@@ -161,7 +159,7 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="id-date-picker-1">매입일자</label>
+										<label style="text-align:left;" class="control-label" for="id-date-picker-1">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker" id="id-date-picker-1"
@@ -172,7 +170,7 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label">구분</label>
+										<label style="text-align:left;" class="control-label">구분</label>
 										<div class="controls">
 											<div class="span2">
 												<label> <input name="taxKind" type="radio" id="tax"
@@ -250,7 +248,7 @@
 
 					<tbody>
 						<c:forEach items="${list }" var="vo" varStatus="status">
-							<tr>
+							<tr class="clickme">
 								<td>${status.count }</td>
 								<td>${vo.id }</td>
 								<td>${vo.address }</td>
@@ -335,13 +333,6 @@
 	<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
-		// 마감일 세팅 여부
-		function checkClosing(){ 
-			if($("#closingDate").val()=="true"){
-				dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-			}
-		}
-		
 		// 입력 유효성 검사
 		function insert(){
 			if(!valid.nullCheck("id", "무형자산 코드")) return;
@@ -379,6 +370,7 @@
 			if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
 			if(!valid.radioCheck("taxKind", "세금 종류")) return;
 			
+			// 무형자산 수정 : U
 	    	var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update";
 	    		$("#insert-intangibleAssets-form").attr("action",url).submit();
 	    }
@@ -417,11 +409,6 @@
         			$("#"+id).val("");
         			$("#"+id).focus();
         			return false;
-        		} else if($("#"+id).val().length > 10 || $("#"+id).val().length < 10) {
-        			dialog(msg+"는 9자리로 지정해야합니다.<br> ex: 110100701 (월+일+007+번호)");
-        			$("#"+id).val("");
-        			$("#"+id).focus();
-        			return false;
         		} else {
         			return true;
         		}
@@ -441,7 +428,7 @@
 						click: function() {
 							if(flag){
 								$( this ).dialog( "close" ); 
-									location.href="${pageContext.request.contextPath }/08/43/add";
+									location.href="${pageContext.request.contextPath }/08/43/list";
 							} else {
 								$( this ).dialog( "close" ); 
 							}
@@ -452,24 +439,36 @@
 	    }
 	
 		$(function() {
+			checkClosing();
+			console.log("clsosing" + $("#closingDate").val());
+			
+			
+			// 마감일 세팅 여부
+			function checkClosing(){ 
+				if($("#closingDate").val()=="true"){
+					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+				}
+			}
+			
+			
 			$(".chosen-select").chosen();
 
 			// 대분류명 선택시 대분류 코드 가져오기
-			$('#form-field-section').change(
+			$('#classification').change(
 					function() {
-						var code = $('#form-field-section option:selected')
+						var code = $('#classification option:selected')
 								.attr('sectionList');
 						$('#code').val(code);
 					});
 
 			// 거래처 코드 선택시 거래처 명 가져오기
-			$('#form-field-customer').change(
+			$('#customerNo').change(
 					function() {
 						var customerName = $(
-								'#form-field-customer option:selected').attr(
+								'#customerNo option:selected').attr(
 								'customerName');
 						var customerManager = $(
-								'#form-field-customer option:selected').attr(
+								'#customerNo option:selected').attr(
 								'customerManager');
 
 						$('#customerName').val(customerName);
@@ -477,8 +476,6 @@
 					});
 
 			// 품목코드 유효성 검사
-			console.log("clsosing" + $("#closingDate").val());
-			checkClosing();
 			$("input[name=id]").on(
 					"change",
 					function() {
@@ -499,13 +496,17 @@
 								}
 
 								if (response.data == true) {
-									alert("사용중인 품목코드입니다 :p");
+									dialog("사용중인 품목코드입니다 :p");
 									$("#id").val("");
 									$("#id").focus();
 									return;
 
 								} else if (id == "") {
-									alert("품목코드는 필수 입력 사항입니다!");
+									dialog("품목코드는 필수 입력 사항입니다!");
+									$("#id").focus();
+								} else if (id.length != 9) {
+									dialog("품목코드는 9자리로 지정해야합니다.<br> ex: 110100701 (월+일+007+번호)");
+									$("#id").val("");
 									$("#id").focus();
 								}
 							},
@@ -573,17 +574,6 @@
 
 							});
 
-			// 무형자산 수정 : U
-			$("#update")
-					.click(
-							function(event) {
-								event.preventDefault();
-								$("form")
-										.attr(
-												"action",
-												"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
-							});
-
 			// 무형자산 삭제 : D
 			$("#delete")
 					.click(
@@ -597,8 +587,8 @@
 			// 초기화 버튼
 			$("#reset").click(function() {
 				// 초기화 버튼 누루면 등록, 수정버튼 다시 보이기
-				document.getElementById('add').style.visibility = 'visible';
-				document.getElementById('update').style.visibility = 'visible';
+				$("#add").show();
+				$("#update").show();
 
 				// 새로고침!
 				location.reload();
@@ -611,11 +601,40 @@
 					event.preventDefault();
 				}
 			}, true);
+			
+			// 조회시 셀렉트박스 값 고정 
+			function updateClassification(sectionCode){
+				 var options = document.getElementById("classification");
+					for(var i=0 ; i < options.length; ++i){
+						if(options[i].value == sectionCode){
+							options[i].selected = "selected";
+							$("#classification_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+						}
+					}
+			 }
+			
+			function updateCustomerNo(customer){
+				 var options = document.getElementById("customerNo");
+					for(var i=0 ; i < options.length; ++i){
+						if(options[i].value == customer){
+							options[i].selected = "selected";
+							$("#customerNo_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+						}
+					}
+			 }
+			
+			function updatePurpose(purpose){
+				 var options = document.getElementById("purpose");
+					for(var i=0 ; i < options.length; ++i){
+						if(options[i].value == purpose){
+							options[i].selected = "selected";
+							$("#purpose_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+						}
+					}
+			 }
 
 			// 행 클릭시 수정, 삭제
-			$("#sample-table-1 tr")
-					.click(
-							function() {
+			$(".clickme").click(function() {
 								var str = ""
 								var tdArr = new Array(); // 배열 선언
 
@@ -625,32 +644,39 @@
 
 								console.log(tr.text());
 
-								$("input[name=id]").val(td.eq(1).text());
+								$("input[name=id]").val((td.eq(1).text()).replace('f',""));
+								
 								$("input[name=address]").val(td.eq(2).text());
-								//$("input[name=classification]").val(td.eq(3).text());
-								$('#form_field_section_chosen').find('span')
-										.text(td.eq(3).text());
+								
+								updateClassification(td.eq(3).text());
+								//$("#form_field_section_chosen").find("span").text(td.eq(3).text());
+								
 								$("input[name=code]").val(td.eq(4).text());
-								//$("input[name=customerNo]").val(td.eq(5).text());
-								$('#form_field_customer_chosen').find('span')
-										.text(td.eq(5).text());
-								$("input[name=customerName]").val(
-										td.eq(6).text());
-								$("input[name=acqPrice]").val(
-										(td.eq(7).text()).replace(/,/gi, ""));
-								$("input[name=addiFee]").val(
-										(td.eq(8).text()).replace(/,/gi, ""));
+								
+								updateCustomerNo(td.eq(5).text());
+								//$("#form_field_customer_chosen").find("span").text(td.eq(5).text());
+								
+								$("input[name=customerName]").val(td.eq(6).text());
+								
+								$("input[name=acqPrice]").val((td.eq(7).text()).replace(/,/gi, ""));
+								
+								$("input[name=addiFee]").val((td.eq(8).text()).replace(/,/gi, ""));
+								
 								$("input[name=taxbillNo]").val(td.eq(9).text());
+								
 								$("input[name=name]").val(td.eq(10).text());
+								
 								$("input[name=user]").val(td.eq(11).text());
-								$("input[name=copyCount]")
-										.val(td.eq(12).text());
-								$("input[name=customerManager]").val(
-										td.eq(13).text());
-								$('#form_field_purpose_chosen').find('span')
-										.text(td.eq(14).text());
-								//$("input[name=purpose]").val(td.eq(14).text());
+								
+								$("input[name=copyCount]").val(td.eq(12).text());
+								
+								$("input[name=customerManager]").val(td.eq(13).text());
+								
+								updatePurpose(td.eq(14).text());
+								//$("#form_field_purpose_chosen").find("span").text(td.eq(14).text());
+								
 								$("input[name=payDate]").val(td.eq(15).text());
+								
 								$("input[name=taxKind]").val(td.eq(16).text());
 
 								if (td.eq(16).text() == "과세") {
@@ -661,12 +687,12 @@
 								}
 
 								if (td.eq(9).text() == "") {
-									document.getElementById('add').style.visibility = 'hidden';
+									$("#add").hide();
 								} else if (td.eq(9).text() != "") {
-									document.getElementById('add').style.visibility = 'hidden';
-									document.getElementById('update').style.visibility = 'hidden';
+									$("#add").hide();
+									$("#update").hide();
 								}
-							});
+			});
 
 		});
 	</script>

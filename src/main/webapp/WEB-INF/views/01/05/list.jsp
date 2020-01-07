@@ -48,7 +48,9 @@
  .form-horizontal .control-label {
             text-align: left
         }
-
+.selected{
+	background-color:#ddd;
+}
 </style>
 
 
@@ -95,7 +97,12 @@
 										<div class="input-append">
 											<input type="text" class="validity" id="cardNo4" name="cardNo" maxlength=4  />
 										</div>
+										<div class="input-append">
+											<input id="btn-check-no" type="button" value="중복확인">
+											<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										</div>
 									</div>
+									
 									
 									
 									<input type="hidden" name="cardNoOld" />
@@ -277,7 +284,7 @@
 				<div class="row-fluid">
 					<div class="span12">
 						<table id="simple-table-1"
-							class="table table-striped table-bordered table-hover">
+							class="table  table-bordered table-hover">
 							<thead>
 								<tr>
 									<th>카드번호</th>
@@ -443,6 +450,7 @@
 <script>
 $(function() {
 	var a;
+	var nochecked = false;
 	$("#btn-create").click(function(){
 		a = "create";
 	});
@@ -457,6 +465,10 @@ $(function() {
 	});
 	$("#btn-reset").click(function(){
 		a = "reset";
+		$("input[name=cardNo]").attr("readonly",false);
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		
 	});
 	
 	
@@ -471,6 +483,11 @@ $(function() {
 			queryString.push({name: 'page', value: "${param.page}"});
 		}
 		if(a == "create") {
+			if(nochecked==false){
+				openErrorModal("DUPLICATE CHECK ERROR","사업자등록번호 중복검사는 필수입니다.",'#no');
+				$("#btn-check-no").show();
+				return;
+			}
 			// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 			if(!InsertValidation()){
 				openErrorModal(errortitle,validationMessage,errorfield);
@@ -491,6 +508,8 @@ $(function() {
 			    		});
 			    		
 			    		alert("카드 생성이 완료되었습니다."); 
+			    		$("#btn-check-no").show();
+						$("#img-checkno").hide();
 			    		
 			    		removeTable();
 			    		var cardList = result.cardList;
@@ -725,6 +744,10 @@ $(function() {
 		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
 		
+		$("input[name=cardNo]").attr("readonly",true);
+
+		$("#btn-check-no").hide();
+		$("#img-checkno").hide();
 	});
 	
 
@@ -764,6 +787,8 @@ $(function() {
 		var td13 = td.eq(13).text();
 		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
+		
+		
 	}
 	
 
@@ -1138,42 +1163,43 @@ $(function() {
 		if('' === cardNo2){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n필수입력항목입니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo2';
 			return false;
 		}
 		if(cardNo2.length<4 || cardNo2.length >4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo2';
 			return false;
 		}
 		if('' === cardNo3){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n필수입력항목입니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo3';
 			return false;
 		}
 		if(cardNo3.length<4 || cardNo3.length >4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo3';
 			return false;
 		}
 		if('' === cardNo4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n필수입력항목입니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo4';
 			return false;
 		}
 		if(cardNo4.length<4 || cardNo4.length >4){
 			errortitle = 'CARD_NO ERROR';
 			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
-			errorfield='#cardNo1';
+			errorfield='#cardNo4';
 			return false;
 		}
 	
 		return true;
 	}
+	
 	
 	function openDeleteModal(title, message) {
 		$('#staticBackdropLabel').html(title);
@@ -1211,9 +1237,77 @@ $(function() {
 	
 		$("#staticBackdrop").dialog('open');//모달을 띄운다
 	}
+	
+
+	//사업자등록번호 중복체크
+	$("#cardNo1").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#cardNo2").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#cardNo3").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#cardNo4").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#btn-check-no").click(function(){
+		
+		if(!DeleteValidation()){
+			openErrorModal(errortitle,validationMessage,errorfield);
+			return;
+		}
+		
+
+		var cardNo1 = $("#cardNo1").val();
+		var cardNo2 = $("#cardNo2").val();
+		var cardNo3 = $("#cardNo3").val();
+		var cardNo4 = $("#cardNo4").val();
+		
+		var cardNo = cardNo1 + "-" + cardNo2 + "-" + cardNo3 + "-" +cardNo4
+		
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath }/01/05/check?cardNo=" + cardNo,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json",
+			data: "",
+			success: function(response){
+				console.log(response);
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				
+				if(response.data == null){
+					nochecked = true;
+					$("#btn-check-no").hide();
+					$("#img-checkno").show();
+					
+					return;
+				}else{
+					openErrorModal('DUPLICATED CARD_NO ERROR',"이미 존재하는 카드번호입니다.",'#no');
+				}
+				
+				},
+				error:function(xhr,error) {
+					console.err("error" + error);
+				}
+			});
+	});
 })
 
-</script>
-
+	
+	
+	</script>
 
 </html>

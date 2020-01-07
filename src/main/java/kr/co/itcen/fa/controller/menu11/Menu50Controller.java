@@ -1,7 +1,12 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -47,7 +53,7 @@ public class Menu50Controller {
 		DataResult<PdebtVo> dataResult = menu50Service.list(page, year, code);
 		List<SectionVo> sectionlist = menu50Service.selectSection();
 		System.out.println("=================== list ===================");
-		System.out.println("dataResult : " + dataResult);
+		System.out.println("dataResult : " + dataResult.toString());
 		System.out.println("code : " + code);
 		System.out.println("sectionlist : " + sectionlist);
 		System.out.println("year : " + year);
@@ -74,7 +80,8 @@ public class Menu50Controller {
 	@RequestMapping(value = "/" + SUBMENU + "/add", method = RequestMethod.POST)
 	public String insert(
 			@ModelAttribute PdebtVo pdebtVo, 
-			@AuthUser UserVo userVo) {
+			@AuthUser UserVo userVo, 
+			Model model) {
 		// 마감 여부 체크
 		try {
 			pdebtVo.setInsertId(userVo.getId()); // 등록자 아이디 삽입
@@ -94,17 +101,21 @@ public class Menu50Controller {
 			if (menu19Service.checkClosingDate(userVo, pdebtVo.getDebtDate())) {
 				menu50Service.insert(pdebtVo, userVo); // 데이터베이스에 데이터 삽입
 				System.out.println("Insert 50 Controller");
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		model.addAttribute("closingDate", true); // 마감된 경우
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
 	public String update(
 			@ModelAttribute PdebtVo pdebtVo, 
-			@AuthUser UserVo userVo) {
+			@AuthUser UserVo userVo,
+			Model model, RedirectAttributes redirectAttributes, 
+			HttpServletResponse response) throws IOException {
 		// 마감 여부 체크
 		try {
 			String deptExpDate = pdebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
@@ -119,28 +130,30 @@ public class Menu50Controller {
 			String[] dangerArray = dangerCode.split("-");
 			pdebtVo.setDangerCode(dangerArray[0]);
 			pdebtVo.setDangerName(dangerArray[1]);
-			System.out.println("Update 50 Controller 1");
 			
 			if (menu19Service.checkClosingDate(userVo, pdebtVo.getDebtDate())) {
 				menu50Service.update(pdebtVo, userVo);
-				System.out.println("Update 50 Controller 2");
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/" + MAINMENU + "/" + SUBMENU;
+		model.addAttribute("closingDate",true);
+		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method = RequestMethod.POST)
 	public String delete(
 			@RequestParam Long[] no, 
-			@AuthUser UserVo userVo) {
+			@AuthUser UserVo userVo,
+			Model model) {
 		List<PdebtVo> pdebtVoList = menu50Service.selectList(no);
 
 		for (int i = 0; i < pdebtVoList.size(); ++i) {
 			try {
 				if (!menu19Service.checkClosingDate(userVo, pdebtVoList.get(i).getDebtDate())) {
-					return "redirect:/" + MAINMENU + "/" + SUBMENU;
+					model.addAttribute("closingDate", true); // 마감된 경우
+					return MAINMENU + "/" + SUBMENU + "/add";
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();

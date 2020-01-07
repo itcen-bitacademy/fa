@@ -11,8 +11,6 @@
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
-
-
 <style>
 .limitation{
 	width:200px;
@@ -21,6 +19,7 @@
 </style>
 </head>
 <body class="skin-3">
+	<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -188,7 +187,7 @@
 									<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서 번호</label>
 									<div class="controls">
-										<input  type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
+										<input type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
 									</div>
 								</div> 
 								
@@ -336,7 +335,7 @@
 								<table id="dialog-message-table" align="center">
 									<tr>
 										<td>
-											<form action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
+											<form id="segum-input-form" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
 												
 												<label>차량코드</label> 
 												<input readonly type="text" id="vehicleNo" name="vehicleNo" value="차량코드">
@@ -465,16 +464,24 @@
 			//차량코드 유효성 검사
 			$(document).ready(function(){
 				
+				$("#insert").show(); //등록 버튼 보여기
+				$("#modify").hide(); //수정 버튼 가리기
+				$("#delete").hide(); //삭제 버튼 가리기
+				$("#search").show(); //조회 버튼 보이기
+				$("#clear").show(); //초기화 버튼 보이기
+				
 				$("#nabbu").hide();
 				$("#walsa").hide();
 				$("#segumBtn").hide();
-				
-				
+			
 				$("#overlap-vehiclecode").hide();
 				$("#onlynumber").hide();
 				$("#null-vehiclecode").hide();
 				
 				$("#vehicle_code").focus();
+				
+				console.log("closing" + $("#closingDate").val());
+				checkClosing();
 				
 				$("#vehicle_code").on("change", function(e){
 					
@@ -523,15 +530,8 @@
 				}); //$("#vehicle_code").on("change", function(e){ 의 마지막 
 			}); //$(document).ready(function() 의 마지막
 					
-			
 
-			function checkClosing(){ // 마감일 세팅 여부
-				if($("#closingDate").val()=="true"){
-					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-				}
-			}
-	
-			//// 등록,수정 같은 validation함수 insert()로 가능
+			//// 등록 validation함수 insert()로 가능
 			function insert(){
 		   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
 		   			if(!valid.numberCheck("vehicle_code", "차량 코드")) return false;
@@ -552,26 +552,26 @@
 	
 		   			return true;
 		        	}
-			
+			//// 수정 validation함수 update()로 가능
 			function update(){
-	   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
-	   			if(!valid.nullCheck("classification", "차량 분류")) return false;
-	   			if(!valid.nullCheck("staffNoId", "직급")) return false;
-	   			if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
-	   			if(!valid.nullCheck("wideAddr", "주소")) return false;
-	   			if(!valid.nullCheck("customerNo", "거래처")) return false;
-	   			if(!valid.nullCheck("payDate", "매입일자")) return false;
-	   			if(!valid.nullCheck("publicValue", "출시가")) return false;
-	   			if(!valid.nullCheck("acqTax", "취득세")) return false;
-	   			if(!valid.nullCheck("etcCost", "부대비용")) return false;
-	   			if(!valid.nullCheck("deposit", "보증금")) return false;
-	   			if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
-	   			if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
-	   			if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
-	   			if(!valid.radioCheck("taxKind", "세금 종류")) return false;
-
-	   			return true;
-	        	}
+		   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
+		   			if(!valid.nullCheck("classification", "차량 분류")) return false;
+		   			if(!valid.nullCheck("staffNoId", "직급")) return false;
+		   			if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
+		   			if(!valid.nullCheck("wideAddr", "주소")) return false;
+		   			if(!valid.nullCheck("customerNo", "거래처")) return false;
+		   			if(!valid.nullCheck("payDate", "매입일자")) return false;
+		   			if(!valid.nullCheck("publicValue", "출시가")) return false;
+		   			if(!valid.nullCheck("acqTax", "취득세")) return false;
+		   			if(!valid.nullCheck("etcCost", "부대비용")) return false;
+		   			if(!valid.nullCheck("deposit", "보증금")) return false;
+		   			if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
+		   			if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
+		   			if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
+		   			if(!valid.radioCheck("taxKind", "세금 종류")) return false;
+	
+		   			return true;
+		        	}
 			
 				//valid2
 		        var valid = {
@@ -628,8 +628,13 @@
 					]
 				});
 	    	} // valid dialog마지막
-					
-		
+				
+	    	//마감일자 validation
+	    	function checkClosing(){ // 마감일 세팅 여부
+				if($("#closingDate").val()=="true"){
+					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+				}
+			}
 	
 	$(function() {
 		$.fn.datepicker.dates['ko'] = {
@@ -846,7 +851,7 @@ $("#delete").click(function() {
 	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 	$("#input-form").attr("method","post");
 	$("#input-form").submit();
-   	alert("삭제");
+   	alert("삭제 하시겠습니까?");
 }); 
 
 $("#search").click(function() {
@@ -854,8 +859,16 @@ $("#search").click(function() {
 	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
 	$("#input-form").attr("method","GET");
 	$("#input-form").submit();
-	alert("조회");
-})
+	//alert("조회");
+});
+
+$("#segum").click(function() {
+	
+	$("#segum-input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum");
+	$("#segum-input-form").attr("method","POST"); 
+	$("#segum-input-form").submit();
+});
+
 
 
 
@@ -876,7 +889,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	$("#nabbu").hide();
 	$("#walsa").hide();
 	$("#segumBtn").show();
-
+	$("#vehicle_code").prop('readonly',true);
 	
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
@@ -884,10 +897,10 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	// 현재 클릭된 Row(<tr>)
 	var tr = $(this); 
 	var td = tr.children();
-
-	var vehicleNo = td.eq(1).text();
+	
+	var vehicleNo = td.eq(1).text().replace('e','');
 	$("input[name=id]").val(vehicleNo);
-	$("#vehicleNo").val(vehicleNo); //납부 Pop - up 에 차량코드 넣기.
+	$("#vehicleNo").val(td.eq(1).text()); //납부 Pop - up 에 차량코드 넣기.
 	
 	var carSectionNo = updateSection(td.eq(2).text());
 	//var carSectionNo = td.eq(2).text();
@@ -901,30 +914,30 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
   var staffNo='';
   
 	switch (staffName){
-  case "사원" :
-  	staffNo=1;
-      break;
-  case "대리" :
-  	staffNo=2;
-	    break;
-  case "과장" :
-  	staffNo=3;
-      break;
-  case "차장" :
-  	staffNo=4;
-      break;
-  case "부장" :
-  	staffNo=5;
-  	break;
-  case "이사" :
-  	staffNo=6;
-  	break;
-  case "상무" :
-  	staffNo=7;
-  	break;
-  case "전무" :
-  	staffNo=8;
-  	break;
+	  case "사원" :
+	  	staffNo=1;
+	      break;
+	  case "대리" :
+	  	staffNo=2;
+		    break;
+	  case "과장" :
+	  	staffNo=3;
+	      break;
+	  case "차장" :
+	  	staffNo=4;
+	      break;
+	  case "부장" :
+	  	staffNo=5;
+	  	break;
+	  case "이사" :
+	  	staffNo=6;
+	  	break;
+	  case "상무" :
+	  	staffNo=7;
+	  	break;
+	  case "전무" :
+	  	staffNo=8;
+	  	break;
 	}
 
 	//선택된 직급에 대한 staffNo값을 value값으로 변경 
@@ -995,17 +1008,17 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
 		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
-		$("#delete").show(); //삭제 버튼 가리기
-		$("#search").show(); //조회 버튼 가리기
-		$("#clear").show(); //초기화 버튼 가리기
+		$("#delete").show(); //삭제 버튼 보여주기
+		$("#search").hide(); //조회 버튼 가리기
+		$("#clear").show(); //초기화 버튼 보여주기
 
 	}else {
 		console.log("세금계산서 번호 있으면 버튼 가리기.");
 		$("#insert").hide(); //등록 버튼 가리기
-		$("#modify").hide(); //수정 버튼 보여주기
-		$("#delete").show(); //삭제 버튼 가리기
+		$("#modify").hide(); //수정 버튼 가리기
+		$("#delete").show(); //삭제 버튼 보여주기
 		$("#search").hide(); //조회 버튼 가리기
-		$("#clear").show(); //초기화 버튼 가리기
+		$("#clear").show(); //초기화 버튼 보여주기
 	} 
   
   $("#cusNo").val(customerCode); // 납부할때 거래처번호를 넘겨줘야 한다.
@@ -1088,7 +1101,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		
 		  
 			var realPayDate = td.eq(23).text(); //실제로 납부한 날짜
-		  console.log("realPayDate" + realPayDate);
+		  	console.log("realPayDate" + realPayDate);
 		  
 		
 			//사용 개월  

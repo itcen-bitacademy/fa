@@ -107,6 +107,10 @@ public class Menu05Service {
 		return map;
 	}
 
+	public CardVo exist(CardVo vo) {
+		return menu05Repository.exist(vo);
+	}
+
 
 	
 

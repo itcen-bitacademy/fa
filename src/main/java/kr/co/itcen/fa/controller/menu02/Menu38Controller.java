@@ -95,7 +95,7 @@ public class Menu38Controller {
 
 		buyTaxbillListVo.setPage(page);
 		buyTaxbillListVo.setPageGroup(pageGroup);
-		
+		System.out.println(buyTaxbillListVo.getCompanyName());
 		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillListAll(buyTaxbillListVo); // 전체리스트
 		List<BuyTaxbillVo> buyTaxbillList = menu38Service.getSelectedBuyTaxbillList(buyTaxbillListVo); // 5개씩 리스트
 		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getSelectedpageBuyTaxbillList(buyTaxbillListVo); // 11개씩																								// 데이터

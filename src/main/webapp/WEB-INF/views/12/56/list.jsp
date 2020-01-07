@@ -30,8 +30,8 @@
 									
 										<div class="span3">
 											<div class="form-horizontal">
-													<label class="control-label" for="cl-ym-date-picker"> 년 월</label>
-													<div class="controls" >
+													<label class="control-label" for="cl-ym-date-picker" style="text-align: left; width: 120px;"> 년 월</label>
+													<div class="controls" style="margin-left: 120px;" >
 														<div class="row-fluid input-append">
 															<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" />
 															<span class="add-on">
@@ -44,8 +44,8 @@
 										
 										<div class="span3">
 											<div class="form-horizontal">
-													<label class="control-label" for="form-field-select-2" >대분류명</label>
-													<div class="controls">
+													<label class="control-label" for="form-field-select-2" style="text-align: left; width: 120px;">대분류명</label>
+													<div class="controls" style="margin-left: 120px;">
 														<select class="chosen-select" id="gcategory" name="sectioncode" data-placeholder="대분류명 선택">
 															<option value=""></option>	
 															<c:forEach items='${gcategory }' var='gcategory' varStatus='status'>
@@ -63,8 +63,8 @@
 										
 										<div class="span3">
 											<div class="form-horizontal">
-													<label class="control-label" for="form-field-select-2">품목명</label>
-													<div class="controls">
+													<label class="control-label" for="form-field-select-2" style="text-align: left; width: 120px;">품목명</label>
+													<div class="controls" style="margin-left: 120px;">
 														<select class="chosen-select" id="subcategory" name="itemcode" data-placeholder="품목명 선택">
 															
 														<c:forEach items='${subcategory }' var='scategory' varStatus='status'>

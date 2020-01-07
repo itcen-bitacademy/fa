@@ -11,10 +11,11 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <!-- select List를 위한 StyleSheet -->
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
-	type="text/css" rel="stylesheet" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+	type="text/css" rel="stylesheet" />
+
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -50,14 +51,6 @@ html, body {
 	width: 525px !important;
 }
 
-.chosen-single div b:before {
-	display: none
-}
-
-.chosen-single div b:after {
-	display: none
-}
-
 .chosen-container-single .chosen-search:before {
 	display: none
 }
@@ -71,9 +64,6 @@ input:focus {
 	outline: none;
 }
 
-.chosen-search {
-	display: none;
-}
 /* 기타 css e*/
 </style>
 </head>
@@ -116,7 +106,7 @@ input:focus {
 								</div>
 								<label class="control-label span1" for="tax-type">과&emsp;세&emsp;유&emsp;형</label>
 								<div class="controls span5">
-									<select class="chosen-select" id="tax-type" name="taxType">
+									<select id="tax-type" name="taxType">
 										<c:choose>
 											<c:when test="${searchData.taxType == 'zero'}">
 												<option value="">전체</option>
@@ -148,12 +138,11 @@ input:focus {
 									<input style="width: 66%" type="text" id="no" name="no"
 										value="${searchData.no }"
 										placeholder="ex) 20190420-44231234-57644467"
-										autocomplete="off" />
+										autocomplete="off" maxlength="26" />
 								</div>
 								<label class="control-label span1" for="delete-flag">삭&emsp;제&emsp;여&emsp;부</label>
 								<div class="controls span5">
-									<select class="chosen-select" id="delete-flag"
-										name="deleteFlag">
+									<select id="delete-flag" name="deleteFlag">
 										<c:choose>
 											<c:when test="${searchData.deleteFlag == 'n'}">
 												<option value="">전체</option>
@@ -182,12 +171,11 @@ input:focus {
 
 								<label class="control-label span1" for="customer-name">거&emsp;래&emsp;처&emsp;명</label>
 								<div class="controls span5">
-									<select id="company-name" name="companyName" class="chosen-select"
-										style="width: 68%;" required>
+									<select id="company-name" name="companyName"
+										class="chosen-select" style="width: 68%;" required>
 										<option style="display: none;"
 											value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
-										<option style="display: none;" value="" disabled selected>ex)
-													아이티센</option>
+										<option value="">&nbsp;</option>
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
@@ -383,12 +371,17 @@ input:focus {
 													</c:forEach>
 													<td>${item.purchaseDate }</td>
 													<td>${item.itemName }</td>
-													<td>${item.amount }</td>
-													<td>${item.supplyValue }</td>
-													<td>${item.taxValue }</td>
+													<td style="">${item.amount }</td>
+													<td style="text-align: right;"><fmt:formatNumber
+															value="${item.supplyValue }" pattern="#,###"></fmt:formatNumber></td>
+													<td style="text-align: right;"><fmt:formatNumber
+															value="${item.taxValue }" pattern="#,###"></fmt:formatNumber>
+													</td>
 													<c:if test="${status == 0 }">
-														<td rowspan="${count }">${taxbill.totalSupplyValue }</td>
-														<td rowspan="${count }">${taxbill.totalTaxValue }</td>
+														<td rowspan="${count }" style="text-align: right;"><fmt:formatNumber
+																value="${taxbill.totalSupplyValue }" pattern="#,###"></fmt:formatNumber></td>
+														<td rowspan="${count }" style="text-align: right;"><fmt:formatNumber
+																value="${taxbill.totalTaxValue }" pattern="#,###"></fmt:formatNumber></td>
 														<td rowspan="${count }"><c:if
 																test="${taxbill.taxType == 'zero' }">
 																영세
@@ -471,13 +464,17 @@ input:focus {
 	<!-- jQeury관련 script -->
 	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<!-- 거래처명 찾기기능 -->
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 	<script>
 		$(".chosen-select").chosen();
+	</script>
+	<!-- 금액 , 표시 함수 -->
+	<script>
+		function addCommas(price) {
+			return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 	</script>
 	<!-- 달력관련 script -->
 	<script
@@ -642,12 +639,9 @@ input:focus {
 				$("#sample-table-1").append($newTbody)
 				var i = 1;
 				if (buyTaxbillList.legnth == 0) {
-
 					$newTbody
 							.append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-
 				} else {
-
 					for ( var taxbill in buyTaxbillList) {
 						var count = 0;
 						var status = 0;
@@ -669,7 +663,6 @@ input:focus {
 											+ buyTaxbillList[taxbill].writeDate
 											+ '</td>');
 								}
-
 								for ( var customer in customerList) {
 									if (buyTaxbillList[taxbill].companyName == customerList[customer].name) {
 										if (status == 0) {
@@ -689,7 +682,6 @@ input:focus {
 															+ '<td rowspan="'+count+'">'
 															+ customerList[customer].item
 															+ '</td>');
-
 										}
 									}
 								}
@@ -699,16 +691,16 @@ input:focus {
 										+ itemsList[item].itemName + '</td>'
 										+ '<td>' + itemsList[item].amount
 										+ '</td>' + '<td>'
-										+ itemsList[item].supplyValue + '</td>'
-										+ '<td>' + itemsList[item].taxValue
+										+ addCommas(itemsList[item].supplyValue) + '</td>'
+										+ '<td>' + addCommas(itemsList[item].taxValue)
 										+ '</td>');
 								if (status == 0) {
 									$newTr
 											.append('<td rowspan="'+count+'">'
-													+ buyTaxbillList[taxbill].totalSupplyValue
+													+ addCommas(buyTaxbillList[taxbill].totalSupplyValue)
 													+ '</td>'
 													+ '<td rowspan="'+count+'">'
-													+ buyTaxbillList[taxbill].totalTaxValue
+													+ addCommas(buyTaxbillList[taxbill].totalTaxValue)
 													+ '</td>');
 									if (buyTaxbillList[taxbill].taxType == 'zero') {
 										$newTr
@@ -724,7 +716,6 @@ input:focus {
 													+ buyTaxbillList[taxbill].deleteFlag
 													+ '</td>');
 								}
-
 								console.log('status : ' + status);
 								status++;
 							}
@@ -732,7 +723,6 @@ input:focus {
 					}
 				}
 			}
-
 			function updatePagination(buyTaxbillListAll, buyTaxbillList,
 					page_num, page_group) {
 				$("#pagination_list").remove();
@@ -741,9 +731,7 @@ input:focus {
 				var page_all_count = parseInt((buyTaxbillListAll.length - 1) / 11) + 1;
 				var list_size = parseInt((buyTaxbillList.length - 1) / 11) + 1;
 				var page_group_max = parseInt((page_all_count - 1) / 5);
-
 				console.log(page_group_max);
-
 				if (0 < page_group) {
 					$newUl
 							.append("<li><a class='page_go_prev' href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
@@ -751,7 +739,6 @@ input:focus {
 					$newUl
 							.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
 				}
-
 				for (var li = 1; li <= list_size; li++) {
 					if (page_num == (li + page_group * 5)) {
 						$newUl
@@ -763,7 +750,6 @@ input:focus {
 										+ (li + page_group * 5) + "</a></li>");
 					}
 				}
-
 				if (page_group_max > page_group) {
 					$newUl
 							.append("<li><a class='page_go_next' href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
@@ -772,7 +758,6 @@ input:focus {
 							.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
 				}
 			}
-
 		});
 	</script>
 
@@ -784,7 +769,6 @@ input:focus {
 							"action",
 							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list")
 					.submit();
-
 		}
 	</script>
 </body>

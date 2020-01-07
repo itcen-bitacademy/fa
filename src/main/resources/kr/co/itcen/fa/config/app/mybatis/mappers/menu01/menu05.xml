@@ -88,7 +88,17 @@
 		 and 	delete_flag = "Y"
 		]]>
 	</select>
-
+	
+	<select id="exist" parameterType="1cardvo" resultType="1cardvo">
+		<![CDATA[
+		select	card_no as cardNo
+		 from	tb_cardmanager
+		 where	card_no = #{cardNo }
+		 and 	delete_flag = "N"
+		]]>
+	</select>
+	
+	
 	<delete id="deleteAll" parameterType="1cardvo">
 		<![CDATA[
 			delete from tb_cardmanager where card_no = #{cardNo} and delete_flag ="Y"

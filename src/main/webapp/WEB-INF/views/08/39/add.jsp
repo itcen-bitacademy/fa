@@ -35,9 +35,7 @@
  
 </head>
 <body class="skin-3">
- <input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
- <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
- <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
+ <input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
 
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
@@ -231,7 +229,7 @@
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
 												<button class="btn btn-primary btn-small" id="insert" 
-													style="float: left; margin-right: 20px;">등록</button>
+													style="float: left; margin-right: 20px;">입력</button>
 												<button class="btn btn-warning btn-small" id="modify"
 													style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
@@ -381,11 +379,17 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script>
+var errorfocus = ""; // error 부분 focusing
+var flag = $('#closingDate').val();
 
 //건물코드 유효성 검사
  $(document).ready(function(){
-	console.log("closing test" + $("#closingDate").val());
-	checkClosing();
+	 
+	$("#modify").hide();
+	$("#delete").hide();
+	
+	console.log("closing test : " + $("#closingDate").val());
+	checkClosing(); // 마감일 체크
 	
 	$("#buildingCode").on("change", function(e){
 		
@@ -405,7 +409,7 @@
 	         if(response.data == true){
 	        	 dialog("이미 존재하는 건물코드 입니다.");
 		         $("#buildingCode").val("");
-		         errorfocus='#buildingCode';
+		        errorfocus='#buildingCode';
 	            return;
 	         
 	         }
@@ -420,6 +424,8 @@
 }); 
 
 //Validation
+
+//등록 valid
 $("#insert").click(function() {
 	if(!manageValid()){
 		return;
@@ -428,6 +434,8 @@ $("#insert").click(function() {
 	$('#manage-building-form').attr('method', 'POST');
 	$('#manage-building-form').submit();
 });
+
+//수정 valid
 $("#modify").click(function() {
 	if(!manageValid()){
 		return;
@@ -437,13 +445,22 @@ $("#modify").click(function() {
 	$('#manage-building-form').submit();
 });
 
-	//마감일 체크
-	function checkClosing(){ 
-		if($("#closingDate").val()=="true"){
-			dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-		}
-	}
+//삭제 valid
+$("#delete").click(function() {
+	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
+	$('#manage-building-form').attr('method', 'POST');
+	$('#manage-building-form').submit();
+});
 
+	//마감일 체크
+	function checkClosing(){
+		if (!valid.closingCheck("closingDate")){
+			return false;
+		}
+		return true;
+	}
+	
+	
 	//// 관리 validation
 	function manageValid() {
 		if (!valid.nullCheck("buildingCode", "건물 코드")){
@@ -552,33 +569,42 @@ $("#modify").click(function() {
 			} else {
 				return true;
 			}
-		}
-		/* closingCheck : function(id) { //마감일자 체크
-			if ($("#" + id).val() == "true"){
-				dialog("마감된 일자입니다. <br>저장되지 않았습니다.");
+		},
+		closingCheck : function(id) { // 마감일 체크
+			if($("#" + id).val() == "true"){
+				dialog("마감된 일자입니다. <br>저장되지 않았습니다.", true);
+				return false;
+			} else {
+				return true;
 			}
-		} */
-
+		}
 	}
 
 	// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
-	function dialog(txt) {
-		$("#dialog-txt").html(txt);
-		var dialog = $("#dialog-confirm").dialog({
-			resizable : false,
-			modal : true,
-			buttons : [ {
-				text : "OK",
-				"class" : "btn btn-danger btn-mini",
-				click : function() {
-					$(this).dialog("close");
-					$(errorfocus).focus();		
-				}
-			} ]
-		});
-	}
+	 function dialog(txt, flag) {
+        	$("#dialog-txt").html(txt);
+    		var dialog = $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				modal: true,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							if(flag){
+								$( this ).dialog( "close" );
+								$(errorfield).focus();
+								location.href="${pageContext.request.contextPath }/08/39/add";
+							} else {
+								$( this ).dialog( "close" );
+							}
+						}
+					}
+				]
+			});
+    	}
 
-	//빈칸 검사()
+	//빈칸 검사
 	function formCheck() {
 
 		if ($("#buildingCode").val() == "") {
@@ -614,11 +640,16 @@ $("#modify").click(function() {
  		$('#managerName').val(managername);
 	});
 	
-	
 	//관리화면
 	$(function() {
 		//한행 클릭 >> 건물코드 가져오기
 		   $(".table-row").click(function() {
+			   
+			  $("#modify").show();
+			  $("#delete").show();
+			  $("#insert").hide();
+			  $("#search").hide();
+			  
 		      var str = ""
 		      var tdArr = new Array();   // 배열 선언
 		      
@@ -660,28 +691,26 @@ $("#modify").click(function() {
 		      }
 		     
 		     //CRUD button
-		      if($("#taxbillNo").val() != '-'){
-		    	  $("#insert").hide();
-		    	  $("#search").hide();
-		    	  $("#update").hide();
+		      if($("#taxbillNo").val() != ''){
+		    	  $("#modify").hide();
 		      }
-		      if($("#taxbillNo").val() == '-'){
-			   		$("#insert").hide();
-			   	 	$("#update").show();
-			   		$("#search").hide();
+		      if($("#taxbillNo").val() == ''){
+			   	 	$("#modify").show();
 			  }
 		      
 			});
+		
+		 //초기화 누를시 CRUD버튼 보임
+			$("#reset").click(function(){
+				$("#insert").show();
+		   		$("#update").show();
+			  	$("#search").show();
+			  	$('#form-field-customer').val('초기값').trigger('chosen:updated');
+			  	$('#form-field-section').val('초기값').trigger('chosen:updated');
+			});
 		      
 	});
-	//초기화 누를시 CRUD버튼 보임
-	$("#reset").click(function(){
-		$("#insert").show();
-   		$("#update").show();
-	  	$("#search").show();
-	  	$('#form-field-customer').val('초기값').trigger('chosen:updated');
-	  	$('#form-field-section').val('초기값').trigger('chosen:updated');
-	});
+	
 	//엔터키 막기
 	document.addEventListener('keydown', function(event) {
 	    if (event.keyCode === 13) {
@@ -738,38 +767,36 @@ $("#modify").click(function() {
 <!-- date picker -->
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-			daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-			daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-			months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			today: "Today",
-			clear: "Clear",
-			format: "yyyy-mm-dd",
-			timeFormat:'HH:mm:ss',
-			titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-			weekStart: 0
-			};
-			
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode: 4,
-				minViewMode: 1,
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-	
-			$('.cl-date-picker').datepicker({
-				language: 'ko'
-			}).next().on(ace.click_event, function(){
-				$(this).prev().focus();
-			});
-		})
-			
+<script>
+	$(function() {
+		$.fn.datepicker.dates['ko'] = {
+		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		today: "Today",
+		clear: "Clear",
+		format: "yyyy-mm-dd",
+		timeFormat:'HH:mm:ss',
+		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+		weekStart: 0
+		};
 		
-	</script>
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode: 4,
+			minViewMode: 1,
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+
+		$('.cl-date-picker').datepicker({
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	})
+</script>
 </body>
 </html>

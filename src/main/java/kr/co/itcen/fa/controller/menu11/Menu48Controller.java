@@ -41,8 +41,6 @@ public class Menu48Controller {
 	@Autowired
 	private Menu48Service menu48Service;
 	
-	@Autowired
-	private Menu03Service menu03Service;
 	
 	@Autowired
 	private Menu19Service menu19Service;
@@ -63,7 +61,6 @@ public class Menu48Controller {
 		model.addAttribute("sectionlist",sectionlist);
 		model.addAttribute("year",year);
 		
-		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 	
@@ -76,7 +73,7 @@ public class Menu48Controller {
 	}
 	
 	@RequestMapping(value = "/"+SUBMENU+"/add", method = RequestMethod.POST)
-	public String add(LTermdebtVo vo,@AuthUser UserVo user) {
+	public String add(LTermdebtVo vo,@AuthUser UserVo user,Model model) {
 		//마감 여부 체크
 		try {
 			String[] dates=vo.getDebtExpDate().split("~");
@@ -87,16 +84,20 @@ public class Menu48Controller {
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 				
 				menu48Service.insert(vo,user);
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+		
+		model.addAttribute("closeDate",true);
+		return MAINMENU + "/" + SUBMENU + "/add";
+		
 	}
 	
 	@RequestMapping(value = "/"+SUBMENU+"/update", method = RequestMethod.POST)
-	public String update(LTermdebtVo vo,@AuthUser UserVo user) {
+	public String update(LTermdebtVo vo,@AuthUser UserVo user,Model model) {
 		String[] dates=vo.getDebtExpDate().split("~");
 		vo.setDebtDate(dates[0]);
 		vo.setExpDate(dates[1]);
@@ -104,21 +105,25 @@ public class Menu48Controller {
 		try {
 			if(menu19Service.checkClosingDate(user, vo.getDebtDate())) { 
 				menu48Service.update(vo,user);
+				return "redirect:/"+MAINMENU+"/"+SUBMENU;
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:/"+MAINMENU+"/"+SUBMENU;
+		model.addAttribute("closeDate",true);
+		return MAINMENU + "/" + SUBMENU + "/add";
+		
 	}
 	
 	@RequestMapping(value = "/"+SUBMENU+"/delete", method = RequestMethod.POST)
-	public String delete(@RequestParam Long[] no,@AuthUser UserVo uservo) {
+	public String delete(@RequestParam Long[] no,@AuthUser UserVo uservo,Model model) {
 		List<LTermdebtVo> l_list=  menu48Service.selectList(no);
 		for(int i=0;i<l_list.size();++i) {
 			try {
 				if(!menu19Service.checkClosingDate(uservo, l_list.get(i).getDebtDate())) {
-					return "redirect:/"+MAINMENU+"/"+SUBMENU;
+					model.addAttribute("closeDate",true);
+					return MAINMENU + "/" + SUBMENU + "/add";
 				}
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block

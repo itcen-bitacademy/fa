@@ -108,6 +108,7 @@
 	</select>
 	<!-- 상환내역 리스트 가지고 오기 -->
 	<select id="selectrepaylist" parameterType="long" resultType="repayvo">
+	<![CDATA[
 	select 	code as code,
 			pay_princ as payPrinc,
 			int_amount as intAmount,
@@ -115,6 +116,8 @@
 	from tb_repay
 	where debt_type = 'L'
 		and debt_no = #{_parameter}
+		and delete_flag = 'N'
+	]]>
 	</select>
 	
 	<!-- 마감일 읽기위한 select -->
@@ -191,6 +194,7 @@
 			#{item } 
 		</foreach>
 	<![CDATA[
+		and delete_flag = 'N'
 		order by code
 	]]>
 	</select>

@@ -428,15 +428,24 @@ $("#debt-amount-comma").on("focusout", function() {
     $(this).val(comma($(this).val()));
 });
 
-$("#int-rate").on("keyup",function(){
-	var pattern = /^(\d{1,2}([.]\d{0,2})?)?$/;
-    var value = $(this).val();
+$("#int-rate").on("keydown keyup",function(){
+	var value = $(this).val();
+	console.log(value.substr($(this).val().indexOf(".")));
+	if(!value.substr($(this).val().indexOf(".") + 1).indexOf(".") > 0){
+		console.log("숫자가아니다");
+		$(this).val(value.substr(0, value.length - 1));
+		return;
+	}
+		
+	
+	var pattern = /^((\d{1,2}|100)([.]\d{0,2})?)?$/;	
+   
     if (!pattern.test(value)) {
-        alert("100 이하의 숫자만 입력가능하며,\n소수점 둘째자리까지만 허용됩니다.");
-        $(this).val(value.substring(0,value.length - 1));
+        dialog("100 이하의 숫자만 입력가능하며,\n소수점 둘째자리까지만 허용됩니다.");
+        $(this).val(value.substr(0, value.length - 1));
         $(this).focus();
     }
-})
+});
 
 $("#mgr").on("keyup", function(){
 	var regexp= /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"\\]/g;
@@ -628,23 +637,7 @@ function openBankDialog(){
 	
 	renderBankDialog();
 	
-	$("#dialog46").dialog({
-		title: "은행정보",
-		title_html: true,
-	   	resizable: false,
-	    height: 500,
-	    width: 400,
-	    modal: true,
-	    close: function() {
-	    	$('#dialog46>*').remove();
-	    },
-	    buttons: {
-	    "닫기" : function() {
-	    		$('#dialog46>*').remove();
-	          	$(this).dialog('close');
-	        }
-	    }
-	});
+	$("#dialog46").dialog(new DialogBody("은행정보"));
 	console.log("-------------------------openBankDialog() End----------------------------------------");
 }
 
@@ -759,6 +752,14 @@ function selectBankRow(thisObj){
 }
 
 //-----------------------------------상환 Model 메서드 ---------------------------------//
+function addRepayBtn(buttons){
+	buttons["상환"] =  function(){
+		var isSuccess = repay(repayForm, vo.repayBal);		//상환Form, 상환잔액 반환
+		if(isSuccess)
+			$(this).dialog('close');
+    }
+}
+
 function openRepayDialog(){
 	console.log("---------------------------openRepayDialog() called--------------------------");
 	var inputForm = $("#input-form")[0];			//선택된 차입금 form
@@ -773,31 +774,10 @@ function openRepayDialog(){
 	var repayForm = $("#repay-form")[0];				//해당 폼을 찾는다.
 	initRepayDialog(repayForm, vo);
 	
-	$("#dialog46").dialog({
-		title: "상환정보등록",
-		title_html: true,
-	   	resizable: false,
-	    height: 500,
-	    width: 400,
-	    modal: true,
-	    close: function() {
-	    	$("#dialog46>*").remove();
-	    	$(this).dialog('close');
-	    },
-	    buttons: {
-	    	//상환버튼 클릭시
-	    "상환": function(){
-			var isSuccess = repay(repayForm, vo.repayBal);		//상환Form, 상환잔액 반환
-			if(isSuccess)
-				$(this).dialog('close');
-			//상환내역 반영
-	    },
-	    "닫기" : function() {
-	    		$("#dialog46>*").remove();
-	          	$(this).dialog('close');
-	        }
-	    }
-	});
+	var dialogBody = new DialogBody("상환정보");
+	addRepayBtn(dialogBody.buttons);
+	    	
+	$("#dialog46").dialog(dialogBody);
 	
 }//openRepayDailog() end
 
@@ -964,23 +944,7 @@ function openAccountDialog(){
 	
 	renderAcctDialog();
 	
-	$("#dialog46").dialog({
-	   	title: "계좌정보",
-	   	title_html: true,
-			resizable: false,
-			height: 500,
-			width: 400,
-			modal: true,
-			close: function() {
-		   	$('#dialog46>*').remove();
-		},
-		buttons: {
-		"닫기" : function() {
-				$(this).dialog('close');
-				$('#dialog46>*').remove();
-			}
-		}
-	});
+	$("#dialog46").dialog(new DialogBody("계좌정보"));
 }
 
 function renderAcctDialog(){
@@ -1260,24 +1224,7 @@ function openRepayListDialog(){
 	//rendering
 	renderingRepayLists();
 	
-	$("#dialog46").dialog({
-     	
-        title: "상환정보",
-        title_html: true,
-           	resizable: false,
-	           height: 500,
-	           width: 400,
-	           modal: true,
-	           close: function() {
-            $('#dialog46 *').remove();
-         },
-         buttons: {
-         "닫기" : function() {
-                  $(this).dialog('close');
-                  $('#dialog46 *').remove();
-             }
-         }
-     });
+	$("#dialog46").dialog(new DialogBody("상환정보"));
 }
 
 function renderingRepayLists(repayLists){
@@ -1317,24 +1264,7 @@ function openClosingDateListDialog(){
 	//rendering
 	renderClosingDateList();
 	
-	$("#dialog46").dialog({
-     	
-        title: "상환정보",
-        title_html: true,	
-           	resizable: false,
-	           height: 500,
-	           width: 400,
-	           modal: true,
-	           close: function() {
-            $('#dialog46 *').remove();
-         },
-         buttons: {
-         "닫기" : function() {
-                  $(this).dialog('close');
-                  $('#dialog46 *').remove();
-             }
-         }
-     });
+	$("#dialog46").dialog(new DialogBody("차입금 상환내역 리스트"));
 }
 
 function renderClosingDateList(closedDateList){
@@ -1500,7 +1430,26 @@ function isEmpty(value){
 					}
 				]
 			});
-	    }
+}
+	    
+ function DialogBody(title){
+		this.title = title;
+		this.title_html = true;
+	   	this.resizable = false;
+	    this.height = 500;
+	    this.width = 400;
+	    this.modal = true;
+	    this.close = function() {
+	    	$("#dialog46>*").remove();
+	    	$(this).dialog('close');
+	    };
+	    this.buttons = {
+			    "닫기" : function() {
+			    		$("#dialog46>*").remove();
+			          	$(this).dialog('close');
+			        }
+			    };
+	}	    
 </script>
 </body>
 </html>

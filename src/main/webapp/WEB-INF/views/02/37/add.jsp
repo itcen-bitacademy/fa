@@ -65,14 +65,6 @@ html, body {
 	width: 260px !important;
 }
 
-.chosen-single div b:before {
-	display: none
-}
-
-.chosen-single div b:after {
-	display: none
-}
-
 .chosen-container-single .chosen-search:before {
 	display: none
 }
@@ -115,7 +107,7 @@ html, body {
 											<input style="width: 100%" type="text" id="no" name="no"
 												value="${getAboutNoData.no }"
 												placeholder="ex) 20190420-44231234-57644467"
-												autocomplete="off" />
+												autocomplete="off" maxlength="26" />
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -123,7 +115,8 @@ html, body {
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="manage-no"
 										value="${getAboutNoData.manageNo }" name="manageNo"
-										placeholder="ex) TX2019116301143" autocomplete="off" />
+										placeholder="ex) TX2019116301143" autocomplete="off"
+										maxlength="20" />
 								</div>
 							</div>
 							<div class="control-group">
@@ -131,13 +124,13 @@ html, body {
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-no"
 										value="${getAboutNoCustomerData.no }" name="id"
-										placeholder="ex) P1018147345" autocomplete="off" />
+										autocomplete="off" readonly />
 								</div>
 								<label class="control-label span1" for="deposit-no">계&emsp;좌&emsp;번&emsp;호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-no"
 										value="${getAboutNoBankData.depositNo }" name="id"
-										placeholder="ex) 14278-927129-62331231" autocomplete="off" />
+										autocomplete="off" readonly />
 								</div>
 							</div>
 							<div class="control-group">
@@ -152,10 +145,11 @@ html, body {
 													style="display: none">${getAboutNoCustomerData.name }</option>
 											</c:when>
 											<c:otherwise>
-												<option style="display: none;" value="" disabled selected>ex)
-													아이티센</option>
+												<option style="display: none;" disabled selected></option>
+												<option value="">&nbsp;</option>
 											</c:otherwise>
 										</c:choose>
+
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
@@ -166,13 +160,13 @@ html, body {
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="customer-name"
 										value="${getAboutNoCustomerData.ceo }" name="id"
-										placeholder="ex) 김기태" autocomplete="off" autocomplete="off" />
+										autocomplete="off" autocomplete="off" readonly />
 								</div>
 								<label class="control-label span1" for="deposit-host">예&emsp;&emsp;금&emsp;&emsp;주</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-host"
 										value="${getAboutNoCustomerData.depositHost }"
-										placeholder="ex) 이제구" autocomplete="off" />
+										autocomplete="off" readonly />
 								</div>
 							</div>
 							<div class="control-group">
@@ -180,19 +174,19 @@ html, body {
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-address"
 										value="${getAboutNoCustomerData.address }" name="id"
-										placeholder="ex) 대구광역시 수성구 청수로 260(황금동)" autocomplete="off" />
+										autocomplete="off" readonly />
 								</div>
 								<label class="control-label span1" for="bank">은&emsp;&emsp;&emsp;&emsp;&emsp;행</label>
 								<div class="controls span5">
 									<div class="controls span2">
 										<input style="width: 80%" type="text" id="bank-code"
 											value="${getAboutNoBankData.bankCode }" name="id"
-											placeholder="ex) 0023320" autocomplete="off" />
+											autocomplete="off" readonly />
 									</div>
 									<div class="controls span3">
 										<input style="width: 100%" type="text" id="bank-name"
 											value="${getAboutNoBankData.bankName }" name="id"
-											placeholder="ex) 산업" autocomplete="off" />
+											autocomplete="off" readonly />
 									</div>
 								</div>
 							</div>
@@ -201,13 +195,13 @@ html, body {
 								<div class="controls span2">
 									<input style="width: 93%;" type="text" id="conditions"
 										value="${getAboutNoCustomerData.conditions }" name="id"
-										placeholder="ex) 제조업" autocomplete="off" />
+										autocomplete="off" readonly />
 								</div>
 								<label class="control-label span1" for="items">종&emsp;&emsp;&emsp;&emsp;&emsp;목</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="items" name="id"
-										value="${getAboutNoCustomerData.item }"
-										placeholder="ex) 제조 / 과실및채소절임식품" autocomplete="off" />
+										value="${getAboutNoCustomerData.item }" autocomplete="off"
+										readonly />
 								</div>
 								<label class="control-label span1" for="taxType">과&emsp;세&emsp;구&emsp;분</label>
 								<div class="controls span2">
@@ -330,16 +324,16 @@ html, body {
 													<td><input style="text-align: right;" type="text"
 														id="amount${status.count }" name="amount"
 														value="${items.amount }" onkeyup="sumAllSupplyAllTax();"
-														autocomplete="off"></td>
+														placeholder="0" autocomplete="off"></td>
 													<td><input style="text-align: right;" type="text"
 														id="supply-value${status.count }"
 														onkeyup="sumAllSupplyAllTax();" name="supplyValue"
 														value="<fmt:formatNumber value="${items.supplyValue }" pattern="#,###"/>"
-														autocomplete="off"></td>
+														placeholder="0" autocomplete="off"></td>
 													<td><input style="text-align: right;" type="text"
 														id="tax-value${status.count }" name="taxValue"
 														value="<fmt:formatNumber value="${items.taxValue }" pattern="#,###"/>"
-														onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+														placeholder="0" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 												</tr>
 											</c:forEach>
 										</c:when>
@@ -352,13 +346,13 @@ html, body {
 													autocomplete="off"></td>
 												<td><input style="text-align: right;" type="text"
 													id="amount1" name="amount" onkeyup="sumAllSupplyAllTax();"
-													autocomplete="off"></td>
+													placeholder="0" autocomplete="off"></td>
 												<td><input style="text-align: right;" type="text"
 													id="supply-value1" onkeyup="sumAllSupplyAllTax();"
-													name="supplyValue" autocomplete="off"></td>
+													placeholder="0" name="supplyValue" autocomplete="off"></td>
 												<td><input style="text-align: right;" type="text"
 													id="tax-value1" name="taxValue"
-													onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+													placeholder="0" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 											</tr>
 										</c:otherwise>
 									</c:choose>
@@ -463,13 +457,13 @@ html, body {
 			cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName" autocomplete="off"></td>';
 			cell4.innerHTML = '<td><input style="text-align:right;" type="text" id="amount'
 					+ cnt
-					+ '" name="amount" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>';
+					+ '" name="amount" onkeyup="sumAllSupplyAllTax();" placeholder="0" autocomplete="off"></td>';
 			cell5.innerHTML = '<td><input style="text-align:right;" type="text" id="supply-value'
 					+ cnt
-					+ '"name="supplyValue" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>';
+					+ '"name="supplyValue" onkeyup="sumAllSupplyAllTax();" placeholder="0" autocomplete="off"></td>';
 			cell6.innerHTML = '<td><input style="text-align:right;" type="text" id="tax-value'
 					+ cnt
-					+ '"name="taxValue" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>';
+					+ '"name="taxValue" onkeyup="sumAllSupplyAllTax();" placeholder="0" autocomplete="off"></td>';
 			cnt++;
 			addElementCommas();
 			addElementCalender();
