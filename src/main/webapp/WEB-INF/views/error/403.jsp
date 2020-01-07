@@ -57,7 +57,7 @@
 
 									<div class="row-fluid">
 										<div class="center">
-											<a href="history.go(-1);" class="btn btn-grey">
+											<a href="#" class="btn btn-grey" onclick="history.go(-1);">
 												<i class="icon-arrow-left"></i>
 												이전 페이지
 											</a>
