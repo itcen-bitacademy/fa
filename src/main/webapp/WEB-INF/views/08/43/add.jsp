@@ -47,8 +47,6 @@
 										<div class="controls">
 											<input type="text" class="span7" id="id" name="id"
 												placeholder="ex) 120400701 (월+일+007+번호)" />
-											<button class="btn btn-info btn-small" type="submit"
-												id="list" style="float: right; margin-right: 180px;">조회</button>
 										</div>
 									</div>
 									<div class="control-group">
@@ -196,6 +194,8 @@
 											<div class="controls" style="margin-left: 0px;">
 												<button class="btn btn-primary btn-small" type="submit"
 													id="add" style="float: left; margin-right: 20px;">등록</button>
+												<button class="btn btn-info btn-small" type="submit"
+													id="list" style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-warning btn-small" type="submit"
 													id="update" style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" type="submit"
@@ -687,11 +687,13 @@
 
 								if (td.eq(9).text() == "") {
 									$("#add").hide();
+									$("#list").hide();
 									$("#update").show();
 									$("#delete").show();
 									
 								} else if (td.eq(9).text() != "") {
 									$("#add").hide();
+									$("#list").hide();
 									$("#update").hide();
 									$("#delete").show();
 									
