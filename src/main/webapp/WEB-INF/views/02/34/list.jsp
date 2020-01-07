@@ -753,8 +753,8 @@
 			<div class="row-fluid">
 				<!-- PAGE CONTENT BEGINS -->
 				<div class="span12">
-				<div class="row-fluid">
-					<form id="form" class="form-horizontal"
+				<div class="row-fluid" style="height:300px">
+					<form id="form" class="form-horizontal" style="margin:0 0 0 0; height:200px"
 					data-formdatasno=""
 					data-formdatassectionname=""
 					data-formdatasfactoryname=""
@@ -968,9 +968,9 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-price" style="text-align:initial; width:100px;">단가</label>
 									<div class="controls" style="margin-left:150px">
-										<input type="text" id="form-field-price1" style="text-align:right; width:160px;" name="price_start"/>
-										&nbsp;~&nbsp;
-										<input type="text" id="form-field-price2" style="text-align:right; width:160px;" name="price_end"/> 원
+										<input type="text" id="form-field-price1" style="text-align:right; width:160px; margin:0 5px 0 0" name="price_start"/>
+										~
+										<input type="text" id="form-field-price2" style="text-align:right; width:160px; margin:0 0 0 5px" name="price_end"/> 원
 									</div>
 								</div>
 							</div>
@@ -1005,32 +1005,33 @@
 										</div>
 									</div>
 									
-									<div class="control-group">
+									<div class="control-group" style="margin:0 0 0 0">
 										<label class="control-label" for="form-field-date" style="text-align:initial; width:100px;">생산일자</label>
 									<div class="controls">
 										<div class="control-group">
-											<div class="input-append">
+											<div class="input-append" style="margin:0 5px 0 0">
 												<input class="span7 cl-date-picker" id="id-date-picker-1" name="producedate_start" type="text" data-date-format="yyyy-mm-dd" style="width:160px">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											&nbsp; ~ &nbsp;
-											<div class="input-append">
+											~
+											<div class="input-append" style="margin:0 0 0 5px">
 												<input class="span7 cl-date-picker" id="id-date-picker-2" name="producedate_end" type="text" data-date-format="yyyy-mm-dd" style="width:160px">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<button class="btn btn-info btn-small" id="purchaseitem_search" style="display:inline">조회</button>
-											&nbsp;
-											<button class="btn btn-default btn-small" type="reset" id="reset">초기화</button>
 										</div>
-									</div>
+									</div> 
 								</div>
+								
 							</div>
 						</div>
+						<div class="hr hr-18 dotted"></div>
+							<button class="btn btn-info btn-small" id="purchaseitem_search" style="display:inline">조회</button>
+							<button class="btn btn-default btn-small" type="reset" id="reset">초기화</button>
+						<div class="hr hr-18 dotted"></div>
 					</form>
 				</div>
 				

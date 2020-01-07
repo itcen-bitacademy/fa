@@ -834,7 +834,6 @@
 			var check = $("#form").data("checkpurchaseno");
 			var checkid = $("#check_no").data("checkid");
 			
-			console.log(checkid);
 			if(check === "ok") {
 				if($("#form-field-item-id").val().length < 10 || $("#form-field-item-id").val() !== checkid) {
 					$("#form").data("checkpurchaseno", "no");
@@ -913,7 +912,7 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
-						<form id="form" class="form-horizontal" data-checkpurchaseno="no" method="post">
+						<form id="form" class="form-horizontal" data-checkpurchaseno="no" style="margin:0 0 0 0" method="post">
 						<div style="height:335px">
 							<div class="span6" style="height:350px;">
 								<div class="control-group">
