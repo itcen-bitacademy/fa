@@ -401,15 +401,18 @@
 										<label class="control-label form-field-1">주소</label>
 										<div class="controls">
 											<div class="input-append">
-												<input class="span4" type="text" id="zipCode" readonly name="zipCode">
-					                            <input class="span9" type="text" id="address" readonly name="address">
+												<input onclick="execDaumPostcode()" style="height:28px; margin-right: 2px" type="button" value="주소찾기">
+												<input class="span3" type="text" id="zipCode" readonly name="zipCode" style="margin-right: 2px">
+					                            <input class="span7" type="text" id="address" readonly name="address">
+					                            <!--  
 												<span class="add-on" onclick="execDaumPostcode()">
 						                        	<a href="#" class="a-customerinfo-dialog">
 						                        		<i class="icon-search nav-search-icon"></i>
 						                        	</a>
 					                            </span>
+					                            -->
 			                                </div>
-											<input class="span8" type="text" id="detailAddress" name="detailAddress" style="margin-top: 5px">
+											<input class="span8" type="text" id="detailAddress" name="detailAddress" style="margin-top: 5px; width: 436px;">
 										</div>
 									</div>
 									<div class="control-group">
