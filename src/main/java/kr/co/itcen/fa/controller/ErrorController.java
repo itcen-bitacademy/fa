@@ -21,4 +21,9 @@ public class ErrorController {
 	public String _404() {
 		return "error/404";
 	}
+	
+	@RequestMapping("/400")
+	public String _400() {
+		return "error/400";
+	}
 }

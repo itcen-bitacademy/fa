@@ -89,6 +89,12 @@ public class Menu54Service {
 		return dataResult;
 	}
 	
+	public List<TaxbillSearchVo> subTaxbillno(TaxbillSearchVo vo){
+		System.out.println("Ajax를 통한 세금계산서 번호 출력");
+		List<TaxbillSearchVo> list = menu54Repository.subTaxbillno(vo);
+		return list; 
+	}
+	
 	
 	
 }

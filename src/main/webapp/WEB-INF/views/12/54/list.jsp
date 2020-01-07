@@ -86,7 +86,6 @@
 																	<c:when test="${clist.customerCode eq search.customerCode }">
 																		<option value="${clist.customerCode }" selected>${clist.customerCode } [${clist.customerName }]</option>
 																	</c:when>
-																
 																	<c:otherwise>
 																			<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
 																	</c:otherwise>
@@ -106,6 +105,7 @@
 												<div class="controls">
 													<select class="span3 chosen-select" id="taxbillNo" name="taxbillNo" data-placeholder="세금계산서">
 															<option value="">없음</option>
+															
 															<c:forEach items="${taxlist }" var="tlist">
 																<c:choose>
 																	<c:when test="${tlist.taxbillNo eq search.taxbillNo }">
@@ -116,6 +116,7 @@
 																	</c:otherwise>
 																</c:choose>
 															</c:forEach>
+															
 													</select>
 											</div>
 										</div>
@@ -339,6 +340,7 @@
 			});
 			
 			$(".chosen-select").chosen();
+								
 		})
 		
 		function view(){
