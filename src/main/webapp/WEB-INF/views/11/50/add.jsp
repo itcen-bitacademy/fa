@@ -22,7 +22,7 @@
 <style>
 #dialog-confirm{z-index: 3333!important;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
-.p-debt-code-input {width: 270px;}
+.p-debt-code-input {width: 195px;}
 
 /* 테이블의 첫 row 모두 padding right */
 .form-horizontal .control-label {text-align: left;}
@@ -36,7 +36,7 @@
 
 .debt-name-input {width: 420px;}
 .mgr-input {width: 90px; display: inline;}
-.mgr-number-input-h4 {display: inline; margin-left: 30px; margin-right: 20px;}
+.mgr-number-input-h4 {display: inline; margin-left: 37px; margin-right: 20px;}
 .mgr-call-input {width: 140px; display: inline;}
 
 .mybtn {float: left; margin-right: 10px;}
@@ -223,7 +223,7 @@
 											<label class="control-label">이율</label>
 										</td>
 										<td colspan="2">
-											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="text-align:right;"/> <h5 style="display: inline-block;">(%)</h5>
+											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" style="text-align:right;"/> <h5 style="display: inline-block;">(%)</h5>
 										</td>
 									</tr>
 									<tr>
@@ -232,12 +232,8 @@
 										</td>
 										<td>
 											<input type="text" class="mgr-input" name="mgr" />
-										</td>
-										<td>
-											<label class="control-label">담당자전화번호</label>
-										</td>
-										<td>
-											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+											<label class="mgr-number-input-h4">담당자전화번호</label>
+											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="15"/>
 										</td>
 									</tr>
 									<tr>

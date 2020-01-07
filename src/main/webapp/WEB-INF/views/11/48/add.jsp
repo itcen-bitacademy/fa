@@ -56,7 +56,7 @@ tr td:first-child {
 
 .mgr-number-input-h4 {
 	display: inline;
-	margin-left: 30px;
+	margin-left: 42px;
 	margin-right: 20px;
 }
 
@@ -113,7 +113,7 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr >
-									<td><label class="control-label">장기차입금명</label></td>
+									<td style="padding-bottom: 70px;"><label class="control-label">장기차입금명</label></td>
 									<td colspan="2">
 										<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
 									</td>
@@ -121,7 +121,7 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><label class="control-label">차입금액</label></td>
-									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /></td>
+									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block;">(원)</h5></td>
 								</tr>
 								<tr>
 									<td><label class="control-label">차입일자 ~ 만기일자</label></td>
@@ -270,8 +270,8 @@ tr td:first-child {
 								<tr>
 									<td><label class="control-label">이율</label></td>
 									<td colspan="2">
-										<input type="text" id="int_rate" name="intRate" placeholder="(%)" class="number-input" 
-										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
+										<input type="text" id="int_rate" name="intRate" class="number-input" 
+										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block;">(%)</h5>
 									</td>
 								</tr>
 								<tr>
@@ -1080,6 +1080,13 @@ tr td:first-child {
 				var td = $(this).children();
 				if($(td.eq(0).children().children()).prop('checked') == true){
 					$(td.eq(0).children().children()).prop('checked',false);
+				}
+				if($("#tbody-list tr").hasClass('selected') === true){
+					$("#tbody-list tr").removeClass("selected");
+					$('#inputbtn').show();
+					$('#search').show();
+					$('#updatebtn').hide();
+					$('#dialog-repayment-button').hide();
 				}
 		 });
 		 if($('#checkall').prop('checked')==true){
