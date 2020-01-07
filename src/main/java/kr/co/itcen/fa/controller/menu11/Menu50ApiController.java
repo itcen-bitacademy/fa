@@ -70,4 +70,12 @@ public class Menu50ApiController {
 		return customerVo;
 	}
 	
+	@ResponseBody
+	@RequestMapping("/getdebtdata")
+	public List<PdebtVo> getDebtdata(
+			@RequestParam("debtvo") PdebtVo vo) {
+		List<PdebtVo> pdebtVo = menu50Service.getDebtdata(vo);
+		return pdebtVo;
+	}
+	
 }

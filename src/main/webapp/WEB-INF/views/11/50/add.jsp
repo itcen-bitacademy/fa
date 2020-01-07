@@ -12,6 +12,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+<!-- Chart Library : Resources -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
@@ -37,6 +43,8 @@
 .mybtn {float: left; margin-right: 10px;}
 
 .textarea{resize: none; width: 270px; height: 84px;}
+
+#chartdiv {width: 100%; height: 500px;}
 </style>
 </head>
 <body class="skin-3">
@@ -71,8 +79,8 @@
 												<input type="text" name="code" id="code" class="p-debt-code-input" value="${code}" maxlength="10"/>
 											</c:otherwise>
 										</c:choose>
-										<input class="btn btn-primary btn-small" id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
-										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										<input id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
+											<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
 										</td>
 									</tr>
 									<tr>
@@ -127,7 +135,7 @@
 									</tr>
 									<tr>
 										<td>
-											<label class="control-label">거래처코드</label>
+											<label class="control-label">은행코드</label>
 										</td>
 										<td colspan="2">
 												<div class="input-append">
@@ -296,7 +304,13 @@
 											<td>
 												<label class="control-label">계좌번호</label>
 												<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-													<a href="#" id="a-dialog-depositNo"><span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span></a>
+												<div class="input-append">
+													<span class="add-on">
+														<a href="#" id="a-dialog-depositNo">
+															<i class="icon-search icon-on-right bigger-110"></i>
+														</a>
+													</span>
+												</div>
 											</td>
 										</tr>
 									</table>
@@ -387,6 +401,14 @@
 									<p id="dialog-txt" class="bolder grey">
 									</p>
 								</div>
+								
+								<!-- 상환 예정 내역 리스트 -->
+								<div id="dialog-repayexpect-list" title="상환예정내역" hidden="hidden">
+								</div>
+								
+								<!-- 차트 -->
+								<div id="chartdiv" hidden="hidden">
+								</div>
 					
 							</div>
 						</div>
@@ -399,6 +421,8 @@
 							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
 							<button type="button" id="repaybtn" class="btn btn-small mybtn">상환</button>
 							<button type="button" id="clearbtn" class="btn btn-success btn-small mybtn">초기화</button>
+							<!-- <button type="button" id="repayexpectbtn" class="btn btn-info btn-small mybtn">금주 상환예정내역</button>
+							<button type="button" id="chartbtn" class="btn btn-info btn-small mybtn">차트</button> -->
 						</div>
 					<hr>
 				</form>
@@ -609,6 +633,12 @@
 		
 		// 초기화버튼 이벤트 연결
 		$('#clearbtn').on('click', clearDebtData);
+		
+		// 상환예정내역버튼 이벤트 연결
+		$('#repayexpectbtn').on('click', repayExpectDebtData);
+		
+		// 차트 이벤트 연결
+		$('#chartbtn').on('click', chartDebtData);
 		
 		// 중복코드 확인 이벤트 연결
 		$('#duplicatecode-checkbtn').on('click', checkCodeDebtData);
@@ -1154,6 +1184,88 @@
 	   
 	}
 	
+	// 상환예정내역 
+	/* function repayExpectDebtData(){
+		
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath }/11/50/repayexpectlist",
+			type: "get",
+			contentType : "application/json; charset=utf-8",
+			dataType: "json",
+			data: "",
+			success : function(response){
+				console.log(response);
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				
+				if(0 <= response.data.length){
+					var repayList = response.data;
+					var code = 0;
+					
+					for(let a in repayList) {
+						if(code!=repayList[a].code){
+							$("#dialog-repayexpect-list").append(
+			         	  			"<table class='table  table-bordered table-hover'>"+
+			         	  			"<label id='repay-code'>"+repayList[a].code+"</label>"+ 
+			         	  				"<thead>"+ 
+			         	  					"<tr>"+ 
+			         	  						"<th class='center'>상환금액</th>" +
+												"<th class='center'>이자금액</th>" +
+												"<th class='center'>상환일</th>" +
+											"</tr>" +
+										"</thead>" +
+			         	  				"<tbody>" + 
+			         	  					"<tr>" + 
+			         	  						"<td class='center'>" + repayList[a].payPrinc + "</td>" +
+					                           	"<td class='center'>" + repayList[a].intAmount + "</td>" +
+					                           	"<td class='center'>" + repayList[a].payDate + "</td>" +
+				                           	"</tr>" +
+			                           	"</tbody>"+
+			                        "</table>");
+							  code = repayList[a].code;
+			         	  } else {
+			         		  var dialog = $("#dialog-repayexpect-list table:last tbody ");
+			         		  dialog.append(
+			         				  "<tr>" +
+				                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
+				                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                          "<td class='center'>" + repayList[a].payDate + "</td>" +
+			                          "</tr>"
+		         	  			);
+		         	  			code=repayList[a].code;
+		         	  		}
+		         	  	}
+		         	  	
+		                $("#dialog-repayexpect-list").dialog({
+		                	title: "상환정보",
+		                	title_html: true,
+		                	resizable: false,
+		                	height: 500,
+		                	width: 400,
+		                	modal: true,
+		                	close: function() {
+		                       $('#dialog-repayexpect-list *').remove();
+		                       $("input").attr('disabled',false);
+		                    },
+		                    buttons: {
+		                    	"닫기" : function() {
+		                    		$(this).dialog('close');
+		                    		$('#dialog-repayexpect-list *').remove();
+		                    		$("input").attr('disabled',false);
+		                    	}
+		                    }
+		                });
+		                $("#dialog-repayexpect-list").dialog('open');
+					}
+				},
+			error:function(xhr,error) {
+				console.err("error" + error);
+			}
+		});
+	} */
+	
 	// 사채코드 중복 확인
 	function checkCodeDebtData() {
 		var code = $("#code").val();
@@ -1379,6 +1491,61 @@
 	          console.error("error : " + error);
 	       }
 	    });
+	}
+	
+	
+	function chartDebtData() {
+		//$("#chartdiv").dialog('open');
+		
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.request.contextPath }/api/customer/getdebtdata",
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				console.log(response.data);
+				if (response.data.length === 0) {
+					openModal('Error', '입력한 은행명에 대한 결과를 찾을 수 없습니다.', '#input-dialog-bankname');
+					$("#input-dialog-bankname").val('');
+					return;
+				}
+				
+				$("#input-dialog-bankname").val('');
+				$.each(response.data,function(index, item){
+		                $("#tbody-bankList").append("<tr>" +
+		                		"<td class='center'>" + item.no + "</td>" +
+						        "<td class='center'>" + item.name + "</td>" +
+						        "</tr>");
+		        })
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+		
+		$("#chartdiv").dialog({
+			title: "차트",
+			title_html: true,
+		   	resizable: false,
+		    height: 700,
+		    width: 1300,
+		    modal: true,
+		    close: function() {
+		    	
+		    },
+		    buttons: {
+		    "닫기" : function() {
+		          	$(this).dialog('close');
+		        }
+		    }
+		});
 	}
 	
 	//insert Validation
@@ -1679,7 +1846,7 @@
 			$("#tbody-list").find("tr").css("background-color", "inherit");
 	        $(tr).css("background-color", "#ddd");
 	        $('#insertbtn').hide();
-	        $('#searchbtn').hide();
+	        //$('#searchbtn').hide();
 	        $('#updatebtn').show();
 	        $('#repaybtn').show();
 		
@@ -1827,6 +1994,84 @@
 				
 			$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 		}
+		//--------------------------------------------------------------------------------------------------------------------------//
+		am4core.ready(function() {
+
+		// Themes begin
+		am4core.useTheme(am4themes_animated);
+		// Themes end
+		
+		// Create chart instance
+		var chart = am4core.create("chartdiv", am4charts.XYChart3D);
+		
+		// Add data
+		chart.data = [{
+		    "country": "USA",
+		    "year2017": 3.5,
+		    "year2018": 4.2
+		}, {
+		    "country": "UK",
+		    "year2017": 1.7,
+		    "year2018": 3.1
+		}, {
+		    "country": "Canada",
+		    "year2017": 2.8,
+		    "year2018": 2.9
+		}, {
+		    "country": "Japan",
+		    "year2017": 2.6,
+		    "year2018": 2.3
+		}, {
+		    "country": "France",
+		    "year2017": 1.4,
+		    "year2018": 2.1
+		}, {
+		    "country": "Brazil",
+		    "year2017": 2.6,
+		    "year2018": 4.9
+		}, {
+		    "country": "Russia",
+		    "year2017": 6.4,
+		    "year2018": 7.2
+		}, {
+		    "country": "India",
+		    "year2017": 8,
+		    "year2018": 7.1
+		}, {
+		    "country": "China",
+		    "year2017": 9.9,
+		    "year2018": 10.1
+		}];
+		
+		// Create axes
+		var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+			categoryAxis.dataFields.category = "country";
+			categoryAxis.renderer.grid.template.location = 0;
+			categoryAxis.renderer.minGridDistance = 30;
+			
+			var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+			valueAxis.title.text = "GDP growth rate";
+			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
+			  return text + "%";
+		});
+		
+		// Create series
+		var series = chart.series.push(new am4charts.ColumnSeries3D());
+			series.dataFields.valueY = "year2017";
+			series.dataFields.categoryX = "country";
+			series.name = "Year 2017";
+			series.clustered = false;
+			series.columns.template.tooltipText = "GDP grow in {category} (2017): [bold]{valueY}[/]";
+			series.columns.template.fillOpacity = 0.9;
+		
+		var series2 = chart.series.push(new am4charts.ColumnSeries3D());
+			series2.dataFields.valueY = "year2018";
+			series2.dataFields.categoryX = "country";
+			series2.name = "Year 2018";
+			series2.clustered = false;
+			series2.columns.template.tooltipText = "GDP grow in {category} (2017): [bold]{valueY}[/]";
+		
+		}); // end a	m4core.ready()
 		//--------------------------------------------------------------------------------------------------------------------------//
 
 </script>

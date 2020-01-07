@@ -78,8 +78,8 @@ h4{
 								 maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) "  
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								 
-								<input id="btn-check-code" type="button" value="중복확인" /> 
-								<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+								<input id="btn-check-code" type="button" value="중복확인" />
+									<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i> 
 							</td>
 						</tr>
 								

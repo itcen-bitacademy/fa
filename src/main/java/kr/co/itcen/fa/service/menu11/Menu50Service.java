@@ -273,4 +273,12 @@ public class Menu50Service {
 		return menu50Repository.selectList(no);
 	}
 
+	public List<PdebtVo> getRepayExpectList() {
+		return menu50Repository.getRepayExpectList();
+	}
+
+	public List<PdebtVo> getDebtdata(PdebtVo vo) {
+		return menu50Repository.getDebtdata(vo);
+	}
+
 }
