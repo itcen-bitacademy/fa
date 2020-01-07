@@ -33,6 +33,8 @@ tr td:first-child {
 	width: 17%;
 }
 
+
+
 .search-input-width-first {
 	width: 130px;
 }
