@@ -77,7 +77,6 @@ form {
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">장기차입금현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 				
 					<!-- PAGE CONTENT BEGINS -->
