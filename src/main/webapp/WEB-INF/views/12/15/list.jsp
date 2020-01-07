@@ -412,6 +412,7 @@
 					                            </span>
 					                            -->
 			                                </div>
+			                                
 											<input class="span8" type="text" id="detailAddress" name="detailAddress" style="margin-top: 5px; width: 436px;">
 										</div>
 									</div>
