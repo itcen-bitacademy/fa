@@ -90,7 +90,6 @@
 	
 	<!-- 거래처 입력 -->
 	<insert id="create" parameterType="1customervo">
-		<if test="deleteFlag = 'N'">
 		<![CDATA[
 			insert 
 			  into tb_customer 
@@ -118,7 +117,6 @@
 				   null, 
 				   null)
 		]]>
-		</if>
 	</insert>
 	
 	<!-- 삭제된 거래처 복구 -->
@@ -148,6 +146,43 @@
 			   and assets_flag!='e'
 		]]>
 	</update>
+	<delete id="deleteDuplicateCustomer" parameterType="1customervo">
+		<![CDATA[
+			delete from tb_customer
+				  where no = concat('A', #{no})
+				    and delete_flag = "Y"
+		]]>
+	</delete>
+	<insert id="recreateDuplicateCustomer" parameterType="1customervo">
+		<![CDATA[
+			insert 
+			  into tb_customer 
+			values (concat('A' ,#{no}),
+				   #{name },
+				   #{ceo }, 
+				   #{address }, 
+				   #{detailAddress }, 
+				   #{conditions }, 
+				   #{item }, 
+				   #{corporationNo }, 
+				   now(), 
+				   #{jurisdictionOffice }, 
+				   #{phone }, 
+				   #{managerName }, 
+				   #{managerEmail }, 
+				   #{depositNo}, 
+				   #{depositHost },
+				   #{bankCode },
+				   #{bankName },
+				   'N', 
+				   #{assetsFlag }, 
+				   #{insertUserid }, 
+				   now(), 
+				   null, 
+				   null)
+			
+		]]>
+	</insert>
 	
 	<!-- 거래처 검색(사업자등록번호로) -->
 	<select id="read" parameterType="1customervo" resultType="1customervo">

@@ -106,7 +106,9 @@ public class Menu27Repository {
 	// 삭제된 거래처 복구
 	public Map<String, Object> deletedrecreate(CustomerVo customervo, PaginationUtil pagination) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		sqlSession.update("menu27.deletedrecreate", customervo);
+		//sqlSession.update("menu27.deletedrecreate", customervo);
+		sqlSession.delete("menu27.deleteDuplicateCustomer", customervo);
+		sqlSession.insert("menu27.recreateDuplicateCustomer", customervo);
 		Map <String, Object> s = new HashMap<String, Object>();
 		s.put("pagination", pagination);
 		map.put("customerList", sqlSession.selectList("menu27.getList", s));
