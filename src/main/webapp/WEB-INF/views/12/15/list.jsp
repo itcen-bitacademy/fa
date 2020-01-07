@@ -409,7 +409,7 @@
 						                        	</a>
 					                            </span>
 			                                </div>
-											<input class="span8" type="text" id="detailAddress" name="detailAddress">
+											<input class="span8" type="text" id="detailAddress" name="detailAddress" style="margin-top: 5px">
 										</div>
 									</div>
 									<div class="control-group">
