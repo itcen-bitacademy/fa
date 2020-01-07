@@ -496,6 +496,7 @@ function selectRow(thisObj){
 		$("#tbody-list").find('tr').removeClass("selected");
 		
 		$(thisObj).addClass('selected');
+		$('#totalAmount').val('0');
 		
 		var inputForm = $("#input-form")[0];
 		var vo = JSON.parse($(thisObj).find("input[name=vo]").val());
