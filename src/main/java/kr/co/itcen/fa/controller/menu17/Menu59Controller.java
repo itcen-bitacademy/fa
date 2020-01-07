@@ -45,7 +45,6 @@ public class Menu59Controller {
 	
 	
 	//재무제표 계정관리 조회
-	@NoAuth
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(@ModelAttribute AccountManagementVo accountManagement,
 					   @RequestParam(value = "accountUsedyear", defaultValue = "2019") String accountUsedyear,
@@ -214,7 +213,6 @@ public class Menu59Controller {
 				vo.setInsertUserid(authUser.getId());
 				vo.setUpdateUserid(authUser.getId());
 				
-				System.out.println("no : " + no + " order : " + order + " acount : " + acount + " year : " + year + " type : " + type);
 				list.add(vo);
 			}
 			
