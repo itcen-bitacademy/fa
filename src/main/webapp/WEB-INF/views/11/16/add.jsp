@@ -21,6 +21,8 @@
 	float: left;
 	width: 10%;
 }
+/* 테이블의 첫 row 모두 padding right */
+.form-horizontal .control-label {text-align: left;}
 h4{
    font-size:14px;
    font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
@@ -50,7 +52,7 @@ h4{
 .number-input{
 	text-align:right;
 }
-
+.box{width: 330px;}
 </style>
 </head>
 <body class="skin-3">
@@ -72,7 +74,7 @@ h4{
 				<div class="span8">
 					<table>
 						<tr >
-							<td><h4>은행코드</h4></td>
+							<td><label class="control-label">은행코드</label></td>
 							<td>
 								<input type="text" name="code" class="code" id="code" 
 								 maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) "  
@@ -84,14 +86,14 @@ h4{
 						</tr>
 								
 						<tr >
-							<td><h4>지점명</h4></td>
+							<td><label class="control-label">지점명</label></td>
 							<td colspan="2" align=left>
 								<input type="text" name="store" id="store" />
 							</td>
 						</tr>
 							
 						<tr >
-							<td><h4>FAX</h4></td>
+							<td><label class="control-label">FAX</label></td>
 							<td colspan="2" >
 								<input type="text" name="fax" id="fax" placeholder=" 숫자만입력하세요. "
 								  onKeyup="inputTelNumber(this);"
@@ -101,7 +103,7 @@ h4{
 						</tr>
 							
 						<tr>
-						<td><h4>거래시작일</h4></td>
+						<td><label class="control-label">거래시작일</label></td>
  							<td colspan="2"> 
 								<div class="control-group">
 									<div class="row-fluid input-append">
@@ -123,14 +125,14 @@ h4{
 						</tr>
 						
 						<tr >
-							<td><h4>담당자</h4></td>
+							<td><label class="control-label">담당자</label></td>
 							<td colspan="2">
 								<input type="text" name="mgr" id="mgr" />
 							</td>
 						</tr>
 						
 						<tr >
-							<td><h4>담당자전화번호</h4></td>
+							<td><label class="control-label">담당자전화번호</label></td>
 							<td colspan="2">
 								<input type="text" name="mgrPhone" id="mgrPhone"  
 								  onKeyup="inputTelNumber(this);"
@@ -143,13 +145,13 @@ h4{
 					<div class="span8">
 						<table>
 							<tr>
-								<td><h4>은행명</h4></td>
+								<td><label class="control-label">은행명</label></td>
 								<td colspan="2">
 									<input type="text" name="name" id="name" />
 								</td>
 							</tr>
 							<tr >
-								<td><h4>은행전화번호</h4></td>
+								<td><label class="control-label">은행전화번호</label></td>
 								<td colspan="2">
 									<input type="text" name="phone" id="phone"  placeholder=" 숫자만입력하세요. "
 								 	 onKeyup="inputTelNumber(this);"
@@ -159,7 +161,7 @@ h4{
 							
 							
 							<tr >
-								<td><h4>주소</h4></td>
+								<td><label class="control-label">주소</label></td>
 								<td colspan="2">
 								<div class="control-group"> 
 			                       <div>
@@ -176,7 +178,7 @@ h4{
 			                           		id="roadAddress" placeholder="도로명주소" readOnly >
 									</div>                     
 									<div>
-					                 		<input  type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
+					                 		<input  type="text" class="box" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
 									</div>
 								</div>
 								</td>
@@ -193,7 +195,7 @@ h4{
 							
 							
 							<tr >
-								<td><h4>담당자이메일</h4></td>
+								<td><label class="control-label">담당자이메일</label></td>
 								<td colspan="2">
 									<input type="email" name="mgrEmail" id="email"  />
 										ex) jisu@naver.com
@@ -208,10 +210,10 @@ h4{
 		
 			<hr>
 			<div>
-				<button id="search" class="btn btn-info btn-small" >조회</button>
-				<button id='deletebtn' class="btn btn-danger btn-small" >삭제</button>
-				<button id='updatebtn' class="btn btn-warning btn-small">수정</button>
 				<button class="btn btn-primary btn-small" id="inputbtn">입력</button>
+				<button id='updatebtn' class="btn btn-warning btn-small">수정</button>
+				<button id='deletebtn' class="btn btn-danger btn-small" >삭제</button>
+				<button id="search" class="btn btn-info btn-small" >조회</button>
 				<button class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
 				<hr>
 			</div>

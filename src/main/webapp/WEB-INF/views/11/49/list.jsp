@@ -148,8 +148,7 @@ form {
 										<input type="text" name="bankName" value="${vo.bankName }"/>
 									</td>
 									<td class="sixth-column">
-										<button class="btn" id='search'>조회</button>
-				
+										<button class="btn btn-primary btn-small" id='search'>조회</button>
 									</td>
 								</tr>
 								<tr>

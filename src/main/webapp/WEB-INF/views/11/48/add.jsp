@@ -15,6 +15,8 @@
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+/* 테이블의 첫 row 모두 padding right */
+.form-horizontal .control-label {text-align: left;}
 h4{
 	font-size:13px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
@@ -66,7 +68,7 @@ tr td:first-child {
 .number-input{
 	text-align:right;
 }
-.mybtn{float:left;margin-right:20px;}
+.mybtn{float:left;margin-right:10px;}
 #staticBackdrop {
 	z-index: -1;
 }
@@ -95,7 +97,7 @@ tr td:first-child {
 						<div class="span8">
 							<table>
 								<tr>
-									<td><h4>장기차입금코드</h4></td>
+									<td><label class="control-label">장기차입금코드</label></td>
 									<td>
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
@@ -111,18 +113,18 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr >
-									<td><h4>장기차입금명</h4></td>
+									<td><label class="control-label">장기차입금명</label></td>
 									<td colspan="2">
 										<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
 									</td>
 									
 								</tr>
 								<tr>
-									<td><h4>차입금액</h4></td>
+									<td><label class="control-label">차입금액</label></td>
 									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /></td>
 								</tr>
 								<tr>
-									<td><h4>차입일자 ~ 만기일자</h4></td>
+									<td><label class="control-label">차입일자 ~ 만기일자</label></td>
 									<td colspan="2">
 									<div class="control-group">
 				                        <div class="row-fluid input-prepend">			                        	
@@ -135,7 +137,7 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr>
-									<td><h4>이자지급방식</h4></td>
+									<td><label class="control-label">이자지급방식</label></td>
 									<td colspan="2">
 										<div class="radio" >
 											<label>
@@ -159,10 +161,10 @@ tr td:first-child {
 								</tr>
 								<tr>
 						                              	
-									<td><h4>은행코드</h4></td>
+									<td><label class="control-label">은행코드</label></td>
 									<td colspan="2">
 									<div class="input-append">
-										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" readonly />
+										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" placeholder="은행코드" readonly />
 												<span class="add-on">
 				                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 				                                    </a>
@@ -210,7 +212,7 @@ tr td:first-child {
 														</table>
 												</div>
 												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-								<input type="text" class="search-input-width-second" name="bankName" readonly />
+								<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly />
 								</td>
 								</tr>
 							</table>
@@ -218,7 +220,7 @@ tr td:first-child {
 						<div class="span8">
 							<table>
 								<tr>
-									<td><h4>회계연도</h4></td>
+									<td><label class="control-label">회계연도</label></td>
 									<td>
 										<c:choose>
 											<c:when test='${year eq ""}'>
@@ -232,7 +234,7 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr>
-									<td><h4>차입금대분류</h4></td>
+									<td><label class="control-label">차입금대분류</label></td>
 									<td colspan="2">
 										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
 										<option value=""></option>
@@ -243,7 +245,7 @@ tr td:first-child {
 									</td>	
 								</tr>
 								<tr>
-								<td><h4>상환방법</h4></td>
+								<td><label class="control-label">상환방법</label></td>
 									<td colspan="2">
 											<div class="radio">
 												<label>
@@ -266,14 +268,14 @@ tr td:first-child {
 									</td>
 									</tr>
 								<tr>
-									<td><h4>이율</h4></td>
+									<td><label class="control-label">이율</label></td>
 									<td colspan="2">
 										<input type="text" id="int_rate" name="intRate" placeholder="(%)" class="number-input" 
 										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 									</td>
 								</tr>
 								<tr>
-									<td><h4>담당자</h4></td>
+									<td><label class="control-label">담당자</label></td>
 									<td>
 										<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
 										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
@@ -281,10 +283,10 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr>
-									<td><h4>계좌</h4></td>
+									<td><label class="control-label">계좌</label></td>
 									<td colspan="2">
 									<div class="input-append">
-										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" readonly />
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" placeholder="계좌번호" readonly />
 												<span class="add-on">
 				                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 				                                    </a>
@@ -334,12 +336,12 @@ tr td:first-child {
 				<div class="row-fluid">
 					<button  class="btn btn-primary btn-small mybtn" id="inputbtn" >입력</button>
 					
-					<button class="btn btn-danger btn-small mybtn" id="updatebtn">수정</button>
-					<button class="btn btn-warning btn-small mybtn" onclick="deleteChecked()"  id='delete' >삭제</button>
+					<button class="btn btn-warning btn-small mybtn" id="updatebtn">수정</button>
+					<button class="btn btn-danger btn-small mybtn" onclick="deleteChecked()"  id='delete' >삭제</button>
 					
-					<button class="btn btn-primary btn-small mybtn" id= "search">조회</button>
+					<button class="btn btn-info btn-small mybtn" id= "search">조회</button>
 				
-					<button class="btn btn-pink btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
+					<button class="btn btn-small btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
 					
 					
 					
@@ -940,6 +942,7 @@ tr td:first-child {
 		if($(this).hasClass('selected') === false){
 			$('#updatebtn').show();
 			$('#inputbtn').hide();
+			$('#dialog-repayment-button').show();
 			
 			$("#tbody-list").find('tr').removeClass("selected");
 			
@@ -1025,6 +1028,7 @@ tr td:first-child {
 	 		
 		}else{
 			$('#updatebtn').hide();
+			$('#dialog-repayment-button').hide();
 			$('#inputbtn').show();
 			
 			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
@@ -1911,6 +1915,7 @@ tr td:first-child {
 	
 	$(function(){
 		$('#updatebtn').hide();
+		$('#dialog-repayment-button').hide();
 		
 		$('button').on('click', function(e) {
 			e.preventDefault();
