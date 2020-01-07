@@ -161,6 +161,8 @@ input::-webkit-inner-spin-button {
 tr.selected{background-color: #ddd}
 
 .textarea{resize: none; width: 282px; height: 84px;}
+
+.hideElement{display: none;}
 </style>
 </head>
 <body class="skin-3">
@@ -188,13 +190,13 @@ tr.selected{background-color: #ddd}
 					<section>
 						<div class="ia-left"><label class="label-name">단기차입금코드</label></div>
 						<div class="ia-right">
-							<input type="text" id="code" name="code" placeholder="ex) P191128001 (P+년+월+일+번호)" onkeydown="codeChanged()" onchange="codeChanged()" required>
-							<button type="button" id='btn-chk-duplication' class="btn btn-primary btn-small" onclick="checkDuplication()">중복확인</button>
-							<img id="img-checkcode" style="width: 20px; display:none" src="/fa/assets/images/check.png">
+							<input type="text" id="code" name="code" onkeydown="codeChanged()" onchange="codeChanged()" required>
+							<button type="button" id='btn-chk-duplication' onclick="checkDuplication()">중복확인</button>
+							<i class="icon-ok bigger-180 blue" id="img-checkcode" style="display: none;"></i>
 							<input type="hidden" name="isDuplicated" value="Y">
 						</div>
 						<div class="ia-left"><label class="label-name">단기차입금명</label></div>
-						<div class="ia-right"><textarea name="name" class="textarea" maxlength="90" placeholder="육하원칙으로 입력해주세요."></textarea></div>
+						<div class="ia-right"><textarea name="name" class="textarea" maxlength="90"></textarea></div>
 						<div class="ia-left"><label class="label-name">차입금액</label></div>
 						<div class="ia-right">
 							<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
@@ -223,13 +225,13 @@ tr.selected{background-color: #ddd}
 						</div>
 						<div class="ia-left"><label class="label-name">은행코드</label></div>
 						<div class="ia-right">
+							<div class="input-append">
 							<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly="readonly" required/>
+							<span class="add-on">
+							<a href="#" id="a-bankinfo-dialog" onclick="openBankDialog()"><i class="icon-search icon-on-right bigger-110"></i></a>
+							</span>
+							</div>
 							<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly="readonly"/>
-							<a href="#" id="a-bankinfo-dialog" onclick="openBankDialog()">
-								<span class="btn btn-small btn-info">
-									<i class="icon-search nav-search-icon"></i>
-								</span>
-							</a>
 						</div>
 						
 					</section>
@@ -267,7 +269,7 @@ tr.selected{background-color: #ddd}
 						</div>
 						
 						<div class="ia-left"><label class="label-name">이율</label></div>
-						<div class="ia-right"><input type="number" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/><h5 style="display:inline">%</h5></div>
+						<div class="ia-right"><input type="text" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/><h5 style="display:inline">%</h5></div>
 						
 						<div class="ia-left"><label class="label-name">담당자</label></div>
 						<div class="ia-right">
@@ -278,8 +280,13 @@ tr.selected{background-color: #ddd}
 						
 						<div class="ia-left"><label class="label-name">계좌</label></div>
 						<div class="ia-right">
+							<div class="input-append">
 							<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" placeholder="계좌번호" readonly="readonly" required/>
-							<span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span>
+							<span class="add-on">
+								<a href="#" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></a>
+							</span>
+							</div>
+							<!-- <span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span> -->
 							<input type="text" class="search-input-width-second" name="depositHost" disabled="disabled" placeholder="예금주"/>
 						</div>
 					</section>
@@ -288,12 +295,13 @@ tr.selected{background-color: #ddd}
 				<section class="above-table">
 					<section class="above-table-left">
 						<div class="btn-list">
-							<button type="button" class="btn btn-primary btn-small mybtn" onclick="insert()">입력</button>
-							<button type="button" class="btn btn-warning btn-small mybtn" onclick="update()">수정</button>
-							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
-							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
-							<button type="button" class="btn btn-small mybtn" onclick="openRepayDialog()">상환</button>
+							<button type="button" class="btn btn-primary btn-small mybtn" id="btn-insert" onclick="insert()">입력</button>
+							<button type="button" class="btn btn-warning btn-small mybtn" id="btn-update" onclick="update()">수정</button>
+							<button type="button" class="btn btn-danger btn-small mybtn" id="btn-delete"onclick="deleteChecked()">삭제</button>
+							<button type="button" class="btn btn-info btn-small mybtn" id="btn-search" onclick="search()">조회</button>
+							<button type="button" class="btn btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
 							<button type="button" class="btn btn-success btn-small mybtn" onclick="resetForm()">초기화</button>
+							<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
 						</div>
 					</section>
 				</section>
@@ -401,7 +409,7 @@ $(function() {						//onload함수
 	
 	//--------------------------------------------------------------------------------------------------------------------------//
 	
-	
+	changeBtnDisplay(false);
 });
 
 //Page ready시 table & paging list Rendering
@@ -428,23 +436,59 @@ $("#debt-amount-comma").on("focusout", function() {
     $(this).val(comma($(this).val()));
 });
 
-$("#int-rate").on("keydown keyup",function(){
+$("#int-rate").on("keydown",function(e){
+	console.log("---------------keydown--------------");
 	var value = $(this).val();
-	console.log(value.substr($(this).val().indexOf(".")));
-	if(!value.substr($(this).val().indexOf(".") + 1).indexOf(".") > 0){
-		console.log("숫자가아니다");
-		$(this).val(value.substr(0, value.length - 1));
-		return;
-	}
-		
-	
 	var pattern = /^((\d{1,2}|100)([.]\d{0,2})?)?$/;	
-   
+   	
+	var charCode = (e.which) ? e.which : e.keyCode;	
+	
+	if((charCode >= 48) && (charCode <= 57)){
+		value = String(value) + String.fromCharCode(e.keyCode);
+	}
+	
+	console.log("value : " + value);
+   	console.log("keyCode String : " + String.fromCharCode(e.keyCode));
+   	console.log("e.keyCode: " + e.keyCode);
+   	console.log("charCode String : " + String.fromCharCode(charCode));
+   	console.log("charCode : " + charCode);
+   	
     if (!pattern.test(value)) {
         dialog("100 이하의 숫자만 입력가능하며,\n소수점 둘째자리까지만 허용됩니다.");
-        $(this).val(value.substr(0, value.length - 1));
-        $(this).focus();
+        return false;
     }
+    
+}).on("keyup", function(e){
+	console.log("---------------keyup--------------");
+	var value = $(this).val();
+	console.log("value : " + value);
+	
+	var charCode = (e.which) ? e.which : e.keyCode;				//크로스 브라우징
+
+	console.log("keyCode String : " + String.fromCharCode(e.keyCode));
+	console.log("keyCode : " + e.keyCode);
+	if((charCode < 48) || (charCode> 57)){
+		if(charCode != 190){//숫자 + .만 입력 가능
+			console.log("불가능");
+			$(this).val("");
+		}
+	}
+	console.log("value : " + $(this).val());
+}).on("keypress", function(e){
+	console.log("---------------keyPress--------------");
+	var value = $(this).val();
+	var charCode = (e.which) ? e.which : e.keyCode;				//크로스 브라우징
+	
+	console.log("code : " + charCode);
+	console.log("value : " + value);
+	
+	var reg = /[.]/;
+	if(reg.test(value)){
+		if(charCode == 46){
+			console.log(".못찍는다");
+			return false;
+		}
+	}
 });
 
 $("#mgr").on("keyup", function(){
@@ -456,6 +500,18 @@ var financialYear = new Date().getFullYear();
 document.getElementById("financialyearId").value = financialYear;
 </script>
 <script>
+//-----------------------------------버튼 display 수정 -------------------------------//
+function changeBtnDisplay(isRowSelected){
+	if(isRowSelected){
+		$("#btn-update").removeClass("hideElement");
+		$("#btn-repay").removeClass("hideElement");
+		$("#btn-insert").addClass("hideElement");
+	}else{
+		$("#btn-update").addClass("hideElement");
+		$("#btn-repay").addClass("hideElement");
+		$("#btn-insert").removeClass("hideElement");
+	}
+}
 //-----------------------------------중복 확인 메서드 -----------------------------------//
 function codeChanged(){					//code 변경 Event시 발생
 	var inputForm = $("#input-form")[0];
@@ -495,17 +551,15 @@ function checkDuplication(){
 	console.log("------------------------------checkDuplication() end ------------------------------");
 }
 
-var validationMessage = ''
-
 function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	/* if(inputForm.vo.value != ""){
+	if(inputForm.vo.value != ""){
 		dialog("새로운 데이터를 입력해주세요.");
 		resetForm();
 		return;
-	} */
+	} 
 	
 	if(!isValidDebt(inputForm)){
 		console.log("유효성 위반");
@@ -535,6 +589,7 @@ function insert(){
 			dialog("입력이 완료 되었습니다.");
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
+			resetForm();
 		},
 		error: function(xhr, error){
 			
@@ -596,25 +651,25 @@ function isValidDebt(inputForm){
 	var isValid = false;
 	
 	if(inputForm.code.value == ''){
-		dialog("코드를 입력하세요.");
+		dialog("코드를 입력하세요.", inputForm.code);
 	}else if(inputForm.name.value == ''){
-		dialog("차입금명을 입력하세요.");
+		dialog("차입금명을 입력하세요.", inputForm.name);
 	}else if(inputForm.debtAmountComma.value == ''){
-		dialog("차입금액을 입력하세요.");
+		dialog("차입금액을 입력하세요.", inputForm.debtAmountComma);
 	}else if(inputForm.debtExpDate.value == ''){
-		dialog("차입일자, 만기일자를 입력하세요.");
+		dialog("차입일자, 만기일자를 입력하세요.", inputForm.debtExpDate);
 	}else if(inputForm.bankCode.value == ''){
-		dialog("은행을 선택하세요.");
+		dialog("은행을 선택하세요.", inputForm.bankCode);
 	}else if(inputForm.majorCode.value == ''){
-		dialog("대분류를 선택하세요.");
+		dialog("대분류를 선택하세요.", inputForm.majorCode);
 	}else if(inputForm.intRate.value == ''){
-		dialog("이율을 입력하세요.");
+		dialog("이율을 입력하세요.", inputForm.intRate);
 	}else if(inputForm.mgr.value == ''){
-		dialog("담당자를 입력하세요.");
+		dialog("담당자를 입력하세요.", inputForm.mgr);
 	}else if(inputForm.mgrCall.value == ''){
-		dialog("담당자 전화를 입력하세요.");
+		dialog("담당자 전화를 입력하세요.", inputForm.mgrCall);
 	}else if(inputForm.depositNo.value == ''){
-		dialog("계좌를 선택하세요.");
+		dialog("계좌를 선택하세요.", inputForm.depositNo);
 	}else{
 		isValid = true;
 	}
@@ -628,7 +683,54 @@ function resetForm(){
 	$("#img-checkcode").css("display","none");
 	$("#tbody-list").find("tr").css("background-color", "inherit");
 	inputForm.vo.value = "";
-	inputForm.reset();	
+	inputForm.reset();
+	changeBtnDisplay(false);
+}
+//-----------------------------------금주 상환내역 Modal ---------------------------------//
+function openRepayDueDialog(){
+	$("#dialog46").dialog(new DialogBody("금주 상환내역"));
+	
+	$.ajax({
+	       url : $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/getRepayDueList",
+	       contentType : "application/json; charset=utf-8",
+	       type: "post",
+	       dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+	       data: "",
+	       statusCode: {
+	           404: function() {
+	             dialog("page not found");
+	           }
+	       },
+	       success: function(response){
+	    	   renderRepayDueDialog(response.list);
+	       },
+	       error: function(xhr, error){
+	          console.error("error : " + error);
+	       }
+	    });
+}
+
+function renderRepayDueDialog(list){
+	$("#dialog46").append(
+			"<table class='table  table-bordered table-hover'>" + 
+				"<thead>"+
+					"<tr>"+
+						"<th class='center'>코드</th>" +
+						"<th class='center'>상환잔액</th>" +
+						"<th class='center'>납입일</th>" +
+					"</tr>" +
+				"</thead>" +
+	  			"<tbody>" +
+               "</tbody>"+
+         "</table>");
+	for(let i in list){
+		$("#dialog46 tbody").append(
+				 "<tr>" +
+                   "<td class='center'>" + list[i].code + "</td>" +
+                   "<td class='center'>" + list[i].repayBal + "</td>" +
+                   "<td class='center'>" + list[i].repayDue + "</td>" +
+             	"</tr>");
+	}//for end
 }
 //-----------------------------------은행 Model 메서드 ---------------------------------//
 //Dialog Open하는 함수
@@ -647,12 +749,16 @@ function renderBankDialog(){
 								"<div class='modal-input-area'>" +
 									"<label>은행코드</label>" +
 									"<input type='text' id='input-dialog-bankcode'/>" + 
-									"<button type='button' id='btn-dialog-bankcode' class='btn-search' onclick='searchByBankcode()'>조회</button>" +
+									"<span class='add-on'>" +
+										"<a href='#' onclick='searchByBankcode()'><i class='icon-search nav-search-icon'></i></a>" +
+									"</span>" +
 								"</div>" +
 								"<div class='modal-input-area'>" +
 									"<label>은행명</label>" +
 									"<input type='text'  id='input-dialog-bankname'/>" +
-									"<button type='button' id='btn-dialog-bankname' class='btn-search' onclick='searchByBankname()'>조회</button>" +
+									"<span class='add-on'>" +
+										"<a href='#' onclick='searchByBankname()'><i class='icon-search nav-search-icon'></i></a>" +
+									"</span>" +
 								"</div>" +
 							"</section>" +
 							"<table id='modal-bank-table' class='table  table-bordered table-hover'>" +
@@ -855,7 +961,8 @@ function getIntAmount(vo){
 	if(intPayWay == "Y"){
 		intAmount = vo.repayBal * vo.intRate / 100;
 	}else if(intPayWay == "M"){
-		intAmount = (vo.repayBal * vo.intRate / 100) / 12;
+		intAmount = vo.repayBal * vo.intRate / 100;
+		intAmount = intAmount / 12;
 	}
 	
 	return Math.round(intAmount,3);
@@ -953,7 +1060,9 @@ function renderAcctDialog(){
 							"<section class='modal-input-area'>" + 
 								"<label>계좌번호</label>" + 
 								"<input type='text' id='input-dialog-depositNo' />" + 
-								"<button type='button' class='btn-search' onclick='searchAccountByNo()'>조회</button>" +
+								"<span class='add-on'>" +
+									"<a href='#' onclick='searchAccountByNo()'><i class='icon-search nav-search-icon'></i></a>" +
+								"</span>" +
 							"</section>" +
 							"<table id='modal-deposit-table' class='table  table-bordered table-hover'>" + 
 							"<thead>" +
@@ -1052,10 +1161,12 @@ function selectRow(thisObj){
 	}else{
 		$(thisObj).closest("table").find(".selected").removeClass("selected");
 		$(thisObj).addClass("selected");
+		
+		changeBtnDisplay(true);
 	}
 	
 	$("#btn-chk-duplication").css("display", "none");
-	//$(inputForm.code).attr("readonly", true);
+	$(inputForm.code).attr("readonly", true);
 	
 	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;
@@ -1078,7 +1189,7 @@ function selectRow(thisObj){
 	var options = inputForm.majorCode.options;					//SelectBox Options
 	for(var i=0 ; i < options.length; ++i){
 		if(options[i].value == vo.majorCode){
-			options[i].selected = "";
+			options[i].selected = "true";
 			$("#majorCode_chosen").find("span")[0].innerHTML = options[i].innerHTML;
 		}
 	}
@@ -1095,6 +1206,7 @@ function selectRow(thisObj){
 	inputForm.mgrCall.value = vo.mgrCall;
 	inputForm.depositNo.value = vo.depositNo;		
 	inputForm.depositHost.value = vo.depositHost;		//조인한 값
+	
 	console.log("--------------------------------selectRow() End--------------------------");
 }
 
@@ -1415,7 +1527,7 @@ function isEmpty(value){
 };
 
 //--------------------------------------Validation ------------------------------------//
- function dialog(txt) {
+ function dialog(txt, element) {
 	        $("#dialog-txt").html(txt);
 	    	var dialog = $("#dialog-confirm").dialog({
 				resizable: false,
@@ -1426,6 +1538,8 @@ function isEmpty(value){
 						"class" : "btn btn-danger btn-mini",
 						click: function() {
 							$(this).dialog("close");
+							if(element != null)
+								element.focus();
 						}
 					}
 				]

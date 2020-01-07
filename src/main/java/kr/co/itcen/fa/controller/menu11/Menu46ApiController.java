@@ -184,4 +184,34 @@ public class Menu46ApiController {
 		
 		return JSONResult.success(map);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getRepayDueList", method = RequestMethod.POST)
+	public JSONResult getRepayDueList()  {
+		List<STermDebtVo> list = menu46Service.getRepayDueList();
+		return JSONResult.success(list);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/insertTest", method = RequestMethod.POST)
+	public JSONResult insertTest(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
+		String debtExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
+	    String saveDeptDate = debtExpDate.substring(0, 10);
+	    String saveExpDate = debtExpDate.substring(13);
+	    sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
+	    sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
+	    
+		sTermDebtVo.setInsertId(authUser.getId());
+		
+		System.out.println("sTermDebtVo : " + sTermDebtVo);
+		Map map= new HashMap();
+		
+		//차입금 입력
+		sTermDebtVo.setVoucherNo(1L);
+		menu46Service.insert(sTermDebtVo);
+		
+		map = menu46Service.getList();
+		
+		return JSONResult.success(map);
+	}
 }	

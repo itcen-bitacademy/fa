@@ -153,7 +153,6 @@ div > .label-radio{
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">단기차입금현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<!-- PAGE CONTENT BEGINS -->
 			<form id="filter-area" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">
@@ -224,9 +223,9 @@ div > .label-radio{
 			<hr/>
 			<section id="page-info" class="page-info">
 				<div id="pg-total-row" class="pg-total-row">
-					<h5>총  ${pagination.totalCnt }건</h5>
+					<p>총  ${pagination.totalCnt }건</p>
 				</div>
-				<div>
+				<!-- <div>
 					<div class="selectbox-wrapper">
 						<label for="pageSize">페이지내 건수</label>
 						<select id="pageSize" name="pageSize">
@@ -235,7 +234,7 @@ div > .label-radio{
 							<option value="15">15</option>
 						</select>
 					</div>
-				</div>
+				</div> -->
 			</section>
 			<!-- PAGE CONTENT ENDS -->
 			<!-- list -->
@@ -460,7 +459,7 @@ function renderingPage(pagination){
 	}
 	
 	$("#pg-total-row>*").remove();
-	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>");
+	$("#pg-total-row").append("<p>총  " + pagination.totalCnt +"건</p>");
 	console.log("------------------------------------renderingPage() End ----------------------------------------");
 }
  
