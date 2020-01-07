@@ -62,6 +62,7 @@ tr td:first-child {
 	width: 150px;
 	display: inline;
 }
+
 .number-input{
 	text-align:right;
 }
