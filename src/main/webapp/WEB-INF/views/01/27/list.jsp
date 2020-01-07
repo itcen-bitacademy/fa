@@ -53,15 +53,19 @@
 	$(function() {
 		var a;
 		$("#btn-create").click(function(){
+			$("#no").attr("readonly",false);
 			a = "create";
 		});
 		$("#btn-read").click(function(){
+			$("#no").attr("readonly",false);
 			a = "read";
 		});
 		$("#btn-update").click(function(){
+			$("#no").attr("readonly",false);
 			a = "update";
 		});
 		$("#btn-delete").click(function(){
+			$("#no").attr("readonly",false);
 			a = "delete";
 		});
 		$("#btn-reset").click(function(){
@@ -273,27 +277,54 @@
 		  $("#simple-table-1").append($newTbody)
 			
 		  for(let customer in customerList){
-			  $newTbody.append(
-			   	"<tr>" +
-		        "<td>" + customerList[customer].no + "</td>" +
-		        "<td>" + customerList[customer].name + "</td>" +
-		        "<td>" + customerList[customer].ceo + "</td>" +
-		        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
-		        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
-		        "<td>" + customerList[customer].assetsFlag + "</td>" +
-		        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
-		        "<td>" + customerList[customer].phone + "</td>" +
-		        "<td>" + customerList[customer].managerName + "</td>" +
-		        "<td>" + customerList[customer].managerEmail + "</td>" +
-		        "<td>" + customerList[customer].bankCode + "</td>" +
-		        "<td>" + customerList[customer].bankName + "</td>" +
-		        "<td>" + customerList[customer].depositNo + "</td>" +
-		        "<td>" + customerList[customer].depositHost + "</td>" +
-		        "<td>" + customerList[customer].insertDay + "</td>" +
-		        "<td>" + customerList[customer].insertUserid + "</td>" +
-		        "<td>" + customerList[customer].updateDay + "</td>" +
-		        "<td>" + customerList[customer].updateUserid + "</td>" +
-		        "</tr>");
+			  if(customerList[customer].updateDay==null){
+				  $newTbody.append(
+						   	"<tr>" +
+					        "<td>" + customerList[customer].no + "</td>" +
+					        "<td>" + customerList[customer].name + "</td>" +
+					        "<td>" + customerList[customer].ceo + "</td>" +
+					        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
+					        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+					        "<td>" + customerList[customer].assetsFlag + "</td>" +
+					        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
+					        "<td>" + customerList[customer].phone + "</td>" +
+					        "<td>" + customerList[customer].managerName + "</td>" +
+					        "<td>" + customerList[customer].managerEmail + "</td>" +
+					        "<td>" + customerList[customer].bankCode + "</td>" +
+					        "<td>" + customerList[customer].bankName + "</td>" +
+					        "<td>" + customerList[customer].depositNo + "</td>" +
+					        "<td>" + customerList[customer].depositHost + "</td>" +
+					        "<td>" + customerList[customer].insertDay + "</td>" +
+					        "<td>" + customerList[customer].insertUserid + "</td>" +
+					        "<td></td>" +
+					        "<td></td>" +
+					        "</tr>");
+				  
+			  }
+			  if(customerList[customer].updateDay !=null){
+				  $newTbody.append(
+						   	"<tr>" +
+					        "<td>" + customerList[customer].no + "</td>" +
+					        "<td>" + customerList[customer].name + "</td>" +
+					        "<td>" + customerList[customer].ceo + "</td>" +
+					        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
+					        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+					        "<td>" + customerList[customer].assetsFlag + "</td>" +
+					        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
+					        "<td>" + customerList[customer].phone + "</td>" +
+					        "<td>" + customerList[customer].managerName + "</td>" +
+					        "<td>" + customerList[customer].managerEmail + "</td>" +
+					        "<td>" + customerList[customer].bankCode + "</td>" +
+					        "<td>" + customerList[customer].bankName + "</td>" +
+					        "<td>" + customerList[customer].depositNo + "</td>" +
+					        "<td>" + customerList[customer].depositHost + "</td>" +
+					        "<td>" + customerList[customer].insertDay + "</td>" +
+					        "<td>" + customerList[customer].insertUserid + "</td>" +
+					        "<td>" + customerList[customer].updateDay + "</td>" +
+					        "<td>" + customerList[customer].updateUserid + "</td>" +
+					        "</tr>");
+				  
+			  }
 		  }
 		  $newTbody.append("</tbody>");
 		  $(".chosen-select").chosen();
@@ -569,6 +600,7 @@
 				{
 					text: "OK",
 					"class" : "btn btn-danger btn-mini",
+					"id" : "modalok",
 					click: function() {
 						$(this).dialog('close');
 			          	$('#staticBackdropBody').text('');
@@ -1349,10 +1381,11 @@
 			
 			if(response.data == null){
 				nochecked = true;
+				openErrorModal("DUPLICATE CHECK COMPLETE","중복 검사가 완료되었습니다.");
 				$("#btn-check-no").hide();
 				$("#img-checkno").show();
 				//$("#no").attr("readonly",true);
-				setTimeout(function(){
+				$("#modalok").click(function(){
 					openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
 					$("#deleteok").click(function(){
 						var customerno = document.getElementById("no").value;
@@ -1366,8 +1399,7 @@
 						$("#corporationNo").attr("readonly",false);
 						return;
 					});
-					
-				},600);
+				});
 // 				if($("#no").prop('readonly',true)){
 // 					$("#no").click(function(){
 // 						openDeleteModal("MODIFY_CUSTOMERNO","사업자등록번호를 다시 입력하시겠습니까?");
@@ -1391,11 +1423,48 @@
 // 				}
 				return;
 			}else if(response.data.deleteFlag == "Y"){
-				$("#no").val("");
-				openErrorModal('DELETED CUSTOMER_NO ERROR',"삭제된 사업자등록번호입니다.",'#no');
+				
+				nochecked = true;
+				$("#btn-check-no").show();
+				$("#img-checkno").hide();
+				openDeleteModal('DELETED CUSTOMER',"삭제 처리되었던 거래처 입니다.\r\n 재등록 하시겠습니까?");
+				$("#deleteok").click(function(){
+
+					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록이 완료되었습니다.");
+					$("#corporationNo").attr("readonly",true);
+					$("#btn-check-no").hide();
+					$("#img-checkno").show();
+					$("#modalok").click(function(){
+							openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
+							$("#deleteok").click(function(){
+								var customerno = document.getElementById("no").value;
+								$("input[name=corporationNo]").val(customerno);
+								openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+								$("#corporationNo").attr("readonly",true);
+								return;
+							});
+							$("#deletecancel").click(function(){
+								openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+								$("#corporationNo").attr("readonly",false);
+								return;
+							});
+						
+					})
+					return;
+				});
+				$("#deletecancel").click(function(){
+					openErrorModal("CUSTOMER RECREATE CANCEL","거래처 재등록을 취소합니다.");
+					nochecked = false;
+					$("#corporationNo").attr("readonly",false);
+					return;
+				});
+				
+			
+				return;
+				
 			}else{
 				$("#no").val("");
-				openErrorModal('DUPLICATED CUSTOMER_NO ERROR',"이미 존재하는 사업자등록번호입니다.",'#no');
+				openErrorModal('DUPLICATED CUSTOMER_NO ERROR',"이미 존재하는 사업자등록번호입니다.");
 			}
 			
 			},

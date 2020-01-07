@@ -47,8 +47,6 @@
 										<div class="controls">
 											<input type="text" class="span7" id="id" name="id"
 												placeholder="ex) 120400701 (월+일+007+번호)" />
-											<button class="btn btn-info btn-small" type="submit"
-												id="list" style="float: right; margin-right: 180px;">조회</button>
 										</div>
 									</div>
 									<div class="control-group">
@@ -196,14 +194,14 @@
 											<div class="controls" style="margin-left: 0px;">
 												<button class="btn btn-primary btn-small" type="submit"
 													id="add" style="float: left; margin-right: 20px;">등록</button>
+												<button class="btn btn-info btn-small" type="submit"
+													id="list" style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-warning btn-small" type="submit"
 													id="update" style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" type="submit"
 													id="delete" style="float: left; margin-right: 20px;">삭제</button>
 												<button class="btn btn-default btn-small" type="reset"
-													id="reset" style="float: left; margin-right: 20px;">
-													<i class="icon-undo bigger-110"></i>초기화
-												</button>
+													id="reset" style="float: left; margin-right: 20px;">초기화</button>
 											</div>
 										</div>
 										<div class="hr hr-18 dotted"></div>
@@ -587,8 +585,8 @@
 			// 초기화 버튼
 			$("#reset").click(function() {
 				// 초기화 버튼 누루면 등록, 수정버튼 다시 보이기
-				$("#add").show();
-				$("#update").show();
+				//$("#add").show();
+				//$("#update").show();
 
 				// 새로고침!
 				location.reload();
@@ -681,16 +679,24 @@
 
 								if (td.eq(16).text() == "과세") {
 									$("input[id=tax]").prop('checked', true);
+									
 								} else if (td.eq(16).text() == "영세") {
-									$("input[id=zeroTax]")
-											.prop('checked', true);
+									$("input[id=zeroTax]").prop('checked', true);
+									
 								}
 
 								if (td.eq(9).text() == "") {
 									$("#add").hide();
+									$("#list").hide();
+									$("#update").show();
+									$("#delete").show();
+									
 								} else if (td.eq(9).text() != "") {
 									$("#add").hide();
+									$("#list").hide();
 									$("#update").hide();
+									$("#delete").show();
+									
 								}
 			});
 
@@ -726,6 +732,9 @@
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
+			
+			$("#update").hide();
+			$("#delete").hide();
 		});
 	</script>
 </body>

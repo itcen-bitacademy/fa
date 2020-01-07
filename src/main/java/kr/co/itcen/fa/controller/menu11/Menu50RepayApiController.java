@@ -76,4 +76,12 @@ public class Menu50RepayApiController {
 		List<RepayVo> list = menu50Service.getRepay(no);
 		return JSONResult.success(list);
 	}
+	
+	@ResponseBody
+	@RequestMapping("/" + SUBMENU + "/repayexpectlist")
+	public JSONResult checkrepayexpectlist() {
+		List<PdebtVo> list = menu50Service.getRepayExpectList();
+		
+		return JSONResult.success(list);
+	}
 }

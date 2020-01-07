@@ -770,8 +770,8 @@
 						<div style="height:200px">
 							<div class="span6">
 								<div class="control-group">
-									<label class="control-label" for="form-field-item-id" style="text-align:initial; text-indent:40px;">품목코드</label>
-									<div class="controls">
+									<label class="control-label" for="form-field-item-id" style="text-align:initial; width:100px;">품목코드</label>
+									<div class="controls" style="margin-left:150px;">
 										<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드" maxlength="10"/>
 									</div>
 								</div>
@@ -784,8 +784,8 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-section-name" style="text-align:initial; text-indent:40px;">품목 대분류명</label>
-									<div class="controls">
+									<label class="control-label" for="form-field-section-name" style="text-align:initial; width:100px;">품목 대분류명</label>
+									<div class="controls" style="margin-left:150px">
 										<div class="row-fluid input-append">
 											<input class="span5" id="form-field-section-name" name="sectionname" type="text" placeholder="품목 대분류명" readonly/>
 											<span class="add-on">
@@ -875,8 +875,8 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-name" style="text-align:initial; text-indent:40px;">생산공장명</label>
-									<div class="controls">
+									<label class="control-label" for="form-field-factory-name" style="text-align:initial; width:100px;">생산공장명</label>
+									<div class="controls" style="margin-left:150px">
 										<div class="row-fluid input-append">
 											<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명" readonly/>
 											<span class="add-on">
@@ -966,11 +966,11 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-price" style="text-align:initial; text-indent:40px;">단가</label>
-									<div class="controls">
-										<input class="span4" type="text" id="form-field-price1" style="text-align:right" name="price_start"/>
+									<label class="control-label" for="form-field-price" style="text-align:initial; width:100px;">단가</label>
+									<div class="controls" style="margin-left:150px">
+										<input type="text" id="form-field-price1" style="text-align:right; width:160px;" name="price_start"/>
 										&nbsp;~&nbsp;
-										<input class="span4" type="text" id="form-field-price2" style="text-align:right" name="price_end"/> 원
+										<input type="text" id="form-field-price2" style="text-align:right; width:160px;" name="price_end"/> 원
 									</div>
 								</div>
 							</div>
@@ -983,41 +983,41 @@
 							
 								<div class="span6">
 									<div class="control-group">
-										<label class="control-label" for="form-field-item-name" style="text-align:initial; text-indent:35px;">품목명</label>
+										<label class="control-label" for="form-field-item-name" style="text-align:initial; width:100px;">품목명</label>
 										<div class="controls">
 											<input class="span5" type="text" id="form-field-item-name" name="name" placeholder="품목명"/>&nbsp;&nbsp;&nbsp;
 											<input class="ace" type="checkbox" id="id-delete-check" data-deleteflag="N" style="display:inline">
-											<label class="lbl" for="id-delete-check" style="display:inline"> 삭제 품목 포함</label>
+											<label class="lbl" for="id-delete-check" style="display:inline; margin:0 0 0 10px;"> 삭제 품목 포함</label>
 										</div>
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-section-code" style="text-align:initial; text-indent:35px;">품목 대분류코드</label>
+										<label class="control-label" for="form-field-section-code" style="text-align:initial; width:110px;">품목 대분류코드</label>
 										<div class="controls">
 											<input class="span4" type="text" id="form-field-section-code" name="sectioncode" readonly/>
 										</div>
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-factory-code" style="text-align:initial; text-indent:35px;">생산공장코드</label>
+										<label class="control-label" for="form-field-factory-code" style="text-align:initial; width:110px;">생산공장코드</label>
 										<div class="controls">
 											<input class="span4" type="text" id="form-field-factory-code" name="factorycode" readonly/>
 										</div>
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-date" style="text-align:initial; text-indent:35px;">생산 일자</label>
+										<label class="control-label" for="form-field-date" style="text-align:initial; width:100px;">생산일자</label>
 									<div class="controls">
 										<div class="control-group">
 											<div class="input-append">
-												<input class="span7 cl-date-picker" id="id-date-picker-1" name="producedate_start" type="text" data-date-format="yyyy-mm-dd" style="width:130px">
+												<input class="span7 cl-date-picker" id="id-date-picker-1" name="producedate_start" type="text" data-date-format="yyyy-mm-dd" style="width:160px">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
 											&nbsp; ~ &nbsp;
 											<div class="input-append">
-												<input class="span7 cl-date-picker" id="id-date-picker-2" name="producedate_end" type="text" data-date-format="yyyy-mm-dd" style="width:130px">
+												<input class="span7 cl-date-picker" id="id-date-picker-2" name="producedate_end" type="text" data-date-format="yyyy-mm-dd" style="width:160px">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
@@ -1036,9 +1036,9 @@
 				
 					
 					<div class="row-fluid">
-						<div class="span12" id="purchaseitem_list">
+						<div class="span12" id="purchaseitem_list" style="margin:0 0 10px 0; overflow-x: scroll;">
 							<label id="purchaseitem_allcount">총 ${fn:length(purchaseitemListall) }건</label>
-							<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+							<table id="sample-table-1" class="table table-striped table-bordered table-hover" style="width:1920px;">
 								<thead>
 									<tr>
 										<th>번호</th>
@@ -1047,7 +1047,7 @@
 										<th>대분류코드</th>
 										<th>대분류명</th>
 										<th>규격</th>
-										<th>단가</th>
+										<th>단가(원)</th>
 										<th>사용용도</th>
 										<th>생산공장코드</th>
 										<th>생산공장명</th>

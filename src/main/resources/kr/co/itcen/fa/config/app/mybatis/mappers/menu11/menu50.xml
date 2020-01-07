@@ -332,5 +332,19 @@
 					where no=#{_parameter}
 		]]>
 	</select>
+	
+	<!-- 금주 상환 예정 내역 조회 -->
+	<select id="getRepayExpectList" resultType="list">
+		<![CDATA[
+			select code, repay_bal, debt_date, exp_date from tb_p_debt
+		]]>
+	</select>
+	
+	<!-- 금주 상환 예정 내역 조회 -->
+	<select id="getDebtdata" parameterType="pdebtvo" resultType="list">
+		<![CDATA[
+			select code, repay_bal, debt_date, exp_date from tb_p_debt
+		]]>
+	</select>
 
 </mapper>

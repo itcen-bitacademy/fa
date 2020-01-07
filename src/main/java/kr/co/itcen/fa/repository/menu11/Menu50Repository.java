@@ -176,5 +176,13 @@ public class Menu50Repository {
 		List<PdebtVo> list = sqlSession.selectList("menu50.selectpdebtlist",listNo);
 		return list;
 	}
+
+	public List<PdebtVo> getRepayExpectList() {
+		return sqlSession.selectList("menu50.getRepayExpectList");
+	}
+
+	public List<PdebtVo> getDebtdata(PdebtVo vo) {
+		return sqlSession.selectList("menu50.getDebtdata");
+	}
 	
 }

@@ -1,12 +1,16 @@
 package kr.co.itcen.fa.controller.menu12;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.NoAuth;
@@ -105,6 +109,27 @@ public class Menu54Controller {
 		model.addAttribute("viewCount", viewCount);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	@NoAuth
+	@ResponseBody
+	@RequestMapping(value={"/" + SUBMENU + "/sub"}, method=RequestMethod.POST)
+	public List<TaxbillSearchVo> sublist(@ModelAttribute TaxbillSearchVo vo, Model model){
+		System.out.println("Ajax를 통한 세금계산서 번호 출력");
+		
+		List<TaxbillSearchVo> list = menu54Service.subTaxbillno(vo);
+		
+		System.out.println(vo.toString());
+		
+		System.out.println(list.toString());
+		
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.toString());
+		}
+		
+		//model.addAttribute("list", "test");
+		
+		return list;
 	}
 
 
