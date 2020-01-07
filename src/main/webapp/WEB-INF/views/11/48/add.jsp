@@ -30,8 +30,10 @@ tr td:first-child {
 
 .radio {
 	float: left;
-	width: 10%;
+	width: 17%;
 }
+
+
 
 .search-input-width-first {
 	width: 130px;
@@ -60,6 +62,7 @@ tr td:first-child {
 	width: 150px;
 	display: inline;
 }
+
 .number-input{
 	text-align:right;
 }
@@ -337,7 +340,8 @@ tr td:first-child {
 					<button class="btn btn-primary btn-small mybtn" id= "search">조회</button>
 				
 					<button class="btn btn-pink btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
-				
+					
+					
 					
 					<!-- 상환 내역 리스트 -->
 					<div id="dialog-repayment-ischeck" title="상환정보여부" hidden="hidden">
@@ -363,7 +367,6 @@ tr td:first-child {
 					<div id="dialog-repayment-delete" title="상환정보여부" hidden="hidden">
 						<!-- 계좌정보 데이터 리스트 -->
 								
-
 					</div>
 					
 					<!-- 차입금코드,납입원금,납입이자,납입일자,부채유형 Modal pop-up : start -->
@@ -412,6 +415,31 @@ tr td:first-child {
 					<!-- 상환 Modal pop-up : end -->
 					
 					<button class="btn btn-success btn-small mybtn" id="clear">초기화</button>
+					
+				<!-- 금주의 상환 내역 Modal pop-up : start -->
+					<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
+							<!-- 은행코드 및 은행명 데이터 리스트 -->
+							<table id="repay-due-table" class="table  table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center">차입금 코드</th>
+										<th class="center">상환 금액</th>
+										<th class="center">납입일</th>
+									</tr>
+								</thead>
+								<tbody id="tbody-repay-due">
+								</tbody>
+							</table>
+					</div>
+					<!-- 금주의 상환 내역 Modal pop-up : end -->
+				
+				
+				<button class="btn btn-pink btn-small mybtn" id="repay-view-button" type="button" class="btn">금주 상환 내역 조회</button>
+					
+				
+					
+					
+					
 							
 				</div>
 				<hr>
@@ -1178,6 +1206,9 @@ tr td:first-child {
 			return;
 		}
 		
+		
+		
+		
 		$("#tbody-list tr").each(function(i){
 			var td = $(this).children();
 		
@@ -1501,6 +1532,69 @@ tr td:first-child {
 		    }
 		});
 	});
+	
+	
+	
+	$('#repay-view-button').click(function(){
+		
+		event.preventDefault();
+		 
+		
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath }/11/48/checkrepaydue",
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				
+				  $.each(response.data,function(index, item){
+	                 $("#tbody-repay-due").append("<tr>" +
+	                       "<td class='center'>" + item.code + "</td>" +
+	                     "<td class='center'>" + item.repayBal + "</td>" +
+	                     "<td class='center'>" + item.payDate + "</td>" +
+	                     "</tr>");
+	          })
+	    	},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+		 
+		 
+		 
+		  $("#repay-due").dialog({
+          	
+              title: "금주의 상환 정보",
+              title_html: true,
+              resizable: false,
+    	      height: 500,
+    	      width: 400,
+    	      modal: true,
+    	      close: function() {
+                  $('#tbody-repay-due tr').remove();
+                  $(this).dialog('close');
+               },
+               buttons: {
+               "닫기" : function() {
+                        $(this).dialog('close');
+                        $('#tbody-repay-due tr').remove();
+                   }
+               }
+           });
+           
+           $("#repay-due").dialog('open');
+	});
+	
+	
+	
+	
 	//상환내역이 있을경우 수정 안되게 하는 코드
 	 $("#updatebtn").click(function(){
 		var count = 0;
@@ -1862,6 +1956,11 @@ tr td:first-child {
 		if(flag){
 			openErrorModal('CLOSINGDATE ERROR','마감일이 지났습니다. 관리자에게 문의 주세요');
 		}
+		
+		
+		 $("#repay-due").dialog({
+		       autoOpen : false
+		  });
 	});
  
  

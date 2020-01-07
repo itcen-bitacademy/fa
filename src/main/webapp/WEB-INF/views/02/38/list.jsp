@@ -86,7 +86,7 @@ input:focus {
 						<div class="span12">
 							<!-- PAGE CONTENT BEGINS -->
 							<div class="control-group">
-								<label class="control-label span1" for="form-field-date">작&emsp;성&emsp;일&emsp;자</label>
+								<label class="control-label span1" for="form-field-date">작성일자</label>
 								<div class="controls span5">
 									<div class="input-append">
 										<input class="cl-date-picker calender" id="calender1"
@@ -95,7 +95,7 @@ input:focus {
 										<span class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
-									&emsp;&emsp;~ &emsp;&emsp;
+									~ 
 									<div class="input-append">
 										<input class="cl-date-picker calender" id="calender2"
 											type="text" style="width: 80%" name="endDate"
@@ -104,7 +104,7 @@ input:focus {
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="tax-type">과&emsp;세&emsp;유&emsp;형</label>
+								<label class="control-label span1" for="tax-type">과세유형</label>
 								<div class="controls span5">
 									<select id="tax-type" name="taxType">
 										<c:choose>
@@ -133,14 +133,14 @@ input:focus {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
 									<input style="width: 66%" type="text" id="no" name="no"
 										value="${searchData.no }"
 										placeholder="ex) 20190420-44231234-57644467"
 										autocomplete="off" maxlength="26" />
 								</div>
-								<label class="control-label span1" for="delete-flag">삭&emsp;제&emsp;여&emsp;부</label>
+								<label class="control-label span1" for="delete-flag">삭제여부</label>
 								<div class="controls span5">
 									<select id="delete-flag" name="deleteFlag">
 										<c:choose>
@@ -169,13 +169,13 @@ input:focus {
 						<div class="span12">
 							<div class="control-group">
 
-								<label class="control-label span1" for="customer-name">거&emsp;래&emsp;처&emsp;명</label>
+								<label class="control-label span1" for="customer-name">거래처명</label>
 								<div class="controls span5">
 									<select id="company-name" name="companyName"
 										class="chosen-select" style="width: 68%;" required>
 										<option style="display: none;"
 											value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
-										<option value="">&nbsp;</option>
+										<option id="empty" value="없음">없음</option>
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
@@ -188,7 +188,7 @@ input:focus {
 					<div class="row-fluid">
 
 						<div class="control-group span12">
-							<label class="control-label span1" for="order">정&emsp;&emsp;&emsp;&emsp;&emsp;렬</label>
+							<label class="control-label span1" for="order">정렬</label>
 							<div class="controls span4">
 								<c:choose>
 									<c:when test="${searchData.order == 'writeDate'}">
@@ -287,6 +287,8 @@ input:focus {
 								<button class="btn btn-default btn-small" type="button"
 									style="float: left; margin-left: 20px;"
 									onclick="search_button();">조회</button>
+								<button id="reset" class="btn btn-default btn-small" type="button"
+									style="float: left; margin-left: 20px;">초기화</button>
 							</div>
 						</div>
 					</div>
@@ -685,15 +687,22 @@ input:focus {
 										}
 									}
 								}
-								$newTr.append('<td>'
-										+ itemsList[item].purchaseDate
-										+ '</td>' + '<td>'
-										+ itemsList[item].itemName + '</td>'
-										+ '<td>' + itemsList[item].amount
-										+ '</td>' + '<td>'
-										+ addCommas(itemsList[item].supplyValue) + '</td>'
-										+ '<td>' + addCommas(itemsList[item].taxValue)
-										+ '</td>');
+								$newTr
+										.append('<td>'
+												+ itemsList[item].purchaseDate
+												+ '</td>'
+												+ '<td>'
+												+ itemsList[item].itemName
+												+ '</td>'
+												+ '<td>'
+												+ itemsList[item].amount
+												+ '</td>'
+												+ '<td>'
+												+ addCommas(itemsList[item].supplyValue)
+												+ '</td>'
+												+ '<td>'
+												+ addCommas(itemsList[item].taxValue)
+												+ '</td>');
 								if (status == 0) {
 									$newTr
 											.append('<td rowspan="'+count+'">'
@@ -771,5 +780,19 @@ input:focus {
 					.submit();
 		}
 	</script>
+	<!-- 리셋버튼  -->
+	<script>
+		
+	$('#reset').click(function () {
+		$("#no").val("");
+		$("#calender1").val("");
+		$("#calender2").val("");
+		$("#tax-type option:eq(0)").prop("selected",true);
+		$("#delete-flag option:eq(0)").prop("selected",true);
+		$('input[name="order"]').filter("[value=writeDate]").prop("checked", true);
+
+	})
+	</script>
+
 </body>
 </html>

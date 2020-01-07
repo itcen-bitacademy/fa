@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu08.Menu39Service;
+import kr.co.itcen.fa.vo.menu08.BuildingVo;
 
 @Auth
 @Controller
@@ -21,10 +22,10 @@ public class Menu39APIController {
 	//건물코드 중복확인
 	@ResponseBody
 	@RequestMapping("/" + Menu39Controller.SUBMENU + "/checkId")
-	public JSONResult checkId(@RequestParam(value = "id"/*, required=true, defaultValue=""*/) String id ) {
+	public JSONResult checkId(@RequestParam(value = "id", required=true, defaultValue="") String id ) {
 		System.out.println("!!!!!중복확인!!!!!");
-		boolean check = menu39Service.checkId(id);
-		return JSONResult.success(check);
+		BuildingVo vo = menu39Service.checkId(id);
+		return JSONResult.success(vo);
 	}
 }
 

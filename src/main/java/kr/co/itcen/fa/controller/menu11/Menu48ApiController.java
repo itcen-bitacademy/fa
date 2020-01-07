@@ -76,4 +76,16 @@ public class Menu48ApiController {
 		System.out.println(list);
         return JSONResult.success(list);
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("/"+SUBMENU+"/checkrepaydue")
+	public JSONResult checkrepaydue() {
+		List<LTermdebtVo> list = menu48Service.getRepayDueList();
+		
+        return JSONResult.success(list);
+	}
+	
+	
 }

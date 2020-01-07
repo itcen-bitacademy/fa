@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.repository.menu11;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,4 +146,19 @@ public class Menu48Repository {
 		
 		
 	}
+
+	public List<LTermdebtVo> getRepayDueList(String startDate,String endDate) {
+		
+		Map<String,String> map =new HashMap<String, String>();
+		
+		map.put("startDate",startDate);
+		map.put("endDate", endDate);
+		
+		List<LTermdebtVo> list = sqlSession.selectList("menu48.getRepayDueList",map);
+		return list;
+	}
+	
+	
+
+	
 }
