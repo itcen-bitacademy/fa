@@ -13,6 +13,9 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 	div#invalid {display: none;}
+	.form-horizontal .control-label {
+	    text-align: left
+	}
 </style>
 </head>
 
