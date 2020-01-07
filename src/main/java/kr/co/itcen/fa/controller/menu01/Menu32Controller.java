@@ -16,7 +16,8 @@ import kr.co.itcen.fa.vo.menu01.AccountCustomerLedgerVo;
 
 /**
  * 
- * @author 이종윤 계정거래처원장조회
+ * @author 이종윤
+ * 계정거래처원장조회
  *
  */
 

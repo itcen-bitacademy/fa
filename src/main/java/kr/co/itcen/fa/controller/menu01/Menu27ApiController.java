@@ -11,6 +11,14 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu27Service;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
+/**
+ * 
+ * @author 이종윤 
+ * 거래처 관리
+ * 사업자등록번호 중복검사Api
+ *
+ */
+
 @Auth
 @Controller("Menu27ApiController")
 @RequestMapping("/" + Menu27Controller.MAINMENU)

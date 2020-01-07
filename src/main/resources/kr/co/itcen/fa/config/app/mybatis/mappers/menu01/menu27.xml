@@ -16,6 +16,13 @@
 		</selectKey>
 	</insert>
 	
+	<select id="getDeleteFlag" parameterType="1customervo" resultType="int">
+		select count(*)
+		  from tb_customer
+		 where no = concat('A' ,#{no })
+		   and delete_flag = "Y"	
+	</select>
+	
 	<!-- 리스트 뽑기 -->
 	<select id="getList" parameterType="map" resultType="1customervo">
 		<![CDATA[
@@ -83,6 +90,7 @@
 	
 	<!-- 거래처 입력 -->
 	<insert id="create" parameterType="1customervo">
+		<if test="deleteFlag = 'N'">
 		<![CDATA[
 			insert 
 			  into tb_customer 
@@ -110,7 +118,36 @@
 				   null, 
 				   null)
 		]]>
+		</if>
 	</insert>
+	
+	<!-- 삭제된 거래처 복구 -->
+	<update id="deletedrecreate" parameterType="1customervo">
+		<![CDATA[
+			update tb_customer
+			   set name = #{name },
+				   ceo = #{ceo },
+				   address = #{address }, 
+				   detail_address = #{detailAddress },
+				   conditions = #{conditions },
+				   item = #{item },
+				   corporation_no = #{corporationNo },
+				   jurisdiction_office = #{jurisdictionOffice},
+				   phone = #{phone },
+				   manager_name = #{managerName },
+				   manager_email = #{managerEmail },
+				   deposit_no = #{depositNo },
+				   deposit_host = #{depositHost },
+				   bank_code = #{bankCode },
+				   bank_name = #{bankName },
+				   assets_flag = #{assetsFlag },
+				   delete_flag = 'N',
+				   update_userid = #{updateUserid },
+				   update_day = now()
+			 where no = concat('A', #{no})
+			   and assets_flag!='e'
+		]]>
+	</update>
 	
 	<!-- 거래처 검색(사업자등록번호로) -->
 	<select id="read" parameterType="1customervo" resultType="1customervo">
@@ -236,6 +273,7 @@
       where deposit_no = #{depositOld}
    </update>
    
+   <!-- 중복검사 -->
    <select id="existNo" parameterType="string" resultType="1customervo">
    		select substr(no,2) as no,
    			   delete_flag as deleteFlag
