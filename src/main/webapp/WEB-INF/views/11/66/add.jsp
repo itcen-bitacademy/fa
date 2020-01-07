@@ -469,6 +469,7 @@ function getListAjax(page){
 	var vo = JSON.parse($("#search-condition").val());
 	vo["page"] = page;
 	
+	
 	$.ajax({
 		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/getList",
 		type: "POST",
