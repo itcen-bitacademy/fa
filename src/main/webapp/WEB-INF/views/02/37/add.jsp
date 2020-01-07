@@ -42,6 +42,7 @@ html, body {
 /* 스크롤 깨짐 css e */
 /* table css s*/
 #item-table tr td {
+	overflow: hidden;
 	padding: 0;
 }
 
@@ -62,7 +63,7 @@ html, body {
 }
 
 .chosen-container {
-	width: 260px !important;
+	width: 200px !important;
 }
 
 .chosen-container-single .chosen-search:before {
@@ -73,6 +74,11 @@ html, body {
 	display: none
 }
 /* table css e*/
+/* 기타 css s*/
+.control-label {
+	margin-top: 4px;
+}
+/* 기타 css e*/
 </style>
 </head>
 <body class="skin-3" onload="startFunctions();">
@@ -134,8 +140,7 @@ html, body {
 								<label class="control-label span1" for="company-name">거래처명</label>
 								<div class="controls span2">
 									<select id="company-name" class="chosen-select"
-										name="companyName" style="width: 99%;"
-										onchange="load_customer_imfo();" required>
+										name="companyName" onchange="load_customer_imfo();" required>
 										<c:choose>
 											<c:when test="${flag == 'true'}">
 												<option value="${getAboutNoCustomerData.name }" selected
@@ -253,7 +258,7 @@ html, body {
 						<div class="span12">
 							<div class="control-group">
 								<label class="control-label span1" for="id-date-picker-1">일자</label>
-								<div class="controls span2">
+								<div class="controls span3">
 									<div class="input-append" style="width: 100%">
 										<input id="id-date-picker-1" class="calender"
 											value="${getAboutNoData.writeDate }" name="writeDate"
@@ -263,7 +268,7 @@ html, body {
 									</div>
 								</div>
 								<label class="control-label span1" for="form-field-14">총공급가액</label>
-								<div class="controls span4">
+								<div class="controls span3">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-14"
 										value="<fmt:formatNumber value="${getAboutNoData.totalSupplyValue }" pattern="#,###"/>"
@@ -312,7 +317,7 @@ html, body {
 										onclick="delete_row();">품목삭제</button>
 								</div>
 							</div>
-
+							<div class="hr hr-10 dotted"></div>
 							<div class="control-group">
 								<table id="item-table"
 									class="table table-striped table-bordered table-hover">
