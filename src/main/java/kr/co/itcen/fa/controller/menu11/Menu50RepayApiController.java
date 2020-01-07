@@ -17,6 +17,7 @@ import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu11.Menu50Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
+import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 
@@ -78,10 +79,9 @@ public class Menu50RepayApiController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/" + SUBMENU + "/repayexpectlist")
-	public JSONResult checkrepayexpectlist() {
-		List<PdebtVo> list = menu50Service.getRepayExpectList();
-		
-		return JSONResult.success(list);
+	@RequestMapping("/"+SUBMENU+"/checkrepaydue")
+	public JSONResult checkrepaydue() {
+		List<PdebtVo> list = menu50Service.getRepayDueList();
+        return JSONResult.success(list);
 	}
 }

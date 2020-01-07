@@ -184,5 +184,14 @@ public class Menu50Repository {
 	public List<PdebtVo> getDebtdata(PdebtVo vo) {
 		return sqlSession.selectList("menu50.getDebtdata");
 	}
+
+	public List<PdebtVo> getRepayDueList(String startDate, String endDate) {
+		Map<String,String> map =new HashMap<String, String>();
+		map.put("startDate",startDate);
+		map.put("endDate", endDate);
+		
+		List<PdebtVo> list = sqlSession.selectList("menu50.getRepayDueList",map);
+		return list;
+	}
 	
 }

@@ -14,9 +14,8 @@
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 
 <!-- Chart Library : Resources -->
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<!-- Load plotly.js into the DOM -->
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
@@ -402,13 +401,25 @@
 									</p>
 								</div>
 								
-								<!-- 상환 예정 내역 리스트 -->
-								<div id="dialog-repayexpect-list" title="상환예정내역" hidden="hidden">
+								<!-- 금주의 상환 내역 Modal pop-up : start -->
+								<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
+										<!-- 은행코드 및 은행명 데이터 리스트 -->
+										<table id="repay-due-table" class="table  table-bordered table-hover">
+											<thead>
+												<tr>
+													<th class="center">차입금 코드</th>
+													<th class="center">상환 금액</th>
+													<th class="center">납입일</th>
+												</tr>
+											</thead>
+											<tbody id="tbody-repay-due">
+											</tbody>
+										</table>
 								</div>
+								<!-- 금주의 상환 내역 Modal pop-up : end -->
 								
 								<!-- 차트 -->
-								<div id="chartdiv" hidden="hidden">
-								</div>
+								<div id='myDiv' hidden="hidden"><!-- Plotly chart will be drawn inside this DIV --></div>
 					
 							</div>
 						</div>
@@ -421,8 +432,8 @@
 							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
 							<button type="button" id="repaybtn" class="btn btn-small mybtn">상환</button>
 							<button type="button" id="clearbtn" class="btn btn-success btn-small mybtn">초기화</button>
-							<!-- <button type="button" id="repayexpectbtn" class="btn btn-info btn-small mybtn">금주 상환예정내역</button>
-							<button type="button" id="chartbtn" class="btn btn-info btn-small mybtn">차트</button> -->
+							<button type="button" id="repayviewbutton" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
+							<!-- <button type="button" id="chartbtn" class="btn btn-info btn-small mybtn">차트</button> -->
 						</div>
 					<hr>
 				</form>
@@ -635,10 +646,10 @@
 		$('#clearbtn').on('click', clearDebtData);
 		
 		// 상환예정내역버튼 이벤트 연결
-		$('#repayexpectbtn').on('click', repayExpectDebtData);
+		$('#repayviewbutton').on('click', repayDueDebtData);
 		
 		// 차트 이벤트 연결
-		$('#chartbtn').on('click', chartDebtData);
+		//$('#chartbtn').on('click', chartDebtData);
 		
 		// 중복코드 확인 이벤트 연결
 		$('#duplicatecode-checkbtn').on('click', checkCodeDebtData);
@@ -679,6 +690,8 @@
 		
 		// 계좌정보 테이블 Modal(dialog 생성)
 		$("#dialog-account-message").dialog({ autoOpen : false });
+		
+		$("#repay-due").dialog({ autoOpen : false });
 		//--------------------------------------------------------------------------------------------------------------------------//
 		
 		//--------------------------------------------------------------------------------------------------------------------------//
@@ -1185,86 +1198,54 @@
 	}
 	
 	// 상환예정내역 
-	/* function repayExpectDebtData(){
-		
+	function repayDueDebtData(){
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath }/11/50/repayexpectlist",
-			type: "get",
+			url: "${pageContext.request.contextPath }/11/50/checkrepaydue",
 			contentType : "application/json; charset=utf-8",
-			dataType: "json",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
 			data: "",
-			success : function(response){
-				console.log(response);
-				if(response.result == "fail"){
-					console.error(response.message);
-					return;
-				}
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
 				
-				if(0 <= response.data.length){
-					var repayList = response.data;
-					var code = 0;
-					
-					for(let a in repayList) {
-						if(code!=repayList[a].code){
-							$("#dialog-repayexpect-list").append(
-			         	  			"<table class='table  table-bordered table-hover'>"+
-			         	  			"<label id='repay-code'>"+repayList[a].code+"</label>"+ 
-			         	  				"<thead>"+ 
-			         	  					"<tr>"+ 
-			         	  						"<th class='center'>상환금액</th>" +
-												"<th class='center'>이자금액</th>" +
-												"<th class='center'>상환일</th>" +
-											"</tr>" +
-										"</thead>" +
-			         	  				"<tbody>" + 
-			         	  					"<tr>" + 
-			         	  						"<td class='center'>" + repayList[a].payPrinc + "</td>" +
-					                           	"<td class='center'>" + repayList[a].intAmount + "</td>" +
-					                           	"<td class='center'>" + repayList[a].payDate + "</td>" +
-				                           	"</tr>" +
-			                           	"</tbody>"+
-			                        "</table>");
-							  code = repayList[a].code;
-			         	  } else {
-			         		  var dialog = $("#dialog-repayexpect-list table:last tbody ");
-			         		  dialog.append(
-			         				  "<tr>" +
-				                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-				                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
-				                          "<td class='center'>" + repayList[a].payDate + "</td>" +
-			                          "</tr>"
-		         	  			);
-		         	  			code=repayList[a].code;
-		         	  		}
-		         	  	}
-		         	  	
-		                $("#dialog-repayexpect-list").dialog({
-		                	title: "상환정보",
-		                	title_html: true,
-		                	resizable: false,
-		                	height: 500,
-		                	width: 400,
-		                	modal: true,
-		                	close: function() {
-		                       $('#dialog-repayexpect-list *').remove();
-		                       $("input").attr('disabled',false);
-		                    },
-		                    buttons: {
-		                    	"닫기" : function() {
-		                    		$(this).dialog('close');
-		                    		$('#dialog-repayexpect-list *').remove();
-		                    		$("input").attr('disabled',false);
-		                    	}
-		                    }
-		                });
-		                $("#dialog-repayexpect-list").dialog('open');
-					}
-				},
-			error:function(xhr,error) {
-				console.err("error" + error);
+				  $.each(response.data,function(index, item){
+	                 $("#tbody-repay-due").append("<tr>" +
+	                     "<td class='center'>" + item.code + "</td>" +
+	                     "<td class='center'>" + item.repayBal + "</td>" +
+	                     "<td class='center'>" + item.payDate + "</td>" +
+	                     "</tr>");
+	          })
+	    	},
+			error: function(xhr, error){
+				console.error("error : " + error);
 			}
 		});
-	} */
+		 
+		  $("#repay-due").dialog({
+              title: "금주의 상환 정보",
+              title_html: true,
+              resizable: false,
+    	      height: 500,
+    	      width: 400,
+    	      modal: true,
+    	      close: function() {
+                  $('#tbody-repay-due tr').remove();
+                  $(this).dialog('close');
+               },
+               buttons: {
+               "닫기" : function() {
+                        $(this).dialog('close');
+                        $('#tbody-repay-due tr').remove();
+                   }
+               }
+           });
+           
+           $("#repay-due").dialog('open');
+	}
 	
 	// 사채코드 중복 확인
 	function checkCodeDebtData() {
@@ -1498,7 +1479,7 @@
 		//$("#chartdiv").dialog('open');
 		
 		// ajax 통신
-		$.ajax({
+		/* $.ajax({
 			url: "${pageContext.request.contextPath }/api/customer/getdebtdata",
 			contentType : "application/json; charset=utf-8",
 			type: "get",
@@ -1528,9 +1509,9 @@
 			error: function(xhr, error){
 				console.error("error : " + error);
 			}
-		});
+		}); */
 		
-		$("#chartdiv").dialog({
+		$("#myDiv").dialog({
 			title: "차트",
 			title_html: true,
 		   	resizable: false,
@@ -1995,83 +1976,47 @@
 			$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 		}
 		//--------------------------------------------------------------------------------------------------------------------------//
-		am4core.ready(function() {
-
-		// Themes begin
-		am4core.useTheme(am4themes_animated);
-		// Themes end
 		
-		// Create chart instance
-		var chart = am4core.create("chartdiv", am4charts.XYChart3D);
-		
-		// Add data
-		chart.data = [{
-		    "country": "USA",
-		    "year2017": 3.5,
-		    "year2018": 4.2
-		}, {
-		    "country": "UK",
-		    "year2017": 1.7,
-		    "year2018": 3.1
-		}, {
-		    "country": "Canada",
-		    "year2017": 2.8,
-		    "year2018": 2.9
-		}, {
-		    "country": "Japan",
-		    "year2017": 2.6,
-		    "year2018": 2.3
-		}, {
-		    "country": "France",
-		    "year2017": 1.4,
-		    "year2018": 2.1
-		}, {
-		    "country": "Brazil",
-		    "year2017": 2.6,
-		    "year2018": 4.9
-		}, {
-		    "country": "Russia",
-		    "year2017": 6.4,
-		    "year2018": 7.2
-		}, {
-		    "country": "India",
-		    "year2017": 8,
-		    "year2018": 7.1
-		}, {
-		    "country": "China",
-		    "year2017": 9.9,
-		    "year2018": 10.1
-		}];
-		
-		// Create axes
-		var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-			categoryAxis.dataFields.category = "country";
-			categoryAxis.renderer.grid.template.location = 0;
-			categoryAxis.renderer.minGridDistance = 30;
+		/* $(function() {
 			
-			var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-			valueAxis.title.text = "GDP growth rate";
-			valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-			  return text + "%";
-		});
+			var trace1 = {
+					  x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+					  y: [20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
+					  type: 'bar',
+					  name: 'Primary Product',
+					  marker: {
+					    color: 'rgb(49,130,189)',
+					    opacity: 0.7,
+					  }
+					};
+
+					var trace2 = {
+					  x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+					  y: [19, 14, 22, 14, 16, 19, 15, 14, 10, 12, 12, 16],
+					  type: 'bar',
+					  name: 'Secondary Product',
+					  marker: {
+					    color: 'rgb(204,204,204)',
+					    opacity: 0.5
+					  }
+					};
+
+					var data = [trace1, trace2];
+
+					var layout = {
+					  title: '2013 Sales Report',
+					  xaxis: {
+						    
+						  },
+						  yaxis: {
+						    
+						  },
+					  barmode: 'group'
+					};
+
+					Plotly.newPlot('myDiv', data, layout);
+		}); */
 		
-		// Create series
-		var series = chart.series.push(new am4charts.ColumnSeries3D());
-			series.dataFields.valueY = "year2017";
-			series.dataFields.categoryX = "country";
-			series.name = "Year 2017";
-			series.clustered = false;
-			series.columns.template.tooltipText = "GDP grow in {category} (2017): [bold]{valueY}[/]";
-			series.columns.template.fillOpacity = 0.9;
-		
-		var series2 = chart.series.push(new am4charts.ColumnSeries3D());
-			series2.dataFields.valueY = "year2018";
-			series2.dataFields.categoryX = "country";
-			series2.name = "Year 2018";
-			series2.clustered = false;
-			series2.columns.template.tooltipText = "GDP grow in {category} (2017): [bold]{valueY}[/]";
-		
-		}); // end a	m4core.ready()
 		//--------------------------------------------------------------------------------------------------------------------------//
 
 </script>

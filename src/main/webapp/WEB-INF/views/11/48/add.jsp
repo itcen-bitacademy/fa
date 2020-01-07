@@ -434,7 +434,7 @@ tr td:first-child {
 					<!-- 금주의 상환 내역 Modal pop-up : end -->
 				
 				
-				<button class="btn btn-pink btn-small mybtn" id="repay-view-button" type="button" class="btn">금주 상환 내역 조회</button>
+				<button class="btn btn-pink btn-small mybtn" id="repay-view-button" type="button" class="btn">금주상환예정목록</button>
 					
 				
 					
