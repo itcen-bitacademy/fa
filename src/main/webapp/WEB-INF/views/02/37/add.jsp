@@ -6,14 +6,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<c:import url="/WEB-INF/views/common/head.jsp" />
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
 	type="text/css" rel="stylesheet" />
-
+<c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -31,7 +31,7 @@ html, body {
 }
 
 .page-content {
-	min-width: 1600px;
+	min-width: 1280px;
 }
 
 @media screen and (max-width: 920px) {
@@ -46,14 +46,14 @@ html, body {
 }
 
 #item-table tr td p {
-	padding: 8px;
+	padding: 7px;
 	margin: 0;
 }
 
 #item-table tr td input {
-	padding: 8px;
+	padding: 7px;
 	margin: 0;
-	width: 94%;
+	width: 95.5%;
 	border: 0
 }
 
@@ -83,9 +83,6 @@ html, body {
 			<div class="page-content">
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입세금계산서관리</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i>메뉴 추가</a>
 				</div>
 				<form id="manage-form" method="post"
 					action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
@@ -290,14 +287,32 @@ html, body {
 						<div class="span12">
 							<div class="control-group">
 								<div class="btn-group">
+									<button class="btn btn-danger btn-small" type="button"
+										onclick="insert_button();">입력</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-warning btn-small" type="button"
+										onclick="update_button();">수정</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-primary btn-small" type="button"
+										onclick="delete_button();">삭제</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-default btn-small" type="button"
+										onclick="lookup_button();">조회</button>
+								</div>
+								<div class="btn-group">
 									<button class="btn btn-small" type="button"
 										onclick="add_row();">품목추가</button>
+
 								</div>
 								<div class="btn-group">
 									<button class="btn btn-small" type="button"
 										onclick="delete_row();">품목삭제</button>
 								</div>
 							</div>
+
 							<div class="control-group">
 								<table id="item-table"
 									class="table table-striped table-bordered table-hover">
@@ -333,7 +348,8 @@ html, body {
 													<td><input style="text-align: right;" type="text"
 														id="tax-value${status.count }" name="taxValue"
 														value="<fmt:formatNumber value="${items.taxValue }" pattern="#,###"/>"
-														placeholder="0" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+														placeholder="0" onkeyup="sumAllSupplyAllTax();"
+														autocomplete="off"></td>
 												</tr>
 											</c:forEach>
 										</c:when>
@@ -351,26 +367,12 @@ html, body {
 													id="supply-value1" onkeyup="sumAllSupplyAllTax();"
 													placeholder="0" name="supplyValue" autocomplete="off"></td>
 												<td><input style="text-align: right;" type="text"
-													id="tax-value1" name="taxValue"
-													placeholder="0" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+													id="tax-value1" name="taxValue" placeholder="0"
+													onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 											</tr>
 										</c:otherwise>
 									</c:choose>
 								</table>
-							</div>
-							<div class="control-group">
-								<button class="btn btn-danger btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="insert_button();">입력</button>
-								<button class="btn btn-warning btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="update_button();">수정</button>
-								<button class="btn btn-primary btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="delete_button();">삭제</button>
-								<button class="btn btn-default btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="lookup_button();">조회</button>
 							</div>
 
 							<!-- PAGE CONTENT ENDS -->

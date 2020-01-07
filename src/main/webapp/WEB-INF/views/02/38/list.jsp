@@ -6,16 +6,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<c:import url="/WEB-INF/views/common/head.jsp" />
 <!-- 달력 -->
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
-<!-- select List를 위한 StyleSheet -->
-<link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-<link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
-	type="text/css" rel="stylesheet" />
-
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
+<c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -33,7 +31,7 @@ html, body {
 }
 
 .page-content {
-	min-width: 1920px;
+	min-width: 1280px;
 }
 
 @media screen and (max-width: 920px) {
@@ -75,9 +73,6 @@ input:focus {
 			<div class="page-content">
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입세금계산서현황조회</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i>메뉴 추가</a>
 				</div>
 				<!-- /.page-header -->
 				<form id="search-form" method="post"
@@ -95,7 +90,7 @@ input:focus {
 										<span class="add-on"> <i class="icon-calendar"></i>
 										</span>
 									</div>
-									~ 
+									~
 									<div class="input-append">
 										<input class="cl-date-picker calender" id="calender2"
 											type="text" style="width: 80%" name="endDate"
@@ -287,8 +282,8 @@ input:focus {
 								<button class="btn btn-default btn-small" type="button"
 									style="float: left; margin-left: 20px;"
 									onclick="search_button();">조회</button>
-								<button id="reset" class="btn btn-default btn-small" type="button"
-									style="float: left; margin-left: 20px;">초기화</button>
+								<button id="reset" class="btn btn-default btn-small"
+									type="button" style="float: left; margin-left: 20px;">초기화</button>
 							</div>
 						</div>
 					</div>
@@ -296,7 +291,7 @@ input:focus {
 				</form>
 
 				<p>총 ${fn:length(buyTaxbillListAll)}건</p>
-				<div class="control-group" style="width: 85%; overflow-x: scroll;">
+				<div class="control-group" style="width: 100%; overflow-x: scroll;">
 					<table id="sample-table-1"
 						class="table table-striped table-bordered table-hover"
 						style="width: 1920px;">
@@ -464,8 +459,8 @@ input:focus {
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 
 	<!-- jQeury관련 script -->
-	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<!-- 거래처명 찾기기능 -->
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
@@ -782,16 +777,17 @@ input:focus {
 	</script>
 	<!-- 리셋버튼  -->
 	<script>
-		
-	$('#reset').click(function () {
-		$("#no").val("");
-		$("#calender1").val("");
-		$("#calender2").val("");
-		$("#tax-type option:eq(0)").prop("selected",true);
-		$("#delete-flag option:eq(0)").prop("selected",true);
-		$('input[name="order"]').filter("[value=writeDate]").prop("checked", true);
+		$('#reset').click(
+				function() {
+					$("#no").val("");
+					$("#calender1").val("");
+					$("#calender2").val("");
+					$("#tax-type option:eq(0)").prop("selected", true);
+					$("#delete-flag option:eq(0)").prop("selected", true);
+					$('input[name="order"]').filter("[value=writeDate]").prop(
+							"checked", true);
 
-	})
+				})
 	</script>
 
 </body>
