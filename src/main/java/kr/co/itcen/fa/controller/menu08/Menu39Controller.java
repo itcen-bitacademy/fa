@@ -133,11 +133,10 @@ public class Menu39Controller {
 	}
 	
 	//조회(R)
-	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/search" }, method = RequestMethod.POST)
-	public String list(@RequestParam(value="id", required = false, defaultValue = "") String id){
-		
-		return "redirect:/" + MAINMENU + "/" + SUBMENU + "?id=" + id;
-	}
+//	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/search" }, method = RequestMethod.POST)
+//	public String list(@RequestParam(value="id", required = false, defaultValue = "") String id){
+//		return "redirect:/" + MAINMENU + "/" + SUBMENU + "?id=" + id;
+//	}
 	
 	//수정(U)
 	@RequestMapping(value = "/" + SUBMENU + "/update" , method = RequestMethod.POST)
@@ -176,7 +175,7 @@ public class Menu39Controller {
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) { 
 	    	//마감됨 (insert안하고 redirect)
 	    	model.addAttribute("closingDate", true);
-	    	return "redirect:/" + MAINMENU + "/" + SUBMENU ;
+	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
 			//전표추가(세금계산서번호가 not null)
 			if (taxbillNo != null && bVoucherNo == null) {
@@ -289,6 +288,9 @@ public class Menu39Controller {
 		
 		Long bVoucherNo = menu39Service.getVoucherNo(id);
 		
+		String temp = "b"+id;
+		id = temp;
+		
 		//전표삭제
 		if(bVoucherNo != null) {
 			List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
@@ -302,13 +304,11 @@ public class Menu39Controller {
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
-	    	System.out.println("마감일 이상함");
+	    	model.addAttribute("closingDate", true);
 	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
-	    	model.addAttribute("closingDate", true);
 	    	menu39Service.delete(id);
 		    return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	    }
 	}
-
 }
