@@ -92,10 +92,9 @@ public class Menu38Controller {
 	public String list(Model model, BuyTaxbillListVo buyTaxbillListVo,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "page_group", required = false, defaultValue = "0") int pageGroup) {
-
 		buyTaxbillListVo.setPage(page);
 		buyTaxbillListVo.setPageGroup(pageGroup);
-		System.out.println(buyTaxbillListVo.getCompanyName());
+	
 		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillListAll(buyTaxbillListVo); // 전체리스트
 		List<BuyTaxbillVo> buyTaxbillList = menu38Service.getSelectedBuyTaxbillList(buyTaxbillListVo); // 5개씩 리스트
 		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getSelectedpageBuyTaxbillList(buyTaxbillListVo); // 11개씩																								// 데이터

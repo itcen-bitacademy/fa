@@ -94,7 +94,7 @@ html, body {
 						<div class="span12">
 							<!-- PAGE CONTENT BEGINS -->
 							<div class="control-group">
-								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
 									<c:choose>
 										<c:when test="${flag == 'true'}">
@@ -111,7 +111,7 @@ html, body {
 										</c:otherwise>
 									</c:choose>
 								</div>
-								<label class="control-label span1" for="manage-no">관&emsp;리&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="manage-no">관리번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="manage-no"
 										value="${getAboutNoData.manageNo }" name="manageNo"
@@ -120,13 +120,13 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="customer-no">등&emsp;록&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="customer-no">등록번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-no"
 										value="${getAboutNoCustomerData.no }" name="id"
 										autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="deposit-no">계&emsp;좌&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="deposit-no">계좌번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-no"
 										value="${getAboutNoBankData.depositNo }" name="id"
@@ -134,7 +134,7 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="company-name">거&emsp;래&emsp;처&emsp;명</label>
+								<label class="control-label span1" for="company-name">거래처명</label>
 								<div class="controls span2">
 									<select id="company-name" class="chosen-select"
 										name="companyName" style="width: 99%;"
@@ -146,7 +146,7 @@ html, body {
 											</c:when>
 											<c:otherwise>
 												<option style="display: none;" disabled selected></option>
-												<option value="">&nbsp;</option>
+												<option value=""></option>
 											</c:otherwise>
 										</c:choose>
 
@@ -156,13 +156,13 @@ html, body {
 										</c:forEach>
 									</select>
 								</div>
-								<label class="control-label span1" for="customer-name">성&emsp;&emsp;&emsp;&emsp;&emsp;명</label>
+								<label class="control-label span1" for="customer-name">성명</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="customer-name"
 										value="${getAboutNoCustomerData.ceo }" name="id"
 										autocomplete="off" autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="deposit-host">예&emsp;&emsp;금&emsp;&emsp;주</label>
+								<label class="control-label span1" for="deposit-host">예금주</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-host"
 										value="${getAboutNoCustomerData.depositHost }"
@@ -170,13 +170,13 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="customer-address">주&emsp;&emsp;&emsp;&emsp;&emsp;소</label>
+								<label class="control-label span1" for="customer-address">주소</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-address"
 										value="${getAboutNoCustomerData.address }" name="id"
 										autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="bank">은&emsp;&emsp;&emsp;&emsp;&emsp;행</label>
+								<label class="control-label span1" for="bank">은행</label>
 								<div class="controls span5">
 									<div class="controls span2">
 										<input style="width: 80%" type="text" id="bank-code"
@@ -191,19 +191,19 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="conditions">업&emsp;&emsp;&emsp;&emsp;&emsp;태</label>
+								<label class="control-label span1" for="conditions">업태</label>
 								<div class="controls span2">
 									<input style="width: 93%;" type="text" id="conditions"
 										value="${getAboutNoCustomerData.conditions }" name="id"
 										autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="items">종&emsp;&emsp;&emsp;&emsp;&emsp;목</label>
+								<label class="control-label span1" for="items">종목</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="items" name="id"
 										value="${getAboutNoCustomerData.item }" autocomplete="off"
 										readonly />
 								</div>
-								<label class="control-label span1" for="taxType">과&emsp;세&emsp;구&emsp;분</label>
+								<label class="control-label span1" for="taxType">과세구분</label>
 								<div class="controls span2">
 									<c:choose>
 										<c:when test="${flag == 'true'}">
@@ -255,7 +255,7 @@ html, body {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="id-date-picker-1">일&emsp;&emsp;&emsp;&emsp;&emsp;자</label>
+								<label class="control-label span1" for="id-date-picker-1">일자</label>
 								<div class="controls span2">
 									<div class="input-append" style="width: 100%">
 										<input id="id-date-picker-1" class="calender"
@@ -265,7 +265,7 @@ html, body {
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="form-field-14">총&emsp;공&nbsp;급&nbsp;가&nbsp;액</label>
+								<label class="control-label span1" for="form-field-14">총공급가액</label>
 								<div class="controls span4">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-14"
@@ -273,7 +273,7 @@ html, body {
 										name="totalSupplyValue" autocomplete="off" placeholder="0"
 										readonly />
 								</div>
-								<label class="control-label span1" for="form-field-15">총&emsp;세&nbsp;액</label>
+								<label class="control-label span1" for="form-field-15">총세액</label>
 								<div class="controls span3">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-15"
