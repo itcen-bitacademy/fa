@@ -466,9 +466,9 @@
 				
 				$("#insert").show(); //등록 버튼 보여기
 				$("#modify").hide(); //수정 버튼 가리기
-				$("#delete").show(); //삭제 버튼 가리기
-				$("#search").show(); //조회 버튼 가리기
-				$("#clear").show(); //초기화 버튼 가리기
+				$("#delete").hide(); //삭제 버튼 가리기
+				$("#search").show(); //조회 버튼 보이기
+				$("#clear").show(); //초기화 버튼 보이기
 				
 				$("#nabbu").hide();
 				$("#walsa").hide();
@@ -1008,17 +1008,17 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
 		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
-		$("#delete").show(); //삭제 버튼 가리기
-		$("#search").show(); //조회 버튼 가리기
-		$("#clear").show(); //초기화 버튼 가리기
+		$("#delete").show(); //삭제 버튼 보여주기
+		$("#search").hide(); //조회 버튼 가리기
+		$("#clear").show(); //초기화 버튼 보여주기
 
 	}else {
 		console.log("세금계산서 번호 있으면 버튼 가리기.");
 		$("#insert").hide(); //등록 버튼 가리기
-		$("#modify").hide(); //수정 버튼 보여주기
-		$("#delete").show(); //삭제 버튼 가리기
+		$("#modify").hide(); //수정 버튼 가리기
+		$("#delete").show(); //삭제 버튼 보여주기
 		$("#search").hide(); //조회 버튼 가리기
-		$("#clear").show(); //초기화 버튼 가리기
+		$("#clear").show(); //초기화 버튼 보여주기
 	} 
   
   $("#cusNo").val(customerCode); // 납부할때 거래처번호를 넘겨줘야 한다.
