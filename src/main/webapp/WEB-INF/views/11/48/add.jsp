@@ -1040,7 +1040,7 @@ tr td:first-child {
 			$('#name').val('');
 			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
 			$('#code').attr('readonly',false);
-			$('#form-field-1').val(2019); 
+			
 			$('#btn-check-code').val('중복확인');
 
 			$(this).removeClass("selected");
