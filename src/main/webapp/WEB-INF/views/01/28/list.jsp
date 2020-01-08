@@ -270,9 +270,9 @@
 				
 					</div>
 				<div class="row-fluid">
-						<div class="span12">
+						<div class="span12" style="overflow: auto;">
 
-							<table id="customer" class="table table-striped table-bordered table-hover">
+							<table id="customer" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 								<thead>
 									<tr>
 										<th class="center">거래처 구분</th>

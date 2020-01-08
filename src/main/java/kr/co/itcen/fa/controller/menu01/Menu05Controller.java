@@ -60,7 +60,7 @@ public class Menu05Controller {
 		String Validity = validity.replace(",", "/");
 		vo.setValidity(Validity);
 		
-		vo.setInsertUserId(uvo.getName());
+		vo.setInsertUserId(uvo.getId());
 		
 		vo.setCardNoOld(null);
 		
@@ -100,7 +100,7 @@ public class Menu05Controller {
 		
 		String Validity = validity.replace(",", "/");
 		vo.setValidity(Validity);
-		vo.setUpdateUserId(uvo.getName());
+		vo.setUpdateUserId(uvo.getId());
 		vo.setLimitation(limitation.get());
 		
 		
@@ -111,12 +111,12 @@ public class Menu05Controller {
 	// Delete
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/delete")
-	public Map<String, Object> remove(@ModelAttribute CardVo vo,
+	public Map<String, Object> remove(@ModelAttribute CardVo vo, @AuthUser UserVo uvo, 
 			@RequestParam("cardNo") String cardNo,
 			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
 		String CardNo = cardNo.replace(",", "-");
 		vo.setCardNo(CardNo);
-		
+		vo.setUpdateUserId(uvo.getId());
 		Map<String, Object> result =menu05Service.delete(vo, page);
 		result.put("success", true);
 		return result;
