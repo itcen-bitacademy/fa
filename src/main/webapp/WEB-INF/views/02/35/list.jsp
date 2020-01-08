@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
@@ -15,6 +16,12 @@
 <script	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
+<c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+	.form-horizontal .control-label {
+	    text-align: left;
+	}
+</style>
 
 	<script>
 	$(function() {
@@ -373,7 +380,7 @@
    		}
 	</script>
 	
-<c:import url="/WEB-INF/views/common/head.jsp" />
+
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -387,9 +394,6 @@
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입거래처관리</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div>
 				<!-- /.page-header -->
 				<div class="row-fluid">
@@ -570,10 +574,10 @@
 								<div class="span12">
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
-											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
-											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
+											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left;">입력</button>
 											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
-											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left; margin-left:20px;">입력</button>
+											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
+											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
 											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">초기화</button>
 									</div>
 									<div class="hr hr-18 dotted"></div>
@@ -582,8 +586,8 @@
 						</form>
 							
 							<div class="row-fluid">
-								<div class="span12">
-									<table id="customer-table" class="table table-striped table-bordered table-hover">
+								<div class="span12" style="overflow-x: scroll;">
+									<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;">
 										<thead>
 											<tr>
 												<th class="center">
@@ -709,5 +713,6 @@
 			});
 		})
 	</script>
+	
 </body>
 </html>
