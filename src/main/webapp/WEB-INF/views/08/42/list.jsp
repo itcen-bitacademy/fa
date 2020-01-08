@@ -8,6 +8,14 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+@media screen and (max-width: 920px) {
+       .main-container{
+          height:calc(100% - 84px);
+       }
+    }
+
+</style>
 </head>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -142,7 +150,7 @@
 						<!-- 차변 대변 나누기 위한 row-fluid -->
 						<br>
 						<br>
-						<p>총 건수 : ${dataResult.pagination.totalCnt } </p>
+						<p>총 ${dataResult.pagination.totalCnt } 건</p>
 								<div class="row-fluid">
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 										<thead>

@@ -174,7 +174,18 @@
 			}
 			return true;
 		});
+		$("#btn-reset").click(function(){
+			$("input[id=datepicker]").val("");
+			$("input[id=datepicker2]").val("");
+			$("input[id=no]").val("");
+			$('#customerDiv').val("All").trigger('chosen:updated'); 
+			$('#deleteFlag').val("N").trigger('chosen:updated'); 
+		});
 	});
+	
+	
+	
+	
 	
 	
 </script>
@@ -260,7 +271,7 @@
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-small btn-info" id="btn-submit" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;
-						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
 					
 					</form>
 					
@@ -270,9 +281,9 @@
 				
 					</div>
 				<div class="row-fluid">
-						<div class="span12">
+						<div class="span12" style="overflow: auto;">
 
-							<table id="customer" class="table table-striped table-bordered table-hover">
+							<table id="customer" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 								<thead>
 									<tr>
 										<th class="center">거래처 구분</th>

@@ -12,6 +12,32 @@
 <script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+
+<style>
+           html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+
+	@media screen and (max-width: 920px) {
+	         	.main-container{
+            	height:calc(100% - 84px);
+         		}
+	 }
+</style>
+
 </head>
 <body class="skin-3">
 
@@ -25,7 +51,7 @@
 				</div><!-- /.page-header -->
 				<form class="form-horizontal">
 				<div class="row-fluid">
-							<div class="span10">
+							<div class="span12">
 									<div class="form-horizontal">
 									
 										<div class="span3">
@@ -44,7 +70,6 @@
 													<label class="control-label" for="form-field-select-2" style="text-align: left; width:80px;">대분류명</label>
 													<div class="controls" style="margin-left: 80px;">
 														<select class="chosen-select" id="gcategory" name="sectioncode" data-placeholder="대분류명 선택">
-															<option value=""></option>	
 															<c:forEach items='${gcategory }' var='gcategory' varStatus='status'>
 																<option value="${gcategory.code }">${gcategory.classification }</option>
 															</c:forEach>
@@ -74,9 +99,10 @@
 													</div>
 										</div>
 										
-										<div class="span3">
-												<button class="btn btn-small btn-info" type="submit" style="margin-left: 50px;"
+										<div class="span2">
+												<button class="btn btn-small btn-info" type="submit" style="margin-left: 10px;"
 												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+												<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 										</div> 
 									</div>
 								</div>
@@ -247,7 +273,12 @@ $(function() {
 		});
 	});
 
-	
+	$("#btn-reset").click(function(){
+		event.preventDefault();
+		$("input[id=datepicker]").val("");
+		$('#gcategory').val("").trigger('chosen:updated');
+		$('#subcategory').val("").trigger('chosen:updated');
+	});	
 	
 	function createoption(list){
 		console.log(list);

@@ -15,7 +15,6 @@
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
-</head>
 <style>
 .chosen-search {
 	display: none;
@@ -23,7 +22,35 @@
 input, textarea, .uneditable-input {
     width: 100px;
 }
+
+  html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+		
+		  @media screen and (max-width: 920px) {
+         .main-container{
+            height:calc(100% - 84px);
+         }
+      }
+	
 </style>
+
+
+</head>
+
 <body class="skin-3">
 
 
@@ -44,7 +71,7 @@ input, textarea, .uneditable-input {
 
 				<div class="row-fluid">
 					<form id="input-form" class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list" method="post">
-						입력 기간
+						입력 기간 : 
 
 						<div class="input-append">
 							<input type="text" id="datepicker" class="cl-date-picker" name="inputperiodStart" value="${param.inputperiodStart }" readonly/> <span
@@ -60,29 +87,21 @@ input, textarea, .uneditable-input {
 						</div>
 
 							&nbsp; &nbsp; &nbsp;
-						카드시작번호 : <input type="text" id="cardStartNo" placeholder="시작번호" name = "cardStartNo" value="${param.cardStartNo }" maxlength=4/>
+						카드시작번호 : <input type="text" id="cardStartNo" placeholder="시작번호" name = "cardStartNo" value="${param.cardStartNo }" maxlength=4 onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 						&nbsp; &nbsp; &nbsp; 
-						카드종료번호 : <input type="text" id="cardEndNo" placeholder="종료번호" name = "cardEndNo" value="${param.cardEndNo }"  maxlength=4/> 
+						카드종료번호 : <input type="text" id="cardEndNo" placeholder="종료번호" name = "cardEndNo" value="${param.cardEndNo }"  maxlength=4 onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/> 
 						
 						
 							&nbsp; &nbsp; &nbsp;
 						삭제여부 : 
-						<select class="chosen-select" id="form-field-select-1" name="deleteFlag" data-placeholder="상위메뉴 선택" style="width:80px">
-							<option value="">  </option>
-							<c:choose>
-								<c:when test="${param.deleteFlag eq 'Y' }">
-									<option value="N">N</option>					
-									<option value="Y" selected>Y</option>
-								</c:when>
-								<c:otherwise>
-									<option value="N" selected>N</option>					
-									<option value="Y">Y</option>
-								</c:otherwise>
-							</c:choose>
+						<select class="chosen-select" id="deleteFlag" name="deleteFlag" data-placeholder="상위메뉴 선택" style="width:80px">
+							<option value="N">N</option>					
+							<option value="Y">Y</option>
 						</select>
-
-						<button type="submit" class="btn btn-small btn-info" >조회</button>
-
+						
+						<button type="submit" id="btn-submit" class="btn btn-small btn-info" >조회</button>
+						&nbsp;
+						<button class="btn btn-default btn-small" id="btn-reset">취소</button>
 					</form>
 					<div class="hr hr-18 dotted"></div>
 					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 카드 ${dataResult.pagination.totalCnt } 건</p>
@@ -91,9 +110,9 @@ input, textarea, .uneditable-input {
 
 
 				<div class="row-fluid">
-					<div class="span12">
+					<div class="span12" style="overflow: auto;">
 						<table id="sample-table-1"
-							class="table table-bordered table-hover">
+							class="table table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 							<thead>
 								<tr>
 									<th>카드번호</th>
@@ -209,20 +228,18 @@ input, textarea, .uneditable-input {
 	</div>
 	<!-- /.main-container -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	
+
 	<!-- Validation Modal Start -->
 	<div id="staticBackdrop" class="hide">
 		<br>
 		<pre id="staticBackdropBody" class="bolder grey"
 			style="text-align: center; background-color: white; border-color: white">
-					</pre>
+		</pre>
 	</div>
 	<!-- Validation Modal End -->
-	
-	
-	
-</body>
 
+
+</body>
 <link
 	href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css"
 	type="text/css" rel="stylesheet" />
@@ -230,13 +247,43 @@ input, textarea, .uneditable-input {
 	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
 <script
-	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
 <script
-	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+
 
 
 <script>
+
+var deleteFlag = "${param.deleteFlag}";
+if(deleteFlag!=''){
+	$('#deleteFlag').val(deleteFlag).trigger('chosen:updated'); 
+}
+
+//숫자와 delete 키만 동작하도록한다.
+function isNumberKey(evt){
+  var charCode = (evt.which) ? evt.which : event.keyCode;
+  var _value = event.srcElement.value;
+
+  if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+      if(event.keyCode != 46){//delete
+           return false;
+      } 
+   }
+  return true;
+  
+}
+
+//한글입력 방지
+function delHangle(evt){
+  var objTarger = evt.srcElement || evt.target;
+  var val = event.srcElement.value;
+  if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+      objTarger.value = null;
+  	}
+  }
+  
 	$(function() {
 		$.fn.datepicker.dates['ko'] = {
 			days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
@@ -269,7 +316,74 @@ input, textarea, .uneditable-input {
 		
 		
 		$(".chosen-select").chosen();
-		            
+		  
+		
+		var validationMessage ='';
+		var errortitle='';
+		var errorfield ='';
+		var nochecked = false;
+		
+		function openErrorModal(title, message,errorfield) {
+			$('#staticBackdropLabel').html(title);
+			$('#staticBackdropBody').text(message);
+			
+			console.log($('#staticBackdropLabel').text());
+			console.log($('#staticBackdropBody').text());
+		
+			$( "#staticBackdrop" ).dialog({
+				resizable: false,
+				modal: true,
+				title: title,
+				buttons: [
+					{
+						text: "OK",
+						"class" : "btn btn-danger btn-mini",
+						click: function() {
+							$(this).dialog('close');
+				          	$('#staticBackdropBody').text('');
+							$(errorfield).focus();
+						}
+					}
+				]
+			});
+		
+			$("#staticBackdrop").dialog('open');//모달을 띄운다
+		}
+		
+		function SearchValidation(){
+			let datepicker1 =$('#datepicker').val();//시작날짜
+			let datepicker2 =$('#datepicker2').val();//종료날짜
+			
+			
+			//datepicker 관련 Valid
+			if(datepicker1 > datepicker2 && datepicker2!=''){
+				errortitle = 'DATE_RANGE_ERROR';
+				validationMessage = '조회기간 범위 오류입니다.\r\n 종료일을 시작일 이후로 설정해주세요';
+				errorfield='#datepicker2';
+				return false;
+				
+			}
+		
+			return true;
+		}
+		
+		$("#btn-submit").click(function(){
+			if(!SearchValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return false;
+			}
+			return true;
+		});
+		
+		$("#btn-reset").click(function(){
+			event.preventDefault();
+			$("input[id=datepicker]").val("");
+			$("input[id=datepicker2]").val("");
+			$("input[id=cardStartNo]").val("");
+			$("input[id=cardEndNo]").val("");
+			$('#deleteFlag').val("N").trigger('chosen:updated'); 
+		});
+		
 	})
 </script>
 

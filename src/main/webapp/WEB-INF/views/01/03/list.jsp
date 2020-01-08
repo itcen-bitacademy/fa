@@ -225,7 +225,7 @@
 			<div class="row-fluid">
 				<div class="span12">
                 <input type="hidden" id="rowCnt" name="rowCnt" value="1">
-                    <table id="save-table" class="table table-striped table-bordered table-hover">
+                    <table id="save-table" class="table  table-bordered table-hover">
                         <thead>
                         <tr>
                             <th class="center">일자</th>
@@ -267,9 +267,15 @@
 				formaction="${pageContext.request.contextPath}/01/03/read">조 회</button>
 			<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
 				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
-			<button class="btn btn-default btn-small" type="reset">취 소</button>
+			<input class="btn btn-small" type="button" value="입력" onclick="add();">
+			<input class="btn btn-small" type="button" value="행 수정" onclick="modify();">
+			<input class="btn btn-small" type="button" value="행 삭제" onclick="delete_row();">
+			<input class="btn btn-primary btn btn-small" id="btn-create" name="btn-create" type="button" value="저 장" onclick="save();">
+			<input class="btn btn-warning btn btn-small" id="btn-update" name="btn-update" type="button" value="수 정" onclick="update();">
+			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
+
 			</form>
-			<div class="row-fluid">
+			<!-- <div class="row-fluid">
 				<div class="span8">
 						<button class="btn btn-small" type="button" onclick="add();">입 력</button>
 						<button class="btn btn-small" type="button" onclick="modify();">행 수정</button>
@@ -278,17 +284,17 @@
 							name="btn-create" onclick="save();">저 장</button>
 						<button class="btn btn-warning btn-small" type="submit" id="btn-update" 
 							name="btn-update" onclick="update();">수 정</button>
-						
-				</div><!-- /.span -->
-			</div><!-- /.row-fluid -->
+						<button class="btn btn-default btn-small" type="button" onclick="window.location.reload()">취 소</button>
+				</div>/.span
+			</div>/.row-fluid -->
 			<div class="hr hr-18 dotted"></div>
 			<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 전표 ${dataResult.pagination.totalCnt } 건</p>
 			
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
-				<div class="span12">
+				<div class="span12" style="overflow: auto;">
 					<table id="simple-table-1"
-						class="table table-striped table-bordered table-hover">
+                     	class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 						<thead>
 							<tr>
 								<th class="center">일자</th>
@@ -332,12 +338,12 @@
 									<td>${voucherVo.accountName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
-								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+								            <td style="text-align: right;"><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								            <td></td>
 								        </c:when>
 								        <c:otherwise>
 								        	<td></td>
-								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+								            <td style="text-align: right;"><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								        </c:otherwise>
 								    </c:choose>
 								    <td>${voucherVo.customerNo }</td>
@@ -478,7 +484,7 @@
 		cell3.innerHTML = '<td class="center">' + accountNo + '</td>';
 		cell4.innerHTML = '<td class="center">' + accountName + '</td>';
 		cell5.innerHTML = '<td class="center">' + amountFlag + '</td>';
-		cell6.innerHTML = '<td class="center">' + comma(amount) + '</td>';
+		cell6.innerHTML = '<td style="text-align: right">' + comma(amount) + '</td>';
 		cell7.innerHTML = '<td class="center">' + customerNo + '</td>';
 		cell8.innerHTML = '<td class="center">' + customerName + '</td>';
 		if(manageNo == '') {
@@ -706,7 +712,7 @@
 		cell3.innerHTML = '<td class="center">' + accountNo + '</td>';
 		cell4.innerHTML = '<td class="center">' + accountName + '</td>';
 		cell5.innerHTML = '<td class="center">' + amountFlag + '</td>';
-		cell6.innerHTML = '<td class="center">' + comma(amount) + '</td>';
+		cell6.innerHTML = '<td style="text-align: right">' + comma(amount) + '</td>';
 		cell7.innerHTML = '<td class="center">' + customerNo + '</td>';
 		cell8.innerHTML = '<td class="center">' + customerName + '</td>';
 		if(manageNo == '') {
@@ -848,6 +854,11 @@
 		}); // ajax
 	}
 	
+	/* // 리셋
+	function reset() {
+		
+	} */
+	
 	// 유효성 검사시 Dialog Popup 창이 모달로 띄움
 	function dialog(txt, flag) {
     	$("#dialog-txt").html(txt);
@@ -904,7 +915,7 @@ $(function(){
 		$(this).prev().focus();
 	});
 	
-	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+	$(document.body).delegate('#voucher_list tr', 'click', function() {
 		
 		// input창에 값 셋팅해주기
 		var tr = $(this);
@@ -1029,7 +1040,7 @@ $(function(){
 	                        "<td>" + voucherList[a].accountNo + "</td>" +
 	                        "<td>" + voucherList[a].accountName + "</td>" +
 	                        "<td>" + voucherList[a].amountFlag + "</td>" +
-	                        "<td>" + voucherList[a].amount + "</td>" +
+	                        "<td>" + comma(voucherList[a].amount) + "</td>" +
 	                        "<td>" + voucherList[a].customerNo + "</td>" +
 	                        "<td>" + voucherList[a].customerName + "</td>" +
 	                        "<td>" + manageName + "</td>" +

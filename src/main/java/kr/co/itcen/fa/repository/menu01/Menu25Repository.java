@@ -120,4 +120,12 @@ public class Menu25Repository {
 		map.put("bankList", sqlSession.selectList("menu25.read", bavo));
 		return map;
 	}
+
+	public boolean existNo(String no) {
+		BankAccountVo bavo = sqlSession.selectOne("menu25.existNo",no);
+		if(bavo != null) {
+			return true;
+		}
+		return false;
+	}
 }

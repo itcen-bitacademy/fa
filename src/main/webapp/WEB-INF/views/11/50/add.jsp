@@ -20,6 +20,12 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+html,body{height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
 #dialog-confirm{z-index: 3333!important;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
 .p-debt-code-input {width: 195px;}
@@ -436,7 +442,8 @@
 				<!-- PAGE CONTENT ENDS -->
 
 				<p>총 ${contentsCount }건</p>
-				<table id="simple-table" class="table  table-bordered table-hover">
+				<div style="overflow: auto;">
+				<table id="simple-table" class="table  table-bordered table-hover table-responsive" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center" >
@@ -507,7 +514,7 @@
 							</c:forEach>
 						</tbody>
 				</table>
-			</div>
+				</div>
 			<!-- /.page-content -->
 			
 			<!-- 페이징 처리 알고리즘 start -->

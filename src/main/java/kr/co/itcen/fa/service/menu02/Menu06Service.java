@@ -43,6 +43,10 @@ public class Menu06Service {
 	public PurchasemanagementVo getList(PurchasemanagementVo vo) {
 		return menu06Repository.getList(vo);
 	}
+	
+	public List<PurchasemanagementVo> getSearchList(PurchasemanagementVo vo) {
+		return menu06Repository.getSearchList(vo);
+	}
 
 	public void update(PurchasemanagementVo vo) {
 		menu06Repository.update(vo);

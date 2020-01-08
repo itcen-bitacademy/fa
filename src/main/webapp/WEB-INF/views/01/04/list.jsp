@@ -174,7 +174,7 @@
 				<div class="span8">
 						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
 							formaction="${pageContext.request.contextPath}/01/04/read">조회</button>
-						<button class="btn btn-default btn-small" type="reset">취 소</button>
+						<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 			<div class="hr hr-18 dotted"></div>
@@ -184,9 +184,9 @@
 			
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
-				<div class="span12">
+				<div class="span12" style="overflow: auto;">
 					<table id="simple-table-1"
-						class="table table-striped table-bordered table-hover">
+                     	class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 						<thead>
 							<tr>
 								<th class="center">일자</th>
@@ -228,12 +228,12 @@
 									<td>${voucherVo.accountName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
-								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+								            <td style="text-align: right;"><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								            <td></td>
 								        </c:when>
 								        <c:otherwise>
 								        	<td></td>
-								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+								            <td style="text-align: right;"><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								        </c:otherwise>
 								    </c:choose>
 								    <td>${voucherVo.customerNo }</td>
@@ -325,7 +325,7 @@ $(function(){
 		$(this).prev().focus();
 	});
 	
-	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+	$(document.body).delegate('#voucher_list tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
 		

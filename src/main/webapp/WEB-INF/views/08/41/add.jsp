@@ -16,6 +16,13 @@
 	width:200px;
 	text-align:right;
 }
+@media screen and (max-width: 920px) {
+       .main-container{
+          height:calc(100% - 84px);
+       }
+    }
+
+
 </style>
 </head>
 <body class="skin-3">
@@ -36,15 +43,18 @@
 						<div class="row-fluid">
 							
 							<!-- PAGE CONTENT BEGINS -->
-							<form class="form-horizontal" method="post" id="input-form" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();">
+							<form class="form-horizontal" method="post" id="input-form" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();" data-checkpurchaseno="no">
 
 								<div class="span6">
 									<!-- 차변 -->
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">차량 코드</label>
 										<div class="controls">
-											<input type="text" id="vehicle_code" name="id" placeholder="9자를 입력하세요" />
-<%-- 											<input type="hidden" id="vehicleNo" value="${saleslist[0].salesNo }">
+											<input type="text" id="vehicle_code" name="id" style="margin:0 5px 0 0" placeholder="9자를 입력하세요"/>
+											<input id="overlapBtn" style="height:28px" type="button" value="중복확인">
+											<i id="check-icon" class="icon-ok bigger-180 blue" style="display:none;"></i>
+											<input readonly type="text" class="span6" id="default-vehiclecode" style="background-color: #FFFFFF" placeholder="ex)2019년12월03일 191203001"></input>
+<%-- 										<input type="hidden" id="vehicleNo" value="${saleslist[0].salesNo }">
 											<input type="text" class="span6" id="default-vehiclecode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
 											<input type="text" class="span6" id="overlap-vehiclecode" style="border:none;color:red"  value="사용중인 품목코드입니다">
 											<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="차량코드는 숫자만 입력하세요.">
@@ -66,7 +76,7 @@
 									</div>
 
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">주소(광역)</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
 										<div class="controls">
 											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 											<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
@@ -251,7 +261,7 @@
 												<button class="btn btn-info btn-small" id="search"
 													style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-default btn-small" id="clear"
-													style="float: left; margin-right: 20px;" type="reset">초기화</button>
+													style="float: left; margin-right: 20px;">초기화</button>
 											</div>
 										</div>
 									</div>
@@ -287,7 +297,7 @@
 										<th>부대비용(원)</th>
 										<th>보증금(원)</th>
 										<th hidden="hidden">보증금,월사용료 실제 납부일자</th>
-										<th>보증금 예정일자</th>
+										<th>보증금 예정일</th>
 										<th>월 사용료(원)</th>
 										<th>월 사용료 납부일</th>
 										<th>과세/영세</th>
@@ -480,75 +490,90 @@
 				
 				$("#vehicle_code").focus();
 				
+				//마감날짜 함수 실행
 				console.log("closing" + $("#closingDate").val());
 				checkClosing();
 				
-				$("#vehicle_code").on("change", function(e){
-					
-					if(isNaN($("#vehicle_code").val()) /*=== true*/){
-						$("#default-vehiclecode").hide();
-						$("#overlap-vehiclecode").hide();
-						$("#null-vehiclecode").hide();
-						$("#onlynumber").show();
-						$("#vehicle_code").val(""); //text비우기
-						return;
-					}
-					var id = "e" + $("#vehicle_code").val();
-			    
-				   $.ajax({
-				      url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id=" + id,
-				      type : "get",
-				      dataType : "json",
-				      data : "",
-				      success: function(response){
-				         if(response.result == "fail"){
-				            console.error(response.message);
-				            return;
-				         }
-				         
-				         if(response.data == true){
-				            $("#default-vehiclecode").hide();
-				            $("#null-vehiclecode").hide();
-				            $("#onlynumber").hide();
-				            $("#overlap-vehiclecode").show();
-				            $("#vehicle_code").val("");
-				            $("#vehicle_code").focus();
-				            return;
-				         
-				         } else if(id == "") {
-				            $("#default-vehiclecode").hide();
-				            $("#overlap-vehiclecode").hide();
-				            $("#onlynumber").hide();
-				            $("#null-vehiclecode").show();
-				            $("#vehicle_code").focus();
-				         }
-				      },
-				      error: function(xhr, error) {
-				         console.error("error: " + error);
-				      }
-				   }); //ajax 마지막
-				}); //$("#vehicle_code").on("change", function(e){ 의 마지막 
+				
 			}); //$(document).ready(function() 의 마지막
+			
 					
+			$("#overlapBtn").on("click", function(e){
+				e.preventDefault();
+		
+				var id = "e" + $("#vehicle_code").val();
+		    
+			   $.ajax({
+			      url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id=" + id,
+			      type : "get",
+			      dataType : "json",
+			      data : "",
+			      success:function(data) {
+						if(data === "true") {
+							dialog("사용가능한 품목코드입니다.", false);
+							$("#input-form").data("checkpurchaseno", "ok");
+							$("#overlapBtn").hide();
+							$("#default-vehiclecode").hide();
+							$("#check-icon").show();
+							var checkpurchaseno = $("#input-form").data("checkpurchaseno");
+							console.log("사용가능한 품목코드입니다." + checkpurchaseno);
+						} else if(data === "false") {
+							dialog("중복된 품목코드입니다.", false);
+							$("#input-form").data("checkpurchaseno", "no");
+							$("#vehicle_code").val("");
+						} else if(data === "none") {
+							dialog("품목코드 9자를 입력해주세요.", false);
+							$("#input-form").data("checkpurchaseno", "no");
+	
+						}
+					}, error:function(error) {
+						dialog("찾을 수 없는 품목입니다.", true);
+					}
+				});
+			});
+		    //차량코드 변화시 중복확인버튼 보이기.
+			$("#vehicle_code").on('keyup', function(event){
+					var check = $("#input-form").data("checkpurchaseno");
+					
+					if(check === "ok") {
+						if($("#vehicle_code").val().length < 9) {
+						$("#input-form").data("checkpurchaseno", "no");
+						$("#overlapBtn").show(); //중복확인버튼
+						$("#default-vehiclecode").show(); //쓰는방법
+						$("#check-icon").hide(); //체크아이콘
+					}
+					}
+			});
 
 			//// 등록 validation함수 insert()로 가능
 			function insert(){
-		   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
-		   			if(!valid.numberCheck("vehicle_code", "차량 코드")) return false;
-		   			if(!valid.nullCheck("classification", "차량 분류")) return false;
-		   			if(!valid.nullCheck("staffNoId", "직급")) return false;
-		   			if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
-		   			if(!valid.nullCheck("wideAddr", "주소")) return false;
-		   			if(!valid.nullCheck("customerNo", "거래처")) return false;
-		   			if(!valid.nullCheck("payDate", "매입일자")) return false;
-		   			if(!valid.nullCheck("publicValue", "출시가")) return false;
-		   			if(!valid.nullCheck("acqTax", "취득세")) return false;
-		   			if(!valid.nullCheck("etcCost", "부대비용")) return false;
-		   			if(!valid.nullCheck("deposit", "보증금")) return false;
-		   			if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
-		   			if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
-		   			if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
-		   			if(!valid.radioCheck("taxKind", "세금 종류")) return false;
+				
+				var checkpurchaseno = $("#input-form").data("checkpurchaseno");
+				var vehiclecode = $("#vehicle_code").val();
+				console.log("품목코드를 중복확인 해주세요." + checkpurchaseno);
+				console.log($("#vehicle_code").val.length);
+				if(checkpurchaseno === "no" || vehiclecode.length < 9) {
+					$("#input-form").data("checkpurchaseno", "no");
+					
+					dialog("품목코드를 중복확인 해주세요.", false);
+				}
+
+				else if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
+				else if(!valid.numberCheck("vehicle_code", "차량 코드")) return false;
+				else if(!valid.nullCheck("classification", "차량 분류")) return false;
+				else if(!valid.nullCheck("staffNoId", "직급")) return false;
+				else if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
+				else if(!valid.nullCheck("wideAddr", "주소")) return false;
+				else if(!valid.nullCheck("customerNo", "거래처")) return false;
+				else if(!valid.nullCheck("payDate", "매입일자")) return false;
+				else if(!valid.nullCheck("publicValue", "출시가")) return false;
+				else if(!valid.nullCheck("acqTax", "취득세")) return false;
+				else if(!valid.nullCheck("etcCost", "부대비용")) return false;
+				else if(!valid.nullCheck("deposit", "보증금")) return false;
+				else if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
+				else if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
+				else if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
+				else if(!valid.radioCheck("taxKind", "세금 종류")) return false;
 	
 		   			return true;
 		        	}
@@ -851,7 +876,7 @@ $("#delete").click(function() {
 	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 	$("#input-form").attr("method","post");
 	$("#input-form").submit();
-   	alert("삭제 하시겠습니까?");
+   	//alert("삭제 하시겠습니까?");
 }); 
 
 $("#search").click(function() {
@@ -861,6 +886,22 @@ $("#search").click(function() {
 	$("#input-form").submit();
 	//alert("조회");
 });
+
+
+$("#clear").click(function() {
+
+	 event.preventDefault();
+     $('input[type=text]').val("");
+     $('input:radio').prop("checked",false);
+     //대분류코드
+      $('#sectionNo').val("").trigger('chosen:updated');
+     //직급
+      $('#staffNoId').val("").trigger('chosen:updated');
+     //거래처코드
+      $('#form-field-customerCode').val("").trigger('chosen:updated');
+ 
+      });
+
 
 $("#segum").click(function() {
 	
@@ -890,6 +931,9 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	$("#walsa").hide();
 	$("#segumBtn").show();
 	$("#vehicle_code").prop('readonly',true);
+	$("#default-vehiclecode").hide();
+	$("#check-icon").hide();
+	$("#overlapBtn").hide();
 	
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
@@ -946,7 +990,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	var ownerName = td.eq(5).text();
   	$("input[name=ownerName]").val(ownerName);
   
-  	var wideAddress = td.eq(6).text();
   	$("input[name=wideAddress]").val(td.eq(6).text());
 	
 	var cityAddress = td.eq(7).text();

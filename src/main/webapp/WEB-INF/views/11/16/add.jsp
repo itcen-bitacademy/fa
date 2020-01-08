@@ -11,48 +11,97 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-/* tr td:first-child { */
-/* 	padding-right: 40px; */
-/* } */
-.radio {
-	float: left;
-	width: 10%;
-}
-/* 테이블의 첫 row 모두 padding right */
 .form-horizontal .control-label {text-align: left;}
+
 h4{
-   font-size:14px;
+   font-size:13px;
    font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
+
+.textarea{
+   resize: none;
+   width: 282px;
+   height: 84px;
+}
+
+tr td:first-child {
+   padding-right: 10px;
+}
+
+.radio {
+   float: left;
+   width: 17%;
+}
+
 .search-input-width-first {
-	width: 130px;
+   width: 130px;
 }
+
 .search-input-width-second {
-	width: 235px;
+   width: 235px;
 }
+
 .debt-name-input {
-	width: 420px;
+   width: 420px;
 }
+
 .mgr-input {
-	width: 90px;
-	display: inline;
+   width: 90px;
+   display: inline;
 }
+
 .mgr-number-input-h4 {
-	display: inline;
-	margin-left: 30px;
-	margin-right: 20px;
+   display: inline;
+   margin-left: 42px;
+   margin-right: 20px;
 }
+
 .mgr-call-input {
-	width: 150px;
-	display: inline;
+   width: 150px;
+   display: inline;
 }
+
 .number-input{
-	text-align:right;
+   text-align:right;
 }
-.box{width: 330px;}
+
+.mybtn{float:left;margin-right:10px;}
+
+#staticBackdrop {
+   z-index: -1;
+}
+
+.selected{
+   background-color:#ddd;
+}
+
+#simple-table{
+   min-width: 2000px; 
+   margin-bottom: 0; 
+   width: auto;"
+}
+
+html,body{
+         overflow-x:hidden;
+      height:100%;
+   }
+   .main-container{
+      height:calc(100% - 45px);
+      overflow-x: hidden;
+   }
+   .main-content{
+      overflow:auto;
+   }
+   .page-content{
+      min-width:1280px;
+   }
+   @media screen and (max-width: 920px) {
+      .main-container{
+         height:calc(100% - 84px);
+      }
+   }
 </style>
 </head>
 <body class="skin-3">
@@ -61,6 +110,7 @@ h4{
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
+		
 		<div class="page-header position-relative">
 			<h1 class="pull-left">은행코드관리</h1>
 		</div><!-- /.page-header -->
@@ -197,7 +247,7 @@ h4{
 							<tr >
 								<td><label class="control-label">담당자이메일</label></td>
 								<td colspan="2">
-									<input type="email" name="mgrEmail" id="email" maxlength="30" />
+									<input  name="mgrEmail" id="email" maxlength="30" />
 										ex) jisu@naver.com
 								</td>
 							</tr>
@@ -319,11 +369,10 @@ h4{
 			</div>
 			<!-- error Modal pop-up : end -->
 			
-	
-	
 			
-   </div>/.main-content -->
- </div>/.main-container -->
+			
+   </div> <!-- /.main-content --> -->
+ </div> <!-- /.main-container --> -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 
@@ -341,19 +390,16 @@ h4{
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
                 // 각 주소의 노출 규칙에 따라 주소를 조합한다.
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
                 var addr = ''; // 주소 변수
                 var extraAddr = ''; // 참고항목 변수
-
                 //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
                 if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
                     addr = data.roadAddress;
                 } else { // 사용자가 지번 주소를 선택했을 경우(J)
                     addr = data.jibunAddress;
                 }
-
                 // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
                 if(data.userSelectedType === 'R'){
                     // 법정동명이 있을 경우 추가한다. (법정리는 제외)
@@ -373,11 +419,9 @@ h4{
                 } else {
                     $('#detailAddress').val('');
                 }
-
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 $('#postcode').val(data.zonecode);
                 $('#roadAddress').val(addr);
-
                 document.getElementById("detailAddress").focus();
                
                 // 커서를 상세주소 필드로 이동한다.
@@ -439,10 +483,11 @@ function Myvalidation(){
 	let phone=$('#phone').val(); //은행전화번호
 	let fax=$('#fax').val(); //팩스번호
 	let post=$('#postcode').val(); //우편번호
-	let address=$('#address').val(); //은행주소
+	let roadAddress=$('#roadAddress').val(); //은행도로명주소
+	let detailAddress=$('#detailAddress').val(); //상세주소
 	let mgr=$('#mgr').val(); //담당자
 	let mgrPhone=$('#mgrPhone').val(); //담당자전화번호
-	let mgrEmail=$('#mgrEmail').val(); //담당자 이메일
+	let mgrEmail=$('#email').val(); //담당자 이메일
 	
 	if(code === ''){
 		errortitle='CODE ERROR';
@@ -506,7 +551,7 @@ function Myvalidation(){
 		errorfield='#fax';
 		return false;
 	}
-	if('' === post && roadAddress) {
+	if('' === post || '' === roadAddress) {
 		errortitle = 'Addreess ERROR';
 		validationMessage = '주소는 우편번호 찾기를 통해 반드시 입력되야 합니다.'
 		errorfield='#post';
@@ -516,12 +561,6 @@ function Myvalidation(){
 		errortitle = 'DETAILADDRESS ERROR';
 		validationMessage = '상세주소는 반드시 입력해야 합니다.'
 		errorfield='#detailAddress';
-		return false;
-	}
-	if(address.length > 500) {
-		errortitle = 'ADDRESS ERROR';
-		validationMessage = '도로명 주소 + 상세주소는 500자 이하로 입력해야 합니다.'
-		errorfield='#address';
 		return false;
 	}
 	if('' === dealDate) {
@@ -557,15 +596,17 @@ function Myvalidation(){
 	if('' === mgrEmail) {
 		errortitle = 'MGREMAIL ERROR';
 		validationMessage = '담당자 이메일은 반드시 입력해야 합니다.';
-		errorfield='#mgrphone';
+		errorfield='#mgrEmail';
 		return false;
 	}
 	var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-
-	var email = $("#mgrEmail").val();
-	if (email == '' || !re.test($mgrEmail)) 
+	var email = $("#email").val();
+	if (email == '' || !re.test(email)) {
+		errortitle = 'MGREMAIL ERROR';
+		validationMessage = '이메일 형식이 틀립니다.';
+		errorfield='#mgrEmail';
 		return false;
-		
+	}
 	return true;
 }
 
@@ -576,7 +617,6 @@ $("#code").change(function(){
 	$("#img-checkcode").hide();
 	$("#btn-check-code").show();
 });	
-
 $("#btn-check-code").click(function(){
 	var code = $("#code").val();
 	if(code == ""){
@@ -615,7 +655,6 @@ $("#btn-check-code").click(function(){
 			}
 	});
 });		
-
 //requied제거후 각각 validation 추가 해라			   		    
 $("#inputbtn").click(function(){//입력버튼 클릭시      
 	if(ischecked == false){
@@ -626,21 +665,24 @@ $("#inputbtn").click(function(){//입력버튼 클릭시
 	else{
 		if(!Myvalidation()){
 	 			openErrorModal(errortitle,validationMessage,errorfield);
+	 			
 	 			return;
 	 	}
 	}
+		
+		
 		$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add');
 	  	$('#myform').attr('method', 'POST');
 	  	$('#myform').submit();
   	});
-
-
+  	
 $('#formReset').click(function(){//초기화 버튼 클릭시
  	$('input').val(''); 
+ 	$("#img-checkcode").hide();
  	 $('#code').attr('readOnly',false);
-  	$('#btn-check-code').val('중복확인');
+  	$('#btn-check-code').val('중복확인').show();
   	$('#addressSearch').val('우편번호찾기');
-});	     
+});	 
 
  $('#updatebtn').click(function(){
 	 if(!Myvalidation()){
@@ -669,29 +711,37 @@ $("#search").click(function(){
 $("#simple-table tr").click(function(){ 
 	var tr = $(this);
 	var td = tr.children();
-	$("input[name=code]").val(td.eq(0).text());
-    $("input[name=name]").val(td.eq(1).text());
-    $("input[name=store]").val(td.eq(2).text());
-    $("input[name=dealDate]").val(td.eq(3).text());
-    $("input[name=phone]").val(td.eq(4).text());
-    $("input[name=fax]").val(td.eq(5).text());
-    $("input[name=post]").val(td.eq(6).text());
-    $("input[name=roadAddress]").val(td.eq(7).text());
-    $("input[name=mgr]").val(td.eq(8).text());
-    $("input[name=mgrPhone]").val(td.eq(9).text());
-    $("input[name=mgrEmail]").val(td.eq(10).text());
-    $('#code').attr('readOnly',true);
+	
+	if($(this).hasClass('selected') === false) {
+		$('updatebtn').show();
+		$('#inputbtn').hide();
+		
+		$("#tbody-list").find('tr').removeClass("selected");
+		
+		$(this).addClass('selected');
+		$("input[name=code]").val(td.eq(0).text());
+	    $("input[name=name]").val(td.eq(1).text());
+	    $("input[name=store]").val(td.eq(2).text());
+	    $("input[name=dealDate]").val(td.eq(3).text());
+	    $("input[name=phone]").val(td.eq(4).text());
+	    $("input[name=fax]").val(td.eq(5).text());
+	    $("input[name=post]").val(td.eq(6).text());
+	    $("input[name=roadAddress]").val(td.eq(7).text());
+	    $("input[name=mgr]").val(td.eq(8).text());
+	    $("input[name=mgrPhone]").val(td.eq(9).text());
+	    $("input[name=mgrEmail]").val(td.eq(10).text());
+	    $('#code').attr('readOnly',true);
+	}
+	
 });
 			
 		
 ///////////////////////////////////////////////////////////////
-
 /////////////////////////////////////////////////////////////////
 //전화번호 자동 하이픈
 function inputTelNumber(obj) {
     var number = obj.value.replace(/[^0-9]/g, "");
     var tel = "";
-
     // 서울 지역번호(02)가 들어오는 경우
     if(number.substring(0, 2).indexOf('02') == 0) {
         if(number.length < 3) {
@@ -736,7 +786,6 @@ function inputTelNumber(obj) {
             tel += number.substr(7);
         }
     }
-
     obj.value = tel;
 }		
 /////////////////////////////////////////////////////////////////
@@ -758,6 +807,7 @@ function removeChar(event) {
     else
         event.target.value = event.target.value.replace(/[^0-9]/g, "");
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////
 $(function(){
 	$('button').on('click', function(e) {

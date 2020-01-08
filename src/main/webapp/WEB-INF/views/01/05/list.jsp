@@ -48,9 +48,30 @@
  .form-horizontal .control-label {
             text-align: left
         }
-.selected{
-	background-color:#ddd;
-}
+        
+         html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+		
+		  @media screen and (max-width: 920px) {
+         .main-container{
+            height:calc(100% - 84px);
+         }
+      }
+	
 </style>
 
 
@@ -74,7 +95,7 @@
 				<form class="form-horizontal" id="input-form" name="input-form"
 					method="post">
 					<div class="row-fluid">
-						<div class="span6">
+						<div class="span7">
 							<div class="tabbable">
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">카드 번호</label>
@@ -82,20 +103,20 @@
 									<div class="controls">
 										<div class="input-append">
 											
-											<input type="text" class="validity" id="cardNo1" name="cardNo" maxlength=4 /> 
+											<input type="text" class="validity" id="cardNo1" name="cardNo" maxlength=4 onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/> 
 										</div>
 										-
 										
 										<div class="input-append">
-											<input type="text" class="validity" id="cardNo2" name="cardNo"  maxlength=4 />
+											<input type="text" class="validity" id="cardNo2" name="cardNo"  maxlength=4 onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 										</div>
 										-
 										<div class="input-append">
-											<input type="text" class="validity" id="cardNo3" name="cardNo" maxlength=4  />
+											<input type="text" class="validity" id="cardNo3" name="cardNo" maxlength=4  onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" />
 										</div>
 										-
 										<div class="input-append">
-											<input type="text" class="validity" id="cardNo4" name="cardNo" maxlength=4  />
+											<input type="text" class="validity" id="cardNo4" name="cardNo" maxlength=4  onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" />
 										</div>
 										<div class="input-append">
 											<input id="btn-check-no" type="button" value="중복확인">
@@ -179,7 +200,7 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="limitation" name="limitation" class="limitation" onkeypress="return isNumberKey(event)"
+										<input type="text" id="limitation" name="limitation" class="limitation" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"
 											placeholder="한도" value=""  />
 									</div>
 								</div>
@@ -189,7 +210,7 @@
 							</div>
 						</div>
 
-						<div class="span6">
+						<div class="span5">
 							<div class="control-group">
 								<div>
 									<label class="control-label" for="form-field-1">유효기간 </label> 
@@ -212,7 +233,7 @@
 								<div>
 									<label class="control-label" for="form-field-1">CVC </label> 
 									<div class="controls">
-									<input type="text" class="validity" id="cvc" name="cvc" maxlength=3 placeholder="CVC" />
+									<input type="text" class="validity" id="cvc" name="cvc" maxlength=3 placeholder="CVC" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 									</div>
 								</div>
 							</div>
@@ -243,7 +264,7 @@
 								<label class="control-label" for="form-field-1">비밀번호 </label>
 
 								<div class="controls">
-									<input type="password" id="password" name="password" class="limit"
+									<input type="password" id="password" name="password" class="limit" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"
 										placeholder="비밀번호" />
 								</div>
 							</div>
@@ -273,7 +294,7 @@
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" onclick= "location.reload()">취소</button> 
+							<button class="btn btn-default btn-small" id="btn-reset" onclick= "location.reload()">초기화</button> 
 						</div>
 
 					</div>
@@ -282,9 +303,9 @@
 
 				<!-- Tables -->
 				<div class="row-fluid">
-					<div class="span12">
+					<div class="span12" style="overflow: auto;">
 						<table id="simple-table-1"
-							class="table  table-bordered table-hover">
+							class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 							<thead>
 								<tr>
 									<th>카드번호</th>
@@ -309,7 +330,7 @@
 								</tr>
 							</thead>
 
-							<tbody class="origin-tbody" >
+							<tbody id="tbodylist" class="origin-tbody" >
 
 								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 									<tr>
@@ -448,6 +469,30 @@
 	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
 <script>
+
+//숫자와 delete 키만 동작하도록한다.
+function isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    var _value = event.srcElement.value;
+
+    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+        if(event.keyCode != 46){//delete
+             return false;
+        } 
+     }
+    return true;
+    
+}
+
+//한글입력 방지
+function delHangle(evt){
+    var objTarger = evt.srcElement || evt.target;
+    var val = event.srcElement.value;
+    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+        objTarger.value = null;
+    	}
+    }
+
 $(function() {
 	var a;
 	var nochecked = false;
@@ -507,7 +552,7 @@ $(function() {
 			    		    this.reset();
 			    		});
 			    		
-			    		alert("카드 생성이 완료되었습니다."); 
+			    		openErrorModal("CREATE SUCCESS","카드 등록에 성공하였습니다.");
 			    		$("#btn-check-no").show();
 						$("#img-checkno").hide();
 			    		
@@ -526,6 +571,11 @@ $(function() {
 			    }
 			 })
 		} else if(a == "read") {
+			//카드번호 전부 입력후 조회가능하게
+			if(!DeleteValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
 			$.ajax({
 			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read",
 			    type: "POST",
@@ -533,7 +583,7 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("카드 검색이 완료되었습니다."); 
+			    		openErrorModal("CREATE SUCCESS","카드 검색에 성공하였습니다.");
 			    		removeTable();
 			    		$('#input-form').each(function(){
 			    		    this.reset();
@@ -562,7 +612,7 @@ $(function() {
 			    dataType: "json",
 			    success: function(dataResult){
 			    	if(dataResult.success) {
-			    		alert("카드 수정이 완료되었습니다."); 
+			    		openErrorModal("CREATE SUCCESS","카드 수정에 성공하였습니다.");
 			    		removeTable();
 			    	
 			    		var cardList = dataResult.cardList;
@@ -610,11 +660,15 @@ $(function() {
 				    dataType: "json",
 				    success: function(dataResult){
 				    	if(dataResult.success) {
-				    		alert("카드 삭제가 완료되었습니다."); 
+				    		openErrorModal("CREATE SUCCESS","카드 삭제에 성공하였습니다.");
 				    		removeTable();
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
+				    		$("input[name=cardNo]").attr("readonly",false);
+
+				    		$("#btn-check-no").show();
+				    		$("#btn-create").show();
 				    		
 				    		var cardList = dataResult.cardList;
 				    		createNewTable(cardList);
@@ -707,7 +761,7 @@ $(function() {
 
 	
 	
-	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+	$(document.body).delegate('#tbodylist tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
 		
@@ -748,6 +802,8 @@ $(function() {
 
 		$("#btn-check-no").hide();
 		$("#img-checkno").hide();
+		$("#btn-create").hide();
+		
 	});
 	
 
@@ -789,6 +845,10 @@ $(function() {
 		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
 		
 		
+		$("input[name=cardNo]").attr("readonly",true);
+		$("#btn-check-no").hide();
+		$("#img-checkno").hide();
+		$("#btn-create").hide();
 	}
 	
 
@@ -1116,29 +1176,6 @@ $(function() {
 		
 		return true;
 	}
-	
-	//숫자와 delete 키만 동작하도록한다.
-	function isNumberKey(evt){
-	    var charCode = (evt.which) ? evt.which : event.keyCode;
-	    var _value = event.srcElement.value;
-	
-	    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
-	        if(event.keyCode != 46){//delete
-	             return false;
-	        } 
-	     }
-	    return true;
-	    
-	}
-	
-	//한글입력 방지
-	function delHangle(evt){
-	    var objTarger = evt.srcElement || evt.target;
-	    var val = event.srcElement.value;
-	    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
-	        objTarger.value = null;
-	    	}
-	    }
 	
 	function DeleteValidation(){
 		let cardNo1 =$('#cardNo1').val();

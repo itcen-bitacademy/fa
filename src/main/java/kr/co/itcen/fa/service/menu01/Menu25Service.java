@@ -111,4 +111,16 @@ public class Menu25Service {
 		map.put("success", true);
 		return map;
 	}
+
+	public Map<String, Object> existNo(String no) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(menu25Repository.existNo(no)) {
+			map.put("result", false);
+		} else {
+			map.put("result", true);			
+		}
+		
+		return map;
+	}
 }

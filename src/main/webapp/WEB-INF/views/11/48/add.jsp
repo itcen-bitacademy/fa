@@ -16,16 +16,20 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 /* 테이블의 첫 row 모두 padding right */
+
 .form-horizontal .control-label {text-align: left;}
+
 h4{
 	font-size:13px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
+
 .textarea{
 	resize: none;
 	width: 282px;
 	height: 84px;
 }
+
 tr td:first-child {
 	padding-right: 10px;
 }
@@ -34,8 +38,6 @@ tr td:first-child {
 	float: left;
 	width: 17%;
 }
-
-
 
 .search-input-width-first {
 	width: 130px;
@@ -68,13 +70,45 @@ tr td:first-child {
 .number-input{
 	text-align:right;
 }
+
 .mybtn{float:left;margin-right:10px;}
+
 #staticBackdrop {
 	z-index: -1;
 }
+
 .selected{
 	background-color:#ddd;
 }
+
+#simple-table{
+	min-width: 2000px; 
+	margin-bottom: 0; 
+	width: auto;"
+}
+
+html,body{
+   		overflow-x:hidden;
+		height:100%;
+	}
+	.main-container{
+		height:calc(100% - 45px);
+		overflow-x: hidden;
+	}
+	.main-content{
+		overflow:auto;
+	}
+	.page-content{
+		min-width:1280px;
+	}
+	@media screen and (max-width: 920px) {
+		.main-container{
+			height:calc(100% - 84px);
+		}
+	}
+
+
+
 </style>
 </head>
 <body class="skin-3">
@@ -455,7 +489,8 @@ tr td:first-child {
 				
 			<!-- list -->
 			<p>총 ${dataResult.pagination.totalCnt }건</p>
-				<table id="simple-table" class="table  table-bordered table-hover">
+			<div  style="overflow: auto;">
+				<table id="simple-table" class="table  table-bordered table-hover" >
 					<thead>
 						<tr>
 							<th class="center">
@@ -521,7 +556,7 @@ tr td:first-child {
 						</c:forEach>
 					</tbody>
 				</table>
-				
+			</div>
 			</div><!-- /.page-content -->
 			<div class="pagination">
 				<ul>
@@ -1040,7 +1075,7 @@ tr td:first-child {
 			$('#name').val('');
 			$('#form-field-select-3').val('초기값').trigger('chosen:updated');
 			$('#code').attr('readonly',false);
-			$('#form-field-1').val(2019); 
+			
 			$('#btn-check-code').val('중복확인');
 
 			$(this).removeClass("selected");

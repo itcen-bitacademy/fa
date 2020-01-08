@@ -13,8 +13,8 @@
 				<i class="icon-caret-down"></i>
 			</a>
 			<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
-				<li><a href="#"><i class="icon-cog"></i>설정</a></li>
-				<li class="divider"></li>
+<!-- 				<li><a href="#"><i class="icon-cog"></i>설정</a></li> -->
+<!-- 				<li class="divider"></li> -->
 				<li><a href="${pageContext.request.contextPath }/user/logout"><i class="icon-off"></i>로그아웃</a></li>
 			</ul>
 		</div><!-- #sidebar-profile -->

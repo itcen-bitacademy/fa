@@ -5,7 +5,7 @@
 	<select id="getList" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      right(p.no, 10) as no, 
+			      substring(p.no, 2) as no, 
 			      p.name, 
 			      p.ceo, 
 			      p.corporation_no as corporationNo, 
@@ -37,7 +37,7 @@
 	<select id="search" parameterType="string" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      right(p.no, 10) as no, 
+			      substring(p.no, 2) as no, 
 			      p.name, 
 			      p.ceo, 
 			      p.corporation_no as corporationNo, 
@@ -72,7 +72,7 @@
 	<select id="afterDelete" parameterType="list" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      right(p.no, 10) as no, 
+			      substring(p.no, 2) as no, 
 			      p.name, 
 			      p.ceo, 
 			      p.corporation_no as corporationNo, 
@@ -158,14 +158,14 @@
 			       deposit_host = #{depositHost },
 			       update_userid = #{updateUserid },
 			       update_day = now()			       
-			 where right(no, 10) = #{no }
+			 where substring(no, 2) = #{preNo }
 		]]>
 	</update>
 	
 	<select id="findByNo" parameterType="string" resultType="purchasecustomer35vo">
 		select no
 		from tb_purchasecustomer
-		where right(no, 10) = #{_parameter }
+		where substring(no, 2) = #{_parameter }
 	</select>
 	
 	<update id="updateBankAccount" parameterType="bankaccountvo">
@@ -180,7 +180,7 @@
 		<![CDATA[
 			update tb_purchasecustomer
 			set delete_flag = 'Y'
-			where right(no, 10) in
+			where substring(no, 2) in
 		]]>
 		<foreach item="item" index="index" collection="list" open="(" close=")" separator="," >
 	        #{item}
