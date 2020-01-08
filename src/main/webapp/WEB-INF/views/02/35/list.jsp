@@ -18,9 +18,32 @@
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-	.form-horizontal .control-label {
+        html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+      	
+      	@media screen and (max-width: 920px) {
+	         	.main-container{
+            	height:calc(100% - 84px);
+         		}
+	 	}
+      	
+      	.form-horizontal .control-label {
 	    text-align: left;
-	}
+		}
 </style>
 
 	<script>
@@ -168,11 +191,9 @@
 			
 			if(document.getElementById("check_ok").style.display=='none' && $("#no").val()!=""){
 				dialog("사업자번호 중복체크 해주세요.");
-				return;
+			}else{
+				checkValid();
 			}
-			
-			checkValid();
-			//홍석아 해결해
 	        
 			return false;
 		});
