@@ -57,7 +57,7 @@
 	<update id="delete" parameterType="1cardvo">
 		<![CDATA[
 			update 	tb_cardmanager 
-			   set 	delete_flag='Y'
+			   set 	delete_flag='Y', update_userid = #{updateUserId}, update_day = now()
 			 where 	card_no = #{cardNo };
 			
 		]]>
