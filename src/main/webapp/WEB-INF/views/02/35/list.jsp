@@ -172,6 +172,7 @@
 			}
 			
 			checkValid();
+			//홍석아 해결해
 	        
 			return false;
 		});
