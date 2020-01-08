@@ -50,9 +50,8 @@ public class Menu27Controller {
 			@AuthUser UserVo authUser) {
 		System.out.println("create");
 		System.out.println(customerVo.toString());
-				
 		// User 정보 넣기 -> getLastUpdate가 내가 원하는기능이면 다시 붙이면됨
-		customerVo.setInsertUserid(authUser.getName());
+		customerVo.setInsertUserid(authUser.getId());
 		
 		page = 1;
 		Map<String, Object> result =  menu27Service.create(customerVo, page);
@@ -78,7 +77,7 @@ public class Menu27Controller {
 			@AuthUser UserVo authUser) {
 		System.out.println("update : " + page);
 		
-		customerVo.setUpdateUserid(authUser.getName());
+		customerVo.setUpdateUserid(authUser.getId());
 		
 		System.out.println(customerVo.toString());
 		
@@ -90,8 +89,10 @@ public class Menu27Controller {
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/delete")
 	public Map<String, Object> delete(@ModelAttribute CustomerVo customerVo,
-			@RequestParam(value = "page", required=false, defaultValue = "1")int page) {
+			@RequestParam(value = "page", required=false, defaultValue = "1")int page,
+			@AuthUser UserVo authUser) {
 		System.out.println("delete");
+		customerVo.setUpdateUserid(authUser.getId());
 		page = 1;
 		Map<String, Object> result = menu27Service.delete(customerVo, page);
 		result.put("success", true);

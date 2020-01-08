@@ -1,15 +1,19 @@
 package kr.co.itcen.fa.service.menu11;
 
-import java.text.DateFormat;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.itcen.fa.repository.menu11.Menu46Repository;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
@@ -42,7 +46,7 @@ public class Menu46Service {
 	}
 	//기본
 	public Map getList() {
-		return getList(null, null, 8, 1);
+		return getList(null, null, 11, 1);
 	}
 	
 	public Map getList(String code, String financialYear, int pageSize, int page) {
@@ -63,6 +67,7 @@ public class Menu46Service {
 		
 		return map;
 	}
+	
 	
 	public void deleteChecked(List<STermDebtVo> list) {
 		menu46Repository.updateDeleteFlag(list);
@@ -112,12 +117,12 @@ public class Menu46Service {
 		itemVo.setAccountNo(repayVo.getAccountNo());	//이자비용 계정과목코드
 		itemVoList.add(itemVo);
 		
-		itemVo2.setAmount(repayVo.getPayPrinc());		//납입원금
-		itemVo2.setAmountFlag("d");						//차변
+		itemVo2.setAmount(repayVo.getPayPrinc());				//납입원금
+		itemVo2.setAmountFlag("d");								//차변
 		itemVo2.setAccountNo(stermdebtVo.getAccountNo());		//단기차입금 계정과목코드					
 		itemVoList.add(itemVo2);
 		
-		itemVo3.setAmount(repayVo.getPayPrinc() + repayVo.getIntAmount());		//보통예금
+		itemVo3.setAmount(repayVo.getTotalPayPrinc());							//보통예금
 		itemVo3.setAmountFlag("c");												//대변
 		itemVo3.setAccountNo(new BankAccountVo().getAccountNo());				//보통예금 계정과목 코드
 		itemVoList.add(itemVo3);
@@ -223,6 +228,47 @@ public class Menu46Service {
 		
 		menu03Service.deleteVoucher(voucherVolist, userVo);
 	}
+	public List<STermDebtVo> getRepayDueList() {
+		List<STermDebtVo> list= null;
+		try {
+			System.out.println(getDateMap());
+			list = menu46Repository.getRepayDueList(getDateMap());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
+	//현재 날짜 일요일
+
+	public String getCurSunday(){
+		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+		c.add(c.DATE,7);
+		
+		System.out.println(formatter.format(c.getTime()));
+		return formatter.format(c.getTime());
+	}
 	
+	public Map getDateMap() throws ParseException {
+		Calendar calendar = new GregorianCalendar(Locale.KOREA);
+		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");		//현재날짜만 가져오기위해 사용
+		String dayOfSunday = getCurSunday();
+		
+		int month = calendar.get(Calendar.MONTH) + 1;
+		Map map = new HashMap();
+		map.put("curYear",calendar.get(Calendar.YEAR));
+		map.put("curMonth", month);
+		map.put("curDay",calendar.get(Calendar.DATE));
+		map.put("today", format1.format(calendar.getTime()));
+		map.put("dateOfSunday",dayOfSunday);
+		map.put("sunDay", dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
+		
+		System.out.println("curYear : " + calendar.get(Calendar.YEAR) + "curMonth : " + month);
+		System.out.println("curDay : " + calendar.get(Calendar.DATE) + "today : " + format1.format(calendar.getTime()));
+		System.out.println("dateOfSunday : " + dayOfSunday + "sunDay : " + dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
+		return map;
+	}
 }

@@ -48,7 +48,9 @@
  .form-horizontal .control-label {
             text-align: left
         }
-
+.selected{
+	background-color:#ddd;
+}
 </style>
 
 
@@ -95,7 +97,12 @@
 										<div class="input-append">
 											<input type="text" class="validity" id="cardNo4" name="cardNo" maxlength=4  />
 										</div>
+										<div class="input-append">
+											<input id="btn-check-no" type="button" value="중복확인">
+											<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										</div>
 									</div>
+									
 									
 									
 									<input type="hidden" name="cardNoOld" />
@@ -106,7 +113,7 @@
 									<label class="control-label" for="form-field-1">사용자</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="user" class="name" maxlength=6
+										<input type="text" id="user" name="user" class="name" maxlength=6
 											placeholder="사용자" />
 									</div>
 								</div>
@@ -117,7 +124,7 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="issuer" class="name" maxlength=6
+										<input type="text" id="issuer" name="issuer" class="name" maxlength=6
 											placeholder="카드발급자" />
 									</div>
 								</div>
@@ -131,7 +138,7 @@
 										<div class="input-append">
 											<a href="#" id="a-bankaccountinfo-dialog"
 												class="a-customerinfo-dialog"> <input type="text"
-												class="search-input-width-first" name="depositNo"
+												class="search-input-width-first" name="depositNo" id="depositNo"
 												placeholder="계좌번호" readonly /> <span class="add-on">
 													<i class="icon-search icon-on-right bigger-110"></i>
 
@@ -139,7 +146,7 @@
 											</a>
 										</div>
 										&nbsp; &nbsp;
-										<input type="text" id="form-field-1" name="depositHost"
+										<input type="text" id="depositHost" name="depositHost"
 											placeholder="예금주" readonly/>
 										
 									</div>
@@ -150,11 +157,11 @@
 									
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" name = "bankCode" value="" placeholder="은행코드" readonly /> 
+											<input type="text" id="bankCode"  name = "bankCode" value="" placeholder="은행코드" readonly /> 
 										</div>
 										&nbsp; &nbsp;
 										<div class="input-append">
-											<input type="text" name ="bankName" value="" placeholder="은행명" readonly />
+											<input type="text" id="bankName"  name ="bankName" value="" placeholder="은행명" readonly />
 										</div>
 									</div>
 								</div>
@@ -172,8 +179,8 @@
 									</label>
 
 									<div class="controls">
-										<input type="text" id="form-field-1" name="limitation" class="limitation" 
-											placeholder="한도" value="" />
+										<input type="text" id="limitation" name="limitation" class="limitation" onkeypress="return isNumberKey(event)"
+											placeholder="한도" value=""  />
 									</div>
 								</div>
 								
@@ -205,7 +212,7 @@
 								<div>
 									<label class="control-label" for="form-field-1">CVC </label> 
 									<div class="controls">
-									<input type="text" class="validity" id="form-field-1" name="cvc" maxlength=3 placeholder="CVC" />
+									<input type="text" class="validity" id="cvc" name="cvc" maxlength=3 placeholder="CVC" />
 									</div>
 								</div>
 							</div>
@@ -213,7 +220,7 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">교통카드 유무 </label> 
 								<div class="controls">
-									<input name="transportation" type="radio" class="ace" value="true" checked  /> 
+									<input name="transportation" type="radio" class="ace" value="true"     /> 
 									<span class="lbl"> Yes</span> 
 									
 									<input name="transportation" type="radio" class="ace" value="false"  />
@@ -224,10 +231,10 @@
 							<div class="control-group">
 								<label class="control-label" for="form-field-1">해외사용 여부</label> 
 								<div class="controls">
-										<input name="abroad" type="radio" class="ace" value="true" checked /> 
+										<input name="abroad" type="radio" class="ace" value="true"   /> 
 										<span class="lbl"> Yes</span> 
 										
-										<input name="abroad" type="radio" class="ace" value="false" /> 
+										<input name="abroad" type="radio" class="ace" value="false"  /> 
 										<span class="lbl">No</span>
 								</div>
 							</div>
@@ -236,7 +243,7 @@
 								<label class="control-label" for="form-field-1">비밀번호 </label>
 
 								<div class="controls">
-									<input type="password" id="form-field-1" name="password" class="limit"
+									<input type="password" id="password" name="password" class="limit"
 										placeholder="비밀번호" />
 								</div>
 							</div>
@@ -245,7 +252,7 @@
 								<label class="control-label" for="form-field-1">카드사 </label>
 
 								<div class="controls">
-									<input type="text" id="form-field-1" name="company" class="bankname"
+									<input type="text" id="company" name="company" class="bankname"
 										placeholder="카드사" />
 								</div>
 							</div>
@@ -271,14 +278,13 @@
 
 					</div>
 					<div class="hr hr-18 dotted"></div>
-					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 카드 ${dataResult.pagination.totalCnt } 건</p>
 				</form>
 
 				<!-- Tables -->
 				<div class="row-fluid">
 					<div class="span12">
 						<table id="simple-table-1"
-							class="table table-striped table-bordered table-hover">
+							class="table  table-bordered table-hover">
 							<thead>
 								<tr>
 									<th>카드번호</th>
@@ -420,7 +426,14 @@
 	</div>
 	<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 
-
+	<!-- Validation Modal Start -->
+	<div id="staticBackdrop" class="hide">
+		<br>
+		<pre id="staticBackdropBody" class="bolder grey"
+			style="text-align: center; background-color: white; border-color: white">
+					</pre>
+	</div>
+	<!-- Validation Modal End -->
 </body>
 <script
 	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -437,6 +450,7 @@
 <script>
 $(function() {
 	var a;
+	var nochecked = false;
 	$("#btn-create").click(function(){
 		a = "create";
 	});
@@ -449,8 +463,12 @@ $(function() {
 	$("#btn-delete").click(function(){
 		a = "delete";
 	});
-	$("#btn-delete").click(function(){
-		a = "delete";
+	$("#btn-reset").click(function(){
+		a = "reset";
+		$("input[name=cardNo]").attr("readonly",false);
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		
 	});
 	
 	
@@ -465,6 +483,16 @@ $(function() {
 			queryString.push({name: 'page', value: "${param.page}"});
 		}
 		if(a == "create") {
+			if(nochecked==false){
+				openErrorModal("DUPLICATE CHECK ERROR","사업자등록번호 중복검사는 필수입니다.",'#no');
+				$("#btn-check-no").show();
+				return;
+			}
+			// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+			if(!InsertValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
 			$.ajax({
 			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create",
 			    type: "POST",
@@ -480,6 +508,8 @@ $(function() {
 			    		});
 			    		
 			    		alert("카드 생성이 완료되었습니다."); 
+			    		$("#btn-check-no").show();
+						$("#img-checkno").hide();
 			    		
 			    		removeTable();
 			    		var cardList = result.cardList;
@@ -520,6 +550,11 @@ $(function() {
 			    }
 			 })
 		} else if(a == "update") {
+			// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+			if(!InsertValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
 			$.ajax({
 			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
 			    type: "POST",
@@ -545,34 +580,58 @@ $(function() {
 			    }
 			 })
 		} else if(a == "delete") {
-			$.ajax({
-			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
-			    type: "POST",
-			    data: queryString,
-			    dataType: "json",
-			    success: function(dataResult){
-			    	if(dataResult.success) {
-			    		alert("카드 삭제가 완료되었습니다."); 
-			    		removeTable();
-			    		$('#input-form').each(function(){
-			    		    this.reset();
-			    		});
-			    		
-			    		var cardList = dataResult.cardList;
-			    		createNewTable(cardList);
-			    	}
-			    	
-			    	$('#pagination ul').remove();
-		    		createNewPage(dataResult, a);
-		    		$('#pagination').show();
-			    },
-			    error: function( err ){
-			      	console.log(err)
-			    }
-			 })
+			// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+			if(!DeleteValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
+			
+			var cardNo1 =$('#cardNo1').val();
+			var cardNo2 =$('#cardNo2').val();
+			var cardNo3 =$('#cardNo3').val();
+			var cardNo4 =$('#cardNo4').val();
+			
+			// 삭제확인창을 띄운다.
+			openDeleteModal('DELETE CHECK', cardNo1+"-"+cardNo2+"-"+cardNo3+"-"+cardNo4+"에 대한\r\n 카드 정보를 삭제하시겠습니까?");
+			
+			// 삭제확인창 - 취소 버튼을 누르면 삭제 X
+			$("#deletecancel").click(function(){
+				openErrorModal("DELETE_CANCEL SUCCESS","카드 삭제가 취소 되었습니다.");
+				console.log("cancel");
+				return;
+			});
+			
+			// 삭제확인창 - 확인 버튼을 누르면 삭제O
+			$("#deleteok").click(function(){
+				$.ajax({
+				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+				    type: "POST",
+				    data: queryString,
+				    dataType: "json",
+				    success: function(dataResult){
+				    	if(dataResult.success) {
+				    		alert("카드 삭제가 완료되었습니다."); 
+				    		removeTable();
+				    		$('#input-form').each(function(){
+				    		    this.reset();
+				    		});
+				    		
+				    		var cardList = dataResult.cardList;
+				    		createNewTable(cardList);
+				    	}
+				    	
+				    	$('#pagination ul').remove();
+			    		createNewPage(dataResult, a);
+			    		$('#pagination').show();
+				    },
+				    error: function( err ){
+				      	console.log(err)
+				    }
+				 })
+			});
 		}
 		else {
-			alert("그외");
+			
 		}
 		
 	});
@@ -685,6 +744,10 @@ $(function() {
 		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
 		
+		$("input[name=cardNo]").attr("readonly",true);
+
+		$("#btn-check-no").hide();
+		$("#img-checkno").hide();
 	});
 	
 
@@ -724,6 +787,8 @@ $(function() {
 		var td13 = td.eq(13).text();
 		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
+		
+		
 	}
 	
 
@@ -819,13 +884,430 @@ $(function() {
     
 	
 	$(".chosen-select").chosen();
+	
+	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
+	
+	
+	function openErrorModal(title, message,errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');
+						$(errorfield).focus();
+					}
+				}
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+	
+	//insert Validation
+	function InsertValidation(){
+		let cardNo1 =$('#cardNo1').val();
+		let cardNo2 =$('#cardNo2').val();
+		let cardNo3 =$('#cardNo3').val();
+		let cardNo4 =$('#cardNo4').val();
+		let validityMM =$('#validityMM').val();
+		let validityYY =$('#validityYY').val();
+		let cvc =$('#cvc').val();
+		let user =$('#user').val();
+		let issuer =$('#issuer').val();
+		let depositNo =$('#depositNo').val();
+		let depositHost=$('#depositHost').val();
+		let password=$('#password').val();
+		let bankCode=$('#bankCode').val();
+		let bankName=$('#bankName').val();
+		let company=$('#company').val();
+		let limitation=$('#limitation').val();
+		let transportation=$('#transportation').val();
+		let abroad=$('#abroad').val();
+		
+		
+		//카드번호 Valid
+		if('' === cardNo1){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo1.length<4 || cardNo1.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo2){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo2';
+			return false;
+		}
+		if(cardNo2.length<4 || cardNo2.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo2';
+			return false;
+		}
+		if('' === cardNo3){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo3';
+			return false;
+		}
+		if(cardNo3.length<4 || cardNo3.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo3';
+			return false;
+		}
+		if('' === cardNo4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo4';
+			return false;
+		}
+		if(cardNo4.length<4 || cardNo4.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo4';
+			return false;
+		}
+		
+		//카드번호 Valid
+		if('' === validityMM){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\n필수입력항목입니다.';
+			errorfield='#validityMM';
+			return false;
+		}
+		if(validityMM.length<2 || validityMM.length >2){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\월은 2자리를 입력하셔야 합니다.';
+			errorfield='#validityMM';
+			return false;
+		}
+		if(validityMM>12 || validityMM<1){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간의\r\n월입력이 잘못되었습니다.';
+			errorfield='#validityMM';
+			return false;
+		}
+		
+		if('' === validityYY){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\n필수입력항목입니다.';
+			errorfield='#validityYY';
+			return false;
+		}
+		if(validityYY.length<2 || validityYY.length >2){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간은\r\n년은 2자리를 입력하셔야 합니다.';
+			errorfield='#validityYY';
+			return false;
+		}
+		if(validityYY<0){
+			errortitle = 'validity ERROR';
+			validationMessage = '유효기간의\r\n년입력이 잘못되었습니다.';
+			errorfield='#validityYY';
+			return false;
+		}
+		//user Valid
+		if('' === user){
+			errortitle = 'user ERROR';
+			validationMessage = '사용자는\r\n필수입력항목입니다.';
+			errorfield='#user';
+			return false;
+		}
+		
+		//cvc Valid
+		if('' === cvc){
+			errortitle = 'cvc ERROR';
+			validationMessage = 'cvc는\r\n필수입력항목입니다.';
+			errorfield='#cvc';
+			return false;
+		}
+		if(cvc.length<3 || cvc.length >3){
+			errortitle = 'cvc ERROR';
+			validationMessage = 'cvc는\r\3자리를 입력하셔야 합니다.';
+			errorfield='#cvc';
+			return false;
+		}
+		
+		
+		//issuer  Valid
+		if('' === issuer ){
+			errortitle = 'issuer  ERROR';
+			validationMessage = '발급자는\r\n필수입력항목입니다.';
+			errorfield='#issuer ';
+			return false;
+		}
+		
+		//transportation Valid
+		if($(':radio[name=transportation]:checked').length < 1){
+			errortitle = 'transportation ERROR';
+			validationMessage = '교통카드 유무는\r\n필수입력항목입니다.';
+			errorfield='#transportation';
+			return false;
+		}
+		
+		//depositNo  Valid
+		if('' === depositNo ){
+			errortitle = 'depositNo  ERROR';
+			validationMessage = '계좌번호, 예금주, 은행코드 은행명은\r\n필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요';
+			errorfield='#depositNo ';
+			return false;
+		}
+		
+		//abroad= Valid
+		if($(':radio[name=abroad]:checked').length < 1){
+			errortitle = 'abroad ERROR';
+			validationMessage = '해외사용 여부는\r\n필수입력항목입니다.';
+			errorfield='#abroad';
+			return false;
+		}
+		//password Valid
+		if('' === password){
+			errortitle = 'password ERROR';
+			validationMessage = '비밀번호는\r\n필수입력항목입니다.';
+			errorfield='#password';
+			return false;
+		}
+		if(password.length<4){
+			errortitle = 'password ERROR';
+			validationMessage = '비밀번호는\r\4자리를 이상 입력하셔야 합니다.';
+			errorfield='#password';
+			return false;
+		}
+
+		//limitation Valid
+		if('' === limitation){
+			errortitle = 'limitation ERROR';
+			validationMessage = '한도는\r\n필수입력항목입니다.';
+			errorfield='#limitation';
+			return false;
+		}
+		//company Valid
+		if('' === company){
+			errortitle = 'company ERROR';
+			validationMessage = '카드사는\r\n필수입력항목입니다.';
+			errorfield='#company';
+			return false;
+		}
+		
+		
+		
+		
+		
+		return true;
+	}
+	
+	//숫자와 delete 키만 동작하도록한다.
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode;
+	    var _value = event.srcElement.value;
+	
+	    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+	        if(event.keyCode != 46){//delete
+	             return false;
+	        } 
+	     }
+	    return true;
+	    
+	}
+	
+	//한글입력 방지
+	function delHangle(evt){
+	    var objTarger = evt.srcElement || evt.target;
+	    var val = event.srcElement.value;
+	    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+	        objTarger.value = null;
+	    	}
+	    }
+	
+	function DeleteValidation(){
+		let cardNo1 =$('#cardNo1').val();
+		let cardNo2 =$('#cardNo2').val();
+		let cardNo3 =$('#cardNo3').val();
+		let cardNo4 =$('#cardNo4').val();
+		
+	
+		//카드번호 Valid
+		if('' === cardNo1){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if(cardNo1.length<4 || cardNo1.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo1';
+			return false;
+		}
+		if('' === cardNo2){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo2';
+			return false;
+		}
+		if(cardNo2.length<4 || cardNo2.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo2';
+			return false;
+		}
+		if('' === cardNo3){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo3';
+			return false;
+		}
+		if(cardNo3.length<4 || cardNo3.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo3';
+			return false;
+		}
+		if('' === cardNo4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n필수입력항목입니다.';
+			errorfield='#cardNo4';
+			return false;
+		}
+		if(cardNo4.length<4 || cardNo4.length >4){
+			errortitle = 'CARD_NO ERROR';
+			validationMessage = '카드번호는\r\n16자리를 입력하셔야 합니다.';
+			errorfield='#cardNo4';
+			return false;
+		}
+	
+		return true;
+	}
+	
+	
+	function openDeleteModal(title, message) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "확인",
+					"class" : "btn btn-danger btn-mini",
+					"name" : "deleteok",
+					"id" : "deleteok",
+					click: function() {
+						$(this).dialog('close');
+					}
+				},
+				{
+					text: "취소",
+					"class" : "btn btn-inverse btn-mini",
+					"name" : "deletecancel",
+					"id" : "deletecancel",
+					click: function() {
+						$(this).dialog('close');
+					}
+				}
+				
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+	
+
+	//사업자등록번호 중복체크
+	$("#cardNo1").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#cardNo2").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#cardNo3").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#cardNo4").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	$("#btn-check-no").click(function(){
+		
+		if(!DeleteValidation()){
+			openErrorModal(errortitle,validationMessage,errorfield);
+			return;
+		}
+		
+
+		var cardNo1 = $("#cardNo1").val();
+		var cardNo2 = $("#cardNo2").val();
+		var cardNo3 = $("#cardNo3").val();
+		var cardNo4 = $("#cardNo4").val();
+		
+		var cardNo = cardNo1 + "-" + cardNo2 + "-" + cardNo3 + "-" +cardNo4
+		
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath }/01/05/check?cardNo=" + cardNo,
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json",
+			data: "",
+			success: function(response){
+				console.log(response);
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				
+				if(response.data == null){
+					nochecked = true;
+					$("#btn-check-no").hide();
+					$("#img-checkno").show();
+					
+					return;
+				}else{
+					openErrorModal('DUPLICATED CARD_NO ERROR',"이미 존재하는 카드번호입니다.",'#no');
+				}
+				
+				},
+				error:function(xhr,error) {
+					console.err("error" + error);
+				}
+			});
+	});
 })
- 
-		
-		
-</script>
 
-
-
+	
+	
+	</script>
 
 </html>

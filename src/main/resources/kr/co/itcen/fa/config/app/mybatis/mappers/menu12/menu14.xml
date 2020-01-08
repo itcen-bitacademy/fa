@@ -21,7 +21,7 @@
 			from 		tb_sales a, 
 						tb_salescustomer b 
 			where 		a.customer_code = b.no
-			order by 	a.sales_date desc, a.sales_no, a.number asc
+			order by 	a.insert_day desc, a.sales_date desc, a.sales_no, a.number asc
 			limit		#{pagination.pageIndex }, #{pagination.listSize } 
 		]]>
 	</select>

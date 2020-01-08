@@ -82,20 +82,12 @@
 			tst.voucher_use as voucherUse, 
 			tst.tax_type as taxType
 			from tb_sell_taxbill as tst, tb_sales as tbs
-            where tst.sales_no = tbs.sales_no
+            where tst.sales_no = tbs.sales_no 
             and tst.delete_flag = 'N'
             ]]>
-            <if test="taxType!=null">
-            	and tst.tax_type = '${taxType }'
-            </if>
-            <if test='startDate!=null'>
-	        	<![CDATA[    
-	        	and tst.write_date between date_format('${startDate }', '%Y-%m-%d') and date_format('${endDate }', '%Y-%m-%d')    
-	            ]]>
-            </if>
-            <if test='customerCode!=""'>
+            <if test='taxType!=""'>
             	<![CDATA[
-            	and tst.customer_code = '${customerCode }'
+            	and tst.tax_type = '${taxType }'
             	]]>
             </if>
             <if test='taxbillNo!=""'>
@@ -103,14 +95,24 @@
             	and tst.taxbill_no = '${taxbillNo }'
             	]]>
             </if>
-            <if test='itemCode!=""'>
+            <if test='itemName!=""'>
             	<![CDATA[
-            	and tbs.item_code = '${itemCode }'	
+            	and tbs.item_name = '${itemName }'
             	]]>
+			</if>
+			<if test='customerCode!=""'>
+            	<![CDATA[
+            	and tst.customer_code = '${customerCode }'
+            	]]>
+            </if>
+            <if test='startDate!=""'>
+	        	<![CDATA[    
+	        	and tst.write_date between '${startDate }' and '${endDate }'    
+	            ]]>
             </if>
             <if test='orderData!=""'>
 	            <![CDATA[
-	            order by '${orderData }' desc
+	            order by ${orderData } desc
 	            ]]>
             </if>
             <![CDATA[
@@ -120,7 +122,7 @@
 	
 	<select id="taxbillallcount" resultType="int">
 		<![CDATA[
-			select count(*) as cnt from tb_sell_taxbill;
+			select count(*) as cnt from tb_sell_taxbill tst, tb_sales tbs where tst.sales_no = tbs.sales_no;
 		]]>
 	</select>
 	
@@ -131,17 +133,9 @@
 			where tst.sales_no = tbs.sales_no
 			and tst.delete_flag = 'N'
             ]]>
-            <if test="taxType!=null">
-            	and tst.tax_type = '${taxType }'
-            </if>
-            <if test='startDate!=null'>
-	        	<![CDATA[    
-	        	and tst.write_date between date_format('${startDate }', '%Y-%m-%d') and date_format('${endDate }', '%Y-%m-%d')    
-	            ]]>
-            </if>
-            <if test='customerCode!=""'>
+            <if test='taxType!=""'>
             	<![CDATA[
-            	and tst.customer_code = '${customerCode }'
+            	and tst.tax_type = '${taxType }'
             	]]>
             </if>
             <if test='taxbillNo!=""'>
@@ -149,16 +143,33 @@
             	and tst.taxbill_no = '${taxbillNo }'
             	]]>
             </if>
-            <if test='itemCode!=""'>
+            <if test='itemName!=""'>
             	<![CDATA[
-            	and tbs.item_code = '${itemCode }'	
+            	and tbs.item_name = '${itemName }'
+            	]]>
+			</if>
+			<if test='customerCode!=""'>
+            	<![CDATA[
+            	and tst.customer_code = '${customerCode }'
             	]]>
             </if>
-            <if test='orderData!=""'>
-	            <![CDATA[
-	            order by '${orderData }' desc
+            <if test='startDate!=""'>
+	        	<![CDATA[    
+	        	and tst.write_date between '${startDate }' and '${endDate }';
 	            ]]>
             </if>
+	</select>
+	
+	<select id="subtaxbillno" parameterType="taxbillsearch12vo" resultType="taxbillsearch12vo">
+		<![CDATA[
+			select 
+			 taxbill_no as taxbillNo,
+			 sales_no as salesNo,
+			 customer_code as customerCode,
+			 customer_name as customerName 
+			 from tb_sell_taxbill
+            where customer_code = '${customerCode }'
+		]]>
 	</select>
 
 </mapper>

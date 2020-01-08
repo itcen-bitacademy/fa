@@ -27,7 +27,6 @@ public class Menu24Service {
 	@NoAuth
 	public DataResult<CardVo> list(int page, CardVo vo) {
 		DataResult<CardVo> dataResult = new DataResult<CardVo>();
-		System.out.println(page);
 		int totalCnt = menu24Repository.listCount(vo);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt, 11, 5);
 		

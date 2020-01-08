@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
+import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu05Service;
@@ -120,7 +121,19 @@ public class Menu05Controller {
 		result.put("success", true);
 		return result;
 	}
-		
+	
+	@ResponseBody
+	@RequestMapping("/"+SUBMENU+"/check")
+	public JSONResult checkNo(@RequestParam(value="cardNo", required=true, defaultValue="") String cardNo) {
+		CardVo exist = new CardVo();
+		exist.setCardNo(cardNo);
+		CardVo vo = menu05Service.exist(exist);
+        return JSONResult.success(vo);
+	}	
+	
+	
+	
+	
 	// PopUp
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/gets")

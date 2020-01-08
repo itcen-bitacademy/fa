@@ -82,7 +82,7 @@ public class Menu09Repository {
 		System.out.println("------------------------------");
 		
 		map.put("landVo", landVo);
-		
+		System.out.println("reposi 성공");
 		
 		sqlSession.update("menu09.updateLand", landVo);
 	}

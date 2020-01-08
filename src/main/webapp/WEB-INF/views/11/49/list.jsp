@@ -59,6 +59,7 @@ form {
 .fourth-column {width:70px;}
 .fifth-column {width:200px;}
 .sixth-column {padding-left:20px;}
+.seventh-column {padding-left:20px;}
 
 /* second row */
 .span2 {padding-left:40px; padding-top:10px;}
@@ -77,7 +78,6 @@ form {
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">장기차입금현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 				
 					<!-- PAGE CONTENT BEGINS -->
@@ -149,8 +149,10 @@ form {
 										<input type="text" name="bankName" value="${vo.bankName }"/>
 									</td>
 									<td class="sixth-column">
-										<button class="btn" id='search'>조회</button>
-				
+										<button class="btn btn-primary btn-small" id='search'>조회</button>
+									</td>
+									<td class="sixth-column">
+										<button class="btn btn-primary btn-small" id='reset'>초기화</button>
 									</td>
 								</tr>
 								<tr>
@@ -175,10 +177,10 @@ form {
 										<label class="control-label" style="padding-right: 12px;">차입금 선택정렬</label>
 										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." name="sort" >
 											<option value=""></option>
-											<option value="d">차입일자</option>
-											<option value="e">만기일자</option>
-											<option value="i">등록일자</option>
-											<option value="m">차입금액</option>
+											<option value="d" <c:if test="${sort eq 'd'}"> selected </c:if>>차입일자</option>
+											<option value="e" <c:if test="${sort eq 'e'}">selected</c:if>>만기일자</option>
+											<option value="i" <c:if test="${sort eq 'i'}">selected</c:if>>등록일자</option>
+											<option value="m" <c:if test="${sort eq 'm'}">selected</c:if>>차입금액</option>
 										</select>
 									</div>
 								</div>

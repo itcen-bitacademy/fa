@@ -11,8 +11,6 @@
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
-
-
 <style>
 .limitation{
 	width:200px;
@@ -21,6 +19,7 @@
 </style>
 </head>
 <body class="skin-3">
+	<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -35,20 +34,24 @@
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="row-fluid">
+							
 							<!-- PAGE CONTENT BEGINS -->
-							<form class="form-horizontal" method="post" id="input-form"
-								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+							<form class="form-horizontal" method="post" id="input-form" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();" data-checkpurchaseno="no">
 
 								<div class="span6">
 									<!-- 차변 -->
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">차량 코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id" placeholder="9자를 입력하세요" />
+											<input type="text" id="vehicle_code" name="id" style="margin:0 5px 0 0" placeholder="9자를 입력하세요"/>
+											<input id="overlapBtn" style="height:28px" type="button" value="중복확인">
+											<i id="check-icon" class="icon-ok bigger-180 blue" style="display:none;"></i>
+											<input readonly type="text" class="span6" id="default-vehiclecode" style="background-color: #FFFFFF" placeholder="ex)2019년12월03일 191203001"></input>
+<%-- 										<input type="hidden" id="vehicleNo" value="${saleslist[0].salesNo }">
 											<input type="text" class="span6" id="default-vehiclecode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
 											<input type="text" class="span6" id="overlap-vehiclecode" style="border:none;color:red"  value="사용중인 품목코드입니다">
 											<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="차량코드는 숫자만 입력하세요.">
-											<input type="text" class="span6" id="null-vehiclecode" style="border:none;color:red"  value="품목코드는 필수 입력 사항입니다!">
+											<input type="text" class="span6" id="null-vehiclecode" style="border:none;color:red"  value="품목코드는 필수 입력 사항입니다!"> --%>
 										</div>
 									</div>
 
@@ -66,7 +69,7 @@
 									</div>
 
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">주소(광역)</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
 										<div class="controls">
 											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 											<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
@@ -91,13 +94,13 @@
 										<div style="float: left; width: 50%">
 											<label style="text-align:left;" class="control-label" for="form-field-1">매입일자</label>
 											<div class="controls">
-												<input class="cl-date-picker" style="width: 150px" type="text" id="form-field-1" name="payDate" placeholder="" />
+												<input class="cl-date-picker" style="width: 150px" type="text" id="payDate" name="payDate" placeholder="" />
 												<i class="icon-calendar"></i>
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 60px; margin-left: 10px; margin-right: 10px;" class="control-label" for="form-field-1">출시가</label>
-												 <input style="width: 200px; margin-left : 10px;" class=limitation type="text" id="form-field-1" name="publicValue" placeholder="금액을 입력하세요" />
+												 <input style="width: 200px; margin-left : 10px;" class=limitation type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
@@ -156,7 +159,7 @@
 										<div style="float: left; width: 50%">
 											<label style="width: 60px; margin-left: 10px; margin-right: 10px;"
 												class="control-label" for="form-field-1">사용자</label> <input
-												style="width: 200px; margin-left : 10px;" type="text" id="form-field-1" name="ownerName" placeholder="차량 사용자를 입력하세요" />
+												style="width: 200px; margin-left : 10px;" type="text" id="ownerName" name="ownerName" placeholder="차량 사용자를 입력하세요" />
 										</div>
 									</div>
 
@@ -187,7 +190,7 @@
 									<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서 번호</label>
 									<div class="controls">
-										<input  type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
+										<input type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
 									</div>
 								</div> 
 								
@@ -242,18 +245,14 @@
 										<div class="hr hr-18 dotted"></div>
 										<div class="controls" style="margin-left: 0px;">
 											<div class="controls" style="margin-left: 0px;">
-												<button type="submit" class="btn btn-primary btn-small"
-													id="insert" style="float: left; margin-right: 20px;"
-													formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert">등록</button>
-												<button type="submit" class="btn btn-warning btn-small"
-													id="modify" style="float: left; margin-right: 20px;"
-													formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update">수정</button>
+												<button class="btn btn-primary btn-small"
+													id="insert" style="float: left; margin-right: 20px;">등록</button>
+												<button class="btn btn-warning btn-small"
+													id="modify" style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
-													style="float: left; margin-right: 20px;"
-													formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}/delete">삭제</button>
+													style="float: left; margin-right: 20px;">삭제</button>
 												<button class="btn btn-info btn-small" id="search"
-													style="float: left; margin-right: 20px;"
-													formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">조회</button>
+													style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-default btn-small" id="clear"
 													style="float: left; margin-right: 20px;" type="reset">초기화</button>
 											</div>
@@ -291,7 +290,7 @@
 										<th>부대비용(원)</th>
 										<th>보증금(원)</th>
 										<th hidden="hidden">보증금,월사용료 실제 납부일자</th>
-										<th>보증금 예정일자</th>
+										<th>보증금 예정일</th>
 										<th>월 사용료(원)</th>
 										<th>월 사용료 납부일</th>
 										<th>과세/영세</th>
@@ -339,7 +338,7 @@
 								<table id="dialog-message-table" align="center">
 									<tr>
 										<td>
-											<form action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
+											<form id="segum-input-form" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum" method="POST">
 												
 												<label>차량코드</label> 
 												<input readonly type="text" id="vehicleNo" name="vehicleNo" value="차량코드">
@@ -440,6 +439,10 @@
 							<!-- 페이징 -->
 							</div>
 						</div>
+						<!-- valid -->
+						 <div id="dialog-confirm" class="hide">
+						<p id="dialog-txt" class="bolder grey"></p>
+						</div>
 						<!-- /.span -->
 					</div>
 					<!-- /.row-fluid -->
@@ -453,178 +456,278 @@
 		<!-- /.main-container -->
 		<!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-
 <script>
-
-//차량코드 유효성 검사
-$(document).ready(function(){
+	//목표 !!! => 큰 function안에 함수들 다 넣기 
+	//$(function(){
 	
-	$("#nabbu").hide();
-	$("#walsa").hide();
-	$("#segumBtn").hide();
-	
-	
-	$("#overlap-vehiclecode").hide();
-	$("#onlynumber").hide();
-	$("#null-vehiclecode").hide();
-	
-	$("#vehicle_code").focus();
-	
-	$("#vehicle_code").on("change", function(e){
+			//차량코드 유효성 검사
+			$(document).ready(function(){
+				
+				$("#insert").show(); //등록 버튼 보여기
+				$("#modify").hide(); //수정 버튼 가리기
+				$("#delete").hide(); //삭제 버튼 가리기
+				$("#search").show(); //조회 버튼 보이기
+				$("#clear").show(); //초기화 버튼 보이기
+				
+				$("#nabbu").hide();
+				$("#walsa").hide();
+				$("#segumBtn").hide();
+			
+				$("#overlap-vehiclecode").hide();
+				$("#onlynumber").hide();
+				$("#null-vehiclecode").hide();
+				
+				$("#vehicle_code").focus();
+				
+				//마감날짜 함수 실행
+				console.log("closing" + $("#closingDate").val());
+				checkClosing();
+				
+				
+			}); //$(document).ready(function() 의 마지막
+			
+					
+			$("#overlapBtn").on("click", function(e){
+				e.preventDefault();
 		
-		if(isNaN($("#vehicle_code").val()) /*=== true*/){
-			$("#default-vehiclecode").hide();
-			$("#overlap-vehiclecode").hide();
-			$("#null-vehiclecode").hide();
-			$("#onlynumber").show();
-			$("#vehicle_code").val(""); //text비우기
-			return;
+				var id = "e" + $("#vehicle_code").val();
+		    
+			   $.ajax({
+			      url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id=" + id,
+			      type : "get",
+			      dataType : "json",
+			      data : "",
+			      success:function(data) {
+						if(data === "true") {
+							dialog("사용가능한 품목코드입니다.", false);
+							$("#input-form").data("checkpurchaseno", "ok");
+							$("#overlapBtn").hide();
+							$("#default-vehiclecode").hide();
+							$("#check-icon").show();
+							var checkpurchaseno = $("#input-form").data("checkpurchaseno");
+							console.log("사용가능한 품목코드입니다." + checkpurchaseno);
+						} else if(data === "false") {
+							dialog("중복된 품목코드입니다.", false);
+							$("#input-form").data("checkpurchaseno", "no");
+							$("#vehicle_code").val("");
+						} else if(data === "none") {
+							dialog("품목코드 9자를 입력해주세요.", false);
+							$("#input-form").data("checkpurchaseno", "no");
+	
+						}
+					}, error:function(error) {
+						dialog("찾을 수 없는 품목입니다.", true);
+					}
+				});
+			});
+		    //차량코드 변화시 중복확인버튼 보이기.
+			$("#vehicle_code").on('keyup', function(event){
+					var check = $("#input-form").data("checkpurchaseno");
+					
+					if(check === "ok") {
+						if($("#vehicle_code").val().length < 9) {
+						$("#input-form").data("checkpurchaseno", "no");
+						$("#overlapBtn").show(); //중복확인버튼
+						$("#default-vehiclecode").show(); //쓰는방법
+						$("#check-icon").hide(); //체크아이콘
+					}
+					}
+			});
+
+			//// 등록 validation함수 insert()로 가능
+			function insert(){
+				
+				var checkpurchaseno = $("#input-form").data("checkpurchaseno");
+				var vehiclecode = $("#vehicle_code").val();
+				console.log("품목코드를 중복확인 해주세요." + checkpurchaseno);
+				console.log($("#vehicle_code").val.length);
+				if(checkpurchaseno === "no" || vehiclecode.length < 9) {
+					$("#input-form").data("checkpurchaseno", "no");
+					
+					dialog("품목코드를 중복확인 해주세요.", false);
+				}
+
+				else if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
+				else if(!valid.numberCheck("vehicle_code", "차량 코드")) return false;
+				else if(!valid.nullCheck("classification", "차량 분류")) return false;
+				else if(!valid.nullCheck("staffNoId", "직급")) return false;
+				else if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
+				else if(!valid.nullCheck("wideAddr", "주소")) return false;
+				else if(!valid.nullCheck("customerNo", "거래처")) return false;
+				else if(!valid.nullCheck("payDate", "매입일자")) return false;
+				else if(!valid.nullCheck("publicValue", "출시가")) return false;
+				else if(!valid.nullCheck("acqTax", "취득세")) return false;
+				else if(!valid.nullCheck("etcCost", "부대비용")) return false;
+				else if(!valid.nullCheck("deposit", "보증금")) return false;
+				else if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
+				else if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
+				else if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
+				else if(!valid.radioCheck("taxKind", "세금 종류")) return false;
+	
+		   			return true;
+		        	}
+			//// 수정 validation함수 update()로 가능
+			function update(){
+		   			if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
+		   			if(!valid.nullCheck("classification", "차량 분류")) return false;
+		   			if(!valid.nullCheck("staffNoId", "직급")) return false;
+		   			if(!valid.nullCheck("ownerName", "차량 소유자")) return false;
+		   			if(!valid.nullCheck("wideAddr", "주소")) return false;
+		   			if(!valid.nullCheck("customerNo", "거래처")) return false;
+		   			if(!valid.nullCheck("payDate", "매입일자")) return false;
+		   			if(!valid.nullCheck("publicValue", "출시가")) return false;
+		   			if(!valid.nullCheck("acqTax", "취득세")) return false;
+		   			if(!valid.nullCheck("etcCost", "부대비용")) return false;
+		   			if(!valid.nullCheck("deposit", "보증금")) return false;
+		   			if(!valid.nullCheck("dueDate", "보증금 납부 예정일")) return false;
+		   			if(!valid.nullCheck("feeDate", "월 사용료 납부 예정일")) return false;
+		   			if(!valid.numberCheck("feeDate", "월 사용료 납부 예정일")) return false;	
+		   			if(!valid.radioCheck("taxKind", "세금 종류")) return false;
+	
+		   			return true;
+		        	}
+			
+				//valid2
+		        var valid = {
+		        		nullCheck: function(id, msg){ // null 체크
+		        			if($("#"+id).val()==""){
+		        				dialog(msg+" 을(를) 입력 해 주세요.");
+		        				return false;
+		        			} else {
+		        				return true;
+		        			}
+		        		},
+						strCheck: function(id){  // 문자열 체크 
+		        			
+		        		}, 
+		        		radioCheck: function(name, msg){  // 문자열 체크 
+							if(!jQuery('input[name='+ name +']:checked').val()){
+		        			dialog(msg+" 를 선택해 주세요.");
+								return false;
+							} else {
+								return true;
+							}
+		        		},
+						numberCheck: function(id, msg){  // 숫자 체크
+		        			if(!$.isNumeric($("#"+id).val())){        	
+		        				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
+		        				$("#"+id).focus();
+		        				return false;
+		        			} else {
+		        				return true;
+		        			}
+		        		}
+		        
+		        }
+		        
+			//valid3 dialog
+	        function dialog(txt, flag) {
+	        	$("#dialog-txt").html(txt);
+	    		var dialog = $( "#dialog-confirm" ).dialog({
+					resizable: false,
+					modal: true,
+					buttons: [
+						{
+							text: "OK",
+							"class" : "btn btn-danger btn-mini",
+							click: function() {
+								if(flag){
+									$( this ).dialog( "close" ); 
+									location.href="${pageContext.request.contextPath }/08/41";
+								} else {
+									$( this ).dialog( "close" ); 
+								}
+							}
+						}
+					]
+				});
+	    	} // valid dialog마지막
+				
+	    	//마감일자 validation
+	    	function checkClosing(){ // 마감일 세팅 여부
+				if($("#closingDate").val()=="true"){
+					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+				}
+			}
+	
+	$(function() {
+		$.fn.datepicker.dates['ko'] = {
+		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+		daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+		months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+		today: "Today",
+		clear: "Clear",
+		format: "yyyy-mm-dd",
+		titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+		weekStart: 0
+		};
+	
+		$('#cl-ym-date-picker').datepicker({
+			maxViewMode: 4,
+			minViewMode: 1,
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+	
+		$('.cl-date-picker').datepicker({
+			language: 'ko'
+		}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		
+		//금액에 콤마 추가하기
+		 function addCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //string으로 변환시키면서 3자리수마다 ,붙여주기
 		}
-		var id = "e" + $("#vehicle_code").val();
-    
-	   $.ajax({
-	      url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
-	      type : "get",
-	      dataType : "json",
-	      data : "",
-	      success: function(response){
-	         if(response.result == "fail"){
-	            console.error(response.message);
-	            return;
-	         }
-	         
-	         if(response.data == true){
-	            $("#default-vehiclecode").hide();
-	            $("#null-vehiclecode").hide();
-	            $("#onlynumber").hide();
-	            $("#overlap-vehiclecode").show();
-	            $("#vehicle_code").val("");
-	            $("#vehicle_code").focus();
-	            return;
-	         
-	         } else if(id == "") {
-	            $("#default-vehiclecode").hide();
-	            $("#overlap-vehiclecode").hide();
-	            $("#onlynumber").hide();
-	            $("#null-vehiclecode").show();
-	            $("#vehicle_code").focus();
-	         }
-	      },
-	      error: function(xhr, error) {
-	         console.error("error: " + error);
-	      }
-	   });
-	   
-	   
+	
+		//.keyup() - 키 입력 후 발생되는 이벤트 콤마가 추가되면서 나옴
+		//console.log("값이 뭔가요?" + $(this).val());
+		$("input[name=publicValue]").on('keyup', function(event){
+			// $(this).val(addCommas($(this).val().replace(/[^0-9]/g,""))); //$(this).val()의 값의 콤마를 제거하고 다시 addCommas
+			//console.log("값이 뭔가요?" + $(this).val()); //이거가 그냥 ,안붙는거
+			//console.log("값이 뭔가요222?" + $(this).val().replace(/[^0-9]/g,""));
+			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		}); 
 		
-	});
-});
-
-
-$(function(){
-	$(".chosen-select").chosen(); 
-});
-$(function() {
-	$.fn.datepicker.dates['ko'] = {
-	days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-	daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-	daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-	months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-	monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-	today: "Today",
-	clear: "Clear",
-	format: "yyyy-mm-dd",
-	titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-	weekStart: 0
-	};
-
-	$('#cl-ym-date-picker').datepicker({
-		maxViewMode: 4,
-		minViewMode: 1,
-		language: 'ko'
-	}).next().on(ace.click_event, function(){
-		$(this).prev().focus();
-	});
-
-	$('.cl-date-picker').datepicker({
-		language: 'ko'
-	}).next().on(ace.click_event, function(){
-		$(this).prev().focus();
-	});
-	
-	//금액에 콤마 추가하기
-	 function addCommas(x) {
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-
-
-	$("input[name=publicValue]").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	}); 
-	
-	$("input[name=acqTax]").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	}); 
-	
-	$("input[name=etcCost]").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	}); 
-	
-	$("input[name=deposit]").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	}); 
-	
-	$("input[name=monthlyFee]").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	}); 
-	
-	$("#input-form").submit(function(event) {
-     
-	
-	$("input[name=publicValue]").val($("input[name=publicValue]").val().replace(/[^0-9]/g,""));
+		$("input[name=acqTax]").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		}); 
 		
-	
-	$("input[name=acqTax]").val($("input[name=acqTax]").val().replace(/[^0-9]/g,""));
-	
-	
-	$("input[name=etcCost]").val($("input[name=etcCost]").val().replace(/[^0-9]/g,""));
-	
-	
-	$("input[name=deposit]").val($("input[name=deposit]").val().replace(/[^0-9]/g,""));
-	
-	$("input[name=monthlyFee]").val($("input[name=monthlyFee]").val().replace(/[^0-9]/g,""));
-});
-});
-
-
-
-//취득세 등록세 계산
-/* $(function() {
-	$("#acqPrice").change(function() {
-		$("#acqTax").val(Math.floor($("#acqPrice").val()*0.04));
-	});
-	
-}); */
-
-
-//빈칸 검사()
-function formCheck() {
-	
-	if($("#vehicle_code").val() == "")
-  {
-		 document.getElementById(next).focus();
-       alert("검색어를 입력해주시기 바랍니다.");
-  }
-
-	if(window.event.keyCode ==13) {
+		$("input[name=etcCost]").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		}); 
 		
-	}else{
-		return;
-	}
-}
+		$("input[name=deposit]").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		}); 
+		
+		$("input[name=monthlyFee]").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		}); 
+		
+		//input창에 값을 등록버튼 눌러서 보낼때는 ,를 빼서 보내야 하는것은 맞는데 이유는 데이터베이스 안에서는 int형으로 들어가야되서 
+		$("#input-form").submit(function(event) {
+		
+		$("input[name=publicValue]").val($("input[name=publicValue]").val().replace(/[^0-9]/g,""));
+			
+		$("input[name=acqTax]").val($("input[name=acqTax]").val().replace(/[^0-9]/g,""));
+		
+		$("input[name=etcCost]").val($("input[name=etcCost]").val().replace(/[^0-9]/g,""));
+		
+		$("input[name=deposit]").val($("input[name=deposit]").val().replace(/[^0-9]/g,""));
+		
+		$("input[name=monthlyFee]").val($("input[name=monthlyFee]").val().replace(/[^0-9]/g,""));
+		
+		});
+	}); //datepicker 함수 마지막
+
 
 //엔터키 막기
 document.addEventListener('keydown', function(event) {
@@ -688,6 +791,15 @@ $('#form-field-customerCode').change(function() {
 
 });
 
+
+//직급 코드 변경시 이벤트 select Box
+/* $('#staffNoId').change(function() {
+	var staffCode = $('#staffNoId option:selected').attr('staffNo');
+	$('#staffNoId').val(staffCode);
+
+}); */
+
+
 //사용개월 수 계산 함수
 function calcMonth(index, item) {
 	var payDate = $(item).text(); //매입날짜
@@ -732,27 +844,62 @@ function updateSection(sectionCode){
 function setMonth() {
 	$('tr .pay-date').each(calcMonth)
 };
+
+$("#insert").click(function() {
+	if(!insert()){
+		return;
+	}		
+	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
+	$("#input-form").attr("method","post");
+	$("#input-form").submit();
+});
+
+$("#modify").click(function() {
+	if(!update()){
+		return;
+	}		
+	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
+	$("#input-form").attr("method","post");
+	$("#input-form").submit();
+
+}); 
+
+$("#delete").click(function() {
+	  
+	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
+	$("#input-form").attr("method","post");
+	$("#input-form").submit();
+   	alert("삭제 하시겠습니까?");
+}); 
+
+$("#search").click(function() {
+	
+	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
+	$("#input-form").attr("method","GET");
+	$("#input-form").submit();
+	//alert("조회");
+});
+
+$("#segum").click(function() {
+	
+	$("#segum-input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum");
+	$("#segum-input-form").attr("method","POST"); 
+	$("#segum-input-form").submit();
+});
+
+
+
+
 //버튼 구현
 $(function(){
 	
-	
-	$("#insert").click(function() {
-		$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
-	});
-	
-	 $("#modify").click(function() {
-	 }); 
-	 
-	 $("#delete").click(function() {
-		   $("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
-	    alert("삭제");
-	 }); 
-	 
-	 $("#search").click(function() {
-	    alert("조회");
-	 })
- 
- setMonth();
+	//버튼 막기 모달창이 바로 사라져버림 방지
+	$('button').on('click', function(e) {
+		e.preventDefault();
+	}) 
+
+ 	 setMonth();
+	 $(".chosen-select").chosen(); //대분류코드 + 거래처코드 + 직급  class=chosen-select ( select box있는 경우 )
 });
 
 // 테이블의 Row 클릭시 값 가져오기
@@ -760,7 +907,10 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	$("#nabbu").hide();
 	$("#walsa").hide();
 	$("#segumBtn").show();
-
+	$("#vehicle_code").prop('readonly',true);
+	$("#default-vehiclecode").hide();
+	$("#check-icon").hide();
+	$("#overlapBtn").hide();
 	
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
@@ -768,12 +918,13 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	// 현재 클릭된 Row(<tr>)
 	var tr = $(this); 
 	var td = tr.children();
-
-	var vehicleNo = td.eq(1).text();
+	
+	var vehicleNo = td.eq(1).text().replace('e','');
 	$("input[name=id]").val(vehicleNo);
-	$("#vehicleNo").val(vehicleNo); //납부 Pop - up 에 차량코드 넣기.
+	$("#vehicleNo").val(td.eq(1).text()); //납부 Pop - up 에 차량코드 넣기.
 	
 	var carSectionNo = updateSection(td.eq(2).text());
+	//var carSectionNo = td.eq(2).text();
 	//$('#form_field_section_chosen').find('span').text(carSectionNo);
 	
 	var carSectionName = td.eq(3).text();
@@ -784,30 +935,30 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
   var staffNo='';
   
 	switch (staffName){
-  case "사원" :
-  	staffNo=1;
-      break;
-  case "대리" :
-  	staffNo=2;
-	    break;
-  case "과장" :
-  	staffNo=3;
-      break;
-  case "차장" :
-  	staffNo=4;
-      break;
-  case "부장" :
-  	staffNo=5;
-  	break;
-  case "이사" :
-  	staffNo=6;
-  	break;
-  case "상무" :
-  	staffNo=7;
-  	break;
-  case "전무" :
-  	staffNo=8;
-  	break;
+	  case "사원" :
+	  	staffNo=1;
+	      break;
+	  case "대리" :
+	  	staffNo=2;
+		    break;
+	  case "과장" :
+	  	staffNo=3;
+	      break;
+	  case "차장" :
+	  	staffNo=4;
+	      break;
+	  case "부장" :
+	  	staffNo=5;
+	  	break;
+	  case "이사" :
+	  	staffNo=6;
+	  	break;
+	  case "상무" :
+	  	staffNo=7;
+	  	break;
+	  case "전무" :
+	  	staffNo=8;
+	  	break;
 	}
 
 	//선택된 직급에 대한 staffNo값을 value값으로 변경 
@@ -878,298 +1029,304 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
 		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
-		$("#delete").show(); //삭제 버튼 가리기
-		$("#search").show(); //조회 버튼 가리기
-		$("#clear").show(); //초기화 버튼 가리기
+		$("#delete").show(); //삭제 버튼 보여주기
+		$("#search").hide(); //조회 버튼 가리기
+		$("#clear").show(); //초기화 버튼 보여주기
 
 	}else {
 		console.log("세금계산서 번호 있으면 버튼 가리기.");
 		$("#insert").hide(); //등록 버튼 가리기
-		$("#modify").hide(); //수정 버튼 보여주기
-		$("#delete").show(); //삭제 버튼 가리기
+		$("#modify").hide(); //수정 버튼 가리기
+		$("#delete").show(); //삭제 버튼 보여주기
 		$("#search").hide(); //조회 버튼 가리기
-		$("#clear").show(); //초기화 버튼 가리기
+		$("#clear").show(); //초기화 버튼 보여주기
 	} 
   
   $("#cusNo").val(customerCode); // 납부할때 거래처번호를 넘겨줘야 한다.
 
-  $.ajax({
-		url: "${pageContext.request.contextPath }/08/41/taxinfo",
-		contentType : "application/json; charset=utf-8",
-		type: "GET",
-		dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-		data: {id : vehicleNo},
-		success: function(response){
-			
-			lastnapil = response.lastnapbuDate;
+  
+		  //보증금 + 월사용료
+		  $.ajax({
+				url: "${pageContext.request.contextPath }/08/41/taxinfo",
+				contentType : "application/json; charset=utf-8",
+				type: "GET",
+				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+				data: {id : vehicleNo},
+				success: function(response){
+					
+					lastnapil = response.lastnapbuDate;
+						
+					if(lastnapil== null ){
+						console.log("보증금 낸적이 없다.")
+						$("#nabbu").show(); //납부 버튼 보여주기
+		              return false;
 				
-			if(lastnapil== null ){
-				console.log("보증금 낸적이 없다.")
-				$("#nabbu").show(); //납부 버튼 보여주기
-              return false;
+					}else {
+						console.log("보증금 낸적이 있다.");
+						$("#nabbu").hide(); //납부 버튼 숨기기
+						$("#walsa").show(); //월사용료 납부버튼 보이기
+						var wal = Number(lastnapil.substr(5,2))+1; //wal.length가 안됨. wal이 number타입이기떄문
+						var walString =  String(wal); //wal을 String으로 바꿔줌
+					
+					
+						//달이 13일이 될 경우 다시 1월로 변경
+					 	if(walString == 13)
+						{
+							walString = "1";
+							
+						} 
+						//달이 한자리 수일때 0을 붙여줘서 01월 의 형식으로 출력되야 하므로
+						if(walString.length==1){
+							walString = "0" + walString;
+							console.log("walnapil : "+ yyyy +"-"+ walString +"-"+ $("#feeDate").val());
+							var walnapil = yyyy +"-"+ walString +"-"+ $("#feeDate").val();
+							$("#walnapil-input").val(walnapil); 
+						}else{ //달이 11,12월일때까지는 그대로 출력해야 하므로
+							var walnapil = yyyy +"-"+ walString +"-"+ $("#feeDate").val();
+							$("#walnapil-input").val(walnapil); 
+						
+						}
+					
+					
+						var today = new Date();	
+						var mmm = (today.getMonth() + 1); //January is 0!	
+						var mm = "0";
+						
+						
+						if(mmm < 10 ){
+							mm = mm + new String(mmm);
+			
+						}else {
+							mm = mmm;
+						}
+					
+						var currentMonth  = mm;
+						console.log("현재달" + currentMonth);
+						console.log("월사용료 예정일 달" + walString);
+						//현재달 1월과 월사용료 예정일 1월 이 같기 때문에 $("#walsa").show();
+						if(walString == currentMonth){
+							console.log("월사용료 = 현재달이라서 월사용료 납부버튼 보이기");
+							$("#walsa").show();
+						}
+						//현재달 12월과 월사용료 예정일 1월이 다르기 때문에 $("#walsa").hide();
+						else{
+							console.log("월사용료 != 현재달이라서 월사용료 납부버튼 숨기기");
+							//$("#walsa").hide();
+						}
+					}
+				},
+				error: function(xhr, error){
+					console.error("error : " + error);
+				}
+			}); //보증금 + 월사용료 ajax
+		
+		  
+			var realPayDate = td.eq(23).text(); //실제로 납부한 날짜
+		  	console.log("realPayDate" + realPayDate);
+		  
+		
+			//사용 개월  
+			var payDate  =  td.eq(12).text();
+			
+			var today = new Date();	
+			var ddd = today.getDate();
+			var dd = "0"
+			var mmm = (today.getMonth() + 1); //January is 0!	
+			var mm = "0";
+			var yyyy = new String(today.getFullYear());
+			
+			
+			if(mmm < 10 ){
+				mm = mm + new String(mmm);
 		
 			}else {
-				console.log("보증금 낸적이 있다.");
-				$("#nabbu").hide(); //납부 버튼 숨기기
-				$("#walsa").show(); //월사용료 납부버튼 보이기
-				var wal = Number(lastnapil.substr(5,2))+1; //wal.length가 안됨. wal이 number타입이기떄문
-				var walString =  String(wal); //wal을 String으로 바꿔줌
-			
-			
-				//달이 13일이 될 경우 다시 1월로 변경
-			 	if(walString == 13)
-				{
-					walString = "1";
-					
-				} 
-				//달이 한자리 수일때 0을 붙여줘서 01월 의 형식으로 출력되야 하므로
-				if(walString.length==1){
-					walString = "0" + walString;
-					console.log("walnapil : "+ yyyy +"-"+ walString +"-"+ $("#feeDate").val());
-					var walnapil = yyyy +"-"+ walString +"-"+ $("#feeDate").val();
-					$("#walnapil-input").val(walnapil); 
-				}else{ //달이 11,12월일때까지는 그대로 출력해야 하므로
-					var walnapil = yyyy +"-"+ walString +"-"+ $("#feeDate").val();
-					$("#walnapil-input").val(walnapil); 
-				
-				}
-			
-			
-				var today = new Date();	
-				var mmm = (today.getMonth() + 1); //January is 0!	
-				var mm = "0";
-				
-				
-				if(mmm < 10 ){
-					mm = mm + new String(mmm);
-	
-				}else {
-					mm = mmm;
-				}
-			
-				var currentMonth  = mm;
-				console.log("현재달" + currentMonth);
-				console.log("월사용료 예정일 달" + walString);
-				//현재달 1월과 월사용료 예정일 1월 이 같기 때문에 $("#walsa").show();
-				if(walString == currentMonth){
-					console.log("월사용료 = 현재달이라서 월사용료 납부버튼 보이기");
-					$("#walsa").show();
-				}
-				//현재달 12월과 월사용료 예정일 1월이 다르기 때문에 $("#walsa").hide();
-				else{
-					console.log("월사용료 != 현재달이라서 월사용료 납부버튼 숨기기");
-					//$("#walsa").hide();
-				}
+				mm = mmm;
 			}
-		},
-		error: function(xhr, error){
-			console.error("error : " + error);
-		}
-	});
-
-  
-	var realPayDate = td.eq(23).text(); //실제로 납부한 날짜
-  console.log("realPayDate" + realPayDate);
-  
-
-	//사용 개월  
-	var payDate  =  td.eq(12).text();
-	
-	var today = new Date();	
-	var ddd = today.getDate();
-	var dd = "0"
-	var mmm = (today.getMonth() + 1); //January is 0!	
-	var mm = "0";
-	var yyyy = new String(today.getFullYear());
-	
-	
-	if(mmm < 10 ){
-		mm = mm + new String(mmm);
-
-	}else {
-		mm = mmm;
-	}
-	
-	if(ddd < 10 ){
-		dd = dd + new String(ddd);
-
-	}else {
-		dd = ddd;
-	}
-	
-	var currentDate  = yyyy + mm + dd;
-	
-	var payDateString  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2)); //매입일자 20191201
-	var currentDateString  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2)); //현재날짜 20191213
-	
-	var interval =  currentDateString - payDateString;
-	var day   =  1000*60*60*24;
-	var month  =  day*30;
-	var year  =  month*12;
-	
-	
-	var usingMonthCnt = parseInt(interval/month);  //기간 사용 개월수
-	
-	
-	var monthlyFee = $('input[name=monthlyFee]').val().replace(/,/g, "");
-	
-	function addCommas(x) {
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-	
-	$("input[name=usingMonth]").val(usingMonthCnt); //input의 name
-  $("#all-monthly-fee").val(addCommas(monthlyFee*usingMonthCnt)); // 월 사용료 총 납부액
-  
-});
-
-//주소
-function execDaumPostcode() {
-    new daum.Postcode({
-       oncomplete : function(data) {
-          var fullRoadAddr = data.roadAddress;
-          console.log(data)
-          $("#wideAddr").val(data.sido);
-          $("#cityAddr").val(data.sigungu); 
-          $("#detailAddr").val(data.roadname + " ");
-          $("#detailAddr").focus();
-       }
-    }).open();
- };
-
-
-$(function() {
-	$("#dialog-message").dialog({
-		autoOpen : false
-	});
-	$("#segumList").dialog({
-		autoOpen : false
-	});
-
-	//보증금 납부버튼 클릭했을시
-	$("#nabbu").on( "click", function() {
-		$("#monthlyFeePop").hide();
-		$(".monthfee").hide();
-		$("#walnapil-label").hide();
-		$("#walnapil-input").hide();
-		$("#depositPop").show();
-		$(".deposits").show();
-		$("#bonapil-label").show();
-		$("#bonapil-input").show();
+			
+			if(ddd < 10 ){
+				dd = dd + new String(ddd);
 		
-		//보증금에 대한 납부 버튼
-		$("#gubun").val("보증금");
-		$("#dialog-message").dialog('open');
-		$("#dialog-message").dialog	({
-			title: "세금계산서정보",
-			title_html: true,
-		   	resizable: false,
-		    height: 500,
-		    width: 400,
-		    modal: true,
-		    close: function() {
-		    	$('#tbody-bankList tr').remove();
-		    },
-		    buttons: {
-		    "닫기" : function() {
-		    		$("#nabbu").hide();
-		          	$(this).dialog('close');
-		          	$('#tbody-bankList tr').remove();
-		        }
-		    }
-		});
-	});
-	
-	//월사용료 납부버튼 클릭했을시
-	$("#walsa").on( "click", function() {
-		$("#monthlyFeePop").show();
-		$(".monthfee").show();
-		$("#walnapil-label").show();
-		$("#walnapil-input").show();
-		$("#depositPop").hide();
-		$(".deposits").hide();
-		$("#bonapil-label").hide();
-		$("#bonapil-input").hide();
-		
-	
-		$("#gubun").val("월사용료");
-		$("#dialog-message").dialog('open');
-		$("#dialog-message").dialog	({
-			title: "세금계산서정보",
-			title_html: true,
-		   	resizable: false,
-		    height: 500,
-		    width: 400,
-		    modal: true,
-		    close: function() {
-		    	$('#tbody-bankList tr').remove();
-		    },
-		    buttons: {
-		    "닫기" : function() {
-		    		$("#walsa").hide();
-		          	$(this).dialog('close');
-		           	$('#tbody-bankList tr').remove();
-		        }
-	    }
-	});
-});
-	
-//세금계산서 리스트 출력 ajax
-	$("#segumBtn").on( "click", function() {
-		
-		$("#tbody-segumList").find("tr").remove();
-		
-		var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
-		
-		$.ajax({
-			url: "${pageContext.request.contextPath }/08/41/taxinfo",
-			contentType : "application/json; charset=utf-8",
-			type: "GET",
-			dataType: "json", 
-			data: {id : id},
-			success: function(response){
-				console.log(response.taxlist);
-				data = response.taxlist;
-		 		for(let k in data) {
-		 			$("#tbody-segumList").append("<tr>" +
-		                         "<td class='center'>" + data[k].vehicleNo + "</td>" +
-		                         "<td class='center'>" + data[k].pay + "</td>" +
-		                         "<td class='center'>" + data[k].paymentDate + "</td>" +
-		                         "<td class='center'>" + data[k].dueDate + "</td>" +
-		                         "<td class='center'>" + data[k].taxbillNoPoP + "</td>" +
-		                         "<td class='center'>" + data[k].voucherNo + "</td>" +
-		                         "<td class='center'>" + data[k].gubun + "</td>" +
-		                         "</tr>");
-		 		} 
-				
-			},
-			error: function(xhr, error){
-				console.error("error : " + error);
+			}else {
+				dd = ddd;
 			}
+			
+			var currentDate  = yyyy + mm + dd;
+			
+			var payDateString  =  new Date(payDate.substr(0,4),payDate.substr(5,2),payDate.substr(8,2)); //매입일자 20191201
+			var currentDateString  =  new Date(currentDate.substr(0,4),currentDate.substr(4,2),currentDate.substr(6,2)); //현재날짜 20191213
+			
+			var interval =  currentDateString - payDateString;
+			var day   =  1000*60*60*24;
+			var month  =  day*30;
+			var year  =  month*12;
+			
+			
+			var usingMonthCnt = parseInt(interval/month);  //기간 사용 개월수
+			
+			
+			var monthlyFee = $('input[name=monthlyFee]').val().replace(/,/g, "");
+			
+			function addCommas(x) {
+			    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+			
+			$("input[name=usingMonth]").val(usingMonthCnt); //input의 name
+		  	$("#all-monthly-fee").val(addCommas(monthlyFee*usingMonthCnt)); // 월 사용료 총 납부액
+
+		  
+		}); // 테이블의 Row 클릭시 값 가져오기 $(document).on('click', '#sample-table-1 tr', function(event) {	
+
+	//주소
+	function execDaumPostcode() {
+	    new daum.Postcode({
+	       oncomplete : function(data) {
+	          var fullRoadAddr = data.roadAddress;
+	          console.log(data)
+	          $("#wideAddr").val(data.sido);
+	          $("#cityAddr").val(data.sigungu); 
+	          $("#detailAddr").val(data.roadname + " ");
+	          $("#detailAddr").focus();
+	       }
+	    }).open();
+	 };
+
+
+
+		//보증금, 월사용료 관련 납부버튼
+		$(function() {
+			$("#dialog-message").dialog({
+				autoOpen : false
+			});
+			$("#segumList").dialog({
+				autoOpen : false
+			});
+		
+			//보증금 납부버튼 클릭했을시
+			$("#nabbu").on( "click", function() {
+				$("#monthlyFeePop").hide();
+				$(".monthfee").hide();
+				$("#walnapil-label").hide();
+				$("#walnapil-input").hide();
+				$("#depositPop").show();
+				$(".deposits").show();
+				$("#bonapil-label").show();
+				$("#bonapil-input").show();
+				
+				//보증금에 대한 납부 버튼
+				$("#gubun").val("보증금");
+				$("#dialog-message").dialog('open');
+				$("#dialog-message").dialog	({
+					title: "세금계산서정보",
+					title_html: true,
+				   	resizable: false,
+				    height: 500,
+				    width: 400,
+				    modal: true,
+				    close: function() {
+				    	$('#tbody-bankList tr').remove();
+				    },
+				    buttons: {
+				    "닫기" : function() {
+				    		$("#nabbu").hide();
+				          	$(this).dialog('close');
+				          	$('#tbody-bankList tr').remove();
+				        }
+				    }
+				});
+			});
+			
+			//월사용료 납부버튼 클릭했을시
+			$("#walsa").on( "click", function() {
+				$("#monthlyFeePop").show();
+				$(".monthfee").show();
+				$("#walnapil-label").show();
+				$("#walnapil-input").show();
+				$("#depositPop").hide();
+				$(".deposits").hide();
+				$("#bonapil-label").hide();
+				$("#bonapil-input").hide();
+				
+			
+				$("#gubun").val("월사용료");
+				$("#dialog-message").dialog('open');
+				$("#dialog-message").dialog	({
+					title: "세금계산서정보",
+					title_html: true,
+				   	resizable: false,
+				    height: 500,
+				    width: 400,
+				    modal: true,
+				    close: function() {
+				    	$('#tbody-bankList tr').remove();
+				    },
+				    buttons: {
+				    "닫기" : function() {
+				    		$("#walsa").hide();
+				          	$(this).dialog('close');
+				           	$('#tbody-bankList tr').remove();
+				        }
+			    }
+			});
 		});
+			
+		//세금계산서 리스트 출력 ajax
+			$("#segumBtn").on( "click", function() {
+				
+				$("#tbody-segumList").find("tr").remove();
+				
+				var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
+				
+				$.ajax({
+					url: "${pageContext.request.contextPath }/08/41/taxinfo",
+					contentType : "application/json; charset=utf-8",
+					type: "GET",
+					dataType: "json", 
+					data: {id : id},
+					success: function(response){
+						console.log(response.taxlist);
+						data = response.taxlist;
+				 		for(let k in data) {
+				 			$("#tbody-segumList").append("<tr>" +
+				                         "<td class='center'>" + data[k].vehicleNo + "</td>" +
+				                         "<td class='center'>" + data[k].pay + "</td>" +
+				                         "<td class='center'>" + data[k].paymentDate + "</td>" +
+				                         "<td class='center'>" + data[k].dueDate + "</td>" +
+				                         "<td class='center'>" + data[k].taxbillNoPoP + "</td>" +
+				                         "<td class='center'>" + data[k].voucherNo + "</td>" +
+				                         "<td class='center'>" + data[k].gubun + "</td>" +
+				                         "</tr>");
+				 		} 
+						
+					},
+					error: function(xhr, error){
+						console.error("error : " + error);
+					}
+				});
+		
+				//세금계산서 정보 모달
+				$("#segumList").dialog('open');
+				$("#segumList").dialog	({
+					title: "세금계산서정보",
+					title_html: true,
+				   	resizable: false,
+				    height: 700,
+				    width: 600,
+				    modal: true,
+				    close: function() {
+				    	$('#tbody-sseList tr').remove();
+				    },
+				    buttons: {
+				    "닫기" : function() {
+				          	$(this).dialog('close');
+				          	$('#tbody-sseList tr').remove();
+				        }
+				    }
+				}); //$("#segumList").dialog	({ 의 마지막
+			});	//$("#segumBtn").on( "click", function() { 의 마지막
+		}); //보증금, 월사용료 관련 납부버튼의 마지막
 
-//세금계산서 정보 모달
-	$("#segumList").dialog('open');
-	$("#segumList").dialog	({
-		title: "세금계산서정보",
-		title_html: true,
-	   	resizable: false,
-	    height: 700,
-	    width: 600,
-	    modal: true,
-	    close: function() {
-	    	$('#tbody-sseList tr').remove();
-	    },
-	    buttons: {
-	    "닫기" : function() {
-	          	$(this).dialog('close');
-	          	$('#tbody-sseList tr').remove();
-	        }
-	    }
-	});
-});
-});
-
-
+		
 </script>
+
 </body>
 </html>

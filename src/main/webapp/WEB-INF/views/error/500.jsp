@@ -6,7 +6,7 @@
 <html lang="ko">
 
 <head>
-<title>ITCEN-FA[Error: Access Denied]</title>
+<title>ITCEN-FA[Error: Internal Server Error]</title>
 <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +28,7 @@
 					<span class="divider"><i class="icon-angle-right arrow-icon"></i></span>
 				</li>
 				<li>
-					<a href="#">Error: Access Dnied</a>
+					<a href="#">Error: Internal Server Error</a>
 				</li>
 			</ul><!-- .breadcrumb -->
 		</div>
@@ -58,7 +58,7 @@
 
 									<div class="row-fluid">
 										<div class="center">
-											<a href="hostory.go(-1);" class="btn btn-grey">
+											<a href="#" class="btn btn-grey" onclick="history.go(-1);">
 												<i class="icon-arrow-left"></i>
 												이전 페이지
 											</a>

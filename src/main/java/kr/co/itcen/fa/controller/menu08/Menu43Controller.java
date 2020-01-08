@@ -54,24 +54,38 @@ public class Menu43Controller {
 
 	// main page
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model, @RequestParam(value = "kwd", required = false, defaultValue = "") String kwd) {
+	public String list(IntangibleAssetsVo intangibleAssetsVo,
+			Model model, 
+			@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd,
+			@RequestParam(value="page", required=false, defaultValue = "1") int page) {
+		
 		// 대분류코드, 거래처명 리스트
 		Map<String, Object> map = new HashMap<>();
 		map.putAll(menu43Service.getSection());
 		map.putAll(menu43Service.getCustomer());
 		map.putAll(menu43Service.getPurpose());
 		model.addAllAttributes(map);
+		
+		//DataResult<IntangibleAssetsVo> dataResult = new DataResult<IntangibleAssetsVo>();
 
 		// 품목코드로 조회
 		if (kwd != null) {
 			List<IntangibleAssetsVo> list = menu43Service.getList(kwd);
-			model.addAttribute("kwd", kwd);
+			/*dataResult = menu43Service.list(page, kwd);
+			
+			model.addAttribute("dataResult",dataResult);
+			model.addAttribute("page" , page);*/
 			model.addAttribute("list", list);
+			model.addAttribute("kwd", kwd);
 
 			return MAINMENU + "/" + SUBMENU + "/add";
 		}
 
 		kwd = null;
+		/*dataResult = menu43Service.list(page, kwd); 
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page" , page);*/
+				
 		List<IntangibleAssetsVo> list = menu43Service.getList(kwd);
 		model.addAttribute("kwd", kwd);
 		model.addAttribute("list", list);
@@ -97,7 +111,7 @@ public class Menu43Controller {
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+			return MAINMENU + "/" + SUBMENU + "/add";
 		} else { // 입력 가능!
 			menu43Service.insert(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
@@ -111,7 +125,7 @@ public class Menu43Controller {
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
 			@RequestParam(value = "customerNo", required = false) String customerNo,
 			@RequestParam(value = "purpose", required = false) String purpose) throws ParseException {
-
+		
 		intangibleAssetsVo.setUpdateUserId(user.getId()); // session값으로 사용자 id가져오기
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo); // voucherNo는 db에서 직접 가져와야함
 		
@@ -120,7 +134,6 @@ public class Menu43Controller {
 
 		// 전표 등록
 		if (taxbillNo != null && voucherNo == null) {
-
 			CustomerVo customerVo = menu43Service.getCustomerInfo(customerNo);
 
 			VoucherVo voucherVo = new VoucherVo();
@@ -207,11 +220,11 @@ public class Menu43Controller {
 			Long updateVoucher = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
 			intangibleAssetsVo.setVoucherNo(updateVoucher);
 		}
-
+		
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
-			return "redirect:/" + MAINMENU + "/" + SUBMENU;
+			return MAINMENU + "/" + SUBMENU;
 		} else { // 입력 가능!
 			menu43Service.update(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;

@@ -76,7 +76,7 @@ public class Menu39Repository {
 		return vocherNo;
 	}
 
-	public String checkId(String id) {
+	public BuildingVo checkId(String id) {
 		return sqlSession.selectOne("menu39.checkId", id);
 	}
 }

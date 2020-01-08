@@ -115,8 +115,9 @@
     background-color: #eee;
     border: 1px solid #ccc;
     vertical-align: top;
-    margin-left: -4px;
 }
+
+div > span.add-on{margin-left:-5px}
 
 
 .div-float-right{
@@ -131,9 +132,6 @@
 div > input[type=radio]{
 	margin-top: 1px;
 	margin-right: 10px;
-}
-div > .label-radio{
-	margin-right: 3px;
 }
 
 </style>
@@ -152,7 +150,6 @@ div > .label-radio{
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">단기차입금현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<!-- PAGE CONTENT BEGINS -->
 			<form id="filter-area" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search">
@@ -179,7 +176,6 @@ div > .label-radio{
 								<label for="bankName" class="label-name">은행명</label>
 								<div>
 									<input type="text" name="bankName" id="bankName">
-									<input type="button" value="조회" onclick="search()">
 								</div>
 							</div>
 						</div>
@@ -198,7 +194,7 @@ div > .label-radio{
 				<section class="filter-bottom">
 					<div class="input-area">
 						<label class="label-name">차입금 선택정렬</label>
-						<select class="order-list chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." onchange="order(this)" >	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
+						<select class="order-list chosen-select form-control" id="majorcode" data-placeholder="정렬하기 위해 선택해주세요." onchange="order(this)" >	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
 							<option value=""></option>
 							<option value="debt_date">차입일자</option>
 							<option value="exp_date">만기일자</option>
@@ -215,17 +211,22 @@ div > .label-radio{
 							<div class="chkbox-list">
 								<label>상환완료포함</label>
 								<input type="checkbox" name="repayCompleFlag" value="Y">
-							</div>	
+							</div>
 						</div>	
 					</div>	
-				</section> <!-- filter-left end -->
+				</section> 
+				<hr/>
+				<section class="filter-reset">
+					<input type="button" class="btn btn-primary btn-small mybtn" value="조회" onclick="search()">
+					<input type="button" class="btn btn-success btn-small mybtn" value="초기화" onclick="resetForm()">	
+				</section>
 			</form>
 			<hr/>
 			<section id="page-info" class="page-info">
 				<div id="pg-total-row" class="pg-total-row">
-					<h5>총  ${pagination.totalCnt }건</h5>
+					<p>총  ${pagination.totalCnt }건</p>
 				</div>
-				<div>
+				<!-- <div>
 					<div class="selectbox-wrapper">
 						<label for="pageSize">페이지내 건수</label>
 						<select id="pageSize" name="pageSize">
@@ -234,7 +235,7 @@ div > .label-radio{
 							<option value="15">15</option>
 						</select>
 					</div>
-				</div>
+				</div> -->
 			</section>
 			<!-- PAGE CONTENT ENDS -->
 			<!-- list -->
@@ -459,7 +460,7 @@ function renderingPage(pagination){
 	}
 	
 	$("#pg-total-row>*").remove();
-	$("#pg-total-row").append("<h5>총  " + pagination.totalCnt +"건</h5>");
+	$("#pg-total-row").append("<p>총  " + pagination.totalCnt +"건</p>");
 	console.log("------------------------------------renderingPage() End ----------------------------------------");
 }
  
@@ -519,6 +520,13 @@ function renderingPage(pagination){
 		 });
 	 
 	 console.log("---------------------getListAjax() End-------------------------");
+ }
+ 
+ //------------------------------------초기화---------------------------------------//
+ function resetForm(){
+	 var form = $("#filter-area")[0];
+	 $("#majorcode").val('').trigger('chosen:updated');
+	 form.reset();
  }
 </script>
 </html>

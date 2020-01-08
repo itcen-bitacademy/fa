@@ -16,6 +16,13 @@
 		</selectKey>
 	</insert>
 	
+	<select id="getDeleteFlag" parameterType="1customervo" resultType="int">
+		select count(*)
+		  from tb_customer
+		 where no = concat('A' ,#{no })
+		   and delete_flag = "Y"	
+	</select>
+	
 	<!-- 리스트 뽑기 -->
 	<select id="getList" parameterType="map" resultType="1customervo">
 		<![CDATA[
@@ -64,9 +71,9 @@
                b.bank_code as bankCode,
                b.bank_name as bankName,
 		       c.insert_userid as insertUserid,
-               date_format(c.insert_day, "%Y-%m-%d %T") as insertDay,
+               date_format(c.insert_day, "%Y-%m-%d") as insertDay,
 		       c.update_userid as updateUserid,
-               date_format(c.update_day, "%Y-%m-%d %T") as updateDay
+               date_format(c.update_day, "%Y-%m-%d") as updateDay
 		from tb_customer c
 		 		left join tb_bank_account b
         		on c.deposit_no = b.deposit_no
@@ -109,6 +116,71 @@
 				   now(), 
 				   null, 
 				   null)
+		]]>
+	</insert>
+	
+	<!-- 삭제된 거래처 복구 -->
+	<update id="deletedrecreate" parameterType="1customervo">
+		<![CDATA[
+			update tb_customer
+			   set name = #{name },
+				   ceo = #{ceo },
+				   address = #{address }, 
+				   detail_address = #{detailAddress },
+				   conditions = #{conditions },
+				   item = #{item },
+				   corporation_no = #{corporationNo },
+				   jurisdiction_office = #{jurisdictionOffice},
+				   phone = #{phone },
+				   manager_name = #{managerName },
+				   manager_email = #{managerEmail },
+				   deposit_no = #{depositNo },
+				   deposit_host = #{depositHost },
+				   bank_code = #{bankCode },
+				   bank_name = #{bankName },
+				   assets_flag = #{assetsFlag },
+				   delete_flag = 'N',
+				   update_userid = #{updateUserid },
+				   update_day = now()
+			 where no = concat('A', #{no})
+			   and assets_flag!='e'
+		]]>
+	</update>
+	<delete id="deleteDuplicateCustomer" parameterType="1customervo">
+		<![CDATA[
+			delete from tb_customer
+				  where no = concat('A', #{no})
+				    and delete_flag = "Y"
+		]]>
+	</delete>
+	<insert id="recreateDuplicateCustomer" parameterType="1customervo">
+		<![CDATA[
+			insert 
+			  into tb_customer 
+			values (concat('A' ,#{no}),
+				   #{name },
+				   #{ceo }, 
+				   #{address }, 
+				   #{detailAddress }, 
+				   #{conditions }, 
+				   #{item }, 
+				   #{corporationNo }, 
+				   now(), 
+				   #{jurisdictionOffice }, 
+				   #{phone }, 
+				   #{managerName }, 
+				   #{managerEmail }, 
+				   #{depositNo}, 
+				   #{depositHost },
+				   #{bankCode },
+				   #{bankName },
+				   'N', 
+				   #{assetsFlag }, 
+				   #{insertUserid }, 
+				   now(), 
+				   null, 
+				   null)
+			
 		]]>
 	</insert>
 	
@@ -160,9 +232,9 @@
                b.bank_code as bankCode,
                b.bank_name as bankName,
 		       c.insert_userid as insertUserid,
-               date_format(c.insert_day, "%Y-%m-%d %T") as insertDay,
+               date_format(c.insert_day, "%Y-%m-%d") as insertDay,
 		       c.update_userid as updateUserid,
-               date_format(c.update_day, "%Y-%m-%d %T") as updateDay
+               date_format(c.update_day, "%Y-%m-%d") as updateDay
 		from tb_customer c
 		 		left join tb_bank_account b
         		on c.deposit_no = b.deposit_no
@@ -203,8 +275,10 @@
 	<update id="delete" parameterType="1customervo">
 		<![CDATA[
 			update tb_customer
-			   set delete_flag = 'Y'
-			 where name =  #{name }
+			   set delete_flag = 'Y',
+				   update_userid = #{updateUserid },
+				   update_day = now()
+			 where no = concat('A', #{no})
 			   and assets_flag!='e'
 		]]>
 	</update>
@@ -233,5 +307,14 @@
       set deposit_no = #{depositNo}
       where deposit_no = #{depositOld}
    </update>
+   
+   <!-- 중복검사 -->
+   <select id="existNo" parameterType="string" resultType="1customervo">
+   		select substr(no,2) as no,
+   			   delete_flag as deleteFlag
+   		from tb_customer
+   		where substr(no,2) like #{_parameter}
+			   and assets_flag!='e'
+   </select>
 	
 </mapper>

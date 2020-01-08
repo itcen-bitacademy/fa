@@ -66,7 +66,8 @@ public class Menu06Controller {
 
 		Long[] totalPrice = new Long[itemCode.length];
 		purchasemanagementVo.setInsertUserid(authUser.getId());
-
+		System.out.println("입력");
+		System.out.println(purchasemanagementVo);
 		// 마감 여부 체크
 		if (menu19Service.checkClosingDate(authUser, purchasemanagementVo.getPurchaseDate())) {
 			if (itemCode.length > 1) {
@@ -100,94 +101,178 @@ public class Menu06Controller {
 		}
 	}
 
+//	// 전표등록 + 수정
+//	@RequestMapping(value = { "/" + SUBMENU + "/update" }, method = RequestMethod.POST)
+//	public String update(Model model, PurchasemanagementVo vo, @AuthUser UserVo authUser) {
+//		System.out.println(vo.getCustomerCode());
+//		System.out.println(vo.getItemCode());
+//		System.out.println(vo);
+//		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
+//
+//		// 매입수정만
+//		if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) { // 세금계산서 입력 전에 수정
+//			System.out.println("들어오는지 확인");
+//			vo.setTaxbillNo(null);
+//			
+//			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
+//			vo.setUpdateUserid(authUser.getId());
+//			menu06Service.update(vo);
+//
+//			List<PurchaseitemVo> itemList = menu06Service.getItemList();
+//			List<CustomerVo> customerList = menu06Service.getCustomerList();
+//			model.addAttribute("itemList", itemList);
+//			model.addAttribute("customerList", customerList);
+//
+//		} else if ((vo.getTaxbillNo() != "" || vo.getTaxbillNo() != null) || vo.getVoucherNo() == null) { // 매입수정과 전표등록을
+//																											// 동시에?!
+//
+//			// 세금계산서 번호 입력
+//			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
+//			vo.setUpdateUserid(authUser.getId());
+//			menu06Service.update(vo);
+//			menu06Service.TaxbillUpdate(vo);
+//
+//			/////////////////////////////////////
+//			// 전표등록
+//			// 객체 생성
+//			VoucherVo voucherVo = new VoucherVo();
+//			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+//			MappingVo mappingVo = new MappingVo();
+//			List<PurchasemanagementVo> price = menu06Service.getPriceList(vo);
+//			Long totalPrice = 0L;
+//			for (int i = 0; i < price.size(); i++) {
+//				totalPrice += price.get(i).getTotalPrice();
+//			}
+//
+//			PurchasemanagementVo taxbillNo = menu06Service.getList(vo);
+//			CustomerVo customerAccount = menu06Service.getAccount(vo);
+//			ItemVo itemVo = new ItemVo();
+//			ItemVo itemVo2 = new ItemVo();
+//			ItemVo itemVo3 = new ItemVo();
+//
+//			voucherVo.setRegDate(vo.getPurchaseDate()); // 매입일
+//			itemVo.setAmount(totalPrice); // 현금
+//			itemVo.setAmountFlag("c"); // 대변 - c
+//			itemVo.setAccountNo(1110101L); // 계정과목코드
+//			itemVoList.add(itemVo);
+//
+//			itemVo2.setAmount((totalPrice * 10) / 11); // 공급가액
+//			itemVo2.setAmountFlag("d"); // 차변 - d
+//			itemVo2.setAccountNo(1120101L); // 상품
+//			itemVoList.add(itemVo2);
+//
+//			itemVo3.setAmount((totalPrice * 1) / 11); // 부가세금액
+//			itemVo3.setAmountFlag("d"); // 대변
+//			itemVo3.setAccountNo(1111201L); // 부가세대급금
+//			itemVoList.add(itemVo3);
+//
+//			mappingVo.setSystemCode(vo.getNo()); // 매입번호
+//			mappingVo.setCustomerNo(vo.getCustomerCode()); // 거래처 코드
+//			mappingVo.setManageNo(taxbillNo.getTaxbillNo()); // 세금계산서 번호 입력
+//			mappingVo.setDepositNo(customerAccount.getDepositNo()); // 계좌번호 입력
+//			Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+//			vo.setVoucherNo(no);
+//			menu06Service.voucherUpdate(vo);
+//			List<PurchaseitemVo> itemList = menu06Service.getItemList();
+//			List<CustomerVo> customerList = menu06Service.getCustomerList();
+//			model.addAttribute("itemList", itemList);
+//			model.addAttribute("customerList", customerList);
+//		}
+//
+//		return MAINMENU + "/" + SUBMENU + "/list";
+//	}
+	
+	
 	// 전표등록 + 수정
-	@RequestMapping(value = { "/" + SUBMENU + "/update" }, method = RequestMethod.POST)
-	public String update(Model model, PurchasemanagementVo vo, @AuthUser UserVo authUser) {
-		System.out.println(vo.getCustomerCode());
-		System.out.println(vo.getItemCode());
-		System.out.println(vo);
-		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
-
-		// 매입수정만
-		if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) { // 세금계산서 입력 전에 수정
-
-			if (vo.getTaxbillNo() == "") {
-				vo.setTaxbillNo(null);
-			}
+		@RequestMapping(value = { "/" + SUBMENU + "/update" }, method = RequestMethod.POST)
+		public String update(Model model, PurchasemanagementVo vo, @AuthUser UserVo authUser) throws ParseException {
+			vo.setVoucherNo(menu06Service.getVoucherNo(vo)); // 전표번호 등록(전표가 없으면 null이 입력되어 전표등록부분으로 감)
 			
-			
-			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
-			vo.setUpdateUserid(authUser.getId());
-			menu06Service.update(vo);
+			// 마감 여부 체크
+			if (menu19Service.checkClosingDate(authUser, vo.getPurchaseDate())) {
+				// 매입수정만
+				if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) { // 세금계산서 입력 전에 수정
+					vo.setTaxbillNo(null);
+					
+					vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
+					vo.setUpdateUserid(authUser.getId());
+					menu06Service.update(vo);
 
-			List<PurchaseitemVo> itemList = menu06Service.getItemList();
-			List<CustomerVo> customerList = menu06Service.getCustomerList();
-			model.addAttribute("itemList", itemList);
-			model.addAttribute("customerList", customerList);
+					List<PurchaseitemVo> itemList = menu06Service.getItemList();
+					List<CustomerVo> customerList = menu06Service.getCustomerList();
+					model.addAttribute("itemList", itemList);
+					model.addAttribute("customerList", customerList);
 
-		} else if ((vo.getTaxbillNo() != "" || vo.getTaxbillNo() != null) || vo.getVoucherNo() == null) { // 매입수정과 전표등록을
-																											// 동시에?!
+				} else if ((vo.getTaxbillNo() != "" || vo.getTaxbillNo() != null) || vo.getVoucherNo() == null) {
 
-			// 세금계산서 번호 입력
-			vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
-			vo.setUpdateUserid(authUser.getId());
-			menu06Service.update(vo);
-			menu06Service.TaxbillUpdate(vo);
+					// 세금계산서 번호 입력
+					vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
+					vo.setUpdateUserid(authUser.getId());
+					menu06Service.update(vo);
+					menu06Service.TaxbillUpdate(vo);
 
-			/////////////////////////////////////
-			// 전표등록
-			// 객체 생성
-			VoucherVo voucherVo = new VoucherVo();
-			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-			MappingVo mappingVo = new MappingVo();
-			List<PurchasemanagementVo> price = menu06Service.getPriceList(vo);
-			Long totalPrice = 0L;
-			for (int i = 0; i < price.size(); i++) {
-				totalPrice += price.get(i).getTotalPrice();
+					/////////////////////////////////////
+					// 전표등록
+					// 객체 생성
+					VoucherVo voucherVo = new VoucherVo();
+					List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+					MappingVo mappingVo = new MappingVo();
+					List<PurchasemanagementVo> price = menu06Service.getPriceList(vo);
+					Long totalPrice = 0L;
+					for (int i = 0; i < price.size(); i++) {
+						totalPrice += price.get(i).getTotalPrice();
+					}
+
+					PurchasemanagementVo taxbillNo = menu06Service.getList(vo);
+					CustomerVo customerAccount = menu06Service.getAccount(vo);
+					ItemVo itemVo = new ItemVo();
+					ItemVo itemVo2 = new ItemVo();
+					ItemVo itemVo3 = new ItemVo();
+
+					voucherVo.setRegDate(vo.getPurchaseDate()); // 매입일
+					itemVo.setAmount(totalPrice); // 현금
+					itemVo.setAmountFlag("c"); // 대변 - c
+					itemVo.setAccountNo(1110101L); // 계정과목코드
+					itemVoList.add(itemVo);
+
+					itemVo2.setAmount((totalPrice * 10) / 11); // 공급가액
+					itemVo2.setAmountFlag("d"); // 차변 - d
+					itemVo2.setAccountNo(1120101L); // 상품
+					itemVoList.add(itemVo2);
+
+					itemVo3.setAmount((totalPrice * 1) / 11); // 부가세금액
+					itemVo3.setAmountFlag("d"); // 대변
+					itemVo3.setAccountNo(1111201L); // 부가세대급금
+					itemVoList.add(itemVo3);
+
+					mappingVo.setSystemCode(vo.getNo()); // 매입번호
+					mappingVo.setCustomerNo(vo.getCustomerCode()); // 거래처 코드
+					mappingVo.setManageNo(taxbillNo.getTaxbillNo()); // 세금계산서 번호 입력
+					mappingVo.setDepositNo(customerAccount.getDepositNo()); // 계좌번호 입력
+					Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+					vo.setVoucherNo(no);
+					menu06Service.voucherUpdate(vo);
+					List<PurchaseitemVo> itemList = menu06Service.getItemList();
+					List<CustomerVo> customerList = menu06Service.getCustomerList();
+					model.addAttribute("itemList", itemList);
+					model.addAttribute("customerList", customerList);
+				}
+				return "redirect:/02/06";
+			} else {
+
+				model.addAttribute("closingDate", true);
+				List<PurchaseitemVo> itemList = menu06Service.getItemList();
+				List<CustomerVo> customerList = menu06Service.getCustomerList();
+				model.addAttribute("itemList", itemList);
+				model.addAttribute("customerList", customerList);
+				return MAINMENU + "/" + SUBMENU + "/list";
 			}
-
-			PurchasemanagementVo taxbillNo = menu06Service.getList(vo);
-			CustomerVo customerAccount = menu06Service.getAccount(vo);
-			ItemVo itemVo = new ItemVo();
-			ItemVo itemVo2 = new ItemVo();
-			ItemVo itemVo3 = new ItemVo();
-
-			voucherVo.setRegDate(vo.getPurchaseDate()); // 매입일
-			itemVo.setAmount(totalPrice); // 현금
-			itemVo.setAmountFlag("c"); // 대변 - c
-			itemVo.setAccountNo(1110101L); // 계정과목코드
-			itemVoList.add(itemVo);
-
-			itemVo2.setAmount((totalPrice * 10) / 11); // 공급가액
-			itemVo2.setAmountFlag("d"); // 차변 - d
-			itemVo2.setAccountNo(1120101L); // 상품
-			itemVoList.add(itemVo2);
-
-			itemVo3.setAmount((totalPrice * 1) / 11); // 부가세금액
-			itemVo3.setAmountFlag("d"); // 대변
-			itemVo3.setAccountNo(1111201L); // 부가세대급금
-			itemVoList.add(itemVo3);
-
-			mappingVo.setSystemCode(vo.getNo()); // 매입번호
-			mappingVo.setCustomerNo(vo.getCustomerCode()); // 거래처 코드
-			mappingVo.setManageNo(taxbillNo.getTaxbillNo()); // 세금계산서 번호 입력
-			mappingVo.setDepositNo(customerAccount.getDepositNo()); // 계좌번호 입력
-			Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
-			vo.setVoucherNo(no);
-			menu06Service.voucherUpdate(vo);
-			List<PurchaseitemVo> itemList = menu06Service.getItemList();
-			List<CustomerVo> customerList = menu06Service.getCustomerList();
-			model.addAttribute("itemList", itemList);
-			model.addAttribute("customerList", customerList);
 		}
-
-		return MAINMENU + "/" + SUBMENU + "/list";
-	}
 
 	// 조회
 	@ResponseBody
 	@RequestMapping(value = { "/" + SUBMENU + "/search" }, method = RequestMethod.POST)
-	public PurchasemanagementVo search(@RequestBody PurchasemanagementVo vo) {
+	public PurchasemanagementVo search(Model model, @RequestBody PurchasemanagementVo vo) {
 		PurchasemanagementVo result = menu06Service.getList(vo);
 		return result;
 	}
@@ -195,18 +280,21 @@ public class Menu06Controller {
 	// 전표삭제 + 매입삭제
 	@RequestMapping(value = { "/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
 	public String delete(PurchasemanagementVo vo, @AuthUser UserVo authUser) {
-
-		menu06Service.delete(vo);
-		vo.setVoucherNo(menu06Service.getVoucherNo(vo));
-
-		// 전표삭제
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); // 여러건 동시삭제 때문에 리스트형식으로 받아옴 근데 난 하나씩만 삭제가 가능해서 그냥
-																	// 하나만 넣어 보내주면 됨
-		VoucherVo voucherVo = new VoucherVo();
-		voucherVo.setNo(vo.getVoucherNo());
-		voucherVolist.add(voucherVo);
-		menu03Service.deleteVoucher(voucherVolist, authUser);
-
+		
+		if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) {
+			menu06Service.delete(vo);
+		} else {
+			menu06Service.delete(vo);
+			vo.setVoucherNo(menu06Service.getVoucherNo(vo));
+	
+			// 전표삭제
+			List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); // 여러건 동시삭제 때문에 리스트형식으로 받아옴 근데 난 하나씩만 삭제가 가능해서 그냥
+																		// 하나만 넣어 보내주면 됨
+			VoucherVo voucherVo = new VoucherVo();
+			voucherVo.setNo(vo.getVoucherNo());
+			voucherVolist.add(voucherVo);
+			menu03Service.deleteVoucher(voucherVolist, authUser);
+		}
 		return "redirect:/02";
 	}
 

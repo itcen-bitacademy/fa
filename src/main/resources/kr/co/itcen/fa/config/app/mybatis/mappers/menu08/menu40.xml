@@ -40,7 +40,6 @@
            and b.section_no like concat('%',#{vo.sectionNo },'%')
            and b.wide_address like concat('%',#{vo.wideAddress },'%')
            and b.city_address like concat('%',#{vo.cityAddress },'%')
-           and b.detail_address like concat('%',#{vo.detailAddress },'%')
            and b.flag like concat('%',#{vo.flag },'%')
 		]]>
 		<if test="vo.area != null">
@@ -48,9 +47,9 @@
         		and b.area <= #{vo.area }
     		]]>
 		</if>
-		<if test='vo.acqPrice != null'>
+		<if test='vo.acqPrice != ""'>
 			<![CDATA[
-        		and b.acq_price <= #{vo.acqPrice }
+        		and b.acq_price <= #{vo.acqPrice}
     		]]>
 		</if>
 		<if test='vo.payDate != ""'>
@@ -83,7 +82,6 @@
            and b.section_no like concat('%',#{vo.sectionNo },'%')
            and b.wide_address like concat('%',#{vo.wideAddress },'%')
            and b.city_address like concat('%',#{vo.cityAddress },'%')
-           and b.detail_address like concat('%',#{vo.detailAddress },'%')
            and b.flag like concat('%',#{vo.flag },'%')
        ]]>
 		<if test="vo.area != null">
@@ -91,7 +89,7 @@
         		and b.area <= #{vo.area }
     		]]>
 		</if>
-		<if test='vo.acqPrice != null'>
+		<if test='vo.acqPrice != ""'>
 			<![CDATA[
         		and b.acq_price <= #{vo.acqPrice }
     		]]>

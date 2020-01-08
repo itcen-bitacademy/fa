@@ -49,7 +49,7 @@ public class Menu05Service {
 
 	public Map<String, Object> read(CardVo vo) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map = menu05Repository.read(vo);
+		map = menu05Repository.read(vo); 
 		map.put("success", true);
 		return map;
 	}
@@ -105,6 +105,10 @@ public class Menu05Service {
 	public Map<String, Object> gets(String cardNo) {
 		Map<String, Object> map = menu05Repository.gets(cardNo);
 		return map;
+	}
+
+	public CardVo exist(CardVo vo) {
+		return menu05Repository.exist(vo);
 	}
 
 

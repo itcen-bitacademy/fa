@@ -13,8 +13,10 @@
 				   tax_type as taxType,
 				   delete_flag as deleteFlag	  	 
 			from tb_buy_taxbill
+			order by write_date desc
 		]]>
 	</select>
+
 	<!-- 세금계산서의 11개를 가져오는 select -->
 	<select id="getBuyTaxbillList" parameterType="int"
 		resultType="buytaxbillvo">
@@ -28,6 +30,7 @@
 				   tax_type as taxType,
 				   delete_flag as deleteFlag	  	 
 			from tb_buy_taxbill
+			order by write_date desc
 			limit #{page_group }, 55
 		]]>
 	</select>
@@ -44,6 +47,7 @@
 				   tax_type as taxType,
 				   delete_flag as deleteFlag	  	 
 			from tb_buy_taxbill
+			order by write_date desc
 			limit #{page }, 11
 		]]>
 	</select>
@@ -60,9 +64,15 @@
 	<select id="getMatchTaxbillItemsList"
 		resultType="buytaxbillitems">
 		<![CDATA[
-		select *
+		select no,
+			   taxbill_no as taxbillNo,
+			   date_format(purchase_date, '%Y-%m-%d') as purchaseDate,
+			   item_name as itemName,
+			   amount,
+			   supply_value as supplyValue,
+			   tax_value as taxValue,
+			   delete_flag as deleteFlag
 		  from tb_buy_taxbill_items
-	  
 		]]>
 	</select>
 
@@ -91,7 +101,7 @@
 					 and no = #{no }
 				]]>
 		</if>
-		<if test='companyName!=null'>
+		<if test='companyName!=null and companyName!="없음"'>
 				<![CDATA[
 					 and company_name = #{companyName }
 				]]>
@@ -136,8 +146,8 @@
 	</select>
 
 	<!-- 세금계산서의 11개를 가져오는 select -->
-	<select id="getSelectedBuyTaxbillList" parameterType="buytaxbilllistvo"
-		resultType="buytaxbillvo">
+	<select id="getSelectedBuyTaxbillList"
+		parameterType="buytaxbilllistvo" resultType="buytaxbillvo">
 		<![CDATA[
 			select no,
 				   manage_no as manageNo,
@@ -160,7 +170,7 @@
 					 and no = #{no }
 				]]>
 		</if>
-		<if test='companyName!=null'>
+		<if test='companyName!=null and companyName!="없음"'>
 				<![CDATA[
 					 and company_name = #{companyName }
 				]]>
@@ -208,8 +218,8 @@
 	</select>
 
 	<!-- 세금계산서의 5page 가져오는 select -->
-	<select id="getSelectedpageBuyTaxbillList" parameterType="buytaxbilllistvo"
-		resultType="buytaxbillvo">
+	<select id="getSelectedpageBuyTaxbillList"
+		parameterType="buytaxbilllistvo" resultType="buytaxbillvo">
 		<![CDATA[
 			select no,
 				   manage_no as manageNo,
@@ -232,7 +242,7 @@
 					 and no = #{no }
 				]]>
 		</if>
-		<if test='companyName!=null'>
+		<if test='companyName!=null and companyName!="없음"'>
 				<![CDATA[
 					 and company_name = #{companyName }
 				]]>

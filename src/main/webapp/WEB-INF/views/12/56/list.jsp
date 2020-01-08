@@ -25,27 +25,24 @@
 				</div><!-- /.page-header -->
 				<form class="form-horizontal">
 				<div class="row-fluid">
-							<div class="span12">
+							<div class="span10">
 									<div class="form-horizontal">
 									
 										<div class="span3">
-											<div class="form-horizontal">
-													<label class="control-label" for="cl-ym-date-picker"> 년 월</label>
-													<div class="controls" >
+													<label class="control-label" for="cl-ym-date-picker" style="text-align: left; width: 50px;"> 년 월</label>
+													<div class="controls" style="margin-left: 50px;" >
 														<div class="row-fluid input-append">
-															<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" />
+															<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }"style="text-align: left; width: 200px;" readOnly />
 															<span class="add-on">
 																<i class="icon-calendar"></i>
 															</span>
 														</div>													
 													</div>
-											</div>
 										</div>
 										
 										<div class="span3">
-											<div class="form-horizontal">
-													<label class="control-label" for="form-field-select-2" >대분류명</label>
-													<div class="controls">
+													<label class="control-label" for="form-field-select-2" style="text-align: left; width:80px;">대분류명</label>
+													<div class="controls" style="margin-left: 80px;">
 														<select class="chosen-select" id="gcategory" name="sectioncode" data-placeholder="대분류명 선택">
 															<option value=""></option>	
 															<c:forEach items='${gcategory }' var='gcategory' varStatus='status'>
@@ -58,13 +55,11 @@
 													$("#gcategory").val(itemcode);
 													</script>
 													</div>
-											</div>
 										</div>
 										
 										<div class="span3">
-											<div class="form-horizontal">
-													<label class="control-label" for="form-field-select-2">품목명</label>
-													<div class="controls">
+													<label class="control-label" for="form-field-select-2" style="text-align: left; width:50px;">품목명</label>
+													<div class="controls" style="margin-left: 50px;">
 														<select class="chosen-select" id="subcategory" name="itemcode" data-placeholder="품목명 선택">
 															
 														<c:forEach items='${subcategory }' var='scategory' varStatus='status'>
@@ -77,11 +72,10 @@
 													$("#subcategory").val(subcategory);
 													</script>
 													</div>
-											</div>
 										</div>
 										
-										<div class="span2">
-												<button class="btn btn-small btn-info" type="submit" style="margin-left: 120px;"
+										<div class="span3">
+												<button class="btn btn-small btn-info" type="submit" style="margin-left: 50px;"
 												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 										</div> 
 									</div>

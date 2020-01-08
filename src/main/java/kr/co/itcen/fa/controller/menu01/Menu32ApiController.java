@@ -1,6 +1,8 @@
 package kr.co.itcen.fa.controller.menu01;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu01.Menu32Service;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
-import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu17.AccountManagementVo;
 
 /**
  * 
  * @author 이종윤 
  * 매입, 매출, 자산 거래처 팝업창
+ * 계정 코드, 계정명 팝업창
  *
  */
 @RestController("Menu32Controller")
@@ -88,6 +90,49 @@ public class Menu32ApiController {
 		System.out.println(accountName+"!!!");
 		List<AccountManagementVo> accountNameList = menu32Service.getAccountNameInfo(accountName);
 		return JSONResult.success(accountNameList);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/searchOptionCustomer")
+	public Map<String, Object> searchOptionCustomerInfo(
+			@RequestParam(value = "no", required = false, defaultValue = "")String no,
+			@RequestParam(value="name", required = false, defaultValue = "")String name) {
+		Map<String, String> customerparam = new HashMap<String, String>();
+		customerparam.put("no", no);
+		customerparam.put("name", name);
+		
+		Map<String, Object> data = menu32Service.searchOptionCustomerInfo(customerparam);
+		data.put("success", true);
+		return data;
+	} 
+	
+	
+	@ResponseBody
+	@RequestMapping("/searchOptionBank")
+	public Map<String, Object> searchOptionBankInfo(
+			@RequestParam(value = "no", required = false, defaultValue = "")String no,
+			@RequestParam(value="name", required = false, defaultValue = "")String name) {
+		Map<String, String> bankparam = new HashMap<String, String>();
+		bankparam.put("no", no);
+		bankparam.put("name", name);
+		
+		Map<String, Object> data = menu32Service.searchOptionBankInfo(bankparam);
+		data.put("success", true);
+		return data;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/searchOptionAccount")
+	public Map<String, Object> searchOptionAccountInfo(
+			@RequestParam(value = "accountNo", required = false, defaultValue = "")String accountNo,
+			@RequestParam(value="accountName", required = false, defaultValue = "")String accountName) {
+		Map<String, String> accountparam = new HashMap<String, String>();
+		accountparam.put("accountNo", accountNo);
+		accountparam.put("accountName", accountName);
+		
+		Map<String, Object> data = menu32Service.searchOptionAccountInfo(accountparam);
+		data.put("success", true);
+		return data;
 	}
 
 }

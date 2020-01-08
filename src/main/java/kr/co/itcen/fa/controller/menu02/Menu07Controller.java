@@ -60,6 +60,7 @@ public class Menu07Controller {
 
 		
 		List<PurchasemanagementVo> result = menu07Service.getList((curPage - 1) * 11);
+		model.addAttribute("total", total);
 		model.addAttribute("result", result);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
@@ -77,7 +78,26 @@ public class Menu07Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public List<PurchasemanagementVo> search(Model model, @RequestBody PurchasemanagementVo vo,
 			String[] purchaseDate, @RequestParam(defaultValue = "1") int page) {
+		
+		int lastPage;
+		int total = menu07Service.getSearchCount(vo);
+		if (total % 11 == 0) {
+			lastPage = (int) Math.floor(total / 11);
+		} else {
+			lastPage = (int) Math.floor(total / 11) + 1;
+		}
 		List<PurchasemanagementVo> result = menu07Service.getList(vo);
+		
+		if(total != 0) {
+			result.get(0).setLastPage(lastPage);
+			result.get(0).setPageCount(total);
+		} else {
+			PurchasemanagementVo emptyVo = new PurchasemanagementVo();
+			result.add(emptyVo);
+			result.get(0).setPageCount(total);
+		}
+		
+	
 		return result;
 	}
 	
@@ -90,12 +110,50 @@ public class Menu07Controller {
 		int curPage = vo.getPage();
 		List<PurchasemanagementVo> result = null;
 		
-		if(vo.isSearchFlag() == false) { 			// 기본 페이징
+		if(vo.isSearchFlag() == false) { 			// 조회시 페이징
+			int lastPage;
+			int total = menu07Service.getSearchCount(vo);
+
+			if (total % 11 == 0) {
+				lastPage = (int) Math.floor(total / 11);
+			} else {
+				lastPage = (int) Math.floor(total / 11) + 1;
+			}
 			vo.setPage((curPage - 1) * 11);
-			result = menu07Service.getList(vo);
-		} else {									// 조회시 페이징
+			result = menu07Service.getList(vo);if(total != 0) {
+				result.get(0).setLastPage(lastPage);
+				result.get(0).setPageCount(total);
+			} else {
+				PurchasemanagementVo emptyVo = new PurchasemanagementVo();
+				result.add(emptyVo);
+				result.get(0).setSupplyValue(0L);
+				result.get(0).setTaxValue(0L);
+				result.get(0).setLastPage(lastPage);
+				result.get(0).setPageCount(total);
+			}
+			
+		} else {									// 기본 페이징
+			int lastPage;
+			int total = menu07Service.getCount();
+
+			if (total % 11 == 0) {
+				lastPage = (int) Math.floor(total / 11);
+			} else {
+				lastPage = (int) Math.floor(total / 11) + 1;
+			}
 			
 			result = menu07Service.getList((curPage - 1) * 11);
+			if(total != 0) {
+				result.get(0).setLastPage(lastPage);
+				result.get(0).setPageCount(total);
+			} else {
+				PurchasemanagementVo emptyVo = new PurchasemanagementVo();
+				result.add(emptyVo);
+				result.get(0).setSupplyValue(0L);
+				result.get(0).setTaxValue(0L);
+				result.get(0).setLastPage(lastPage);
+				result.get(0).setPageCount(total);
+			}
 		}
 		
 		return result;

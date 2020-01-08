@@ -33,6 +33,7 @@
 		  , taxbill_no as taxbillNo
 		  , date_format(receipt_date, '%Y-%m-%d') as receiptDate, date_format(release_date, '%Y-%m-%d') as releaseDate
 		  from tb_purchasemanagement
+		  where delete_flag = "N"
 		]]>
 	</select>
 	
@@ -54,7 +55,8 @@
 		  , date_format(receipt_date, '%Y-%m-%d') as receiptDate
 		  , date_format(release_date, '%Y-%m-%d') as releaseDate
 		  from tb_purchasemanagement
-		  order by purchase_date
+		  where delete_flag = "N"
+		  order by insert_day
 	      limit #{page},11
 		]]>
 	</select>
@@ -62,7 +64,46 @@
 	<select id="getcount" resultType="purchasemanagement06vo">
 	<![CDATA[
 	select * from tb_purchasemanagement
+	where delete_flag = "N"
 	]]>
+	</select>
+	
+	<select id="getSearchCount" parameterType="purchasemanagement06vo" resultType="purchasemanagement06vo">
+	<![CDATA[
+	select *
+	from tb_purchasemanagement
+	where delete_flag = #{deleteFlag }
+	]]>
+		<if test='no != ""'>
+		<![CDATA[
+	    	and purchase_no = #{no }
+	    ]]>
+	  	</if>
+	  	<if test="customerCode != ''">
+		<![CDATA[
+	    	and customer_code = #{customerCode }
+	    ]]>
+	  	</if>
+	  	<if test="customerName != ''">
+		<![CDATA[
+	    	and customer_name = #{customerName }
+	    ]]>
+	  	</if>
+	  	<if test="itemCode != ''">
+		<![CDATA[
+	    	and item_code = #{itemCode }
+	    ]]>
+	  	</if>
+	  	<if test="itemName != ''">
+		<![CDATA[
+	    	and item_name = #{itemName }
+	    ]]>
+	  	</if>
+	  	<if test="startDate != '' and endDate != ''">
+			<![CDATA[
+				and purchase_date >= '${startDate } 00:00:00' and purchase_date <= '${endDate } 23:59:59'
+			]]>
+		</if>
 	</select>
 	
 	<select id="getSearchList"  parameterType="purchasemanagement06vo" resultType="purchasemanagement06vo">
@@ -91,11 +132,6 @@
 	    	and purchase_no = #{no }
 	    ]]>
 	  	</if>
-		<if test="purchaseDate != ''">
-		<![CDATA[
-	    	and purchase_date = #{purchaseDate }
-	    ]]>
-	    </if>
 	  	<if test="customerCode != ''">
 		<![CDATA[
 	    	and customer_code = #{customerCode }
@@ -116,8 +152,13 @@
 	    	and item_name = #{itemName }
 	    ]]>
 	  	</if>
+	  	<if test="startDate != '' and endDate != ''">
+			<![CDATA[
+				and purchase_date >= '${startDate } 00:00:00' and purchase_date <= '${endDate } 23:59:59'
+			]]>
+		</if>
 	  	<![CDATA[
-	  		order by #{orderStd }
+	  		order by ${orderStd }
 	  	
 	  		limit #{page},11
 	  	]]>

@@ -30,7 +30,9 @@ public class Menu50Repository {
 	
 	// 사채정보입력
 	public Boolean insert(PdebtVo pdebtVo) {
+		System.out.println("Insert 50 Repository PdebtVo : " + pdebtVo);
 		int count = sqlSession.insert("menu50.insert", pdebtVo);
+		System.out.println("Insert 50 Repository count : " + count);
 		return count == 1;
 	}
 	
@@ -64,12 +66,16 @@ public class Menu50Repository {
 
 	// 은행 팝업창에서 은행명으로 데이터 리스트형식으로 조회 - 은행명으로 데이터 출력
 	public List<BankVo> selectOneBanknameInfo(String bankname) {
+		System.out.println("Get in the Bank Name Information : repository");
+		System.out.println("bankname : " + bankname);
 		return sqlSession.selectList("menu50.getBanknameList", bankname);
 	}
 
 	// 사채관리 페이지에서 수정을 눌렀을 때, 해당 사채정보 수정
 	public Boolean update(PdebtVo vo) {
+		System.out.println("Update 50 Repository PdebtVo : " + vo);
 		int count = sqlSession.update("menu50.pdebtupdate", vo);
+		System.out.println("Update 50 Repository count : " + count);
 		return count == 1;
 	}
 
@@ -168,6 +174,23 @@ public class Menu50Repository {
 			listNo.add(no1);
 		}
 		List<PdebtVo> list = sqlSession.selectList("menu50.selectpdebtlist",listNo);
+		return list;
+	}
+
+	public List<PdebtVo> getRepayExpectList() {
+		return sqlSession.selectList("menu50.getRepayExpectList");
+	}
+
+	public List<PdebtVo> getDebtdata(PdebtVo vo) {
+		return sqlSession.selectList("menu50.getDebtdata");
+	}
+
+	public List<PdebtVo> getRepayDueList(String startDate, String endDate) {
+		Map<String,String> map =new HashMap<String, String>();
+		map.put("startDate",startDate);
+		map.put("endDate", endDate);
+		
+		List<PdebtVo> list = sqlSession.selectList("menu50.getRepayDueList",map);
 		return list;
 	}
 	

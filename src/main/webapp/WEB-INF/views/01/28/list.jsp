@@ -57,6 +57,127 @@
 			
 		})
 	</script>
+	
+	<script type="text/javascript">
+	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
+	var nochecked = false;
+	
+	function openErrorModal(title, message,errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');
+						$(errorfield).focus();
+					}
+				}
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+	
+	//search Validation
+	function SearchValidation(){
+		let ceo =$('#no').val();//사업자등록번호
+		let datepicker1 =$('#datepicker1').val();//시작날짜
+		let datepicker2 =$('#datepicker2').val();//종료날짜
+		let customerDiv =$('#customerDiv').val();//거래처구분
+		let deleteFlag=$('#deleteFlag').val();//삭제여부
+		
+		
+		//사업자등록번호 Valid
+		//if('' === no){
+		//	errortitle = 'CUSTOEMR_NO ERROR';
+		//	validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
+		//	errorfield='#no';
+		//	return false;
+		//}
+		//if(no.length<10 || no.length >10){
+		//	errortitle = 'CUSTOEMR_NO ERROR';
+		//	validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
+		//	errorfield='#no';
+		//	return false;
+		//}
+		
+		//사업자등록번호
+		if(null == customerDiv){
+			errortitle = 'CUSTOMERDIV_NO_SELECTED ERROR';
+			validationMessage = '거래처 구분을 선택해주세요.';
+			errorfield='#customerDiv';
+			return false;
+			
+		}
+		
+		//datepicker 관련 Valid
+		if(datepicker1 > datepicker2){
+			errortitle = 'DATE_RANGE_ERROR';
+			validationMessage = '조회기간 범위 오류입니다.\r\n 종료일을 시작일 이후로 설정해주세요';
+			errorfield='#datepicker2';
+			return false;
+			
+		}
+		
+		//삭제여부
+		if(null == deleteFlag){
+			errortitle = 'DELETEFLAG_NO_SELECTED ERROR';
+			validationMessage = '삭제여부를 선택해주세요.';
+			errorfield='#deleteFlag';
+			return false;
+		}
+	
+		return true;
+	}
+	
+	//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다.
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode;
+	    var _value = event.srcElement.value;
+	
+	    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+	        if(event.keyCode != 46){//delete
+	             return false;
+	        } 
+	     }
+	    return true;
+	    
+	}
+	
+	//사업자등록번호, 법인번호, 전화번호에서 한글이 입력 되었을시 지운다.
+	function delHangle(evt){
+	    var objTarger = evt.srcElement || evt.target;
+	    var val = event.srcElement.value;
+	    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+	        objTarger.value = null;
+	    	}
+	    }
+	
+	$(function(){
+		$("#btn-submit").click(function(){
+			if(!SearchValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return false;
+			}
+			return true;
+		});
+	});
+	
+	
+</script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body class="skin-3">
@@ -70,7 +191,7 @@
 		
 		
 			<div class="page-header position-relative">
-				<h1 class="pull-left">거래처 현황조회 [28]</h1>
+				<h1 class="pull-left">거래처 현황조회</h1>
 				
 			</div><!-- /.page-header -->
 			<div class="row-fluid"> <!-- 검색조건 start -->
@@ -93,7 +214,7 @@
 						
 						&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px"/>
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px" readonly="readonly"/>
 							
 							<span class="add-on">
 								<i class="icon-calendar"></i>
@@ -105,7 +226,7 @@
 						</script>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker" style="width:100px"/>
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker" style="width:100px" readonly="readonly"/>
 								<span class="add-on">
 								<i class="icon-calendar"></i>
 							</span>
@@ -117,7 +238,7 @@
 						
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;사업자등록번호 :&nbsp; 
-						<input type="text" id="no" name="no" placeholder="ex)000-00-00000" size=4 style="width:150px" style="width:100px;"/>
+						<input type="text" id="no" name="no" placeholder="사업자등록번호" size=4 style="width:150px" style="width:100px;"maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 						<script type="text/javascript">
 						var no = "${param.no}";
 						$("#no").val(no);
@@ -137,7 +258,10 @@
 						</script>
 						
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+						<button class="btn btn-small btn-info" id="btn-submit" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+						&nbsp;
+						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+					
 					</form>
 					
 					<div class="hr hr-18 dotted"></div>
@@ -194,6 +318,11 @@
 									</tbody>
 							</table>
 						</div>
+				<div id="staticBackdrop" class="hide">
+					<br>
+					<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
+					</pre>
+				</div>
 					</div>
 	<div class="pagination">
 		<ul>

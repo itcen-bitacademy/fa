@@ -6,41 +6,41 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<!-- 다음 주소 api -->
+<!-- 다음 주소 팝업창 api -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
-/*주소검색 api*/
-function execDaumPostcode() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            var addr = ''; 
-            var extraAddr = ''; 
-            if (data.userSelectedType === 'R') { 
-                addr = data.roadAddress;
-            } else {
-                addr = data.jibunAddress;
-            }
-            if(data.userSelectedType === 'R'){
-                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                    extraAddr += data.bname;
-                }
-                if(data.buildingName !== '' && data.apartment === 'Y'){
-                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                if(extraAddr !== ''){
-                    extraAddr = ' (' + extraAddr + ')';
-                }
-            
-            } else {
-                document.getElementById("address").value = '';
-            }
-
-            document.getElementById("address").value = addr;
-            document.getElementById("detailAddress").focus();
-        }
-    }).open();
-};
+	/*주소검색 api*/
+	function execDaumPostcode() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            var addr = ''; 
+	            var extraAddr = ''; 
+	            if (data.userSelectedType === 'R') { 
+	                addr = data.roadAddress;
+	            } else {
+	                addr = data.jibunAddress;
+	            }
+	            if(data.userSelectedType === 'R'){
+	                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                    extraAddr += data.bname;
+	                }
+	                if(data.buildingName !== '' && data.apartment === 'Y'){
+	                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                }
+	                if(extraAddr !== ''){
+	                    extraAddr = ' (' + extraAddr + ')';
+	                }
+	            
+	            } else {
+	                document.getElementById("address").value = '';
+	            }
+	
+	            document.getElementById("address").value = addr;
+	            document.getElementById("detailAddress").focus();
+	        }
+	    }).open();
+	};
 </script>
 
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -53,19 +53,27 @@ function execDaumPostcode() {
 	$(function() {
 		var a;
 		$("#btn-create").click(function(){
+			$("#no").attr("readonly",false);
 			a = "create";
 		});
 		$("#btn-read").click(function(){
+			$("#no").attr("readonly",false);
 			a = "read";
 		});
 		$("#btn-update").click(function(){
 			a = "update";
 		});
 		$("#btn-delete").click(function(){
+			$("#no").attr("readonly",false);
 			a = "delete";
 		});
 		$("#btn-reset").click(function(){
 			$("#no").attr("readonly",false);
+			$("#corporationNo").attr("readonly",false);
+			$("#btn-check-no").show();
+			$("#img-checkno").hide();
+			$("#btn-create").show();
+			
 		});
 		
 		$("#inputform").submit(function(event) {
@@ -76,9 +84,18 @@ function execDaumPostcode() {
 			}
 			
 			if(a == "create") {
-				if(!InsertValidation()){
-					openErrorModal(errortitle,validationMessage,errorfield);
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+				if(nochecked==false){
+
+					openErrorModal("DUPLICATE CHECK ERROR","사업자등록번호 중복검사는 필수입니다.",'#no');
+					$("#btn-check-no").show();
 					return;
+				}
+				else{
+					if(!InsertValidation()){
+						openErrorModal(errortitle,validationMessage,errorfield);
+						return;
+					}
 				}
 				
 				$.ajax({
@@ -88,13 +105,17 @@ function execDaumPostcode() {
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.fail) {
-				    		alert("다시 입력해주세요.");
+				    		//alert("다시 입력해주세요.");
+				    		openErrorModal("CREATE FAIL","거래처 등록에 실패하였습니다. \r\n 다시입력해주세요.");
 				    	}
 				    	if(result.success) {
 				    		$('#inputform').each(function(){
 				    		    this.reset();
 				    		});
-				    		alert("거래처 등록이 완료되었습니다."); 
+				    		openErrorModal("CREATE SUCCESS","거래처 등록에 성공하였습니다.");
+							$("#btn-check-no").show();
+							$("#img-checkno").hide();
+				    		//alert("거래처 등록이 완료되었습니다."); 
 				    		
 				    		removeTable();
 				    		var customerList = result.customerList;
@@ -119,7 +140,9 @@ function execDaumPostcode() {
 				    dataType: "json",
 				    success: function(result){
 				    	if(result.success) {
-				    		alert("거래처 조회가 완료되었습니다."); 
+				    		openErrorModal("READ SUCCESS","거래처 조회가 완료되었습니다.");
+							$("#btn-check-no").show();
+				    		//alert("거래처 조회가 완료되었습니다."); 
 				    		removeTable();
 				    		$('#inputform').each(function(){
 				    		    this.reset();
@@ -127,7 +150,7 @@ function execDaumPostcode() {
 				    		
 				    		var customerList = result.customerList;
 				    		createNewTable(customerList);
-				    		settingInput(customerList);
+				    		//settingInput(customerList);
 				    		$('#pagination').hide();
 				    	}
 				    },
@@ -135,64 +158,118 @@ function execDaumPostcode() {
 				      	console.log(err)
 				    }
 				 })
+				 $("#btn-create").show();
 			} else if(a == "update") {
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!InsertValidation()){
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
 				}
-				$.ajax({
-				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
-				    type: "POST",
-				    data: queryString,
-				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
-				    		alert("거래처 수정이 완료되었습니다."); 
-				    		removeTable();
-				    		
-				    		var customerList = result.customerList;
-				    		createNewTable(customerList);
-				    	}
-				    	if(result.fail) {
-				    		alert("다시 입력해주세요.");
-				    	}
-				    	
-				    	$('#pagination ul').remove();
-			    		createNewPage(result, a);
-				    	$('#pagination').show();
-				    },
-				    error: function( err ){
-				      	console.log(err)
-				    }
-				 })
+				var customername = document.getElementById("name").value;
+				
+				// 수정확인창을 띄운다.
+				openDeleteModal('UPDATE CHECK', customername+"에 대한 \r\n수정된 정보를 반영하시겠습니까?");
+				
+				// 수정확인창 - 취소 버튼을 누르면 수정 X
+				$("#deletecancel").click(function(){
+					openErrorModal("UPDATE_CANCEL","거래처 수정이 취소 되었습니다.");
+					console.log("cancel");
+					return;
+				});
+				$("#deleteok").click(function(){
+				
+					$.ajax({
+					    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
+					    type: "POST",
+					    data: queryString,
+					    dataType: "json",
+					    success: function(result){
+					    	if(result.success) {
+	
+								openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
+					    		//alert("거래처 수정이 완료되었습니다."); 
+					    		removeTable();
+					    		
+					    		var customerList = result.customerList;
+					    		createNewTable(customerList);
+
+
+
+								$("#no").attr("readonly",true);
+								$("#btn-check-no").hide();
+								$("#img-checkno").hide();
+					    	}
+					    	if(result.fail) {
+					    		alert("다시 입력해주세요.");
+					    	}
+					    	
+					    	$('#pagination ul').remove();
+				    		createNewPage(result, a);
+					    	$('#pagination').show();
+					    },
+					    error: function( err ){
+					      	console.log(err)
+					    }
+					 })
+
+				});
+				
 			} else if(a == "delete") {
-				$.ajax({
-				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
-				    type: "POST",
-				    data: queryString,
-				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
-				    		alert("거래처 삭제가 완료되었습니다."); 
-				    		removeTable();
-				    		$('#inputform').each(function(){
-				    		    this.reset();
-				    		});
-				    		
-				    		var customerList = result.customerList;
-				    		createNewTable(customerList);
-				    	}
-				    	
-				    	$('#pagination ul').remove();
-			    		createNewPage(result, a);
-			    		$('#pagination').show();
-				    },
-				    error: function( err ){
-				      	console.log(err)
-				    }
-				 })
+				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+				if(!DeleteValidation()){
+					openErrorModal(errortitle,validationMessage,errorfield);
+					return;
+				}
+				var customername = document.getElementById("name").value;
+				
+				// 삭제확인창을 띄운다.
+				openDeleteModal('DELETE CHECK',customername+"에 대한\r\n 거래처정보를 삭제하시겠습니까?");
+				
+				// 삭제확인창 - 취소 버튼을 누르면 삭제 X
+				$("#deletecancel").click(function(){
+					openErrorModal("DELETE_CANCEL","거래처 삭제가 취소 되었습니다.");
+					console.log("cancel");
+					return;
+				});
+				
+				// 삭제확인창 - 확인 버튼을 누르면 삭제O
+				$("#deleteok").click(function(){
+					console.log("deleteok");
+					$.ajax({
+					    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+					    type: "POST",
+					    data: queryString,
+					    dataType: "json",
+					    success: function(result){
+					    	if(result.success) {
+					    		//alert("거래처 삭제가 완료되었습니다."); 
+								openErrorModal("DELETE SUCCESS","거래처 삭제가 완료되었습니다.");
+								$("#btn-check-no").show();
+					    		removeTable();
+					    		$('#inputform').each(function(){
+					    		    this.reset();
+					    		});
+					    		
+					    		var customerList = result.customerList;
+					    		createNewTable(customerList);
+					    	}
+					    	
+					    	$('#pagination ul').remove();
+				    		createNewPage(result, a);
+				    		$('#pagination').show();
+					    },
+					    error: function( err ){
+					      	console.log(err)
+					    }
+					 })
+
+						$("#btn-create").show();
+				});
+				
 			} else {
-				alert("예외사항 발생");
+
+	    		openErrorModal("UNKNOWN ERROR","알수없는 에러입니다 \r\n 다시 시도해주세요.");
+				//alert("예외사항 발생");
 			}
 		
 	});
@@ -203,33 +280,60 @@ function execDaumPostcode() {
 		  // ajax로 추가했던 테이블 제거
 		  $(".new-tbody").remove();
 	}
+	
 	function createNewTable(customerList){
 		  var $newTbody = $("<tbody class='new-tbody'>")
 		  $("#simple-table-1").append($newTbody)
 			
 		  for(let customer in customerList){
-			  $newTbody.append(
-			   	"<tr>" +
-		        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
-		        "<td>" + customerList[customer].no + "</td>" +
-		        "<td>" + customerList[customer].name + "</td>" +
-		        "<td>" + customerList[customer].ceo + "</td>" +
-		        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
-		        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
-		        "<td>" + customerList[customer].assetsFlag + "</td>" +
-		        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
-		        "<td>" + customerList[customer].phone + "</td>" +
-		        "<td>" + customerList[customer].managerName + "</td>" +
-		        "<td>" + customerList[customer].managerEmail + "</td>" +
-		        "<td>" + customerList[customer].bankCode + "</td>" +
-		        "<td>" + customerList[customer].bankName + "</td>" +
-		        "<td>" + customerList[customer].depositNo + "</td>" +
-		        "<td>" + customerList[customer].depositHost + "</td>" +
-		        "<td>" + customerList[customer].insertDay + "</td>" +
-		        "<td>" + customerList[customer].insertUserid + "</td>" +
-		        "<td>" + customerList[customer].updateDay + "</td>" +
-		        "<td>" + customerList[customer].updateUserid + "</td>" +
-		        "</tr>");
+			  if(customerList[customer].updateDay==null){
+				  $newTbody.append(
+						   	"<tr>" +
+					        "<td>" + customerList[customer].no + "</td>" +
+					        "<td>" + customerList[customer].name + "</td>" +
+					        "<td>" + customerList[customer].ceo + "</td>" +
+					        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
+					        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+					        "<td>" + customerList[customer].assetsFlag + "</td>" +
+					        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
+					        "<td>" + customerList[customer].phone + "</td>" +
+					        "<td>" + customerList[customer].managerName + "</td>" +
+					        "<td>" + customerList[customer].managerEmail + "</td>" +
+					        "<td>" + customerList[customer].bankCode + "</td>" +
+					        "<td>" + customerList[customer].bankName + "</td>" +
+					        "<td>" + customerList[customer].depositNo + "</td>" +
+					        "<td>" + customerList[customer].depositHost + "</td>" +
+					        "<td>" + customerList[customer].insertDay + "</td>" +
+					        "<td>" + customerList[customer].insertUserid + "</td>" +
+					        "<td></td>" +
+					        "<td></td>" +
+					        "</tr>");
+				  
+			  }
+			  if(customerList[customer].updateDay !=null){
+				  $newTbody.append(
+						   	"<tr>" +
+					        "<td>" + customerList[customer].no + "</td>" +
+					        "<td>" + customerList[customer].name + "</td>" +
+					        "<td>" + customerList[customer].ceo + "</td>" +
+					        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
+					        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+					        "<td>" + customerList[customer].assetsFlag + "</td>" +
+					        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
+					        "<td>" + customerList[customer].phone + "</td>" +
+					        "<td>" + customerList[customer].managerName + "</td>" +
+					        "<td>" + customerList[customer].managerEmail + "</td>" +
+					        "<td>" + customerList[customer].bankCode + "</td>" +
+					        "<td>" + customerList[customer].bankName + "</td>" +
+					        "<td>" + customerList[customer].depositNo + "</td>" +
+					        "<td>" + customerList[customer].depositHost + "</td>" +
+					        "<td>" + customerList[customer].insertDay + "</td>" +
+					        "<td>" + customerList[customer].insertUserid + "</td>" +
+					        "<td>" + customerList[customer].updateDay + "</td>" +
+					        "<td>" + customerList[customer].updateUserid + "</td>" +
+					        "</tr>");
+				  
+			  }
 		  }
 		  $newTbody.append("</tbody>");
 		  $(".chosen-select").chosen();
@@ -239,71 +343,113 @@ function execDaumPostcode() {
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
-		//var customerNo1=td.eq(1).text().substring(0,2);
-		//var customerNo2=td.eq(1).text().substring(4,5);
-		//var customerNo3=td.eq(1).text().substring(7,11);
-		var customerNo = td.eq(1).text();
+		
+		//사업자 등록번호와 법인번호 => - 를 제거한다.
+		var customerNo = td.eq(0).text();
 		var noArray=customerNo.split('-');
-		
-		var customerPhone = td.eq(8).text();
-		var phoneArray=customerPhone.split('-');
-		
-		var customerAddr = td.eq(4).text();
-		var addrArray=customerAddr.split('/');
-		
-		var customerConIt = td.eq(5).text();
-		var conitArray=customerConIt.split('/');
-		
-		if (noArray[2] !=null){
-			$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
-		} else if (noArray[2]==null){
-			$("input[name=no]").val(noArray[0]);  
-		}
-		$("input[name=name]").val(td.eq(2).text());
-		$("input[name=ceo]").val(td.eq(3).text());
-		$("input[name=address]").val(addrArray[0]);
-		$("input[name=detailAddress]").val(addrArray[1]);
-		$("input[name=conditions]").val(conitArray[0]);
-		$("input[name=item]").val(conitArray[1]);
-		
+		//법인번호
 		if (noArray[2] !=null){
 			$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
 		} else if (noArray[2]==null){
 			$("input[name=corporationNo]").val(noArray[0]);
 		}
+		//사업자등록번호
+		if (noArray[2] !=null){
+			$("input[name=no]").val(noArray[0]+noArray[1]+noArray[2]);
+		} else if (noArray[2]==null){
+			$("input[name=no]").val(noArray[0]);  
+		}
 		
-		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
+		//거래처 번호 => - 를 제거한다.
+		var customerPhone = td.eq(7).text();
+		var phoneArray=customerPhone.split('-');
+		
 		if (phoneArray[2] !=null){
 			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
 		} else if (phoneArray[2]==null){
 			$("input[name=phone]").val(phoneArray[0]+phoneArray[1]);
 		}
-		//$("input[name=phone]").val(phoneArray[0]+phoneArray[1]+phoneArray[2]);
-		$("input[name=managerEmail]").val(td.eq(10).text());
-		$("input[name=bankName]").val(td.eq(12).text());
-		$("input[name=bankCode]").val(td.eq(11).text());
-		$("input[name=depositNo]").val(td.eq(13).text());
-		$("input[name=managerName]").val(td.eq(9).text());
-		$("input[name=depositHost]").val(td.eq(14).text());
+		
+		//거래처 주소를 '/'를 기준으로 끊어 주소와 상세주소로 구분한다.
+		var customerAddr = td.eq(3).text();
+		var addrArray=customerAddr.split('/');
+
+		$("input[name=address]").val(addrArray[0]);//주소
+		$("input[name=detailAddress]").val(addrArray[1]);//상세주소
+		
+		// '/'를기준으로 끊어 업태와 종목을 구분한다.
+		var customerConIt = td.eq(4).text();
+		var conitArray=customerConIt.split('/');
+		
+		$("input[name=conditions]").val(conitArray[0]);//업태
+		$("input[name=item]").val(conitArray[1]);//업종
+		
+		//거래처명
+		$("input[name=name]").val(td.eq(1).text());
+		
+		//대표자명
+		$("input[name=ceo]").val(td.eq(2).text());
+		
+		//관할영업소
+		$("input[name=jurisdictionOffice]").val(td.eq(6).text());
+		
+		//담당자 이메일
+		$("input[name=managerEmail]").val(td.eq(9).text());
+		
+		//은행명
+		$("input[name=bankName]").val(td.eq(11).text());
+		
+		//은행코드
+		$("input[name=bankCode]").val(td.eq(10).text());
+		
+		//계좌번호
+		$("input[name=depositNo]").val(td.eq(12).text());
+		
+		//거래처 담당자명
+		$("input[name=managerName]").val(td.eq(8).text());
+		
+		//예금주
+		$("input[name=depositHost]").val(td.eq(13).text());
+		
+		
 		$("input[name=address]").prop("readonly", true);
 		$("input[name=depositNo]").prop("readonly", true);
 		$("input[name='bankCode']").prop("readonly", true);
 		$("input[name='bankName']").prop("readonly", true);
-		$("input[name='depositHost']").prop("readonly", true);  
-		var td6 = td.eq(6).text();
-		if(td6 == "토지"){
+		$("input[name='depositHost']").prop("readonly", true);
+		
+		//assets_flag(자산 거래처 종류) 값에 따라  radio 박스의 체크 상태가 변화한다.
+		var td5 = td.eq(5).text();
+		if(td5 == "토지"){
 		$('input:radio[name=assetsFlag]:input[value="a"]').prop("checked", true);
-		} else if (td6 =="건물"){
+		} else if (td5 =="건물"){
 		$('input:radio[name=assetsFlag]:input[value="b"]').prop("checked", true);
-		} else if (td6 =="차량"){
+		} else if (td5 =="차량"){
 		$('input:radio[name=assetsFlag]:input[value="c"]').prop("checked", true);
-		} else if (td6 =="무형자산"){
+		} else if (td5 =="무형자산"){
 		$('input:radio[name=assetsFlag]:input[value="d"]').prop("checked", true);
 		}
+		
+		//PK인 사업자 등록번호의  input box가 readonly 상태로 바뀌어 수정불가한 상태가 된다.
 		$("#no").attr("readonly",true);
+
+		$("#btn-check-no").hide();
+		$("#img-checkno").hide();
+		$("#btn-create").hide();
 	});
 	
 	function settingInput(customerList) {
+		//var customerNo = td.eq(1).text();
+		//var noArray=customerNo.split('-');
+		//법인번호
+		//if (noArray[2] !=null){
+	//		$("input[name=corporationNo]").val(noArray[0]+noArray[1]+noArray[2]);
+	//	} else if (noArray[2]==null){
+	//		$("input[name=corporationNo]").val(noArray[0]);
+	//	}
+	//	$("input[name=name]").val(td.eq(2).text());
+		
+	
 		$("input[name=no]").val(customerList[0].no);
 		$("input[name=name]").val(customerList[0].name);
 		$("input[name=ceo]").val(customerList[0].ceo);
@@ -326,19 +472,6 @@ function execDaumPostcode() {
 		$("input[name='depositHost']").prop("readonly", true);  
 	}
 	
-	$(document.body).delegate('#selectAll', 'click', function() {
-		if(this.checked) {
-	        $(':checkbox').each(function() {
-	            this.checked = true;                        
-	        });
-	    } else {
-	        $(':checkbox').each(function() {
-	            this.checked = false;                       
-	        });
-	    }
-	});
-	
-
 	$(function() {
 	      $("#dialog-message").dialog({
 	         autoOpen : false
@@ -378,7 +511,7 @@ function execDaumPostcode() {
           url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
           contentType : "application/json; charset=utf-8",
           type: "get",
-          dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+          dataType: "json",
           data : "",
           statusCode: {
               404: function() {
@@ -407,13 +540,20 @@ function execDaumPostcode() {
        });
     });
     
-    // 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
+    // 은행리스트에서 row를 선택면 해당하는 form 에 반영된다.
     $(document.body).delegate('#tbody-bankaccountList tr', 'click', function() {
        var tr = $(this);
        var td = tr.children();
+       //계좌번호
        $("input[name=depositNo]").val(td.eq(0).text());
+       
+       //예금주
        $("input[name=depositHost]").val(td.eq(1).text());
+       
+       //은행코드
        $("input[name=bankCode]").val(td.eq(2).text());
+       
+       //은행명
        $("input[name=bankName]").val(td.eq(3).text());
        $("#dialog-message").dialog('close');
     });
@@ -450,238 +590,421 @@ function execDaumPostcode() {
 </script>
 
 <script type="text/javascript">
-var validationMessage ='';
-var errortitle='';
-var errorfield ='';
-
-
-function openErrorModal(title, message,errorfield) {
-	$('#staticBackdropLabel').html(title);
-	$('#staticBackdropBody').text(message);
+	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
+	var nochecked = false;
 	
-	console.log($('#staticBackdropLabel').text());
-	console.log($('#staticBackdropBody').text());
-
-	$( "#staticBackdrop" ).dialog({
-		resizable: false,
-		modal: true,
-		title: title,
-		buttons: [
-			{
-				text: "OK",
-				"class" : "btn btn-danger btn-mini",
-				click: function() {
-					$(this).dialog('close');
-		          	$('#staticBackdropBody').text('');
-					$(errorfield).focus();
+	function openErrorModal(title, message,errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					"id" : "modalok",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');
+						$(errorfield).focus();
+					}
 				}
-			}
-		]
-	});
-
-	$("#staticBackdrop").dialog('open');//모델창 띄운다
-}
-
-//insert Validation
-function InsertValidation(){
-	let no =$('#no').val();//사업자등록번호
-	let name =$('#name').val();//상호명
-	let ceo =$('#ceo').val();//대표자
-	let address =$('#address').val();//종목
-	let conditions =$('#conditions').val();//종목
-	let item =$('#item').val();//업태
-	let corporationNo=$('#corporationNo').val();//법인번호
-	let phone=$('#phone').val();//거래처전화번호
-	let assetsFlag=$('#assetsFlag').val();//종류
-	let managerName=$('#managerName').val();//담당자 성명
-	let managerEmail=$('#managerEmail').val();//이메일
-	let bankCode=$('#bankCode').val();//은행코드
-	let bankName=$('#bankName').val();//은행명
-	let depositNo=$('#depositNo').val();//계좌번호
-	let depositHost=$('#depositHost').val();//예금주
+			]
+		});
 	
-	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+
 	//사업자등록번호 Valid
-	if('' === no){
-		errortitle = 'CUSTOEMR_NO ERROR';
-		validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
-		errorfield='#no';
-		return false;
-	}
-	if(no.length<10 || no.length >10){
-		errortitle = 'CUSTOEMR_NO ERROR';
-		validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
-		errorfield='#no';
-		return false;
-	}
+	function noValid(no){
+			if('' === no){
+				errortitle = 'CUSTOMER_NO ERROR';	
+				validationMessage = '사업자등록번호는 반드시 입력해야합니다.';
+				errorfield='#no';
+				return false;
+			}
+			if(no.length<10 || no.length >10){
+				errortitle = 'CUSTOMER_NO ERROR';
+				validationMessage = '사업자등록번호는 10자리를 입력하셔야 합니다';
+				errorfield='#no';
+				return false;
+			}
+			return true;
+		}
 	
-	//상호명 Valid
-	if(''=== name){
-		errortitle = 'CUSTOMER_NAME ERROR';
-		validationMessage = '상호명은 필수입력항목입니다.';
-		errorfield='#name';
-		return false;
+	//insert Validation
+	function InsertValidation(){
+		let name =$('#name').val();//상호명
+		let ceo =$('#ceo').val();//대표자
+		let address =$('#address').val();//종목
+		let conditions =$('#conditions').val();//종목
+		let item =$('#item').val();//업태
+		let corporationNo=$('#corporationNo').val();//법인번호
+		let phone=$('#phone').val();//거래처전화번호
+		let assetsFlag=$('#assetsFlag').val();//종류
+		let managerName=$('#managerName').val();//담당자 성명
+		let managerEmail=$('#managerEmail').val();//이메일
+		let bankCode=$('#bankCode').val();//은행코드
+		let bankName=$('#bankName').val();//은행명
+		let depositNo=$('#depositNo').val();//계좌번호
+		let depositHost=$('#depositHost').val();//예금주
 		
-	}
-	if(name.length > 20){
-		errortitle = 'CUSTOMER_NAME ERROR';
-		validationMessage = '상호명은\r\n20자 이하로 입력하셔야 합니다.';
-		errorfield='#name';
-		return false;
-	}
-	
-	//대표자 Valid
-	if(''=== ceo){
-		errortitle = 'CUSTOMER_CEO ERROR';
-		validationMessage = '대표자는 필수입력항목입니다.';
-		errorfield='#ceo';
-		return false;
+		//사업자등록번호 Valid
+		//if('' === no){
+		//	errortitle = 'CUSTOEMR_NO ERROR';
+		//	validationMessage = '사업자 등록번호는\r\n필수입력항목입니다.';
+		//	errorfield='#no';
+		//	return false;
+		//}
+		//if(no.length<10 || no.length >10){
+		//	errortitle = 'CUSTOEMR_NO ERROR';
+		//	validationMessage = '사업자등록번호는\r\n10자리를 입력하셔야 합니다.';
+		//	errorfield='#no';
+		//	return false;
+		//}
 		
-	}
-	if(ceo.length > 6){
-		errortitle = 'CUSTOMER_CEO ERROR';
-		validationMessage = '대표자는\r\n6자 이하로 입력하셔야 합니다.';
-		errorfield='#ceo';
-		return false;
-	}
-	//주소 Valid
-
-	if(''=== address){
-		errortitle = 'CUSTOMER_ADDRESS ERROR';
-		validationMessage = '주소는 필수입력항목입니다.\r\n 팝업창을 통해 입력해주세요.';
-		errorfield='#address';
-		return false;
+		//상호명 Valid
+		if(''=== name){
+			errortitle = 'CUSTOMER_NAME ERROR';
+			validationMessage = '상호명은 필수입력항목입니다.';
+			errorfield='#name';
+			return false;
+			
+		}
+		if(name.length > 20){
+			errortitle = 'CUSTOMER_NAME ERROR';
+			validationMessage = '상호명은\r\n20자 이하로 입력하셔야 합니다.';
+			errorfield='#name';
+			return false;
+		}
+		
+		//대표자 Valid
+		if(''=== ceo){
+			errortitle = 'CUSTOMER_CEO ERROR';
+			validationMessage = '대표자는 필수입력항목입니다.';
+			errorfield='#ceo';
+			return false;
+			
+		}
+		if(ceo.length > 6){
+			errortitle = 'CUSTOMER_CEO ERROR';
+			validationMessage = '대표자는\r\n6자 이하로 입력하셔야 합니다.';
+			errorfield='#ceo';
+			return false;
+		}
+		
+		//주소 Valid
+		if(''=== address){
+			errortitle = 'CUSTOMER_ADDRESS ERROR';
+			validationMessage = '주소는 필수입력항목입니다.\r\n 팝업창을 통해 입력해주세요.';
+			errorfield='#address';
+			return false;
+		}
+		
+		//업태 Valid
+		if(''=== conditions){
+			errortitle = 'CUSTOMER_CONDITIONS ERROR';
+			validationMessage = '업태는 필수입력항목입니다.';
+			errorfield='#conditions';
+			console.log(conditions.length);
+			return false;
+		}
+		if(conditions.length > 10){
+			errortitle = 'CUSTOMER_CONDITIONS ERROR';
+			validationMessage = '업태는\r\n10자 이하로 입력하셔야 합니다.';
+			errorfield='#conditions';
+			return false;
+		}
+		
+		//종목 Valid
+		if(''=== item){
+			errortitle = 'CUSTOMER_ITEM ERROR';
+			validationMessage = '종목은 필수입력항목입니다.';
+			errorfield='#item';
+			return false;
+		}
+		if(item.length > 10){
+			errortitle = 'CUSTOMER_ITEM ERROR';
+			validationMessage = '종목은\r\n10자 이하로 입력하셔야 합니다.';
+			errorfield='#item';
+			return false;
+		}
+		
+		//법인번호 Valid
+		if(''=== corporationNo){
+			errortitle = 'CUSTOMER_CORPORATIONNO ERROR';
+			validationMessage = '법인번호는 필수입력항목입니다.';
+			errorfield='#corporationNo';
+			return false;
+		}
+		if(corporationNo.length<10 || corporationNo.length >10){
+			errortitle = 'CUSTOEMR_CORPORATIONNO ERROR';
+			validationMessage = '법인번호는\r\n10자리를 입력하셔야 합니다.';
+			errorfield='#corporationNo';
+			return false;
+		}
+		
+		//자산플래그 Valid
+		if($(':radio[name=assetsFlag]:checked').length < 1){
+			errortitle = 'CUSTOMER_ASSETSFLAG ERROR';
+			validationMessage = '자산 종류는 필수입력항목입니다.';
+			errorfield='#assetsFlag';
+			return false;
+		}
+		
+		//거래처 전화번호 Valid (11자)
+		if(''=== phone){
+			errortitle = 'CUSTOMER_PHONE ERROR';
+			validationMessage = '거래처 전화번호는\r\n필수입력항목입니다.';
+			errorfield='#phone';
+			return false;
+		}
+		if(phone.length > 11){
+			errortitle = 'CUSTOMER_PHONE ERROR';
+			validationMessage = '거래처 전화번호는\r\n11자리 이하로 입력하셔야 합니다.';
+			errorfield='#phone';
+			return false;
+		}
+		
+		//Email Valid
+		if(''=== managerEmail){
+			errortitle = 'CUSTOMER_Email ERROR';
+			validationMessage = '이메일은 필수입력항목입니다.';
+			errorfield='#managerEmail';
+			return false;
+		}
+		//정규식에 따른 email 형식검사
+		var re=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+		var email = document.getElementById('managerEmail').value;
+		if (email = !re.test(email)) {
+			errortitle = 'CUSTOMER_Email ERROR';
+			validationMessage = '이메일 형식에 맞게 입력해주세요.\r\n 예)example@test.com';
+			errorfield='#managerEmail';
+			return false;
+			} 
+		
+		//계좌번호, 은행코드, 은행명, 예금주 Valid (팝업창으로 유도)
+		if(''=== depositNo){
+			errortitle = 'CUSTOMER_DEPOSITNO ERROR';
+			validationMessage = '계좌번호, 은행코드, 은행명, 예금주\r\n는 필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요.';
+			errorfield='#depositNo';
+			return false;
+		}
+		
+		//거래처 담당자 성명 Valid
+		if(''=== managerName){
+			errortitle = 'CUSTOMER_MANAGERNAME ERROR';
+			validationMessage = '거래처 담당자 성명은\r\n필수입력항목입니다.';
+			errorfield='#managerName';
+			return false;
+		}
+		if(ceo.managerName > 6){
+			errortitle = 'CUSTOMER_MANAGERNAME ERROR';
+			validationMessage = '거래처 담당자 성명은\r\n6자 이하로 입력하셔야 합니다.';
+			errorfield='#managerName';
+			return false;
+		}
+	
+		return true;
 	}
 	
-	//업태 Valid
-	if(''=== conditions){
-		errortitle = 'CUSTOMER_CONDITIONS ERROR';
-		validationMessage = '업태는 필수입력항목입니다.';
-		errorfield='#conditions';
-		console.log(conditions.length);
-		return false;
+	//delete Validation
+	function DeleteValidation(){
+		let no =$('#no').val();//사업자등록번호
+		let name =$('#name').val();//상호명
+		let ceo =$('#ceo').val();//대표자
+		let address =$('#address').val();//종목
+		let conditions =$('#conditions').val();//종목
+		let item =$('#item').val();//업태
+		let corporationNo=$('#corporationNo').val();//법인번호
+		let phone=$('#phone').val();//거래처전화번호
+		let assetsFlag=$('#assetsFlag').val();//종류
+		let managerName=$('#managerName').val();//담당자 성명
+		let managerEmail=$('#managerEmail').val();//이메일
+		let bankCode=$('#bankCode').val();//은행코드
+		let bankName=$('#bankName').val();//은행명
+		let depositNo=$('#depositNo').val();//계좌번호
+		let depositHost=$('#depositHost').val();//예금주
+		
+		//사업자등록번호 Valid
+		if('' === no){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#no';
+			return false;
+		}
+		
+		//상호명 Valid
+		if(''=== name){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#name';
+			return false;
+			
+		}
+		
+		//대표자 Valid
+		if(''=== ceo){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#ceo';
+			return false;
+			
+		}
+		
+		//주소 Valid
+		if(''=== address){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#address';
+			return false;
+		}
+		
+		//업태 Valid
+		if(''=== conditions){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#conditions';
+			console.log(conditions.length);
+			return false;
+		}
+		
+		//종목 Valid
+		if(''=== item){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#item';
+			return false;
+		}
+		
+		//법인번호 Valid
+		if(''=== corporationNo){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#corporationNo';
+			return false;
+		}
+		
+		//자산플래그 Valid
+		if($(':radio[name=assetsFlag]:checked').length < 1){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#assetsFlag';
+			return false;
+		}
+		
+		//거래처 전화번호 Valid (11자)
+		if(''=== phone){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#phone';
+			return false;
+		}
+		
+		//Email Valid
+		if(''=== managerEmail){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#managerEmail';
+			return false;
+		}
+		
+		//계좌번호, 은행코드, 은행명, 예금주 Valid (팝업창으로 유도)
+		if(''=== depositNo){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#depositNo';
+			return false;
+		}
+		
+		//거래처 담당자 성명 Valid
+		if(''=== managerName){
+			errortitle = 'DELETE ERROR';
+			validationMessage = '삭제할 거래처를 선택해주세요';
+			errorfield='#managerName';
+			return false;
+		}
+	
+		return true;
 	}
-	if(conditions.length > 10){
-		errortitle = 'CUSTOMER_CONDITIONS ERROR';
-		validationMessage = '업태는\r\n10자 이하로 입력하셔야 합니다.';
-		errorfield='#conditions';
-		return false;
+	function enterdeposit(){
+		$("#a-dialog-depositNo").click();
 	}
 	
-	//종목 Valid
-	if(''=== item){
-		errortitle = 'CUSTOMER_ITEM ERROR';
-		validationMessage = '종목은 필수입력항목입니다.';
-		errorfield='#item';
-		return false;
-	}
-	if(item.length > 10){
-		errortitle = 'CUSTOMER_ITEM ERROR';
-		validationMessage = '종목은\r\n10자 이하로 입력하셔야 합니다.';
-		errorfield='#item';
-		return false;
+	//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다.
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode;
+	    var _value = event.srcElement.value;
+	
+	    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
+	        if(event.keyCode != 46){//delete
+	             return false;
+	        } 
+	     }
+	    return true;
+	    
 	}
 	
-	//법인번호 Valid
-	if(''=== corporationNo){
-		errortitle = 'CUSTOMER_CORPORATIONNO ERROR';
-		validationMessage = '법인번호는 필수입력항목입니다.';
-		errorfield='#corporationNo';
-		return false;
-	}
-	if(corporationNo.length<10 || corporationNo.length >10){
-		errortitle = 'CUSTOEMR_CORPORATIONNO ERROR';
-		validationMessage = '법인번호는\r\n10자리를 입력하셔야 합니다.';
-		errorfield='#corporationNo';
-		return false;
-	}
+	//사업자등록번호, 법인번호, 전화번호에서 한글이 입력 되었을시 지운다.
+	function delHangle(evt){
+	    var objTarger = evt.srcElement || evt.target;
+	    var val = event.srcElement.value;
+	    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
+	        objTarger.value = null;
+	    	}
+	    }
 	
-	//자산플래그 Valid
-	if($(':radio[name=assetsFlag]:checked').length < 1){
-		errortitle = 'CUSTOMER_ASSETSFLAG ERROR';
-		validationMessage = '자산 종류는 필수입력항목입니다.';
-		errorfield='#assetsFlag';
-		return false;
-	}
+	//삭제확인모달창 띄우기
+	var Deletecheckmessage ='';
+	var deletetitle='';
 	
-	//거래처 전화번호 Valid (11자)
-	if(''=== phone){
-		errortitle = 'CUSTOMER_PHONE ERROR';
-		validationMessage = '거래처 전화번호는\r\n필수입력항목입니다.';
-		errorfield='#phone';
-		return false;
-	}
-	if(phone.length > 11){
-		errortitle = 'CUSTOMER_PHONE ERROR';
-		validationMessage = '거래처 전화번호는\r\n11자리 이하로 입력하셔야 합니다.';
-		errorfield='#phone';
-		return false;
-	}
+	function openDeleteModal(title, message) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
 	
-	//Email Valid
-	if(''=== managerEmail){
-		errortitle = 'CUSTOMER_Email ERROR';
-		validationMessage = '이메일은 필수입력항목입니다.';
-		errorfield='#managerEmail';
-		return false;
-	}
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "확인",
+					"class" : "btn btn-danger btn-mini",
+					"name" : "deleteok",
+					"id" : "deleteok",
+					click: function() {
+						$(this).dialog('close');
+					}
+				},
+				{
+					text: "취소",
+					"class" : "btn btn-inverse btn-mini",
+					"name" : "deletecancel",
+					"id" : "deletecancel",
+					click: function() {
+						$(this).dialog('close');
+					}
+				}
+				
+			]
+		});
 	
-	var re=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-	var email = document.getElementById('managerEmail').value;
-	if (email = !re.test(email)) {
-		errortitle = 'CUSTOMER_Email ERROR';
-		validationMessage = '이메일 형식에 맞게 입력해주세요.\r\n 예)example@test.com';
-		errorfield='#managerEmail';
-		return false;
-		} 
-	
-	//계좌번호, 은행코드, 은행명, 예금주 Valid
-	if(''=== depositNo){
-		errortitle = 'CUSTOMER_DEPOSITNO ERROR';
-		validationMessage = '계좌번호, 은행코드, 은행명, 예금주\r\n는 필수입력항목입니다. \r\n 팝업창을 통해 입력해주세요.';
-		errorfield='#depositNo';
-		return false;
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
 	}
-	
-	//거래처 담당자 성명 Valid
-	if(''=== managerName){
-		errortitle = 'CUSTOMER_MANAGERNAME ERROR';
-		validationMessage = '거래처 담당자 성명은\r\n필수입력항목입니다.';
-		errorfield='#managerName';
-		return false;
-	}
-	if(ceo.managerName > 6){
-		errortitle = 'CUSTOMER_MANAGERNAME ERROR';
-		validationMessage = '거래처 담당자 성명은\r\n6자 이하로 입력하셔야 합니다.';
-		errorfield='#managerName';
-		return false;
-	}
-
-	return true;
-}
-
-//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다
-function isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : event.keyCode;
-    var _value = event.srcElement.value;
-
-    if((event.keyCode < 48) || (event.keyCode > 57)){//1~0
-        if(event.keyCode != 46){//delete
-             return false;
-        } 
-     }
-    return true;
-    
-}
-function delHangle(evt){
-    var objTarger = evt.srcElement || evt.target;
-    var val = event.srcElement.value;
-    if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(val)){
-        objTarger.value = null;
-    	}
-    }
-
 </script>
+
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 
@@ -692,11 +1015,8 @@ function delHangle(evt){
 		<div class="main-content">
 			<div class="page-content">
 
-
-
-
 				<div class="page-header position-relative">
-					<h1 class="pull-left">거래처 관리 [27]</h1>
+					<h1 class="pull-left">거래처 관리</h1>
 				</div>
 				
 				<!-- /.page-header -->
@@ -704,20 +1024,22 @@ function delHangle(evt){
 
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" id="inputform" name="inputform" method="post">
-						<div class="row-fluid" style="float: left">
+						<div class="row-fluid">
 							<div class="span6">
-								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										사업자 등록번호:&nbsp;
-									</label>
-									
-									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
-								</div>
 								
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										상호명:&nbsp;
+										사업자등록번호:&nbsp;
 									</label>
+									<div class="input-append">
+									
+									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
+									
+									
+									<input id="btn-check-no" type="button" value="중복확인">
+										<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+									</div>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;상호명:
 									<input type="text" id="name" name="name" placeholder="상호명" maxlength="20" class="col-xs-10 col-sm-5" />
 								</div>
 
@@ -744,7 +1066,7 @@ function delHangle(evt){
 				                            </span>
 				                    	</a>
 									</div>
-									&nbsp; &nbsp; &nbsp; &nbsp; 상세주소:
+									&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;상세주소:
 									<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"/>
 								</div>
 
@@ -824,15 +1146,14 @@ function delHangle(evt){
 										계좌번호:&nbsp;
 									</label>
 									<div class="input-append">
-										 <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
-										<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" readonly/>
-												<span class="add-on">
-				                                   <i class="icon-search icon-on-right bigger-110"></i>
-				                                  
-				                                 </span>
-				                                   </a>
-										</div>
-									&nbsp; &nbsp; &nbsp; &nbsp; 은행코드:
+										<a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
+											<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" readonly/>
+											<span class="add-on">
+					                        	<i class="icon-search icon-on-right bigger-110"></i>
+					                        </span>
+					                    </a>
+									</div>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;은행코드:
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 
@@ -860,7 +1181,7 @@ function delHangle(evt){
 											<td>
 												<label>계좌번호</label>
 												<div class="input-append">
-													<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+													<input type="text" id="input-dialog-depositNo" style="width: 100px;" onkeypress="if( event.keyCode==13 ){enterdeposit();}"/>
 													<a href="#" id="a-dialog-depositNo">
 														<span class="add-on">
 														<i class="icon-search icon-on-right bigger-110"></i>
@@ -896,28 +1217,23 @@ function delHangle(evt){
 									</label>
 									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" maxlength="6"/>
 								</div>
-
-								<br/>
 							</div><!-- ./span6 -->
 						</div>
-							<!-- span -->
 						<div class="hr hr-18 dotted"></div>
+							<!-- span -->
 						<div class="row-fluid">
 							<div class="span8">
 							<button class="btn btn-info btn-small" id="btn-read">조회</button>
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
-						</div>	<!-- /.span -->
+							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+							</div>	<!-- /.span -->
 						
 						</div>
 						<div class="hr hr-18 dotted"></div>
-						<br/>
 					
 						</form>
-
-
 
 						<div class="row-fluid">
 							<div class="span12">
@@ -925,13 +1241,6 @@ function delHangle(evt){
 									<table id="simple-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th class="center">
-													<label>
-														<input type="checkbox" class="ace" id="selectAll" />
-														<span class="lbl">
-														</span>
-													</label>
-												</th>
 												<th>사업자등록번호</th>
 												<th>상호</th>
 												<th>대표자</th>
@@ -956,13 +1265,6 @@ function delHangle(evt){
 										<tbody class = "origin-tbody">
 											<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 												<tr>
-													<td class="center">
-														<label>
-															<input type="checkbox" class="ace" />
-															<span class="lbl">
-															</span>
-														</label>
-													</td>
 													<td>${vo.no }</td>
 													<td>${vo.name }</td>
 													<td>${vo.ceo }</td>
@@ -1042,19 +1344,146 @@ function delHangle(evt){
 					</ul>
 				</div>
 				
-				
-			<!-- Validation Modal Start -->
-			<div id="staticBackdrop" class="hide">
-			<br>
-				<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
-				</pre>
+				<!-- Validation Modal Start -->
+				<div id="staticBackdrop" class="hide">
+					<br>
+					<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
+					</pre>
+				</div>
+				<!-- Validation Modal End -->
 			</div>
-			<!-- Validation Modal End -->
-		</div>
 		
 	<!-- /.page-content -->
 	
 	<!-- basic scripts -->
 		<c:import url="/WEB-INF/views/common/footer.jsp" />
 	</body>
+	<script type="text/javascript">
+	//사업자등록번호 중복체크
+	$("#no").change(function(){
+		$("#btn-check-no").show();
+		$("#img-checkno").hide();
+		nochecked = false;
+	});	
+	
+	$("#btn-check-no").click(function(){
+		
+		var no = $("#no").val();
+		if(!noValid(no)){
+			openErrorModal(errortitle,validationMessage,errorfield);
+			return;
+		}
+		
+		
+	// 사업자등록번호 중복체크
+	$.ajax({
+		url: "${pageContext.servletContext.contextPath }/01/27/checkno?no=" + no,
+		contentType : "application/json; charset=utf-8",
+		type: "get",
+		dataType: "json",
+		data: "",
+		success: function(response){
+			console.log(response);
+			if(response.result == "fail"){
+				console.error(response.message);
+				return;
+			}
+			
+			if(response.data == null){
+				nochecked = true;
+				openErrorModal("DUPLICATE CHECK COMPLETE","중복 검사가 완료되었습니다.");
+				$("#btn-check-no").hide();
+				$("#img-checkno").show();
+				//$("#no").attr("readonly",true);
+				$("#modalok").click(function(){
+					openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
+					$("#deleteok").click(function(){
+						var customerno = document.getElementById("no").value;
+						$("input[name=corporationNo]").val(customerno);
+						openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+						$("#corporationNo").attr("readonly",true);
+						return;
+					});
+					$("#deletecancel").click(function(){
+						openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+						$("#corporationNo").attr("readonly",false);
+						return;
+					});
+				});
+// 				if($("#no").prop('readonly',true)){
+// 					$("#no").click(function(){
+// 						openDeleteModal("MODIFY_CUSTOMERNO","사업자등록번호를 다시 입력하시겠습니까?");
+// 						$("#deleteok").click(function(){
+// 							//var customerno = document.getElementById("no").value;
+// 							//$("input[name=corporationNo]").val(customerno);
+// 							openErrorModal("MODIFY ALLOW","사업자등록번호를 수정해주세요");
+// 							$("#no").attr("readonly",false);
+// 							$("#btn-check-no").show();
+// 							$("#img-checkno").hide();
+// 							return;
+// 						});
+// 						$("#deletecancel").click(function(){
+// 							openErrorModal("MODIFY CANCEL","사업자등록번호 수정이 취소되었습니다.");
+// 							$("#no").attr("readonly",true);
+// 							return;
+// 						});
+// 						return;
+// 						});
+					
+// 				}
+				return;
+			}else if(response.data.deleteFlag == "Y"){
+				
+				nochecked = true;
+				$("#btn-check-no").show();
+				$("#img-checkno").hide();
+				openDeleteModal('DELETED CUSTOMER',"삭제 처리되었던 거래처 입니다.\r\n 재등록 하시겠습니까?");
+				$("#deleteok").click(function(){
+
+					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록이 완료되었습니다.");
+					$("#corporationNo").attr("readonly",true);
+					$("#btn-check-no").hide();
+					$("#img-checkno").show();
+					$("#modalok").click(function(){
+							openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
+							$("#deleteok").click(function(){
+								var customerno = document.getElementById("no").value;
+								$("input[name=corporationNo]").val(customerno);
+								openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+								$("#corporationNo").attr("readonly",true);
+								return;
+							});
+							$("#deletecancel").click(function(){
+								openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+								$("#corporationNo").attr("readonly",false);
+								return;
+							});
+						
+					})
+					return;
+				});
+				$("#deletecancel").click(function(){
+					openErrorModal("CUSTOMER RECREATE CANCEL","거래처 재등록을 취소합니다.");
+					nochecked = false;
+					$("#corporationNo").attr("readonly",false);
+					return;
+				});
+				
+			
+				return;
+				
+			}else{
+				$("#no").val("");
+				openErrorModal('DUPLICATED CUSTOMER_NO ERROR',"이미 존재하는 사업자등록번호입니다.");
+			}
+			
+			},
+			error:function(xhr,error) {
+				console.err("error" + error);
+			}
+		});
+	});
+	
+	
+	</script>
 </html>

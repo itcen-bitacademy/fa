@@ -34,6 +34,7 @@ public class STermDebtVo {
 	private String insertDate; // 등록일
 	private String updateId; // 수정자
 	private String updateDate; // 수정일
+	private String repayDue;
 	
 	public Long getNo() {
 		return no;
@@ -197,6 +198,14 @@ public class STermDebtVo {
 	public void setUpdateId(String updateId) {
 		this.updateId = updateId;
 	}
+	
+	public String getRepayDue() {
+		return repayDue;
+	}
+	public void setRepayDue(String repayDue) {
+		this.repayDue = repayDue;
+	}
+	
 	@Override
 	public String toString() {
 		return "STermDebtVo [no=" + no + ", code=" + code + ", name=" + name + ", majorCode=" + majorCode
@@ -204,9 +213,10 @@ public class STermDebtVo {
 				+ ", repayCompleFlag=" + repayCompleFlag + ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate
 				+ ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay + ", mgr=" + mgr
 				+ ", mgrCall=" + mgrCall + ", deptClassification=" + deptClassification + ", bankCode=" + bankCode
-				+ ", bankName=" + bankName + ", depositNo=" + depositNo + ", accountNo=" + accountNo + ", voucherNo="
-				+ voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate=" + insertDate
-				+ ", updateId=" + updateId + ", updateDate=" + updateDate + "]";
+				+ ", bankName=" + bankName + ", depositNo=" + depositNo + ", depositHost=" + depositHost
+				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
+				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate
+				+ ", repayDue=" + repayDue + "]";
 	}
 
 }

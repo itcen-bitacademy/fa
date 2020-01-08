@@ -20,7 +20,7 @@ public class PurchasemanagementVo {
 		
 		public PurchasemanagementVo(PurchasemanagementVo vo){
 			this.no = vo.getNo();
-			this.purchaseDate = vo.getPurchaseDate();		
+			this.purchaseDate = vo.getPurchaseDate();
 			this.customerCode = vo.getCustomerCode();
 			this.customerName = vo.getCustomerName();
 			this.purchaseManager = vo.getPurchaseManager();
@@ -57,32 +57,229 @@ public class PurchasemanagementVo {
 	private String orderStd;			//정렬기준
 	private int page;					//페이지
 	private boolean searchFlag;			//조회여부
-	private Long voucherNo;			//전표번호
+	private Long voucherNo;				//전표번호
+	private int lastPage;				//조회시 마지막 페이지
+	private String startDate;			//기간검색
+	private String endDate;				//기간검색
+	private int pageCount;			//종 건수
 	
 	
 	
-	public Long getVoucherNo() {
-		return voucherNo;
+	
+	public int getPageCount() {
+		return pageCount;
 	}
 
-	public void setVoucherNo(Long voucherNo) {
-		this.voucherNo = voucherNo;
+	public void setPageCount(int pageCount) {
+		this.pageCount = pageCount;
 	}
 
-	public boolean isSearchFlag() {
-		return searchFlag;
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public void setSearchFlag(boolean searchFlag) {
-		this.searchFlag = searchFlag;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public int getPage() {
-		return page;
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setPage(int page) {
-		this.page = page;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public int getLastPage() {
+		return lastPage;
+	}
+
+	public void setLastPage(int lastPage) {
+		this.lastPage = lastPage;
+	}
+
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long number) {
+		this.number = number;
+	}
+
+	public String getPurchaseDate() {
+		return purchaseDate;
+	}
+
+	public void setPurchaseDate(String purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
+
+	public String getPurchaseManager() {
+		return purchaseManager;
+	}
+
+	public void setPurchaseManager(String purchaseManager) {
+		this.purchaseManager = purchaseManager;
+	}
+
+	public String getCustomerCode() {
+		return customerCode;
+	}
+
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getSectionCode() {
+		return sectionCode;
+	}
+
+	public void setSectionCode(String sectionCode) {
+		this.sectionCode = sectionCode;
+	}
+
+	public String getSectionName() {
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
+
+	public String getItemCode() {
+		return itemCode;
+	}
+
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public Long getSupplyValue() {
+		return supplyValue;
+	}
+
+	public void setSupplyValue(Long supplyValue) {
+		this.supplyValue = supplyValue;
+	}
+
+	public Long getTaxValue() {
+		return taxValue;
+	}
+
+	public void setTaxValue(Long taxValue) {
+		this.taxValue = taxValue;
+	}
+
+	public Long getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Long totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public String getTaxType() {
+		return taxType;
+	}
+
+	public void setTaxType(String taxType) {
+		this.taxType = taxType;
+	}
+
+	public String getTaxbillNo() {
+		return taxbillNo;
+	}
+
+	public void setTaxbillNo(String taxbillNo) {
+		this.taxbillNo = taxbillNo;
+	}
+
+	public String getReceiptDate() {
+		return receiptDate;
+	}
+
+	public void setReceiptDate(String receiptDate) {
+		this.receiptDate = receiptDate;
+	}
+
+	public String getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	public String getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(String deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
+	public String getInsertUserid() {
+		return insertUserid;
+	}
+
+	public void setInsertUserid(String insertUserid) {
+		this.insertUserid = insertUserid;
+	}
+
+	public String getInsertDay() {
+		return insertDay;
+	}
+
+	public void setInsertDay(String insertDay) {
+		this.insertDay = insertDay;
+	}
+
+	public String getUpdateUserid() {
+		return updateUserid;
+	}
+
+	public void setUpdateUserid(String updateUserid) {
+		this.updateUserid = updateUserid;
+	}
+
+	public String getUpdateDay() {
+		return updateDay;
+	}
+
+	public void setUpdateDay(String updateDay) {
+		this.updateDay = updateDay;
 	}
 
 	public String getOrderStd() {
@@ -93,143 +290,28 @@ public class PurchasemanagementVo {
 		this.orderStd = orderStd;
 	}
 
-	public String getNo() {
-		return no;
+	public int getPage() {
+		return page;
 	}
-	public void setNo(String no) {
-		this.no = no;
+
+	public void setPage(int page) {
+		this.page = page;
 	}
-	public Long getNumber() {
-		return number;
+
+	public boolean isSearchFlag() {
+		return searchFlag;
 	}
-	public void setNumber(Long number) {
-		this.number = number;
+
+	public void setSearchFlag(boolean searchFlag) {
+		this.searchFlag = searchFlag;
 	}
-	public String getPurchaseDate() {
-		return purchaseDate;
+
+	public Long getVoucherNo() {
+		return voucherNo;
 	}
-	public void setPurchaseDate(String purchaseDate) {
-		this.purchaseDate = purchaseDate;
-	}
-	public String getPurchaseManager() {
-		return purchaseManager;
-	}
-	public void setPurchaseManager(String purchaseManager) {
-		this.purchaseManager = purchaseManager;
-	}
-	public String getCustomerCode() {
-		return customerCode;
-	}
-	public void setCustomerCode(String customerCode) {
-		this.customerCode = customerCode;
-	}
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	public String getSectionCode() {
-		return sectionCode;
-	}
-	public void setSectionCode(String sectionCode) {
-		this.sectionCode = sectionCode;
-	}
-	public String getSectionName() {
-		return sectionName;
-	}
-	public void setSectionName(String sectionName) {
-		this.sectionName = sectionName;
-	}
-	public String getItemCode() {
-		return itemCode;
-	}
-	public void setItemCode(String itemCode) {
-		this.itemCode = itemCode;
-	}
-	public String getItemName() {
-		return itemName;
-	}
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	public Long getSupplyValue() {
-		return supplyValue;
-	}
-	public void setSupplyValue(Long supplyValue) {
-		this.supplyValue = supplyValue;
-	}
-	public Long getTaxValue() {
-		return taxValue;
-	}
-	public void setTaxValue(Long taxValue) {
-		this.taxValue = taxValue;
-	}
-	public Long getTotalPrice() {
-		return totalPrice;
-	}
-	public void setTotalPrice(Long totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-	public String getTaxType() {
-		return taxType;
-	}
-	public void setTaxType(String taxType) {
-		this.taxType = taxType;
-	}
-	public String getTaxbillNo() {
-		return taxbillNo;
-	}
-	public void setTaxbillNo(String taxbillNo) {
-		this.taxbillNo = taxbillNo;
-	}
-	public String getReceiptDate() {
-		return receiptDate;
-	}
-	public void setReceiptDate(String receiptDate) {
-		this.receiptDate = receiptDate;
-	}
-	public String getReleaseDate() {
-		return releaseDate;
-	}
-	public void setReleaseDate(String releaseDate) {
-		this.releaseDate = releaseDate;
-	}
-	public String getDeleteFlag() {
-		return deleteFlag;
-	}
-	public void setDeleteFlag(String deleteFlag) {
-		this.deleteFlag = deleteFlag;
-	}
-	public String getInsertUserid() {
-		return insertUserid;
-	}
-	public void setInsertUserid(String insertUserid) {
-		this.insertUserid = insertUserid;
-	}
-	public String getInsertDay() {
-		return insertDay;
-	}
-	public void setInsertDay(String insertDay) {
-		this.insertDay = insertDay;
-	}
-	public String getUpdateUserid() {
-		return updateUserid;
-	}
-	public void setUpdateUserid(String updateUserid) {
-		this.updateUserid = updateUserid;
-	}
-	public String getUpdateDay() {
-		return updateDay;
-	}
-	public void setUpdateDay(String updateDay) {
-		this.updateDay = updateDay;
+
+	public void setVoucherNo(Long voucherNo) {
+		this.voucherNo = voucherNo;
 	}
 
 	@Override
@@ -242,8 +324,11 @@ public class PurchasemanagementVo {
 				+ taxbillNo + ", receiptDate=" + receiptDate + ", releaseDate=" + releaseDate + ", deleteFlag="
 				+ deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
 				+ updateUserid + ", updateDay=" + updateDay + ", orderStd=" + orderStd + ", page=" + page
-				+ ", searchFlag=" + searchFlag + ", voucherNo=" + voucherNo + "]";
+				+ ", searchFlag=" + searchFlag + ", voucherNo=" + voucherNo + ", lastPage=" + lastPage + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", pageCount=" + pageCount + "]";
 	}
+
+	
 
 	
 

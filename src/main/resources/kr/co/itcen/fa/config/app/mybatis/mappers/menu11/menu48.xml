@@ -108,6 +108,7 @@
 	</select>
 	<!-- 상환내역 리스트 가지고 오기 -->
 	<select id="selectrepaylist" parameterType="long" resultType="repayvo">
+	<![CDATA[
 	select 	code as code,
 			pay_princ as payPrinc,
 			int_amount as intAmount,
@@ -115,6 +116,8 @@
 	from tb_repay
 	where debt_type = 'L'
 		and debt_no = #{_parameter}
+		and delete_flag = 'N'
+	]]>
 	</select>
 	
 	<!-- 마감일 읽기위한 select -->
@@ -191,10 +194,138 @@
 			#{item } 
 		</foreach>
 	<![CDATA[
+		and delete_flag = 'N'
 		order by code
 	]]>
 	</select>
-	
+	<select id="getRepayDueList" parameterType="map" resultType="ldebtvo">
+	<![CDATA[
+	select code,
+		   repay_bal as repayBal,
+		   (case repay_way
+   				when 'Y' then (case 
+   				]]>
+				<choose>
+					<when test="(startDate.substring(1,4) != endDate.substring(1,4))">
+				<![CDATA[
+					when (date_format(debt_date,"%m-%d") BETWEEN 
+						date_format(#{startDate},"%m-%d") AND '12-31')
+						
+						then
+						 concat(date_format(#{startDate},"%y-"), date_format(debt_date,"%m-%d"))
+						 
+					when  (date_format(debt_date,"%m-%d") BETWEEN 
+						'01-01' AND date_format(#{endDate},"%m-%d"))
+							
+						then 
+						 concat(date_format(#{endDate},"%y-"), date_format(debt_date,"%m-%d"))
+					]]>
+					</when>
+					<otherwise>
+					<![CDATA[
+					when date_format(debt_date,"%m-%d") BETWEEN 
+						date_format(#{startDate},"%m-%d") AND date_format(#{endDate},"%m-%d")
+						
+						then
+						 concat(date_format(#{startDate},"%y-"), date_format(debt_date,"%m-%d"))
+					]]>
+					</otherwise>
+				</choose>     
+				<![CDATA[
+            		   
+         			 end)
+    			when 'M' then (case 
+    				]]>
+				<choose>
+					<when test="(startDate.substring(5,6) != endDate.substring(5,6))">
+				<![CDATA[
+					when (date_format(debt_date,"%d") BETWEEN 
+						date_format(#{startDate},"%d") AND '31')
+						
+						then
+						 concat(date_format(#{startDate},"%y-%m-"), date_format(debt_date,"%d"))
+						 
+					when  (date_format(debt_date,"%d") BETWEEN 
+						'01' AND date_format(#{endDate},"%d"))
+							
+						then 
+						 concat(date_format(#{endDate},"%y-%m-"), date_format(debt_date,"%d"))
+						 
+						 
+						 
+					]]>
+					</when>
+					<otherwise>
+					<![CDATA[
+					when date_format(debt_date,"%d") BETWEEN 
+						date_format(#{startDate},"%d") AND date_format(#{endDate},"%d")
+						
+						then
+						 concat(date_format(#{startDate},"%y-%m"), date_format(debt_date,"%d"))
+					]]>
+					</otherwise>
+				</choose>     
+				<![CDATA[
+            	
+    			end) 
+    			when 'E' then (
+					 date_format(debt_date,"%y-%m-%d")
+				)
+    		end)
+		   
+		    as payDate
+		   
+	from tb_l_term_debt
+	where (case repay_way
+		when 'Y' then ( 
+		]]>
+		<choose>
+			<when test="(startDate.substring(1,4) != endDate.substring(1,4))">
+			<![CDATA[
+			(date_format(debt_date,"%m-%d") BETWEEN 
+				date_format(#{startDate},"%m-%d") AND '12-31')
+			or (date_format(debt_date,"%m-%d") BETWEEN 
+				'01-01' AND date_format(#{endDate},"%m-%d"))
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			date_format(debt_date,"%m-%d") BETWEEN 
+				date_format(#{startDate},"%m-%d") AND date_format(#{endDate},"%m-%d")
+			]]>
+			</otherwise>
+		</choose>     
+		<![CDATA[
+		)
+		when 'M' then (
+		]]>
+		<choose>
+			<when test="(startDate.substring(5,6) != endDate.substring(5,6))">
+			<![CDATA[
+			(date_format(debt_date,"%d") BETWEEN 
+				date_format(#{startDate},"%d") AND '31')
+			or (date_format(debt_date,"%d") BETWEEN 
+				'01' AND date_format(#{endDate},"%d"))
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			date_format(debt_date,"%d") BETWEEN 
+				date_format(#{startDate},"%d") AND date_format(#{endDate},"%d")
+			]]>
+			</otherwise>
+		</choose>     
+		<![CDATA[
+		)
+		when 'E' then (
+			 date_format(debt_date,"%y-%m-%d") BETWEEN 
+				date_format(#{startDate},"%y-%m-%d") AND date_format(#{endDate},"%y-%m-%d")
+		)
+	end)
+	and repay_comple_flag = 'N'
+	and delete_flag = 'N'
+	]]>
+	</select>
 	
 	<!-- update -->
 	<update parameterType="ldebtvo" id="update">

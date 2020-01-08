@@ -21,8 +21,12 @@
 			   delete_flag as deleteFlag
 		 from	tb_cardmanager
 		 where	delete_flag = "N"
-		 and    card_no = #{cardNo}
-		]]>
+		 and    substring(card_no,1,5) like concat(#{cardNo1 }, "%")
+		 and    substring(card_no,6,5) like concat(#{cardNo2 }, "%")
+		 and    substring(card_no,11,5) like concat(#{cardNo3 }, "%")
+		 and    substring(card_no,16,5) like concat(#{cardNo4 }, "%")
+		 ]]>
+		
 	</select>
 	
 
@@ -84,7 +88,17 @@
 		 and 	delete_flag = "Y"
 		]]>
 	</select>
-
+	
+	<select id="exist" parameterType="1cardvo" resultType="1cardvo">
+		<![CDATA[
+		select	card_no as cardNo
+		 from	tb_cardmanager
+		 where	card_no = #{cardNo }
+		 and 	delete_flag = "N"
+		]]>
+	</select>
+	
+	
 	<delete id="deleteAll" parameterType="1cardvo">
 		<![CDATA[
 			delete from tb_cardmanager where card_no = #{cardNo} and delete_flag ="Y"

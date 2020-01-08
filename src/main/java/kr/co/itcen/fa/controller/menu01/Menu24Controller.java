@@ -41,6 +41,7 @@ public class Menu24Controller {
 			vo.setDeleteFlag("N");
 		}
 		System.out.println(vo);
+		
 		DataResult<CardVo> dataResult = menu24Service.list(page,vo);
 		
 		model.addAttribute("dataResult",dataResult);
