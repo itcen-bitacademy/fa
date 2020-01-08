@@ -159,6 +159,7 @@
 				      	console.log(err)
 				    }
 				 })
+				 $("#btn-create").show();
 			} else if(a == "update") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!InsertValidation()){
@@ -207,9 +208,8 @@
 					    }
 					 })
 
-						$("#btn-create").show();
-
 				});
+				$("#btn-create").show();
 			} else if(a == "delete") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!DeleteValidation()){
