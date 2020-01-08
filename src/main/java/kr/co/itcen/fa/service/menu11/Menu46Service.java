@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.itcen.fa.repository.menu11.Menu46Repository;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
@@ -66,6 +67,7 @@ public class Menu46Service {
 		
 		return map;
 	}
+	
 	
 	public void deleteChecked(List<STermDebtVo> list) {
 		menu46Repository.updateDeleteFlag(list);
@@ -229,6 +231,7 @@ public class Menu46Service {
 	public List<STermDebtVo> getRepayDueList() {
 		List<STermDebtVo> list= null;
 		try {
+			System.out.println(getDateMap());
 			list = menu46Repository.getRepayDueList(getDateMap());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -254,15 +257,18 @@ public class Menu46Service {
 		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");		//현재날짜만 가져오기위해 사용
 		String dayOfSunday = getCurSunday();
 		
+		int month = calendar.get(Calendar.MONTH) + 1;
 		Map map = new HashMap();
 		map.put("curYear",calendar.get(Calendar.YEAR));
-		map.put("curMonth",calendar.get(Calendar.MONTH));
+		map.put("curMonth", month);
 		map.put("curDay",calendar.get(Calendar.DATE));
-		map.put("today", format1.parse(format1.format(calendar.getTime())));
-		map.put("dateOfSunday",format1.parse(dayOfSunday));
+		map.put("today", format1.format(calendar.getTime()));
+		map.put("dateOfSunday",dayOfSunday);
 		map.put("sunDay", dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
 		
-		
+		System.out.println("curYear : " + calendar.get(Calendar.YEAR) + "curMonth : " + month);
+		System.out.println("curDay : " + calendar.get(Calendar.DATE) + "today : " + format1.format(calendar.getTime()));
+		System.out.println("dateOfSunday : " + dayOfSunday + "sunDay : " + dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
 		return map;
 	}
 }
