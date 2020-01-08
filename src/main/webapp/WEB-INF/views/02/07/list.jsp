@@ -160,7 +160,7 @@
 												<tr>
 													<td class="left">${vo.purchaseDate }</td>
 													<td class="left">${vo.no }</td>
-													<td class="left">${vo.number }</td>
+													<td style="text-align:right">${vo.number }</td>
 													<td class="left">${vo.customerCode }</td>
 													<td class="left">${vo.customerName }</td>
 													<td class="left">${vo.purchaseManager }</td>
