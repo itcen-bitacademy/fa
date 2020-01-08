@@ -509,7 +509,7 @@
        
        // ajax 통신
        $.ajax({
-          url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
+          url: "${pageContext.request.contextPath }/api/deposit/gets?depositNo=" + depositNo,
           contentType : "application/json; charset=utf-8",
           type: "get",
           dataType: "json",
