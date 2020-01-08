@@ -40,7 +40,7 @@
 							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }" id="form1">
 								<div class="span4">
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 일 자</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매입일자</label>
 											<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker1 input-small" id="purchaseDate" type="text" data-date-format="yyyy-mm-dd" name="purchaseDate" value="">
@@ -63,7 +63,7 @@
 									</div>
 							
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처 담당자</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처담당자</label>
 											<div class="controls">
 												<input class="input-small" type="text" id="purchaseManager" placeholder="" readonly name="purchaseManager">
 											</div>
@@ -91,21 +91,21 @@
 							
 								<div class="span4">
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 번 호</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매입번호</label>
 											<div class="controls">
 												<input class="input-middle" type="text" id="no" placeholder="" name="no">
 											</div>
 									</div>
 								
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거 래 처 명</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처명</label>
 											<div class="controls">
 												<input type="text" id="customerName" name="customerName" placeholder="" readonly>
 											</div>
 									</div>
 									
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">입 고 일 자</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">입고일자</label>
 											<div class="controls">
 												<div class="input-append">
 													<input class="cl-date-picker2 input-small" id="receiptDate" type="text" data-date-format="yyyy-mm-dd" name="receiptDate" value="">
@@ -117,7 +117,7 @@
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">출 고 일 자</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">출고일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker3 input-small" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate" value="">
