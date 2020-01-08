@@ -225,7 +225,7 @@
 			<div class="row-fluid">
 				<div class="span12">
                 <input type="hidden" id="rowCnt" name="rowCnt" value="1">
-                    <table id="save-table" class="table table-striped table-bordered table-hover">
+                    <table id="save-table" class="table  table-bordered table-hover">
                         <thead>
                         <tr>
                             <th class="center">일자</th>
@@ -294,7 +294,7 @@
 			<div class="row-fluid">
 				<div class="span12" style="overflow: auto;">
 					<table id="simple-table-1"
-						class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
+                     	class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 						<thead>
 							<tr>
 								<th class="center">일자</th>
@@ -915,7 +915,7 @@ $(function(){
 		$(this).prev().focus();
 	});
 	
-	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+	$(document.body).delegate('#voucher_list tr', 'click', function() {
 		
 		// input창에 값 셋팅해주기
 		var tr = $(this);
