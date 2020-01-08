@@ -129,21 +129,21 @@ html,body{
 				<!-- PAGE CONTENT BEGINS -->
 			<div>
 				<div>
-				<form class="form-horizontal">
+				<form id='myform' class="form-horizontal">
 					<table style="width:100%;">
 						<tbody>
 						<tr>
-							<td class="first-column center"><label class="control-label">은행명</label></td>
+							<td class="first-column center"><h4>은행명</h4></td>
 							<td class="second-column">
 				               		<input type="text" name="name"  value='${vo.name }'/>
 				            </td>
 				            
-							<td class="third-column center"><label class="control-label">지점명</label></td>
+							<td class="third-column center"><h4>지점명</h4></td>
 							<td class="fourth-column">
 				                <input type="text" name="store" value='${vo.store }' />
 				            </td>
 				            
-							<td class="fifth-column center"><label class="control-label">거래시작일</label></td>
+							<td class="fifth-column center"><h4>거래시작일</h4></td>
 							<td class="sixth-column">
 									<div class="row-fluid input-append">
 										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" 
@@ -164,7 +164,7 @@ html,body{
 						</tbody>
 					</table>
 					<div class="row-fluid">
-						<div class="span10"> 
+						<div class="span9"> 
 							<div class="checkbox" style="float:right; margin-top: 5px;">
 								<label>
 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
