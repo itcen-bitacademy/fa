@@ -39,6 +39,12 @@
       	.page-content{
          	min-width:1280px;
       	}
+      	
+      	@media screen and (max-width: 920px) {
+         .main-container{
+            height:calc(100% - 84px);
+         }
+      }
 </style>
 </head>
 <body class="skin-3">
