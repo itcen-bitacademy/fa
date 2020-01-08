@@ -121,7 +121,13 @@ public class Menu37Controller {
 	public String delete(Model model, BuyTaxbillVo vo) {
 		List<CustomerVo> customerList = menu37Service.customerList();
 		List<BankAccountVo> customerBankList = menu37Service.customerBankList();
-
+		
+		// 세금계산서가 있는지 확인
+		if(menu37Service.checkDuplicateNo(vo.getNo()) == null) {
+			model.addAttribute("deleteFlag","true");
+			return MAINMENU + "/" + SUBMENU + "/add";
+		}
+		
 		menu37Service.taxbillDelete(vo.getNo());
 		menu37Service.taxbillItemDelete(vo.getNo());
 
