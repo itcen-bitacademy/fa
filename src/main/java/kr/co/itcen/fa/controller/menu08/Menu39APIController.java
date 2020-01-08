@@ -22,7 +22,7 @@ public class Menu39APIController {
 	//건물코드 중복확인
 	@ResponseBody
 	@RequestMapping("/" + Menu39Controller.SUBMENU + "/checkId")
-	public JSONResult checkId(@RequestParam(value = "id", required=true, defaultValue="") String id ) {
+	public JSONResult checkId(@RequestParam(value = "id"/* , required=true, defaultValue="" */) String id ) {
 		System.out.println("!!!!!중복확인!!!!!");
 		BuildingVo vo = menu39Service.checkId(id);
 		return JSONResult.success(vo);

@@ -54,7 +54,7 @@
 							<!-- PAGE CONTENT BEGINS -->
 
 							
-							<form class="form-horizontal" name="manageForm" id="manage-building-form" onkeypress="if(event.keyCode == 13) formCheck();">
+							<form class="form-horizontal" name="manageForm" id="manage-building-form">
 								<!-- 좌측 -->
 								<div class="span6">
 									<div class="control-group">
@@ -122,10 +122,10 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득세</label>
+										<label class="control-label" for="form-field-1">기타비용</label>
 										<div class="controls">
-											<input readonly type="text" id="acqTax" name="acqTax" class="acqTax"
-												placeholder="" />
+											<input type="text" id="etcCost" name="etcCost" class="etcCost"
+												placeholder="금액을 입력하세요"/>
 										</div>
 									</div>
 									<div class="control-group">
@@ -203,9 +203,8 @@
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
-												class="control-label" for="form-field-1">기타비용</label> <input
-												type="text" id="etcCost" name="etcCost" class="etcCost"
-												placeholder="금액을 입력하세요" />
+												class="control-label" for="form-field-1">취득세</label> 
+											<input readonly type="text" id="acqTax" name="acqTax" class="acqTax" placeholder="" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -432,12 +431,14 @@ var checkId = false; //중복체크 유무를 확인
 			 $("#btn-check-code").hide();
 			 $("#img-check-code").show();
              return;
+             
          } else if(response.data.flag == "d"){
+        	 $("#buildingCode").val("");
         	 dialog("삭제된 코드입니다.");
-			 //$("#buildingCode").val("");
+			 
 		 } else {
-			 dialog("이미 존재하는 건물코드 입니다.");
-	         //$("#buildingCode").val("");
+			 $("#buildingCode").val("");
+			 dialog("이미 존재하는 코드 입니다.");
 		 }
       },
       error: function(xhr, error) {

@@ -186,8 +186,8 @@
 	<select id="checkId" parameterType="string" resultType="building08vo">
 		<![CDATA[
 		select id,
-			   flag
-		  from tb_building
+			   b.flag
+		  from tb_building as b
 		 where id like #{_parameter}
 		]]>
 	</select>
