@@ -527,6 +527,14 @@ function checkDuplication(){
 	console.log("code : " + code);
 	console.log({"code" : code});
 	
+	if(inputForm.code.value == ''){
+		dialog("코드를 입력하세요.", inputForm.code);
+		return;
+	}else if(inputForm.code.value.substr(0) != "G"){
+		dialog("단기차입금코드는 G로 시작해야합니다.", inputForm.code);
+		return;
+	}
+	
 	$.ajax({
 		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkDuplication?code=" + code,
 		contentType : "application/json; charset=utf-8",
@@ -555,11 +563,11 @@ function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	if(inputForm.vo.value != ""){
+	/* if(inputForm.vo.value != ""){
 		dialog("새로운 데이터를 입력해주세요.");
 		resetForm();
 		return;
-	} 
+	}  */
 	
 	if(!isValidDebt(inputForm)){
 		console.log("유효성 위반");
@@ -702,7 +710,7 @@ function openRepayDueDialog(){
 	           }
 	       },
 	       success: function(response){
-	    	   renderRepayDueDialog(response.list);
+	    	   renderRepayDueDialog(response.data);
 	       },
 	       error: function(xhr, error){
 	          console.error("error : " + error);
@@ -711,6 +719,7 @@ function openRepayDueDialog(){
 }
 
 function renderRepayDueDialog(list){
+	console.log(list);
 	$("#dialog46").append(
 			"<table class='table  table-bordered table-hover'>" + 
 				"<thead>"+
@@ -1162,11 +1171,11 @@ function selectRow(thisObj){
 		$(thisObj).closest("table").find(".selected").removeClass("selected");
 		$(thisObj).addClass("selected");
 		
-		changeBtnDisplay(true);
+		//changeBtnDisplay(true);
 	}
 	
 	$("#btn-chk-duplication").css("display", "none");
-	$(inputForm.code).attr("readonly", true);
+	//$(inputForm.code).attr("readonly", true);
 	
 	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;

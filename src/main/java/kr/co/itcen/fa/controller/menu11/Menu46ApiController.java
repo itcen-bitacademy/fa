@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,6 +53,7 @@ public class Menu46ApiController {
 	}
 	
 	//배열로 넘어온거는 '[]' 붙여줘야한다.
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/" + Menu46Controller.SUBMENU + "/deleteChecked")
 	public JSONResult deleteChecked(@RequestBody List<STermDebtVo> list,
@@ -76,6 +78,7 @@ public class Menu46ApiController {
 		return JSONResult.success(map);
 	}
 	
+	@Transactional
 	@ResponseBody
 	@RequestMapping(value = "/" + Menu46Controller.SUBMENU + "/repay", method = RequestMethod.POST)
 	public JSONResult repay(RepayVo repayVo,
@@ -119,6 +122,7 @@ public class Menu46ApiController {
 		return JSONResult.success(exist);
 	}
 	
+	@Transactional
 	@ResponseBody
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/update", method = RequestMethod.POST)
 	public JSONResult update(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
@@ -153,6 +157,7 @@ public class Menu46ApiController {
 		 return JSONResult.success(map);
 	}
 	
+	@Transactional
 	@ResponseBody
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/insert", method = RequestMethod.POST)
 	public JSONResult insert(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
@@ -189,12 +194,13 @@ public class Menu46ApiController {
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getRepayDueList", method = RequestMethod.POST)
 	public JSONResult getRepayDueList()  {
 		List<STermDebtVo> list = menu46Service.getRepayDueList();
+		System.out.println(list);
 		return JSONResult.success(list);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/insertTest", method = RequestMethod.POST)
-	public JSONResult insertTest(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
+	public JSONResult insertTest(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {			//insert 내테이블에만 할때 사용
 		String debtExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
 	    String saveDeptDate = debtExpDate.substring(0, 10);
 	    String saveExpDate = debtExpDate.substring(13);
