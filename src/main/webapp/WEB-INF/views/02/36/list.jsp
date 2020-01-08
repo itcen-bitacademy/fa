@@ -11,9 +11,32 @@
 <link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-	.form-horizontal .control-label {
+        html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+      	
+      	@media screen and (max-width: 920px) {
+	         	.main-container{
+            	height:calc(100% - 84px);
+         		}
+	 	}
+      	
+      	.form-horizontal .control-label {
 	    text-align: left;
-	}
+		}
 </style>
 </head>
 <body class="skin-3">
