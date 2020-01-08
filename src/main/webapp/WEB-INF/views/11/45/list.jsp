@@ -89,13 +89,14 @@ form {
 				            
 							<td class="third-column center"><label class="control-label">지점명</label></td>
 							<td class="fourth-column">
-				                <input type="text" name="store" />
+				                <input type="text" name="store" value='${vo.store }' />
 				            </td>
 				            
 							<td class="fifth-column center"><label class="control-label">거래시작일</label></td>
 							<td class="sixth-column">
 									<div class="row-fluid input-append">
-										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" readOnly />
+										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" 
+										data-date-format="yyyy-mm-dd" value='${vo.dealDate }' readOnly />
 										<span class="add-on">
 										<i class="icon-calendar"></i>
 										</span>
