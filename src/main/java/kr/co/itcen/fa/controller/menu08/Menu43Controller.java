@@ -126,11 +126,17 @@ public class Menu43Controller {
 			@RequestParam(value = "customerNo", required = false) String customerNo,
 			@RequestParam(value = "purpose", required = false) String purpose) throws ParseException {
 		
+		String id = 'f' + intangibleAssetsVo.getId();
+		intangibleAssetsVo.setId(id);
+
 		intangibleAssetsVo.setUpdateUserId(user.getId()); // session값으로 사용자 id가져오기
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo); // voucherNo는 db에서 직접 가져와야함
 		
 		Long acqPrice = Long.parseLong(intangibleAssetsVo.getAcqPrice().replace("," ,""));
 		Long addiFee = Long.parseLong(intangibleAssetsVo.getAddiFee().replace("," ,""));
+
+		intangibleAssetsVo.setAcqPrice(intangibleAssetsVo.getAcqPrice().replace("," ,""));
+		intangibleAssetsVo.setAddiFee(intangibleAssetsVo.getAddiFee().replace("," ,""));
 
 		// 전표 등록
 		if (taxbillNo != null && voucherNo == null) {
@@ -225,7 +231,8 @@ public class Menu43Controller {
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
 			return MAINMENU + "/" + SUBMENU;
-		} else { // 입력 가능!
+		} else { // 수정 가능!
+			System.out.println(intangibleAssetsVo);
 			menu43Service.update(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}
@@ -238,24 +245,26 @@ public class Menu43Controller {
 			@RequestParam(value = "id", required = false) String id,
 			@SessionAttribute("authUser") UserVo user) throws ParseException {
 
-		// 전표 삭제
+		id = 'f' + id;
+		
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo); // voucherNo는 db에서 직접 가져와야함
-
-		if (voucherNo != null) {
-			List<VoucherVo> voucherVo = new ArrayList<VoucherVo>();
-			VoucherVo v = new VoucherVo();
-
-			v.setNo(voucherNo);
-			v.setRegDate(intangibleAssetsVo.getPayDate());
-			voucherVo.add(v);
-			menu03Service.deleteVoucher(voucherVo, user);
-		}
 
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
-		} else { // 입력 가능!
+		} else { // 삭제 가능!
+			// 전표 삭제
+			if (voucherNo != null) {
+				List<VoucherVo> voucherVo = new ArrayList<VoucherVo>();
+				VoucherVo v = new VoucherVo();
+
+				v.setNo(voucherNo);
+				v.setRegDate(intangibleAssetsVo.getPayDate());
+				voucherVo.add(v);
+				menu03Service.deleteVoucher(voucherVo, user);
+			}
+			
 			menu43Service.delete(id);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}
