@@ -78,6 +78,7 @@ public class Menu07Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public List<PurchasemanagementVo> search(Model model, @RequestBody PurchasemanagementVo vo,
 			String[] purchaseDate, @RequestParam(defaultValue = "1") int page) {
+		
 		int lastPage;
 		int total = menu07Service.getSearchCount(vo);
 		if (total % 11 == 0) {
@@ -85,9 +86,7 @@ public class Menu07Controller {
 		} else {
 			lastPage = (int) Math.floor(total / 11) + 1;
 		}
-		System.out.println(vo);
 		List<PurchasemanagementVo> result = menu07Service.getList(vo);
-		System.out.println(result);
 		
 		if(total != 0) {
 			result.get(0).setLastPage(lastPage);
@@ -95,10 +94,6 @@ public class Menu07Controller {
 		} else {
 			PurchasemanagementVo emptyVo = new PurchasemanagementVo();
 			result.add(emptyVo);
-			System.out.println(emptyVo);
-			result.get(0).setSupplyValue(0L);
-			result.get(0).setTaxValue(0L);
-			result.get(0).setLastPage(lastPage);
 			result.get(0).setPageCount(total);
 		}
 		
@@ -131,7 +126,6 @@ public class Menu07Controller {
 			} else {
 				PurchasemanagementVo emptyVo = new PurchasemanagementVo();
 				result.add(emptyVo);
-				System.out.println(emptyVo);
 				result.get(0).setSupplyValue(0L);
 				result.get(0).setTaxValue(0L);
 				result.get(0).setLastPage(lastPage);
@@ -155,7 +149,6 @@ public class Menu07Controller {
 			} else {
 				PurchasemanagementVo emptyVo = new PurchasemanagementVo();
 				result.add(emptyVo);
-				System.out.println(emptyVo);
 				result.get(0).setSupplyValue(0L);
 				result.get(0).setTaxValue(0L);
 				result.get(0).setLastPage(lastPage);

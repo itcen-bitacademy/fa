@@ -156,7 +156,7 @@
 	</update>
 	
 	<!-- 삭제 -->
-	<update id="delete" parameterType="long">
+	<update id="delete" parameterType="string">
 	<![CDATA[
 		update tb_building
 		set flag='d'
@@ -183,11 +183,12 @@
     </select>
     
     <!-- 건물코드 중복확인 -->
-	<select id="checkId" parameterType="string" resultType="string">
+	<select id="checkId" parameterType="string" resultType="building08vo">
 		<![CDATA[
-		select id
-		  from tb_building
-		 where id = #{id }
+		select id,
+			   b.flag
+		  from tb_building as b
+		 where id like #{_parameter}
 		]]>
 	</select>
 </mapper>

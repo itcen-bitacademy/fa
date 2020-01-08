@@ -39,7 +39,8 @@
 					success:function(data) {
 						if(data.dataflag === "ok") {
 							$("#search").data("searchflag", "ok");
-							$("#checknospan").hide();
+							$("#check_no").hide();
+							$("#check_ok").hide();
 							$("#form-field-item-id").attr("readonly", "true");
 							$("#form-field-item-id").val(data.no);
 							$("#form-field-section-name").val(data.section_name);
@@ -70,9 +71,11 @@
 		});
 		
 		$("#reset").click(function(event) {
-			$("#checknospan").show();
+			$("#check_no").show();
+			$("#check_ok").hide();
 			$("#form-field-item-id").removeAttr("readonly");
 			$("#search").data("searchflag", "no");
+			$("#check_no").data("checkid", "");
 			var searchflag = $("#search").data("searchflag");
 			console.log("searchflag :" + searchflag);
 		});
@@ -98,6 +101,11 @@
 								dialog("삭제 완료", false);
 								
 								$("#form-field-item-id").val("");
+								$("#form-field-item-id").removeAttr("readonly");
+								$("#search").data("searchflag", "no");
+								$("#check_no").data("checkid", "");
+								$("#check_no").show();
+								$("#check_ok").hide();
 								$("#form-field-section-name").val("");
 								$("#form-field-factory-name").val("");
 								$("#form-field-factory-postaddress").val("");
@@ -343,7 +351,8 @@
 					data:{"itemcode" : itemcode},
 					success:function(data) {
 						$("#search").data("searchflag", "ok");
-						$("#checknospan").hide();
+						$("#check_no").hide();
+						$("#check_ok").hide();
 						$("#form-field-item-id").attr("readonly", "true");
 						$("#form-field-item-id").val(data.no);
 						$("#form-field-section-name").val(data.section_name);
@@ -817,16 +826,20 @@
 			return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 		
-		$("#form-field-price").on('keyup', function(event){
+		$("#form-field-price").on("keyup", function(event){
 			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		});
 		
-		$("#form-field-item-id").on('keyup', function(event){
+		$("#form-field-item-id").on("keyup", function(event){
 			var check = $("#form").data("checkpurchaseno");
+			var checkid = $("#check_no").data("checkid");
 			
 			if(check === "ok") {
-				$("#form").data("checkpurchaseno", "no");
-				$("#checknospan").show();
+				if($("#form-field-item-id").val().length < 10 || $("#form-field-item-id").val() !== checkid) {
+					$("#form").data("checkpurchaseno", "no");
+					$("#check_no").show();
+					$("#check_ok").hide();
+				}
 			}
 		});
 		
@@ -845,7 +858,8 @@
 						dialog("사용가능한 품목코드입니다.", false);
 						$("#form").data("checkpurchaseno", "ok");
 						$("#check_no").data("checkid", $("#form-field-item-id").val());
-						$("#checknospan").hide();
+						$("#check_no").hide();
+						$("#check_ok").show();
 					} else if(data === "false") {
 						dialog("중복된 품목코드입니다.", false);
 						$("#form").data("checkpurchaseno", "no");
@@ -898,17 +912,16 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
-						<form id="form" class="form-horizontal" data-checkpurchaseno="no" method="post">
+						<form id="form" class="form-horizontal" data-checkpurchaseno="no" style="margin:0 0 0 0" method="post">
 						<div style="height:335px">
-							<div class="span6">
+							<div class="span6" style="height:350px;">
 								<div class="control-group">
-									<label class="control-label" for="form-field-item-id" style="text-align:initial; text-indent:40px;">품목코드</label>
-									<div class="controls">
-										<div class="row-fluid input-append">
-											<input class="span4" type="text" id="form-field-item-id" name="no" placeholder="품목코드" maxlength="10"/>
-											<span class="add-on" id="checknospan">
-												<a href="javascript:void(0);" id="check_no" data-checkid="" style="text-decoration:none"><i class="icon-ok bigger-110"></i></a>
-											</span>
+									<label class="control-label" for="form-field-item-id" style="text-align:initial; width:100px;">품목코드</label>
+									<div class="controls" style="margin-left:150px;">
+										<div class="row-fluid">
+											<input class="span4" type="text" id="form-field-item-id" name="no" style="margin:0 5px 0 0" placeholder="품목코드" maxlength="10"/>
+											<input id="check_no" style="height:28px" data-checkid="" type="button" value="중복확인">
+											<i id="check_ok" class="icon-ok bigger-150 blue" style="display:none;"></i>
 										</div>
 									</div>
 								</div>
@@ -918,10 +931,10 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-section-name" style="text-align:initial; text-indent:40px;">품목 대분류명</label>
-									<div class="controls">
+									<label class="control-label" for="form-field-section-name" style="text-align:initial; width:100px;">품목 대분류명</label>
+									<div class="controls" style="margin-left:150px;">
 										<div class="row-fluid input-append">
-											<input class="span5" id="form-field-section-name" name="sectionname" type="text" placeholder="품목 대분류명" readonly/>
+											<input class="span5" id="form-field-section-name" name="sectionname" style="width:240px;" type="text" placeholder="품목 대분류명" readonly/>
 											<span class="add-on">
 												<a href="javascript:void(0);" id="search-section-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 											</span>
@@ -1010,10 +1023,10 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-name" style="text-align:initial; text-indent:40px;">생산공장명</label>
-									<div class="controls">
+									<label class="control-label" for="form-field-factory-name" style="text-align:initial; width:100px;">생산공장명</label>
+									<div class="controls" style="margin-left:150px;">
 										<div class="row-fluid input-append">
-											<input class="span5" type="text" id="form-field-factory-name" name="factoryname" placeholder="생산공장명" readonly/>
+											<input class="span5" type="text" id="form-field-factory-name" style="width:240px;" name="factoryname" placeholder="생산공장명" readonly/>
 											<span class="add-on">
 												<a href="javascript:void(0);" id="search-factory-dialog" style="text-decoration:none"><i class="icon-search icon-on-right bigger-110"></i></a>
 											</span>
@@ -1101,68 +1114,68 @@
 								
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-postaddress" style="text-align:initial; text-indent:40px;">생산공장 주소</label>
-									<div class="controls">
+									<label class="control-label" for="form-field-factory-postaddress" style="text-align:initial; width:100px;">생산공장 주소</label>
+									<div class="controls" style="margin-left:150px;">
 										<div class="row-fluid input-append" style="margin:0 0 5px 0">
 											<input class="span3" id="form-field-factory-postaddress" name="postaddress" type="text" style="margin:0 10px 0 0;" placeholder="우편번호" readonly/>
-											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
+											<input onclick="execDaumPostcode()" type="button" style="height:28px" value="주소찾기">
 										</div>
 										
-										<input class="span5" type="text" id="form-field-factory-roadaddress" name="roadaddress" placeholder="도로명 주소" readonly/>
-										<input class="span6" type="text" id="form-field-factory-detailaddress" name="detailaddress" placeholder="상세 주소"/>
+										<input class="span5" type="text" id="form-field-factory-roadaddress" name="roadaddress" style="width:230px;" placeholder="도로명 주소" readonly/>
+										<input class="span6" type="text" id="form-field-factory-detailaddress" name="detailaddress" style="width:280px;" placeholder="상세 주소"/>
 									</div>
 									
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-standard" style="text-align:initial; text-indent:40px;">규격</label>
-									<div class="controls">
-										<input class="span5" type="text" id="form-field-standard" name="standard" placeholder="ex) 20 x 35 cm"/>
+									<label class="control-label" for="form-field-standard" style="text-align:initial; width:100px;">규격</label>
+									<div class="controls" style="margin-left:150px;">
+										<input class="span5" type="text" id="form-field-standard" style="width:230px;" name="standard" placeholder="ex) 20 x 35 cm"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-price" style="text-align:initial; text-indent:40px;">단가</label>
-									<div class="controls">
-										<input class="span5" type="text" id="form-field-price" style="text-align:right" name="price"/>&nbsp;원
+									<label class="control-label" for="form-field-price" style="text-align:initial; width:100px;">단가</label>
+									<div class="controls" style="margin-left:150px; ">
+										<input class="span5" type="text" id="form-field-price" style="text-align:right; width:230px;" name="price"/>&nbsp;원
 									</div>
 								</div>
 							</div>
 							
 							<div class="span6">
 								<div class="control-group">
-									<label class="control-label" for="form-field-item-name" style="text-align:initial; text-indent:35px;">품목명</label>
+									<label class="control-label" for="form-field-item-name" style="text-align:initial; width:100px;">품목명</label>
 									<div class="controls">
 										<input class="span5" type="text" id="form-field-item-name" name="name" placeholder="품목명"/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-section-code" style="text-align:initial; text-indent:35px;">품목 대분류코드</label>
+									<label class="control-label" for="form-field-section-code" style="text-align:initial; width:110px;">품목 대분류코드</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-section-code" name="sectioncode" readonly/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-code" style="text-align:initial; text-indent:35px;">생산공장코드</label>
+									<label class="control-label" for="form-field-factory-code" style="text-align:initial; width:110px;">생산공장코드</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-factory-code" name="factorycode" readonly/>
 									</div>
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-factory-manager" style="text-align:initial; text-indent:35px;">생산담당자</label>
+									<label class="control-label" for="form-field-factory-manager" style="text-align:initial; width:100px;">생산담당자</label>
 									<div class="controls">
 										<input class="span4" type="text" id="form-field-factory-manager" name="managername" placeholder="생산담당자"/>
 									</div>
 								</div>
 								
-								<div class="control-group">
-									<label class="control-label" for="id-date-picker-1" style="text-align:initial; text-indent:35px;">생산 일자</label>
+								<div class="control-group" style="margin:0 0 10px 0">
+									<label class="control-label" for="id-date-picker-1" style="text-align:initial; width:100px;">생산일자</label>
 									<div class="controls">
 											<div class="row-fluid input-append" style="margin: 0 0 10px 0">
-												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="producedate" data-date-format="yyyy-mm-dd">
+												<input class="span3 cl-date-picker" id="id-date-picker-1" type="text" name="producedate" style="width:160px" data-date-format="yyyy-mm-dd">
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
@@ -1171,7 +1184,7 @@
 								</div>
 								
 								<div class="control-group">
-									<label class="control-label" for="form-field-purpose" style="text-align:initial; text-indent:35px;">사용용도</label>
+									<label class="control-label" for="form-field-purpose" style="text-align:initial; width:100px;">사용용도</label>
 									<div class="controls">
 										<input class="span5" type="text" id="form-field-purpose" name="purpose"/>
 									</div>
@@ -1185,10 +1198,10 @@
 						<div class="hr hr-18 dotted"></div>
 						
 						<div>
-							<button class="btn btn-info btn-small" type="submit" data-searchflag="no" id="search">조회</button>
-							<button class="btn btn-danger btn-small" type="submit" id="delete">삭제</button>
-							<button class="btn btn-warning btn-small" type="submit" id="update">수정</button>
 							<button class="btn btn-primary btn-small" type="submit" id="add">입력</button>
+							<button class="btn btn-warning btn-small" type="submit" id="update">수정</button>
+							<button class="btn btn-danger btn-small" type="submit" id="delete">삭제</button>
+							<button class="btn btn-info btn-small" type="submit" data-searchflag="no" id="search">조회</button>
 							<button class="btn btn-default btn-small" type="reset" id="reset">초기화</button>
 						</div>
 											

@@ -54,13 +54,15 @@
 							<!-- PAGE CONTENT BEGINS -->
 
 							
-							<form class="form-horizontal" name="manageForm" id="manage-building-form" onkeypress="if(event.keyCode == 13) formCheck();">
+							<form class="form-horizontal" name="manageForm" id="manage-building-form">
 								<!-- 좌측 -->
 								<div class="span6">
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물코드</label>
 										<div class="controls">
 											<input type="text" id="buildingCode" name="id" placeholder="9자를 입력하세요"/>
+											<input id="btn-check-code" style="height:28px" type="button" value="중복확인">
+                              				<i class="icon-ok bigger-180 blue" id="img-check-code"></i>
 										</div>
 									</div>
 									<div class="control-group">
@@ -120,10 +122,10 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득세</label>
+										<label class="control-label" for="form-field-1">기타비용</label>
 										<div class="controls">
-											<input readonly type="text" id="acqTax" name="acqTax" class="acqTax"
-												placeholder="" />
+											<input type="text" id="etcCost" name="etcCost" class="etcCost"
+												placeholder="금액을 입력하세요"/>
 										</div>
 									</div>
 									<div class="control-group">
@@ -201,9 +203,8 @@
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
-												class="control-label" for="form-field-1">기타비용</label> <input
-												type="text" id="etcCost" name="etcCost" class="etcCost"
-												placeholder="금액을 입력하세요" />
+												class="control-label" for="form-field-1">취득세</label> 
+											<input readonly type="text" id="acqTax" name="acqTax" class="acqTax" placeholder="" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -233,9 +234,9 @@
 												<button class="btn btn-warning btn-small" id="modify"
 													style="float: left; margin-right: 20px;">수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
-													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
+													style="float: left; margin-right: 20px;">삭제</button>
 												<button class="btn btn-info btn-small" id="search" 
-													style="float: left; margin-right: 20px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+													style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-default btn-small" id="reset"
 													style="float: left; margin-right: 20px;" type="reset">초기화</button>
 											</div>
@@ -380,77 +381,114 @@
 
 <script>
 var errorfocus = ""; // error 부분 focusing
-var flag = $('#closingDate').val();
+var closeflag = $('#closingDate').val();
+var checkId = false; //중복체크 유무를 확인
 
-//건물코드 유효성 검사
+//유효성 검사
  $(document).ready(function(){
 	 
 	$("#modify").hide();
 	$("#delete").hide();
+	$("#img-check-code").hide();
 	
-	console.log("closing test : " + $("#closingDate").val());
-	checkClosing(); // 마감일 체크
-	
-	$("#buildingCode").on("change", function(e){
-		
-		var id = "b" + $("#buildingCode").val();
-        
-	   $.ajax({
-	      url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id=" + id,
-	      type : "get",
-	      dataType : "json",
-	      data : "",
-	      success: function(response){
-	         if(response.result == "fail"){
-	            console.error(response.message);
-	            return;
-	         }
-	         
-	         if(response.data == true){
-	        	 dialog("이미 존재하는 건물코드 입니다.");
-		         $("#buildingCode").val("");
-		        errorfocus='#buildingCode';
-	            return;
-	         
-	         }
-	      },
-	      error: function(xhr, error) {
-	         console.error("error: " + error);
-	      }
-	   });
-		
-	});
+	 // 마감일 체크
+	checkClosing();
 
 }); 
 
+//건물코드 중복검사
+ $("#btn-check-code").click(function(e){
+	 
+	 e.preventDefault();
+	 
+	var id = "b" + $("#buildingCode").val();
+	
+	if (!valid.nullCheck("buildingCode", "건물 코드")){
+		errorfocus='#buildingCode';
+		return false;
+	}
+	if (!valid.strCheck("buildingCode", "건물 코드")){
+		errorfocus='#buildingCode';
+		return false;
+	}
+	if (!valid.numberCheck("buildingCode", "건물 코드")){
+		errorfocus='#buildingCode';
+		return false;
+	}
+   $.ajax({
+      url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id=" + id,
+      type : "get",
+      dataType : "json",
+      data : "",
+      success: function(response){
+         if(response.result == "fail"){
+            console.error(response.message);
+            return;
+         }
+         
+         if(response.data == null){
+			 checkId = true;
+			 $("#btn-check-code").hide();
+			 $("#img-check-code").show();
+             return;
+             
+         } else if(response.data.flag == "d"){
+        	 $("#buildingCode").val("");
+        	 dialog("삭제된 코드입니다.");
+			 
+		 } else {
+			 $("#buildingCode").val("");
+			 dialog("이미 존재하는 코드 입니다.");
+		 }
+      },
+      error: function(xhr, error) {
+         console.error("error: " + error);
+      }
+	});
+ });
+
 //Validation
 
-//등록 valid
-$("#insert").click(function() {
-	if(!manageValid()){
-		return;
-	}
-	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create');
-	$('#manage-building-form').attr('method', 'POST');
-	$('#manage-building-form').submit();
-});
+	//등록 동작
+	$("#insert").click(function() {
+		if(checkId == false) {
+			dialog("코드 중복확인를 하세요.");
+			return
+		} else {
+			//validation
+			if(!manageValid()){
+				return;
+			}
+			$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/create');
+			$('#manage-building-form').attr('method', 'POST');
+			$('#manage-building-form').submit();
+		}
+	});
 
-//수정 valid
-$("#modify").click(function() {
-	if(!manageValid()){
-		return;
-	}
-	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
-	$('#manage-building-form').attr('method', 'POST');
-	$('#manage-building-form').submit();
-});
+	//수정 동작
+	$("#modify").click(function() {
+		if(!manageValid()){
+			return;
+		}
+		$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update');
+		$('#manage-building-form').attr('method', 'POST');
+		$('#manage-building-form').submit();
+	});
 
-//삭제 valid
-$("#delete").click(function() {
-	$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
-	$('#manage-building-form').attr('method', 'POST');
-	$('#manage-building-form').submit();
-});
+	//삭제 동작
+	$("#delete").click(function() {
+		$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
+		$('#manage-building-form').attr('method', 'POST');
+		$('#manage-building-form').submit();
+	});
+
+	//조회 동작
+	$("#search").click(function() {
+		$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
+		$('#manage-building-form').attr('method', 'GET');
+		$('#manage-building-form').submit();
+	});
+
 
 	//마감일 체크
 	function checkClosing(){
@@ -541,6 +579,7 @@ $("#delete").click(function() {
 		nullCheck : function(id, msg) { // null 체크
 			if ($("#" + id).val() == "") {
 				dialog(msg + "을(를) 입력 해 주세요.");
+				$("#" + id).focus();
 				return false;
 			} else {
 				return true;
@@ -549,6 +588,7 @@ $("#delete").click(function() {
 		strCheck : function(id, msg) { // 글자 수 체크
 			if ($("#" + id).val().length != 9) {
 				dialog(msg + "은(는) 9자를 입력하셔야 합니다.");
+				$("#" + id).focus();
 				return false;
 			} else {
 				return true;
@@ -557,6 +597,7 @@ $("#delete").click(function() {
 		radioCheck : function(name, msg) { // radio 버튼 체크 
 			if (!jQuery('input[name=' + name + ']:checked').val()) {
 				dialog(msg + "를 선택해 주세요.");
+				$("#" + name).focus();
 				return false;
 			} else {
 				return true;
@@ -565,6 +606,7 @@ $("#delete").click(function() {
 		numberCheck : function(id, msg) { // 숫자 체크
 			if (!$.isNumeric($("#" + id).val())) {
 				dialog(msg + "은(는) 숫자만 입력 가능합니다.");
+				$("#" + id).focus();
 				return false;
 			} else {
 				return true;
@@ -581,7 +623,7 @@ $("#delete").click(function() {
 	}
 
 	// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
-	 function dialog(txt, flag) {
+	 function dialog(txt, closeflag) {
         	$("#dialog-txt").html(txt);
     		var dialog = $( "#dialog-confirm" ).dialog({
 				resizable: false,
@@ -591,9 +633,8 @@ $("#delete").click(function() {
 						text: "OK",
 						"class" : "btn btn-danger btn-mini",
 						click: function() {
-							if(flag){
+							if(closeflag){
 								$( this ).dialog( "close" );
-								$(errorfield).focus();
 								location.href="${pageContext.request.contextPath }/08/39/add";
 							} else {
 								$( this ).dialog( "close" );
@@ -649,6 +690,7 @@ $("#delete").click(function() {
 			  $("#delete").show();
 			  $("#insert").hide();
 			  $("#search").hide();
+			  $("#btn-check-code").hide();
 			  
 		      var str = ""
 		      var tdArr = new Array();   // 배열 선언

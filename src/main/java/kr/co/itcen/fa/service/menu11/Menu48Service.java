@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.service.menu11;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -240,4 +241,39 @@ public class Menu48Service {
 		return menu48Repository.updateBankAccount(bankAccount);
 	}
 
+	public List<LTermdebtVo> getRepayDueList() {
+		String startDate = getCurMonday();
+		String endDate = getCurSunday();
+		
+		//return  menu48Repository.getRepayDueList(startDate,endDate);
+		return  menu48Repository.getRepayDueList(startDate,endDate);
+	}
+	//현재 날짜 월요일
+ 	public static String getCurMonday(){
+
+ 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+
+ 		Calendar c = Calendar.getInstance();
+
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+
+ 		return formatter.format(c.getTime());
+
+ 	}
+ 	//현재 날짜 일요일
+ 	public static String getCurSunday(){
+
+ 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+
+ 		Calendar c = Calendar.getInstance();
+
+ 		
+
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+
+ 		c.add(c.DATE,7);
+
+ 		return formatter.format(c.getTime());
+
+ 	}
 }

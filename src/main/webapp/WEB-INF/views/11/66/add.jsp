@@ -469,6 +469,7 @@ function getListAjax(page){
 	var vo = JSON.parse($("#search-condition").val());
 	vo["page"] = page;
 	
+	
 	$.ajax({
 		url: $("#context-path").val() + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/getList",
 		type: "POST",
@@ -495,6 +496,7 @@ function selectRow(thisObj){
 		$("#tbody-list").find('tr').removeClass("selected");
 		
 		$(thisObj).addClass('selected');
+		$('#totalAmount').val('0');
 		
 		var inputForm = $("#input-form")[0];
 		var vo = JSON.parse($(thisObj).find("input[name=vo]").val());

@@ -15,6 +15,8 @@
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+/* 테이블의 첫 row 모두 padding right */
+.form-horizontal .control-label {text-align: left;}
 h4{
 	font-size:13px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
@@ -30,8 +32,10 @@ tr td:first-child {
 
 .radio {
 	float: left;
-	width: 10%;
+	width: 17%;
 }
+
+
 
 .search-input-width-first {
 	width: 130px;
@@ -52,7 +56,7 @@ tr td:first-child {
 
 .mgr-number-input-h4 {
 	display: inline;
-	margin-left: 30px;
+	margin-left: 42px;
 	margin-right: 20px;
 }
 
@@ -60,10 +64,11 @@ tr td:first-child {
 	width: 150px;
 	display: inline;
 }
+
 .number-input{
 	text-align:right;
 }
-.mybtn{float:left;margin-right:20px;}
+.mybtn{float:left;margin-right:10px;}
 #staticBackdrop {
 	z-index: -1;
 }
@@ -92,7 +97,7 @@ tr td:first-child {
 						<div class="span8">
 							<table>
 								<tr>
-									<td><h4>장기차입금코드</h4></td>
+									<td><label class="control-label">장기차입금코드</label></td>
 									<td>
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
@@ -108,18 +113,18 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr >
-									<td><h4>장기차입금명</h4></td>
+									<td style="padding-bottom: 70px;"><label class="control-label">장기차입금명</label></td>
 									<td colspan="2">
 										<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
 									</td>
 									
 								</tr>
 								<tr>
-									<td><h4>차입금액</h4></td>
-									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /></td>
+									<td><label class="control-label">차입금액</label></td>
+									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block;">(원)</h5></td>
 								</tr>
 								<tr>
-									<td><h4>차입일자 ~ 만기일자</h4></td>
+									<td><label class="control-label">차입일자 ~ 만기일자</label></td>
 									<td colspan="2">
 									<div class="control-group">
 				                        <div class="row-fluid input-prepend">			                        	
@@ -132,7 +137,7 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr>
-									<td><h4>이자지급방식</h4></td>
+									<td><label class="control-label">이자지급방식</label></td>
 									<td colspan="2">
 										<div class="radio" >
 											<label>
@@ -156,10 +161,10 @@ tr td:first-child {
 								</tr>
 								<tr>
 						                              	
-									<td><h4>은행코드</h4></td>
+									<td><label class="control-label">은행코드</label></td>
 									<td colspan="2">
 									<div class="input-append">
-										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" readonly />
+										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" placeholder="은행코드" readonly />
 												<span class="add-on">
 				                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 				                                    </a>
@@ -207,7 +212,7 @@ tr td:first-child {
 														</table>
 												</div>
 												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-								<input type="text" class="search-input-width-second" name="bankName" readonly />
+								<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly />
 								</td>
 								</tr>
 							</table>
@@ -215,7 +220,7 @@ tr td:first-child {
 						<div class="span8">
 							<table>
 								<tr>
-									<td><h4>회계연도</h4></td>
+									<td><label class="control-label">회계연도</label></td>
 									<td>
 										<c:choose>
 											<c:when test='${year eq ""}'>
@@ -229,7 +234,7 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr>
-									<td><h4>차입금대분류</h4></td>
+									<td><label class="control-label">차입금대분류</label></td>
 									<td colspan="2">
 										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
 										<option value=""></option>
@@ -240,7 +245,7 @@ tr td:first-child {
 									</td>	
 								</tr>
 								<tr>
-								<td><h4>상환방법</h4></td>
+								<td><label class="control-label">상환방법</label></td>
 									<td colspan="2">
 											<div class="radio">
 												<label>
@@ -263,14 +268,14 @@ tr td:first-child {
 									</td>
 									</tr>
 								<tr>
-									<td><h4>이율</h4></td>
+									<td><label class="control-label">이율</label></td>
 									<td colspan="2">
-										<input type="text" id="int_rate" name="intRate" placeholder="(%)" class="number-input" 
-										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
+										<input type="text" id="int_rate" name="intRate" class="number-input" 
+										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block;">(%)</h5>
 									</td>
 								</tr>
 								<tr>
-									<td><h4>담당자</h4></td>
+									<td><label class="control-label">담당자</label></td>
 									<td>
 										<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
 										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
@@ -278,10 +283,10 @@ tr td:first-child {
 									</td>
 								</tr>
 								<tr>
-									<td><h4>계좌</h4></td>
+									<td><label class="control-label">계좌</label></td>
 									<td colspan="2">
 									<div class="input-append">
-										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" readonly />
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" placeholder="계좌번호" readonly />
 												<span class="add-on">
 				                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 				                                    </a>
@@ -331,13 +336,14 @@ tr td:first-child {
 				<div class="row-fluid">
 					<button  class="btn btn-primary btn-small mybtn" id="inputbtn" >입력</button>
 					
-					<button class="btn btn-danger btn-small mybtn" id="updatebtn">수정</button>
-					<button class="btn btn-warning btn-small mybtn" onclick="deleteChecked()"  id='delete' >삭제</button>
+					<button class="btn btn-warning btn-small mybtn" id="updatebtn">수정</button>
+					<button class="btn btn-danger btn-small mybtn" onclick="deleteChecked()"  id='delete' >삭제</button>
 					
-					<button class="btn btn-primary btn-small mybtn" id= "search">조회</button>
+					<button class="btn btn-info btn-small mybtn" id= "search">조회</button>
 				
-					<button class="btn btn-pink btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
-				
+					<button class="btn btn-small btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
+					
+					
 					
 					<!-- 상환 내역 리스트 -->
 					<div id="dialog-repayment-ischeck" title="상환정보여부" hidden="hidden">
@@ -363,7 +369,6 @@ tr td:first-child {
 					<div id="dialog-repayment-delete" title="상환정보여부" hidden="hidden">
 						<!-- 계좌정보 데이터 리스트 -->
 								
-
 					</div>
 					
 					<!-- 차입금코드,납입원금,납입이자,납입일자,부채유형 Modal pop-up : start -->
@@ -412,6 +417,31 @@ tr td:first-child {
 					<!-- 상환 Modal pop-up : end -->
 					
 					<button class="btn btn-success btn-small mybtn" id="clear">초기화</button>
+					
+				<!-- 금주의 상환 내역 Modal pop-up : start -->
+					<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
+							<!-- 은행코드 및 은행명 데이터 리스트 -->
+							<table id="repay-due-table" class="table  table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center">차입금 코드</th>
+										<th class="center">상환 금액</th>
+										<th class="center">납입일</th>
+									</tr>
+								</thead>
+								<tbody id="tbody-repay-due">
+								</tbody>
+							</table>
+					</div>
+					<!-- 금주의 상환 내역 Modal pop-up : end -->
+				
+				
+				<button class="btn btn-pink btn-small mybtn" id="repay-view-button" type="button" class="btn">금주상환예정목록</button>
+					
+				
+					
+					
+					
 							
 				</div>
 				<hr>
@@ -912,6 +942,7 @@ tr td:first-child {
 		if($(this).hasClass('selected') === false){
 			$('#updatebtn').show();
 			$('#inputbtn').hide();
+			$('#dialog-repayment-button').show();
 			
 			$("#tbody-list").find('tr').removeClass("selected");
 			
@@ -997,6 +1028,7 @@ tr td:first-child {
 	 		
 		}else{
 			$('#updatebtn').hide();
+			$('#dialog-repayment-button').hide();
 			$('#inputbtn').show();
 			
 			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
@@ -1048,6 +1080,13 @@ tr td:first-child {
 				var td = $(this).children();
 				if($(td.eq(0).children().children()).prop('checked') == true){
 					$(td.eq(0).children().children()).prop('checked',false);
+				}
+				if($("#tbody-list tr").hasClass('selected') === true){
+					$("#tbody-list tr").removeClass("selected");
+					$('#inputbtn').show();
+					$('#search').show();
+					$('#updatebtn').hide();
+					$('#dialog-repayment-button').hide();
 				}
 		 });
 		 if($('#checkall').prop('checked')==true){
@@ -1177,6 +1216,9 @@ tr td:first-child {
 			openErrorModal('MANY LIST CLICK ERROR',"한개의 리스트를 클릭 후 상환을 눌러주세요 ",'');
 			return;
 		}
+		
+		
+		
 		
 		$("#tbody-list tr").each(function(i){
 			var td = $(this).children();
@@ -1501,6 +1543,69 @@ tr td:first-child {
 		    }
 		});
 	});
+	
+	
+	
+	$('#repay-view-button').click(function(){
+		
+		event.preventDefault();
+		 
+		
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath }/11/48/checkrepaydue",
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				
+				  $.each(response.data,function(index, item){
+	                 $("#tbody-repay-due").append("<tr>" +
+	                       "<td class='center'>" + item.code + "</td>" +
+	                     "<td class='center'>" + item.repayBal + "</td>" +
+	                     "<td class='center'>" + item.payDate + "</td>" +
+	                     "</tr>");
+	          })
+	    	},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+		 
+		 
+		 
+		  $("#repay-due").dialog({
+          	
+              title: "금주의 상환 정보",
+              title_html: true,
+              resizable: false,
+    	      height: 500,
+    	      width: 400,
+    	      modal: true,
+    	      close: function() {
+                  $('#tbody-repay-due tr').remove();
+                  $(this).dialog('close');
+               },
+               buttons: {
+               "닫기" : function() {
+                        $(this).dialog('close');
+                        $('#tbody-repay-due tr').remove();
+                   }
+               }
+           });
+           
+           $("#repay-due").dialog('open');
+	});
+	
+	
+	
+	
 	//상환내역이 있을경우 수정 안되게 하는 코드
 	 $("#updatebtn").click(function(){
 		var count = 0;
@@ -1817,6 +1922,7 @@ tr td:first-child {
 	
 	$(function(){
 		$('#updatebtn').hide();
+		$('#dialog-repayment-button').hide();
 		
 		$('button').on('click', function(e) {
 			e.preventDefault();
@@ -1862,6 +1968,11 @@ tr td:first-child {
 		if(flag){
 			openErrorModal('CLOSINGDATE ERROR','마감일이 지났습니다. 관리자에게 문의 주세요');
 		}
+		
+		
+		 $("#repay-due").dialog({
+		       autoOpen : false
+		  });
 	});
  
  

@@ -6,14 +6,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<c:import url="/WEB-INF/views/common/head.jsp" />
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link href="/fa/ace/assets/css/jquery-ui-1.10.3.full.min.css"
 	type="text/css" rel="stylesheet" />
-
+<c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 /* 스크롤 깨짐 css s */
 html, body {
@@ -31,7 +31,7 @@ html, body {
 }
 
 .page-content {
-	min-width: 1600px;
+	min-width: 1280px;
 }
 
 @media screen and (max-width: 920px) {
@@ -42,18 +42,19 @@ html, body {
 /* 스크롤 깨짐 css e */
 /* table css s*/
 #item-table tr td {
+	overflow: hidden;
 	padding: 0;
 }
 
 #item-table tr td p {
-	padding: 8px;
+	padding: 7px;
 	margin: 0;
 }
 
 #item-table tr td input {
-	padding: 8px;
+	padding: 7px;
 	margin: 0;
-	width: 94%;
+	width: 95.5%;
 	border: 0
 }
 
@@ -62,7 +63,7 @@ html, body {
 }
 
 .chosen-container {
-	width: 260px !important;
+	width: 200px !important;
 }
 
 .chosen-container-single .chosen-search:before {
@@ -73,6 +74,11 @@ html, body {
 	display: none
 }
 /* table css e*/
+/* 기타 css s*/
+.control-label {
+	margin-top: 4px;
+}
+/* 기타 css e*/
 </style>
 </head>
 <body class="skin-3" onload="startFunctions();">
@@ -83,9 +89,6 @@ html, body {
 			<div class="page-content">
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입세금계산서관리</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i>메뉴 추가</a>
 				</div>
 				<form id="manage-form" method="post"
 					action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
@@ -94,7 +97,7 @@ html, body {
 						<div class="span12">
 							<!-- PAGE CONTENT BEGINS -->
 							<div class="control-group">
-								<label class="control-label span1" for="no">승&emsp;인&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="no">승인번호</label>
 								<div class="controls span5">
 									<c:choose>
 										<c:when test="${flag == 'true'}">
@@ -111,7 +114,7 @@ html, body {
 										</c:otherwise>
 									</c:choose>
 								</div>
-								<label class="control-label span1" for="manage-no">관&emsp;리&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="manage-no">관리번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="manage-no"
 										value="${getAboutNoData.manageNo }" name="manageNo"
@@ -120,13 +123,13 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="customer-no">등&emsp;록&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="customer-no">등록번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-no"
 										value="${getAboutNoCustomerData.no }" name="id"
 										autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="deposit-no">계&emsp;좌&emsp;번&emsp;호</label>
+								<label class="control-label span1" for="deposit-no">계좌번호</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-no"
 										value="${getAboutNoBankData.depositNo }" name="id"
@@ -134,11 +137,10 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="company-name">거&emsp;래&emsp;처&emsp;명</label>
+								<label class="control-label span1" for="company-name">거래처명</label>
 								<div class="controls span2">
 									<select id="company-name" class="chosen-select"
-										name="companyName" style="width: 99%;"
-										onchange="load_customer_imfo();" required>
+										name="companyName" onchange="load_customer_imfo();" required>
 										<c:choose>
 											<c:when test="${flag == 'true'}">
 												<option value="${getAboutNoCustomerData.name }" selected
@@ -146,7 +148,7 @@ html, body {
 											</c:when>
 											<c:otherwise>
 												<option style="display: none;" disabled selected></option>
-												<option value="">&nbsp;</option>
+												<option value=""></option>
 											</c:otherwise>
 										</c:choose>
 
@@ -156,13 +158,13 @@ html, body {
 										</c:forEach>
 									</select>
 								</div>
-								<label class="control-label span1" for="customer-name">성&emsp;&emsp;&emsp;&emsp;&emsp;명</label>
+								<label class="control-label span1" for="customer-name">성명</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="customer-name"
 										value="${getAboutNoCustomerData.ceo }" name="id"
 										autocomplete="off" autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="deposit-host">예&emsp;&emsp;금&emsp;&emsp;주</label>
+								<label class="control-label span1" for="deposit-host">예금주</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="deposit-host"
 										value="${getAboutNoCustomerData.depositHost }"
@@ -170,13 +172,13 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="customer-address">주&emsp;&emsp;&emsp;&emsp;&emsp;소</label>
+								<label class="control-label span1" for="customer-address">주소</label>
 								<div class="controls span5">
 									<input style="width: 100%" type="text" id="customer-address"
 										value="${getAboutNoCustomerData.address }" name="id"
 										autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="bank">은&emsp;&emsp;&emsp;&emsp;&emsp;행</label>
+								<label class="control-label span1" for="bank">은행</label>
 								<div class="controls span5">
 									<div class="controls span2">
 										<input style="width: 80%" type="text" id="bank-code"
@@ -191,19 +193,19 @@ html, body {
 								</div>
 							</div>
 							<div class="control-group">
-								<label class="control-label span1" for="conditions">업&emsp;&emsp;&emsp;&emsp;&emsp;태</label>
+								<label class="control-label span1" for="conditions">업태</label>
 								<div class="controls span2">
 									<input style="width: 93%;" type="text" id="conditions"
 										value="${getAboutNoCustomerData.conditions }" name="id"
 										autocomplete="off" readonly />
 								</div>
-								<label class="control-label span1" for="items">종&emsp;&emsp;&emsp;&emsp;&emsp;목</label>
+								<label class="control-label span1" for="items">종목</label>
 								<div class="controls span2">
 									<input style="width: 100%" type="text" id="items" name="id"
 										value="${getAboutNoCustomerData.item }" autocomplete="off"
 										readonly />
 								</div>
-								<label class="control-label span1" for="taxType">과&emsp;세&emsp;구&emsp;분</label>
+								<label class="control-label span1" for="taxType">과세구분</label>
 								<div class="controls span2">
 									<c:choose>
 										<c:when test="${flag == 'true'}">
@@ -255,8 +257,8 @@ html, body {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="control-group">
-								<label class="control-label span1" for="id-date-picker-1">일&emsp;&emsp;&emsp;&emsp;&emsp;자</label>
-								<div class="controls span2">
+								<label class="control-label span1" for="id-date-picker-1">일자</label>
+								<div class="controls span3">
 									<div class="input-append" style="width: 100%">
 										<input id="id-date-picker-1" class="calender"
 											value="${getAboutNoData.writeDate }" name="writeDate"
@@ -265,15 +267,15 @@ html, body {
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="form-field-14">총&emsp;공&nbsp;급&nbsp;가&nbsp;액</label>
-								<div class="controls span4">
+								<label class="control-label span1" for="form-field-14">총공급가액</label>
+								<div class="controls span3">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-14"
 										value="<fmt:formatNumber value="${getAboutNoData.totalSupplyValue }" pattern="#,###"/>"
 										name="totalSupplyValue" autocomplete="off" placeholder="0"
 										readonly />
 								</div>
-								<label class="control-label span1" for="form-field-15">총&emsp;세&nbsp;액</label>
+								<label class="control-label span1" for="form-field-15">총세액</label>
 								<div class="controls span3">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-15"
@@ -290,14 +292,32 @@ html, body {
 						<div class="span12">
 							<div class="control-group">
 								<div class="btn-group">
+									<button class="btn btn-danger btn-small" type="button"
+										onclick="insert_button();">입력</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-warning btn-small" type="button"
+										onclick="update_button();">수정</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-primary btn-small" type="button"
+										onclick="delete_button();">삭제</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-default btn-small" type="button"
+										onclick="lookup_button();">조회</button>
+								</div>
+								<div class="btn-group">
 									<button class="btn btn-small" type="button"
 										onclick="add_row();">품목추가</button>
+
 								</div>
 								<div class="btn-group">
 									<button class="btn btn-small" type="button"
 										onclick="delete_row();">품목삭제</button>
 								</div>
 							</div>
+							<div class="hr hr-10 dotted"></div>
 							<div class="control-group">
 								<table id="item-table"
 									class="table table-striped table-bordered table-hover">
@@ -333,7 +353,8 @@ html, body {
 													<td><input style="text-align: right;" type="text"
 														id="tax-value${status.count }" name="taxValue"
 														value="<fmt:formatNumber value="${items.taxValue }" pattern="#,###"/>"
-														placeholder="0" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+														placeholder="0" onkeyup="sumAllSupplyAllTax();"
+														autocomplete="off"></td>
 												</tr>
 											</c:forEach>
 										</c:when>
@@ -351,26 +372,12 @@ html, body {
 													id="supply-value1" onkeyup="sumAllSupplyAllTax();"
 													placeholder="0" name="supplyValue" autocomplete="off"></td>
 												<td><input style="text-align: right;" type="text"
-													id="tax-value1" name="taxValue"
-													placeholder="0" onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
+													id="tax-value1" name="taxValue" placeholder="0"
+													onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 											</tr>
 										</c:otherwise>
 									</c:choose>
 								</table>
-							</div>
-							<div class="control-group">
-								<button class="btn btn-danger btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="insert_button();">입력</button>
-								<button class="btn btn-warning btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="update_button();">수정</button>
-								<button class="btn btn-primary btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="delete_button();">삭제</button>
-								<button class="btn btn-default btn-small" type="button"
-									style="float: left; margin-left: 20px;"
-									onclick="lookup_button();">조회</button>
 							</div>
 
 							<!-- PAGE CONTENT ENDS -->

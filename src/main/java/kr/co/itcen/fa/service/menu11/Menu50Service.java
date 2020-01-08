@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.service.menu11;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu11.BankVo;
+import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 
@@ -272,5 +274,37 @@ public class Menu50Service {
 	public List<PdebtVo> selectList(Long[] no) {
 		return menu50Repository.selectList(no);
 	}
+
+	public List<PdebtVo> getRepayExpectList() {
+		return menu50Repository.getRepayExpectList();
+	}
+
+	public List<PdebtVo> getRepayDueList() {
+		String startDate = getCurMonday();
+		String endDate = getCurSunday();
+		
+		return menu50Repository.getRepayDueList(startDate,endDate);
+	}
+	
+	//현재 날짜 월요일
+ 	public static String getCurMonday(){
+ 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+ 		Calendar c = Calendar.getInstance();
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+
+ 		return formatter.format(c.getTime());
+
+ 	}
+ 	//현재 날짜 일요일
+ 	public static String getCurSunday(){
+ 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+ 		Calendar c = Calendar.getInstance();
+
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+ 		c.add(c.DATE,7);
+
+ 		return formatter.format(c.getTime());
+
+ 	}
 
 }

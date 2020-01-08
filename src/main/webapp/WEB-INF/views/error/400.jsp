@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
@@ -7,7 +6,7 @@
 <html lang="ko">
 
 <head>
-<title>ITCEN-FA[Error: Page Not Found]</title>
+<title>ITCEN-FA[Error: Access Denied]</title>
 <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,7 +28,7 @@
 					<span class="divider"><i class="icon-angle-right arrow-icon"></i></span>
 				</li>
 				<li>
-					<a href="#">Error: Page Not Found</a>
+					<a href="#">Error: Access Dnied</a>
 				</li>
 			</ul><!-- .breadcrumb -->
 		</div>
@@ -42,14 +41,14 @@
 									<h1 class="grey lighter smaller">
 										<span class="blue bigger-125">
 											<i class="icon-random"></i>
-											404
+											403
 										</span>
-										존재하지 않는 페이지
+										접근거부
 									</h1>
 
 									<hr />
 									<h3 class="lighter smaller">
-										해당 페이지가 존재하지 않습니다.<br/>
+										해당 메뉴에 접근 권한이 없습니다.<br/>
 										시스템 관리자에게 문의해 주세요.(안태영, 010.9145.9107)
 									</h3>
 

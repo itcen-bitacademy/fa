@@ -103,5 +103,23 @@ public class Menu27Repository {
 		return customerVo;
 	}
 	
+	// 삭제된 거래처 복구
+	public Map<String, Object> deletedrecreate(CustomerVo customervo, PaginationUtil pagination) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		//sqlSession.update("menu27.deletedrecreate", customervo);
+		sqlSession.delete("menu27.deleteDuplicateCustomer", customervo);
+		sqlSession.insert("menu27.recreateDuplicateCustomer", customervo);
+		Map <String, Object> s = new HashMap<String, Object>();
+		s.put("pagination", pagination);
+		map.put("customerList", sqlSession.selectList("menu27.getList", s));
+		return map;
+	}
+	
+	//deleteFlag가 N이면 true
+	public boolean getDeleteFlag(CustomerVo customervo) {
+		int getdf = sqlSession.selectOne("menu27.getDeleteFlag",customervo);
+		return getdf==1;
+	}
+	
 
 }

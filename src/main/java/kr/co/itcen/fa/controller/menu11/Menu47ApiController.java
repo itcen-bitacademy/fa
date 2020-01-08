@@ -30,7 +30,7 @@ public class Menu47ApiController {
 	@ResponseBody
 	@RequestMapping(value="/" + Menu47Controller.SUBMENU + "/getList", method=RequestMethod.POST)
 	public JSONResult getList(STermDebtVo sTermDebtVo,
-			@RequestParam(value="pageSize", required=false, defaultValue="5") int pageSize,
+			@RequestParam(value="pageSize", required=false, defaultValue="11") int pageSize,
 			@RequestParam(value="orderColumn", required=false, defaultValue="") String orderColumn,
 			@RequestParam(value="page", required=true) int page) {
 		

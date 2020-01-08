@@ -1,11 +1,14 @@
 package kr.co.itcen.fa.service.menu11;
 
-import java.text.DateFormat;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,6 +226,43 @@ public class Menu46Service {
 		
 		menu03Service.deleteVoucher(voucherVolist, userVo);
 	}
+	public List<STermDebtVo> getRepayDueList() {
+		List<STermDebtVo> list= null;
+		try {
+			list = menu46Repository.getRepayDueList(getDateMap());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
+	//현재 날짜 일요일
+
+	public String getCurSunday(){
+		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+		c.add(c.DATE,7);
+		
+		System.out.println(formatter.format(c.getTime()));
+		return formatter.format(c.getTime());
+	}
 	
+	public Map getDateMap() throws ParseException {
+		Calendar calendar = new GregorianCalendar(Locale.KOREA);
+		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");		//현재날짜만 가져오기위해 사용
+		String dayOfSunday = getCurSunday();
+		
+		Map map = new HashMap();
+		map.put("curYear",calendar.get(Calendar.YEAR));
+		map.put("curMonth",calendar.get(Calendar.MONTH));
+		map.put("curDay",calendar.get(Calendar.DATE));
+		map.put("today", format1.parse(format1.format(calendar.getTime())));
+		map.put("dateOfSunday",format1.parse(dayOfSunday));
+		map.put("sunDay", dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
+		
+		
+		return map;
+	}
 }

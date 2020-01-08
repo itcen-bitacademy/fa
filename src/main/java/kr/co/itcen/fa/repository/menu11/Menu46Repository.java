@@ -72,4 +72,7 @@ public class Menu46Repository {
 	public List<RepayVo> getRepayList(Long no){
 		return sqlSession.selectList("menu46.getRepayList", no);
 	}
+	public List<STermDebtVo> getRepayDueList(Map dateMap) {
+		return sqlSession.selectList("menu46.getRepayDueList", dateMap);
+	}
 }

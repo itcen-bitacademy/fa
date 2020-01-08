@@ -35,10 +35,20 @@ public class Menu27Service {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		int totalCnt = menu27Repository.selectCount();
-		System.out.println("djflsf"+totalCnt);
+		System.out.println("totalCnt:"+totalCnt);
 		PaginationUtil pagination = new PaginationUtil(page, totalCnt+1, 11, 5);
 		
-		map = menu27Repository.create(customervo, pagination);
+		// 새로운 거래처 입력
+		if(menu27Repository.getDeleteFlag(customervo)==false) { //delete Flag가 "N"
+			map = menu27Repository.create(customervo, pagination);
+			System.out.println("새로운 거래처 입력");
+		}
+		
+		// 삭제된 거래처 재입력 처리
+		if(menu27Repository.getDeleteFlag(customervo)==true) { //delete Flag가 "Y"
+			map = menu27Repository.deletedrecreate(customervo, pagination);
+			System.out.println("삭제된 거래처 재등록");
+		}
 		map.put("pagination", pagination);
 		map.put("success", true);
 		return map;

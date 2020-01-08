@@ -128,4 +128,22 @@
 		from tb_repay
 		where debt_no=${_parameter} and debt_type="S"
 	</select>
+	
+	<select id="getRepayDueList" parameterType="map" resultType="stermdebtvo">
+   		<![CDATA[
+   			select code, repay_bal, case
+   			when repay_way = "E" then exp_date 
+			when repay_way = "Y" then concat(date_format(#{today}, "%Y-"), date_format(debt_date, "%m-%d")) 
+			when repay_way="M" then concat(date_format(#{today}, "%Y-%m-"), date_format(debt_date, "%d")) end as repayDue
+			from tb_s_term_debt
+			where repay_comple_flag = "N" and
+			(#{curDay} <= day(debt_date) and #{sunDay} >= day(debt_date) and
+			(repay_way="Y"  and
+			year(debt_date) < #{curYear} and month(debt_date) = #{curMonth}) or
+			(repay_way="M" and
+			 date_format(debt_date, "%Y%m") <> date_format(#{today}, "%Y%m"))) or
+			repay_way="E" and 
+			#{today} <= exp_date and exp_date <= #{dateOfSunday};
+   		]]>
+   </select>
 </mapper>

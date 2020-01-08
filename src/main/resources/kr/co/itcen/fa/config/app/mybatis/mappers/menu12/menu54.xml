@@ -159,5 +159,17 @@
 	            ]]>
             </if>
 	</select>
+	
+	<select id="subtaxbillno" parameterType="taxbillsearch12vo" resultType="taxbillsearch12vo">
+		<![CDATA[
+			select 
+			 taxbill_no as taxbillNo,
+			 sales_no as salesNo,
+			 customer_code as customerCode,
+			 customer_name as customerName 
+			 from tb_sell_taxbill
+            where customer_code = '${customerCode }'
+		]]>
+	</select>
 
 </mapper>

@@ -12,12 +12,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+<!-- Chart Library : Resources -->
+<!-- Load plotly.js into the DOM -->
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 #dialog-confirm{z-index: 3333!important;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
-.p-debt-code-input {width: 270px;}
+.p-debt-code-input {width: 195px;}
 
 /* 테이블의 첫 row 모두 padding right */
 .form-horizontal .control-label {text-align: left;}
@@ -31,12 +36,14 @@
 
 .debt-name-input {width: 420px;}
 .mgr-input {width: 90px; display: inline;}
-.mgr-number-input-h4 {display: inline; margin-left: 30px; margin-right: 20px;}
+.mgr-number-input-h4 {display: inline; margin-left: 37px; margin-right: 20px;}
 .mgr-call-input {width: 140px; display: inline;}
 
 .mybtn {float: left; margin-right: 10px;}
 
 .textarea{resize: none; width: 270px; height: 84px;}
+
+#chartdiv {width: 100%; height: 500px;}
 </style>
 </head>
 <body class="skin-3">
@@ -71,8 +78,8 @@
 												<input type="text" name="code" id="code" class="p-debt-code-input" value="${code}" maxlength="10"/>
 											</c:otherwise>
 										</c:choose>
-										<input class="btn btn-primary btn-small" id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
-										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										<input id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
+											<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
 										</td>
 									</tr>
 									<tr>
@@ -127,7 +134,7 @@
 									</tr>
 									<tr>
 										<td>
-											<label class="control-label">거래처코드</label>
+											<label class="control-label">은행코드</label>
 										</td>
 										<td colspan="2">
 												<div class="input-append">
@@ -216,7 +223,7 @@
 											<label class="control-label">이율</label>
 										</td>
 										<td colspan="2">
-											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="text-align:right;"/> <h5 style="display: inline-block;">(%)</h5>
+											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" style="text-align:right;"/> <h5 style="display: inline-block;">(%)</h5>
 										</td>
 									</tr>
 									<tr>
@@ -225,12 +232,8 @@
 										</td>
 										<td>
 											<input type="text" class="mgr-input" name="mgr" />
-										</td>
-										<td>
-											<label class="control-label">담당자전화번호</label>
-										</td>
-										<td>
-											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+											<label class="mgr-number-input-h4">담당자전화번호</label>
+											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="15"/>
 										</td>
 									</tr>
 									<tr>
@@ -296,7 +299,13 @@
 											<td>
 												<label class="control-label">계좌번호</label>
 												<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-													<a href="#" id="a-dialog-depositNo"><span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span></a>
+												<div class="input-append">
+													<span class="add-on">
+														<a href="#" id="a-dialog-depositNo">
+															<i class="icon-search icon-on-right bigger-110"></i>
+														</a>
+													</span>
+												</div>
 											</td>
 										</tr>
 									</table>
@@ -387,6 +396,26 @@
 									<p id="dialog-txt" class="bolder grey">
 									</p>
 								</div>
+								
+								<!-- 금주의 상환 내역 Modal pop-up : start -->
+								<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
+										<!-- 은행코드 및 은행명 데이터 리스트 -->
+										<table id="repay-due-table" class="table  table-bordered table-hover">
+											<thead>
+												<tr>
+													<th class="center">차입금 코드</th>
+													<th class="center">상환 금액</th>
+													<th class="center">납입일</th>
+												</tr>
+											</thead>
+											<tbody id="tbody-repay-due">
+											</tbody>
+										</table>
+								</div>
+								<!-- 금주의 상환 내역 Modal pop-up : end -->
+								
+								<!-- 차트 -->
+								<div id='myDiv' hidden="hidden"><!-- Plotly chart will be drawn inside this DIV --></div>
 					
 							</div>
 						</div>
@@ -399,6 +428,8 @@
 							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
 							<button type="button" id="repaybtn" class="btn btn-small mybtn">상환</button>
 							<button type="button" id="clearbtn" class="btn btn-success btn-small mybtn">초기화</button>
+							<button type="button" id="repayviewbutton" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
+							<!-- <button type="button" id="chartbtn" class="btn btn-info btn-small mybtn">차트</button> -->
 						</div>
 					<hr>
 				</form>
@@ -610,6 +641,12 @@
 		// 초기화버튼 이벤트 연결
 		$('#clearbtn').on('click', clearDebtData);
 		
+		// 상환예정내역버튼 이벤트 연결
+		$('#repayviewbutton').on('click', repayDueDebtData);
+		
+		// 차트 이벤트 연결
+		//$('#chartbtn').on('click', chartDebtData);
+		
 		// 중복코드 확인 이벤트 연결
 		$('#duplicatecode-checkbtn').on('click', checkCodeDebtData);
 		
@@ -649,6 +686,8 @@
 		
 		// 계좌정보 테이블 Modal(dialog 생성)
 		$("#dialog-account-message").dialog({ autoOpen : false });
+		
+		$("#repay-due").dialog({ autoOpen : false });
 		//--------------------------------------------------------------------------------------------------------------------------//
 		
 		//--------------------------------------------------------------------------------------------------------------------------//
@@ -1154,6 +1193,56 @@
 	   
 	}
 	
+	// 상환예정내역 
+	function repayDueDebtData(){
+		$.ajax({
+			url: "${pageContext.request.contextPath }/11/50/checkrepaydue",
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				
+				  $.each(response.data,function(index, item){
+	                 $("#tbody-repay-due").append("<tr>" +
+	                     "<td class='center'>" + item.code + "</td>" +
+	                     "<td class='center'>" + item.repayBal + "</td>" +
+	                     "<td class='center'>" + item.payDate + "</td>" +
+	                     "</tr>");
+	          })
+	    	},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+		 
+		  $("#repay-due").dialog({
+              title: "금주의 상환 정보",
+              title_html: true,
+              resizable: false,
+    	      height: 500,
+    	      width: 400,
+    	      modal: true,
+    	      close: function() {
+                  $('#tbody-repay-due tr').remove();
+                  $(this).dialog('close');
+               },
+               buttons: {
+               "닫기" : function() {
+                        $(this).dialog('close');
+                        $('#tbody-repay-due tr').remove();
+                   }
+               }
+           });
+           
+           $("#repay-due").dialog('open');
+	}
+	
 	// 사채코드 중복 확인
 	function checkCodeDebtData() {
 		var code = $("#code").val();
@@ -1379,6 +1468,61 @@
 	          console.error("error : " + error);
 	       }
 	    });
+	}
+	
+	
+	function chartDebtData() {
+		//$("#chartdiv").dialog('open');
+		
+		// ajax 통신
+		/* $.ajax({
+			url: "${pageContext.request.contextPath }/api/customer/getdebtdata",
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				console.log(response.data);
+				if (response.data.length === 0) {
+					openModal('Error', '입력한 은행명에 대한 결과를 찾을 수 없습니다.', '#input-dialog-bankname');
+					$("#input-dialog-bankname").val('');
+					return;
+				}
+				
+				$("#input-dialog-bankname").val('');
+				$.each(response.data,function(index, item){
+		                $("#tbody-bankList").append("<tr>" +
+		                		"<td class='center'>" + item.no + "</td>" +
+						        "<td class='center'>" + item.name + "</td>" +
+						        "</tr>");
+		        })
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		}); */
+		
+		$("#myDiv").dialog({
+			title: "차트",
+			title_html: true,
+		   	resizable: false,
+		    height: 700,
+		    width: 1300,
+		    modal: true,
+		    close: function() {
+		    	
+		    },
+		    buttons: {
+		    "닫기" : function() {
+		          	$(this).dialog('close');
+		        }
+		    }
+		});
 	}
 	
 	//insert Validation
@@ -1679,7 +1823,7 @@
 			$("#tbody-list").find("tr").css("background-color", "inherit");
 	        $(tr).css("background-color", "#ddd");
 	        $('#insertbtn').hide();
-	        $('#searchbtn').hide();
+	        //$('#searchbtn').hide();
 	        $('#updatebtn').show();
 	        $('#repaybtn').show();
 		
@@ -1827,6 +1971,48 @@
 				
 			$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 		}
+		//--------------------------------------------------------------------------------------------------------------------------//
+		
+		/* $(function() {
+			
+			var trace1 = {
+					  x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+					  y: [20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
+					  type: 'bar',
+					  name: 'Primary Product',
+					  marker: {
+					    color: 'rgb(49,130,189)',
+					    opacity: 0.7,
+					  }
+					};
+
+					var trace2 = {
+					  x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+					  y: [19, 14, 22, 14, 16, 19, 15, 14, 10, 12, 12, 16],
+					  type: 'bar',
+					  name: 'Secondary Product',
+					  marker: {
+					    color: 'rgb(204,204,204)',
+					    opacity: 0.5
+					  }
+					};
+
+					var data = [trace1, trace2];
+
+					var layout = {
+					  title: '2013 Sales Report',
+					  xaxis: {
+						    
+						  },
+						  yaxis: {
+						    
+						  },
+					  barmode: 'group'
+					};
+
+					Plotly.newPlot('myDiv', data, layout);
+		}); */
+		
 		//--------------------------------------------------------------------------------------------------------------------------//
 
 </script>
