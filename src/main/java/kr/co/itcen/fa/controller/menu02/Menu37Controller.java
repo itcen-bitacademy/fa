@@ -102,7 +102,7 @@ public class Menu37Controller {
 			model.addAttribute("searchFlag","true");
 			return MAINMENU + "/" + SUBMENU + "/add";
 		}
-		
+		 
 		CustomerVo getAboutNoCustomerData = menu37Service.getAboutNoCustomerData(getAboutNoData.getCompanyName());
 		BankAccountVo getAboutNoBankData = menu37Service.getAboutNoBankData(getAboutNoCustomerData.getDepositNo());
 		List<BuyTaxbillItemsVo> getAboutItmes = menu37Service.getAboutItmes(vo.getNo());

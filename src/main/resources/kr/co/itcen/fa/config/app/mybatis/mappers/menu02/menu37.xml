@@ -70,7 +70,7 @@
 			select *
 		      from tb_purchasecustomer
 		]]>
-	</select>
+	</select> 
 	<select id="customerBankList" resultType="bankaccountvo">
 		
 		<![CDATA[
