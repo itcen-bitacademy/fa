@@ -48,6 +48,30 @@
  .form-horizontal .control-label {
             text-align: left
         }
+        
+         html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+		
+		  @media screen and (max-width: 920px) {
+         .main-container{
+            height:calc(100% - 84px);
+         }
+      }
+	
 </style>
 
 
@@ -71,7 +95,7 @@
 				<form class="form-horizontal" id="input-form" name="input-form"
 					method="post">
 					<div class="row-fluid">
-						<div class="span6">
+						<div class="span7">
 							<div class="tabbable">
 								<div class="control-group">
 									<label class="control-label" for="form-field-1">카드 번호</label>
@@ -186,7 +210,7 @@
 							</div>
 						</div>
 
-						<div class="span6">
+						<div class="span5">
 							<div class="control-group">
 								<div>
 									<label class="control-label" for="form-field-1">유효기간 </label> 
@@ -270,7 +294,7 @@
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" onclick= "location.reload()">취소</button> 
+							<button class="btn btn-default btn-small" id="btn-reset" onclick= "location.reload()">초기화</button> 
 						</div>
 
 					</div>
@@ -279,9 +303,9 @@
 
 				<!-- Tables -->
 				<div class="row-fluid">
-					<div class="span12">
+					<div class="span12" style="overflow: auto;">
 						<table id="simple-table-1"
-							class="table  table-bordered table-hover">
+							class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 							<thead>
 								<tr>
 									<th>카드번호</th>
@@ -306,7 +330,7 @@
 								</tr>
 							</thead>
 
-							<tbody class="origin-tbody" >
+							<tbody id="tbodylist" class="origin-tbody" >
 
 								<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 									<tr>
@@ -547,6 +571,11 @@ $(function() {
 			    }
 			 })
 		} else if(a == "read") {
+			//카드번호 전부 입력후 조회가능하게
+			if(!DeleteValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
 			$.ajax({
 			    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read",
 			    type: "POST",
@@ -732,7 +761,7 @@ $(function() {
 
 	
 	
-	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+	$(document.body).delegate('#tbodylist tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
 		

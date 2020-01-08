@@ -22,6 +22,30 @@
 input, textarea, .uneditable-input {
     width: 100px;
 }
+
+  html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+		
+		  @media screen and (max-width: 920px) {
+         .main-container{
+            height:calc(100% - 84px);
+         }
+      }
+	
 </style>
 
 
@@ -86,9 +110,9 @@ input, textarea, .uneditable-input {
 
 
 				<div class="row-fluid">
-					<div class="span12">
+					<div class="span12" style="overflow: auto;">
 						<table id="sample-table-1"
-							class="table table-bordered table-hover">
+							class="table table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 							<thead>
 								<tr>
 									<th>카드번호</th>
