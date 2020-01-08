@@ -566,7 +566,7 @@ input:focus {
 										});
 							});
 
-			$("body") 
+			$("body")  
 					.on(
 							"click",
 							".page_go_prev",

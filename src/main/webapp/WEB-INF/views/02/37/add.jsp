@@ -405,7 +405,7 @@ html, body {
 	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
-	<!-- 페이지로드될 때 발생하는 script함수 --> 
+	<!-- 페이지로드될 때 발생하는 script함수 -->  
 	<script>
 		function startFunctions() {
 			addElementCommas();
