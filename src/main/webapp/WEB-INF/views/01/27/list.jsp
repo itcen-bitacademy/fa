@@ -73,6 +73,7 @@
 			$("#corporationNo").attr("readonly",false);
 			$("#btn-check-no").show();
 			$("#img-checkno").hide();
+			$("#btn-create").show();
 			
 		});
 		
@@ -206,6 +207,8 @@
 					    }
 					 })
 
+						$("#btn-create").show();
+
 				});
 			} else if(a == "delete") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
@@ -255,6 +258,8 @@
 					      	console.log(err)
 					    }
 					 })
+
+						$("#btn-create").show();
 				});
 				
 			} else {
@@ -426,6 +431,7 @@
 
 		$("#btn-check-no").hide();
 		$("#img-checkno").hide();
+		$("#btn-create").hide();
 	});
 	
 	function settingInput(customerList) {
