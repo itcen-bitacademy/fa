@@ -41,28 +41,28 @@
 							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">
 								<div class="span4">
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매입번호</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">매입번호</label>
 										<div class="controls">
 											<input class="input-small" type="text" id="no" name="no" placeholder="" value="">										
 										</div>
 									</div>
 							
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처코드</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">거래처코드</label>
 										<div class="controls">
 											<input class="input-small" type="text" id="customerCode" name="customerCode" placeholder=""  value="">
 										</div>
 									</div>
 							
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">품목코드</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">품목코드</label>
 										<div class="controls">
 											<input class="input-small" type="text" id="itemCode" name="itemCode" placeholder=""  value="">										
 										</div>
 									</div>
 								
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">삭제여부</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">삭제여부</label>
 										<div class="controls">
 											<select class="chosen-select span1" id="deleteFlag" name="deleteFlag">
 												<option value="Y">Y</option>
@@ -72,7 +72,7 @@
 									</div>
 							
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">정렬기준</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">정렬기준</label>
 										<div class="controls">
 											<select class="chosen-select span1" id="orderStd" name="orderStd">
 											<option value="purchase_date" selected="selected">매입일자</option>
@@ -89,7 +89,7 @@
 								</div>
 								<div class="span4">
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매입일자</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker1 input-small" id="startDate" name="startDate" type="text" data-date-format="yyyy-mm-dd"  value="">
@@ -109,7 +109,7 @@
 								
 															
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처명</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">거래처명</label>
 	
 										<div class="controls">
 											<input type="text" id="customerName" name="customerName" placeholder=""  value="">
@@ -117,7 +117,7 @@
 									</div>
 								
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">품목명</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">품목명</label>
 	
 										<div class="controls">
 											<input type="text" id="itemName" name="itemName" placeholder=""  value="">
@@ -336,7 +336,7 @@
 							"<tr>" +
 				            "<td class='left'>" + isEmpty(result[i].purchaseDate) + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].no)  + "</td>" +
-				            "<td class='left'>" + isEmpty(result[i].number)  + "</td>" +
+				            "<td style='text-align:right'>" + isEmpty(result[i].number)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].customerCode)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].customerName)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].purchaseManager)  + "</td>" +
