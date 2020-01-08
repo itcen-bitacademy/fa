@@ -16,6 +16,13 @@
 	width:200px;
 	text-align:right;
 }
+@media screen and (max-width: 920px) {
+       .main-container{
+          height:calc(100% - 84px);
+       }
+    }
+
+
 </style>
 </head>
 <body class="skin-3">
@@ -254,7 +261,7 @@
 												<button class="btn btn-info btn-small" id="search"
 													style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-default btn-small" id="clear"
-													style="float: left; margin-right: 20px;" type="reset">초기화</button>
+													style="float: left; margin-right: 20px;">초기화</button>
 											</div>
 										</div>
 									</div>
@@ -869,7 +876,7 @@ $("#delete").click(function() {
 	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 	$("#input-form").attr("method","post");
 	$("#input-form").submit();
-   	alert("삭제 하시겠습니까?");
+   	//alert("삭제 하시겠습니까?");
 }); 
 
 $("#search").click(function() {
@@ -879,6 +886,22 @@ $("#search").click(function() {
 	$("#input-form").submit();
 	//alert("조회");
 });
+
+
+$("#clear").click(function() {
+
+	 event.preventDefault();
+     $('input[type=text]').val("");
+     $('input:radio').prop("checked",false);
+     //대분류코드
+      $('#sectionNo').val("").trigger('chosen:updated');
+     //직급
+      $('#staffNoId').val("").trigger('chosen:updated');
+     //거래처코드
+      $('#form-field-customerCode').val("").trigger('chosen:updated');
+ 
+      });
+
 
 $("#segum").click(function() {
 	
@@ -967,7 +990,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	var ownerName = td.eq(5).text();
   	$("input[name=ownerName]").val(ownerName);
   
-  	var wideAddress = td.eq(6).text();
   	$("input[name=wideAddress]").val(td.eq(6).text());
 	
 	var cityAddress = td.eq(7).text();

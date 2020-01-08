@@ -36,13 +36,19 @@
 		]]>
 	</select>
 	
-	<!-- 전체페이지 총 건수구하기 -->
+	<!-- 삭제 포함 x 전체페이지 총 건수구하기 -->
 	<select id="pageAllCount" resultType="int">
 		select count(*)
-		from tb_vehicle where flag in('s','o','d')
+			from tb_vehicle v 
+			 left outer join tb_staff st on v.staff_no = st.no
+			 left outer join tb_section s on v.section_no = s.code 
+                left outer join user u on v.insert_userid = u.id
+                left outer join tb_customer c on v.customer_no = c.no
+                left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
+	where s.parent_no=4 and v.flag IN('s','o')  and v.customer_no = c.no and c.assets_flag="c"
 	</select>
 	
-	<!-- 페이징 처리  -->
+	<!--삭제포함x 페이징 처리  -->
 	 <select id="list" resultType="vehicle08vo" parameterType="map">
 		<![CDATA[
 			select  
@@ -77,7 +83,7 @@
                  left outer join user u on v.insert_userid = u.id
                  left outer join tb_customer c on v.customer_no = c.no
                  left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
-		where s.parent_no=4 and v.flag IN('s','o','d')
+		where s.parent_no=4 and v.flag IN('s','o')
 		]]>
 		<if test="id">
             <![CDATA[
@@ -94,7 +100,7 @@
 		</if>
 	</select> 
 	
-	<!-- 조회 조건 페이지 COUNT  -->
+	<!-- 삭제 포함 o 조회 조건 페이지 COUNT  -->
 	<select id="pageCount" parameterType="map" resultType="int">
 				<![CDATA[
 				select  count(*) as cnt
@@ -104,7 +110,10 @@
 			                 left outer join user u on v.insert_userid = u.id
 			                 left outer join tb_customer c on v.customer_no = c.no
 			                 left outer join tb_taxbill t on v.taxbill_no = t.taxbill_no
-					where s.parent_no=4 and v.flag IN('s','o','d')  and v.customer_no = c.no and c.assets_flag="c"
+					where s.parent_no=4 
+						and v.flag IN('s','o','d')  
+						and v.customer_no = c.no 
+						and c.assets_flag="c"
 				]]>
 				<if test='id!=""'>
 				<![CDATA[
@@ -159,7 +168,7 @@
 	</select>
 	
 	
-	<!-- 조회 조건 페이지 select  -->
+	<!-- 삭제 포함 o 조회 조건 페이지 select  -->
 	<select id="getList" parameterType="map" resultType="vehicle08vo">
 		<![CDATA[
 			select  
@@ -243,7 +252,7 @@
 				</if>
 				<if test='flag==null'>
 				<![CDATA[
-				 and v.flag in("s", "o") 
+				 and v.flag in("s", "o" ) 
 				]]>
 				</if>
 			    <if test="pagination.pageIndex >= 0">
