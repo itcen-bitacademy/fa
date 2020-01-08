@@ -11,54 +11,97 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-/* tr td:first-child { */
-/* 	padding-right: 40px; */
-/* } */
-.radio {
-	float: left;
-	width: 10%;
-}
-/* 테이블의 첫 row 모두 padding right */
 .form-horizontal .control-label {text-align: left;}
+
 h4{
-   font-size:14px;
+   font-size:13px;
    font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
+
+.textarea{
+   resize: none;
+   width: 282px;
+   height: 84px;
+}
+
+tr td:first-child {
+   padding-right: 10px;
+}
+
+.radio {
+   float: left;
+   width: 17%;
+}
+
 .search-input-width-first {
-	width: 130px;
+   width: 130px;
 }
+
 .search-input-width-second {
-	width: 235px;
+   width: 235px;
 }
+
 .debt-name-input {
-	width: 420px;
+   width: 420px;
 }
+
 .mgr-input {
-	width: 90px;
-	display: inline;
+   width: 90px;
+   display: inline;
 }
+
 .mgr-number-input-h4 {
-	display: inline;
-	margin-left: 30px;
-	margin-right: 20px;
+   display: inline;
+   margin-left: 42px;
+   margin-right: 20px;
 }
+
 .mgr-call-input {
-	width: 150px;
-	display: inline;
+   width: 150px;
+   display: inline;
 }
+
 .number-input{
-	text-align:right;
+   text-align:right;
 }
-.mybtn{margin-right:10px;}
+
+.mybtn{float:left;margin-right:10px;}
+
 #staticBackdrop {
-	z-index: -1;
+   z-index: -1;
 }
+
 .selected{
-	background-color:#ddd;
+   background-color:#ddd;
 }
+
+#simple-table{
+   min-width: 2000px; 
+   margin-bottom: 0; 
+   width: auto;"
+}
+
+html,body{
+         overflow-x:hidden;
+      height:100%;
+   }
+   .main-container{
+      height:calc(100% - 45px);
+      overflow-x: hidden;
+   }
+   .main-content{
+      overflow:auto;
+   }
+   .page-content{
+      min-width:1280px;
+   }
+   @media screen and (max-width: 920px) {
+      .main-container{
+         height:calc(100% - 84px);
+      }
+   }
 </style>
 </head>
 <body class="skin-3">
@@ -67,6 +110,7 @@ h4{
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
+		
 		<div class="page-header position-relative">
 			<h1 class="pull-left">은행코드관리</h1>
 		</div><!-- /.page-header -->
@@ -327,8 +371,8 @@ h4{
 			
 			
 			
-   </div>/.main-content -->
- </div>/.main-container -->
+   </div> <!-- /.main-content --> -->
+ </div> <!-- /.main-container --> -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 
@@ -634,8 +678,9 @@ $("#inputbtn").click(function(){//입력버튼 클릭시
   	
 $('#formReset').click(function(){//초기화 버튼 클릭시
  	$('input').val(''); 
+ 	$("#img-checkcode").hide();
  	 $('#code').attr('readOnly',false);
-  	$('#btn-check-code').val('중복확인');
+  	$('#btn-check-code').val('중복확인').show();
   	$('#addressSearch').val('우편번호찾기');
 });	 
 
