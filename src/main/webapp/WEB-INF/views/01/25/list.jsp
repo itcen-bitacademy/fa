@@ -9,14 +9,42 @@
 <head>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-
+	
+<c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .chosen-search {
 	display: none;
 }
 
-.control-group {
-	text-align:justify; 
+.cl-date-picker {
+	width: 150px;
+}
+
+.form-horizontal .control-label {
+	text-align: left
+}
+
+html, body {
+	height: 100%;
+}
+
+.main-container {
+	height: calc(100% - 45px);
+	overflow-x: hidden;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.page-content {
+	min-width: 1280px;
+}
+
+@media screen and (max-width: 920px) {
+	.main-container {
+		height: calc(100% - 84px);
+	}
 }
 </style>
 
@@ -36,8 +64,9 @@
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-
+	
 <script>
+	var nochecked = false;
 	$(function() {
 		var a;
 		$("#btn-create").click(function(){
@@ -45,6 +74,9 @@
 		});
 		$("#btn-read").click(function(){
 			a = "read";
+			$("input[name=balance]").val(0); 
+			$("input[name=depositLimit]").val(0);
+			$("input[name=profit]").val(0);
 		});
 		$("#btn-update").click(function(){
 			a = "update";
@@ -52,12 +84,20 @@
 		$("#btn-delete").click(function(){
 			a = "delete";
 		});
+		$("#btn-reset").click(function(){
+			$("#depositNo").attr("readonly",false);
+			$("#btn-check-no").show();
+			$("#img-checkno").hide();
+			$("#btn-create").show();
+		});
 		
 		$("#input-form").submit(function(event) {
 	        event.preventDefault();
 	        
 	        $("input[name=balance]").val($("input[name=balance]").val().replace(/[^0-9]/g,""));
 	        $("input[name=depositLimit]").val($("input[name=depositLimit]").val().replace(/[^0-9]/g,""));
+	        
+	        
 	        
 			var queryString = $("form[name=input-form]").serializeArray();
 			
@@ -67,6 +107,12 @@
 			
 			if(a == "create") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
+				if(nochecked==false){
+
+					openErrorModal("DUPLICATE CHECK ERROR","계좌번호 중복검사는 필수입니다.",'#no');
+					$("#btn-check-no").show();
+					return;
+				}
 				if(!InsertValidation()){
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
@@ -79,14 +125,14 @@
 				    dataType: "json",
 				    success: function(dataResult){
 				    	if(dataResult.fail) {
-				    		alert("다시 입력해주세요.");
+				    		openErrorModal("FAIL","다시 입력해주세요.");
 				    	}
 				    	if(dataResult.success) {
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
 				    		
-				    		alert("계좌 생성이 완료되었습니다."); 
+				    		openErrorModal("CREATE SUCCESS","계좌 생성이 완료되었습니다.");
 				    		
 				    		removeTable();
 				    		var bankList = dataResult.bankList;
@@ -102,6 +148,7 @@
 				    }
 				 })
 			} else if(a == "read") {
+				
 				$.ajax({
 				    url: "${pageContext.request.contextPath}/01/25/read",
 				    type: "POST",
@@ -109,12 +156,11 @@
 				    dataType: "json",
 				    success: function(dataResult){
 				    	if(dataResult.success) {
-				    		alert("계좌 검색이 완료되었습니다."); 
+				    		openErrorModal("READ SUCCESS","계좌 검색이 완료되었습니다.");
 				    		removeTable();
 				    		$('#input-form').each(function(){
 				    		    this.reset();
 				    		});
-				    		
 				    		var bankList = dataResult.bankList;
 				    		settingInput(bankList);
 				    		createNewTable(bankList);
@@ -139,14 +185,14 @@
 				    dataType: "json",
 				    success: function(dataResult){
 				    	if(dataResult.success) {
-				    		alert("계좌 수정이 완료되었습니다."); 
+				    		openErrorModal("UPDATE SUCCESS","계좌 수정이 완료되었습니다.");
 				    		removeTable();
 				    		
 				    		var bankList = dataResult.bankList;
 				    		createNewTable(bankList);
 				    	}
 				    	if(dataResult.fail) {
-				    		alert("다시 입력해주세요.");
+				    		openErrorModal("FAIL","다시 입력해주세요.");
 				    	}
 				    	
 				    	$('#pagination ul').remove();
@@ -165,7 +211,7 @@
 				    dataType: "json",
 				    success: function(dataResult){
 				    	if(dataResult.success) {
-				    		alert("계좌 삭제가 완료되었습니다."); 
+				    		openErrorModal("DELETE SUCCESS","계좌 삭제가 완료되었습니다.");
 				    		removeTable();
 				    		$('#input-form').each(function(){
 				    		    this.reset();
@@ -231,7 +277,6 @@
 			  for(let bankdeposit in bankList){
 				  $newTbody.append(
 				   	"<tr>" +
-			        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
 			        "<td>" + bankList[bankdeposit].depositNo + "</td>" +
 			        "<td>" + bankList[bankdeposit].bankCode + "</td>" +
 			        "<td>" + bankList[bankdeposit].depositHost + "</td>" +
@@ -267,24 +312,28 @@
 			var tr = $(this);
 			var td = tr.children();
 
-			$("input[name=depositNo]").val(td.eq(1).text());
-			$("input[name=depositOld]").val(td.eq(1).text());
-			$("input[name=bankCode]").val(td.eq(2).text());
-			$("input[name=depositHost]").val(td.eq(3).text());
-			$("input[name=makeDate]").val(td.eq(4).text());
-			$("input[name=enDate]").val(td.eq(5).text());
-			$("input[name=balance]").val(td.eq(6).text());
-			$("input[name=depositLimit]").val(td.eq(7).text());
-			$("input[name=profit]").val(td.eq(8).text());
-			$("input[name=bankName]").val(td.eq(9).text());
-			$("input[name=bankLocation]").val(td.eq(10).text());
-			$("input[name=banker]").val(td.eq(11).text());
-			$("input[name=bankPhoneCall]").val(td.eq(12).text());
+			$("input[name=depositNo]").val(td.eq(0).text());
+			$("input[name=depositOld]").val(td.eq(0).text());
+			$("input[name=bankCode]").val(td.eq(1).text());
+			$("input[name=depositHost]").val(td.eq(2).text());
+			$("input[name=makeDate]").val(td.eq(3).text());
+			$("input[name=enDate]").val(td.eq(4).text());
+			$("input[name=balance]").val(td.eq(5).text());
+			$("input[name=depositLimit]").val(td.eq(6).text());
+			$("input[name=profit]").val(td.eq(7).text());
+			$("input[name=bankName]").val(td.eq(8).text());
+			$("input[name=bankLocation]").val(td.eq(9).text());
+			$("input[name=banker]").val(td.eq(10).text());
+			$("input[name=bankPhoneCall]").val(td.eq(11).text());
 
+			$("input[name=depositNo]").prop("readonly", true);
+			$("#btn-check-no").hide();
+			$("#img-checkno").hide();
 			$("input[name=bankName]").prop("readonly", true);
 			$("input[name='bankLocation']").prop("readonly", true);
 			$("input[name='banker']").prop("readonly", true);
 			$("input[name='bankPhoneCall']").prop("readonly", true);
+			$("#btn-create").hide();
 		});
 
 		function settingInput(bankList) {
@@ -306,6 +355,8 @@
 			$("input[name='bankLocation']").prop("readonly", true);
 			$("input[name='banker']").prop("readonly", true);
 			$("input[name='bankPhoneCall']").prop("readonly", true);
+			
+			$("#btn-create").hide();
 		}
 
 		$(document.body).delegate('#selectAll', 'click', function() {
@@ -662,11 +713,62 @@
 				}
 			});
 		});
+		
+		
+		//사업자등록번호 중복체크
+		$("#depositNo").change(function(){
+			$("#btn-check-no").show();
+			$("#img-checkno").hide();
+			nochecked = false;
+		});	
+		
+		$("#btn-check-no").click(function(){
+			
+			var depositNo = $("#depositNo").val();
+			
+			//계좌번호 Valid
+			if ('' === depositNo) {
+				errortitle = 'DEPOSIT_NO ERROR';
+				validationMessage = '계좌번호는\r\n필수입력항목입니다.';
+				errorfield = '#depositNo';
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
+			
+			// 중복체크
+			$.ajax({
+				url: "${pageContext.servletContext.contextPath }/01/25/checkno?depositNo=" + depositNo,
+				contentType : "application/json; charset=utf-8",
+				type: "get",
+				dataType: "json",
+				data: "",
+				success: function(response){
+					console.log(response);
+					if(response.result){
+						nochecked = true;
+						openErrorModal("DUPLICATE CHECK COMPLETE","중복 검사가 완료되었습니다.");
+						$("#btn-check-no").hide();
+						$("#img-checkno").show();
+						return;
+					}
+					else {
+						nochecked = true;
+						$("#btn-check-no").show();
+						$("#img-checkno").hide();
+						openErrorModal('DUPLICATE DEPOSIT',"중복된 계좌입니다.");
+						return;
+					}
+				},
+				error:function(xhr,error) {
+					console.err("error" + error);
+				}
+			});
+		});
 
 	});
 </script>
 
-<c:import url="/WEB-INF/views/common/head.jsp" />
+
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -676,9 +778,6 @@
 			<div class="page-content">
 				<div class="page-header position-relative">
 					<h1 class="pull-left">계좌 관리</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div>
 				<!-- /.page-header -->
 
@@ -688,7 +787,7 @@
 				<form class="form-horizontal" id="input-form" name="input-form"
 					method="post">
 					<div class="row-fluid">
-						<div class="span6">
+						<div class="span7">
 							<div class="tabbable">
 
 								<div class="control-group">
@@ -698,6 +797,9 @@
 										<input type="text" id="depositNo" name="depositNo"
 											placeholder="계좌 번호"  /> <input type="hidden"
 											name="depositOld" />
+											
+										<input id="btn-check-no" type="button" value="중복확인">
+										<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">	
 									</div>
 								</div>
 
@@ -756,9 +858,9 @@
 						<!-- /span -->
 
 						<!-- 4조에서 데이터 가져오는 부분 -->
-						<div class="span6">
+						<div class="span5">
 							<div class="control-group">
-								<label class="control-label" for="form-field-1">은 행 코 드 </label>
+								<label class="control-label" for="form-field-1">은 행 명 </label>
 								<div class="controls">
 								<div class="input-append">
 									<a href="#"	id="a-bankinfo-dialog">  <input type="text"
@@ -768,10 +870,13 @@
 										</span>
 									</a>
 								</div>
-								&nbsp; &nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="form-field-1">은 행 코 드 </label>
+								<div class="controls">
 									<input type="text" id="form-field-1" name="bankName"
 										placeholder="은행코드" readonly />
-										
 								</div>
 							</div>
 
@@ -781,7 +886,7 @@
 									<tr>
 										<td><label>은행코드</label>
 										<div class="input-append">
-										 <input type="text"
+										 <input type="text" class="input-dialog-bank"
 											id="input-dialog-bankcode" style="width: 100px;" /> <a
 											href="#" id="a-dialog-bankcode">
 											<span class="add-on">
@@ -792,7 +897,7 @@
 										</td>
 										<td><label>은행명</label> 
 										<div class="input-append">
-										<input type="text"
+										<input type="text" class="input-dialog-bank"
 											id="input-dialog-bankname" style="width: 100px;" /> <a
 											href="#" id="a-dialog-bankname">
 											<span class="add-on">
@@ -866,7 +971,8 @@
 								id="btn-update" name="btn-update">수정</button>
 							<button type="submit" class="btn btn-primary btn" id="btn-create"
 								name="btn-create">입력</button>
-							<button type="reset" class="btn btn-default btn">취소</button>
+							<button type="reset" class="btn btn-default btn" id="btn-reset"
+								name="btn-reset">초기화</button>
 							<div class="hr hr-18 dotted"></div>
 						</div>
 						<!-- /.span -->
@@ -875,14 +981,11 @@
 
 					<!-- Tables -->
 					<div class="row-fluid">
-						<div class="span12">
+						<div class="span12" style="overflow:auto;">
 							<table id="simple-table-1"
-								class="table table-striped table-bordered table-hover">
+								class="table table-striped table-bordered table-hover" style="min-width:2000px;margin-bottom:0;width:auto">
 								<thead>
 									<tr>
-										<th class="center"><label> <input type="checkbox"
-												class="ace" id="selectAll" /> <span class="lbl"></span>
-										</label></th>
 										<th>계좌번호</th>
 										<th>은행번호</th>
 										<th>예금주</th>
@@ -906,10 +1009,6 @@
 
 									<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
 										<tr>
-											<td class="center"><label> <input
-													type="checkbox" class="ace" /> <span class="lbl"></span>
-											</label></td>
-
 											<td>${vo.depositNo }</td>
 											<td>${vo.bankCode }</td>
 											<td>${vo.depositHost }</td>
@@ -987,4 +1086,3 @@
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
-</html>

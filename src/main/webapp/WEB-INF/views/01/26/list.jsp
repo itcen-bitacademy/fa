@@ -12,6 +12,32 @@
 .chosen-search {
 	display: none;
 }
+
+.form-horizontal .control-label {
+    text-align: left
+}
+html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+
+	@media screen and (max-width: 920px) {
+	         	.main-container{
+            	height:calc(100% - 84px);
+         		}
+	 }
 </style>
 
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -113,9 +139,9 @@
 					<div class="hr hr-18 dotted"></div>
 				
 				<div class="row-fluid">
-						<div class="span12">
+						<div class="span12" style="overflow:auto;">
 
-							<table id="simple-table-1" class="table table-striped table-bordered table-hover">
+							<table id="simple-table-1" class="table table-striped table-bordered table-hover" style="min-width:2000px;margin-bottom:0;width:auto">
 								<thead>
 									<tr>
 										<th>계좌번호</th>
