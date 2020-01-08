@@ -59,6 +59,7 @@ form {
 .fourth-column {width:70px;}
 .fifth-column {width:200px;}
 .sixth-column {padding-left:20px;}
+.seventh-column {padding-left:20px;}
 
 /* second row */
 .span2 {padding-left:40px; padding-top:10px;}
@@ -149,6 +150,9 @@ form {
 									</td>
 									<td class="sixth-column">
 										<button class="btn btn-primary btn-small" id='search'>조회</button>
+									</td>
+									<td class="sixth-column">
+										<button class="btn btn-primary btn-small" id='reset'>초기화</button>
 									</td>
 								</tr>
 								<tr>
