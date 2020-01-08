@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+	.form-horizontal .control-label {
+	    text-align: left;
+	}
+</style>
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -23,15 +28,14 @@
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">매입거래처현황조회</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div>
 				<!-- /.page-header -->
 				<div class="row-fluid">
 					<div class="span12">
 
 						<!-- PAGE CONTENT BEGINS -->
+						<div class="row-fluid">
+						<div class="span12">
 						<form class="form-horizontal" id="form-customer" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 							<div class="span12">
 								<div class="control-group">
@@ -95,7 +99,7 @@
 								
 								
 
-							<div class="span4">
+							<div class="span4" style="margin:0 0 0 0">
 		                        <div class="control-group">
 		                           <label class="control-label" for="item">종목</label>
 		                           <div class="controls">
@@ -151,17 +155,19 @@
 								<div class="span12">
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
-											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button><br>
+											<button id="btn_select" class="btn btn-info btn-small" style="float:left;">조회</button><br>
 									</div>
 									<div class="hr hr-18 dotted"></div>
 								</div>
 							</div>
 						</form>
+						</div>
+						</div>
 							
 							<div class="row-fluid">
-								<div class="span12">
+								<div class="span12" style="overflow-x: scroll;">
 								<label>총 ${dataResult.pagination.totalCnt }건</label>
-									<table id="customer-table" class="table table-striped table-bordered table-hover">
+									<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;">
 										<thead>
 											<tr>
 				                                 <th class="center">사업자번호</th>

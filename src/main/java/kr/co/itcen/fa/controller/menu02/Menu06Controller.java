@@ -203,8 +203,7 @@ public class Menu06Controller {
 					model.addAttribute("itemList", itemList);
 					model.addAttribute("customerList", customerList);
 
-				} else if ((vo.getTaxbillNo() != "" || vo.getTaxbillNo() != null) || vo.getVoucherNo() == null) { // 매입수정과 전표등록을
-																													// 동시에
+				} else if ((vo.getTaxbillNo() != "" || vo.getTaxbillNo() != null) || vo.getVoucherNo() == null) {
 
 					// 세금계산서 번호 입력
 					vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());

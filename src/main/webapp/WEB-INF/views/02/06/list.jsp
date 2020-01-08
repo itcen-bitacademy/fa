@@ -40,7 +40,7 @@
 							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }" id="form1">
 								<div class="span4">
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 일 자</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial;">매입일자</label>
 											<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker1 input-small" id="purchaseDate" type="text" data-date-format="yyyy-mm-dd" name="purchaseDate" value="">
@@ -52,7 +52,7 @@
 									</div>
 								
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처코드</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial;">거래처코드</label>
 												<div class=" controls" id="customerListDiv">
 												<select class="chosen-select span1" id="customerCode" name="customerCode" onchange="setData.customer();">
 													<c:forEach items='${customerList }' var='vo' varStatus='status'>
@@ -63,14 +63,14 @@
 									</div>
 							
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처 담당자</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial;">거래처담당자</label>
 											<div class="controls">
 												<input class="input-small" type="text" id="purchaseManager" placeholder="" readonly name="purchaseManager">
 											</div>
 									</div>
 									 
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">세금계산서번호</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial;">세금계산서번호</label>
 		
 											<div class="controls">
 												<input type="text" id="taxbillNo" placeholder="" name="taxbillNo">
@@ -78,7 +78,7 @@
 											</div>
 											<div class="controls">
 												<label class="span3">
-													<input id="taxType1" name="taxType" type="radio" class="ace" value="tax">
+													<input id="taxType1" name="taxType" type="radio" class="ace" value="tax" checked="checked">
 													<span class="lbl"> 과세</span>
 												</label>
 												<label class="span3">
@@ -91,21 +91,21 @@
 							
 								<div class="span4">
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 번 호</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial;">매입번호</label>
 											<div class="controls">
 												<input class="input-middle" type="text" id="no" placeholder="" name="no">
 											</div>
 									</div>
 								
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거 래 처 명</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial;">거래처명</label>
 											<div class="controls">
 												<input type="text" id="customerName" name="customerName" placeholder="" readonly>
 											</div>
 									</div>
 									
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">입 고 일 자</label>
+											<label class="control-label" for="form-field-1" style="text-align:initial;">입고일자</label>
 											<div class="controls">
 												<div class="input-append">
 													<input class="cl-date-picker2 input-small" id="receiptDate" type="text" data-date-format="yyyy-mm-dd" name="receiptDate" value="">
@@ -117,7 +117,7 @@
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">출 고 일 자</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">출고일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker3 input-small" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate" value="">
@@ -128,18 +128,23 @@
 										</div>
 									</div>
 								</div>
-							
-								<div class="span12">
+								
+								
+								<div class="span12" style = "margin:0;">
 									<div class="hr hr-18 dotted"></div>
-									
-									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
-									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
+									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
+									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
 									<button class="btn btn-info btn-small" type="button" id="update" onclick="modify()">수정</button>
-									<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;margin-bottom:20px;" onclick="insert();">입력</button>
-									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
-									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
+									<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;" onclick="insert();">입력</button>
+									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;" type="button" onclick="add_row();">행추가</button>
+									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;" type="button" onclick="delete_row();">행삭제</button>				
+									
 								</div>
-							
+								
+								<div class="span12" style = "margin:0;">
+									<div class="hr hr-18 dotted"></div>
+								</div>
+								
 								<input type="hidden" id="rowCnt" name="rowCnt" value="1">
 								<table id="item-table" class="table table-striped table-bordered table-hover">
 									<tr>
@@ -164,7 +169,7 @@
 												<span class="lbl"></span>
 											</label>
 										</td>
-										<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number"></td>								
+										<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
 										
 										<td class="left">
 											<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
@@ -283,7 +288,7 @@
 				        $("#item-table").append(
 				            		"<tr>" +
 				      		        "<td class='center'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" +
-				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='number' id='number"+cnt+"' placeholder='' name='number'></td>" +
+				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
 				      		        "<td class='left'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
 					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +
@@ -396,9 +401,9 @@
 						contentType: 'application/json;charset=utf-8',
 						data: JSON.stringify(vo),
 						success: function(result) {
-							$("form").each(function() {  
+							/* $("form").each(function() {  
 					            this.reset();  
-					         });
+					         }); */
 							$("#purchaseDate").val(result.purchaseDate);
 							updateCustomerCode(result.customerCode);
 							$("#purchaseManager").val(result.purchaseManager);

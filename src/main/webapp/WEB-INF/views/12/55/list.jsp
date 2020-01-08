@@ -64,7 +64,7 @@ $(function() {
 										<label class="control-label" for="cl-ym-date-picker" style="text-align: left; width: 50px;"> 년 월</label>
 										<div class="controls" style="margin-left: 50px;">
 											<div class="row-fluid input-append">
-												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" style="text-align: left; width: 200px;"/>
+												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" readOnly style="text-align: left; width: 200px;"/>
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
