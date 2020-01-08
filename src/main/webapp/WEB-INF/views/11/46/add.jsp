@@ -318,7 +318,8 @@ tr.selected{background-color: #ddd}
 			<!-- list -->
 				<section class="above-table-right" id="above-table-right">
 				</section>
-				<table  class="table table-bordered table-hover">
+				<div style="overflow: auto;">
+				<table  class="table table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center">
@@ -348,6 +349,7 @@ tr.selected{background-color: #ddd}
 						
 					</tbody> 	<!-- tbody-list end -->
 				</table>
+				</div>
 				
 				<section class="pagination" id="pagination">
 					<ul id="pg-list" class="pg-list">
