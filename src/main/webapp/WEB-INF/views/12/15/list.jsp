@@ -388,6 +388,7 @@
 											<input class="span6" type="hidden" id="preNo" name="preNo">
 											<div id="invalid">
 												중복된 사업자번호 입니다.
+												
 											</div>
 										</div>
 									</div>
