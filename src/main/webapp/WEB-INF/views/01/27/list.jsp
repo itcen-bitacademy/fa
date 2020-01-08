@@ -61,7 +61,6 @@
 			a = "read";
 		});
 		$("#btn-update").click(function(){
-			$("#no").attr("readonly",false);
 			a = "update";
 		});
 		$("#btn-delete").click(function(){
@@ -188,12 +187,17 @@
 					    	if(result.success) {
 	
 								openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
-								$("#btn-check-no").show();
 					    		//alert("거래처 수정이 완료되었습니다."); 
 					    		removeTable();
 					    		
 					    		var customerList = result.customerList;
 					    		createNewTable(customerList);
+
+
+
+								$("#no").attr("readonly",true);
+								$("#btn-check-no").hide();
+								$("#img-checkno").hide();
 					    	}
 					    	if(result.fail) {
 					    		alert("다시 입력해주세요.");
@@ -209,7 +213,7 @@
 					 })
 
 				});
-				$("#btn-create").show();
+				
 			} else if(a == "delete") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!DeleteValidation()){

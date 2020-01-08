@@ -28,124 +28,122 @@
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">매입 관리</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
+				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }"></a>
 			</div><!-- /.page-header -->
+			
 			<div class="row-fluid">
 				<div class="span12">
-				
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
 						<div class="span12">
 						
 							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }" id="form1">
-							<div class="span4">
+								<div class="span4">
+									<div class="control-group">
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 일 자</label>
+											<div class="controls">
+											<div class="input-append">
+												<input class="cl-date-picker1 input-small" id="purchaseDate" type="text" data-date-format="yyyy-mm-dd" name="purchaseDate" value="">
+												<span class="add-on">
+													<i class="icon-calendar"></i>
+												</span>
+											</div>
+											</div>
+									</div>
+								
+									<div class="control-group">
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처코드</label>
+												<div class=" controls" id="customerListDiv">
+												<select class="chosen-select span1" id="customerCode" name="customerCode" onchange="setData.customer();">
+													<c:forEach items='${customerList }' var='vo' varStatus='status'>
+														<option value="${vo.no }" >${vo.no }</option>
+													</c:forEach>
+												</select>
+												</div>
+									</div>
 							
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">매 입 일 자</label>
-									<div class="controls">
-									<div class="input-append">
-										<input class="cl-date-picker1 input-small" id="purchaseDate" type="text" data-date-format="yyyy-mm-dd" name="purchaseDate" value="">
-										<span class="add-on">
-											<i class="icon-calendar"></i>
-										</span>
+									<div class="control-group">
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거래처 담당자</label>
+											<div class="controls">
+												<input class="input-small" type="text" id="purchaseManager" placeholder="" readonly name="purchaseManager">
+											</div>
 									</div>
+									 
+									<div class="control-group">
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">세금계산서번호</label>
+		
+											<div class="controls">
+												<input type="text" id="taxbillNo" placeholder="" name="taxbillNo">
+												
+											</div>
+											<div class="controls">
+												<label class="span3">
+													<input id="taxType1" name="taxType" type="radio" class="ace" value="tax">
+													<span class="lbl"> 과세</span>
+												</label>
+												<label class="span3">
+													<input id="taxType2" name="taxType" type="radio" class="ace" value="zero">
+													<span class="lbl"> 비과세</span>
+												</label>
+											</div>
 									</div>
-							</div>
-						
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">거래처코드</label>
-										<div class=" controls" id="customerListDiv">
-										<select class="chosen-select span1" id="customerCode" name="customerCode" onchange="setData.customer();">
-											<c:forEach items='${customerList }' var='vo' varStatus='status'>
-												<option value="${vo.no }" >${vo.no }</option>
-											</c:forEach>
-										</select>
-										</div>
-							</div>
-					
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">거래처 담당자</label>
-									<div class="controls">
-										<input class="input-small" type="text" id="purchaseManager" placeholder="" readonly name="purchaseManager">
-									</div>
-							</div>
-							 
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">세금계산서번호</label>
-
-									<div class="controls">
-										<input type="text" id="taxbillNo" placeholder="" name="taxbillNo">
-										
-									</div>
-									<div class="controls">
-									<label class="span3">
-										<input id="taxType1" name="taxType" type="radio" class="ace" value="tax">
-										<span class="lbl"> 과세</span>
-									</label>
-									<label class="span3">
-										<input id="taxType2" name="taxType" type="radio" class="ace" value="zero">
-										<span class="lbl"> 비과세</span>
-									</label>
-									</div>
-							</div>
-							</div>
-							
-							<div class="span4">
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">매 입 번 호</label>
-									<div class="controls">
-										<input class="input-middle" type="text" id="no" placeholder="" name="no">
-									</div>
-							</div>
-							
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">거 래 처 명</label>
-									<div class="controls">
-										<input type="text" id="customerName" name="customerName" placeholder="" readonly>
-									</div>
-							</div>
-							
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">입 고 일 자</label>
-									<div class="controls">
-									<div class="input-append">
-										<input class="cl-date-picker2 input-small" id="receiptDate" type="text" data-date-format="yyyy-mm-dd" name="receiptDate" value="">
-										<span class="add-on">
-											<i class="icon-calendar"></i>
-										</span>
-									</div>
-									</div>
-							</div>
-							
-							<div class="control-group">
-									<label class="control-label" for="form-field-1">출 고 일 자</label>
-									<div class="controls">
-									<div class="input-append">
-										<input class="cl-date-picker3 input-small" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate" value="">
-										<span class="add-on">
-											<i class="icon-calendar"></i>
-										</span>
-									</div>
-									</div>
-							</div>
-							</div>
-							
-							<div class="span12">
-							<div class="hr hr-18 dotted"></div>
-								<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
-								<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
-								<!-- <button class="btn btn-warning btn-small" type="submit" id="update" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button> -->
-								<button class="btn btn-info btn-small" type="button" id="update" onclick="modify()">수정</button>
-								<!-- <button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button> -->
-								<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;margin-bottom:20px;" onclick="insert();">입력</button>
-								<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
-								<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
 								</div>
 							
-							<input type="hidden" id="rowCnt" name="rowCnt" value="1">
-							<table id="item-table" class="table table-striped table-bordered table-hover">
+								<div class="span4">
+									<div class="control-group">
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 번 호</label>
+											<div class="controls">
+												<input class="input-middle" type="text" id="no" placeholder="" name="no">
+											</div>
+									</div>
+								
+									<div class="control-group">
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거 래 처 명</label>
+											<div class="controls">
+												<input type="text" id="customerName" name="customerName" placeholder="" readonly>
+											</div>
+									</div>
+									
+									<div class="control-group">
+											<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">입 고 일 자</label>
+											<div class="controls">
+												<div class="input-append">
+													<input class="cl-date-picker2 input-small" id="receiptDate" type="text" data-date-format="yyyy-mm-dd" name="receiptDate" value="">
+													<span class="add-on">
+														<i class="icon-calendar"></i>
+													</span>
+												</div>
+											</div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">출 고 일 자</label>
+										<div class="controls">
+											<div class="input-append">
+												<input class="cl-date-picker3 input-small" id="releaseDate" type="text" data-date-format="yyyy-mm-dd" name="releaseDate" value="">
+												<span class="add-on">
+													<i class="icon-calendar"></i>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							
+								<div class="span12">
+									<div class="hr hr-18 dotted"></div>
+									
+									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
+									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
+									<button class="btn btn-info btn-small" type="button" id="update" onclick="modify()">수정</button>
+									<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;margin-bottom:20px;" onclick="insert();">입력</button>
+									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
+									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="delete_row();">행삭제</button>				
+								</div>
+							
+								<input type="hidden" id="rowCnt" name="rowCnt" value="1">
+								<table id="item-table" class="table table-striped table-bordered table-hover">
 									<tr>
-										<th class="left">
+										<th class="center">
 											<label>
 												<input type="checkbox" class="ace">
 												<span class="lbl"></span>
@@ -158,38 +156,38 @@
 										<th class="left">공급가액</th>
 										<th class="left">부가세</th>
 									</tr>
-								
-								<tr>
-								<td class="left">
-								<label>
-								<input type="checkbox" class="ace" value="1" name='check' id="check1">
-								<span class="lbl"></span>
-								</label>
-								</td>
-								<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number"></td>								
-								
-								<td class="left">
-									<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
-									<c:forEach items='${itemList }' var='vo' varStatus='status'>
-										<option value="${vo.no }">${vo.no }</option>
-									</c:forEach>
-									</select>
-								</td>
-								<td class="left"><input class="input-large" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
-								<td class="left"><input class="input-mini" style="text-align:right;" type="text" id="quantity1" placeholder="" name="quantity" ></td>
-								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="supplyValue1" placeholder="" name="supplyValue" readonly></td>
-								<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="taxValue1" placeholder="" name="taxValue" readonly ></td>															
-								</tr>	
-														
-							</table>
-							<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
-							<input type="hidden" value='${prePurchaseDate }' name="prePurchaseDate" id="prePurchaseDate">
-							<input type="hidden" value='${preNo }' name="preNo" id="preNo">
-							<input type="hidden" value='${preNumber }' name="preNumber" id="preNumber">
-							<div id="dialog-confirm" class="hide">
-								<p id="dialog-txt" class="bolder grey">
-								</p>
-							</div>
+									
+									<tr>
+										<td class="center">
+											<label>
+												<input type="checkbox" class="ace" value="1" name='check' id="check1">
+												<span class="lbl"></span>
+											</label>
+										</td>
+										<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number"></td>								
+										
+										<td class="left">
+											<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
+											<c:forEach items='${itemList }' var='vo' varStatus='status'>
+												<option value="${vo.no }">${vo.no }</option>
+											</c:forEach>
+											</select>
+										</td>
+										<td class="left"><input class="input-large" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
+										<td class="left"><input class="input-mini" style="text-align:right;" type="text" id="quantity1" placeholder="" name="quantity" ></td>
+										<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="supplyValue1" placeholder="" name="supplyValue" readonly></td>
+										<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="taxValue1" placeholder="" name="taxValue" readonly ></td>															
+									</tr>	
+															
+								</table>
+								<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
+								<input type="hidden" value='${prePurchaseDate }' name="prePurchaseDate" id="prePurchaseDate">
+								<input type="hidden" value='${preNo }' name="preNo" id="preNo">
+								<input type="hidden" value='${preNumber }' name="preNumber" id="preNumber">
+								<div id="dialog-confirm" class="hide">
+									<p id="dialog-txt" class="bolder grey">
+									</p>
+								</div>
 							</form>
 						</div><!-- /span -->
 					</div><!-- /row -->
@@ -272,7 +270,8 @@
 		
 		 function checkClosing(){ // 마감일 세팅 여부
         	if($("#closingDate").val()=="true"){
-        		alert("마감일자가 지난 매입입니다.");
+        		dialog("마감일자가 지난 매입입니다.",false);
+        		return;
         	} 
         }
 		
@@ -283,7 +282,7 @@
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        "<td class='left'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" +
+				      		        "<td class='center'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" +
 				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='number' id='number"+cnt+"' placeholder='' name='number'></td>" +
 				      		        "<td class='left'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
@@ -303,17 +302,7 @@
 				        $(".chosen-select").chosen();
 			 }
 		
-		/* function delete_row() {
-            var table = document.getElementById('item-table');
-            var check = document.getElementsByName('check');
-            console.log(check);
-            for(var i=0 ; i<check.length ; i++){
-	            if (check[i].checked==true) {
-	            	console.log($('input:checkbox[name='+check[i]+']:checked').val());
-	            	table.deleteRow($('input:checkbox[name='+check[i]+']:checked').val());
-	            } 
-            }
-        }   */     
+		
        // 행 삭제
        function delete_row() {
             var table = document.getElementById('item-table');
@@ -364,28 +353,6 @@
 		$("#delete").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 		});
-		
-		/* $("#update").click(function() {
-			if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
-   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; 
-   			if(!valid.nullCheck("receiptDate", "입고 일자")) return;
-   			if(!valid.nullCheck("releaseDate", "출고 일자")) return;
-   			if(!valid.nullCheck("number1", "매입 순번")) return;
-			if(!valid.nullCheck("itemCode1", "품목 코드")) return;
-			if(!valid.numberCheck("quantity1", "품목 수량")) return;
-			if(!valid.numberCheck("supplyValue1", "공급가액")) return;
-			if(!valid.numberCheck("taxValue1", "부가세")) return;
-			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
-		}); */
-		
-		/* $("#input").click(function() {
-			 //insert();
-			 //$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
-		}); */
-		
-		/* $("#voucher").click(function() {
-			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/voucher");
-		}); */
 		});
 		
 		
@@ -487,10 +454,7 @@
 		  	    	no += possible.charAt(Math.floor(Math.random() * possible.length)); // 스펠링 난수
 		  	    $("#no").val(no);
 			  	$("#checkNo").val(no);
-		  	   /*  if($("#flag").val()==''){ // 조회한 경우가 아닐때 생성된 매출번호 set
-		  	    	$("#no").val(no);
-			  	    $("#checkNo").val(no);    
-		  	    } */
+		  	  
 	        }
 		 
 			// 첫화면 버튼 세팅
