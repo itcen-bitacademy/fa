@@ -52,7 +52,7 @@
 												</label>
 												<div class="space"></div>
 												<div class="clearfix">
-													<label class="inline"><input type="checkbox" class="ace" /> <span class="lbl"> Remember Me</span></label>
+<!-- 													<label class="inline"><input type="checkbox" class="ace" /> <span class="lbl"> Remember Me</span></label> -->
 													<button class="width-35 pull-right btn btn-small btn-primary"><i class="icon-key"></i> 로그인</button>
 												</div>
 												<div class="space-4"></div>
