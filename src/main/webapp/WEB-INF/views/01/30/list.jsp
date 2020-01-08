@@ -289,11 +289,11 @@ html,body{
 								<td>
 									<h3>상호 검색</h3>
 									<div class="input-append" style="text-align:center;">
-								<select id="searchCustomerOption" style="width:120px;">
+									<select id="searchCustomerOption" style="width:120px;">
 											<option value="no">사업자번호</option>
 											<option value="name">상호명</option>
 									</select>
-										<input type="text" id="input-dialog-customerno" style="width: 100px;" />
+										<input type="text" id="input-dialog-customerno" style="width: 100px;" onkeypress="if( event.keyCode==13 ){entercustomer();}" />
 										<a href="#" id="a-dialog-customerno">
 											<span class="add-on">
 												<i class="icon-search icon-on-right bigger-110"></i>
@@ -308,7 +308,7 @@ html,body{
 											<option value="no">은행코드</option>
 											<option value="name">은행명</option>
 									</select>
-										<input type="text" id="input-dialog-bankcode" style="width: 100px;" />
+										<input type="text" id="input-dialog-bankcode" style="width: 100px;" onkeypress="if( event.keyCode==13 ){enterbank();}" />
 										<a href="#" id="a-dialog-bankcode">
 											<span class="add-on">
 												<i class="icon-search icon-on-right bigger-110"></i>
@@ -360,7 +360,7 @@ html,body{
 											<option value="accountNo">계정코드</option>
 											<option value="accountName">계정명</option>
 										</select>
-									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
+									<input type="text" id="input-dialog-accountname" style="width: 100px;"  onkeypress="if( event.keyCode==13 ){enteraccount();}"/>
 									<a href="#" id="a-dialog-accountname"> 
                                     	<span class="add-on">
                                         	<i class="icon-search icon-on-right bigger-110"></i>
@@ -398,6 +398,17 @@ html,body{
 
 </body>
 <script>
+
+function entercustomer(){
+	$("#a-dialog-customerno").click();
+}
+function enterbank(){
+	$("#a-dialog-bankcode").click();
+}
+function enteraccount(){
+	$("#a-dialog-accountname").click();
+}
+
 		$(function() {
 			$.fn.datepicker.dates['ko'] = {
 					days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],

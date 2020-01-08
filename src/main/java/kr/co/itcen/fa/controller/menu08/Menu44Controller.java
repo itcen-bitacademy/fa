@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -69,6 +71,21 @@ public class Menu44Controller {
 		
 		// list.jsp 페이지 기본 화면
 		dataResult = menu44Service.getList(page, intangibleAssetsVo, startDate, endDate);
+		
+		System.out.println("삭제여부:" + intangibleAssetsVo.getIsChecked());
+		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance()
+				.queryParam("id",intangibleAssetsVo.getId())
+				.queryParam("payDate",intangibleAssetsVo.getPayDate())
+				.queryParam("sectionNo",intangibleAssetsVo.getSectionNo())
+				.queryParam("customerName",intangibleAssetsVo.getCustomerName())
+				.queryParam("address",intangibleAssetsVo.getAddress())
+				.queryParam("acqPrice", intangibleAssetsVo.getAcqPrice())
+				.queryParam("isChecked",intangibleAssetsVo.getIsChecked())
+				.build();
+		String uri = uriComponents.toUriString();
+		model.addAttribute("uri",uri);
 		
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("intangibleAssetsVo", dataResult.getDatas());

@@ -75,6 +75,7 @@ public class Menu41Service {
 
 	//리스트 삭제
 	public void delete(String id) {
+		System.out.println("삭제되는가" + id);
 		menu41Repository.delete(id);
 	}
 

@@ -422,7 +422,7 @@
 
 					<div class="input-append">
 						<input type="text" id="input-dialog-depositNo"
-							style="width: 100px;" /> <a href="#" id="a-dialog-depositNo">
+							style="width: 100px;" onkeypress="if( event.keyCode==13 ){enter();}" /> <a href="#" id="a-dialog-depositNo">
 							<span class="add-on"> <i
 								class="icon-search icon-on-right bigger-110"></i></span>
 						</a>
@@ -492,7 +492,9 @@ function delHangle(evt){
         objTarger.value = null;
     	}
     }
-
+function enter(){
+	$("#a-dialog-depositNo").click();
+}
 $(function() {
 	var a;
 	var nochecked = false;
