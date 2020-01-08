@@ -97,11 +97,16 @@ public class Menu03Controller {
 		System.out.println("delete");
 		System.out.println(voucherVo.getInsertTeam());
 		System.out.println(voucherVo.getInsertTeam().equals(userVo.getTeamName()));
+		System.out.println("voucherNo : " + voucherVo.getNo());
+		System.out.println("regDate : " + voucherVo.getRegDate());
 		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
 		System.out.println("delete2");
 		//String businessDateStr = menu03Service.businessDateStr();
+		
+		voucherVo.setRegDate(menu03Service.getRegDate(voucherVo));
+		
 		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			menu03Service.deleteVoucher(voucherVo);
 		}

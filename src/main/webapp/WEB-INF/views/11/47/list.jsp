@@ -133,9 +133,6 @@ div > input[type=radio]{
 	margin-top: 1px;
 	margin-right: 10px;
 }
-div > .label-radio{
-	margin-right: 3px;
-}
 
 </style>
 </head>
@@ -179,7 +176,6 @@ div > .label-radio{
 								<label for="bankName" class="label-name">은행명</label>
 								<div>
 									<input type="text" name="bankName" id="bankName">
-									<input type="button" class="btn btn-primary btn-small mybtn" value="조회" onclick="search()">
 								</div>
 							</div>
 						</div>
@@ -198,7 +194,7 @@ div > .label-radio{
 				<section class="filter-bottom">
 					<div class="input-area">
 						<label class="label-name">차입금 선택정렬</label>
-						<select class="order-list chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." onchange="order(this)" >	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
+						<select class="order-list chosen-select form-control" id="majorcode" data-placeholder="정렬하기 위해 선택해주세요." onchange="order(this)" >	<!-- id를 통해서 정렬 컬럼을 파악한다. -->
 							<option value=""></option>
 							<option value="debt_date">차입일자</option>
 							<option value="exp_date">만기일자</option>
@@ -215,10 +211,15 @@ div > .label-radio{
 							<div class="chkbox-list">
 								<label>상환완료포함</label>
 								<input type="checkbox" name="repayCompleFlag" value="Y">
-							</div>	
+							</div>
 						</div>	
 					</div>	
-				</section> <!-- filter-left end -->
+				</section> 
+				<hr/>
+				<section class="filter-reset">
+					<input type="button" class="btn btn-primary btn-small mybtn" value="조회" onclick="search()">
+					<input type="button" class="btn btn-success btn-small mybtn" value="초기화" onclick="resetForm()">	
+				</section>
 			</form>
 			<hr/>
 			<section id="page-info" class="page-info">
@@ -519,6 +520,13 @@ function renderingPage(pagination){
 		 });
 	 
 	 console.log("---------------------getListAjax() End-------------------------");
+ }
+ 
+ //------------------------------------초기화---------------------------------------//
+ function resetForm(){
+	 var form = $("#filter-area")[0];
+	 $("#majorcode").val('').trigger('chosen:updated');
+	 form.reset();
  }
 </script>
 </html>

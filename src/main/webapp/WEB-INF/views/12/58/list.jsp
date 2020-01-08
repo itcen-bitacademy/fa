@@ -187,12 +187,10 @@
 					<div class="row-fluid">
 						<div class="span10">
 							<form class="form-horizontal" id="form-purchase" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-								<div class="span4">
+								<div class="span3">
 									<div class="control-group">
-										<div class="span2">
-											<label class="control-label form-field-1">년 월</label>
-										</div>
-										<div class="row-fluid input-append span2">
+										<label class="control-label form-field-1" style="text-align: left; width: 50px;">년 월</label>
+										<div class="row-fluid input-append span2" style="margin-left: 5px;">
 											<input class="date-picker" id="cl-ym-date-picker" type="text" style="width: 150px;" data-date-format="yyyy-mm" name="purchaseDate" value="${purchase.purchaseDate }">
 											<span class="add-on">
 												<i class="icon-calendar"></i>
@@ -200,12 +198,10 @@
 										</div>
 									</div>
 								</div>
-								<div class="span6">
+								<div class="span4">
 									<div class="control-group">
-										<div class="span2">
-											<label class="control-label span2" for="form-field-1">거래처</label>
-										</div>
-										<div class="span10">
+										<label class="control-label span2" for="form-field-1" style="text-align: left; width: 60px;">거래처</label>
+										<div style="margin-left: 5px;">
 											<input type="text" id="customerCode" name="customerCode" style="width: 100px;" value="${purchase.customerCode }">
 				                            <div class="input-append">
 					                              <input type="text" id="customerName" name="customerName" readonly style="width: 150px;" value="${purchase.customerName }">
@@ -217,7 +213,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="span2">
+								<div class="span2" style="margin-left: 50px;">
 									<button class="btn btn-small btn-info" id="btn-submit">조회</button>
 								</div>
 								<input type="hidden" name="page">

@@ -571,11 +571,11 @@ function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	/* if(inputForm.vo.value != ""){
+	if(inputForm.vo.value != ""){
 		dialog("새로운 데이터를 입력해주세요.");
 		resetForm();
 		return;
-	}  */
+	} 
 	
 	if(!isValidDebt(inputForm)){
 		console.log("유효성 위반");
@@ -698,6 +698,7 @@ function resetForm(){
 	$("#btn-chk-duplication").css("display", "inline-block");
 	$("#img-checkcode").css("display","none");
 	$("#tbody-list").find("tr").css("background-color", "inherit");
+	$('#majorCode').val('').trigger('chosen:updated');
 	inputForm.vo.value = "";
 	inputForm.reset();
 	changeBtnDisplay(false);
@@ -1179,11 +1180,11 @@ function selectRow(thisObj){
 		$(thisObj).closest("table").find(".selected").removeClass("selected");
 		$(thisObj).addClass("selected");
 		
-		//changeBtnDisplay(true);
+		changeBtnDisplay(true);
 	}
 	
 	$("#btn-chk-duplication").css("display", "none");
-	//$(inputForm.code).attr("readonly", true);
+	$(inputForm.code).attr("readonly", true);
 	
 	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;
@@ -1203,13 +1204,7 @@ function selectRow(thisObj){
 	inputForm.bankCode.value = vo.bankCode;		
 	inputForm.bankName.value = vo.bankName;		//조인한 값
 	
-	var options = inputForm.majorCode.options;					//SelectBox Options
-	for(var i=0 ; i < options.length; ++i){
-		if(options[i].value == vo.majorCode){
-			options[i].selected = "true";
-			$("#majorCode_chosen").find("span")[0].innerHTML = options[i].innerHTML;
-		}
-	}
+	$('#majorCode').val(vo.majorCode).trigger('chosen:updated');
 	
 	$(inputForm).find("input[name='repayWay']").each(function(i, e){
 		if($(this).val() == vo.repayWay){

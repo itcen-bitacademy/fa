@@ -1236,9 +1236,8 @@
 						</form>
 
 						<div class="row-fluid">
-							<div class="span12">
-								<div style="width: 100%; overflow-x: auto">
-									<table id="simple-table-1" class="table table-striped table-bordered table-hover">
+							<div class="span12" style="overflow: auto;">
+									<table id="simple-table-1" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 										<thead>
 											<tr>
 												<th>사업자등록번호</th>
@@ -1288,7 +1287,6 @@
 										</tbody>
 	
 									</table>
-								</div>
 								<!-- /span -->
 							</div>
 						</div>

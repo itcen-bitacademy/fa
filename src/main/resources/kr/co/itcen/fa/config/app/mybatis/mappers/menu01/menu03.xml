@@ -379,7 +379,7 @@
                v.use_yn = #{useYn }
            and i.use_yn = #{useYn }
            and m.use_yn = #{useYn }
-           and i.order_no in (m.order_no in)
+           and i.order_no in (m.order_no)
     	   ]]>
     	</if>
     	<if test="regDate != null and !''.equals(regDate)">

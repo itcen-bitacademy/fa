@@ -58,7 +58,8 @@ form {
 .third-column {width:120px;}
 .fourth-column {width:70px;}
 .fifth-column {width:200px;}
-.sixth-column {padding-left:20px;}
+.sixth-column {padding-left:20px;
+width: 208px;}
 .seventh-column {padding-left:20px;}
 
 /* second row */
@@ -148,11 +149,8 @@ form {
 									<td class="fifth-column">
 										<input type="text" name="bankName" value="${vo.bankName }"/>
 									</td>
-									<td class="sixth-column">
-										<button class="btn btn-primary btn-small" id='search'>조회</button>
-									</td>
-									<td class="sixth-column">
-										<button class="btn btn-primary btn-small" id='reset'>초기화</button>
+									<td class="sixth-column" >
+								
 									</td>
 								</tr>
 								<tr>
@@ -172,10 +170,10 @@ form {
 							
 							
 							<div class="row-fluid">
-								<div class="span9">
+								<div class="span8">
 									<div class="prod-list-opts">
 										<label class="control-label" style="padding-right: 12px;">차입금 선택정렬</label>
-										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="정렬하기 위해 선택해주세요." name="sort" >
+										<select class="chosen-select form-control" id="sort-select" data-placeholder="정렬하기 위해 선택해주세요." name="sort" >
 											<option value=""></option>
 											<option value="d" <c:if test="${sort eq 'd'}"> selected </c:if>>차입일자</option>
 											<option value="e" <c:if test="${sort eq 'e'}">selected</c:if>>만기일자</option>
@@ -190,10 +188,10 @@ form {
 										<label >
 												<c:choose>
 												<c:when test='${vo.deleteFlag eq ""}'>
-													<input name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
+													<input id='deleteFlag' name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
 												</c:when>
 												<c:otherwise>
-													<input name="deleteFlag" type="checkbox" class="ace" value="" />
+													<input id='deleteFlag' name="deleteFlag" type="checkbox" class="ace" value="" />
 												</c:otherwise>
 												</c:choose>
 													<span class="lbl">삭제포함</span>
@@ -203,10 +201,10 @@ form {
 										<label>	
 												<c:choose>
 												<c:when test='${vo.repayCompleFlag eq ""}'>
-													<input name="repayCompleFlag" type="checkbox" class="ace" value="" checked="checked"/>
+													<input id='repayCompleFlag' name="repayCompleFlag" type="checkbox" class="ace" value="" checked="checked"/>
 												</c:when>
 												<c:otherwise>
-													<input name="repayCompleFlag" type="checkbox" class="ace" value=""/>
+													<input id='repayCompleFlag' name="repayCompleFlag" type="checkbox" class="ace" value=""/>
 												</c:otherwise>
 												</c:choose>
 													<span class="lbl">상환완료포함</span>
@@ -219,7 +217,12 @@ form {
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
-			
+		<hr>
+		<div>	
+			<button class="btn btn-primary btn-small" id='search'>조회</button>
+			<button class="btn btn-success btn-small" id='reset'>취소</button>
+			<hr>						
+		</div>
 		<!-- list -->
 		<p>총 ${dataResult.pagination.totalCnt }건</p>
 				<table id="simple-table" class="table  table-bordered table-hover">
@@ -349,7 +352,23 @@ $('#search').click(function(){
 	$('#myform').submit();
 	return;
 });
+$('#reset').click(function(){
 
+	$('input').not('input[name=intPayWay]').val('');
+	$('#sort-select').val('정렬하기 위해 선택해주세요.').trigger('chosen:updated');
+	
+	
+	$('input[name=intPayWay]').each(function(index,	item){
+		if($(item).prop('checked') == true){
+			$(item).prop('checked',false);
+		}	
+	});
+	$('#deleteFlag').prop('checked',false);
+	$('#repayCompleFlag').prop('checked',false);
+	
+	
+	
+});
 
 </script>
 
