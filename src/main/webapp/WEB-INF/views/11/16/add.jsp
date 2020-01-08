@@ -373,7 +373,7 @@ h4{
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                $('#post').val(data.zonecode);
+                $('#postcode').val(data.zonecode);
                 $('#roadAddress').val(addr);
 
                 document.getElementById("detailAddress").focus();
@@ -472,12 +472,6 @@ function Myvalidation(){
 		errorfield='#store';
 		return false;
 	}
-	if('' === dealDate) {
-		errortitle = 'dealDate ERROR';
-		validationMessage = '거래일은 반드시 입력해야 합니다.';
-		errorfield='#id-date-picker-1';
-		return false;
-	}
 	
 	if('' === phone) {
 		errortitle = 'PHONE ERROR';
@@ -503,9 +497,9 @@ function Myvalidation(){
 		errorfield='#fax';
 		return false;
 	}
-	if('' === post) {
-		errortitle = 'POST ERROR';
-		validationMessage = '우편번호는 우편번호 찾기를 통해 반드시 입력되야 합니다.'
+	if('' === post & roadAddress) {
+		errortitle = 'Addreess ERROR';
+		validationMessage = '주소는 우편번호 찾기를 통해 반드시 입력되야 합니다.'
 		errorfield='#post';
 		return false;
 	}
@@ -519,6 +513,12 @@ function Myvalidation(){
 		errortitle = 'ADDRESS ERROR';
 		validationMessage = '도로명 주소 + 상세주소는 500자 이하로 입력해야 합니다.'
 		errorfield='#address';
+		return false;
+	}
+	if('' === dealDate) {
+		errortitle = 'dealDate ERROR';
+		validationMessage = '거래일은 반드시 입력해야 합니다.';
+		errorfield='#id-date-picker-1';
 		return false;
 	}
 	if('' === mgr) {
@@ -605,7 +605,8 @@ $("#btn-check-code").click(function(){
 //requied제거후 각각 validation 추가 해라			   		    
 $("#inputbtn").click(function(){//입력버튼 클릭시      
 	if(ischecked == false){
- 		alert("은행코드를 중복체크 해야합니다.");
+		openErrorModal("bankcode ERROR","은행코드를 중복체크 해야합니다.",'');
+ 	
  		   return;
  	 }
 	else{
@@ -625,7 +626,8 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
  	 $('#code').attr('readOnly',false);
   	$('#btn-check-code').val('중복확인');
   	$('#addressSearch').val('우편번호찾기');
-});	        
+});	     
+
  $('#updatebtn').click(function(){
 	 if(!Myvalidation()){
 			openErrorModal(errortitle,validationMessage,errorfield);
@@ -635,6 +637,7 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
 	$('#myform').attr('method', 'POST');
 	$('#myform').submit();
  });
+ 
  $('#deletebtn').click(function(){
   	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
 	$('#myform').attr('method', 'POST');
