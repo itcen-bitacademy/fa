@@ -242,9 +242,9 @@ html, body {
 												<button class="btn btn-info btn-small" type="submit"
 													id="list" style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-warning btn-small" type="submit"
-													id="update" style="float: left; margin-right: 20px;">수정</button>
+													id="update" style="float: left; margin-right: 20px; display:none;">수정</button>
 												<button class="btn btn-danger btn-small" type="submit"
-													id="delete" style="float: left; margin-right: 20px;">삭제</button>
+													id="delete" style="float: left; margin-right: 20px; display:none;">삭제</button>
 												<button class="btn btn-default btn-small" type="reset"
 													id="reset" style="float: left; margin-right: 20px;">초기화</button>
 											</div>
@@ -701,6 +701,11 @@ html, body {
 
 			// 행 클릭시 수정, 삭제
 			$(".clickme").click(function() {
+				$("#overlapBtn").hide();
+				
+				// id값 수정, 삭제 못하게 readonly로 바꿈
+				$("#id").prop('readonly', true);
+				
 				var str = ""
 				var tdArr = new Array(); // 배열 선언
 
@@ -800,9 +805,6 @@ html, body {
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
-
-			$("#update").hide();
-			$("#delete").hide();
 		});
 	</script>
 </body>

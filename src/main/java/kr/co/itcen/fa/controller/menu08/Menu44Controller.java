@@ -71,6 +71,7 @@ public class Menu44Controller {
 		
 		// list.jsp 페이지 기본 화면
 		dataResult = menu44Service.getList(page, intangibleAssetsVo, startDate, endDate);
+		model.addAttribute("dataResult", dataResult);
 		
 		System.out.println("삭제여부:" + intangibleAssetsVo.getIsChecked());
 		
@@ -86,9 +87,11 @@ public class Menu44Controller {
 				.build();
 		String uri = uriComponents.toUriString();
 		model.addAttribute("uri",uri);
-		
-		model.addAttribute("dataResult", dataResult);
+		model.addAttribute("vo", intangibleAssetsVo);
 		model.addAttribute("intangibleAssetsVo", dataResult.getDatas());
+		
+		System.out.println("1 : " + dataResult);
+		System.out.println("2 : " + intangibleAssetsVo);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

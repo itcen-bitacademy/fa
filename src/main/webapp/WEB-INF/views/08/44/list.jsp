@@ -63,21 +63,21 @@ html, body {
 										<label style="text-align: left;" class="control-label"
 											for="form-field-1">품목 코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id" />
+											<input type="text" id="form-field-1" name="id" value="${vo.id }" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label style="text-align: left;" class="control-label"
 											for="form-field-1">거래처명</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="customerName" />
+											<input type="text" id="form-field-1" name="customerName" value="${vo.customerName }" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label style="text-align: left;" class="control-label"
 											for="form-field-1">설치주소</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="address" />
+											<input type="text" id="form-field-1" name="address" value="${vo.address }" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -121,7 +121,7 @@ html, body {
 										<label style="text-align: left;" class="control-label"
 											for="form-field-1">거래처 담당자</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="customerManager" />
+											<input type="text" id="form-field-1" name="customerManager" value="${vo.customerManager }" />
 										</div>
 									</div>
 								</div>
@@ -135,9 +135,17 @@ html, body {
 											</button>
 											<button class="btn btn-default btn-small" type="reset"
 												id="reset" style="float: right; margin-right: 20px;">초기화</button>
-											<label style="float: right"> <input name="isChecked"
-												id="delete" value="d" type="checkbox" class="ace"> <span
-												class="lbl" style="margin: 10px"> 삭제포함</span>
+											<label style="float: right">
+												<c:choose>
+													<c:when test='${vo.isChecked eq null}'>
+														<input name="isChecked" id="delete" value="d"
+															 type="checkbox" class="ace"><span class="lbl" style="margin: 10px"> 삭제포함</span>
+													</c:when>
+													<c:otherwise>
+														<input name="isChecked" id="delete" value="d" checked="checked"
+															type="checkbox" class="ace"><span class="lbl" style="margin: 10px"> 삭제포함</span>
+													</c:otherwise>
+												</c:choose>
 											</label>
 										</div>
 									</div>
