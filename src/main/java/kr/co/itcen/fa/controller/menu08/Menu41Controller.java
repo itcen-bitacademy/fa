@@ -199,21 +199,25 @@ public class Menu41Controller {
 	//삭제기능
 	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
 	public String delete(@ModelAttribute VehicleVo vehicleVo,
-						 @RequestParam(value="id") String id,
+						 @RequestParam(value="id", required = false) String id,
 						 @SessionAttribute("authUser") UserVo userVo,
 						 Model model) throws ParseException {
 		
+				id = "e" + id;
+				System.out.println("삭제할 id" + id);
 		
+				Long voucherNo = menu41Service.getVoucherNo(id);
+				List<Long> taxVoucherNo = menu41Service.getTaxVoucherNo(id);
+				
 			//마감 여부 체크
 		    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
+	
 	    	    model.addAttribute("closingDate", true);
 		    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
 		    } else {
-		    	  Long voucherNo = menu41Service.getVoucherNo(id);
-				  List<Long> taxVoucherNo = menu41Service.getTaxVoucherNo(id);
-				  
+	
 				  if(voucherNo != 0) {
-				  
+
 					  //전표삭제 
 					  List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); 
 					  VoucherVo v = new VoucherVo(); 
@@ -231,7 +235,8 @@ public class Menu41Controller {
 				  }
 				 
 				//삭제한 사람도 남길때 set무엇으로 하는게 적당한지 모르겠음
-				vehicleVo.setUpdateUserId(userVo.getId());
+				//vehicleVo.setUpdateUserId(userVo.getId());
+				System.out.println("삭제할때 필요한 id" + id);
 				menu41Service.delete(id); //vehicle
 				menu41Service.deleteTaxbill(id);//taxbill
 				return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";

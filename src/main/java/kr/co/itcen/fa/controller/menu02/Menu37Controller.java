@@ -57,10 +57,15 @@ public class Menu37Controller {
 		model.addAttribute("customerList", customerList);
 		model.addAttribute("customerBankList", customerBankList);
 
+		// 입력된 세금계산서번호가 중복인지 알아본다.
+		if(menu37Service.checkDuplicateNo(vo.getNo()) != null) {
+			model.addAttribute("insertFlag","true");
+			return MAINMENU + "/" + SUBMENU + "/add";
+		}
 		// 입력하는 ID를 vo를 setting 후 insert
 		vo.setInsertUserid(authUser.getId());
 		menu37Service.insertTax(vo);
-
+		
 		// 세금게산서의 품목들을 vo list에 setting 후 insert
 		ArrayList<BuyTaxbillItemsVo> list = new ArrayList<BuyTaxbillItemsVo>();
 		for (int i = 0; i < purchaseDate.length; i++) {
@@ -93,16 +98,21 @@ public class Menu37Controller {
 
 		// 승인번호와 matching되는 정보들을 가져온다.
 		BuyTaxbillVo getAboutNoData = menu37Service.getAboutNoData(vo.getNo());
+		if(getAboutNoData == null ) {
+			model.addAttribute("searchFlag","true");
+			return MAINMENU + "/" + SUBMENU + "/add";
+		}
+		
 		CustomerVo getAboutNoCustomerData = menu37Service.getAboutNoCustomerData(getAboutNoData.getCompanyName());
 		BankAccountVo getAboutNoBankData = menu37Service.getAboutNoBankData(getAboutNoCustomerData.getDepositNo());
 		List<BuyTaxbillItemsVo> getAboutItmes = menu37Service.getAboutItmes(vo.getNo());
-
+		
 		model.addAttribute("flag", "true");
 		model.addAttribute("getAboutNoData", getAboutNoData);
 		model.addAttribute("getAboutItmesList", getAboutItmes);
 		model.addAttribute("getAboutNoCustomerData", getAboutNoCustomerData);
 		model.addAttribute("getAboutNoBankData", getAboutNoBankData);
-
+		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
 
@@ -125,13 +135,13 @@ public class Menu37Controller {
 	@RequestMapping(value = "/" + SUBMENU + "/update", method = RequestMethod.POST)
 	public String update(Model model, BuyTaxbillVo vo, @SessionAttribute("authUser") UserVo authUser,
 			String purchaseDate[], String itemName[], Long amount[], String supplyValue[], String taxValue[]) {
-
+		System.out.println(vo.toString());
 		// 거래처리스트를 뿌리기위해 가져온다.
 		List<CustomerVo> customerList = menu37Service.customerList();
 		List<BankAccountVo> customerBankList = menu37Service.customerBankList();
 		model.addAttribute("customerList", customerList);
 		model.addAttribute("customerBankList", customerBankList);
-
+		
 		// 기존의 세금계산서를 처음 입력한 날짜와 id를 vo setting
 		vo.setInsertDay(vo.getInsertDay());
 		vo.setInsertUserid(vo.getInsertUserid());

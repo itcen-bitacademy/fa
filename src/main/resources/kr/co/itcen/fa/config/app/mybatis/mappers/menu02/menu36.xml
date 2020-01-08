@@ -5,7 +5,7 @@
 	<select id="getList" parameterType="purchasecustomer35vo" resultType="purchasecustomer35vo">
 		<![CDATA[
 		     select 
-			      right(p.no, 10) as no, 
+			      substring(p.no, 2) as no, 
 			      p.name, 
 			      p.ceo, 
 			      p.corporation_no as corporationNo, 
@@ -38,7 +38,7 @@
 		<choose>
 			<when test="preNo!=null and !preNo.equals('') and no!=null and !no.equals('')">
 				<![CDATA[
-				  and right(p.no, 10) between #{preNo} and #{no} 
+				  and substring(p.no, 2) between #{preNo} and #{no} 
 				]]>
 			</when>
 			<when test="preNo!=null and !preNo.equals('')">
@@ -88,7 +88,7 @@
 		<choose>
 			<when test="preNo!=null and !preNo.equals('') and no!=null and !no.equals('')">
 				<![CDATA[
-				  and right(no, 10) between #{preNo} and #{no} 
+				  and substring(no, 2) between #{preNo} and #{no} 
 				]]>
 			</when>
 			<when test="preNo!=null and !preNo.equals('')">
@@ -124,7 +124,7 @@
 	
 	<select id="gets" parameterType="map" resultType="purchasecustomer35vo">
 		<![CDATA[
-			select	right(no, 10) as no, 
+			select	substring(no, 2) as no, 
 			      	name
 			  from	tb_purchasecustomer
 			  where delete_flag = "N"

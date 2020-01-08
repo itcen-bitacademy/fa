@@ -65,6 +65,7 @@ public class Menu42Repository {
 	public int listCount(VehicleVo vehicleVo, String startDate, String endDate, String dueStartDate, String dueEndDate) {
 		
 		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("vo", vehicleVo);
 		map.put("id", vehicleVo.getId()); //차량코드
 		map.put("sectionNo", vehicleVo.getSectionNo()); //sectionNo를 받아와두 되는지 sectionNo = 1 / 1000CC 차량분류
 		map.put("staffName", vehicleVo.getStaffName()); //직급
@@ -88,6 +89,7 @@ public class Menu42Repository {
 		
 		
 		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("vo", vehicleVo);
 		map.put("id", vehicleVo.getId()); //차량코드
 		map.put("sectionNo", vehicleVo.getSectionNo()); //sectionNo를 받아와두 되는지 sectionNo = 1 / 1000CC 차량분류
 		map.put("staffName", vehicleVo.getStaffName()); //직급

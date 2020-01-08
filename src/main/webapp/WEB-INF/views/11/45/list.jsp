@@ -9,45 +9,96 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-.radio {
-	float: left;
-	width: 10%;
-}
+		
+.form-horizontal .control-label {text-align: left;}
 
-.prod-list-opts {
-	padding: 10px 15px 9px 11px;
-	position: relative;
-}
-
-.prod-list-opts .order-list {
-    margin: 3px 0 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-.prod-list-opts .order-item {
-    float: left;
-    padding: 0 9px 0 8px;
-    
-}
-
-.prod-list-opts li {
-    list-style: none;
-    float: left;
-}
-
-.checkbox {
-	float: left;
-}
 h4{
-   font-size:14px;
+   font-size:13px;
    font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
-form {
-	margin-bottom: 0px;
+
+.textarea{
+   resize: none;
+   width: 282px;
+   height: 84px;
 }
 
-.form-horizontal .control-label {padding-right: 39px;}
+tr td:first-child {
+   padding-right: 10px;
+}
+
+.radio {
+   float: left;
+   width: 17%;
+}
+
+.search-input-width-first {
+   width: 130px;
+}
+
+.search-input-width-second {
+   width: 235px;
+}
+
+.debt-name-input {
+   width: 420px;
+}
+
+.mgr-input {
+   width: 90px;
+   display: inline;
+}
+
+.mgr-number-input-h4 {
+   display: inline;
+   margin-left: 42px;
+   margin-right: 20px;
+}
+
+.mgr-call-input {
+   width: 150px;
+   display: inline;
+}
+
+.number-input{
+   text-align:right;
+}
+
+.mybtn{float:left;margin-right:10px;}
+
+#staticBackdrop {
+   z-index: -1;
+}
+
+.selected{
+   background-color:#ddd;
+}
+
+#simple-table{
+   min-width: 2000px; 
+   margin-bottom: 0; 
+   width: auto;"
+}
+
+html,body{
+         overflow-x:hidden;
+      height:100%;
+   }
+   .main-container{
+      height:calc(100% - 45px);
+      overflow-x: hidden;
+   }
+   .main-content{
+      overflow:auto;
+   }
+   .page-content{
+      min-width:1280px;
+   }
+   @media screen and (max-width: 920px) {
+      .main-container{
+         height:calc(100% - 84px);
+      }
+   }
 
 /* table columns  */
 .first-column {width:120px; padding-left:20px;}
@@ -78,21 +129,21 @@ form {
 				<!-- PAGE CONTENT BEGINS -->
 			<div>
 				<div>
-				<form class="form-horizontal">
+				<form id='myform' class="form-horizontal">
 					<table style="width:100%;">
 						<tbody>
 						<tr>
-							<td class="first-column center"><label class="control-label">은행명</label></td>
+							<td class="first-column center"><h4>은행명</h4></td>
 							<td class="second-column">
 				               		<input type="text" name="name"  value='${vo.name }'/>
 				            </td>
 				            
-							<td class="third-column center"><label class="control-label">지점명</label></td>
+							<td class="third-column center"><h4>지점명</h4></td>
 							<td class="fourth-column">
 				                <input type="text" name="store" value='${vo.store }' />
 				            </td>
 				            
-							<td class="fifth-column center"><label class="control-label">거래시작일</label></td>
+							<td class="fifth-column center"><h4>거래시작일</h4></td>
 							<td class="sixth-column">
 									<div class="row-fluid input-append">
 										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" 
@@ -113,7 +164,7 @@ form {
 						</tbody>
 					</table>
 					<div class="row-fluid">
-						<div class="span10"> 
+						<div class="span9"> 
 							<div class="checkbox" style="float:right; margin-top: 5px;">
 								<label>
 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 

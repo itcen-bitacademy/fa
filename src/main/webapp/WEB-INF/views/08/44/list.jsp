@@ -11,6 +11,30 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+html, body {
+	height: 100%;
+}
+
+.main-container {
+	height: calc(100% - 45px);
+	overflow-x: hidden;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.page-content {
+	min-width: 1280px;
+}
+
+@media screen and (max-width: 920px) {
+	.main-container {
+		height: calc(100% - 84px);
+	}
+}
+</style>
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -34,27 +58,31 @@
 
 							<form class="form-horizontal" method="post"
 								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-								<div class="span6">
+								<div class="span6" style="overflow: auto;">
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">품목 코드</label>
+										<label style="text-align: left;" class="control-label"
+											for="form-field-1">품목 코드</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="id" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">거래처명</label>
+										<label style="text-align: left;" class="control-label"
+											for="form-field-1">거래처명</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="customerName" />
 										</div>
 									</div>
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">설치주소</label>
+										<label style="text-align: left;" class="control-label"
+											for="form-field-1">설치주소</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="address" />
 										</div>
 									</div>
 									<div class="control-group">
-									<label style="text-align:left;" class="control-label" for="form-field-1">취득금액</label>
+										<label style="text-align: left;" class="control-label"
+											for="form-field-1">취득금액</label>
 										<div class="controls">
 											<input type="text" id="acqPrice" name="acqPrice"
 												style="text-align: right;" value="0" />
@@ -64,8 +92,8 @@
 
 								<div class="span6">
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-select-1">무형자산
-											분류</label>
+										<label style="text-align: left;" class="control-label"
+											for="form-field-select-1">무형자산 분류</label>
 										<div class="controls">
 											<select class="span2 chosen-select" id="form-field-section"
 												name="classification" data-placeholder="전체">
@@ -78,7 +106,8 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="id-date-range-picker-1">매입일자</label>
+										<label style="text-align: left;" class="control-label"
+											for="id-date-range-picker-1">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
 												<span class="add-on"> <i class="icon-calendar"></i>
@@ -89,29 +118,27 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">거래처
-											담당자</label>
+										<label style="text-align: left;" class="control-label"
+											for="form-field-1">거래처 담당자</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="customerManager" />
 										</div>
 									</div>
 								</div>
 
-								<div class="span6">
+								<div class="span6" style="float: right; overflow: auto;">
 									<div class="control-group">
 										<div class="controls">
-											<div class="span3" style="float: right">
-												<button class="btn btn-info btn-small" type="submit"
-													style="float: right; margin-right: 20px;">
-													<i class="icon-ok bigger-80"></i>조회
-												</button>
-											</div>
-											<div class="span2" style="float: right">
-												<label style="float: right"> <input name="isChecked"
-													id="delete" value="d" type="checkbox" class="ace">
-													<span class="lbl"> 삭제포함</span>
-												</label>
-											</div>
+											<button class="btn btn-info btn-small" type="submit"
+												style="float: right; margin-right: 20px;">
+												<i class="icon-ok bigger-80"></i>조회
+											</button>
+											<button class="btn btn-default btn-small" type="reset"
+												id="reset" style="float: right; margin-right: 20px;">초기화</button>
+											<label style="float: right"> <input name="isChecked"
+												id="delete" value="d" type="checkbox" class="ace"> <span
+												class="lbl" style="margin: 10px"> 삭제포함</span>
+											</label>
 										</div>
 									</div>
 								</div>
@@ -124,9 +151,10 @@
 						<div class="row-fluid">
 							<label>총 ${dataResult.pagination.totalCnt }건</label>
 
-							<div>
+							<div style="overflow-x: auto;">
 								<table id="list-table"
-									class="table table-striped table-bordered table-hover">
+									class="table table-striped table-bordered table-hover"
+									style="width: 1920px">
 									<thead>
 										<tr>
 											<th>NO</th>
@@ -191,7 +219,45 @@
 									</tbody>
 								</table>
 							</div>
-
+						</div>
+						<div class="pagination">
+							<ul>
+								<c:choose>
+									<c:when test="${dataResult.pagination.prev }">
+										<li><a
+											href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${dataResult.pagination.startPage - 1 }"><i
+												class="icon-double-angle-left"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="disabled"><a href="#"><i
+												class="icon-double-angle-left"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+								<c:forEach begin="${dataResult.pagination.startPage }"
+									end="${dataResult.pagination.endPage }" var="pg">
+									<c:choose>
+										<c:when test="${pg eq dataResult.pagination.page }">
+											<li class="active"><a
+												href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${pg }">${pg }</a></li>
+										</c:when>
+										<c:otherwise>
+											<li><a
+												href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${pg }&kwd=${kwd }">${pg }</a></li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<c:choose>
+									<c:when test="${dataResult.pagination.next }">
+										<li><a
+											href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${dataResult.pagination.endPage + 1 }"><i
+												class="icon-double-angle-right"></i></a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="disabled"><a href="#"><i
+												class="icon-double-angle-right"></i></a></li>
+									</c:otherwise>
+								</c:choose>
+							</ul>
 						</div>
 						<!-- /row -->
 						<!-- PAGE CONTENT ENDS -->
@@ -201,48 +267,11 @@
 				<!-- /.row-fluid -->
 			</div>
 			<!-- /.page-content -->
+
 		</div>
 		<!-- /.main-content -->
 
-		<div class="pagination">
-			<ul>
-				<c:choose>
-					<c:when test="${dataResult.pagination.prev }">
-						<li><a
-							href="${pageContext.servletContext.contextPath }/08/44/list?page=${dataResult.pagination.startPage - 1 }"><i
-								class="icon-double-angle-left"></i></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href="#"><i
-								class="icon-double-angle-left"></i></a></li>
-					</c:otherwise>
-				</c:choose>
-				<c:forEach begin="${dataResult.pagination.startPage }"
-					end="${dataResult.pagination.endPage }" var="pg">
-					<c:choose>
-						<c:when test="${pg eq dataResult.pagination.page }">
-							<li class="active"><a
-								href="${pageContext.servletContext.contextPath }/08/44/list?page=${pg }">${pg }</a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a
-								href="${pageContext.servletContext.contextPath }/08/44/list?page=${pg }&kwd=${kwd }">${pg }</a></li>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-				<c:choose>
-					<c:when test="${dataResult.pagination.next }">
-						<li><a
-							href="${pageContext.servletContext.contextPath }/08/44/list?page=${dataResult.pagination.endPage + 1 }"><i
-								class="icon-double-angle-right"></i></a></li>
-					</c:when>
-					<c:otherwise>
-						<li class="disabled"><a href="#"><i
-								class="icon-double-angle-right"></i></a></li>
-					</c:otherwise>
-				</c:choose>
-			</ul>
-		</div>
+
 
 	</div>
 	<!-- /.main-container -->
@@ -254,6 +283,11 @@
 	<script>
 		$(function() {
 			$(".chosen-select").chosen();
+
+			// 초기화 버튼
+			$("#reset").click(function() {
+				location.reload();
+			});
 		});
 	</script>
 	<script

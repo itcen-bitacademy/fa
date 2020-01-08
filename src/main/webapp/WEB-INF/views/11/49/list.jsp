@@ -220,7 +220,7 @@ width: 208px;}
 		<hr>
 		<div>	
 			<button class="btn btn-primary btn-small" id='search'>조회</button>
-			<button class="btn btn-success btn-small" id='reset'>취소</button>
+			<button class="btn btn-success btn-small" id='reset'>초기화</button>
 			<hr>						
 		</div>
 		<!-- list -->

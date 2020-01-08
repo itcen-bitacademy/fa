@@ -341,6 +341,7 @@
 	
 	
 	$(document.body).delegate('#simple-table-1 tr', 'click', function() {
+		
 		var tr = $(this);
 		var td = tr.children();
 		
@@ -508,7 +509,7 @@
        
        // ajax 통신
        $.ajax({
-          url: "${pageContext.request.contextPath }/01/25/gets?depositNo=" + depositNo,
+          url: "${pageContext.request.contextPath }/api/deposit/gets?depositNo=" + depositNo,
           contentType : "application/json; charset=utf-8",
           type: "get",
           dataType: "json",
@@ -1027,61 +1028,70 @@
 						<div class="row-fluid">
 							<div class="span6">
 								
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										사업자등록번호:&nbsp;
+								<div class="form-group" style="float: left;" >
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;사&nbsp;업&nbsp;자&nbsp;등&nbsp;록&nbsp;번&nbsp;호&nbsp;
 									</label>
 									<div class="input-append">
 									
-									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
-									
-									
+									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="width: 135px;"/>
 									<input id="btn-check-no" type="button" value="중복확인">
 										<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
 									</div>
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;상호명:
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;상&nbsp;호&nbsp;명&nbsp;
+									</label>
 									<input type="text" id="name" name="name" placeholder="상호명" maxlength="20" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br/>
 
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										대표자:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;대&nbsp;표&nbsp;자&nbsp;
 									</label>
 									<input type="text" id="ceo" name="ceo" placeholder="대표자" maxlength="6" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br/>
 
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										주소:&nbsp;
+								<div class="form-group" style="float: left">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;주&nbsp;소&nbsp;
 									</label>
 									<div class="input-append">
 										<a href="#"onclick="execDaumPostcode()">
-											<input type="text" class="search-input-width-first" id="address" name="address" readonly/>
+											<input type="text" class="search-input-width-first" id="address" name="address" readonly style="width: 180px;"/>
 											<span class="add-on">
 				                            <i class="icon-search icon-on-right bigger-110"></i>
 				                            </span>
 				                    	</a>
 									</div>
-									&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;상세주소:
+								</div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;상&nbsp;세&nbsp;주&nbsp;소&nbsp;
+									</label>
 									<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" class="col-xs-10 col-sm-5"/>
 								</div>
+								
 
 								<br/>
 
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										업태:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;업&nbsp;태&nbsp;
 									</label>
 									<input type="text" id="conditions" name="conditions" maxlength="10" placeholder="업태" class="col-xs-10 col-sm-5" />
 								</div>
 								
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										종목:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;종&nbsp;목&nbsp;
 									</label>
 									<input type="text" id="item" name="item" placeholder="종목" maxlength="10" class="col-xs-10 col-sm-5" />
 								</div>
@@ -1089,15 +1099,15 @@
 								<br/>
 								
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										법인번호:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;법&nbsp;인&nbsp;번&nbsp;호&nbsp;
 									</label>
 									<input type="text" id="corporationNo" name="corporationNo" maxlength="10" placeholder="법인번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 								</div>
 								
 								<div class="form-group" >
-									<label class="control-label" for="form-field-1">
-										종류:&nbsp;&nbsp;
+									<label class="control-label" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;종&nbsp;류&nbsp;
 									</label> 
 									<input name="assetsFlag" id="assetsFlag" type="radio" hidden="토지" class="ace" value="a" /> 
 									<span class="lbl">토지</span> 
@@ -1116,8 +1126,8 @@
 
 							<div class="span6">
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										관할 영업소:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;관&nbsp;할&nbsp;&nbsp;영&nbsp;업&nbsp;소&nbsp;
 									</label>
 									<input type="text" id="jurisdictionOffice" name="jurisdictionOffice" placeholder="관할 영업소" class="col-xs-10 col-sm-5" />
 								</div>
@@ -1125,50 +1135,55 @@
 								<br/>
 
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										거래처 전화번호:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;거&nbsp;래&nbsp;처&nbsp;&nbsp;전&nbsp;화&nbsp;번&nbsp;호&nbsp;
 									</label>
 									<input type="text" id="phone" name="phone" maxlength="11" placeholder="거래처 전화번호" class="col-xs-10 col-sm-5" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" />
 								</div>
 
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										E-mail:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;-&nbsp;m&nbsp;a&nbsp;i&nbsp;l&nbsp;
 									</label>
 									<input type="text" id="managerEmail" name="managerEmail" placeholder="E-mail" class="col-xs-10 col-sm-5" />
 								</div>
 
 								<br/>
 
-								<div class="form-group">
+								<div class="form-group"  style="float: left">
 								
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										계좌번호:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;계&nbsp;좌&nbsp;번&nbsp;호&nbsp;
 									</label>
 									<div class="input-append">
 										<a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" readonly/>
+											<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" readonly  style="width: 180px;"/>
 											<span class="add-on">
 					                        	<i class="icon-search icon-on-right bigger-110"></i>
 					                        </span>
 					                    </a>
 									</div>
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;은행코드:
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;은&nbsp;행&nbsp;코&nbsp;드&nbsp;
+									</label>
 									<input type="text" id="bankCode" name="bankCode" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 
 								<br/>
 
 								<div class="form-group" style="float: left">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-									은행명:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+									&nbsp;&nbsp;&nbsp;&nbsp;은&nbsp;행&nbsp;명&nbsp;
 									</label>
 									<input type="text" id="bankName" name="bankName" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
 								
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										예금주:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;예&nbsp;금&nbsp;주&nbsp;
 									</label>
 									<input type="text" id="depositHost" name="depositHost" placeholder="자동입력" class="col-xs-10 col-sm-5" readonly />
 								</div>
@@ -1212,8 +1227,8 @@
 								<br/>
 								
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-										거래처 담당자 성명:&nbsp;
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
+										&nbsp;&nbsp;&nbsp;&nbsp;거래처 담당자 성명&nbsp;
 									</label>
 									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" maxlength="6"/>
 								</div>
@@ -1227,7 +1242,7 @@
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
 							</div>	<!-- /.span -->
 						
 						</div>
@@ -1240,24 +1255,24 @@
 									<table id="simple-table-1" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 										<thead>
 											<tr>
-												<th>사업자등록번호</th>
-												<th>상호</th>
-												<th>대표자</th>
-												<th>주소/상세주소</th>
-												<th>업태/종목</th>
-												<th>종류</th>
-												<th>관할영업소</th>
-												<th>거래처 전화번호</th>
-												<th>거래처 담당자 성명</th>
-												<th>e-mail</th>
-												<th>은행코드</th>
-												<th>은행명</th>
-												<th>계좌번호</th>
-												<th>예금주</th>
-												<th>입력일자</th>
-												<th>입력담당자</th>
-												<th>수정일자</th>
-												<th>수정담당자</th>
+												<th class="center">사업자등록번호</th>
+												<th class="center">상호</th>
+												<th class="center">대표자</th>
+												<th class="center">주소/상세주소</th>
+												<th class="center">업태/종목</th>
+												<th class="center">종류</th>
+												<th class="center">관할영업소</th>
+												<th class="center">거래처 전화번호</th>
+												<th class="center">거래처 담당자 성명</th>
+												<th class="center">e-mail</th>
+												<th class="center">은행코드</th>
+												<th class="center">은행명</th>
+												<th class="center">계좌번호</th>
+												<th class="center">예금주</th>
+												<th class="center">입력일자</th>
+												<th class="center">입력담당자</th>
+												<th class="center">수정일자</th>
+												<th class="center">수정담당자</th>
 											</tr>
 										</thead>
 										

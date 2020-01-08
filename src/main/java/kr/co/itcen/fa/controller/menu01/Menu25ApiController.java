@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu25Service;
+import kr.co.itcen.fa.vo.menu01.CustomerVo;
 
 @Auth
 @Controller
@@ -30,6 +32,7 @@ public class Menu25ApiController {
 		data.put("success", true);
 		return data;
 	}
+	
 	
 }
 

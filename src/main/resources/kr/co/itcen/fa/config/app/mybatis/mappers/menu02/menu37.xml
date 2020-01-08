@@ -150,4 +150,12 @@
 		</selectKey>
 	</insert>
 	
+	<!-- 세금계산서 입력하기 전 중복이 있나 check하는 select -->
+	<select id="checkDuplicateNo" parameterType="String" resultType="String">
+		<![CDATA[
+		select no
+		  from tb_buy_taxbill
+		 where no = #{values }
+		]]>
+	</select>
 </mapper>

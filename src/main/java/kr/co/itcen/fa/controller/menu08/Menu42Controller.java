@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -98,6 +100,18 @@ public class Menu42Controller {
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);
 		
+		UriComponents uriComponents=
+				UriComponentsBuilder.newInstance()
+				.queryParam("id",vehicleVo.getId())
+				.queryParam("payDate",vehicleVo.getPayDate())
+				.queryParam("sectionNo",vehicleVo.getSectionNo())
+				.queryParam("customerNo",vehicleVo.getCustomerNo())
+				.queryParam("cityAddress",vehicleVo.getCityAddress())
+				.queryParam("flag",vehicleVo.getFlag())
+				.build();
+		String uri = uriComponents.toUriString();
+		model.addAttribute("uri",uri);
+		model.addAttribute("vo",vehicleVo);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

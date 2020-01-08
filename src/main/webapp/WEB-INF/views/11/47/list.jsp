@@ -129,10 +129,7 @@ div > span.add-on{margin-left:-5px}
 	display: inline-block;
 }
 
-div > input[type=radio]{
-	margin-top: 1px;
-	margin-right: 10px;
-}
+div > .label-radio{margin-right: 10px;}
 
 </style>
 </head>
@@ -141,7 +138,7 @@ div > input[type=radio]{
 <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode}">
 <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }">
 <input type="hidden" id="order-column">		<!-- 정렬값을 저장 -->
-<input type="hidden" id="search-condition">
+<input type="hidden" id="search-condition" value="">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -166,9 +163,9 @@ div > input[type=radio]{
 						<div class="input-area">
 							<label class="label-name">이자지급방식</label>
 							<div class="radio-area">
-								<label class="label-radio">년</label><input type="radio" name="intPayWay" value="Y">
-								<label class="label-radio">월</label><input type="radio" name="intPayWay" value="M">
-								<label class="label-radio">해당없음</label><input type="radio" name="intPayWay" value="E">
+								<input type="radio" name="intPayWay" value="Y"><label class="label-radio">연</label>
+								<input type="radio" name="intPayWay" value="M"><label class="label-radio">월</label>
+								<input type="radio" name="intPayWay" value="E"><label class="label-radio">해당없음</label>
 							</div>
 						</div>
 						<div>
@@ -218,7 +215,7 @@ div > input[type=radio]{
 				<hr/>
 				<section class="filter-reset">
 					<input type="button" class="btn btn-primary btn-small mybtn" value="조회" onclick="search()">
-					<input type="button" class="btn btn-success btn-small mybtn" value="초기화" onclick="resetForm()">	
+					<input type="button" class="btn btn-default btn-small mybtn" value="초기화" onclick="resetForm()">	
 				</section>
 			</form>
 			<hr/>
@@ -239,7 +236,8 @@ div > input[type=radio]{
 			</section>
 			<!-- PAGE CONTENT ENDS -->
 			<!-- list -->
-				<table id="simple-table" class="table  table-bordered table-hover">
+				<div style="overflow: auto;">
+				<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center">단기차입금코드</th>
@@ -278,6 +276,7 @@ div > input[type=radio]{
 						</c:forEach>
 					</tbody>
 				</table>
+				</div>
 				
 				<section class="pagination" id="pagination">
 					<ul id="pg-list" class="pg-list">
@@ -465,7 +464,7 @@ function renderingPage(pagination){
 }
  
  function getList(){
-	 getListAjax(1);
+	 search();
  }
  
  //조회 버튼 Click Event Method, 조회 데이터들을 넘겨준다.
