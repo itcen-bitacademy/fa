@@ -232,9 +232,8 @@
 
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
-						<div class="span12">
-							<div style="width:100%; overflow-x:auto"> <!-- scroll auto -->
-								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+						<div class="span12" style="overflow: auto;">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 									<thead>
 										<tr>
 											
@@ -296,7 +295,6 @@
 									</c:forEach>
 									</tbody>
 								</table>
-							</div>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
