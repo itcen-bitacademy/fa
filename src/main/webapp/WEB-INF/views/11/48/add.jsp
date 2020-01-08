@@ -108,8 +108,10 @@ tr td:first-child {
 												<input type="text" name="code" id ="code" value="${code}" maxlength="10"/>
 											</c:otherwise>
 										</c:choose>
+									
 										<input id="btn-check-code" type="button" value="중복확인">
-										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+											<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
+									
 									</td>
 								</tr>
 								<tr >
@@ -297,12 +299,15 @@ tr td:first-child {
 													<table id="dialog-account-message-table">
 														<tr>
 															<td>
+																		
+															
 															<div class="input-append">
 																<label>계좌번호</label>
 																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-																<a href="#" id="a-dialog-depositNo">
-																<span class="btn btn-small btn-info" style="margin-bottom: 10px;">조회</span>
-															</a>
+																<span class="add-on">
+										                             <a href="#" id="a-dialog-depositNo" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+										                             </a>
+										                         </span>
 															</div>
 															</td>
 														</tr>

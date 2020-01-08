@@ -50,7 +50,7 @@ public class Menu16Controller {
 	@RequestParam(value="code", required=false,defaultValue = "") String code ) {
 
 	return "redirect:/" + MAINMENU + "/" + SUBMENU + "?page=" + page + "&code=" + code;
-}
+	}
 	
 	@RequestMapping(value= "/" + SUBMENU + "/add" , method = RequestMethod.POST)
 	public String add(@ModelAttribute BankVo vo,
