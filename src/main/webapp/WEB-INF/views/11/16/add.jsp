@@ -88,7 +88,7 @@ h4{
 						<tr >
 							<td><label class="control-label">지점명</label></td>
 							<td colspan="2" align=left>
-								<input type="text" name="store" id="store" />
+								<input type="text" name="store" id="store" maxlength="15" />
 							</td>
 						</tr>
 							
@@ -96,9 +96,8 @@ h4{
 							<td><label class="control-label">FAX</label></td>
 							<td colspan="2" >
 								<input type="text" name="fax" id="fax" placeholder=" 숫자만입력하세요. "
-								  onKeyup="inputTelNumber(this);"
-								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)'
-								 />
+									maxlength="13" onKeyup="inputTelNumber(this);"
+								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 							</td>
 						</tr>
 							
@@ -127,15 +126,15 @@ h4{
 						<tr >
 							<td><label class="control-label">담당자</label></td>
 							<td colspan="2">
-								<input type="text" name="mgr" id="mgr" />
+								<input type="text" name="mgr" id="mgr" maxlength="5"/>
 							</td>
 						</tr>
 						
 						<tr >
 							<td><label class="control-label">담당자전화번호</label></td>
 							<td colspan="2">
-								<input type="text" name="mgrPhone" id="mgrPhone"  
-								  onKeyup="inputTelNumber(this);"
+								<input type="text" name="mgrPhone" id="mgrPhone" 
+								maxlength="13" onKeyup="inputTelNumber(this);"
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 							</td>
 						</tr>
@@ -147,14 +146,14 @@ h4{
 							<tr>
 								<td><label class="control-label">은행명</label></td>
 								<td colspan="2">
-									<input type="text" name="name" id="name" />
+									<input type="text" name="name" id="name" maxlength="10" />
 								</td>
 							</tr>
 							<tr >
 								<td><label class="control-label">은행전화번호</label></td>
 								<td colspan="2">
 									<input type="text" name="phone" id="phone"  placeholder=" 숫자만입력하세요. "
-								 	 onKeyup="inputTelNumber(this);"
+									maxlength="13" onKeyup="inputTelNumber(this);"
 									 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								</td>
 							</tr>
@@ -170,15 +169,16 @@ h4{
 			                       </div>
 									<div>
 			                        
-			                      		<input type="text" name="post" class="box" id="postcode"
+			                      		<input type="text" name="post"  id="postcode"
 			                           		placeholder="우편번호" readOnly >
 									</div>			
 									<div>
-			                       		<input  type="text" name="roadAddress" class="box"
+			                       		<input  type="text" name="roadAddress" 
 			                           		id="roadAddress" placeholder="도로명주소" readOnly >
 									</div>                     
 									<div>
-					                 		<input  type="text" class="box" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
+					                 		<input  type="text"  id="detailAddress" name="detailAddress" 
+					                 		maxlength="70" placeholder="상세주소"/>
 									</div>
 								</div>
 								</td>
@@ -197,7 +197,7 @@ h4{
 							<tr >
 								<td><label class="control-label">담당자이메일</label></td>
 								<td colspan="2">
-									<input type="email" name="mgrEmail" id="email"  />
+									<input type="email" name="mgrEmail" id="email" maxlength="30" />
 										ex) jisu@naver.com
 								</td>
 							</tr>
@@ -424,7 +424,7 @@ function CodeValidation() {
 	}
 	if(code.length > 7 || code.length <= 6){
 		errortitle='CODE ERROR';
-		validationMessage = '코드는 7자리를 입력해야 합니다.(7자)';
+		validationMessage = '코드는 7자리를 입력해야 합니다.';
 		errorfield='#code';
 		return false;
 	}
@@ -443,6 +443,7 @@ function Myvalidation(){
 	let mgr=$('#mgr').val(); //담당자
 	let mgrPhone=$('#mgrPhone').val(); //담당자전화번호
 	let mgrEmail=$('#mgrEmail').val(); //담당자 이메일
+	
 	if(code === ''){
 		errortitle='CODE ERROR';
 		validationMessage = '은행코드를 반드시 입력해야 합니다.';
@@ -450,6 +451,12 @@ function Myvalidation(){
 		return false;
 		
 	}
+	/* if(code.length < 7) {
+		errortitle = 'CODE ERROR';
+		validationMessage = '은행코드는 반드시 7자로 입력해야 합니다.';
+		errorfield='#code';
+		return false;
+	} */
 	if('' === name) {
 		errortitle='NAME ERROR';
 		validationMessage = '은행명을 반드시 입력해야 합니다. (최대 10자)';
@@ -481,9 +488,9 @@ function Myvalidation(){
 		errorfield='#phone';
 		return false;
 	}
-	if(phone.length > 15) {
+	 if(phone.length < 7) {
 		errortitle = 'PHONE ERROR';
-		validationMessage = '은행 전화번호는 반드시 15자 이하로 입력해야 합니다.';
+		validationMessage = '은행 전화번호가 잘못 입력되었습니다.';
 		errorfield='#phone';
 		return false;
 	}
@@ -493,13 +500,13 @@ function Myvalidation(){
 		errorfield='#fax';
 		return false;
 	}
-	if(fax.length > 15) {
+	else if(fax.length < 7) {
 		errortitle = 'FAX ERROR';
-		validationMessage = '팩스 전화번호는 반드시 15자 이하로 입력해야 합니다.';
+		validationMessage = '팩스 전화번호가 잘못 입력되었습니다.';
 		errorfield='#fax';
 		return false;
 	}
-	if('' === post & roadAddress) {
+	if('' === post && roadAddress) {
 		errortitle = 'Addreess ERROR';
 		validationMessage = '주소는 우편번호 찾기를 통해 반드시 입력되야 합니다.'
 		errorfield='#post';
@@ -529,9 +536,9 @@ function Myvalidation(){
 		errorfield='#mgr';
 		return false;
 	}
-	if(mgr.length > 10) {
+	if(mgr.length > 5) {
 		errortitle = 'MGR ERROR';
-		validationMessage = '담당자명은 반드시 10자 이하로  입력해야 합니다.';
+		validationMessage = '담당자명은 반드시 5자 이하로  입력해야 합니다.';
 		errorfield='#mgr';
 		return false;
 	}
@@ -541,9 +548,9 @@ function Myvalidation(){
 		errorfield='#mgrPhone';
 		return false;
 	}
-	if(mgrPhone.length > 15) {
+	if(mgrPhone.length < 7) {
 		errortitle = 'MGRPHONE ERROR';
-		validationMessage = '담당자 전화번호는 반드시 15자 이하로  입력해야 합니다.';
+		validationMessage = '담당자 전화번호가 잘못 입력되었습니다.';
 		errorfield='#mgrPhone';
 		return false;
 	}
@@ -553,7 +560,12 @@ function Myvalidation(){
 		errorfield='#mgrphone';
 		return false;
 	}
-	
+	var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
+	var email = $("#mgrEmail").val();
+	if (email == '' || !re.test($mgrEmail)) 
+		return false;
+		
 	return true;
 }
 
@@ -647,7 +659,7 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
  });
  
 $("#search").click(function(){
-	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
+	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list');
 	$('#myform').attr('method', 'POST');
 	$('#myform').submit();
 });
@@ -673,20 +685,7 @@ $("#simple-table tr").click(function(){
 			
 		
 ///////////////////////////////////////////////////////////////
-//이메일 유효성 검사
-$("#email").change(function(){
-	function validateEmail(email) {
-		var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-		return re.test(email);
-		}
-		var email = $("#email").val();
-		if (email == '' || !re.test($mgrEmail)) {
-			openErrorModal('EMAIL ERROR',"올바른 이메일 주소를 입력하세요",'#email');
-			return false;
-		}
-	
-});
-		
+
 /////////////////////////////////////////////////////////////////
 //전화번호 자동 하이픈
 function inputTelNumber(obj) {
