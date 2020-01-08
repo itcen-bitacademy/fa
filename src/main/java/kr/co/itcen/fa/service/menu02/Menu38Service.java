@@ -4,13 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import kr.co.itcen.fa.repository.menu02.Menu38Repository;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillItemsVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillListVo;
 import kr.co.itcen.fa.vo.menu02.BuyTaxbillVo;
 import kr.co.itcen.fa.vo.menu02.CustomerVo;
-import kr.co.itcen.fa.vo.menu02.PurchaseitemVo;
 
 /**
  * 
