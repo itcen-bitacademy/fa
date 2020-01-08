@@ -520,6 +520,19 @@ function codeChanged(){					//code 변경 Event시 발생
 	$("#btn-chk-duplication").css("display", "inline-block");
 }
 
+function isValidCode(code){
+	var isValid = false;
+	if(code.value == ''){
+		dialog("코드를 입력하세요.", code);
+	}else if(code.value.substr(0) != "G"){
+		dialog("단기차입금코드는 G로 시작해야합니다.", code);
+	}else{
+		isValid = true;
+	}
+	
+	return isValid;
+}
+
 function checkDuplication(){
 	console.log("------------------------------checkDuplication() called ------------------------------");
 	var inputForm = $("#input-form")[0];
@@ -527,13 +540,8 @@ function checkDuplication(){
 	console.log("code : " + code);
 	console.log({"code" : code});
 	
-	if(inputForm.code.value == ''){
-		dialog("코드를 입력하세요.", inputForm.code);
+	if(isValidCode(inputForm.code) == false)
 		return;
-	}else if(inputForm.code.value.substr(0) != "G"){
-		dialog("단기차입금코드는 G로 시작해야합니다.", inputForm.code);
-		return;
-	}
 	
 	$.ajax({
 		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkDuplication?code=" + code,
