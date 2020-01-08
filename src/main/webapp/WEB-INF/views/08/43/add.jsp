@@ -38,7 +38,7 @@
 
 							<form class="form-horizontal" method="post"
 								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add" 
-								id="insert-intangibleAssets-form" method="post" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();">
+								id="insert-intangibleAssets-form" data-checkpurchaseno="no" method="post" name="sendform" onkeypress="if(event.keyCode == 13) formCheck();">
 								<div class="span6">
 									<!-- 차변 -->
 									<div class="control-group">
@@ -47,6 +47,8 @@
 										<div class="controls">
 											<input type="text" class="span7" id="id" name="id"
 												placeholder="ex) 120400701 (월+일+007+번호)" />
+											<input id="overlapBtn" style="height:28px" type="button" value="중복확인">
+											<i id="check-icon" class="icon-ok bigger-180 blue" style="display:none;"></i>
 										</div>
 									</div>
 									<div class="control-group">
@@ -333,22 +335,32 @@
 	<script>
 		// 입력 유효성 검사
 		function insert(){
-			if(!valid.nullCheck("id", "무형자산 코드")) return;
-			if(!valid.numberCheck("id", "무형자산 코드")) return;
-			if(!valid.nullCheck("address", "설치 주소")) return;
-			if(!valid.nullCheck("code", "무형자산 분류")) return;
-			if(!valid.nullCheck("customerNo", "거래처")) return;
-			if(!valid.nullCheck("acqPrice", "취득 금액")) return;
-			if(!valid.nullCheck("addiFee", "부대 비용")) return;
-			if(!valid.nullCheck("code", "무형자산 명")) return;
-			if(!valid.nullCheck("user", "사용 담당자")) return;
-			if(!valid.nullCheck("copyCount", "수량")) return;
-			if(!valid.numberCheck("copyCount", "수량")) return;
-			if(!valid.nullCheck("customerManager", "담당자")) return;
-			if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
-			if(!valid.radioCheck("taxKind", "세금 종류")) return;
-			
-			$("#insert-intangibleAssets-form").submit();
+			// Insert 에서 중복확인버튼을 통해 주어진 checkpurchaseno의 flag를 통해 구분한다
+			var checkpurchaseno = $("#insert-intangibleAssets-form").data("checkpurchaseno");
+			var id = $("#id").val();
+			console.log("품목 코드 중복확인 해주세요." + checkpurchaseno);
+			console.log($("#id").val.length);
+			if(checkpurchaseno === "no" || id.length < 9) {
+				$("#insert- intangibleAssets -form").data("checkpurchaseno", "no");
+				dialog("품목 코드를 중복확인 해주세요.", false);
+			}
+			else if(!valid.nullCheck("id", "무형자산 코드")) return;
+			else if(!valid.numberCheck("id", "무형자산 코드")) return;
+			else if(!valid.nullCheck("address", "설치 주소")) return;
+			else if(!valid.nullCheck("code", "무형자산 분류")) return;
+			else if(!valid.nullCheck("customerNo", "거래처")) return;
+			else if(!valid.nullCheck("acqPrice", "취득 금액")) return;
+			else if(!valid.nullCheck("addiFee", "부대 비용")) return;
+			else if(!valid.nullCheck("code", "무형자산 명")) return;
+			else if(!valid.nullCheck("user", "사용 담당자")) return;
+			else if(!valid.nullCheck("copyCount", "수량")) return;
+			else if(!valid.numberCheck("copyCount", "수량")) return;
+			else if(!valid.nullCheck("customerManager", "담당자")) return;
+			else if(!valid.nullCheck("id-date-picker-1", "매입일자")) return;
+			else if(!valid.radioCheck("taxKind", "세금 종류")) return;
+			else { 
+				$("#insert-intangibleAssets-form").submit();
+			}
 		}
 		
 		// 수정 유효성 검사
@@ -448,8 +460,57 @@
 				}
 			}
 			
-			
 			$(".chosen-select").chosen();
+			
+			// 중복확인 버튼 
+			// form에 있는 checkpurchaseno로 flag를 준다.
+			$("#overlapBtn").on("click", function(e){
+				e.preventDefault();
+					
+				var id = "f" + $("#id").val();
+					
+				$.ajax({
+					url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
+				   type : "get",
+			   dataType : "json",
+				   data : "",
+				 success:function(data) {
+							if(data === "true") {
+								dialog("사용가능한 품목 코드입니다.", false);
+								$("#insert-intangibleAssets-form").data("checkpurchaseno", "ok");
+								$("#overlapBtn").hide();
+								$("#check-icon").show();
+								var checkpurchaseno = $("#insert-intangibleAssets-form").data("checkpurchaseno");
+								console.log("사용가능한 품목 코드입니다." + checkpurchaseno);
+								
+							} else if(data === "false") {
+								dialog("중복된 품목코드입니다.", false);
+								$("#insert-intangibleAssets-form").data("checkpurchaseno", "no");
+								$("#id").val("");
+								
+							} else if(data === "none") {
+								dialog("품목코드 9자를 입력해주세요.", false);
+								$("#insert-intangibleAssets-form").data("checkpurchaseno", "no");
+								
+							}
+					}, error: function(error) {
+							dialog("찾을 수 없는 품목입니다.", true);
+					}
+				});
+			});
+			
+			// 무형자산코드 변화 시 중복확인버튼 보이기
+			$("#id").on('keyup', function(event){
+				var check = $("#insert-intangibleAssets-form").data("checkpurchaseno");
+					
+				if(check == "ok") {
+					if($("#id").val().length < 9) {
+						$("#insert-intangibleAssets-form").data("checkpurchaseno", "no");
+						$("#overlapBtn").show(); //중복확인버튼
+						$("#check-icon").hide(); //체크아이콘
+					}
+				}
+			});
 
 			// 대분류명 선택시 대분류 코드 가져오기
 			$('#classification').change(
@@ -474,7 +535,7 @@
 					});
 
 			// 품목코드 유효성 검사
-			$("input[name=id]").on(
+			/* $("input[name=id]").on(
 					"change",
 					function() {
 						var id = $("#id").val();
@@ -513,7 +574,7 @@
 							}
 						});
 
-					});
+					}); */
 			
 			// 모든 입력항목 유효성 검사
 			$("#add").click(function() {

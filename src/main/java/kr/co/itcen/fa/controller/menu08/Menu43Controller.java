@@ -125,9 +125,6 @@ public class Menu43Controller {
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
 			@RequestParam(value = "customerNo", required = false) String customerNo,
 			@RequestParam(value = "purpose", required = false) String purpose) throws ParseException {
-		System.out.println("customerNo:" + intangibleAssetsVo.getCustomerNo());
-		System.out.println("classification:" + intangibleAssetsVo.getClassification());
-		System.out.println("purpose:" + intangibleAssetsVo.getPurpose());
 		
 		intangibleAssetsVo.setUpdateUserId(user.getId()); // session값으로 사용자 id가져오기
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo); // voucherNo는 db에서 직접 가져와야함
