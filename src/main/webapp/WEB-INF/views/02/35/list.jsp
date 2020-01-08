@@ -151,7 +151,7 @@
 		// 수정 update
 		$("#btn_update").click(function(){
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
-			checkNo();
+			checkValid();
 	        return false;
 		});
 		
@@ -160,7 +160,7 @@
 			//event.preventDefault();
 
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
-			checkNo();
+			checkValid();
 	        return false;
 		});
 		
@@ -226,25 +226,7 @@
 		});
 		
 		// 사업자번호 중복체크
-		function checkNo() {
-			if($("#no").val() == $("#preNo").val()) {
-				// 유효성 검사
-				if(!valid.nullCheck("no", "사업자번호")) return;
-				if(!valid.numberCheck("no", "사업자번호")) return;
-				
-				if(!valid.nullCheck("bsname", "상호")) return;
-				
-				if(!valid.numberCheck("corporationNo", "법인번호")) return;
-				
-				if(!valid.nullCheck("phone", "전화번호")) return;
-				if(!valid.numberCheck("phone", "전화번호")) return;
-				
-				if(!valid.nullCheck("managerName", "담당자명")) return;
-				if(!valid.nullCheck("managerEmail", "메일")) return;
-				
-				$("#form-customer").submit();
-				return;
-			}
+		$("#check_no").click(function(){
 			$.ajax({
 				url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo?no="+$("#no").val(),
 				type: "get",
@@ -256,33 +238,45 @@
 						return;
 					}
 					if(response.data == true) {
-						//document.getElementById("invalid").style.display="block";
 						dialog("중복된 사업자번호 입니다.");
 						$("#no").val("");
 						$("#no").focus();
+						$("#check_ok").hide();
 						return;
 					} else {
-						// 유효성 검사
 						if(!valid.nullCheck("no", "사업자번호")) return;
-						if(!valid.numberCheck("no", "사업자번호")) return;
-						
-						if(!valid.nullCheck("bsname", "상호")) return;
-						
-						if(!valid.numberCheck("corporationNo", "법인번호")) return;
-						
-						if(!valid.nullCheck("phone", "전화번호")) return;
-						if(!valid.numberCheck("phone", "전화번호")) return;
-						
-						if(!valid.nullCheck("managerName", "담당자명")) return;
-						if(!valid.nullCheck("managerEmail", "메일")) return;
-						
-						$("#form-customer").submit();
+						$("#check_ok").show();
 					}
 				},
 				error: function(xhr, error) {
 					console.error("error:"+error);
 				}
-			});	
+			});
+		});
+		
+		// 유효성 검사
+		function checkValid() {
+			if(document.getElementById("check_ok").style.display=='none' && $("#no").val()!=""){
+				dialog("사업자번호 중복체크 해주세요.");
+				return;
+			}
+			
+			if(!valid.nullCheck("no", "사업자번호")) return;
+			if(!valid.numberCheck("no", "사업자번호")) return;
+			
+			if(!valid.nullCheck("bsname", "상호")) return;
+			
+			if(!valid.numberCheck("corporationNo", "법인번호")) return;
+			
+			if(!valid.nullCheck("phone", "전화번호")) return;
+			if(!valid.numberCheck("phone", "전화번호")) return;
+			
+			if(!valid.nullCheck("managerName", "담당자명")) return;
+			if(!valid.nullCheck("managerEmail", "메일")) return;
+			
+			$("#form-customer").submit();
+			return;
+			
 		}
 	});
 	
@@ -405,22 +399,24 @@
 								<div class="control-group">
 									<label class="control-label" for="no">사업자번호</label>
 									<div class="controls">
-										<input type="text" id="no" name="no" maxlength="11" style="width: 200px;">
+										<input type="text" id="no" name="no" maxlength="11">
 										<input class="span6" type="hidden" id="preNo" name="preNo">
 <!-- 										<div id="invalid" style="display:none">
 											중복된 사업자번호 입니다.
 										</div> -->
+                             			<input id="check_no" style="height:28px" data-checkid="" type="button" value="중복확인">
+										<i id="check_ok" class="icon-ok bigger-150 blue" style="display:none;"></i>
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="ceo">대표자</label>
 									<div class="controls">
-										<input type="text" id="ceo" name="ceo" maxlength="10" style="width: 150px;">
+										<input type="text" id="ceo" name="ceo" maxlength="10">
 									</div>
 								</div>
 
-								<div class="control-group">
+<!-- 								<div class="control-group">
 									<label class="control-label" for="address">주소</label>
 									<div class="controls">
 										<input type="text" id="zipCode" name="zipCode" readonly style="width: 60px;"> 
@@ -432,12 +428,24 @@
 										<br> 
 										<input type="text" id="detailAddress" name="detailAddress" maxlength="60" style="width: 330px;">
 									</div>
+								</div> -->
+								
+								<div class="control-group">
+									<label class="control-label" for="address">주소</label>
+									<div class="controls">
+										<div class="input-append">
+											<input onclick="execDaumPostcode()" style="height:28px; margin-right: 2px" type="button" value="주소찾기">
+											<input class="span3" type="text" id="zipCode" readonly name="zipCode" style="margin-right: 2px">
+				                            <input class="span7" type="text" id="address" readonly name="address">
+		                                </div>
+										<input class="span8" type="text" id="detailAddress" name="detailAddress" maxlength="60" style="margin-top: 5px; width: 436px;">
+									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="conditions">업태</label>
 									<div class="controls">
-										<input type="text" id="conditions" name="conditions" maxlength="10" style="width: 150px;">
+										<input type="text" id="conditions" name="conditions" maxlength="10">
 									</div>
 								</div>
 
@@ -445,7 +453,7 @@
 									<label class="control-label" for="openDate">개설일자</label>
 										<div class="controls">
 											<div class="row-fluid input-append">
-											<input class="cl-date-picker" id="openDate" name="openDate" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" />
+											<input class="cl-date-picker" id="openDate" name="openDate" type="text" data-date-format="yyyy-mm-dd" />
 												<span class="add-on">
 												<i class="icon-calendar"></i>
 												</span>
@@ -456,7 +464,7 @@
 								<div class="control-group">
 									<label class="control-label" for="managerName">담당자명</label>
 									<div class="controls">
-										<input type="text" id="managerName" name="managerName" maxlength="10" style="width: 150px;">
+										<input type="text" id="managerName" name="managerName" maxlength="10">
 									</div>
 								</div>
 
@@ -464,7 +472,7 @@
 									<label class="control-label" for="depositNo">입금계좌번호</label>
 									<div class="controls">
 										<div class="input-append">
-											<input type="text" id="depositNo" name="depositNo" readonly style="width: 200px;"> 
+											<input type="text" id="depositNo" name="depositNo" readonly> 
 											<span class="add-on">
 											<a href="#" id="a-bankaccountinfo-dialog">
 											<i class="icon-search icon-on-right bigger-110"></i></a></span>
@@ -512,21 +520,21 @@
 								<div class="control-group">
 									<label class="control-label" for="name">상호</label>
 									<div class="controls">
-										<input type="text" id="bsname" name="name" maxlength="30" style="width: 250px;">
+										<input type="text" id="bsname" name="name" maxlength="30">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="corporationNo">법인번호</label>
 									<div class="controls">
-										<input type="text" id="corporationNo" name="corporationNo" maxlength="15" style="width: 200px;">
+										<input type="text" id="corporationNo" name="corporationNo" maxlength="15">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="phone">전화번호</label>
 									<div class="controls">
-										<input type="text" id="phone" name="phone" maxlength="15" style="width: 200px;">
+										<input type="text" id="phone" name="phone" maxlength="15">
 										<br>
 										<br> 
 										<input type="text" id="" style="visibility: hidden;">
@@ -536,28 +544,28 @@
 								<div class="control-group">
 									<label class="control-label" for="item">종목</label>
 									<div class="controls">
-										<input type="text" id="item" name="item" maxlength="10" style="width: 150px;">
+										<input type="text" id="item" name="item" maxlength="10">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="jurisdictionOffice">관할사무소</label>
 									<div class="controls">
-										<input type="text" id="jurisdictionOffice" name="jurisdictionOffice" maxlength="30" style="width: 200px;">
+										<input type="text" id="jurisdictionOffice" name="jurisdictionOffice" maxlength="30">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="managerEmail">메일</label>
 									<div class="controls">
-										<input type="text" id="managerEmail" name="managerEmail" maxlength="50" style="width: 250px;">
+										<input type="text" id="managerEmail" name="managerEmail" maxlength="50">
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="depositHost">예금주</label>
 									<div class="controls">
-										<input type="text" id="depositHost" name="depositHost" readonly style="width: 150px;">
+										<input type="text" id="depositHost" name="depositHost" readonly>
 									</div>
 								</div>
 
@@ -565,7 +573,7 @@
 									<label class="control-label" for="Bank">은행</label>
 									<div class="controls">
 										<input type="text" id="bankCode" name="bankCode" readonly style="width: 80px;"> 
-										<input type="text" id="bankName" name="bankName" readonly style="width: 150px;">
+										<input type="text" id="bankName" name="bankName" readonly style="width: 110px;">
 									</div>
 								</div>
 							</div>
