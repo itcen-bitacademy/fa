@@ -17,7 +17,7 @@
 </style>
 
 </head>
-<body class="skin-3">
+<body class="skin-3" style="min-width:1500px">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -87,7 +87,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="span4">
+								<div class="span6">
 									<div class="control-group">
 										<label class="control-label" for="form-field-1" style="text-align:initial;">매입일자</label>
 										<div class="controls">

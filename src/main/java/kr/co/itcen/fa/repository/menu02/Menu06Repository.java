@@ -93,4 +93,8 @@ public class Menu06Repository {
 	public List<PurchasemanagementVo> getPriceList(PurchasemanagementVo vo) {
 		return sqlSession.selectList("menu06.getPriceList",vo);
 	}
+
+	public List<PurchasemanagementVo> getSearchList(PurchasemanagementVo vo) {
+		return sqlSession.selectList("menu06.getSearchList",vo);
+	}
 }
