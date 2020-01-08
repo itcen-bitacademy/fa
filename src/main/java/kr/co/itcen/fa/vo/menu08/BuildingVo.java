@@ -23,10 +23,10 @@ public class BuildingVo {
 	private Long basement;
 	private String purpose;
 	private String material;
-	private Long publicValue;
-	private Long acqPrice;
-	private Long etcCost;
-	private Long acqTax;
+	private String publicValue;
+	private String acqPrice;
+	private String etcCost;
+	private String acqTax;
 	private String payDate;
 	private String taxKind;
 	private String flag;
@@ -34,6 +34,7 @@ public class BuildingVo {
 	private String insertDay;
 	private String updateUserid;
 	private String updateDay;
+	
 	
 	public String getId() {
 		return id;
@@ -143,28 +144,28 @@ public class BuildingVo {
 	public void setMaterial(String material) {
 		this.material = material;
 	}
-	public Long getPublicValue() {
+	public String getPublicValue() {
 		return publicValue;
 	}
-	public void setPublicValue(Long publicValue) {
+	public void setPublicValue(String publicValue) {
 		this.publicValue = publicValue;
 	}
-	public Long getAcqPrice() {
+	public String getAcqPrice() {
 		return acqPrice;
 	}
-	public void setAcqPrice(Long acqPrice) {
+	public void setAcqPrice(String acqPrice) {
 		this.acqPrice = acqPrice;
 	}
-	public Long getEtcCost() {
+	public String getEtcCost() {
 		return etcCost;
 	}
-	public void setEtcCost(Long etcCost) {
+	public void setEtcCost(String etcCost) {
 		this.etcCost = etcCost;
 	}
-	public Long getAcqTax() {
+	public String getAcqTax() {
 		return acqTax;
 	}
-	public void setAcqTax(Long acqTax) {
+	public void setAcqTax(String acqTax) {
 		this.acqTax = acqTax;
 	}
 	public String getPayDate() {

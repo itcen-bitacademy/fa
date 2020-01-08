@@ -19,6 +19,7 @@ import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
+import kr.co.itcen.fa.util.Pagination;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
@@ -41,7 +42,7 @@ public class Menu46ApiController {
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getList", method=RequestMethod.POST)
 	public JSONResult getList(@RequestParam(value="code", required=false) String code, 
 			@RequestParam(value="financialYear", required=false) String financialYear,
-			@RequestParam(value="pageSize", required=false, defaultValue="8") int pageSize,
+			@RequestParam(value="pageSize", required=false, defaultValue="11") int pageSize,
 			@RequestParam(value="page", required=true) int page){
 		
 		System.out.println("pageSize : " + pageSize);
@@ -177,6 +178,36 @@ public class Menu46ApiController {
 		
 		//차입금 입력
 		sTermDebtVo.setVoucherNo(voucherNo);
+		menu46Service.insert(sTermDebtVo);
+		
+		map = menu46Service.getList();
+		
+		return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getRepayDueList", method = RequestMethod.POST)
+	public JSONResult getRepayDueList()  {
+		List<STermDebtVo> list = menu46Service.getRepayDueList();
+		return JSONResult.success(list);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/insertTest", method = RequestMethod.POST)
+	public JSONResult insertTest(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
+		String debtExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
+	    String saveDeptDate = debtExpDate.substring(0, 10);
+	    String saveExpDate = debtExpDate.substring(13);
+	    sTermDebtVo.setDebtDate(saveDeptDate); // 차입일자 등록
+	    sTermDebtVo.setExpDate(saveExpDate); // 만기일지 등록
+	    
+		sTermDebtVo.setInsertId(authUser.getId());
+		
+		System.out.println("sTermDebtVo : " + sTermDebtVo);
+		Map map= new HashMap();
+		
+		//차입금 입력
+		sTermDebtVo.setVoucherNo(1L);
 		menu46Service.insert(sTermDebtVo);
 		
 		map = menu46Service.getList();

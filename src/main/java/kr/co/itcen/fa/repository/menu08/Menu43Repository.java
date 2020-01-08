@@ -1,11 +1,14 @@
 package kr.co.itcen.fa.repository.menu08;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.CustomerVo;
 import kr.co.itcen.fa.vo.menu08.IntangibleAssetsVo;
 import kr.co.itcen.fa.vo.menu08.PurposeVo;
@@ -82,6 +85,19 @@ public class Menu43Repository {
 
 	public PurposeVo getPurposeInfo(String purpose) {
 		return sqlSession.selectOne("menu43.getPurposeInfo", purpose);
+	}
+
+	public int listCount(String kwd) {
+		return sqlSession.selectOne("menu43.listCount", kwd);
+	}
+
+	public List<IntangibleAssetsVo> list(String kwd, PaginationUtil pagination) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("kwd", kwd);
+		map.put("pagination", pagination);
+		List<IntangibleAssetsVo> list = sqlSession.selectList("menu43.list", map);
+		
+		return list;
 	}
 
 }

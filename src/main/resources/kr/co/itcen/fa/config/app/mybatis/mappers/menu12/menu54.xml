@@ -95,6 +95,21 @@
             	and tst.taxbill_no = '${taxbillNo }'
             	]]>
             </if>
+            <if test='itemName!=""'>
+            	<![CDATA[
+            	and tbs.item_name = '${itemName }'
+            	]]>
+			</if>
+			<if test='customerCode!=""'>
+            	<![CDATA[
+            	and tst.customer_code = '${customerCode }'
+            	]]>
+            </if>
+            <if test='startDate!=""'>
+	        	<![CDATA[    
+	        	and tst.write_date between '${startDate }' and '${endDate }'    
+	            ]]>
+            </if>
             <if test='orderData!=""'>
 	            <![CDATA[
 	            order by ${orderData } desc
@@ -128,6 +143,33 @@
             	and tst.taxbill_no = '${taxbillNo }'
             	]]>
             </if>
+            <if test='itemName!=""'>
+            	<![CDATA[
+            	and tbs.item_name = '${itemName }'
+            	]]>
+			</if>
+			<if test='customerCode!=""'>
+            	<![CDATA[
+            	and tst.customer_code = '${customerCode }'
+            	]]>
+            </if>
+            <if test='startDate!=""'>
+	        	<![CDATA[    
+	        	and tst.write_date between '${startDate }' and '${endDate }';
+	            ]]>
+            </if>
+	</select>
+	
+	<select id="subtaxbillno" parameterType="taxbillsearch12vo" resultType="taxbillsearch12vo">
+		<![CDATA[
+			select 
+			 taxbill_no as taxbillNo,
+			 sales_no as salesNo,
+			 customer_code as customerCode,
+			 customer_name as customerName 
+			 from tb_sell_taxbill
+            where customer_code = '${customerCode }'
+		]]>
 	</select>
 
 </mapper>

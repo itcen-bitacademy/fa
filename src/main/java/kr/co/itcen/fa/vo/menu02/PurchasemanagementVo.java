@@ -61,7 +61,60 @@ public class PurchasemanagementVo {
 	private String preNo;				//수정 전 매입번호
 	private Long preNumber;				//수정 전 품목순번
 	private String prePurchaseDate;		//수정 전 매입일자
+	private int lastPage;				//조회시 마지막 페이지
+	private String startDate;			//기간검색
+	private String endDate;				//기간검색
+	private int pageCount;			//종 건수
 	
+	
+	
+	@Override
+	public String toString() {
+		return "PurchasemanagementVo [no=" + no + ", number=" + number + ", purchaseDate=" + purchaseDate
+				+ ", purchaseManager=" + purchaseManager + ", customerCode=" + customerCode + ", customerName="
+				+ customerName + ", sectionCode=" + sectionCode + ", sectionName=" + sectionName + ", itemCode="
+				+ itemCode + ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue=" + supplyValue
+				+ ", taxValue=" + taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType + ", taxbillNo="
+				+ taxbillNo + ", receiptDate=" + receiptDate + ", releaseDate=" + releaseDate + ", deleteFlag="
+				+ deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
+				+ updateUserid + ", updateDay=" + updateDay + ", orderStd=" + orderStd + ", page=" + page
+				+ ", searchFlag=" + searchFlag + ", voucherNo=" + voucherNo + ", preNo=" + preNo + ", preNumber="
+				+ preNumber + ", prePurchaseDate=" + prePurchaseDate + ", lastPage=" + lastPage + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", pageCount=" + pageCount + "]";
+	}
+
+	public int getPageCount() {
+		return pageCount;
+	}
+
+	public void setPageCount(int pageCount) {
+		this.pageCount = pageCount;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public int getLastPage() {
+		return lastPage;
+	}
+
+	public void setLastPage(int lastPage) {
+		this.lastPage = lastPage;
+	}
+
 	public String getNo() {
 		return no;
 	}
@@ -302,19 +355,9 @@ public class PurchasemanagementVo {
 		this.prePurchaseDate = prePurchaseDate;
 	}
 
-	@Override
-	public String toString() {
-		return "PurchasemanagementVo [no=" + no + ", number=" + number + ", purchaseDate=" + purchaseDate
-				+ ", purchaseManager=" + purchaseManager + ", customerCode=" + customerCode + ", customerName="
-				+ customerName + ", sectionCode=" + sectionCode + ", sectionName=" + sectionName + ", itemCode="
-				+ itemCode + ", itemName=" + itemName + ", quantity=" + quantity + ", supplyValue=" + supplyValue
-				+ ", taxValue=" + taxValue + ", totalPrice=" + totalPrice + ", taxType=" + taxType + ", taxbillNo="
-				+ taxbillNo + ", receiptDate=" + receiptDate + ", releaseDate=" + releaseDate + ", deleteFlag="
-				+ deleteFlag + ", insertUserid=" + insertUserid + ", insertDay=" + insertDay + ", updateUserid="
-				+ updateUserid + ", updateDay=" + updateDay + ", orderStd=" + orderStd + ", page=" + page
-				+ ", searchFlag=" + searchFlag + ", voucherNo=" + voucherNo + ", preNo=" + preNo + ", preNumber="
-				+ preNumber + ", prePurchaseDate=" + prePurchaseDate + "]";
-	}
+	
+
+	
 	
 	
 	

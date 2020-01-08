@@ -48,7 +48,7 @@
             ]]>
          </if>
          <![CDATA[
-          order by tb_land.update_day desc, tb_land.insert_day desc
+          order by tb_land.insert_day desc
          ]]>
 	</select>
 	
@@ -82,7 +82,7 @@
             ]]>
          </if>
          <![CDATA[
-          order by tb_land.update_day desc, tb_land.insert_day desc
+          order by tb_land.insert_day desc
          ]]>
          <if test="pagination.pageIndex >= 0">
 			<![CDATA[

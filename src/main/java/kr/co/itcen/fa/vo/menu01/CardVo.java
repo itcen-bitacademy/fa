@@ -14,6 +14,10 @@ import org.apache.ibatis.type.Alias;
 @Alias("1cardvo")
 public class CardVo {
 	private String cardNo;			// 카드번호
+	private String cardNo1;
+	private String cardNo2;			
+	private String cardNo3;			
+	private String cardNo4;			
 	private String validity;		// 유효기간
 	private boolean transportation;	// 교통카드 유무
 	private Integer limitation;			// 한도
@@ -182,9 +186,35 @@ public class CardVo {
 	public void setCardEndNo(String cardEndNo) {
 		this.cardEndNo = cardEndNo;
 	}
+	
+	public String getCardNo1() {
+		return cardNo1;
+	}
+	public void setCardNo1(String cardNo1) {
+		this.cardNo1 = cardNo1;
+	}
+	public String getCardNo2() {
+		return cardNo2;
+	}
+	public void setCardNo2(String cardNo2) {
+		this.cardNo2 = cardNo2;
+	}
+	public String getCardNo3() {
+		return cardNo3;
+	}
+	public void setCardNo3(String cardNo3) {
+		this.cardNo3 = cardNo3;
+	}
+	public String getCardNo4() {
+		return cardNo4;
+	}
+	public void setCardNo4(String cardNo4) {
+		this.cardNo4 = cardNo4;
+	}
 	@Override
 	public String toString() {
-		return "CardVo [cardNo=" + cardNo + ", validity=" + validity + ", transportation=" + transportation
+		return "CardVo [cardNo=" + cardNo + ", cardNo1=" + cardNo1 + ", cardNo2=" + cardNo2 + ", cardNo3=" + cardNo3
+				+ ", cardNo4=" + cardNo4 + ", validity=" + validity + ", transportation=" + transportation
 				+ ", limitation=" + limitation + ", cvc=" + cvc + ", issuer=" + issuer + ", user=" + user + ", company="
 				+ company + ", abroad=" + abroad + ", password=" + password + ", depositNo=" + depositNo
 				+ ", insertUserId=" + insertUserId + ", insertDay=" + insertDay + ", updateUserId=" + updateUserId

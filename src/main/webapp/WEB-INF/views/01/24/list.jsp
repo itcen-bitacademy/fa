@@ -43,7 +43,7 @@ input, textarea, .uneditable-input {
 
 
 				<div class="row-fluid">
-					<form class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list" method="post">
+					<form id="input-form" class="form-horizontal" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list" method="post">
 						입력 기간
 
 						<div class="input-append">
@@ -60,9 +60,10 @@ input, textarea, .uneditable-input {
 						</div>
 
 							&nbsp; &nbsp; &nbsp;
-						카드시작번호 : <input type="text" id="form-field-1" placeholder="시작번호" name = "cardStartNo" value="${param.cardStartNo }" maxlength=4/>
+						카드시작번호 : <input type="text" id="cardStartNo" placeholder="시작번호" name = "cardStartNo" value="${param.cardStartNo }" maxlength=4/>
 						&nbsp; &nbsp; &nbsp; 
-						카드종료번호 : <input type="text" id="form-field-1" placeholder="종료번호" name = "cardEndNo" value="${param.cardEndNo }"  maxlength=4/> 
+						카드종료번호 : <input type="text" id="cardEndNo" placeholder="종료번호" name = "cardEndNo" value="${param.cardEndNo }"  maxlength=4/> 
+						
 						
 							&nbsp; &nbsp; &nbsp;
 						삭제여부 : 
@@ -92,7 +93,7 @@ input, textarea, .uneditable-input {
 				<div class="row-fluid">
 					<div class="span12">
 						<table id="sample-table-1"
-							class="table table-striped table-bordered table-hover">
+							class="table table-bordered table-hover">
 							<thead>
 								<tr>
 									<th>카드번호</th>
@@ -148,53 +149,55 @@ input, textarea, .uneditable-input {
 				</div>
 
 				<div class="pagination" id = "pagination">
-					<ul>
-						<c:choose>
-							<c:when test="${dataResult.pagination.prev }">
-								<li><a
-									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
-									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}">
-										<i class="icon-double-angle-left"></i>
-								</a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="disabled"><a><i
-										class="icon-double-angle-left"></i></a></li>
-							</c:otherwise>
-						</c:choose>
-						<c:forEach begin="${dataResult.pagination.startPage }"
-							end="${dataResult.pagination.endPage }" var="pg">
+					<c:if test="${dataResult.pagination != null && dataResult.pagination.totalCnt != 0 }">
+						<ul>
 							<c:choose>
-								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+								<c:when test="${dataResult.pagination.prev }">
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }
 										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+										&deleteFlag=${param.deleteFlag}">
+											<i class="icon-double-angle-left"></i>
+									</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a
-										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}
-										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+									<li class="disabled"><a><i
+											class="icon-double-angle-left"></i></a></li>
 								</c:otherwise>
 							</c:choose>
-						</c:forEach>
-
-						<c:choose>
-							<c:when test="${dataResult.pagination.next }">
-								<li><a
-									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
-									&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
-									&deleteFlag=${param.deleteFlag}"><i
-										class="icon-double-angle-right"></i></a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="disabled"><a><i
-										class="icon-double-angle-right"></i></a></li>
-							</c:otherwise>
-						</c:choose>
-					</ul>
+							<c:forEach begin="${dataResult.pagination.startPage }"
+								end="${dataResult.pagination.endPage }" var="pg">
+								<c:choose>
+									<c:when test="${pg eq dataResult.pagination.page }">
+										<li class="active"><a
+											href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }
+											&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+										&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a
+											href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}
+											&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+										&deleteFlag=${param.deleteFlag}">${pg }</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+	
+							<c:choose>
+								<c:when test="${dataResult.pagination.next }">
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }
+										&inputperiodStart=${param.inputperiodStart}&inputperiodEnd=${param.inputperiodEnd}&cardStartNo=${param.cardStartNo}&cardEndNo=${param.cardEndNo}
+										&deleteFlag=${param.deleteFlag}"><i
+											class="icon-double-angle-right"></i></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="disabled"><a><i
+											class="icon-double-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
+						</ul>
+					</c:if>
 				</div>
 
 
@@ -205,19 +208,32 @@ input, textarea, .uneditable-input {
 		<!-- /.main-content -->
 	</div>
 	<!-- /.main-container -->
-	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-
+	
+	<!-- Validation Modal Start -->
+	<div id="staticBackdrop" class="hide">
+		<br>
+		<pre id="staticBackdropBody" class="bolder grey"
+			style="text-align: center; background-color: white; border-color: white">
+					</pre>
+	</div>
+	<!-- Validation Modal End -->
+	
+	
+	
 </body>
+
+<link
+	href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css"
+	type="text/css" rel="stylesheet" />
 <script
-	src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+	src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-
 
 
 <script>
@@ -253,8 +269,7 @@ input, textarea, .uneditable-input {
 		
 		
 		$(".chosen-select").chosen();
-
-		
+		            
 	})
 </script>
 

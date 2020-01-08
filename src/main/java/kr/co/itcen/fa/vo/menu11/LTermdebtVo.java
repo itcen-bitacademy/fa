@@ -8,7 +8,7 @@ public class LTermdebtVo {
 	private String code;//장기차입금 코드
 	private String name;//장기차입금 명
 	private Long debtAmount;//차입금액
-	private Long repayBal;//상환잔액
+	private Long repayBal;//상환금액
 	private String repayWay;//상환방법
 	private String repayCompleFlag; // 상환완료여부
 	private String debtExpDate;//차입-만기일자
@@ -32,6 +32,10 @@ public class LTermdebtVo {
 	private String updateDate;//수정일
 	private String bankName;//은행 이름
 	private String depositHost;//예금주
+	
+	
+	private String payDate;
+	
 	
 	public String getDepositHost() {
 		return depositHost;
@@ -191,6 +195,19 @@ public class LTermdebtVo {
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
+	
+	
+	
+	
+	public String getPayDate() {
+		return payDate;
+	}
+	public void setPayDate(String payDate) {
+		this.payDate = payDate;
+	}
+	public void setIntRate(double intRate) {
+		this.intRate = intRate;
+	}
 	@Override
 	public String toString() {
 		return "LTermdebtVo [no=" + no + ", code=" + code + ", name=" + name + ", debtAmount=" + debtAmount
@@ -200,8 +217,11 @@ public class LTermdebtVo {
 				+ majorCode + ", bankCode=" + bankCode + ", depositNo=" + depositNo + ", accountNo=" + accountNo
 				+ ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId=" + insertId + ", insertDate="
 				+ insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate + ", bankName=" + bankName
-				+ ", depositHost=" + depositHost + "]";
+				+ ", depositHost=" + depositHost + ", payDate=" + payDate + "]";
 	}
+	
+	
+	
 	
 	
 	

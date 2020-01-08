@@ -37,7 +37,8 @@ public class Menu44Controller {
 	// main page
 	@NoAuth
 	@RequestMapping({ "/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(IntangibleAssetsVo intangibleAssetsVo, Model model,
+	public String list(IntangibleAssetsVo intangibleAssetsVo, 
+			Model model,
 			@RequestParam(value = "payDate", required = false) String payDate,
 			@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd,
 			@RequestParam(defaultValue = "1") int page) {

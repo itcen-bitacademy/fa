@@ -46,8 +46,10 @@ public class Menu50ApiController {
 	@RequestMapping("/getbankname")
 	public List<BankVo> getBanknameInfo(
 			@RequestParam("banknameVal") String bankname) {
+		System.out.println("Get in the Bank Name Information : controller");
 		List<BankVo> banknameList = menu50Service.selectOneBanknameInfo(bankname);
-        return banknameList;
+        System.out.println(banknameList);
+		return banknameList;
 	}
 	
 	// 거래처 - 은행 팝업창에서 은행코드로 조회

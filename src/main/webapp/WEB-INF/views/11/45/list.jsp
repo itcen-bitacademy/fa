@@ -47,6 +47,8 @@ form {
 	margin-bottom: 0px;
 }
 
+.form-horizontal .control-label {padding-right: 39px;}
+
 /* table columns  */
 .first-column {width:120px; padding-left:20px;}
 .second-column {width:70px;}
@@ -70,7 +72,7 @@ form {
 			<div class="page-content">
 			
 				<div class="page-header position-relative">
-					<h1 class="pull-left">은행코드 현황조회</h1>
+					<h1 class="pull-left">은행코드현황조회</h1>
 				</div><!-- /.page-header -->
 				
 				<!-- PAGE CONTENT BEGINS -->
@@ -80,19 +82,17 @@ form {
 					<table style="width:100%;">
 						<tbody>
 						<tr>
-							<td class="first-column center"><h4>은행명</h4></td>
+							<td class="first-column center"><label class="control-label">은행명</label></td>
 							<td class="second-column">
-						
 				               		<input type="text" name="name"  value='${vo.name }'/>
-						
 				            </td>
 				            
-							<td class="third-column center"><h4>지점명</h4></td>
+							<td class="third-column center"><label class="control-label">지점명</label></td>
 							<td class="fourth-column">
 				                <input type="text" name="store" />
 				            </td>
 				            
-							<td class="fifth-column center"><h4>거래시작일</h4></td>
+							<td class="fifth-column center"><label class="control-label">거래시작일</label></td>
 							<td class="sixth-column">
 									<div class="row-fluid input-append">
 										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" readOnly />
@@ -103,7 +103,7 @@ form {
 							</td>
 					
 							<td class="seventh-column" >
-								<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+								<button id="search" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							</td>
 							</tr>
 							
@@ -112,8 +112,8 @@ form {
 						</tbody>
 					</table>
 					<div class="row-fluid">
-						<div class="span7"> 
-							<div class="checkbox" style="float:right">
+						<div class="span10"> 
+							<div class="checkbox" style="float:right; margin-top: 5px;">
 								<label>
 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
 									<span class="lbl">삭제포함</span>

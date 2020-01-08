@@ -65,8 +65,7 @@ $(function() {
 
 								<div class="span3">
 									<div class="form-horizontal">
-										<label class="control-label" for="cl-ym-date-picker"
-											style="text-align: left; width: 120px;"> 년 월</label>
+										<label class="control-label" for="cl-ym-date-picker" style="text-align: left; width: 120px;"> 년 월</label>
 										<div class="controls" style="margin-left: 120px;">
 											<div class="row-fluid input-append">
 												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" />
@@ -80,8 +79,7 @@ $(function() {
 
 								<div class="span4">
 									<div class="form-horizontal">
-										<label class="control-label" for="form-field-select-2"
-											style="text-align: left; width: 120px;">품목명</label>
+										<label class="control-label" for="form-field-select-2" style="text-align: left; width: 120px;">품목명</label>
 										<div class="controls" style="margin-left: 120px;">
 											<select class="chosen-select" id="itemname" name="itemcode"
 												data-placeholder="품목명 선택" >

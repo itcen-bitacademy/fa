@@ -38,6 +38,12 @@ public class Menu05Repository {
 
 	public Map<String, Object> read(CardVo vo) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		vo.setCardNo(vo.getCardNo()+"-0000");
+		String[] card= vo.getCardNo().split("-");
+		vo.setCardNo1(card[0]);
+		vo.setCardNo2(card[1]);
+		vo.setCardNo3(card[2]);
+		vo.setCardNo4(card[3]);
 		
 		map.put("cardList", sqlSession.selectList("menu05.read", vo));
 
@@ -79,6 +85,10 @@ public class Menu05Repository {
 		return exist == 1;
 	}
 
+	public CardVo exist(CardVo vo) {
+		return sqlSession.selectOne("menu05.exist",vo);
+	}
+	
 	public boolean deleteAll(CardVo vo) {
 		int count = sqlSession.delete("menu05.deleteAll", vo);
 		

@@ -67,6 +67,12 @@ public class Menu54Repository {
 		return sqlSession.selectOne("menu54.taxbillsearchcount", tvo);
 	}
 	
+	// 검색을 통해서 거래처에 따른 세금계산서를 출력해주는 기능
+	public List<TaxbillSearchVo> subTaxbillno(TaxbillSearchVo vo){
+		System.out.println("Ajax를 통한 세금계산서 번호 출력");
+		return sqlSession.selectList("menu54.subtaxbillno", vo); 
+	}
+	
 	
 	
 }

@@ -5,9 +5,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .chosen-search {
@@ -28,7 +28,7 @@
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">매입 관리</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
+				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -134,7 +134,8 @@
 							<div class="hr hr-18 dotted"></div>
 								<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;margin-bottom:20px;">조회</button>
 								<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;margin-bottom:20px;">삭제</button>
-								<button class="btn btn-warning btn-small" type="submit" id="update" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button>
+								<!-- <button class="btn btn-warning btn-small" type="submit" id="update" style="float:left;margin-right:20px;margin-bottom:20px;">수정</button> -->
+								<button class="btn btn-info btn-small" type="button" id="update" onclick="modify()">수정</button>
 								<!-- <button class="btn btn-primary btn-small" type="submit" id="input" style="float:left;margin-right:20px;margin-bottom:20px;">입력</button> -->
 								<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;margin-bottom:20px;" onclick="insert();">입력</button>
 								<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;margin-bottom:20px;" type="button" onclick="add_row();">행추가</button>
@@ -208,6 +209,22 @@
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 
 	<script>
+	
+	function modify(){
+		var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update";
+			if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
+			if(!valid.nullCheck("customerCode", "거래처 코드")) return; 
+			if(!valid.nullCheck("receiptDate", "입고 일자")) return;
+			if(!valid.nullCheck("releaseDate", "출고 일자")) return;
+			if(!valid.nullCheck("number1", "매입 순번")) return;
+			if(!valid.nullCheck("itemCode1", "품목 코드")) return;
+			if(!valid.numberCheck("quantity1", "품목 수량")) return;
+			if(!valid.numberCheck("supplyValue1", "공급가액")) return;
+			if(!valid.numberCheck("taxValue1", "부가세")) return;
+					
+			$("form").attr("action",url).submit();
+    	}
+	
 		$(function() {
 			$.fn.datepicker.dates['ko'] = {
 			days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
@@ -348,19 +365,30 @@
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
 		});
 		
-		$("#update").click(function() {
+		/* $("#update").click(function() {
+			if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
+   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; 
+   			if(!valid.nullCheck("receiptDate", "입고 일자")) return;
+   			if(!valid.nullCheck("releaseDate", "출고 일자")) return;
+   			if(!valid.nullCheck("number1", "매입 순번")) return;
+			if(!valid.nullCheck("itemCode1", "품목 코드")) return;
+			if(!valid.numberCheck("quantity1", "품목 수량")) return;
+			if(!valid.numberCheck("supplyValue1", "공급가액")) return;
+			if(!valid.numberCheck("taxValue1", "부가세")) return;
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
-		});
+		}); */
 		
 		/* $("#input").click(function() {
 			 //insert();
 			 //$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/input");
 		}); */
 		
-		$("#voucher").click(function() {
+		/* $("#voucher").click(function() {
 			$("form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/voucher");
+		}); */
 		});
-		});
+		
+		
 		
 		// 조회시 셀렉트박스 값 고정 
 		 function updateCustomerCode(customer){
@@ -493,27 +521,36 @@
 				$('#deleteRow').hide()
 			}
 			
+		
+			
 			function insert(){
-		   		//if($("#salesNo").val()==$("#checkSalesNo").val()){ // 기존 제공된 매출번호를 수정한 경우 체크
 		   			if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
 		   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
 		   			if(!valid.nullCheck("receiptDate", "입고 일자")) return;
 		   			if(!valid.nullCheck("releaseDate", "출고 일자")) return;
-		   			console.log("abcd : " + ($("#item-table tr").length-2));
-		   			for(var i=1; i<=($("#item-table tr").length-2); i++){
-		   				if(!valid.nullCheck("number"+i, "매입 순번")) return;
-		   				if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
-		   				if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
-		   				if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
-		   				if(!valid.numberCheck("taxValue"+i, "부가세")) return;
+		   			if(($("#item-table tr").length-2) > 1){
+			   			console.log("abcd : " + ($("#item-table tr").length-2));
+			   			for(var i=1; i<=($("#item-table tr").length-2); i++){
+			   				if(!valid.nullCheck("number"+i, "매입 순번")) return;
+			   				if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
+			   				if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
+			   				if(!valid.numberCheck("supplyValue"+i, "공급가액")) return;
+			   				if(!valid.numberCheck("taxValue"+i, "부가세")) return;
+			   			}
+			   			
+		   			} else {
+		   				if(!valid.nullCheck("number1", "매입 순번")) return;
+		   				if(!valid.nullCheck("itemCode1", "품목 코드")) return;
+		   				if(!valid.numberCheck("quantity1", "품목 수량")) return;
+		   				if(!valid.numberCheck("supplyValue1", "공급가액")) return;
+		   				if(!valid.numberCheck("taxValue1", "부가세")) return;
 		   			}
 		   					
 		   			$("#form1").submit();
-		   			/* } else {
-		   				dialog("매출번호가 수정되어 입력이 불가능합니다.<br>새 매출번호를 생성합니다.", false); 
-		   				createSalesNo();
-		   			} */
 		        	}
+			
+			
+			
 
 			//// 핵심소스
 			var valid = {

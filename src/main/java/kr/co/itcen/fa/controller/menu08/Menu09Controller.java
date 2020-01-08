@@ -129,7 +129,7 @@ public class Menu09Controller {
 		if(!menu19Service.checkClosingDate(user, landVo.getPayDate())) {
 			model.addAttribute("closingDate", true);
 			System.out.println("마감되었습니다.");
-			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+			return MAINMENU + "/" + SUBMENU + "/add";
 		} else {
 			menu09Service.insertLand(landVo);
 			System.out.println("insert 됩니다.");
@@ -160,8 +160,9 @@ public class Menu09Controller {
 		
 		//마감 여부 체크
 		if(!menu19Service.checkClosingDate(user, landVo.getPayDate())) {
+			System.out.println("마감되었습니다.");
 			model.addAttribute("closingDate", true);
-			return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+			return MAINMENU + "/" + SUBMENU + "/add";
 			
 		} else {
 			// 전표 시작
@@ -214,7 +215,7 @@ public class Menu09Controller {
 			landVo.setVoucherNo(voucherNo);
 			
 			}
-			
+			System.out.println("update 성공");
 			landVo.setAcqPrice(Long.toString(acqPrice));
 			landVo.setAcqTax(Long.toString(acqTax));
 			landVo.setPublicValue(Long.toString(publicValue));

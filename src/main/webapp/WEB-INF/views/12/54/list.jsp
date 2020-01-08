@@ -9,10 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-		.chosen-search {
-			display: none;
-		}
-		
 		.number{
     		text-align:right;
     	}
@@ -90,7 +86,6 @@
 																	<c:when test="${clist.customerCode eq search.customerCode }">
 																		<option value="${clist.customerCode }" selected>${clist.customerCode } [${clist.customerName }]</option>
 																	</c:when>
-																
 																	<c:otherwise>
 																			<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
 																	</c:otherwise>
@@ -110,6 +105,7 @@
 												<div class="controls">
 													<select class="span3 chosen-select" id="taxbillNo" name="taxbillNo" data-placeholder="세금계산서">
 															<option value="">없음</option>
+															
 															<c:forEach items="${taxlist }" var="tlist">
 																<c:choose>
 																	<c:when test="${tlist.taxbillNo eq search.taxbillNo }">
@@ -120,6 +116,7 @@
 																	</c:otherwise>
 																</c:choose>
 															</c:forEach>
+															
 													</select>
 											</div>
 										</div>
@@ -131,15 +128,15 @@
 											<div class="span6">
 												<label class="control-label" for="form-field-1">품목명</label>
 													<div class="controls">
-													<select class="span3 chosen-select" id="itemCode" name="itemCode" data-placeholder="품목명">
+													<select class="span3 chosen-select" id="itemName" name="itemName" data-placeholder="품목명">
 														<option value="">없음</option>
 														<c:forEach items="${itemlist }" var="ilist">
 															<c:choose>
-																<c:when test="${ilist.itemCode eq search.itemCode }">
-																	<option value="${ilist.itemCode }" selected>${ilist.itemName }</option>	
+																<c:when test="${ilist.itemName eq search.itemName }">
+																	<option value="${ilist.itemName }" selected>${ilist.itemName }</option>	
 																</c:when>
 																<c:otherwise>
-																	<option value="${ilist.itemCode }">${ilist.itemName }</option>
+																	<option value="${ilist.itemName }">${ilist.itemName }</option>
 																</c:otherwise>
 															</c:choose>
 														</c:forEach>
@@ -343,6 +340,7 @@
 			});
 			
 			$(".chosen-select").chosen();
+								
 		})
 		
 		function view(){

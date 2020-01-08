@@ -53,15 +53,19 @@
 	$(function() {
 		var a;
 		$("#btn-create").click(function(){
+			$("#no").attr("readonly",false);
 			a = "create";
 		});
 		$("#btn-read").click(function(){
+			$("#no").attr("readonly",false);
 			a = "read";
 		});
 		$("#btn-update").click(function(){
+			$("#no").attr("readonly",false);
 			a = "update";
 		});
 		$("#btn-delete").click(function(){
+			$("#no").attr("readonly",false);
 			a = "delete";
 		});
 		$("#btn-reset").click(function(){
@@ -69,6 +73,7 @@
 			$("#corporationNo").attr("readonly",false);
 			$("#btn-check-no").show();
 			$("#img-checkno").hide();
+			$("#btn-create").show();
 			
 		});
 		
@@ -160,47 +165,65 @@
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
 				}
-				$.ajax({
-				    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
-				    type: "POST",
-				    data: queryString,
-				    dataType: "json",
-				    success: function(result){
-				    	if(result.success) {
+				var customername = document.getElementById("name").value;
+				
+				// 수정확인창을 띄운다.
+				openDeleteModal('UPDATE CHECK', customername+"에 대한 \r\n수정된 정보를 반영하시겠습니까?");
+				
+				// 수정확인창 - 취소 버튼을 누르면 수정 X
+				$("#deletecancel").click(function(){
+					openErrorModal("UPDATE_CANCEL","거래처 수정이 취소 되었습니다.");
+					console.log("cancel");
+					return;
+				});
+				$("#deleteok").click(function(){
+				
+					$.ajax({
+					    url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
+					    type: "POST",
+					    data: queryString,
+					    dataType: "json",
+					    success: function(result){
+					    	if(result.success) {
+	
+								openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
+								$("#btn-check-no").show();
+					    		//alert("거래처 수정이 완료되었습니다."); 
+					    		removeTable();
+					    		
+					    		var customerList = result.customerList;
+					    		createNewTable(customerList);
+					    	}
+					    	if(result.fail) {
+					    		alert("다시 입력해주세요.");
+					    	}
+					    	
+					    	$('#pagination ul').remove();
+				    		createNewPage(result, a);
+					    	$('#pagination').show();
+					    },
+					    error: function( err ){
+					      	console.log(err)
+					    }
+					 })
 
-							openErrorModal("UPDATE SUCCESS","거래처 수정이 완료되었습니다.");
-							$("#btn-check-no").show();
-				    		//alert("거래처 수정이 완료되었습니다."); 
-				    		removeTable();
-				    		
-				    		var customerList = result.customerList;
-				    		createNewTable(customerList);
-				    	}
-				    	if(result.fail) {
-				    		alert("다시 입력해주세요.");
-				    	}
-				    	
-				    	$('#pagination ul').remove();
-			    		createNewPage(result, a);
-				    	$('#pagination').show();
-				    },
-				    error: function( err ){
-				      	console.log(err)
-				    }
-				 })
+						$("#btn-create").show();
+
+				});
 			} else if(a == "delete") {
 				// 유효성 검사를 만족하지 못하면 모달을 띄운다.
 				if(!DeleteValidation()){
 					openErrorModal(errortitle,validationMessage,errorfield);
 					return;
 				}
+				var customername = document.getElementById("name").value;
 				
 				// 삭제확인창을 띄운다.
-				openDeleteModal('DELETE CHECK',"삭제하시겠습니까?");
+				openDeleteModal('DELETE CHECK',customername+"에 대한\r\n 거래처정보를 삭제하시겠습니까?");
 				
 				// 삭제확인창 - 취소 버튼을 누르면 삭제 X
 				$("#deletecancel").click(function(){
-					openErrorModal("DELETE_CANCEL SUCCESS","거래처 삭제가 취소 되었습니다.");
+					openErrorModal("DELETE_CANCEL","거래처 삭제가 취소 되었습니다.");
 					console.log("cancel");
 					return;
 				});
@@ -235,6 +258,8 @@
 					      	console.log(err)
 					    }
 					 })
+
+						$("#btn-create").show();
 				});
 				
 			} else {
@@ -257,28 +282,54 @@
 		  $("#simple-table-1").append($newTbody)
 			
 		  for(let customer in customerList){
-			  $newTbody.append(
-			   	"<tr>" +
-		        "<td class='center'><label class='pos-rel'> <input name='RowCheck' type='checkbox' class='ace' /><span class='lbl'></span></label></td>" +
-		        "<td>" + customerList[customer].no + "</td>" +
-		        "<td>" + customerList[customer].name + "</td>" +
-		        "<td>" + customerList[customer].ceo + "</td>" +
-		        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
-		        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
-		        "<td>" + customerList[customer].assetsFlag + "</td>" +
-		        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
-		        "<td>" + customerList[customer].phone + "</td>" +
-		        "<td>" + customerList[customer].managerName + "</td>" +
-		        "<td>" + customerList[customer].managerEmail + "</td>" +
-		        "<td>" + customerList[customer].bankCode + "</td>" +
-		        "<td>" + customerList[customer].bankName + "</td>" +
-		        "<td>" + customerList[customer].depositNo + "</td>" +
-		        "<td>" + customerList[customer].depositHost + "</td>" +
-		        "<td>" + customerList[customer].insertDay + "</td>" +
-		        "<td>" + customerList[customer].insertUserid + "</td>" +
-		        "<td>" + customerList[customer].updateDay + "</td>" +
-		        "<td>" + customerList[customer].updateUserid + "</td>" +
-		        "</tr>");
+			  if(customerList[customer].updateDay==null){
+				  $newTbody.append(
+						   	"<tr>" +
+					        "<td>" + customerList[customer].no + "</td>" +
+					        "<td>" + customerList[customer].name + "</td>" +
+					        "<td>" + customerList[customer].ceo + "</td>" +
+					        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
+					        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+					        "<td>" + customerList[customer].assetsFlag + "</td>" +
+					        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
+					        "<td>" + customerList[customer].phone + "</td>" +
+					        "<td>" + customerList[customer].managerName + "</td>" +
+					        "<td>" + customerList[customer].managerEmail + "</td>" +
+					        "<td>" + customerList[customer].bankCode + "</td>" +
+					        "<td>" + customerList[customer].bankName + "</td>" +
+					        "<td>" + customerList[customer].depositNo + "</td>" +
+					        "<td>" + customerList[customer].depositHost + "</td>" +
+					        "<td>" + customerList[customer].insertDay + "</td>" +
+					        "<td>" + customerList[customer].insertUserid + "</td>" +
+					        "<td></td>" +
+					        "<td></td>" +
+					        "</tr>");
+				  
+			  }
+			  if(customerList[customer].updateDay !=null){
+				  $newTbody.append(
+						   	"<tr>" +
+					        "<td>" + customerList[customer].no + "</td>" +
+					        "<td>" + customerList[customer].name + "</td>" +
+					        "<td>" + customerList[customer].ceo + "</td>" +
+					        "<td>" + customerList[customer].address + "/" + customerList[customer].detailAddress + "</td>" +
+					        "<td>" + customerList[customer].conditions + "/" + customerList[customer].item + "</td>" +
+					        "<td>" + customerList[customer].assetsFlag + "</td>" +
+					        "<td>" + customerList[customer].jurisdictionOffice + "</td>" +	
+					        "<td>" + customerList[customer].phone + "</td>" +
+					        "<td>" + customerList[customer].managerName + "</td>" +
+					        "<td>" + customerList[customer].managerEmail + "</td>" +
+					        "<td>" + customerList[customer].bankCode + "</td>" +
+					        "<td>" + customerList[customer].bankName + "</td>" +
+					        "<td>" + customerList[customer].depositNo + "</td>" +
+					        "<td>" + customerList[customer].depositHost + "</td>" +
+					        "<td>" + customerList[customer].insertDay + "</td>" +
+					        "<td>" + customerList[customer].insertUserid + "</td>" +
+					        "<td>" + customerList[customer].updateDay + "</td>" +
+					        "<td>" + customerList[customer].updateUserid + "</td>" +
+					        "</tr>");
+				  
+			  }
 		  }
 		  $newTbody.append("</tbody>");
 		  $(".chosen-select").chosen();
@@ -290,7 +341,7 @@
 		var td = tr.children();
 		
 		//사업자 등록번호와 법인번호 => - 를 제거한다.
-		var customerNo = td.eq(1).text();
+		var customerNo = td.eq(0).text();
 		var noArray=customerNo.split('-');
 		//법인번호
 		if (noArray[2] !=null){
@@ -306,7 +357,7 @@
 		}
 		
 		//거래처 번호 => - 를 제거한다.
-		var customerPhone = td.eq(8).text();
+		var customerPhone = td.eq(7).text();
 		var phoneArray=customerPhone.split('-');
 		
 		if (phoneArray[2] !=null){
@@ -316,45 +367,45 @@
 		}
 		
 		//거래처 주소를 '/'를 기준으로 끊어 주소와 상세주소로 구분한다.
-		var customerAddr = td.eq(4).text();
+		var customerAddr = td.eq(3).text();
 		var addrArray=customerAddr.split('/');
 
 		$("input[name=address]").val(addrArray[0]);//주소
 		$("input[name=detailAddress]").val(addrArray[1]);//상세주소
 		
 		// '/'를기준으로 끊어 업태와 종목을 구분한다.
-		var customerConIt = td.eq(5).text();
+		var customerConIt = td.eq(4).text();
 		var conitArray=customerConIt.split('/');
 		
 		$("input[name=conditions]").val(conitArray[0]);//업태
 		$("input[name=item]").val(conitArray[1]);//업종
 		
 		//거래처명
-		$("input[name=name]").val(td.eq(2).text());
+		$("input[name=name]").val(td.eq(1).text());
 		
 		//대표자명
-		$("input[name=ceo]").val(td.eq(3).text());
+		$("input[name=ceo]").val(td.eq(2).text());
 		
 		//관할영업소
-		$("input[name=jurisdictionOffice]").val(td.eq(7).text());
+		$("input[name=jurisdictionOffice]").val(td.eq(6).text());
 		
 		//담당자 이메일
-		$("input[name=managerEmail]").val(td.eq(10).text());
+		$("input[name=managerEmail]").val(td.eq(9).text());
 		
 		//은행명
-		$("input[name=bankName]").val(td.eq(12).text());
+		$("input[name=bankName]").val(td.eq(11).text());
 		
 		//은행코드
-		$("input[name=bankCode]").val(td.eq(11).text());
+		$("input[name=bankCode]").val(td.eq(10).text());
 		
 		//계좌번호
-		$("input[name=depositNo]").val(td.eq(13).text());
+		$("input[name=depositNo]").val(td.eq(12).text());
 		
 		//거래처 담당자명
-		$("input[name=managerName]").val(td.eq(9).text());
+		$("input[name=managerName]").val(td.eq(8).text());
 		
 		//예금주
-		$("input[name=depositHost]").val(td.eq(14).text());
+		$("input[name=depositHost]").val(td.eq(13).text());
 		
 		
 		$("input[name=address]").prop("readonly", true);
@@ -364,14 +415,14 @@
 		$("input[name='depositHost']").prop("readonly", true);
 		
 		//assets_flag(자산 거래처 종류) 값에 따라  radio 박스의 체크 상태가 변화한다.
-		var td6 = td.eq(6).text();
-		if(td6 == "토지"){
+		var td5 = td.eq(5).text();
+		if(td5 == "토지"){
 		$('input:radio[name=assetsFlag]:input[value="a"]').prop("checked", true);
-		} else if (td6 =="건물"){
+		} else if (td5 =="건물"){
 		$('input:radio[name=assetsFlag]:input[value="b"]').prop("checked", true);
-		} else if (td6 =="차량"){
+		} else if (td5 =="차량"){
 		$('input:radio[name=assetsFlag]:input[value="c"]').prop("checked", true);
-		} else if (td6 =="무형자산"){
+		} else if (td5 =="무형자산"){
 		$('input:radio[name=assetsFlag]:input[value="d"]').prop("checked", true);
 		}
 		
@@ -380,6 +431,7 @@
 
 		$("#btn-check-no").hide();
 		$("#img-checkno").hide();
+		$("#btn-create").hide();
 	});
 	
 	function settingInput(customerList) {
@@ -416,19 +468,6 @@
 		$("input[name='depositHost']").prop("readonly", true);  
 	}
 	
-	$(document.body).delegate('#selectAll', 'click', function() {
-		if(this.checked) {
-	        $(':checkbox').each(function() {
-	            this.checked = true;                        
-	        });
-	    } else {
-	        $(':checkbox').each(function() {
-	            this.checked = false;                       
-	        });
-	    }
-	});
-	
-
 	$(function() {
 	      $("#dialog-message").dialog({
 	         autoOpen : false
@@ -567,6 +606,7 @@
 				{
 					text: "OK",
 					"class" : "btn btn-danger btn-mini",
+					"id" : "modalok",
 					click: function() {
 						$(this).dialog('close');
 			          	$('#staticBackdropBody').text('');
@@ -891,6 +931,9 @@
 	
 		return true;
 	}
+	function enterdeposit(){
+		$("#a-dialog-depositNo").click();
+	}
 	
 	//사업자등록번호, 법인번호, 전화번호에서 숫자와 delete 키만 동작하도록한다.
 	function isNumberKey(evt){
@@ -969,7 +1012,7 @@
 			<div class="page-content">
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">거래처 관리 [27]</h1>
+					<h1 class="pull-left">거래처 관리</h1>
 				</div>
 				
 				<!-- /.page-header -->
@@ -977,7 +1020,7 @@
 
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" id="inputform" name="inputform" method="post">
-						<div class="row-fluid" style="float: left">
+						<div class="row-fluid">
 							<div class="span6">
 								
 								<div class="form-group">
@@ -1134,7 +1177,7 @@
 											<td>
 												<label>계좌번호</label>
 												<div class="input-append">
-													<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+													<input type="text" id="input-dialog-depositNo" style="width: 100px;" onkeypress="if( event.keyCode==13 ){enterdeposit();}"/>
 													<a href="#" id="a-dialog-depositNo">
 														<span class="add-on">
 														<i class="icon-search icon-on-right bigger-110"></i>
@@ -1170,12 +1213,10 @@
 									</label>
 									<input type="text" id="managerName" name="managerName" placeholder="거래처 담당자" class="col-xs-10 col-sm-5" maxlength="6"/>
 								</div>
-
-								<br/>
 							</div><!-- ./span6 -->
 						</div>
-							<!-- span -->
 						<div class="hr hr-18 dotted"></div>
+							<!-- span -->
 						<div class="row-fluid">
 							<div class="span8">
 							<button class="btn btn-info btn-small" id="btn-read">조회</button>
@@ -1183,11 +1224,10 @@
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
 							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
-						</div>	<!-- /.span -->
+							</div>	<!-- /.span -->
 						
 						</div>
 						<div class="hr hr-18 dotted"></div>
-						<br/>
 					
 						</form>
 
@@ -1197,13 +1237,6 @@
 									<table id="simple-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th class="center">
-													<label>
-														<input type="checkbox" class="ace" id="selectAll" />
-														<span class="lbl">
-														</span>
-													</label>
-												</th>
 												<th>사업자등록번호</th>
 												<th>상호</th>
 												<th>대표자</th>
@@ -1228,13 +1261,6 @@
 										<tbody class = "origin-tbody">
 											<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 												<tr>
-													<td class="center">
-														<label>
-															<input type="checkbox" class="ace" />
-															<span class="lbl">
-															</span>
-														</label>
-													</td>
 													<td>${vo.no }</td>
 													<td>${vo.name }</td>
 													<td>${vo.ceo }</td>
@@ -1333,6 +1359,7 @@
 	$("#no").change(function(){
 		$("#btn-check-no").show();
 		$("#img-checkno").hide();
+		nochecked = false;
 	});	
 	
 	$("#btn-check-no").click(function(){
@@ -1342,6 +1369,7 @@
 			openErrorModal(errortitle,validationMessage,errorfield);
 			return;
 		}
+		
 		
 	// 사업자등록번호 중복체크
 	$.ajax({
@@ -1359,10 +1387,11 @@
 			
 			if(response.data == null){
 				nochecked = true;
+				openErrorModal("DUPLICATE CHECK COMPLETE","중복 검사가 완료되었습니다.");
 				$("#btn-check-no").hide();
 				$("#img-checkno").show();
-				$("#no").attr("readonly",true);
-				setTimeout(function(){
+				//$("#no").attr("readonly",true);
+				$("#modalok").click(function(){
 					openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
 					$("#deleteok").click(function(){
 						var customerno = document.getElementById("no").value;
@@ -1376,16 +1405,72 @@
 						$("#corporationNo").attr("readonly",false);
 						return;
 					});
+				});
+// 				if($("#no").prop('readonly',true)){
+// 					$("#no").click(function(){
+// 						openDeleteModal("MODIFY_CUSTOMERNO","사업자등록번호를 다시 입력하시겠습니까?");
+// 						$("#deleteok").click(function(){
+// 							//var customerno = document.getElementById("no").value;
+// 							//$("input[name=corporationNo]").val(customerno);
+// 							openErrorModal("MODIFY ALLOW","사업자등록번호를 수정해주세요");
+// 							$("#no").attr("readonly",false);
+// 							$("#btn-check-no").show();
+// 							$("#img-checkno").hide();
+// 							return;
+// 						});
+// 						$("#deletecancel").click(function(){
+// 							openErrorModal("MODIFY CANCEL","사업자등록번호 수정이 취소되었습니다.");
+// 							$("#no").attr("readonly",true);
+// 							return;
+// 						});
+// 						return;
+// 						});
 					
-				},600);
-				
+// 				}
 				return;
 			}else if(response.data.deleteFlag == "Y"){
-				$("#no").val("");
-				openErrorModal('DELETED CUSTOMER_NO ERROR',"삭제된 사업자등록번호입니다.",'#no');
+				
+				nochecked = true;
+				$("#btn-check-no").show();
+				$("#img-checkno").hide();
+				openDeleteModal('DELETED CUSTOMER',"삭제 처리되었던 거래처 입니다.\r\n 재등록 하시겠습니까?");
+				$("#deleteok").click(function(){
+
+					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록이 완료되었습니다.");
+					$("#corporationNo").attr("readonly",true);
+					$("#btn-check-no").hide();
+					$("#img-checkno").show();
+					$("#modalok").click(function(){
+							openDeleteModal('AUTOCOMPLETE CORPNO',"법인번호에 자동반영하시겠습니까?");
+							$("#deleteok").click(function(){
+								var customerno = document.getElementById("no").value;
+								$("input[name=corporationNo]").val(customerno);
+								openErrorModal("AUTOCOMPLETE APPLY","법인번호에 반영되었습니다.");
+								$("#corporationNo").attr("readonly",true);
+								return;
+							});
+							$("#deletecancel").click(function(){
+								openErrorModal("AUTOCOMPLETE CANCEL","법인번호를 수동으로 입력해주시기바랍니다.");
+								$("#corporationNo").attr("readonly",false);
+								return;
+							});
+						
+					})
+					return;
+				});
+				$("#deletecancel").click(function(){
+					openErrorModal("CUSTOMER RECREATE CANCEL","거래처 재등록을 취소합니다.");
+					nochecked = false;
+					$("#corporationNo").attr("readonly",false);
+					return;
+				});
+				
+			
+				return;
+				
 			}else{
 				$("#no").val("");
-				openErrorModal('DUPLICATED CUSTOMER_NO ERROR',"이미 존재하는 사업자등록번호입니다.",'#no');
+				openErrorModal('DUPLICATED CUSTOMER_NO ERROR',"이미 존재하는 사업자등록번호입니다.");
 			}
 			
 			},
@@ -1394,5 +1479,7 @@
 			}
 		});
 	});
+	
+	
 	</script>
 </html>

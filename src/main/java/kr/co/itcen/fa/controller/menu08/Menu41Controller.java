@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -61,7 +62,8 @@ public class Menu41Controller {
 	public String list(
 			Model model,
 			@RequestParam(value="id", required=false, defaultValue = "") String id,
-			@RequestParam(value="page", required=false, defaultValue = "1") int page) 
+			@RequestParam(value="page", required=false, defaultValue = "1") int page,
+			@RequestParam(value="closingDate", required=false)Boolean closingDate) 
 		{
 		//menu41Service.test();
 		/*
@@ -94,6 +96,8 @@ public class Menu41Controller {
 		map.putAll(menu41Service.getCustomer());
 		model.addAllAttributes(map);
 		
+		//마감일자
+		model.addAttribute("closingDate", closingDate);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
@@ -103,7 +107,8 @@ public class Menu41Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/insert" }, method = RequestMethod.POST)
 	public String insert(@ModelAttribute VehicleVo vehicleVo, 
 						 @SessionAttribute("authUser") UserVo userVo,
-						 Model model) throws ParseException{
+						 Model model,
+						 RedirectAttributes redirect) throws ParseException{
 		
 		System.out.println("새로입력 합니다.");
 		
@@ -116,11 +121,13 @@ public class Menu41Controller {
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
 	    	System.out.println("마감되었습니다.");
-    	    model.addAttribute("closingDate", true);
+    	    //model.addAttribute("closingDate", true);
+	    	redirect.addAttribute("closingDate",true);
 	    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
-	    } else {System.out.println("등록되었습니다.");
-	    menu41Service.insert(vehicleVo);
-	    return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
+	    } else {
+	    	System.out.println("등록되었습니다.");
+		    menu41Service.insert(vehicleVo);
+		    return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add"; 
 	    }
 	}
 
@@ -133,18 +140,19 @@ public class Menu41Controller {
 		System.out.println("수정합니다.");
 		
 		vehicleVo.setUpdateUserId(userVo.getId());
+		vehicleVo.setId("e"+vehicleVo.getId());
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(userVo, vehicleVo.getPayDate())) { 
     	    model.addAttribute("closingDate", true);
-	    	return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";
+	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
-	    	System.out.println("세금계산서" + vehicleVo.getTaxbillNo());
-	    	if(vehicleVo.getTaxbillNo()!= "") { //세금계산서 번호 있음
-	    		System.out.println("세금계산서나오면 이상한것" + vehicleVo.getTaxbillNo());
+		    	//System.out.println("세금계산서" + vehicleVo.getTaxbillNo());
+		    	if(vehicleVo.getTaxbillNo()!= "") { //세금계산서 번호 있음
+	    		//System.out.println("세금계산서나오면 이상한것" + vehicleVo.getTaxbillNo());
 		    	Long vehicleVno = menu41Service.getVoucherNo(vehicleVo.getId());
 				
-				System.out.println("전표번호 " + vehicleVno);
+				//System.out.println("전표번호 " + vehicleVno);
 				CustomerVo cus = menu41Service.getDepositNo(vehicleVo.getCustomerNo());
 				
 				VoucherVo voucherVo = new VoucherVo();  //거래처 객체
@@ -248,6 +256,8 @@ public class Menu41Controller {
 		Long monthlyFee = Long.parseLong(monthlyFee2);
 		
 		System.out.println("cusNo : " + customerNo);
+		
+		System.out.println("차량코드" +taxbillVo.getVehicleNo() );
 		taxbillVo.setInsertUserid(userVo.getId());
 		String taxno = taxbillVo.getTaxbillNoPoP();
 		String veno = taxbillVo.getVehicleNo();
@@ -267,6 +277,8 @@ public class Menu41Controller {
 		
 
 		if(gubun.equals("보증금")) {
+			System.out.println("보증금");
+			
 			taxbillVo.setDueDate(bonapil);
 			taxbillVo.setPay(deposit);
 			voucherVo.setRegDate(bonapil); //
@@ -294,6 +306,7 @@ public class Menu41Controller {
 
 			
 		}else if(gubun.equals("월사용료")) {
+			System.out.println("월사용료");
 			taxbillVo.setDueDate(walnapil);
 			taxbillVo.setPay(monthlyFee);
 			voucherVo.setRegDate(walnapil);
@@ -341,10 +354,11 @@ public class Menu41Controller {
 			@RequestParam(value="id", required = false) String id, 
 			Model model
 			) {
-
+			System.out.println("여기타?");
+			System.out.println("ID : " + id);
 		//조회기능 
 		Map<String, Object> map = new HashMap<>();
-		map.putAll(menu41Service.selectTaxList(id));
+		map.putAll(menu41Service.selectTaxList("e"+id));
 		model.addAllAttributes(map);
 
 		return map;

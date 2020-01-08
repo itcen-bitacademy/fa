@@ -39,7 +39,7 @@
 						<div class="row-fluid">
 							<!-- PAGE CONTENT BEGINS -->
 
-							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+							<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 
 								<!-- 차변 -->
 								<div class="span6">
@@ -90,16 +90,6 @@
 											<input readonly type="text" class="span6" name="customerNo" id="customerNo" placeholder="거래처명을 지정하면 코드가 입력됩니다">
 										</div>
 									</div>
-
-									
-									
-									<div class="control-group">
-										<label class="control-label">취득금액</label>
-										<div class="controls">
-											<input type="text" class="acqPrice" name="acqPrice" placeholder="금액을 입력하세요" /> 
-												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
-										</div>
-									</div>
 								</div>
 								<!-- 좌측 -->
 
@@ -127,21 +117,21 @@
 									</div>
 									
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">상세주소</label>
-										<div class="controls">
-											<input type="text" id="detailAddress" name="detailAddress" class="span8"
-												placeholder="상세주소를 입력하세요" />
-										</div>
-									</div>
-									
-									<div class="control-group">
 										<label class="control-label" for="form-field-1">거래처 담당자</label>
 										<div class="controls" id="form-input-customer">
 											<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" />
 										</div>
 									</div>
 									
-									<span style="line-height:550%"><br></span>
+									<div class="control-group">
+										<label class="control-label">취득금액</label>
+										<div class="controls">
+											<input type="text" class="acqPrice" name="acqPrice" id="acqPrice" placeholder="금액을 입력하세요" /> 
+												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
+										</div>
+									</div>
+									
+									<span style="line-height:400%"><br></span>
 									
 									<div class="control-group" style="margin-bottom:0px;">
 										<div class="span3" style="float: right;">
@@ -159,6 +149,8 @@
 												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 										</div>
 									</div>
+									
+									
 								</div>
 								<!-- 우측 span -->
 							</form>
@@ -312,6 +304,26 @@
            }
         }).open();
      }
+	
+	
+	//금액에 3자리마다 , 넣기
+	function addCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	$(function() {
+		$("#acqPrice").on('keyup', function(event){
+			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+		});
+	});
+	
+	//엔터키 막기
+	document.addEventListener('keydown', function(event) {
+	    if (event.keyCode === 13) {
+	        $(this).next('.inputs').focus();
+	        event.preventDefault();
+	    }
+	}, true);
 	
 	</script>
 	
