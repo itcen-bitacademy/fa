@@ -29,7 +29,7 @@
 		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">매입현황조회</h1>
-				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }"><i class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
+				<a class="btn btn-link pull-right" href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }"></a>
 			</div><!-- /.page-header -->
 			
 			<div class="row-fluid">
@@ -41,28 +41,28 @@
 							<form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">
 								<div class="span4">
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">매 입 번 호</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 번 호</label>
 										<div class="controls">
 											<input class="input-small" type="text" id="no" name="no" placeholder="" value="">										
 										</div>
 									</div>
 							
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">거 래 처 코 드</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거 래 처 코 드</label>
 										<div class="controls">
 											<input class="input-small" type="text" id="customerCode" name="customerCode" placeholder=""  value="">
 										</div>
 									</div>
 							
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">품 목 코 드</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">품 목 코 드</label>
 										<div class="controls">
 											<input class="input-small" type="text" id="itemCode" name="itemCode" placeholder=""  value="">										
 										</div>
 									</div>
 								
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">삭제여부</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">삭제여부</label>
 										<div class="controls">
 											<select class="chosen-select span1" id="deleteFlag" name="deleteFlag">
 												<option value="Y">Y</option>
@@ -72,7 +72,7 @@
 									</div>
 							
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">정렬기준</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">정렬기준</label>
 										<div class="controls">
 											<select class="chosen-select span1" id="orderStd" name="orderStd">
 											<option value="purchase_date" selected="selected">매입일자</option>
@@ -82,14 +82,14 @@
 											</select>
 											<span>
 												<button class="btn btn-small" type="submit" id="search">조회</button>
-												<button class="btn btn-info btn-small" type="reset" id="reset">초기화</button>
+												<button class="btn btn-info btn-small" type="button" id="reset" onclick="formReset();">초기화</button>
 											</span>
 										</div>
 									</div>
 								</div>
 								<div class="span4">
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">매 입 일 자</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">매 입 일 자</label>
 										<div class="controls">
 											<div class="input-append">
 												<input class="cl-date-picker1 input-small" id="startDate" name="startDate" type="text" data-date-format="yyyy-mm-dd"  value="">
@@ -109,7 +109,7 @@
 								
 															
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">거 래 처 명</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">거 래 처 명</label>
 	
 										<div class="controls">
 											<input type="text" id="customerName" name="customerName" placeholder=""  value="">
@@ -117,7 +117,7 @@
 									</div>
 								
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">품 목 명</label>
+										<label class="control-label" for="form-field-1" style="text-align:initial; text-indent:40px;">품 목 명</label>
 	
 										<div class="controls">
 											<input type="text" id="itemName" name="itemName" placeholder=""  value="">
@@ -273,9 +273,10 @@
 			$(".chosen-select").chosen();
 		})
 		
-		function reset() {
-		location.reload(true);
-	};
+		function formReset() {
+			location.reload(true);
+			
+		};
 		
 	 
 		var searchFlag = true;

@@ -186,19 +186,12 @@ public class Menu06Controller {
 	// 전표등록 + 수정
 		@RequestMapping(value = { "/" + SUBMENU + "/update" }, method = RequestMethod.POST)
 		public String update(Model model, PurchasemanagementVo vo, @AuthUser UserVo authUser) throws ParseException {
-			System.out.println(vo.getPreNo());
-			System.out.println(vo.getPreNumber());
-			System.out.println(vo.getPrePurchaseDate());
-			System.out.println(vo);
-			vo.setVoucherNo(menu06Service.getVoucherNo(vo));
-
-			
+			vo.setVoucherNo(menu06Service.getVoucherNo(vo)); // 전표번호 등록(전표가 없으면 null이 입력되어 전표등록부분으로 감)
 			
 			// 마감 여부 체크
 			if (menu19Service.checkClosingDate(authUser, vo.getPurchaseDate())) {
 				// 매입수정만
 				if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) { // 세금계산서 입력 전에 수정
-					System.out.println("들어오는지 확인");
 					vo.setTaxbillNo(null);
 					
 					vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
@@ -211,7 +204,7 @@ public class Menu06Controller {
 					model.addAttribute("customerList", customerList);
 
 				} else if ((vo.getTaxbillNo() != "" || vo.getTaxbillNo() != null) || vo.getVoucherNo() == null) { // 매입수정과 전표등록을
-																													// 동시에?!
+																													// 동시에
 
 					// 세금계산서 번호 입력
 					vo.setTotalPrice((vo.getSupplyValue() + vo.getTaxValue()) * vo.getQuantity());
@@ -275,7 +268,6 @@ public class Menu06Controller {
 				model.addAttribute("customerList", customerList);
 				return MAINMENU + "/" + SUBMENU + "/list";
 			}
-			//return MAINMENU + "/" + SUBMENU + "/list";
 		}
 
 	// 조회
@@ -283,10 +275,6 @@ public class Menu06Controller {
 	@RequestMapping(value = { "/" + SUBMENU + "/search" }, method = RequestMethod.POST)
 	public PurchasemanagementVo search(Model model, @RequestBody PurchasemanagementVo vo) {
 		PurchasemanagementVo result = menu06Service.getList(vo);
-		System.out.println(result.getPurchaseDate());
-		model.addAttribute("prePurchaseDate", result.getPurchaseDate());
-		model.addAttribute("preNo", result.getNo());
-		model.addAttribute("preNumber", result.getNumber());
 		return result;
 	}
 
