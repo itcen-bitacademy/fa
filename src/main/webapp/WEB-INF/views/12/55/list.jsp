@@ -54,33 +54,27 @@ $(function() {
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">품목별 매입매출 현황</h1>
-					<a class="btn btn-link pull-right"
-						href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add"><i
-						class="icon-plus-sign bigger-120 green"></i> 팀 추가</a>
 				</div>
 				<form class="form-horizontal">
 					<div class="row-fluid">
-						<div class="span12">
+						<div class="span10">
 							<div class="form-horizontal">
 
 								<div class="span3">
-									<div class="form-horizontal">
-										<label class="control-label" for="cl-ym-date-picker" style="text-align: left; width: 120px;"> 년 월</label>
-										<div class="controls" style="margin-left: 120px;">
+										<label class="control-label" for="cl-ym-date-picker" style="text-align: left; width: 50px;"> 년 월</label>
+										<div class="controls" style="margin-left: 50px;">
 											<div class="row-fluid input-append">
-												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" />
+												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" style="text-align: left; width: 200px;"/>
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
 										</div>
-									</div>
 								</div>
 
 
-								<div class="span4">
-									<div class="form-horizontal">
-										<label class="control-label" for="form-field-select-2" style="text-align: left; width: 120px;">품목명</label>
-										<div class="controls" style="margin-left: 120px;">
+								<div class="span3">
+										<label class="control-label" for="form-field-select-2" style="text-align: left; width: 60px;">품목명</label>
+										<div class="controls" style="margin-left: 60px;">
 											<select class="chosen-select" id="itemname" name="itemcode"
 												data-placeholder="품목명 선택" >
 												<option value=""></option>
@@ -95,12 +89,11 @@ $(function() {
 													$("#itemname").val(itemcode);
 											</script>
 										</div>
-									</div>
 								</div>
 
 
 								<div class="span2">
-									<button type="submit" class="btn btn-small btn-info"
+									<button type="submit" class="btn btn-small btn-info" type="submit" style="margin-left: 50px;"
 										formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 
 								</div>
