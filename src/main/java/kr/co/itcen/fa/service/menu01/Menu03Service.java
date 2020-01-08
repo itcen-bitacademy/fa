@@ -278,5 +278,10 @@ public class Menu03Service {
 	public List<AccountManagementVo> getAllAccountList() {
 		return menu03Repository.getAllAccountList();
 	}
+	
+	// 삭제할때 시간구하기
+	public String getRegDate(VoucherVo voucherVo) {
+		return menu03Repository.getRegDate(voucherVo.getNo());
+	}
 
 }

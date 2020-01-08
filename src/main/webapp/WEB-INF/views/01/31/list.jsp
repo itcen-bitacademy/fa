@@ -148,67 +148,65 @@
 
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
-						<div class="span12">
-							<div style="width:100%; overflow-x:auto"> <!-- scroll auto -->
-								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
-									<thead>
-										<tr>
-											
-											<th class="center">계정과목명</th>
-											<th class="center">일자</th>
-											<th class="center">전표번호-순번</th>
-											<th class="center">차대구분</th>
-											<th class="center">차변</th>
-											<th class="center">대변</th>
-											<th class="center">은행명</th>
-											<th class="center">카드번호</th>
-											<th class="center">계좌번호</th>
-											<th class="center">소유자</th>
-											<th class="center">사용목적</th>
-											<th class="center">관리팀</th>
-											
-											
-										</tr>
-									</thead>
-									
-									<tbody style="text-align: center;">
-										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
-											<tr style="text-align: center;">
+						<div class="span12" style="overflow: auto;">
+							<table id="sample-table-1" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
+								<thead>
+									<tr>
+										
+										<th class="center">계정과목명</th>
+										<th class="center">일자</th>
+										<th class="center">전표번호-순번</th>
+										<th class="center">차대구분</th>
+										<th class="center">차변</th>
+										<th class="center">대변</th>
+										<th class="center">은행명</th>
+										<th class="center">카드번호</th>
+										<th class="center">계좌번호</th>
+										<th class="center">소유자</th>
+										<th class="center">사용목적</th>
+										<th class="center">관리팀</th>
+										
+										
+									</tr>
+								</thead>
+								
+								<tbody style="text-align: center;">
+									<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
+										<tr style="text-align: center;">
 
-												<td class="center">${vo.accountName }</td>
-												<td class="center">${vo.regDate }</td>
-												<td class="center">${vo.voucherNo }-${vo.voucherOrderNo }</td>
-												<td class="center">${vo.amountFlag }</td>
-													<c:choose>
-												        <c:when test="${vo.amountFlag == '차변' }">
-												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
-												            <td style="text-align: right;"></td>
-												        </c:when>
-												        <c:otherwise>
-												        	<td style="text-align: right;"></td>
-												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
-												        </c:otherwise>
-												    </c:choose>
-												<td class="center">${vo.bankName }</td>
-												<td class="center">${vo.cardNo }</td>
-												<td class="center">${vo.depositNo }</td>
+											<td class="center">${vo.accountName }</td>
+											<td class="center">${vo.regDate }</td>
+											<td class="center">${vo.voucherNo }-${vo.voucherOrderNo }</td>
+											<td class="center">${vo.amountFlag }</td>
 												<c:choose>
-												<c:when test="${empty vo.depositHost }">
-												<td class="center">${vo.cardUser }</td>
-												</c:when>
-												<c:otherwise>
-												<td class="center">${vo.depositHost }</td>
-												</c:otherwise>
-												</c:choose>
-												<td class="center">${vo.voucherUse }</td>
-												<td class="center">${vo.insertTeam }</td>
-												    
-											</tr>
-											
-									</c:forEach>
-									</tbody>
-								</table>
-							</div>
+											        <c:when test="${vo.amountFlag == '차변' }">
+											            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+											            <td style="text-align: right;"></td>
+											        </c:when>
+											        <c:otherwise>
+											        	<td style="text-align: right;"></td>
+											            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
+											        </c:otherwise>
+											    </c:choose>
+											<td class="center">${vo.bankName }</td>
+											<td class="center">${vo.cardNo }</td>
+											<td class="center">${vo.depositNo }</td>
+											<c:choose>
+											<c:when test="${empty vo.depositHost }">
+											<td class="center">${vo.cardUser }</td>
+											</c:when>
+											<c:otherwise>
+											<td class="center">${vo.depositHost }</td>
+											</c:otherwise>
+											</c:choose>
+											<td>${vo.voucherUse }</td>
+											<td class="center">${vo.insertTeam }</td>
+											    
+										</tr>
+										
+								</c:forEach>
+								</tbody>
+							</table>
 						</div><!-- /span -->
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->

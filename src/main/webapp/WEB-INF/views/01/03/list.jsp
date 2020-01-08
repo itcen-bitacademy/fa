@@ -292,9 +292,9 @@
 			
 			<!--조회 테이블 영역 -->
 			<div class="row-fluid">
-				<div class="span12">
+				<div class="span12" style="overflow: auto;">
 					<table id="simple-table-1"
-						class="table table-striped table-bordered table-hover">
+						class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 						<thead>
 							<tr>
 								<th class="center">일자</th>
@@ -338,12 +338,12 @@
 									<td>${voucherVo.accountName }</td>
 									<c:choose>
 								        <c:when test="${voucherVo.amountFlag == 'd' }">
-								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+								            <td style="text-align: right;"><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								            <td></td>
 								        </c:when>
 								        <c:otherwise>
 								        	<td></td>
-								            <td><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
+								            <td style="text-align: right;"><fmt:formatNumber value="${voucherVo.amount}" pattern="#,###" /></td>
 								        </c:otherwise>
 								    </c:choose>
 								    <td>${voucherVo.customerNo }</td>
@@ -484,7 +484,7 @@
 		cell3.innerHTML = '<td class="center">' + accountNo + '</td>';
 		cell4.innerHTML = '<td class="center">' + accountName + '</td>';
 		cell5.innerHTML = '<td class="center">' + amountFlag + '</td>';
-		cell6.innerHTML = '<td class="center">' + comma(amount) + '</td>';
+		cell6.innerHTML = '<td style="text-align: right">' + comma(amount) + '</td>';
 		cell7.innerHTML = '<td class="center">' + customerNo + '</td>';
 		cell8.innerHTML = '<td class="center">' + customerName + '</td>';
 		if(manageNo == '') {
@@ -712,7 +712,7 @@
 		cell3.innerHTML = '<td class="center">' + accountNo + '</td>';
 		cell4.innerHTML = '<td class="center">' + accountName + '</td>';
 		cell5.innerHTML = '<td class="center">' + amountFlag + '</td>';
-		cell6.innerHTML = '<td class="center">' + comma(amount) + '</td>';
+		cell6.innerHTML = '<td style="text-align: right">' + comma(amount) + '</td>';
 		cell7.innerHTML = '<td class="center">' + customerNo + '</td>';
 		cell8.innerHTML = '<td class="center">' + customerName + '</td>';
 		if(manageNo == '') {
@@ -1040,7 +1040,7 @@ $(function(){
 	                        "<td>" + voucherList[a].accountNo + "</td>" +
 	                        "<td>" + voucherList[a].accountName + "</td>" +
 	                        "<td>" + voucherList[a].amountFlag + "</td>" +
-	                        "<td>" + voucherList[a].amount + "</td>" +
+	                        "<td>" + comma(voucherList[a].amount) + "</td>" +
 	                        "<td>" + voucherList[a].customerNo + "</td>" +
 	                        "<td>" + voucherList[a].customerName + "</td>" +
 	                        "<td>" + manageName + "</td>" +
