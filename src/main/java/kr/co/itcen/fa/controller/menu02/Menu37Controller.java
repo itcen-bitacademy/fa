@@ -99,7 +99,7 @@ public class Menu37Controller {
 		// 승인번호와 matching되는 정보들을 가져온다.
 		BuyTaxbillVo getAboutNoData = menu37Service.getAboutNoData(vo.getNo());
 		if(getAboutNoData == null ) {
-			model.addAttribute("flag", "false");
+			model.addAttribute("searchFlag","true");
 			return MAINMENU + "/" + SUBMENU + "/add";
 		}
 		
