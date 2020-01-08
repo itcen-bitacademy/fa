@@ -102,7 +102,7 @@ public class Menu37Controller {
 			model.addAttribute("searchFlag","true");
 			return MAINMENU + "/" + SUBMENU + "/add";
 		}
-		
+		  
 		CustomerVo getAboutNoCustomerData = menu37Service.getAboutNoCustomerData(getAboutNoData.getCompanyName());
 		BankAccountVo getAboutNoBankData = menu37Service.getAboutNoBankData(getAboutNoCustomerData.getDepositNo());
 		List<BuyTaxbillItemsVo> getAboutItmes = menu37Service.getAboutItmes(vo.getNo());
@@ -121,7 +121,13 @@ public class Menu37Controller {
 	public String delete(Model model, BuyTaxbillVo vo) {
 		List<CustomerVo> customerList = menu37Service.customerList();
 		List<BankAccountVo> customerBankList = menu37Service.customerBankList();
-
+		
+		// 세금계산서가 있는지 확인
+		if(menu37Service.checkDuplicateNo(vo.getNo()) == null) {
+			model.addAttribute("deleteFlag","true");
+			return MAINMENU + "/" + SUBMENU + "/add";
+		}
+		
 		menu37Service.taxbillDelete(vo.getNo());
 		menu37Service.taxbillItemDelete(vo.getNo());
 

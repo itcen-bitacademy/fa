@@ -78,7 +78,7 @@ public class Menu37Service {
 		menu37Repository.taxbillItemsUpdateDelete(no);
 
 	}
-
+  
 	public void insertUpdatedTax(BuyTaxbillVo vo) {
 		menu37Repository.insertUpdatedTax(vo);
 

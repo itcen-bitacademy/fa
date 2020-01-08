@@ -405,17 +405,21 @@ html, body {
 	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
-	<!-- 페이지로드될 때 발생하는 script함수 -->
+	<!-- 페이지로드될 때 발생하는 script함수 -->  
 	<script>
 		function startFunctions() {
 			addElementCommas();
 			addElementCalender();
 			if('${insertFlag }'){
-				chectDuplicateNo();
+				checkDuplicateNo();
 			}
 			if('${searchFlag }'){
-				chectDuplicateNo();
+				checkSearchNo();
 			}
+			if('${deleteFlag }'){
+				checkDeleteNo();
+			}
+			
 		}
 	</script>
 	<!-- 거래처명 찾기기능 -->
@@ -595,11 +599,19 @@ html, body {
 				$("#tax-value" + i).val(taxValue);
 			}
 		}
-
-		// 세금계산서 중복 dialog
-		function chectDuplicateNo(){
-			dialog("중복된 세금계산서 번호가 있습니다.<br />세금계산서 번호를 다시한번 확인해주시기를 바랍니다.");
+		// 삭제했을 때 세금계산서 번호가 없는 것을 체크할 떄
+		function checkDeleteNo(){
+			dialog("※주의<br /><br />없는 세금계산서 번호입니다.<br />세금계산서 번호를 다시한번 확인해주시기를 바랍니다.");
 		}
+		// 조회했을 때 세금계산서 번호가 없는 것을 체크할 때
+		function checkSearchNo(){
+			dialog("※주의<br /><br />없는 세금계산서 번호입니다.<br />세금계산서 번호를 다시한번 확인해주시기를 바랍니다.");
+		}
+		// 세금계산서 중복 dialog
+		function checkDuplicateNo(){
+			dialog("※주의<br /><br />중복된 세금계산서 번호가 있습니다.<br />세금계산서 번호를 다시한번 확인해주시기를 바랍니다.");
+		}
+		
 		// 세금계산서 수정 불가 alert
 		function impossible_no() {
 			dialog("※주의<br /><br />세금계산서 번호는 수정할 수 없습니다.<br />수정을 원하시면 삭제 후 재입력 해주시기를 바랍니다.");
@@ -721,7 +733,6 @@ html, body {
 								"action",
 								"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
 						.submit();
-
 			}
 		}
 
