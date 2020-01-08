@@ -296,7 +296,7 @@ input:focus {
 										type="button" style="float: left; margin-left: 20px;">초기화</button>
 								</div>
 								<div style="float: right;" class="btn-group">
-									<button class="btn btn-default btn-small" type="button"
+									<button class="btn btn-info btn-small" type="button"
 										style="float: left; margin-left: 20px;"
 										onclick="search_button();">조회</button>
 								</div>

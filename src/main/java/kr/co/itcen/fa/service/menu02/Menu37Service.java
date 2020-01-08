@@ -88,4 +88,9 @@ public class Menu37Service {
 		menu37Repository.insertUpdatedItem(buyTaxbillItemsVo);
 
 	}
+
+	public String checkDuplicateNo(String no) {
+		return menu37Repository.checkDuplicateNo(no);
+		
+	}
 }

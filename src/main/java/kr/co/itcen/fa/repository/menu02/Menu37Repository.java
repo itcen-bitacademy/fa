@@ -91,4 +91,8 @@ public class Menu37Repository {
 
 	}
 
+	public String checkDuplicateNo(String no) {
+		return sqlSession.selectOne("menu37.checkDuplicateNo", no);
+	}
+
 }
