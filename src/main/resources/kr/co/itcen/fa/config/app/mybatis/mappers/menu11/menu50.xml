@@ -12,7 +12,7 @@
 						#{debtDate }, #{expDate }, #{intRate }, 
 						#{intPayWay }, #{mgr }, 
 						#{mgrCall }, #{dangerCode }, #{dangerName }, 
-						#{bankCode }, #{depositNo }, '2402101', #{voucherNo }, 
+						#{bankCode }, #{depositNo }, #{voucherNo }, 
 						'N', #{insertId }, now(), 0, now())
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">

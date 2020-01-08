@@ -10,11 +10,17 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <style>
+html,body{height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
 .form-horizontal .control-label {text-align: left;}
 
 .radio {
 	float: left;
-	width: 10%;
+	width: 13%;
 }
 
 .prod-list-opts {
@@ -39,7 +45,7 @@ form {
 .sixth-column {padding-left:10px;}
 
 /* second row */
-.span3 {padding-left:40px; padding-top:20px;}
+.span3 {padding-left:150px; padding-top:10px;}
 
 </style>
 </head>
@@ -57,7 +63,7 @@ form {
 					<!-- PAGE CONTENT BEGINS -->
 					<div>
 						<div>
-						<form class="form-horizontal" method="get" action="">
+						<form class="form-horizontal" id="myform" method="get" action="">
 							<table style="width:100%;">
 								<tbody>
 								<tr>
@@ -66,7 +72,7 @@ form {
 									</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="cl-date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" readonly="readonly" />
+				                           <input class="cl-date-picker" type="text" name="debtDate" id="id-date-picker-1"  data-date-format="yyyy-mm-dd" value="${vo.debtDate }" readonly="readonly" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -77,20 +83,41 @@ form {
 									</td>
 									<td>
 										<div class="radio">
-											<label class="control-label">
+											<label>
+											<c:choose>
+											<c:when test='${vo.intPayWay eq "Y"}'>
+												<input name="intPayWay" type="radio" class="ace" value="Y" checked="checked"/>
+											</c:when>
+											<c:otherwise>
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
+											</c:otherwise>
+											</c:choose>
 												<span class="lbl">연</span>
 											</label>
 										</div>
 										<div class="radio">
-											<label class="control-label">
+											<label>
+											<c:choose>
+											<c:when test='${vo.intPayWay eq "M"}'>
+												<input name="intPayWay" type="radio" class="ace" value="M" checked="checked"/>
+											</c:when>
+											<c:otherwise>
 												<input name="intPayWay" type="radio" class="ace" value="M"/>
+											</c:otherwise>
+											</c:choose>
 												<span class="lbl">월</span>
 											</label>
 										</div>
 										<div class="radio">
-											<label class="control-label">
+											<label>
+											<c:choose>
+											<c:when test='${vo.intPayWay eq "E"}'>
+												<input name="intPayWay" type="radio" class="ace" value="E" checked="checked"/>
+											</c:when>
+											<c:otherwise>
 												<input name="intPayWay" type="radio" class="ace" value="E"/>
+											</c:otherwise>
+											</c:choose>
 												<span class="lbl">만기</span>
 											</label>
 										</div>
@@ -99,10 +126,9 @@ form {
 										<label class="control-label">은행명</label>
 									</td>
 									<td class="fifth-column">
-										<input type="text" name="bankName"/>
+										<input type="text" name="bankName" value="${vo.bankName }"/>
 									</td>
 									<td class="sixth-column">
-										<button type="submit" class="btn btn-primary btn-small" style="width: 50px;" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 									</td>
 								</tr>
 								<tr>
@@ -111,7 +137,7 @@ form {
 								</td>
 									<td class="second-column">
 				                        <div class="row-fluid input-prepend">
-				                           <input class="cl-date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd" readonly="readonly" />
+				                           <input class="cl-date-picker" type="text" name="expDate" id="id-date-picker-1" data-date-format="yyyy-mm-dd" value="${vo.expDate }" readonly="readonly" />
 				                           <span class="add-on">
 				                              <i class="icon-calendar"></i>
 				                           </span>
@@ -135,19 +161,39 @@ form {
 								</div>
 								<div class="span3">
 									<div class="checkbox">
-										<label>
-											<input name="form-field-checkbox" type="checkbox" class="ace" />
-											<span class="lbl">삭제포함</span>
+										<label >
+												<c:choose>
+												<c:when test='${vo.deleteFlag eq ""}'>
+													<input name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
+												</c:when>
+												<c:otherwise>
+													<input name="deleteFlag" type="checkbox" class="ace" value="" />
+												</c:otherwise>
+												</c:choose>
+													<span class="lbl">삭제포함</span>
 										</label>
 									</div>
 									<div class="checkbox">
-										<label>
-											<input name="form-field-checkbox" type="checkbox" class="ace" />
-											<span class="lbl">상환완료포함</span>
-										</label>
+										<label>	
+												<c:choose>
+												<c:when test='${vo.repayCompleFlag eq ""}'>
+													<input name="repayCompleFlag" type="checkbox" class="ace" value="" checked="checked"/>
+												</c:when>
+												<c:otherwise>
+													<input name="repayCompleFlag" type="checkbox" class="ace" value=""/>
+												</c:otherwise>
+												</c:choose>
+													<span class="lbl">상환완료포함</span>
+											</label>
 									</div>
 								</div>
 							</div>
+							<hr>
+						<div class="row-fluid">
+							<button type="button" id="searchbtn" class="btn btn-primary btn-small mybtn">조회</button>
+							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
+						</div>
+					<hr>
 							</form>
 						</div><!-- /span -->
 					</div><!-- /row -->
@@ -155,7 +201,8 @@ form {
 			
 				<!-- list -->
 				<p>총 ${contentsCount }건</p>
-				<table id="simple-table" class="table  table-bordered table-hover">
+				<div style="overflow: auto;">
+				<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center">사채코드</th>
@@ -208,6 +255,7 @@ form {
 					</c:forEach>
 					</tbody>
 				</table>
+				</div>
 
 				<!-- 페이징 처리 코드 start -->
 				<div class="pagination">
@@ -280,6 +328,52 @@ form {
 			language: 'ko'
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
+		});
+		
+		$('#searchbtn').click(function(){
+			var isIntPayWayCheck=false;
+			$('input[name=intPayWay]').each(function(index,	item){
+				if($(item).prop('checked') == true){
+					isIntPayWayCheck = true;
+				}
+			});
+			if(!isIntPayWayCheck){
+				$('input[name=intPayWay]').val('');
+			}
+			
+			$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
+			$('#myform').attr('method', 'GET');
+			$('#myform').submit();
+			return;
+		});
+		
+		// 초기화버튼 이벤트 연결
+		$('#clearbtn').click(function(){
+			$('input[name=debtDate]').val('');
+			$('input[name=expDate]').val('');
+			
+			$('input').not('input[name=intPayWay]').not('input[name=repayWay]').val('');
+			    
+		    $('input[name=intPayWay]').each(function(index, item){
+		    	if($(item).prop('checked') == true){
+		    		$(item).prop('checked', false);
+		    	}
+		    });
+		    
+		    $('input[name=bankName]').val('');
+		    $('#majorcode-field-select').val('').trigger('chosen:updated');
+		    
+		    $('input[name=deleteFlag]').each(function(index, item){
+		    	if($(item).prop('checked') == true){
+		    		$(item).prop('checked', false);
+		    	}
+		    });
+		    
+		    $('input[name=repayCompleFlag]').each(function(index, item){
+		    	if($(item).prop('checked') == true){
+		    		$(item).prop('checked', false);
+		    	}
+		    });
 		});
 	});
 </script>
