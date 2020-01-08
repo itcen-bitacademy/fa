@@ -151,7 +151,12 @@
 		// 수정 update
 		$("#btn_update").click(function(){
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update");
-			checkValid();
+			if($("#no").val() == $("#preNo").val()){
+				checkValid();			
+			}else{
+				checkNo();
+				checkValid();
+			}
 	        return false;
 		});
 		
@@ -160,14 +165,22 @@
 			//event.preventDefault();
 
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
+			
+			if(document.getElementById("check_ok").style.display=='none' && $("#no").val()!=""){
+				dialog("사업자번호 중복체크 해주세요.");
+				return;
+			}
+			
 			checkValid();
-	        return false;
+	        
+			return false;
 		});
 		
 		// 취소 cancel
 		$("#btn_cancel").click(function(){
 			// 입력버튼 활성화
 			$("#btn_insert").prop("disabled", false);
+			$("#check_no").show();
 			
 			$("#no").val('');					//사업자번호
 			$("#preNo").val('');				//사업자번호
@@ -195,6 +208,7 @@
 		$("#customer-table tr").click(function(){ 	
 			// 입력버튼 비활성화
 			$("#btn_insert").prop("disabled", true);
+			$("#check_no").hide();
 			
 			var str = ""
 			var tdArr = new Array();	// 배열 선언
@@ -227,6 +241,10 @@
 		
 		// 사업자번호 중복체크
 		$("#check_no").click(function(){
+			checkNo();
+		});
+		
+		function checkNo(){
 			$.ajax({
 				url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo?no="+$("#no").val(),
 				type: "get",
@@ -252,15 +270,14 @@
 					console.error("error:"+error);
 				}
 			});
+		}
+		
+		$("#no").on("change", function(){
+			$("#check_ok").hide();
 		});
 		
 		// 유효성 검사
 		function checkValid() {
-			if(document.getElementById("check_ok").style.display=='none' && $("#no").val()!=""){
-				dialog("사업자번호 중복체크 해주세요.");
-				return;
-			}
-			
 			if(!valid.nullCheck("no", "사업자번호")) return;
 			if(!valid.numberCheck("no", "사업자번호")) return;
 			
@@ -276,7 +293,6 @@
 			
 			$("#form-customer").submit();
 			return;
-			
 		}
 	});
 	
@@ -586,7 +602,7 @@
 											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
 											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
 											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
-											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">초기화</button>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button>
 									</div>
 									<div class="hr hr-18 dotted"></div>
 								</div>
@@ -599,10 +615,10 @@
 										<thead>
 											<tr>
 												<th class="center">
-				                                    <label>
+				                                    <!-- <label>
 				                                       <input type="checkbox" class="ace">
 				                                       <span class="lbl"></span>
-				                                    </label>
+				                                    </label> -->
 				                                 </th>
 				                                 <th class="center">사업자번호</th>
 				                                 <th class="center">상호</th>

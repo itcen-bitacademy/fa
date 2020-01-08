@@ -158,7 +158,7 @@
 			       deposit_host = #{depositHost },
 			       update_userid = #{updateUserid },
 			       update_day = now()			       
-			 where right(no, 10) = #{no }
+			 where right(no, 10) = #{preNo }
 		]]>
 	</update>
 	
