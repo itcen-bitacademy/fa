@@ -142,7 +142,7 @@
 						<!-- 차변 대변 나누기 위한 row-fluid -->
 						<br>
 						<br>
-						<p>총 건수 : ${dataResult.pagination.totalCnt } </p>
+						<p>총 ${dataResult.pagination.totalCnt } 건</p>
 								<div class="row-fluid">
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 										<thead>
