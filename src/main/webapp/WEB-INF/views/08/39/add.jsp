@@ -16,20 +16,13 @@
     text-align: left
  }
  
- .publicValue {
+/*테이블 내 row  */
+ #tbody-list .alignRight{
     text-align: right;
  }
  
-  .acqTax {
-    text-align: right;
- }
- 
-  .acqPrice {
-    text-align: right;
- }
- 
-  .etcCost {
-    text-align: right;
+ .alignRight{
+ 	text-align: right;
  }
  
  html,body{
@@ -141,14 +134,14 @@
 										<div style="float: left; width: 40%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">공시지가</label> 
-												<input type="text" id="publicValue" name="publicValue" class="publicValue"
+												<input type="text" id="publicValue" name="publicValue" class="alignRight"
 												placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">기타비용</label>
 										<div class="controls">
-											<input type="text" id="etcCost" name="etcCost" class="etcCost"
+											<input type="text" id="etcCost" name="etcCost" class="alignRight"
 												placeholder="금액을 입력하세요"/>
 										</div>
 									</div>
@@ -221,14 +214,14 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">취득금액</label>
 											<div class="controls">
-												<input type="text" id="acqPrice" name="acqPrice" class="acqPrice"
+												<input type="text" id="acqPrice" name="acqPrice" class="alignRight"
 													placeholder="금액을 입력하세요" />
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label style="width: 70px; margin-right: 10px;"
 												class="control-label" for="form-field-1">취득세</label> 
-											<input readonly type="text" id="acqTax" name="acqTax" class="acqTax" placeholder="" />
+											<input readonly type="text" id="acqTax" name="acqTax" class="alignRight" placeholder="" />
 										</div>
 									</div>
 									<div class="control-group">
@@ -274,9 +267,7 @@
 									</div>
 								</div>
 							</form>
-						
-
-
+							
 			<!-- 테이블 -->
 			<div style="overflow: auto;">
 				<table id="sample-table-1" 
@@ -311,9 +302,9 @@
 						</tr>
 					</thead>
 					
-					<tbody>
+					<tbody id="tbody-list">
 					<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
-						<tr class="table-row" >
+						<tr>
 							<td>${(page-1)*11 + status.count}</td>
 							<td>${vo.id }</td>
 							<td>${vo.sectionNo }</td>
@@ -330,11 +321,11 @@
 							<td>${vo.customerName }</td>
 							<td>${vo.managerName }</td>
 							<td>${vo.ownerName }</td>
-							<td class="center">${vo.payDate }</td>
-							<td style="text-align : right"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
-							<td style="text-align : right"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
-							<td style="text-align : right"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
-							<td style="text-align : right"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
+							<td>${vo.payDate }</td>
+							<td class="alignRight"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+							<td class="alignRight"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+							<td class="alignRight"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+							<td class="alignRight"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 							<td>${vo.combineNo }</td>
 							<td>${vo.taxbillNo }</td>
 							<td>${vo.taxKind }</td>
@@ -350,13 +341,10 @@
 				</p>
 			</div>		
 		</div><!-- /.span -->
-						
 	</div><!-- 좌,우측  row-fluid -->
-				
 </div><!-- /.page-content -->
-			
-			<!-- 페이징 row-fluid -->
-			<div class="row-fluid">
+		<!-- 페이징 row-fluid -->
+		<div class="row-fluid">
 			<!-- 페이징 -->
 			<div class="pagination">
 				<ul>
@@ -369,6 +357,7 @@
 							<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
 						</c:otherwise>
 					</c:choose>
+					
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
@@ -410,18 +399,15 @@
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
+<!-- date picker -->
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
+
 <script>
-var errorfocus = ""; // error 부분 focusing
-var closeflag = $('#closingDate').val();
-var checkId = false; //중복체크 유무를 확인
+	var errorfocus = ""; // error 부분 focusing
+	var closeflag = $('#closingDate').val();
+	var checkId = false; //중복체크 유무를 확인
 
-//유효성 검사
- $(document).ready(function(){
-	
-	 // 마감일 체크
-	checkClosing();
-
-}); 
 
 //건물코드 중복검사
  $("#btn-check-code").click(function(e){
@@ -531,6 +517,7 @@ var checkId = false; //중복체크 유무를 확인
 	//초기화 동작
 	$("#reset").click(function(event) {
 	  event.preventDefault();
+	  $('#buildingCode').prop('readonly', false);
 	  $('input[type=text]').val("");
 	  $('input:radio').prop("checked",false);
       $('#form-field-section').val("").trigger('chosen:updated');
@@ -539,17 +526,8 @@ var checkId = false; //중복체크 유무를 확인
  	  $("#modify").hide();
 	  $("#search").show();
 	  $("#delete").hide();
+	  $("#btn-check-code").show();
 	});
-
-
-	//마감일 체크
-	function checkClosing(){
-		if (!valid.closingCheck("closingDate")){
-			return false;
-		}
-		return true;
-	}
-	
 	
 	//// 관리 validation
 	function manageValid() {
@@ -626,6 +604,14 @@ var checkId = false; //중복체크 유무를 확인
 		}
 		return true;
 	}
+	
+	//마감일 체크
+	function checkClosing(){
+		if (!valid.closingCheck("closingDate")){
+			return false;
+		}
+		return true;
+	}
 
 	var valid = {
 		nullCheck : function(id, msg) { // null 체크
@@ -655,7 +641,7 @@ var checkId = false; //중복체크 유무를 확인
 				return true;
 			}
 		},
-		numberCheck : function(id, msg) { // 숫자 체크
+		/* numberCheck : function(id, msg) { // 숫자 체크
 			if (!$.isNumeric($("#" + id).val())) {
 				dialog(msg + "은(는) 숫자만 입력 가능합니다.");
 				$("#" + id).focus();
@@ -663,7 +649,7 @@ var checkId = false; //중복체크 유무를 확인
 			} else {
 				return true;
 			}
-		},
+		}, */
 		closingCheck : function(id) { // 마감일 체크
 			if($("#" + id).val() == "true"){
 				dialog("마감된 일자입니다. <br>저장되지 않았습니다.", true);
@@ -697,104 +683,96 @@ var checkId = false; //중복체크 유무를 확인
 			});
     	}
 
-	//빈칸 검사
-	function formCheck() {
-
-		if ($("#buildingCode").val() == "") {
-			document.getElementById(next).focus();
-			alert("검색어를 입력해주시기 바랍니다.");
+		//빈칸 검사
+		function formCheck() {
+	
+			if ($("#buildingCode").val() == "") {
+				document.getElementById(next).focus();
+				alert("검색어를 입력해주시기 바랍니다.");
+			}
+	
+			if (window.event.keyCode == 13) {
+	
+			} else {
+				return;
+			}
 		}
-
-		if (window.event.keyCode == 13) {
-
-		} else {
-			return;
-		}
-	}
-</script>
-<script>
-	$(function(){
-		$(".chosen-select").chosen(); 
-	});
+		
+		
+		//select box 선택 시 값 등록
+		//대분류
+		$('#form-field-section').change(function() {
+	  		var code = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.code}
+	 		$('#code').val(code); 
+		});
+		
+		//거래처-담당자
+		$('#form-field-customer').change(function() {
+	  		var customerno = $('#form-field-customer option:selected').attr('customerNo'); // ${customerVo.no}
+	  		$('#customerNo').val(customerno);
+	 		var managername = $('#form-field-customer option:selected').attr('managerName'); // ${customerVo.manager_name}
+	 		$('#managerName').val(managername);
+		});
 	
-	//select box 선택 시 값 등록
-	
-	//대분류
-	$('#form-field-section').change(function() {
-  		var code = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.code}
- 		$('#code').val(code); 
-	});
-	
-	//거래처-담당자
-	$('#form-field-customer').change(function() {
-  		var customerno = $('#form-field-customer option:selected').attr('customerNo'); // ${customerVo.no}
-  		$('#customerNo').val(customerno);
- 		var managername = $('#form-field-customer option:selected').attr('managerName'); // ${customerVo.manager_name}
- 		$('#managerName').val(managername);
-	});
-	
-	//관리화면
-	$(function() {
+		//관리화면
 		//한행 클릭 >> 건물코드 가져오기
-		   $(".table-row").click(function() {
-			  $('#buildingCode').prop('readonly', true); // row 선택 시 readonly시킴
-			  $("#modify").show();
-			  $("#delete").show();
-			  $("#insert").hide();
-			  $("#search").hide();
-			  $("#btn-check-code").hide();
-			  
-		      var str = ""
-		      var tdArr = new Array();   // 배열 선언
-		      
-		      // 현재 클릭된 Row(<tr>)
-		      var tr = $(this);
-		      var td = tr.children();
-		      
-		      $("input[name=id]").val(td.eq(1).text().replace("b", ""));
-		      $("input[name=sectionNo]").val(td.eq(2).text());
-		      //sectionName 에 대한 값(classification)을 select box에 표시
-		      $('#form-field-section').val(td.eq(3).text()).trigger('chosen:updated');
-		      $("input[name=area]").val(td.eq(4).text());
-		      $("input[name=floor]").val(td.eq(5).text());
-		      $("input[name=basement]").val(td.eq(6).text());
-		      $("input[name=wideAddress]").val(td.eq(7).text());
-		      $("input[name=cityAddress]").val(td.eq(8).text());
-		      $("input[name=detailAddress]").val(td.eq(9).text());
-		      $("input[name=purpose]").val(td.eq(10).text());
-		      $("input[name=material]").val(td.eq(11).text());
-		      $("input[name=customerNo]").val(td.eq(12).text());
-		      //customerName 에 대한 값(code)을 select box에 표시
-		      $('#form-field-customer').val(td.eq(13).text()).trigger('chosen:updated'); 
-		      $("input[name=managerName]").val(td.eq(14).text());
-		      $("input[name=ownerName]").val(td.eq(15).text());
-		      $("input[name=payDate]").val(td.eq(16).text());
-		      $("input[name=publicValue]").val(td.eq(17).text());
-		      $("input[name=acqPrice]").val(td.eq(18).text());
-		      $("input[name=etcCost]").val(td.eq(19).text());
-		      $("input[name=acqTax]").val(td.eq(20).text());
-		      $("input[name=combineNo]").val(td.eq(21).text());
-		      $("input[name=taxbillNo]").val(td.eq(22).text());
-		      
-		     //radio button
-		      if(td.eq(23).text() == "과세"){
-		          $("input[id=tax]").prop('checked', true);
-		      }
-		      else if(td.eq(24).text() == "영세"){
-		          $("input[id=zeroTax]").prop('checked', true);
-		      }
-		     
-		     //CRUD button
-		      if($("#taxbillNo").val() != ''){
-		    	  $("#modify").hide();
-		      }
-		      if($("#taxbillNo").val() == ''){
-			   	 	$("#modify").show();
-			  }
-		      
-			});
-		      
-	});
+	   $("#tbody-list tr").click(function() {
+		  $('#buildingCode').prop('readonly', true); // row 선택 시 readonly시킴
+		  $("#modify").show();
+		  $("#delete").show();
+		  $("#insert").hide();
+		  $("#search").hide();
+		  $("#btn-check-code").hide();
+		  
+	      var str = ""
+	      var tdArr = new Array();   // 배열 선언
+	      
+	      // 현재 클릭된 Row(<tr>)
+	      var tr = $(this);
+	      var td = tr.children();
+	      
+	      $("input[name=id]").val(td.eq(1).text().replace("b", ""));
+	      $("input[name=sectionNo]").val(td.eq(2).text());
+	      //sectionName 에 대한 값(classification)을 select box에 표시
+	      $('#form-field-section').val(td.eq(3).text()).trigger('chosen:updated');
+	      $("input[name=area]").val(td.eq(4).text());
+	      $("input[name=floor]").val(td.eq(5).text());
+	      $("input[name=basement]").val(td.eq(6).text());
+	      $("input[name=wideAddress]").val(td.eq(7).text());
+	      $("input[name=cityAddress]").val(td.eq(8).text());
+	      $("input[name=detailAddress]").val(td.eq(9).text());
+	      $("input[name=purpose]").val(td.eq(10).text());
+	      $("input[name=material]").val(td.eq(11).text());
+	      $("input[name=customerNo]").val(td.eq(12).text());
+	      //customerName 에 대한 값(code)을 select box에 표시
+	      $('#form-field-customer').val(td.eq(13).text()).trigger('chosen:updated'); 
+	      $("input[name=managerName]").val(td.eq(14).text());
+	      $("input[name=ownerName]").val(td.eq(15).text());
+	      $("input[name=payDate]").val(td.eq(16).text());
+	      $("input[name=publicValue]").val(td.eq(17).text());
+	      $("input[name=acqPrice]").val(td.eq(18).text());
+	      $("input[name=etcCost]").val(td.eq(19).text());
+	      $("input[name=acqTax]").val(td.eq(20).text());
+	      $("input[name=combineNo]").val(td.eq(21).text());
+	      $("input[name=taxbillNo]").val(td.eq(22).text());
+	      
+	     //radio button
+	      if(td.eq(23).text() == "과세"){
+	          $("input[id=tax]").prop('checked', true);
+	      }
+	      else if(td.eq(24).text() == "영세"){
+	          $("input[id=zeroTax]").prop('checked', true);
+	      }
+	     
+	     //CRUD button
+	      if($("#taxbillNo").val() != ''){
+	    	  $("#modify").hide();
+	      }
+	      if($("#taxbillNo").val() == ''){
+		   	 	$("#modify").show();
+		  }
+	      
+		});
 	
 	//엔터키 막기
 	document.addEventListener('keydown', function(event) {
@@ -806,33 +784,46 @@ var checkId = false; //중복체크 유무를 확인
 	
 	//금액에 3자리마다 , 넣기
 	function addCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	
-	$(function() {
-		$("#publicValue").on('keyup', function(event){
-			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-		});
-		$("#etcCost").on('keyup', function(event){
-			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-		});
-		$("#acqPrice").on('keyup', function(event){
-			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-		});
+	//숫자(0-9)가 아닌 다른 값을 입력 시 ''로 replace
+	$("#publicValue").on('keyup', function(event){
+		$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	
+	$("#etcCost").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	
+	$("#acqPrice").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	
+	$("#area").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	
+	$("#floor").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	
+	$("#basement").on('keyup', function(event){
+		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
+	});
+	
+	//건물코드에 숫자 이외 칠떄마다 ""로 replace(숫자만 입력)
+	$("#buildingCode").on('keyup', function(event){
+		 $(this).val($(this).val().replace(/[^0-9]/g,""));
 	});
 
-	//취득세 계산
-	$(function() {
-		$('button').on('click', function(e) {
-			e.preventDefault();
-		})
-		$("#acqPrice").change(function() {
-			var AcqPrice = $("#acqPrice").val();
-			var RealAcqPrice = AcqPrice.split(',').join('');
-			$("#acqTax").val(Math.floor(RealAcqPrice*0.04));
-			$("#acqTax").val(addCommas($("#acqTax").val().replace(/[^0-9]/g,"")));
-		});
+	$("#acqPrice").change(function() {// 취득금액 값이 변경(change)시 실행되는 javascript
+		var AcqPrice = $("#acqPrice").val();
+		var RealAcqPrice = AcqPrice.split(',').join('');
+		$("#acqTax").val(Math.floor(RealAcqPrice*0.04));
+		$("#acqTax").val(addCommas($("#acqTax").val().replace(/[^0-9]/g,"")));
 	});
+	
 	
 	//주소 API
 	function execDaumPostcode() {
@@ -847,13 +838,14 @@ var checkId = false; //중복체크 유무를 확인
 			}
 		}).open();
 	}
-</script>
-
-<!-- date picker -->
-<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
-<script>
+	
+	
 	$(function() {
+		 // 마감일 체크
+		checkClosing();
+		 
+		$(".chosen-select").chosen();
+		//date picker customizing
 		$.fn.datepicker.dates['ko'] = {
 		days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
 		daysShort: ["일", "월", "화", "수", "목", "금", "토"],
@@ -881,6 +873,12 @@ var checkId = false; //중복체크 유무를 확인
 		}).next().on(ace.click_event, function(){
 			$(this).prev().focus();
 		});
+		
+		//취득세 계산
+		$('button').on('click', function(e) {
+			e.preventDefault();
+		})
+		
 	})
 </script>
 </body>
