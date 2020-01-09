@@ -21,7 +21,7 @@
 				code,
 				name ,
 				store,
-				date_format(deal_date,'%Y/%m/%d') as dealDate,
+				date_format(deal_date,'%Y-%m-%d') as dealDate,
 				phone, 
 				fax,
 				post, 

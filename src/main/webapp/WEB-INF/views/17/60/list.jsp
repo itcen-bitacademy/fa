@@ -87,7 +87,7 @@
 								&nbsp;
 								<button class="btn btn-info btn-small" type="submit" name="action"  value="list" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">조회</button>
 								&nbsp;
-								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn">취소</button>
+								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn">초기화</button>
 							</div>
 						</form>
 						<!-- PAGE CONTENT ENDS -->
@@ -109,14 +109,14 @@
 					<table id="tb_account_management" class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th>순번</th>
-								<th>계정과목</th>
-								<th>계정명칭</th>
-								<th>잔액구분</th>
-								<th>입력담당자</th>
-								<th>입력일자</th>
-								<th>수정담당자</th>
-								<th>수정일자</th>
+								<th class="center" >순번</th>
+								<th class="center" >계정과목</th>
+								<th class="center" >계정명칭</th>
+								<th class="center" >잔액구분</th>
+								<th class="center" >입력담당자</th>
+								<th class="center" >입력일자</th>
+								<th class="center" >수정담당자</th>
+								<th class="center" >수정일자</th>
 							</tr>
 						</thead>
 

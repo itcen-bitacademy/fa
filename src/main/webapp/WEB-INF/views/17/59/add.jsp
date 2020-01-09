@@ -86,7 +86,7 @@
 								&nbsp;
 								<button class="btn btn-danger btn-small" type="submit" id="account-delete-btn" name="account-delete-btn" value="delete" onclick="delete_data();" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 								&nbsp;
-								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >취소</button>
+								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >초기화</button>
 							</div>
 						</form>
 					</div>
@@ -115,14 +115,14 @@
 					<table id="tb-account-management" class="table table-striped table-bordered table-hover">
 						<thead>
 							<tr>
-								<th>순번</th>
-								<th>계정과목</th>
-								<th>계정명칭</th>
-								<th>잔액구분</th>
-								<th>입력담당자</th>
-								<th>입력일자</th>
-								<th>수정담당자</th>
-								<th>수정일자</th>
+								<th class="center" >순번</th>
+								<th class="center" >계정과목</th>
+								<th class="center" >계정명칭</th>
+								<th class="center" >잔액구분</th>
+								<th class="center" >입력담당자</th>
+								<th class="center" >입력일자</th>
+								<th class="center" >수정담당자</th>
+								<th class="center" >수정일자</th>
 							</tr>
 						</thead>
 

@@ -80,6 +80,7 @@ public class Menu40Controller {
 		//dataresult 생성
 		DataResult<BuildingVo> dataResult = menu40Service.list(vo, page, startDate, endDate); 
 		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page", page); // page 계산하기위함
 		
 		//map 생성
 		Map<String, Object> map = new HashMap<>();
@@ -97,8 +98,14 @@ public class Menu40Controller {
 				.queryParam("id",vo.getId())
 				.queryParam("payDate",vo.getPayDate())
 				.queryParam("sectionNo",vo.getSectionNo())
-				.queryParam("customerNo",vo.getCustomerNo())
+				.queryParam("sectionName",vo.getSectionName())
+				.queryParam("area",vo.getArea())
+				.queryParam("wideAddress",vo.getWideAddress())
 				.queryParam("cityAddress",vo.getCityAddress())
+				.queryParam("acqPrice",vo.getAcqPrice())
+				.queryParam("customerNo",vo.getCustomerNo())
+				.queryParam("customerName",vo.getSectionName())
+				.queryParam("managerName",vo.getManagerName())
 				.queryParam("flag",vo.getFlag())
 				.build();
 		String uri = uriComponents.toUriString();

@@ -14,6 +14,7 @@
 <style>
            html,body{
              	height:100%;
+             	overflow-x:hidden;
       	}
       	
       	.main-container{
@@ -70,8 +71,8 @@
 										<div class="controls" style="margin-left: 70px;">
 											<select class="chosen-select" id="itemname" name="itemcode"
 												data-placeholder="품목명 선택" >
-												<c:forEach items='${itemname }' var='itemname'
-													varStatus='status'>
+												<option value=""></option>
+												<c:forEach items='${itemname }' var='itemname' varStatus='status'>
 													<option value="${itemname.itemcode }">${itemname.itemname }</option>
 												</c:forEach>
 											</select>
@@ -81,9 +82,7 @@
 													$("#itemname").val(itemcode);
 											</script>
 										</div>
-								</div>
-
-
+									</div>
 								<div class="span4">
 									<button type="submit" class="btn btn-small btn-info" type="submit" style="margin-left: 50px;"
 										formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
@@ -92,31 +91,30 @@
 
 							</div>
 						</div>
-					</div>
-	
+				</div>
 				</form>
-
 				<div class="hr hr-18 dotted"></div>
-
+				<p class="span6" style="margin:0 0 10px 0;font-size:0.9rem">품목별 매입매출 현황 ${dataResult.pagination.totalCnt } 건</p>
+								
 				<div class="row-fluid">
-					<div class="span12">
-					<table id="sample-table-1"class="table table-striped table-bordered table-hover">
+					<div class="span12" style="overflow: auto;">
+					<table id="sample-table-1"class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 						<thead>
 							<tr>
-								<th>품목코드</th>
-								<th>품목명</th>
-								<th>입고수량</th>
-								<th>입고공급가액</th>
-								<th>입고부가세</th>
-								<th>입고금액</th>
-								<th>출고수량</th>
-								<th>출고공급가액</th>
-								<th>출고부가세</th>
-								<th>출고금액</th>
-								<th>재고수량</th>
-								<th>재고공급가액</th>
-								<th>재고부가세</th>
-								<th>재고금액</th>
+								<th class="center">품목코드</th>
+								<th class="center">품목명</th>
+								<th class="center">입고수량</th>
+								<th class="center">입고공급가액</th>
+								<th class="center">입고부가세</th>
+								<th class="center">입고금액</th>
+								<th class="center">출고수량</th>
+								<th class="center">출고공급가액</th>
+								<th class="center">출고부가세</th>
+								<th class="center">출고금액</th>
+								<th class="center">재고수량</th>
+								<th class="center">재고공급가액</th>
+								<th class="center">재고부가세</th>
+								<th class="center">재고금액</th>
 							</tr>
 						</thead>
 						<c:forEach items='${dataResult.datas  }' var='vo' varStatus='status'>

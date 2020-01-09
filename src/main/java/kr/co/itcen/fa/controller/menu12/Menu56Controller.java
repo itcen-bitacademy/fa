@@ -69,6 +69,7 @@ public class Menu56Controller {
 	}
 	
 	//대분류명을 선택하였을 때 품목명들이 따라오는 코드
+	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/api")
 	public JSONResult list(@RequestParam("sectioncode")String sectioncode) {

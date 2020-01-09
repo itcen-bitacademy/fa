@@ -15,6 +15,30 @@
 
 body{font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;}
 
+html,body{
+	height:100%;
+	overflow-x: hidden;
+}
+     	
+.main-container{
+  	height:calc(100% - 45px);
+  	overflow-x: hidden;
+}
+
+.main-content{
+  	overflow:auto;
+}
+
+.page-content{
+  	min-width:1280px;
+}
+
+@media screen and (max-width: 920px) {
+	.main-container{
+	 	height:calc(100% - 84px);
+	}
+}
+	 
 #tbody-list tr{cursor: pointer;}
 
 .input-area{
@@ -163,6 +187,7 @@ tr.selected{background-color: #ddd}
 .textarea{resize: none; width: 282px; height: 84px;}
 
 .hideElement{display: none;}
+.right{text-align: right}
 </style>
 </head>
 <body class="skin-3">
@@ -211,8 +236,8 @@ tr.selected{background-color: #ddd}
 						<div class="ia-left"><label class="label-name">이자지급방식</label></div>
 						<div class="ia-right la-radio-wrapper">
 							<div>
-								<input type="radio" name="intPayWay" value="Y" class="ace" checked="checked">
-								<span class="lbl">년</span>
+								<input type="radio" name="intPayWay" value="Y" class="ace">
+								<span class="lbl">연</span>
 							</div>
 							<div>
 								<input type="radio" name="intPayWay" value="M" class="ace">
@@ -255,8 +280,8 @@ tr.selected{background-color: #ddd}
 						<div class="ia-left"><label class="label-name">상환방법</label></div>
 						<div class="ia-right la-radio-wrapper">
 							<div>
-								<input name="repayWay" type="radio" class="ace"  value="Y" checked="checked"/>
-								<span class="lbl">년</span>
+								<input name="repayWay" type="radio" class="ace"  value="Y"/>
+								<span class="lbl">연</span>
 							</div>
 							<div>
 								<input name="repayWay" type="radio" class="ace"  value="M" />
@@ -300,7 +325,7 @@ tr.selected{background-color: #ddd}
 							<button type="button" class="btn btn-danger btn-small mybtn" id="btn-delete"onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" id="btn-search" onclick="search()">조회</button>
 							<button type="button" class="btn btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
-							<button type="button" class="btn btn-success btn-small mybtn" onclick="resetForm()">초기화</button>
+							<button type="button" class="btn btn-default btn-small mybtn" onclick="resetForm()">초기화</button>
 							<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
 						</div>
 					</section>
@@ -1292,7 +1317,7 @@ function renderingList(list){
 					 "</label>" +
 				 "</td>" +
 				 "<td class='center'>" + list[i].code + "</td>" +
-				 "<td class='center'>" + list[i].name + "</td>" +
+				 "<td>" + list[i].name + "</td>" +
 				 "<td class='center'>" + list[i].majorCode + "</td>" +
 				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
 				 "<td class='center'>" + comma(list[i].repayBal) + "</td>" +
@@ -1341,7 +1366,7 @@ function renderingPage(pagination){
 	}
 	
 	$("#above-table-right>*").remove();
-	$("#above-table-right").append("<p>" +pagination.totalCnt + "건</p>")
+	$("#above-table-right").append("<p>총  " +pagination.totalCnt + "건</p>")
 }
 
 //---------------------------상환리스트 Dialog---------------------------//

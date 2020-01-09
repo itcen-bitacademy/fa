@@ -15,12 +15,18 @@
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+html,body{overflow-x:hidden; height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
 /* 테이블의 첫 row 모두 padding right */
 
 .form-horizontal .control-label {text-align: left;}
 
 h4{
-	font-size:13px;
+	font-size:14px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
 
@@ -86,29 +92,6 @@ tr td:first-child {
 	margin-bottom: 0; 
 	width: auto;"
 }
-
-html,body{
-   		overflow-x:hidden;
-		height:100%;
-	}
-	.main-container{
-		height:calc(100% - 45px);
-		overflow-x: hidden;
-	}
-	.main-content{
-		overflow:auto;
-	}
-	.page-content{
-		min-width:1280px;
-	}
-	@media screen and (max-width: 920px) {
-		.main-container{
-			height:calc(100% - 84px);
-		}
-	}
-
-
-
 </style>
 </head>
 <body class="skin-3">
@@ -455,7 +438,7 @@ html,body{
 					</div>
 					<!-- 상환 Modal pop-up : end -->
 					
-					<button class="btn btn-success btn-small mybtn" id="clear">초기화</button>
+					<button class="btn btn-default btn-small mybtn" id="clear">초기화</button>
 					
 				<!-- 금주의 상환 내역 Modal pop-up : start -->
 					<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
@@ -490,7 +473,7 @@ html,body{
 			<!-- list -->
 			<p>총 ${dataResult.pagination.totalCnt }건</p>
 			<div  style="overflow: auto;">
-				<table id="simple-table" class="table  table-bordered table-hover" >
+				<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center">
@@ -513,6 +496,8 @@ html,body{
 							<th class="center">담당자전화번호</th>
 							<th class="center">은행코드</th>
 							<th class="center">계좌</th>
+							<th class="center">등록일자</th>
+							
 						</tr>
 					</thead>
 
@@ -533,7 +518,7 @@ html,body{
 										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
+							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
 							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
@@ -551,7 +536,8 @@ html,body{
 							<td class="center">${ltermvo.mgr}</td>
 							<td class="center" >${ltermvo.mgrCall}</td>
 							<td class="center" bank-name="${ltermvo.bankName}">${ltermvo.bankCode}</td>
-							<td class="center" deposit-host="${ltermvo.depositHost}">${ltermvo.depositNo}</td>			
+							<td class="center" deposit-host="${ltermvo.depositHost}">${ltermvo.depositNo}</td>
+							<td class="center">${ltermvo.insertDate}</td>			
 						</tr>
 						</c:forEach>
 					</tbody>

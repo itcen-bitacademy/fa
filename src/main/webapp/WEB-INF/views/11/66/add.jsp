@@ -12,6 +12,12 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+html,body{overflow-x:hidden; height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
 .form-horizontal .control-label {text-align: left;}
 
 input[type="text"], input[type="date"], select {
@@ -142,14 +148,14 @@ input[type="text"], input[type="date"], select {
 							<button type="button" id="updatebtn" class="btn btn-warning btn-small mybtn"  onclick="update()">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
-							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
+							<button type="button"  id="formReset" class="btn btn-default btn-small mybtn">초기화</button>
 						</div>
 					</section>
 				</section>
 				<hr>
 			</form>
 			<div>
-				<h5 id="total-cnt">총  ${contentsCount }건</h5>
+				<p id="total-cnt">총  ${contentsCount }건</p>
 			</div>
 			<br>				
 			<!-- PAGE CONTENT ENDS -->
@@ -170,7 +176,6 @@ input[type="text"], input[type="date"], select {
 							<th class="center">이자금액</th>
 							<th class="center">부채유형</th>
 							<th class="center">상환일자</th>
-							<th class="center">전표번호</th>
 							<th class="center">등록일</th>
 						</tr>
 					</thead>
@@ -192,7 +197,6 @@ input[type="text"], input[type="date"], select {
 									<c:when test="${vo.debtType eq 'P'}"><td class="center">사채</td></c:when>
 								</c:choose>
 								<td class="center">${vo.payDate}</td>
-								<td class="center">${vo.voucherNo}</td>
 								<td class="center">${vo.insertDate}</td>
 							</tr>
 							</c:forEach>
@@ -423,7 +427,6 @@ function renderingList(list){
 				 "<td class='center'>" + comma(list[i].intAmount) + "</td>" +
 				 "<td class='center'>" + convertDebtType(list[i].debtType) + "</td>" +
 				 "<td class='center'>" + list[i].payDate + "</td>" +
-				 "<td class='center'>" + list[i].voucherNo + "</td>" + 
 				 "<td class='center'>" + list[i].insertDate + "</td>" +
 			"</tr>");
 	}

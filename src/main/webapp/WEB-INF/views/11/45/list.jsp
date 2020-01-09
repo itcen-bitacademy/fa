@@ -64,7 +64,7 @@ tr td:first-child {
    text-align:right;
 }
 
-.mybtn{float:left;margin-right:10px;}
+.mybtn{margin-right:10px;}
 
 #staticBackdrop {
    z-index: -1;
@@ -102,9 +102,9 @@ html,body{
 
 /* table columns  */
 .first-column {width:120px; padding-left:20px;}
-.second-column {width:70px;}
+.second-column {width:70px; padding-right:190px;}
 .third-column {width:140px;}
-.fourth-column {width:80px;}
+.fourth-column {width:80px; padding-right:190px;}
 .fifth-column {width:170px;}
 .sixth-column {width:60px;}
 .seventh-column {padding-left:20px;}
@@ -133,17 +133,17 @@ html,body{
 					<table style="width:100%;">
 						<tbody>
 						<tr>
-							<td class="first-column center"><h4>은행명</h4></td>
+							<td class="first-column center"><label class="control-label">은행명</label></td>
 							<td class="second-column">
 				               		<input type="text" name="name"  value='${vo.name }'/>
 				            </td>
 				            
-							<td class="third-column center"><h4>지점명</h4></td>
+							<td class="third-column center"><label class="control-label">지점명</label></td>
 							<td class="fourth-column">
 				                <input type="text" name="store" value='${vo.store }' />
 				            </td>
 				            
-							<td class="fifth-column center"><h4>거래시작일</h4></td>
+							<td class="fifth-column center"><label class="control-label">거래시작일</label></td>
 							<td class="sixth-column">
 									<div class="row-fluid input-append">
 										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" 
@@ -153,26 +153,32 @@ html,body{
 										</span>
 									</div>
 							</td>
-					
-							<td class="seventh-column" >
-								<button id="search" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-							</td>
 							</tr>
-							
-
-						
 						</tbody>
 					</table>
 					<div class="row-fluid">
-						<div class="span9"> 
+						<div class="span12"> 
 							<div class="checkbox" style="float:right; margin-top: 5px;">
 								<label>
-									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
+									<c:choose>
+										<c:when test='${vo.deleteFlag eq ""}'>
+											<input id='deleteFlag' name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
+										</c:when>
+										<c:otherwise>
+											<input id='deleteFlag' name="deleteFlag" type="checkbox" class="ace" value="" />
+										</c:otherwise>
+									</c:choose>
 									<span class="lbl">삭제포함</span>
 								</label>
 							</div>	
 						</div>
 					</div>
+					<hr>
+						<div class="row-fluid">
+							<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
+						</div>
+					<hr>
 				</form>
 			</div>
 		</div>
@@ -180,7 +186,8 @@ html,body{
 		
 		<!-- list -->
 		<p>총 ${dataResult.pagination.totalCnt }건</p>
-		<table id="simple-table" class="table  table-bordered table-hover">
+		<div style="overflow: auto;">
+		<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
             <thead>
                 <tr>
                    <th class="center">은행코드</th>
@@ -214,6 +221,7 @@ html,body{
 				</c:forEach>
            </tbody>
        </table>
+       </div>
 					
 		<div class="pagination">
 			<ul>
@@ -259,12 +267,25 @@ html,body{
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 <script>
    $(function() {
-	        	  $(".chosen-select").chosen();
+	    $(".chosen-select").chosen();
 					
-					$('.date-picker').datepicker().next().on(ace.click_event, function(){
-						$(this).prev().focus();
-					});
-  		 });
+		$('.date-picker').datepicker().next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		
+		// 초기화버튼 이벤트 연결
+		$('#clearbtn').click(function(){
+			$('input[name=name]').val('');
+			$('input[name=store]').val('');
+			$('input[name=dealDate]').val('');
+			
+		    $('input[name=deleteFlag]').each(function(index, item){
+		    	if($(item).prop('checked') == true){
+		    		$(item).prop('checked', false);
+		    	}
+		    });
+		});
+	});
 					
 </script>
 </body>

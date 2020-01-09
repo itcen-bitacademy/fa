@@ -10,7 +10,7 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <style>
-html,body{height:100%;}
+html,body{overflow-x:hidden; height:100%;}
 .main-container{height:calc(100% - 45px); overflow-x: hidden;}
 .main-content{overflow:auto;}
 .page-content{min-width:1280px;}
@@ -190,7 +190,7 @@ form {
 							</div>
 							<hr>
 						<div class="row-fluid">
-							<button type="button" id="searchbtn" class="btn btn-primary btn-small mybtn">조회</button>
+							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
 							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
 						</div>
 					<hr>

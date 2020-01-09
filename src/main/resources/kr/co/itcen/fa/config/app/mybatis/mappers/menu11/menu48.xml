@@ -91,7 +91,8 @@
 		    a.bank_code as bankCode,
 		    a.deposit_no as depositNo,
 		    c.deposit_host as depositHost,
-		    b.name as bankName
+		    b.name as bankName,
+			date_format(a.insert_date,'%Y-%m-%d %H:%i:%S') as insertDate
 		    from tb_l_term_debt as a,tb_bank as b,tb_bank_account as c
 		    where a.bank_code=b.code
 		   		and a.deposit_no = c.deposit_no

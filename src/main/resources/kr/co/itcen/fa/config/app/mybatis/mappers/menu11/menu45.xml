@@ -8,25 +8,17 @@
 			select	count(*)
 				from tb_bank
 		]]>
-		<choose>
-				<when test='deleteFlag==null or ("").equals(deleteFlag)'>
-					<!-- code.length()>0 하면 에러남  -->
-		 			<![CDATA[
-		  				 where delete_flag = 'N'
-		   			]]>
-				
-				</when>  
-				<otherwise>
-					<![CDATA[
-						where delete_flag = #{deleteFlag}
-					]]>
-				</otherwise>	
-		</choose>
+			<if test='deleteFlag==null or ("").equals(deleteFlag)'>
+			<!-- code.length()>0 하면 에러남  -->
+		 		<![CDATA[
+		  		where delete_flag like concat('%',#{deleteFlag},'%')
+		   		]]>
+			</if>
 			<if test='name!=null and !("").equals(name)'> 
 			<!-- code.length()>0 하면 에러남  -->
- 			  <![CDATA[
-  			 and name like concat('%',#{name},'%') 
-   			]]>
+ 				<![CDATA[
+  				and name like concat('%',#{name},'%') 
+   				]]>
    			</if>
    			<if test='store!=null and !("").equals(store)'> 
 			<!-- code.length()>0 하면 에러남  -->
@@ -49,7 +41,7 @@
 				code,
 				name,
 				store,
-				date_format(deal_date,'%Y/%m/%d') as dealDate,
+				date_format(deal_date,'%Y-%m-%d') as dealDate,
 				phone, 
 				fax,
 				post, 
@@ -59,20 +51,13 @@
 				mgr_email as mgrEmail
 			from tb_bank
 			]]>
-			<choose>
-				<when test='vo.deleteFlag==null or ("").equals(vo.deleteFlag)'>
-					<!-- code.length()>0 하면 에러남  -->
-		 			<![CDATA[
-		  				 where delete_flag = 'N'
-		   			]]>
-				
-					</when>  
-					<otherwise>
-						<![CDATA[
-							where delete_flag = #{vo.deleteFlag}
-						]]>
-					</otherwise>	
-			</choose>
+			
+			<if test='deleteFlag==null or ("").equals(deleteFlag)'>
+			<!-- code.length()>0 하면 에러남  -->
+		 		<![CDATA[
+		  		where delete_flag like concat('%',#{vo.deleteFlag},'%')
+		   		]]>
+			</if>
 			
    			<if test='vo.name!=null and !("").equals(vo.name) '>
 				<![CDATA[
