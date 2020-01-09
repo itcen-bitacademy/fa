@@ -97,7 +97,7 @@ h4{
 										<td>
 											<label class="control-label">차입금액</label>
 										</td>
-										<td style="display: inline-block;"><input type="text" id="inputPrice" name="textDebtAmount" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5><input type="hidden" id="hidden-dept-amount" name="debtAmount" /></td>
+										<td style="display: inline-block;"><input type="text" id="inputPrice" name="textDebtAmount" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5><input type="hidden" id="hidden-dept-amount" name="debtAmount" /></td>
 									</tr>
 									<tr>
 										<td>
@@ -137,7 +137,7 @@ h4{
 									</tr>
 									<tr>
 										<td>
-											<label class="control-label">거래처코드</label>
+											<label class="control-label">은행코드</label>
 										</td>
 										<td colspan="2">
 												<div class="input-append">
@@ -175,7 +175,7 @@ h4{
 										<td>
 											<c:choose>
 												<c:when test='${year eq ""}'>
-													<input type="number" min="1900" max="2099" step="1" value="2019" id="financialyearId" name="financialYear" placeholder="회계연도" />
+													<input type="number" min="1900" max="2099" step="1" id="financialyearId" name="financialYear" placeholder="회계연도" />
 												</c:when>
 												<c:otherwise>
 													<input type="number" min="1900" max="2099" step="1" value="${year}" id="financialyearId" name="financialYear" placeholder="회계연도" />
@@ -226,7 +226,7 @@ h4{
 											<label class="control-label">이율</label>
 										</td>
 										<td colspan="2">
-											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="text-align:right;"/> <h5 style="display: inline-block;">(%)</h5>
+											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
 										</td>
 									</tr>
 									<tr>
@@ -344,20 +344,20 @@ h4{
 										<tr>
 											<td>
 												<label class="control-label">납입원금</label>
-												<input type="text" name="text-name-payPrinc" id= "text-id-payPrinc" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
+												<input type="text" name="text-name-payPrinc" id= "text-id-payPrinc" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
 												<input type="hidden" name="payPrinc" id= "payPrinc" style="text-align:right;"/>
 											</td>
 										</tr>
 										<tr>
 											<td>
 												<label class="control-label">이자금액</label>
-												<input type="text" name="intAmount" id= "intAmount" readonly="readonly" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
+												<input type="text" name="intAmount" id= "intAmount" readonly="readonly" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
 											</td>
 										</tr>
 										<tr>
 											<td>
 												<label class="control-label">총액</label>
-												<input type="text" name="totalAmount" id= "totalAmount" readonly="readonly" style="text-align:right;" value="0"/> <h5 style="display: inline-block;">(원)</h5>
+												<input type="text" name="totalAmount" id= "totalAmount" readonly="readonly" style="text-align:right;" value="0"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
 											</td>
 										</tr>
 										</table>
@@ -448,37 +448,37 @@ h4{
 										<span class="lbl"></span>
 									</label>
 								</td>
-								<td class="center">${vo.code}</td>
+								<td>${vo.code}</td>
 								<td>${vo.name}</td>
 						        <c:choose>
-											<c:when test="${vo.majorCode eq '001'}"><td class="center">국내은행</td></c:when>
-											<c:when test="${vo.majorCode eq '002'}"><td class="center">저축은행</td></c:when>
-											<c:when test="${vo.majorCode eq '003'}"><td class="center">신용금고</td></c:when>
-											<c:when test="${vo.majorCode eq '004'}"><td class="center">새마을금고</td></c:when>
-											<c:when test="${vo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
-											<c:otherwise><td class="center">증권</td></c:otherwise>
+											<c:when test="${vo.majorCode eq '001'}"><td >국내은행</td></c:when>
+											<c:when test="${vo.majorCode eq '002'}"><td >저축은행</td></c:when>
+											<c:when test="${vo.majorCode eq '003'}"><td >신용금고</td></c:when>
+											<c:when test="${vo.majorCode eq '004'}"><td >새마을금고</td></c:when>
+											<c:when test="${vo.majorCode eq '005'}"><td >외국계은행</td></c:when>
+											<c:otherwise><td >증권</td></c:otherwise>
 								</c:choose>	
-								<td class="center"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /><input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" /></td>				
-								<td class="center"><fmt:formatNumber value="${vo.repayBal}" pattern="#,###" /></td>
+								<td style="text-align:right;"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /><input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" /></td>				
+								<td style="text-align:right;"><fmt:formatNumber value="${vo.repayBal}" pattern="#,###" /></td>
 								<c:choose>
-											<c:when test="${vo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
-											<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
-											<c:otherwise><td class="center">만기</td></c:otherwise>
+											<c:when test="${vo.repayWay eq 'Y'}"><td >연</td></c:when>
+											<c:when test="${vo.repayWay eq 'M'}"><td >월</td></c:when>
+											<c:otherwise><td >만기</td></c:otherwise>
 								</c:choose>		
-								<td class="center">${vo.debtDate}</td>
-								<td class="center">${vo.expDate}</td>
-								<td class="center">${vo.intRate}</td>
+								<td >${vo.debtDate}</td>
+								<td>${vo.expDate}</td>
+								<td>${vo.intRate}%</td>
 								<c:choose>
-											<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
-											<c:when test="${vo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
-											<c:otherwise><td class="center">해당없음</td></c:otherwise>
+											<c:when test="${vo.intPayWay eq 'Y'}"><td >연</td></c:when>
+											<c:when test="${vo.intPayWay eq 'M'}"><td >월</td></c:when>
+											<c:otherwise><td>해당없음</td></c:otherwise>
 								</c:choose>	
-								<td class="center">${vo.mgr}</td>
-								<td class="center">${vo.mgrCall}</td>
-								<td class="center" data-bankname="${vo.bankName }">${vo.bankCode}</td>
-								<td class="center" data-deposithost="${vo.depositHost }">${vo.depositNo}</td>
-								<td class="center">${vo.dangerName}</td>
-								<td class="center" >${vo.insertDate}</td>
+								<td >${vo.mgr}</td>
+								<td >${vo.mgrCall}</td>
+								<td  data-bankname="${vo.bankName }">${vo.bankCode}</td>
+								<td  data-deposithost="${vo.depositHost }">${vo.depositNo}</td>
+								<td >${vo.dangerName}</td>
+								<td  >${vo.insertDate}</td>
 							</tr>
 							</c:forEach>
 						</tbody>
@@ -1092,7 +1092,6 @@ h4{
 		$('#majorcode-field-select').val('').trigger('chosen:updated');
 		$('#dangercode-field-select').val('').trigger('chosen:updated');
 	    $('#code').attr('readonly',false);
-	    $('#financialyearId').val(2019);
 		    
 	    $('input[name=intPayWay]').each(function(index, item){
 	    	if($(item).prop('checked') == true){

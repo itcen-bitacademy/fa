@@ -39,24 +39,30 @@ public class Menu45Controller {
 	public String list(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			BankVo vo, Model model) {
-		System.out.println(vo);
-		if("".equals(vo.getDeleteFlag()))
-			vo.setDeleteFlag("");
-		else vo.setDeleteFlag("N");
+				System.out.println(vo);
+				if(vo.getName() == null)
+					vo.setName("");
+				if(vo.getStore() == null)
+					vo.setStore("");
+				if(vo.getDealDate() == null)
+					vo.setDealDate("");
+				if("".equals(vo.getDeleteFlag()))
+					vo.setDeleteFlag("");
+				else vo.setDeleteFlag("N");
 		
-		DataResult<BankVo> dataResult = menu45Service.list(vo, page);
+				DataResult<BankVo> dataResult = menu45Service.list(vo, page);
 		
-		UriComponents uriComponents=
-				UriComponentsBuilder.newInstance().queryParam("name",vo.getName())
-				.queryParam("store", vo.getStore())
-				.queryParam("dealDate", vo.getDealDate())
-				.queryParam("deleteFlag", vo.getDeleteFlag())
-				.build();
-		String uri = uriComponents.toUriString();
-		model.addAttribute("dataResult", dataResult);
-		model.addAttribute("uri", uri);
-		model.addAttribute("vo", vo);
-		
-		return MAINMENU + "/" + SUBMENU + "/list";
+				UriComponents uriComponents=
+						UriComponentsBuilder.newInstance().queryParam("name",vo.getName())
+						.queryParam("store", vo.getStore())
+						.queryParam("dealDate", vo.getDealDate())
+						.queryParam("deleteFlag", vo.getDeleteFlag())
+						.build();
+				String uri = uriComponents.toUriString();
+				model.addAttribute("dataResult", dataResult);
+				model.addAttribute("uri", uri);
+				model.addAttribute("vo", vo);
+				
+				return MAINMENU + "/" + SUBMENU + "/list";
+			}
 	}
-}

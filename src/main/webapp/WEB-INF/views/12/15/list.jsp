@@ -65,9 +65,7 @@
 				return;
 			}
 			
-			if(checkValid()) {
-				$("#form-customer").submit();
-			}
+			checkValid();
 		});
 		
 		$("#btn-select").on("click", function(){
@@ -77,19 +75,23 @@
 		
 		$("#btn-update").on("click", function(){
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/modify");
+			var flag = true;
 			
-			if(!$("#no").val() == $("#preNo").val()) {
-				checkNo();			
+			if($("#no").val() != $("#preNo").val()) {
+				flag = checkNo("update");
 			}
 			
-			if(checkValid()) {
-				$("#form-customer").submit();
+			if(flag) {
+				checkValid();
 			}
+			
 		});
 		
 		$("#btn-clear").on("click", function(){
-			$('#form-customer input').val("");
+			$('#form-customer')[0].reset();
+			//$('#form-customer input').val("");
 		});
+		
 		
 		$("#btn-delete").on("click", function(){
 			var checkArr = [];
@@ -125,6 +127,8 @@
 		
 		$("#customer-table tr.rows").on("click", function(event){
 			if (event.target.type == 'checkbox') return;
+
+			$("#check_no").hide();
 			
 			var td = $(this).children();
 			var no = td.eq(1).text();
@@ -253,8 +257,9 @@
 	});
 	
 	
-	function checkNo() {
-		console.log("1");
+	function checkNo(formAction) {
+		var flag = false;
+		
 		$.ajax({
 			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo?no="+$("#no").val(),
 			type: "get",
@@ -270,27 +275,36 @@
 					dialog("중복된 사업자번호 입니다.");
 					$("#no").focus();
 					$("#check_ok").hide();
-				} else {
+					flag = false;
+				} else if(formAction != "update") {
 					$("#check_ok").show();
+					flag = true;
 				}
 			},
 			error: function(xhr, error) {
 				console.error("error:"+error);
 			}
-		});	
-		
+		});
+		return flag;
 	}
 	
+	// 유효성 검사
 	function checkValid() {
-		if(!valid.nullCheck("no", "사업자번호")) return false;
-		if(!valid.numberCheck("no", "사업자번호")) return false;
-		if(!valid.nullCheck("name", "상호")) return false;
-		if(!valid.numberCheck("corporationNo", "법인번호")) return false;
-		if(!valid.nullCheck("phone", "전화번호")) return false;
-		if(!valid.numberCheck("phone", "전화번호")) return false;
-		if(!valid.nullCheck("managerName", "담당자명")) return false;
-		if(!valid.nullCheck("managerEmail", "메일")) return false;
-		return true;
+		if(!valid.nullCheck("no", "사업자번호")) return;
+		if(!valid.numberCheck("no", "사업자번호")) return;
+		
+		if(!valid.nullCheck("bsname", "상호")) return;
+		
+		if(!valid.numberCheck("corporationNo", "법인번호")) return;
+		
+		if(!valid.nullCheck("phone", "전화번호")) return;
+		if(!valid.numberCheck("phone", "전화번호")) return;
+		
+		if(!valid.nullCheck("managerName", "담당자명")) return;
+		if(!valid.nullCheck("managerEmail", "메일")) return;
+		
+		$("#form-customer").submit();
+		return;
 	}
 	
 	function execDaumPostcode() {

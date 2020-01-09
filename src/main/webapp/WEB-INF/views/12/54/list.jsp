@@ -82,7 +82,7 @@
 							<div class="span12">
 									<div class="form-horizontal">
 										<div class="control-group">
-											<div class="span6">
+											<div class="span10">
 												<label class="control-label" for="form-field-select-1">거래처</label>
 												<div class="controls">
 													<select class="span3 chosen-select" id="customerCode" name="customerCode" data-placeholder="거래처">
@@ -90,14 +90,15 @@
 															<c:forEach items="${customerlist }" var="clist">
 																<c:choose>
 																	<c:when test="${clist.customerCode eq search.customerCode }">
-																		<option value="${clist.customerCode }" selected>${clist.customerCode } [${clist.customerName }]</option>
+																		<option value="${clist.customerCode }" data-taxbill="${clist.customerName }" selected>${clist.customerCode } [${clist.customerName }]</option>
 																	</c:when>
 																	<c:otherwise>
-																			<option value="${clist.customerCode }">${clist.customerCode } [${clist.customerName }]</option>
+																			<option value="${clist.customerCode }" data-taxbill="${clist.customerName }">${clist.customerCode } [${clist.customerName }]</option>
 																	</c:otherwise>
 																</c:choose>
 															</c:forEach>
 													</select>
+													<input class="span3" type="text" id="customerNameSelect" name="customerNameSelect" placeholder="거래처" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
 												</div>
 											</div>
 										</div>
@@ -106,24 +107,23 @@
 									
 									<div class="form-horizontal">
 										<div class="control-group">
-											<div class="span6">
+											<div class="span10">
 												<label class="control-label" for="form-field-1">세금계산서 번호</label>
 												<div class="controls">
 													<select class="span3 chosen-select" id="taxbillNo" name="taxbillNo" data-placeholder="세금계산서">
 															<option value="">없음</option>
-															
 															<c:forEach items="${taxlist }" var="tlist">
 																<c:choose>
 																	<c:when test="${tlist.taxbillNo eq search.taxbillNo }">
-																		<option value="${tlist.taxbillNo }" selected>${tlist.taxbillNo } [${tlist.salesNo }]</option>
+																		<option value="${tlist.taxbillNo }" data-taxbill="${tlist.taxbillNo }" selected>${tlist.taxbillNo } [${tlist.salesNo }]</option>
 																	</c:when>
 																	<c:otherwise>
-																		<option value="${tlist.taxbillNo }">${tlist.taxbillNo } [${tlist.salesNo }]</option>
+																		<option value="${tlist.taxbillNo }" data-taxbill="${tlist.taxbillNo }" >${tlist.taxbillNo } [${tlist.salesNo }]</option>
 																	</c:otherwise>
 																</c:choose>
 															</c:forEach>
-															
 													</select>
+													<input class="span3" type="text" id="taxbillNoName" name="taxbillNoName" placeholder="세금계산서" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
 											</div>
 										</div>
 									</div>
@@ -131,7 +131,7 @@
 									
 									<div class="form-horizontal">
 										<div class="control-group">
-											<div class="span6">
+											<div class="span10">
 												<label class="control-label" for="form-field-1">품목명</label>
 													<div class="controls">
 													<select class="span3 chosen-select" id="itemName" name="itemName" data-placeholder="품목명">
@@ -139,14 +139,15 @@
 														<c:forEach items="${itemlist }" var="ilist">
 															<c:choose>
 																<c:when test="${ilist.itemName eq search.itemName }">
-																	<option value="${ilist.itemName }" selected>${ilist.itemName }</option>	
+																	<option value="${ilist.itemName }" data-taxbill="${ilist.itemName }" selected>${ilist.itemName }</option>	
 																</c:when>
 																<c:otherwise>
-																	<option value="${ilist.itemName }">${ilist.itemName }</option>
+																	<option value="${ilist.itemName }" data-taxbill="${ilist.itemName }">${ilist.itemName }</option>
 																</c:otherwise>
 															</c:choose>
 														</c:forEach>
 													</select>
+													<input class="span3" type="text" id="itemNameSelect" name="itemNameSelect" placeholder="품목명" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
 												</div>
 											</div>
 										</div>
@@ -350,6 +351,12 @@
 			$(".chosen-select").chosen();
 								
 		})
+		
+		// 명칭 불러 오는 기능
+   		 $('#taxbillNo').change(function () {
+    		var taxbillNoName = $(this).find('option:selected').attr('data-taxbill');
+    		$('#taxbillNoName').val(taxbillNoName);
+ 		  });
 		
 		function view(){
         	var url = "${pageContext.request.contextPath }/12/54/1";

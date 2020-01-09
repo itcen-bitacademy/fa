@@ -66,7 +66,9 @@
 		
 		$(".pagination li a").on("click", function(event){
 			event.preventDefault();
-			
+			if($(this).parent().attr("class") == "disabled"){
+				return;
+			}
 			$("#form-customer input[name=page]").val($(this).parent().val());
 			$("#form-customer").submit();
 		});
@@ -314,7 +316,7 @@
                            <label class="control-label" for="insert_date">입력일자</label>
                               <div class="controls">
                                  <div class="row-fluid input-append">
-                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${customerVo.insertDay }"/>
+                                 <input class="cl-date-picker" name="insertDay" type="text" readonly style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${customerVo.insertDay }"/>
                                     <span class="add-on">
                                     <i class="icon-calendar"></i>
                                     </span>
