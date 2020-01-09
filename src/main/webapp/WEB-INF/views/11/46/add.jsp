@@ -523,8 +523,8 @@ $("#mgr").on("keyup", function(){
 	$(this).val($(this).val().replace(regexp, ""));
 });
 
-var financialYear = new Date().getFullYear();
-document.getElementById("financialyearId").value = financialYear;
+/* var financialYear = new Date().getFullYear();
+document.getElementById("financialyearId").value = financialYear; */
 </script>
 <script>
 //-----------------------------------버튼 display 수정 -------------------------------//

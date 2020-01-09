@@ -175,7 +175,7 @@ h4{
 										<td>
 											<c:choose>
 												<c:when test='${year eq ""}'>
-													<input type="number" min="1900" max="2099" step="1" value="2019" id="financialyearId" name="financialYear" placeholder="회계연도" />
+													<input type="number" min="1900" max="2099" step="1" id="financialyearId" name="financialYear" placeholder="회계연도" />
 												</c:when>
 												<c:otherwise>
 													<input type="number" min="1900" max="2099" step="1" value="${year}" id="financialyearId" name="financialYear" placeholder="회계연도" />
@@ -1092,7 +1092,6 @@ h4{
 		$('#majorcode-field-select').val('').trigger('chosen:updated');
 		$('#dangercode-field-select').val('').trigger('chosen:updated');
 	    $('#code').attr('readonly',false);
-	    $('#financialyearId').val(2019);
 		    
 	    $('input[name=intPayWay]').each(function(index, item){
 	    	if($(item).prop('checked') == true){
