@@ -11,6 +11,27 @@
 .chosen-search {
 	display: none;
 }
+
+
+html,body{
+   height:100%;
+   overflow-x: hidden;
+   }
+   .main-container{
+   height:calc(100% - 45px);
+   overflow-x: hidden;
+   }
+   .main-content{
+   overflow:auto;
+   }
+   .page-content{
+   min-width:1280px;
+   }
+   @media screen and (max-width: 920px) {
+   .main-container{
+   height:calc(100% - 84px);
+   }
+   }
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>

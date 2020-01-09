@@ -47,7 +47,7 @@ public class Menu59Controller {
 	//재무제표 계정관리 조회
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(@ModelAttribute AccountManagementVo accountManagement,
-					   @RequestParam(value = "accountUsedyear", defaultValue = "2019") String accountUsedyear,
+					   @RequestParam(value = "accountUsedyear", defaultValue = "2020") String accountUsedyear,
 					   @RequestParam(value = "accountOrder", defaultValue = "") Long accountOrder,
 					   @RequestParam(value = "selectedAccountStatementType", defaultValue = "B") String type,
 					   @RequestParam(value = "selectedAccount", defaultValue = "") Long accountNo,
