@@ -15,6 +15,30 @@
 
 body{font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;}
 
+html,body{
+	height:100%;
+	overflow-x: hidden;
+}
+     	
+.main-container{
+  	height:calc(100% - 45px);
+  	overflow-x: hidden;
+}
+
+.main-content{
+  	overflow:auto;
+}
+
+.page-content{
+  	min-width:1280px;
+}
+
+@media screen and (max-width: 920px) {
+	.main-container{
+	 	height:calc(100% - 84px);
+	}
+}
+	 
 #tbody-list tr{cursor: pointer;}
 
 .input-area{
