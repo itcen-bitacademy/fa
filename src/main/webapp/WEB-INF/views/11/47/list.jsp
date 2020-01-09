@@ -131,6 +131,8 @@ div > span.add-on{margin-left:-5px}
 
 div > .label-radio{margin-right: 10px;}
 
+.right{text-align: right;}
+.left{text-align: left;}
 </style>
 </head>
 <body class="skin-3">

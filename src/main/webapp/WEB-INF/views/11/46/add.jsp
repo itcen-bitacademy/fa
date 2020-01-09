@@ -187,6 +187,7 @@ tr.selected{background-color: #ddd}
 .textarea{resize: none; width: 282px; height: 84px;}
 
 .hideElement{display: none;}
+.right{text-align: right}
 </style>
 </head>
 <body class="skin-3">
