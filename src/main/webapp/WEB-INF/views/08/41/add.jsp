@@ -16,6 +16,24 @@
 	width:200px;
 	text-align:right;
 }
+     html,body{
+		height:100%;
+		overflow-x: hidden;
+		}
+     	
+     	.main-container{
+        	height:calc(100% - 45px);
+        	overflow-x: hidden;
+     	}
+     
+     	.main-content{
+        	overflow:auto;
+     	}
+     	
+     	.page-content{
+        	min-width:1280px;
+     	}
+
 @media screen and (max-width: 920px) {
        .main-container{
           height:calc(100% - 84px);
@@ -53,7 +71,7 @@
 											<input type="text" id="vehicle_code" name="id" style="margin:0 5px 0 0" placeholder="9자를 입력하세요"/>
 											<input id="overlapBtn" style="height:28px" type="button" value="중복확인">
 											<i id="check-icon" class="icon-ok bigger-180 blue" style="display:none;"></i>
-											<input readonly type="text" class="span6" id="default-vehiclecode" style="background-color: #FFFFFF" placeholder="ex)2019년12월03일 191203001"></input>
+											<input readonly type="text" class="span6" id="default-vehiclecode" style="border:none;" style="background-color: #FFFFFF" placeholder="ex)2019년12월03일 191203001"></input>
 <%-- 										<input type="hidden" id="vehicleNo" value="${saleslist[0].salesNo }">
 											<input type="text" class="span6" id="default-vehiclecode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
 											<input type="text" class="span6" id="overlap-vehiclecode" style="border:none;color:red"  value="사용중인 품목코드입니다">
@@ -121,7 +139,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">보증금</label>
 										<div class="controls">
-											<input type="text" class=limitation id="deposit" name="deposit" placeholder="금액을 입력하세요" />
+											<input  type="text" class=limitation id="deposit" name="deposit" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
@@ -274,9 +292,10 @@
 							</form>
 						</div>
 						<!-- 차변 대변 나누기 위한 row-fluid -->
-						<div>
+	
+						<div style="overflow-x: auto;">
 							<table id="sample-table-1"
-								class="table table-striped table-bordered table-hover">
+								class="table table-striped table-bordered table-hover" style="width: 2200px">
 								<thead>
 									<tr>
 										<th>NO</th>
@@ -324,10 +343,10 @@
 											<td>${VehicleVo.customerName}</td> <!-- 10 -->
 											<td>${VehicleVo.managerName}</td> <!-- 11 -->
 											<td class="pay-date">${VehicleVo.payDate}</td> <!-- 12 -->
-											<td><fmt:formatNumber value="${VehicleVo.publicValue}" pattern="#,###"></fmt:formatNumber></td> <!-- 13 -->
-											<td><fmt:formatNumber value="${VehicleVo.acqTax}" pattern="#,###"></fmt:formatNumber></td> <!-- 14 -->
-											<td><fmt:formatNumber value="${VehicleVo.etcCost}" pattern="#,###"></fmt:formatNumber></td> <!-- 15 -->
-											<td><fmt:formatNumber value="${VehicleVo.deposit}" pattern="#,###"></fmt:formatNumber></td> <!-- 16 -->
+											<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.publicValue}" pattern="#,###" ></fmt:formatNumber></td> <!-- 13 -->
+											<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.acqTax}" pattern="#,###" ></fmt:formatNumber></td> <!-- 14 -->
+											<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.etcCost}" pattern="#,###" ></fmt:formatNumber></td> <!-- 15 -->
+											<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.deposit}" pattern="#,###"></fmt:formatNumber></td> <!-- 16 -->
 											<td>${VehicleVo.dueDate}</td> <!-- 17 -->
 											<td class="monthly-fee"><fmt:formatNumber value="${VehicleVo.monthlyFee}" pattern="#,###"></fmt:formatNumber></td> <!-- 18 -->
 											<td>${VehicleVo.feeDate}</td> <!-- 19 -->
@@ -889,20 +908,10 @@ $("#search").click(function() {
 
 
 $("#clear").click(function() {
-
-	 event.preventDefault();
-     $('input[type=text]').val("");
-     $('input:radio').prop("checked",false);
-     //대분류코드
-      $('#sectionNo').val("").trigger('chosen:updated');
-     //직급
-      $('#staffNoId').val("").trigger('chosen:updated');
-     //거래처코드
-      $('#form-field-customerCode').val("").trigger('chosen:updated');
- 
-      });
-
-
+	// 새로고침!
+	location.reload();
+ });
+	     
 $("#segum").click(function() {
 	
 	$("#segum-input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum");
