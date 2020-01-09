@@ -1292,7 +1292,7 @@ function renderingList(list){
 					 "</label>" +
 				 "</td>" +
 				 "<td class='center'>" + list[i].code + "</td>" +
-				 "<td class='center'>" + list[i].name + "</td>" +
+				 "<td>" + list[i].name + "</td>" +
 				 "<td class='center'>" + list[i].majorCode + "</td>" +
 				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
 				 "<td class='center'>" + comma(list[i].repayBal) + "</td>" +
@@ -1341,7 +1341,7 @@ function renderingPage(pagination){
 	}
 	
 	$("#above-table-right>*").remove();
-	$("#above-table-right").append("<p>" +pagination.totalCnt + "건</p>")
+	$("#above-table-right").append("<p>총  " +pagination.totalCnt + "건</p>")
 }
 
 //---------------------------상환리스트 Dialog---------------------------//

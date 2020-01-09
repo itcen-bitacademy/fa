@@ -9,6 +9,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+html,body{overflow-x:hidden; height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
 .radio {
 	float: left;
 	width: 10%;
@@ -225,7 +231,8 @@ width: 208px;}
 		</div>
 		<!-- list -->
 		<p>총 ${dataResult.pagination.totalCnt }건</p>
-				<table id="simple-table" class="table  table-bordered table-hover">
+		<div  style="overflow: auto;">
+				<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							
@@ -282,7 +289,8 @@ width: 208px;}
 						</tr>
 					</c:forEach>
 					</tbody>
-				</table>	
+				</table>
+				</div>	
 				
 				<div class="pagination">
 				<ul>
