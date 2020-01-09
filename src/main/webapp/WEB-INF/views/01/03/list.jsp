@@ -31,7 +31,7 @@
 
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">전표관리[1-03]</h1>
+					<h1 class="pull-left">전표관리</h1>
 				</div><!-- /.page-header -->
 				<form class="form-horizontal" id="input-form"  method="post">
 					<div class="row-fluid">
@@ -44,7 +44,7 @@
 									<label class="control-label" for="form-field-codename" style="text-align:left;width:120px;" >일자</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
-										<input class="span4 date-picker" id="regDate" name="regDate" type="text" data-date-format="yyyy-mm-dd" />
+										<input class="span4 date-picker" id="regDate" name="regDate" type="text" data-date-format="yyyy-mm-dd" readonly style="width:193px;" />
 											<span class="add-on">
 											<i class="icon-calendar"></i>
 											</span>
@@ -67,7 +67,7 @@
 													<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>
 											</c:forEach>
 										</select> 
-										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
+										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 200px; height: 18px;" disabled />
 									</div>
 								</div>
 								
@@ -96,9 +96,9 @@
 										<div class="input-append">
 											<input type="text" id="manageNo" name="manageNo" value="" placeholder="증빙코드" /> 
 										</div>
-										&nbsp; &nbsp;
+										
 										<div class="input-append">
-											<input type="text" id="manageName" name ="manageName" value="" placeholder="세금계산서" readonly />
+											<input type="text" id="manageName" name ="manageName" value="" placeholder="세금계산서" style="text-align: center; width: 200px; height: 20px;" readonly />
 										</div>
 									</div>
 								</div>
@@ -111,7 +111,7 @@
 									<div class="controls">
 										<div class="input-append">
 										<a href="#" id="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
+											<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" style="width:180px;" />
 											<span class="add-on">
 												<i class="icon-search icon-on-right bigger-110"></i>
 											</span> 
@@ -170,7 +170,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표사용목적</label>
 									<div class="controls">
-										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적"/>
+										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적" style="width:465px;" />
 										<input class="span8" type="hidden" id="voucherNo" name="no" />
 										<input class="span8" type="hidden" id="orderNo" name="orderNo" />
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />

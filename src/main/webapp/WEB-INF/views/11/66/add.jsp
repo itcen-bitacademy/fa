@@ -180,26 +180,7 @@ input[type="text"], input[type="date"], select {
 						</tr>
 					</thead>
 						<tbody id="tbody-list">
-						<c:forEach items="${dataResult.datas}" var="vo" varStatus="status">
-							<tr>
-								<input type="hidden" name="vo"/>
-								<td class="center">
-									<label class="pos-rel"></label>
-									<input type="checkbox" class="ace" name="no" /><span class="lbl"></span>
-								</td>
-								<td class="center">${vo.code}</td>
-								<td class="center"><fmt:formatNumber value="${vo.totalPayPrinc}" pattern="#,###" /></td>	
-								<td class="center"><fmt:formatNumber value="${vo.payPrinc}" pattern="#,###" /><input type="hidden" value="${vo.payPrinc}" /></td>	
-								<td class="center"><fmt:formatNumber value="${vo.intAmount}" pattern="#,###" /><input type="hidden" value="${vo.intAmount}" /></td>
-								<c:choose>
-									<c:when test="${vo.debtType eq 'S'}"><td class="center">단기차입금</td></c:when>
-									<c:when test="${vo.debtType eq 'L'}"><td class="center">장기차입금</td></c:when>
-									<c:when test="${vo.debtType eq 'P'}"><td class="center">사채</td></c:when>
-								</c:choose>
-								<td class="center">${vo.payDate}</td>
-								<td class="center">${vo.insertDate}</td>
-							</tr>
-							</c:forEach>
+						
 						</tbody>
 				</table>
 				
@@ -421,13 +402,13 @@ function renderingList(list){
 					"<label class='pos-rel'></label>" +
 					"<input type='checkbox' class='ace' name='no'  value='" + list[i].no + "' onchange='rowChecked(this)'/><span class='lbl'></span>" +
 				"</td>" +
-				 "<td class='center'>" + list[i].code + "</td>" +
-				 "<td class='center'>" + comma(list[i].payPrinc + list[i].intAmount) + "</td>" +
-				 "<td class='center'>" + comma(list[i].payPrinc) + "</td>" +
-				 "<td class='center'>" + comma(list[i].intAmount) + "</td>" +
-				 "<td class='center'>" + convertDebtType(list[i].debtType) + "</td>" +
-				 "<td class='center'>" + list[i].payDate + "</td>" +
-				 "<td class='center'>" + list[i].insertDate + "</td>" +
+				 "<td >" + list[i].code + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].payPrinc + list[i].intAmount) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].payPrinc) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].intAmount) + "</td>" +
+				 "<td >" + convertDebtType(list[i].debtType) + "</td>" +
+				 "<td >" + list[i].payDate + "</td>" +
+				 "<td>" + list[i].insertDate + "</td>" +
 			"</tr>");
 	}
 	console.log("--------------------() renderingLIst End------------------------");

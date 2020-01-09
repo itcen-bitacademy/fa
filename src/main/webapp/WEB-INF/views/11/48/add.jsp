@@ -26,7 +26,7 @@ html,body{overflow-x:hidden; height:100%;}
 .form-horizontal .control-label {text-align: left;}
 
 h4{
-	font-size:13px;
+	font-size:14px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
 
@@ -140,7 +140,7 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><label class="control-label">차입금액</label></td>
-									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block;">(원)</h5></td>
+									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block; font-size:14px;">(원)</h5></td>
 								</tr>
 								<tr>
 									<td><label class="control-label">차입일자 ~ 만기일자</label></td>
@@ -290,7 +290,7 @@ tr td:first-child {
 									<td><label class="control-label">이율</label></td>
 									<td colspan="2">
 										<input type="text" id="int_rate" name="intRate" class="number-input" 
-										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block;">(%)</h5>
+										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
 									</td>
 								</tr>
 								<tr>
@@ -518,8 +518,8 @@ tr td:first-child {
 										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
-							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
