@@ -180,9 +180,10 @@
 								<div class="span12">
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
-											<button id="btn_select" class="btn btn-info btn-small" style="float:left;">조회</button><br>
+											<button id="btn_select" class="btn btn-info btn-small" style="float:left;">조회</button>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:5px;">초기화</button>
 									</div>
-									<div class="hr hr-18 dotted"></div>
+										<div class="hr hr-18 dotted"></div>
 								</div>
 							</div>
 						</form>
@@ -191,7 +192,7 @@
 							
 							<div class="row-fluid">
 								<div class="span12" style="overflow-x: scroll;">
-								<label>총 ${dataResult.pagination.totalCnt }건</label>
+								<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">매입거래처 ${dataResult.pagination.totalCnt } 건</p>
 									<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;">
 										<thead>
 											<tr>
