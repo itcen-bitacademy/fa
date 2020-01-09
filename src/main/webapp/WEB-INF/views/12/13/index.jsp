@@ -526,14 +526,16 @@
                         <div class="span12">
                         <input type="hidden" id="rowCnt" name="rowCnt" value="1">
                             <table id="item-table" class="table table-striped table-bordered table-hover">
-                                <tr>
-                                    <th>순번</th>
-                                    <th style="width:260px">품목코드</th>
-                                    <th>품목명</th>
-                                    <th>수량</th>
-                                    <th>공급가액</th>
-                                    <th>부가세</th>
-                                </tr>
+                               <thead>
+	                                <tr>
+	                                    <th>순번</th>
+	                                    <th style="width:260px">품목코드</th>
+	                                    <th>품목명</th>
+	                                    <th>수량</th>
+	                                    <th>공급가액</th>
+	                                    <th>부가세</th>
+	                                </tr>
+                                </thead>
                                 <!-- 매출 조회 시 -->
                                 <c:forEach items="${saleslist }" var="sales" varStatus="status">
                                 <tr>
