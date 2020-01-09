@@ -208,6 +208,7 @@
                 <div class="row-fluid">
                     <div class="span12" style="overflow:auto">
                         <table id="list-table" class="table table-striped table-bordered table-hover" style="min-width:1600px;margin-bottom:0;">
+                            <thead>
                             <tr>
                                 <th>매출번호</th>
                                 <th>매출일</th>
@@ -224,6 +225,7 @@
                                 <th>공급가액</th>
                                 <th>부가세</th>
                             </tr>
+                            </thead>
                             <c:forEach items="${dataResult.datas }" var="list" varStatus="status">
                                 <tr>
                                     <td class="salesNo">${list.salesNo }</td>
