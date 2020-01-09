@@ -1316,21 +1316,21 @@ function renderingList(list){
 				 		"<input type='checkbox' name='no' class='ace' onchange='rowChecked(this)'/>" +"<span class='lbl'></span>" +
 					 "</label>" +
 				 "</td>" +
-				 "<td class='center'>" + list[i].code + "</td>" +
+				 "<td>" + list[i].code + "</td>" +
 				 "<td>" + list[i].name + "</td>" +
-				 "<td class='center'>" + list[i].majorCode + "</td>" +
+				 "<td>" + list[i].majorCode + "</td>" +
 				 "<td style='text-align:right;'>" + comma(list[i].debtAmount) + "</td>" +
 				 "<td style='text-align:right;'>" + comma(list[i].repayBal) + "</td>" +
-				 "<td class='center'>" + list[i].repayWay + "</td>" +
-				 "<td class='center'>" + list[i].debtDate + "</td>" + 
-				 "<td class='center'>" + list[i].expDate + "</td>" +
-				 "<td class='center'>" + list[i].intRate + "</td>" +
-				 "<td class='center'>" + list[i].intPayWay + "</td>" +
-				 "<td class='center'>" + list[i].mgr + "</td>" +
-				 "<td class='center'>" + list[i].mgrCall + "</td>" +
-				 "<td class='center'>" + list[i].bankCode + "</td>" +
-				 "<td class='center'>" + list[i].depositNo + "</td>" +
-				 "<td class='center'>" + convertInsertDate(list[i].insertDate) + "</td>" +
+				 "<td>" + list[i].repayWay + "</td>" +
+				 "<td>" + list[i].debtDate + "</td>" + 
+				 "<td>" + list[i].expDate + "</td>" +
+				 "<td>" + list[i].intRate + "</td>" +
+				 "<td>" + list[i].intPayWay + "</td>" +
+				 "<td>" + list[i].mgr + "</td>" +
+				 "<td>" + list[i].mgrCall + "</td>" +
+				 "<td>" + list[i].bankCode + "</td>" +
+				 "<td>" + list[i].depositNo + "</td>" +
+				 "<td>" + convertInsertDate(list[i].insertDate) + "</td>" +
 			"</tr>");
 	}//end for
 }

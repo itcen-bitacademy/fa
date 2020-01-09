@@ -402,13 +402,13 @@ function renderingList(list){
 					"<label class='pos-rel'></label>" +
 					"<input type='checkbox' class='ace' name='no'  value='" + list[i].no + "' onchange='rowChecked(this)'/><span class='lbl'></span>" +
 				"</td>" +
-				 "<td class='center'>" + list[i].code + "</td>" +
+				 "<td >" + list[i].code + "</td>" +
 				 "<td style='text-align:right;'>" + comma(list[i].payPrinc + list[i].intAmount) + "</td>" +
 				 "<td style='text-align:right;'>" + comma(list[i].payPrinc) + "</td>" +
 				 "<td style='text-align:right;'>" + comma(list[i].intAmount) + "</td>" +
-				 "<td class='center'>" + convertDebtType(list[i].debtType) + "</td>" +
-				 "<td class='center'>" + list[i].payDate + "</td>" +
-				 "<td class='center'>" + list[i].insertDate + "</td>" +
+				 "<td >" + convertDebtType(list[i].debtType) + "</td>" +
+				 "<td >" + list[i].payDate + "</td>" +
+				 "<td>" + list[i].insertDate + "</td>" +
 			"</tr>");
 	}
 	console.log("--------------------() renderingLIst End------------------------");

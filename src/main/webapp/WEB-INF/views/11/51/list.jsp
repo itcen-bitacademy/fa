@@ -209,6 +209,7 @@ form {
 							<th class="center">사채명</th>
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
+							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
 							<th class="center">차입일자</th>
 							<th class="center">만기일자</th>
@@ -223,34 +224,35 @@ form {
 					<tbody>
 					<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 						<tr>
-							<td class="center">${vo.code}</td>
+							<td >${vo.code}</td>
 							<td>${vo.name}</td>
 							 <c:choose>
-										<c:when test="${vo.majorCode eq '001'}"><td class="center">국내은행</td></c:when>
-										<c:when test="${vo.majorCode eq '002'}"><td class="center">저축은행</td></c:when>
-										<c:when test="${vo.majorCode eq '003'}"><td class="center">신용금고</td></c:when>
-										<c:when test="${vo.majorCode eq '004'}"><td class="center">새마을금고</td></c:when>
-										<c:when test="${vo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
-										<c:otherwise><td class="center">증권</td></c:otherwise>
+										<c:when test="${vo.majorCode eq '001'}"><td >국내은행</td></c:when>
+										<c:when test="${vo.majorCode eq '002'}"><td >저축은행</td></c:when>
+										<c:when test="${vo.majorCode eq '003'}"><td >신용금고</td></c:when>
+										<c:when test="${vo.majorCode eq '004'}"><td >새마을금고</td></c:when>
+										<c:when test="${vo.majorCode eq '005'}"><td >외국계은행</td></c:when>
+										<c:otherwise><td >증권</td></c:otherwise>
 							</c:choose>	
 							<td style="text-align:right;"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${vo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
-										<c:when test="${vo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
-										<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
-										<c:otherwise><td class="center">만기</td></c:otherwise>
+										<c:when test="${vo.repayWay eq 'Y'}"><td >연</td></c:when>
+										<c:when test="${vo.repayWay eq 'M'}"><td >월</td></c:when>
+										<c:otherwise><td >만기</td></c:otherwise>
 							</c:choose>		
-							<td class="center">${vo.debtDate}</td>
-							<td class="center">${vo.expDate}</td>
-							<td class="center">${vo.intRate}%</td>
+							<td >${vo.debtDate}</td>
+							<td >${vo.expDate}</td>
+							<td >${vo.intRate}%</td>
 							<c:choose>
-										<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
-										<c:when test="${vo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
-										<c:otherwise><td class="center">만기</td></c:otherwise>
+										<c:when test="${vo.intPayWay eq 'Y'}"><td >연</td></c:when>
+										<c:when test="${vo.intPayWay eq 'M'}"><td>월</td></c:when>
+										<c:otherwise><td >만기</td></c:otherwise>
 							</c:choose>	
-							<td class="center">${vo.mgr}</td>
-							<td class="center">${vo.mgrCall}</td>
-							<td class="center">${vo.bankCode}</td>
-							<td class="center">${vo.depositNo}</td>
+							<td >${vo.mgr}</td>
+							<td >${vo.mgrCall}</td>
+							<td >${vo.bankCode}</td>
+							<td >${vo.depositNo}</td>
 						</tr>
 					</c:forEach>
 					</tbody>
