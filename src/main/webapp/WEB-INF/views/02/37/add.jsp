@@ -149,8 +149,7 @@ html, body {
 													style="display: none">${getAboutNoCustomerData.name }</option>
 											</c:when>
 											<c:otherwise>
-												<option style="display: none;" disabled selected></option>
-												<option value=""></option>
+												<option selected>없음</option>
 											</c:otherwise>
 										</c:choose>
 

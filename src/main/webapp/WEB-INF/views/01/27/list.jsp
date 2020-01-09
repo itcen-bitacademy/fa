@@ -1269,7 +1269,7 @@ html,body{
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
+							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 							</div>	<!-- /.span -->
 						
 						</div>
