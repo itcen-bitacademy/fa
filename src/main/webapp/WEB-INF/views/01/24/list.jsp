@@ -19,33 +19,34 @@
 .chosen-search {
 	display: none;
 }
+
 input, textarea, .uneditable-input {
-    width: 100px;
+	width: 100px;
 }
 
-  html,body{
-             	height:100%;
-      	}
-      	
-      	.main-container{
-         	height:calc(100% - 45px);
-         	overflow-x: hidden;
-      	}
-      
-      	.main-content{
-         	overflow:auto;
-      	}
-      	
-      	.page-content{
-         	min-width:1280px;
-      	}
-		
-		  @media screen and (max-width: 920px) {
-         .main-container{
-            height:calc(100% - 84px);
-         }
-      }
-	
+html, body {
+	height: 100%;
+	overflow-x: hidden;
+}
+
+.main-container {
+	height: calc(100% - 45px);
+	overflow-x: hidden;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.page-content {
+	min-width: 1280px;
+}
+
+@media screen and (max-width: 920px) {
+	.main-container {
+		height: calc(100% - 84px);
+	}
+}
 </style>
 
 
@@ -101,7 +102,7 @@ input, textarea, .uneditable-input {
 						
 						<button type="submit" id="btn-submit" class="btn btn-small btn-info" >조회</button>
 						&nbsp;
-						<button class="btn btn-default btn-small" id="btn-reset">취소</button>
+						<button class="btn btn-default btn-small" id="btn-reset">초기화</button>
 					</form>
 					<div class="hr hr-18 dotted"></div>
 					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 카드 ${dataResult.pagination.totalCnt } 건</p>

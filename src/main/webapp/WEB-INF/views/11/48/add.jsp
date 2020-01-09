@@ -26,7 +26,7 @@ html,body{overflow-x:hidden; height:100%;}
 .form-horizontal .control-label {text-align: left;}
 
 h4{
-	font-size:13px;
+	font-size:14px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
 
@@ -361,7 +361,7 @@ tr td:first-child {
 					<button class="btn btn-warning btn-small mybtn" id="updatebtn">수정</button>
 					<button class="btn btn-danger btn-small mybtn" onclick="deleteChecked()"  id='delete' >삭제</button>
 					
-					<button class="btn btn-small mybtn" id= "search">조회</button>
+					<button class="btn btn-info btn-small mybtn" id= "search">조회</button>
 				
 					<button class="btn btn-small btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
 					
@@ -438,7 +438,7 @@ tr td:first-child {
 					</div>
 					<!-- 상환 Modal pop-up : end -->
 					
-					<button class="btn btn-info btn-small mybtn" id="clear">초기화</button>
+					<button class="btn btn-default btn-small mybtn" id="clear">초기화</button>
 					
 				<!-- 금주의 상환 내역 Modal pop-up : start -->
 					<div id="repay-due" title="금주의 상환 내역" hidden="hidden">

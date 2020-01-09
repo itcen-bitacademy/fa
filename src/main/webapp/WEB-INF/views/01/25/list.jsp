@@ -963,15 +963,15 @@ html, body {
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="hr hr-18 dotted"></div>
-							<button type="submit" class="btn btn-info btn"
+							<button type="submit" class="btn btn-small btn-info btn"
 								id="btn-read" name="btn-read">조회</button>
-							<button type="submit" class="btn btn-danger btn"
+							<button type="submit" class="btn btn-small btn-danger btn"
 								id="btn-delete" name="btn-delete">삭제</button>
-							<button type="submit" class="btn btn-warning btn"
+							<button type="submit" class="btn btn-small btn-warning btn"
 								id="btn-update" name="btn-update">수정</button>
-							<button type="submit" class="btn btn-primary btn" id="btn-create"
+							<button type="submit" class="btn btn-small btn-primary btn" id="btn-create"
 								name="btn-create">입력</button>
-							<button type="reset" class="btn btn-default btn" id="btn-reset"
+							<button type="reset" class="btn btn-small btn-default btn" id="btn-reset"
 								name="btn-reset">초기화</button>
 							<div class="hr hr-18 dotted"></div>
 						</div>

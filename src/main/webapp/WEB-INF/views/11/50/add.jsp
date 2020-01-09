@@ -15,9 +15,20 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+html,body{overflow-x:hidden; height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
+h4{
+	font-size:14px;
+	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
+}
+
 #dialog-confirm{z-index: 2222!important;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
-.p-debt-code-input {width: 270px;}
+.p-debt-code-input {width: 205px;}
 
 /* 테이블의 첫 row 모두 padding right */
 .form-horizontal .control-label {text-align: left;}
@@ -30,7 +41,7 @@
 
 .debt-name-input {width: 420px;}
 .mgr-input {width: 90px; display: inline;}
-.mgr-number-input-h4 {display: inline; margin-left: 30px; margin-right: 20px;}
+.mgr-number-input-h4 {display: inline; margin-left: 37px; margin-right: 20px;}
 .mgr-call-input {width: 140px; display: inline;}
 
 .mybtn {float: left; margin-right: 10px;}
@@ -70,8 +81,8 @@
 												<input type="text" name="code" id="code" class="p-debt-code-input" value="${code}" maxlength="10"/>
 											</c:otherwise>
 										</c:choose>
-										<input class="btn btn-primary btn-small" id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
-										<img id="img-checkcode" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										<input id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
+										<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
 										</td>
 									</tr>
 									<tr>
@@ -223,13 +234,9 @@
 											<label class="control-label">담당자</label>
 										</td>
 										<td>
-											<input type="text" class="mgr-input" name="mgr" />
-										</td>
-										<td>
-											<label class="control-label">담당자전화번호</label>
-										</td>
-										<td>
-											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+											<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
+											<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
 										</td>
 									</tr>
 									<tr>
@@ -396,6 +403,7 @@
 							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
 							<button type="button" id="repaybtn" class="btn btn-small mybtn">상환</button>
 							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
+							<button type="button" id="repay-view-button" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
 						</div>
 					<hr>
 				</form>
@@ -403,7 +411,8 @@
 
 				<!-- list -->
 				<p>총 ${contentsCount }건</p>
-				<table id="simple-table" class="table  table-bordered table-hover">
+				<div  style="overflow: auto;">
+				<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center" >
@@ -474,6 +483,7 @@
 							</c:forEach>
 						</tbody>
 				</table>
+				</div>
 			</div>
 			<!-- /.page-content -->
 			
@@ -540,7 +550,10 @@
 		// button action 막기
 		$('button').on('click', function(e) { e.preventDefault(); })
 		$(".chosen-select").chosen();
-
+		
+		$("#updatebtn").hide();
+		$("#repaybtn").hide();
+		
 		// daterangepicker 호출
 		$('#id-date-range-picker-1').daterangepicker({
 			format: 'YYYY-MM-DD'
