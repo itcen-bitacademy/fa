@@ -192,7 +192,7 @@
 							
 							<div class="row-fluid">
 								<div class="span12" style="overflow-x: scroll;">
-								<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">매입거래처 ${dataResult.pagination.totalCnt } 건</p>
+								<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">총 ${dataResult.pagination.totalCnt } 건</p>
 									<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;">
 										<thead>
 											<tr>
