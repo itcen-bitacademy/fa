@@ -131,6 +131,8 @@ div > span.add-on{margin-left:-5px}
 
 div > .label-radio{margin-right: 10px;}
 
+.right{text-align: right;}
+.left{text-align: left;}
 </style>
 </head>
 <body class="skin-3">
@@ -214,8 +216,8 @@ div > .label-radio{margin-right: 10px;}
 				</section> 
 				<hr/>
 				<section class="filter-reset">
-					<input type="button" class="btn btn-primary btn-small mybtn" value="조회" onclick="search()">
-					<input type="button" class="btn btn-success btn-small mybtn" value="초기화" onclick="resetForm()">	
+					<input type="button" class="btn btn-info btn-small mybtn" value="조회" onclick="search()">
+					<input type="button" class="btn btn-default btn-small mybtn" value="초기화" onclick="resetForm()">	
 				</section>
 			</form>
 			<hr/>

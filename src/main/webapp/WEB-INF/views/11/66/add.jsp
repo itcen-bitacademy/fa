@@ -148,7 +148,7 @@ input[type="text"], input[type="date"], select {
 							<button type="button" id="updatebtn" class="btn btn-warning btn-small mybtn"  onclick="update()">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" onclick="search()">조회</button>
-							<button type="button"  id="formReset" class="btn btn-success btn-small mybtn">초기화</button>
+							<button type="button"  id="formReset" class="btn btn-default btn-small mybtn">초기화</button>
 						</div>
 					</section>
 				</section>

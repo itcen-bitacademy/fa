@@ -40,14 +40,18 @@ public class Menu45Controller {
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			BankVo vo, Model model) {
 		System.out.println(vo);
+		if("".equals(vo.getDeleteFlag()))
+			vo.setDeleteFlag("");
+		else vo.setDeleteFlag("N");
+		
 		DataResult<BankVo> dataResult = menu45Service.list(vo, page);
 		
 		UriComponents uriComponents=
 				UriComponentsBuilder.newInstance().queryParam("name",vo.getName())
-									.queryParam("store", vo.getStore())
-									.queryParam("dealDate", vo.getDealDate())
-									.queryParam("deleteFlag", vo.getDeleteFlag())
-									.build();
+				.queryParam("store", vo.getStore())
+				.queryParam("dealDate", vo.getDealDate())
+				.queryParam("deleteFlag", vo.getDeleteFlag())
+				.build();
 		String uri = uriComponents.toUriString();
 		model.addAttribute("dataResult", dataResult);
 		model.addAttribute("uri", uri);
