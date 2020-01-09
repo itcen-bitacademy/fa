@@ -14,7 +14,11 @@
 .chosen-search {
 	display: none;
 }
+.form-horizontal .control-label {
+    text-align: left
+}
 </style>
+
 
 </head>
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -25,6 +29,7 @@
 <script type="text/javascript">
 	$(function() {
 		$(".chosen-select").chosen();
+		$("th").attr("class", "center");
 		$('table th input:checkbox').on('click' , function(){
 			var that = this;
 			$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -61,7 +66,9 @@
 		
 		$(".pagination li a").on("click", function(event){
 			event.preventDefault();
-			
+			if($(this).parent().attr("class") == "disabled"){
+				return;
+			}
 			$("#form-customer input[name=page]").val($(this).parent().val());
 			$("#form-customer").submit();
 		});
@@ -309,7 +316,7 @@
                            <label class="control-label" for="insert_date">입력일자</label>
                               <div class="controls">
                                  <div class="row-fluid input-append">
-                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${customerVo.insertDay }"/>
+                                 <input class="cl-date-picker" name="insertDay" type="text" readonly style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${customerVo.insertDay }"/>
                                     <span class="add-on">
                                     <i class="icon-calendar"></i>
                                     </span>
@@ -330,6 +337,7 @@
                            <div class="control-group">
                               <div class="hr hr-18 dotted"></div>
                                  <button class="btn btn-info btn-small" id="btn-submit" style="float:left; margin-left:20px;">조회</button>
+                                 <button class="btn btn-default btn-small" id="btn-reset" type = "reset" style="margin-left: 10px;">초기화</button>
                            </div>
                            <div class="hr hr-18 dotted"></div>
                         </div>
@@ -337,13 +345,13 @@
                   </form>
 				</div>
 				<div>
-				총 ${pagination.totalCnt }건
+					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">매출거래처 ${pagination.totalCnt } 건</p>
 				</div>
 			</div>
 					<div class="row-fluid">
 					
-						<div class="span12">
-							<table id="customer-table" class="table table-striped table-bordered table-hover" aria-describedby="sample-table-2_info">
+						<div class="span12" style="overflow-x: scroll;">
+							<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;" aria-describedby="sample-table-2_info">
 								<thead>
 									<tr role="row">
 										<th>사업자번호</th>

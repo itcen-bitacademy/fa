@@ -96,7 +96,7 @@
 					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
 				]]>
 		</if>
-		<if test='no!=null'>
+		<if test='no!=""'>
 				<![CDATA[
 					 and no = #{no }
 				]]>
@@ -165,7 +165,7 @@
 					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
 				]]>
 		</if>
-		<if test='no!=null'>
+		<if test='no!=""'>
 				<![CDATA[
 					 and no = #{no }
 				]]>
@@ -237,7 +237,7 @@
 					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
 				]]>
 		</if>
-		<if test='no!=null'>
+		<if test='no!=""'>
 				<![CDATA[
 					 and no = #{no }
 				]]>

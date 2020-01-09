@@ -19,7 +19,8 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
         html,body{
-             	height:100%;
+             height:100%;
+             overflow-x: hidden;
       	}
       	
       	.main-container{
@@ -439,9 +440,6 @@
 									<div class="controls">
 										<input type="text" id="no" name="no" maxlength="11">
 										<input class="span6" type="hidden" id="preNo" name="preNo">
-<!-- 										<div id="invalid" style="display:none">
-											중복된 사업자번호 입니다.
-										</div> -->
                              			<input id="check_no" style="height:28px" data-checkid="" type="button" value="중복확인">
 										<i id="check_ok" class="icon-ok bigger-150 blue" style="display:none;"></i>
 									</div>
@@ -454,20 +452,6 @@
 									</div>
 								</div>
 
-<!-- 								<div class="control-group">
-									<label class="control-label" for="address">주소</label>
-									<div class="controls">
-										<input type="text" id="zipCode" name="zipCode" readonly style="width: 60px;"> 
-										<div class="input-append">
-											<input type="text" id="address" name="address" readonly style="width: 200px;"> 
-											<span class="add-on"><i class="icon-search icon-on-right bigger-110" onclick="execDaumPostcode()"></i></span>
-										</div>	
-										<br>
-										<br> 
-										<input type="text" id="detailAddress" name="detailAddress" maxlength="60" style="width: 330px;">
-									</div>
-								</div> -->
-								
 								<div class="control-group">
 									<label class="control-label" for="address">주소</label>
 									<div class="controls">
@@ -621,10 +605,10 @@
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
 											<button id="btn_insert" class="btn btn-primary btn-small" style="float:left;">입력</button>
-											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:20px;">수정</button>
-											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:20px;">삭제</button>
-											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:20px;">조회</button>
-											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:20px;">취소</button>
+											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:5px;">수정</button>
+											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:5px;">삭제</button>
+											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:5px;">조회</button>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:5px;">초기화</button>
 									</div>
 									<div class="hr hr-18 dotted"></div>
 								</div>

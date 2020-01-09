@@ -81,8 +81,8 @@
 											<option value="item_name">품목명</option>
 											</select>
 											<span>
-												<button class="btn btn-small" type="submit" id="search">조회</button>
-												<button class="btn btn-info btn-small" type="button" id="reset" onclick="formReset();">초기화</button>
+												<button class="btn btn-info btn-small" type="submit" id="search">조회</button>
+												<button class="btn btn-default btn-small" type="button" id="reset" onclick="formReset();">초기화</button>
 											</span>
 										</div>
 									</div>
@@ -137,21 +137,21 @@
 									<table id="searchList" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th class="left">매입일자</th>
-												<th class="left">매입번호</th>
-												<th class="left">매입순번</th>
-												<th class="left">거래처코드</th>
-												<th class="left">거래처명</th>
-												<th class="left">담당자</th>
-												<th class="left">품목코드</th>
-												<th class="left">품목명</th>
-												<th class="left">입고일자</th>
-												<th class="left">출고일자</th>
-												<th class="left">수량</th>
-												<th class="left">공급가액</th>
-												<th class="left">부가세</th>
-												<th class="left">과세 여부</th>
-												<th class="left">세금계산서번호</th>
+												<th class="center">매입일자</th>
+												<th class="center">매입번호</th>
+												<th class="center">매입순번</th>
+												<th class="center">거래처코드</th>
+												<th class="center">거래처명</th>
+												<th class="center">담당자</th>
+												<th class="center">품목코드</th>
+												<th class="center">품목명</th>
+												<th class="center">입고일자</th>
+												<th class="center">출고일자</th>
+												<th class="center">수량</th>
+												<th class="center">공급가액</th>
+												<th class="center">부가세</th>
+												<th class="center">과세 여부</th>
+												<th class="center">세금계산서번호</th>
 											</tr>
 										</thead>
 										
@@ -275,7 +275,6 @@
 		
 		function formReset() {
 			location.reload(true);
-			
 		};
 		
 	 
