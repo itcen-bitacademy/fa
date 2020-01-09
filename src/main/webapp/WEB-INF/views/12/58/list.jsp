@@ -287,7 +287,7 @@
 			        	</div>
 			        </div>
 			        <div class="hr hr-18 dotted"></div>
-					<p class="span6" style="margin:0 0 10px 0;font-size:0.9rem">월별 거래처 매입 현황 ${dataResult.pagination.totalCnt } 건</p>			
+					<p class="span6" style="margin:0 0 5px 0;font-size:0.9rem">월별 거래처 매입 현황 ${dataResult.pagination.totalCnt } 건</p>			
 								
 					<div class="row-fluid">
 						<div class="span12" style="overflow: auto;">

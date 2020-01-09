@@ -438,7 +438,7 @@ tr td:first-child {
 					</div>
 					<!-- 상환 Modal pop-up : end -->
 					
-					<button class="btn btn-success btn-small mybtn" id="clear">초기화</button>
+					<button class="btn btn-default btn-small mybtn" id="clear">초기화</button>
 					
 				<!-- 금주의 상환 내역 Modal pop-up : start -->
 					<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
@@ -496,6 +496,8 @@ tr td:first-child {
 							<th class="center">담당자전화번호</th>
 							<th class="center">은행코드</th>
 							<th class="center">계좌</th>
+							<th class="center">등록일자</th>
+							
 						</tr>
 					</thead>
 
@@ -534,7 +536,8 @@ tr td:first-child {
 							<td class="center">${ltermvo.mgr}</td>
 							<td class="center" >${ltermvo.mgrCall}</td>
 							<td class="center" bank-name="${ltermvo.bankName}">${ltermvo.bankCode}</td>
-							<td class="center" deposit-host="${ltermvo.depositHost}">${ltermvo.depositNo}</td>			
+							<td class="center" deposit-host="${ltermvo.depositHost}">${ltermvo.depositNo}</td>
+							<td class="center">${ltermvo.insertDate}</td>			
 						</tr>
 						</c:forEach>
 					</tbody>
