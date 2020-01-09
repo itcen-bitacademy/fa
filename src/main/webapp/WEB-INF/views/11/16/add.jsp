@@ -88,7 +88,7 @@ html,body{
       height:100%;
    }
    .main-container{
-      height:calc(100% - 45px);
+      height:calc(100% - 84px);
       overflow-x: hidden;
    }
    .main-content{
@@ -264,7 +264,7 @@ html,body{
 				<button id='updatebtn' class="btn btn-warning btn-small">수정</button>
 				<button id='deletebtn' class="btn btn-danger btn-small" >삭제</button>
 				<button id="search" class="btn btn-info btn-small" >조회</button>
-				<button class="btn btn-success btn-small mybtn" id="formReset">초기화</button>
+				<button class="btn btn-default btn-small mybtn" id="formReset">초기화</button>
 				<hr>
 			</div>
 		

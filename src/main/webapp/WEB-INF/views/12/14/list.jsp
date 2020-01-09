@@ -130,6 +130,9 @@
                                         <div class="btn-group">
                                             <button class="btn btn-info btn-small" type="submit">조회</button>
                                         </div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-default btn-small" type="button" onclick="location.href='${pageContext.request.contextPath }/12/14';">취소</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -187,11 +190,11 @@
                     </div>
 
                     <div class="hr hr-10 dotted"></div>
-                    <p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">총 ${dataResult.pagination.totalCnt } 건</p>
-                    <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;" onchange="view()">
+                    <p class="span6" style="margin:5px 0 5px 0; font-size:0.9rem">총 ${dataResult.pagination.totalCnt } 건</p>
+                    <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;display:none" onchange="view()">
                     	<c:choose>
                              <c:when test="${viewCount == 10 }">
-                                 <option value="10" selected style="display:none">10</option>
+                                 <option value="11" selected style="display:none">10</option>
                              </c:when>
                              <c:when test="${viewCount == 30 }">
                                  <option value="30" selected style="display:none">30</option>
@@ -200,7 +203,7 @@
                                  <option value="50" selected style="display:none">50</option>
                              </c:when>
                          </c:choose>
-                         <option value="10">10</option>
+                         <option value="11">10</option>
 	                     <option value="30">30</option>
 	                     <option value="50">50</option>
                     </select>
@@ -303,7 +306,7 @@
         	var now = new Date();
             $(".chosen-select").chosen();
             $("#salesDate").daterangepicker({
-            	startDate: new Date(now.getYear()+1900, now.getMonth(), 1),
+            	startDate: new Date(now.getYear()+1900, now.getMonth()-1, 1),
                 endDate: new Date(now.getYear()+1900, now.getMonth()+1, 0),
                 locale: {
                     format: 'YYYY-MM-DD'
