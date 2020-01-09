@@ -13,6 +13,7 @@
 <style>
         html,body{
              	height:100%;
+             	overflow-x: hidden;
       	}
       	
       	.main-container{
@@ -170,6 +171,7 @@
 		                           <label class="control-label" for="manager_name">거래처 담당자</label>
 		                           <div class="controls">
 		                              <input type="text" name="managerName" id="manager_name" style="width: 150px;" value="${inputCustomer.managerName }">
+		                              <input type="hidden" name="page" value="1">
 		                           </div>
 		                        </div>
 		                     </div>
@@ -253,35 +255,38 @@
 						
 						<%-- 페이징 --%>
 						<div class="pagination">
-							<ul>
-								<c:choose>
+						<ul>
+							<c:choose>
 								<c:when test="${dataResult.pagination.prev }">
-									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+									<li value="${dataResult.pagination.startPage - 1 }"><a href="#"><i class="icon-double-angle-left"></i></a></li>								
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
 								</c:otherwise>
-								</c:choose>
-								<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+							</c:choose>
+								
+							
+							<c:forEach var="pageNum" begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }">
 								<c:choose>
-								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${pg }">${pg }</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${pg }">${pg }</a></li>
-								</c:otherwise>
+									<c:when test="${pageNum eq  dataResult.pagination.page}">
+										<li class="active" value="${pageNum }"><a href="#">${pageNum }</a></li>		
+									</c:when>
+									<c:otherwise>
+										<li value="${pageNum }"><a href="#">${pageNum }</a></li>
+									</c:otherwise>
 								</c:choose>
-								</c:forEach>
-								<c:choose>
-									<c:when test="${dataResult.pagination.next }">
-									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+							</c:forEach>
+							
+							<c:choose>
+								<c:when test="${dataResult.pagination.next }">
+									<li value="${dataResult.pagination.endPage + 1 }"><a href="#"><i class="icon-double-angle-right"></i></a></li>								
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
 								</c:otherwise>
-								</c:choose>
-									</ul>
-								</div>
+							</c:choose>
+						</ul>
+					</div>		
 
 						<!-- PAGE CONTENT ENDS -->
 						
@@ -311,6 +316,15 @@
 	$(function() {
 		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
 		$(".chosen-select").chosen();
+		
+		$(".pagination li a").on("click", function(event){
+			event.preventDefault();
+			if($(this).parent().attr("class") == "disabled"){
+				return;
+			}
+			$("#form-customer input[name=page]").val($(this).parent().val());
+			$("#form-customer").submit();
+		});
 		
 		// 매입거래처 팝업
 		$("#dialog-message").dialog({

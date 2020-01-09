@@ -19,7 +19,8 @@
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
         html,body{
-             	height:100%;
+             height:100%;
+             overflow-x: hidden;
       	}
       	
       	.main-container{

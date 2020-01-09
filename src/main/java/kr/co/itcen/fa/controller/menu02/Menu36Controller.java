@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,14 +36,29 @@ public class Menu36Controller {
 	
 	// 조회
 	@NoAuth
-	@RequestMapping({"", "/" + SUBMENU + "/list", "/" + SUBMENU })
-	public String closingDateListPage(CustomerVo customerVo, Model model, @RequestParam(defaultValue = "1") int page) {
+	@RequestMapping("/" + SUBMENU)
+	public String list(Model model, @RequestParam(defaultValue = "1") int page) {
+		CustomerVo customerVo = new CustomerVo();
+
+		if(customerVo.getDeleteFlag() == null) {
+			customerVo.setDeleteFlag("N");
+		}
 		
+		DataResult<CustomerVo> dataResult = menu36Service.selectAll(page, customerVo);
+		model.addAttribute("inputCustomer", customerVo);
+		model.addAttribute("dataResult", dataResult);
+		model.addAttribute("customerVo", dataResult.getDatas());
+
+		return MAINMENU + "/" + SUBMENU + "/list";
+	}
+	
+	@NoAuth
+	@RequestMapping(value="/" + SUBMENU + "/list", method=RequestMethod.POST)
+	public String list(CustomerVo customerVo, Model model, @RequestParam(value="page", required=false, defaultValue="1") int page) {
 		if(customerVo.getDeleteFlag() == null) {
 			customerVo.setDeleteFlag("N");
 		}
 
-		
 		DataResult<CustomerVo> dataResult = menu36Service.selectAll(page, customerVo);
 		model.addAttribute("inputCustomer", customerVo);
 		model.addAttribute("dataResult", dataResult);
