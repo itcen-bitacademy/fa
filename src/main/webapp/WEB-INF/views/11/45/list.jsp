@@ -175,8 +175,8 @@ html,body{
 					</div>
 					<hr>
 						<div class="row-fluid">
-							<button id="search" class="btn btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-							<button type="button" id="clearbtn" class="btn btn-info btn-small mybtn">초기화</button>
+							<button id="search" class="btn btn-info btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
 						</div>
 					<hr>
 				</form>

@@ -225,8 +225,8 @@ width: 208px;}
 					<!-- PAGE CONTENT ENDS -->
 		<hr>
 		<div>	
-			<button class="btn btn-small" id='search'>조회</button>
-			<button class="btn btn-info btn-small" id='reset'>초기화</button>
+			<button class="btn btn-info btn-small" id='search'>조회</button>
+			<button class="btn btn-default btn-small" id='reset'>초기화</button>
 			<hr>						
 		</div>
 		<!-- list -->

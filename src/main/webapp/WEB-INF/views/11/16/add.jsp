@@ -263,8 +263,8 @@ html,body{
 				<button class="btn btn-primary btn-small" id="inputbtn">입력</button>
 				<button id='updatebtn' class="btn btn-warning btn-small">수정</button>
 				<button id='deletebtn' class="btn btn-danger btn-small" >삭제</button>
-				<button id="search" class="btn btn-small" >조회</button>
-				<button class="btn btn-info btn-small mybtn" id="formReset">초기화</button>
+				<button id="search" class="btn btn-info btn-small" >조회</button>
+				<button class="btn btn-default btn-small mybtn" id="formReset">초기화</button>
 				<hr>
 			</div>
 		
