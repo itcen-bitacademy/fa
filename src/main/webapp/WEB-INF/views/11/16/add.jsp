@@ -67,7 +67,7 @@ tr td:first-child {
    text-align:right;
 }
 
-.mybtn{float:left;margin-right:10px;}
+.mybtn{margin-right:10px;}
 
 #staticBackdrop {
    z-index: -1;
