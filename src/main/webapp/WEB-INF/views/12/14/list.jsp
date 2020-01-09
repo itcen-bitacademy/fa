@@ -190,7 +190,7 @@
                     </div>
 
                     <div class="hr hr-10 dotted"></div>
-                    <p class="span6" style="margin:5px 0 5px 0;font-size:0.9rem">총 ${dataResult.pagination.totalCnt } 건</p>
+                    <p class="span6" style="margin:5px 0 5px 0; font-size:0.9rem">총 ${dataResult.pagination.totalCnt } 건</p>
                     <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;display:none" onchange="view()">
                     	<c:choose>
                              <c:when test="${viewCount == 10 }">
