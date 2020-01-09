@@ -414,7 +414,7 @@ function renderingList(list){
 				 "<td class='center'>" + list[i].code + "</td>" +
 				 "<td>" + list[i].name + "</td>" +
 				 "<td class='center'>" + convertMajorCode(list[i].majorCode) + "</td>" +
-				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].debtAmount) + "</td>" +
 				 "<td class='center'>" + convertRepayWay(list[i].repayWay) + "</td>" +
 				 "<td class='center'>" + list[i].debtDate + "</td>" + 
 				 "<td class='center'>" + list[i].expDate + "</td>" +

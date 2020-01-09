@@ -233,7 +233,7 @@ form {
 										<c:when test="${vo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /></td>
 							<c:choose>
 										<c:when test="${vo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>

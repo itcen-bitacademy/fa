@@ -240,7 +240,7 @@ width: 208px;}
 							<th class="center">장기차입금명</th>
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
-							<th class="center">상환액</th>
+							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
 							<th class="center">차입일자</th>
 							<th class="center">만기일자</th>
@@ -266,15 +266,15 @@ width: 208px;}
 										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
-							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
 										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
 										<c:otherwise><td class="center">만기</td></c:otherwise>
 							</c:choose>		
-							<td class="center">${ltermvo.debtDate}</td>
-							<td class="center">${ltermvo.expDate}</td>
+							<td style="text-align:right;">${ltermvo.debtDate}</td>
+							<td style="text-align:right;">${ltermvo.expDate}</td>
 							<td class="center">${ltermvo.intRate}%</td>
 							<c:choose>
 										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>

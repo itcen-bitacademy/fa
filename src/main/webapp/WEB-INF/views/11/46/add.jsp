@@ -226,7 +226,7 @@ tr.selected{background-color: #ddd}
 						<div class="ia-right">
 							<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
 							<input type="hidden" name="debtAmount" required>
-							<label class="label-name" style="display: inline-block;">(원)</label>
+							<label class="label-name" style="display: inline-block; font-size:14px;">(원)</label>
 						</div>
 						<div class="ia-left"><label class="label-name">차입일자 ~ 만기일자</label></div>
 						<div class="ia-right">
@@ -294,7 +294,7 @@ tr.selected{background-color: #ddd}
 						</div>
 						
 						<div class="ia-left"><label class="label-name">이율</label></div>
-						<div class="ia-right"><input type="text" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/><h5 style="display:inline">%</h5></div>
+						<div class="ia-right"><input type="text" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/> <h5 style="display:inline; font-size:14px;">(%)</h5></div>
 						
 						<div class="ia-left"><label class="label-name">담당자</label></div>
 						<div class="ia-right">
@@ -1319,8 +1319,8 @@ function renderingList(list){
 				 "<td class='center'>" + list[i].code + "</td>" +
 				 "<td>" + list[i].name + "</td>" +
 				 "<td class='center'>" + list[i].majorCode + "</td>" +
-				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
-				 "<td class='center'>" + comma(list[i].repayBal) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].debtAmount) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].repayBal) + "</td>" +
 				 "<td class='center'>" + list[i].repayWay + "</td>" +
 				 "<td class='center'>" + list[i].debtDate + "</td>" + 
 				 "<td class='center'>" + list[i].expDate + "</td>" +
