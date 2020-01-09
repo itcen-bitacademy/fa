@@ -97,8 +97,7 @@
 													$("#subcategory").val(subcategory);
 													</script>
 													</div>
-										</div>
-										
+											</div>
 										<div class="span2">
 												<button class="btn btn-small btn-info" type="submit" style="margin-left: 10px;"
 												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
@@ -110,10 +109,11 @@
 							</form>
 								
 							<div class="hr hr-18 dotted"></div>
-								
+							<p class="span6" style="margin:0 0 10px 0;font-size:0.9rem">품목대분류별 매입매출 현황 ${dataResult.pagination.totalCnt } 건</p>	
+							
 							<div class="row-fluid">
-								<div class="span12">
-									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+								<div class="span12" style="overflow: auto;">
+									<table id="sample-table-1" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 										<thead>
 										<tr>
 											<th>대분류코드</th>

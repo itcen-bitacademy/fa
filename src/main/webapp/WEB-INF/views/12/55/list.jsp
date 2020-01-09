@@ -70,8 +70,8 @@
 										<div class="controls" style="margin-left: 70px;">
 											<select class="chosen-select" id="itemname" name="itemcode"
 												data-placeholder="품목명 선택" >
-												<c:forEach items='${itemname }' var='itemname'
-													varStatus='status'>
+												<option value=""></option>
+												<c:forEach items='${itemname }' var='itemname' varStatus='status'>
 													<option value="${itemname.itemcode }">${itemname.itemname }</option>
 												</c:forEach>
 											</select>
@@ -81,9 +81,7 @@
 													$("#itemname").val(itemcode);
 											</script>
 										</div>
-								</div>
-
-
+									</div>
 								<div class="span4">
 									<button type="submit" class="btn btn-small btn-info" type="submit" style="margin-left: 50px;"
 										formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
@@ -92,15 +90,14 @@
 
 							</div>
 						</div>
-					</div>
-	
+				</div>
 				</form>
-
 				<div class="hr hr-18 dotted"></div>
-
+				<p class="span6" style="margin:0 0 10px 0;font-size:0.9rem">품목별 매입매출 현황 ${dataResult.pagination.totalCnt } 건</p>
+								
 				<div class="row-fluid">
-					<div class="span12">
-					<table id="sample-table-1"class="table table-striped table-bordered table-hover">
+					<div class="span12" style="overflow: auto;">
+					<table id="sample-table-1"class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 						<thead>
 							<tr>
 								<th>품목코드</th>
