@@ -685,9 +685,30 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
  	$('#code').attr('readOnly',false);
   	$('#btn-check-code').val('중복확인').show();
   	$('#addressSearch').val('우편번호찾기');
+	
+	$("#tbody-list").find('tr').removeClass("selected");
 });	 
 
  $('#updatebtn').click(function(){
+	 
+	 var count = 0;
+	 $("#tbody-list tr").each(function(i){
+		if($(this).hasClass('selected') === true){
+			count++;
+		}
+	 });
+	console.log(count);
+	
+	if(count>1){
+		openErrorModal('UPDATE ERROR','하나의 내용만 수정할 수 있습니다','');
+		return;
+	}
+	if(count<=0){
+		openErrorModal('UPDATE ERROR','수정할 리스트를 선택하여 주세요','');
+		return;
+	}	
+	 
+	 
 	 if(!Myvalidation()){
 			openErrorModal(errortitle,validationMessage,errorfield);
 			return;
@@ -698,6 +719,23 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
  });
  
  $('#deletebtn').click(function(){
+	 $("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		 });
+		
+		
+		if(count>1){
+			openErrorModal('UPDATE ERROR','하나의 내용만 삭제 할 수 있습니다','');
+			return;
+		}
+		if(count<=0){
+			openErrorModal('UPDATE ERROR','삭제할 리스트를 선택하여 주세요','');
+			return;
+		}	
+	 
+	 
   	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
 	$('#myform').attr('method', 'POST');
 	$('#myform').submit();
@@ -711,7 +749,7 @@ $("#search").click(function(){
 			  
 			  
 ////////////////////////////////////////////////////////////////////////////////////////
-$("#simple-table tr").click(function(){ 
+$("#tbody-list tr").click(function(){ 
 	var tr = $(this);
 	var td = tr.children();
 	
@@ -734,8 +772,23 @@ $("#simple-table tr").click(function(){
 	    $("input[name=mgrPhone]").val(td.eq(9).text());
 	    $("input[name=mgrEmail]").val(td.eq(10).text());
 	    $('#code').attr('readOnly',true);
+
+	  	$('#btn-check-code').val('중복확인').hide();
+	    
+	  	
+	  	
+	  	
+	  	
+	    
 	} else {
 		$(this).removeClass("selected");
+		$('input').val('');
+	 	$("#inputbtn").show();
+	 	$("#updatebtn").hide();
+	 	$("#img-checkcode").hide();
+	 	$('#code').attr('readOnly',false);
+	  	$('#btn-check-code').val('중복확인').show();
+	  	$('#addressSearch').val('우편번호찾기');
 	}
 	
 });
