@@ -26,7 +26,7 @@ html,body{overflow-x:hidden; height:100%;}
 .form-horizontal .control-label {text-align: left;}
 
 h4{
-	font-size:13px;
+	font-size:14px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
 
