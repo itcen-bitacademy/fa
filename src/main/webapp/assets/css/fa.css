@@ -48,3 +48,6 @@ body { font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고
 .pagination	ul		{ margin: 0 auto; }
 
 td[rowspan]			{ vertical-align: middle }
+
+.table tbody tr th{ text-align:center }
+.table thead tr th{ text-align:center }
