@@ -6,6 +6,33 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<style type="text/css">
+html,body{
+   height:100%;
+   overflow-x: hidden;
+   }
+         
+         .main-container{
+            height:calc(100% - 45px);
+            overflow-x: hidden;
+         }
+      
+         .main-content{
+            overflow:auto;
+         }
+         
+         .page-content{
+            min-width:1280px;
+         }
+
+   @media screen and (max-width: 920px) {
+               .main-container{
+               height:calc(100% - 84px);
+               }
+    }
+
+
+</style>
 <!-- 다음 주소 팝업창 api -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
@@ -1311,11 +1338,7 @@
 				<!-- /row -->
 				<!-- PAGE CONTENT ENDS -->
 				<!-- PAGE CONTENT ENDS -->
-				</div>
-			<!-- /.col -->
-			</div>
-			<!-- /.row -->
-				<div class="pagination" id = "pagination">
+				</div><div class="pagination" id = "pagination">
 					<ul>
 						<c:choose>
 							<c:when test="${dataResult.pagination.prev }">
@@ -1356,6 +1379,10 @@
 						</c:choose>
 					</ul>
 				</div>
+			<!-- /.col -->
+			</div>
+			<!-- /.row -->
+				
 				
 				<!-- Validation Modal Start -->
 				<div id="staticBackdrop" class="hide">
