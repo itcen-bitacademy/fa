@@ -453,7 +453,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">개설일자</label>
 										<div class="row-fluid input-append span2">
-											<input class="cl-date-picker" type="text" id="openDate" data-date-format="yyyy-mm-dd" name="openDate">
+											<input class="cl-date-picker" type="text" id="openDate" readonly data-date-format="yyyy-mm-dd" name="openDate">
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
