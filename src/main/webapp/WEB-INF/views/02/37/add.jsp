@@ -78,6 +78,9 @@ html, body {
 .control-label {
 	margin-top: 4px;
 }
+#item-table tr th {
+	text-align : center;
+}
 /* 기타 css e*/
 </style>
 </head>
@@ -337,7 +340,7 @@ html, body {
 											<c:forEach items="${getAboutItmesList }" var="items"
 												varStatus="status">
 												<tr>
-													<td><p>${status.count }</p></td>
+													<td><p style="text-align : center;">${status.count }</p></td>
 													<td><input type="text" id="date${status.count }"
 														class="calender" name="purchaseDate"
 														value="${items.purchaseDate }" autocomplete="off"></td>
@@ -363,7 +366,7 @@ html, body {
 										</c:when>
 										<c:otherwise>
 											<tr>
-												<td><p>1</p></td>
+												<td><p style="text-align : center;">1</p></td>
 												<td><input type="text" id="date1" class="calender"
 													name="purchaseDate" autocomplete="off"></td>
 												<td><input type="text" id="item1" name="itemName"
@@ -472,7 +475,7 @@ html, body {
 			var cell4 = row.insertCell(3);
 			var cell5 = row.insertCell(4);
 			var cell6 = row.insertCell(5);
-			cell1.innerHTML = '<td><p>' + cnt + '</p></td>';
+			cell1.innerHTML = '<td><p style="text-align : center;">' + cnt + '</p></td>';
 			cell2.innerHTML = '<td><input type="text" id="date'+cnt+'" class="calender" name="purchaseDate" autocomplete="off"></td>';
 			cell3.innerHTML = '<td><input type="text" id="item'+cnt+'" name="itemName" autocomplete="off"></td>';
 			cell4.innerHTML = '<td><input style="text-align:right;" type="text" id="amount'
