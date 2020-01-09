@@ -122,11 +122,11 @@
 						&nbsp; ~ &nbsp;
 						<div class="input-append">
 							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px" readonly /> 
-							<span class="add-on" style="margin:0,0,5px,0"> 
+							<span class="add-on"> 
 								<i class="icon-calendar"></i>
 							</span>
-							
-							<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button class="btn btn-small btn-info" style="margin : 0 0 0 5px" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							&nbsp;
 							<button class="btn btn-default btn-small" type="reset">취 소</button>
 						</div>
 						
