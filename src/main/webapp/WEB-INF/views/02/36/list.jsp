@@ -65,15 +65,15 @@
 								<div class="control-group">
 									<label class="control-label" for="customer">거래처</label>
 									<div class="controls">
-										<input type="text" name="preNo" style="width: 150px;" value="${inputCustomer.preNo }">
+										<input type="text" id="preNo" name="preNo" style="width: 150px;" value="${inputCustomer.preNo }">
 										<div class="input-append">
-										<input type="text" name="preName" readonly style="width: 200px;" value="${inputCustomer.preName }">
+										<input type="text" id="preName" name="preName" readonly style="width: 200px;" value="${inputCustomer.preName }">
 										<span class="add-on">
 										<a href="#" id="a-firstCustomerInfo-dialog">
 										<i class="icon-search icon-on-right bigger-110"></i></a></span></div> ~
-										<input type="text" name="no" style="width: 150px;" value="${inputCustomer.no }">
+										<input type="text" id="no" name="no" style="width: 150px;" value="${inputCustomer.no }">
 										<div class="input-append">
-											<input type="text" name="name" readonly style="width: 200px;" value="${inputCustomer.name }">
+											<input type="text" id="name" name="name" readonly style="width: 200px;" value="${inputCustomer.name }">
 											<span class="add-on">
 											<a href="#" id="a-secondCustomerInfo-dialog">
 												<i class="icon-search icon-on-right bigger-110"></i>
@@ -159,7 +159,7 @@
 		                           <label class="control-label" for="insert_date">입력일자</label>
 		                              <div class="controls">
 		                                 <div class="row-fluid input-append">
-		                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${inputCustomer.insertDay }"/>
+		                                 <input class="cl-date-picker" id="insertDay" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" readonly value="${inputCustomer.insertDay }"/>
 		                                    <span class="add-on">
 		                                    <i class="icon-calendar"></i>
 		                                    </span>
@@ -170,7 +170,7 @@
 		                        <div class="control-group">
 		                           <label class="control-label" for="manager_name">거래처 담당자</label>
 		                           <div class="controls">
-		                              <input type="text" name="managerName" id="manager_name" style="width: 150px;" value="${inputCustomer.managerName }">
+		                              <input type="text" name="managerName" id="managerName" style="width: 150px;" value="${inputCustomer.managerName }">
 		                              <input type="hidden" name="page" value="1">
 		                           </div>
 		                        </div>
@@ -409,6 +409,18 @@
 		// 조회
 		$("#btn_select").click(function(){
 			document.getElementById('form-customer').submit();
+		});
+		
+		// 초기화
+		$("#btn_cancel").click(function(){
+			$("#preNo").val('');				//사업자번호1
+			$("#preName").val('');				//상호명1
+			$("#no").val('');					//사업자번호2
+			$("#name").val('');					//상호명2
+			$("#item").val('');					//종목
+			$("#insertDay").val('');			//입력일자
+			$("input:radio[name='deleteFlag']:radio[value='N']").prop('checked', true); // 삭제포함여부
+			$("#managerName").val('');			//거래처담당자
 		});
 		
 		// 삭제포함여부 클릭시
