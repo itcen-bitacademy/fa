@@ -73,7 +73,9 @@
 		
 		$(".pagination li a").on("click", function(event){
 			event.preventDefault();
-			
+			if($(this).parent().attr("class") == "disabled"){
+				return;
+			}
 			$("#form-purchase input[name=page]").val($(this).parent().val());
 			$("#form-purchase").submit();
 		});
