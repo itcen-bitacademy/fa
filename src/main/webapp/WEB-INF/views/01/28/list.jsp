@@ -292,7 +292,7 @@ html,body{
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-small btn-info" id="btn-submit" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;
-						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
+						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 					
 					</form>
 					
