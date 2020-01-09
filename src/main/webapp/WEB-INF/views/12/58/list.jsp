@@ -12,7 +12,31 @@
 <style>
 .form-horizontal .control-label {
     text-align: left
-}
+    }
+       html,body{
+             	height:100%;
+             	overflow-x:hidden;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+
+	@media screen and (max-width: 920px) {
+	         	.main-container{
+            	height:calc(100% - 84px);
+         		}
+	 }
+
 </style>
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
@@ -161,6 +185,12 @@
 			    }
 			});
 		});
+		$("#btn-reset").click(function(){
+			event.preventDefault();
+			$("input[id=cl-ym-date-picker]").val("");
+			$("input[id=customerCode]").val("");
+			$("input[id=customerName]").val("");
+		});	
 	})
 </script>
 <style>
@@ -191,7 +221,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1" style="text-align: left; width: 50px;">년 월</label>
 										<div class="row-fluid input-append span2" style="margin-left: 5px;">
-											<input class="date-picker" id="cl-ym-date-picker" type="text" style="width: 150px;" data-date-format="yyyy-mm" name="purchaseDate" value="${purchase.purchaseDate }">
+											<input class="date-picker" id="cl-ym-date-picker" type="text" style="width: 150px;" data-date-format="yyyy-mm" name="purchaseDate" value="${purchase.purchaseDate }" readOnly>
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -202,7 +232,7 @@
 									<div class="control-group">
 										<label class="control-label span2" for="form-field-1" style="text-align: left; width: 60px;">거래처</label>
 										<div style="margin-left: 5px;">
-											<input type="text" id="customerCode" name="customerCode" style="width: 100px;" value="${purchase.customerCode }">
+											<input type="text" id="customerCode" name="customerCode" style="width: 100px;" value="${purchase.customerCode }" readOnly>
 				                            <div class="input-append">
 					                              <input type="text" id="customerName" name="customerName" readonly style="width: 150px;" value="${purchase.customerName }">
 					                              <span class="add-on">
@@ -215,6 +245,7 @@
 								</div>
 								<div class="span2" style="margin-left: 50px;">
 									<button class="btn btn-small btn-info" id="btn-submit">조회</button>
+									<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 								</div>
 								<input type="hidden" name="page">
 			        		</form>
@@ -256,8 +287,11 @@
 			        	</div>
 			        </div>
 			        <div class="hr hr-18 dotted"></div>
+					<p class="span6" style="margin:0 0 5px 0;font-size:0.9rem">월별 거래처 매입 현황 ${dataResult.pagination.totalCnt } 건</p>			
 								
-								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+					<div class="row-fluid">
+						<div class="span12" style="overflow: auto;">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 									<thead>
 									<tr>
 										<th>매입일자</th>
@@ -301,6 +335,7 @@
 									</tr>
 									</tbody>
 								</table>
+								</div>
 								</div>
 								<div class="pagination">
 									<ul>
@@ -395,6 +430,7 @@
 											</c:otherwise>
 										</c:choose>
 									</ul>
+								</div>
 								</div>
 				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->

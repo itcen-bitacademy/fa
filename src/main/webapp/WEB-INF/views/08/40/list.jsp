@@ -20,12 +20,32 @@
  .acqPrice {
     text-align: right
  }
-  @media screen and (max-width: 920px) {
-	  .main-container{
-           height:calc(100% - 84px);
-        }
-	 }
- </style>
+ 
+ html,body{
+	height:100%;
+	overflow-x: hidden;
+	}
+      	
+ .main-container{
+    height:calc(100% - 45px);
+    overflow-x: hidden;
+    }
+      
+ .main-content{
+    overflow:auto;
+    }
+      	
+ .page-content{
+    min-width:1280px;
+    }
+    
+ @media screen and (max-width: 920px) {
+ .main-container{
+     height:calc(100% - 84px);
+   	}
+   }
+   
+</style>
  
 </head>
 <body class="skin-3">
@@ -162,10 +182,11 @@
 							<!-- 구분선 -->
 						</div><!-- 나누기 위한 row-fluid -->
 						<div class="hr hr-18 dotted"></div>
-						<div>
+						<div style="overflow: auto;">
 							<p>총 ${dataResult.pagination.totalCnt }건</p>
 							<table id="sample-table-1"
-								class="table table-striped table-bordered table-hover">
+								class="table table-striped table-bordered table-hover"
+								style="width: 2200px">
 								<thead>
 									<tr>
 										<th>NO</th>

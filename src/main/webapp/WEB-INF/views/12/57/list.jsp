@@ -19,6 +19,30 @@
 .form-horizontal .control-label {
     text-align: left
 }
+
+           html,body{
+             	height:100%;
+             	overflow-x:hidden;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+
+	@media screen and (max-width: 920px) {
+	         	.main-container{
+            	height:calc(100% - 84px);
+         		}
+	 }
 </style>
 
 <script
@@ -58,27 +82,15 @@
 		});
 
 		$("#btn-submit").on("click", function() {
+			$("#form-sales input[name=page]").val("1");
 			$("#form-sales").submit();
 		});
-		/* 
-		$(".pagination li a").on("click", function(event){
-			event.preventDefault();
-			var activePage = $(this).parent().attr("class");
-			if(activePage == "disabled" || activePage == "active") {
-				return;
-			}
-			var page = $(".pagination li").attr("class", "active").children().text();
-			var icon = $(this).children().attr("class");
-			if(icon == "icon-double-angle-left") {
-				page += 1;
-			} else if(icon == "icon-double-angle-right") {
-				page -= 1;
-			}
+// 		$(".pagination li a").on("click", function(event){
+// 			event.preventDefault();
 			
-			$("#form-purchase input[name=page]").val(page);
-			$("#form-purchase").submit();
-		});
-		 */
+// 			$("#form-sales input[name=page]").val($(this).parent().val());
+// 			$("#form-sales").submit();
+// 		});
 		$("#dialog-message").dialog({
 			autoOpen : false
 		});
@@ -173,43 +185,42 @@
 				});
 
 		// 매출거래처 name 자동입력
-		$('#customerCode')
-				.on(
-						'change',
-						function(event) {
-							var el = $(this);
+		$('#customerCode').on('change',function(event) {
+			var el = $(this);
 
-							// ajax 통신
-							$
-									.ajax({
-										url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/get?no="
-												+ $(el).val(),
-										contentType : "application/json; charset=utf-8",
-										type : "get",
-										dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
-										data : "",
-										statusCode : {
-											404 : function() {
-												alert("page not found");
-											}
-										},
-										success : function(data) {
-											$(el).next().children("input").val(
-													"");
-											if (data.success
-													&& data.customer != null) {
-												var customer = data.customer;
-												console.log(customer);
-												console.log(customer.name);
-												$(el).next().children("input")
-														.val(customer.name);
-											}
-										},
-										error : function(xhr, error) {
-											console.error("error : " + error);
-										}
-									});
-						});
+				// ajax 통신
+				$.ajax({
+					url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/get?no="+ $(el).val(),
+					contentType : "application/json; charset=utf-8",
+					type : "get",
+					dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
+					data : "",
+					statusCode : {
+						404 : function() {
+							alert("page not found");
+						}
+					},
+					success : function(data) {
+						$(el).next().children("input").val("");
+						if (data.success && data.customer != null) {
+							var customer = data.customer;
+							console.log(customer);
+							console.log(customer.name);
+							$(el).next().children("input")
+							.val(customer.name);
+						}
+					},
+					error : function(xhr, error) {
+						console.error("error : " + error);
+				    }
+				});
+		});
+		$("#btn-reset").click(function(){
+			event.preventDefault();
+			$("input[id=cl-ym-date-picker]").val("");
+			$("input[id=customerCode]").val("");
+			$("input[id=customerName]").val("");
+		});	
 	})
 </script>
 <style>
@@ -242,7 +253,7 @@
 										<div class="control-group">
 											<label class="control-label form-field-1" style="text-align: left; width: 50px;">년 월</label>
 											<div class="row-fluid input-append span2" style="margin-left: 5px;">
-												<input class="date-picker" id="cl-ym-date-picker" type="text" style="width: 150px;" data-date-format="yyyy-mm" name="purchaseDate" value="${purchase.purchaseDate }">
+												<input class="date-picker" id="cl-ym-date-picker" type="text" style="width: 150px;" data-date-format="yyyy-mm" name="salesDate" value="${sales.salesDate }" readOnly>
 												<span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
@@ -253,9 +264,9 @@
 										<div class="control-group">
 											<label class="control-label span2" for="form-field-1" style="text-align: left; width: 60px;">거래처</label>
 											<div style="margin-left: 5px;">
-												<input type="text" id="customerCode" name="customerCode" style="width: 100px;" value="${purchase.customerCode }">
+												<input type="text" id="customerCode" name="customerCode" style="width: 100px;" value="${sales.customerCode }" readOnly>
 					                            <div class="input-append">
-						                              <input type="text" id="customerName" name="customerName" readonly style="width: 150px;" value="${purchase.customerName }">
+						                              <input type="text" id="customerName" name="customerName" readonly style="width: 150px;" value="${sales.customerName }">
 						                              <span class="add-on">
 							                              <a href="#" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
 							                              </a>
@@ -266,6 +277,7 @@
 									</div>
 									<div class="span2" style="margin-left: 50px;">
 										<button class="btn btn-small btn-info" id="btn-submit">조회</button>
+										<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 									</div>
 								</form>
 								<!-- 매출거래처 사업자번호, 상호명 Modal pop-up : start -->
@@ -304,9 +316,12 @@
 							</div>
 						</div>
 						<div class="hr hr-18 dotted"></div>
-
+						<p class="span6" style="margin:0 0 5px 0;font-size:0.9rem">월별 거래처 매출 현황 ${dataResult.pagination.totalCnt } 건</p>	
+						
+						<div class="row-fluid">
+						<div class="span12" style="overflow: auto;">
 						<table id="sample-table-1"
-							class="table table-striped table-bordered table-hover">
+							class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 							<thead>
 								<tr>
 									<th class="center">매출일자</th>
@@ -348,6 +363,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</div>
 					</div>
 					<div class="pagination">
 						<ul>
@@ -391,6 +407,7 @@
 								</c:otherwise>
 							</c:choose>
 						</ul>
+					</div>
 					</div>
 				</div>
 				<!-- /.span -->

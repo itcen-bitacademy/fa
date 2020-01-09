@@ -59,7 +59,15 @@
 		
 		$("#btn-add").on("click", function(){
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
-			checkNo();
+			
+			if(document.getElementById("check_ok").style.display=='none' && $("#no").val()!=""){
+				dialog("사업자번호 중복체크 해주세요.");
+				return;
+			}
+			
+			if(checkValid()) {
+				$("#form-customer").submit();
+			}
 		});
 		
 		$("#btn-select").on("click", function(){
@@ -69,7 +77,14 @@
 		
 		$("#btn-update").on("click", function(){
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/modify");
-			checkNo();
+			
+			if(!$("#no").val() == $("#preNo").val()) {
+				checkNo();			
+			}
+			
+			if(checkValid()) {
+				$("#form-customer").submit();
+			}
 		});
 		
 		$("#btn-clear").on("click", function(){
@@ -97,6 +112,15 @@
 				}
 			});
 			*/
+		});
+		
+		// 사업자번호 중복체크
+		$("#check_no").on("click", function(){
+			checkNo();
+		});
+		
+		$("#no").on("keyup", function(){
+			$("#check_ok").hide();
 		});
 		
 		$("#customer-table tr.rows").on("click", function(event){
@@ -199,10 +223,6 @@
 	       $("#dialog-message").dialog('close');
 	   	});
 	    
-	    $("#no").on("keyup", function(){
-	    	$("#invalid").hide();
-	    });
-
 	});	
 	
 	$(function() {
@@ -230,15 +250,11 @@
 	             }
 	         });
 	      });
-	  });
+	});
+	
 	
 	function checkNo() {
-		if($("#no").val() == $("#preNo").val()) {
-			if(checkValid()) {
-				$("#form-customer").submit();
-			}
-			return;
-		}
+		console.log("1");
 		$.ajax({
 			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo?no="+$("#no").val(),
 			type: "get",
@@ -252,11 +268,10 @@
 				}
 				if(response.data == true) {
 					dialog("중복된 사업자번호 입니다.");
-					//$("#invalid").show();
+					$("#no").focus();
+					$("#check_ok").hide();
 				} else {
-					if(checkValid()) {
-						$("#form-customer").submit();
-					}
+					$("#check_ok").show();
 				}
 			},
 			error: function(xhr, error) {
@@ -338,6 +353,7 @@
        		}
        	}
 	}
+	
 	// 유효성 검사시에 발생되는 Dialog - 화면
     function dialog(txt, flag) {
         $("#dialog-txt").html(txt);
@@ -386,9 +402,8 @@
 											<form:input path="no"/>
 											<!-- <input type="text" class="input-validation" id="no" name="no" required> -->
 											<input class="span6" type="hidden" id="preNo" name="preNo">
-											<div id="invalid">
-												중복된 사업자번호 입니다.
-											</div>
+											<input id="check_no" style="height:28px" data-checkid="" type="button" value="중복확인">
+											<i id="check_ok" class="icon-ok bigger-150 blue" style="display:none;"></i>
 										</div>
 									</div>
 									<div class="control-group">
@@ -552,10 +567,10 @@
 								<div class="hr hr-18 dotted"></div>
 								<div class="row-fluid" style="background-color:white">
 									<div id="sample-table-2_length" class="dataTables_length">
-										<button id="btn-select" class="btn btn-info btn-small">조회</button>
 										<button id="btn-add" class="btn btn-primary btn-small">입력</button>
 										<button id="btn-update" class="btn btn-warning btn-small">수정</button>
 										<button id="btn-delete" class="btn btn-danger btn-small">삭제</button>
+										<button id="btn-select" class="btn btn-info btn-small">조회</button>
 										<button id="btn-clear" class="btn btn-default btn-small">초기화</button>
 									</div>
 								</div>

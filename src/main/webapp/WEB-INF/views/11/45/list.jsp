@@ -160,16 +160,23 @@ html,body{
 						<div class="span12"> 
 							<div class="checkbox" style="float:right; margin-top: 5px;">
 								<label>
-									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
-									<span class="lbl" style="padding-right: 15px;">삭제포함</span>
+									<c:choose>
+										<c:when test='${vo.deleteFlag eq ""}'>
+											<input id='deleteFlag' name="deleteFlag" type="checkbox" class="ace" value="" checked="checked"/>
+										</c:when>
+										<c:otherwise>
+											<input id='deleteFlag' name="deleteFlag" type="checkbox" class="ace" value="" />
+										</c:otherwise>
+									</c:choose>
+									<span class="lbl">삭제포함</span>
 								</label>
 							</div>	
 						</div>
 					</div>
 					<hr>
 						<div class="row-fluid">
-							<button id="search" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-							<button type="button" id="clearbtn" class="btn btn-success btn-small mybtn">초기화</button>
+							<button id="search" class="btn btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button type="button" id="clearbtn" class="btn btn-info btn-small mybtn">초기화</button>
 						</div>
 					<hr>
 				</form>

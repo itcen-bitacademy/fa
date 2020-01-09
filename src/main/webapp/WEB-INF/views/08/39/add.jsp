@@ -31,11 +31,30 @@
   .etcCost {
     text-align: right;
  }
+ 
+ html,body{
+	height:100%;
+	overflow-x: hidden;
+	}
+      	
+ .main-container{
+    height:calc(100% - 45px);
+    overflow-x: hidden;
+    }
+      
+ .main-content{
+    overflow:auto;
+    }
+      	
+ .page-content{
+    min-width:1280px;
+    }
+    
  @media screen and (max-width: 920px) {
-	  .main-container{
-           height:calc(100% - 84px);
-        }
-	 }
+ .main-container{
+     height:calc(100% - 84px);
+   	}
+   }
  </style>
  
 </head>
@@ -259,8 +278,10 @@
 
 
 			<!-- 테이블 -->
-			<div class = "row-fluid">
-				<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+			<div style="overflow: auto;">
+				<table id="sample-table-1" 
+					class="table table-striped table-bordered table-hover"
+					style="width: 2200px">
 					<thead>
 						<tr>
 							<th>NO</th>

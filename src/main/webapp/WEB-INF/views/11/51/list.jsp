@@ -190,8 +190,8 @@ form {
 							</div>
 							<hr>
 						<div class="row-fluid">
-							<button type="button" id="searchbtn" class="btn btn-primary btn-small mybtn">조회</button>
-							<button type="button" id="clearbtn" class="btn btn-success btn-small mybtn">초기화</button>
+							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
+							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
 						</div>
 					<hr>
 							</form>
