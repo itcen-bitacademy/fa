@@ -325,7 +325,7 @@ tr.selected{background-color: #ddd}
 							<button type="button" class="btn btn-danger btn-small mybtn" id="btn-delete"onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" id="btn-search" onclick="search()">조회</button>
 							<button type="button" class="btn btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
-							<button type="button" class="btn btn-success btn-small mybtn" onclick="resetForm()">초기화</button>
+							<button type="button" class="btn btn-default btn-small mybtn" onclick="resetForm()">초기화</button>
 							<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
 						</div>
 					</section>
