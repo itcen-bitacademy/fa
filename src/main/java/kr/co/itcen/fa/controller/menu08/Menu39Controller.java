@@ -69,6 +69,7 @@ public class Menu39Controller {
 		//dataresult 생성
 		DataResult<BuildingVo> dataResult = menu39Service.list(id, page); 
 		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page", page);
 		
 		//map 생성
 		Map<String, Object> map = new HashMap<>();

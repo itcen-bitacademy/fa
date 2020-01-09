@@ -40,7 +40,7 @@ public class Menu55Repository {
 		
 	}
 	
-	//전체 글의 수를 세기 위한 카운트
+	//글의 수를 세기 위한 카운트
 	public int selectAllCount(CurrentSituationVo vo) {
 		return sqlSession.selectOne("menu55.selectAllCount",vo);
 	}

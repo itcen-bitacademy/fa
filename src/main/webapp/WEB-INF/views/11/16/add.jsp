@@ -11,54 +11,97 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-/* tr td:first-child { */
-/* 	padding-right: 40px; */
-/* } */
-.radio {
-	float: left;
-	width: 10%;
-}
-/* 테이블의 첫 row 모두 padding right */
 .form-horizontal .control-label {text-align: left;}
+
 h4{
-   font-size:14px;
+   font-size:13px;
    font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
+
+.textarea{
+   resize: none;
+   width: 282px;
+   height: 84px;
+}
+
+tr td:first-child {
+   padding-right: 10px;
+}
+
+.radio {
+   float: left;
+   width: 17%;
+}
+
 .search-input-width-first {
-	width: 130px;
+   width: 130px;
 }
+
 .search-input-width-second {
-	width: 235px;
+   width: 235px;
 }
+
 .debt-name-input {
-	width: 420px;
+   width: 420px;
 }
+
 .mgr-input {
-	width: 90px;
-	display: inline;
+   width: 90px;
+   display: inline;
 }
+
 .mgr-number-input-h4 {
-	display: inline;
-	margin-left: 30px;
-	margin-right: 20px;
+   display: inline;
+   margin-left: 42px;
+   margin-right: 20px;
 }
+
 .mgr-call-input {
-	width: 150px;
-	display: inline;
+   width: 150px;
+   display: inline;
 }
+
 .number-input{
-	text-align:right;
+   text-align:right;
 }
+
 .mybtn{margin-right:10px;}
+
 #staticBackdrop {
-	z-index: -1;
+   z-index: -1;
 }
+
 .selected{
-	background-color:#ddd;
+   background-color:#ddd;
 }
+
+#simple-table{
+   min-width: 2000px; 
+   margin-bottom: 0; 
+   width: auto;"
+}
+
+html,body{
+         overflow-x:hidden;
+      height:100%;
+   }
+   .main-container{
+      height:calc(100% - 45px);
+      overflow-x: hidden;
+   }
+   .main-content{
+      overflow:auto;
+   }
+   .page-content{
+      min-width:1280px;
+   }
+   @media screen and (max-width: 920px) {
+      .main-container{
+         height:calc(100% - 84px);
+      }
+   }
 </style>
 </head>
 <body class="skin-3">
@@ -67,6 +110,7 @@ h4{
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
+		
 		<div class="page-header position-relative">
 			<h1 class="pull-left">은행코드관리</h1>
 		</div><!-- /.page-header -->
@@ -83,7 +127,7 @@ h4{
 							<td><label class="control-label">은행코드</label></td>
 							<td>
 								<input type="text" name="code" class="code" id="code" 
-								 maxlength="7" placeholder=" 은행코드(3) + 지점코드(4) "  
+								 maxlength="7" placeholder="은행코드(3) + 지점코드(4) "  
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								 
 								<input id="btn-check-code" type="button" value="중복확인" />
@@ -101,7 +145,7 @@ h4{
 						<tr >
 							<td><label class="control-label">FAX</label></td>
 							<td colspan="2" >
-								<input type="text" name="fax" id="fax" placeholder=" 숫자만입력하세요. "
+								<input type="text" name="fax" id="fax" placeholder="숫자만입력하세요. "
 									maxlength="13" onKeyup="inputTelNumber(this);"
 								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 							</td>
@@ -158,7 +202,7 @@ h4{
 							<tr >
 								<td><label class="control-label">은행전화번호</label></td>
 								<td colspan="2">
-									<input type="text" name="phone" id="phone"  placeholder=" 숫자만입력하세요. "
+									<input type="text" name="phone" id="phone"  placeholder="숫자만입력하세요. "
 									maxlength="13" onKeyup="inputTelNumber(this);"
 									 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
 								</td>
@@ -228,7 +272,8 @@ h4{
 		
 		<!-- PAGE CONTENT ENDS -->
 		<p>총 ${dataResult.pagination.totalCnt }건</p>	
-		<table id="simple-table" class="table  table-bordered table-hover">
+		<div style="overflow: auto;">
+		<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
              <thead>
                   <tr>
 	                 <th class="center">은행코드</th>
@@ -247,7 +292,6 @@ h4{
           	<tbody id= "tbody-list">
                 <c:forEach items="${dataResult.datas }" var="bankvo">
                      <tr>
-                                       
 	                          <td class="center">${bankvo.code }</td>
 	                          <td class="center">${bankvo.name }</td>
 	                          <td class="center">${bankvo.store }</td>
@@ -263,6 +307,7 @@ h4{
                          </c:forEach>
                      </tbody>
              </table>
+             </div>
              
 		<!-- PAGE CONTENT ENDS -->
 		</div><!-- /.page-content -->
@@ -327,8 +372,8 @@ h4{
 			
 			
 			
-   </div>/.main-content -->
- </div>/.main-container -->
+   </div> <!-- /.main-content --> -->
+ </div> <!-- /.main-container --> -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 
@@ -633,13 +678,37 @@ $("#inputbtn").click(function(){//입력버튼 클릭시
   	});
   	
 $('#formReset').click(function(){//초기화 버튼 클릭시
- 	$('input').val(''); 
- 	 $('#code').attr('readOnly',false);
-  	$('#btn-check-code').val('중복확인');
+ 	$('input').val('');
+ 	$("#inputbtn").show();
+ 	$("#updatebtn").hide();
+ 	$("#img-checkcode").hide();
+ 	$('#code').attr('readOnly',false);
+  	$('#btn-check-code').val('중복확인').show();
   	$('#addressSearch').val('우편번호찾기');
+	
+	$("#tbody-list").find('tr').removeClass("selected");
 });	 
 
  $('#updatebtn').click(function(){
+	 
+	 var count = 0;
+	 $("#tbody-list tr").each(function(i){
+		if($(this).hasClass('selected') === true){
+			count++;
+		}
+	 });
+	console.log(count);
+	
+	if(count>1){
+		openErrorModal('UPDATE ERROR','하나의 내용만 수정할 수 있습니다','');
+		return;
+	}
+	if(count<=0){
+		openErrorModal('UPDATE ERROR','수정할 리스트를 선택하여 주세요','');
+		return;
+	}	
+	 
+	 
 	 if(!Myvalidation()){
 			openErrorModal(errortitle,validationMessage,errorfield);
 			return;
@@ -650,6 +719,23 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
  });
  
  $('#deletebtn').click(function(){
+	 $("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		 });
+		
+		
+		if(count>1){
+			openErrorModal('UPDATE ERROR','하나의 내용만 삭제 할 수 있습니다','');
+			return;
+		}
+		if(count<=0){
+			openErrorModal('UPDATE ERROR','삭제할 리스트를 선택하여 주세요','');
+			return;
+		}	
+	 
+	 
   	$('#myform').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete');
 	$('#myform').attr('method', 'POST');
 	$('#myform').submit();
@@ -663,12 +749,12 @@ $("#search").click(function(){
 			  
 			  
 ////////////////////////////////////////////////////////////////////////////////////////
-$("#simple-table tr").click(function(){ 
+$("#tbody-list tr").click(function(){ 
 	var tr = $(this);
 	var td = tr.children();
 	
 	if($(this).hasClass('selected') === false) {
-		$('updatebtn').show();
+		$('#updatebtn').show();
 		$('#inputbtn').hide();
 		
 		$("#tbody-list").find('tr').removeClass("selected");
@@ -686,6 +772,23 @@ $("#simple-table tr").click(function(){
 	    $("input[name=mgrPhone]").val(td.eq(9).text());
 	    $("input[name=mgrEmail]").val(td.eq(10).text());
 	    $('#code').attr('readOnly',true);
+
+	  	$('#btn-check-code').val('중복확인').hide();
+	    
+	  	
+	  	
+	  	
+	  	
+	    
+	} else {
+		$(this).removeClass("selected");
+		$('input').val('');
+	 	$("#inputbtn").show();
+	 	$("#updatebtn").hide();
+	 	$("#img-checkcode").hide();
+	 	$('#code').attr('readOnly',false);
+	  	$('#btn-check-code').val('중복확인').show();
+	  	$('#addressSearch').val('우편번호찾기');
 	}
 	
 });
@@ -769,6 +872,9 @@ $(function(){
 		e.preventDefault();
 	});
 	$(".chosen-select").chosen();
+
+	$("#updatebtn").hide(); // 맨처음화면에서 수정화면 hide
+	
 	$('.date-picker').datepicker().next().on(ace.click_event,function(){
 		$(this).prev().focus();
 	});

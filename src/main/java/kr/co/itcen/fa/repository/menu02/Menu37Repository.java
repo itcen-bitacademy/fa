@@ -80,7 +80,7 @@ public class Menu37Repository {
 	public void taxbillItemsUpdateDelete(String no) {
 		sqlSession.delete("menu37.taxbillItemsUpdateDelete", no);
 	}
-
+  
 	public void insertUpdatedTax(BuyTaxbillVo vo) {
 		sqlSession.insert("menu37.insertUpdatedTax", vo);
 
@@ -89,6 +89,10 @@ public class Menu37Repository {
 	public void insertUpdatedItem(BuyTaxbillItemsVo buyTaxbillItemsVo) {
 		sqlSession.insert("menu37.insertUpdatedItem", buyTaxbillItemsVo);
 
+	}
+
+	public String checkDuplicateNo(String no) {
+		return sqlSession.selectOne("menu37.checkDuplicateNo", no);
 	}
 
 }

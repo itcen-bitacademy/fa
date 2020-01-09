@@ -20,7 +20,32 @@
  .acqPrice {
     text-align: right
  }
- </style>
+ 
+ html,body{
+	height:100%;
+	overflow-x: hidden;
+	}
+      	
+ .main-container{
+    height:calc(100% - 45px);
+    overflow-x: hidden;
+    }
+      
+ .main-content{
+    overflow:auto;
+    }
+      	
+ .page-content{
+    min-width:1280px;
+    }
+    
+ @media screen and (max-width: 920px) {
+ .main-container{
+     height:calc(100% - 84px);
+   	}
+   }
+   
+</style>
  
 </head>
 <body class="skin-3">
@@ -48,20 +73,20 @@
 										<label class="control-label" for="form-field-1">건물코드</label>
 										<div class="controls">
 											<input type="text" id="form-field-1" name="id"
-													placeholder="10자로 입력하세요" />
+													placeholder="10자로 입력하세요" value='${vo.id}' />
 										</div>
 									</div>
 									
 									<div class="control-group">
 										<label class="control-label" for="form-field-select-1">대분류</label>
 										<div class="controls">
-											<select class="chosen-select" id="form-field-section" name="sectionName" data-placeholder="대분류">
+											<select class="chosen-select" id="form-field-section" name="sectionName"  data-placeholder="대분류" >
 											<option value=""></option>
 												<c:forEach items="${sectionList }" var="sectionVo">
 													<option sectionList="${sectionVo.code }" value="${sectionVo.classification}">${sectionVo.classification}</option>
 												</c:forEach>
 											</select> 
-											<input readonly type="text" class="span6" id="code" name="sectionNo" placeholder="대분류명을 지정하면 코드가 입력됩니다">
+											<input readonly type="text" class="span6" id="code" name="sectionNo" value='${vo.sectionNo}' placeholder="대분류명을 지정하면 코드가 입력됩니다">
 										</div>
 									</div>
 									
@@ -71,10 +96,10 @@
 											<input class="span2" onclick="execDaumPostcode()" 
 												class="btn-primary box" type="button" value="주소 찾기">
 											<input class="span4" readonly type="text" id="wideAddress"
-												name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
+												name="wideAddress" placeholder="주소를 선택하면 입력됩니다." value="${vo.wideAddress }"> 
 											<input style="width: 230px" class="span5" readonly type="text"
 												id="cityAddress" name="cityAddress"
-												placeholder="주소를 선택하면 입력됩니다.">
+												placeholder="주소를 선택하면 입력됩니다." value="${vo.cityAddress }">
 										</div>
 									</div>
 
@@ -83,11 +108,11 @@
 										<div class="controls">
 											<select class="chosen-select" id="form-field-customer" data-placeholder="거래처" name="customerName">
 												<option value=""></option>
-												<c:forEach items="${customerList }" var="customerVo">
+												<c:forEach items="${customerList }" var="customerVo" >
 													<option customerNo="${customerVo.no}" managerName="${customerVo.managerName }" value="${customerVo.name }">${customerVo.name }</option>
 												</c:forEach>
 											</select> 
-											<input readonly type="text" class="span6" name="customerNo" id="customerNo" placeholder="거래처명을 지정하면 코드가 입력됩니다">
+											<input readonly type="text" class="span6" name="customerNo" id="customerNo" value='${vo.customerNo }'placeholder="거래처명을 지정하면 코드가 입력됩니다">
 										</div>
 									</div>
 								</div>
@@ -104,30 +129,30 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1" placeholder="날짜 범위를 지정하세요">
+											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1" placeholder="날짜 범위를 지정하세요" value="${vo.payDate }">
 										</div>
 									</div>		
 									<div class="control-group">
 										<label class="control-label">평수</label>
 										<div class="controls">
 											<input type="text" id="area" name="area"
-												placeholder="숫자만 입력하세요" /> <input
+												placeholder="숫자만 입력하세요" value='${vo.area }'/> <input
 												style="border-style: none;" type="text" placeholder="입력된 숫자이하로 검색됩니다." />
-										</div>
-									</div>
-									
-									<div class="control-group">
-										<label class="control-label" for="form-field-1">거래처 담당자</label>
-										<div class="controls" id="form-input-customer">
-											<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" />
 										</div>
 									</div>
 									
 									<div class="control-group">
 										<label class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" class="acqPrice" name="acqPrice" id="acqPrice" placeholder="금액을 입력하세요" /> 
+											<input type="text" class="acqPrice" name="acqPrice" id="acqPrice" placeholder="금액을 입력하세요" value="${vo.acqPrice }"/> 
 												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
+										</div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label" for="form-field-1">거래처 담당자</label>
+										<div class="controls" id="form-input-customer">
+											<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" value='${vo.managerName }'/>
 										</div>
 									</div>
 									
@@ -157,12 +182,14 @@
 							<!-- 구분선 -->
 						</div><!-- 나누기 위한 row-fluid -->
 						<div class="hr hr-18 dotted"></div>
-						<div>
+						<div style="overflow: auto;">
 							<p>총 ${dataResult.pagination.totalCnt }건</p>
 							<table id="sample-table-1"
-								class="table table-striped table-bordered table-hover">
+								class="table table-striped table-bordered table-hover"
+								style="width: 2200px">
 								<thead>
 									<tr>
+										<th>NO</th>
 										<th>건물코드</th>
 										<th>건물대분류코드</th>
 										<th>건물분류명</th>
@@ -174,17 +201,17 @@
 										<th>주소(상세)</th>
 										<th>용도</th>
 										<th>주 구조</th>
-										<th>매입거래처코드</th>
-										<th>매입거래처명</th>
-										<th>세금계산서번호</th>
+										<th>거래처코드</th>
+										<th>거래처명</th>
+										<th>거래처담당자</th>
 										<th>건물소유자</th>
 										<th>매입일자</th>
 										<th>공시지가(원)</th>
 										<th>취득금액(원)</th>
 										<th>기타비용(원)</th>
-										<th>등록세(원)</th>
-										<th>세금계산서번호</th>
+										<th>취득세(원)</th>
 										<th>합병코드</th>
+										<th>세금계산서번호</th>
 										<th>구분</th>
 										<th>삭제여부</th>
 									</tr>
@@ -192,6 +219,7 @@
 								<tbody>
 								<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 									<tr class="table-row">
+										<td>${(page-1)*11 + status.count}</td>
 										<td>${vo.id }</td>
 										<td>${vo.sectionNo }</td>
 										<td>${vo.sectionName }</td>
@@ -324,10 +352,19 @@
 	        event.preventDefault();
 	    }
 	}, true);
+
+	//select box 값 유지
+	var sectionName = "${param.sectionName }";
+	var customerName = "${param.customerName }";
 	
-	</script>
+	if(sectionName != ''){
+		$('#form-field-section').val(sectionName).trigger('chosen:updated'); 
+	}
 	
-	<script>
+	if(customerName != ''){
+		$('#form-field-customer').val(customerName).trigger('chosen:updated'); 
+	}
+
 	
 	//select box 선택 시 값 등록
 	

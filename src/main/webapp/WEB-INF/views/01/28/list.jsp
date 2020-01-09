@@ -11,6 +11,27 @@
 .chosen-search {
 	display: none;
 }
+
+
+html,body{
+   height:100%;
+   overflow-x: hidden;
+   }
+   .main-container{
+   height:calc(100% - 45px);
+   overflow-x: hidden;
+   }
+   .main-content{
+   overflow:auto;
+   }
+   .page-content{
+   min-width:1280px;
+   }
+   @media screen and (max-width: 920px) {
+   .main-container{
+   height:calc(100% - 84px);
+   }
+   }
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -174,7 +195,18 @@
 			}
 			return true;
 		});
+		$("#btn-reset").click(function(){
+			$("input[id=datepicker]").val("");
+			$("input[id=datepicker2]").val("");
+			$("input[id=no]").val("");
+			$('#customerDiv').val("All").trigger('chosen:updated'); 
+			$('#deleteFlag').val("N").trigger('chosen:updated'); 
+		});
 	});
+	
+	
+	
+	
 	
 	
 </script>
@@ -260,7 +292,7 @@
 						&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-small btn-info" id="btn-submit" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 						&nbsp;
-						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+						<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
 					
 					</form>
 					

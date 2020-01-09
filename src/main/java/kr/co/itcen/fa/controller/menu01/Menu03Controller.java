@@ -25,7 +25,6 @@ import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
-import kr.co.itcen.fa.service.menu17.Menu59Service;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.ItemVo;
 import kr.co.itcen.fa.vo.menu01.MappingVo;

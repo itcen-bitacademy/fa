@@ -86,7 +86,7 @@
 								&nbsp;
 								<button class="btn btn-danger btn-small" type="submit" id="account-delete-btn" name="account-delete-btn" value="delete" onclick="delete_data();" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete">삭제</button>
 								&nbsp;
-								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >취소</button>
+								<button class="btn btn-default btn-small" type="button" id="account-reset-btn" name="account-reset-btn" >초기화</button>
 							</div>
 						</form>
 					</div>

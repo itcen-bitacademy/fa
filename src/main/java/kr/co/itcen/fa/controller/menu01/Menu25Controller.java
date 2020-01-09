@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.itcen.fa.dto.DataResult;
-import kr.co.itcen.fa.repository.menu12.Menu15Repository;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu25Service;
@@ -122,13 +120,23 @@ public class Menu25Controller {
 	}
 	
 	// PopUp
+//	@ResponseBody
+//	@RequestMapping("/" + SUBMENU + "/gets")
+//	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
+//		System.out.println("gets");
+//		
+//		Map<String, Object> data = menu25Service.gets(depositNo);
+//		data.put("success", true);
+//		return data;
+//	}
+	
+
 	@ResponseBody
-	@RequestMapping("/" + SUBMENU + "/gets")
-	public Map<String, Object> gets(@RequestParam("depositNo") String depositNo) {
-		System.out.println("gets");
+	@RequestMapping("/" + SUBMENU + "/checkno")
+	public Map<String, Object> checkNo(@RequestParam(value="depositNo", required=true, defaultValue="") String depositNo) {
+		System.out.println("checkno");
+		Map<String, Object> data = menu25Service.existNo(depositNo);
 		
-		Map<String, Object> data = menu25Service.gets(depositNo);
-		data.put("success", true);
 		return data;
 	}
 		

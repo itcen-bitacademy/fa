@@ -101,10 +101,12 @@ html, body {
 								<div class="controls span5">
 									<c:choose>
 										<c:when test="${flag == 'true'}">
+											<input style="display: none;" id="hidden-no"
+												value="${getAboutNoData.no }" />
 											<input style="width: 100%" type="text" id="no" name="no"
 												value="${getAboutNoData.no }"
 												placeholder="ex) 20190420-44231234-57644467"
-												autocomplete="off" onclick="impossible_no();" readonly />
+												autocomplete="off" onclick="impossible_no();" />
 										</c:when>
 										<c:otherwise>
 											<input style="width: 100%" type="text" id="no" name="no"
@@ -267,7 +269,8 @@ html, body {
 										</span>
 									</div>
 								</div>
-								<label class="control-label span1" for="form-field-14">총공급가액</label>
+								<label class="control-label span1" for="form-field-14">총
+									공급가액</label>
 								<div class="controls span3">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-14"
@@ -275,7 +278,8 @@ html, body {
 										name="totalSupplyValue" autocomplete="off" placeholder="0"
 										readonly />
 								</div>
-								<label class="control-label span1" for="form-field-15">총세액</label>
+								<label class="control-label span1" for="form-field-15">총
+									세액</label>
 								<div class="controls span3">
 									<input style="width: 100%; text-align: right;" type="text"
 										id="form-field-15"
@@ -292,7 +296,7 @@ html, body {
 						<div class="span12">
 							<div class="control-group">
 								<div class="btn-group">
-									<button class="btn btn-danger btn-small" type="button"
+									<button class="btn btn-primary btn-small" type="button"
 										onclick="insert_button();">입력</button>
 								</div>
 								<div class="btn-group">
@@ -300,20 +304,20 @@ html, body {
 										onclick="update_button();">수정</button>
 								</div>
 								<div class="btn-group">
-									<button class="btn btn-primary btn-small" type="button"
+									<button class="btn btn-danger btn-small" type="button"
 										onclick="delete_button();">삭제</button>
 								</div>
 								<div class="btn-group">
-									<button class="btn btn-default btn-small" type="button"
+									<button class="btn btn-info btn-small" type="button"
 										onclick="lookup_button();">조회</button>
 								</div>
 								<div class="btn-group">
-									<button class="btn btn-small" type="button"
+									<button class="btn btn-default btn-small" type="button"
 										onclick="add_row();">품목추가</button>
 
 								</div>
 								<div class="btn-group">
-									<button class="btn btn-small" type="button"
+									<button class="btn btn-default btn-small" type="button"
 										onclick="delete_row();">품목삭제</button>
 								</div>
 							</div>
@@ -401,11 +405,21 @@ html, body {
 	<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 	<script src="/fa/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 
-	<!-- 페이지로드될 때 발생하는 script함수 -->
+	<!-- 페이지로드될 때 발생하는 script함수 -->  
 	<script>
 		function startFunctions() {
 			addElementCommas();
 			addElementCalender();
+			if('${insertFlag }'){
+				checkDuplicateNo();
+			}
+			if('${searchFlag }'){
+				checkSearchNo();
+			}
+			if('${deleteFlag }'){
+				checkDeleteNo();
+			}
+			
 		}
 	</script>
 	<!-- 거래처명 찾기기능 -->
@@ -585,7 +599,24 @@ html, body {
 				$("#tax-value" + i).val(taxValue);
 			}
 		}
-
+		// 삭제했을 때 세금계산서 번호가 없는 것을 체크할 떄
+		function checkDeleteNo(){
+			dialog("※주의<br /><br />없는 세금계산서 번호입니다.<br />세금계산서 번호를 다시한번 확인해주시기를 바랍니다.");
+		}
+		// 조회했을 때 세금계산서 번호가 없는 것을 체크할 때
+		function checkSearchNo(){
+			dialog("※주의<br /><br />없는 세금계산서 번호입니다.<br />세금계산서 번호를 다시한번 확인해주시기를 바랍니다.");
+		}
+		// 세금계산서 중복 dialog
+		function checkDuplicateNo(){
+			dialog("※주의<br /><br />중복된 세금계산서 번호가 있습니다.<br />세금계산서 번호를 다시한번 확인해주시기를 바랍니다.");
+		}
+		
+		// 세금계산서 수정 불가 alert
+		function impossible_no() {
+			dialog("※주의<br /><br />세금계산서 번호는 수정할 수 없습니다.<br />수정을 원하시면 삭제 후 재입력 해주시기를 바랍니다.");
+		}
+		
 		// 입력버튼 클릭시 
 		function insert_button() {
 
@@ -636,10 +667,6 @@ html, body {
 					.submit();
 
 		}
-		// 세금계산서 수정 불가 alert
-		function impossible_no() {
-			alert("※주의\n\n세금계산서 번호는 수정할 수 없습니다.\n수정을 원하시면 삭제 후 재입력 해주시기를 바랍니다.");
-		}
 
 		// 수정버튼 클릭시 
 		function update_button() {
@@ -683,6 +710,11 @@ html, body {
 				if (!valid.numberCheck("tax-value" + i, "부가세"))
 					return;
 			}
+			
+			if($("#hidden-no").val() != $("#no").val()) {
+				impossible_no();
+				return;
+			}
 			$("#manage-form")
 					.attr(
 							"action",
@@ -692,24 +724,31 @@ html, body {
 
 		// 삭제버튼 클릭시 
 		function delete_button() {
-			if (confirm("정말로 삭제하시겠습니까? 다시한번 확인해주세요")) {
+			if ($("#no").val() == "") {
+				dialog("승인번호를 입력 후 삭제해주시기를 바랍니다.");
+				return;
+			} else {
 				$("#manage-form")
 						.attr(
 								"action",
 								"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete")
 						.submit();
-			} else {
-				return;
 			}
 		}
 
 		// 조회버튼 클릭시 
 		function lookup_button() {
-			$("#manage-form")
-					.attr(
-							"action",
-							"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/lookUp")
-					.submit();
+			if ($("#no").val() == "") {
+				dialog("승인번호를 입력 후 조회해주시기를 바랍니다.");
+				return;
+			} else {
+				$("#manage-form")
+						.attr(
+								"action",
+								"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/lookUp")
+						.submit();
+			}
+
 		}
 	</script>
 
@@ -750,7 +789,7 @@ html, body {
 									click : function() {
 										if (flag) {
 											$(this).dialog("close");
-											location.href = "${pageContext.request.contextPath }/12/53";
+											location.href = "${pageContext.request.contextPath }/12/37";
 										} else {
 											$(this).dialog("close");
 										}

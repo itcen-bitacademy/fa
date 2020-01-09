@@ -31,6 +31,30 @@
   .etcCost {
     text-align: right;
  }
+ 
+ html,body{
+	height:100%;
+	overflow-x: hidden;
+	}
+      	
+ .main-container{
+    height:calc(100% - 45px);
+    overflow-x: hidden;
+    }
+      
+ .main-content{
+    overflow:auto;
+    }
+      	
+ .page-content{
+    min-width:1280px;
+    }
+    
+ @media screen and (max-width: 920px) {
+ .main-container{
+     height:calc(100% - 84px);
+   	}
+   }
  </style>
  
 </head>
@@ -62,7 +86,7 @@
 										<div class="controls">
 											<input type="text" id="buildingCode" name="id" placeholder="9자를 입력하세요"/>
 											<input id="btn-check-code" style="height:28px" type="button" value="중복확인">
-                              				<i class="icon-ok bigger-180 blue" id="img-check-code"></i>
+                              				<i class="icon-ok bigger-180 blue" id="img-check-code" style="display:none;"></i>
 										</div>
 									</div>
 									<div class="control-group">
@@ -182,7 +206,7 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">거래처 담당자</label>
 											<div class="controls" id="form-input-customer">
-												<input readonly type="text" name="managerName" id="managerName" placeholder="담당자" />
+												<input readonly type="text" name="managerName" id="managerName" placeholder="거래처 담당자" />
 											</div>
 											
 										</div>
@@ -232,13 +256,14 @@
 												<button class="btn btn-primary btn-small" id="insert" 
 													style="float: left; margin-right: 20px;">입력</button>
 												<button class="btn btn-warning btn-small" id="modify"
-													style="float: left; margin-right: 20px;">수정</button>
+													style="float: left; margin-right: 20px; display: none" >수정</button>
 												<button class="btn btn-danger btn-small" id="delete"
-													style="float: left; margin-right: 20px;">삭제</button>
+													style="float: left; margin-right: 20px; display: none">삭제</button>
 												<button class="btn btn-info btn-small" id="search" 
 													style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-default btn-small" id="reset"
-													style="float: left; margin-right: 20px;" type="reset">초기화</button>
+													style="float: left; margin-right: 20px;" type="reset" >초기화</button>
+													
 											</div>
 										</div>
 									</div>
@@ -252,11 +277,14 @@
 						
 
 
-				<!-- 테이블 -->
-				<div class = "row-fluid">
-				<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+			<!-- 테이블 -->
+			<div style="overflow: auto;">
+				<table id="sample-table-1" 
+					class="table table-striped table-bordered table-hover"
+					style="width: 2200px">
 					<thead>
 						<tr>
+							<th>NO</th>
 							<th>건물코드</th>
 							<th>건물대분류코드</th>
 							<th>건물분류명</th>
@@ -270,13 +298,13 @@
 							<th>주 구조</th>
 							<th>거래처코드</th>
 							<th>거래처명</th>
-							<th>담당자</th>
+							<th>거래처담당자</th>
 							<th>건물소유자</th>
 							<th>매입일자</th>
 							<th>공시지가(원)</th>
 							<th>취득금액(원)</th>
 							<th>기타비용(원)</th>
-							<th>등록세(원)</th>
+							<th>취득세(원)</th>
 							<th>합병코드</th>
 							<th>세금계산서번호</th>
 							<th>구분</th>
@@ -286,6 +314,7 @@
 					<tbody>
 					<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 						<tr class="table-row" >
+							<td>${(page-1)*11 + status.count}</td>
 							<td>${vo.id }</td>
 							<td>${vo.sectionNo }</td>
 							<td>${vo.sectionName }</td>
@@ -301,7 +330,7 @@
 							<td>${vo.customerName }</td>
 							<td>${vo.managerName }</td>
 							<td>${vo.ownerName }</td>
-							<td>${vo.payDate }</td>
+							<td class="center">${vo.payDate }</td>
 							<td style="text-align : right"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
 							<td style="text-align : right"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
 							<td style="text-align : right"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
@@ -343,10 +372,12 @@
 					<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 						<c:choose>
 							<c:when test="${pg eq dataResult.pagination.page }">
-								<li class="active"><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								<li class="active">
+								<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								<li>
+								<a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -386,10 +417,6 @@ var checkId = false; //중복체크 유무를 확인
 
 //유효성 검사
  $(document).ready(function(){
-	 
-	$("#modify").hide();
-	$("#delete").hide();
-	$("#img-check-code").hide();
 	
 	 // 마감일 체크
 	checkClosing();
@@ -484,9 +511,34 @@ var checkId = false; //중복체크 유무를 확인
 
 	//조회 동작
 	$("#search").click(function() {
+		if (!valid.nullCheck("buildingCode", "건물 코드")){
+			errorfocus='#buildingCode';
+			return false;
+		}
+		if (!valid.strCheck("buildingCode", "건물 코드")){
+			errorfocus='#buildingCode';
+			return false;
+		}
+		if (!valid.numberCheck("buildingCode", "건물 코드")){
+			errorfocus='#buildingCode';
+			return false;
+		}
 		$('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
 		$('#manage-building-form').attr('method', 'GET');
 		$('#manage-building-form').submit();
+	});
+	
+	//초기화 동작
+	$("#reset").click(function(event) {
+	  event.preventDefault();
+	  $('input[type=text]').val("");
+	  $('input:radio').prop("checked",false);
+      $('#form-field-section').val("").trigger('chosen:updated');
+      $('#form-field-customer').val("").trigger('chosen:updated');
+      $("#insert").show();
+ 	  $("#modify").hide();
+	  $("#search").show();
+	  $("#delete").hide();
 	});
 
 
@@ -685,7 +737,7 @@ var checkId = false; //중복체크 유무를 확인
 	$(function() {
 		//한행 클릭 >> 건물코드 가져오기
 		   $(".table-row").click(function() {
-			   
+			  $('#buildingCode').prop('readonly', true); // row 선택 시 readonly시킴
 			  $("#modify").show();
 			  $("#delete").show();
 			  $("#insert").hide();
@@ -699,36 +751,36 @@ var checkId = false; //중복체크 유무를 확인
 		      var tr = $(this);
 		      var td = tr.children();
 		      
-		      $("input[name=id]").val(td.eq(0).text().replace("b", ""));
-		      $("input[name=sectionNo]").val(td.eq(1).text());
+		      $("input[name=id]").val(td.eq(1).text().replace("b", ""));
+		      $("input[name=sectionNo]").val(td.eq(2).text());
 		      //sectionName 에 대한 값(classification)을 select box에 표시
-		      $('#form-field-section').val(td.eq(2).text()).trigger('chosen:updated');
-		      $("input[name=area]").val(td.eq(3).text());
-		      $("input[name=floor]").val(td.eq(4).text());
-		      $("input[name=basement]").val(td.eq(5).text());
-		      $("input[name=wideAddress]").val(td.eq(6).text());
-		      $("input[name=cityAddress]").val(td.eq(7).text());
-		      $("input[name=detailAddress]").val(td.eq(8).text());
-		      $("input[name=purpose]").val(td.eq(9).text());
-		      $("input[name=material]").val(td.eq(10).text());
-		      $("input[name=customerNo]").val(td.eq(11).text());
+		      $('#form-field-section').val(td.eq(3).text()).trigger('chosen:updated');
+		      $("input[name=area]").val(td.eq(4).text());
+		      $("input[name=floor]").val(td.eq(5).text());
+		      $("input[name=basement]").val(td.eq(6).text());
+		      $("input[name=wideAddress]").val(td.eq(7).text());
+		      $("input[name=cityAddress]").val(td.eq(8).text());
+		      $("input[name=detailAddress]").val(td.eq(9).text());
+		      $("input[name=purpose]").val(td.eq(10).text());
+		      $("input[name=material]").val(td.eq(11).text());
+		      $("input[name=customerNo]").val(td.eq(12).text());
 		      //customerName 에 대한 값(code)을 select box에 표시
-		      $('#form-field-customer').val(td.eq(12).text()).trigger('chosen:updated'); 
-		      $("input[name=managerName]").val(td.eq(13).text());
-		      $("input[name=ownerName]").val(td.eq(14).text());
-		      $("input[name=payDate]").val(td.eq(15).text());
-		      $("input[name=publicValue]").val(td.eq(16).text());
-		      $("input[name=acqPrice]").val(td.eq(17).text());
-		      $("input[name=etcCost]").val(td.eq(18).text());
-		      $("input[name=acqTax]").val(td.eq(19).text());
-		      $("input[name=combineNo]").val(td.eq(20).text());
-		      $("input[name=taxbillNo]").val(td.eq(21).text());
+		      $('#form-field-customer').val(td.eq(13).text()).trigger('chosen:updated'); 
+		      $("input[name=managerName]").val(td.eq(14).text());
+		      $("input[name=ownerName]").val(td.eq(15).text());
+		      $("input[name=payDate]").val(td.eq(16).text());
+		      $("input[name=publicValue]").val(td.eq(17).text());
+		      $("input[name=acqPrice]").val(td.eq(18).text());
+		      $("input[name=etcCost]").val(td.eq(19).text());
+		      $("input[name=acqTax]").val(td.eq(20).text());
+		      $("input[name=combineNo]").val(td.eq(21).text());
+		      $("input[name=taxbillNo]").val(td.eq(22).text());
 		      
 		     //radio button
-		      if(td.eq(22).text() == "과세"){
+		      if(td.eq(23).text() == "과세"){
 		          $("input[id=tax]").prop('checked', true);
 		      }
-		      else if(td.eq(22).text() == "영세"){
+		      else if(td.eq(24).text() == "영세"){
 		          $("input[id=zeroTax]").prop('checked', true);
 		      }
 		     
@@ -740,15 +792,6 @@ var checkId = false; //중복체크 유무를 확인
 			   	 	$("#modify").show();
 			  }
 		      
-			});
-		
-		 //초기화 누를시 CRUD버튼 보임
-			$("#reset").click(function(){
-				$("#insert").show();
-		   		$("#update").show();
-			  	$("#search").show();
-			  	$('#form-field-customer').val('초기값').trigger('chosen:updated');
-			  	$('#form-field-section').val('초기값').trigger('chosen:updated');
 			});
 		      
 	});

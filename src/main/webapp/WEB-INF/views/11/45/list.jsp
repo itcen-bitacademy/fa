@@ -9,51 +9,102 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-.radio {
-	float: left;
-	width: 10%;
-}
+		
+.form-horizontal .control-label {text-align: left;}
 
-.prod-list-opts {
-	padding: 10px 15px 9px 11px;
-	position: relative;
-}
-
-.prod-list-opts .order-list {
-    margin: 3px 0 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-.prod-list-opts .order-item {
-    float: left;
-    padding: 0 9px 0 8px;
-    
-}
-
-.prod-list-opts li {
-    list-style: none;
-    float: left;
-}
-
-.checkbox {
-	float: left;
-}
 h4{
-   font-size:14px;
+   font-size:13px;
    font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
-form {
-	margin-bottom: 0px;
+
+.textarea{
+   resize: none;
+   width: 282px;
+   height: 84px;
 }
 
-.form-horizontal .control-label {padding-right: 39px;}
+tr td:first-child {
+   padding-right: 10px;
+}
+
+.radio {
+   float: left;
+   width: 17%;
+}
+
+.search-input-width-first {
+   width: 130px;
+}
+
+.search-input-width-second {
+   width: 235px;
+}
+
+.debt-name-input {
+   width: 420px;
+}
+
+.mgr-input {
+   width: 90px;
+   display: inline;
+}
+
+.mgr-number-input-h4 {
+   display: inline;
+   margin-left: 42px;
+   margin-right: 20px;
+}
+
+.mgr-call-input {
+   width: 150px;
+   display: inline;
+}
+
+.number-input{
+   text-align:right;
+}
+
+.mybtn{margin-right:10px;}
+
+#staticBackdrop {
+   z-index: -1;
+}
+
+.selected{
+   background-color:#ddd;
+}
+
+#simple-table{
+   min-width: 2000px; 
+   margin-bottom: 0; 
+   width: auto;"
+}
+
+html,body{
+         overflow-x:hidden;
+      height:100%;
+   }
+   .main-container{
+      height:calc(100% - 45px);
+      overflow-x: hidden;
+   }
+   .main-content{
+      overflow:auto;
+   }
+   .page-content{
+      min-width:1280px;
+   }
+   @media screen and (max-width: 920px) {
+      .main-container{
+         height:calc(100% - 84px);
+      }
+   }
 
 /* table columns  */
 .first-column {width:120px; padding-left:20px;}
-.second-column {width:70px;}
+.second-column {width:70px; padding-right:190px;}
 .third-column {width:140px;}
-.fourth-column {width:80px;}
+.fourth-column {width:80px; padding-right:190px;}
 .fifth-column {width:170px;}
 .sixth-column {width:60px;}
 .seventh-column {padding-left:20px;}
@@ -78,7 +129,7 @@ form {
 				<!-- PAGE CONTENT BEGINS -->
 			<div>
 				<div>
-				<form class="form-horizontal">
+				<form id='myform' class="form-horizontal">
 					<table style="width:100%;">
 						<tbody>
 						<tr>
@@ -102,26 +153,25 @@ form {
 										</span>
 									</div>
 							</td>
-					
-							<td class="seventh-column" >
-								<button id="search" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-							</td>
 							</tr>
-							
-
-						
 						</tbody>
 					</table>
 					<div class="row-fluid">
-						<div class="span10"> 
+						<div class="span12"> 
 							<div class="checkbox" style="float:right; margin-top: 5px;">
 								<label>
 									<input name="deleteFlag" type="checkbox" class="ace" value='Y'/> 
-									<span class="lbl">삭제포함</span>
+									<span class="lbl" style="padding-right: 15px;">삭제포함</span>
 								</label>
 							</div>	
 						</div>
 					</div>
+					<hr>
+						<div class="row-fluid">
+							<button id="search" class="btn btn-primary btn-small" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button type="button" id="clearbtn" class="btn btn-success btn-small mybtn">초기화</button>
+						</div>
+					<hr>
 				</form>
 			</div>
 		</div>
@@ -129,7 +179,8 @@ form {
 		
 		<!-- list -->
 		<p>총 ${dataResult.pagination.totalCnt }건</p>
-		<table id="simple-table" class="table  table-bordered table-hover">
+		<div style="overflow: auto;">
+		<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
             <thead>
                 <tr>
                    <th class="center">은행코드</th>
@@ -163,6 +214,7 @@ form {
 				</c:forEach>
            </tbody>
        </table>
+       </div>
 					
 		<div class="pagination">
 			<ul>
@@ -208,12 +260,25 @@ form {
 <script src="${pageContext.request.contextPath }/ace/assets/js/date-time/daterangepicker.min.js"></script>
 <script>
    $(function() {
-	        	  $(".chosen-select").chosen();
+	    $(".chosen-select").chosen();
 					
-					$('.date-picker').datepicker().next().on(ace.click_event, function(){
-						$(this).prev().focus();
-					});
-  		 });
+		$('.date-picker').datepicker().next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		
+		// 초기화버튼 이벤트 연결
+		$('#clearbtn').click(function(){
+			$('input[name=name]').val('');
+			$('input[name=store]').val('');
+			$('input[name=dealDate]').val('');
+			
+		    $('input[name=deleteFlag]').each(function(index, item){
+		    	if($(item).prop('checked') == true){
+		    		$(item).prop('checked', false);
+		    	}
+		    });
+		});
+	});
 					
 </script>
 </body>

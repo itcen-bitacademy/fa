@@ -16,7 +16,7 @@
 </style>
 
 </head>
-<body class="skin-3">
+<body class="skin-3" style="min-width:1500px">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -81,7 +81,7 @@
 													<input id="taxType1" name="taxType" type="radio" class="ace" value="tax" checked="checked">
 													<span class="lbl"> 과세</span>
 												</label>
-												<label class="span3">
+												<label class="span4">
 													<input id="taxType2" name="taxType" type="radio" class="ace" value="zero">
 													<span class="lbl"> 비과세</span>
 												</label>
@@ -148,12 +148,12 @@
 								<input type="hidden" id="rowCnt" name="rowCnt" value="1">
 								<table id="item-table" class="table table-striped table-bordered table-hover">
 									<tr>
-										<th class="center">
+										<!-- <th class="center">
 											<label>
 												<input type="checkbox" class="ace">
 												<span class="lbl"></span>
 											</label>
-										</th>
+										</th> -->
 										<th class="left">순번</th>
 										<th class="left">품목코드</th>
 										<th class="left">품목명</th>
@@ -163,12 +163,12 @@
 									</tr>
 									
 									<tr>
-										<td class="center">
+										<!-- <td class="center">
 											<label>
 												<input type="checkbox" class="ace" value="1" name='check' id="check1">
 												<span class="lbl"></span>
 											</label>
-										</td>
+										</td> -->
 										<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
 										
 										<td class="left">
@@ -287,7 +287,7 @@
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        "<td class='center'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" +
+				      		        /* "<td class='center'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" + */
 				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
 				      		        "<td class='left'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
@@ -373,12 +373,12 @@
 				}
 		 }
 		 
-		 function updateItemCode(item){
-					 var options = document.getElementById("itemCode1");
+		 function updateItemCode(item,cnt){
+					 var options = document.getElementById("itemCode"+cnt);
 						for(var i=0 ; i < options.length; ++i){
 							if(options[i].value == item){
 								options[i].selected = "selected";
-								$("#itemCode1_chosen").find("span")[0].innerHTML = options[i].innerHTML;
+								$("#itemCode"+ cnt+"_chosen").find("span")[0].innerHTML = options[i].innerHTML;
 							}
 						}
 		 }
@@ -390,8 +390,11 @@
 				$search.click(function(event) {
 					
 					var vo = {purchaseDate : $("#purchaseDate").val(), no : $("#no").val(), number : $("#number1").val() };
-					
+
 					event.preventDefault();
+					
+					if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
+					if(!valid.nullCheck("no", "매입 번호")) return;
 					
 					// ajax 통신
 					$.ajax({
@@ -401,50 +404,137 @@
 						contentType: 'application/json;charset=utf-8',
 						data: JSON.stringify(vo),
 						success: function(result) {
-							/* $("form").each(function() {  
-					            this.reset();  
-					         }); */
-							$("#purchaseDate").val(result.purchaseDate);
-							updateCustomerCode(result.customerCode);
-							$("#purchaseManager").val(result.purchaseManager);
-							$("#customerName").val(result.customerName);
-							$("#receiptDate").val(result.receiptDate);
-							$("#releaseDate").val(result.releaseDate);
-							$("#number1").val(result.number);
-							updateItemCode(result.itemCode);
-							$("#itemName1").val(result.itemName);
-							$("#quantity1").val(result.quantity);
-							$("#supplyValue1").val(result.supplyValue);
-							$("#taxValue1").val(result.taxValue);
-							if (result.taxbillNo == null) {
-								$("#taxbillNo").val('');	
-							} else {
-								$("#taxbillNo").val(result.taxbillNo);
+							if(result.length == 0){
+								dialog("검색 결과가 없습니다.",false);
+							}else{
+								//$("#form1").reset();
+								var table = document.getElementById("item-table");
+								var cnt = table.rows.length;
+								if(result.length == 1){
+									//$("#form1").html();
+									for(var i = 0; i < cnt-2; i++){
+										delete_row();
+									}
+									
+									$("#purchaseDate").val(result[0].purchaseDate);
+									updateCustomerCode(result[0].customerCode);
+									$("#purchaseManager").val(result[0].purchaseManager);
+									$("#customerName").val(result[0].customerName);
+									$("#receiptDate").val(result[0].receiptDate);
+									$("#releaseDate").val(result[0].releaseDate);
+									$("#number1").val(result[0].number);
+									updateItemCode(result[0].itemCode, result.length);
+									$("#itemName1").val(result[0].itemName);
+									$("#quantity1").val(result[0].quantity);
+									$("#supplyValue1").val(result[0].supplyValue);
+									$("#taxValue1").val(result[0].taxValue);
+									if (result[0].taxbillNo == null) {
+										$("#taxbillNo").val('');	
+									} else {
+										$("#taxbillNo").val(result[0].taxbillNo);
+									}
+									
+									if(result[0].taxType == 'tax'){
+										$("#taxType1").val(result[0].taxType).attr("checked", true);
+									} else{
+										$("#taxType2").val(result[0].taxType).attr("checked", true);
+									} 
+									$("#no").val(result[0].no);
+									
+									if(result.taxbillNo == null){
+										taxbillButtonSet();
+									}if(result.taxbillNo != null && result.voucherNo != null) {
+										deleteButtonSet();
+									} 
+								} else {
+									var cnt = table.rows.length;
+									for(var v = 0; v < cnt-2; v++){
+										delete_row();
+									}
+									$("#no").val(result[0].no);
+									$("#purchaseDate").val(result[0].purchaseDate);
+									updateCustomerCode(result[0].customerCode);
+									$("#purchaseManager").val(result[0].purchaseManager);
+									$("#customerName").val(result[0].customerName);
+									$("#receiptDate").val(result[0].receiptDate);
+									$("#releaseDate").val(result[0].releaseDate);
+									if(result[0].taxType == 'tax'){
+										$("#taxType1").val(result[0].taxType).attr("checked", true);
+									} else{
+										$("#taxType2").val(result[0].taxType).attr("checked", true);
+									} 
+									if (result[0].taxbillNo == null) {
+										$("#taxbillNo").val('');	
+									} else {
+										$("#taxbillNo").val(result[0].taxbillNo);
+									}
+									for(var i = 1; i <= result.length; i++){
+										
+										add_row();
+										$("#number"+i).val(result[i-1].number);
+										updateItemCode(result[i-1].itemCode,i);
+										$("#itemName"+i).val(result[i-1].itemName);
+										$("#quantity"+i).val(result[i-1].quantity);
+										$("#supplyValue"+i).val(result[i-1].supplyValue);
+										$("#taxValue"+i).val(result[i-1].taxValue);
+									}
+									if(result.taxbillNo == null){
+										taxbillButtonSet();
+									}if(result.taxbillNo != null && result.voucherNo != null) {
+										deleteButtonSet();
+									} 
+									delete_row();
+								}
+									/* $("#no").val(result[0].no);
+									$("#purchaseDate").val(result[0].purchaseDate);
+									updateCustomerCode(result[0].customerCode);
+									$("#purchaseManager").val(result[0].purchaseManager);
+									$("#customerName").val(result[0].customerName);
+									$("#receiptDate").val(result[0].receiptDate);
+									$("#releaseDate").val(result[0].releaseDate);
+									if(result[0].taxType == 'tax'){
+										$("#taxType1").val(result[0].taxType).attr("checked", true);
+									} else{
+										$("#taxType2").val(result[0].taxType).attr("checked", true);
+									} 
+									if (result[0].taxbillNo == null) {
+										$("#taxbillNo").val('');	
+									} else {
+										$("#taxbillNo").val(result[0].taxbillNo);
+									}
+									
+									for(var i = 1; i <= result.length; i++){
+										add_row();
+										$("#number"+i).val(result[i-1].number);
+										updateItemCode(result[i-1].itemCode,i);
+										$("#itemName"+i).val(result[i-1].itemName);
+										$("#quantity"+i).val(result[i-1].quantity);
+										$("#supplyValue"+i).val(result[i-1].supplyValue);
+										$("#taxValue"+i).val(result[i-1].taxValue);
+									}
+									if(result.taxbillNo == null){
+										taxbillButtonSet();
+									}if(result.taxbillNo != null && result.voucherNo != null) {
+										deleteButtonSet();
+									} 
+									delete_row(); */
+								
 							}
 							
-							if(result.taxType == 'tax'){
-								$("#taxType1").val(result.taxType).attr("checked", true);
-							} else{
-								$("#taxType2").val(result.taxType).attr("checked", true);
-							} 
-							$("#no").val(result.no);
-							
-							if(result.taxbillNo == null){
-								taxbillButtonSet();
-							}if(result.taxbillNo != null && result.voucherNo != null) {
-								deleteButtonSet();
-							} 
 							$(".chosen-select").chosen();
 						},
 						error: function(xhr, error){
-							if($("#purchaseDate").val() == '' ||  $("#no").val() == '' || $("#number1").val() == '' ){
-								alert("매입일자, 매입번호, 순번을 정확히 입력해 주세요.");
-							}
+							alert("?");
 						}
 					});
 				});
 		});
 		 
+		/*  function createSearchForm(result){
+			 $("#form1").remove();
+			 
+		 }
+		  */
 		 function createPurchaseNo(){ // 매출번호 랜덤 생성
 		       	var no = "";
 		       	var date = new Date();
@@ -497,9 +587,9 @@
 		   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
 		   			if(!valid.nullCheck("receiptDate", "입고 일자")) return;
 		   			if(!valid.nullCheck("releaseDate", "출고 일자")) return;
-		   			if(($("#item-table tr").length-2) > 1){
-			   			console.log("abcd : " + ($("#item-table tr").length-2));
-			   			for(var i=1; i<=($("#item-table tr").length-2); i++){
+		   			var tableSize = ($("#item-table tr").length/2)+0.5
+		   			if( tableSize > 1){
+		   				for(var i=1; i<=tableSize; i++){
 			   				if(!valid.nullCheck("number"+i, "매입 순번")) return;
 			   				if(!valid.nullCheck("itemCode"+i, "품목 코드")) return;
 			   				if(!valid.numberCheck("quantity"+i, "품목 수량")) return;
@@ -535,7 +625,6 @@
 		        			
 		        		}, 
 						numberCheck: function(id, msg){  // 숫자 체크
-							console.log(id);
 		        			if(!$.isNumeric($("#"+id).val())){        	
 		        				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
 		        				$("#"+id).focus();

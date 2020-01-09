@@ -33,6 +33,12 @@
       	.page-content{
          	min-width:1280px;
       	}
+      	
+      	  @media screen and (max-width: 920px) {
+         .main-container{
+            height:calc(100% - 84px);
+         }
+      }
 </style>
 </head>
 <body class="skin-3" style="min-width:1500px">
@@ -55,11 +61,11 @@
 										<div class="span6">
 											<label class="control-label" for="form-field-date">작 성 일 자</label>
 												<div class="controls">
-													<input class="span4 cl-date-picker" id="sales-date" name="startDate" type="text" data-date-format="yyyy-mm-dd" value="${search.startDate }"> 
+													<input class="span4 cl-date-picker" id="sales-date" name="startDate" type="text" data-date-format="yyyy-mm-dd" value="${search.startDate }" readonly="readonly"> 
 														<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 													&nbsp; ~ &nbsp;															
-													<input class="span4 cl-date-picker" id="sales-date" name="endDate" type="text" data-date-format="yyyy-mm-dd" value="${search.endDate }"> 
+													<input class="span4 cl-date-picker" id="sales-date" name="endDate" type="text" data-date-format="yyyy-mm-dd" value="${search.endDate }" readonly="readonly"> 
 													<span class="add-on"><i class="icon-calendar"></i>
 													</span>
 												</div>
@@ -187,13 +193,15 @@
 														</select>
 														
 														<button class="btn btn-small btn-info" type="submit">조회</button>
+														
+														<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
 											</div>
 										</div>
 									</div>
 								</div>
 						<div class="hr hr-18 dotted"></div>
 						<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">세금계산서 발행 ${resultlist.pagination.totalCnt } 건</p>
-	                    <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;" onchange="view()">
+	                   <%--  <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;" onchange="view()">
 	                    	<c:choose>
 	                             <c:when test="${viewCount == 10 }">
 	                                 <option value="10" selected style="display:none">10</option>
@@ -208,7 +216,7 @@
 	                         <option value="10">10</option>
 		                     <option value="30">30</option>
 		                     <option value="50">50</option>
-	                    </select>
+	                    </select> --%>
 						</form> 
 						<div class="row-fluid">
 						<div class="span12" style="overflow: auto;">

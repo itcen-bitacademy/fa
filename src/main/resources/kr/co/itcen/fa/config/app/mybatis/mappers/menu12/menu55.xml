@@ -115,7 +115,7 @@
 		
 	</select>
 	
-	<!-- 	품목명을 가져오는 코드 -->
+<!-- 	품목명을 가져오는 코드 -->
 	<select id="getitemcode" resultType="currentsituationvo">
 	<![CDATA[
 	select 

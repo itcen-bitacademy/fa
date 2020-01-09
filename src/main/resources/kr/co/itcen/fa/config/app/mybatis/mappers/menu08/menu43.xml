@@ -114,7 +114,7 @@ left outer join tb_customer c on tb.customer_no = c.no
 	<update id="update" parameterType="intangibleAssetsVo">
 		<![CDATA[
 		update tb_intangible_assets 
-		   set id = CONCAT('f', #{id }),
+		   set id = #{id },
 		   	   customer_no = #{customerNo }, 
 		   	   taxbill_no = #{taxbillNo }, 
 		   	   voucher_no = #{voucherNo },  
@@ -130,7 +130,7 @@ left outer join tb_customer c on tb.customer_no = c.no
 			   tax_kind = #{taxKind },
 			   update_userid = #{updateUserId },
 			   update_day = now()
-		 where id = CONCAT('f', #{id })
+		 where id = #{id }
 		]]>
 	</update>
 	

@@ -5,6 +5,31 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<style type="text/css">
+html,body{
+   height:100%;
+   overflow-x: hidden;
+   }
+         
+         .main-container{
+            height:calc(100% - 45px);
+            overflow-x: hidden;
+         }
+      
+         .main-content{
+            overflow:auto;
+         }
+         
+         .page-content{
+            min-width:1280px;
+         }
+
+   @media screen and (max-width: 920px) {
+               .main-container{
+               height:calc(100% - 84px);
+               }
+    }
+</style>
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 	
 
@@ -218,7 +243,7 @@
 					&nbsp; &nbsp;&nbsp;
 					<button class="btn btn-small btn-info" id="btn-submit" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 					&nbsp;
-					<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+					<button class="btn btn-default btn-small" id="btn-reset" type = "reset">취소</button>
 					</form>
 				
 				<div class="hr hr-18 dotted"></div>
@@ -259,11 +284,11 @@
 										<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 											<tr style="text-align: center;">
 
-												<td class="center">${vo.accountName }</td>
-												<td class="center">${vo.customerName } </td>
-												<td class="center">${vo.regDate }</td>
-												<td class="center">${vo.voucherNo }-${vo.voucherOrderNo }</td>
-												<td class="center">${vo.amountFlag }</td>
+												<td>${vo.accountName }</td>
+												<td>${vo.customerName } </td>
+												<td>${vo.regDate }</td>
+												<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
+												<td>${vo.amountFlag }</td>
 													<c:choose>
 												        <c:when test="${vo.amountFlag == '차변' }">
 												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
@@ -274,7 +299,7 @@
 												            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
 												        </c:otherwise>
 												    </c:choose>
-												<td class="center">${vo.bankName }</td>
+												<td>${vo.bankName }</td>
 													<c:choose>
 														<c:when test="${vo.customerName eq '여비' }">
 															<td>${vo.cardNo }</td>
@@ -287,8 +312,8 @@
 												            <td>${vo.depositHost }</td>
 												        </c:otherwise>
 												    </c:choose>
-												<td class="center">${vo.voucherUse }</td>
-												<td class="center">${vo.insertTeam }</td>
+												<td>${vo.voucherUse }</td>
+												<td>${vo.insertTeam }</td>
 												    
 											</tr>
 											

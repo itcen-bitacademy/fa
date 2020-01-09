@@ -6,25 +6,18 @@ import org.apache.ibatis.type.Alias;
 public class BuyTaxbillListVo {
 	private String startDate;
 	private String endDate;
-	private Long no;
+	private String no;
 	private String companyName;
 	private String taxType;
 	private String deleteFlag;
 	private String order;
 	private int pageGroup;
 	private int page;
-	
-	public int getPageGroup() {
-		return pageGroup;
-	}
-	public void setPageGroup(int pageGroup) {
-		this.pageGroup = pageGroup;
-	}
-	public int getPage() {
-		return page;
-	}
-	public void setPage(int page) {
-		this.page = page;
+	@Override
+	public String toString() {
+		return "BuyTaxbillListVo [startDate=" + startDate + ", endDate=" + endDate + ", no=" + no + ", companyName="
+				+ companyName + ", taxType=" + taxType + ", deleteFlag=" + deleteFlag + ", order=" + order
+				+ ", pageGroup=" + pageGroup + ", page=" + page + "]";
 	}
 	public String getStartDate() {
 		return startDate;
@@ -38,10 +31,10 @@ public class BuyTaxbillListVo {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	public Long getNo() {
+	public String getNo() {
 		return no;
 	}
-	public void setNo(Long no) {
+	public void setNo(String no) {
 		this.no = no;
 	}
 	public String getCompanyName() {
@@ -68,11 +61,16 @@ public class BuyTaxbillListVo {
 	public void setOrder(String order) {
 		this.order = order;
 	}
-	@Override
-	public String toString() {
-		return "BuyTaxbillListVo [startDate=" + startDate + ", endDate=" + endDate + ", no=" + no + ", companyName="
-				+ companyName + ", taxType=" + taxType + ", deleteFlag=" + deleteFlag + ", order=" + order
-				+ ", pageGroup=" + pageGroup + ", page=" + page + "]";
+	public int getPageGroup() {
+		return pageGroup;
 	}
-	
+	public void setPageGroup(int pageGroup) {
+		this.pageGroup = pageGroup;
+	}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
 }

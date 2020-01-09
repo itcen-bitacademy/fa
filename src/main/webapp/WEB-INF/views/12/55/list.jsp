@@ -10,39 +10,32 @@
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
-<script
-	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<script
-	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
-<script>
-$(function() {
-	// 데이트피커 한글설정
-	$.fn.datepicker.dates['ko'] = {
-	days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
-	daysShort: ["일", "월", "화", "수", "목", "금", "토"],
-	daysMin: ["일", "월", "화", "수", "목", "금", "토"],
-	months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-	monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-	today: "Today",
-	clear: "Clear",
-	format: "yyyy-mm-dd",
-	titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
-	weekStart: 0
-	};
 
-	// 년월 설정 데이트피커
-	$('#datepicker').datepicker({
-		maxViewMode: 4,
-		minViewMode: 1,
-		language: 'ko'
-	}).next().on(ace.click_event, function(){
-		$(this).prev().focus();
-	});
-	
-	$(".chosen-select").chosen();
-})
-</script>
+<style>
+           html,body{
+             	height:100%;
+      	}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+
+	@media screen and (max-width: 920px) {
+	         	.main-container{
+            	height:calc(100% - 84px);
+         		}
+	 }
+</style>
+
 </head>
 <body class="skin-3">
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -57,12 +50,12 @@ $(function() {
 				</div>
 				<form class="form-horizontal">
 					<div class="row-fluid">
-						<div class="span10">
+						<div class="span8">
 							<div class="form-horizontal">
 
-								<div class="span3">
+								<div class="span4">
 										<label class="control-label" for="cl-ym-date-picker" style="text-align: left; width: 50px;"> 년 월</label>
-										<div class="controls" style="margin-left: 50px;">
+										<div class="controls" style="margin-left: 60px;">
 											<div class="row-fluid input-append">
 												<input class="span11 date-picker" id="datepicker" name="searchdate" type="text" data-date-format="yyyy-mm" value="${vo.searchdate }" readOnly style="text-align: left; width: 200px;"/>
 												<span class="add-on"> <i class="icon-calendar"></i>
@@ -72,14 +65,13 @@ $(function() {
 								</div>
 
 
-								<div class="span3">
-										<label class="control-label" for="form-field-select-2" style="text-align: left; width: 60px;">품목명</label>
-										<div class="controls" style="margin-left: 60px;">
+								<div class="span4">
+										<label class="control-label" for="form-field-select-2" style="text-align: left; width: 50px;">품목명</label>
+										<div class="controls" style="margin-left: 70px;">
 											<select class="chosen-select" id="itemname" name="itemcode"
 												data-placeholder="품목명 선택" >
 												<option value=""></option>
-												<c:forEach items='${itemname }' var='itemname'
-													varStatus='status'>
+												<c:forEach items='${itemname }' var='itemname' varStatus='status'>
 													<option value="${itemname.itemcode }">${itemname.itemname }</option>
 												</c:forEach>
 											</select>
@@ -89,26 +81,23 @@ $(function() {
 													$("#itemname").val(itemcode);
 											</script>
 										</div>
-								</div>
-
-
-								<div class="span2">
+									</div>
+								<div class="span4">
 									<button type="submit" class="btn btn-small btn-info" type="submit" style="margin-left: 50px;"
 										formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-
+									<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
 								</div>
 
 							</div>
 						</div>
-					</div>
-	
+				</div>
 				</form>
-
 				<div class="hr hr-18 dotted"></div>
-
+				<p class="span6" style="margin:0 0 10px 0;font-size:0.9rem">품목별 매입매출 현황 ${dataResult.pagination.totalCnt } 건</p>
+								
 				<div class="row-fluid">
-					<div class="span12">
-					<table id="sample-table-1"class="table table-striped table-bordered table-hover">
+					<div class="span12" style="overflow: auto;">
+					<table id="sample-table-1"class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 						<thead>
 							<tr>
 								<th>품목코드</th>
@@ -208,4 +197,45 @@ $(function() {
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 
 </body>
+
+<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
+<script>
+$(function() {
+	// 데이트피커 한글설정
+	$.fn.datepicker.dates['ko'] = {
+	days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+	daysShort: ["일", "월", "화", "수", "목", "금", "토"],
+	daysMin: ["일", "월", "화", "수", "목", "금", "토"],
+	months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+	monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+	today: "Today",
+	clear: "Clear",
+	format: "yyyy-mm-dd",
+	titleFormat: "yyyy MM", /* Leverages same syntax as 'format' */
+	weekStart: 0
+	};
+
+	// 년월 설정 데이트피커
+	$('#datepicker').datepicker({
+		maxViewMode: 4,
+		minViewMode: 1,
+		language: 'ko'
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	
+	$(".chosen-select").chosen();
+	
+	$("#btn-reset").click(function(){
+		event.preventDefault();
+		$("input[id=datepicker]").val("");
+		$('#itemname').val("").trigger('chosen:updated');
+	});	
+})
+</script>
+
 </html>

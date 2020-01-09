@@ -13,13 +13,15 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 
-<!-- Chart Library : Resources -->
-<!-- Load plotly.js into the DOM -->
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+html,body{overflow-x:hidden; height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
 #dialog-confirm{z-index: 3333!important;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
 .p-debt-code-input {width: 195px;}
@@ -436,7 +438,8 @@
 				<!-- PAGE CONTENT ENDS -->
 
 				<p>총 ${contentsCount }건</p>
-				<table id="simple-table" class="table  table-bordered table-hover">
+				<div style="overflow: auto;">
+				<table id="simple-table" class="table  table-bordered table-hover table-responsive" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center" >
@@ -491,7 +494,7 @@
 								</c:choose>		
 								<td class="center">${vo.debtDate}</td>
 								<td class="center">${vo.expDate}</td>
-								<td class="center">${vo.intRate}</td>
+								<td class="center">${vo.intRate}%</td>
 								<c:choose>
 											<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
 											<c:when test="${vo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
@@ -507,7 +510,7 @@
 							</c:forEach>
 						</tbody>
 				</table>
-			</div>
+				</div>
 			<!-- /.page-content -->
 			
 			<!-- 페이징 처리 알고리즘 start -->
@@ -556,6 +559,7 @@
 			<!-- 페이징 처리 알고리즘 end -->
 		</div>
 		<!-- /.main-content -->
+	</div>
 	</div>
 	<!-- /.main-container -->
 			
@@ -643,9 +647,6 @@
 		
 		// 상환예정내역버튼 이벤트 연결
 		$('#repayviewbutton').on('click', repayDueDebtData);
-		
-		// 차트 이벤트 연결
-		//$('#chartbtn').on('click', chartDebtData);
 		
 		// 중복코드 확인 이벤트 연결
 		$('#duplicatecode-checkbtn').on('click', checkCodeDebtData);
@@ -1470,61 +1471,6 @@
 	    });
 	}
 	
-	
-	function chartDebtData() {
-		//$("#chartdiv").dialog('open');
-		
-		// ajax 통신
-		/* $.ajax({
-			url: "${pageContext.request.contextPath }/api/customer/getdebtdata",
-			contentType : "application/json; charset=utf-8",
-			type: "get",
-			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-			data: "",
-			statusCode: {
-			    404: function() {
-			      alert("page not found");
-			    }
-			},
-			success: function(response){
-				console.log(response.data);
-				if (response.data.length === 0) {
-					openModal('Error', '입력한 은행명에 대한 결과를 찾을 수 없습니다.', '#input-dialog-bankname');
-					$("#input-dialog-bankname").val('');
-					return;
-				}
-				
-				$("#input-dialog-bankname").val('');
-				$.each(response.data,function(index, item){
-		                $("#tbody-bankList").append("<tr>" +
-		                		"<td class='center'>" + item.no + "</td>" +
-						        "<td class='center'>" + item.name + "</td>" +
-						        "</tr>");
-		        })
-			},
-			error: function(xhr, error){
-				console.error("error : " + error);
-			}
-		}); */
-		
-		$("#myDiv").dialog({
-			title: "차트",
-			title_html: true,
-		   	resizable: false,
-		    height: 700,
-		    width: 1300,
-		    modal: true,
-		    close: function() {
-		    	
-		    },
-		    buttons: {
-		    "닫기" : function() {
-		          	$(this).dialog('close');
-		        }
-		    }
-		});
-	}
-	
 	//insert Validation
 	function MyValidation(){
 		//코드는  중복체크에서 확인해준다
@@ -1971,48 +1917,6 @@
 				
 			$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 		}
-		//--------------------------------------------------------------------------------------------------------------------------//
-		
-		/* $(function() {
-			
-			var trace1 = {
-					  x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-					  y: [20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
-					  type: 'bar',
-					  name: 'Primary Product',
-					  marker: {
-					    color: 'rgb(49,130,189)',
-					    opacity: 0.7,
-					  }
-					};
-
-					var trace2 = {
-					  x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-					  y: [19, 14, 22, 14, 16, 19, 15, 14, 10, 12, 12, 16],
-					  type: 'bar',
-					  name: 'Secondary Product',
-					  marker: {
-					    color: 'rgb(204,204,204)',
-					    opacity: 0.5
-					  }
-					};
-
-					var data = [trace1, trace2];
-
-					var layout = {
-					  title: '2013 Sales Report',
-					  xaxis: {
-						    
-						  },
-						  yaxis: {
-						    
-						  },
-					  barmode: 'group'
-					};
-
-					Plotly.newPlot('myDiv', data, layout);
-		}); */
-		
 		//--------------------------------------------------------------------------------------------------------------------------//
 
 </script>

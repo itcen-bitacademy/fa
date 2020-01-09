@@ -124,5 +124,12 @@
 		 where	delete_flag = "N"
 		]]>
 	</select>
+	
+	<!-- 중복검사 -->
+   <select id="existNo" parameterType="string" resultType="bankaccountvo">
+   		select * from tb_bank_account
+   		where deposit_no = #{_parameter}
+			   and delete_flag = "N"
+   </select>
 
 </mapper>

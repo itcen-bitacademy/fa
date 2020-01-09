@@ -78,7 +78,7 @@ public class Menu37Service {
 		menu37Repository.taxbillItemsUpdateDelete(no);
 
 	}
-
+  
 	public void insertUpdatedTax(BuyTaxbillVo vo) {
 		menu37Repository.insertUpdatedTax(vo);
 
@@ -87,5 +87,10 @@ public class Menu37Service {
 	public void insertUpdatedItem(BuyTaxbillItemsVo buyTaxbillItemsVo) {
 		menu37Repository.insertUpdatedItem(buyTaxbillItemsVo);
 
+	}
+
+	public String checkDuplicateNo(String no) {
+		return menu37Repository.checkDuplicateNo(no);
+		
 	}
 }

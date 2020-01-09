@@ -64,6 +64,8 @@ public class Menu44Repository {
 		map.put("isChecked", intangibleAssetsVo.getIsChecked());
 		map.put("pagination", paginationUtil);
 		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList", map);
+		
+		System.out.println(result.size());
 		return result;
 	}
 }
