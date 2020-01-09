@@ -317,6 +317,7 @@
 		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
 		$(".chosen-select").chosen();
 		
+		// 페이징
 		$(".pagination li a").on("click", function(event){
 			event.preventDefault();
 			if($(this).parent().attr("class") == "disabled"){
