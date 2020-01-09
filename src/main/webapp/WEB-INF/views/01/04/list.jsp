@@ -35,7 +35,7 @@
 
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">전표현황조회[1-04]</h1>
+					<h1 class="pull-left">전표현황조회</h1>
 				</div><!-- /.page-header -->
 				<form class="form-horizontal" id="input-form"  method="post">
 					<div class="row-fluid">
@@ -48,7 +48,7 @@
 									<label class="control-label" for="form-field-codename" style="text-align:left;width:120px;" >일자</label>
 									<div class="controls">
 										<div class="row-fluid input-append">
-										<input class="span4 date-picker" id="regDate" name="regDate" type="text" data-date-format="yyyy-mm-dd" />
+										<input class="span4 date-picker" id="regDate" name="regDate" type="text" data-date-format="yyyy-mm-dd" readonly style="width:168px;" />
 											<span class="add-on">
 											<i class="icon-calendar"></i>
 											</span>
@@ -59,7 +59,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표번호</label>
 									<div class="controls">
-										<input class="span8" type="text" id="no" name="no" placeholder="전표번호"/>
+										<input class="span5" type="text" id="no" name="no" placeholder="전표번호" style="width:193px;" />
 									</div>
 								</div>
 								
@@ -67,7 +67,7 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >계정과목</label>
 									<div class="controls">
-										<select class="chosen-select" id="accountNo" name="accountNo" data-placeholder="계정과목코드">		
+										<select class="chosen-select" id="accountNo" name="accountNo" data-placeholder="계정과목코드" style="width:193px;">		
 											<option value="" data-accountName=""></option>		
 											<c:choose>
 												<c:when test="${accountNo eq accountNo }">
@@ -78,7 +78,7 @@
 													<option value="${vo.accountNo}" data-accountName="${vo.accountName }" >${vo.accountNo }</option>
 											</c:forEach>
 										</select> 
-										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 300px; height: 18px;" disabled />
+										<input type="text" id="accountName" name="accountName" placeholder="계정명칭" value="" style="text-align: center; width: 200px; height: 18px;" disabled />
 									</div>
 								</div>
 								
@@ -93,7 +93,7 @@
 										<div class="input-append">
 											
 											<a href="#" id="a-customerinfo-dialog"> 
-												<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" />
+												<input type="text" class="search-input-width-first" id="customerNo" name="customerNo" style="width:153px;"/>
 												<span class="add-on">
 													<i class="icon-search icon-on-right bigger-110"></i>
 												</span>
@@ -101,15 +101,15 @@
 										
 											
 										</div> 
-										&nbsp; &nbsp;
-										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly/>
+										
+										<input type="text" id="customerName" name="customerName" placeholder="거래처명" readonly style="width:173px;" />
 									</div>
 								</div>
 								
 								<div class="control-group">
 									<label class="control-label" for="form-field-1" style="text-align:left;width:120px;" >전표사용목적</label>
 									<div class="controls">
-										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적"/>
+										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적" style="width:385px;" />
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
@@ -118,9 +118,9 @@
 								<div class="control-group">
 									<label class="control-label" for="form-field-select-1" style="text-align:left;width:120px;" >삭제여부</label>
 									<div class="controls">
-										<select class="chosen-select" id="useYn" name="useYn" data-placeholder="삭제여부">		
-											<option value="true">Y</option>
-											<option value="false">N</option>
+										<select class="chosen-select" id="useYn" name="useYn" data-placeholder="삭제여부" style="width:90px;" >		
+											<option value="true">N</option>
+											<option value="false">Y</option>
 										</select> 
 									</div>
 								</div>
