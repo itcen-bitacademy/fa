@@ -119,13 +119,17 @@
 							$("#datepicker1").val(datepicker1);
 						</script>
 						
-						&nbsp; &nbsp; ~ &nbsp; &nbsp;
+						&nbsp; ~ &nbsp;
 						<div class="input-append">
 							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px" readonly /> 
-							<span class="add-on"> 
+							<span class="add-on" style="margin:0,0,5px,0"> 
 								<i class="icon-calendar"></i>
 							</span>
+							
+							<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button class="btn btn-default btn-small" type="reset">취 소</button>
 						</div>
+						
 						
 						<script type="text/javascript">
 							var datepicker2 = "${param.datepicker2}";
@@ -133,9 +137,7 @@
 						</script>
 					&nbsp; &nbsp;&nbsp;
 					<div class="hr hr-18 dotted"></div>
-					<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-					<button class="btn btn-default btn-small" type="reset">취 소</button>
-					<div class="hr hr-18 dotted"></div>
+					
 					</form>
 				
 				
