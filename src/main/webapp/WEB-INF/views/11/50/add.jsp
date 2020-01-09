@@ -21,6 +21,11 @@ html,body{overflow-x:hidden; height:100%;}
 .page-content{min-width:1280px;}
 @media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
 
+h4{
+	font-size:14px;
+	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
+}
+
 #dialog-confirm{z-index: 2222!important;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
 .p-debt-code-input {width: 205px;}
@@ -36,7 +41,7 @@ html,body{overflow-x:hidden; height:100%;}
 
 .debt-name-input {width: 420px;}
 .mgr-input {width: 90px; display: inline;}
-.mgr-number-input-h4 {display: inline; margin-left: 30px; margin-right: 20px;}
+.mgr-number-input-h4 {display: inline; margin-left: 37px; margin-right: 20px;}
 .mgr-call-input {width: 140px; display: inline;}
 
 .mybtn {float: left; margin-right: 10px;}
@@ -229,13 +234,9 @@ html,body{overflow-x:hidden; height:100%;}
 											<label class="control-label">담당자</label>
 										</td>
 										<td>
-											<input type="text" class="mgr-input" name="mgr" />
-										</td>
-										<td>
-											<label class="control-label">담당자전화번호</label>
-										</td>
-										<td>
-											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+											<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
+											<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
 										</td>
 									</tr>
 									<tr>
