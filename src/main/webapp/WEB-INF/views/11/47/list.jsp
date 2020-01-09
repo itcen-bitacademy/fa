@@ -410,7 +410,7 @@ function renderingList(list){
 	for(var i=0; i < list.length; ++i){
 		$("#tbody-list").append("<tr>" +
 				 "<td class='center'>" + list[i].code + "</td>" +
-				 "<td class='center'>" + list[i].name + "</td>" +
+				 "<td>" + list[i].name + "</td>" +
 				 "<td class='center'>" + convertMajorCode(list[i].majorCode) + "</td>" +
 				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
 				 "<td class='center'>" + convertRepayWay(list[i].repayWay) + "</td>" +

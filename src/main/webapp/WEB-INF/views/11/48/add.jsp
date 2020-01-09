@@ -15,6 +15,12 @@
 
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+html,body{overflow-x:hidden; height:100%;}
+.main-container{height:calc(100% - 45px); overflow-x: hidden;}
+.main-content{overflow:auto;}
+.page-content{min-width:1280px;}
+@media screen and (max-width: 920px) {.main-container{height:calc(100% - 84px);}}
+
 /* 테이블의 첫 row 모두 padding right */
 
 .form-horizontal .control-label {text-align: left;}
@@ -86,29 +92,6 @@ tr td:first-child {
 	margin-bottom: 0; 
 	width: auto;"
 }
-
-html,body{
-   		overflow-x:hidden;
-		height:100%;
-	}
-	.main-container{
-		height:calc(100% - 45px);
-		overflow-x: hidden;
-	}
-	.main-content{
-		overflow:auto;
-	}
-	.page-content{
-		min-width:1280px;
-	}
-	@media screen and (max-width: 920px) {
-		.main-container{
-			height:calc(100% - 84px);
-		}
-	}
-
-
-
 </style>
 </head>
 <body class="skin-3">
@@ -490,7 +473,7 @@ html,body{
 			<!-- list -->
 			<p>총 ${dataResult.pagination.totalCnt }건</p>
 			<div  style="overflow: auto;">
-				<table id="simple-table" class="table  table-bordered table-hover" >
+				<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 					<thead>
 						<tr>
 							<th class="center">
@@ -533,7 +516,7 @@ html,body{
 										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
 										<c:otherwise><td class="center">증권</td></c:otherwise>
 							</c:choose>	
-							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
+							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
 							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
 										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
