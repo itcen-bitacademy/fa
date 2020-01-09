@@ -353,6 +353,7 @@
        		}
        	}
 	}
+	
 	// 유효성 검사시에 발생되는 Dialog - 화면
     function dialog(txt, flag) {
         $("#dialog-txt").html(txt);
