@@ -88,8 +88,10 @@
 		});
 		
 		$("#btn-clear").on("click", function(){
-			$('#form-customer input').val("");
+			$('#form-customer')[0].reset();
+			//$('#form-customer input').val("");
 		});
+		
 		
 		$("#btn-delete").on("click", function(){
 			var checkArr = [];
