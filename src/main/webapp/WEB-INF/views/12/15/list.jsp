@@ -562,8 +562,8 @@
 					
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
-						<div class="span12">
-							<div id="sample-table-2_wrapper" class="dataTables_wrapper table-responsive" role="grid">
+						<div class="span12" style="overflow-x: scroll;">
+							<div id="sample-table-2_wrapper" class="dataTables_wrapper table-responsive" style="width:3000px;" role="grid">
 								<div class="hr hr-18 dotted"></div>
 								<div class="row-fluid" style="background-color:white">
 									<div id="sample-table-2_length" class="dataTables_length">
