@@ -466,6 +466,7 @@
 											<!-- <input type="text" class="input-validation" id="managerName" name="managerName" required> -->
 										</div>
 									</div>
+									
 									<div class="control-group">
 										<label class="control-label form-field-1">입금계좌번호</label>
 										<div class="controls">
