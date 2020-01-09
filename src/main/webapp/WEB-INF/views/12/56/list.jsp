@@ -16,6 +16,7 @@
 <style>
            html,body{
              	height:100%;
+             	overflow-x:hidden;
       	}
       	
       	.main-container{
@@ -116,22 +117,22 @@
 									<table id="sample-table-1" class="table table-striped table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
 										<thead>
 										<tr>
-											<th>대분류코드</th>
-											<th>대분류명</th>
-											<th>품목코드</th>
-											<th>품목명</th>
-											<th>입고수량</th>
-											<th>입고공급가액</th>
-											<th>입고부가세</th>
-											<th>입고금액</th>
-											<th>출고수량</th>
-											<th>출고공급가액</th>
-											<th>출고부가세</th>
-											<th>출고금액</th>
-											<th>재고수량</th>
-											<th>재고공급가액</th>
-											<th>재고부가세</th>
-											<th>재고금액</th>
+											<th class="center">대분류코드</th>
+											<th class="center">대분류명</th>
+											<th class="center">품목코드</th>
+											<th class="center">품목명</th>
+											<th class="center">입고수량</th>
+											<th class="center">입고공급가액</th>
+											<th class="center">입고부가세</th>
+											<th class="center">입고금액</th>
+											<th class="center">출고수량</th>
+											<th class="center">출고공급가액</th>
+											<th class="center">출고부가세</th>
+											<th class="center">출고금액</th>
+											<th class="center">재고수량</th>
+											<th class="center">재고공급가액</th>
+											<th class="center">재고부가세</th>
+											<th class="center">재고금액</th>
 										</tr>
 										</thead>
 										<c:forEach items='${dataResult.datas }' var='vo' varStatus='status'>
