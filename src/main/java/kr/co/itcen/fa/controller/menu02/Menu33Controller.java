@@ -41,7 +41,7 @@ public class Menu33Controller {
 	private Menu33Service menu33Service;
 	
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list"})
-	public String main(@ModelAttribute PurchaseitemVo purchaseitemVo,
+	public String main(@RequestParam(value="itemcode", required=false, defaultValue = "") String no,
 					   @RequestParam(value="page", required=false, defaultValue="1") int page,
 					   @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
 					   @RequestParam(value="section_page", required=false, defaultValue="1") int section_page,
@@ -51,9 +51,9 @@ public class Menu33Controller {
 					   @RequestParam(value="factory_page_group", required=false, defaultValue="0") int factory_page_group,
 					   @RequestParam(value="search_sectiondata", required=false, defaultValue = "") String search_factorydata,
 					   Model model) {
-		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();//모든 데이터
-		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);//5페이지씩 데이터 55개
-		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);//한페이지 데이터 11개
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall(no);//모든 데이터
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group, no);//5페이지씩 데이터 55개
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page, no);//한페이지 데이터 11개
 		
 		///////////////
 		search_sectiondata = "%" + search_sectiondata + "%";
@@ -92,13 +92,14 @@ public class Menu33Controller {
 	
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
-	public Map<String, Object> paging(@RequestParam(value="page", required=false, defaultValue="1") int page,
+	public Map<String, Object> paging(@RequestParam(value="itemcode", required=false, defaultValue = "") String no,
+									  @RequestParam(value="page", required=false, defaultValue="1") int page,
 									  @RequestParam(value="page_group", required=false, defaultValue="0") int page_group,
 									  Model model) {
 		System.out.println(page);
-		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
-		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);
-		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page, no);
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group, no);
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall(no);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -177,11 +178,12 @@ public class Menu33Controller {
 	
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/update")
-	public Map<String, Object> update(@ModelAttribute PurchaseitemVo purchaseitemVo,
-						  			   @ModelAttribute FactoryVo factoryVo,
-						  			   @RequestParam(value="factoryname", required=false) String factory_name,
-						  			   @RequestParam(value="page", required=false, defaultValue="1") int page,
-						  			   HttpServletRequest request) {
+	public Map<String, Object> update(@RequestParam(value="itemcode", required=false, defaultValue = "") String no,
+									  @ModelAttribute PurchaseitemVo purchaseitemVo,
+						  			  @ModelAttribute FactoryVo factoryVo,
+						  			  @RequestParam(value="factoryname", required=false) String factory_name,
+						  			  @RequestParam(value="page", required=false, defaultValue="1") int page,
+						  			  HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		purchaseitemVo.setPrice(String.join("", purchaseitemVo.getPrice().split(",")));
@@ -210,8 +212,8 @@ public class Menu33Controller {
 			}
 		}
 		
-		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
-		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall(no);
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page, no);
 		map.put("purchaseitemListall", purchaseitemListall);
 		map.put("pagepurchaseitemList", pagepurchaseitemList);
 		return map;
@@ -219,7 +221,8 @@ public class Menu33Controller {
 	
 	@ResponseBody
 	@RequestMapping(value="/" + SUBMENU + "/delete")
-	public Map<String, Object> delete(@ModelAttribute PurchaseitemVo purchaseitemVo,
+	public Map<String, Object> delete(@RequestParam(value="itemcode", required=false, defaultValue = "") String no,
+									  @ModelAttribute PurchaseitemVo purchaseitemVo,
  			 			 			  @ModelAttribute FactoryVo factoryVo,
  			 			 			  @RequestParam(value="factoryname", required=false) String factory_name,
  			 			 			  @RequestParam(value="page", required=false, defaultValue="1") int page,
@@ -253,7 +256,7 @@ public class Menu33Controller {
 			}
 		}
 		
-		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall();
+		List<PurchaseitemVo> purchaseitemListall = menu33Service.getPurchaseitemListall(no);
 		
 		int page_max = ((purchaseitemListall.size()-1) / 11) + 1;
 		
@@ -263,8 +266,8 @@ public class Menu33Controller {
 		
 		int page_group = (page-1) / 5;
 		
-		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page);
-		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group);
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Service.getpagePurchaseitemList(page, no);
+		List<PurchaseitemVo> purchaseitemList = menu33Service.getPurchaseitemList(page_group, no);
 		
 		map.put("page_num", page);
 		map.put("page_group", page_group);
