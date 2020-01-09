@@ -324,7 +324,7 @@ tr.selected{background-color: #ddd}
 							<button type="button" class="btn btn-warning btn-small mybtn" id="btn-update" onclick="update()">수정</button>
 							<button type="button" class="btn btn-danger btn-small mybtn" id="btn-delete"onclick="deleteChecked()">삭제</button>
 							<button type="button" class="btn btn-info btn-small mybtn" id="btn-search" onclick="search()">조회</button>
-							<button type="button" class="btn btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
+							<button type="button" class="btn btn-success btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
 							<button type="button" class="btn btn-default btn-small mybtn" onclick="resetForm()">초기화</button>
 							<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
 						</div>
@@ -551,7 +551,8 @@ function isValidCode(code){
 	var isValid = false;
 	if(code.value == ''){
 		dialog("코드를 입력하세요.", code);
-	}else if(code.value.substr(0) != "G"){
+	}else if(code.value.substr(0,1) != "G"){
+		console.log("code.value.substr(0) : " + code.value.substr(0,1));
 		dialog("단기차입금코드는 G로 시작해야합니다.", code);
 	}else{
 		isValid = true;
@@ -729,6 +730,20 @@ function resetForm(){
 	inputForm.vo.value = "";
 	inputForm.reset();
 	changeBtnDisplay(false);
+	
+	$("#tbody-list tr").each(function(i){
+    	var td = $(this).children();
+    	if($(td.eq(0).children().children()).prop('checked') == true){
+    		$(td.eq(0).children().children()).prop('checked', false);
+    	}
+    	if($("#tbody-list tr").hasClass('selected') === true){
+			$("#tbody-list tr").removeClass("selected");
+			$('#insertbtn').show();
+			$('#searchbtn').show();
+			$('#updatebtn').hide();
+			$('#repaybtn').hide();
+		}
+    });
 }
 //-----------------------------------금주 상환내역 Modal ---------------------------------//
 function openRepayDueDialog(){
@@ -1198,7 +1213,7 @@ function selectRow(thisObj){
 	var vo = JSON.parse(inputVo.val());					//JSON string형식을 JSON형식으로 변환, 객체 생성
 	var inputForm = $("#input-form")[0];
 	
-	if($(thisObj).hasClass("selected")){
+	/* if($(thisObj).hasClass("selected")){
 		console.log("클래스 있다");
 		$(thisObj).removeClass("selected");
 		resetForm();	
@@ -1207,6 +1222,16 @@ function selectRow(thisObj){
 		$(thisObj).closest("table").find(".selected").removeClass("selected");
 		$(thisObj).addClass("selected");
 		
+		changeBtnDisplay(true);
+	} */
+	
+	if($(thisObj).hasClass("selected") === true){
+		$(thisObj).removeClass("selected");
+		resetForm();
+		return;
+	}else{
+		$("#tbody-list").find('tr').removeClass("selected");
+		$(thisObj).addClass("selected");
 		changeBtnDisplay(true);
 	}
 	
