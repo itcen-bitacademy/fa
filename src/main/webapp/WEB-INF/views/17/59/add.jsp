@@ -393,20 +393,29 @@
     var maxCnt = Number("${dataResult.getDatas().get(0).getMaxcnt() }"); //가장 높은 no
     var totalcnt = 0; //행 추가시 순번 자동 생성할 데이터
 
+    console.log(max);
+    
 	// 테이블 행추가
     function add_row() {
         var table = document.getElementById("tb-account-management"); // 테이블 아이디
         var row = table.insertRow(table.rows.length); // 하단에 추가
         var cnt = table.rows.length-1; // 헤더를 뺀 테이블 길이 아이디에 부여용도
 
-        if(max < 12){
+        if(max < 12){ //총 개수가 11개 이하일 경우
         	totalcnt = cnt
         	maxCnt   = (maxCnt+cnt-(cnt-1));
+        	console.log("max < 12");
         	console.log(maxCnt);
 
-        }else {
+        }else if(max > 11 && cnt < 12){ //총 개수가 11개 이상이지만 현재 페이지의 개수가 11개 이하인 경우
+        	totalcnt = (max+cnt-1);
+        	maxCnt   = (maxCnt+cnt-(cnt-1));
+        	console.log("else if");
+        	console.log(maxCnt);
+        } else { // 그 외 총 개수가 12개 이상에 현재 페이지의 개수가 11개 이상인 경우
         	totalcnt = (max+cnt-11);
         	maxCnt   = (maxCnt+cnt-(cnt-1));
+        	console.log("else");
         	console.log(maxCnt);
         }
 

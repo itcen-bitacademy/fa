@@ -206,17 +206,17 @@ html,body{
             <tbody>
                 <c:forEach items="${dataResult.datas }" var="bankvo">
                       <tr>
-                      	<td class="center">${bankvo.code }</td>
-                        <td class="center">${bankvo.name }</td>
-                        <td class="center">${bankvo.store }</td>
-                        <td class="center">${bankvo.dealDate }</td>
-                        <td class="center">${bankvo.phone }</td>
-                        <td class="center">${bankvo.fax }</td>
-                        <td class="center">${bankvo.post }</td>
-                        <td class="center">${bankvo.address }</td>
-                        <td class="center">${bankvo.mgr }</td>
-                        <td class="center">${bankvo.mgrPhone }</td>
-                        <td class="center">${bankvo.mgrEmail }</td>
+                      	<td>${bankvo.code }</td>
+                        <td>${bankvo.name }</td>
+                        <td>${bankvo.store }</td>
+                        <td>${bankvo.dealDate }</td>
+                        <td>${bankvo.phone }</td>
+                        <td>${bankvo.fax }</td>
+                        <td>${bankvo.post }</td>
+                        <td>${bankvo.address }</td>
+                        <td>${bankvo.mgr }</td>
+                        <td>${bankvo.mgrPhone }</td>
+                        <td>${bankvo.mgrEmail }</td>
                      </tr>
 				</c:forEach>
            </tbody>
