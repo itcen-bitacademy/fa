@@ -18,11 +18,11 @@
 	display: none;
 }
 
-.validity{
+.validity {
 	width: 35px;
 }
 
-.name{
+.name {
 	width: 80px;
 }
 
@@ -30,48 +30,50 @@
 	width: 150px;
 }
 
-.bankcode{
+.bankcode {
 	width: 200px;
 }
 
-.bankname{
+.bankname {
 	width: 200px;
 }
-.limit{
-	width:100px;
+
+.limit {
+	width: 100px;
 }
 
-.limitation{
-	width:100px;
-	text-align:right;
+.limitation {
+	width: 100px;
+	text-align: right;
 }
- .form-horizontal .control-label {
-            text-align: left
-        }
-        
-         html,body{
-             	height:100%;
-      	}
-      	
-      	.main-container{
-         	height:calc(100% - 45px);
-         	overflow-x: hidden;
-      	}
-      
-      	.main-content{
-         	overflow:auto;
-      	}
-      	
-      	.page-content{
-         	min-width:1280px;
-      	}
-		
-		  @media screen and (max-width: 920px) {
-         .main-container{
-            height:calc(100% - 84px);
-         }
-      }
-	
+
+.form-horizontal .control-label {
+	text-align: left
+}
+
+html, body {
+	height: 100%;
+	overflow-x: hidden;
+}
+
+.main-container {
+	height: calc(100% - 45px);
+	overflow-x: hidden;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.page-content {
+	min-width: 1280px;
+}
+
+@media screen and (max-width: 920px) {
+	.main-container {
+		height: calc(100% - 84px);
+	}
+}
 </style>
 
 

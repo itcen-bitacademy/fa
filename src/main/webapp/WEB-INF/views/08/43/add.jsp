@@ -31,6 +31,14 @@ html, body {
 	min-width: 1280px;
 }
 
+.table > thead > tr > th {
+	text-align: center;
+}
+
+#price {
+	text-align: right;
+}
+
 @media screen and (max-width: 920px) {
 	.main-container {
 		height: calc(100% - 84px);
@@ -301,14 +309,14 @@ html, body {
 									<td>${vo.code }</td>
 									<td>${vo.customerNo }</td>
 									<td>${vo.customerName }</td>
-									<td><fmt:formatNumber value="${vo.acqPrice }"
+									<td id="price"><fmt:formatNumber value="${vo.acqPrice }"
 											pattern="#,###"></fmt:formatNumber></td>
-									<td><fmt:formatNumber value="${vo.addiFee }"
+									<td id="price"><fmt:formatNumber value="${vo.addiFee }"
 											pattern="#,###"></fmt:formatNumber></td>
 									<td>${vo.taxbillNo }</td>
 									<td>${vo.name }</td>
 									<td>${vo.user }</td>
-									<td><fmt:formatNumber value="${vo.copyCount }"
+									<td id="price"><fmt:formatNumber value="${vo.copyCount }"
 											pattern="#,###"></fmt:formatNumber></td>
 									<td>${vo.customerManager }</td>
 									<td>${vo.purpose }</td>
