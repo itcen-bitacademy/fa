@@ -211,8 +211,8 @@ tr.selected{background-color: #ddd}
 						<div class="ia-left"><label class="label-name">이자지급방식</label></div>
 						<div class="ia-right la-radio-wrapper">
 							<div>
-								<input type="radio" name="intPayWay" value="Y" class="ace" checked="checked">
-								<span class="lbl">년</span>
+								<input type="radio" name="intPayWay" value="Y" class="ace">
+								<span class="lbl">연</span>
 							</div>
 							<div>
 								<input type="radio" name="intPayWay" value="M" class="ace">
@@ -255,8 +255,8 @@ tr.selected{background-color: #ddd}
 						<div class="ia-left"><label class="label-name">상환방법</label></div>
 						<div class="ia-right la-radio-wrapper">
 							<div>
-								<input name="repayWay" type="radio" class="ace"  value="Y" checked="checked"/>
-								<span class="lbl">년</span>
+								<input name="repayWay" type="radio" class="ace"  value="Y"/>
+								<span class="lbl">연</span>
 							</div>
 							<div>
 								<input name="repayWay" type="radio" class="ace"  value="M" />
