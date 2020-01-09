@@ -145,7 +145,7 @@ html,body{
 		}
 		
 		//datepicker 관련 Valid
-		if(datepicker1 > datepicker2){
+		if(datepicker1 > datepicker2 && datepicker2 !=''){
 			errortitle = 'DATE_RANGE_ERROR';
 			validationMessage = '조회기간 범위 오류입니다.\r\n 종료일을 시작일 이후로 설정해주세요';
 			errorfield='#datepicker2';
