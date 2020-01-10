@@ -251,9 +251,11 @@ public class Menu41Controller {
 						  @RequestParam(value="bonapil") String bonapil, // 예정 보증금 납부일
 						  @RequestParam(value="walnapil") String walnapil, //예정 월 사용료 납부일 
 						  @RequestParam(value="cusNo") String customerNo, //거래처 번호
-						  @RequestParam(value="gubun" ) String gubun
+						  @RequestParam(value="gubun" ) String gubun,
+						  @RequestParam(value="id", required = false) String id
 						  ) {
 		
+		id = "e" + id;
 		deposit2=deposit2.replace(",", "");
 		Long deposit = Long.parseLong(deposit2);
 		

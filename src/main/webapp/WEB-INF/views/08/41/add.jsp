@@ -1056,13 +1056,15 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
   	$("#taxbillNo").val(taxbillNo);
   
   
-	if(taxbillNo == "" ){
+	if(taxbillNo == "" && taxbillNo == null ){
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
 		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
 		$("#delete").show(); //삭제 버튼 보여주기
 		$("#search").hide(); //조회 버튼 가리기
 		$("#clear").show(); //초기화 버튼 보여주기
+		$("#nabbu").hide(); //보조금 납부 버튼 가리기
+		$("#walsa").hide(); //월 사용료 납부 버튼 가리기
 
 	}else {
 		console.log("세금계산서 번호 있으면 버튼 가리기.");
@@ -1071,6 +1073,8 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		$("#delete").show(); //삭제 버튼 보여주기
 		$("#search").hide(); //조회 버튼 가리기
 		$("#clear").show(); //초기화 버튼 보여주기
+		$("#nabbu").show(); //납부 버튼 보여주기
+		$("#walsa").hide(); //월 사용료 납부 가리기
 	} 
   
   $("#cusNo").val(customerCode); // 납부할때 거래처번호를 넘겨줘야 한다.
@@ -1087,7 +1091,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 					
 					lastnapil = response.lastnapbuDate;
 						
-					if(lastnapil== null ){
+					if(lastnapil== null && taxbillNo !="" && taxbillNo != null){
 						console.log("보증금 낸적이 없다.")
 						$("#nabbu").show(); //납부 버튼 보여주기
 		              return false;
@@ -1095,7 +1099,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 					}else {
 						console.log("보증금 낸적이 있다.");
 						$("#nabbu").hide(); //납부 버튼 숨기기
-						$("#walsa").show(); //월사용료 납부버튼 보이기
+						//$("#walsa").show(); //월사용료 납부버튼 보이기
 						var wal = Number(lastnapil.substr(5,2))+1; //wal.length가 안됨. wal이 number타입이기떄문
 						var walString =  String(wal); //wal을 String으로 바꿔줌
 					
@@ -1135,15 +1139,16 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 						console.log("현재달" + currentMonth);
 						console.log("월사용료 예정일 달" + walString);
 						//현재달 1월과 월사용료 예정일 1월 이 같기 때문에 $("#walsa").show();
-						if(walString == currentMonth){
+						if(walString == currentMonth ){
 							console.log("월사용료 = 현재달이라서 월사용료 납부버튼 보이기");
 							$("#walsa").show();
 						}
 						//현재달 12월과 월사용료 예정일 1월이 다르기 때문에 $("#walsa").hide();
 						else{
 							console.log("월사용료 != 현재달이라서 월사용료 납부버튼 숨기기");
-							//$("#walsa").hide();
+							$("#walsa").hide();
 						}
+						$("#walsa").show();
 					}
 				},
 				error: function(xhr, error){
