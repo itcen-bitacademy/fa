@@ -153,7 +153,7 @@ html,body{
 							<td colspan="2" >
 								<input type="text" name="fax" id="fax" placeholder="숫자만입력하세요. "
 									maxlength="13" onKeyup="inputTelNumber(this);"
-								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' 
+								  
 								 style="margin:10px 0 0 0"/>
 							</td>
 						</tr>
@@ -193,7 +193,7 @@ html,body{
 							<td colspan="2">
 								<input type="text" name="mgrPhone" id="mgrPhone" 
 								maxlength="13" onKeyup="inputTelNumber(this);"
-								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' style="margin:10px 0 0 0" />
+								  style="margin:10px 0 0 0" />
 							</td>
 						</tr>
 						</table>
@@ -212,7 +212,7 @@ html,body{
 								<td colspan="2">
 									<input type="text" name="phone" id="phone"  placeholder="숫자만입력하세요. "
 									maxlength="13" onKeyup="inputTelNumber(this);"
-									 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' style="margin:10px 0 0 0" />
+									  style="margin:10px 0 0 0" />
 								</td>
 							</tr>
 							
@@ -801,6 +801,12 @@ $("#tbody-list tr").click(function(){
 /////////////////////////////////////////////////////////////////
 //전화번호 자동 하이픈
 function inputTelNumber(obj) {
+	if (!(event.keyCode >= 48 && event.keyCode <= 57)) { //숫자키만 입력
+		obj.value='';
+		return;
+	} 
+
+
     var number = obj.value.replace(/[^0-9]/g, "");
     var tel = "";
     // 서울 지역번호(02)가 들어오는 경우
@@ -868,6 +874,7 @@ function removeChar(event) {
     else
         event.target.value = event.target.value.replace(/[^0-9]/g, "");
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 $(function(){
