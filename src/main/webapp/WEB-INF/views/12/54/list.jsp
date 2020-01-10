@@ -90,10 +90,10 @@
 															<c:forEach items="${customerlist }" var="clist">
 																<c:choose>
 																	<c:when test="${clist.customerCode eq search.customerCode }">
-																		<option value="${clist.customerCode }" data-taxbill="${clist.customerName }" selected>${clist.customerCode } [${clist.customerName }]</option>
+																		<option value="${clist.customerCode }" data-customer="${clist.customerName }" selected>${clist.customerCode } [${clist.customerName }]</option>
 																	</c:when>
 																	<c:otherwise>
-																			<option value="${clist.customerCode }" data-taxbill="${clist.customerName }">${clist.customerCode } [${clist.customerName }]</option>
+																			<option value="${clist.customerCode }" data-customer="${clist.customerName }">${clist.customerCode } [${clist.customerName }]</option>
 																	</c:otherwise>
 																</c:choose>
 															</c:forEach>
@@ -139,10 +139,10 @@
 														<c:forEach items="${itemlist }" var="ilist">
 															<c:choose>
 																<c:when test="${ilist.itemName eq search.itemName }">
-																	<option value="${ilist.itemName }" data-taxbill="${ilist.itemName }" selected>${ilist.itemName }</option>	
+																	<option value="${ilist.itemName }" data-item="${ilist.itemName }" selected>${ilist.itemName }</option>	
 																</c:when>
 																<c:otherwise>
-																	<option value="${ilist.itemName }" data-taxbill="${ilist.itemName }">${ilist.itemName }</option>
+																	<option value="${ilist.itemName }" data-item="${ilist.itemName }">${ilist.itemName }</option>
 																</c:otherwise>
 															</c:choose>
 														</c:forEach>
@@ -352,11 +352,23 @@
 								
 		})
 		
-		// 명칭 불러 오는 기능
+		// 거래처 명칭 불러 오는 기능
+   		 $('#customerCode').change(function () {
+    		var customerNameSelect = $(this).find('option:selected').attr('data-customer');
+    		$('#customerNameSelect').val(customerNameSelect);
+ 		 });
+		
+		// 세금계산서 명칭 불러 오는 기능
    		 $('#taxbillNo').change(function () {
     		var taxbillNoName = $(this).find('option:selected').attr('data-taxbill');
     		$('#taxbillNoName').val(taxbillNoName);
- 		  });
+ 		 });
+		
+   		// 아이템 명칭 불러 오는 기능
+   		 $('#itemName').change(function () {
+    		var itemNameSelect = $(this).find('option:selected').attr('data-item');
+    		$('#itemNameSelect').val(itemNameSelect);
+ 		 });
 		
 		function view(){
         	var url = "${pageContext.request.contextPath }/12/54/1";
