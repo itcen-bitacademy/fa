@@ -56,7 +56,7 @@ public class Menu37Controller {
 		List<BankAccountVo> customerBankList = menu37Service.customerBankList();
 		model.addAttribute("customerList", customerList);
 		model.addAttribute("customerBankList", customerBankList);
-
+		
 		// 입력된 세금계산서번호가 중복인지 알아본다.
 		if(menu37Service.checkDuplicateNo(vo.getNo()) != null) {
 			model.addAttribute("insertFlag","true");

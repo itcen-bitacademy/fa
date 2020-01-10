@@ -47,9 +47,10 @@
 	<select id="getAboutNoCustomerData" parameterType="String"
 		resultType="purchasecustomer35vo">
 		<![CDATA[
-		select no, name, ceo, address, conditions, item, deposit_no from tb_purchasecustomer where name =#{values }
+		
+		select no, name, ceo, address, conditions, item, deposit_no, deposit_host as depositHost from tb_purchasecustomer where name =#{values }
 		union
-		select no, name, ceo, address, conditions, item, deposit_no from tb_customer where assets_flag !="e" and name =#{values }
+		select no, name, ceo, address, conditions, item, deposit_no, deposit_host as depositHost from tb_customer where assets_flag !="e" and name =#{values }
 		]]>
 	</select>
 
@@ -67,10 +68,10 @@
 	<!-- 거래처명 리스트 중 클릭할시 관련정보 불러오는 select -->
 	<select id="customerList" resultType="purchasecustomer35vo">
 		<![CDATA[
-			select no, name, ceo, address, conditions, item, deposit_no 
+			select no, name, ceo, address, conditions, item, deposit_no as depositNo, deposit_host as depositHost
 			  from tb_purchasecustomer
 			union
-			select no, name, ceo, address, conditions, item, deposit_no 
+			select no, name, ceo, address, conditions, item, deposit_no as depositNo, deposit_host as depositHost
 			  from tb_customer where assets_flag !="e"
 		]]>
 	</select>
