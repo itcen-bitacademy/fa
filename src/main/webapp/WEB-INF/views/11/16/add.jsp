@@ -643,15 +643,21 @@ $("#btn-check-code").click(function(){
 			}
 			console.log(response);
 			
-			if(response.data == true){
-				alert("이미 존재하는 은행코드입니다.");
-				$("#input-code").val("");
-				$("#input-code").focus();
-				return;
-			}else{
+			if(response.data == null){
 				$("#btn-check-code").hide();
 				$("#img-checkcode").show();
 				ischecked = true;
+				return;
+			}else if(response.data.deleteFlag == "Y"){
+				$("#code").val("");
+				$("#code").focus();
+				openErrorModal('CODE ERROR',"삭제된 코드입니다.",'#code');
+			}else {
+				
+				$("#code").val("");
+				$("#code").focus();
+				openErrorModal('CODE ERROR',"이미 존재하는 코드입니다.",'#code');
+			
 			}
 			},
 			error:function(xhr,error) {
@@ -659,6 +665,8 @@ $("#btn-check-code").click(function(){
 			}
 	});
 });		
+
+
 //requied제거후 각각 validation 추가 해라			   		    
 $("#inputbtn").click(function(){//입력버튼 클릭시      
 	if(ischecked == false){
@@ -679,6 +687,7 @@ $("#inputbtn").click(function(){//입력버튼 클릭시
 	  	$('#myform').attr('method', 'POST');
 	  	$('#myform').submit();
   	});
+  	
   	
 $('#formReset').click(function(){//초기화 버튼 클릭시
  	$('input').val('');

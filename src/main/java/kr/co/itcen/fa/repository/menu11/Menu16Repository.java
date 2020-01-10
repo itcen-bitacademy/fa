@@ -59,9 +59,9 @@ public class Menu16Repository {
 		return count;
 	}
 
-	public Object getCode(String code) {
+	public BankVo getCode(String code) {
 		BankVo result = sqlSession.selectOne("menu16.getByCode",code);
-		System.out.println(result + "sdfsdfsdfs");
+	
 		return result;
 	}
 
