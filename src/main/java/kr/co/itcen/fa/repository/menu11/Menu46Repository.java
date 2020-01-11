@@ -11,10 +11,8 @@ import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 
 /**
- * 
  * @author 반현길
  * 단기차입금관리
- *
  */
 @Repository
 public class Menu46Repository {
@@ -72,7 +70,12 @@ public class Menu46Repository {
 	public List<RepayVo> getRepayList(Long no){
 		return sqlSession.selectList("menu46.getRepayList", no);
 	}
+	
 	public List<STermDebtVo> getRepayDueList(Map dateMap) {
 		return sqlSession.selectList("menu46.getRepayDueList", dateMap);
+	}
+	
+	public List<Map> getYearDebtStat() {
+		return sqlSession.selectList("menu46.getYearDebtStat");
 	}
 }

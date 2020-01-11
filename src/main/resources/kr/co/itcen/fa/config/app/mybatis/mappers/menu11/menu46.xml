@@ -146,8 +146,12 @@
 			#{today} <= exp_date and exp_date <= #{dateOfSunday}
    		]]>
    </select>
-  
-  
    
-
+   <select	id="getYearDebtStat" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_s_term_debt
+ 		group by year(debt_date)
+   	]]>
+   </select>
 </mapper>

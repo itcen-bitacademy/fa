@@ -1,6 +1,9 @@
 package kr.co.itcen.fa.controller.menu11;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +23,6 @@ import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu11.Menu46Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
-import kr.co.itcen.fa.util.Pagination;
 import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
 import kr.co.itcen.fa.vo.menu11.STermDebtVo;
@@ -219,5 +221,35 @@ public class Menu46ApiController {
 		map = menu46Service.getList();
 		
 		return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getYearDebtStat", method = RequestMethod.POST)
+	public JSONResult getYearDebtStat() {			//insert 내테이블에만 할때 사용
+		List<Map> list = menu46Service.getYearDebtStat();
+		int curYear = Calendar.getInstance().get(Calendar.YEAR);
+		
+		System.out.println("list : " + list);
+		System.out.println("list : " + list.get(0).get("year"));
+		System.out.println("curYear : " + curYear);
+		List<Long> yearSumList = new ArrayList<Long>();
+		for(int i=2010; i<= curYear; ++i) {
+			Long sum = 0L;
+			
+			for(Map map : list) {			//리스트를 순회하면서 해당년도가 있는지 확인
+				Integer year = (Integer)map.get("year");
+				if(year == i) {			//해당년도가 있으면 sum값으로 입력
+					sum = getLongFromMap(map.get("sum"));
+					break;
+				}
+			}
+			yearSumList.add(sum);
+		}
+		return JSONResult.success(yearSumList);
+	}
+	
+	public Long getLongFromMap(Object value) {
+		BigDecimal v = (BigDecimal)value;
+		return Long.valueOf(v.toString());
 	}
 }	

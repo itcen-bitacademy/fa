@@ -271,4 +271,8 @@ public class Menu46Service {
 		System.out.println("dateOfSunday : " + dayOfSunday + "sunDay : " + dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
 		return map;
 	}
+	
+	public List<Map> getYearDebtStat(){
+		return menu46Repository.getYearDebtStat();
+	}
 }
