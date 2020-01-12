@@ -74,6 +74,9 @@ input:focus {
 	display: inline;
 	margin-right: 10px;
 }
+#items-table thead tr th { 
+	text-align : center;
+}
 /* 기타 css e*/
 </style>
 </head>

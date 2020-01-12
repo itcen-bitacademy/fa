@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.co.itcen.fa.dto.JSONResult;
 import kr.co.itcen.fa.service.menu11.Menu16Service;
+import kr.co.itcen.fa.vo.menu11.BankVo;
 
 
 
@@ -24,9 +25,8 @@ public class Menu16ApiController {
 	@ResponseBody
 	@RequestMapping("/"+SUBMENU+"/api/checkcode")
 	public JSONResult checkCode(@RequestParam(value="code", required=true, defaultValue="") String code) {
-		Boolean exist = menu16Service.existCode(code);
-		System.out.println(code+"sfdfdsf");
-        return JSONResult.success(exist);
+		BankVo bankvo = menu16Service.existCode(code);
+        return JSONResult.success(bankvo);
 	}
 	
 	

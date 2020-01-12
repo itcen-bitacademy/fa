@@ -20,6 +20,8 @@ html,body{overflow-x:hidden; height:100%;}
 	width: 10%;
 }
 
+
+
 h4{
 	font-size:14px;
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
@@ -151,7 +153,9 @@ width: 208px;}
 											</label>
 										</div>
 									</td>
-									<td class="fourth-column"><h4>은행명</h4></td>
+									<td class="fourth-column">
+										<label class="control-label">은행명</label>
+									</td>
 									<td class="fifth-column">
 										<input type="text" name="bankName" value="${vo.bankName }"/>
 									</td>
@@ -240,7 +244,7 @@ width: 208px;}
 							<th class="center">장기차입금명</th>
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
-							<th class="center">상환액</th>
+							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
 							<th class="center">차입일자</th>
 							<th class="center">만기일자</th>
@@ -256,36 +260,36 @@ width: 208px;}
 					<c:forEach items="${dataResult.datas }" var="ltermvo">
 						<tr>
 							
-							<td class="center">${ltermvo.code}</td>
+							<td >${ltermvo.code}</td>
 							<td>${ltermvo.name}</td>
 							 <c:choose>
-										<c:when test="${ltermvo.majorCode eq '001'}"><td class="center">국내은행</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '002'}"><td class="center">저축은행</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '003'}"><td class="center">신용금고</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '004'}"><td class="center">새마을금고</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
-										<c:otherwise><td class="center">증권</td></c:otherwise>
+										<c:when test="${ltermvo.majorCode eq '001'}"><td >국내은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '002'}"><td >저축은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '003'}"><td >신용금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '004'}"><td >새마을금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '005'}"><td >외국계은행</td></c:when>
+										<c:otherwise><td>증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
-							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
-										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
-										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
-										<c:otherwise><td class="center">만기</td></c:otherwise>
+										<c:when test="${ltermvo.repayWay eq 'Y'}"><td >연</td></c:when>
+										<c:when test="${ltermvo.repayWay eq 'M'}"><td>월</td></c:when>
+										<c:otherwise><td >만기</td></c:otherwise>
 							</c:choose>		
-							<td class="center">${ltermvo.debtDate}</td>
-							<td class="center">${ltermvo.expDate}</td>
-							<td class="center">${ltermvo.intRate}%</td>
+							<td >${ltermvo.debtDate}</td>
+							<td >${ltermvo.expDate}</td>
+							<td>${ltermvo.intRate}%</td>
 							<c:choose>
-										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
-										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
-										<c:otherwise><td class="center">만기</td></c:otherwise>
+										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td >연</td></c:when>
+										<c:when test="${ltermvo.intPayWay eq 'M'}"><td >월</td></c:when>
+										<c:otherwise><td >만기</td></c:otherwise>
 							</c:choose>	
 							
-							<td class="center">${ltermvo.mgr}</td>
-							<td class="center">${ltermvo.mgrCall}</td>
-							<td class="center">${ltermvo.bankName}</td>
-							<td class="center">${ltermvo.depositNo}</td>
+							<td >${ltermvo.mgr}</td>
+							<td >${ltermvo.mgrCall}</td>
+							<td>${ltermvo.bankName}</td>
+							<td >${ltermvo.depositNo}</td>
 						</tr>
 					</c:forEach>
 					</tbody>

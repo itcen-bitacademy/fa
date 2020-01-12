@@ -27,7 +27,7 @@ import kr.co.itcen.fa.vo.menu11.STermDebtVo;
  */
 @Auth
 @Controller
-@RequestMapping("/" + Menu46Controller.MAINMENU)
+@RequestMapping("/" + Menu46Controller.MAINMENU + "/" + Menu46Controller.SUBMENU)
 public class Menu46Controller {
 	public static final String MAINMENU = "11";
 	public static final String SUBMENU = "46";
@@ -36,9 +36,14 @@ public class Menu46Controller {
 	private Menu46Service menu46Service;
 	
 	//기본
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/add" })
+	@RequestMapping({"",  "/add" })
 	public String add(Model model) {
 		return MAINMENU + "/" + SUBMENU + "/add";
+	}
+	
+	@RequestMapping("/statistics")
+	public String statistics() {
+		return MAINMENU + "/" + SUBMENU + "/statistics";
 	}
 	
 }

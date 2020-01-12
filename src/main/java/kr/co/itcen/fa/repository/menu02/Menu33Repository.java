@@ -66,13 +66,6 @@ public class Menu33Repository {
 		return sectionVo;
 	}
 	
-	public List<PurchaseitemVo> getPurchaseitemList(int page_group) {
-		page_group *= 55;
-		
-		List<PurchaseitemVo> purchaseitemList = sqlSession.selectList("menu33.getpurchaseitemlist", page_group);
-		
-		return purchaseitemList;
-	}
 	
 	public List<SectionVo> getsearchSectionList(String sectionname) {
 		sectionname = "%" + sectionname + "%";
@@ -81,17 +74,43 @@ public class Menu33Repository {
 		
 		return searchsectionList;
 	}
-
-	public List<PurchaseitemVo> getpagePurchaseitemList(int page) {
-		page = (page-1)*11;
+	
+	public List<PurchaseitemVo> getPurchaseitemList(int page_group, String no) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		
-		List<PurchaseitemVo> pagepurchaseitemList = sqlSession.selectList("menu33.getpagePurchaseitemList", page);
+		page_group *= 55;
+		no = "%" + no + "%";
+		
+		map.put("no", no);
+		map.put("page_group", page_group);
+		
+		List<PurchaseitemVo> purchaseitemList = sqlSession.selectList("menu33.getpurchaseitemlist", map);
+		
+		return purchaseitemList;
+	}
+	
+	public List<PurchaseitemVo> getpagePurchaseitemList(int page, String no) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		page = (page-1)*11;
+		no = "%" + no + "%";
+		
+		map.put("no", no);
+		map.put("page", page);
+		
+		List<PurchaseitemVo> pagepurchaseitemList = sqlSession.selectList("menu33.getpagePurchaseitemList", map);
 		
 		return pagepurchaseitemList;
 	}
 
-	public List<PurchaseitemVo> getPurchaseitemListall() {
-		List<PurchaseitemVo> purchaseitemListall = sqlSession.selectList("menu33.getPurchaseitemListall");
+	public List<PurchaseitemVo> getPurchaseitemListall(String no) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		no = "%" + no + "%";
+		
+		map.put("no", no);
+		
+		List<PurchaseitemVo> purchaseitemListall = sqlSession.selectList("menu33.getPurchaseitemListall", map);
 		
 		return purchaseitemListall;
 	}

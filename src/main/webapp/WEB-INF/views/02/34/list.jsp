@@ -1042,20 +1042,20 @@
 							<table id="sample-table-1" class="table table-striped table-bordered table-hover" style="width:1920px;">
 								<thead>
 									<tr>
-										<th>번호</th>
-										<th>품목코드</th>
-										<th>품목명</th>
-										<th>대분류코드</th>
-										<th>대분류명</th>
-										<th>규격</th>
-										<th>단가(원)</th>
-										<th>사용용도</th>
-										<th>생산공장코드</th>
-										<th>생산공장명</th>
-										<th>생산공장 주소</th>
-										<th>생산담당자</th>
-										<th>생산일자</th>
-										<th>삭제여부</th>
+										<th style="text-align:center">번호</th>
+										<th style="text-align:center">품목코드</th>
+										<th style="text-align:center">품목명</th>
+										<th style="text-align:center">대분류코드</th>
+										<th style="text-align:center">대분류명</th>
+										<th style="text-align:center">규격</th>
+										<th style="text-align:center">단가(원)</th>
+										<th style="text-align:center">사용용도</th>
+										<th style="text-align:center">생산공장코드</th>
+										<th style="text-align:center">생산공장명</th>
+										<th style="text-align:center">생산공장 주소</th>
+										<th style="text-align:center">생산담당자</th>
+										<th style="text-align:center">생산일자</th>
+										<th style="text-align:center">삭제여부</th>
 									</tr>
 								</thead>
 

@@ -199,7 +199,7 @@
 			return false;
 		});
 		
-		// 취소 cancel
+		// 초기화
 		$("#btn_cancel").click(function(){
 			// 입력버튼 활성화
 			$("#btn_insert").prop("disabled", false);
@@ -475,7 +475,7 @@
 									<label class="control-label" for="openDate">개설일자</label>
 										<div class="controls">
 											<div class="row-fluid input-append">
-											<input class="cl-date-picker" id="openDate" name="openDate" type="text" data-date-format="yyyy-mm-dd" />
+											<input class="cl-date-picker" id="openDate" name="openDate" type="text" readonly data-date-format="yyyy-mm-dd" />
 												<span class="add-on">
 												<i class="icon-calendar"></i>
 												</span>

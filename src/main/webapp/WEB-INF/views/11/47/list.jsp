@@ -246,6 +246,7 @@ div > .label-radio{margin-right: 10px;}
 							<th class="center">단기차입금명</th>
 							<th class="center">차입금대분류</th>
 							<th class="center">차입금액</th>
+							<th class="center">상환잔액</th>
 							<th class="center">상환방법</th>
 							<th class="center">차입일자</th>
 							<th class="center">만기일자</th>
@@ -261,19 +262,20 @@ div > .label-radio{margin-right: 10px;}
 					<tbody id="tbody-list">
 						<c:forEach items="${list }" var="vo" varStatus="status">
 							<tr id="${vo.no }">
-								<td class="center">${vo.code }</td>
-								<td class="center">${vo.name }</td>
-								<td class="center">${vo.majorCode }</td>
-								<td class="center">${vo.debtAmount }</td>
-								<td class="center">${vo.repayWay }</td>
-								<td class="center">${vo.debtDate }</td>
-								<td class="center">${vo.expDate }</td>
-								<td class="center">${vo.intRate }</td>
-								<td class="center">${vo.intPayWay }</td>
-								<td class="center">${vo.mgr }</td>
-								<td class="center">${vo.mgrCall }</td>
-								<td class="center">${vo.bankName }</td>
-								<td class="center">${vo.depositNo }</td>
+								<td>${vo.code }</td>
+								<td>${vo.name }</td>
+								<td>${vo.majorCode }</td>
+								<td style='text-align:right;'>${vo.debtAmount }</td>
+								<td style='text-align:right;'>${vo.repayBal }</td>
+								<td>${vo.repayWay }</td>
+								<td>${vo.debtDate }</td>
+								<td>${vo.expDate }</td>
+								<td>${vo.intRate }</td>
+								<td>${vo.intPayWay }</td>
+								<td>${vo.mgr }</td>
+								<td>${vo.mgrCall }</td>
+								<td>${vo.bankName }</td>
+								<td>${vo.depositNo }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -411,19 +413,20 @@ function renderingList(list){
 	$("#tbody-list > *").remove();
 	for(var i=0; i < list.length; ++i){
 		$("#tbody-list").append("<tr>" +
-				 "<td class='center'>" + list[i].code + "</td>" +
+				 "<td >" + list[i].code + "</td>" +
 				 "<td>" + list[i].name + "</td>" +
-				 "<td class='center'>" + convertMajorCode(list[i].majorCode) + "</td>" +
-				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
-				 "<td class='center'>" + convertRepayWay(list[i].repayWay) + "</td>" +
-				 "<td class='center'>" + list[i].debtDate + "</td>" + 
-				 "<td class='center'>" + list[i].expDate + "</td>" +
-				 "<td class='center'>" + convertIntRate(list[i].intRate) + "</td>" +
-				 "<td class='center'>" + convertIntPayWay(list[i].intPayWay) + "</td>" +
-				 "<td class='center'>" + list[i].mgr + "</td>" +
-				 "<td class='center'>" + list[i].mgrCall + "</td>" +
-				 "<td class='center'>" + list[i].bankName + "</td>" +
-				 "<td class='center'>" + list[i].depositNo + "</td>");
+				 "<td>" + convertMajorCode(list[i].majorCode) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].debtAmount) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].repayBal) + "</td>" +
+				 "<td>" + convertRepayWay(list[i].repayWay) + "</td>" +
+				 "<td>" + list[i].debtDate + "</td>" + 
+				 "<td>" + list[i].expDate + "</td>" +
+				 "<td>" + convertIntRate(list[i].intRate) + "</td>" +
+				 "<td>" + convertIntPayWay(list[i].intPayWay) + "</td>" +
+				 "<td>" + list[i].mgr + "</td>" +
+				 "<td>" + list[i].mgrCall + "</td>" +
+				 "<td>" + list[i].bankName + "</td>" +
+				 "<td>" + list[i].depositNo + "</td>");
 	}
 }
 

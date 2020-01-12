@@ -10,6 +10,40 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
+<style>
+ .form-horizontal .control-label {
+    text-align: left
+ }
+ 
+ .acqPrice {
+    text-align: right
+ }
+ 
+ html,body{
+	height:100%;
+	overflow-x: hidden;
+	}
+      	
+ .main-container{
+    height:calc(100% - 45px);
+    overflow-x: hidden;
+    }
+      
+ .main-content{
+    overflow:auto;
+    }
+      	
+ .page-content{
+    min-width:1280px;
+    }
+    
+ @media screen and (max-width: 920px) {
+ .main-container{
+     height:calc(100% - 84px);
+   	}
+   }
+   
+</style>
 </head>
 <body class="skin-3">
 <input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
@@ -58,7 +92,7 @@
 								</div>
 								
 								 <div class="control-group">
-									<label style="text-align:left;" class="control-label" for="form-field-1">주소(광역)</label>
+									<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
 									<div class="controls">
 										<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 										<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다.">
@@ -190,8 +224,8 @@
 					</form>
 					</div><!-- 차변 대변 나누기 위한 row-fluid -->
 					
-					<div class="row-fluid">
-						<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+					<div style="overflow-x:auto">
+						<table id="sample-table-1" class="table table-striped table-bordered table-hover" style="width: 2200px">
 							<thead>
 								<tr>
 									<!-- <th class="center">
@@ -241,10 +275,10 @@
 											<td>${land.customerName }</td>
 											<td>${land.managerName }</td>
 											<td>${land.payDate}</td>
-											<td><fmt:formatNumber value="${land.publicValue}" pattern="#,###"></fmt:formatNumber></td>
-											<td><fmt:formatNumber value="${land.acqPrice}" pattern="#,###"></fmt:formatNumber></td>
-											<td><fmt:formatNumber value="${land.etcCost}" pattern="#,###"></fmt:formatNumber></td>
-											<td><fmt:formatNumber value="${land.acqTax}" pattern="#,###"></fmt:formatNumber></td>
+											<td style="text-align : right"><fmt:formatNumber value="${land.publicValue}" pattern="#,###"></fmt:formatNumber></td>
+											<td style="text-align : right"><fmt:formatNumber value="${land.acqPrice}" pattern="#,###"></fmt:formatNumber></td>
+											<td style="text-align : right"><fmt:formatNumber value="${land.etcCost}" pattern="#,###"></fmt:formatNumber></td>
+											<td style="text-align : right"><fmt:formatNumber value="${land.acqTax}" pattern="#,###"></fmt:formatNumber></td>
 											<td>${land.combineNo}</td>
 											<td>${land.taxbillNo}</td>
 											<td>${land.taxKind}</td>
@@ -426,6 +460,7 @@ $(function() {
 			else if(!valid.numberCheck("land_code", "토지 코드")) return;
 			else if(!valid.nullCheck("code", "토지 분류")) return;
 			else if(!valid.nullCheck("area", "평수")) return;
+			else if(!valid.numberCheck("area", "평수")) return;
 			else if(!valid.numberCheck("area", "평수")) return;
 			else if(!valid.nullCheck("wideAddr", "주소")) return;
    			else if(!valid.nullCheck("customerNo", "거래처")) return;

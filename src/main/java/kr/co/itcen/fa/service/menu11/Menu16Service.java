@@ -76,9 +76,9 @@ public class Menu16Service {
 		return dataResult;
 	}
 
-	public Boolean existCode(String code) {
+	public BankVo existCode(String code) {
 		
-		return menu16Repository.getCode(code) != null;
+		return menu16Repository.getCode(code);
 	}
 
 	

@@ -274,7 +274,7 @@ html, body {
 				<div style="overflow-x: auto;">
 					<table id="sample-table-1"
 						class="table table-striped table-bordered table-hover"
-						style="width: 1920px">
+						style="width: 2200px">
 						<thead>
 							<tr>
 								<th>NO</th>

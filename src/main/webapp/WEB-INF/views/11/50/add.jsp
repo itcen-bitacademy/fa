@@ -97,7 +97,7 @@ h4{
 										<td>
 											<label class="control-label">차입금액</label>
 										</td>
-										<td style="display: inline-block;"><input type="text" id="inputPrice" name="textDebtAmount" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5><input type="hidden" id="hidden-dept-amount" name="debtAmount" /></td>
+										<td style="display: inline-block;"><input type="text" id="inputPrice" name="textDebtAmount" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5><input type="hidden" id="hidden-dept-amount" name="debtAmount" /></td>
 									</tr>
 									<tr>
 										<td>
@@ -137,7 +137,7 @@ h4{
 									</tr>
 									<tr>
 										<td>
-											<label class="control-label">거래처코드</label>
+											<label class="control-label">은행코드</label>
 										</td>
 										<td colspan="2">
 												<div class="input-append">
@@ -175,7 +175,7 @@ h4{
 										<td>
 											<c:choose>
 												<c:when test='${year eq ""}'>
-													<input type="number" min="1900" max="2099" step="1" value="2019" id="financialyearId" name="financialYear" placeholder="회계연도" />
+													<input type="number" min="1900" max="2099" step="1" id="financialyearId" name="financialYear" placeholder="회계연도" />
 												</c:when>
 												<c:otherwise>
 													<input type="number" min="1900" max="2099" step="1" value="${year}" id="financialyearId" name="financialYear" placeholder="회계연도" />
@@ -226,7 +226,7 @@ h4{
 											<label class="control-label">이율</label>
 										</td>
 										<td colspan="2">
-											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="text-align:right;"/> <h5 style="display: inline-block;">(%)</h5>
+											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
 										</td>
 									</tr>
 									<tr>
@@ -344,20 +344,20 @@ h4{
 										<tr>
 											<td>
 												<label class="control-label">납입원금</label>
-												<input type="text" name="text-name-payPrinc" id= "text-id-payPrinc" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
+												<input type="text" name="text-name-payPrinc" id= "text-id-payPrinc" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
 												<input type="hidden" name="payPrinc" id= "payPrinc" style="text-align:right;"/>
 											</td>
 										</tr>
 										<tr>
 											<td>
 												<label class="control-label">이자금액</label>
-												<input type="text" name="intAmount" id= "intAmount" readonly="readonly" style="text-align:right;"/> <h5 style="display: inline-block;">(원)</h5>
+												<input type="text" name="intAmount" id= "intAmount" readonly="readonly" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
 											</td>
 										</tr>
 										<tr>
 											<td>
 												<label class="control-label">총액</label>
-												<input type="text" name="totalAmount" id= "totalAmount" readonly="readonly" style="text-align:right;" value="0"/> <h5 style="display: inline-block;">(원)</h5>
+												<input type="text" name="totalAmount" id= "totalAmount" readonly="readonly" style="text-align:right;" value="0"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
 											</td>
 										</tr>
 										</table>
@@ -401,7 +401,7 @@ h4{
 							<button type="submit" id="updatebtn" class="btn btn-warning btn-small mybtn">수정</button>
 							<button type="button" id="deletebtn" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
 							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
-							<button type="button" id="repaybtn" class="btn btn-small mybtn">상환</button>
+							<button type="button" id="repaybtn" class="btn btn-success btn-small mybtn">상환</button>
 							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
 							<button type="button" id="repay-view-button" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
 						</div>
@@ -444,41 +444,41 @@ h4{
 							<tr class="row-select">
 								<td class="center" data-no="${vo.no }">
 									<label class="pos-rel" onclick='event.cancelBubble=true'>
-										<input type="checkbox" class="ace checkboxtable" data-no="${vo.no }" name="checkBox" id="checkboxId" onchange='rowChecked(this)'/>
+										<input type="checkbox" class="ace checkboxtable" data-no="${vo.no }" name="checkBox" id="checkboxId" />
 										<span class="lbl"></span>
 									</label>
 								</td>
-								<td class="center">${vo.code}</td>
+								<td>${vo.code}</td>
 								<td>${vo.name}</td>
 						        <c:choose>
-											<c:when test="${vo.majorCode eq '001'}"><td class="center">국내은행</td></c:when>
-											<c:when test="${vo.majorCode eq '002'}"><td class="center">저축은행</td></c:when>
-											<c:when test="${vo.majorCode eq '003'}"><td class="center">신용금고</td></c:when>
-											<c:when test="${vo.majorCode eq '004'}"><td class="center">새마을금고</td></c:when>
-											<c:when test="${vo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
-											<c:otherwise><td class="center">증권</td></c:otherwise>
+											<c:when test="${vo.majorCode eq '001'}"><td >국내은행</td></c:when>
+											<c:when test="${vo.majorCode eq '002'}"><td >저축은행</td></c:when>
+											<c:when test="${vo.majorCode eq '003'}"><td >신용금고</td></c:when>
+											<c:when test="${vo.majorCode eq '004'}"><td >새마을금고</td></c:when>
+											<c:when test="${vo.majorCode eq '005'}"><td >외국계은행</td></c:when>
+											<c:otherwise><td >증권</td></c:otherwise>
 								</c:choose>	
-								<td class="center"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /><input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" /></td>				
-								<td class="center"><fmt:formatNumber value="${vo.repayBal}" pattern="#,###" /></td>
+								<td style="text-align:right;"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /><input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" /></td>				
+								<td style="text-align:right;"><fmt:formatNumber value="${vo.repayBal}" pattern="#,###" /></td>
 								<c:choose>
-											<c:when test="${vo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
-											<c:when test="${vo.repayWay eq 'M'}"><td class="center">월</td></c:when>
-											<c:otherwise><td class="center">만기</td></c:otherwise>
+											<c:when test="${vo.repayWay eq 'Y'}"><td >연</td></c:when>
+											<c:when test="${vo.repayWay eq 'M'}"><td >월</td></c:when>
+											<c:otherwise><td >만기</td></c:otherwise>
 								</c:choose>		
-								<td class="center">${vo.debtDate}</td>
-								<td class="center">${vo.expDate}</td>
-								<td class="center">${vo.intRate}</td>
+								<td>${vo.debtDate}</td>
+								<td>${vo.expDate}</td>
+								<td>${vo.intRate}%</td>
 								<c:choose>
-											<c:when test="${vo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
-											<c:when test="${vo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
-											<c:otherwise><td class="center">해당없음</td></c:otherwise>
+											<c:when test="${vo.intPayWay eq 'Y'}"><td >연</td></c:when>
+											<c:when test="${vo.intPayWay eq 'M'}"><td >월</td></c:when>
+											<c:otherwise><td>해당없음</td></c:otherwise>
 								</c:choose>	
-								<td class="center">${vo.mgr}</td>
-								<td class="center">${vo.mgrCall}</td>
-								<td class="center" data-bankname="${vo.bankName }">${vo.bankCode}</td>
-								<td class="center" data-deposithost="${vo.depositHost }">${vo.depositNo}</td>
-								<td class="center">${vo.dangerName}</td>
-								<td class="center" >${vo.insertDate}</td>
+								<td>${vo.mgr}</td>
+								<td>${vo.mgrCall}</td>
+								<td data-bankname="${vo.bankName }">${vo.bankCode}</td>
+								<td data-deposithost="${vo.depositHost }">${vo.depositNo}</td>
+								<td>${vo.dangerName}</td>
+								<td>${vo.insertDate}</td>
 							</tr>
 							</c:forEach>
 						</tbody>
@@ -568,11 +568,17 @@ h4{
 		$("#tbody-list tr").click(function(){ 
 			var tr = $(this);
 			var td = tr.children();
-			if(td.eq(0).children().children().prop('checked') == false){
+			
+			if($(this).hasClass('selected') === false){
+				$("#tbody-list").find('tr').removeClass("selected");
+				$(this).addClass("selected");
 				formInsertion(this);
-			} else {
-				formDeletion(this);
+				//$(tr).removeClass("selected");
+			}else{
+				$(this).removeClass("selected");
+				formDeletion(this);	
 			}
+			
 		});
 	});
 	
@@ -1116,7 +1122,15 @@ h4{
 	    	if($(td.eq(0).children().children()).prop('checked') == true){
 	    		$(td.eq(0).children().children()).prop('checked', false);
 	    	}
+	    	if($("#tbody-list tr").hasClass('selected') === true){
+				$("#tbody-list tr").removeClass("selected");
+				$('#insertbtn').show();
+				$('#searchbtn').show();
+				$('#updatebtn').hide();
+				$('#repaybtn').hide();
+			}
 	    });
+	   
 	}
 	
 	// 사채코드 중복 확인
@@ -1344,15 +1358,6 @@ h4{
 	          console.error("error : " + error);
 	       }
 	    });
-	}
-	
-	// checkbox를 선택했을 때, table의 row데이터 form input에 추가
-	function rowChecked(thisObj){
-		if (!$(thisObj).is(":checked")) {										//check 해제인 경우
-			formDeletion(thisObj);
-		} else {																//check를 한 경우
-			formInsertion(thisObj);
-		}
 	}
 	
 	//insert Validation
@@ -1616,18 +1621,23 @@ h4{
 	
 		//--------------------------------------------------------------------------------------------------------------------------//
 		// form에 데이터 추가
-		function formInsertion(thisObj){
+	 function formInsertion(thisObj){
 			var tr = $(thisObj).closest("tr");
 			var td = tr.children();
 			
-			$(td.eq(0).children().children()).prop('checked',true);
+			//$(td.eq(0).children().children()).prop('checked',true);
 			$("#tbody-list").find("tr").css("background-color", "inherit");
 	        $(tr).css("background-color", "#ddd");
+	        $('#insertbtn').hide();
+	        $("#img-checkcode").hide(); // '중복확인' 체크 이미지
+	        $('#searchbtn').show();
+	        $('#updatebtn').show();
+	        $('#repaybtn').show();
 		
 			$("input[name=no]").val(td.eq(0).attr('data-no'));
 			
 			$("input[name=code]").val(td.eq(1).text()); // 사채코드
-			//$("input[name=code]").attr('readonly', true);
+			$("input[name=code]").attr('readonly', true);
 			
 			$("#onlyHangulAndNumber").val(td.eq(2).text()); // 사채명
 			
@@ -1680,7 +1690,8 @@ h4{
 			$("input[name=debtExpDate]").val(td.eq(7).text() + " - " + td.eq(8).text());
 			
 			// 이율
-			$("input[name=intRate]").val(td.eq(9).text());
+			var rate = td.eq(9).text().split('%');
+	 		$("input[name=intRate]").val(rate[0]);
 			
 			// 이자지급방식
 			var intPayWay='';
@@ -1726,7 +1737,7 @@ h4{
 		        break;
 			}
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
-			//$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
+			$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
 		}
 		
 		function formDeletion(thisObj){
@@ -1735,16 +1746,23 @@ h4{
 			var repayWay = '';
 			var intPayWay = '';
 			
+			$('#insertbtn').show();
+			$('#searchbtn').show();
+			$('#updatebtn').hide();
+			$('#repaybtn').hide();
+			
 			$('input').not('input:radio[name="repayWay"]').not('input:radio[name="intPayWay"]').val('');
 			$('#onlyHangulAndNumber').val('');
 			$('#majorcode-field-select').val('').trigger('chosen:updated'); // major code select 선택
 			$('#dangercode-field-select').val('').trigger('chosen:updated'); // danger code select 선택
 			$('#code').attr('readonly', false); // 사채코드 입력 readonly 해제
-			$('#financialyearId').val(2019);  // 회계연도 2019 설정
+			
+			$('#financialyearId').val(new Date().getFullYear());  // 회계연도 설정
+			
 			$('#duplicatecode-checkbtn').val('중복확인'); // 중복확인 check
 			$("#tbody-list").find("tr").css("background-color", "inherit");
 			$(tr).css("background-color", "");
-			$(td.eq(0).children().children()).prop('checked', false);
+			//$(td.eq(0).children().children()).prop('checked', false);
 			$('input:radio[name="repayWay"][value="'+repayWay+'"]').prop('checked', false);
 			$('input:radio[name="intPayWay"][value="'+intPayWay+'"]').prop('checked', false);				
 			
