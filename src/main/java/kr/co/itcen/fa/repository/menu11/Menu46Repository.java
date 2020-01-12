@@ -75,7 +75,27 @@ public class Menu46Repository {
 		return sqlSession.selectList("menu46.getRepayDueList", dateMap);
 	}
 	
-	public List<Map> getYearDebtStat() {
-		return sqlSession.selectList("menu46.getYearDebtStat");
+	public List<Map> getYearSDebtStat(int searchYear) {
+		return sqlSession.selectList("menu46.getYearSDebtStat", searchYear);
+	}
+	
+	public List<Map> getYearLDebtStat(int searchYear) {
+		return sqlSession.selectList("menu46.getYearLDebtStat", searchYear);
+	}
+	
+	public List<Map> getYearPDebtStat(int searchYear) {
+		return sqlSession.selectList("menu46.getYearPDebtStat", searchYear);
+	}
+	
+	public List<Map> getMonthSDebtStat(int searchYear) {
+		return sqlSession.selectList("menu46.getMonthSDebtStat", searchYear);
+	}
+	
+	public List<Map> getMonthLDebtStat(int searchYear) {
+		return sqlSession.selectList("menu46.getMonthLDebtStat", searchYear);
+	}
+	
+	public List<Map> getMonthPDebtStat(int searchYear) {
+		return sqlSession.selectList("menu46.getMonthPDebtStat", searchYear);
 	}
 }

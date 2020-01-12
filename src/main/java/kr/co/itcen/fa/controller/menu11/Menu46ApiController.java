@@ -226,30 +226,7 @@ public class Menu46ApiController {
 	@ResponseBody
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getYearDebtStat", method = RequestMethod.POST)
 	public JSONResult getYearDebtStat() {			//insert 내테이블에만 할때 사용
-		List<Map> list = menu46Service.getYearDebtStat();
-		int curYear = Calendar.getInstance().get(Calendar.YEAR);
-		
-		System.out.println("list : " + list);
-		System.out.println("list : " + list.get(0).get("year"));
-		System.out.println("curYear : " + curYear);
-		List<Long> yearSumList = new ArrayList<Long>();
-		for(int i=2010; i<= curYear; ++i) {
-			Long sum = 0L;
-			
-			for(Map map : list) {			//리스트를 순회하면서 해당년도가 있는지 확인
-				Integer year = (Integer)map.get("year");
-				if(year == i) {			//해당년도가 있으면 sum값으로 입력
-					sum = getLongFromMap(map.get("sum"));
-					break;
-				}
-			}
-			yearSumList.add(sum);
-		}
-		return JSONResult.success(yearSumList);
-	}
-	
-	public Long getLongFromMap(Object value) {
-		BigDecimal v = (BigDecimal)value;
-		return Long.valueOf(v.toString());
+		Map map = menu46Service.getYearDebtStat();
+		return JSONResult.success(map);
 	}
 }	

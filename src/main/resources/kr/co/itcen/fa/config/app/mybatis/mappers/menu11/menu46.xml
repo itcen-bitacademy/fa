@@ -147,11 +147,57 @@
    		]]>
    </select>
    
-   <select	id="getYearDebtStat" resultType="map">
+   <select	id="getYearSDebtStat" parameterType="int" resultType="map">
    	<![CDATA[
    		select year(debt_date) "year", sum(debt_amount) "sum"
   		from tb_s_term_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
  		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select	id="getYearLDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_l_term_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select	id="getYearPDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_p_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select id="getMonthSDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_s_term_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   <select id="getMonthLDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_l_term_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   <select id="getMonthPDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_p_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
    	]]>
    </select>
 </mapper>

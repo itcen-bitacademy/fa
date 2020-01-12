@@ -5,34 +5,109 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <!-- For Dialog -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+	.navbar-inner.fixed{background: #393939;}
+	
 	body{font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;}
-
-html,body{
-	height:100%;
-	overflow-x: hidden;
-}
-     	
-.main-container{
-  	height:calc(100% - 45px);
-  	overflow-x: hidden;
-}
-
-.main-content{
-  	overflow:auto;
-}
-
-.page-content{
-  	min-width:1280px;
-}
-
-@media screen and (max-width: 920px) {
+	
+	html,body{
+		height:100%;
+		overflow-x: hidden;
+	}
+	     	
 	.main-container{
-	 	height:calc(100% - 84px);
+	  	height:calc(100% - 45px);
+	  	overflow-x: hidden;
+	}
+	
+	.main-content{
+	  	overflow:auto;
+	}
+	
+	.page-content{
+	  	min-width:1280px;
+	}
+	
+	@media screen and (max-width: 920px) {
+		.main-container{
+		 	height:calc(100% - 84px);
+		}
+	}
+	
+	/* Tabbed Styles */
+	.tabbed {
+		min-width: 400px;
+		margin: 0 auto;
+		border-bottom: 4px solid #000;
+		overflow: hidden;
+		transition: border 250ms ease;
+	}
+	.tabbed ul {
+		margin: 0px;
+		padding: 0px;
+		overflow: hidden;
+		float: left;
+		padding-left: 48px;
+		list-style-type: none;
+	}
+	.tabbed ul * {
+		margin: 0px;
+		padding: 0px;
+	}
+	.tabbed ul li {
+		display: block;
+		float: left;
+		padding: 10px 24px 8px;
+		background-color: #FFF;
+		margin-right: 46px;
+		z-index: 2;
+		position: relative;
+		cursor: pointer;
+		color: #777;
+
+		text-transform: uppercase;
+		font: 600 13px/20px roboto, "Open Sans", Helvetica, sans-serif;
+
+		transition: all 250ms ease;
+	}
+	.tabbed ul li:before,
+	.tabbed ul li:after {
+		display: block;
+		content: " ";
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: 44px; 	
+		background-color: #FFF;
+		transition: all 250ms ease;
+	}
+	.tabbed ul li:before {
+		right: -24px;
+		transform: skew(30deg, 0deg);
+		box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;
+	}
+	.tabbed ul li:after {
+		left: -24px;
+		transform: skew(-30deg, 0deg);
+		box-shadow: rgba(0,0,0,.1) -3px 2px 5px, inset rgba(255,255,255,.09) 1px 0;
+	}
+	.tabbed ul li:hover,
+	.tabbed ul li:hover:before,
+	.tabbed ul li:hover:after {
+		background-color: #F4F7F9;
+		color: #444;
+	}
+	.tabbed ul li.active {
+		z-index: 3;
+	}
+	.tabbed ul li.active,
+	.tabbed ul li.active:before,
+	.tabbed ul li.active:after {
+		background-color: #000;
+		color: #fff;
 	}
 </style>
 </head>
@@ -45,9 +120,16 @@ html,body{
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-		
 			<div class="page-header position-relative">
 				<h1 class="pull-left">통계정보</h1>
+			</div>
+			<div class="tabbed">
+				<ul>
+					<li class="active">년간부채</li>
+					<li>월별부채</li>
+					<li>허허</li>
+					<li >부체</li>
+				</ul>
 			</div>
 			<figure class="highcharts-figure">
 			    <div id="container"></div>
@@ -55,9 +137,9 @@ html,body{
 			        부채 통계
 			    </p>
 			</figure>
-		</div>
-	</div>
-</div>
+		</div><!-- /.page-content End-->
+	</div><!-- /.main-content -->
+</div><!-- /.main-container -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
@@ -73,22 +155,48 @@ html,body{
 <script>
 setChartTheme();
 $(function(){
-	$.ajax({
-		url: $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/getYearDebtStat",
-		type: "POST",
-		dataType: "json",
-		data:"",
-		success: function(response){
-			console.log("arr : " + response.data);			
-			createChart(response.data);
-		},
-		error: function(xhr, error){
-			
-		}
-	});
+	//Tab Click Event 활성화
+	addTabClick();
+	
+	//차트정보 받기
+	$.ajax(new CharAjaxBody("/getYearDebtStat"));
 });
 
-function createChart(arr){
+function CharAjaxBody(url){
+	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + url;
+	this.type = "POST";
+	this.dataTYpe = "json";
+	this.data="";
+	this.success = function(response){
+		console.log("arr : " + response.data);			
+		createChart(response.data);
+	}
+	this.error = function(xhr, error){
+		
+	}
+}
+
+function addTabClick(){
+	var tabs = document.querySelectorAll('.tabbed li');
+
+	for (var i = 0, len = tabs.length; i < len; i++) {
+		tabs[i].addEventListener("click", function() {
+			if (this.classList.contains('active'))
+				return;
+
+			var parent = this.parentNode,
+				innerTabs = parent.querySelectorAll('li');
+
+			for (var index = 0, iLen = innerTabs.length; index < iLen; index++) {
+				innerTabs[index].classList.remove('active');
+			}
+
+			this.classList.add('active');
+		});
+	}
+}
+
+function createChart(statMap){
 	Highcharts.chart('container', {
 	    chart: {
 	        type: 'column'
@@ -100,24 +208,17 @@ function createChart(arr){
 	        text: '연간 부채 합계'
 	    },
 	    xAxis: {
-	        categories: [
-	            'Jan',
-	            'Feb',
-	            'Mar',
-	            'Apr',
-	            'May',
-	            'Jun',
-	            'Jul',
-	            'Aug',
-	            'Sep',
-	            'Oct',
-	            'Nov',
-	            'Dec'
-	        ],
+	        categories: statMap.xAxis,
 	        crosshair: true
 	    },
 	    yAxis: {
 	        min: 0,
+            startOnTick: false,
+            endOnTick: false,
+            tickInterval: 100000000,
+			labels : {
+				format: '{value:,.0f}',
+			},
 	        title: {
 	            text: '(원)'
 	        }
@@ -137,25 +238,25 @@ function createChart(arr){
 	        }
 	    },
 	    series: [{
-	        name: 'Tokyo',
-	        data: arr
+	        name: '단기차입금',
+	        data: statMap.sList
 
 	    }, {
-	        name: 'New York',
-	        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+	        name: '장기차입금',
+	        data: statMap.lList
 
 	    }, {
-	        name: 'London',
-	        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-	    }, {
-	        name: 'Berlin',
-	        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+	        name: '사채',
+	        data: statMap.pList
 	    }]
 	});
 }
 
 function setChartTheme(){
 	Highcharts.setOptions({
+		lang: {
+			thousandsSep: ','
+		},		
 	    colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
 	        '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
 	    chart: {
@@ -349,6 +450,7 @@ function setChartTheme(){
 	    }
 	});
 }
+
 </script>
 <script>
 
