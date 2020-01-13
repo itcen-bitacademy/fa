@@ -298,9 +298,7 @@ public class Menu46Service {
 		return map;
 	}
 	
-	public Map getMonthDebtStat(){
-		int searchYear = 2019;
-		
+	public Map getMonthDebtStat(int searchYear){
 		List<Map> sList = menu46Repository.getMonthSDebtStat(searchYear);
 		List<Map> lList = menu46Repository.getMonthLDebtStat(searchYear);
 		List<Map> pList = menu46Repository.getMonthPDebtStat(searchYear);
@@ -309,19 +307,42 @@ public class Menu46Service {
 		System.out.println("lList : " + lList);
 		System.out.println("pList : " + pList);
 		
-		List<Long> sYearSumList = getMonthSumList(sList);
-		List<Long> lYearSumList = getMonthSumList(lList);
-		List<Long> pYearSumList = getMonthSumList(pList);
+		List<Long> sMonthSumList = getMonthSumList(sList);
+		List<Long> lMonthSumList = getMonthSumList(lList);
+		List<Long> pMonthSumList = getMonthSumList(pList);
 		
 		List<Integer> monthRangeList = getMonthRangeList();
+		
+		Map map = new HashMap();
+		map.put("sList", sMonthSumList);
+		map.put("lList", lMonthSumList);
+		map.put("pList", pMonthSumList);
+		map.put("xAxis", monthRangeList);
+		return map;
+	}
+	
+	public Map getYearIntStat() {
+		int curYear = Calendar.getInstance().get(Calendar.YEAR);
+		
+		List<Map> sList = menu46Repository.getYearSIntStat(curYear);
+		List<Map> lList = menu46Repository.getYearLIntStat(curYear);
+		List<Map> pList = menu46Repository.getYearPIntStat(curYear);
+		
+		System.out.println("sList : " + sList);
+		System.out.println("lList : " + lList);
+		System.out.println("pList : " + pList);
+		
+		List<Long> sYearSumList = getYearSumList(sList, curYear);
+		List<Long> lYearSumList = getYearSumList(lList, curYear);
+		List<Long> pYearSumList = getYearSumList(pList, curYear);
 		
 		Map map = new HashMap();
 		map.put("sList", sYearSumList);
 		map.put("lList", lYearSumList);
 		map.put("pList", pYearSumList);
-		map.put("xAxis", monthRangeList);
+		map.put("xAxis", getYearRangeList(curYear));
 		return map;
-	}
+	} 
 	
 	public List<Long> getYearSumList(List<Map> list, int searchYear){
 		
@@ -352,8 +373,7 @@ public class Menu46Service {
 		return list;
 	}
 	
-public List<Long> getMonthSumList(List<Map> list){
-		
+	public List<Long> getMonthSumList(List<Map> list){
 		List<Long> monthSumList = new ArrayList<Long>();
 		for(int i=1; i<= 12; ++i) {							//(조회년도 -10) ~ 조회년도 : 10년간의 범위
 			Long sum = 0L;

@@ -98,4 +98,13 @@ public class Menu46Repository {
 	public List<Map> getMonthPDebtStat(int searchYear) {
 		return sqlSession.selectList("menu46.getMonthPDebtStat", searchYear);
 	}
+	public List<Map> getYearSIntStat(int searchYear) {
+		return sqlSession.selectList("menu46.getYearSIntStat", searchYear);
+	}
+	public List<Map> getYearLIntStat(int searchYear) {
+		return sqlSession.selectList("menu46.getYearLIntStat", searchYear);
+	}
+	public List<Map> getYearPIntStat(int searchYear) {
+		return sqlSession.selectList("menu46.getYearPIntStat", searchYear);
+	}
 }

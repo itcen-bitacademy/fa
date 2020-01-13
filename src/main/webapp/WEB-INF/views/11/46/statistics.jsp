@@ -153,23 +153,22 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
-setChartTheme();
 $(function(){
-	//Tab Click Event 활성화
-	addTabClick();
+	//테마 설정
+	setChartTheme();
 	
-	//차트정보 받기
-	$.ajax(new CharAjaxBody("/getYearDebtStat"));
+	//Tab Click Event 추가
+	addTabClick();
 });
 
-function CharAjaxBody(url){
-	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + url;
+function ChartAjaxBody(chartInfo){
+	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
 	this.type = "POST";
 	this.dataTYpe = "json";
 	this.data="";
 	this.success = function(response){
 		console.log("arr : " + response.data);			
-		createChart(response.data);
+		createChart(response.data, chartInfo.subTitle);
 	}
 	this.error = function(xhr, error){
 		
@@ -178,6 +177,8 @@ function CharAjaxBody(url){
 
 function addTabClick(){
 	var tabs = document.querySelectorAll('.tabbed li');
+	setTabValue(tabs);										//각 tab에 value(url)를 설정한다.
+	console.log("tabs : " + tabs);
 
 	for (var i = 0, len = tabs.length; i < len; i++) {
 		tabs[i].addEventListener("click", function() {
@@ -192,11 +193,37 @@ function addTabClick(){
 			}
 
 			this.classList.add('active');
+			var chartInfo = JSON.parse($(this).find("input").val());
+			
+			$.ajax(new ChartAjaxBody(chartInfo));
 		});
-	}
+	}// for End
+	
+	var chartInfo = JSON.parse($(tabs[0]).find("input").val());
+	
+	$.ajax(new ChartAjaxBody(chartInfo));
 }
 
-function createChart(statMap){
+function setTabValue(tabs){
+	$(tabs[0]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearDebtStat", "년간 부채 합계")) + "'/>");
+	$(tabs[1]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getMonthDebtStat", "월간 부채 합계")) + "'/>");
+	$(tabs[2]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearIntStat", "년간 지급이자 합계")) + "'/>");
+	$(tabs[3]).append("<input type='hidden' value='/getYearDebtStat'/>");
+}	
+
+function ChartInfo(url, subTitle){
+	this.url = url;
+	this.subTitle = subTitle;
+}
+
+function comma(str) {
+	str = String(str);
+	return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
+</script>
+<script>
+//High Chart
+function createChart(statMap, subTitle){
 	Highcharts.chart('container', {
 	    chart: {
 	        type: 'column'
@@ -205,7 +232,7 @@ function createChart(statMap){
 	        text: '부채통계'
 	    },
 	    subtitle: {
-	        text: '연간 부채 합계'
+	        text: subTitle
 	    },
 	    xAxis: {
 	        categories: statMap.xAxis,
@@ -225,8 +252,8 @@ function createChart(statMap){
 	    },
 	    tooltip: {
 	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+	        pointFormat: '<tr class="tr-chart-hover"><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:,.0f}원</b></td></tr>',
 	        footerFormat: '</table>',
 	        shared: true,
 	        useHTML: true
@@ -250,6 +277,7 @@ function createChart(statMap){
 	        data: statMap.pList
 	    }]
 	});
+	
 }
 
 function setChartTheme(){
@@ -450,9 +478,5 @@ function setChartTheme(){
 	    }
 	});
 }
-
-</script>
-<script>
-
 </script>
 </html>
