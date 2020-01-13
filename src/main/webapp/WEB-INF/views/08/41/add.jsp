@@ -1056,7 +1056,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
   	$("#taxbillNo").val(taxbillNo);
   
   
-	if(taxbillNo == "" && taxbillNo == null ){
+	if(taxbillNo == "" || taxbillNo == null ){
 		console.log("세금계산서 번호 없으면 버튼 보여주기.")
 		$("#insert").hide(); //등록 버튼 가리기
 		$("#modify").show(); //수정 버튼 보여주기
