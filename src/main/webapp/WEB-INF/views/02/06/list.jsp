@@ -157,10 +157,10 @@ html, body {
 								
 								<div class="span12" style = "margin:0;">
 									<div class="hr hr-18 dotted"></div>
-									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
-									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
-									<button class="btn btn-warning btn-small" type="button" id="update" onclick="modify()">수정</button>
 									<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;" onclick="insert();">입력</button>
+									<button class="btn btn-warning btn-small" type="button" id="update" style="float:left;margin-right:20px;" onclick="modify()">수정</button>
+									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
+									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
 									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;" type="button" onclick="add_row();">행추가</button>
 									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;" type="button" onclick="delete_row();">행삭제</button>				
 									
@@ -496,9 +496,9 @@ html, body {
 										$("#supplyValue"+i).val(result[i-1].supplyValue);
 										$("#taxValue"+i).val(result[i-1].taxValue);
 									}
-									if(result.taxbillNo == null){
+									if(result[0].taxbillNo == null){
 										taxbillButtonSet();
-									}if(result.taxbillNo != null && result.voucherNo != null) {
+									}if(result[0].taxbillNo != null && result[0].voucherNo != null) {
 										deleteButtonSet();
 									} 
 									delete_row();
@@ -540,22 +540,23 @@ html, body {
 				$('#search').show()
 				$('#addRow').show()
 				$('#deleteRow').show()
-			}
+			} 
+			
 			// 세금계산서가 등록되지 않는 매입 버튼 세팅
 			function taxbillButtonSet() {
-				$('#update').show()
-				$('#delete').show()
-				$('#input').hide()
-				$('#search').show()
-				$('#addRow').hide()
-				$('#deleteRow').hide()
+				$('#input').hide();
+				$('#update').show();
+				$('#delete').show();
+				$('#search').show();
+				$('#addRow').hide();
+				$('#deleteRow').hide();
 			}
 			// 세금계산서가 등록된 매입 버튼 세팅
 			function deleteButtonSet() {
 				$('#update').hide()
 				$('#delete').show()
-				$('#input').hide()
 				$('#search').show()
+				$('#input').hide()
 				$('#addRow').hide()
 				$('#deleteRow').hide()
 			}
