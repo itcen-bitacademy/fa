@@ -338,18 +338,16 @@
                               <div class="hr hr-18 dotted"></div>
                                  <button class="btn btn-info btn-small" id="btn-submit" style="float:left; margin-left:20px;">조회</button>
                                  <button class="btn btn-default btn-small" id="btn-reset" type = "reset" style="margin-left: 10px;">초기화</button>
+                              <div class="hr hr-18 dotted"></div>
                            </div>
-                           <div class="hr hr-18 dotted"></div>
                         </div>
                      </div>
                   </form>
 				</div>
-				<div>
-					<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">매출거래처 ${pagination.totalCnt } 건</p>
-				</div>
+				<p class="span6" style="margin:-30px 0 0 0;font-size:0.9rem">매출거래처 ${pagination.totalCnt } 건</p>
 			</div>
 					<div class="row-fluid">
-					
+						
 						<div class="span12" style="overflow-x: scroll;">
 							<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;" aria-describedby="sample-table-2_info">
 								<thead>

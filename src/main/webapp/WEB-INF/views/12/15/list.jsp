@@ -98,6 +98,11 @@
 			$("#customer-table input[type=checkbox]:checked").each(function(i) {
 		        checkArr.push($(this).closest("td").next().text());
 		    });
+			if(checkArr.length == 0) {
+				dialog("삭제할 거래처를 선택해주세요.");
+				return;
+			}
+			
 			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete?checkNoArr=" + checkArr;
 			/*
 			$.ajax({
