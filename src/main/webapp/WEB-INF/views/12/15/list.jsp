@@ -103,6 +103,7 @@
 				return;
 			}
 			
+			
 			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete?checkNoArr=" + checkArr;
 			/*
 			$.ajax({
