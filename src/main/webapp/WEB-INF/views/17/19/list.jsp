@@ -22,7 +22,7 @@
 
 
 			<div class="page-header position-relative">
-				<h1 class="pull-left">마감일자관리[19] list</h1>
+				<h1 class="pull-left">마감일자관리</h1>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">

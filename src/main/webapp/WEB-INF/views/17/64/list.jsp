@@ -23,7 +23,7 @@
 
 			<%-- Page Header BEGIN --%>
 			<div class="page-header position-relative">
-				<h1 class="pull-left">손익계산서조회[64]</h1>
+				<h1 class="pull-left">손익계산서조회</h1>
 			</div>
 			<%-- Page Header END --%>
 
