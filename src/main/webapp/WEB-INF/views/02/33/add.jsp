@@ -17,6 +17,32 @@
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
+<style>
+	html, body {
+	   overflow-x: hidden;
+	   height: 100%;
+	}
+	
+	.main-container {
+	   height: calc(100% - 45px);
+	   overflow-x: hidden;
+	}
+	
+	.main-content {
+	   overflow: auto;
+	}
+	
+	.page-content {
+	   min-width: 1280px;
+	}
+	
+	@media screen and (max-width: 920px) {
+	   .main-container {
+	      height: calc(100% - 84px);
+	   }
+	}
+</style>
+
 <script type="text/javascript">
 	$(function(){
 		$(".chosen-select").chosen(); 
@@ -876,7 +902,7 @@
 	});
 </script>
 </head>
-<body class="skin-3" style="min-width:1500px">
+<body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
