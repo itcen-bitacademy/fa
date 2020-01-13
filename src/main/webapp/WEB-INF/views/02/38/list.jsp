@@ -74,8 +74,9 @@ input:focus {
 	display: inline;
 	margin-right: 10px;
 }
-#items-table thead tr th { 
-	text-align : center;
+
+#items-table thead tr th {
+	text-align: center;
 }
 /* 기타 css e*/
 </style>
@@ -187,7 +188,7 @@ input:focus {
 											<c:when test="${flag == 'true'}">
 												<option value="${searchData.companyName }" selected
 													style="display: none">${searchData.companyName }</option>
-													<option id="empty" value="없음">없음</option>
+												<option id="empty" value="없음">없음</option>
 											</c:when>
 											<c:otherwise>
 												<option id="empty" value="없음" selected>없음</option>
@@ -808,7 +809,7 @@ input:focus {
 				function() {
 					var spanTag = $('.chosen-single').children("span");
 					spanTag.text("없음");
-					$("#empty").attr("selected","selected");
+					$("#empty").attr("selected", "selected");
 
 					$("#no").val("");
 					$("#calender1").val("");
