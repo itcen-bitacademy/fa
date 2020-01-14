@@ -181,7 +181,7 @@
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
 											<button id="btn_select" class="btn btn-info btn-small" style="float:left;">조회</button>
-											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:5px;">초기화</button>
+											<button id="btn_cancel" class="btn btn-default btn-small" type="button" style="float:left; margin-left:5px;">초기화</button>
 									</div>
 										<div class="hr hr-18 dotted"></div>
 								</div>
@@ -415,15 +415,6 @@
 		$("#btn_cancel").click(function(){
 			$("#form-customer input[type=text]").val("");
 			$("input:radio[name='deleteFlag']:radio[value='N']").prop('checked', true); // 삭제포함여부
-			
-/* 			$("#preNo").val('');				//사업자번호1
-			$("#preName").val('');				//상호명1
-			$("#no").val('');					//사업자번호2
-			$("#name").val('');					//상호명2
-			$("#item").val('');					//종목
-			$("#insertDay").val('');			//입력일자
-			$("input:radio[name='deleteFlag']:radio[value='N']").prop('checked', true); // 삭제포함여부
-			$("#managerName").val('');			//거래처담당자 */
 		});
 		
 		// 삭제포함여부 클릭시

@@ -206,27 +206,6 @@
 			$("#check_no").show();
 			
 			$("#form-customer input[type=text]").val("");
-			//$("#form-customer")[0].reset();
-			
-/* 			$("#no").val('');					//사업자번호
-			$("#preNo").val('');				//사업자번호
-			$("#bsname").val('');				//상호
-			$("#ceo").val('');					//대표자
-			$("#corporationNo").val('');		//법인번호
-			$("#zipCode").val('');				//우편번호
-			$("#address").val('');				//도로명주소
-			$("#detailAddress").val('');		//상세주소
-			$("#phone").val('');				//전화번호
-			$("#conditions").val('');			//업태
-			$("#item").val('');					//종목
-			$("#openDate").val('');				//개설일자
-			$("#jurisdictionOffice").val('');	//관할사무소
-			$("#managerName").val('');			//거래처담당자성명
-			$("#managerEmail").val('');			//담당자이메일
-			$("#depositNo").val('');			//계좌번호
-			$("#depositHost").val('');			//예금주
-			$("#bankCode").val('');				//은행코드
-			$("#bankName").val('');				//은행명 */
 		});
 		
 		
@@ -316,6 +295,14 @@
 			
 			if(!valid.nullCheck("managerName", "담당자명")) return;
 			if(!valid.nullCheck("managerEmail", "메일")) return;
+			
+			var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+			var email = $("#managerEmail").val();
+			if (!re.test(email)) {
+				dialog("이메일 형식이 틀립니다.");
+				$("#managerEmail").focus();
+				return;
+			}
 			
 			$("#form-customer").submit();
 			return;
@@ -611,7 +598,7 @@
 											<button id="btn_update" class="btn btn-warning btn-small" style="float:left; margin-left:5px;">수정</button>
 											<button id="btn_delete" class="btn btn-danger btn-small" style="float:left; margin-left:5px;">삭제</button>
 											<button id="btn_select" class="btn btn-info btn-small" style="float:left; margin-left:5px;">조회</button>
-											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:5px;">초기화</button>
+											<button id="btn_cancel" class="btn btn-default btn-small" type="button" style="float:left; margin-left:5px;">초기화</button>
 									</div>
 									<div class="hr hr-18 dotted"></div>
 								</div>
