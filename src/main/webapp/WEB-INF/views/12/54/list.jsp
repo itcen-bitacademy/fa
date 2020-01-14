@@ -202,7 +202,8 @@
 								</div>
 						<div class="hr hr-18 dotted"></div>
 						<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">세금계산서 발행 ${resultlist.pagination.totalCnt } 건</p>
-	                   <%--  <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;" onchange="view()">
+						
+	                <%--    <select class="span6" name="viewCount" id="viewCount" style="width:80px;float:right;margin-bottom:5px;" onchange="view()">
 	                    	<c:choose>
 	                             <c:when test="${viewCount == 10 }">
 	                                 <option value="10" selected style="display:none">10</option>
@@ -218,6 +219,7 @@
 		                     <option value="30">30</option>
 		                     <option value="50">50</option>
 	                    </select> --%>
+	                    
 						</form> 
 						<div class="row-fluid">
 						<div class="span12" style="overflow: auto;">
