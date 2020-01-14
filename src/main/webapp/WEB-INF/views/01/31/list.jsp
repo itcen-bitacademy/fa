@@ -39,7 +39,7 @@
 		
 		
 				<div class="page-header position-relative">
-					<h1 class="pull-left">계정별원장조회 [31]</h1>
+					<h1 class="pull-left">계정별원장조회</h1>
 				</div><!-- /.page-header -->
 			
 				<div class="row-fluid"> <!-- 검색조건 -->
@@ -108,7 +108,7 @@
 					
 						&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px"/>
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px" readonly />
 							<span class="add-on">
 								<i class="icon-calendar"></i>
 							</span>
@@ -119,13 +119,17 @@
 							$("#datepicker1").val(datepicker1);
 						</script>
 						
-						&nbsp; &nbsp; ~ &nbsp; &nbsp;
+						&nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px"/> 
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px" readonly /> 
 							<span class="add-on"> 
 								<i class="icon-calendar"></i>
 							</span>
+							<button class="btn btn-small btn-info" style="margin : 0 0 0 5px" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							&nbsp;
+							<button class="btn btn-default btn-small" type="reset">취 소</button>
 						</div>
+						
 						
 						<script type="text/javascript">
 							var datepicker2 = "${param.datepicker2}";
@@ -133,9 +137,7 @@
 						</script>
 					&nbsp; &nbsp;&nbsp;
 					<div class="hr hr-18 dotted"></div>
-					<button class="btn btn-small btn-info" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
-					<button class="btn btn-default btn-small" type="reset">취 소</button>
-					<div class="hr hr-18 dotted"></div>
+					
 					</form>
 				
 				
@@ -174,10 +176,10 @@
 									<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 										<tr style="text-align: center;">
 
-											<td class="center">${vo.accountName }</td>
-											<td class="center">${vo.regDate }</td>
-											<td class="center">${vo.voucherNo }-${vo.voucherOrderNo }</td>
-											<td class="center">${vo.amountFlag }</td>
+											<td>${vo.accountName }</td>
+											<td>${vo.regDate }</td>
+											<td>${vo.voucherNo }-${vo.voucherOrderNo }</td>
+											<td>${vo.amountFlag }</td>
 												<c:choose>
 											        <c:when test="${vo.amountFlag == '차변' }">
 											            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
@@ -188,19 +190,19 @@
 											            <td style="text-align: right;"><fmt:formatNumber value="${vo.amount}" pattern="#,###" /></td>
 											        </c:otherwise>
 											    </c:choose>
-											<td class="center">${vo.bankName }</td>
-											<td class="center">${vo.cardNo }</td>
-											<td class="center">${vo.depositNo }</td>
+											<td>${vo.bankName }</td>
+											<td>${vo.cardNo }</td>
+											<td>${vo.depositNo }</td>
 											<c:choose>
 											<c:when test="${empty vo.depositHost }">
-											<td class="center">${vo.cardUser }</td>
+											<td>${vo.cardUser }</td>
 											</c:when>
 											<c:otherwise>
-											<td class="center">${vo.depositHost }</td>
+											<td>${vo.depositHost }</td>
 											</c:otherwise>
 											</c:choose>
 											<td>${vo.voucherUse }</td>
-											<td class="center">${vo.insertTeam }</td>
+											<td>${vo.insertTeam }</td>
 											    
 										</tr>
 										

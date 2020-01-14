@@ -20,6 +20,7 @@ h4{
    font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
 
+
 .textarea{
    resize: none;
    width: 282px;
@@ -83,6 +84,11 @@ tr td:first-child {
    width: auto;"
 }
 
+
+.margin-top{
+    margin-top: 10px;
+}
+
 html,body{
          overflow-x:hidden;
       height:100%;
@@ -138,7 +144,7 @@ html,body{
 						<tr >
 							<td><label class="control-label">지점명</label></td>
 							<td colspan="2" align=left>
-								<input type="text" name="store" id="store" maxlength="15" />
+								<input style="margin:10px 0 0 0" type="text" name="store" id="store" maxlength="15" />
 							</td>
 						</tr>
 							
@@ -147,18 +153,20 @@ html,body{
 							<td colspan="2" >
 								<input type="text" name="fax" id="fax" placeholder="숫자만입력하세요. "
 									maxlength="13" onKeyup="inputTelNumber(this);"
-								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
+								  
+								 style="margin:10px 0 0 0"/>
 							</td>
 						</tr>
 							
 						<tr>
-						<td><label class="control-label">거래시작일</label></td>
+						<td><label class="control-label" >거래시작일</label></td>
  							<td colspan="2"> 
 								<div class="control-group">
 									<div class="row-fluid input-append">
-										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text" data-date-format="yyyy-mm-dd" readOnly />
-										<span class="add-on">
-										<i class="icon-calendar"></i>
+										<input class="date-picker" id="id-date-picker-1" name="dealDate" type="text"
+											 data-date-format="yyyy-mm-dd" readOnly style="margin:20px 0 0 0"/>
+										<span class="add-on" style="margin:20px 0 0 0" >
+										<i class="icon-calendar" style="margin:3px 0 0 0"></i>
 										</span>
 									</div>
 								</div>
@@ -176,7 +184,7 @@ html,body{
 						<tr >
 							<td><label class="control-label">담당자</label></td>
 							<td colspan="2">
-								<input type="text" name="mgr" id="mgr" maxlength="5"/>
+								<input type="text" name="mgr" id="mgr" maxlength="5" />
 							</td>
 						</tr>
 						
@@ -185,7 +193,7 @@ html,body{
 							<td colspan="2">
 								<input type="text" name="mgrPhone" id="mgrPhone" 
 								maxlength="13" onKeyup="inputTelNumber(this);"
-								 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
+								  style="margin:10px 0 0 0" />
 							</td>
 						</tr>
 						</table>
@@ -204,31 +212,26 @@ html,body{
 								<td colspan="2">
 									<input type="text" name="phone" id="phone"  placeholder="숫자만입력하세요. "
 									maxlength="13" onKeyup="inputTelNumber(this);"
-									 onkeydown='return onlyNumber(event)' onkeyup='removeChar(event)' />
+									  style="margin:10px 0 0 0" />
 								</td>
 							</tr>
 							
 							
 							<tr >
-								<td><label class="control-label">주소</label></td>
+								<td><label class="control-label" style="margin:10px 0 0 0">주소</label></td>
 								<td colspan="2">
 								<div class="control-group"> 
 			                       <div>
-									<input type="button" class="btn-primary box"
-			                            onclick="execDaumPostcode()" value="우편번호 찾기" id='addressSearch'><br>
-			                       </div>
-									<div>
-			                        
-			                      		<input type="text" name="post"  id="postcode"
+			                      		<input type="text" name="post"  id="postcode" style="width:55px; margin:30px 0 0 0;"
 			                           		placeholder="우편번호" readOnly >
-									</div>			
-									<div>
-			                       		<input  type="text" name="roadAddress" 
+			                       		<input  type="text" name="roadAddress" style="width:250px; margin:30px 0 0 0;"
 			                           		id="roadAddress" placeholder="도로명주소" readOnly >
+			                           	<input type="button" style="width:70px; margin:30px 0 0 0;"
+			                           	 onclick="execDaumPostcode()" value="주소찾기" id='addressSearch'>
 									</div>                     
 									<div>
-					                 		<input  type="text"  id="detailAddress" name="detailAddress" 
-					                 		maxlength="70" placeholder="상세주소"/>
+					                 	<input  type="text"  id="detailAddress" name="detailAddress" style="width:400px"
+					                 	maxlength="70" placeholder="상세주소"/>
 									</div>
 								</div>
 								</td>
@@ -292,17 +295,17 @@ html,body{
           	<tbody id= "tbody-list">
                 <c:forEach items="${dataResult.datas }" var="bankvo">
                      <tr>
-	                          <td class="center">${bankvo.code }</td>
-	                          <td class="center">${bankvo.name }</td>
-	                          <td class="center">${bankvo.store }</td>
-	                          <td class="center">${bankvo.dealDate }</td>
-	                          <td class="center">${bankvo.phone }</td>
-	                          <td class="center">${bankvo.fax }</td>
-	                          <td class="center">${bankvo.post }</td>
-	                          <td class="center">${bankvo.address }</td>
-	                          <td class="center">${bankvo.mgr }</td>
-	                          <td class="center">${bankvo.mgrPhone }</td>
-	                          <td class="center">${bankvo.mgrEmail }</td>
+	                          <td>${bankvo.code }</td>
+	                          <td>${bankvo.name }</td>
+	                          <td>${bankvo.store }</td>
+	                          <td>${bankvo.dealDate }</td>
+	                          <td>${bankvo.phone }</td>
+	                          <td>${bankvo.fax }</td>
+	                          <td>${bankvo.post }</td>
+	                          <td>${bankvo.address }</td>
+	                          <td>${bankvo.mgr }</td>
+	                          <td>${bankvo.mgrPhone }</td>
+	                          <td>${bankvo.mgrEmail }</td>
                          </tr>
                          </c:forEach>
                      </tbody>
@@ -640,15 +643,21 @@ $("#btn-check-code").click(function(){
 			}
 			console.log(response);
 			
-			if(response.data == true){
-				alert("이미 존재하는 은행코드입니다.");
-				$("#input-code").val("");
-				$("#input-code").focus();
-				return;
-			}else{
+			if(response.data == null){
 				$("#btn-check-code").hide();
 				$("#img-checkcode").show();
 				ischecked = true;
+				return;
+			}else if(response.data.deleteFlag == "Y"){
+				$("#code").val("");
+				$("#code").focus();
+				openErrorModal('CODE ERROR',"삭제된 코드입니다.",'#code');
+			}else {
+				
+				$("#code").val("");
+				$("#code").focus();
+				openErrorModal('CODE ERROR',"이미 존재하는 코드입니다.",'#code');
+			
 			}
 			},
 			error:function(xhr,error) {
@@ -656,6 +665,8 @@ $("#btn-check-code").click(function(){
 			}
 	});
 });		
+
+
 //requied제거후 각각 validation 추가 해라			   		    
 $("#inputbtn").click(function(){//입력버튼 클릭시      
 	if(ischecked == false){
@@ -676,6 +687,7 @@ $("#inputbtn").click(function(){//입력버튼 클릭시
 	  	$('#myform').attr('method', 'POST');
 	  	$('#myform').submit();
   	});
+  	
   	
 $('#formReset').click(function(){//초기화 버튼 클릭시
  	$('input').val('');
@@ -798,6 +810,12 @@ $("#tbody-list tr").click(function(){
 /////////////////////////////////////////////////////////////////
 //전화번호 자동 하이픈
 function inputTelNumber(obj) {
+	if (!(event.keyCode >= 48 && event.keyCode <= 57)) { //숫자키만 입력
+		obj.value='';
+		return;
+	} 
+
+
     var number = obj.value.replace(/[^0-9]/g, "");
     var tel = "";
     // 서울 지역번호(02)가 들어오는 경우
@@ -865,6 +883,7 @@ function removeChar(event) {
     else
         event.target.value = event.target.value.replace(/[^0-9]/g, "");
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 $(function(){

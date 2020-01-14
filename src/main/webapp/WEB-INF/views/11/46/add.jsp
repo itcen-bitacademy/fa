@@ -205,183 +205,174 @@ tr.selected{background-color: #ddd}
 			</div>
 			
 			<!-- PAGE CONTENT BEGINS -->
-				<input id="search-condition" type="hidden">
-				<input id="deleteVoList" type="hidden">
-				<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
-					<input type="hidden" name="vo"/>				
-					<input type="hidden" name="no"/>
-					<input type="hidden" name="voucherNo"/>
-				<div class="input-area">
-					<section>
-						<div class="ia-left"><label class="label-name">단기차입금코드</label></div>
-						<div class="ia-right">
-							<input type="text" id="code" name="code" onkeydown="codeChanged()" onchange="codeChanged()" required>
-							<button type="button" id='btn-chk-duplication' onclick="checkDuplication()">중복확인</button>
-							<i class="icon-ok bigger-180 blue" id="img-checkcode" style="display: none;"></i>
-							<input type="hidden" name="isDuplicated" value="Y">
-						</div>
-						<div class="ia-left"><label class="label-name">단기차입금명</label></div>
-						<div class="ia-right"><textarea name="name" class="textarea" maxlength="90"></textarea></div>
-						<div class="ia-left"><label class="label-name">차입금액</label></div>
-						<div class="ia-right">
-							<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
-							<input type="hidden" name="debtAmount" required>
-							<label class="label-name" style="display: inline-block;">(원)</label>
-						</div>
-						<div class="ia-left"><label class="label-name">차입일자 ~ 만기일자</label></div>
-						<div class="ia-right">
-							<input type="text" name="debtExpDate" readonly="readonly" required>
-							<span class="add-on"><i class="icon-calendar"></i></span>
-						</div>
-						<div class="ia-left"><label class="label-name">이자지급방식</label></div>
-						<div class="ia-right la-radio-wrapper">
-							<div>
-								<input type="radio" name="intPayWay" value="Y" class="ace">
-								<span class="lbl">연</span>
-							</div>
-							<div>
-								<input type="radio" name="intPayWay" value="M" class="ace">
-								<span class="lbl">월</span>
-							</div>
-							<div>
-								<input type="radio" name="intPayWay" value="E" class="ace">
-								<span class="lbl">해당없음</span>
-							</div>
-						</div>
-						<div class="ia-left"><label class="label-name">은행코드</label></div>
-						<div class="ia-right">
-							<div class="input-append">
-							<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly="readonly" required/>
-							<span class="add-on">
-							<a href="#" id="a-bankinfo-dialog" onclick="openBankDialog()"><i class="icon-search icon-on-right bigger-110"></i></a>
-							</span>
-							</div>
-							<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly="readonly"/>
-						</div>
-						
-					</section>
-					<section>
-						<div class="ia-left"><label class="label-name">회계연도</label></div>
-						<div class="ia-right"><input type="number" min="1900" max="2099" step="1" id="financialyearId" name="financialYear" placeholder="회계연도"></div>
-						
-						<div class="ia-left"><label class="label-name">차입금대분류</label></div>
-						<div class="ia-right">
-							<select class="chosen-select form-control" name="majorCode" id="majorCode" data-placeholder="차입금대분류" required>
-								<option value=""></option>
-								<option value="008001">국내은행</option>
-								<option value="008002">저축은행</option>
-								<option value="008003">신용금고</option>
-								<option value="008004">새마을금고</option>
-								<option value="008005">외국계은행</option>
-								<option value="008006">증권</option>
-							</select>
-						</div>
-						
-						<div class="ia-left"><label class="label-name">상환방법</label></div>
-						<div class="ia-right la-radio-wrapper">
-							<div>
-								<input name="repayWay" type="radio" class="ace"  value="Y"/>
-								<span class="lbl">연</span>
-							</div>
-							<div>
-								<input name="repayWay" type="radio" class="ace"  value="M" />
-								<span class="lbl">월</span>
-							</div>
-							<div>
-								<input name="repayWay" type="radio" class="ace"  value="E" />
-								<span class="lbl">만기</span>
-							</div>
-						</div>
-						
-						<div class="ia-left"><label class="label-name">이율</label></div>
-						<div class="ia-right"><input type="text" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/><h5 style="display:inline">%</h5></div>
-						
-						<div class="ia-left"><label class="label-name">담당자</label></div>
-						<div class="ia-right">
-							<input type="text" class="mgr-input" name="mgr" id="mgr" required/>
-							<label class="mgr-number-input-h4 label-name">담당자전화번호</label>
-							<input type="text" class="mgr-call-input" name="mgrCall" id="mgrCall" required/>
-						</div>
-						
-						<div class="ia-left"><label class="label-name">계좌</label></div>
-						<div class="ia-right">
-							<div class="input-append">
-							<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" placeholder="계좌번호" readonly="readonly" required/>
-							<span class="add-on">
-								<a href="#" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></a>
-							</span>
-							</div>
-							<!-- <span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span> -->
-							<input type="text" class="search-input-width-second" name="depositHost" disabled="disabled" placeholder="예금주"/>
-						</div>
-					</section>
-				</div>	<!--  input area -->
-				<hr>
-				<section class="above-table">
-					<section class="above-table-left">
-						<div class="btn-list">
-							<button type="button" class="btn btn-primary btn-small mybtn" id="btn-insert" onclick="insert()">입력</button>
-							<button type="button" class="btn btn-warning btn-small mybtn" id="btn-update" onclick="update()">수정</button>
-							<button type="button" class="btn btn-danger btn-small mybtn" id="btn-delete"onclick="deleteChecked()">삭제</button>
-							<button type="button" class="btn btn-info btn-small mybtn" id="btn-search" onclick="search()">조회</button>
-							<button type="button" class="btn btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
-							<button type="button" class="btn btn-default btn-small mybtn" onclick="resetForm()">초기화</button>
-							<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
-						</div>
-					</section>
-				</section>
-				<hr>
-			</form>					
-			<!-- PAGE CONTENT ENDS -->
-			
-			<!-- 상환  Modal pop-up : start -->
-					<div id="dialog-repayment" title="상환정보등록" hidden="hidden">
-						
+			<input id="search-condition" type="hidden">
+			<input id="deleteVoList" type="hidden">
+			<form class="form-horizontal" id="input-form" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add">
+				<input type="hidden" name="vo"/>				
+				<input type="hidden" name="no"/>
+				<input type="hidden" name="voucherNo"/>
+			<div class="input-area">
+				<section>
+					<div class="ia-left"><label class="label-name">단기차입금코드</label></div>
+					<div class="ia-right">
+						<input type="text" id="code" name="code" onkeydown="codeChanged()" onchange="codeChanged()" required>
+						<button type="button" id='btn-chk-duplication' onclick="checkDuplication()">중복확인</button>
+						<i class="icon-ok bigger-180 blue" id="img-checkcode" style="display: none;"></i>
+						<input type="hidden" name="isDuplicated" value="Y">
 					</div>
-					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+					<div class="ia-left"><label class="label-name">단기차입금명</label></div>
+					<div class="ia-right"><textarea name="name" class="textarea" maxlength="90"></textarea></div>
+					<div class="ia-left"><label class="label-name">차입금액</label></div>
+					<div class="ia-right">
+						<input type="text" id="debt-amount-comma" name="debtAmountComma" class="input-num">
+						<input type="hidden" name="debtAmount" required>
+						<label class="label-name" style="display: inline-block; font-size:14px;">(원)</label>
+					</div>
+					<div class="ia-left"><label class="label-name">차입일자 ~ 만기일자</label></div>
+					<div class="ia-right">
+						<input type="text" name="debtExpDate" readonly="readonly" required>
+						<span class="add-on"><i class="icon-calendar"></i></span>
+					</div>
+					<div class="ia-left"><label class="label-name">이자지급방식</label></div>
+					<div class="ia-right la-radio-wrapper">
+						<div>
+							<input type="radio" name="intPayWay" value="Y" class="ace">
+							<span class="lbl">연</span>
+						</div>
+						<div>
+							<input type="radio" name="intPayWay" value="M" class="ace">
+							<span class="lbl">월</span>
+						</div>
+						<div>
+							<input type="radio" name="intPayWay" value="E" class="ace">
+							<span class="lbl">해당없음</span>
+						</div>
+					</div>
+					<div class="ia-left"><label class="label-name">은행코드</label></div>
+					<div class="ia-right">
+						<div class="input-append">
+						<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" readonly="readonly" required/>
+						<span class="add-on">
+						<a href="#" id="a-bankinfo-dialog" onclick="openBankDialog()"><i class="icon-search icon-on-right bigger-110"></i></a>
+						</span>
+						</div>
+						<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly="readonly"/>
+					</div>
 					
-			<!-- list -->
-				<section class="above-table-right" id="above-table-right">
 				</section>
-				<div style="overflow: auto;">
-				<table  class="table table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
-					<thead>
-						<tr>
-							<th class="center">
-								<label class="pos-rel">
-									<input type="checkbox" class="ace" id="chkbox-select-all" />
-									<span class="lbl"></span>
-								</label>
-							</th>
-							<th class="center">단기차입금코드</th>
-							<th class="center">단기차입금명</th>
-							<th class="center">차입금대분류</th>
-							<th class="center">차입금액</th>
-							<th class="center">상환잔액</th>
-							<th class="center">상환방법</th>
-							<th class="center">차입일자</th>
-							<th class="center">만기일자</th>
-							<th class="center">이율</th>
-							<th class="center">이자지급방식</th>
-							<th class="center">담당자</th>
-							<th class="center">담당자전화번호</th>	
-							<th class="center">은행코드</th>
-							<th class="center">계좌</th>
-							<th class="center">등록일자</th>
-						</tr>
-					</thead>
-					<tbody id="tbody-list">
-						
-					</tbody> 	<!-- tbody-list end -->
-				</table>
-				</div>
+				<section>
+					<div class="ia-left"><label class="label-name">회계연도</label></div>
+					<div class="ia-right"><input type="number" min="1900" max="2099" step="1" id="financialyearId" name="financialYear" placeholder="회계연도"></div>
+					
+					<div class="ia-left"><label class="label-name">차입금대분류</label></div>
+					<div class="ia-right">
+						<select class="chosen-select form-control" name="majorCode" id="majorCode" data-placeholder="차입금대분류" required>
+							<option value=""></option>
+							<option value="008001">국내은행</option>
+							<option value="008002">저축은행</option>
+							<option value="008003">신용금고</option>
+							<option value="008004">새마을금고</option>
+							<option value="008005">외국계은행</option>
+							<option value="008006">증권</option>
+						</select>
+					</div>
+					
+					<div class="ia-left"><label class="label-name">상환방법</label></div>
+					<div class="ia-right la-radio-wrapper">
+						<div>
+							<input name="repayWay" type="radio" class="ace"  value="Y"/>
+							<span class="lbl">연</span>
+						</div>
+						<div>
+							<input name="repayWay" type="radio" class="ace"  value="M" />
+							<span class="lbl">월</span>
+						</div>
+						<div>
+							<input name="repayWay" type="radio" class="ace"  value="E" />
+							<span class="lbl">만기</span>
+						</div>
+					</div>
+					
+					<div class="ia-left"><label class="label-name">이율</label></div>
+					<div class="ia-right"><input type="text" id="int-rate" name="intRate" id="intRate" placeholder="(%) 100미만, 소수점 2자리 이하" class="input-num" required/> <h5 style="display:inline; font-size:14px;">(%)</h5></div>
+					
+					<div class="ia-left"><label class="label-name">담당자</label></div>
+					<div class="ia-right">
+						<input type="text" class="mgr-input" name="mgr" id="mgr" required/>
+						<label class="mgr-number-input-h4 label-name">담당자전화번호</label>
+						<input type="text" class="mgr-call-input" name="mgrCall" id="mgrCall" required/>
+					</div>
+					
+					<div class="ia-left"><label class="label-name">계좌</label></div>
+					<div class="ia-right">
+						<div class="input-append">
+						<input type="text" class="search-input-width-first" name="depositNo" id="depositNo" placeholder="계좌번호" readonly="readonly" required/>
+						<span class="add-on">
+							<a href="#" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></a>
+						</span>
+						</div>
+						<!-- <span class="btn btn-small btn-info" onclick="openAccountDialog()"><i class="icon-search nav-search-icon"></i></span> -->
+						<input type="text" class="search-input-width-second" name="depositHost" disabled="disabled" placeholder="예금주"/>
+					</div>
+				</section>
+			</div>	<!--  input area -->
+			<hr>
+			<section class="above-table">
+				<section class="above-table-left">
+					<div class="btn-list">
+						<button type="button" class="btn btn-primary btn-small mybtn" id="btn-insert" onclick="insert()">입력</button>
+						<button type="button" class="btn btn-warning btn-small mybtn" id="btn-update" onclick="update()">수정</button>
+						<button type="button" class="btn btn-danger btn-small mybtn" id="btn-delete"onclick="deleteChecked()">삭제</button>
+						<button type="button" class="btn btn-info btn-small mybtn" id="btn-search" onclick="search()">조회</button>
+						<button type="button" class="btn btn-success btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
+						<button type="button" class="btn btn-default btn-small mybtn" onclick="resetForm()">초기화</button>
+						<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
+						<a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/statistics">통계</a>
+					</div>
+				</section>
+			</section>
+			<hr>
+		</form>					
+		<!-- list -->
+		<div style="overflow: auto;">
+			<table  class="table table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
+				<thead>
+					<tr>
+						<th class="center">
+							<label class="pos-rel">
+								<input type="checkbox" class="ace" id="chkbox-select-all" />
+								<span class="lbl"></span>
+							</label>
+						</th>
+						<th class="center">단기차입금코드</th>
+						<th class="center">단기차입금명</th>
+						<th class="center">차입금대분류</th>
+						<th class="center">차입금액</th>
+						<th class="center">상환잔액</th>
+						<th class="center">상환방법</th>
+						<th class="center">차입일자</th>
+						<th class="center">만기일자</th>
+						<th class="center">이율</th>
+						<th class="center">이자지급방식</th>
+						<th class="center">담당자</th>
+						<th class="center">담당자전화번호</th>	
+						<th class="center">은행코드</th>
+						<th class="center">계좌</th>
+						<th class="center">등록일자</th>
+					</tr>
+				</thead>
+				<tbody id="tbody-list">
+					
+				</tbody> 	<!-- tbody-list end -->
+			</table>
+		</div>
+		
+		<section class="pagination" id="pagination">
+			<ul id="pg-list" class="pg-list">
 				
-				<section class="pagination" id="pagination">
-					<ul id="pg-list" class="pg-list">
-						
-					</ul> <!-- pg-list end -->
-				</section>
-			</div><!-- /.page-content -->
+			</ul> <!-- /.pg-list end -->
+		</section>
+	</div><!-- /.page-content End-->
 			<!-- 모달 -->
 			<div id="dialog46" hidden="hidden">
 							
@@ -404,9 +395,6 @@ tr.selected{background-color: #ddd}
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-
-
 <script>
 $(function() {						//onload함수
 	//1.Range Picker
@@ -523,8 +511,8 @@ $("#mgr").on("keyup", function(){
 	$(this).val($(this).val().replace(regexp, ""));
 });
 
-var financialYear = new Date().getFullYear();
-document.getElementById("financialyearId").value = financialYear;
+/* var financialYear = new Date().getFullYear();
+document.getElementById("financialyearId").value = financialYear; */
 </script>
 <script>
 //-----------------------------------버튼 display 수정 -------------------------------//
@@ -551,7 +539,8 @@ function isValidCode(code){
 	var isValid = false;
 	if(code.value == ''){
 		dialog("코드를 입력하세요.", code);
-	}else if(code.value.substr(0) != "G"){
+	}else if(code.value.substr(0,1) != "G"){
+		console.log("code.value.substr(0) : " + code.value.substr(0,1));
 		dialog("단기차입금코드는 G로 시작해야합니다.", code);
 	}else{
 		isValid = true;
@@ -729,6 +718,20 @@ function resetForm(){
 	inputForm.vo.value = "";
 	inputForm.reset();
 	changeBtnDisplay(false);
+	
+	$("#tbody-list tr").each(function(i){
+    	var td = $(this).children();
+    	if($(td.eq(0).children().children()).prop('checked') == true){
+    		$(td.eq(0).children().children()).prop('checked', false);
+    	}
+    	if($("#tbody-list tr").hasClass('selected') === true){
+			$("#tbody-list tr").removeClass("selected");
+			$('#insertbtn').show();
+			$('#searchbtn').show();
+			$('#updatebtn').hide();
+			$('#repaybtn').hide();
+		}
+    });
 }
 //-----------------------------------금주 상환내역 Modal ---------------------------------//
 function openRepayDueDialog(){
@@ -1198,7 +1201,7 @@ function selectRow(thisObj){
 	var vo = JSON.parse(inputVo.val());					//JSON string형식을 JSON형식으로 변환, 객체 생성
 	var inputForm = $("#input-form")[0];
 	
-	if($(thisObj).hasClass("selected")){
+	/* if($(thisObj).hasClass("selected")){
 		console.log("클래스 있다");
 		$(thisObj).removeClass("selected");
 		resetForm();	
@@ -1207,6 +1210,16 @@ function selectRow(thisObj){
 		$(thisObj).closest("table").find(".selected").removeClass("selected");
 		$(thisObj).addClass("selected");
 		
+		changeBtnDisplay(true);
+	} */
+	
+	if($(thisObj).hasClass("selected") === true){
+		$(thisObj).removeClass("selected");
+		resetForm();
+		return;
+	}else{
+		$("#tbody-list").find('tr').removeClass("selected");
+		$(thisObj).addClass("selected");
 		changeBtnDisplay(true);
 	}
 	
@@ -1316,21 +1329,21 @@ function renderingList(list){
 				 		"<input type='checkbox' name='no' class='ace' onchange='rowChecked(this)'/>" +"<span class='lbl'></span>" +
 					 "</label>" +
 				 "</td>" +
-				 "<td class='center'>" + list[i].code + "</td>" +
+				 "<td>" + list[i].code + "</td>" +
 				 "<td>" + list[i].name + "</td>" +
-				 "<td class='center'>" + list[i].majorCode + "</td>" +
-				 "<td class='center'>" + comma(list[i].debtAmount) + "</td>" +
-				 "<td class='center'>" + comma(list[i].repayBal) + "</td>" +
-				 "<td class='center'>" + list[i].repayWay + "</td>" +
-				 "<td class='center'>" + list[i].debtDate + "</td>" + 
-				 "<td class='center'>" + list[i].expDate + "</td>" +
-				 "<td class='center'>" + list[i].intRate + "</td>" +
-				 "<td class='center'>" + list[i].intPayWay + "</td>" +
-				 "<td class='center'>" + list[i].mgr + "</td>" +
-				 "<td class='center'>" + list[i].mgrCall + "</td>" +
-				 "<td class='center'>" + list[i].bankCode + "</td>" +
-				 "<td class='center'>" + list[i].depositNo + "</td>" +
-				 "<td class='center'>" + convertInsertDate(list[i].insertDate) + "</td>" +
+				 "<td>" + list[i].majorCode + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].debtAmount) + "</td>" +
+				 "<td style='text-align:right;'>" + comma(list[i].repayBal) + "</td>" +
+				 "<td>" + list[i].repayWay + "</td>" +
+				 "<td>" + list[i].debtDate + "</td>" + 
+				 "<td>" + list[i].expDate + "</td>" +
+				 "<td>" + list[i].intRate + "</td>" +
+				 "<td>" + list[i].intPayWay + "</td>" +
+				 "<td>" + list[i].mgr + "</td>" +
+				 "<td>" + list[i].mgrCall + "</td>" +
+				 "<td>" + list[i].bankCode + "</td>" +
+				 "<td>" + list[i].depositNo + "</td>" +
+				 "<td>" + convertInsertDate(list[i].insertDate) + "</td>" +
 			"</tr>");
 	}//end for
 }

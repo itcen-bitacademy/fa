@@ -8,6 +8,41 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
+<style>
+ .form-horizontal .control-label {
+    text-align: left
+ }
+ 
+ .acqPrice {
+    text-align: right
+ }
+ 
+ html,body{
+	height:100%;
+	overflow-x: hidden;
+	}
+      	
+ .main-container{
+    height:calc(100% - 45px);
+    overflow-x: hidden;
+    }
+      
+ .main-content{
+    overflow:auto;
+    }
+      	
+ .page-content{
+    min-width:1280px;
+    }
+    
+ @media screen and (max-width: 920px) {
+ .main-container{
+     height:calc(100% - 84px);
+   	}
+   }
+   
+</style>
+
 </head>
 <body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
@@ -32,7 +67,7 @@
 										<div style="float: left; width: 50%">
 											<label style="text-align:left;" class="control-label" for="form-field-1">토지코드</label>
 											<div class="controls"> 
-												<input type="text" id="id" name="id" placeholder="토지코드를 입력해주세요" />
+												<input type="text" id="id" name="id" value="${landVo.id }" placeholder="토지코드를 입력해주세요" />
 											</div>
 										</div>
 										<div style="float: left; width: 50%;">
@@ -50,24 +85,24 @@
 										<div style="float: left; width: 50%">
 											<label style="text-align:left;" class="control-label" for="form-field-1">매입거래처명</label>
 											<div class="controls">
-												<input type="text" id="customerName" name="customerName"
+												<input type="text" id="customerName" name="customerName" value="${landVo.customerName }"
 													placeholder="" />
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="form-field-1">거래처담당자명</label>
 											<div class="controls">
-												<input type="text" id="customerManager" name="managerName" placeholder="" />
+												<input type="text" id="customerManager" name="managerName" value="${landVo.managerName }" placeholder="" />
 											</div>
 										</div>
 									</div>
 									
 									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="form-field-1">조회</label>
+										<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
 											<div class="controls">
 												<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
-												<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" value="" placeholder="주소를 선택하면 입력됩니다.">
-												<input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" value=""  placeholder="주소를 선택하면 입력됩니다.">
+												<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" value="${landVo.wideAddress}" placeholder="주소를 선택하면 입력됩니다.">
+												<input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" value="${landVo.cityAddress}"  placeholder="주소를 선택하면 입력됩니다.">
 											</div>
 									</div>
 
@@ -86,14 +121,14 @@
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="payDate" id="payDate">
+											<input readonly class="span5" type="text" name="payDate" id="payDate">
 										</div>
 									</div>
 
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label">평수</label>
 										<div class="controls">
-											<input type="text" id="area" name="landArea" placeholder="숫자만 입력해주세요" /> 
+											<input type="text" id="area" name="landArea" value="${landVo.landArea}" placeholder="숫자만 입력해주세요" /> 
 												<input readonly style="border-style: none;" type="text" id="area" name="landArea" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
@@ -101,7 +136,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" id="acqPrice" name="acqPrice"placeholder="숫자만 입력해주세요" /> 
+											<input type="text" id="acqPrice" value="${landVo.acqPrice}" name="acqPrice"placeholder="숫자만 입력해주세요" /> 
 											<input readonly style="border-style: none;" type="text" placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
@@ -111,16 +146,21 @@
 									<input type="hidden" name="searchGubun" value="조회">
 									<div class="control-group">
 										<div class="controls">
-											<div class="span3" style="float:right;width:120px">
+												<button class="btn btn-default btn btn-small" type="button" onclick="clearBtn();" style="float:right; margin-right:20px;">초기화</button>
 												<button class="btn btn-info btn-small" id="searchBtn" style="float:right;margin-right:20px;">조회</button>
-											</div>
-											<div class="span2" style="float:right">
-												<label style="float:right">
-													<input name="flag" type="checkbox" class="ace">
+												<label style="float:right;margin-right:5px">
+													<c:choose>
+														<c:when test='${landVo.flag eq ""}'>
+															<input type="checkbox" name="flag" id="flag" class="ace" value="" checked="checked">
+														</c:when>
+														<c:otherwise>
+															<input type="checkbox" name="flag" id="flag" class="ace" value="" >
+														</c:otherwise>
+													</c:choose>
 														<span class="lbl"> 삭제포함</span>
 												</label>
-											</div>
 										</div>
+										
 									</div>
 								
 								</div>
@@ -131,10 +171,10 @@
 						<!-- 차변 대변 나누기 위한 row-fluid -->
 						<br>
 						<br>
-						<p>총 건수 : ${dataResult.pagination.totalCnt } </p>
-						<div class="row-fluid">
+						<p>총 ${dataResult.pagination.totalCnt } 건</p>
+						<div style="overflow-x: auto;">
 							<table id="sample-table-1"
-								class="table table-striped table-bordered table-hover">
+								class="table table-striped table-bordered table-hover" style="width: 2200px">
 								<thead>
 									<tr>
 
@@ -157,6 +197,7 @@
 										<th>취득세(원)</th>
 										<th>합병코드</th>
 										<th>세금계산서번호</th>
+										<th>구분</th>
 										<th>삭제여부</th>
 									</tr>
 								</thead>
@@ -183,6 +224,7 @@
 											<td><fmt:formatNumber value="${sl.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 											<td>${sl.combineNo }</td>
 											<td>${sl.taxbillNo }</td>
+											<td>${sl.taxKind }</td>
 											<c:choose>
 												<c:when test="${sl.flag eq 's'}"><td>작성</td></c:when>
 												<c:when test="${sl.flag eq 'o'}"><td>수정됨</td></c:when>
@@ -207,25 +249,22 @@
 									<c:choose>
 										<c:when test="${dataResult.pagination.prev }">
 											<li><a
-												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.startPage - 1 }">
 													<i class="icon-double-angle-left"></i>
 											</a></li>
 										</c:when>
 										<c:otherwise>
-											<li class="disabled"><a href="#"><i
-													class="icon-double-angle-left"></i></a></li>
+											<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
 										</c:otherwise>
 									</c:choose>
-									<c:forEach begin="${dataResult.pagination.startPage }"
-										end="${dataResult.pagination.endPage }" var="pg">
+									<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
 										<c:choose>
 											<c:when test="${pg eq dataResult.pagination.page }">
 												<li class="active"><a
-													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg }">${pg }</a></li>
 											</c:when>
 											<c:otherwise>
-												<li><a
-													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+												<li><a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg}">${pg }</a></li>
 											</c:otherwise>
 										</c:choose>
 									</c:forEach>
@@ -233,7 +272,7 @@
 									<c:choose>
 										<c:when test="${dataResult.pagination.next }">
 											<li><a
-												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.endPage + 1 }">
 													<i class="icon-double-angle-right"></i>
 											</a></li>
 										</c:when>
@@ -270,7 +309,22 @@
 <script>
 $(function(){
 	$(".chosen-select").chosen(); 
+	
 });
+
+function clearBtn(){
+	$("#id").val("");  // 토지코드
+	$("#classification").val("");          //토지분류
+	$('#classification').val("").trigger('chosen:updated');
+	$("#payDate").val("");   				// 매일일자
+	$("#customerName").val("");        //거래처명
+	$("#customerManager").val("");  // 거래처매니저명
+	$("#area").val("");        				//평수
+	$("#wideAddr").val("");				//광역시
+	$("#cityAddr").val("");				//시군구
+	$("#acqPrice").val("");
+	$('input:checkbox').prop("checked",false);
+}
 
 $(function() {
 	$("#payDate").daterangepicker({

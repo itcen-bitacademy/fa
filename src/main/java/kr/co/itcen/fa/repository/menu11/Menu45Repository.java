@@ -43,6 +43,7 @@ public class Menu45Repository {
 	// 은행 테이블의 정보 갯수 
 	public int selectBankListCount(BankVo vo) {
 		int count = sqlSession.selectOne("menu45.selectBankListCount",vo);
+		System.out.println("%%%count:"+count);
 		return count;
 	}
 	

@@ -54,8 +54,8 @@ public class Menu33Service {
 		return sectionVo;
 	}
 	
-	public List<PurchaseitemVo> getPurchaseitemList(int page_group) {
-		List<PurchaseitemVo> purchaseitemList = menu33Repository.getPurchaseitemList(page_group);
+	public List<PurchaseitemVo> getPurchaseitemList(int page_group, String no) {
+		List<PurchaseitemVo> purchaseitemList = menu33Repository.getPurchaseitemList(page_group, no);
 		
 		return purchaseitemList;
 	}
@@ -66,14 +66,14 @@ public class Menu33Service {
 		return searchsectionList;
 	}
 
-	public List<PurchaseitemVo> getpagePurchaseitemList(int page) {
-		List<PurchaseitemVo> pagepurchaseitemList = menu33Repository.getpagePurchaseitemList(page);
+	public List<PurchaseitemVo> getpagePurchaseitemList(int page, String no) {
+		List<PurchaseitemVo> pagepurchaseitemList = menu33Repository.getpagePurchaseitemList(page, no);
 		
 		return pagepurchaseitemList;
 	}
 
-	public List<PurchaseitemVo> getPurchaseitemListall() {
-		List<PurchaseitemVo> purchaseitemListall = menu33Repository.getPurchaseitemListall();
+	public List<PurchaseitemVo> getPurchaseitemListall(String no) {
+		List<PurchaseitemVo> purchaseitemListall = menu33Repository.getPurchaseitemListall(no);
 		
 		return purchaseitemListall;
 	}

@@ -14,10 +14,34 @@
 .chosen-search {
 	display: none;
 }
+
+html, body {
+	   overflow-x: hidden;
+	   height: 100%;
+	}
+	
+	.main-container {
+	   height: calc(100% - 45px);
+	   overflow-x: hidden;
+	}
+	
+	.main-content {
+	   overflow: auto;
+	}
+	
+	.page-content {
+	   min-width: 1280px;
+	}
+	
+	@media screen and (max-width: 920px) {
+	   .main-container {
+	      height: calc(100% - 84px);
+	   }
+	}
 </style>
 
 </head>
-<body class="skin-3" style="min-width:1500px">
+<body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -81,8 +105,8 @@
 											<option value="item_name">품목명</option>
 											</select>
 											<span>
-												<button class="btn btn-small" type="submit" id="search">조회</button>
-												<button class="btn btn-info btn-small" type="button" id="reset" onclick="formReset();">초기화</button>
+												<button class="btn btn-info btn-small" type="submit" id="search">조회</button>
+												<button class="btn btn-default btn-small" type="button" id="reset" onclick="formReset();">초기화</button>
 											</span>
 										</div>
 									</div>
@@ -137,21 +161,21 @@
 									<table id="searchList" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
-												<th class="left">매입일자</th>
-												<th class="left">매입번호</th>
-												<th class="left">매입순번</th>
-												<th class="left">거래처코드</th>
-												<th class="left">거래처명</th>
-												<th class="left">담당자</th>
-												<th class="left">품목코드</th>
-												<th class="left">품목명</th>
-												<th class="left">입고일자</th>
-												<th class="left">출고일자</th>
-												<th class="left">수량</th>
-												<th class="left">공급가액</th>
-												<th class="left">부가세</th>
-												<th class="left">과세 여부</th>
-												<th class="left">세금계산서번호</th>
+												<th class="center">매입일자</th>
+												<th class="center">매입번호</th>
+												<th class="center">매입순번</th>
+												<th class="center">거래처코드</th>
+												<th class="center">거래처명</th>
+												<th class="center">담당자</th>
+												<th class="center">품목코드</th>
+												<th class="center">품목명</th>
+												<th class="center">입고일자</th>
+												<th class="center">출고일자</th>
+												<th class="center">수량</th>
+												<th class="center">공급가액</th>
+												<th class="center">부가세</th>
+												<th class="center">과세 여부</th>
+												<th class="center">세금계산서번호</th>
 											</tr>
 										</thead>
 										
@@ -160,7 +184,7 @@
 												<tr>
 													<td class="left">${vo.purchaseDate }</td>
 													<td class="left">${vo.no }</td>
-													<td style="text-align:right">${vo.number }</td>
+													<td class="left">${vo.number }</td>
 													<td class="left">${vo.customerCode }</td>
 													<td class="left">${vo.customerName }</td>
 													<td class="left">${vo.purchaseManager }</td>
@@ -275,7 +299,6 @@
 		
 		function formReset() {
 			location.reload(true);
-			
 		};
 		
 	 
@@ -336,7 +359,7 @@
 							"<tr>" +
 				            "<td class='left'>" + isEmpty(result[i].purchaseDate) + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].no)  + "</td>" +
-				            "<td style='text-align:right'>" + isEmpty(result[i].number)  + "</td>" +
+				            "<td class='left'>" + isEmpty(result[i].number)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].customerCode)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].customerName)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].purchaseManager)  + "</td>" +

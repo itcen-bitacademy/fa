@@ -13,10 +13,35 @@
 .chosen-search {
 	display: none;
 }
+
+html, body {
+	   overflow-x: hidden;
+	   height: 100%;
+	}
+	
+	.main-container {
+	   height: calc(100% - 45px);
+	   overflow-x: hidden;
+	}
+	
+	.main-content {
+	   overflow: auto;
+	}
+	
+	.page-content {
+	   min-width: 1280px;
+	}
+	
+	@media screen and (max-width: 920px) {
+	   .main-container {
+	      height: calc(100% - 84px);
+	   }
+	}
+
 </style>
 
 </head>
-<body class="skin-3" style="min-width:1500px">
+<body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -52,14 +77,14 @@
 									</div>
 								
 									<div class="control-group">
-											<label class="control-label" for="form-field-1" style="text-align:initial;">거래처코드</label>
-												<div class=" controls" id="customerListDiv">
-												<select class="chosen-select span1" id="customerCode" name="customerCode" onchange="setData.customer();">
-													<c:forEach items='${customerList }' var='vo' varStatus='status'>
-														<option value="${vo.no }" >${vo.no }</option>
-													</c:forEach>
-												</select>
-												</div>
+										<label class="control-label" for="form-field-1" style="text-align:initial;">거래처코드</label>
+										<div class=" controls" id="customerListDiv">
+										<select class="chosen-select span1" id="customerCode" name="customerCode" onchange="setData.customer();">
+											<c:forEach items='${customerList }' var='vo' varStatus='status'>
+												<option value="${vo.no }">${vo.no }</option>
+											</c:forEach>
+										</select>
+										</div>
 									</div>
 							
 									<div class="control-group">
@@ -132,10 +157,10 @@
 								
 								<div class="span12" style = "margin:0;">
 									<div class="hr hr-18 dotted"></div>
-									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
-									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
-									<button class="btn btn-info btn-small" type="button" id="update" onclick="modify()">수정</button>
 									<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;" onclick="insert();">입력</button>
+									<button class="btn btn-warning btn-small" type="button" id="update" style="float:left;margin-right:20px;" onclick="modify()">수정</button>
+									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
+									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
 									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;" type="button" onclick="add_row();">행추가</button>
 									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;" type="button" onclick="delete_row();">행삭제</button>				
 									
@@ -154,22 +179,16 @@
 												<span class="lbl"></span>
 											</label>
 										</th> -->
-										<th class="left">순번</th>
-										<th class="left">품목코드</th>
-										<th class="left">품목명</th>
-										<th class="left">수량</th>
-										<th class="left">공급가액</th>
-										<th class="left">부가세</th>
+										<th class="center">순번</th>
+										<th class="center">품목코드</th>
+										<th class="center">품목명</th>
+										<th class="center">수량</th>
+										<th class="center">공급가액</th>
+										<th class="center">부가세</th>
 									</tr>
 									
 									<tr>
-										<!-- <td class="center">
-											<label>
-												<input type="checkbox" class="ace" value="1" name='check' id="check1">
-												<span class="lbl"></span>
-											</label>
-										</td> -->
-										<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
+										<td class="left"><input class="input-mini left" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
 										
 										<td class="left">
 											<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
@@ -287,8 +306,7 @@
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        /* "<td class='center'><label> <input type='checkbox' class='ace' value='"+cnt+"' name='check'  id='check"+cnt+"'> <span class='lbl'></span> </label></td>" + */
-				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
+				      		        "<td class='left'><input class='input-mini left' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
 				      		        "<td class='left'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
 					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +
@@ -478,63 +496,25 @@
 										$("#supplyValue"+i).val(result[i-1].supplyValue);
 										$("#taxValue"+i).val(result[i-1].taxValue);
 									}
-									if(result.taxbillNo == null){
+									if(result[0].taxbillNo == null){
 										taxbillButtonSet();
-									}if(result.taxbillNo != null && result.voucherNo != null) {
+									}if(result[0].taxbillNo != null && result[0].voucherNo != null) {
 										deleteButtonSet();
 									} 
 									delete_row();
-								}
-									/* $("#no").val(result[0].no);
-									$("#purchaseDate").val(result[0].purchaseDate);
-									updateCustomerCode(result[0].customerCode);
-									$("#purchaseManager").val(result[0].purchaseManager);
-									$("#customerName").val(result[0].customerName);
-									$("#receiptDate").val(result[0].receiptDate);
-									$("#releaseDate").val(result[0].releaseDate);
-									if(result[0].taxType == 'tax'){
-										$("#taxType1").val(result[0].taxType).attr("checked", true);
-									} else{
-										$("#taxType2").val(result[0].taxType).attr("checked", true);
-									} 
-									if (result[0].taxbillNo == null) {
-										$("#taxbillNo").val('');	
-									} else {
-										$("#taxbillNo").val(result[0].taxbillNo);
-									}
-									
-									for(var i = 1; i <= result.length; i++){
-										add_row();
-										$("#number"+i).val(result[i-1].number);
-										updateItemCode(result[i-1].itemCode,i);
-										$("#itemName"+i).val(result[i-1].itemName);
-										$("#quantity"+i).val(result[i-1].quantity);
-										$("#supplyValue"+i).val(result[i-1].supplyValue);
-										$("#taxValue"+i).val(result[i-1].taxValue);
-									}
-									if(result.taxbillNo == null){
-										taxbillButtonSet();
-									}if(result.taxbillNo != null && result.voucherNo != null) {
-										deleteButtonSet();
-									} 
-									delete_row(); */
-								
+								}							
 							}
 							
 							$(".chosen-select").chosen();
 						},
 						error: function(xhr, error){
-							alert("?");
+							dialog("조회된 데이터가 없습니다.",false);
 						}
 					});
 				});
 		});
 		 
-		/*  function createSearchForm(result){
-			 $("#form1").remove();
-			 
-		 }
-		  */
+	
 		 function createPurchaseNo(){ // 매출번호 랜덤 생성
 		       	var no = "";
 		       	var date = new Date();
@@ -560,22 +540,23 @@
 				$('#search').show()
 				$('#addRow').show()
 				$('#deleteRow').show()
-			}
+			} 
+			
 			// 세금계산서가 등록되지 않는 매입 버튼 세팅
 			function taxbillButtonSet() {
-				$('#update').show()
-				$('#delete').show()
-				$('#input').hide()
-				$('#search').show()
-				$('#addRow').hide()
-				$('#deleteRow').hide()
+				$('#input').hide();
+				$('#update').show();
+				$('#delete').show();
+				$('#search').show();
+				$('#addRow').hide();
+				$('#deleteRow').hide();
 			}
 			// 세금계산서가 등록된 매입 버튼 세팅
 			function deleteButtonSet() {
 				$('#update').hide()
 				$('#delete').show()
-				$('#input').hide()
 				$('#search').show()
+				$('#input').hide()
 				$('#addRow').hide()
 				$('#deleteRow').hide()
 			}

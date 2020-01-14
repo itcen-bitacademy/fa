@@ -43,13 +43,21 @@ public class Menu42Controller {
 	//               /08   /   42     , /08/42/list
 	@NoAuth
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model,@ModelAttribute VehicleVo vehicleVo,
+	public String list(Model model,VehicleVo vehicleVo,
 					@RequestParam(value="payDate", required=false) String payDate,
 					@RequestParam(value="dueDate", required=false) String dueDate,
 					@RequestParam(value="id", required=false, defaultValue = "") String id,
-					@RequestParam(value="page", required=false, defaultValue = "1") int page,
-					@RequestParam(value="searchGubun", required=false) String gubun
+					@RequestParam(value="page", required=false, defaultValue = "1") int page
 					  ) {
+		
+		
+		if("".equals(vehicleVo.getFlag())) {
+			vehicleVo.setFlag(""); //삭제포함된거
+		}
+		else { 
+			vehicleVo.setFlag("s"); // 처음 s는 의미없고 처음일때 null이아니고 공백이 아닐때 작성된거랑 수정된거가 나와야됨
+		}
+		
 		
 		System.out.println(vehicleVo);
 		//menu42Service.test();
@@ -69,14 +77,10 @@ public class Menu42Controller {
 		map.putAll(menu42Service.getName());
 		model.addAllAttributes(map);
 		
-		DataResult<VehicleVo> dataResult = new DataResult<VehicleVo>();
 		
 		//dataresult 생성, 모델
-		if(gubun==null) {
-			System.out.println("기본화면");
-			dataResult = menu42Service.list(id, page);
-			
-		}else { //조회버튼 클릭 리스트
+	
+			//조회버튼 클릭 리스트
 			
 			System.out.println("조회화면");
 			//매입날짜 시작일, 종료일 구하기
@@ -85,33 +89,42 @@ public class Menu42Controller {
 			String dueStartDate = null;
 			String dueEndDate = null;
 			
-			if(!dueDate.equals("")) {
+					
+			if(dueDate != null && !dueDate.equals("")) {
 				String[] duedate = dueDate.split(" - ");
 				dueStartDate = duedate[0];
 				dueEndDate = duedate[1];
 			}
-			if(!payDate.equals("")) {
+			
+			if(payDate != null &&!payDate.equals("")) {
 			String[]date = payDate.split(" - ");
-			startDate = date[0];	
-			endDate = date[1];
+				startDate = date[0];	
+				endDate = date[1];
 			}
-			dataResult = menu42Service.getList(vehicleVo, startDate, endDate, dueStartDate, dueEndDate, page);
-		}
+			DataResult<VehicleVo> dataResult = menu42Service.getList(vehicleVo, startDate, endDate, dueStartDate, dueEndDate, page);
+			
+			//8가지 
+		
+		  UriComponents uriComponents= UriComponentsBuilder.newInstance()
+		  .queryParam("id",vehicleVo.getId()) //차량코드
+		  .queryParam("sectionNo",vehicleVo.getSectionNo()) //대분류명
+		  .queryParam("staffNo",vehicleVo.getStaffNo()) //직급
+		  .queryParam("customerNo",vehicleVo.getCustomerNo()) //거래처 코드
+		  .queryParam("customerName",vehicleVo.getCustomerName()) //거래처 담당자
+		  .queryParam("dueDate",vehicleVo.getDueDate())// 납부일자
+		  .queryParam("cityAddress",vehicleVo.getCityAddress()) //주소
+		  .queryParam("payDate",vehicleVo.getPayDate())// 매입일자
+		  .queryParam("flag",vehicleVo.getFlag()) .build(); String uri =
+		  uriComponents.toUriString(); model.addAttribute("uri",uri);
+		  
+		  if(vehicleVo!=null) {
+			  model.addAttribute("vehicleVo",vehicleVo);
+		  }
+
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);
 		
-		UriComponents uriComponents=
-				UriComponentsBuilder.newInstance()
-				.queryParam("id",vehicleVo.getId())
-				.queryParam("payDate",vehicleVo.getPayDate())
-				.queryParam("sectionNo",vehicleVo.getSectionNo())
-				.queryParam("customerNo",vehicleVo.getCustomerNo())
-				.queryParam("cityAddress",vehicleVo.getCityAddress())
-				.queryParam("flag",vehicleVo.getFlag())
-				.build();
-		String uri = uriComponents.toUriString();
-		model.addAttribute("uri",uri);
-		model.addAttribute("vo",vehicleVo);
+		
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

@@ -25,7 +25,7 @@
 
 
 			<div class="page-header position-relative">
-				<h1 class="pull-left">마감현황조회[20] list</h1>
+				<h1 class="pull-left">마감현황조회</h1>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
@@ -47,48 +49,64 @@ public class Menu10Controller {
 	@NoAuth
 	@RequestMapping({"", "/" + SUBMENU, "/" + SUBMENU + "/list" })
 	public String list(Model model, @ModelAttribute LandVo landVo,
-			@RequestParam(value="payDate", required=false) String payDate,
+			@RequestParam(value="payDate", required=false, defaultValue = "") String payDate,
 			@RequestParam(value="id", required=false, defaultValue = "") String id,
-			@RequestParam(value="page", required=false, defaultValue = "1") int page,
-			@RequestParam(value="searchGubun", required=false) String gubun) {
+			@RequestParam(value="page", required=false, defaultValue = "1") int page) {
 		/* menu10Service.test(); */
+		
+		String uri="";
+		String startDate = null;
+		String endDate = null;
+		
+		if("".equals(landVo.getFlag())) {
+			landVo.setFlag("");
+		}else {
+			landVo.setFlag("s");
+		}
 		
 		if(landVo.getAcqPrice()!=null) {
 		String acqPrice = landVo.getAcqPrice().replace("," ,"");
 		landVo.setAcqPrice(acqPrice);
 		}
+
+		
+		if(!payDate.equals("")) {
+			String[] date = payDate.split(" - ");
+			startDate = date[0];	
+			endDate = date[1];
+			}
 		
 		//대분류코드 select box
 		List<SectionVo> list = menu09Service.getSectionList();
 		model.addAttribute("sectionList2", list);
 		
 		DataResult<LandVo> dataResult = new DataResult<LandVo>();
-		
-		
 		//dataresult 생성, 모델
-		if(gubun==null) {
-		System.out.println("기본화면");
-		dataResult = menu10Service.list(id, page);
-		}else { //조회버튼 클릭 리스트
-			
-			System.out.println("조회화면");
-			
-			//매입날짜 시작일, 종료일 구하기
-			String startDate = null;
-			String endDate = null;
-			if(!payDate.equals("")) {
-			String[] date = payDate.split(" - ");
-			startDate = date[0];	
-			endDate = date[1];
-			}
-			dataResult = menu10Service.getList(landVo, startDate, endDate, page);
-			System.out.println(dataResult);
-		}
+		
+		dataResult = menu10Service.getList(landVo, startDate, endDate, page);
 		model.addAttribute("dataResult",dataResult);
 		model.addAttribute("page" , page);
 		
+		UriComponents uriComponents= UriComponentsBuilder.newInstance()
+									.queryParam("id",landVo.getId())
+									.queryParam("payDate",landVo.getPayDate())
+									.queryParam("sectionNo",landVo.getSectionNo())
+									.queryParam("customerNo",landVo.getCustomerNo())
+									.queryParam("wideAddress",landVo.getWideAddress())
+									.queryParam("cityAddress",landVo.getCityAddress())
+									.queryParam("flag", landVo.getFlag())
+									.build();
 		
-
+		uri = uriComponents.toUriString();
+		System.out.println("URI : " + uri);
+		System.out.println("FLAG  : " + landVo.getFlag());
+		
+		model.addAttribute("landVo", landVo);
+		model.addAttribute("dataResult",dataResult);
+		model.addAttribute("page" , page);
+		model.addAttribute("uri",uri);
+		
+		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 

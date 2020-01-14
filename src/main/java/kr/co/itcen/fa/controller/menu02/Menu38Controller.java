@@ -56,7 +56,7 @@ public class Menu38Controller {
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
 
-	/* paging을 클릭할 때 발생되는 메소드*/
+	/* paging을 클릭할 때 발생되는 메소드 */
 	@NoAuth
 	@ResponseBody
 	@RequestMapping("/" + SUBMENU + "/paging")
@@ -85,8 +85,7 @@ public class Menu38Controller {
 		return map;
 	}
 
-	
-	/* 조회버튼을 누를 때 발생하는 post 메소드*/
+	/* 조회버튼을 누를 때 발생하는 post 메소드 */
 	@NoAuth
 	@RequestMapping(value = "/" + SUBMENU + "/list", method = RequestMethod.POST)
 	public String list(Model model, BuyTaxbillListVo buyTaxbillListVo,
@@ -94,10 +93,12 @@ public class Menu38Controller {
 			@RequestParam(value = "page_group", required = false, defaultValue = "0") int pageGroup) {
 		buyTaxbillListVo.setPage(page);
 		buyTaxbillListVo.setPageGroup(pageGroup);
-	
+		
 		List<BuyTaxbillVo> buyTaxbillListAll = menu38Service.getSelectedBuyTaxbillListAll(buyTaxbillListVo); // 전체리스트
 		List<BuyTaxbillVo> buyTaxbillList = menu38Service.getSelectedBuyTaxbillList(buyTaxbillListVo); // 5개씩 리스트
-		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getSelectedpageBuyTaxbillList(buyTaxbillListVo); // 11개씩																								// 데이터
+		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getSelectedpageBuyTaxbillList(buyTaxbillListVo); // 11개씩
+																												// //
+																												// 데이터
 		List<CustomerVo> getMatchTaxbillCustomerList = menu38Service.getMatchTaxbillCustomerList();
 		List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Service.getMatchTaxbillItemsList();
 
@@ -109,7 +110,9 @@ public class Menu38Controller {
 		model.addAttribute("itemsList", getMatchTaxbillItemsList);
 		model.addAttribute("cur_page", page);
 		model.addAttribute("page_group", pageGroup);
+		model.addAttribute("flag", "true");
 
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}
+
 }

@@ -38,7 +38,7 @@
 
 
 				<div class="page-header position-relative">
-					<h1 class="pull-left">계정 거래처 명세서 조회</h1>
+					<h1 class="pull-left">계정 명세서 조회</h1>
 				</div>
 
 

@@ -8,8 +8,8 @@
 		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
 			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
 			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
-			   insert_userid as insertUserId, insert_day as insertDay, 
-			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
+			   insert_userid as insertUserId, date_format(insert_day, "%Y-%m-%d") as insertDay,  
+			   ifnull(update_userid , "")as updateUserId, ifnull(date_format(update_day, "%Y-%m-%d"), "") as updateDay, delete_flag as deleteFlag
 		 from	tb_bank_account 
 		 where	delete_flag = "N"
 		 order by insert_day desc
@@ -38,8 +38,8 @@
 		select	deposit_no as depositNo, deposit_host as depositHost, bank_code as bankCode, makedate as makeDate, 
 			   balance, endate as enDate, deposit_limit as depositLimit, profit, bank_name as bankName, banker,
 			   bank_location as bankLocation, bank_phonecall as bankPhoneCall,
-			   insert_userid as insertUserId, insert_day as insertDay, 
-			   ifnull(update_userid , "")as updateUserId, ifnull(update_day, "") as updateDay, delete_flag as deleteFlag
+			   insert_userid as insertUserId, date_format(insert_day, "%Y-%m-%d") as insertDay, 
+			   ifnull(update_userid , "")as updateUserId, ifnull(date_format(update_day, "%Y-%m-%d"), "") as updateDay, delete_flag as deleteFlag
 		 from	tb_bank_account 
 		 where	delete_flag = "N"
 		 and deposit_no = #{depositNo}

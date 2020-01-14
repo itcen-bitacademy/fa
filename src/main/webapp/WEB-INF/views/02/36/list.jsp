@@ -13,6 +13,7 @@
 <style>
         html,body{
              	height:100%;
+             	overflow-x: hidden;
       	}
       	
       	.main-container{
@@ -64,15 +65,15 @@
 								<div class="control-group">
 									<label class="control-label" for="customer">거래처</label>
 									<div class="controls">
-										<input type="text" name="preNo" style="width: 150px;" value="${inputCustomer.preNo }">
+										<input type="text" id="preNo" name="preNo" style="width: 150px;" value="${inputCustomer.preNo }">
 										<div class="input-append">
-										<input type="text" name="preName" readonly style="width: 200px;" value="${inputCustomer.preName }">
+										<input type="text" id="preName" name="preName" readonly style="width: 200px;" value="${inputCustomer.preName }">
 										<span class="add-on">
 										<a href="#" id="a-firstCustomerInfo-dialog">
 										<i class="icon-search icon-on-right bigger-110"></i></a></span></div> ~
-										<input type="text" name="no" style="width: 150px;" value="${inputCustomer.no }">
+										<input type="text" id="no" name="no" style="width: 150px;" value="${inputCustomer.no }">
 										<div class="input-append">
-											<input type="text" name="name" readonly style="width: 200px;" value="${inputCustomer.name }">
+											<input type="text" id="name" name="name" readonly style="width: 200px;" value="${inputCustomer.name }">
 											<span class="add-on">
 											<a href="#" id="a-secondCustomerInfo-dialog">
 												<i class="icon-search icon-on-right bigger-110"></i>
@@ -158,7 +159,7 @@
 		                           <label class="control-label" for="insert_date">입력일자</label>
 		                              <div class="controls">
 		                                 <div class="row-fluid input-append">
-		                                 <input class="cl-date-picker" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd"  value="${inputCustomer.insertDay }"/>
+		                                 <input class="cl-date-picker" id="insertDay" name="insertDay" type="text" style="width: 135px;" data-date-format="yyyy-mm-dd" readonly value="${inputCustomer.insertDay }"/>
 		                                    <span class="add-on">
 		                                    <i class="icon-calendar"></i>
 		                                    </span>
@@ -169,7 +170,8 @@
 		                        <div class="control-group">
 		                           <label class="control-label" for="manager_name">거래처 담당자</label>
 		                           <div class="controls">
-		                              <input type="text" name="managerName" id="manager_name" style="width: 150px;" value="${inputCustomer.managerName }">
+		                              <input type="text" name="managerName" id="managerName" style="width: 150px;" value="${inputCustomer.managerName }">
+		                              <input type="hidden" name="page" value="1">
 		                           </div>
 		                        </div>
 		                     </div>
@@ -178,18 +180,19 @@
 								<div class="span12">
 									<div class="control-group">
 										<div class="hr hr-18 dotted"></div>
-											<button id="btn_select" class="btn btn-info btn-small" style="float:left;">조회</button><br>
+											<button id="btn_select" class="btn btn-info btn-small" style="float:left;">조회</button>
+											<button id="btn_cancel" class="btn btn-default btn-small" style="float:left; margin-left:5px;">초기화</button>
 									</div>
-									<div class="hr hr-18 dotted"></div>
+										<div class="hr hr-18 dotted"></div>
 								</div>
 							</div>
 						</form>
 						</div>
+								<p class="span6" style="margin:-30px 0 0 0;font-size:0.9rem">총 ${dataResult.pagination.totalCnt } 건</p>
 						</div>
 							
 							<div class="row-fluid">
 								<div class="span12" style="overflow-x: scroll;">
-								<label>총 ${dataResult.pagination.totalCnt }건</label>
 									<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;">
 										<thead>
 											<tr>
@@ -253,35 +256,38 @@
 						
 						<%-- 페이징 --%>
 						<div class="pagination">
-							<ul>
-								<c:choose>
+						<ul>
+							<c:choose>
 								<c:when test="${dataResult.pagination.prev }">
-									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${dataResult.pagination.startPage - 1 }"><i class="icon-double-angle-left"></i></a></li>
+									<li value="${dataResult.pagination.startPage - 1 }"><a href="#"><i class="icon-double-angle-left"></i></a></li>								
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
 								</c:otherwise>
-								</c:choose>
-								<c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+							</c:choose>
+								
+							
+							<c:forEach var="pageNum" begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }">
 								<c:choose>
-								<c:when test="${pg eq dataResult.pagination.page }">
-									<li class="active"><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${pg }">${pg }</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${pg }">${pg }</a></li>
-								</c:otherwise>
+									<c:when test="${pageNum eq  dataResult.pagination.page}">
+										<li class="active" value="${pageNum }"><a href="#">${pageNum }</a></li>		
+									</c:when>
+									<c:otherwise>
+										<li value="${pageNum }"><a href="#">${pageNum }</a></li>
+									</c:otherwise>
 								</c:choose>
-								</c:forEach>
-								<c:choose>
-									<c:when test="${dataResult.pagination.next }">
-									<li><a href="${pageContext.servletContext.contextPath }/02/36/list?page=${dataResult.pagination.endPage + 1 }"><i class="icon-double-angle-right"></i></a></li>
+							</c:forEach>
+							
+							<c:choose>
+								<c:when test="${dataResult.pagination.next }">
+									<li value="${dataResult.pagination.endPage + 1 }"><a href="#"><i class="icon-double-angle-right"></i></a></li>								
 								</c:when>
 								<c:otherwise>
 									<li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
 								</c:otherwise>
-								</c:choose>
-									</ul>
-								</div>
+							</c:choose>
+						</ul>
+					</div>		
 
 						<!-- PAGE CONTENT ENDS -->
 						
@@ -311,6 +317,16 @@
 	$(function() {
 		// $(function()){ 이 중복될 경우 아래 코드 하나만 사용
 		$(".chosen-select").chosen();
+		
+		// 페이징
+		$(".pagination li a").on("click", function(event){
+			event.preventDefault();
+			if($(this).parent().attr("class") == "disabled"){
+				return;
+			}
+			$("#form-customer input[name=page]").val($(this).parent().val());
+			$("#form-customer").submit();
+		});
 		
 		// 매입거래처 팝업
 		$("#dialog-message").dialog({
@@ -393,6 +409,18 @@
 		// 조회
 		$("#btn_select").click(function(){
 			document.getElementById('form-customer').submit();
+		});
+		
+		// 초기화
+		$("#btn_cancel").click(function(){
+			$("#preNo").val('');				//사업자번호1
+			$("#preName").val('');				//상호명1
+			$("#no").val('');					//사업자번호2
+			$("#name").val('');					//상호명2
+			$("#item").val('');					//종목
+			$("#insertDay").val('');			//입력일자
+			$("input:radio[name='deleteFlag']:radio[value='N']").prop('checked', true); // 삭제포함여부
+			$("#managerName").val('');			//거래처담당자
 		});
 		
 		// 삭제포함여부 클릭시

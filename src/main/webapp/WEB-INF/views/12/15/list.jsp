@@ -65,9 +65,7 @@
 				return;
 			}
 			
-			if(checkValid()) {
-				$("#form-customer").submit();
-			}
+			checkValid();
 		});
 		
 		$("#btn-select").on("click", function(){
@@ -77,25 +75,35 @@
 		
 		$("#btn-update").on("click", function(){
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/modify");
+			var flag = true;
 			
-			if(!$("#no").val() == $("#preNo").val()) {
-				checkNo();			
+			if($("#no").val() != $("#preNo").val()) {
+				flag = checkNo("update");
 			}
 			
-			if(checkValid()) {
-				$("#form-customer").submit();
+			if(flag) {
+				checkValid();
 			}
+			
 		});
 		
 		$("#btn-clear").on("click", function(){
-			$('#form-customer input').val("");
+			$('#form-customer')[0].reset();
+			//$('#form-customer input').val("");
 		});
+		
 		
 		$("#btn-delete").on("click", function(){
 			var checkArr = [];
 			$("#customer-table input[type=checkbox]:checked").each(function(i) {
 		        checkArr.push($(this).closest("td").next().text());
 		    });
+			if(checkArr.length == 0) {
+				dialog("삭제할 거래처를 선택해주세요.");
+				return;
+			}
+			
+			
 			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete?checkNoArr=" + checkArr;
 			/*
 			$.ajax({
@@ -125,6 +133,8 @@
 		
 		$("#customer-table tr.rows").on("click", function(event){
 			if (event.target.type == 'checkbox') return;
+
+			$("#check_no").hide();
 			
 			var td = $(this).children();
 			var no = td.eq(1).text();
@@ -253,8 +263,9 @@
 	});
 	
 	
-	function checkNo() {
-		console.log("1");
+	function checkNo(formAction) {
+		var flag = false;
+		
 		$.ajax({
 			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkNo?no="+$("#no").val(),
 			type: "get",
@@ -270,27 +281,36 @@
 					dialog("중복된 사업자번호 입니다.");
 					$("#no").focus();
 					$("#check_ok").hide();
-				} else {
+					flag = false;
+				} else if(formAction != "update") {
 					$("#check_ok").show();
+					flag = true;
 				}
 			},
 			error: function(xhr, error) {
 				console.error("error:"+error);
 			}
-		});	
-		
+		});
+		return flag;
 	}
 	
+	// 유효성 검사
 	function checkValid() {
-		if(!valid.nullCheck("no", "사업자번호")) return false;
-		if(!valid.numberCheck("no", "사업자번호")) return false;
-		if(!valid.nullCheck("name", "상호")) return false;
-		if(!valid.numberCheck("corporationNo", "법인번호")) return false;
-		if(!valid.nullCheck("phone", "전화번호")) return false;
-		if(!valid.numberCheck("phone", "전화번호")) return false;
-		if(!valid.nullCheck("managerName", "담당자명")) return false;
-		if(!valid.nullCheck("managerEmail", "메일")) return false;
-		return true;
+		if(!valid.nullCheck("no", "사업자번호")) return;
+		if(!valid.numberCheck("no", "사업자번호")) return;
+		
+		if(!valid.nullCheck("bsname", "상호")) return;
+		
+		if(!valid.numberCheck("corporationNo", "법인번호")) return;
+		
+		if(!valid.nullCheck("phone", "전화번호")) return;
+		if(!valid.numberCheck("phone", "전화번호")) return;
+		
+		if(!valid.nullCheck("managerName", "담당자명")) return;
+		if(!valid.nullCheck("managerEmail", "메일")) return;
+		
+		$("#form-customer").submit();
+		return;
 	}
 	
 	function execDaumPostcode() {
@@ -439,7 +459,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">개설일자</label>
 										<div class="row-fluid input-append span2">
-											<input class="cl-date-picker" type="text" id="openDate" data-date-format="yyyy-mm-dd" name="openDate">
+											<input class="cl-date-picker" type="text" id="openDate" readonly data-date-format="yyyy-mm-dd" name="openDate">
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -452,6 +472,7 @@
 											<!-- <input type="text" class="input-validation" id="managerName" name="managerName" required> -->
 										</div>
 									</div>
+									
 									<div class="control-group">
 										<label class="control-label form-field-1">입금계좌번호</label>
 										<div class="controls">
@@ -562,8 +583,8 @@
 					
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
-						<div class="span12">
-							<div id="sample-table-2_wrapper" class="dataTables_wrapper table-responsive" role="grid">
+						<div class="span12" style="overflow-x: scroll;">
+							<div id="sample-table-2_wrapper" class="dataTables_wrapper table-responsive" style="width:3000px;" role="grid">
 								<div class="hr hr-18 dotted"></div>
 								<div class="row-fluid" style="background-color:white">
 									<div id="sample-table-2_length" class="dataTables_length">

@@ -74,6 +74,10 @@ input:focus {
 	display: inline;
 	margin-right: 10px;
 }
+
+#items-table thead tr th {
+	text-align: center;
+}
 /* 기타 css e*/
 </style>
 </head>
@@ -180,9 +184,16 @@ input:focus {
 								<div class="controls span5">
 									<select id="company-name" name="companyName"
 										class="chosen-select" required>
-										<option style="display: none;"
-											value="${searchData.companyName }" disabled selected>${searchData.companyName }</option>
-										<option id="empty" value="없음">없음</option>
+										<c:choose>
+											<c:when test="${flag == 'true'}">
+												<option value="${searchData.companyName }" selected
+													style="display: none">${searchData.companyName }</option>
+												<option id="empty" value="없음">없음</option>
+											</c:when>
+											<c:otherwise>
+												<option id="empty" value="없음" selected>없음</option>
+											</c:otherwise>
+										</c:choose>
 										<c:forEach items="${customerList }" var="list"
 											varStatus="status">
 											<option id="${status }" value="${list.name }">${list.name }</option>
@@ -385,7 +396,7 @@ input:focus {
 													</c:forEach>
 													<td>${item.purchaseDate }</td>
 													<td>${item.itemName }</td>
-													<td style="">${item.amount }</td>
+													<td style="text-align: right;">${item.amount }</td>
 													<td style="text-align: right;"><fmt:formatNumber
 															value="${item.supplyValue }" pattern="#,###"></fmt:formatNumber></td>
 													<td style="text-align: right;"><fmt:formatNumber
@@ -566,7 +577,7 @@ input:focus {
 										});
 							});
 
-			$("body")  
+			$("body")
 					.on(
 							"click",
 							".page_go_prev",
@@ -706,21 +717,21 @@ input:focus {
 												+ '<td>'
 												+ itemsList[item].itemName
 												+ '</td>'
-												+ '<td>'
+												+ '<td style="text-align: right;">'
 												+ itemsList[item].amount
 												+ '</td>'
-												+ '<td>'
+												+ '<td style="text-align: right;">'
 												+ addCommas(itemsList[item].supplyValue)
 												+ '</td>'
-												+ '<td>'
+												+ '<td style="text-align: right;">'
 												+ addCommas(itemsList[item].taxValue)
 												+ '</td>');
 								if (status == 0) {
 									$newTr
-											.append('<td rowspan="'+count+'">'
+											.append('<td  style="text-align: right;" rowspan="'+count+'">'
 													+ addCommas(buyTaxbillList[taxbill].totalSupplyValue)
 													+ '</td>'
-													+ '<td rowspan="'+count+'">'
+													+ '<td  style="text-align: right;" rowspan="'+count+'">'
 													+ addCommas(buyTaxbillList[taxbill].totalTaxValue)
 													+ '</td>');
 									if (buyTaxbillList[taxbill].taxType == 'zero') {
@@ -796,6 +807,10 @@ input:focus {
 	<script>
 		$('#reset').click(
 				function() {
+					var spanTag = $('.chosen-single').children("span");
+					spanTag.text("없음");
+					$("#empty").attr("selected", "selected");
+
 					$("#no").val("");
 					$("#calender1").val("");
 					$("#calender2").val("");

@@ -144,7 +144,8 @@
 		<![CDATA[
 		insert
 		  into tb_taxbill
-		values (null,
+		values (
+				null,
 				#{taxbillNoPoP},
 				#{voucherNo},
 				#{vehicleNo},

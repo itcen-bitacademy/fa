@@ -56,8 +56,11 @@
 	<select id="getMatchTaxbillCustomerList"
 		resultType="purchasecustomer35vo">
 		<![CDATA[
-		select *
-		  from tb_purchasecustomer
+			select no, name, ceo, address, conditions, item, deposit_no 
+			  from tb_purchasecustomer
+			union
+			select no, name, ceo, address, conditions, item, deposit_no 
+			  from tb_customer where assets_flag !="e"
 		]]>
 	</select>
 	<!-- 세금계산서에 맞는 품목을 가져오는 select -->
@@ -96,7 +99,7 @@
 					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
 				]]>
 		</if>
-		<if test='no!=null'>
+		<if test='no!=""'>
 				<![CDATA[
 					 and no = #{no }
 				]]>
@@ -165,7 +168,7 @@
 					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
 				]]>
 		</if>
-		<if test='no!=null'>
+		<if test='no!=""'>
 				<![CDATA[
 					 and no = #{no }
 				]]>
@@ -237,7 +240,7 @@
 					 and write_date >= '${startDate } 00:00:00' and write_date <= '${endDate } 23:59:59'
 				]]>
 		</if>
-		<if test='no!=null'>
+		<if test='no!=""'>
 				<![CDATA[
 					 and no = #{no }
 				]]>

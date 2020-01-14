@@ -66,21 +66,12 @@ public class Menu42Repository {
 		
 		Map<String, Object> map =new HashMap<String, Object>();
 		map.put("vo", vehicleVo);
-		map.put("id", vehicleVo.getId()); //차량코드
-		map.put("sectionNo", vehicleVo.getSectionNo()); //sectionNo를 받아와두 되는지 sectionNo = 1 / 1000CC 차량분류
-		map.put("staffName", vehicleVo.getStaffName()); //직급
-		map.put("customerName", vehicleVo.getCustomerName()); //거래처명
-		map.put("managerName", vehicleVo.getManagerName()); //거래처 담당자
-		map.put("dueDate", vehicleVo.getDueDate()); //납부일자
-		map.put("wideAddress", vehicleVo.getWideAddress()); //시/군/구 주소
-		map.put("cityAddress", vehicleVo.getCityAddress()); //시/도 주소
 		map.put("startDate", startDate); //시작일자
 		map.put("endDate", endDate); //마감일자
 		map.put("dueStartDate", dueStartDate); //납부일 시작일자.
 		map.put("dueEndDate", dueEndDate); //납부일 마감일자.
-		map.put("payDate", vehicleVo.getPayDate()); //매입일자
-		map.put("flag", vehicleVo.getFlag()); //플래그
 		
+		System.out.println(vehicleVo);
 		return sqlSession.selectOne("menu42.pageCount", map);
 	}
 	
@@ -89,21 +80,12 @@ public class Menu42Repository {
 		
 		
 		Map<String, Object> map =new HashMap<String, Object>();
+		
 		map.put("vo", vehicleVo);
-		map.put("id", vehicleVo.getId()); //차량코드
-		map.put("sectionNo", vehicleVo.getSectionNo()); //sectionNo를 받아와두 되는지 sectionNo = 1 / 1000CC 차량분류
-		map.put("staffName", vehicleVo.getStaffName()); //직급
-		map.put("customerName", vehicleVo.getCustomerName()); //거래처명
-		map.put("managerName", vehicleVo.getManagerName()); //거래처 담당자
-		map.put("dueDate", vehicleVo.getDueDate()); //납부일자
-		map.put("wideAddress", vehicleVo.getWideAddress()); //시/군/구 주소
-		map.put("cityAddress", vehicleVo.getCityAddress()); //시/도 주소
 		map.put("startDate", startDate); //시작일자
 		map.put("endDate", endDate); //마감일자
 		map.put("dueStartDate", dueStartDate); //납부일 시작일자.
 		map.put("dueEndDate", dueEndDate); //납부일 마감일자.
-		map.put("payDate", vehicleVo.getPayDate()); //매입일자
-		map.put("flag", vehicleVo.getFlag()); //플래그
 		map.put("pagination", pagination); //페이징
 		
 		List<VehicleVo> list = sqlSession.selectList("menu42.getList", map);

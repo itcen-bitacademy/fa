@@ -140,7 +140,7 @@ tr td:first-child {
 								</tr>
 								<tr>
 									<td><label class="control-label">차입금액</label></td>
-									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block;">(원)</h5></td>
+									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block; font-size:14px;">(원)</h5></td>
 								</tr>
 								<tr>
 									<td><label class="control-label">차입일자 ~ 만기일자</label></td>
@@ -290,7 +290,7 @@ tr td:first-child {
 									<td><label class="control-label">이율</label></td>
 									<td colspan="2">
 										<input type="text" id="int_rate" name="intRate" class="number-input" 
-										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block;">(%)</h5>
+										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
 									</td>
 								</tr>
 								<tr>
@@ -363,7 +363,7 @@ tr td:first-child {
 					
 					<button class="btn btn-info btn-small mybtn" id= "search">조회</button>
 				
-					<button class="btn btn-small btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
+					<button class="btn btn-success btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
 					
 					
 					
@@ -507,37 +507,37 @@ tr td:first-child {
 							<td class="center" lterm-no ="${ltermvo.no}" ><label class="pos-rel"  onclick='event.cancelBubble=true'> <input
 								type="checkbox" class="ace" lterm-no ="${ltermvo.no}" name="checkBox" /> <span class="lbl"></span>
 							</label></td>
-							<td class="center">${ltermvo.code}</td>
+							<td >${ltermvo.code}</td>
 							<td>${ltermvo.name}</td>
 							
 					        <c:choose>
-										<c:when test="${ltermvo.majorCode eq '001'}"><td class="center">국내은행</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '002'}"><td class="center">저축은행</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '003'}"><td class="center">신용금고</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '004'}"><td class="center">새마을금고</td></c:when>
-										<c:when test="${ltermvo.majorCode eq '005'}"><td class="center">외국계은행</td></c:when>
-										<c:otherwise><td class="center">증권</td></c:otherwise>
+										<c:when test="${ltermvo.majorCode eq '001'}"><td >국내은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '002'}"><td >저축은행</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '003'}"><td >신용금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '004'}"><td >새마을금고</td></c:when>
+										<c:when test="${ltermvo.majorCode eq '005'}"><td >외국계은행</td></c:when>
+										<c:otherwise><td >증권</td></c:otherwise>
 							</c:choose>	
-							<td class="center"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
-							<td class="center"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.debtAmount}" pattern="#,###" /></td>
+							<td style="text-align:right;"><fmt:formatNumber value="${ltermvo.repayBal}" pattern="#,###" /></td>
 							<c:choose>
-										<c:when test="${ltermvo.repayWay eq 'Y'}"><td class="center">연</td></c:when>
-										<c:when test="${ltermvo.repayWay eq 'M'}"><td class="center">월</td></c:when>
-										<c:otherwise><td class="center">만기</td></c:otherwise>
+										<c:when test="${ltermvo.repayWay eq 'Y'}"><td >연</td></c:when>
+										<c:when test="${ltermvo.repayWay eq 'M'}"><td >월</td></c:when>
+										<c:otherwise><td >만기</td></c:otherwise>
 							</c:choose>		
-							<td class="center" debtExpDate="${ltermvo.debtExpDate}">${ltermvo.debtDate} </td>
-							<td class="center" >${ltermvo.expDate}</td>
-							<td class="center">${ltermvo.intRate}%</td>
+							<td  debtExpDate="${ltermvo.debtExpDate}">${ltermvo.debtDate} </td>
+							<td  >${ltermvo.expDate}</td>
+							<td>${ltermvo.intRate}%</td>
 							<c:choose>
-										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td class="center">연</td></c:when>
-										<c:when test="${ltermvo.intPayWay eq 'M'}"><td class="center">월</td></c:when>
-										<c:otherwise><td class="center">해당없음</td></c:otherwise>
+										<c:when test="${ltermvo.intPayWay eq 'Y'}"><td >연</td></c:when>
+										<c:when test="${ltermvo.intPayWay eq 'M'}"><td>월</td></c:when>
+										<c:otherwise><td >해당없음</td></c:otherwise>
 							</c:choose>	
-							<td class="center">${ltermvo.mgr}</td>
-							<td class="center" >${ltermvo.mgrCall}</td>
-							<td class="center" bank-name="${ltermvo.bankName}">${ltermvo.bankCode}</td>
-							<td class="center" deposit-host="${ltermvo.depositHost}">${ltermvo.depositNo}</td>
-							<td class="center">${ltermvo.insertDate}</td>			
+							<td >${ltermvo.mgr}</td>
+							<td  >${ltermvo.mgrCall}</td>
+							<td  bank-name="${ltermvo.bankName}">${ltermvo.bankCode}</td>
+							<td deposit-host="${ltermvo.depositHost}">${ltermvo.depositNo}</td>
+							<td >${ltermvo.insertDate}</td>			
 						</tr>
 						</c:forEach>
 					</tbody>
@@ -713,6 +713,36 @@ tr td:first-child {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	
+	//search Validation
+	function searchValid(){
+		let code = $('#code').val();
+		let year = $('#form-field-1').val();
+		
+		if(code === ''&& year ===''	){
+			errortitle = 'SEARCH ERROR';	
+			validationMessage = '코드나 연도 중 하나는 반드시 입력되어야 합니다';
+			errorfield='';
+			return false;
+		
+		}
+		if(code != '' && 'H' !== code.charAt(0)){
+			errortitle = 'SEARCH ERROR';	
+			validationMessage = '검색할 코드는 반드시 H로 시작하여야 합니다';
+			errorfield='#code';
+			return false;
+		}
+	
+		if(code != '' && code.length != 10){
+			errortitle = 'SEARCH ERROR';	
+			validationMessage = '검색할 코드는 반드시 10자리여야 합니다';
+			errorfield='#code';
+			return false;
+		}
+		
 	}
 	
 	
@@ -1087,7 +1117,7 @@ tr td:first-child {
 		 $('#form-field-select-3').val('초기값').trigger('chosen:updated');
 		 
 		 $('#code').attr('readonly',false);
-		 $('#form-field-1').val(2019);
+		 $('#form-field-1').val('');
 		$('input[name=intPayWay]').each(function(index,	item){
 			if($(item).prop('checked') == true){
 				$(item).prop('checked',false);
@@ -1802,7 +1832,13 @@ tr td:first-child {
 		 });
 		 
 		 $("#search").click(function(){
-			
+			 
+			//validation
+			if(!searchValid()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return;
+			}
+		
 			 $("input").attr('disabled',true);
 			 console.log($("input[name=code]").val());
 			 $("input[name=code]").attr('disabled',false);
@@ -1986,10 +2022,6 @@ tr td:first-child {
 		 $("#staticBackdrop").dialog({
 		       autoOpen : false
 		  });
-		// 회계연도 setting
-		var date = new Date();
-		var financialYear = date.getFullYear();
-		document.getElementById("form-field-1").value = financialYear;
 
 		if(flag){
 			openErrorModal('CLOSINGDATE ERROR','마감일이 지났습니다. 관리자에게 문의 주세요');
