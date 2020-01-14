@@ -65,13 +65,13 @@
 								<div class="control-group">
 									<label class="control-label" for="customer">거래처</label>
 									<div class="controls">
-										<input type="text" id="preNo" name="preNo" style="width: 150px;" value="${inputCustomer.preNo }">
+										<input type="text" id="preNo" name="preNo" readonly style="width: 150px;" value="${inputCustomer.preNo }">
 										<div class="input-append">
 										<input type="text" id="preName" name="preName" readonly style="width: 200px;" value="${inputCustomer.preName }">
 										<span class="add-on">
 										<a href="#" id="a-firstCustomerInfo-dialog">
 										<i class="icon-search icon-on-right bigger-110"></i></a></span></div> ~
-										<input type="text" id="no" name="no" style="width: 150px;" value="${inputCustomer.no }">
+										<input type="text" id="no" name="no" readonly style="width: 150px;" value="${inputCustomer.no }">
 										<div class="input-append">
 											<input type="text" id="name" name="name" readonly style="width: 200px;" value="${inputCustomer.name }">
 											<span class="add-on">
@@ -413,14 +413,17 @@
 		
 		// 초기화
 		$("#btn_cancel").click(function(){
-			$("#preNo").val('');				//사업자번호1
+			$("#form-customer input[type=text]").val("");
+			$("input:radio[name='deleteFlag']:radio[value='N']").prop('checked', true); // 삭제포함여부
+			
+/* 			$("#preNo").val('');				//사업자번호1
 			$("#preName").val('');				//상호명1
 			$("#no").val('');					//사업자번호2
 			$("#name").val('');					//상호명2
 			$("#item").val('');					//종목
 			$("#insertDay").val('');			//입력일자
 			$("input:radio[name='deleteFlag']:radio[value='N']").prop('checked', true); // 삭제포함여부
-			$("#managerName").val('');			//거래처담당자
+			$("#managerName").val('');			//거래처담당자 */
 		});
 		
 		// 삭제포함여부 클릭시

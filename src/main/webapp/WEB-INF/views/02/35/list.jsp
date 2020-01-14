@@ -205,7 +205,10 @@
 			$("#btn_insert").prop("disabled", false);
 			$("#check_no").show();
 			
-			$("#no").val('');					//사업자번호
+			$("#form-customer input[type=text]").val("");
+			//$("#form-customer")[0].reset();
+			
+/* 			$("#no").val('');					//사업자번호
 			$("#preNo").val('');				//사업자번호
 			$("#bsname").val('');				//상호
 			$("#ceo").val('');					//대표자
@@ -223,7 +226,7 @@
 			$("#depositNo").val('');			//계좌번호
 			$("#depositHost").val('');			//예금주
 			$("#bankCode").val('');				//은행코드
-			$("#bankName").val('');				//은행명
+			$("#bankName").val('');				//은행명 */
 		});
 		
 		

@@ -13,7 +13,7 @@
 			      p.phone, 
 			      p.conditions, 
 			      p.item, 
-			      p.open_date as openDate, 
+			      date_format(p.open_date, "%Y-%m-%d") as openDate, 
 			      p.jurisdiction_office as jurisdictionOffice, 
 			      p.manager_name as managerName, 
 			      p.manager_email as managerEmail, 
@@ -22,9 +22,9 @@
 			      b.bank_code as bankCode,
 			      b.bank_name as bankName, 
 				  p.insert_userid as insertUserid, 
-				  p.insert_day as insertDay, 
+				  date_format(p.insert_day, "%Y-%m-%d %T") as insertDay, 
 				  p.update_userid as updateUserid, 
-				  p.update_day as updateDay, 
+				  date_format(p.update_day, "%Y-%m-%d %T") as updateDay, 
 				  p.delete_flag as deleteFlag 
 			 from tb_purchasecustomer p left outer join tb_bank_account b
 			   on p.deposit_no = b.deposit_no
