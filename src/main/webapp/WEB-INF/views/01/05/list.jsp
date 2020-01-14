@@ -702,7 +702,7 @@ $(function() {
 		  $(".new-tbody").remove();
 	}
 	function createNewTable(cardList){
-		  var $newTbody = $("<tbody class='new-tbody'>");
+		  var $newTbody = $("<tbody id='tbodylist' class='new-tbody'>");
 		  
 		  $("#simple-table-1").append($newTbody);
 		  
