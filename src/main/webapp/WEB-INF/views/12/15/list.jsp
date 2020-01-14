@@ -91,6 +91,7 @@
 		
 		$("#btn-clear").on("click", function(){
 			$('#form-customer')[0].reset();
+			$("#check_no").show();
 			//$('#form-customer input').val("");
 		});
 		
