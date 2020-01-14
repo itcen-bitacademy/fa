@@ -54,10 +54,6 @@ html, body {
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
-
-
-
-
 				<div class="page-header position-relative">
 					<h1 class="pull-left">무형자산현황조회</h1>
 				</div>
@@ -267,7 +263,7 @@ html, body {
 										</c:when>
 										<c:otherwise>
 											<li><a
-												href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${pg }&kwd=${kwd }">${pg }</a></li>
+												href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${pg }">${pg }</a></li>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
@@ -296,8 +292,6 @@ html, body {
 		</div>
 		<!-- /.main-content -->
 
-
-
 	</div>
 	<!-- /.main-container -->
 
@@ -322,7 +316,6 @@ html, body {
 
 			// 초기화 버튼
 			$("#reset").click(function() {
-				//event.preventDefault();
 				$('input[type=text]').val("");
 				$('input:checkbox').prop("checked", false);
 				$('#form-field-section').val("").trigger('chosen:updated');
@@ -340,7 +333,7 @@ html, body {
 			});
 		});
 
-		//select box 값 유지
+		// select box 값 유지
 		var classification = "${param.classification }";
 
 		if (classification != '') {

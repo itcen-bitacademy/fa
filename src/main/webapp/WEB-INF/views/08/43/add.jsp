@@ -31,7 +31,7 @@ html, body {
 	min-width: 1280px;
 }
 
-.table > thead > tr > th {
+.table>thead>tr>th {
 	text-align: center;
 }
 
@@ -59,16 +59,12 @@ html, body {
 		value="${menuInfo.subMenuCode }" />
 	<input type="hidden" value="${closingDate }" name="closingDate"
 		id="closingDate">
-	<input type="hidden" id="kwd" name="kwd" value="${kwd }">
 
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 		<div class="main-content">
 			<div class="page-content">
-
-
-
 				<div class="page-header position-relative">
 					<h1 class="pull-left">무형자산관리</h1>
 				</div>
@@ -254,9 +250,11 @@ html, body {
 												<button class="btn btn-info btn-small" type="submit"
 													id="list" style="float: left; margin-right: 20px;">조회</button>
 												<button class="btn btn-warning btn-small" type="submit"
-													id="update" style="float: left; margin-right: 20px; display:none;">수정</button>
+													id="update"
+													style="float: left; margin-right: 20px; display: none;">수정</button>
 												<button class="btn btn-danger btn-small" type="submit"
-													id="delete" style="float: left; margin-right: 20px; display:none;">삭제</button>
+													id="delete"
+													style="float: left; margin-right: 20px; display: none;">삭제</button>
 												<button class="btn btn-default btn-small" type="reset"
 													id="reset" style="float: left; margin-right: 20px;">초기화</button>
 											</div>
@@ -346,12 +344,43 @@ html, body {
 	<!-- basic scripts -->
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
-	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath }/assets/ace/js/jquery-ui-1.10.3.full.min.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
+		$(function() {
+			$.fn.datepicker.dates['ko'] = {
+				days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
+				daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
+				daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
+				months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+						"9월", "10월", "11월", "12월" ],
+				monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
+						"9월", "10월", "11월", "12월" ],
+				today : "Today",
+				clear : "Clear",
+				format : "yyyy-mm-dd",
+				titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
+				weekStart : 0
+			};
+
+			$('#cl-ym-date-picker').datepicker({
+				maxViewMode : 4,
+				minViewMode : 1,
+				language : 'ko'
+			}).next().on(ace.click_event, function() {
+				$(this).prev().focus();
+			});
+
+			$('.cl-date-picker').datepicker({
+				language : 'ko'
+			}).next().on(ace.click_event, function() {
+				$(this).prev().focus();
+			});
+		});
+
 		// 입력 유효성 검사
 		function insert() {
 			// Insert 에서 중복확인버튼을 통해 주어진 checkpurchaseno의 flag를 통해 구분한다
@@ -664,11 +693,6 @@ html, body {
 
 			// 초기화 버튼
 			$("#reset").click(function() {
-				// 초기화 버튼 누루면 등록, 수정버튼 다시 보이기
-				//$("#add").show();
-				//$("#update").show();
-
-				// 새로고침!
 				location.reload();
 			});
 
@@ -714,10 +738,10 @@ html, body {
 			// 행 클릭시 수정, 삭제
 			$(".clickme").click(function() {
 				$("#overlapBtn").hide();
-				
+
 				// id값 수정, 삭제 못하게 readonly로 바꿈
 				$("#id").prop('readonly', true);
-				
+
 				var str = ""
 				var tdArr = new Array(); // 배열 선언
 
@@ -785,38 +809,6 @@ html, body {
 				}
 			});
 
-		});
-	</script>
-	<script>
-		$(function() {
-			$.fn.datepicker.dates['ko'] = {
-				days : [ "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일" ],
-				daysShort : [ "일", "월", "화", "수", "목", "금", "토" ],
-				daysMin : [ "일", "월", "화", "수", "목", "금", "토" ],
-				months : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-						"9월", "10월", "11월", "12월" ],
-				monthsShort : [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월",
-						"9월", "10월", "11월", "12월" ],
-				today : "Today",
-				clear : "Clear",
-				format : "yyyy-mm-dd",
-				titleFormat : "yyyy MM", /* Leverages same syntax as 'format' */
-				weekStart : 0
-			};
-
-			$('#cl-ym-date-picker').datepicker({
-				maxViewMode : 4,
-				minViewMode : 1,
-				language : 'ko'
-			}).next().on(ace.click_event, function() {
-				$(this).prev().focus();
-			});
-
-			$('.cl-date-picker').datepicker({
-				language : 'ko'
-			}).next().on(ace.click_event, function() {
-				$(this).prev().focus();
-			});
 		});
 	</script>
 </body>
