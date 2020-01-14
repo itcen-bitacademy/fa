@@ -73,27 +73,11 @@
 			$("#form-customer").submit();
 		});
 		
-		/*
-		$(".pagination li a").on("click", function(event){
-			event.preventDefault();
-			var activePage = $(this).parent().attr("class");
-			if(activePage == "disabled" || activePage == "active") {
-				return;
-			}
-			var page = $(".pagination li[class=active]").children().text();
-			var icon = $(this).children().attr("class");
-			if(icon == "icon-double-angle-left") {
-				page += 1;
-			} else if(icon == "icon-double-angle-right") {
-				page -= 1;
-			} else {
-				page = $(this).text();
-			}
-			
-			$("#form-customer input[name=page]").val(page);
-			$("#form-customer").submit();
+		$("#btn-clear").on("click", function(){
+			$('#form-customer input[type=text]').val("");
+			$("#form-customer input[name=deleteFlag]").eq(0).attr("checked", true);
+			$("#form-customer input[name=deleteFlag]").eq(1).attr("checked", false);
 		});
-		*/
 		
 		$("#dialog-message").dialog({
 		       autoOpen : false
@@ -228,7 +212,7 @@
                         <div class="control-group">
                            <label class="control-label" for="customer">거래처</label>
                            <div class="controls">
-                              <input type="text" class="no" id="no" name="no" style="width: 150px;" value="${customerVo.no }">
+                              <input type="text" class="no" id="no" name="no" readonly style="width: 150px;" value="${customerVo.no }">
                               <div class="input-append">
 	                              <input type="text" id="name" name="name" class="name" readonly style="width: 200px;" value="${customerVo.name }">
 	                              <span class="add-on">
@@ -236,7 +220,7 @@
 		                              </a>
 	                              </span>
                               </div> ~ 
-                              <input type="text" class="no" id="no2" name="preNo" style="width: 150px;" value="${customerVo.preNo }">
+                              <input type="text" class="no" id="no2" name="preNo" readonly style="width: 150px;" value="${customerVo.preNo }">
                               <div class="input-append">
 	                              <input type="text" id="name2" name="preName" class="name" readonly style="width: 200px;" value="${customerVo.preName }">
 	                              <span class="add-on"><a href="#" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a></span>
@@ -337,7 +321,7 @@
                            <div class="control-group">
                               <div class="hr hr-18 dotted"></div>
                                  <button class="btn btn-info btn-small" id="btn-submit" style="float:left; margin-left:20px;">조회</button>
-                                 <button class="btn btn-default btn-small" id="btn-reset" type = "reset" style="margin-left: 10px;">초기화</button>
+                                 <button class="btn btn-default btn-small" id="btn-clear" type="button" style="margin-left: 10px;">초기화</button>
                               <div class="hr hr-18 dotted"></div>
                            </div>
                         </div>
