@@ -97,7 +97,7 @@ left outer join tb_customer c on tb.customer_no = c.no
 left outer join tb_section s on tb.code = s.code
 left outer join tb_customer c on tb.customer_no = c.no
 	 where s.parent_no = 5
-	   and tb.insert_day > (now() - interval 3 day)
+	   and tb.insert_day > (now() - interval 7 day)
 	   and flag ='s'
 	   ]]>
 	<if test=' _parameter != null '>

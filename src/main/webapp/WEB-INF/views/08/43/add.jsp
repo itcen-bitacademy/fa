@@ -35,6 +35,10 @@ html, body {
 	text-align: center;
 }
 
+#count {
+	text-align: center;
+}
+
 #price {
 	text-align: right;
 }
@@ -302,7 +306,7 @@ html, body {
 						<tbody>
 							<c:forEach items="${list }" var="vo" varStatus="status">
 								<tr class="clickme">
-									<td>${status.count }</td>
+									<td id="count">${status.count }</td>
 									<td>${vo.id }</td>
 									<td>${vo.address }</td>
 									<td>${vo.classification }</td>

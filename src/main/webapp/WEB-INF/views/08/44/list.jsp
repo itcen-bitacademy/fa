@@ -33,6 +33,10 @@ html, body {
 	text-align: center;
 }
 
+#count {
+	text-align: center;
+}
+
 #price {
 	text-align: right;
 }
@@ -200,7 +204,7 @@ html, body {
 										<c:forEach items="${intangibleAssetsVo }" var="vo"
 											varStatus="status">
 											<tr>
-												<td>${status.count }</td>
+												<td id="count">${status.count }</td>
 												<td>${vo.id }</td>
 												<td>${vo.address }</td>
 												<td>${vo.classification }</td>
