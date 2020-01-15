@@ -142,5 +142,10 @@
 		 and  delete_flag = "N"
 		]]>
 	</select>
- 
+ 	
+ 	<update id="updateBankAccount" parameterType="bankaccountvo">
+      update tb_cardmanager
+      set deposit_host = #{depositHost}
+      where deposit_no = #{depositNo}
+   </update>
 </mapper>
