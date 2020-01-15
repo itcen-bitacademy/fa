@@ -243,4 +243,11 @@ public class Menu46ApiController {
 		Map map = menu46Service.getYearIntStat();
 		return JSONResult.success(map);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getDebtRatio", method = RequestMethod.POST)
+	public JSONResult getDebtRatio() {
+		List<Map> list = menu46Service.getDebtRatioStat();
+		return JSONResult.success(list);
+	}
 }	

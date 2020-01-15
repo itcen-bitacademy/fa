@@ -200,4 +200,37 @@
 	  group by month(debt_date);
    	]]>
    </select>
+   
+   <select id="getYearIntStat" parameterType="map" resultType="map">
+   	<![CDATA[
+   		select year(pay_date) "year", sum(int_amount) "sum"
+   		from tb_repay
+   		where year(pay_date) <= ${searchYear} and year(pay_date) >= ${searchYear} -10
+   		]]>
+   		<choose>
+   			<when test='"S".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   			<when test='"L".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   			<when test='"P".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   		</choose>
+   	<![CDATA[
+   		group by year(pay_date)
+   	]]>
+   </select>
+   	
+   <select id="getDebtRatioStat" resultType="map">
+   	<![CDATA[
+   	  select round(s.sum / (s.sum + l.sum + p.sum), 2) * 100 sDebtRatio, 
+		 	 round(l.sum / (s.sum + l.sum + p.sum), 2) * 100 lDebtRatio, 
+			 round(p.sum / (s.sum + l.sum + p.sum), 2) * 100 pDebtRatio
+	  from (select sum(debt_amount) sum from tb_s_term_debt) s, 
+		   (select sum(debt_amount) sum from tb_l_term_debt) l, 
+	       (select sum(debt_amount) sum from tb_p_debt) p;
+	   	]]>
+   </select>
 </mapper>
