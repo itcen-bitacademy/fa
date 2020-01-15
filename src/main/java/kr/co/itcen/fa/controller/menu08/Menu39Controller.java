@@ -125,6 +125,7 @@ public class Menu39Controller {
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
 	    	//마감됨 (insert안하고 redirect)
+	    	System.out.println("마감일 오류!!");
 	    	model.addAttribute("closingDate", true);
 	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {

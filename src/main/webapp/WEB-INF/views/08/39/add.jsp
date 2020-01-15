@@ -77,9 +77,9 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물코드</label>
 										<div class="controls">
-											<input type="text" id="buildingCode" name="id" placeholder="9자를 입력하세요"/>
+											<input type="text" id="buildingCode" name="id" placeholder="9자를 입력하세요" maxlength="9"/>
 											<input id="btn-check-code" style="height:28px" type="button" value="중복확인">
-                              				<i class="icon-ok bigger-180 blue" id="img-check-code" style="display:none;"></i>
+                              				<i class="icon-ok bigger-180 blue" id="img-check-code" style="display:none;" ></i>
 										</div>
 									</div>
 									<div class="control-group">
@@ -424,10 +424,7 @@
 		errorfocus='#buildingCode';
 		return false;
 	}
-	if (!valid.numberCheck("buildingCode", "건물 코드")){
-		errorfocus='#buildingCode';
-		return false;
-	}
+	
    $.ajax({
       url : "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/checkId?id=" + id,
       type : "get",
@@ -466,7 +463,7 @@
 	$("#insert").click(function() {
 		if(checkId == false) {
 			dialog("코드 중복확인를 하세요.");
-			return
+			return;
 		} else {
 			//validation
 			if(!manageValid()){
@@ -535,38 +532,47 @@
 			errorfocus='#buildingCode';
 			return false;
 		}
+		
 		if (!valid.strCheck("buildingCode", "건물 코드")){
 			errorfocus='#buildingCode';
 			return false;
 		}
+		
 		if (!valid.numberCheck("buildingCode", "건물 코드")){
 			errorfocus='#buildingCode';
 			return false;
 		}
+
 		if (!valid.nullCheck("area", "평수")){
 			errorfocus='#area';
 			return false;
 		}
+
 		if (!valid.numberCheck("area", "평수")){
 			errorfocus='#area';
 			return false;
 		}
+
 		if (!valid.nullCheck("floor", "층수(지상)")){
 			errorfocus='#floor';
 			return false;
 		}
+
 		if (!valid.numberCheck("floor", "층수(지상)")){
 			errorfocus='#floor';
 			return false;
 		}
+
 		if (!valid.nullCheck("basement", "층수(지하)")){
 			errorfocus='#basement';
 			return false;
 		}
+
 		if (!valid.numberCheck("basement", "층수(지하)")){
 			errorfocus='#basement';
 			return false;
 		}
+
 		if (!valid.nullCheck("code", "대분류")){
 			return false;
 		}
@@ -641,7 +647,7 @@
 				return true;
 			}
 		},
-		/* numberCheck : function(id, msg) { // 숫자 체크
+		numberCheck : function(id, msg) { // 숫자 체크
 			if (!$.isNumeric($("#" + id).val())) {
 				dialog(msg + "은(는) 숫자만 입력 가능합니다.");
 				$("#" + id).focus();
@@ -649,7 +655,7 @@
 			} else {
 				return true;
 			}
-		}, */
+		},
 		closingCheck : function(id) { // 마감일 체크
 			if($("#" + id).val() == "true"){
 				dialog("마감된 일자입니다. <br>저장되지 않았습니다.", true);
@@ -676,6 +682,7 @@
 								location.href="${pageContext.request.contextPath }/08/39/add";
 							} else {
 								$( this ).dialog( "close" );
+								$(errorfocus).focus();
 							}
 						}
 					}
@@ -800,20 +807,21 @@
 		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 	});
 	
-	$("#area").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	});
-	
-	$("#floor").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	});
-	
-	$("#basement").on('keyup', function(event){
-		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-	});
 	
 	//건물코드에 숫자 이외 칠떄마다 ""로 replace(숫자만 입력)
 	$("#buildingCode").on('keyup', function(event){
+		 $(this).val($(this).val().replace(/[^0-9]/g,""));
+	});
+	
+	$("#area").on('keyup', function(event){
+		 $(this).val($(this).val().replace(/[^0-9]/g,""));
+	});
+	
+	$("#floor").on('keyup', function(event){
+		 $(this).val($(this).val().replace(/[^0-9]/g,""));
+	});
+	
+	$("#basement").on('keyup', function(event){
 		 $(this).val($(this).val().replace(/[^0-9]/g,""));
 	});
 
