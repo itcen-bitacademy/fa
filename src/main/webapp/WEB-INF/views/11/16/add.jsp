@@ -230,7 +230,7 @@ html,body{
 			                           	 onclick="execDaumPostcode()" value="주소찾기" id='addressSearch'>
 									</div>                     
 									<div>
-					                 	<input  type="text"  id="detailAddress" name="detailAddress" style="width:400px"
+					                 	<input  type="text"  id="detailAddress" name="detailAddress" style="width:400px;" 
 					                 	maxlength="70" placeholder="상세주소"/>
 									</div>
 								</div>
@@ -419,18 +419,21 @@ html,body{
                     if(extraAddr !== ''){
                         extraAddr = ' (' + extraAddr + ')';
                     }
-                
+                 
                 } else {
                     $('#detailAddress').val('');
+                   
                 }
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 $('#postcode').val(data.zonecode);
                 $('#roadAddress').val(addr);
                 document.getElementById("detailAddress").focus();
-               
+            
+                $('#detailAddress').show();
                 // 커서를 상세주소 필드로 이동한다.
             }
         }).open();
+        
     }
    		    
 /////////////////////////////////////////////////////////////////
@@ -696,8 +699,8 @@ $('#formReset').click(function(){//초기화 버튼 클릭시
  	$("#img-checkcode").hide();
  	$('#code').attr('readOnly',false);
   	$('#btn-check-code').val('중복확인').show();
-  	$('#addressSearch').val('우편번호찾기');
-	
+  	$('#addressSearch').val('주소찾기');
+	$('#detailAddress').hide();
 	$("#tbody-list").find('tr').removeClass("selected");
 });	 
 
@@ -786,7 +789,7 @@ $("#tbody-list tr").click(function(){
 	    $('#code').attr('readOnly',true);
 
 	  	$('#btn-check-code').val('중복확인').hide();
-	    
+	  	 $('#detailAddress').hide();
 	  	
 	  	
 	  	
@@ -800,7 +803,8 @@ $("#tbody-list tr").click(function(){
 	 	$("#img-checkcode").hide();
 	 	$('#code').attr('readOnly',false);
 	  	$('#btn-check-code').val('중복확인').show();
-	  	$('#addressSearch').val('우편번호찾기');
+	  	$('#addressSearch').val('주소찾기');
+	  	 $('#detailAddress').hide();
 	}
 	
 });
@@ -900,6 +904,7 @@ $(function(){
 	$("#staticBackdrop").dialog({
 		autoOpen : false	
 	});
+	$('#detailAddress').hide();
 });
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////
