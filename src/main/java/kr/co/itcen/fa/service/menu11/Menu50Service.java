@@ -3,6 +3,7 @@ package kr.co.itcen.fa.service.menu11;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -306,5 +307,11 @@ public class Menu50Service {
  		return formatter.format(c.getTime());
 
  	}
+
+	public Map<String, Object> getStatistic(String statisticYear) {
+		System.out.println("statisticYear service");
+		Map<String, Object> map = menu50Repository.getStatistic(statisticYear);
+		return map;
+	}
 
 }
