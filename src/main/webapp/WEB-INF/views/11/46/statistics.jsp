@@ -109,6 +109,42 @@
 		background-color: #000;
 		color: #fff;
 	}
+	
+	<!-- Pie Chart-->
+	
+	.highcharts-figure, .highcharts-data-table table {
+    min-width: 320px; 
+    max-width: 660px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+	font-family: Verdana, sans-serif;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+.highcharts-data-table th {
+	font-weight: 600;
+    padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
 </style>
 </head>
 <body>
@@ -127,8 +163,8 @@
 				<ul>
 					<li class="active">년간부채</li>
 					<li>월별부채</li>
-					<li>허허</li>
-					<li >부체</li>
+					<li>년간 지급이자</li>
+					<li>계정별 부채비율</li>
 				</ul>
 			</div>
 			<figure class="highcharts-figure">
@@ -155,25 +191,11 @@
 <script>
 $(function(){
 	//테마 설정
-	setChartTheme();
+	setBarChartTheme();
 	
 	//Tab Click Event 추가
 	addTabClick();
 });
-
-function ChartAjaxBody(chartInfo){
-	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
-	this.type = "POST";
-	this.dataTYpe = "json";
-	this.data="";
-	this.success = function(response){
-		console.log("arr : " + response.data);			
-		createChart(response.data, chartInfo.subTitle);
-	}
-	this.error = function(xhr, error){
-		
-	}
-}
 
 function addTabClick(){
 	var tabs = document.querySelectorAll('.tabbed li');
@@ -195,6 +217,12 @@ function addTabClick(){
 			this.classList.add('active');
 			var chartInfo = JSON.parse($(this).find("input").val());
 			
+			if(chartInfo.type == "bar"){
+				setBarChartTheme();
+			}else if(chartInfo.type == "pie"){
+				setPieChartTheme();
+			}
+			
 			$.ajax(new ChartAjaxBody(chartInfo));
 		});
 	}// for End
@@ -205,15 +233,36 @@ function addTabClick(){
 }
 
 function setTabValue(tabs){
-	$(tabs[0]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearDebtStat", "년간 부채 합계")) + "'/>");
-	$(tabs[1]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getMonthDebtStat", "월간 부채 합계")) + "'/>");
-	$(tabs[2]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearIntStat", "년간 지급이자 합계")) + "'/>");
-	$(tabs[3]).append("<input type='hidden' value='/getYearDebtStat'/>");
+	$(tabs[0]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearDebtStat", "년간 부채 합계", "bar", 100000000)) + "'/>");
+	$(tabs[1]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getMonthDebtStat", "월간 부채 합계", "bar", 10000000)) + "'/>");
+	$(tabs[2]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearIntStat", "년간 지급이자 합계", "bar", 10000000)) + "'/>");
+	$(tabs[3]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getDebtRatio", "계정별 부채비율", "pie")) + "'/>");
 }	
 
-function ChartInfo(url, subTitle){
+function ChartAjaxBody(chartInfo){
+	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
+	this.type = "POST";
+	this.dataTYpe = "json";
+	this.data="";
+	this.success = function(response){
+		console.log("data : " + response.data);
+		
+		if(chartInfo.type == "bar")
+			createBarChart(response.data, chartInfo);
+		else if(chartInfo.type == "pie")
+			createPieChart(response.data, chartInfo);
+	}
+	this.error = function(xhr, error){
+		
+	}
+}
+
+function ChartInfo(url, subTitle, type, measure){
 	this.url = url;
 	this.subTitle = subTitle;
+	if(typeof measure == "Number")
+		this.measure = measure;
+	this.type = type;
 }
 
 function comma(str) {
@@ -223,16 +272,64 @@ function comma(str) {
 </script>
 <script>
 //High Chart
-function createChart(statMap, subTitle){
+function createPieChart(statMap, chartInfo){
+	console.log("statMap : " + statMap[0].y);
 	Highcharts.chart('container', {
 	    chart: {
-	        type: 'column'
+	        plotBackgroundColor: null,
+	        plotBorderWidth: null,
+	        plotShadow: false,
+	        type: 'pie'
+	    },
+	    title: {
+	        text: chartInfo.subTitle
+	    },
+	    tooltip: {
+	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	    },
+	    accessibility: {
+	        point: {
+	            valueSuffix: '%'
+	        }
+	    },
+	    plotOptions: {
+	        pie: {
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	                enabled: true,
+	                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                connectorColor: 'silver'
+	            }
+	        }
+	    },
+	    series: [{
+	        name: 'Share',
+	        data: statMap
+	    }]
+	});
+}
+
+function createBarChart(statMap, chartInfo){
+	Highcharts.chart('container', {
+	    chart: {
+	    	// Edit chart spacing
+	    	spacingBottom: 15,
+	    	spacingTop: 10,
+	    	spacingLeft: 10,
+	    	spacingRight: 10,
+	    	
+	        type: 'column',
+	        
+	        // Explicitly Tell the width and height of a chart
+	        width: 1590,
+	        height: 800
 	    },
 	    title: {
 	        text: '부채통계'
 	    },
 	    subtitle: {
-	        text: subTitle
+	        text: chartInfo.subTitle
 	    },
 	    xAxis: {
 	        categories: statMap.xAxis,
@@ -242,7 +339,7 @@ function createChart(statMap, subTitle){
 	        min: 0,
             startOnTick: false,
             endOnTick: false,
-            tickInterval: 100000000,
+            tickInterval: chartInfo.measure,
 			labels : {
 				format: '{value:,.0f}',
 			},
@@ -280,7 +377,69 @@ function createChart(statMap, subTitle){
 	
 }
 
-function setChartTheme(){
+function setPieChartTheme(){
+	// Radialize the colors
+	Highcharts.setOptions({
+	    colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+	        return {
+	            radialGradient: {
+	                cx: 0.5,
+	                cy: 0.3,
+	                r: 0.7
+	            },
+	            stops: [
+	                [0, color],
+	                [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+	            ]
+	        };
+	    })
+	});
+
+	// Build the chart
+	Highcharts.chart('container', {
+	    chart: {
+	        plotBackgroundColor: null,
+	        plotBorderWidth: null,
+	        plotShadow: false,
+	        type: 'pie'
+	    },
+	    title: {
+	        text: 'Browser market shares in January, 2018'
+	    },
+	    tooltip: {
+	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	    },
+	    accessibility: {
+	        point: {
+	            valueSuffix: '%'
+	        }
+	    },
+	    plotOptions: {
+	        pie: {
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	                enabled: true,
+	                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                connectorColor: 'silver'
+	            }
+	        }
+	    },
+	    series: [{
+	        name: 'Share',
+	        data: [
+	            { name: 'Chrome', y: 61.41 },
+	            { name: 'Internet Explorer', y: 11.84 },
+	            { name: 'Firefox', y: 10.85 },
+	            { name: 'Edge', y: 4.67 },
+	            { name: 'Safari', y: 4.18 },
+	            { name: 'Other', y: 7.05 }
+	        ]
+	    }]
+	});
+}
+
+function setBarChartTheme(){
 	Highcharts.setOptions({
 		lang: {
 			thousandsSep: ','

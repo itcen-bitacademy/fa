@@ -432,5 +432,63 @@
       		) end) and repay_comple_flag = 'N' and delete_flag = 'N'
    		]]>
    	</select>
+   	
+   	
+   	<select id="getStatisticSTermDebtVo" parameterType="String" resultType="stermdebtvo">
+		<![CDATA[
+			SELECT 
+			  case when date_format(debt_date,'%m') = 1 then sum(debt_amount) end As 'JAN',
+			  case when date_format(debt_date,'%m') = 2 then sum(debt_amount) end As 'FEB',
+			  case when date_format(debt_date,'%m') = 3 then sum(debt_amount) end As 'MAR',
+			  case when date_format(debt_date,'%m') = 4 then sum(debt_amount) end As 'APR',
+			  case when date_format(debt_date,'%m') = 5 then sum(debt_amount) end As 'MAY',
+			  case when date_format(debt_date,'%m') = 6 then sum(debt_amount) end As 'JUN',
+			  case when date_format(debt_date,'%m') = 7 then sum(debt_amount) end As 'JUL',
+			  case when date_format(debt_date,'%m') = 8 then sum(debt_amount) end As 'AUG',
+			  case when date_format(debt_date,'%m') = 9 then sum(debt_amount) end As 'SEP',
+			  case when date_format(debt_date,'%m') = 10 then sum(debt_amount) end As 'OCT',
+			  case when date_format(debt_date,'%m') = 11 then sum(debt_amount) end As 'NOV',
+			  case when date_format(debt_date,'%m') = 12 then sum(debt_amount) end As 'DEC' 
+			FROM tb_s_term_debt where date_format(debt_date,'%Y') = #{statisticYear}
+		]]>
+	</select>
+	
+	<select id="getStatisticLTermdebtVo" parameterType="String" resultType="ldebtvo">
+		<![CDATA[
+			SELECT 
+			  case when date_format(debt_date,'%m') = 1 then sum(debt_amount) end As 'JAN',
+			  case when date_format(debt_date,'%m') = 2 then sum(debt_amount) end As 'FEB',
+			  case when date_format(debt_date,'%m') = 3 then sum(debt_amount) end As 'MAR',
+			  case when date_format(debt_date,'%m') = 4 then sum(debt_amount) end As 'APR',
+			  case when date_format(debt_date,'%m') = 5 then sum(debt_amount) end As 'MAY',
+			  case when date_format(debt_date,'%m') = 6 then sum(debt_amount) end As 'JUN',
+			  case when date_format(debt_date,'%m') = 7 then sum(debt_amount) end As 'JUL',
+			  case when date_format(debt_date,'%m') = 8 then sum(debt_amount) end As 'AUG',
+			  case when date_format(debt_date,'%m') = 9 then sum(debt_amount) end As 'SEP',
+			  case when date_format(debt_date,'%m') = 10 then sum(debt_amount) end As 'OCT',
+			  case when date_format(debt_date,'%m') = 11 then sum(debt_amount) end As 'NOV',
+			  case when date_format(debt_date,'%m') = 12 then sum(debt_amount) end As 'DEC' 
+			FROM tb_l_term_debt where date_format(debt_date,'%Y') = #{statisticYear}
+		]]>
+	</select>
+	
+	<select id="getStatisticPdebtVo" parameterType="String" resultType="pdebtvo">
+		<![CDATA[
+			SELECT 
+			  case when date_format(debt_date,'%m') = 1 then sum(debt_amount) end As 'JAN',
+			  case when date_format(debt_date,'%m') = 2 then sum(debt_amount) end As 'FEB',
+			  case when date_format(debt_date,'%m') = 3 then sum(debt_amount) end As 'MAR',
+			  case when date_format(debt_date,'%m') = 4 then sum(debt_amount) end As 'APR',
+			  case when date_format(debt_date,'%m') = 5 then sum(debt_amount) end As 'MAY',
+			  case when date_format(debt_date,'%m') = 6 then sum(debt_amount) end As 'JUN',
+			  case when date_format(debt_date,'%m') = 7 then sum(debt_amount) end As 'JUL',
+			  case when date_format(debt_date,'%m') = 8 then sum(debt_amount) end As 'AUG',
+			  case when date_format(debt_date,'%m') = 9 then sum(debt_amount) end As 'SEP',
+			  case when date_format(debt_date,'%m') = 10 then sum(debt_amount) end As 'OCT',
+			  case when date_format(debt_date,'%m') = 11 then sum(debt_amount) end As 'NOV',
+			  case when date_format(debt_date,'%m') = 12 then sum(debt_amount) end As 'DEC' 
+			FROM tb_p_debt a where date_format(debt_date,'%Y') like concat('%', #{statisticYear }, '%')
+		]]>
+	</select>
 
 </mapper>

@@ -323,10 +323,15 @@ public class Menu46Service {
 	
 	public Map getYearIntStat() {
 		int curYear = Calendar.getInstance().get(Calendar.YEAR);
+		Map map = new HashMap();
 		
-		List<Map> sList = menu46Repository.getYearSIntStat(curYear);
-		List<Map> lList = menu46Repository.getYearLIntStat(curYear);
-		List<Map> pList = menu46Repository.getYearPIntStat(curYear);
+		map.put("searchYear", curYear);
+		map.put("debtType", "S");
+		List<Map> sList = menu46Repository.getYearIntStat(map);
+		map.replace("debtType", "L");
+		List<Map> lList = menu46Repository.getYearIntStat(map);
+		map.replace("debtType", "P");
+		List<Map> pList = menu46Repository.getYearIntStat(map);
 		
 		System.out.println("sList : " + sList);
 		System.out.println("lList : " + lList);
@@ -336,13 +341,45 @@ public class Menu46Service {
 		List<Long> lYearSumList = getYearSumList(lList, curYear);
 		List<Long> pYearSumList = getYearSumList(pList, curYear);
 		
-		Map map = new HashMap();
 		map.put("sList", sYearSumList);
 		map.put("lList", lYearSumList);
 		map.put("pList", pYearSumList);
 		map.put("xAxis", getYearRangeList(curYear));
+		
 		return map;
 	} 
+	
+	public List<Map> getDebtRatioStat() {
+		Map map = menu46Repository.getDebtRatioStat();
+		
+		List<Map> list = getDebtRatioList(map);
+		
+		return list;
+	}
+	
+	public List<Map> getDebtRatioList(Map ratioMap) {
+		float sDebtRatio = getFloatFromMap(ratioMap.get("sDebtRatio"));
+		float lDebtRatio = getFloatFromMap(ratioMap.get("lDebtRatio"));
+		float pDebtRatio = getFloatFromMap(ratioMap.get("pDebtRatio"));
+		
+		List<Map> list = new ArrayList<Map>();
+		Map map = new HashMap();
+		map.put("name", "단기차입금");
+		map.put("y", sDebtRatio);
+		list.add(map);
+		
+		map = new HashMap();
+		map.put("name", "장기차입금");
+		map.put("y", lDebtRatio);
+		list.add(map);
+		
+		map = new HashMap();
+		map.put("name", "사채");
+		map.put("y", pDebtRatio);
+		list.add(map);
+		
+		return list;
+	}
 	
 	public List<Long> getYearSumList(List<Map> list, int searchYear){
 		
@@ -407,6 +444,18 @@ public class Menu46Service {
 			resultVal= Long.valueOf(v.toString());
 		}else {
 			resultVal = (Long)value;
+		}
+			
+		return resultVal;
+	}
+	
+	public Float getFloatFromMap(Object value) {
+		Float resultVal=0f;
+		if(value instanceof BigDecimal) {
+			BigDecimal v = (BigDecimal)value;
+			resultVal= Float.valueOf(v.toString());
+		}else {
+			resultVal = (Float)value;
 		}
 			
 		return resultVal;

@@ -16,6 +16,7 @@ import kr.co.itcen.fa.vo.menu11.BankVo;
 import kr.co.itcen.fa.vo.menu11.LTermdebtVo;
 import kr.co.itcen.fa.vo.menu11.PdebtVo;
 import kr.co.itcen.fa.vo.menu11.RepayVo;
+import kr.co.itcen.fa.vo.menu11.STermDebtVo;
 /**
  * 
  * @author 박준호
@@ -192,6 +193,26 @@ public class Menu50Repository {
 		
 		List<PdebtVo> list = sqlSession.selectList("menu50.getRepayDueList",map);
 		return list;
+	}
+
+	public Map<String, Object> getStatistic(String statisticYear) {
+		System.out.println("statisticYear repository");
+		Map<String, Object> map =new HashMap<String, Object>();
+		
+		System.out.println("statisticYear : " + statisticYear);
+		STermDebtVo sTermDebtVo = sqlSession.selectOne("menu50.getStatisticSTermDebtVo", statisticYear);
+		LTermdebtVo lTermdebtVo = sqlSession.selectOne("menu50.getStatisticLTermdebtVo", statisticYear);
+		PdebtVo pdebtVo = sqlSession.selectOne("menu50.getStatisticPdebtVo", statisticYear);
+		
+		System.out.println(sTermDebtVo);
+		System.out.println(lTermdebtVo);
+		System.out.println(pdebtVo);
+		
+		map.put("sTermDebtVo", sTermDebtVo);
+		map.put("lTermdebtVo", lTermdebtVo);
+		map.put("pdebtVo", pdebtVo);
+		
+		return map;
 	}
 	
 }

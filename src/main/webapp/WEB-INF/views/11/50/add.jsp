@@ -12,6 +12,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
@@ -391,6 +397,21 @@ h4{
 									<p id="dialog-txt" class="bolder grey">
 									</p>
 								</div>
+								
+								<!-- 부채통계 -->
+								<div id="highcharts-dialog" title="부채통계" hidden="hidden">
+									<figure class="highcharts-figure">
+									    <div id="container">
+									    	<input type="text" id="statisticYear" name=""/>
+									    </div>
+									    <!-- <p class="highcharts-description">
+									        A basic column chart compares rainfall values between four cities.
+									        Tokyo has the overall highest amount of rainfall, followed by New York.
+									        The chart is making use of the axis crosshair feature, to highlight
+									        months as they are hovered over.
+									    </p> -->
+									</figure>
+								</div>
 					
 							</div>
 						</div>
@@ -404,6 +425,7 @@ h4{
 							<button type="button" id="repaybtn" class="btn btn-success btn-small mybtn">상환</button>
 							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
 							<button type="button" id="repay-view-button" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
+							<button type="button" id="debtstatisticbtn" class="btn btn-primar btn-small mybtn">부채통계</button>
 						</div>
 					<hr>
 				</form>
@@ -1780,6 +1802,329 @@ h4{
 			$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 		}
 		//--------------------------------------------------------------------------------------------------------------------------//
+
+</script>
+<script>
+$(function() {
+	// 입력버튼 이벤트 연결
+	$('#debtstatisticbtn').on('click', statisticDialog);
+	
+	$("#highcharts-dialog").dialog({ autoOpen : false });
+});
+
+function statisticDialog(){
+	var statisticYear = $('#statisticYear').val();
+	
+	if(statisticYear == null){
+		// statisticYear = new Date().getFullYear();
+		statisticYear = '2019';
+	}
+	
+	var options = {
+			chart: {
+		        type: 'column',
+		        width: 900,
+		        height: 550
+		    },
+		    title: {
+		        text: '부채관리'
+		    },
+		    subtitle: {
+		        text: '단기차입금, 장기차입금, 사채'
+		    },
+		    xAxis: {
+		        categories: [
+		            'Jan',
+		            'Feb',
+		            'Mar',
+		            'Apr',
+		            'May',
+		            'Jun',
+		            'Jul',
+		            'Aug',
+		            'Sep',
+		            'Oct',
+		            'Nov',
+		            'Dec'
+		        ],
+		        crosshair: true
+		    },
+		    yAxis: {
+		        min: 0,
+		        max: 100000000,
+		        tickInterval: 1000,
+		        title: {
+		            text: '(원)'
+		        },
+		    },
+	        series: [{
+	        	
+	        }],
+	        data: [
+	        ]
+	    };
+	
+	Highcharts.ajax({
+		url: "${pageContext.servletContext.contextPath }/api/selectone/get-statistic?statisticYear=" + statisticYear,
+		contentType : "application/json; charset=utf-8",
+		type: "get",
+		dataType: "json",
+		data: "",
+		success : function(data, result){
+			options.series[0].data = data.pdebtVo.JAN;
+			//options.series[1].data = data.pdebtVo.FEB;
+			options.series[2].data = data.pdebtVo.MAR;
+			options.series[3].data = data.pdebtVo.APR;
+			options.series[4].data = data.pdebtVo.MAY;
+			options.series[5].data = data.pdebtVo.JUN;
+			options.series[6].data = data.pdebtVo.JUL;
+			options.series[7].data = data.pdebtVo.AUG;
+			options.series[8].data = data.pdebtVo.SEP;
+			options.series[9].data = data.pdebtVo.OCT;
+			options.series[10].data = data.pdebtVo.NOV;
+			options.series[11].data = data.pdebtVo.DEC;
+			console.log("data : " + data.pdebtVo.nov);
+			
+			Highcharts.chart('container', options);
+			
+			$("#highcharts-dialog").dialog({
+				title: "부채통계",
+				title_html: true,
+			   	resizable: false,
+			    height: 700,
+			    width: 1000,
+			    modal: true,
+			    close: function() {
+			    },
+			    buttons: {
+			    "닫기" : function() {
+			    	$(this).dialog('close');
+			    }
+			}
+		});
+		$("#highcharts-dialog").dialog('open');
+		},
+		error : function(xhr,error) {
+			console.err("error" + error);
+		}
+	});
+}
+
+function statisticDebtData(){
+	var statisticYear = $('#statisticYear').val();
+	
+	
+}
+/* *
+*
+*  (c) 2010-2019 Torstein Honsi
+*
+*  License: www.highcharts.com/license
+*
+*  Dark theme for Highcharts JS
+*
+*  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
+*
+* */
+'use strict';
+/* global document */
+//Load the fonts
+
+Highcharts.setOptions({
+    colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+        '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+    chart: {
+        backgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+            stops: [
+                [0, '#2a2a2b'],
+                [1, '#3e3e40']
+            ]
+        },
+        style: {
+            fontFamily: '\'Unica One\', sans-serif'
+        },
+        plotBorderColor: '#606063'
+    },
+    title: {
+        style: {
+            color: '#E0E0E3',
+            textTransform: 'uppercase',
+            fontSize: '20px'
+        }
+    },
+    subtitle: {
+        style: {
+            color: '#E0E0E3',
+            textTransform: 'uppercase'
+        }
+    },
+    xAxis: {
+        gridLineColor: '#707073',
+        labels: {
+            style: {
+                color: '#E0E0E3'
+            }
+        },
+        lineColor: '#707073',
+        minorGridLineColor: '#505053',
+        tickColor: '#707073',
+        title: {
+            style: {
+                color: '#A0A0A3'
+            }
+        }
+    },
+    yAxis: {
+        gridLineColor: '#707073',
+        labels: {
+            style: {
+                color: '#E0E0E3'
+            }
+        },
+        lineColor: '#707073',
+        minorGridLineColor: '#505053',
+        tickColor: '#707073',
+        tickWidth: 1,
+        title: {
+            style: {
+                color: '#A0A0A3'
+            }
+        }
+    },
+    tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+        style: {
+            color: '#F0F0F0'
+        }
+    },
+    plotOptions: {
+        series: {
+            dataLabels: {
+                color: '#F0F0F3',
+                style: {
+                    fontSize: '13px'
+                }
+            },
+            marker: {
+                lineColor: '#333'
+            }
+        },
+        boxplot: {
+            fillColor: '#505053'
+        },
+        candlestick: {
+            lineColor: 'white'
+        },
+        errorbar: {
+            color: 'white'
+        }
+    },
+    legend: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        itemStyle: {
+            color: '#E0E0E3'
+        },
+        itemHoverStyle: {
+            color: '#FFF'
+        },
+        itemHiddenStyle: {
+            color: '#606063'
+        },
+        title: {
+            style: {
+                color: '#C0C0C0'
+            }
+        }
+    },
+    credits: {
+        style: {
+            color: '#666'
+        }
+    },
+    labels: {
+        style: {
+            color: '#707073'
+        }
+    },
+    drilldown: {
+        activeAxisLabelStyle: {
+            color: '#F0F0F3'
+        },
+        activeDataLabelStyle: {
+            color: '#F0F0F3'
+        }
+    },
+    navigation: {
+        buttonOptions: {
+            symbolStroke: '#DDDDDD',
+            theme: {
+                fill: '#505053'
+            }
+        }
+    },
+    // scroll charts
+    rangeSelector: {
+        buttonTheme: {
+            fill: '#505053',
+            stroke: '#000000',
+            style: {
+                color: '#CCC'
+            },
+            states: {
+                hover: {
+                    fill: '#707073',
+                    stroke: '#000000',
+                    style: {
+                        color: 'white'
+                    }
+                },
+                select: {
+                    fill: '#000003',
+                    stroke: '#000000',
+                    style: {
+                        color: 'white'
+                    }
+                }
+            }
+        },
+        inputBoxBorderColor: '#505053',
+        inputStyle: {
+            backgroundColor: '#333',
+            color: 'silver'
+        },
+        labelStyle: {
+            color: 'silver'
+        }
+    },
+    navigator: {
+        handles: {
+            backgroundColor: '#666',
+            borderColor: '#AAA'
+        },
+        outlineColor: '#CCC',
+        maskFill: 'rgba(255,255,255,0.1)',
+        series: {
+            color: '#7798BF',
+            lineColor: '#A6C7ED'
+        },
+        xAxis: {
+            gridLineColor: '#505053'
+        }
+    },
+    scrollbar: {
+        barBackgroundColor: '#808083',
+        barBorderColor: '#808083',
+        buttonArrowColor: '#CCC',
+        buttonBackgroundColor: '#606063',
+        buttonBorderColor: '#606063',
+        rifleColor: '#FFF',
+        trackBackgroundColor: '#404043',
+        trackBorderColor: '#404043'
+    }
+});
+
+
 
 </script>
 </body>

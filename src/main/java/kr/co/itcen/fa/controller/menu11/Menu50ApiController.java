@@ -1,6 +1,7 @@
 package kr.co.itcen.fa.controller.menu11;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,6 +69,15 @@ public class Menu50ApiController {
 			@RequestParam("bankname-customer") String name) {
 		List<CustomerVo> customerVo = menu50Service.selectNameFromCustomer(name);
 		return customerVo;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/get-statistic")
+	public Map<String, Object> getStatistic(
+			@RequestParam("statisticYear") String statisticYear) {
+		System.out.println("statisticYear controller");
+		Map<String, Object> data = menu50Service.getStatistic(statisticYear);
+		return data;
 	}
 	
 }

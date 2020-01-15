@@ -79,7 +79,7 @@
 										<label class="control-label" for="form-field-1">건물코드</label>
 										<div class="controls">
 											<input type="text" id="buildingCode" name="id"
-													placeholder="10자로 입력하세요" value='${vo.id}' />
+													placeholder="숫자를 입력하세요" value='${vo.id}' maxlength="9"/>
 										</div>
 									</div>
 									
