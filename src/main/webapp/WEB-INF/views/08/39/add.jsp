@@ -225,16 +225,16 @@
 										</div>
 									</div>
 									<div class="control-group">
-										<label class="control-label" for="form-field-select-1">세금계산서번호</label>
-										<div class="controls">
-											<input type="text" class="span7" name="taxbillNo" id="taxbillNo">
-										</div>
-									</div>
-									<div class="control-group">
 										<label class="control-label" for="form-field-2">구분</label>
 										<div class="controls">
 											<input name="taxKind" type="radio" class="ace" id="tax" value="과세"> <span class="lbl">과세</span> 
 											<input name="taxKind" type="radio" class="ace" id="zeroTax" value="영세"> <span class="lbl">영세</span>
+										</div>
+									</div>
+									<div class="control-group" id="taxbill" style="display: none">
+										<label class="control-label" for="form-field-select-1" >세금계산서번호</label>
+										<div class="controls">
+											<input type="text" class="span7" name="taxbillNo" id="taxbillNo">
 										</div>
 									</div>
 									
@@ -438,6 +438,7 @@
          
          if(response.data == null){
 			 checkId = true;
+			 dialog("사용가능한 품목코드입니다.");
 			 $("#btn-check-code").hide();
 			 $("#img-check-code").show();
              return;
@@ -514,7 +515,7 @@
 	//초기화 동작
 	$("#reset").click(function(event) {
 	  event.preventDefault();
-	  $('#buildingCode').prop('readonly', false);
+	  /* $('#buildingCode').prop('readonly', false);
 	  $('input[type=text]').val("");
 	  $('input:radio').prop("checked",false);
       $('#form-field-section').val("").trigger('chosen:updated');
@@ -524,6 +525,10 @@
 	  $("#search").show();
 	  $("#delete").hide();
 	  $("#btn-check-code").show();
+	  $("#taxbill").hide(); */
+	  $('#manage-building-form').attr('action', '${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }');
+	  $('#manage-building-form').attr('method', 'POST');
+	  $('#manage-building-form').submit();
 	});
 	
 	//// 관리 validation
@@ -730,6 +735,7 @@
 		  $("#insert").hide();
 		  $("#search").hide();
 		  $("#btn-check-code").hide();
+		  $("#taxbill").show();
 		  
 	      var str = ""
 	      var tdArr = new Array();   // 배열 선언
