@@ -173,12 +173,6 @@ html, body {
 								<input type="hidden" id="rowCnt" name="rowCnt" value="1">
 								<table id="item-table" class="table table-striped table-bordered table-hover">
 									<tr>
-										<!-- <th class="center">
-											<label>
-												<input type="checkbox" class="ace">
-												<span class="lbl"></span>
-											</label>
-										</th> -->
 										<th class="center">순번</th>
 										<th class="center">품목코드</th>
 										<th class="center">품목명</th>
@@ -402,7 +396,7 @@ html, body {
 		 }
 		 
 	
-		 
+		 //조회
 		 $(function() {
 				var $search = $("#search");
 				$search.click(function(event) {
@@ -422,14 +416,15 @@ html, body {
 						contentType: 'application/json;charset=utf-8',
 						data: JSON.stringify(vo),
 						success: function(result) {
+							
 							if(result.length == 0){
 								dialog("검색 결과가 없습니다.",false);
-							}else{
-								//$("#form1").reset();
+							} else{
 								var table = document.getElementById("item-table");
 								var cnt = table.rows.length;
+								
+								//검색 결과가 한 건일 경우
 								if(result.length == 1){
-									//$("#form1").html();
 									for(var i = 0; i < cnt-2; i++){
 										delete_row();
 									}
@@ -464,7 +459,7 @@ html, body {
 									}if(result.taxbillNo != null && result.voucherNo != null) {
 										deleteButtonSet();
 									} 
-								} else {
+								} else { // 검색 결과가 여러 건일 경우
 									var cnt = table.rows.length;
 									for(var v = 0; v < cnt-2; v++){
 										delete_row();
@@ -515,7 +510,7 @@ html, body {
 		});
 		 
 	
-		 function createPurchaseNo(){ // 매출번호 랜덤 생성
+		 function createPurchaseNo(){ // 매입번호 랜덤 생성
 		       	var no = "";
 		       	var date = new Date();
 		  	 	var year = date.getFullYear().toString(); // 년
@@ -562,7 +557,7 @@ html, body {
 			}
 			
 		
-			
+			//입력
 			function insert(){
 		   			if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
 		   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
