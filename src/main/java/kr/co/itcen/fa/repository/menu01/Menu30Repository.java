@@ -53,8 +53,6 @@ public class Menu30Repository {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("End",End);
 		map.put("Start", Start);
-		System.out.println(End+":"+ Start);
-		System.out.println(sqlSession.selectList("menu30.select",map));
 		return sqlSession.selectList("menu30.select",map);
 	}
 
