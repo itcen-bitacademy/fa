@@ -53,6 +53,34 @@ h4{
 .mybtn {float: left; margin-right: 10px;}
 
 .textarea{resize: none; width: 282px; height: 84px;}
+
+.grid-main{
+	display: grid;
+	grid-template-rows: repeat(4, auto);
+}
+
+.grid-input{
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+}
+
+.grid-input>div{
+	display: grid;
+	grid-template-columns: 150px auto;
+	grid-template-rows: repeat(6, auto);
+	gap : 10px;
+}
+
+.div-radio{
+	display: grid;
+	grid-template-columns: 50px 50px 50px;
+}
+
+.lbl{
+	margin-left: -20px !important;
+}
+
+
 </style>
 </head>
 <body class="skin-3">
@@ -70,14 +98,11 @@ h4{
 				<form class="form-horizontal" method="post" action="" id="inputForm" name="debtInputForm" >
 					<div class="container-fluid">
 						<!-- Example row of columns -->
-						<div class="row">
-							<div class="span8">
-								<table class="input-form-left">
-									<tr>
-										<td>
-											<label class="control-label">사채코드</label>
-										</td>
-										<td colspan="2">
+						<section class="grid-main">
+							<section class="grid-input">
+								<div>
+									<label class="control-label">사채코드</label>
+									<div>
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
 											<c:when test='${code eq ""}'>
@@ -89,38 +114,24 @@ h4{
 										</c:choose>
 										<input id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
 										<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">사채명</label>
-										</td>
-										<td colspan="2">
-											<textarea id="onlyHangulAndNumber" class="textarea" name="name" maxlength="90" ></textarea>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">차입금액</label>
-										</td>
-										<td style="display: inline-block;"><input type="text" id="inputPrice" name="textDebtAmount" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5><input type="hidden" id="hidden-dept-amount" name="debtAmount" /></td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">차입일자 ~ 만기일자</label>
-										</td>
-										<td colspan="2">
-											<div class="row-fluid input-prepend">
-												<input type="text" name="debtExpDate" id="id-date-range-picker-1" readonly="readonly"/><span class="add-on"> <i class="icon-calendar"></i>
-												</span>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">이자지급방식</label>
-										</td>
-										<td colspan="2">
+									</div>
+									<label class="control-label">사채명</label>
+									<div>
+										<textarea id="onlyHangulAndNumber" class="textarea" name="name" maxlength="90" ></textarea>
+									</div>
+									<label class="control-label">차입금액</label>
+									<div>
+										<input type="text" id="inputPrice" name="textDebtAmount" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5><input type="hidden" id="hidden-dept-amount" name="debtAmount" />
+									</div>
+									<label class="control-label">차입일자 ~ 만기일자</label>
+									<div>
+										<div class="row-fluid input-prepend">
+											<input type="text" name="debtExpDate" id="id-date-range-picker-1" readonly="readonly"/><span class="add-on"> <i class="icon-calendar"></i>
+											</span>
+										</div>
+									</div>
+									<label class="control-label">이자지급방식</label>
+									<div class="div-radio">
 										<div class="radio">
 											<label class="control-label">
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
@@ -139,27 +150,19 @@ h4{
 												<span class="lbl">해당없음</span>
 											</label>
 										</div>
-									</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">은행코드</label>
-										</td>
-										<td colspan="2">
-												<div class="input-append">
-													<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" maxlength="7" readonly/>
-														<span class="add-on">
-							                                    <a href="#" id="a-bankinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
-							                        	</span>
-												</div>
-												<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly/>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">위험등급</label>
-										</td>
-										<td colspan="2">
+									</div>
+									<label class="control-label">은행코드</label>
+									<div>
+										<div class="input-append">
+											<input type="text" class="search-input-width-first" name="bankCode" placeholder="은행코드" maxlength="7" readonly/>
+												<span class="add-on">
+					                                    <a href="#" id="a-bankinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+					                        	</span>
+										</div>
+										<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly/>
+									</div>
+									<label class="control-label">위험등급</label>
+									<div>
 										<select class="chosen-select form-control" name="dangerCode" id="dangercode-field-select" data-placeholder="위험등급">
 											<option value=""></option>
 											<option value="RED1-초고위험">초고위험</option>
@@ -168,100 +171,205 @@ h4{
 											<option value="GREEN4-저위험">저위험</option>
 											<option value="BLUE5-초저위험">초저위험</option>
 										</select>
-										</td>
-									</tr>
+									</div>
+								</div>
+								
+								<div>
+									<label class="control-label">회계연도</label>
+									<div>
+										<c:choose>
+											<c:when test='${year eq ""}'>
+												<input type="number" min="1900" max="2099" step="1" id="financialyearId" name="financialYear" placeholder="회계연도" />
+											</c:when>
+											<c:otherwise>
+												<input type="number" min="1900" max="2099" step="1" value="${year}" id="financialyearId" name="financialYear" placeholder="회계연도" />
+											</c:otherwise>
+										</c:choose>
+									</div>
+									<label class="control-label">차입금대분류</label>
+									<div>
+										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="차입금대분류" name="majorCode" >
+											<option value=""></option>
+											<c:forEach items="${sectionlist}" var="sectionvo">
+												<option value="${sectionvo.code}">${sectionvo.classification }</option>
+											</c:forEach>
+										</select>
+									</div>
+									<label class="control-label">상환방법</label>
+									<div class="div-radio">
+										<div class="radio">
+											<label class="control-label">
+												<input name="repayWay" type="radio" class="ace" value="Y"/>
+												<span class="lbl">연</span>
+											</label>
+										</div>
+										<div class="radio">
+											<label class="control-label">
+												<input name="repayWay" type="radio" class="ace"  value="M"/>
+												<span class="lbl">월</span>
+											</label>
+										</div>
+										<div class="radio">
+											<label class="control-label">
+												<input name="repayWay" type="radio" class="ace"  value="E"/>
+												<span class="lbl">만기</span>
+											</label>
+										</div>
+									</div>
+									<label class="control-label">이율</label>
+									<div>
+										<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
+									</div>
+									<label class="control-label">담당자</label>
+									<div>
+										<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
+										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+										<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
+									</div>
+									<label class="control-label">계좌</label>
+									<div>
+										<div class="input-append">
+											<input type="text" class="search-input-width-first" id="input-id-depositNo" name="depositNo" placeholder="계좌번호" readonly/>
+											<span class="add-on">
+				                            	<a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+				                            </span>
+										</div>
+										<!-- 계좌정보 Modal pop-up : end -->
+										<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
+								</div>
+							</section>
+							<hr>
+							<div class="row-fluid">
+								<button type="button" id="insertbtn" class="btn btn-primary btn-small mybtn">입력</button>
+								<button type="submit" id="updatebtn" class="btn btn-warning btn-small mybtn">수정</button>
+								<button type="button" id="deletebtn" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
+								<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
+								<button type="button" id="repaybtn" class="btn btn-success btn-small mybtn">상환</button>
+								<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
+								<button type="button" id="repay-view-button" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
+								<button type="button" id="debtstatisticbtn" class="btn btn-primar btn-small mybtn">부채통계</button>
+							</div>
+							<hr>
+							
+							<p>총 ${contentsCount }건</p>
+							<div  style="overflow: auto;">
+								<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
+									<thead>
+										<tr>
+											<th class="center" >
+												<label class="pos-rel">
+													<input type="checkbox" class="ace" id="checkall" />
+													<span class="lbl"></span>
+												</label>
+											</th>
+											<th class="center">사채코드</th>
+											<th class="center">사채명</th>
+											<th class="center">차입금대분류</th>
+											<th class="center">차입금액</th>
+											<th class="center">상환잔액</th>
+											<th class="center">상환방법</th>
+											<th class="center">차입일자</th>
+											<th class="center">만기일자</th>
+											<th class="center">이율</th>
+											<th class="center">이자지급방식</th>
+											<th class="center">담당자</th>
+											<th class="center">담당자전화번호</th>
+											<th class="center">은행코드</th>
+											<th class="center">계좌</th>
+											<th class="center">위험등급</th>
+											<th class="center">등록일</th>
+										</tr>
+									</thead>
+									<tbody id="tbody-list">
+									<c:forEach items="${dataResult.datas}" var="vo" varStatus="status">
+										<tr class="row-select">
+											<td class="center" data-no="${vo.no }">
+												<label class="pos-rel" onclick='event.cancelBubble=true'>
+													<input type="checkbox" class="ace checkboxtable" data-no="${vo.no }" name="checkBox" id="checkboxId" />
+													<span class="lbl"></span>
+												</label>
+											</td>
+											<td>${vo.code}</td>
+											<td>${vo.name}</td>
+									        <c:choose>
+												<c:when test="${vo.majorCode eq '001'}"><td >국내은행</td></c:when>
+												<c:when test="${vo.majorCode eq '002'}"><td >저축은행</td></c:when>
+												<c:when test="${vo.majorCode eq '003'}"><td >신용금고</td></c:when>
+												<c:when test="${vo.majorCode eq '004'}"><td >새마을금고</td></c:when>
+												<c:when test="${vo.majorCode eq '005'}"><td >외국계은행</td></c:when>
+												<c:otherwise><td >증권</td></c:otherwise>
+											</c:choose>	
+											<td style="text-align:right;"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /><input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" /></td>				
+											<td style="text-align:right;"><fmt:formatNumber value="${vo.repayBal}" pattern="#,###" /></td>
+											<c:choose>
+												<c:when test="${vo.repayWay eq 'Y'}"><td >연</td></c:when>
+												<c:when test="${vo.repayWay eq 'M'}"><td >월</td></c:when>
+												<c:otherwise><td >만기</td></c:otherwise>
+											</c:choose>		
+											<td>${vo.debtDate}</td>
+											<td>${vo.expDate}</td>
+											<td>${vo.intRate}%</td>
+											<c:choose>
+														<c:when test="${vo.intPayWay eq 'Y'}"><td >연</td></c:when>
+														<c:when test="${vo.intPayWay eq 'M'}"><td >월</td></c:when>
+														<c:otherwise><td>해당없음</td></c:otherwise>
+											</c:choose>	
+											<td>${vo.mgr}</td>
+											<td>${vo.mgrCall}</td>
+											<td data-bankname="${vo.bankName }">${vo.bankCode}</td>
+											<td data-deposithost="${vo.depositHost }">${vo.depositNo}</td>
+											<td>${vo.dangerName}</td>
+											<td>${vo.insertDate}</td>
+										</tr>
+										</c:forEach>
+									</tbody>
 								</table>
 							</div>
-							<div class="span8">
-								<table>
-									<tr>
-										<td>
-											<label class="control-label">회계연도</label>
-										</td>
-										<td>
-											<c:choose>
-												<c:when test='${year eq ""}'>
-													<input type="number" min="1900" max="2099" step="1" id="financialyearId" name="financialYear" placeholder="회계연도" />
-												</c:when>
-												<c:otherwise>
-													<input type="number" min="1900" max="2099" step="1" value="${year}" id="financialyearId" name="financialYear" placeholder="회계연도" />
-												</c:otherwise>
-											</c:choose>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">차입금대분류</label>
-										</td>
-										<td colspan="2">
-										<select class="chosen-select form-control" id="majorcode-field-select" data-placeholder="차입금대분류" name="majorCode" >
-												<option value=""></option>
-												<c:forEach items="${sectionlist}" var="sectionvo">
-													<option value="${sectionvo.code}">${sectionvo.classification }</option>
-												</c:forEach>
-										</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">상환방법</label>
-										</td>
-										<td colspan="2">
-												<div class="radio">
-													<label class="control-label">
-														<input name="repayWay" type="radio" class="ace" value="Y"/>
-														<span class="lbl">연</span>
-													</label>
-												</div>
-												<div class="radio">
-													<label class="control-label">
-														<input name="repayWay" type="radio" class="ace"  value="M"/>
-														<span class="lbl">월</span>
-													</label>
-												</div>
-												<div class="radio">
-													<label class="control-label">
-														<input name="repayWay" type="radio" class="ace"  value="E"/>
-														<span class="lbl">만기</span>
-													</label>
-												</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">이율</label>
-										</td>
-										<td colspan="2">
-											<input type="text" name="intRate" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" style="text-align:right;"/> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">담당자</label>
-										</td>
-										<td>
-											<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
-											<h4 class="mgr-number-input-h4">담당자전화번호</h4>
-											<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<label class="control-label">계좌</label>
-										</td>
-										<td colspan="3">
-											<div class="input-append">
-												<input type="text" class="search-input-width-first" id="input-id-depositNo" name="depositNo" placeholder="계좌번호" readonly/>
-													<span class="add-on">
-						                            	<a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
-						                            </span>
-											</div>
-												<!-- 계좌정보 Modal pop-up : end -->
-												<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
-										</td>
-									</tr>
-								</table>
-								
+							<!-- 페이징 처리 알고리즘 start -->
+							<div class="pagination">
+							    <ul>
+							        <c:choose>
+							            <c:when test="${dataResult.pagination.prev }">
+							                <li>
+							                    <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
+							                        <i class="icon-double-angle-left"></i>
+							                    </a>
+							                </li>
+							            </c:when>
+							            <c:otherwise>
+							                <li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
+							            </c:otherwise>
+							        </c:choose>
+							        <c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
+							            <c:choose>
+							                <c:when test="${pg eq dataResult.pagination.page }">
+							                    <li class="active">
+							                        <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg}</a>
+							                    </li>
+							                </c:when>
+							                <c:otherwise>
+							                    <li>
+							                        <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg}</a>
+							                    </li>
+							                </c:otherwise>
+							            </c:choose>
+							        </c:forEach>
+							        <c:choose>
+							            <c:when test="${dataResult.pagination.next }">
+							                <li>
+							                    <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }">
+							                        <i class="icon-double-angle-right"></i>
+							                    </a>
+							                </li>
+							            </c:when>
+							            <c:otherwise>
+							                <li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
+							            </c:otherwise>
+							        </c:choose>
+							    </ul>
+							</div>
+							<!-- 페이징 처리 알고리즘 end -->
+						</section><!--  grid main End -->
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
 								<div id="dialog-bankinfo-message" title="은행코드" hidden="hidden">
 									<table id ="dialog-message-table" align="center">
@@ -299,8 +407,6 @@ h4{
 									</table>
 								</div>
 								<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-												
-												
 								<!-- 계좌정보 Modal pop-up : start -->
 								<div id="dialog-account-message" title="계좌" hidden="hidden">
 									<table id="dialog-account-message-table">
@@ -412,147 +518,10 @@ h4{
 									    </p> -->
 									</figure>
 								</div>
-					
 							</div>
 						</div>
-					</div>
-					<hr>
-						<div class="row-fluid">
-							<button type="button" id="insertbtn" class="btn btn-primary btn-small mybtn">입력</button>
-							<button type="submit" id="updatebtn" class="btn btn-warning btn-small mybtn">수정</button>
-							<button type="button" id="deletebtn" class="btn btn-danger btn-small mybtn" onclick="deleteChecked()">삭제</button>
-							<button type="button" id="searchbtn" class="btn btn-info btn-small mybtn">조회</button>
-							<button type="button" id="repaybtn" class="btn btn-success btn-small mybtn">상환</button>
-							<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
-							<button type="button" id="repay-view-button" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
-							<button type="button" id="debtstatisticbtn" class="btn btn-primar btn-small mybtn">부채통계</button>
-						</div>
-					<hr>
+					</div><!-- PAGE CONTENT ENDS -->
 				</form>
-				<!-- PAGE CONTENT ENDS -->
-
-				<!-- list -->
-				<p>총 ${contentsCount }건</p>
-				<div  style="overflow: auto;">
-				<table id="simple-table" class="table  table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
-					<thead>
-						<tr>
-							<th class="center" >
-								<label class="pos-rel">
-									<input type="checkbox" class="ace" id="checkall" />
-									<span class="lbl"></span>
-								</label>
-							</th>
-							<th class="center">사채코드</th>
-							<th class="center">사채명</th>
-							<th class="center">차입금대분류</th>
-							<th class="center">차입금액</th>
-							<th class="center">상환잔액</th>
-							<th class="center">상환방법</th>
-							<th class="center">차입일자</th>
-							<th class="center">만기일자</th>
-							<th class="center">이율</th>
-							<th class="center">이자지급방식</th>
-							<th class="center">담당자</th>
-							<th class="center">담당자전화번호</th>
-							<th class="center">은행코드</th>
-							<th class="center">계좌</th>
-							<th class="center">위험등급</th>
-							<th class="center">등록일</th>
-						</tr>
-					</thead>
-						<tbody id="tbody-list">
-						<c:forEach items="${dataResult.datas}" var="vo" varStatus="status">
-							<tr class="row-select">
-								<td class="center" data-no="${vo.no }">
-									<label class="pos-rel" onclick='event.cancelBubble=true'>
-										<input type="checkbox" class="ace checkboxtable" data-no="${vo.no }" name="checkBox" id="checkboxId" />
-										<span class="lbl"></span>
-									</label>
-								</td>
-								<td>${vo.code}</td>
-								<td>${vo.name}</td>
-						        <c:choose>
-											<c:when test="${vo.majorCode eq '001'}"><td >국내은행</td></c:when>
-											<c:when test="${vo.majorCode eq '002'}"><td >저축은행</td></c:when>
-											<c:when test="${vo.majorCode eq '003'}"><td >신용금고</td></c:when>
-											<c:when test="${vo.majorCode eq '004'}"><td >새마을금고</td></c:when>
-											<c:when test="${vo.majorCode eq '005'}"><td >외국계은행</td></c:when>
-											<c:otherwise><td >증권</td></c:otherwise>
-								</c:choose>	
-								<td style="text-align:right;"><fmt:formatNumber value="${vo.debtAmount}" pattern="#,###" /><input type="hidden" name="tbody-hidden-debtAmount" value="${vo.debtAmount}" /></td>				
-								<td style="text-align:right;"><fmt:formatNumber value="${vo.repayBal}" pattern="#,###" /></td>
-								<c:choose>
-											<c:when test="${vo.repayWay eq 'Y'}"><td >연</td></c:when>
-											<c:when test="${vo.repayWay eq 'M'}"><td >월</td></c:when>
-											<c:otherwise><td >만기</td></c:otherwise>
-								</c:choose>		
-								<td>${vo.debtDate}</td>
-								<td>${vo.expDate}</td>
-								<td>${vo.intRate}%</td>
-								<c:choose>
-											<c:when test="${vo.intPayWay eq 'Y'}"><td >연</td></c:when>
-											<c:when test="${vo.intPayWay eq 'M'}"><td >월</td></c:when>
-											<c:otherwise><td>해당없음</td></c:otherwise>
-								</c:choose>	
-								<td>${vo.mgr}</td>
-								<td>${vo.mgrCall}</td>
-								<td data-bankname="${vo.bankName }">${vo.bankCode}</td>
-								<td data-deposithost="${vo.depositHost }">${vo.depositNo}</td>
-								<td>${vo.dangerName}</td>
-								<td>${vo.insertDate}</td>
-							</tr>
-							</c:forEach>
-						</tbody>
-				</table>
-				</div>
-			</div>
-			<!-- /.page-content -->
-			
-			<!-- 페이징 처리 알고리즘 start -->
-			<div class="pagination">
-			    <ul>
-			        <c:choose>
-			            <c:when test="${dataResult.pagination.prev }">
-			                <li>
-			                    <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.startPage - 1 }">
-			                        <i class="icon-double-angle-left"></i>
-			                    </a>
-			                </li>
-			            </c:when>
-			            <c:otherwise>
-			                <li class="disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-			            </c:otherwise>
-			        </c:choose>
-			        <c:forEach begin="${dataResult.pagination.startPage }" end="${dataResult.pagination.endPage }" var="pg">
-			            <c:choose>
-			                <c:when test="${pg eq dataResult.pagination.page }">
-			                    <li class="active">
-			                        <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg }">${pg}</a>
-			                    </li>
-			                </c:when>
-			                <c:otherwise>
-			                    <li>
-			                        <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${pg}">${pg}</a>
-			                    </li>
-			                </c:otherwise>
-			            </c:choose>
-			        </c:forEach>
-			        <c:choose>
-			            <c:when test="${dataResult.pagination.next }">
-			                <li>
-			                    <a href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?year=${year }&page=${dataResult.pagination.endPage + 1 }">
-			                        <i class="icon-double-angle-right"></i>
-			                    </a>
-			                </li>
-			            </c:when>
-			            <c:otherwise>
-			                <li class="disabled"><a href="#"><i class="icon-double-angle-right"></i></a></li>
-			            </c:otherwise>
-			        </c:choose>
-			    </ul>
-			</div>
-			<!-- 페이징 처리 알고리즘 end -->
 		</div>
 		<!-- /.main-content -->
 	</div>
