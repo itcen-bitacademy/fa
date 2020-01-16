@@ -284,7 +284,7 @@
     $("#account-reset-btn").click(function() {
     	$('#selectedAccountStatementType').val("B");
     	$('#accountOrder').val("");
-    	$('#accountUsedyear').val("2019");
+    	$('#accountUsedyear').val("2020");
     	$('#accountName').val("");
     	$('#selectedAccount').val(null).trigger('chosen:updated');
     });
