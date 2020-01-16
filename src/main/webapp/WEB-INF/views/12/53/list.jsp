@@ -457,19 +457,19 @@
 	  	 	if (day.length < 2) day = "0" + day; // 한자리 일 0
 	  	 	
 	  	 	taxbillNo = year + month + day;	// ex)20191223
-	  	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	  	    var possible = "0123456789";
 	  	 	
 	  		// 스펠링 난수
-	  	    for( var i=0; i < 7; i++ ){ 
+	  	    for( var i=0; i < 6; i++ ){ 
 	  	    	middleNo += possible.charAt(Math.floor(Math.random() * possible.length)); // 난수
 	  	    }
 	  		
-	  		for( var i=0; i < 9; i++ ){
+	  		for( var i=0; i < 8; i++ ){
 	  			lastNo += possible.charAt(Math.floor(Math.random() * possible.length)); // 난수
 	  		}
 	  		
 	  	    if($("#taxbillNo").val() == ''){ // 조회한 경우가 아닐때 생성된 매출번호 set
-	  	    	taxbill = taxbillNo + 42 + middleNo + lastNo;
+	  	    	taxbill = taxbillNo+ " -" + 42 + middleNo + "- " + lastNo;
 	  	    	$("#taxbillNo").val(taxbill);		  	        
 	  	    }
         }
