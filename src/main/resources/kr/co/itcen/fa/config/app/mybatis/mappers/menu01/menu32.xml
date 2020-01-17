@@ -139,7 +139,7 @@
 				a.name as accountName,
 				cu.no as customerNo,
 		   	 	cu.name as customerName,
-		   	 	date_format(m.insert_day, "%Y-%m-%d") as regDate,
+		   	 	date_format(v.reg_date, "%Y-%m-%d") as regDate,
 			   v.no as voucherNo,
 			   i.order_no as voucherOrderNo,
 			   m.insert_team as insertTeam,
@@ -189,12 +189,12 @@
            
 			<if test="vo.datepicker1!=null and !vo.datepicker1.equals('')">		    
 				<![CDATA[
-					and m.insert_day >= #{vo.datepicker1 }
+					and v.reg_date >= #{vo.datepicker1 }
 				]]>
 			</if>
 			<if test="vo.datepicker2!=null and !vo.datepicker2.equals('')">		    
 				<![CDATA[
-					and m.insert_day <= #{vo.datepicker2 }
+					and v.reg_date <= #{vo.datepicker2 }
 				]]>
 			</if>
 			<if test="vo.accountNo!=null and !vo.accountNo.equals('')">
@@ -252,12 +252,12 @@
            
 			<if test="datepicker1!=null and !datepicker1.equals('')">		    
 				<![CDATA[
-					and m.insert_day >= #{datepicker1 }
+					and v.reg_date >= #{datepicker1 }
 				]]>
 			</if>
 			<if test="datepicker2!=null and !datepicker2.equals('')">		    
 				<![CDATA[
-					and m.insert_day <= #{datepicker2 }
+					and v.reg_date <= #{datepicker2 }
 				]]>
 			</if>
 			<if test="accountNo!=null and !accountNo.equals('')">
