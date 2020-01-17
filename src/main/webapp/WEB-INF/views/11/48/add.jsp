@@ -110,9 +110,8 @@ tr td:first-child {
 	display: grid;
 	grid-template-columns: 50px 50px auto;
 }
-.lbl{
-	margin-left: -20px !important;
-}
+
+.radio-span{margin-left: -20px !important}
 </style>
 </head>
 <body class="skin-3">
@@ -172,19 +171,19 @@ tr td:first-child {
 									<div class="radio" >
 										<label>
 											<input name="intPayWay" type="radio" class="ace" value="Y" />
-											<span class="lbl">연</span>
+											<span class="lbl radio-span">연</span>
 										</label>
 									</div>
 									<div class="radio">
 										<label>
 											<input name="intPayWay" type="radio" class="ace" value="M" />
-											<span class="lbl">월</span>
+											<span class="lbl radio-span">월</span>
 										</label>
 									</div>
 									<div class="radio">
 										<label>
 											<input name="intPayWay" type="radio" class="ace" value="E" />
-											<span class="lbl">해당없음</span>
+											<span class="lbl radio-span">해당없음</span>
 										</label>
 									</div>
 								</div>
@@ -226,19 +225,19 @@ tr td:first-child {
 									<div class="radio">
 										<label>
 											<input name="repayWay" type="radio" class="ace" value="Y" />
-											<span class="lbl">연</span>
+											<span class="lbl radio-span">연</span>
 										</label>
 									</div>
 									<div class="radio">
 										<label>
 											<input name="repayWay" type="radio" class="ace"  value="M" />
-											<span class="lbl">월</span>
+											<span class="lbl radio-span">월</span>
 										</label>
 									</div>
 									<div class="radio">
 										<label>
 											<input name="repayWay" type="radio" class="ace"  value="E" />
-											<span class="lbl">만기</span>
+											<span class="lbl radio-span">만기</span>
 										</label>
 									</div>
 								</div>
