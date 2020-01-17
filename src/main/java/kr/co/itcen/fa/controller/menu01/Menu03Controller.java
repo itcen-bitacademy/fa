@@ -53,13 +53,10 @@ public class Menu03Controller {
 	// 전표관리 페이지
 	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/read" })
 	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
-		System.out.println("여기 1");
-		System.out.println("getUseYn1 : " + voucherVo.getUseYn() );
 		if(voucherVo.getUseYn() == null) {
 			voucherVo.setUseYn(true);
 			System.out.println("왜 안타니");
 		}
-		System.out.println("getUseYn2 : " + voucherVo.getUseYn() );
 		// 전표 검색
 		DataResult<VoucherVo> dataResult = menu03Service.selectVoucherCount(voucherVo, page);
 		
@@ -78,7 +75,6 @@ public class Menu03Controller {
 			, Model model) throws ParseException {
 		// 마감 여부 체크
 		
-		System.out.println("asdf: " + voucherVo.getRegDate());
 		//String businessDateStr = menu03Service.businessDateStr();
 		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 			voucherVo.setOrderNo(1);
@@ -93,15 +89,9 @@ public class Menu03Controller {
 	// 전표 삭제 1팀
 	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
 	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
-		System.out.println("delete");
-		System.out.println(voucherVo.getInsertTeam());
-		System.out.println(voucherVo.getInsertTeam().equals(userVo.getTeamName()));
-		System.out.println("voucherNo : " + voucherVo.getNo());
-		System.out.println("regDate : " + voucherVo.getRegDate());
 		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
 			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 		}
-		System.out.println("delete2");
 		//String businessDateStr = menu03Service.businessDateStr();
 		
 		voucherVo.setRegDate(menu03Service.getRegDate(voucherVo));
@@ -148,11 +138,6 @@ public class Menu03Controller {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			VoucherVo[] voucherList = mapper.readValue(itemList, VoucherVo[].class);
-//			System.out.println(voucherList);
-			System.out.println(voucherList[0]);
-			System.out.println(voucherList[0].getOrderNo());
-//			System.out.println(voucherList[1]);
-//			System.out.println(voucherList[1].getAccountName());
 			
 			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
 				VoucherVo voucherVo = new VoucherVo();
@@ -165,7 +150,6 @@ public class Menu03Controller {
 				for(int i = 0; i < voucherList.length; i++) {
 					ItemVo itemVo = new ItemVo();
 					itemVo.setAmount(voucherList[i].getAmount());
-					System.out.println("amount : " + itemVo.getAmount());
 					itemVo.setAmountFlag(voucherList[i].getAmountFlag());
 					itemVo.setAccountNo(voucherList[i].getAccountNo());
 					itemVo.setInsertUserid(userVo.getId());
@@ -184,7 +168,6 @@ public class Menu03Controller {
 					
 					mappingList.add(mappingVo);
 				}
-				System.out.println("controller");
 				menu03Service.createVoucher(voucherVo, itemList2, mappingList, userVo);
 			}
 			
@@ -212,7 +195,6 @@ public class Menu03Controller {
 	public Map<String, Object> update(HttpServletRequest request, @AuthUser UserVo userVo) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String itemList = request.getParameter("itemList");
-		System.out.println(itemList);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -220,8 +202,6 @@ public class Menu03Controller {
 			
 			
 			String insertTeam = menu03Service.selectTeam(voucherList[0].getNo());
-			System.out.println("insertTeam : " + insertTeam);
-			System.out.println(insertTeam);
 			
 			if(!insertTeam.equals(userVo.getTeamName())) {
 				return null;
@@ -240,7 +220,6 @@ public class Menu03Controller {
 				for(int i = 0; i < voucherList.length; i++) {
 					ItemVo itemVo = new ItemVo();
 					itemVo.setAmount(voucherList[i].getAmount());
-					System.out.println("amount : " + itemVo.getAmount());
 					itemVo.setAmountFlag(voucherList[i].getAmountFlag());
 					itemVo.setAccountNo(voucherList[i].getAccountNo());
 					itemVo.setUpdateUserid(userVo.getId());
@@ -259,7 +238,6 @@ public class Menu03Controller {
 					
 					mappingList.add(mappingVo);
 				}
-				System.out.println("controller");
 				
 				menu03Service.updateVoucher(voucherVo, itemList2, mappingList, userVo);
 			}
@@ -267,7 +245,6 @@ public class Menu03Controller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("111");
 		return resultMap;
 	}
 	

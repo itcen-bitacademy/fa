@@ -72,7 +72,7 @@ public class Menu59Controller {
 		model.addAttribute("accountList", menu59Service.getAllAccountList());
 		
 		DataResult<AccountManagementVo> dataResult = menu59Service.getList(accountManagement, page);
-
+		
 		//테이블부분 셋팅
 		model.addAttribute("dataResult", dataResult);
 		

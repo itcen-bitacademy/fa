@@ -265,13 +265,13 @@
 			<!-- buttons -->
 			<button class="btn btn-info btn-small" type="submit" id="btn-read" name="btn-read"
 				formaction="${pageContext.request.contextPath}/01/03/read">조 회</button>
-			<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
-				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 			<input class="btn btn-small" type="button" value="입력" onclick="add();">
 			<input class="btn btn-small" type="button" value="행 수정" onclick="modify();">
 			<input class="btn btn-small" type="button" value="행 삭제" onclick="delete_row();">
 			<input class="btn btn-primary btn btn-small" id="btn-create" name="btn-create" type="button" value="저 장" onclick="save();">
 			<input class="btn btn-warning btn btn-small" id="btn-update" name="btn-update" type="button" value="수 정" onclick="update();">
+			<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
+				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
 
 			</form>

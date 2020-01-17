@@ -32,7 +32,7 @@ h4{
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
 
-#dialog-confirm{z-index: 2222!important;}
+#dialog-confirm{z-index: 3333;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
 .p-debt-code-input {width: 205px;}
 
@@ -76,10 +76,7 @@ h4{
 	grid-template-columns: 50px 50px 50px;
 }
 
-.lbl{
-	margin-left: -20px !important;
-}
-
+.radio-span{margin-left: -20px !important}
 
 </style>
 </head>
@@ -135,19 +132,19 @@ h4{
 										<div class="radio">
 											<label class="control-label">
 												<input name="intPayWay" type="radio" class="ace" value="Y"/>
-												<span class="lbl">연</span>
+												<span class="lbl radio-span">연</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label class="control-label">
 												<input name="intPayWay" type="radio" class="ace" value="M"/>
-												<span class="lbl">월</span>
+												<span class="lbl radio-span">월</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label class="control-label">
 												<input name="intPayWay" type="radio" class="ace" value="E"/>
-												<span class="lbl">해당없음</span>
+												<span class="lbl radio-span">해당없음</span>
 											</label>
 										</div>
 									</div>
@@ -200,19 +197,19 @@ h4{
 										<div class="radio">
 											<label class="control-label">
 												<input name="repayWay" type="radio" class="ace" value="Y"/>
-												<span class="lbl">연</span>
+												<span class="lbl radio-span">연</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label class="control-label">
 												<input name="repayWay" type="radio" class="ace"  value="M"/>
-												<span class="lbl">월</span>
+												<span class="lbl radio-span">월</span>
 											</label>
 										</div>
 										<div class="radio">
 											<label class="control-label">
 												<input name="repayWay" type="radio" class="ace"  value="E"/>
-												<span class="lbl">만기</span>
+												<span class="lbl radio-span">만기</span>
 											</label>
 										</div>
 									</div>
@@ -247,7 +244,6 @@ h4{
 								<button type="button" id="repaybtn" class="btn btn-success btn-small mybtn">상환</button>
 								<button type="button" id="clearbtn" class="btn btn-default btn-small mybtn">초기화</button>
 								<button type="button" id="repay-view-button" class="btn btn-pink btn-small mybtn">금주상환예정목록</button>
-								<button type="button" id="debtstatisticbtn" class="btn btn-primar btn-small mybtn">부채통계</button>
 							</div>
 							<hr>
 							
@@ -499,25 +495,28 @@ h4{
 									<!-- 계좌정보 데이터 리스트 -->
 								</div>
 								
+								<!-- 금주의 상환 내역 Modal pop-up : start -->
+								<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
+										<!-- 은행코드 및 은행명 데이터 리스트 -->
+										<table id="repay-due-table" class="table  table-bordered table-hover">
+											<thead>
+												<tr>
+													<th class="center">차입금 코드</th>
+													<th class="center">상환 금액</th>
+													<th class="center">납입일</th>
+												</tr>
+											</thead>
+											<tbody id="tbody-repay-due">
+											</tbody>
+										</table>
+								</div>
+								<!-- 금주의 상환 내역 Modal pop-up : end -->
+								
 								<div id="dialog-confirm" class="hide">
 									<p id="dialog-txt" class="bolder grey">
 									</p>
 								</div>
 								
-								<!-- 부채통계 -->
-								<div id="highcharts-dialog" title="부채통계" hidden="hidden">
-									<figure class="highcharts-figure">
-									    <div id="container">
-									    	<input type="text" id="statisticYear" name=""/>
-									    </div>
-									    <!-- <p class="highcharts-description">
-									        A basic column chart compares rainfall values between four cities.
-									        Tokyo has the overall highest amount of rainfall, followed by New York.
-									        The chart is making use of the axis crosshair feature, to highlight
-									        months as they are hovered over.
-									    </p> -->
-									</figure>
-								</div>
 							</div>
 						</div>
 					</div><!-- PAGE CONTENT ENDS -->
@@ -594,6 +593,9 @@ h4{
 		
 		// 초기화버튼 이벤트 연결
 		$('#clearbtn').on('click', clearDebtData);
+		
+		// 상환예정목록 이벤트 연결
+		$('#repay-view-button').on('click', repayViewDebtData);
 		
 		// 중복코드 확인 이벤트 연결
 		$('#duplicatecode-checkbtn').on('click', checkCodeDebtData);
@@ -721,18 +723,25 @@ h4{
 	}
 	
 	// 사채데이터 수정
-	function updateDebtData(event) {
-		event.preventDefault();
-		var count = $("input:checkbox[name=checkBox]:checked").length;
+	function updateDebtData() {
+		var count = 0;
 		
-		if (count > 1){
-			dialog('하나의 내용만 수정할 수 있습니다');
+		$("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		});
+		console.log(count);
+		
+		if(count>1){
+			openErrorModal('UPDATE ERROR','하나의 내용만 수정할 수 있습니다','');
 			return;
 		}
-		if (count <= 0){
-			dialog('수정할 데이터를 선택하여 주세요');
+		
+		if(count<=0){
+			openErrorModal('UPDATE ERROR','수정할 리스트를 선택하여 주세요','');
 			return;
-		}
+		}	
 		
 		var no = $('#no').val();
 		$.ajax({
@@ -762,13 +771,20 @@ h4{
 					openModal('Error', "해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
 					
 					var repayList = response.data;
+					var payPrinc;
+					var intAmount;
+					
 	         	  	$("#repay-code").text(repayList[0].code);
 	         	  	
 	         	  	for(let a in repayList) {
+	         	  		payPrinc = numberFormat(repayList[a].payPrinc);
+	         	  		intAmount = numberFormat(repayList[a].intAmount);
+	         	  		console.log();
+	         	  		console.log();
 	         	  		$("#tbody-repaymentList").append("<tr>" +
 		                          "<td class='center'>" + repayList[a].code + "</td>" +
-		                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-		                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+		                          "<td class='center'>" + payPrinc + "</td>" +
+		                          "<td class='center'>" + intAmount + "</td>" +
 		                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 		                          "</tr>");
 	         	  	}
@@ -938,8 +954,15 @@ h4{
 	function repayDebtData() {
 		$("#repaycode").val($('#code').val()); // 차입금코드를 상환팝업의 차입금코드에 입력
 		console.log($("input[name=code]").val());
-		var count = $("input:checkbox[name=checkBox]:checked").length;
-			
+		
+		var count = 0;
+		 $("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		 });
+		console.log(count);
+		
 		if (count > 1 || count == 0) {
 			openModal('Error', '상환할 데이터를 선택해 주세요');
 			return;
@@ -1122,6 +1145,59 @@ h4{
 			}
 	    });
 	   
+	}
+	
+	function repayViewDebtData() {
+		event.preventDefault();
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath }/11/50/checkrepaydue",
+			contentType : "application/json; charset=utf-8",
+			type: "get",
+			dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
+			data: "",
+			statusCode: {
+			    404: function() {
+			      alert("page not found");
+			    }
+			},
+			success: function(response){
+				var repayBal;
+				
+				$.each(response.data,function(index, item){
+					repayBal = numberFormat(item.repayBal);
+					$("#tbody-repay-due").append("<tr>" + 
+							"<td class='center'>" + item.code + "</td>" +
+	                     	"<td class='center'>" + repayBal + "</td>" +
+	                     	"<td class='center'>" + item.payDate + "</td>" +
+	                 "</tr>");
+				})
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+		 
+		  $("#repay-due").dialog({
+              title: "금주의 상환 정보",
+              title_html: true,
+              resizable: false,
+    	      height: 500,
+    	      width: 400,
+    	      modal: true,
+    	      close: function() {
+                  $('#tbody-repay-due tr').remove();
+                  $(this).dialog('close');
+               },
+               buttons: {
+               "닫기" : function() {
+                        $(this).dialog('close');
+                        $('#tbody-repay-due tr').remove();
+                   }
+               }
+           });
+           
+           $("#repay-due").dialog('open');
 	}
 	
 	// 사채코드 중복 확인
@@ -1489,10 +1565,6 @@ h4{
 		} else if (repayBal < payPrinc) {
 			validationMessage = '납입원금이 상환 잔액보다 큽니다. 상환잔액(' + repay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ')보다 작게 입력해주세요';
 			return false;
-		} else if (intAmount > payPrinc) {
-			var noCommaIntAmount = comma(intAmount);
-			validationMessage = '이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요';
-			return false;
 		}
 		return true;
 	}
@@ -1585,6 +1657,11 @@ h4{
 	    	val = val.replace(/,/g, "");
 	   }
 	   return val;
+	}
+	
+	// 5. 콤마추가
+	function numberFormat(inputNumber) {
+		return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	//--------------------------------------------------------------------------------------------------------------------------//
 
@@ -1771,329 +1848,6 @@ h4{
 			$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 		}
 		//--------------------------------------------------------------------------------------------------------------------------//
-
-</script>
-<script>
-$(function() {
-	// 입력버튼 이벤트 연결
-	$('#debtstatisticbtn').on('click', statisticDialog);
-	
-	$("#highcharts-dialog").dialog({ autoOpen : false });
-});
-
-function statisticDialog(){
-	var statisticYear = $('#statisticYear').val();
-	
-	if(statisticYear == null){
-		// statisticYear = new Date().getFullYear();
-		statisticYear = '2019';
-	}
-	
-	var options = {
-			chart: {
-		        type: 'column',
-		        width: 900,
-		        height: 550
-		    },
-		    title: {
-		        text: '부채관리'
-		    },
-		    subtitle: {
-		        text: '단기차입금, 장기차입금, 사채'
-		    },
-		    xAxis: {
-		        categories: [
-		            'Jan',
-		            'Feb',
-		            'Mar',
-		            'Apr',
-		            'May',
-		            'Jun',
-		            'Jul',
-		            'Aug',
-		            'Sep',
-		            'Oct',
-		            'Nov',
-		            'Dec'
-		        ],
-		        crosshair: true
-		    },
-		    yAxis: {
-		        min: 0,
-		        max: 100000000,
-		        tickInterval: 1000,
-		        title: {
-		            text: '(원)'
-		        },
-		    },
-	        series: [{
-	        	
-	        }],
-	        data: [
-	        ]
-	    };
-	
-	Highcharts.ajax({
-		url: "${pageContext.servletContext.contextPath }/api/selectone/get-statistic?statisticYear=" + statisticYear,
-		contentType : "application/json; charset=utf-8",
-		type: "get",
-		dataType: "json",
-		data: "",
-		success : function(data, result){
-			options.series[0].data = data.pdebtVo.JAN;
-			//options.series[1].data = data.pdebtVo.FEB;
-			options.series[2].data = data.pdebtVo.MAR;
-			options.series[3].data = data.pdebtVo.APR;
-			options.series[4].data = data.pdebtVo.MAY;
-			options.series[5].data = data.pdebtVo.JUN;
-			options.series[6].data = data.pdebtVo.JUL;
-			options.series[7].data = data.pdebtVo.AUG;
-			options.series[8].data = data.pdebtVo.SEP;
-			options.series[9].data = data.pdebtVo.OCT;
-			options.series[10].data = data.pdebtVo.NOV;
-			options.series[11].data = data.pdebtVo.DEC;
-			console.log("data : " + data.pdebtVo.nov);
-			
-			Highcharts.chart('container', options);
-			
-			$("#highcharts-dialog").dialog({
-				title: "부채통계",
-				title_html: true,
-			   	resizable: false,
-			    height: 700,
-			    width: 1000,
-			    modal: true,
-			    close: function() {
-			    },
-			    buttons: {
-			    "닫기" : function() {
-			    	$(this).dialog('close');
-			    }
-			}
-		});
-		$("#highcharts-dialog").dialog('open');
-		},
-		error : function(xhr,error) {
-			console.err("error" + error);
-		}
-	});
-}
-
-function statisticDebtData(){
-	var statisticYear = $('#statisticYear').val();
-	
-	
-}
-/* *
-*
-*  (c) 2010-2019 Torstein Honsi
-*
-*  License: www.highcharts.com/license
-*
-*  Dark theme for Highcharts JS
-*
-*  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
-*
-* */
-'use strict';
-/* global document */
-//Load the fonts
-
-Highcharts.setOptions({
-    colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
-        '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
-    chart: {
-        backgroundColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
-            stops: [
-                [0, '#2a2a2b'],
-                [1, '#3e3e40']
-            ]
-        },
-        style: {
-            fontFamily: '\'Unica One\', sans-serif'
-        },
-        plotBorderColor: '#606063'
-    },
-    title: {
-        style: {
-            color: '#E0E0E3',
-            textTransform: 'uppercase',
-            fontSize: '20px'
-        }
-    },
-    subtitle: {
-        style: {
-            color: '#E0E0E3',
-            textTransform: 'uppercase'
-        }
-    },
-    xAxis: {
-        gridLineColor: '#707073',
-        labels: {
-            style: {
-                color: '#E0E0E3'
-            }
-        },
-        lineColor: '#707073',
-        minorGridLineColor: '#505053',
-        tickColor: '#707073',
-        title: {
-            style: {
-                color: '#A0A0A3'
-            }
-        }
-    },
-    yAxis: {
-        gridLineColor: '#707073',
-        labels: {
-            style: {
-                color: '#E0E0E3'
-            }
-        },
-        lineColor: '#707073',
-        minorGridLineColor: '#505053',
-        tickColor: '#707073',
-        tickWidth: 1,
-        title: {
-            style: {
-                color: '#A0A0A3'
-            }
-        }
-    },
-    tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.85)',
-        style: {
-            color: '#F0F0F0'
-        }
-    },
-    plotOptions: {
-        series: {
-            dataLabels: {
-                color: '#F0F0F3',
-                style: {
-                    fontSize: '13px'
-                }
-            },
-            marker: {
-                lineColor: '#333'
-            }
-        },
-        boxplot: {
-            fillColor: '#505053'
-        },
-        candlestick: {
-            lineColor: 'white'
-        },
-        errorbar: {
-            color: 'white'
-        }
-    },
-    legend: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        itemStyle: {
-            color: '#E0E0E3'
-        },
-        itemHoverStyle: {
-            color: '#FFF'
-        },
-        itemHiddenStyle: {
-            color: '#606063'
-        },
-        title: {
-            style: {
-                color: '#C0C0C0'
-            }
-        }
-    },
-    credits: {
-        style: {
-            color: '#666'
-        }
-    },
-    labels: {
-        style: {
-            color: '#707073'
-        }
-    },
-    drilldown: {
-        activeAxisLabelStyle: {
-            color: '#F0F0F3'
-        },
-        activeDataLabelStyle: {
-            color: '#F0F0F3'
-        }
-    },
-    navigation: {
-        buttonOptions: {
-            symbolStroke: '#DDDDDD',
-            theme: {
-                fill: '#505053'
-            }
-        }
-    },
-    // scroll charts
-    rangeSelector: {
-        buttonTheme: {
-            fill: '#505053',
-            stroke: '#000000',
-            style: {
-                color: '#CCC'
-            },
-            states: {
-                hover: {
-                    fill: '#707073',
-                    stroke: '#000000',
-                    style: {
-                        color: 'white'
-                    }
-                },
-                select: {
-                    fill: '#000003',
-                    stroke: '#000000',
-                    style: {
-                        color: 'white'
-                    }
-                }
-            }
-        },
-        inputBoxBorderColor: '#505053',
-        inputStyle: {
-            backgroundColor: '#333',
-            color: 'silver'
-        },
-        labelStyle: {
-            color: 'silver'
-        }
-    },
-    navigator: {
-        handles: {
-            backgroundColor: '#666',
-            borderColor: '#AAA'
-        },
-        outlineColor: '#CCC',
-        maskFill: 'rgba(255,255,255,0.1)',
-        series: {
-            color: '#7798BF',
-            lineColor: '#A6C7ED'
-        },
-        xAxis: {
-            gridLineColor: '#505053'
-        }
-    },
-    scrollbar: {
-        barBackgroundColor: '#808083',
-        barBorderColor: '#808083',
-        buttonArrowColor: '#CCC',
-        buttonBackgroundColor: '#606063',
-        buttonBorderColor: '#606063',
-        rifleColor: '#FFF',
-        trackBackgroundColor: '#404043',
-        trackBorderColor: '#404043'
-    }
-});
-
-
 
 </script>
 </body>

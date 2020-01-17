@@ -173,4 +173,14 @@
 		;
 	</update>
 	
+	
+	<update id="updateClosingYnToFalse" parameterType="closingDate17Vo">
+		update	tb_closing_date
+		   set	closing_yn = false
+		   		, update_userId = #{updateUserid }
+		   		, update_day = now()
+		 where	no = #{no }
+		   and	use_yn = true
+		;
+	</update>
 </mapper>

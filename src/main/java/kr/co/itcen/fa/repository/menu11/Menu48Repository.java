@@ -157,6 +157,38 @@ public class Menu48Repository {
 		List<LTermdebtVo> list = sqlSession.selectList("menu48.getRepayDueList",map);
 		return list;
 	}
+
+	public List<Map> getYearSDebtStat(int searchYear) {
+		return sqlSession.selectList("menu48.getYearSDebtStat", searchYear);
+	}
+
+	public List<Map> getYearLDebtStat(int searchYear) {
+		return sqlSession.selectList("menu48.getYearLDebtStat", searchYear);
+	}
+
+	public List<Map> getYearPDebtStat(int searchYear) {
+		return sqlSession.selectList("menu48.getYearPDebtStat", searchYear);
+	}
+
+	public List<Map> getMonthSDebtStat(int searchYear) {
+		return sqlSession.selectList("menu48.getMonthSDebtStat", searchYear);
+	}
+	
+	public List<Map> getMonthLDebtStat(int searchYear) {
+		return sqlSession.selectList("menu48.getMonthLDebtStat", searchYear);
+	}
+	
+	public List<Map> getMonthPDebtStat(int searchYear) {
+		return sqlSession.selectList("menu48.getMonthPDebtStat", searchYear);
+	}
+
+	public List<Map> getYearIntStat(Map map) {
+		return sqlSession.selectList("menu48.getYearIntStat", map);
+	}
+
+	public Map getDebtRatioStat() {
+		return sqlSession.selectOne("menu48.getDebtRatioStat");
+	}
 	
 	
 
