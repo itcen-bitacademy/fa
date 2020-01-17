@@ -12,14 +12,14 @@
 					 am.account_order as accountOrder, 
 					 a.name as accountName, 
 					 (case 
-					  when a.balance_type = "C" 
-					  then (ifnull(existCost.credit_spot_month, 0) - ifnull(existCost.debtor_spot_month, 0)) 
-					  else (ifnull(existCost.debtor_spot_month, 0) - ifnull(existCost.credit_spot_month, 0)) 
+					  when a.balance_type = "D" 
+					  then (ifnull(existCost.debtor_spot_month, 0) - ifnull(existCost.credit_spot_month, 0)) 
+					  else (ifnull(existCost.credit_spot_month, 0) - ifnull(existCost.debtor_spot_month, 0)) 
 					  end) as monthToAmount, 
 					 (case 
-					  when a.balance_type = "C" 
-					  then (ifnull(existCost.credit_total, 0) - ifnull(existCost.debtor_total, 0)) 
-					  else (ifnull(existCost.debtor_total, 0) - ifnull(existCost.credit_total, 0)) 
+					  when a.balance_type = "D" 
+					  then (ifnull(existCost.debtor_total, 0) - ifnull(existCost.credit_total, 0)) 
+					  else (ifnull(existCost.credit_total, 0) - ifnull(existCost.debtor_total, 0)) 
 					  end) as amount, 
 					 existCost.insert_userid as insertUserid, 
 					 existCost.insert_day as insertDay, 
