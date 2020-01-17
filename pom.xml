@@ -164,6 +164,7 @@
 
 
 	<build>
+		<finalName>fa</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
