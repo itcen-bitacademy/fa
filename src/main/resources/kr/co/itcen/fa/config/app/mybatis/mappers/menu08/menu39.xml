@@ -32,7 +32,6 @@
 		from tb_building b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
         where tb_section.parent_no = 3 
-           and b.insert_day > (NOW() - INTERVAL 3 DAY) 
            and b.flag = 's'
 		]]>
 		<if test="_parameter.length()>0 ">
