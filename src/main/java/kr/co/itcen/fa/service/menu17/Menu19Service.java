@@ -264,4 +264,22 @@ public class Menu19Service {
 		
 		return dataResult;
 	}
+	
+	
+	/**
+	 * 
+	 * 최신 결산완료 마감일 조회
+	 */
+	public ClosingDateVo selectLastestClosedDateByClosingDateNoPerYear(ClosingDateVo closingDateVo) {
+		return menu19Repository.selectLastestClosedDateByClosingDateNoPerYear(closingDateVo);
+	}
+	
+	
+	/**
+	 * 
+	 * 결산완료된 마감일자 미결산처리
+	 */
+	public void updateClosingYnToFalse(ClosingDateVo closingDateVo) {
+		menu19Repository.updateClosingYnToFalse(closingDateVo);
+	}
 }
