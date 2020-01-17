@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
 import kr.co.itcen.fa.service.menu08.Menu43Service;
@@ -59,6 +60,11 @@ public class Menu43Controller {
 			@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd,
 			@RequestParam(value="page", required=false, defaultValue = "1") int page) {
 		
+		// 페이징 처리
+		String startDate = null;
+		String endDate = null;
+		DataResult<IntangibleAssetsVo> dataResult = new DataResult<IntangibleAssetsVo>();
+		
 		// 대분류코드, 거래처명 리스트
 		Map<String, Object> map = new HashMap<>();
 		map.putAll(menu43Service.getSection());
@@ -66,29 +72,10 @@ public class Menu43Controller {
 		map.putAll(menu43Service.getPurpose());
 		model.addAllAttributes(map);
 		
-		//DataResult<IntangibleAssetsVo> dataResult = new DataResult<IntangibleAssetsVo>();
-
-		// 품목코드로 조회
-		if (kwd != null) {
-			List<IntangibleAssetsVo> list = menu43Service.getList(kwd);
-			/*dataResult = menu43Service.list(page, kwd);
-			
-			model.addAttribute("dataResult",dataResult);
-			model.addAttribute("page" , page);*/
-			model.addAttribute("list", list);
-			model.addAttribute("kwd", kwd);
-
-			return MAINMENU + "/" + SUBMENU + "/add";
-		}
-
-		kwd = null;
-		/*dataResult = menu43Service.list(page, kwd); 
+		dataResult = menu43Service.getList(page, intangibleAssetsVo, startDate, endDate); 
 		model.addAttribute("dataResult",dataResult);
-		model.addAttribute("page" , page);*/
-				
-		List<IntangibleAssetsVo> list = menu43Service.getList(kwd);
-		model.addAttribute("kwd", kwd);
-		model.addAttribute("list", list);
+		model.addAttribute("page" , page);
+		model.addAttribute("intangibleAssetsVo", dataResult.getDatas());
 
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
@@ -124,7 +111,8 @@ public class Menu43Controller {
 			@SessionAttribute("authUser") UserVo user,
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
 			@RequestParam(value = "customerNo", required = false) String customerNo,
-			@RequestParam(value = "purpose", required = false) String purpose) throws ParseException {
+			@RequestParam(value = "purpose", required = false) String purpose
+			) throws ParseException {
 		
 		String id = 'f' + intangibleAssetsVo.getId();
 		intangibleAssetsVo.setId(id);
@@ -232,7 +220,6 @@ public class Menu43Controller {
 			model.addAttribute("closingDate", true);
 			return MAINMENU + "/" + SUBMENU;
 		} else { // 수정 가능!
-			System.out.println(intangibleAssetsVo);
 			menu43Service.update(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}

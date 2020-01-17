@@ -2,20 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menu43">
 
-	<!--  TEST -->
-	<insert id="save" parameterType="test08vo">
-		<![CDATA[
-		insert
-		  into test
-		values (null, #{name })
-		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
-	</insert>
-	
 	<insert id="insert" parameterType="intangibleAssetsVo">
 		<![CDATA[
 		insert 
@@ -27,26 +13,26 @@
 	</insert>
 	
 	<select id="getSection" resultType="sectionvo">
-	<![CDATA[
-	select s.no, s.classification, s.code
-	  from tb_section s
-	 where s.parent_no = 5
-	]]>
+		<![CDATA[
+		select s.no, s.classification, s.code
+		  from tb_section s
+		 where s.parent_no = 5
+		]]>
 	</select>
 	
 	<select id="getCustomer" resultType="1customervo">
-	<![CDATA[
-	select no , name , manager_name
-	  from tb_customer
-	 where assets_flag = 'd'
-	]]>
+		<![CDATA[
+		select no , name , manager_name
+		  from tb_customer
+		 where assets_flag = 'd'
+		]]>
 	</select>
 	
 	<select id="getPurpose" resultType="purposevo">
-	<![CDATA[
-	select classification, account_no, y_or_n
-	  from tb_purpose
-	]]>
+		<![CDATA[
+		select classification, account_no, y_or_n
+		  from tb_purpose
+		]]>
 	</select>
 	
 	<select id="getById" parameterType="string" resultType="string">
@@ -57,58 +43,46 @@
 		]]>
 	</select>
 	
-	<!-- 페이징 처리  -->
-	<select id="list" resultType="intangibleAssetsVo" parameterType="map">
+	<select id="selectCount" parameterType="map" resultType="int">
 		<![CDATA[
-			select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
-		   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
-		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind, c.name as customerName, c.manager_name as customerManager,
-		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
-		   tb.update_day as updateDay
-	  from tb_intangible_assets tb
-left outer join tb_section s on tb.code = s.code
-left outer join tb_customer c on tb.customer_no = c.no
-	 where s.parent_no = 5
-	   and flag ='s'
+			select	count(*)
+			  from	tb_intangible_assets tb
+	left outer join tb_section s on tb.code = s.code 
+    left outer join tb_customer c on tb.customer_no = c.no
+			  where s.parent_no = 5
+			    and tb.flag in ('s', 'o')
 		]]>
-		<if test=' kwd != null '><!-- "_parameter.length()>0" --> 
-            <![CDATA[
-              and tb.id like CONCAT('%', #{id }, '%') 
-            ]]>
-         </if>
-         <![CDATA[
-          order by tb.update_day desc, tb.insert_day desc
-         ]]>
-         <if test=' pagination.pageIndex >= 0 '>
+		<if test="id!=null and !id.equals('')">
 			<![CDATA[
-        		limit #{pagination.pageIndex }, #{pagination.listSize }
-    		]]>
+				  and id like CONCAT('%',#{id },'%')
+			]]>
 		</if>
-	</select> 
+	</select>
 	
-	<select id="getList" parameterType="string" resultType="intangibleAssetsVo">
-	<![CDATA[
-	select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
-		   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
-		   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind, c.name as customerName, c.manager_name as customerManager,
-		   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
-		   tb.update_day as updateDay
-	  from tb_intangible_assets tb
-left outer join tb_section s on tb.code = s.code
-left outer join tb_customer c on tb.customer_no = c.no
-	 where s.parent_no = 5
-	   and tb.insert_day > (now() - interval 7 day)
-	   and flag ='s'
-	   ]]>
-	<if test=' _parameter != null '>
+	<select id="getList" resultType="intangibleAssetsVo" parameterType="map">
 		<![CDATA[
-		and tb.id like CONCAT('%', #{ _parameter }, '%')
-		]]>
+		select tb.id, tb.customer_no as customerNo, tb.taxbill_no as taxbillNo, tb.voucher_no as voucherNo, tb.taxbill_no as taxbillNo, tb.name,
+			   tb.section_no as sectionNo, tb.code as code, s.classification as classification, tb.copy_count as copyCount, tb.purpose, tb.address, tb.user,
+			   tb.acq_price as acqPrice, tb.addi_fee as addiFee, tb.pay_date as payDate, tb.tax_kind as taxKind, c.name as customerName, c.manager_name as customerManager,
+			   tb.flag, tb.insert_userid as insertUserId, date_format(tb.insert_day, '%Y-%m-%d %h:%i:%s') as insertDay, tb.update_userid as updateUserId,
+			   tb.update_day as updateDay
+		  from tb_intangible_assets tb
+	left outer join tb_section s on tb.code = s.code
+	left outer join tb_customer c on tb.customer_no = c.no
+		 where s.parent_no = 5
+		   and tb.flag in ('s', 'o')
+		   ]]>
+	<if test="id!=null and !id.equals('')">
+			<![CDATA[
+				  and id like CONCAT('%',#{id },'%')
+			]]>
 	</if>
-	<![CDATA[
-  order by tb.insert_day desc
-     limit 0, 3
-  	]]>
+	<if test="pagination.pageIndex >= 0">
+			<![CDATA[
+				order by tb.insert_day desc
+				limit #{pagination.pageIndex }, #{pagination.listSize }
+			]]>
+		</if>
 	</select>
 	
 	<update id="update" parameterType="intangibleAssetsVo">
@@ -129,7 +103,8 @@ left outer join tb_customer c on tb.customer_no = c.no
 			   pay_date = #{payDate }, 
 			   tax_kind = #{taxKind },
 			   update_userid = #{updateUserId },
-			   update_day = now()
+			   update_day = now(),
+			   flag = 'o'
 		 where id = #{id }
 		]]>
 	</update>
@@ -159,17 +134,11 @@ left outer join tb_customer c on tb.customer_no = c.no
    </select>
    
 	<delete id="delete" parameterType="string">
-	<![CDATA[
-	update tb_intangible_assets 
-		  set flag = 'd'
-		where id = #{id }
-	]]>
+		<![CDATA[
+		update tb_intangible_assets 
+			  set flag = 'd'
+			where id = #{id }
+		]]>
 	</delete>
-	
-	<select id="listCount" resultType="int" parameterType="string">
-		select count(*)
-		from tb_intangible_assets
-		where id like CONCAT('%', #{id }, '%') and flag = 's'
-	</select>
 
 </mapper>
