@@ -40,10 +40,6 @@ tr td:first-child {
 	padding-right: 10px;
 }
 
-.radio {
-	float: left;
-	width: 17%;
-}
 
 .search-input-width-first {
 	width: 130px;
@@ -107,6 +103,15 @@ tr td:first-child {
 	display: grid;
 	grid-template-columns: 150px auto;
 	grid-template-rows: repeat(6, auto);
+	gap: 10px;
+}
+
+.div-radio{
+	display: grid;
+	grid-template-columns: 50px 50px auto;
+}
+.lbl{
+	margin-left: -20px !important;
 }
 </style>
 </head>
@@ -163,7 +168,7 @@ tr td:first-child {
 			                     	</div>
 								</div>
 								<label class="control-label">이자지급방식</label>
-								<div>
+								<div class="div-radio">
 									<div class="radio" >
 										<label>
 											<input name="intPayWay" type="radio" class="ace" value="Y" />
@@ -190,196 +195,158 @@ tr td:first-child {
 										<span class="add-on">
 		                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
 		                                 </span>
+		                                 <input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly />
 									</div>
 								</div>
 							</div>
 							
 							<div>
-								
+								<label class="control-label">회계연도</label>
 								<div>
+									<c:choose>
+										<c:when test='${year eq ""}'>
+											<input type="number" min="1900" max="2099" step="1"  id="form-field-1" name="financialYear" placeholder="회계연도" />
+										</c:when>
+										<c:otherwise>
+											<input type="number" min="1900" max="2099" step="1" value="${year}" id="form-field-1" name="financialYear" placeholder="회계연도" />
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<label class="control-label">차입금대분류</label>
+								<div>
+									<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
+										<option value=""></option>
+										<c:forEach items="${sectionlist}" var="sectionvo">
+											<option value="${sectionvo.code}">${sectionvo.classification }</option>
+										</c:forEach>
+									</select>
+								</div>
+								<label class="control-label">상환방법</label>
+								<div class="div-radio">
+									<div class="radio">
+										<label>
+											<input name="repayWay" type="radio" class="ace" value="Y" />
+											<span class="lbl">연</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="repayWay" type="radio" class="ace"  value="M" />
+											<span class="lbl">월</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="repayWay" type="radio" class="ace"  value="E" />
+											<span class="lbl">만기</span>
+										</label>
+									</div>
+								</div>
+								
+								<label class="control-label">이율</label>
+								<div>
+									<input type="text" id="int_rate" name="intRate" class="number-input" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> 
+									<h5 style="display: inline-block; font-size:14px;">(%)</h5>
+								</div>
+								
+								<label class="control-label">담당자</label>
+								<div>
+									<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
+									<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+									<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
+								</div>
+								
+								<label class="control-label">계좌</label>
+								<div>
+									<div class="input-append">
+										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" placeholder="계좌번호" readonly />
+										<span class="add-on">
+		                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+		                                    </a>
+		                                </span>
+									</div>
+	                                 <input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
 								</div>
 							</div>		
 						</section>
 					</section>
 					
-					<div class="row">
-						<div class="span8">
-							<table>
-								<tr>
-									<td><label class="control-label">은행코드</label></td>
-									<td colspan="2">
-									<div class="input-append">
-										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" placeholder="은행코드" readonly />
-										<span class="add-on">
-		                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-		                                    </a>
-		                                 </span>
-									</div>
-									
-									<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
-												<div id="dialog-message" title="은행코드" hidden="hidden">
-															<table id ="dialog-message-table" align="center">
-																<tr>
-																	<td>
-																	<label>은행코드</label>
-																	<div class="input-append">
+					<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+					<div id="dialog-message" title="은행코드" hidden="hidden">
+								<table id ="dialog-message-table" align="center">
+									<tr>
+										<td>
+										<label>은행코드</label>
+										<div class="input-append">
 
-																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
-																		<span class="add-on">
-										                                    <a href="#" id="a-dialog-bankcode" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                                    </a>
-										                                 </span>
-																		</div>
-																	</td>
-																	<td>
-																	<label>은행명</label>
-																	<div class="input-append">
-																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
-																		<span class="add-on">
-										                                    <a href="#" id="a-dialog-bankname" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                                    </a>
-										                                 </span>
-																	</div>
-																	</td>
-																</tr>
-																
-															</table>
-														<!-- 은행코드 및 은행명 데이터 리스트 -->
-														<table id="modal-bank-table" class="table  table-bordered table-hover">
-															<thead>
-																<tr>
-																	<th class="center">은행코드</th>
-																	<th class="center">은행명</th>
-																</tr>
-															</thead>
-															<tbody id="tbody-bankList">
-															</tbody>
-														</table>
-												</div>
-												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-								<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly />
-								</td>
-								</tr>
-							</table>
-						</div>
-						<div class="span8">
-							<table>
-								<tr>
-									<td><label class="control-label">회계연도</label></td>
-									<td>
-										<c:choose>
-											<c:when test='${year eq ""}'>
-												<input type="number" min="1900" max="2099" step="1"  id="form-field-1" name="financialYear" placeholder="회계연도" />
-											</c:when>
-											<c:otherwise>
-												<input type="number" min="1900" max="2099" step="1" value="${year}" id="form-field-1" name="financialYear" placeholder="회계연도" />
-											</c:otherwise>
-										</c:choose>
-										
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">차입금대분류</label></td>
-									<td colspan="2">
-										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
-										<option value=""></option>
-										<c:forEach items="${sectionlist}" var="sectionvo">
-											<option value="${sectionvo.code}">${sectionvo.classification }</option>
-										</c:forEach>
-										</select>
-									</td>	
-								</tr>
-								<tr>
-								<td><label class="control-label">상환방법</label></td>
-									<td colspan="2">
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace" value="Y" />
-													<span class="lbl">연</span>
-												</label>
+										<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
+											<span class="add-on">
+			                                    <a href="#" id="a-dialog-bankcode" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+			                                    </a>
+			                                 </span>
 											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="M" />
-													<span class="lbl">월</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="E" />
-													<span class="lbl">만기</span>
-												</label>
-											</div>
-									</td>
+										</td>
+										<td>
+										<label>은행명</label>
+										<div class="input-append">
+										<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
+											<span class="add-on">
+			                                    <a href="#" id="a-dialog-bankname" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+			                                    </a>
+			                                 </span>
+										</div>
+										</td>
 									</tr>
-								<tr>
-									<td><label class="control-label">이율</label></td>
-									<td colspan="2">
-										<input type="text" id="int_rate" name="intRate" class="number-input" 
-										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">담당자</label></td>
-									<td>
-										<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
-										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
-										<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">계좌</label></td>
-									<td colspan="2">
-									<div class="input-append">
-										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" placeholder="계좌번호" readonly />
-												<span class="add-on">
-				                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-				                                    </a>
-				                                 </span>
-									</div>
-												<!-- 계좌정보 Modal pop-up : start -->
-												<div id="dialog-account-message" title="계좌" hidden="hidden">
-													<table id="dialog-account-message-table">
-														<tr>
-															<td>
-																		
-															
-															<div class="input-append">
-																<label>계좌번호</label>
-																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-																<span class="add-on">
-										                             <a href="#" id="a-dialog-depositNo" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                             </a>
-										                         </span>
-															</div>
-															</td>
-														</tr>
-													</table>
-													<!-- 계좌정보 데이터 리스트 -->
-													<table id="modal-deposit-table" class="table  table-bordered table-hover">
-														<thead>
-															<tr>
-																<th class="center">계좌번호</th>
-																<th class="center">예금주</th>
-																<th class="center">은행코드</th>
-																<th class="center">은행명</th>
-															</tr>
-														</thead>
-														<tbody id="tbody-bankaccountList">
-															
-														</tbody>
-													</table>
-												</div>
-												<!-- 계좌정보 Modal pop-up : end -->
-								
-											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
-									</td>
-								</tr>
+									
+								</table>
+							<!-- 은행코드 및 은행명 데이터 리스트 -->
+							<table id="modal-bank-table" class="table  table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center">은행코드</th>
+										<th class="center">은행명</th>
+									</tr>
+								</thead>
+								<tbody id="tbody-bankList">
+								</tbody>
 							</table>
-						</div>
-
 					</div>
-				</div>
+					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+					<!-- 계좌정보 Modal pop-up : start -->
+					<div id="dialog-account-message" title="계좌" hidden="hidden">
+						<table id="dialog-account-message-table">
+							<tr>
+								<td>
+											
+								
+								<div class="input-append">
+									<label>계좌번호</label>
+									<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+									<span class="add-on">
+			                             <a href="#" id="a-dialog-depositNo" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+			                             </a>
+			                         </span>
+								</div>
+								</td>
+							</tr>
+						</table>
+						<!-- 계좌정보 데이터 리스트 -->
+						<table id="modal-deposit-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">계좌번호</th>
+									<th class="center">예금주</th>
+									<th class="center">은행코드</th>
+									<th class="center">은행명</th>
+								</tr>
+							</thead>
+							<tbody id="tbody-bankaccountList">
+								
+							</tbody>
+						</table>
+					</div>
+					<!-- 계좌정보 Modal pop-up : end -->
+				</div> <!--  container-fluid End -->
 				<hr>
 				<div class="row-fluid">
 					<button  class="btn btn-primary btn-small mybtn" id="inputbtn" >입력</button>
