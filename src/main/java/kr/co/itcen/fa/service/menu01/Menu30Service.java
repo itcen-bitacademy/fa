@@ -224,7 +224,8 @@ public class Menu30Service {
 			
 			voucherVolist.add(v);
 		}
-		menu03Service.deleteVoucher(voucherVolist, authUser);
+		menu30Repository.deleteVoucher(voucherVolist);
+		
 	}
 	
 	
