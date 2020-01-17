@@ -32,7 +32,7 @@ h4{
 	font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;
 }
 
-#dialog-confirm{z-index: 2222!important;}
+#dialog-confirm{z-index: 3333;}
 /* 상환정보 dialog에서 Error Modal 생성시, dialog앞에 Modal생성 */
 .p-debt-code-input {width: 205px;}
 
@@ -495,6 +495,23 @@ h4{
 									<!-- 계좌정보 데이터 리스트 -->
 								</div>
 								
+								<!-- 금주의 상환 내역 Modal pop-up : start -->
+								<div id="repay-due" title="금주의 상환 내역" hidden="hidden">
+										<!-- 은행코드 및 은행명 데이터 리스트 -->
+										<table id="repay-due-table" class="table  table-bordered table-hover">
+											<thead>
+												<tr>
+													<th class="center">차입금 코드</th>
+													<th class="center">상환 금액</th>
+													<th class="center">납입일</th>
+												</tr>
+											</thead>
+											<tbody id="tbody-repay-due">
+											</tbody>
+										</table>
+								</div>
+								<!-- 금주의 상환 내역 Modal pop-up : end -->
+								
 								<div id="dialog-confirm" class="hide">
 									<p id="dialog-txt" class="bolder grey">
 									</p>
@@ -706,18 +723,25 @@ h4{
 	}
 	
 	// 사채데이터 수정
-	function updateDebtData(event) {
-		event.preventDefault();
-		var count = $("input:checkbox[name=checkBox]:checked").length;
+	function updateDebtData() {
+		var count = 0;
 		
-		if (count > 1){
-			dialog('하나의 내용만 수정할 수 있습니다');
+		$("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		});
+		console.log(count);
+		
+		if(count>1){
+			openErrorModal('UPDATE ERROR','하나의 내용만 수정할 수 있습니다','');
 			return;
 		}
-		if (count <= 0){
-			dialog('수정할 데이터를 선택하여 주세요');
+		
+		if(count<=0){
+			openErrorModal('UPDATE ERROR','수정할 리스트를 선택하여 주세요','');
 			return;
-		}
+		}	
 		
 		var no = $('#no').val();
 		$.ajax({
@@ -747,13 +771,20 @@ h4{
 					openModal('Error', "해당 차입금정보는 상환내역이 있기때문에 수정할 수 없습니다.");
 					
 					var repayList = response.data;
+					var payPrinc;
+					var intAmount;
+					
 	         	  	$("#repay-code").text(repayList[0].code);
 	         	  	
 	         	  	for(let a in repayList) {
+	         	  		payPrinc = numberFormat(repayList[a].payPrinc);
+	         	  		intAmount = numberFormat(repayList[a].intAmount);
+	         	  		console.log();
+	         	  		console.log();
 	         	  		$("#tbody-repaymentList").append("<tr>" +
 		                          "<td class='center'>" + repayList[a].code + "</td>" +
-		                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-		                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+		                          "<td class='center'>" + payPrinc + "</td>" +
+		                          "<td class='center'>" + intAmount + "</td>" +
 		                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 		                          "</tr>");
 	         	  	}
@@ -923,8 +954,15 @@ h4{
 	function repayDebtData() {
 		$("#repaycode").val($('#code').val()); // 차입금코드를 상환팝업의 차입금코드에 입력
 		console.log($("input[name=code]").val());
-		var count = $("input:checkbox[name=checkBox]:checked").length;
-			
+		
+		var count = 0;
+		 $("#tbody-list tr").each(function(i){
+			if($(this).hasClass('selected') === true){
+				count++;
+			}
+		 });
+		console.log(count);
+		
 		if (count > 1 || count == 0) {
 			openModal('Error', '상환할 데이터를 선택해 주세요');
 			return;
@@ -1124,15 +1162,17 @@ h4{
 			    }
 			},
 			success: function(response){
-				  $.each(response.data,function(index, item){
-					  var repayBal = numberFormat(item.repayBal);
-	                 $("#tbody-repay-due").append("<tr>" + 
-	                		 "<td class='center'>" + item.code + "</td>" +
+				var repayBal;
+				
+				$.each(response.data,function(index, item){
+					repayBal = numberFormat(item.repayBal);
+					$("#tbody-repay-due").append("<tr>" + 
+							"<td class='center'>" + item.code + "</td>" +
 	                     	"<td class='center'>" + repayBal + "</td>" +
-	                    	 "<td class='center'>" + item.payDate + "</td>" +
-	                     "</tr>");
-	          })
-	    	},
+	                     	"<td class='center'>" + item.payDate + "</td>" +
+	                 "</tr>");
+				})
+			},
 			error: function(xhr, error){
 				console.error("error : " + error);
 			}
@@ -1524,10 +1564,6 @@ h4{
 			return false;
 		} else if (repayBal < payPrinc) {
 			validationMessage = '납입원금이 상환 잔액보다 큽니다. 상환잔액(' + repay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ')보다 작게 입력해주세요';
-			return false;
-		} else if (intAmount > payPrinc) {
-			var noCommaIntAmount = comma(intAmount);
-			validationMessage = '이자 금액보다 납입금이 작습니다 납입금('+ noCommaIntAmount + '원)보다 크게 입력해주세요';
 			return false;
 		}
 		return true;
