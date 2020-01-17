@@ -365,7 +365,6 @@ $('#search').click(function(){
 	return;
 });
 $('#reset').click(function(){
-
 	$('input').not('input[name=intPayWay]').val('');
 	$('#sort-select').val('정렬하기 위해 선택해주세요.').trigger('chosen:updated');
 	

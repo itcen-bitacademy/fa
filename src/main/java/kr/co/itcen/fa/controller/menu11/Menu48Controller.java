@@ -134,7 +134,10 @@ public class Menu48Controller {
 		
 	}
 	
-	
+	@RequestMapping("/" + SUBMENU + "/statistics")
+	public String Statistics() {
+		return MAINMENU + "/" + SUBMENU + "/statistics";
+	}
 	
 	
 }

@@ -401,4 +401,98 @@
 		where deposit_no = #{depositOld}
 	</update>
 	
+	<!-- 연간 부채 그래프 -->
+	<select	id="getYearSDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_s_term_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select	id="getYearLDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_l_term_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select	id="getYearPDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_p_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+	
+	<!-- 월별 부채 그래프 -->
+	<select id="getMonthSDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_s_term_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   <select id="getMonthLDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_l_term_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   <select id="getMonthPDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_p_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   
+   
+	<!-- 년간 지급이자 그래프 -->
+	<select id="getYearIntStat" parameterType="map" resultType="map">
+   	<![CDATA[
+   		select year(pay_date) "year", sum(int_amount) "sum"
+   		from tb_repay
+   		where year(pay_date) <= ${searchYear} and year(pay_date) >= ${searchYear} -10
+   		]]>
+   		<choose>
+   			<when test='"S".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   			<when test='"L".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   			<when test='"P".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   		</choose>
+   	<![CDATA[
+   		group by year(pay_date)
+   	]]>
+   </select>
+   
+   <!-- 계정별 부채 비율 -->
+   <select id="getDebtRatioStat" resultType="map">
+   	<![CDATA[
+   	  select round(s.sum / (s.sum + l.sum + p.sum), 2) * 100 sDebtRatio, 
+		 	 round(l.sum / (s.sum + l.sum + p.sum), 2) * 100 lDebtRatio, 
+			 round(p.sum / (s.sum + l.sum + p.sum), 2) * 100 pDebtRatio
+	  from (select sum(debt_amount) sum from tb_s_term_debt) s, 
+		   (select sum(debt_amount) sum from tb_l_term_debt) l, 
+	       (select sum(debt_amount) sum from tb_p_debt) p;
+	   	]]>
+   </select>
+   
+   
 </mapper>
