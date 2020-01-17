@@ -131,20 +131,131 @@
 	
 	<select id="getRepayDueList" parameterType="map" resultType="stermdebtvo" resultMap="stermdebtResult">
    		<![CDATA[
-   			select code, repay_bal, case
-   			when repay_way = "E" then exp_date 
-			when repay_way = "Y" then concat(date_format(now(), "%Y-"), date_format(debt_date, "%m-%d")) 
-			when repay_way="M" then concat(date_format(now(), "%Y-%m-"), date_format(debt_date, "%d")) end as repayDue
-			from tb_s_term_debt
-			where repay_comple_flag = "N" and
-			(${curDay} <= day(debt_date) and ${sunDay} >= day(debt_date) and
-			(repay_way="Y"  and
-			year(debt_date) < ${curYear} and month(debt_date) = ${curMonth})  or
-			(repay_way="M" and
-			 date_format(debt_date, "%Y%m") <> date_format(now(), "%Y%m"))) or
-			repay_way="E" and 
-			#{today} <= exp_date and exp_date <= #{dateOfSunday}
-   		]]>
+	select code,
+		   repay_bal as repayBal,
+		   (case repay_way
+   				when 'Y' then (case 
+   				]]>
+				<choose>
+					<when test="(startDate.substring(1,4) != endDate.substring(1,4))">
+				<![CDATA[
+					when (date_format(debt_date,"%m-%d") BETWEEN 
+						date_format(#{startDate},"%m-%d") AND '12-31')
+						
+						then
+						 concat(date_format(#{startDate},"%Y-"), date_format(debt_date,"%m-%d"))
+						 
+					when  (date_format(debt_date,"%m-%d") BETWEEN 
+						'01-01' AND date_format(#{endDate},"%m-%d"))
+							
+						then 
+						 concat(date_format(#{endDate},"%Y-"), date_format(debt_date,"%m-%d"))
+					]]>
+					</when>
+					<otherwise>
+					<![CDATA[
+					when date_format(debt_date,"%m-%d") BETWEEN 
+						date_format(#{startDate},"%m-%d") AND date_format(#{endDate},"%m-%d")
+						
+						then
+						 concat(date_format(#{startDate},"%Y-"), date_format(debt_date,"%m-%d"))
+					]]>
+					</otherwise>
+				</choose>     
+				<![CDATA[
+            		   
+         			 end)
+    			when 'M' then (case 
+    				]]>
+				<choose>
+					<when test="(startDate.substring(5,6) != endDate.substring(5,6))">
+				<![CDATA[
+					when (date_format(debt_date,"%d") BETWEEN 
+						date_format(#{startDate},"%d") AND '31')
+						
+						then
+						 concat(date_format(#{startDate},"%Y-%m-"), date_format(debt_date,"%d"))
+						 
+					when  (date_format(debt_date,"%d") BETWEEN 
+						'01' AND date_format(#{endDate},"%d"))
+							
+						then 
+						 concat(date_format(#{endDate},"%Y-%m-"), date_format(debt_date,"%d"))
+						 
+						 
+						 
+					]]>
+					</when>
+					<otherwise>
+					<![CDATA[
+					when date_format(debt_date,"%d") BETWEEN 
+						date_format(#{startDate},"%d") AND date_format(#{endDate},"%d")
+						
+						then
+						 concat(date_format(#{startDate},"%Y-%m"), date_format(debt_date,"%d"))
+					]]>
+					</otherwise>
+				</choose>     
+				<![CDATA[
+            	
+    			end) 
+    			when 'E' then (
+					 date_format(debt_date,"%Y-%m-%d")
+				)
+    		end)
+		   
+		    as repayDue
+		   
+	from tb_s_term_debt
+	where (case repay_way
+		when 'Y' then ( 
+		]]>
+		<choose>
+			<when test="(startDate.substring(1,4) != endDate.substring(1,4))">
+			<![CDATA[
+			(date_format(debt_date,"%m-%d") BETWEEN 
+				date_format(#{startDate},"%m-%d") AND '12-31')
+			or (date_format(debt_date,"%m-%d") BETWEEN 
+				'01-01' AND date_format(#{endDate},"%m-%d"))
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			date_format(debt_date,"%m-%d") BETWEEN 
+				date_format(#{startDate},"%m-%d") AND date_format(#{endDate},"%m-%d")
+			]]>
+			</otherwise>
+		</choose>     
+		<![CDATA[
+		)
+		when 'M' then (
+		]]>
+		<choose>
+			<when test="(startDate.substring(5,6) != endDate.substring(5,6))">
+			<![CDATA[
+			(date_format(debt_date,"%d") BETWEEN 
+				date_format(#{startDate},"%d") AND '31')
+			or (date_format(debt_date,"%d") BETWEEN 
+				'01' AND date_format(#{endDate},"%d"))
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			date_format(debt_date,"%d") BETWEEN 
+				date_format(#{startDate},"%d") AND date_format(#{endDate},"%d")
+			]]>
+			</otherwise>
+		</choose>     
+		<![CDATA[
+		)
+		when 'E' then (
+			 date_format(debt_date,"%y-%m-%d") BETWEEN 
+				date_format(#{startDate},"%y-%m-%d") AND date_format(#{endDate},"%y-%m-%d")
+		)
+	end)
+	and repay_comple_flag = 'N'
+	and delete_flag = 'N'
+	]]>
    </select>
    
    <select	id="getYearSDebtStat" parameterType="int" resultType="map">

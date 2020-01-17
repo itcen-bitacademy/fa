@@ -301,10 +301,13 @@ html, body {
 			location.reload(true);
 		};
 		
-	 
+	 	// 검색여부 플래그
 		var searchFlag = true;
+	 	
+	 	// 조회
 		$("#search").click(function(event) {
 			event.preventDefault();
+			
 			
 			if(($("#startDate").val() != null && $("#startDate").val().length !== 0) || ($("#endDate").val() != null && $("#endDate").val().length !== 0)) {
 				if(($("#startDate").val() != null && $("#startDate").val().length !== 0) && ($("#endDate").val() != null && $("#endDate").val().length !== 0)) {
@@ -317,9 +320,6 @@ html, body {
 					return;
 				}
 			}
-			
-		
-			
 			var vo = {startDate : $("#startDate").val(), endDate : $("#endDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
 					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val()};
 			//페이징

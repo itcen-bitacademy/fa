@@ -92,6 +92,22 @@ tr td:first-child {
 	margin-bottom: 0; 
 	width: auto;"
 }
+
+.grid-main{
+	display: grid;
+	grid-template-rows: repeat(3, auto);
+}
+
+.grid-input{
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+}
+
+.grid-input>div{
+	display: grid;
+	grid-template-columns: 150px auto;
+	grid-template-rows: repeat(6, auto);
+}
 </style>
 </head>
 <body class="skin-3">
@@ -110,84 +126,94 @@ tr td:first-child {
 				<form id="myform" class="form-horizontal">
 				<div class="container-fluid">
 					<!-- Example row of columns -->
+					<section class="grid-main">
+						<section class="grid-input">
+							<div>
+								<label class="control-label">장기차입금코드</label>
+								<div>
+									<input type="hidden" name="no" id = "no" />
+									<c:choose>
+										<c:when test='${code eq ""}'>
+											<input type="text" name="code" id ="code" maxlength="10"/>
+										</c:when>
+										<c:otherwise>
+											<input type="text" name="code" id ="code" value="${code}" maxlength="10"/>
+										</c:otherwise>
+									</c:choose>
+									<input id="btn-check-code" type="button" value="중복확인">
+									<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
+								</div>
+								<label class="control-label">장기차입금명</label>
+								<div>
+									<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
+								</div>
+								<label class="control-label">차입금액</label>
+								<div>
+									<input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
+								</div>
+								<label class="control-label">차입일자 ~ 만기일자</label>
+								<div>
+									<div class="control-group">
+			                       	  <div class="row-fluid input-prepend">			                        	
+			                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" readonly />
+			                           <span class="add-on">
+			                             <i class="icon-calendar"></i>
+			                           </span>
+			                          </div>
+			                     	</div>
+								</div>
+								<label class="control-label">이자지급방식</label>
+								<div>
+									<div class="radio" >
+										<label>
+											<input name="intPayWay" type="radio" class="ace" value="Y" />
+											<span class="lbl">연</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="intPayWay" type="radio" class="ace" value="M" />
+											<span class="lbl">월</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="intPayWay" type="radio" class="ace" value="E" />
+											<span class="lbl">해당없음</span>
+										</label>
+									</div>
+								</div>
+								<label class="control-label">은행코드</label>
+								<div>
+									<div class="input-append">
+										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" placeholder="은행코드" readonly />
+										<span class="add-on">
+		                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+		                                 </span>
+									</div>
+								</div>
+							</div>
+							
+							<div>
+								
+								<div>
+								</div>
+							</div>		
+						</section>
+					</section>
+					
 					<div class="row">
 						<div class="span8">
 							<table>
 								<tr>
-									<td><label class="control-label">장기차입금코드</label></td>
-									<td>
-										<input type="hidden" name="no" id = "no" />
-										<c:choose>
-											<c:when test='${code eq ""}'>
-												<input type="text" name="code" id ="code" maxlength="10"/>
-											</c:when>
-											<c:otherwise>
-												<input type="text" name="code" id ="code" value="${code}" maxlength="10"/>
-											</c:otherwise>
-										</c:choose>
-									
-										<input id="btn-check-code" type="button" value="중복확인">
-											<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
-									
-									</td>
-								</tr>
-								<tr >
-									<td style="padding-bottom: 70px;"><label class="control-label">장기차입금명</label></td>
-									<td colspan="2">
-										<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
-									</td>
-									
-								</tr>
-								<tr>
-									<td><label class="control-label">차입금액</label></td>
-									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block; font-size:14px;">(원)</h5></td>
-								</tr>
-								<tr>
-									<td><label class="control-label">차입일자 ~ 만기일자</label></td>
-									<td colspan="2">
-									<div class="control-group">
-				                        <div class="row-fluid input-prepend">			                        	
-				                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" readonly />
-				                           <span class="add-on">
-				                              <i class="icon-calendar"></i>
-				                           </span>
-				                          </div>
-				                      </div>
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">이자지급방식</label></td>
-									<td colspan="2">
-										<div class="radio" >
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="Y" />
-												<span class="lbl">연</span>
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="M" />
-												<span class="lbl">월</span>
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="E" />
-												<span class="lbl">해당없음</span>
-											</label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-						                              	
 									<td><label class="control-label">은행코드</label></td>
 									<td colspan="2">
 									<div class="input-append">
 										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" placeholder="은행코드" readonly />
-												<span class="add-on">
-				                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-				                                    </a>
-				                                 </span>
+										<span class="add-on">
+		                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+		                                    </a>
+		                                 </span>
 									</div>
 									
 									<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
