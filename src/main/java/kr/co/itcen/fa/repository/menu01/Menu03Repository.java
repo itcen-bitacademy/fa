@@ -61,8 +61,6 @@ public class Menu03Repository {
 			sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
 		}
 		
-		
-		
 		return voucherVo.getNo();	// 전표번호
 	}
 	
@@ -70,27 +68,16 @@ public class Menu03Repository {
 	public Long createVoucher(VoucherVo voucherVo, List<ItemVo> itemVo, List<MappingVo> mappingVo, UserVo userVo) throws ParseException {
 		
 		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-			System.out.println("repo1");
 			sqlSession.insert("menu03.insertVoucher", voucherVo); // 전표테이블 입력
 			for(int i = 0; i < itemVo.size(); i++) {
 				System.out.println("itemVo.size : " + itemVo.size());
 				itemVo.get(i).setVoucherNo(voucherVo.getNo());
-				System.out.println("itemVo.get(i) : " + itemVo.get(i).getVoucherNo());
-				System.out.println("itemVo.get(i)amount : " + itemVo.get(i).getAmount());
-				System.out.println("itemVo.get(i)amountflag : " + itemVo.get(i).getAmountFlag());
-				System.out.println("itemVo.get groupNo : " + itemVo.get(i).getGroupNo());
 				itemVo.get(i).setGroupNo(voucherVo.getNo());
-				System.out.println("repo2");
 				sqlSession.insert("menu03.insertItem3", itemVo.get(i)); // 항목테이블 입력
 				
 				//int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
-				//System.out.println("order : " + order);
-				
-				System.out.println("repo3");
-				
 				
 				mappingVo.get(i).setVoucherNo(voucherVo.getNo());
-				System.out.println("repo4");
 				sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
 			}
 			
@@ -128,14 +115,12 @@ public class Menu03Repository {
 		}
 		
 		
-		System.out.println("repository2 : " + voucherVo.getNo());
 		return voucherVo.getNo();
 		
 	}
 
 	// 전표생성 (1팀)
 	public void createVoucher(VoucherVo voucherVo) {
-		System.out.println("111a : " + voucherVo.getOrderNo());
 		sqlSession.insert("menu03.insertVoucher2", voucherVo);
 		sqlSession.insert("menu03.insertItem2", voucherVo);
 		sqlSession.insert("menu03.insertMapping2", voucherVo);
@@ -180,8 +165,6 @@ public class Menu03Repository {
 	
 	// 전표 1팀 수정
 	public Boolean updateVoucher(VoucherVo voucherVo) {
-		
-		
 		int count = sqlSession.update("menu03.updateVoucher2", voucherVo);
 		count += sqlSession.update("menu03.updateItem2", voucherVo);
 		count += sqlSession.update("menu03.updateMapping2", voucherVo);
@@ -194,19 +177,14 @@ public class Menu03Repository {
 		VoucherVo insertTeam = new VoucherVo();
 		insertTeam = sqlSession.selectOne("menu03.selectTeam", voucherVo);
 		if(!insertTeam.getInsertTeam().equals(userVo.getTeamName())) {
-			System.out.println("너냐 범인이");
 			return null;
 		}
 		voucherVoTemp = sqlSession.selectOne("menu03.selectTemp", voucherVo);
-		System.out.println("! :" + voucherVo.getNo());
 		sqlSession.delete("menu03.deleteVoucher", voucherVo);
 		
 		for(int i = 0; i < itemVo.size(); i++) {
 			itemVo.get(i).setVoucherNo(voucherVo.getNo());
-			System.out.println("@ : " + itemVo.get(i).getVoucherNo());
 			sqlSession.delete("menu03.deleteItem", itemVo.get(i));
-		
-			
 		}
 		mappingVo.get(0).setVoucherNo(voucherVo.getNo());
 		sqlSession.delete("menu03.deleteMapping", mappingVo.get(0));
@@ -224,9 +202,6 @@ public class Menu03Repository {
 			itemVo.get(i).setOrderNo(i+1);
 			
 			sqlSession.insert("menu03.newItem", itemVo.get(i)); // 항목테이블 입력
-			
-			
-		
 		
 			mappingVo.get(0).setInsertUserid(voucherVoTemp.getInsertUserid());
 			mappingVo.get(0).setInsertDay(voucherVoTemp.getInsertDay());
@@ -235,8 +210,6 @@ public class Menu03Repository {
 			sqlSession.insert("menu03.newMapping", mappingVo.get(0)); // 매핑테이블 입력
 		}
 		
-		
-		System.out.println("repository2 : " + voucherVo.getNo());
 		return voucherVo.getNo();
 		
 	}
