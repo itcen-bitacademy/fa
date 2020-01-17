@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
 import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
@@ -53,8 +54,6 @@ public class Menu30Repository {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("End",End);
 		map.put("Start", Start);
-		System.out.println(End+":"+ Start);
-		System.out.println(sqlSession.selectList("menu30.select",map));
 		return sqlSession.selectList("menu30.select",map);
 	}
 
@@ -77,5 +76,14 @@ public class Menu30Repository {
 	
 	public ReceiptVo csum(ReceiptVo revo) {
 		return sqlSession.selectOne("menu30.csum", revo);
+	}
+
+	public void deleteVoucher(List<VoucherVo> voucherVolist) {
+		for(VoucherVo v1:voucherVolist) {
+			sqlSession.delete("menu30.deleteVoucher", v1);
+			sqlSession.delete("menu30.deleteItem", v1);
+			sqlSession.delete("menu30.deleteMapping", v1);
+		};
+		
 	}
 }

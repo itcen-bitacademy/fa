@@ -131,23 +131,217 @@
 	
 	<select id="getRepayDueList" parameterType="map" resultType="stermdebtvo" resultMap="stermdebtResult">
    		<![CDATA[
-   			select code, repay_bal, case
-   			when repay_way = "E" then exp_date 
-			when repay_way = "Y" then concat(date_format(now(), "%Y-"), date_format(debt_date, "%m-%d")) 
-			when repay_way="M" then concat(date_format(now(), "%Y-%m-"), date_format(debt_date, "%d")) end as repayDue
-			from tb_s_term_debt
-			where repay_comple_flag = "N" and
-			(${curDay} <= day(debt_date) and ${sunDay} >= day(debt_date) and
-			(repay_way="Y"  and
-			year(debt_date) < ${curYear} and month(debt_date) = ${curMonth})  or
-			(repay_way="M" and
-			 date_format(debt_date, "%Y%m") <> date_format(now(), "%Y%m"))) or
-			repay_way="E" and 
-			#{today} <= exp_date and exp_date <= #{dateOfSunday}
-   		]]>
+	select code,
+		   repay_bal as repayBal,
+		   (case repay_way
+   				when 'Y' then (case 
+   				]]>
+				<choose>
+					<when test="(startDate.substring(1,4) != endDate.substring(1,4))">
+				<![CDATA[
+					when (date_format(debt_date,"%m-%d") BETWEEN 
+						date_format(#{startDate},"%m-%d") AND '12-31')
+						
+						then
+						 concat(date_format(#{startDate},"%Y-"), date_format(debt_date,"%m-%d"))
+						 
+					when  (date_format(debt_date,"%m-%d") BETWEEN 
+						'01-01' AND date_format(#{endDate},"%m-%d"))
+							
+						then 
+						 concat(date_format(#{endDate},"%Y-"), date_format(debt_date,"%m-%d"))
+					]]>
+					</when>
+					<otherwise>
+					<![CDATA[
+					when date_format(debt_date,"%m-%d") BETWEEN 
+						date_format(#{startDate},"%m-%d") AND date_format(#{endDate},"%m-%d")
+						
+						then
+						 concat(date_format(#{startDate},"%Y-"), date_format(debt_date,"%m-%d"))
+					]]>
+					</otherwise>
+				</choose>     
+				<![CDATA[
+            		   
+         			 end)
+    			when 'M' then (case 
+    				]]>
+				<choose>
+					<when test="(startDate.substring(5,6) != endDate.substring(5,6))">
+				<![CDATA[
+					when (date_format(debt_date,"%d") BETWEEN 
+						date_format(#{startDate},"%d") AND '31')
+						
+						then
+						 concat(date_format(#{startDate},"%Y-%m-"), date_format(debt_date,"%d"))
+						 
+					when  (date_format(debt_date,"%d") BETWEEN 
+						'01' AND date_format(#{endDate},"%d"))
+							
+						then 
+						 concat(date_format(#{endDate},"%Y-%m-"), date_format(debt_date,"%d"))
+						 
+						 
+						 
+					]]>
+					</when>
+					<otherwise>
+					<![CDATA[
+					when date_format(debt_date,"%d") BETWEEN 
+						date_format(#{startDate},"%d") AND date_format(#{endDate},"%d")
+						
+						then
+						 concat(date_format(#{startDate},"%Y-%m"), date_format(debt_date,"%d"))
+					]]>
+					</otherwise>
+				</choose>     
+				<![CDATA[
+            	
+    			end) 
+    			when 'E' then (
+					 date_format(debt_date,"%Y-%m-%d")
+				)
+    		end)
+		   
+		    as repayDue
+		   
+	from tb_s_term_debt
+	where (case repay_way
+		when 'Y' then ( 
+		]]>
+		<choose>
+			<when test="(startDate.substring(1,4) != endDate.substring(1,4))">
+			<![CDATA[
+			(date_format(debt_date,"%m-%d") BETWEEN 
+				date_format(#{startDate},"%m-%d") AND '12-31')
+			or (date_format(debt_date,"%m-%d") BETWEEN 
+				'01-01' AND date_format(#{endDate},"%m-%d"))
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			date_format(debt_date,"%m-%d") BETWEEN 
+				date_format(#{startDate},"%m-%d") AND date_format(#{endDate},"%m-%d")
+			]]>
+			</otherwise>
+		</choose>     
+		<![CDATA[
+		)
+		when 'M' then (
+		]]>
+		<choose>
+			<when test="(startDate.substring(5,6) != endDate.substring(5,6))">
+			<![CDATA[
+			(date_format(debt_date,"%d") BETWEEN 
+				date_format(#{startDate},"%d") AND '31')
+			or (date_format(debt_date,"%d") BETWEEN 
+				'01' AND date_format(#{endDate},"%d"))
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			date_format(debt_date,"%d") BETWEEN 
+				date_format(#{startDate},"%d") AND date_format(#{endDate},"%d")
+			]]>
+			</otherwise>
+		</choose>     
+		<![CDATA[
+		)
+		when 'E' then (
+			 date_format(debt_date,"%y-%m-%d") BETWEEN 
+				date_format(#{startDate},"%y-%m-%d") AND date_format(#{endDate},"%y-%m-%d")
+		)
+	end)
+	and repay_comple_flag = 'N'
+	and delete_flag = 'N'
+	]]>
    </select>
-  
-  
    
-
+   <select	id="getYearSDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_s_term_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select	id="getYearLDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_l_term_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select	id="getYearPDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   		select year(debt_date) "year", sum(debt_amount) "sum"
+  		from tb_p_debt
+  		where year(debt_date) <= ${_parameter} and year(debt_date) >= ${_parameter} -10
+ 		group by year(debt_date)
+   	]]>
+   </select>
+   
+   <select id="getMonthSDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_s_term_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   <select id="getMonthLDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_l_term_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   <select id="getMonthPDebtStat" parameterType="int" resultType="map">
+   	<![CDATA[
+   	  select month(debt_date) "month", sum(debt_amount) "sum"
+	  from tb_p_debt
+	  where year(debt_date) = ${_parameter}
+	  group by month(debt_date);
+   	]]>
+   </select>
+   
+   <select id="getYearIntStat" parameterType="map" resultType="map">
+   	<![CDATA[
+   		select year(pay_date) "year", sum(int_amount) "sum"
+   		from tb_repay
+   		where year(pay_date) <= ${searchYear} and year(pay_date) >= ${searchYear} -10
+   		]]>
+   		<choose>
+   			<when test='"S".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   			<when test='"L".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   			<when test='"P".equals(debtType)'>
+   				and debt_type = #{debtType}
+   			</when>
+   		</choose>
+   	<![CDATA[
+   		group by year(pay_date)
+   	]]>
+   </select>
+   	
+   <select id="getDebtRatioStat" resultType="map">
+   	<![CDATA[
+   	  select round(s.sum / (s.sum + l.sum + p.sum), 2) * 100 sDebtRatio, 
+		 	 round(l.sum / (s.sum + l.sum + p.sum), 2) * 100 lDebtRatio, 
+			 round(p.sum / (s.sum + l.sum + p.sum), 2) * 100 pDebtRatio
+	  from (select sum(debt_amount) sum from tb_s_term_debt) s, 
+		   (select sum(debt_amount) sum from tb_l_term_debt) l, 
+	       (select sum(debt_amount) sum from tb_p_debt) p;
+	   	]]>
+   </select>
 </mapper>

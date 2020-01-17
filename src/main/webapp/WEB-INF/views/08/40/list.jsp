@@ -17,8 +17,14 @@
     text-align: left
  }
  
- .acqPrice {
-    text-align: right
+ /*테이블 내 row  */
+ #tbody-list .alignRight{
+    text-align: right;
+ }
+ 
+ /*inpu창 내에 숫자 오른정렬  */
+  .alignRight{
+ 	text-align: right;
  }
  
  html,body{
@@ -72,8 +78,8 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id"
-													placeholder="10자로 입력하세요" value='${vo.id}' />
+											<input type="text" id="buildingCode" name="id"
+													placeholder="숫자를 입력하세요" value='${vo.id}' maxlength="9"/>
 										</div>
 									</div>
 									
@@ -136,15 +142,15 @@
 										<label class="control-label">평수</label>
 										<div class="controls">
 											<input type="text" id="area" name="area"
-												placeholder="숫자만 입력하세요" value='${vo.area }'/> <input
-												style="border-style: none;" type="text" placeholder="입력된 숫자이하로 검색됩니다." />
+												placeholder="숫자만 입력하세요" value='${vo.area }'/> 
+											<input style="border-style: none;" type="text" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
 									
 									<div class="control-group">
 										<label class="control-label">취득금액</label>
 										<div class="controls">
-											<input type="text" class="acqPrice" name="acqPrice" id="acqPrice" placeholder="금액을 입력하세요" value="${vo.acqPrice }"/> 
+											<input type="text" class="alignRight" name="acqPrice" id="acqPrice" placeholder="금액을 입력하세요" value="${vo.acqPrice }"/> 
 												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
@@ -159,7 +165,7 @@
 									<span style="line-height:400%"><br></span>
 									
 									<div class="control-group" style="margin-bottom:0px;">
-										<div class="span3" style="float: right;">
+										<div class="span4" style="float: right; ">
 											<c:choose>
 												<c:when test='${vo.flag eq ""}'>
 													<input type="checkbox" name="flag" id="flag" class="ace" value="" checked="checked">
@@ -168,10 +174,12 @@
 													<input type="checkbox" name="flag" id="flag" class="ace" value="" >
 												</c:otherwise>
 											</c:choose>
-											<span class="lbl">삭제포함</span>
-											<button class="btn btn-info btn-small"
-												style="float: right; margin-right: 20px;" type="submit" name="search"
-												formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+											<span class="lbl" style="margin-right: 50px;">삭제포함</span>
+											
+											<button class="btn btn-info btn-small" id="search">조회</button>
+												
+											<button class="btn btn-default btn-small" id="reset"
+													style="float: right;" type="reset" >초기화</button>
 										</div>
 									</div>
 									
@@ -216,7 +224,7 @@
 										<th>삭제여부</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="tbody-list">
 								<c:forEach items="${dataResult.datas }" var="vo" varStatus="status">
 									<tr class="table-row">
 										<td>${(page-1)*11 + status.count}</td>
@@ -236,10 +244,10 @@
 										<td>${vo.managerName }</td>
 										<td>${vo.ownerName }</td>
 										<td>${vo.payDate }</td>
-										<td style="text-align : right"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
-										<td style="text-align : right"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
-										<td style="text-align : right"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
-										<td style="text-align : right"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
+										<td class="alignRight"><fmt:formatNumber value="${vo.publicValue }" pattern="#,###"></fmt:formatNumber></td>
+										<td class="alignRight"><fmt:formatNumber value="${vo.acqPrice }" pattern="#,###"></fmt:formatNumber></td>
+										<td class="alignRight"><fmt:formatNumber value="${vo.etcCost }" pattern="#,###"></fmt:formatNumber></td>
+										<td class="alignRight"><fmt:formatNumber value="${vo.acqTax }" pattern="#,###"></fmt:formatNumber></td>
 										<td>${vo.combineNo }</td>
 										<td>${vo.taxbillNo }</td>
 										<td>${vo.taxKind }</td>
@@ -306,83 +314,116 @@
 	<script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script>
+	
 		$(function() {
 			$(".chosen-select").chosen();
 			$('#id-date-range-picker-1').daterangepicker({
-				format: 'YYYY-MM-DD',
-				separator: '~'
-			}).prev().on(ace.click_event, function(){
+				format : 'YYYY-MM-DD',
+				separator : '~'
+			}).prev().on(ace.click_event, function() {
 				$(this).next().focus();
 			});
-		});
-		
-	</script>
-	
-	<script>
-	//주소
-	function execDaumPostcode() {
-        new daum.Postcode({
-           oncomplete : function(data) {
-              var fullRoadAddr = data.roadAddress;
-              console.log(data)
-              $("#wideAddress").val(data.sido);
-              $("#cityAddress").val(data.sigungu); 
-              $("#detailAddress").val(data.roadname + " ");
-              $("#detailAddress").focus();
-           }
-        }).open();
-     }
-	
-	
-	//금액에 3자리마다 , 넣기
-	function addCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
-	
-	$(function() {
-		$("#acqPrice").on('keyup', function(event){
-			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
-		});
-	});
-	
-	//엔터키 막기
-	document.addEventListener('keydown', function(event) {
-	    if (event.keyCode === 13) {
-	        $(this).next('.inputs').focus();
-	        event.preventDefault();
-	    }
-	}, true);
 
-	//select box 값 유지
-	var sectionName = "${param.sectionName }";
-	var customerName = "${param.customerName }";
-	
-	if(sectionName != ''){
-		$('#form-field-section').val(sectionName).trigger('chosen:updated'); 
-	}
-	
-	if(customerName != ''){
-		$('#form-field-customer').val(customerName).trigger('chosen:updated'); 
-	}
+			//주소
+			function execDaumPostcode() {
+				new daum.Postcode({
+					oncomplete : function(data) {
+						var fullRoadAddr = data.roadAddress;
+						console.log(data)
+						$("#wideAddress").val(data.sido);
+						$("#cityAddress").val(data.sigungu);
+						$("#detailAddress").val(data.roadname + " ");
+						$("#detailAddress").focus();
+					}
+				}).open();
+			}
 
-	
-	//select box 선택 시 값 등록
-	
-	//대분류
-	$('#form-field-section').change(function() {
-  		var code = $('#form-field-section option:selected').attr('sectionList'); // ${sectionVo.code}
- 		$('#code').val(code); 
-	});
-	
-	//거래처-담당자
-	$('#form-field-customer').change(function() {
-  		var customerno = $('#form-field-customer option:selected').attr('customerNo'); // ${customerVo.no}
-  		$('#customerNo').val(customerno);
-  		var managername = $('#form-field-customer option:selected').attr('managerName'); // ${customerVo.manager_name}
- 		$('#managerName').val(managername);
-	});
-	
-	
+			//금액에 3자리마다 , 넣기
+			function addCommas(x) {
+				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+
+			//칠때마다 ,넣기
+			$("#acqPrice").on('keyup', function(event) {
+				$(this).val(addCommas($(this).val().replace(/[^0-9]/g, "")));
+			});
+
+			//숫자 이외 칠떄마다 ""로 replace(숫자만 입력)
+			$("#buildingCode").on('keyup', function(event) {
+				$(this).val($(this).val().replace(/[^0-9]/g, ""));
+			});
+
+			$("#area").on('keyup', function(event) {
+				$(this).val(addCommas($(this).val().replace(/[^0-9]/g, "")));
+			});
+
+			//엔터키 막기
+			document.addEventListener('keydown', function(event) {
+				if (event.keyCode === 13) {
+					$(this).next('.inputs').focus();
+					event.preventDefault();
+				}
+			}, true);
+
+			//select box 값 유지
+			var sectionName = "${param.sectionName }";
+			var customerName = "${param.customerName }";
+
+			if (sectionName != '') {
+				$('#form-field-section').val(sectionName).trigger(
+						'chosen:updated');
+			}
+
+			if (customerName != '') {
+				$('#form-field-customer').val(customerName).trigger(
+						'chosen:updated');
+			}
+
+			//select box 선택 시 값 등록
+
+			//대분류
+			$('#form-field-section').change(
+					function() {
+						var code = $('#form-field-section option:selected')
+								.attr('sectionList'); // ${sectionVo.code}
+						$('#code').val(code);
+					});
+
+			//거래처-담당자
+			$('#form-field-customer').change(
+					function() {
+						var customerno = $(
+								'#form-field-customer option:selected').attr(
+								'customerNo'); // ${customerVo.no}
+						$('#customerNo').val(customerno);
+						var managername = $(
+								'#form-field-customer option:selected').attr(
+								'managerName'); // ${customerVo.manager_name}
+						$('#managerName').val(managername);
+					});
+
+			//조회 동작
+			$("#search")
+					.click(
+							function() {
+								$('#manage-building-form')
+										.attr(
+												'action',
+												'${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list');
+								$('#manage-building-form')
+										.attr('method', 'GET');
+								$('#manage-building-form').submit();
+							});
+
+			//초기화 동작
+			$("#reset").click(function(event) {
+				event.preventDefault();
+				$('input[type=text]').val("");
+				$('input:checkbox').prop("checked", false);
+				$('#form-field-section').val("").trigger('chosen:updated');
+				$('#form-field-customer').val("").trigger('chosen:updated');
+			});
+		});
 	</script>
 </body>
 </html>

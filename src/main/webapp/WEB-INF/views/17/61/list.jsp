@@ -25,7 +25,7 @@
 
 
 			<div class="page-header position-relative">
-				<h1 class="pull-left">결산작업[61] list</h1>
+				<h1 class="pull-left">결산작업</h1>
 			</div><!-- /.page-header -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -124,8 +124,8 @@
 													<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
 												</c:if> --%>
 												<c:choose>
-													<c:when test="${cdt.closingYn }">
-														완료
+													<c:when test="${cdt.closingYn }" >
+														<span no="${cdt.no }" class="cdt-not-closed">완료</span>
 													</c:when>
 													<c:otherwise>
 														<button class="btn btn-primary btn-small settlement-btn" no="${cdt.no }">결산</button>
@@ -234,6 +234,12 @@
 
 			window.history.pushState({}, document.title, '${pageContext.request.contextPath }/17/19/list')
 		}
+
+		// 결산완료 데이터 중 가장 최근 데이터 재결산 버튼 등록
+		var rerunCdt = $('.cdt-not-closed')[0]
+		rerunCdtNo = $(rerunCdt).attr('no')
+		var editBtn = $('<button />').addClass('btn btn-warning btn-small').attr('no', rerunCdtNo).text('재결산').on('click', executeSettlementRerun)
+		$(rerunCdt).parent().empty().append(editBtn)
 	});
 
 	// static backdrop modal
@@ -264,6 +270,18 @@
 	function executeSettlement(event) {
 		var form = $('<form/>')
 		form.attr('action', '${pageContext.request.contextPath }/17/61/settlement').attr('method', 'post')
+
+		var no = $('<input type="hidden"/>').attr('name', 'closingDateNo').val($(event.target).attr('no'))
+		$(form).append(no)
+
+		$(document.body).append(form)
+		form.submit()
+	}
+
+	// 해당마감일 재결산 실행
+	function executeSettlementRerun(event) {
+		var form = $('<form/>')
+		form.attr('action', '${pageContext.request.contextPath }/17/61/resettlement').attr('method', 'post')
 
 		var no = $('<input type="hidden"/>').attr('name', 'closingDateNo').val($(event.target).attr('no'))
 		$(form).append(no)

@@ -14,10 +14,34 @@
 .chosen-search {
 	display: none;
 }
+
+html, body {
+	   overflow-x: hidden;
+	   height: 100%;
+	}
+	
+	.main-container {
+	   height: calc(100% - 45px);
+	   overflow-x: hidden;
+	}
+	
+	.main-content {
+	   overflow: auto;
+	}
+	
+	.page-content {
+	   min-width: 1280px;
+	}
+	
+	@media screen and (max-width: 920px) {
+	   .main-container {
+	      height: calc(100% - 84px);
+	   }
+	}
 </style>
 
 </head>
-<body class="skin-3" style="min-width:1500px">
+<body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -160,7 +184,7 @@
 												<tr>
 													<td class="left">${vo.purchaseDate }</td>
 													<td class="left">${vo.no }</td>
-													<td style="text-align:right">${vo.number }</td>
+													<td class="left">${vo.number }</td>
 													<td class="left">${vo.customerCode }</td>
 													<td class="left">${vo.customerName }</td>
 													<td class="left">${vo.purchaseManager }</td>
@@ -277,10 +301,13 @@
 			location.reload(true);
 		};
 		
-	 
+	 	// 검색여부 플래그
 		var searchFlag = true;
+	 	
+	 	// 조회
 		$("#search").click(function(event) {
 			event.preventDefault();
+			
 			
 			if(($("#startDate").val() != null && $("#startDate").val().length !== 0) || ($("#endDate").val() != null && $("#endDate").val().length !== 0)) {
 				if(($("#startDate").val() != null && $("#startDate").val().length !== 0) && ($("#endDate").val() != null && $("#endDate").val().length !== 0)) {
@@ -293,9 +320,6 @@
 					return;
 				}
 			}
-			
-		
-			
 			var vo = {startDate : $("#startDate").val(), endDate : $("#endDate").val(), no : $("#no").val(), customerCode : $("#customerCode").val(), customerName : $("#customerName").val(),
 					  itemCode : $("#itemCode").val(),itemName : $("#itemName").val(), deleteFlag : $("#deleteFlag").val(), orderStd : $("#orderStd").val()};
 			//페이징
@@ -335,7 +359,7 @@
 							"<tr>" +
 				            "<td class='left'>" + isEmpty(result[i].purchaseDate) + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].no)  + "</td>" +
-				            "<td style='text-align:right'>" + isEmpty(result[i].number)  + "</td>" +
+				            "<td class='left'>" + isEmpty(result[i].number)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].customerCode)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].customerName)  + "</td>" +
 				            "<td class='left'>" + isEmpty(result[i].purchaseManager)  + "</td>" +

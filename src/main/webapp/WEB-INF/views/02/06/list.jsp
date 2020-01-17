@@ -13,10 +13,35 @@
 .chosen-search {
 	display: none;
 }
+
+html, body {
+	   overflow-x: hidden;
+	   height: 100%;
+	}
+	
+	.main-container {
+	   height: calc(100% - 45px);
+	   overflow-x: hidden;
+	}
+	
+	.main-content {
+	   overflow: auto;
+	}
+	
+	.page-content {
+	   min-width: 1280px;
+	}
+	
+	@media screen and (max-width: 920px) {
+	   .main-container {
+	      height: calc(100% - 84px);
+	   }
+	}
+
 </style>
 
 </head>
-<body class="skin-3" style="min-width:1500px">
+<body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -132,10 +157,10 @@
 								
 								<div class="span12" style = "margin:0;">
 									<div class="hr hr-18 dotted"></div>
-									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
-									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
-									<button class="btn btn-warning btn-small" type="button" id="update" onclick="modify()">수정</button>
 									<button class="btn btn-primary btn-small" type="button" id="input" style="float:left;margin-right:20px;" onclick="insert();">입력</button>
+									<button class="btn btn-warning btn-small" type="button" id="update" style="float:left;margin-right:20px;" onclick="modify()">수정</button>
+									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
+									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
 									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;" type="button" onclick="add_row();">행추가</button>
 									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;" type="button" onclick="delete_row();">행삭제</button>				
 									
@@ -148,12 +173,6 @@
 								<input type="hidden" id="rowCnt" name="rowCnt" value="1">
 								<table id="item-table" class="table table-striped table-bordered table-hover">
 									<tr>
-										<!-- <th class="center">
-											<label>
-												<input type="checkbox" class="ace">
-												<span class="lbl"></span>
-											</label>
-										</th> -->
 										<th class="center">순번</th>
 										<th class="center">품목코드</th>
 										<th class="center">품목명</th>
@@ -163,7 +182,7 @@
 									</tr>
 									
 									<tr>
-										<td class="left"><input class="input-mini" style="text-align:right;" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
+										<td class="left"><input class="input-mini left" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
 										
 										<td class="left">
 											<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
@@ -281,7 +300,7 @@
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
+				      		        "<td class='left'><input class='input-mini left' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
 				      		        "<td class='left'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
 					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +
@@ -377,7 +396,7 @@
 		 }
 		 
 	
-		 
+		 //조회
 		 $(function() {
 				var $search = $("#search");
 				$search.click(function(event) {
@@ -397,14 +416,15 @@
 						contentType: 'application/json;charset=utf-8',
 						data: JSON.stringify(vo),
 						success: function(result) {
+							
 							if(result.length == 0){
 								dialog("검색 결과가 없습니다.",false);
-							}else{
-								//$("#form1").reset();
+							} else{
 								var table = document.getElementById("item-table");
 								var cnt = table.rows.length;
+								
+								//검색 결과가 한 건일 경우
 								if(result.length == 1){
-									//$("#form1").html();
 									for(var i = 0; i < cnt-2; i++){
 										delete_row();
 									}
@@ -439,7 +459,7 @@
 									}if(result.taxbillNo != null && result.voucherNo != null) {
 										deleteButtonSet();
 									} 
-								} else {
+								} else { // 검색 결과가 여러 건일 경우
 									var cnt = table.rows.length;
 									for(var v = 0; v < cnt-2; v++){
 										delete_row();
@@ -471,9 +491,9 @@
 										$("#supplyValue"+i).val(result[i-1].supplyValue);
 										$("#taxValue"+i).val(result[i-1].taxValue);
 									}
-									if(result.taxbillNo == null){
+									if(result[0].taxbillNo == null){
 										taxbillButtonSet();
-									}if(result.taxbillNo != null && result.voucherNo != null) {
+									}if(result[0].taxbillNo != null && result[0].voucherNo != null) {
 										deleteButtonSet();
 									} 
 									delete_row();
@@ -490,7 +510,7 @@
 		});
 		 
 	
-		 function createPurchaseNo(){ // 매출번호 랜덤 생성
+		 function createPurchaseNo(){ // 매입번호 랜덤 생성
 		       	var no = "";
 		       	var date = new Date();
 		  	 	var year = date.getFullYear().toString(); // 년
@@ -515,28 +535,29 @@
 				$('#search').show()
 				$('#addRow').show()
 				$('#deleteRow').show()
-			}
+			} 
+			
 			// 세금계산서가 등록되지 않는 매입 버튼 세팅
 			function taxbillButtonSet() {
-				$('#update').show()
-				$('#delete').show()
-				$('#input').hide()
-				$('#search').show()
-				$('#addRow').hide()
-				$('#deleteRow').hide()
+				$('#input').hide();
+				$('#update').show();
+				$('#delete').show();
+				$('#search').show();
+				$('#addRow').hide();
+				$('#deleteRow').hide();
 			}
 			// 세금계산서가 등록된 매입 버튼 세팅
 			function deleteButtonSet() {
 				$('#update').hide()
 				$('#delete').show()
-				$('#input').hide()
 				$('#search').show()
+				$('#input').hide()
 				$('#addRow').hide()
 				$('#deleteRow').hide()
 			}
 			
 		
-			
+			//입력
 			function insert(){
 		   			if(!valid.nullCheck("purchaseDate", "매입 일자")) return;
 		   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크

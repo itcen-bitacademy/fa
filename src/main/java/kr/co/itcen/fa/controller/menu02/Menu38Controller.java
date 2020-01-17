@@ -44,7 +44,7 @@ public class Menu38Controller {
 		List<BuyTaxbillVo> pagebuyTaxbillList = menu38Service.getpageBuyTaxbillList(page); // 11개씩 데이터
 		List<CustomerVo> getMatchTaxbillCustomerList = menu38Service.getMatchTaxbillCustomerList(); // 거래처리스트를 가져온다.
 		List<BuyTaxbillItemsVo> getMatchTaxbillItemsList = menu38Service.getMatchTaxbillItemsList(); // 세금계산서와 맞는 품목리스트를
-																										// 가져온다.
+																									 // 가져온다.
 		model.addAttribute("buyTaxbillListAll", buyTaxbillListAll);
 		model.addAttribute("buyTaxbillList", buyTaxbillList);
 		model.addAttribute("pagebuyTaxbillList", pagebuyTaxbillList);

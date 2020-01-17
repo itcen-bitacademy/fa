@@ -89,9 +89,9 @@
 	
 	<select id="getByCode" parameterType="string" resultType="bankvo">
 		<![CDATA[
-			select *
+			select code, delete_flag as deleteFlag
 			from tb_bank
-			where code=#{code }
+			where code like #{_parameter}
 		]]>
 		
 	</select>

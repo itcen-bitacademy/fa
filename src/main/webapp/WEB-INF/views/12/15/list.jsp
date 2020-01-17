@@ -58,6 +58,8 @@
 		});
 		
 		$("#btn-add").on("click", function(){
+			console.log($("input[type=email]").attr("aria-invalid"));
+			return;
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
 			
 			if(document.getElementById("check_ok").style.display=='none' && $("#no").val()!=""){
@@ -69,7 +71,7 @@
 		});
 		
 		$("#btn-select").on("click", function(){
-			$(".input-validation").attr("required", false);
+			//$(".input-validation").attr("required", false);
 			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list?no="+$("#no").val();
 		});
 		
@@ -89,6 +91,7 @@
 		
 		$("#btn-clear").on("click", function(){
 			$('#form-customer')[0].reset();
+			$("#check_no").show();
 			//$('#form-customer input').val("");
 		});
 		
@@ -98,6 +101,11 @@
 			$("#customer-table input[type=checkbox]:checked").each(function(i) {
 		        checkArr.push($(this).closest("td").next().text());
 		    });
+			if(checkArr.length == 0) {
+				dialog("삭제할 거래처를 선택해주세요.");
+				return;
+			}
+			
 			location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete?checkNoArr=" + checkArr;
 			/*
 			$.ajax({
@@ -453,7 +461,7 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">개설일자</label>
 										<div class="row-fluid input-append span2">
-											<input class="cl-date-picker" type="text" id="openDate" data-date-format="yyyy-mm-dd" name="openDate">
+											<input class="cl-date-picker" type="text" id="openDate" readonly data-date-format="yyyy-mm-dd" name="openDate">
 											<span class="add-on">
 												<i class="icon-calendar"></i>
 											</span>
@@ -466,6 +474,7 @@
 											<!-- <input type="text" class="input-validation" id="managerName" name="managerName" required> -->
 										</div>
 									</div>
+									
 									<div class="control-group">
 										<label class="control-label form-field-1">입금계좌번호</label>
 										<div class="controls">
@@ -518,8 +527,8 @@
 									<div class="control-group">
 										<label class="control-label form-field-1">메일</label>
 										<div class="controls">
-											<form:input path="managerEmail"/>
-											<!-- <input class="span7 input-validation" type="text" id="managerEmail" name="managerEmail" required> -->
+											<!-- <form:input path="managerEmail"/> -->
+											<input class="span7" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" aria-invalid="true" type="email" id="managerEmail" name="managerEmail">
 										</div>
 									</div>
 									<div class="control-group">

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.CardVo;
 
 /**
@@ -118,6 +119,13 @@ public class Menu05Repository {
 		List<CardVo> s = sqlSession.selectList("menu25.gets", cardNo);
 		map.put("cardList", s);
 		
+		return map;
+	}
+
+
+	public Map<String, Object> updateBankAccount(BankAccountVo bankAccountVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		sqlSession.update("menu05.updateBankAccount", bankAccountVo);
 		return map;
 	}
 

@@ -9,7 +9,29 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
-@media screen and (max-width: 920px) {
+		.controles-right{
+			display: grid;
+			grid-template-columns: 100px 100px 100px;
+		}
+       html,body{
+			height:100%;
+			overflow-x: hidden;
+			}
+      	
+      	.main-container{
+         	height:calc(100% - 45px);
+         	overflow-x: hidden;
+      	}
+      
+      	.main-content{
+         	overflow:auto;
+      	}
+      	
+      	.page-content{
+         	min-width:1280px;
+      	}
+
+		@media screen and (max-width: 920px) {
        .main-container{
           height:calc(100% - 84px);
        }
@@ -38,14 +60,14 @@
 								<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-1">차량 코드</label>
 									<div class="controls">
-										<input type="text" id="id" name="id" placeholder="10자로 입력하세요"/>
+										<input type="text" id="id" name="id" placeholder="10자로 입력하세요" value='${vehicleVo.id}'/>
 									</div>
 								</div>
 								
 								<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-1">거래처 명</label>
 									<div class="controls">
-										<input type="text" id="customerName" name="customerName" placeholder="거래처명을 입력하세요"/>
+										<input type="text" id="customerName" name="customerName" placeholder="거래처명을 입력하세요" value='${vehicleVo.customerName}'/>
 									</div>
 								</div>
 							
@@ -54,8 +76,8 @@
 									<label style="text-align:left;" class="control-label" for="form-field-1">주소</label>
 										<div class="controls">
 											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
-											<input class="span4" readonly type="text" id="wideAddress" name="wideAddress" placeholder="주소를 선택하면 입력됩니다.">
-											<input style="width:230px"class="span5" readonly type="text" id="cityAddress" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
+											<input class="span4" readonly type="text" id="wideAddress" name="wideAddress" placeholder="주소를 선택하면 입력됩니다." value='${vehicleVo.wideAddress}'>
+											<input style="width:230px"class="span5" readonly type="text" id="cityAddress" name="cityAddress" placeholder="주소를 선택하면 입력됩니다." value='${vehicleVo.cityAddress}'>
 										</div>
 								</div>
 			
@@ -81,7 +103,7 @@
 								<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-1">거래처 담당자</label>
 									<div class="controls">
-										<input type="text" id="managerName" name="managerName" placeholder="이름을 입력하세요"/>
+										<input type="text" id="managerName" name="managerName" placeholder="이름을 입력하세요" value='${vehicleVo.managerName}'/>
 									</div>
 								</div>
 							
@@ -111,7 +133,7 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="id-date-range-picker-2" type="text" name="dueDate" >
+											<input class="id-date-range-picker-2" type="text" name="dueDate" value="${vehicleVo.dueDate }" >
 							
 										</div>
 									</div>
@@ -124,35 +146,40 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="id-date-range-picker-1" type="text" name="payDate" >
+											<input class="id-date-range-picker-1" type="text" name="payDate" value="${vehicleVo.payDate }">
 											
 										</div>
 									</div>
 								
-								<input type="hidden" name="searchGubun" value="조회">
 								<div class="control-group">
-                              <div class="controls">
-                                 <div class="span4" style="float:right">
-                                    <button class="btn btn-info btn-small" style="width:80px; float:right; margin-right:15px">상세조회</button>
-                                 </div>
-                                 <div class="span2" style="float:right">
-                                    <label style="float:right">
-                                       <input name="flag" type="checkbox" class="ace">
-                                          <span class="lbl" style="width:72px; margin-right:0px">삭제포함</span>
+                              <div class="controls controles-right"><!-- 여기서 css주면 됨 -->
+                                    <label style=" display:inline;">
+                                    	<c:choose>
+                                 			<c:when test='${vehicleVo.flag eq ""}'>
+                                       			<input name="flag" id="delete" value="" type="checkbox" checked="checked"class="ace">
+                                         	 	<span class="lbl" style="width:72px; margin-right:190px">삭제포함</span>
+                                          	</c:when>
+                                          	<c:otherwise>
+												<input name="flag" id="delete" value=""  type="checkbox" class="ace">
+												<span class="lbl" style="width:72px; margin-right:190px">삭제포함</span>
+											</c:otherwise>
+										</c:choose>
                                     </label>
+                                    <button class="btn btn-info btn-small" id="detailSearch" style="width:80px; display:inline; margin-right:150px">상세조회</button>
+                                    <button class="btn btn-info btn-small" id="clear" style="width:80px; display:inline; margin-right:30px">초기화</button>
                                  </div>
-                              </div>
+                                
                            </div>
 						</div>
 					</form>
 					</div>
 						<div class="hr hr-18 dotted"></div>
 						<!-- 차변 대변 나누기 위한 row-fluid -->
-						<br>
-						<br>
+					
+						<div class="row-fluid">
 						<p>총 ${dataResult.pagination.totalCnt } 건</p>
-								<div class="row-fluid">
-									<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+								<div style="overflow-x: auto;">
+									<table id="sample-table-1" class="table table-striped table-bordered table-hover" style="width: 2200px">
 										<thead>
 											<tr>
 												<th>NO</th>
@@ -200,12 +227,12 @@
 													<td>${VehicleVo.customerName}</td> <!-- 10 -->
 													<td>${VehicleVo.managerName}</td> <!-- 11 -->
 													<td class="pay-date">${VehicleVo.payDate}</td> <!-- 12 -->
-													<td><fmt:formatNumber value="${VehicleVo.publicValue}" pattern="#,###"></fmt:formatNumber></td> <!-- 13 -->
-													<td><fmt:formatNumber value="${VehicleVo.acqTax}" pattern="#,###"></fmt:formatNumber></td> <!-- 14 -->
-													<td><fmt:formatNumber value="${VehicleVo.etcCost}" pattern="#,###"></fmt:formatNumber></td> <!-- 15 -->
-													<td><fmt:formatNumber value="${VehicleVo.deposit}" pattern="#,###"></fmt:formatNumber></td> <!-- 16 -->
+													<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.publicValue}" pattern="#,###"></fmt:formatNumber></td> <!-- 13 -->
+													<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.acqTax}" pattern="#,###"></fmt:formatNumber></td> <!-- 14 -->
+													<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.etcCost}" pattern="#,###"></fmt:formatNumber></td> <!-- 15 -->
+													<td style="text-align : right"><fmt:formatNumber value="${VehicleVo.deposit}" pattern="#,###"></fmt:formatNumber></td> <!-- 16 -->
 													<td>${VehicleVo.dueDate}</td> <!-- 17 -->
-													<td class="monthly-fee"><fmt:formatNumber value="${VehicleVo.monthlyFee}" pattern="#,###"></fmt:formatNumber></td> <!-- 18 -->
+													<td style="text-align : right" class="monthly-fee"><fmt:formatNumber value="${VehicleVo.monthlyFee}" pattern="#,###"></fmt:formatNumber></td> <!-- 18 -->
 													<td>${VehicleVo.feeDate}</td> <!-- 19 -->
 													<td>${VehicleVo.taxKind}</td> <!-- 20 -->
 													<td hidden class="using-month"></td> <!-- 21 -->
@@ -222,14 +249,15 @@
 										</tbody>
 									</table>
 								</div>
+							</div>
 								<!-- PAGE CONTENT ENDS -->
-								<div class="row-fluid">
+							
 									<div class="pagination">
 										<ul>
 											<c:choose>
 												<c:when test="${dataResult.pagination.prev }">
 													<li><a
-														href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+														href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.startPage - 1 }">
 															<i class="icon-double-angle-left"></i>
 													</a></li>
 												</c:when>
@@ -243,11 +271,11 @@
 												<c:choose>
 													<c:when test="${pg eq dataResult.pagination.page }">
 														<li class="active"><a
-															href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+															href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg }">${pg }</a></li>
 													</c:when>
 													<c:otherwise>
 														<li><a
-															href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+															href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg}">${pg }</a></li>
 													</c:otherwise>
 												</c:choose>
 											</c:forEach>
@@ -255,7 +283,7 @@
 											<c:choose>
 												<c:when test="${dataResult.pagination.next }">
 													<li><a
-														href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+														href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.endPage + 1 }">
 															<i class="icon-double-angle-right"></i>
 													</a></li>
 												</c:when>
@@ -265,7 +293,7 @@
 												</c:otherwise>
 											</c:choose>
 										</ul>
-									</div>
+								
 							<!-- 페이징 -->
 						</div>					
 				</div><!-- /.span -->
@@ -301,7 +329,27 @@ $(function() {
    }).prev().on(ace.click_event, function(){
       $(this).next().focus();
    });
-});
+   
+   
+	// 조회 버튼
+/* 	$("#detailSearch").click(function() {
+		     event.preventDefault();
+		     
+		     var sectionNo = "${param.sectionNo }";
+		     var staffName = "${param.staffName }";
+		     
+		     $('#sectionNo').val(sectionNo).trigger('chosen:updated'); 
+		     $('#staffName').val(staffName).trigger('chosen:updated'); 
+		   }); */
+	// 초기화 버튼
+	$("#clear").click(function() {
+		  
+		     $('input[type=text]').val("");
+		      $('#sectionNo').val("").trigger('chosen:updated');
+		      $('#staffName').val("").trigger('chosen:updated');
+		   });
+	});
+
 
 //주소
 function execDaumPostcode() {
@@ -316,6 +364,26 @@ function execDaumPostcode() {
 		}
 	}).open();
 };
+
+//엔터키 막기
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        $(this).next('.inputs').focus();
+        event.preventDefault();
+    }
+}, true);
+
+//select box 값 유지
+ var sectionNo = "${param.sectionNo }";
+var staffName = "${param.staffName }";
+
+if(sectionNo != ''){
+	$('#sectionNo').val(sectionNo).trigger('chosen:updated'); 
+}
+
+if(staffName != ''){
+	$('#staffName').val(staffName).trigger('chosen:updated'); 
+} 
 
 
 </script>

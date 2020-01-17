@@ -27,52 +27,52 @@
 			from tb_land, tb_section, tb_customer  
 			where tb_land.section_no = tb_section.code
 			]]>
-				<if test='id!=""'>
+				<if test='id!="" and id!=null'>
 				<![CDATA[
 				 and tb_land.id like concat('%', #{id },'%')
 				]]>
 				</if>
-				<if test='sectionName!=""'>
+				<if test='sectionName!="" and sectionName!=null'>
 				<![CDATA[
 				 and tb_section.classification = #{sectionName }
 				]]>
 				</if>	
-				<if test='payDate!=""'>
+				<if test='payDate!="" and payDate!=null'>
 				<![CDATA[
 				 and tb_land.pay_date >= '${startDate } 00:00:00' and tb_land.pay_date <= '${endDate } 23:59:59'
 				]]>
 				</if>
-				<if test='customerName!=""'>
+				<if test='customerName!="" and customerName!=null'>
 				<![CDATA[
 				 and tb_customer.name like concat('%',#{customerName },'%')
 				]]>
 				</if>
-				<if test='managerName!=""'>
+				<if test='managerName!="" and managerName!=null'>
 				<![CDATA[
 				 and tb_customer.manager_name like concat('%',#{managerName },'%')
 				]]>
 				</if>
-				<if test='landArea!=null'>
+				<if test='landArea!=null and landArea !=""'>
 				<![CDATA[
 				 and tb_land.land_area<=#{landArea }
 				]]>
 				</if>
-				<if test='wideAddress!=""'>
+				<if test='wideAddress!="" and wideAddress!= null'>
 				<![CDATA[
 				 and tb_land.wide_address=#{wideAddress }
 				]]>
 				</if>
-				<if test='cityAddress!=""'>
+				<if test='cityAddress!="" and cityAddress!=null'>
 				<![CDATA[
 				 and tb_land.city_address=#{cityAddress }
 				]]>
 				</if>
-				<if test='acqPrice!=""'>
+				<if test='acqPrice!="" and acqPrice!=null'>
 				<![CDATA[
 				 and tb_land.acq_price <= #{acqPrice }
 				]]>
 				</if>
-				<if test='flag==null'>
+				<if test='flag!=null and !flag.equals("")'>
 				<![CDATA[
 				 and tb_land.flag in("s", "o") 
 				]]>
@@ -101,52 +101,52 @@
 			from tb_land, tb_section, tb_customer  
 			where tb_land.section_no = tb_section.code 
 			]]>
-				<if test='id!=""'>
+				<if test='id!="" and id!=null'>
 				<![CDATA[
 				 and tb_land.id like concat('%', #{id },'%')
 				]]>
 				</if>
-				<if test='sectionName!=""'>
+				<if test='sectionName!="" and sectionName!=null'>
 				<![CDATA[
 				 and tb_section.classification = #{sectionName }
 				]]>
 				</if>	
-				<if test='payDate!=""'>
+				<if test='payDate!="" and payDate!=null'>
 				<![CDATA[
 				 and tb_land.pay_date >= '${startDate } 00:00:00' and tb_land.pay_date <= '${endDate } 23:59:59'
 				]]>
 				</if>
-				<if test='customerName!=""'>
+				<if test='customerName!="" and customerName!=null'>
 				<![CDATA[
 				 and tb_customer.name like concat('%',#{customerName },'%')
 				]]>
 				</if>
-				<if test='managerName!=""'>
+				<if test='managerName!="" and managerName!=null'>
 				<![CDATA[
 				 and tb_customer.manager_name like concat('%',#{managerName },'%')
 				]]>
 				</if>
-				<if test='landArea!=null'>
+				<if test='landArea!=null and landArea !=""'>
 				<![CDATA[
 				 and tb_land.land_area<=#{landArea }
 				]]>
 				</if>
-				<if test='wideAddress!=""'>
+				<if test='wideAddress!="" and wideAddress!= null'>
 				<![CDATA[
 				 and tb_land.wide_address=#{wideAddress }
 				]]>
 				</if>
-				<if test='cityAddress!=""'>
+				<if test='cityAddress!="" and cityAddress!=null'>
 				<![CDATA[
 				 and tb_land.city_address=#{cityAddress }
 				]]>
 				</if>
-				<if test='acqPrice!=""'>
+				<if test='acqPrice!="" and acqPrice!=null'>
 				<![CDATA[
 				 and tb_land.acq_price <= #{acqPrice }
 				]]>
 				</if>
-				<if test='flag==null'>
+				<if test='flag!=null and !flag.equals("")' >
 				<![CDATA[
 				 and tb_land.flag IN("s", "o") 
 				]]>

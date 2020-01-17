@@ -10,7 +10,7 @@
 		  		where delete_flag like concat('%',#{deleteFlag},'%')
   					and name like concat('%',#{name},'%') 
 					and store like concat('%',#{store},'%') 
-		  			and date_format(deal_date,'%Y-%m-%d') like concat('%',#{dealDate},'%') 
+		  			and date_format(deal_date,'%Y-%m') like concat('%',#{dealDate},'%') 
    			]]>
 	</select>
 	
@@ -33,7 +33,7 @@
 		  	where delete_flag like concat('%',#{vo.deleteFlag},'%')
 				and name like concat('%',#{vo.name },'%')
 				and store like concat('%',#{vo.store },'%')
-				and date_format(deal_date,'%Y-%m-%d') like concat('%',#{vo.dealDate},'%')
+				and date_format(deal_date,'%Y-%m') like concat('%',#{vo.dealDate},'%') 
 		]]>
 		<if test="pagination.pageIndex >= 0">
 			<![CDATA[

@@ -66,37 +66,37 @@
 		]]>
 	</select>
 	
-	<select id="getpurchaseitemlist" parameterType="int" resultType="purchaseitem33vo">
-		<![CDATA[
-		select p.no, p.name, p.price, date(p.produce_date) as producedate, p.section_code as sectioncode, p.standard, s.classification as sectionname, f.manager_name as managername
-		  from tb_purchaseitem p, tb_factory f, tb_section s
-		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
-		 order by p.idx asc
-		 limit #{page_group }, 55
-		]]>
-	</select>
-	
 	<select id="getsearchsectionlist" parameterType="String" resultType="sectionvo">
 		<![CDATA[
 		select no, classification, code, last_update as lastUpdate, parent_no as parentNo from tb_section where parent_no = 1 and classification like #{sectionname }
 		]]>
 	</select>
 	
-	<select id="getpagePurchaseitemList" parameterType="int" resultType="purchaseitem33vo">
+	<select id="getpurchaseitemlist" parameterType="map" resultType="purchaseitem33vo">
 		<![CDATA[
 		select p.no, p.name, p.price, date(p.produce_date) as producedate, p.section_code as sectioncode, p.standard, s.classification as sectionname, f.manager_name as managername
 		  from tb_purchaseitem p, tb_factory f, tb_section s
-		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
+		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.no like #{no } and p.delete_flag = "N"
+		 order by p.idx asc
+		 limit #{page_group }, 55
+		]]>
+	</select>
+	
+	<select id="getpagePurchaseitemList" parameterType="map" resultType="purchaseitem33vo">
+		<![CDATA[
+		select p.no, p.name, p.price, date(p.produce_date) as producedate, p.section_code as sectioncode, p.standard, s.classification as sectionname, f.manager_name as managername
+		  from tb_purchaseitem p, tb_factory f, tb_section s
+		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.no like #{no } and p.delete_flag = "N"
 		 order by p.idx asc
 		 limit #{page }, 11
 		]]>
 	</select>
 	
-	<select id="getPurchaseitemListall" resultType="purchaseitem33vo">
+	<select id="getPurchaseitemListall" parameterType="map" resultType="purchaseitem33vo">
 		<![CDATA[
 		select p.no, p.name, p.price, date(p.produce_date) as producedate, p.section_code as sectioncode, p.standard, s.classification as sectionname, f.manager_name as managername
 		  from tb_purchaseitem p, tb_factory f, tb_section s
-		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.delete_flag = "N"
+		 where p.no = f.purchaseitem_code and p.section_code = s.code and s.parent_no = 1 and p.no like #{no } and p.delete_flag = "N"
 		 order by p.idx asc
 		]]>
 	</select>

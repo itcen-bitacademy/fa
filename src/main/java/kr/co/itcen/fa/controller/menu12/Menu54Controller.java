@@ -71,8 +71,9 @@ public class Menu54Controller {
 	@RequestMapping(value={"/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU, "/" + SUBMENU + "/{page}"}, method=RequestMethod.POST)
 	public String list(TaxbillSearchVo tvo, Model model, 
 			@PathVariable(name="page", required=false)String page,
-			@RequestParam(name="orderData")String orderData,
-			@RequestParam(name="viewCount") int viewCount) {
+			@RequestParam(name="orderData")String orderData
+			) {
+		//@RequestParam(name="viewCount") int viewCount
 		
 		System.out.println("검색기능");
 		System.out.println("-----" + page + "넘어오는 페이지");
@@ -101,12 +102,14 @@ public class Menu54Controller {
 		
 		model.addAttribute("order", tvo.getOrderData());
 		
-		model.addAttribute("resultlist", menu54Service.taxbillSearch(tvo, ipage, viewCount));
+		//model.addAttribute("resultlist", menu54Service.taxbillSearch(tvo, ipage, viewCount));
+		model.addAttribute("resultlist", menu54Service.taxbillSearch(tvo, ipage));
 		
 		System.out.println(tvo.toString());	// 객체에 값은 담겨있다.
 		
 		model.addAttribute("search", tvo);		// 검색 조건 데이터 저장
-		model.addAttribute("viewCount", viewCount);
+		
+		//model.addAttribute("viewCount", viewCount);
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

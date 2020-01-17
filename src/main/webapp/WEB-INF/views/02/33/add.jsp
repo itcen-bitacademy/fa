@@ -17,6 +17,32 @@
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 
+<style>
+	html, body {
+	   overflow-x: hidden;
+	   height: 100%;
+	}
+	
+	.main-container {
+	   height: calc(100% - 45px);
+	   overflow-x: hidden;
+	}
+	
+	.main-content {
+	   overflow: auto;
+	}
+	
+	.page-content {
+	   min-width: 1280px;
+	}
+	
+	@media screen and (max-width: 920px) {
+	   .main-container {
+	      height: calc(100% - 84px);
+	   }
+	}
+</style>
+
 <script type="text/javascript">
 	$(function(){
 		$(".chosen-select").chosen(); 
@@ -26,48 +52,24 @@
 		$("#search").click(function(event) {
 			event.preventDefault();
 			
-			var searchflag = $("#search").data("searchflag");
-			var itemcode = $("#form-field-item-id").val();
+			var page_num = 1;
+			var page_group = parseInt((page_num-1)/5);
+			$("#form-field-item-id").data("searchid", $("#form-field-item-id").val());
+			var itemcode = $("#form-field-item-id").data("searchid");
 			console.log(itemcode);
 			
-			if(itemcode != null && itemcode.length > 0) {
-				$.ajax({
-					url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/search",
-					type:"get",
-					dataType:"json",
-					data:{"itemcode" : itemcode},
-					success:function(data) {
-						if(data.dataflag === "ok") {
-							$("#search").data("searchflag", "ok");
-							$("#check_no").hide();
-							$("#check_ok").hide();
-							$("#form-field-item-id").attr("readonly", "true");
-							$("#form-field-item-id").val(data.no);
-							$("#form-field-section-name").val(data.section_name);
-							$("#form-field-factory-name").val(data.factory_name);
-							$("#form-field-factory-postaddress").val(data.postaddress);
-							$("#form-field-factory-roadaddress").val(data.roadaddress);
-							$("#form-field-factory-detailaddress").val(data.detailaddress);
-							$("#form-field-standard").val(data.standard);
-							$("#form-field-price").val(numberFormat(data.price));
-							
-							$("#form-field-item-name").val(data.name);
-							$("#form-field-section-code").val(data.section_code);
-							$("#form-field-factory-code").val(data.factory_code);
-							$("#form-field-factory-manager").val(data.manager_name);
-							$("#id-date-picker-1").val(data.produce_date);
-							$("#form-field-purpose").val(data.purpose);
-							console.log("searchflag :" + $("#search").data("searchflag"));
-						} else if(data.dataflag === "no") {
-							dialog("찾을 수 없는 품목입니다.", true);
-						}
-					}, error:function(error) {
-						dialog("찾을 수 없는 품목입니다.", true);
-					}
-				});
-			} else {
-				dialog("품목코드를 입력해주세요.", true);
-			}
+			$.ajax({
+				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
+				type:"get",
+				dataType:"json",
+				data:{"itemcode" : itemcode, "page" : page_num, "page_group" : page_group},
+				success:function(data) {
+					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
+					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
+				}, error:function(error) {
+					dialog("찾을 수 없는 품목입니다.", true);
+				}
+			});
 		});
 		
 		$("#reset").click(function(event) {
@@ -83,19 +85,20 @@
 		$("#delete").click(function(event) {
 			event.preventDefault();
 			
-			var itemcode = $("#form-field-item-id").val();
+			var itemcode = $("#form-field-item-id").data("searchid");
+			var deleteitemcode = $("#form-field-item-id").val();
 			var page_num = $("#select_num").text();
 			var searchflag = $("#search").data("searchflag");
 			console.log(page_num);
 			console.log("searchflag :" + searchflag);
 			
 			if(searchflag === "ok") {
-				if(itemcode != null && itemcode.length > 0) {
+				if(deleteitemcode != null && deleteitemcode.length > 0) {
 					$.ajax({
 						url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
 						type:"get",
 						dataType:"json",
-						data:$("#form").serialize() + "&page=" + page_num,
+						data:$("#form").serialize() + "&itemcode=" + itemcode + "&page=" + page_num,
 						success:function(data) {
 							if(data.delflag === "ok") {
 								dialog("삭제 완료", false);
@@ -124,7 +127,7 @@
 								dialog("품목코드를 확인해주세요.", false);
 							}
 							
-							updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
+							updateTable(data.pagepurchaseitemList, data.page_num, data.purchaseitemListall);
 							updatePagination(data.purchaseitemListall, data.purchaseitemList, data.page_num, data.page_group);
 						}, error:function(error) {
 							dialog("찾을 수 없는 품목입니다.", false);
@@ -139,14 +142,15 @@
 		$("#update").click(function(event) {
 			event.preventDefault();
 			
-			var itemcode = $("#form-field-item-id").val();
+			var itemcode = $("#form-field-item-id").data("searchid");
+			var updateitemcode = $("#form-field-item-id").val();
 			var page_num = $("#select_num").text();
 			var searchflag = $("#search").data("searchflag");
 			console.log(page_num);
 			console.log("searchflag :" + searchflag);
 			
 			if(searchflag === "ok") {
-				if(itemcode != null && itemcode.length > 0) {
+				if(updateitemcode != null && updateitemcode.length > 0) {
 					var purchasename = $("#form-field-item-name").val();
 					var sectionname = $("#form-field-section-name").val();
 					var sectioncode = $("#form-field-section-code").val();
@@ -173,7 +177,7 @@
 							url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update",
 							type:"get",
 							dataType:"json",
-							data:$("#form").serialize() + "&page=" + page_num,
+							data:$("#form").serialize() + "&itemcode=" + itemcode + "&page=" + page_num,
 							success:function(data) {
 								if(data.updateflag === "ok") {
 									dialog("수정 완료", false);
@@ -380,6 +384,7 @@
 		$("body").on("click",".page_go",function(e) {
 			var page_num = $(this).text();
 			var page_group = parseInt((page_num-1)/5);
+			var itemcode = $("#form-field-item-id").data("searchid");
 			
 			console.log("page_num : " + page_num);
 			console.log("page_group : " + page_group);
@@ -388,7 +393,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:{"page" : page_num, "page_group" : page_group},
+				data:{"itemcode" : itemcode, "page" : page_num, "page_group" : page_group},
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -412,7 +417,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:{"page" : page_num, "page_group" : page_group},
+				data:{"itemcode" : itemcode, "page" : page_num, "page_group" : page_group},
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -436,7 +441,7 @@
 				url:"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/paging",
 				type:"get",
 				dataType:"json",
-				data:{"page" : page_num, "page_group" : page_group},
+				data:{"itemcode" : itemcode, "page" : page_num, "page_group" : page_group},
 				success:function(data) {
 					updateTable(data.pagepurchaseitemList, page_num, data.purchaseitemListall);
 					updatePagination(data.purchaseitemListall, data.purchaseitemList, page_num, page_group);
@@ -897,7 +902,7 @@
 	});
 </script>
 </head>
-<body class="skin-3" style="min-width:1500px">
+<body class="skin-3">
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -919,7 +924,7 @@
 									<label class="control-label" for="form-field-item-id" style="text-align:initial; width:100px;">품목코드</label>
 									<div class="controls" style="margin-left:150px;">
 										<div class="row-fluid">
-											<input class="span4" type="text" id="form-field-item-id" name="no" style="margin:0 5px 0 0" placeholder="품목코드" maxlength="10"/>
+											<input class="span4" type="text" id="form-field-item-id" data-searchid="" name="no" style="margin:0 5px 0 0" placeholder="품목코드" maxlength="10"/>
 											<input id="check_no" style="height:28px" data-checkid="" type="button" value="중복확인">
 											<i id="check_ok" class="icon-ok bigger-150 blue" style="display:none;"></i>
 										</div>
@@ -1215,15 +1220,15 @@
 						<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th>번호</th>
-									<th>품목코드</th>
-									<th>품목명</th>
-									<th>대분류코드</th>
-									<th>대분류명</th>
-									<th>규격</th>
-									<th>단가(원)</th>
-									<th>생산담당자</th>
-									<th>일자</th>
+									<th style="text-align:center">번호</th>
+									<th style="text-align:center">품목코드</th>
+									<th style="text-align:center">품목명</th>
+									<th style="text-align:center">대분류코드</th>
+									<th style="text-align:center">대분류명</th>
+									<th style="text-align:center">규격</th>
+									<th style="text-align:center">단가(원)</th>
+									<th style="text-align:center">생산담당자</th>
+									<th style="text-align:center">일자</th>
 								</tr>
 							</thead>
 

@@ -118,18 +118,6 @@
 
 
 	
-	<select id="select" resultType="long" parameterType="map">
-		<![CDATA[
-		select	v.no
-		  from tb_voucher_manager as v
-		  join tb_voucher_system_mapping m on v.no = m.voucher_no
-		 where v.reg_date >= #{End }
-		   and v.reg_date <= #{Start }
-		   and m.closing_yn ='y'
-		;
-		]]>
-	</select>
-	
 	<select id="previous" resultType="previousVo"
 		parameterType="receiptVo">
 			<![CDATA[
@@ -349,4 +337,41 @@
 		</if>
 		
 	</select>
+	
+	
+	<delete id="deleteVoucher" parameterType="1vouchervo">
+	<![CDATA[
+		delete
+		  from tb_voucher_manager
+		 where no = #{no };
+	]]>
+	</delete>
+	
+	<delete id="deleteItem" parameterType="1vouchervo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_item
+		 where voucher_no = #{no };
+	]]>
+	</delete>
+	
+	<delete id="deleteMapping" parameterType="1vouchervo">
+	<![CDATA[
+		delete 
+		  from tb_voucher_system_mapping
+		 where voucher_no = #{no };
+	]]>
+	</delete>
+	
+	 <select id="select" resultType="long" parameterType="map">
+      <![CDATA[
+      select   v.no
+        from tb_voucher_manager as v
+        join tb_voucher_system_mapping m on v.no = m.voucher_no
+       where v.reg_date >= #{End }
+         and v.reg_date <= #{Start }
+         and m.closing_yn ='y'
+      ;
+      ]]>
+   </select>
 </mapper>

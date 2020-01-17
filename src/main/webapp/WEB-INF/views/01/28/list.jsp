@@ -145,7 +145,7 @@ html,body{
 		}
 		
 		//datepicker 관련 Valid
-		if(datepicker1 > datepicker2){
+		if(datepicker1 > datepicker2 && datepicker2 !=''){
 			errortitle = 'DATE_RANGE_ERROR';
 			validationMessage = '조회기간 범위 오류입니다.\r\n 종료일을 시작일 이후로 설정해주세요';
 			errorfield='#datepicker2';
@@ -236,7 +236,7 @@ html,body{
 							 <option value="Purchase">매입 거래처</option>
 							 <option value="Sales">매출 거래처</option>
 							 <option value="Assets">자산 거래처</option>
-							 <option value="Bank">은행</option>
+							 <!-- <option value="Bank">은행</option> -->
 						</select>
 						<script type="text/javascript">
 						var customerDiv = "${param.customerDiv}";
@@ -300,7 +300,7 @@ html,body{
 				
 				<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 거래처 ${dataResult.pagination.totalCnt } 건</p>
 				
-					</div>
+			</div>
 				<div class="row-fluid">
 						<div class="span12" style="overflow: auto;">
 
