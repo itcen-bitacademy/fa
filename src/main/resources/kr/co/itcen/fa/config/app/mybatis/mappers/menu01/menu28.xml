@@ -20,7 +20,7 @@
 			<![CDATA[
 				select ((select count(*) as count
 						   from tb_customer
-			  			  where name!='여비'
+			  			  where assets_flag!='e'
 			]]>	
 
 				<if test="deleteFlag!=null">		    
@@ -134,7 +134,7 @@
 			</if>
 	</if>
 		
-	<if test='customerDiv == "Bank"'>
+	<!-- <if test='customerDiv == "Bank"'>
 		<![CDATA[
 			select count(*) as count
 			  from tb_customer
@@ -162,7 +162,7 @@
 					and no like '%${no }%'
 				]]>	   
 			</if>
-	</if>
+	</if> -->
 		
 	<if test='customerDiv == "Purchase"'>
 		<![CDATA[
@@ -353,7 +353,7 @@
 				    ]]>
 			    </if>
 			    
-			    <![CDATA[
+			    <!-- <![CDATA[
 				union
 			   select concat('은행') as customerDiv,
 			   		  c.no as no,
@@ -416,7 +416,7 @@
 				    <![CDATA[
 				    	and c.no like '%${vo.no }%'
 				    ]]>
-			    </if>
+			    </if> -->
 			    
 			    <![CDATA[
 			    	union
@@ -560,7 +560,7 @@
 		]]>
 		</if>
 		
-	<if test='vo.customerDiv == "Bank"'>
+	<!-- <if test='vo.customerDiv == "Bank"'>
 	    <![CDATA[
 			select concat('은행') as customerDiv,
 			   		  c.no as no,
@@ -629,7 +629,7 @@
 		  order by corporationNo desc
 		 limit	#{pagination.pageIndex }, #{pagination.listSize }
 		]]>
-		</if>
+		</if> -->
 		
 		
 	
