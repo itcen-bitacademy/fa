@@ -122,8 +122,8 @@
 										<div style="float: left; width: 50%">
 											<label class="control-label" for="id-date-picker-1">매입일자</label>
 											<div class="controls">
-												<input style="width: 174px" class="cl-date-picker" readonly
-													type="text" id="id-date-picker-1" name="payDate" placeholder="날짜를 선택하세요" />
+												<input style="width: 174px" class="cl-date-picker" 
+													readonly type="text" id="id-date-picker-1" name="payDate" placeholder="날짜를 선택하세요" />
 												<div class="input-append">
 													<span class="add-on"> <i class="icon-calendar"></i>
 													</span>
@@ -496,14 +496,6 @@
 	//조회 동작
 	$("#search").click(function() {
 		if (!valid.nullCheck("buildingCode", "건물 코드")){
-			errorfocus='#buildingCode';
-			return false;
-		}
-		if (!valid.strCheck("buildingCode", "건물 코드")){
-			errorfocus='#buildingCode';
-			return false;
-		}
-		if (!valid.numberCheck("buildingCode", "건물 코드")){
 			errorfocus='#buildingCode';
 			return false;
 		}
