@@ -107,6 +107,29 @@ public class Menu41Service {
 		return map;
 		
 	}
+	
+	//세금계산서 정보 조회하기2
+//	public DataResult<TaxbillVo> selectTaxList(String id, int page) {
+//		
+//		DataResult<TaxbillVo> dataResult = new DataResult<TaxbillVo>();
+//		
+//		int totalCount = menu41Repository.TaxListCount(id);
+//		
+//		PaginationUtil pagination = new PaginationUtil(page,totalCount, 11, 5);
+//		dataResult.setPagination(pagination);
+//		
+//		
+//		List<TaxbillVo> list = menu41Repository.selectTaxList(id, pagination);
+//		dataResult.setDatas(list);
+//		
+//		return dataResult;
+//		
+////		Map<String, Object> map = new HashMap<String, Object>();
+////		map.put("taxlist", menu41Repository.selectTaxList(id));
+////		map.put("lastnapbuDate", menu41Repository.selectTaxVo(id)); // 보증금 납부일 가져오기
+////		return map;
+//		
+//	}
 
 	//vehicle 전표번호 가져오기
 	public Long getVoucherNo(String id) {
@@ -145,6 +168,38 @@ public class Menu41Service {
 	public boolean checkId(String id) {
 		menu41Repository.checkId(id);
 		return menu41Repository.checkId(id) != null;
+	}
+
+	//해당 페이지 세금계산서 리스트
+	public Map<String, Object> selectpageTaxList(String id, int page) {
+		
+		int totalTaxCount = menu41Repository.listTaxCount(id);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("pagetaxlist", menu41Repository.selectpageTaxList(id, page));
+		
+//		map.put("pagelastnapbuDate", menu41Repository.selectpageTaxVo(id, page)); // 보증금 납부일 가져오기
+		
+		return map;
+	}
+
+
+	//페이징 그룹 리스트 계산
+	public Map<String, Object> selectgroupTaxList(String id, int page_group) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("grouptaxlist", menu41Repository.selectgroupTaxList(id, page_group));
+		
+		return map;
+	}
+
+
+	public int taxcount(String id) {
+		int count = menu41Repository.listTaxCount(id);
+		
+		System.out.println(id);
+		System.out.println(count);
+		
+		return count;
 	}
 
 

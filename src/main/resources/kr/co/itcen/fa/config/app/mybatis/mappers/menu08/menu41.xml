@@ -180,7 +180,7 @@
    		]]>
 	</update>
 	
-	<!-- 세금계산서 정보 조회-->
+	<!-- 세금계산서 정보 조회 전체 count를 위함 ex)123개-->
 	<select id="selectTaxbill" parameterType="string"  resultType="08taxVehicle">
 		<![CDATA[
 		select 	 
@@ -194,7 +194,7 @@
 			 b.flag as flag
 		from tb_vehicle a 
 			 inner join tb_taxbill b on a.id=b.vehicle_no 
-		where a.id=#{_parameter} and b.flag IN('s','o');
+		where a.id=#{_parameter} and b.flag IN('s','o')
 		]]>
 	</select>
 	
@@ -323,6 +323,54 @@
 		select id
 		  from tb_vehicle
 		 where id = #{id }
+		]]>
+	</select>
+	
+	<!-- 세금계산서 페이징 조회  1 전체 12개-->
+	<select id="selectpageTaxbill" parameterType="map" resultType="08taxVehicle">
+		<![CDATA[
+		select 	 
+			 a.id as vehicleNo,
+			 b.pay as pay, 
+			 b.due_date as dueDate,
+			 b.pay_date as paymentDate,
+			 b.taxbill_no as taxbillNoPoP,
+			 b.voucher_no as voucherNo,
+			 b.gubun  as gubun,
+			 b.flag as flag
+		from tb_vehicle a 
+			 inner join tb_taxbill b on a.id=b.vehicle_no 
+		where a.id=#{id } and b.flag IN('s','o')
+		limit #{page }, 12
+		]]>
+	</select>
+	
+	<!-- 세금계산서 group페이지 조회 1~5까지 전체 60개 -->
+	<select id="selectgroupTaxbill" parameterType="map" resultType="08taxVehicle">
+		<![CDATA[
+		select 	 
+			 a.id as vehicleNo,
+			 b.pay as pay, 
+			 b.due_date as dueDate,
+			 b.pay_date as paymentDate,
+			 b.taxbill_no as taxbillNoPoP,
+			 b.voucher_no as voucherNo,
+			 b.gubun  as gubun,
+			 b.flag as flag
+		from tb_vehicle a 
+			 inner join tb_taxbill b on a.id=b.vehicle_no 
+		where a.id=#{id } and b.flag IN('s','o')
+		limit #{page_group }, 60
+		]]>
+	</select>
+	
+	<!-- 세금계산서 페이지 총 건수 taxPageCount-->
+	<select id="taxPageCount" parameterType="string" resultType="int">
+		<![CDATA[
+		select  count(*) as cnt
+			from tb_vehicle a 
+				 inner join tb_taxbill b on a.id=b.vehicle_no 
+			where a.id=#{id } and b.flag IN('s','o')
 		]]>
 	</select>
 	

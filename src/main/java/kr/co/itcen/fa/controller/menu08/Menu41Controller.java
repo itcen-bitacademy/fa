@@ -355,20 +355,30 @@ public class Menu41Controller {
 	
 	//세금계산서 정보 조회하기 RequestMethod를 GET메소드로
 	@ResponseBody
-	@RequestMapping(value = {"/" + SUBMENU + "/taxinfo" }, method = RequestMethod.GET)
-	public Map<String, Object> taxlist(
-			@ModelAttribute TaxbillVo taxbillVo, 
-			@RequestParam(value="id", required = false) String id, 
-			Model model
-			) {
-			System.out.println("여기타?");
-			System.out.println("ID : " + id);
+	@RequestMapping(value = "/" + SUBMENU + "/taxinfo" , method = RequestMethod.GET)
+	public Map<String, Object> taxlist(@ModelAttribute TaxbillVo taxbillVo, 
+									   @RequestParam(value="id", required = false) String id,
+									   @RequestParam(value="page", required = false, defaultValue = "1") int page,
+									   @RequestParam(value="page_group", required = false, defaultValue = "0") int page_group,
+									   Model model) {
+		id = "e" + id;
 		//조회기능 
 		Map<String, Object> map = new HashMap<>();
-		map.putAll(menu41Service.selectTaxList("e"+id));
+		map.putAll(menu41Service.selectTaxList(id)); // 차량코드의 전체 세금계산서
+		map.putAll(menu41Service.selectpageTaxList(id, page));// 차량코드의 해당 페이지 세금계산서 12개씩
+		map.putAll(menu41Service.selectgroupTaxList(id, page_group));// 차량코드의 해당 그룹 페이지 세금계산서 5개씩
 		model.addAllAttributes(map);
 
 		return map;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/taxcount" , method = RequestMethod.GET)
+	public int taxcount(@RequestParam(value="id", required = false) String id) {
+		int count = menu41Service.taxcount(id);
+		
+		System.out.println(count);
+		
+		return count;
+	}
 }
