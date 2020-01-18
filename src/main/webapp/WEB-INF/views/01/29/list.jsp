@@ -230,26 +230,20 @@
 	<div id="dialog-message2" title="계정" hidden="hidden">
 		<table id="dialog-message-table">
 			<tr>
-				<td><label>계정코드</label>
-					<div class="input-append">
-						<input type="text" id="input-dialog-accountno"
-							style="width: 100px;" /> <a href="#" id="a-dialog-accountno">
-							<span class="add-on"> <i
-								class="icon-search icon-on-right bigger-110"></i>
-						</span>
-						</a>
-					</div></td>
-					
-				<td><label>계정명</label>
-					<div class="input-append">
-						<input type="text" id="input-dialog-accountname"
-							style="width: 100px;" /> <a href="#" id="a-dialog-accountname">
-							<span class="add-on"> <i
-								class="icon-search icon-on-right bigger-110"></i>
-						</span>
-						</a>
-					</div></td>
-				
+				<td>
+					<div class="input-append" >
+						<select id="searchAccountOption" style="width:120px;">
+							<option value="accountNo">계정코드</option>
+							<option value="accountName">계정명</option>
+						</select>
+					<input type="text" id="input-dialog-accountname" style="width: 100px;"  onkeypress="if( event.keyCode==13 ){enteraccount();}"/>
+					<a href="#" id="a-dialog-accountname"> 
+                       	<span class="add-on">
+                           	<i class="icon-search icon-on-right bigger-110"></i>
+                       	</span>
+					</a>
+					</div>
+				</td>
 			</tr>
 		</table>
 
@@ -316,16 +310,17 @@
 		});
 
 		
-		// 계정 이름
+		//계정명, 계정코드로 검색
 		$("#a-dialog-accountname").click(function(event){
 			event.preventDefault();
 			$("#tbody-accountList").find("tr").remove();
 			
 			var accountNameVal = $("#input-dialog-accountname").val();
+			var searchAccountOption = $("#searchAccountOption").val();
 			console.log(accountNameVal);
 			// ajax 통신
 			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getaccountName?accountNameVal=" + accountNameVal,
+				url: "${pageContext.request.contextPath }/api/customer/searchOptionAccount?"+searchAccountOption+"="+accountNameVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
 				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -335,49 +330,18 @@
 				      alert("page not found");
 				    }
 				},
-				success: function(response){
-					$("#input-dialog-accountname").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-accountList").append("<tr>" +
-			                		"<td class='center'>" + item.accountNo + "</td>" +
-							        "<td class='center'>" + item.accountName + "</td>" +
-							        "</tr>");
-			         })
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
-		// 계정번호
-		$("#a-dialog-accountno").click(function(event){
-			event.preventDefault();
-			$("#tbody-accountList").find("tr").remove();
-			
-			var accountNoVal = $("#input-dialog-accountno").val();
-			console.log(accountNoVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/customer/getaccountNo?accountNoVal=" + accountNoVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					$("#input-dialog-accountno").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-accountList").append("<tr>" +
-			                		"<td class='center'>" + item.accountName + "</td>" +
-							        "<td class='center'>" + item.accountNo + "</td>" +
-							        "</tr>");
-			         })
-				},
+				success: function(data){
+				  	  if(data.success) {
+							$("#input-dialog-accountname").val('');
+					  	  	var accountList = data.accountList;
+					  	  	for(const a in accountList) {
+					                $("#tbody-accountList").append("<tr>" +
+						                    "<td class='center'>" + accountList[a].accountName + "</td>" +
+						                    "<td class='center'>" + accountList[a].accountNo + "</td>" +
+						                    "</tr>");
+					  	  	}
+					         }
+						},
 				error: function(xhr, error){
 					console.error("error : " + error);
 				}
