@@ -95,7 +95,7 @@
 		]]>
 	</insert>
 	
-	<!-- 매핑테이블 입력 -->
+	<!-- 매핑테이블 입력 계좌 -->
 	<insert id="insertMapping" parameterType="1mappingvo">
 		<![CDATA[
 		insert
@@ -108,7 +108,6 @@
 		  			   voucher_no,
 		  			   system_code,
 		  			   manage_no,
-		  			   card_no,
 		  			   deposit_no,
 		  			   customer_no,
 		  			   order_no
@@ -122,8 +121,40 @@
 		  		#{voucherNo },
 		  		#{systemCode },
 		  		#{manageNo },
-		  		#{cardNo },
 		  		#{depositNo },
+		  		#{customerNo },
+		  		#{orderNo }
+		)
+		]]>
+	</insert>
+	
+	<!-- 매핑테이블 입력 카드 -->
+	<insert id="insertMapping3" parameterType="1mappingvo">
+		<![CDATA[
+		insert
+		  into tb_voucher_system_mapping(no,
+		  			   voucher_use,
+		  			   insert_team,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   use_yn,
+		  			   voucher_no,
+		  			   system_code,
+		  			   manage_no,
+		  			   card_no,
+		  			   customer_no,
+		  			   order_no
+		)
+		values (null,
+				#{voucherUse },
+				#{insertTeam },
+		  		#{insertUserid },
+		  		now(),
+		  		true,
+		  		#{voucherNo },
+		  		#{systemCode },
+		  		#{manageNo },
+		  		#{cardNo },
 		  		#{customerNo },
 		  		#{orderNo }
 		)
