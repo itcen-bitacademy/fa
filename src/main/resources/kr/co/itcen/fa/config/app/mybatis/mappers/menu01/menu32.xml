@@ -173,9 +173,7 @@
 				 union
 				select no, name
                   from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                  ) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -236,9 +234,7 @@
 				 union
 				select no, name
                   from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                  ) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
