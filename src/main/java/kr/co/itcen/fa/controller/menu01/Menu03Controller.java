@@ -86,22 +86,7 @@ public class Menu03Controller {
 		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
 	}
 	
-	// 전표 삭제 1팀
-	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
-	public String delete(@ModelAttribute VoucherVo voucherVo, @AuthUser UserVo userVo) throws ParseException {
-		if(!voucherVo.getInsertTeam().equals(userVo.getTeamName())) {
-			return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
-		}
-		//String businessDateStr = menu03Service.businessDateStr();
-		
-		voucherVo.setRegDate(menu03Service.getRegDate(voucherVo));
-		
-		if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-			menu03Service.deleteVoucher(voucherVo);
-		}
-		
-		return "redirect:/"+ MAINMENU + "/" + SUBMENU + "/read";
-	}
+	
 	
 //	// 전표 수정 1팀
 //	@RequestMapping(value = "/" + SUBMENU + "/update", method=RequestMethod.POST)
@@ -204,6 +189,7 @@ public class Menu03Controller {
 			String insertTeam = menu03Service.selectTeam(voucherList[0].getNo());
 			
 			if(!insertTeam.equals(userVo.getTeamName())) {
+				System.out.println("팀 확인중");
 				return null;
 			}
 			
@@ -245,6 +231,40 @@ public class Menu03Controller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return resultMap;
+	}
+	
+	// 전표 삭제 1팀
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/delete", method=RequestMethod.POST)
+	public Map<String, Object> delete(HttpServletRequest request, @AuthUser UserVo userVo) throws ParseException {
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String itemList = request.getParameter("itemList");
+		VoucherVo voucherVo = new VoucherVo();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			VoucherVo[] voucherList = mapper.readValue(itemList, VoucherVo[].class);
+			
+			
+			String insertTeam = menu03Service.selectTeam(voucherList[0].getNo());
+			
+			if(!insertTeam.equals(userVo.getTeamName())) {
+				System.out.println("팀 확인중");
+				return null;
+			}
+			
+			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
+				voucherVo.setNo(voucherList[0].getNo());
+				menu03Service.deleteVoucher(voucherVo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return resultMap;
 	}
 	

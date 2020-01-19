@@ -270,8 +270,9 @@
 			<input class="btn btn-small" type="button" value="행 삭제" onclick="delete_row();">
 			<input class="btn btn-primary btn btn-small" id="btn-create" name="btn-create" type="button" value="저 장" onclick="save();">
 			<input class="btn btn-warning btn btn-small" id="btn-update" name="btn-update" type="button" value="수 정" onclick="update();">
-			<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
-				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
+			<input class="btn btn-danger btn-small" id="btn-delete" name="btn-delete" type="button" value="삭 제" onclick="delete1();">
+			<%-- <button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
+				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button> --%>
 			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
 
 			</form>
@@ -844,20 +845,116 @@
 				console.log("success");
 				console.log(response);
 				// 전표 입력시 list로 이동
+				
 				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read";
+				window.location.reload();
 			},
 			error: function(response) {
 				console.log("error");
 				console.log(response);
+				if(!valid.teamCheck("regDate", "관리팀")) return;
+			}
+			
+		}); // ajax
+		
+		
+	}
+	
+	function delete1() {
+		var voucherList = [];
+		$("#save-table tr").each(function(i){
+			
+			var tr = $(this);
+			var td = tr.children();
+			
+			var noArray = td.eq(1).text().split('-');
+			
+			if(i > 0) {
+				$('#regDate').val('');
+				$('#accountNo').val('');
+				$('#accountName').val('');
+				$('#amountFlag').val('');
+				$('#amount').val('');
+				$('#manageNo').val('');
+				$('#customerNo').val('');
+				$('#customerName').val('');
+				$('#bankCode').val('');
+				$('#bankName').val('');
+				$('#cardNo').val('');
+				$('#cardUser').val('');
+				$('#depositNo').val('');
+				$('#depositHost').val('');
+				$('#voucherUse').val('');
+				
+				var regDate =  td.eq(0).text();
+				
+				if(noArray[1] != null) {
+					var no = noArray[0]
+					var orderNo = noArray[1];
+				} else {
+					var orderNo = noArray[0];
+				}
+				
+				var accountNo =  td.eq(2).text();
+				var accountName =  td.eq(3).text();
+				var amountFlag =  td.eq(4).text();
+				var amount =  uncomma(td.eq(5).text());
+				var customerNo =  td.eq(6).text();
+				var customerName =  td.eq(7).text();
+				var manageNo =  td.eq(9).text();
+				var bankCode =  td.eq(10).text();
+				var bankName =  td.eq(11).text();
+				if(td.eq(12).text() == '') {
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var depositHost =  td.eq(14).text();
+				}
+				if(td.eq(13).text() == '') {
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var cardUser =  td.eq(14).text();
+				}
+				var voucherUse =  td.eq(15).text();
+				
+				var voucherVo = {regDate:regDate, no:no, orderNo:orderNo, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
+						manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
+						cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
+					};
+				
+				voucherList.push(voucherVo);
+				
+			}
+		});
+		
+		var jsonString = JSON.stringify(voucherList);
+		console.log("jsonString : " + jsonString);
+		console.log(jsonString);
+		
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+			type: "post",
+			dataType: "json",
+			data: {
+				'itemList' : jsonString
+			},
+			success: function(response) {
+				console.log("success");
+				console.log(response);
+				// 전표 입력시 list로 이동
+				
+				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read";
+				window.location.reload();
+			},
+			error: function(response) {
+				console.log("error");
+				console.log(response);
+				if(!valid.teamCheck2("regDate", "관리팀")) return;
 			}
 			
 		}); // ajax
 	}
-	
-	/* // 리셋
-	function reset() {
-		
-	} */
+
 	
 	// 유효성 검사시 Dialog Popup 창이 모달로 띄움
 	function dialog(txt, flag) {
@@ -898,6 +995,22 @@
     			if(!$.isNumeric($("#"+id).val())){        	
     				dialog(msg+" 은(는) 숫자만 입력 가능합니다.");
     				$("#"+id).focus();
+    				return false;
+    			} else {
+    				return true;
+    			}
+    		},
+    		teamCheck: function(id, msg){ // null 체크
+    			if($("#"+id).val()==""){
+    				dialog(msg+"이 달라서 수정 할 수 없습니다.");
+    				return false;
+    			} else {
+    				return true;
+    			}
+    		},
+    		teamCheck2: function(id, msg){ // null 체크
+    			if($("#"+id).val()==""){
+    				dialog(msg+"이 달라서 삭제 할 수 없습니다.");
     				return false;
     			} else {
     				return true;
