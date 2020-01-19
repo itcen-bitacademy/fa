@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
 import kr.co.itcen.fa.vo.menu01.VoucherVo;
@@ -78,12 +79,25 @@ public class Menu30Repository {
 		return sqlSession.selectOne("menu30.csum", revo);
 	}
 
-	public void deleteVoucher(List<VoucherVo> voucherVolist) {
-		for(VoucherVo v1:voucherVolist) {
-			sqlSession.delete("menu30.deleteVoucher", v1);
-			sqlSession.delete("menu30.deleteItem", v1);
-			sqlSession.delete("menu30.deleteMapping", v1);
-		};
+	public void deleteVoucher(List<Long> list) {
+			sqlSession.delete("menu30.deleteVoucher", list);
+			sqlSession.delete("menu30.deleteItem", list);
+			sqlSession.delete("menu30.deleteMapping", list);
+		
+	}
+
+	public void createVoucher(List<VoucherVo> voucherVolist, UserVo authUser) {
+		Long no = sqlSession.selectOne("menu30.voucherVolist");
+		for(int i=0 ; i<voucherVolist.size();i++) {
+			voucherVolist.get(i).setNo(no);
+			voucherVolist.get(i).setInsertTeam(authUser.getTeamName());
+			voucherVolist.get(i).setInsertUserid(authUser.getId());
+			voucherVolist.get(i).setOrderNo(1);
+			no=no+1;
+		}
+		sqlSession.insert("menu30.insertVoucher", voucherVolist);
+		sqlSession.insert("menu30.insertItem", voucherVolist);
+		sqlSession.insert("menu30.insertMapping", voucherVolist);
 		
 	}
 }
