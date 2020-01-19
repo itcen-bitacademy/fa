@@ -73,12 +73,18 @@ public class Menu03Repository {
 				System.out.println("itemVo.size : " + itemVo.size());
 				itemVo.get(i).setVoucherNo(voucherVo.getNo());
 				itemVo.get(i).setGroupNo(voucherVo.getNo());
+				
 				sqlSession.insert("menu03.insertItem3", itemVo.get(i)); // 항목테이블 입력
 				
 				//int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
 				
 				mappingVo.get(i).setVoucherNo(voucherVo.getNo());
-				sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
+				if((itemVo.get(i).getAccountNo() >= 8000000 && itemVo.get(i).getAccountNo() < 9000000) || (itemVo.get(i).getAccountNo() >= 9200000 && itemVo.get(i).getAccountNo() < 9300000)) {
+					sqlSession.insert("menu03.insertMapping3", mappingVo.get(i));
+				} else {
+					sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
+				}
+				
 			}
 			
 			return voucherVo.getNo();	// 전표번호
