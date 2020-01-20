@@ -118,14 +118,14 @@
 									</div>
 
 									<div class="control-group">
-										<div style="float: left; width: 50%">
+										<div style="float: left">
 											<label style="text-align:left;" class="control-label" for="form-field-1">매입일자</label>
 											<div class="controls">
 												<input readonly class="cl-date-picker" style="width: 150px" type="text" id="payDate" name="payDate" placeholder="" />
 												<i class="icon-calendar"></i>
 											</div>
 										</div>
-										<div style="float: left; width: 50%">
+										<div style="float: left">
 											<label style="width: 60px; margin-left: 10px; margin-right: 10px;" class="control-label" for="form-field-1">출시가</label>
 												 <input style="width: 200px; margin-left : 10px;" class=limitation type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요" />
 										</div>
@@ -212,15 +212,6 @@
 											<input type="text" class=limitation id="acqTax" name="acqTax"   placeholder="금액을 입력하세요" />
 										</div>
 									</div>
-
-
-							<!-- 		<div class="control-group">
-									<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서 번호</label>
-									<div class="controls">
-										<input type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
-									</div>
-								</div> 
-								 -->
 
 									<div class="control-group">
 										<div style="float: left; width: 50%">

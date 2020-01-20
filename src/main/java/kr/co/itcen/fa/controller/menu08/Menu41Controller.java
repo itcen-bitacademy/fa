@@ -21,6 +21,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
+import kr.co.itcen.fa.service.menu01.Menu05Service;
 import kr.co.itcen.fa.service.menu08.Menu41Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
@@ -56,6 +57,9 @@ public class Menu41Controller {
 
 	@Autowired
 	private Menu03Service menu03Service;  // 1팀 전표
+	
+	@Autowired
+	private Menu05Service menu05Service; // 1팀 카드 (비용관련 월사용료만)
 
 	//               /08   /   41     , /08/41/add
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/add" })
@@ -138,6 +142,7 @@ public class Menu41Controller {
 						 Model model) throws ParseException{
 		
 		System.out.println("수정합니다.");
+		
 		
 		vehicleVo.setUpdateUserId(userVo.getId());
 		vehicleVo.setId("e"+vehicleVo.getId());
@@ -278,6 +283,7 @@ public class Menu41Controller {
 		ItemVo itemVo = new ItemVo(); //차변대변나누기 위해서 객체선언
 		ItemVo itemVo2 = new ItemVo(); //차변대변나누기 위해서 객체선언
 		MappingVo mappingVo = new MappingVo();
+		String cardNo = menu05Service.getCardNo(cus.getDepositNo()); //카드번호 가져올 변수
 		//---
 
 		//왼쪽 : 얻은것(차변) 차량 가격  :::: 오른쪽(대변)  현금   가격 
@@ -334,6 +340,7 @@ public class Menu41Controller {
 			//매핑테이블
 			mappingVo.setSystemCode(taxbillVo.getVehicleNo());  // 차량 코드번호
 			mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+			mappingVo.setCardNo(cardNo); //카드번호
 			mappingVo.setCustomerNo(customerNo); //거래처번호
 			mappingVo.setManageNo(taxbillVo.getTaxbillNoPoP());//세금계산서번호
 			mappingVo.setBankCode(cus.getBankCode()); //은행코드
