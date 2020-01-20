@@ -250,7 +250,7 @@
 									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
-										<c:when test="${voucherVo.customerName eq '여비' }">
+										<c:when test="${(voucherVo.accountNo >= 8000000 && voucherVo.accountNo < 9000000) || (voucherVo.accountNo >= 9200000 && voucherVo.accountNo < 9300000) }">
 											<td>${voucherVo.cardNo }</td>
 								            <td></td>
 								            <td>${voucherVo.cardUser }</td>
@@ -325,6 +325,22 @@ $(function(){
 	$(document.body).delegate('#voucher_list tr', 'click', function() {
 		var tr = $(this);
 		var td = tr.children();
+		
+		$('#regDate').val('');
+		$('#accountNo').val('');
+		$('#accountName').val('');
+		$('#amountFlag').val('');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
 		
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
