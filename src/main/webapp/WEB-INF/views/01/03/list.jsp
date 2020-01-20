@@ -1131,10 +1131,14 @@ $(function(){
 	      	  			cardNo = voucherList[a].cardNo;
 	      	  			host = voucherList[a].cardUser;
 	      	  			depositNo = '';
-	      	  		} else {
+	      	  		} else if (voucherList[a].depositNo != null) {
 	      	  			cardNo = '';
 	      	  			depositNo = voucherList[a].depositNo;
 	      	  			host = voucherList[a].depositHost;
+	      	  		} else {
+	      	  			cardNo = '';
+      	  				depositNo = '';
+      	  				host = '';
 	      	  		}
 	      	  		
 		      	  	if(voucherList[a].manageNo == '') {
