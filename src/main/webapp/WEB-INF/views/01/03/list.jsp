@@ -17,7 +17,28 @@
 	overflow: auto;
 }
 
+html, body {
+	height: 100%;
+}
 
+.main-container {
+	height: calc(100% - 45px);
+	overflow-x: hidden;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.page-content {
+	min-width: 1280px;
+}
+
+@media screen and (max-width: 920px) {
+	.main-container {
+		height: calc(100% - 84px);
+	}
+}
 </style>
 
 </head>
@@ -172,7 +193,7 @@
 									<div class="controls">
 										<input class="span8" type="text" id="voucherUse" name="voucherUse" placeholder="전표사용목적" style="width:465px;" />
 										<input class="span8" type="hidden" id="voucherNo" name="no" />
-										<input class="span8" type="hidden" id="orderNo" name="orderNo" />
+										<input class="span8" type="hidden" id="orderNo" name="orderNo" value="1" />
 										<input class="span8" type="hidden" id="insertTeam" name="insertTeam" />
 									</div>
 								</div>
@@ -275,7 +296,7 @@
 			<input class="btn btn-danger btn-small" id="btn-delete" name="btn-delete" type="button" value="삭 제" onclick="delete1();">
 			<%-- <button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
 				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button> --%>
-			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
+			<input class="btn btn-default btn btn-small" id="btn-reset" name="btn-reset" type="button" value="취 소" >
 
 			</form>
 			<!-- <div class="row-fluid">
@@ -294,6 +315,7 @@
 			<p class="span6" style="margin:5px 0 0 0;font-size:0.9rem">조회된 전표 ${dataResult.pagination.totalCnt } 건</p>
 			
 			<!--조회 테이블 영역 -->
+			
 			<div class="row-fluid">
 				<div class="span12" style="overflow: auto;">
 					<table id="simple-table-1"
@@ -956,6 +978,28 @@
 			
 		}); // ajax
 	}
+	
+	$("#btn-reset").click(function(){
+		$('#regDate').val('');
+		$('#accountName').val('');
+		$('#accountNo').val("계정과목코드").trigger('chosen:updated');
+		$('#amountFlag').val("d").trigger('chosen:updated');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
+		
+		$("#voucher_save").empty();
+	});
+	
+	
 
 	
 	// 유효성 검사시 Dialog Popup 창이 모달로 띄움
@@ -979,6 +1023,7 @@
 				}
 			]
 		});
+		$("#dialog-confirm").dialog('open');//모달을 띄운다
 	}
 	
 	var valid = {
@@ -1057,7 +1102,14 @@ $(function(){
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
 		$("input[name=orderNo]").val(td.eq(2).text());
-		$("input[name=amountFlag]").val(td.eq(3).text());
+		let amountFlag = '';
+		if(td.eq(3).text() == '차변') {
+			amountFlag = 'd';
+		} else if (td.eq(3).text() == '대변') {
+			amountFlag = 'c';
+		}
+		$('#amountFlag').val(amountFlag).trigger('chosen:updated');
+		
 		$('#accountNo').val(td.eq(4).text()).trigger('chosen:updated');
 		$("input[name=accountName]").val(td.eq(5).text());
 		console.log($("input[name=no]").val());
@@ -1232,7 +1284,7 @@ $(function(){
      	    
      	    $('#accountNo').val(td.eq(2).text()).trigger('chosen:updated');
      	    $('#accountName').val(td.eq(3).text()).trigger('chosen:updated');
-     	    $("input[name=amountFlag]").val(td.eq(4).text());
+     	    $('#amountFlag').val(td.eq(4).text()).trigger('chosen:updated');
      	    $("input[name=amount]").val(td.eq(5).text());
      	     
      	    $("input[name=customerNo]").val(td.eq(6).text());
