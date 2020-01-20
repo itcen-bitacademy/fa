@@ -61,10 +61,13 @@
 														
 														<td class="hidden-phone">${subSection.lastUpdate }</td>
 														
+														 	
 														<td>
 															<div class="hidden-phone visible-desktop action-buttons">
+																<!-- 
 																<a class="green" href="#"><i class="icon-pencil bigger-130"></i></a>
-																<a class="red" href="#"><i class="icon-trash bigger-130"></i></a>
+																<a class="red" href="#"><i class="icon-trash bigger-130"></i></a> 
+																-->
 															</div>															
 														</td>
 													</tr>

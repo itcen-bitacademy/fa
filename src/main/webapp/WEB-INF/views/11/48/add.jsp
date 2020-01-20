@@ -99,6 +99,8 @@ tr td:first-child {
 	grid-template-columns: repeat(2, auto);
 }
 
+
+
 .grid-input>div{
 	display: grid;
 	grid-template-columns: 150px auto;
@@ -728,6 +730,9 @@ tr td:first-child {
 			return false;
 		}
 	
+		
+		
+		
 		if(code != '' && code.length != 10){
 			errortitle = 'SEARCH ERROR';	
 			validationMessage = '검색할 코드는 반드시 10자리여야 합니다';
@@ -735,6 +740,7 @@ tr td:first-child {
 			return false;
 		}
 		
+		return true;
 	}
 	
 	
@@ -914,7 +920,7 @@ tr td:first-child {
 		return true;
 	}
 	
-	
+	 
 	
 	function delHangle(evt){//한글을 지우는 부분, keyup에 들어간다.
 	    var objTarger = evt.srcElement || evt.target;
@@ -985,7 +991,7 @@ tr td:first-child {
 		
 		var tr = $(this);
 		var td = tr.children();
-		
+		$('#img-checkcode').hide();
 		
 		if($(this).hasClass('selected') === false){
 			$('#updatebtn').show();
@@ -1155,7 +1161,7 @@ tr td:first-child {
 	
 	// 은행코드 검색
 	$("#a-dialog-bankcode").click(function(event){
-		alert("click dialog bankcode");
+		
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
 		
@@ -1174,7 +1180,7 @@ tr td:first-child {
 			    }
 			},
 			success: function(response){
-				alert(response);
+				
 				$("#input-dialog-bankcode").val('');
 				  $.each(response.data,function(index, item){
 	                 $("#tbody-bankList").append("<tr>" +
@@ -1191,7 +1197,7 @@ tr td:first-child {
 	
 	// 은행명 검색 : 은행목록 리스트로 가져오기
 	$("#a-dialog-bankname").click(function(event){
-		alert("click dialog bankname");
+		
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
 		
@@ -1210,7 +1216,7 @@ tr td:first-child {
 			    }
 			},
 			success: function(response){
-				alert(response.data);
+				
 				$("#input-dialog-bankname").val('');
 				 $.each(response.data,function(index, item){
 		                $("#tbody-bankList").append("<tr>" +
@@ -1391,8 +1397,8 @@ tr td:first-child {
 						         	for(let a in repayList) {  			
 						         	$("#tbody-repaymentList").append("<tr>" +
 							             "<td class='center'>" + repayList[a].code + "</td>" +
-				                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-				                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                          "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+				                          "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 				                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 				                          "</tr>");
 					         	  	}
@@ -1712,8 +1718,8 @@ tr td:first-child {
 		         	  		
 			         	  	$("#tbody-repaymentList").append("<tr>" +
 			                          "<td class='center'>" + repayList[a].code + "</td>" +
-			                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-			                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+			                          "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+			                          "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 			                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 			                          "</tr>");
 			         	  	
@@ -1896,8 +1902,8 @@ tr td:first-child {
 				         	  				
 				         	  				"<tbody>"+
 				         	  			   "<tr>" +
-				                           "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-				                           "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                           "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+				                           "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 				                           "<td class='center'>" + repayList[a].payDate + "</td>" +
 				                           "</tr>" +
 				                           "</tbody>"+
@@ -1909,8 +1915,8 @@ tr td:first-child {
 			         	  			
 			         	  			dialog.append(
 			         	  				  "<tr>" +
-				                           "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-				                           "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                           "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+				                           "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 				                           "<td class='center'>" + repayList[a].payDate + "</td>" +
 				                           "</tr>"
 			         	  			);

@@ -27,6 +27,8 @@ public class DBConfig {
 		basicDataSource.setUrl(env.getProperty("jdbc.url"));
 		basicDataSource.setUsername(env.getProperty("jdbc.username"));
 		basicDataSource.setPassword(env.getProperty("jdbc.password"));
+		basicDataSource.setTestOnBorrow(true);
+		basicDataSource.setValidationQuery(env.getProperty("jdbc.validationQuery"));
 		basicDataSource.setInitialSize(env.getProperty("jdbc.initialSize", Integer.class));
 		basicDataSource.setMaxActive(env.getProperty("jdbc.maxActive", Integer.class));
 		return basicDataSource;

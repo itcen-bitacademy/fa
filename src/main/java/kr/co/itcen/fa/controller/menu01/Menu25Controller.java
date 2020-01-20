@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
+import kr.co.itcen.fa.service.menu01.Menu05Service;
 import kr.co.itcen.fa.service.menu01.Menu25Service;
 import kr.co.itcen.fa.service.menu01.Menu27Service;
 import kr.co.itcen.fa.service.menu02.Menu35Service;
@@ -36,6 +37,8 @@ public class Menu25Controller {
 	public static final String MAINMENU = "01";
 	public static final String SUBMENU = "25";
 
+	@Autowired
+	private Menu05Service menu05Service;
 	@Autowired
 	private Menu25Service menu25Service;
 	@Autowired
@@ -99,6 +102,7 @@ public class Menu25Controller {
 		
 		Map<String, Object> dataResult = menu25Service.update(bavo, page);
 		
+		menu05Service.updateBankAccount(bavo);
 		menu27Service.updateBankAccount(bavo);
 		menu15Service.updateBankAccount(bavo);
 		menu35Service.updateBankAccount(bavo);

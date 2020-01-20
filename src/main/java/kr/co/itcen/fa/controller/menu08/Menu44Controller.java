@@ -43,8 +43,9 @@ public class Menu44Controller {
 			Model model,
 			@RequestParam(value = "payDate", required = false) String payDate,
 			@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd,
-			@RequestParam(defaultValue = "1") int page) {
+			@RequestParam(value="page", required=false, defaultValue = "1") int page) {
 
+		String uri="";
 		String startDate = null;
 		String endDate = null;
 		DataResult<IntangibleAssetsVo> dataResult = new DataResult<IntangibleAssetsVo>();
@@ -53,6 +54,12 @@ public class Menu44Controller {
 		Map<String, Object> map = new HashMap<>();
 		map.putAll(menu44Service.getSection());
 		model.addAllAttributes(map);
+		
+		if("".equals(intangibleAssetsVo.getFlag())) {
+			intangibleAssetsVo.setFlag("");
+		}else {
+			intangibleAssetsVo.setFlag("s");
+		}
 		
 		// 취득금액 조회
 		if (intangibleAssetsVo.getAcqPrice() != null) {
@@ -72,8 +79,8 @@ public class Menu44Controller {
 		// list.jsp 페이지 기본 화면
 		dataResult = menu44Service.getList(page, intangibleAssetsVo, startDate, endDate);
 		model.addAttribute("dataResult", dataResult);
-		
-		System.out.println("삭제여부:" + intangibleAssetsVo.getIsChecked());
+		model.addAttribute("vo", intangibleAssetsVo);
+		model.addAttribute("page", page);
 		
 		UriComponents uriComponents=
 				UriComponentsBuilder.newInstance()
@@ -83,15 +90,12 @@ public class Menu44Controller {
 				.queryParam("customerName",intangibleAssetsVo.getCustomerName())
 				.queryParam("address",intangibleAssetsVo.getAddress())
 				.queryParam("acqPrice", intangibleAssetsVo.getAcqPrice())
-				.queryParam("isChecked",intangibleAssetsVo.getIsChecked())
+				.queryParam("flag",intangibleAssetsVo.getFlag())
 				.build();
-		String uri = uriComponents.toUriString();
+		uri = uriComponents.toUriString();
 		model.addAttribute("uri",uri);
-		model.addAttribute("vo", intangibleAssetsVo);
-		model.addAttribute("intangibleAssetsVo", dataResult.getDatas());
 		
-		System.out.println("1 : " + dataResult);
-		System.out.println("2 : " + intangibleAssetsVo);
+		//model.addAttribute("intangibleAssetsVo", dataResult.getDatas());
 		
 		return MAINMENU + "/" + SUBMENU + "/list";
 	}

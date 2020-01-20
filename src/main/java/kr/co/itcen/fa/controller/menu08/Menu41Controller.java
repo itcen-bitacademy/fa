@@ -21,6 +21,7 @@ import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.security.AuthUser;
 import kr.co.itcen.fa.service.menu01.Menu03Service;
+import kr.co.itcen.fa.service.menu01.Menu05Service;
 import kr.co.itcen.fa.service.menu08.Menu41Service;
 import kr.co.itcen.fa.service.menu17.Menu19Service;
 import kr.co.itcen.fa.vo.UserVo;
@@ -56,6 +57,9 @@ public class Menu41Controller {
 
 	@Autowired
 	private Menu03Service menu03Service;  // 1팀 전표
+	
+	@Autowired
+	private Menu05Service menu05Service; // 1팀 카드 (비용관련 월사용료만)
 
 	//               /08   /   41     , /08/41/add
 	@RequestMapping(value = {"/" + SUBMENU, "/" + SUBMENU + "/add" })
@@ -139,6 +143,7 @@ public class Menu41Controller {
 		
 		System.out.println("수정합니다.");
 		
+		
 		vehicleVo.setUpdateUserId(userVo.getId());
 		vehicleVo.setId("e"+vehicleVo.getId());
 		
@@ -200,10 +205,12 @@ public class Menu41Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
 	public String delete(@ModelAttribute VehicleVo vehicleVo,
 						 @RequestParam(value="id", required = false) String id,
+						 @RequestParam(value="taxbillNo", required = false) String taxbillNo,
 						 @SessionAttribute("authUser") UserVo userVo,
 						 Model model) throws ParseException {
 		
 				id = "e" + id;
+				String userId = userVo.getId();
 				System.out.println("삭제할 id" + id);
 		
 				Long voucherNo = menu41Service.getVoucherNo(id);
@@ -225,6 +232,9 @@ public class Menu41Controller {
 					  v.setNo(voucherNo); 
 					  voucherVolist.add(v);
 					  menu03Service.deleteVoucher(voucherVolist, userVo); 
+					  //뒤로 빠진 세금계산서 번호를 삭제해주기 위해서 지금 삭제하는 중
+					  menu41Service.deleteTaxbillNo(userId,taxbillNo); //전표에서 세금계산서 번호 삭제해야함 이것만 붕 뜨는중(우리가 수정할때 세금계산서 번호를 입력하기때문에)
+	
 				  
 					  for(Long no : taxVoucherNo) {
 						  System.out.println("나는 NO다 " + no);
@@ -237,8 +247,8 @@ public class Menu41Controller {
 				//삭제한 사람도 남길때 set무엇으로 하는게 적당한지 모르겠음
 				//vehicleVo.setUpdateUserId(userVo.getId());
 				System.out.println("삭제할때 필요한 id" + id);
-				menu41Service.delete(id); //vehicle
-				menu41Service.deleteTaxbill(id);//taxbill
+				menu41Service.delete(userId, id); //vehicle에서 필요한 차량 번호
+				menu41Service.deleteTaxbill(userId, id);//taxbill에서 필요한 차량 번호
 				return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
 		    }
 	}
@@ -278,6 +288,7 @@ public class Menu41Controller {
 		ItemVo itemVo = new ItemVo(); //차변대변나누기 위해서 객체선언
 		ItemVo itemVo2 = new ItemVo(); //차변대변나누기 위해서 객체선언
 		MappingVo mappingVo = new MappingVo();
+		String cardNo = menu05Service.getCardNo(cus.getDepositNo()); //카드번호 가져올 변수
 		//---
 
 		//왼쪽 : 얻은것(차변) 차량 가격  :::: 오른쪽(대변)  현금   가격 
@@ -334,6 +345,7 @@ public class Menu41Controller {
 			//매핑테이블
 			mappingVo.setSystemCode(taxbillVo.getVehicleNo());  // 차량 코드번호
 			mappingVo.setDepositNo(cus.getDepositNo());  // 계좌번호
+			mappingVo.setCardNo(cardNo); //카드번호
 			mappingVo.setCustomerNo(customerNo); //거래처번호
 			mappingVo.setManageNo(taxbillVo.getTaxbillNoPoP());//세금계산서번호
 			mappingVo.setBankCode(cus.getBankCode()); //은행코드
@@ -345,8 +357,6 @@ public class Menu41Controller {
 		Long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo); //전표입력
 		taxbillVo.setVoucherNo(voucherNo); //전표번호 세팅
 		
-//		menu41Service.updateTax(taxno, veno, voucherNo, userVo.getId());  //차량 테이블 업데이트
-		
 		menu41Service.taxbill(taxbillVo);   //차량세금 인서트
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
@@ -355,20 +365,28 @@ public class Menu41Controller {
 	
 	//세금계산서 정보 조회하기 RequestMethod를 GET메소드로
 	@ResponseBody
-	@RequestMapping(value = {"/" + SUBMENU + "/taxinfo" }, method = RequestMethod.GET)
-	public Map<String, Object> taxlist(
-			@ModelAttribute TaxbillVo taxbillVo, 
-			@RequestParam(value="id", required = false) String id, 
-			Model model
-			) {
-			System.out.println("여기타?");
-			System.out.println("ID : " + id);
+	@RequestMapping(value = "/" + SUBMENU + "/taxinfo" , method = RequestMethod.GET)
+	public Map<String, Object> taxlist(@ModelAttribute TaxbillVo taxbillVo, 
+									   @RequestParam(value="id", required = false) String id,
+									   @RequestParam(value="page", required = false, defaultValue = "1") int page,
+									   @RequestParam(value="page_group", required = false, defaultValue = "0") int page_group,
+									   Model model) {
+		id = "e" + id;
 		//조회기능 
 		Map<String, Object> map = new HashMap<>();
-		map.putAll(menu41Service.selectTaxList("e"+id));
+		map.putAll(menu41Service.selectTaxList(id)); // 차량코드의 전체 세금계산서
+		map.putAll(menu41Service.selectpageTaxList(id, page));// 차량코드의 해당 페이지 세금계산서 12개씩
+		map.putAll(menu41Service.selectgroupTaxList(id, page_group));// 차량코드의 해당 그룹 페이지 세금계산서 5개씩
 		model.addAllAttributes(map);
 
 		return map;
 	}
 	
+	//세금계산서 총 건수 
+	@ResponseBody
+	@RequestMapping(value = "/" + SUBMENU + "/taxcount" , method = RequestMethod.GET)
+	public int taxcount(@RequestParam(value="id", required = false) String id) {
+		int count = menu41Service.taxcount(id);
+		return count;
+	}
 }

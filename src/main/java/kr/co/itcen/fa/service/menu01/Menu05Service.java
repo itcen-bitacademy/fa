@@ -102,11 +102,11 @@ public class Menu05Service {
 		return dataResult;
 		
 	}
-
-	public Map<String, Object> gets(String cardNo) {
-		Map<String, Object> map = menu05Repository.gets(cardNo);
-		return map;
-	}
+//
+//	public Map<String, Object> gets(String cardNo) {
+//		Map<String, Object> map = menu05Repository.gets(cardNo);
+//		return map;
+//	}
 
 	public CardVo exist(CardVo vo) {
 		return menu05Repository.exist(vo);
@@ -118,7 +118,9 @@ public class Menu05Service {
 		return map;
 	}
 
-
+	public String getCardNo(String depositNo) {
+		return menu05Repository.getCardNo(depositNo);
+	}
 	
 
 }

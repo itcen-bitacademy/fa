@@ -35,31 +35,34 @@ public class Menu43Service {
 		menu43Repository.insert(intangibleAssetsVo);
 	}
 
-	public DataResult<IntangibleAssetsVo> list(int page, String kwd) {
+	public DataResult<IntangibleAssetsVo> getList(int page, IntangibleAssetsVo intangibleAssetsVo, String startDate, String endDate) {
 		DataResult<IntangibleAssetsVo> dataResult = new DataResult<IntangibleAssetsVo>();
-		
-		int totalCount = menu43Repository.listCount(kwd);
+		int totalCount = menu43Repository.selectCount(intangibleAssetsVo, startDate, endDate);
 		
 		//pagination
 		PaginationUtil pagination = new PaginationUtil(page, totalCount, 11, 5);
 		dataResult.setPagination(pagination);
 		
-		List<IntangibleAssetsVo> list = menu43Repository.list(kwd, pagination);
+		intangibleAssetsVo.setPagination(pagination);// paginnationUtil 세팅
+
+		dataResult.setPagination(pagination);
+		
+		List<IntangibleAssetsVo> list = menu43Repository.getList(pagination, intangibleAssetsVo, startDate, endDate);
 		dataResult.setDatas(list);
 		
 		return dataResult;
-	}
-	
-	public List<IntangibleAssetsVo> getList(String kwd) {
-		return menu43Repository.getList(kwd);
 	}
 
 	public void update(IntangibleAssetsVo intangibleAssetsVo) {
 		menu43Repository.update(intangibleAssetsVo);
 	}
 
-	public void delete(String id) {
+	public void delete(String id, String userId, String taxbillNo) {
 		menu43Repository.delete(id);
+		
+		// 세금계산서 삭제
+		menu43Repository.delTaxbill(userId, taxbillNo);
+		
 	}
 
 	public Map<? extends String, ? extends Object> getSection() {

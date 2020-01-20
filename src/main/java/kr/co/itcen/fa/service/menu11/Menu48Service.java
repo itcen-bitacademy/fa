@@ -1,8 +1,11 @@
 package kr.co.itcen.fa.service.menu11;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -276,4 +279,194 @@ public class Menu48Service {
  		return formatter.format(c.getTime());
 
  	}
+
+	public Map getYearDebtStat() {
+		int curYear = Calendar.getInstance().get(Calendar.YEAR);
+		List<Map> sList = menu48Repository.getYearSDebtStat(curYear);
+		List<Map> lList = menu48Repository.getYearLDebtStat(curYear);
+		List<Map> pList = menu48Repository.getYearPDebtStat(curYear);
+		
+		System.out.println("sList : " + sList);
+		System.out.println("lList : " + lList);
+		System.out.println("pList : " + pList);
+		
+		List<Long> sYearSumList = getYearSumList(sList, curYear);
+		List<Long> lYearSumList = getYearSumList(lList, curYear);
+		List<Long> pYearSumList = getYearSumList(pList, curYear);
+		
+		List<Integer> yearRangeList = getYearRangeList(curYear);
+		
+		Map map = new HashMap();
+		map.put("sList", sYearSumList);
+		map.put("lList", lYearSumList);
+		map.put("pList", pYearSumList);
+		map.put("xAxis", yearRangeList);
+		return map;
+	}
+	
+	public Map getMonthDebtStat(int searchYear) {
+		List<Map> sList = menu48Repository.getMonthSDebtStat(searchYear);
+		List<Map> lList = menu48Repository.getMonthLDebtStat(searchYear);
+		List<Map> pList = menu48Repository.getMonthPDebtStat(searchYear);
+		
+		System.out.println("sList : " + sList);
+		System.out.println("lList : " + lList);
+		System.out.println("pList : " + pList);
+		
+		List<Long> sMonthSumList = getMonthSumList(sList);
+		List<Long> lMonthSumList = getMonthSumList(lList);
+		List<Long> pMonthSumList = getMonthSumList(pList);
+		
+		List<Integer> monthRangeList = getMonthRangeList();
+		
+		Map map = new HashMap();
+		map.put("sList", sMonthSumList);
+		map.put("lList", lMonthSumList);
+		map.put("pList", pMonthSumList);
+		map.put("xAxis", monthRangeList);
+		return map;
+	}
+	
+	public Map getYearIntStat() {
+		int curYear = Calendar.getInstance().get(Calendar.YEAR);
+		Map map = new HashMap();
+		
+		map.put("searchYear", curYear);
+		map.put("debtType", "S");
+		List<Map> sList = menu48Repository.getYearIntStat(map);
+		map.replace("debtType", "L");
+		List<Map> lList = menu48Repository.getYearIntStat(map);
+		map.replace("debtType", "P");
+		List<Map> pList = menu48Repository.getYearIntStat(map);
+		
+		System.out.println("sList : " + sList);
+		System.out.println("lList : " + lList);
+		System.out.println("pList : " + pList);
+		
+		List<Long> sYearSumList = getYearSumList(sList, curYear);
+		List<Long> lYearSumList = getYearSumList(lList, curYear);
+		List<Long> pYearSumList = getYearSumList(pList, curYear);
+		
+		map.put("sList", sYearSumList);
+		map.put("lList", lYearSumList);
+		map.put("pList", pYearSumList);
+		map.put("xAxis", getYearRangeList(curYear));
+		
+		return map;
+	}
+
+	public List<Map> getDebtRatioStat() {
+		Map map = menu48Repository.getDebtRatioStat();
+		
+		List<Map> list = getDebtRatioList(map);
+		
+		return list;
+	}
+	public List<Map> getDebtRatioList(Map ratioMap) {
+		float sDebtRatio = getFloatFromMap(ratioMap.get("sDebtRatio"));
+		float lDebtRatio = getFloatFromMap(ratioMap.get("lDebtRatio"));
+		float pDebtRatio = getFloatFromMap(ratioMap.get("pDebtRatio"));
+		
+		List<Map> list = new ArrayList<Map>();
+		Map map = new HashMap();
+		map.put("name", "단기차입금");
+		map.put("y", sDebtRatio);
+		list.add(map);
+		
+		map = new HashMap();
+		map.put("name", "장기차입금");
+		map.put("y", lDebtRatio);
+		list.add(map);
+		
+		map = new HashMap();
+		map.put("name", "사채");
+		map.put("y", pDebtRatio);
+		list.add(map);
+		
+		return list;
+	}
+	public List<Long> getYearSumList(List<Map> list, int searchYear){
+		
+		List<Long> yearSumList = new ArrayList<Long>();
+		for(int i = searchYear; i >= searchYear-10; --i) {					//조회년도 ~ (조회년도 -10) : 10년간의 범위
+			Long sum = 0L;
+			
+			for(Map map : list) {								//리스트를 순회하면서 해당년도가 있는지 확인
+				Integer year = (Integer)map.get("year");
+				if(year == i) {									//해당년도가 있으면 sum값으로 입력
+					sum =getLongFromMap(map.get("sum"));
+					break;
+				}
+			}
+			yearSumList.add(sum);
+		}
+		
+		return yearSumList;
+	}
+	
+	public List<Integer> getYearRangeList(int searchYear){
+		List<Integer> list = new ArrayList();
+		
+		for(int i=searchYear; i>= searchYear-10; --i) {					//(조회년도 -10) ~ 조회년도 : 10년간의 범위
+			list.add(i);
+		}
+		
+		return list;
+	}
+	
+	public List<Long> getMonthSumList(List<Map> list){
+		List<Long> monthSumList = new ArrayList<Long>();
+		for(int i=1; i<= 12; ++i) {							//(조회년도 -10) ~ 조회년도 : 10년간의 범위
+			Long sum = 0L;
+			
+			for(Map map : list) {							//리스트를 순회하면서 해당월이 있는지 확인
+				Integer month = (Integer)map.get("month");
+				if(month == i) {							//해당월이 있으면 sum값으로 입력
+					sum =getLongFromMap(map.get("sum"));
+					break;
+				}
+			}
+			monthSumList.add(sum);
+		}
+		
+		return monthSumList;
+	}
+
+	public List<Integer> getMonthRangeList(){
+		List<Integer> list = new ArrayList();
+
+		for(int i=1; i<= 12; ++i) {					//1 ~ 12 
+			list.add(i);
+		}
+		return list;
+	}
+	
+	public Long getLongFromMap(Object value) {
+		Long resultVal=0L;
+		if(value instanceof BigDecimal) {
+			BigDecimal v = (BigDecimal)value;
+			resultVal= Long.valueOf(v.toString());
+		}else {
+			resultVal = (Long)value;
+		}
+			
+		return resultVal;
+	}
+	
+	public Float getFloatFromMap(Object value) {
+		Float resultVal=0f;
+		if(value instanceof BigDecimal) {
+			BigDecimal v = (BigDecimal)value;
+			resultVal= Float.valueOf(v.toString());
+		}else {
+			resultVal = (Float)value;
+		}
+			
+		return resultVal;
+	}
+
+	
+
+
+	
 }

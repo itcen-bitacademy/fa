@@ -225,6 +225,7 @@ html,body{
 								$("#no").attr("readonly",true);
 								$("#btn-check-no").hide();
 								$("#img-checkno").hide();
+								$("#btn-reset").click();
 					    	}
 					    	if(result.fail) {
 					    		alert("다시 입력해주세요.");
@@ -1059,7 +1060,7 @@ html,body{
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
 										&nbsp;&nbsp;&nbsp;&nbsp;사&nbsp;업&nbsp;자&nbsp;등&nbsp;록&nbsp;번&nbsp;호&nbsp;
 									</label>
-									<div class="input-append">
+									<div class="input-append" style="width: 220px;">
 									
 									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="width: 135px;"/>
 									<input id="btn-check-no" type="button" value="중복확인">
@@ -1480,7 +1481,7 @@ html,body{
 				openDeleteModal('DELETED CUSTOMER',"삭제 처리되었던 거래처 입니다.\r\n 재등록 하시겠습니까?");
 				$("#deleteok").click(function(){
 
-					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록이 완료되었습니다.");
+					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록을 시작합니다.");
 					$("#corporationNo").attr("readonly",true);
 					$("#btn-check-no").hide();
 					$("#img-checkno").show();

@@ -67,7 +67,7 @@
 				order by a.exp_date desc
 			]]>
 			</if>
-			<if test='sort != null and "i".equals(sort)'>
+			<if test='sort == null or "i".equals(sort)'>
 			<![CDATA[
 				order by a.insert_date desc
 			]]>

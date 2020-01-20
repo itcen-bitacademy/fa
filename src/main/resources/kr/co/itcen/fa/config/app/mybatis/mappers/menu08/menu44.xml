@@ -79,9 +79,9 @@
 			]]>
 		</if>
 		
-		<if test="isChecked == null">
+		<if test="flag!=null and !flag.equals('')">
 		<![CDATA[
-	        	and tb.flag = 's'
+	        	and tb.flag in('s', 'o')
 	    	]]>
 		</if>
 		
@@ -144,9 +144,9 @@
 			]]>
 		</if>
 		
-		<if test="isChecked == null">
+		<if test="flag!=null and !flag.equals('')">
 		<![CDATA[
-	        	and tb.flag = 's'
+	        	and tb.flag in('s', 'o')
 	    	]]>
 		</if>
 	</select>

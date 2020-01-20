@@ -45,11 +45,9 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
-			System.out.println("왜 안되냐2");
 			List<MappingVo> mappingList = new ArrayList<MappingVo>();
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
 				voucherVo.setInsertUserid(userVo.getId());
-				System.out.println("왜 안되냐3");
 				for(int i = 0; i < itemVo.size(); i++) {
 					itemVo.get(i).setInsertUserid(userVo.getId());
 					
@@ -67,7 +65,6 @@ public class Menu03Service {
 					mappingList.add(mappingVoTemp);
 				}
 				
-				System.out.println("22222222222222222" + voucherVo.getRegDate());
 				menu03Repository.createVoucher(voucherVo, itemVo, mappingList);
 				return voucherVo.getNo(); // 전표번호
 			}
@@ -100,9 +97,7 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
-			System.out.println("Service");
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate())) {
-				System.out.println("Service2");
 				menu03Repository.updateVoucher2(voucherVo, itemVo, mappingList, userVo);
 				
 				return voucherVo.getNo(); // 전표번호
@@ -120,7 +115,6 @@ public class Menu03Service {
 		//마감 여부 체크
 		try {
 			//String businessDateStr = menu03Repository.businessDateStr();
-			System.out.println("voucherVo : " + voucherVo.getNo());
 			voucherVo.setRegDate2(menu03Repository.getRegDate(voucherVo.getNo()));
 			List<MappingVo> mappingList = new ArrayList<MappingVo>();
 			System.out.println("setRegDate : " + voucherVo.getRegDate());
@@ -128,10 +122,7 @@ public class Menu03Service {
 			
 			if(menu19Service.checkClosingDate(userVo, voucherVo.getRegDate2())) {
 				voucherVo.setUpdateUserid(userVo.getId());
-				System.out.println("###########" + voucherVo.getNo());
-				System.out.println("service" + mappingVo.getVoucherNo());
 				for(int i = 0; i < itemVo.size(); i++) {
-					
 					
 					itemVo.get(i).setUpdateUserid(userVo.getId());
 					
@@ -149,7 +140,6 @@ public class Menu03Service {
 					mappingList.add(mappingVoTemp);
 					
 					voucherVo.setNo(menu03Repository.updateVoucher(voucherVo, itemVo, mappingList, userVo));
-					System.out.println("service : " + voucherVo.getNo());
 				}
 				return voucherVo.getNo();
 			}
@@ -213,9 +203,7 @@ public class Menu03Service {
    public DataResult<VoucherVo> selectVoucherCount(VoucherVo voucherVo, int page) {
    
 	   DataResult<VoucherVo> dataResult = new DataResult<VoucherVo>();
-	   System.out.println("regDateService :" + voucherVo.getRegDate());
 	   int totalCount = menu03Repository.selectVoucherCount(voucherVo);
-	   System.out.println("totalCount : " + totalCount);
 	   PaginationUtil paginationUtil = new PaginationUtil(page, totalCount, 11, 5);
 	   dataResult.setPagination(paginationUtil);
 	   
@@ -227,8 +215,6 @@ public class Menu03Service {
 	
 	// 전표생성 (1팀)
 	public void createVoucher(VoucherVo voucherVo, @AuthUser UserVo userVo) {
-		System.out.println("a : " + userVo.getTeamName());
-		System.out.println("b : " + userVo.getId());
 		voucherVo.setInsertTeam(userVo.getTeamName());
 		voucherVo.setInsertUserid(userVo.getId());
 		voucherVo.setOrderNo(1);

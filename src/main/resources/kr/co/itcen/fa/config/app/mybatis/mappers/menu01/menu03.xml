@@ -95,8 +95,41 @@
 		]]>
 	</insert>
 	
-	<!-- 매핑테이블 입력 -->
+	<!-- 매핑테이블 입력 계좌 -->
 	<insert id="insertMapping" parameterType="1mappingvo">
+		<![CDATA[
+		insert
+		  into tb_voucher_system_mapping(no,
+		  			   voucher_use,
+		  			   insert_team,
+		  			   insert_userid,
+		  			   insert_day,
+		  			   use_yn,
+		  			   voucher_no,
+		  			   system_code,
+		  			   manage_no,
+		  			   deposit_no,
+		  			   customer_no,
+		  			   order_no
+		)
+		values (null,
+				#{voucherUse },
+				#{insertTeam },
+		  		#{insertUserid },
+		  		now(),
+		  		true,
+		  		#{voucherNo },
+		  		#{systemCode },
+		  		#{manageNo },
+		  		#{depositNo },
+		  		#{customerNo },
+		  		#{orderNo }
+		)
+		]]>
+	</insert>
+	
+	<!-- 매핑테이블 입력 카드 -->
+	<insert id="insertMapping3" parameterType="1mappingvo">
 		<![CDATA[
 		insert
 		  into tb_voucher_system_mapping(no,
@@ -269,9 +302,7 @@
 				 union
 				select no, name
                   from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                 ) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -322,9 +353,7 @@
 				 union
 				select no, name
                   from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                 ) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -453,9 +482,7 @@
 				 union
 				select no, name
                   from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                 ) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no
@@ -555,9 +582,7 @@
 				 union
 				select no, name
                   from tb_purchasecustomer
-                 union
-                select code as no, name
-                  from tb_bank) as cu
+                 ) as cu
             on cu.no = m.customer_no
 	 left join tb_cardmanager c
             on c.card_no = m.card_no

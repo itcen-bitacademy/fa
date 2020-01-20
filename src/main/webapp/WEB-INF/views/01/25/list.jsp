@@ -374,115 +374,103 @@ html, body {
 
 		$(".chosen-select").chosen();
 
-		// 4조 - 은행코드 검색
+	// 4조 - 은행코드 검색
 		$("#a-dialog-bankcode")
 				.click(
 						function(event) {
 							event.preventDefault();
 							$("#tbody-bankList").find("tr").remove();
-
-							var bankcodeVal = $("#input-dialog-bankcode").val();
-							console.log(bankcodeVal);
-							// ajax 통신
-							$
-									.ajax({
-										url : "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcode="
-												+ bankcodeVal,
-										contentType : "application/json; charset=utf-8",
-										type : "get",
-										dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
-										data : "",
-										statusCode : {
-											404 : function() {
-												alert("page not found");
+							var searchAccountOption = $("#searchAccountOption").val();
+							alert(searchAccountOption);
+							if (searchAccountOption == 'bankCode') {
+								var bankcodeVal = $("#input-dialog-bankcode").val();
+								// ajax 통신
+								$
+										.ajax({
+											url : "${pageContext.request.contextPath }/api/selectone/getbankcode?bankcode="
+													+ bankcodeVal,
+											contentType : "application/json; charset=utf-8",
+											type : "get",
+											dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
+											data : "",
+											statusCode : {
+												404 : function() {
+													alert("page not found");
+												}
+											},
+											success : function(response) {
+												$("#input-dialog-bankcode").val('');
+												$("#tbody-bankList")
+														.append(
+																"<tr>"
+																		+ "<td class='center'>"
+																		+ response.data.code
+																		+ "</td>"
+																		+ "<td class='center'>"
+																		+ response.data.name
+																		+ "</td>"
+																		+ "<td class='center'>"
+																		+ response.data.store
+																		+ "</td>"
+																		+ "<td style='visibility:hidden;position:absolute;'>"
+																		+ response.data.mgr
+																		+ "</td>"
+																		+ "<td style='visibility:hidden;position:absolute;'>"
+																		+ response.data.mgrPhone
+																		+ "</td>"
+																		+ "</tr>");
+											},
+											error : function(xhr, error) {
+												console.error("error : "
+														+ error);
 											}
-										},
-										success : function(response) {
-											$("#input-dialog-bankcode").val('');
-											$("#tbody-bankList")
-													.append(
-															"<tr>"
-																	+ "<td class='center'>"
-																	+ response.data.code
-																	+ "</td>"
-																	+ "<td class='center'>"
-																	+ response.data.name
-																	+ "</td>"
-																	+ "<td class='center'>"
-																	+ response.data.store
-																	+ "</td>"
-																	+ "<td style='visibility:hidden;position:absolute;'>"
-																	+ response.data.mgr
-																	+ "</td>"
-																	+ "<td style='visibility:hidden;position:absolute;'>"
-																	+ response.data.mgrPhone
-																	+ "</td>"
-																	+ "</tr>");
-										},
-										error : function(xhr, error) {
-											console.error("error : " + error);
-										}
-									});
-						});
-
-		// 은행명 검색 : 은행목록 리스트로 가져오기
-		$('#dialog-message-table')
-				.on(
-						'click',
-						'#a-dialog-bankname',
-						function(event) {
-							event.preventDefault();
-							$("#tbody-bankList").find("tr").remove();
-
-							var banknameVal = $("#input-dialog-bankname").val();
-							console.log(banknameVal);
-							// ajax 통신
-							$
-									.ajax({
-										url : "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal="
-												+ banknameVal,
-										contentType : "application/json; charset=utf-8",
-										type : "get",
-										dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
-										data : "",
-										statusCode : {
-											404 : function() {
-												alert("page not found");
+										});
+							}
+							if (searchAccountOption == 'bankName') {
+								var banknameVal = $("#input-dialog-bankcode").val();
+								// ajax 통신
+								$
+										.ajax({
+											url : "${pageContext.request.contextPath }/api/selectone/getbankname?banknameVal="
+													+ banknameVal,
+											contentType : "application/json; charset=utf-8",
+											type : "get",
+											dataType : "json", // JSON 형식으로 받을거다!! (MIME type)
+											data : "",
+											statusCode : {
+												404 : function() {
+													alert("page not found");
+												}
+											},
+											success : function(data) {
+												$("#input-dialog-bankcode").val('');
+												$.each( data,function(index, item) {
+														$("#tbody-bankList").append(
+																	"<tr>"
+																			+ "<td class='center'>"
+																			+ item.code
+																			+ "</td>"
+																			+ "<td class='center'>"
+																			+ item.name
+																			+ "</td>"
+																			+ "<td class='center'>"
+																			+ item.store
+																			+ "</td>"
+																			+ "<td style='visibility:hidden;position:absolute;'>"
+																			+ item.mgr
+																			+ "</td>"
+																			+ "<td style='visibility:hidden;position:absolute;'>"
+																			+ item.mgrPhone
+																			+ "</td>"
+																			+ "</tr>");
+																})
+											},
+											error : function(xhr, error) {
+												console.error("error : "
+														+ error);
 											}
-										},
-										success : function(data) {
-											$("#input-dialog-bankname").val('');
-											$
-													.each(
-															data,
-															function(index,
-																	item) {
-																$(
-																		"#tbody-bankList")
-																		.append(
-																				"<tr>"
-																						+ "<td class='center'>"
-																						+ item.code
-																						+ "</td>"
-																						+ "<td class='center'>"
-																						+ item.name
-																						+ "</td>"
-																						+ "<td class='center'>"
-																						+ item.store
-																						+ "</td>"
-																						+ "<td style='visibility:hidden;position:absolute;'>"
-																						+ item.mgr
-																						+ "</td>"
-																						+ "<td style='visibility:hidden;position:absolute;'>"
-																						+ item.mgrPhone
-																						+ "</td>"
-																						+ "</tr>");
-															})
-										},
-										error : function(xhr, error) {
-											console.error("error : " + error);
-										}
-									});
+										});
+							}
 						});
 
 		// 은행리스트(bankList)에서 row를 선택하면 row의 해당 데이터 form에 추가
@@ -498,12 +486,10 @@ html, body {
 		});
 
 	});
-	
 
 	function addCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
-	
 
 	var validationMessage = '';
 	var errortitle = '';
@@ -637,7 +623,7 @@ html, body {
 			if (event.keyCode != 46) {//delete
 				return false;
 			}
-		}	
+		}
 		return true;
 
 	}
@@ -713,57 +699,64 @@ html, body {
 				}
 			});
 		});
-		
-		
+
 		//사업자등록번호 중복체크
-		$("#depositNo").change(function(){
+		$("#depositNo").change(function() {
 			$("#btn-check-no").show();
 			$("#img-checkno").hide();
 			nochecked = false;
-		});	
-		
-		$("#btn-check-no").click(function(){
-			
-			var depositNo = $("#depositNo").val();
-			
-			//계좌번호 Valid
-			if ('' === depositNo) {
-				errortitle = 'DEPOSIT_NO ERROR';
-				validationMessage = '계좌번호는\r\n필수입력항목입니다.';
-				errorfield = '#depositNo';
-				openErrorModal(errortitle,validationMessage,errorfield);
-				return;
-			}
-			
-			// 중복체크
-			$.ajax({
-				url: "${pageContext.servletContext.contextPath }/01/25/checkno?depositNo=" + depositNo,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json",
-				data: "",
-				success: function(response){
-					console.log(response);
-					if(response.result){
-						nochecked = true;
-						openErrorModal("DUPLICATE CHECK COMPLETE","중복 검사가 완료되었습니다.");
-						$("#btn-check-no").hide();
-						$("#img-checkno").show();
-						return;
-					}
-					else {
-						nochecked = true;
-						$("#btn-check-no").show();
-						$("#img-checkno").hide();
-						openErrorModal('DUPLICATE DEPOSIT',"중복된 계좌입니다.");
-						return;
-					}
-				},
-				error:function(xhr,error) {
-					console.err("error" + error);
-				}
-			});
 		});
+
+		$("#btn-check-no")
+				.click(
+						function() {
+
+							var depositNo = $("#depositNo").val();
+
+							//계좌번호 Valid
+							if ('' === depositNo) {
+								errortitle = 'DEPOSIT_NO ERROR';
+								validationMessage = '계좌번호는\r\n필수입력항목입니다.';
+								errorfield = '#depositNo';
+								openErrorModal(errortitle, validationMessage,
+										errorfield);
+								return;
+							}
+
+							// 중복체크
+							$
+									.ajax({
+										url : "${pageContext.servletContext.contextPath }/01/25/checkno?depositNo="
+												+ depositNo,
+										contentType : "application/json; charset=utf-8",
+										type : "get",
+										dataType : "json",
+										data : "",
+										success : function(response) {
+											console.log(response);
+											if (response.result) {
+												nochecked = true;
+												openErrorModal(
+														"DUPLICATE CHECK COMPLETE",
+														"중복 검사가 완료되었습니다.");
+												$("#btn-check-no").hide();
+												$("#img-checkno").show();
+												return;
+											} else {
+												nochecked = true;
+												$("#btn-check-no").show();
+												$("#img-checkno").hide();
+												openErrorModal(
+														'DUPLICATE DEPOSIT',
+														"중복된 계좌입니다.");
+												return;
+											}
+										},
+										error : function(xhr, error) {
+											console.err("error" + error);
+										}
+									});
+						});
 
 	});
 </script>
@@ -884,22 +877,15 @@ html, body {
 							<div id="dialog-message" title="은행코드" hidden="hidden">
 								<table id="dialog-message-table">
 									<tr>
-										<td><label>은행코드</label>
+										<td>
 										<div class="input-append">
+											<select id="searchAccountOption" style="width:120px;">
+												<option value="bankCode">은행코드</option>
+												<option value="bankName">은행명</option>
+											</select>
 										 <input type="text" class="input-dialog-bank"
 											id="input-dialog-bankcode" style="width: 100px;" /> <a
 											href="#" id="a-dialog-bankcode">
-											<span class="add-on">
-											<i class="icon-search icon-on-right bigger-110"></i>
-											</span>
-										</a>
-										</div>
-										</td>
-										<td><label>은행명</label> 
-										<div class="input-append">
-										<input type="text" class="input-dialog-bank"
-											id="input-dialog-bankname" style="width: 100px;" /> <a
-											href="#" id="a-dialog-bankname">
 											<span class="add-on">
 											<i class="icon-search icon-on-right bigger-110"></i>
 											</span>

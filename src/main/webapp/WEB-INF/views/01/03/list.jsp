@@ -177,6 +177,7 @@
 									</div>
 								</div>
 								
+								
 								<!-- 거래처 Modal pop-up : start -->
 								<div id="dialog-message" title="거래처" hidden="hidden">
 									<table id="dialog-message-table">
@@ -203,6 +204,7 @@
 												<th class="center">은행코드</th>
 												<th class="center">은행명</th>
 												<th class="center">카드번호</th>
+												<th class="center">소유주</th>
 												<th class="center">계좌번호</th>
 												<th class="center">소유주</th>
 											</tr>
@@ -265,13 +267,14 @@
 			<!-- buttons -->
 			<button class="btn btn-info btn-small" type="submit" id="btn-read" name="btn-read"
 				formaction="${pageContext.request.contextPath}/01/03/read">조 회</button>
-			<button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
-				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button>
 			<input class="btn btn-small" type="button" value="입력" onclick="add();">
 			<input class="btn btn-small" type="button" value="행 수정" onclick="modify();">
 			<input class="btn btn-small" type="button" value="행 삭제" onclick="delete_row();">
 			<input class="btn btn-primary btn btn-small" id="btn-create" name="btn-create" type="button" value="저 장" onclick="save();">
 			<input class="btn btn-warning btn btn-small" id="btn-update" name="btn-update" type="button" value="수 정" onclick="update();">
+			<input class="btn btn-danger btn-small" id="btn-delete" name="btn-delete" type="button" value="삭 제" onclick="delete1();">
+			<%-- <button class="btn btn-danger btn-small" type="submit" id="btn-delete" name="btn-delete"
+				formaction="${pageContext.request.contextPath }/01/03/delete">삭 제</button> --%>
 			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
 
 			</form>
@@ -363,7 +366,7 @@
 									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
-										<c:when test="${voucherVo.customerName eq '여비' }">
+										<c:when test="${(voucherVo.accountNo >= 8000000 && voucherVo.accountNo < 9000000) || (voucherVo.accountNo >= 9200000 && voucherVo.accountNo < 9300000) }">
 											<td>${voucherVo.cardNo }</td>
 								            <td></td>
 								            <td>${voucherVo.cardUser }</td>
@@ -499,7 +502,7 @@
 		}
 		cell11.innerHTML = '<td class="center">' + bankCode + '</td>';
 		cell12.innerHTML = '<td class="center">' + bankName + '</td>';
-		if(customerName == '여비') {
+		if((accountNo >= 8000000 && accountNo < 9000000) || (accountNo >= 9200000 && accountNo < 9300000)) {
 			cell13.innerHTML = '<td class="center">' + cardNo + '</td>';
 			cell14.innerHTML = '<td class="center">' + '</td>';
 			cell15.innerHTML = '<td class="center">' + cardUser + '</td>';
@@ -727,7 +730,7 @@
 		}
 		cell11.innerHTML = '<td class="center">' + bankCode + '</td>';
 		cell12.innerHTML = '<td class="center">' + bankName + '</td>';
-		if(customerName == '여비') {
+		if((accountNo >= 8000000 && accountNo < 9000000) || (accountNo >= 9200000 && accountNo < 9300000)) {
 			cell13.innerHTML = '<td class="center">' + cardNo + '</td>';
 			cell14.innerHTML = '<td class="center">' + '</td>';
 			cell15.innerHTML = '<td class="center">' + cardUser + '</td>';
@@ -844,20 +847,116 @@
 				console.log("success");
 				console.log(response);
 				// 전표 입력시 list로 이동
+				
 				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read";
+				window.location.reload();
 			},
 			error: function(response) {
 				console.log("error");
 				console.log(response);
+				if(!valid.teamCheck("regDate", "관리팀")) return;
+			}
+			
+		}); // ajax
+		
+		
+	}
+	
+	function delete1() {
+		var voucherList = [];
+		$("#save-table tr").each(function(i){
+			
+			var tr = $(this);
+			var td = tr.children();
+			
+			var noArray = td.eq(1).text().split('-');
+			
+			if(i > 0) {
+				$('#regDate').val('');
+				$('#accountNo').val('');
+				$('#accountName').val('');
+				$('#amountFlag').val('');
+				$('#amount').val('');
+				$('#manageNo').val('');
+				$('#customerNo').val('');
+				$('#customerName').val('');
+				$('#bankCode').val('');
+				$('#bankName').val('');
+				$('#cardNo').val('');
+				$('#cardUser').val('');
+				$('#depositNo').val('');
+				$('#depositHost').val('');
+				$('#voucherUse').val('');
+				
+				var regDate =  td.eq(0).text();
+				
+				if(noArray[1] != null) {
+					var no = noArray[0]
+					var orderNo = noArray[1];
+				} else {
+					var orderNo = noArray[0];
+				}
+				
+				var accountNo =  td.eq(2).text();
+				var accountName =  td.eq(3).text();
+				var amountFlag =  td.eq(4).text();
+				var amount =  uncomma(td.eq(5).text());
+				var customerNo =  td.eq(6).text();
+				var customerName =  td.eq(7).text();
+				var manageNo =  td.eq(9).text();
+				var bankCode =  td.eq(10).text();
+				var bankName =  td.eq(11).text();
+				if(td.eq(12).text() == '') {
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var depositHost =  td.eq(14).text();
+				}
+				if(td.eq(13).text() == '') {
+					var cardNo =  td.eq(12).text();
+					var depositNo =  td.eq(13).text();
+					var cardUser =  td.eq(14).text();
+				}
+				var voucherUse =  td.eq(15).text();
+				
+				var voucherVo = {regDate:regDate, no:no, orderNo:orderNo, accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
+						manageNo:manageNo, customerNo:customerNo, customerName:customerName, bankCode:bankCode, bankName:bankName,
+						cardNo:cardNo, cardUser:cardUser, depositNo:depositNo, depositHost:depositHost, voucherUse:voucherUse
+					};
+				
+				voucherList.push(voucherVo);
+				
+			}
+		});
+		
+		var jsonString = JSON.stringify(voucherList);
+		console.log("jsonString : " + jsonString);
+		console.log(jsonString);
+		
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete",
+			type: "post",
+			dataType: "json",
+			data: {
+				'itemList' : jsonString
+			},
+			success: function(response) {
+				console.log("success");
+				console.log(response);
+				// 전표 입력시 list로 이동
+				
+				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read";
+				window.location.reload();
+			},
+			error: function(response) {
+				console.log("error");
+				console.log(response);
+				if(!valid.teamCheck2("regDate", "관리팀")) return;
 			}
 			
 		}); // ajax
 	}
-	
-	/* // 리셋
-	function reset() {
-		
-	} */
+
 	
 	// 유효성 검사시 Dialog Popup 창이 모달로 띄움
 	function dialog(txt, flag) {
@@ -902,6 +1001,22 @@
     			} else {
     				return true;
     			}
+    		},
+    		teamCheck: function(id, msg){ // null 체크
+    			if($("#"+id).val()==""){
+    				dialog(msg+"이 달라서 수정 할 수 없습니다.");
+    				return false;
+    			} else {
+    				return true;
+    			}
+    		},
+    		teamCheck2: function(id, msg){ // null 체크
+    			if($("#"+id).val()==""){
+    				dialog(msg+"이 달라서 삭제 할 수 없습니다.");
+    				return false;
+    			} else {
+    				return true;
+    			}
     		}
     
     }
@@ -923,6 +1038,22 @@ $(function(){
 		console.log($(this));
 		var td = tr.children();
 		
+		$('#regDate').val('');
+		$('#accountNo').val('');
+		$('#accountName').val('');
+		$('#amountFlag').val('');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
+		
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
 		$("input[name=orderNo]").val(td.eq(2).text());
@@ -943,10 +1074,11 @@ $(function(){
 		$("input[name=bankName]").val(td.eq(13).text());
 		$("input[name=cardNo]").val(td.eq(14).text());
 		$("input[name=depositNo]").val(td.eq(15).text());
-		if(td.eq(14).text()== "") {
-			$("input[name=depositHost]").val(td.eq(16).text());
-		} else {
+		
+		if(td.eq(14).text() != "") {
 			$("input[name=cardUser]").val(td.eq(16).text());
+		} else {
+			$("input[name=depositHost]").val(td.eq(16).text());
 		}
 		$("input[name=voucherUse]").val(td.eq(17).text());
 		$("input[name=insertTeam]").val(td.eq(18).text());
@@ -981,35 +1113,33 @@ $(function(){
 				console.log("success");
 				console.log(response);
 				var voucherList = response.voucherList;
+				var host = '';
+				var cardNo = '';
+				var depositNo = '';
 				console.log(response.voucherList);
 	      	  	for(let a in voucherList) {
-		      	  	if(voucherList[a].customerName == '여비') {
+		      	  	if((voucherList[a].accountNo >= 8000000 && voucherList[a].accountNo < 9000000) || (voucherList[a].accountNo >= 9200000 && voucherList[a].accountNo < 9300000)) {
 	      	  			host = voucherList[a].cardUser;
 	      	  		} else {
 	      	  			host = voucherList[a].depositHost
 	      	  		}
-		      	  	console.log("host3");
-	      	  		console.log(host);
-	      	  		
+	      	  		console.log("voucherList[a].cardNo : " + voucherList[a].cardNo);
+	      	  		console.log(voucherList[a].cardNo);
+	      	  		console.log("voucherList[a].depositNo : " + voucherList[a].depositNo);
+      	  			console.log(voucherList[a].depositNo);
 	      	  		if(voucherList[a].cardNo != null) { // 카드번호값 셋팅
-	      	  			var cardNo = voucherList[a].cardNo;
-	      	  			var host = voucherList[a].cardUser;
+	      	  			cardNo = voucherList[a].cardNo;
+	      	  			host = voucherList[a].cardUser;
+	      	  			depositNo = '';
+	      	  		} else if (voucherList[a].depositNo != null) {
+	      	  			cardNo = '';
+	      	  			depositNo = voucherList[a].depositNo;
+	      	  			host = voucherList[a].depositHost;
 	      	  		} else {
 	      	  			cardNo = '';
-	      	  			host = '';
+      	  				depositNo = '';
+      	  				host = '';
 	      	  		}
-	      	  		console.log("host1");
-	      	  		console.log(host);
-	      	  		
-		      	  	if(voucherList[a].depositNo != null) {
-		  	  			var depositNo = voucherList[a].depositNo;
-		  	  			host = voucherList[a].depositHost;
-		  	  		} else {
-		  	  			depositNo = '';
-		  	  			host = '';
-		  	  		}
-		      	  	console.log("host2");
-	      	  		console.log(host);
 	      	  		
 		      	  	if(voucherList[a].manageNo == '') {
 		      	  		var manageName = '';
@@ -1033,7 +1163,7 @@ $(function(){
 		      	  	} else {
 		      	  		bankName = '';
 		      	  	}
-		      	  	
+		      	  	console.log('host= =====' + host);
 	      	  		$("#voucher_save").append("<tr>" +
 	                        "<td>" + voucherList[a].regDate + "</td>" +
 	                        "<td>" + voucherNo + "-" + voucherList[a].orderNo + "</td>" +
@@ -1068,6 +1198,22 @@ $(function(){
 			var tr = $(this);
 			var td = tr.children();
 			
+			$('#regDate').val('');
+			$('#accountNo').val('');
+			$('#accountName').val('');
+			$('#amountFlag').val('');
+			$('#amount').val('');
+			$('#manageNo').val('');
+			$('#customerNo').val('');
+			$('#customerName').val('');
+			$('#bankCode').val('');
+			$('#bankName').val('');
+			$('#cardNo').val('');
+			$('#cardUser').val('');
+			$('#depositNo').val('');
+			$('#depositHost').val('');
+			$('#voucherUse').val('');
+			
 			var noArray = td.eq(1).text().split('-');
 			
 			$("input[name=regDate]").val(td.eq(0).text());
@@ -1085,6 +1231,7 @@ $(function(){
 			}
      	    
      	    $('#accountNo').val(td.eq(2).text()).trigger('chosen:updated');
+     	    $('#accountName').val(td.eq(3).text()).trigger('chosen:updated');
      	    $("input[name=amountFlag]").val(td.eq(4).text());
      	    $("input[name=amount]").val(td.eq(5).text());
      	     
@@ -1173,22 +1320,14 @@ $(function(){
       	  	var customerList = result.customerList;
       	  	console.log(result.customerList);
       	  	for(let a in customerList) {
-      	  		if(customerList[a].cardNo != null) { // 카드번호값 셋팅
-      	  			var cardNo = customerList[a].cardNo;
-      	  		} else {
-      	  			cardNo = '';
+      	  		if(customerList[a].cardNo == null) {
+      	  			customerList[a].cardNo = "";
+      	  			customerList[a].cardUser = "";
       	  		}
       	  		
-	      	  	if(customerList[a].depositNo != null) {
-	  	  			var depositNo = customerList[a].depositNo;
-	  	  		} else {
-	  	  			depositNo = '';
-	  	  		}
-	      	  	
-      	  		if(customerList[a].customerName == '여비') {
-      	  			var host = customerList[a].cardUser;
-      	  		} else {
-      	  			host = customerList[a].depositHost
+      	  		if(customerList[a].depositNo == null) {
+      	  			customerList[a].depositNo = "";
+      	  			customerList[a].depositHost = "";
       	  		}
       	  		
       	  		$("#tbody-customerList").append("<tr>" +
@@ -1196,9 +1335,10 @@ $(function(){
                         "<td class='center'>" + customerList[a].customerName + "</td>" +
                         "<td class='center'>" + customerList[a].bankCode + "</td>" +
                         "<td class='center'>" + customerList[a].bankName + "</td>" +
-                        "<td class='center'>" + cardNo + "</td>" +
-                        "<td class='center'>" + depositNo + "</td>" +
-                        "<td class='center'>" + host + "</td>" +
+                        "<td class='center'>" + customerList[a].cardNo + "</td>" +
+                        "<td class='center'>" + customerList[a].cardUser + "</td>" +
+                        "<td class='center'>" + customerList[a].depositNo + "</td>" +
+                        "<td class='center'>" + customerList[a].depositHost + "</td>" +
                         "</tr>");
       	  	}
       	  }
@@ -1218,8 +1358,9 @@ $(function(){
      $("input[name=bankCode]").val(td.eq(2).text());
      $("input[name=bankName]").val(td.eq(3).text());
      $("input[name=cardNo]").val(td.eq(4).text());
-     $("input[name=depositNo]").val(td.eq(5).text());
-     $("input[name=depositHost]").val(td.eq(6).text());
+     $("input[name=cardUser]").val(td.eq(5).text());
+     $("input[name=depositNo]").val(td.eq(6).text());
+     $("input[name=depositHost]").val(td.eq(7).text());
      $("#dialog-message").dialog('close');
   });
   

@@ -135,7 +135,7 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="span5" type="text" name="payDate" id="id-date-range-picker-1" placeholder="날짜 범위를 지정하세요" value="${vo.payDate }">
+											<input class="span5" readonly type="text" name="payDate" id="id-date-range-picker-1" placeholder="날짜 범위를 지정하세요" value="${vo.payDate }">
 										</div>
 									</div>		
 									<div class="control-group">

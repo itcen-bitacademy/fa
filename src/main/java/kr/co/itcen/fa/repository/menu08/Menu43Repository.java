@@ -37,11 +37,6 @@ public class Menu43Repository {
 		sqlSession.insert("menu43.insert", intangibleAssetsVo);
 	}
 	
-	public List<IntangibleAssetsVo> getList(String kwd) {
-		List<IntangibleAssetsVo> result = sqlSession.selectList("menu43.getList", kwd);
-		return result;
-	}
-
 	public void update(IntangibleAssetsVo intangibleAssetsVo) {
 		sqlSession.update("menu43.update", intangibleAssetsVo);
 	}
@@ -87,17 +82,33 @@ public class Menu43Repository {
 		return sqlSession.selectOne("menu43.getPurposeInfo", purpose);
 	}
 
-	public int listCount(String kwd) {
-		return sqlSession.selectOne("menu43.listCount", kwd);
+	public int selectCount(IntangibleAssetsVo intangibleAssetsVo, String startDate, String endDate) {
+		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("id", intangibleAssetsVo.getId());
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		return sqlSession.selectOne("menu43.selectCount", map);
+	}
+	
+	public List<IntangibleAssetsVo> getList(PaginationUtil pagination, IntangibleAssetsVo intangibleAssetsVo,
+			String startDate, String endDate) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", intangibleAssetsVo.getId());
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("pagination", pagination);
+		List<IntangibleAssetsVo> result = sqlSession.selectList("menu43.getList", map);
+		
+		System.out.println(result.size());
+		return result;
 	}
 
-	public List<IntangibleAssetsVo> list(String kwd, PaginationUtil pagination) {
+	public void delTaxbill(String userId, String taxbillNo) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("kwd", kwd);
-		map.put("pagination", pagination);
-		List<IntangibleAssetsVo> list = sqlSession.selectList("menu43.list", map);
+		map.put("userId", userId);
+		map.put("taxbillNo", taxbillNo);
 		
-		return list;
+		sqlSession.update("menu43.delTaxbill", map);
 	}
 
 }

@@ -131,19 +131,19 @@ public class Menu05Controller {
         return JSONResult.success(vo);
 	}	
 	
-	
-	
-	
-	// PopUp
-	@ResponseBody
-	@RequestMapping("/" + SUBMENU + "/gets")
-	public Map<String, Object> gets(@RequestParam("cardNo") String cardNo) {
-		System.out.println("gets");
-			
-		Map<String, Object> data = menu05Service.gets(cardNo);
-		data.put("success", true);
-		return data;
-	}
-	
-	
+//	
+//	
+//	
+//	// PopUp
+//	@ResponseBody
+//	@RequestMapping("/" + SUBMENU + "/gets")
+//	public Map<String, Object> gets(@RequestParam("cardNo") String cardNo) {
+//		System.out.println("gets");
+//			
+//		Map<String, Object> data = menu05Service.gets(cardNo);
+//		data.put("success", true);
+//		return data;
+//	}
+//	
+//	
 }
