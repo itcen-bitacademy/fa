@@ -589,6 +589,7 @@
 					$("#input-form").data("checkpurchaseno", "no");
 					
 					dialog("품목코드를 중복확인 해주세요.", false);
+					return false;
 				}
 
 				else if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
