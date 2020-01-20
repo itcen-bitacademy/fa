@@ -74,9 +74,8 @@ public class Menu41Service {
 
 
 	//리스트 삭제
-	public void delete(String id) {
-		System.out.println("삭제되는가" + id);
-		menu41Repository.delete(id);
+	public void delete(String userId, String id) {
+		menu41Repository.delete(userId, id);
 	}
 
 
@@ -108,28 +107,6 @@ public class Menu41Service {
 		
 	}
 	
-	//세금계산서 정보 조회하기2
-//	public DataResult<TaxbillVo> selectTaxList(String id, int page) {
-//		
-//		DataResult<TaxbillVo> dataResult = new DataResult<TaxbillVo>();
-//		
-//		int totalCount = menu41Repository.TaxListCount(id);
-//		
-//		PaginationUtil pagination = new PaginationUtil(page,totalCount, 11, 5);
-//		dataResult.setPagination(pagination);
-//		
-//		
-//		List<TaxbillVo> list = menu41Repository.selectTaxList(id, pagination);
-//		dataResult.setDatas(list);
-//		
-//		return dataResult;
-//		
-////		Map<String, Object> map = new HashMap<String, Object>();
-////		map.put("taxlist", menu41Repository.selectTaxList(id));
-////		map.put("lastnapbuDate", menu41Repository.selectTaxVo(id)); // 보증금 납부일 가져오기
-////		return map;
-//		
-//	}
 
 	//vehicle 전표번호 가져오기
 	public Long getVoucherNo(String id) {
@@ -144,8 +121,8 @@ public class Menu41Service {
 	}
 
 	//세금계산서에서 지우기
-	public void deleteTaxbill(String id) {
-		menu41Repository.deleteTaxbill(id);
+	public void deleteTaxbill(String userId, String id) {
+		menu41Repository.deleteTaxbill(userId, id);
 	}
 	
 	//페이징 하기
@@ -196,6 +173,12 @@ public class Menu41Service {
 		int count = menu41Repository.listTaxCount(id);
 		return count;
 	}
+
+	//세금계산서 번호 삭제 플래그 주기
+	public void deleteTaxbillNo(String userId, String taxbillNo) {
+		menu41Repository.deleteTaxbillNo(userId, taxbillNo);
+	}
+
 
 
 }

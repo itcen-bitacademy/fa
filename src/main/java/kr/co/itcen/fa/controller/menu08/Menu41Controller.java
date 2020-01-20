@@ -205,10 +205,12 @@ public class Menu41Controller {
 	@RequestMapping(value = {"/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
 	public String delete(@ModelAttribute VehicleVo vehicleVo,
 						 @RequestParam(value="id", required = false) String id,
+						 @RequestParam(value="taxbillNo", required = false) String taxbillNo,
 						 @SessionAttribute("authUser") UserVo userVo,
 						 Model model) throws ParseException {
 		
 				id = "e" + id;
+				String userId = userVo.getId();
 				System.out.println("삭제할 id" + id);
 		
 				Long voucherNo = menu41Service.getVoucherNo(id);
@@ -230,6 +232,9 @@ public class Menu41Controller {
 					  v.setNo(voucherNo); 
 					  voucherVolist.add(v);
 					  menu03Service.deleteVoucher(voucherVolist, userVo); 
+					  //뒤로 빠진 세금계산서 번호를 삭제해주기 위해서 지금 삭제하는 중
+					  menu41Service.deleteTaxbillNo(userId,taxbillNo); //전표에서 세금계산서 번호 삭제해야함 이것만 붕 뜨는중(우리가 수정할때 세금계산서 번호를 입력하기때문에)
+	
 				  
 					  for(Long no : taxVoucherNo) {
 						  System.out.println("나는 NO다 " + no);
@@ -242,8 +247,8 @@ public class Menu41Controller {
 				//삭제한 사람도 남길때 set무엇으로 하는게 적당한지 모르겠음
 				//vehicleVo.setUpdateUserId(userVo.getId());
 				System.out.println("삭제할때 필요한 id" + id);
-				menu41Service.delete(id); //vehicle
-				menu41Service.deleteTaxbill(id);//taxbill
+				menu41Service.delete(userId, id); //vehicle에서 필요한 차량 번호
+				menu41Service.deleteTaxbill(userId, id);//taxbill에서 필요한 차량 번호
 				return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
 		    }
 	}
@@ -352,8 +357,6 @@ public class Menu41Controller {
 		Long voucherNo= menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo); //전표입력
 		taxbillVo.setVoucherNo(voucherNo); //전표번호 세팅
 		
-//		menu41Service.updateTax(taxno, veno, voucherNo, userVo.getId());  //차량 테이블 업데이트
-		
 		menu41Service.taxbill(taxbillVo);   //차량세금 인서트
 		
 		return "redirect:/" + MAINMENU + "/" + SUBMENU  + "/add";
@@ -379,13 +382,11 @@ public class Menu41Controller {
 		return map;
 	}
 	
+	//세금계산서 총 건수 
 	@ResponseBody
 	@RequestMapping(value = "/" + SUBMENU + "/taxcount" , method = RequestMethod.GET)
 	public int taxcount(@RequestParam(value="id", required = false) String id) {
 		int count = menu41Service.taxcount(id);
-		
-		System.out.println(count);
-		
 		return count;
 	}
 }
