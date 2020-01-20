@@ -27,7 +27,6 @@
                      public_value as publicValue,
                      acq_price as acqPrice,
                      etc_cost as etcCost,
-                     reg_tax as regTax,
                      acq_tax as acqTax,
 					 pay_date as payDate,
 					 tax_kind as taxKind, 
@@ -63,7 +62,6 @@
                      public_value as publicValue,
                      acq_price as acqPrice,
                      etc_cost as etcCost,
-                     reg_tax as regTax,
                      acq_tax as acqTax,
 					 pay_date as payDate,
 					 tax_kind as taxKind, 
@@ -115,7 +113,7 @@
 	<!-- 토지 입력 -->
 	<insert id="insertLand" parameterType="08landvo">
 		<![CDATA[
-			insert into tb_land values(#{id}, #{customerNo}, null, null, #{sectionNo}, #{landArea}, #{combineNo}, #{ownerName}, #{wideAddress}, #{cityAddress}, #{detailAddress}, #{publicValue}, #{acqPrice}, #{etcCost}, #{regTax}, #{acqTax}, #{payDate}, #{taxKind}, "s", #{insertUserid}, now(), null, null)
+			insert into tb_land values(#{id}, #{customerNo}, null, null, #{sectionNo}, #{landArea}, #{combineNo}, #{ownerName}, #{wideAddress}, #{cityAddress}, #{detailAddress}, #{publicValue}, #{acqPrice}, #{etcCost}, #{acqTax}, #{payDate}, #{taxKind}, "s", #{insertUserid}, now(), null, null)
 		]]>
 	
 	</insert>
@@ -155,7 +153,6 @@
                  public_value = #{publicValue},
                  acq_price = #{acqPrice},
                  etc_cost = #{etcCost},
-                 reg_tax = #{regTax},
                  acq_tax = #{acqTax},
 				 pay_date = #{payDate},
 				 tax_kind = #{taxKind},
@@ -188,5 +185,13 @@
 		from tb_land 
 		where id = #{id}
 	</select>
-
+	
+	<!-- 세금계산서 삭제 -->
+	<update id="delTaxbill" parameterType="map">
+		update tb_buy_taxbill 
+			set delete_flag ='y',
+				update_userid = #{userId},
+				update_day = now() 
+			where no = #{taxbillNo}
+	</update>
 </mapper>

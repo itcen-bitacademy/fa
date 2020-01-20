@@ -172,7 +172,7 @@
 									</div>
 								</div>
 								<div class="control-group">
-										<div style="float:left;width:50%">											
+										<div style="float:left;width:50%">
 											<label style="text-align:left;" class="control-label" for="form-field-1">공시지가</label>
 											<div class="controls">
 												<input style="text-align:right;" type="text" id="publicValue" name="publicValue" />
@@ -183,10 +183,11 @@
 											<input style="text-align:right;" type="text" id="etcCost" name="etcCost" />
 										</div>	
 								</div>
-								<div class="control-group">
-									<label style="text-align:left;" class="control-label" for="form-field-select-1">세금계산서번호</label>
+								
+								<div class="control-group" id="div-taxbillNo" style="display:none;">
+									<label style="text-align:left;display:none;" class="control-label" id="label-taxbillNo" for="form-field-select-1"  >세금계산서번호</label>
 									<div class="controls">
-										<input type="text" class="span7" id="taxbillNo" name="taxbillNo">
+										<input style="display:none;" type="text" class="span7" id="taxbillNo" name="taxbillNo">
 									</div>
 								</div>
 								<div class="control-group">
@@ -368,6 +369,8 @@
 		e.preventDefault();
 		
 		var id = "c" + $("#land_code").val();
+		
+		
 		
 		$.ajax({
 			url : $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + "/checkId?id=" + id,
@@ -592,8 +595,12 @@ $(function() {
 		$("#delete").show();
 		$("#check-icon").hide();
 		$("#overlapBtn").hide();
+		$("#div-taxbillNo").show();
+		$("#label-taxbillNo").show();
+		$("#taxbillNo").show();
 		/* alert("등록") */
-		var str = ""
+		
+		var str = "";
 		var tdArr = new Array();	// 배열 선언
 		
 		// 현재 클릭된 Row(<tr>)

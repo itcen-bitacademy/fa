@@ -129,6 +129,14 @@ public class Menu09Repository {
 		return voucherNo;
 	}
 
+	public void deltaxbill(String userId, String taxbillNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("taxbillNo", taxbillNo);
+		
+		sqlSession.update("menu09.delTaxbill", map);
+	}
+
 
 	
 }

@@ -24,7 +24,6 @@ public class LandVo {
 	private String publicValue;
 	private String acqPrice;
 	private String etcCost;
-	private String regTax;
 	private String acqTax;
 	private String payDate;
 	private String taxKind;
@@ -136,12 +135,7 @@ public class LandVo {
 	public void setEtcCost(String etcCost) {
 		this.etcCost = etcCost;
 	}
-	public String getRegTax() {
-		return regTax;
-	}
-	public void setRegTax(String regTax) {
-		this.regTax = regTax;
-	}
+	
 	public String getAcqTax() {
 		return acqTax;
 	}
@@ -197,7 +191,7 @@ public class LandVo {
 				+ voucherNo + ", sectionNo=" + sectionNo + ", landArea=" + landArea + ", combineNo=" + combineNo
 				+ ", ownerName=" + ownerName + ", wideAddress=" + wideAddress + ", cityAddress=" + cityAddress
 				+ ", detailAddress=" + detailAddress + ", publicValue=" + publicValue
-				+ ", acqPrice=" + acqPrice + ", etcCost=" + etcCost + ", regTax=" + regTax + ", acqTax=" + acqTax
+				+ ", acqPrice=" + acqPrice + ", etcCost=" + etcCost + ", acqTax=" + acqTax
 				+ ", payDate=" + payDate + ", taxKind=" + taxKind + ", flag=" + flag + ", insertUserid=" + insertUserid
 				+ ", insertDay=" + insertDay + ", updateUserid=" + updateUserid + ", updateDay=" + updateDay + "]";
 	}

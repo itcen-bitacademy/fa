@@ -423,6 +423,7 @@ function search(){
 	console.log("--------------------() search() Called------------------------");
 	var inputForm = $("#input-form")[0];
 	var vo = {"code":inputForm.code.value, "debtType": inputForm.debtType.value};
+	
 	$("#search-condition").val(JSON.stringify(vo));
 	console.log("search-condition : " + $("#search-condition").val());
 	console.log("vo.code : " + vo.code);
@@ -480,11 +481,10 @@ function selectRow(thisObj){
 		$("#tbody-list").find('tr').removeClass("selected");
 		
 		$(thisObj).addClass('selected');
-		$('#totalAmount').val('0');
 		
 		var inputForm = $("#input-form")[0];
 		var vo = JSON.parse($(thisObj).find("input[name=vo]").val());
-		
+		$('#totalAmount').val(comma(vo.payPrinc + vo.intAmount));
 		
 		inputForm.voucherNo.value = vo.voucherNo;
 		inputForm.code.value = vo.code;
@@ -539,6 +539,24 @@ function removeCommaReturn(val){
 function update(){
 	var sendData = $("#input-form").serialize();
 	console.log("sendData : " + sendData);
+	
+	var count = 0;
+	
+	$("#tbody-list tr").each(function(i){
+		if($(this).hasClass('selected') === true){
+			count++;
+		}
+	});
+	
+	/* if(count > 1){
+		dialog('하나의 내용만 수정할 수 있습니다', true);
+		return;
+	} */
+	
+	if(count <= 0){
+		dialog('수정할 데이터를 선택하여 주세요', true);
+		return;
+	}	
 	
 	if($('input[name=code]').val() == '' && $('input[name=commaPayPrinc]').val() == '' && $('input[name=payDate]').val() == ''){
 		dialog('리스트에서 상환데이터를 선택해주세요.', true);

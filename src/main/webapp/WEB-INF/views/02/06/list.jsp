@@ -40,19 +40,18 @@ html, body {
 	#item-table tr td {
 	padding: 0;
 }
-	
+	#item-table tr td.sel {
+	text-align:center;
+	padding: 5px 0px 0px 0px;
+}
 	#item-table tr td input.txt {
 		padding: 9px;
 		width: 96%;
 		border: 0;
 	}
-
 	
-
 #item-table tr td input.num {
-	justify-content:center;
-	padding: 9px;
-	margin: 0;
+padding: 10px 0 0 0 ;
 	width: 50px;
 	border: 0
 }
@@ -180,8 +179,8 @@ html, body {
 									<button class="btn btn-warning btn-small" type="button" id="update" style="float:left;margin-right:20px;" onclick="modify()">수정</button>
 									<button class="btn btn-danger btn-small" type="submit" id="delete" style="float:left;margin-right:20px;">삭제</button>
 									<button class="btn btn-info btn-small" type="submit" id="search" style="float:left;margin-right:20px;">조회</button>
-									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;" type="button" onclick="add_row();">행추가</button>
-									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;" type="button" onclick="delete_row();">행삭제</button>				
+									<button class="btn btn-default btn-small" id="addRow" style="float:left;margin-right:20px;" type="button" onclick="add_row();">품목추가</button>
+									<button class="btn btn-default btn-small" id="deleteRow" style="float:left;margin-right:20px;" type="button" onclick="delete_row();">품목삭제</button>				
 									
 								</div>
 								
@@ -201,9 +200,9 @@ html, body {
 									</tr>
 									
 									<tr>
-										<td class="center"><input class="num" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
+										<td class="center"><input class="num" type="number" id="number1" placeholder="" name="number"  value="1"></td>								
 										
-										<td class="center">
+										<td class="sel">
 											<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
 											<c:forEach items='${itemList }' var='vo' varStatus='status'>
 												<option value="${vo.no }">${vo.no }</option>
@@ -319,8 +318,8 @@ html, body {
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        "<td><input class='num' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
-				      		        "<td class='center'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
+				      		        "<td class='center'><input class='num' type='number' id='number"+cnt+"' placeholder='' name='number'  value='"+cnt+"'></td>" +
+				      		        "<td  class='sel'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
 					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +
 				      		      		"<option value='" + '${vo.no }' + "'> " + '${vo.no }' + "</option>" + 

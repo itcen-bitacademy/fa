@@ -940,19 +940,15 @@ h4{
 	// 사채정보 조회
 	function searchDebtData() {
 		var code = $("input[name=code]").val();
+		var year = $("input[name=financialYear]").val();
 		
 		if(code === ''&& year ===''	){
 			openModal('Error', '코드나 연도 중 하나는 반드시 입력되어야 합니다.', '');
 			return false;
 		}
 		
-		if (code.charAt(0) !== 'I') {
+		if (code != '' && 'I' !== code.charAt(0)) {
 			openModal('Error', '조회할 사채 코드는 반드시 대문자 I로 시작하여야 합니다.', '');
-			return false;
-		}
-		
-		if (code.length < 10) {
-			openModal('Error', '조회할 사채 코드는 10자리를 입력하셔야 합니다.', '');
 			return false;
 		}
 		
@@ -1909,7 +1905,7 @@ h4{
 		        break;
 			}
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
-			//$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
+			$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
 		}
 		
 		function formDeletion(thisObj){

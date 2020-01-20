@@ -71,7 +71,7 @@ public class Menu50Controller {
 	@RequestMapping(value = { "/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.POST)
 	public String list(
 			@RequestParam(value = "code", required = false, defaultValue = "") String code,
-			@RequestParam(value = "financialYear", required = false, defaultValue = "") int year,
+			@RequestParam(value = "financialYear", required = false, defaultValue = "") String year,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "?financialYear=" + year + "&code=" + code + "&page" + page;

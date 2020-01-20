@@ -173,7 +173,7 @@
 			<!-- buttons -->
 			<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
 				formaction="${pageContext.request.contextPath}/01/04/read">조회</button>
-			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
+			<input class="btn btn-default btn btn-small" id="btn-reset" name="btn-reset" type="button" value="취 소" >
 			<div class="hr hr-18 dotted"></div>
 			</form>
 			
@@ -370,6 +370,28 @@ $(function(){
 		$("input[name='bankLocation']").prop("readonly", true);
 		$("input[name='banker']").prop("readonly", true);
 		$("input[name='bankPhoneCall']").prop("readonly", true);
+	});
+	
+	$("#btn-reset").click(function(){
+		$('#regDate').val('');
+		$('#no').val('');
+		$('#accountName').val('');
+		$('#accountNo').val("계정과목코드").trigger('chosen:updated');
+		$('#amountFlag').val("d").trigger('chosen:updated');
+		$('#useYn').val("삭제여부").trigger('chosen:updated');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
+		
+		$("#voucher_save").empty();
 	});
 	
 	//계정과목에 따른 계정명 불러오기

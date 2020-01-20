@@ -269,6 +269,7 @@ public class Menu09Controller {
 	@RequestMapping(value = { "/" + SUBMENU + "/delete" }, method=RequestMethod.POST)
 	public String delete(@RequestParam(value="id") String id,
 						 @RequestParam(value="payDate") String payDate,
+						 @RequestParam(value="taxbillNo") String taxbillNo,
 						 @SessionAttribute("authUser") UserVo user, Model model) throws ParseException {
 		
 
@@ -293,8 +294,9 @@ public class Menu09Controller {
 				v.setRegDate(payDate);
 				voucherVolist.add(v);
 				menu03Service.deleteVoucher(voucherVolist, user);
+				menu09Service.delTaxbill(userId, taxbillNo);
 				}
-				
+
 				menu09Service.delLand(id, userId);
 			
 				return "redirect:/" + MAINMENU + "/" + SUBMENU + "/add";

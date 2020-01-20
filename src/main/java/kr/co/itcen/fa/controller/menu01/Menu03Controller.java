@@ -55,7 +55,6 @@ public class Menu03Controller {
 	public String view(@ModelAttribute VoucherVo voucherVo, @RequestParam(defaultValue = "1") int page, Model model) {
 		if(voucherVo.getUseYn() == null) {
 			voucherVo.setUseYn(true);
-			System.out.println("왜 안타니");
 		}
 		// 전표 검색
 		DataResult<VoucherVo> dataResult = menu03Service.selectVoucherCount(voucherVo, page);
