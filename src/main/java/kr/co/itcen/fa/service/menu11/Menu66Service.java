@@ -160,6 +160,12 @@ public class Menu66Service {
 		
 		setMappingVoByDebtType(mappingVo, vo);
 		
+		System.out.println("========= updateVoucher =========");
+		System.out.println(voucherVo);
+		System.out.println(itemVoList);
+		System.out.println(mappingVo);
+		System.out.println("========= updateVoucher =========");
+		
 		return menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
 	}
 	public void deleteVoucerList(List<RepayVo> voList, UserVo authUser) {
