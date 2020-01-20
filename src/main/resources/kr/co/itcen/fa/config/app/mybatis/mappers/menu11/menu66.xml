@@ -117,7 +117,8 @@
 			update tb_repay set 
 				pay_princ = #{payPrinc}, 
 				int_amount = #{intAmount}, 
-				pay_date = #{payDate} 
+				pay_date = #{payDate}, 
+				voucher_no = #{voucherNo} 
 					where delete_flag= 'N' 
 						and debt_no = #{debtNo} 
 						and debt_type = #{debtType}
