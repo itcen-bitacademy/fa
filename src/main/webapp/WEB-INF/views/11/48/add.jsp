@@ -1622,7 +1622,7 @@ tr td:first-child {
 				  $.each(response.data,function(index, item){
 	                 $("#tbody-repay-due").append("<tr>" +
 	                       "<td class='center'>" + item.code + "</td>" +
-	                     "<td class='center'>" + item.repayBal + "</td>" +
+	                     "<td class='center'>" + item.repayBal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 	                     "<td class='center'>" + item.payDate + "</td>" +
 	                     "</tr>");
 	          })
