@@ -956,13 +956,13 @@
 	   		  ba.bank_name as bankName,
 	   		  c.card_no as cardNo,
 	   		  c.user as cardUser
-    	from (select no, name, deposit_no, deposit_host
+    	from (select no, name, deposit_no, deposit_host, delete_flag
 		 	    from tb_customer
 			   union
-	   		  select no, name, deposit_no, deposit_host
+	   		  select no, name, deposit_no, deposit_host, delete_flag
 		 		from tb_salescustomer
 			   union
-	   		  select no, name, deposit_no, deposit_host
+	   		  select no, name, deposit_no, deposit_host, delete_flag
 		 		from tb_purchasecustomer) cu
 	left join tb_bank_account ba
   		   on cu.deposit_no = ba.deposit_no
@@ -970,7 +970,12 @@
      		   on b.code = ba.bank_code
 	left join tb_cardmanager c
      		   on ba.deposit_no = c.deposit_no
-        where cu.no like concat('%', #{customerNo }, '%');
+        where cu.no like concat('%', #{customerNo }, '%')
+          and cu.delete_flag = 'N'
+          and ba.delete_flag = 'N'
+          and b.delete_flag = 'N'
+          and (c.delete_flag = 'N'
+           or c.delete_flag is null);
      
 	]]>
 	</select>

@@ -486,7 +486,7 @@ html, body {
 		
 		//voucherList.push(voucherVo);
 		// 여기
-		var table = document.getElementById("save-table"); // 테이블 아이디
+		var table = document.getElementById("voucher_save"); // 테이블 아이디
 		var row = table.insertRow(table.rows.length); // 하단에 추가
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
@@ -505,8 +505,27 @@ html, body {
 		var cell15 = row.insertCell(14);
 		var cell16 = row.insertCell(15);
 		
+		if((accountNo >= 8000000 && accountNo < 9000000) || (accountNo >= 9200000 && accountNo < 9300000)) {
+			console.log("cardNo : " + cardNo);
+			if(cardNo == "") {
+				$("#voucher_save").empty();
+				if(!valid.nullCard("cardNo", "카드")) return;
+			}
+			cell13.innerHTML = '<td class="center">' + cardNo + '</td>';
+			cell14.innerHTML = '<td class="center">' + '</td>';
+			cell15.innerHTML = '<td class="center">' + cardUser + '</td>';
+		} else {
+			if(depositNo == "") {
+				$("#voucher_save").empty();
+				if(!valid.nullCard("depositNo", "계좌")) return;
+			}
+			cell13.innerHTML = '<td class="center">' + '</td>';
+			cell14.innerHTML = '<td class="center">' + depositNo + '</td>';
+			cell15.innerHTML = '<td class="center">' + depositHost + '</td>';
+		}
+		
 		cell1.innerHTML = '<td class="center">' + regDate + '</td>';
-		cell2.innerHTML = '<td class="center">' + (table.rows.length-1) + '</td>';
+		cell2.innerHTML = '<td class="center">' + (table.rows.length) + '</td>';
 		cell3.innerHTML = '<td class="center">' + accountNo + '</td>';
 		cell4.innerHTML = '<td class="center">' + accountName + '</td>';
 		cell5.innerHTML = '<td class="center">' + amountFlag + '</td>';
@@ -525,15 +544,7 @@ html, body {
 		}
 		cell11.innerHTML = '<td class="center">' + bankCode + '</td>';
 		cell12.innerHTML = '<td class="center">' + bankName + '</td>';
-		if((accountNo >= 8000000 && accountNo < 9000000) || (accountNo >= 9200000 && accountNo < 9300000)) {
-			cell13.innerHTML = '<td class="center">' + cardNo + '</td>';
-			cell14.innerHTML = '<td class="center">' + '</td>';
-			cell15.innerHTML = '<td class="center">' + cardUser + '</td>';
-		} else {
-			cell13.innerHTML = '<td class="center">' + '</td>';
-			cell14.innerHTML = '<td class="center">' + depositNo + '</td>';
-			cell15.innerHTML = '<td class="center">' + depositHost + '</td>';
-		}
+		
 		cell16.innerHTML = '<td class="center">' + voucherUse + '</td>';
 		
 		var voucherVo = {regDate:regDate, orderNo:(table.rows.length-1), accountNo:accountNo, accountName:accountName, amountFlag:amountFlag, amount:amount, 
@@ -556,6 +567,10 @@ html, body {
 		$('#depositNo').val('');
 		$('#depositHost').val('');
 		$('#voucherUse').val('');
+		$('#rowCnt').val('');
+		$('#voucherNo').val('');
+		$('#orderNo').val('1');
+		$('#insertTeam').val('');
 		
 		//$(".date-picker").datepicker("destroy");
 		//$("#regDate").removeClass('hasDatepicker').datepicker();
@@ -602,6 +617,10 @@ html, body {
 				$('#depositNo').val('');
 				$('#depositHost').val('');
 				$('#voucherUse').val('');
+				$('#rowCnt').val('');
+				$('#voucherNo').val('');
+				$('#orderNo').val('1');
+				$('#insertTeam').val('');
 				
 				var regDate =  td.eq(0).text();
 				var orderNo = td.eq(1).text();
@@ -702,8 +721,8 @@ html, body {
 		console.log(orderNo-1);
 		
 		
-		var table = document.getElementById("save-table"); // 테이블 아이디
-		var row = table.insertRow(orderNo); // 하단에 추가
+		var table = document.getElementById("voucher_save"); // 테이블 아이디
+		var row = table.insertRow(orderNo-1); // 하단에 추가
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
@@ -784,6 +803,10 @@ html, body {
 		$('#depositNo').val('');
 		$('#depositHost').val('');
 		$('#voucherUse').val('');
+		$('#rowCnt').val('');
+		$('#voucherNo').val('');
+		$('#orderNo').val('1');
+		$('#insertTeam').val('');
 	}
 	
 	// 수정
@@ -813,6 +836,10 @@ html, body {
 				$('#depositNo').val('');
 				$('#depositHost').val('');
 				$('#voucherUse').val('');
+				$('#rowCnt').val('');
+				$('#voucherNo').val('');
+				$('#orderNo').val('1');
+				$('#insertTeam').val('');
 				
 				var regDate =  td.eq(0).text();
 				
@@ -910,6 +937,10 @@ html, body {
 				$('#depositNo').val('');
 				$('#depositHost').val('');
 				$('#voucherUse').val('');
+				$('#rowCnt').val('');
+				$('#voucherNo').val('');
+				$('#orderNo').val('1');
+				$('#insertTeam').val('');
 				
 				var regDate =  td.eq(0).text();
 				
@@ -996,6 +1027,10 @@ html, body {
 		$('#depositNo').val('');
 		$('#depositHost').val('');
 		$('#voucherUse').val('');
+		$('#rowCnt').val('');
+		$('#voucherNo').val('');
+		$('#orderNo').val('1');
+		$('#insertTeam').val('');
 		
 		$("#voucher_save").empty();
 	});
@@ -1063,6 +1098,14 @@ html, body {
     			} else {
     				return true;
     			}
+    		},
+    		nullCard: function(id, msg){ // null 체크
+    			if($("#"+id).val()==""){
+    				dialog(msg+"정보가 없어서 입력이 불가능합니다..");
+    				return false;
+    			} else {
+    				return true;
+    			}
     		}
     
     }
@@ -1099,6 +1142,10 @@ $(function(){
 		$('#depositNo').val('');
 		$('#depositHost').val('');
 		$('#voucherUse').val('');
+		$('#rowCnt').val('');
+		$('#voucherNo').val('');
+		$('#orderNo').val('1');
+		$('#insertTeam').val('');
 		
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
@@ -1266,6 +1313,10 @@ $(function(){
 			$('#depositNo').val('');
 			$('#depositHost').val('');
 			$('#voucherUse').val('');
+			$('#rowCnt').val('');
+			$('#voucherNo').val('');
+			$('#orderNo').val('1');
+			$('#insertTeam').val('');
 			
 			var noArray = td.eq(1).text().split('-');
 			
