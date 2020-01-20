@@ -230,9 +230,12 @@ public class Menu43Controller {
 	public String delete(IntangibleAssetsVo intangibleAssetsVo,
 			Model model,
 			@RequestParam(value = "id", required = false) String id,
+			@RequestParam(value = "taxbillNo") String taxbillNo,
 			@SessionAttribute("authUser") UserVo user) throws ParseException {
 
 		id = 'f' + id;
+		
+		String userId = user.getId();
 		
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo); // voucherNo는 db에서 직접 가져와야함
 
@@ -252,7 +255,7 @@ public class Menu43Controller {
 				menu03Service.deleteVoucher(voucherVo, user);
 			}
 			
-			menu43Service.delete(id);
+			menu43Service.delete(id, userId, taxbillNo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}
 	}

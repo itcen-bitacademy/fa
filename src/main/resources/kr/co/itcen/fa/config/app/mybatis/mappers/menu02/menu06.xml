@@ -155,21 +155,29 @@
 		]]>
 	</update>
 	
+	<update id="taxbillDelete" parameterType="purchasemanagement06vo">
+		<![CDATA[
+        update tb_buy_taxbill
+           set delete_flag = "y"
+         where no = #{taxbillNo }
+		]]>
+	</update>
+	
 	<update id="delete" parameterType="purchasemanagement06vo">
 		<![CDATA[
         update tb_purchasemanagement
            set delete_flag = 'Y'
-         where purchase_no = #{no } and purchase_date = #{purchaseDate } and number = #{number }
+         where purchase_no = #{no } and purchase_date = #{purchaseDate }
 		]]>
 	</update>
 	
-	<select id="getTaxbillList" resultType="buytaxbillvo">
+	<!-- <select id="getTaxbillList" resultType="buytaxbillvo">
 		<![CDATA[
 		  select *
 		  from tb_buy_taxbill
 		  where manage_no = #{taxbillNo }
 		]]>
-	</select>
+	</select> -->
 	
 	<select id="getAccount" resultType="purchasecustomer35vo">
 		<![CDATA[

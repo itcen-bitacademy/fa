@@ -37,6 +37,25 @@ html, body {
 	      height: calc(100% - 84px);
 	   }
 	}
+	#item-table tr td {
+	padding: 0;
+}
+	
+	#item-table tr td input.txt {
+		padding: 9px;
+		width: 96%;
+		border: 0;
+	}
+
+	
+
+#item-table tr td input.num {
+	justify-content:center;
+	padding: 9px;
+	margin: 0;
+	width: 50px;
+	border: 0
+}
 
 </style>
 
@@ -182,19 +201,19 @@ html, body {
 									</tr>
 									
 									<tr>
-										<td class="left"><input class="input-mini left" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
+										<td class="center"><input class="num" type="number" id="number1" placeholder="" name="number" readonly value="1"></td>								
 										
-										<td class="left">
+										<td class="center">
 											<select class="chosen-select span1" id="itemCode1" name="itemCode" onchange="setData.item(this.id);">
 											<c:forEach items='${itemList }' var='vo' varStatus='status'>
 												<option value="${vo.no }">${vo.no }</option>
 											</c:forEach>
 											</select>
 										</td>
-										<td class="left"><input class="input-large" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
-										<td class="left"><input class="input-mini" style="text-align:right;" type="text" id="quantity1" placeholder="" name="quantity" ></td>
-										<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="supplyValue1" placeholder="" name="supplyValue" readonly></td>
-										<td class="left"><input class="input-medium" style="text-align:right;" type="text" id="taxValue1" placeholder="" name="taxValue" readonly ></td>															
+										<td><input class="txt" type="text" id="itemName1" placeholder="" name="itemName" readonly value=""></td>								
+										<td><input class="txt" style="text-align:right;" type="text" id="quantity1" placeholder="" name="quantity" ></td>
+										<td><input class="txt" style="text-align:right;" type="text" id="supplyValue1" placeholder="" name="supplyValue" readonly></td>
+										<td><input class="txt" style="text-align:right;" type="text" id="taxValue1" placeholder="" name="taxValue" readonly ></td>															
 									</tr>	
 															
 								</table>
@@ -300,18 +319,18 @@ html, body {
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        "<td class='left'><input class='input-mini left' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
-				      		        "<td class='left'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
+				      		        "<td><input class='num' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
+				      		        "<td class='center'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
 					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +
 				      		      		"<option value='" + '${vo.no }' + "'> " + '${vo.no }' + "</option>" + 
 				            			"</c:forEach>"+
 				      		      		
 									"</select></td>" + 
-				      		        "<td class='left'><input class='input-large' type='text' id='itemName"+cnt+"' name='itemName' placeholder='' readonly value=''></td>" +
-				      		        "<td class='left'><input class='input-mini' style='text-align:right;' type='text' id='quantity"+cnt+"' name='quantity' placeholder=''  ></td>" +
-				      		        "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='supplyValue"+cnt+"' name='supplyValue' placeholder='' readonly></td>" +
-				      			    "<td class='left'><input class='input-medium' style='text-align:right;' type='text' id='taxValue"+cnt+"' name='taxValue' placeholder='' readonly></td>" +
+				      		        "<td><input class='txt' type='text' id='itemName"+cnt+"' name='itemName' placeholder='' readonly value=''></td>" +
+				      		        "<td><input class='txt' style='text-align:right;' type='text' id='quantity"+cnt+"' name='quantity' placeholder=''  ></td>" +
+				      		        "<td><input class='txt' style='text-align:right;' type='text' id='supplyValue"+cnt+"' name='supplyValue' placeholder='' readonly></td>" +
+				      			    "<td><input class='txt' style='text-align:right;' type='text' id='taxValue"+cnt+"' name='taxValue' placeholder='' readonly></td>" +
 				      		       "</tr>"
 				      	);
 				        

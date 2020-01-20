@@ -1131,10 +1131,14 @@ $(function(){
 	      	  			cardNo = voucherList[a].cardNo;
 	      	  			host = voucherList[a].cardUser;
 	      	  			depositNo = '';
-	      	  		} else {
+	      	  		} else if (voucherList[a].depositNo != null) {
 	      	  			cardNo = '';
 	      	  			depositNo = voucherList[a].depositNo;
 	      	  			host = voucherList[a].depositHost;
+	      	  		} else {
+	      	  			cardNo = '';
+      	  				depositNo = '';
+      	  				host = '';
 	      	  		}
 	      	  		
 		      	  	if(voucherList[a].manageNo == '') {
@@ -1316,14 +1320,15 @@ $(function(){
       	  	var customerList = result.customerList;
       	  	console.log(result.customerList);
       	  	for(let a in customerList) {
-      	  		console.log("customerList[a].cardNo : " + customerList[a].cardNo);
-      	  		console.log(customerList[a].cardNo);
-	      	  	console.log("customerList[a].depositNo : " + customerList[a].depositNo);
-	  	  		console.log(customerList[a].depositNo);
-		  	  	console.log("customerList[a].cardUser : " + customerList[a].cardUser);
-	  	  		console.log(customerList[a].cardUser);
-		  	  	console.log("customerList[a].depositHost : " + customerList[a].depositHost);
-	  	  		console.log(customerList[a].depositHost);
+      	  		if(customerList[a].cardNo == null) {
+      	  			customerList[a].cardNo = "";
+      	  			customerList[a].cardUser = "";
+      	  		}
+      	  		
+      	  		if(customerList[a].depositNo == null) {
+      	  			customerList[a].depositNo = "";
+      	  			customerList[a].depositHost = "";
+      	  		}
       	  		
       	  		$("#tbody-customerList").append("<tr>" +
                         "<td class='center'>" + customerList[a].customerNo + "</td>" +

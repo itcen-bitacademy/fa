@@ -408,7 +408,7 @@ public class Menu06Controller {
 	@RequestMapping(value = { "/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
 	public String delete(PurchasemanagementVo vo, Long number[], int quantity[], String itemCode[],
 			String itemName[], Long supplyValue[], Long taxValue[], @AuthUser UserVo authUser) {
-		
+		System.out.println(vo);
 		PurchasemanagementVo purchasemanagementVo = new PurchasemanagementVo(vo);
 		if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) {
 			if (itemCode.length > 1) {
@@ -424,6 +424,9 @@ public class Menu06Controller {
 		} else {
 			menu06Service.delete(vo);
 			vo.setVoucherNo(menu06Service.getVoucherNo(vo));
+			
+			// 세금계산서 삭제
+			menu06Service.taxbillDelete(vo);
 	
 			// 전표삭제
 			List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); // 여러건 동시삭제 때문에 리스트형식으로 받아옴 근데 난 하나씩만 삭제가 가능해서 그냥

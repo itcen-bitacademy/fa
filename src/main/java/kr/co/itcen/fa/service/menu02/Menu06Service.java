@@ -57,9 +57,9 @@ public class Menu06Service {
 		
 	}
 
-	public BuyTaxbillVo getTaxbillList(PurchasemanagementVo vo) {
-		return menu06Repository.getTaxbillList(vo);
-	}
+//	public BuyTaxbillVo getTaxbillList(PurchasemanagementVo vo) {
+//		return menu06Repository.getTaxbillList(vo);
+//	}
 
 	public CustomerVo getAccount(PurchasemanagementVo vo) {
 		
@@ -83,5 +83,10 @@ public class Menu06Service {
 	public List<PurchasemanagementVo> getPriceList(PurchasemanagementVo vo) {
 		
 		return menu06Repository.getPriceList(vo);
+	}
+
+	public void taxbillDelete(PurchasemanagementVo vo) {
+		
+		menu06Repository.taxbillDelete(vo);
 	}
 }
