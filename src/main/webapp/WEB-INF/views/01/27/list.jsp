@@ -225,6 +225,7 @@ html,body{
 								$("#no").attr("readonly",true);
 								$("#btn-check-no").hide();
 								$("#img-checkno").hide();
+								$("#btn-reset").click();
 					    	}
 					    	if(result.fail) {
 					    		alert("다시 입력해주세요.");
