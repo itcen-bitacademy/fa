@@ -72,38 +72,38 @@ html,body{
 							거래처 코드/거래처명:&nbsp;
 									<div class="input-append">
 										<a href="#" id="a-customerinfo-dialog">
-											<input type="text" class="search-input-width-first" id="customerNo" placeholder="거래처코드" name="customerNo" style="text-align: center; width:150px;" readonly/>
+											<input type="text" class="search-input-width-first" id="customerNo" placeholder="거래처코드" name="customerNo" style="text-align: center; width:150px; margin-top: 10px" readonly/>
 											<script type="text/javascript">
 												var customerNo = "${param.customerNo}";
 												$("#customerNo").val(customerNo);
 												</script>
-											<span class="add-on">
+											<span class="add-on" style="margin-top: 10px;">
 				                            <i class="icon-search icon-on-right bigger-110" id="search1"></i>
 				                            </span>
 				                    	</a>
 									</div>
 				
-						<input type="text" id="customerName" name="customerName" placeholder="거래처명" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						<input type="text" id="customerName" name="customerName" placeholder="거래처명" class="col-xs-10 col-sm-5" style="text-align: center; width:150px; margin-top: 10px;" readonly />
 						<script type="text/javascript">
 							var customerName = "${param.customerName}";
 							$("#customerName").val(customerName);
 						</script>
 					
-						&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명
+						&nbsp; &nbsp;&nbsp; &nbsp;계정코드/계정명:&nbsp;
 									<div class="input-append">
 										<a href="#" id="a-accountinfo-dialog">
-											<input type="text" class="search-input-width-first" placeholder="계정코드" id="accountNo" name="accountNo" style="text-align: center; width:150px;" readonly/>
+											<input type="text" class="search-input-width-first" placeholder="계정코드" id="accountNo" name="accountNo" style="text-align: center; width:150px; margin-top: 10px;" readonly/>
 											<script type="text/javascript">
 												var accountNo = "${param.accountNo}";
 												$("#accountNo").val(accountNo);
 												</script>
-											<span class="add-on">
+											<span class="add-on" style="margin-top: 10px;">
 				                            <i class="icon-search icon-on-right bigger-110"></i>
 				                            </span>
 				                    	</a>
 									</div>
 				
-						<input type="text" id="accountName" name="accountName" placeholder="계정명" class="col-xs-10 col-sm-5" style="text-align: center; width:150px;" readonly />
+						<input type="text" id="accountName" name="accountName" placeholder="계정명" class="col-xs-10 col-sm-5" style="text-align: center; width:150px; margin-top: 10px;" readonly />
 						<script type="text/javascript">
 							var accountName = "${param.accountName}";
 							$("#accountName").val(accountName);
@@ -214,10 +214,10 @@ html,body{
 					</div>
 					<!-- 계정 Modal pop-up : end -->
 					
-						&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
+						&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;조회 기간:&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px" readonly="readonly"/>
-							<span class="add-on">
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px; margin-top: 10px;" readonly="readonly"/>
+							<span class="add-on" style="margin-top: 10px;">
 								<i class="icon-calendar"></i>
 							</span>
 						</div>
@@ -229,8 +229,8 @@ html,body{
 						
 						&nbsp; &nbsp; ~ &nbsp; &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px" readonly="readonly"/> 
-							<span class="add-on"> 
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker"  style="width:100px; margin-top: 10px;" readonly="readonly"/> 
+							<span class="add-on" style="margin-top: 10px;"> 
 								<i class="icon-calendar"></i>
 							</span>
 						</div>
