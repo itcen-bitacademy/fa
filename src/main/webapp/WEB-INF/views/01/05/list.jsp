@@ -297,7 +297,7 @@ html, body {
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" onclick= "location.reload()">초기화</button> 
+							<button class="btn btn-default btn-small" id="btn-reset">초기화</button> 
 						</div>
 
 					</div>
@@ -522,8 +522,25 @@ $(function() {
 	$("#btn-reset").click(function(){
 		a = "reset";
 		$("input[name=cardNo]").attr("readonly",false);
+		
 		$("#btn-check-no").show();
 		$("#img-checkno").hide();
+		$("#btn-create").show();
+		
+		$("input").not('input[name=transportation]').not('input[name=abroad]').val('');
+		$("#btn-check-no").val('중복확인');
+		
+		$('input[name=transportation]').each(function(index,item){
+			if($(item).prop('checked') == true){
+				$(item).prop('checked',false);
+			}	
+		});
+		
+		$('input[name=abroad]').each(function(index,item){
+			if($(item).prop('checked') == true){
+				$(item).prop('checked',false);
+			}	
+		});
 		
 	});
 	
@@ -1197,7 +1214,7 @@ $(function() {
 		}
 		if(password.length<4){
 			errortitle = 'password ERROR';
-			validationMessage = '비밀번호는\r\4자리를 이상 입력하셔야 합니다.';
+			validationMessage = '비밀번호는\r\n4자리를 이상 입력하셔야 합니다.';
 			errorfield='#password';
 			return false;
 		}
