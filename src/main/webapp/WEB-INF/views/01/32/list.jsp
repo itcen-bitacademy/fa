@@ -67,7 +67,7 @@ html,body{
 				</div><!-- /.page-header -->
 			
 				<div class="row-fluid"> <!-- 검색조건 -->
-					<form class="form-horizontal; center">
+					<form class="form-horizontal; left">
 							
 							거래처 코드/거래처명:&nbsp;
 									<div class="input-append">
