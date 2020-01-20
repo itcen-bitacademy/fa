@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/jquery-ui-1.10.3.full.min.css" />
     <c:import url="/WEB-INF/views/common/head.jsp" />
     <style>
-    
 		/* 스크롤 깨짐 css s */
     	html,body{
     		overflow-x:hidden;
