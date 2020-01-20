@@ -271,7 +271,7 @@
 					<div class="hr hr-18 dotted"></div>
 					<div class="span6">
 						<div id="sample-table-2_length" class="dataTables_length">
-									<button class="btn btn-info btn-small" type="submit">발행</button>
+									<button class="btn btn-info btn-small" type="button" id="btnInsert" onclick="datainsert()">발행</button>
 									<button class="btn btn-default btn-small">발행취소</button>
 									<button class="btn btn-warning btn-small" type="button" id="btnModify" onclick="update()">발행수정</button>
 						</div>
@@ -428,7 +428,7 @@
 			alert($("#taxbillNo").val());
 			
 			if($("#taxbillNo").val().trim() == ""){
-				alert("세금계산서가 발행을 먼저 해주세요.");
+				alert("세금계산서를 먼저 발행을 먼저 해주세요.");
 				console.log($("#taxbillNo").val() + "null");
 			}
 			
@@ -439,6 +439,31 @@
 						$("#insert-form").attr("action",url).submit();
 					}
 			}
+		}
+		
+		//발행에 대한 처리
+		function datainsert(){
+			
+			//var code = $("#salesNo").val();
+			
+			//alert($("#taxbillNo").val());
+			
+			if($("#sales-date").val().trim() == "" || $("#sales-no").val().trim() == ""){
+				dialog("필수사항이 빠졌습니다", true);
+				
+				//console.log($("#taxbillNo").val() + "null");
+			}else{
+				$("#insert-form").submit();
+			}
+			
+			/* if($("#taxbillNo").val().trim() != ""){
+				console.log($("#taxbillNo").val() + "not null");
+					var url = "${pageContext.request.contextPath }/12/53/update/"+code;
+					if($("#flag").val() == "true"&&code!=""){
+						$("#insert-form").attr("action",url).submit();
+					}
+			} */
+			
 		}
 		
 		// 세금계산서 번호 자동생성 함수
