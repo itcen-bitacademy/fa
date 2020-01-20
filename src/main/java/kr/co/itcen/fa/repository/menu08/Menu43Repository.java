@@ -103,4 +103,12 @@ public class Menu43Repository {
 		return result;
 	}
 
+	public void delTaxbill(String userId, String taxbillNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("taxbillNo", taxbillNo);
+		
+		sqlSession.update("menu43.delTaxbill", map);
+	}
+
 }

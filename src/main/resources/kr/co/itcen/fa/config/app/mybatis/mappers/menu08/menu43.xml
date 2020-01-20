@@ -140,5 +140,14 @@
 			where id = #{id }
 		]]>
 	</delete>
+	
+	<!-- 세금계산서 삭제 -->
+   <update id="delTaxbill" parameterType="map">
+      update tb_buy_taxbill 
+         set delete_flag ='y',
+            update_userid = #{userId },
+            update_day = now() 
+         where no = #{taxbillNo }
+   </update>
 
 </mapper>

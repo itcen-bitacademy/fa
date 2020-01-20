@@ -57,8 +57,12 @@ public class Menu43Service {
 		menu43Repository.update(intangibleAssetsVo);
 	}
 
-	public void delete(String id) {
+	public void delete(String id, String userId, String taxbillNo) {
 		menu43Repository.delete(id);
+		
+		// 세금계산서 삭제
+		menu43Repository.delTaxbill(userId, taxbillNo);
+		
 	}
 
 	public Map<? extends String, ? extends Object> getSection() {
