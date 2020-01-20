@@ -99,11 +99,11 @@
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">주소</label>
 										<div class="controls">
-											<input class="span2" onclick="execDaumPostcode()" 
-												class="btn-primary box" type="button" value="주소 찾기">
+											<input onclick="execDaumPostcode()"
+												class="span2" type="button" value="주소 찾기">
 											<input class="span4" readonly type="text" id="wideAddress"
 												name="wideAddress" placeholder="주소를 선택하면 입력됩니다." value="${vo.wideAddress }"> 
-											<input style="width: 230px" class="span5" readonly type="text"
+											<input class="span5" readonly type="text"
 												id="cityAddress" name="cityAddress"
 												placeholder="주소를 선택하면 입력됩니다." value="${vo.cityAddress }">
 										</div>
@@ -165,7 +165,7 @@
 									<span style="line-height:400%"><br></span>
 									
 									<div class="control-group" style="margin-bottom:0px;">
-										<div class="span4" style="float: right; ">
+										<div class="span7" style="float: right; width: 230px">
 											<c:choose>
 												<c:when test='${vo.flag eq ""}'>
 													<input type="checkbox" name="flag" id="flag" class="ace" value="" checked="checked">
@@ -174,7 +174,7 @@
 													<input type="checkbox" name="flag" id="flag" class="ace" value="" >
 												</c:otherwise>
 											</c:choose>
-											<span class="lbl" style="margin-right: 50px;">삭제포함</span>
+											<span class="lbl" style="margin-right: 15px; ">삭제포함</span>
 											
 											<button class="btn btn-info btn-small" id="search">조회</button>
 												
@@ -182,8 +182,7 @@
 													style="float: right;" type="reset" >초기화</button>
 										</div>
 									</div>
-									
-									
+															
 								</div>
 								<!-- 우측 span -->
 							</form>
@@ -315,6 +314,19 @@
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script>
 	
+		//주소
+		function execDaumPostcode(){
+			new daum.Postcode({
+				oncomplete : function(data) {
+					var fullRoadAddr = data.roadAddress;
+					console.log(data)
+					$("#wideAddress").val(data.sido);
+					$("#cityAddress").val(data.sigungu);
+				}
+			}).open();
+		}
+
+	
 		$(function() {
 			$(".chosen-select").chosen();
 			$('#id-date-range-picker-1').daterangepicker({
@@ -324,20 +336,7 @@
 				$(this).next().focus();
 			});
 
-			//주소
-			function execDaumPostcode() {
-				new daum.Postcode({
-					oncomplete : function(data) {
-						var fullRoadAddr = data.roadAddress;
-						console.log(data)
-						$("#wideAddress").val(data.sido);
-						$("#cityAddress").val(data.sigungu);
-						$("#detailAddress").val(data.roadname + " ");
-						$("#detailAddress").focus();
-					}
-				}).open();
-			}
-
+			
 			//금액에 3자리마다 , 넣기
 			function addCommas(x) {
 				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

@@ -128,11 +128,11 @@
 	
 	<!-- 삭제 TEST --><!--  삭제버튼 클릭시 flag="s"를 flag="d"로 바꾸면서 삭제-->
 
-	<update id="delete" parameterType="string">
+	<update id="delete" parameterType="map">
 		<![CDATA[
 		update tb_vehicle
 		  set flag="d",
-		  	  update_userid = #{updateUserId},
+		  	  update_userid = #{userId},
 			  update_day = now()
 	    where id = #{id}; 
 		]]>
@@ -232,11 +232,11 @@
 	</select>
 	
 	<!-- 세금계산서 번호에서 지우기 -->
-	<update id="deleteTaxbill" parameterType="string">
+	<update id="deleteTaxbill" parameterType="map">
 		<![CDATA[
 		update tb_taxbill
 		  set flag="d",
-		  	  update_userid = #{updateUserId},
+		  	  update_userid = #{userId},
 			  update_day = now()
 	    where vehicle_no = #{id}; 
 		]]>
@@ -373,5 +373,15 @@
 			where a.id=#{id } and b.flag IN('s','o')
 		]]>
 	</select>
+	
+	
+	<!-- 세금계산서 삭제 -->
+   <update id="deleteTaxbillNo" parameterType="map">
+      update tb_buy_taxbill 
+         set delete_flag ='y',
+            update_userid = #{userId},
+            update_day = now() 
+         where no = #{taxbillNo}
+   </update>
 	
 </mapper>

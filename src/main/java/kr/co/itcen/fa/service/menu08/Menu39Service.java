@@ -53,8 +53,9 @@ public class Menu39Service {
 	}
 	
 	//삭제 flag
-	public void delete(String id) {
+	public void delete(String id, String userId, String taxbillNo) {
 		menu39Repository.delete(id);
+		menu39Repository.deleteTax(userId, taxbillNo);
 	}
 	
 	//대분류 리스트

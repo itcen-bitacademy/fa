@@ -85,6 +85,7 @@ html,body{
 		});
 		$("#btn-read").click(function(){
 			$("#no").attr("readonly",false);
+			$("#readspace").hide();
 			a = "read";
 		});
 		$("#btn-update").click(function(){
@@ -93,6 +94,7 @@ html,body{
 		$("#btn-delete").click(function(){
 			$("#no").attr("readonly",false);
 			a = "delete";
+			$("#readspace").hide();
 		});
 		$("#btn-reset").click(function(){
 			$("#no").attr("readonly",false);
@@ -100,6 +102,7 @@ html,body{
 			$("#btn-check-no").show();
 			$("#img-checkno").hide();
 			$("#btn-create").show();
+			$("#readspace").hide();
 			
 		});
 		
@@ -465,6 +468,7 @@ html,body{
 		$("#btn-check-no").hide();
 		$("#img-checkno").hide();
 		$("#btn-create").hide();
+		$("#readspace").show();
 	});
 	
 	function settingInput(customerList) {
@@ -1060,12 +1064,15 @@ html,body{
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
 										&nbsp;&nbsp;&nbsp;&nbsp;사&nbsp;업&nbsp;자&nbsp;등&nbsp;록&nbsp;번&nbsp;호&nbsp;
 									</label>
-									<div class="input-append" style="width: 220px;">
+									<div class="input-append">
 									
 									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="width: 135px;"/>
 									<input id="btn-check-no" type="button" value="중복확인">
-										<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										<!-- <img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png"> -->
+									
 									</div>
+									<div id="readspace" class="input-append" style="display:none; width:70px;"></div>
+									<i id="img-checkno" class="icon-ok bigger-180 blue" style="display: none; width: 70px; text-align: left;" ></i>
 								</div>
 
 								<div class="form-group">

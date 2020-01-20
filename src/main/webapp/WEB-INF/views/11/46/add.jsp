@@ -327,7 +327,6 @@ tr.selected{background-color: #ddd}
 						<button type="button" class="btn btn-success btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
 						<button type="button" class="btn btn-default btn-small mybtn" onclick="resetForm()">초기화</button>
 						<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
-						<a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/statistics">통계</a>
 					</div>
 				</section>
 			</section>
@@ -713,7 +712,7 @@ function resetForm(){
 	$(inputForm.code).attr("readonly", false);
 	$("#btn-chk-duplication").css("display", "inline-block");
 	$("#img-checkcode").css("display","none");
-	$("#tbody-list").find("tr").css("background-color", "inherit");
+	$("#tbody-list").find("tr").removeClass("selected");
 	$('#majorCode').val('').trigger('chosen:updated');
 	inputForm.vo.value = "";
 	inputForm.reset();
@@ -775,7 +774,7 @@ function renderRepayDueDialog(list){
 		$("#dialog46 tbody").append(
 				 "<tr>" +
                    "<td class='center'>" + list[i].code + "</td>" +
-                   "<td class='center'>" + list[i].repayBal + "</td>" +
+                   "<td class='center'>" + comma(list[i].repayBal) + "</td>" +
                    "<td class='center'>" + list[i].repayDue + "</td>" +
              	"</tr>");
 	}//for end
@@ -1273,8 +1272,10 @@ function convertMajorCode(majorCode){
 		MajorName = "신용금고";
 	else if(majorCode == "008004")
 		MajorName = "새마을금고";
-	else
+	else if(majorCode == "008005")
 		MajorName = "외국계은행";
+	else
+		MajorName = "증권";
 	return MajorName;
 }
 function convertRepayWay(repayWay){
@@ -1413,8 +1414,8 @@ function renderingRepayLists(repayLists){
 		for(let j in repayList){
 			$("#dialog46 tbody").append(
 					 "<tr>" +
-	                   "<td class='center'>" + repayList[j].payPrinc + "</td>" +
-	                   "<td class='center'>" + repayList[j].intAmount + "</td>" +
+	                   "<td class='center'>" + comma(repayList[j].payPrinc) + "</td>" +
+	                   "<td class='center'>" + comma(repayList[j].intAmount) + "</td>" +
 	                   "<td class='center'>" + repayList[j].payDate + "</td>" +
                  	"</tr>");
 		}//for end

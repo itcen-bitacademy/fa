@@ -52,6 +52,16 @@ public class Menu39Repository {
 		int count = sqlSession.update("menu39.delete", id);
 		return count == 1;
 	}
+	
+	public Boolean deleteTax(String userId, String taxbillNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("id", userId);
+		map.put("taxbillNo", taxbillNo);
+		
+		int count = sqlSession.update("menu39.delTaxbill", map);
+		return count == 1;
+	}
 
 	public List<SectionVo> getSection() {
 		List<SectionVo> sectionList = sqlSession.selectList("menu39.getSection");

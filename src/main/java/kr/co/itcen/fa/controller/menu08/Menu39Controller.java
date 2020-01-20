@@ -63,7 +63,6 @@ public class Menu39Controller {
 	public String list(Model model, 
 			@RequestParam(value="id", required = false, defaultValue = "") String id,
 			@RequestParam(value="page", required=false, defaultValue = "1") int page,
-			//@RequestParam(value="closingDate", required = false, defaultValue = "false") boolean closingDate,
 			@SessionAttribute("authUser") UserVo authUser) {
 		
 		//dataresult 생성
@@ -82,8 +81,6 @@ public class Menu39Controller {
 		map.putAll(menu39Service.getCustomer());
 		model.addAllAttributes(map);
 		
-		//마감일자
-		//model.addAttribute("closingDate",closingDate);
 		
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
@@ -286,30 +283,33 @@ public class Menu39Controller {
 	//삭제(D)
 	@RequestMapping(value = "/" + SUBMENU + "/delete" , method = RequestMethod.POST)
 	public String delete(@RequestParam(value="id", required = false, defaultValue = "") String id,
+			@RequestParam(value="taxbillNo") String taxbillNo,
 			@SessionAttribute("authUser") UserVo authUser, BuildingVo buildingvo, Model model) throws ParseException{
 		
 		Long bVoucherNo = menu39Service.getVoucherNo(id);
 		
-		String temp = "b"+id;
+		String temp = "b" + id;
 		id = temp;
 		
-		//전표삭제
-		if(bVoucherNo != null) {
-			List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-			VoucherVo voucherVo = new VoucherVo();
-			
-			voucherVo.setNo(bVoucherNo); // 수정뒤 전표no >> 전표vo의 no
-			voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo의 매입일자 >> 전표vo의 regdate (마감일자 check)
-			voucherVolist.add(voucherVo); // 전표vo의 no >> 전표list의 no
-			menu03Service.deleteVoucher(voucherVolist, authUser);
-		}
+		String userId = authUser.getId();
+		
 		
 		//마감 여부 체크
 	    if(!menu19Service.checkClosingDate(authUser, buildingvo.getPayDate())) {
 	    	model.addAttribute("closingDate", true);
 	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
-	    	menu39Service.delete(id);
+	    	//전표삭제
+			if(bVoucherNo != null) {
+				List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
+				VoucherVo voucherVo = new VoucherVo();
+				
+				voucherVo.setNo(bVoucherNo); // 수정뒤 전표no >> 전표vo의 no
+				voucherVo.setRegDate(buildingvo.getPayDate()); // buildingvo의 매입일자 >> 전표vo의 regdate (마감일자 check)
+				voucherVolist.add(voucherVo); // 전표vo의 no >> 전표list의 no
+				menu03Service.deleteVoucher(voucherVolist, authUser);
+			}
+	    	menu39Service.delete(id, userId, taxbillNo);
 		    return "redirect:/" + MAINMENU + "/" + SUBMENU;
 	    }
 	}
