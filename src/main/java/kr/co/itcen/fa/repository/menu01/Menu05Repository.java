@@ -131,7 +131,7 @@ public class Menu05Repository {
 
 	public String getCardNo(String depositNo) {
 		List<String> list = sqlSession.selectList("menu05.get", depositNo);
-		if(list==null) {
+		if(list.size()==0) {
 			return "-";
 		}else {
 			return list.get(0);
