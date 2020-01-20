@@ -38,6 +38,9 @@ public class Menu66ApiController {
 			@RequestParam(value="pageSize", required=false, defaultValue="8")int pageSize) {
 		System.out.println("----------------getList() called ----------------");
 		System.out.println("vo : " + vo);
+		if("초기값".equals(vo.getDebtType())) {
+			vo.setDebtType("");
+		}
 		Map map = menu66Service.getList(vo, page, pageSize);
 		System.out.println(map);
 		

@@ -423,6 +423,7 @@ function search(){
 	console.log("--------------------() search() Called------------------------");
 	var inputForm = $("#input-form")[0];
 	var vo = {"code":inputForm.code.value, "debtType": inputForm.debtType.value};
+	
 	$("#search-condition").val(JSON.stringify(vo));
 	console.log("search-condition : " + $("#search-condition").val());
 	console.log("vo.code : " + vo.code);
