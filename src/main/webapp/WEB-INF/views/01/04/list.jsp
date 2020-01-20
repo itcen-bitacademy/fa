@@ -151,6 +151,7 @@
 												<th class="center">은행코드</th>
 												<th class="center">은행명</th>
 												<th class="center">카드번호</th>
+												<th class="center">소유주</th>
 												<th class="center">계좌번호</th>
 												<th class="center">소유주</th>
 											</tr>
@@ -170,13 +171,9 @@
 			
 			<div class="hr hr-18 dotted"></div>
 			<!-- buttons -->
-			<div class="row-fluid">
-				<div class="span8">
-						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
-							formaction="${pageContext.request.contextPath}/01/04/read">조회</button>
-						<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
-				</div><!-- /.span -->
-			</div><!-- /.row-fluid -->
+			<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
+				formaction="${pageContext.request.contextPath}/01/04/read">조회</button>
+			<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
 			<div class="hr hr-18 dotted"></div>
 			</form>
 			
@@ -417,32 +414,25 @@ $(function(){
       	  	var customerList = result.customerList;
       	  	console.log(result.customerList);
       	  	for(let a in customerList) {
-      	  		if(customerList[a].cardNo != null) { // 카드번호값 셋팅
-      	  			var cardNo = customerList[a].cardNo;
-      	  		} else {
-      	  			cardNo = '';
-      	  		}
-      	  		
-	      	  	if(customerList[a].depositNo != null) {
-	  	  			var depositNo = customerList[a].depositNo;
-	  	  		} else {
-	  	  			depositNo = '';
+	      	  	if(customerList[a].cardNo == null) {
+	  	  			customerList[a].cardNo = "";
+	  	  			customerList[a].cardUser = "";
 	  	  		}
-	      	  	
-      	  		if(customerList[a].customerName == '여비') {
-      	  			var host = customerList[a].cardUser;
-      	  		} else {
-      	  			host = customerList[a].depositHost
-      	  		}
+	  	  		
+	  	  		if(customerList[a].depositNo == null) {
+	  	  			customerList[a].depositNo = "";
+	  	  			customerList[a].depositHost = "";
+	  	  		}
       	  		
       	  		$("#tbody-customerList").append("<tr>" +
-                        "<td class='center'>" + customerList[a].customerNo + "</td>" +
-                        "<td class='center'>" + customerList[a].customerName + "</td>" +
-                        "<td class='center'>" + customerList[a].bankCode + "</td>" +
-                        "<td class='center'>" + customerList[a].bankName + "</td>" +
-                        "<td class='center'>" + cardNo + "</td>" +
-                        "<td class='center'>" + depositNo + "</td>" +
-                        "<td class='center'>" + host + "</td>" +
+	      	  			"<td class='center'>" + customerList[a].customerNo + "</td>" +
+	                    "<td class='center'>" + customerList[a].customerName + "</td>" +
+	                    "<td class='center'>" + customerList[a].bankCode + "</td>" +
+	                    "<td class='center'>" + customerList[a].bankName + "</td>" +
+	                    "<td class='center'>" + customerList[a].cardNo + "</td>" +
+	                    "<td class='center'>" + customerList[a].cardUser + "</td>" +
+	                    "<td class='center'>" + customerList[a].depositNo + "</td>" +
+	                    "<td class='center'>" + customerList[a].depositHost + "</td>" +
                         "</tr>");
       	  	}
       	  }
