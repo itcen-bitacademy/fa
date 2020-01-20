@@ -177,14 +177,12 @@ public class Menu41Service {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pagetaxlist", menu41Repository.selectpageTaxList(id, page));
-		
-//		map.put("pagelastnapbuDate", menu41Repository.selectpageTaxVo(id, page)); // 보증금 납부일 가져오기
-		
+	
 		return map;
 	}
 
 
-	//페이징 그룹 리스트 계산
+	//세금계산서 페이징 그룹 리스트 계산
 	public Map<String, Object> selectgroupTaxList(String id, int page_group) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("grouptaxlist", menu41Repository.selectgroupTaxList(id, page_group));
@@ -193,12 +191,9 @@ public class Menu41Service {
 	}
 
 
+	//세금계산서 페이징 총 건수 
 	public int taxcount(String id) {
 		int count = menu41Repository.listTaxCount(id);
-		
-		System.out.println(id);
-		System.out.println(count);
-		
 		return count;
 	}
 

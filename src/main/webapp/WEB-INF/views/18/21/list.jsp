@@ -46,12 +46,14 @@
 											<td>${team.menuName }</td>
 											<td>${team.info }</td>
 											<td class="hidden-phone">${team.lastUpdate }</td>
-											<td>
+										 	<td>
 												<div class="hidden-phone visible-desktop action-buttons">
+													<!-- 
 													<a class="green" href="#"><i class="icon-pencil bigger-130"></i></a>
-													<a class="red" href="#"><i class="icon-trash bigger-130"></i></a>
+													<a class="red" href="#"><i class="icon-trash bigger-130"></i></a> 
+													-->
 												</div>												
-											</td>
+											</td> 
 										</tr>
 									</c:forEach>
 								</tbody>

@@ -227,7 +227,7 @@ html,body{
 				
 			</div><!-- /.page-header -->
 			<div class="row-fluid"> <!-- 검색조건 start -->
-					<form class="form-horizontal; center" name="searchOption" ><!--  -->
+					<form class="form-horizontal; left" name="searchOption" ><!--  -->
 					거래처 구분 : &nbsp;
 						<select class="chosen-select"
 							id="customerDiv" name="customerDiv" 

@@ -56,10 +56,12 @@
 														</c:if>
 														<td><a href="#">${subMenu.name }[${subMenu.code }]</a></td>
 														<td class="hidden-phone">${subMenu.lastUpdate }</td>
-														<td>
+													<td>
 															<div class="hidden-phone visible-desktop action-buttons">
+															<!-- 	
 																<a class="green" href="#"><i class="icon-pencil bigger-130"></i></a>
-																<a class="red" href="#"><i class="icon-trash bigger-130"></i></a>
+																<a class="red" href="#"><i class="icon-trash bigger-130"></i></a> 
+															-->
 															</div>															
 														</td>
 													</tr>
