@@ -991,7 +991,7 @@ tr td:first-child {
 		
 		var tr = $(this);
 		var td = tr.children();
-		
+		$('#img-checkcode').hide();
 		
 		if($(this).hasClass('selected') === false){
 			$('#updatebtn').show();
@@ -1161,7 +1161,7 @@ tr td:first-child {
 	
 	// 은행코드 검색
 	$("#a-dialog-bankcode").click(function(event){
-		alert("click dialog bankcode");
+		
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
 		
@@ -1180,7 +1180,7 @@ tr td:first-child {
 			    }
 			},
 			success: function(response){
-				alert(response);
+				
 				$("#input-dialog-bankcode").val('');
 				  $.each(response.data,function(index, item){
 	                 $("#tbody-bankList").append("<tr>" +
@@ -1197,7 +1197,7 @@ tr td:first-child {
 	
 	// 은행명 검색 : 은행목록 리스트로 가져오기
 	$("#a-dialog-bankname").click(function(event){
-		alert("click dialog bankname");
+		
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
 		
@@ -1216,7 +1216,7 @@ tr td:first-child {
 			    }
 			},
 			success: function(response){
-				alert(response.data);
+				
 				$("#input-dialog-bankname").val('');
 				 $.each(response.data,function(index, item){
 		                $("#tbody-bankList").append("<tr>" +

@@ -240,7 +240,7 @@
         		on c.deposit_no = b.deposit_no
 			 where c.delete_flag = 'N'
 			   and c.assets_flag!='e'
-			   and no like '%${no }%'
+			   and no like concat('A' ,#{no})
 		]]>
 	</select>
 	

@@ -300,7 +300,7 @@ html,body{
 												    </c:choose>
 												<td>${vo.bankName }</td>
 													<c:choose>
-														<c:when test="${vo.customerName eq '여비' }">
+														<c:when test="${not empty vo.cardNo }">
 															<td>${vo.cardNo }</td>
 												            <td></td>
 												            <td>${vo.cardUser }</td>

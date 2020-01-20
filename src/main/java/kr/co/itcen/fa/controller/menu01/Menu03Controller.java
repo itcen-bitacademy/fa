@@ -146,6 +146,8 @@ public class Menu03Controller {
 					mappingVo.setCustomerNo(voucherList[i].getCustomerNo());
 					mappingVo.setDepositNo(voucherList[i].getDepositNo());
 					mappingVo.setManageNo(voucherList[i].getManageNo());
+					System.out.println("cardNo 확인중~");
+					System.out.println(mappingVo.getCardNo());
 					mappingVo.setCardNo(voucherList[i].getCardNo());
 					mappingVo.setInsertTeam(userVo.getTeamName());
 					mappingVo.setInsertUserid(userVo.getId());

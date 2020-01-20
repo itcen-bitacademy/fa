@@ -100,6 +100,7 @@
 		    	and a.repay_comple_flag = 'N'
 		    	and 	date_format(a.debt_date,'%Y') like concat('%',#{year},'%') 
 				and 	a.code like concat('%',#{code},'%') 
+			order by insertDate desc
 	]]>
 	<if test="pagination.pageIndex >= 0">
 	<![CDATA[
