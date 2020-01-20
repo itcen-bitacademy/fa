@@ -85,6 +85,7 @@ html,body{
 		});
 		$("#btn-read").click(function(){
 			$("#no").attr("readonly",false);
+			$("#readspace").hide();
 			a = "read";
 		});
 		$("#btn-update").click(function(){
@@ -93,6 +94,7 @@ html,body{
 		$("#btn-delete").click(function(){
 			$("#no").attr("readonly",false);
 			a = "delete";
+			$("#readspace").hide();
 		});
 		$("#btn-reset").click(function(){
 			$("#no").attr("readonly",false);
@@ -100,6 +102,7 @@ html,body{
 			$("#btn-check-no").show();
 			$("#img-checkno").hide();
 			$("#btn-create").show();
+			$("#readspace").hide();
 			
 		});
 		
@@ -465,6 +468,7 @@ html,body{
 		$("#btn-check-no").hide();
 		$("#img-checkno").hide();
 		$("#btn-create").hide();
+		$("#readspace").show();
 	});
 	
 	function settingInput(customerList) {
@@ -1067,7 +1071,8 @@ html,body{
 										<!-- <img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png"> -->
 									
 									</div>
-									<i id="img-checkno" class="icon-ok bigger-180 blue" style="display: none;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+									<div id="readspace" class="input-append" style="display:none; width:70px;"></div>
+									<i id="img-checkno" class="icon-ok bigger-180 blue" style="display: none; width: 70px; text-align: left;" ></i>
 								</div>
 
 								<div class="form-group">
