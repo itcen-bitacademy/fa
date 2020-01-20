@@ -58,7 +58,13 @@ public class Menu03Repository {
 			
 			mappingVo.get(i).setVoucherNo(voucherVo.getNo());
 			mappingVo.get(i).setOrderNo(i+1);
-			sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
+			if((itemVo.get(i).getAccountNo() >= 8000000L && itemVo.get(i).getAccountNo() < 9000000L) || (itemVo.get(i).getAccountNo() >= 9200000L && itemVo.get(i).getAccountNo() < 9300000L)) {
+				System.out.println("찍히냐");
+				System.out.println(mappingVo.get(i).getCardNo());
+				sqlSession.insert("menu03.insertMapping3", mappingVo.get(i));
+			} else {
+				sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력
+			}
 		}
 		
 		return voucherVo.getNo();	// 전표번호
@@ -79,7 +85,11 @@ public class Menu03Repository {
 				//int order = sqlSession.selectOne("menu03.selectOrder", voucherVo.getNo());
 				
 				mappingVo.get(i).setVoucherNo(voucherVo.getNo());
-				if((itemVo.get(i).getAccountNo() >= 8000000 && itemVo.get(i).getAccountNo() < 9000000) || (itemVo.get(i).getAccountNo() >= 9200000 && itemVo.get(i).getAccountNo() < 9300000)) {
+				System.out.println("확인중~");
+				System.out.println(itemVo.get(i).getAccountNo());
+				if((itemVo.get(i).getAccountNo() >= 8000000L && itemVo.get(i).getAccountNo() < 9000000L) || (itemVo.get(i).getAccountNo() >= 9200000L && itemVo.get(i).getAccountNo() < 9300000L)) {
+					System.out.println("찍히냐");
+					System.out.println(mappingVo.get(i).getCardNo());
 					sqlSession.insert("menu03.insertMapping3", mappingVo.get(i));
 				} else {
 					sqlSession.insert("menu03.insertMapping", mappingVo.get(i)); // 매핑테이블 입력

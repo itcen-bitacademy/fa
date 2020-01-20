@@ -177,6 +177,7 @@
 									</div>
 								</div>
 								
+								
 								<!-- 거래처 Modal pop-up : start -->
 								<div id="dialog-message" title="거래처" hidden="hidden">
 									<table id="dialog-message-table">
@@ -203,6 +204,7 @@
 												<th class="center">은행코드</th>
 												<th class="center">은행명</th>
 												<th class="center">카드번호</th>
+												<th class="center">소유주</th>
 												<th class="center">계좌번호</th>
 												<th class="center">소유주</th>
 											</tr>
@@ -364,7 +366,7 @@
 									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
-										<c:when test="${voucherVo.customerName eq '여비' }">
+										<c:when test="${(voucherVo.accountNo >= 8000000 && voucherVo.accountNo < 9000000) || (voucherVo.accountNo >= 9200000 && voucherVo.accountNo < 9300000) }">
 											<td>${voucherVo.cardNo }</td>
 								            <td></td>
 								            <td>${voucherVo.cardUser }</td>
@@ -500,7 +502,7 @@
 		}
 		cell11.innerHTML = '<td class="center">' + bankCode + '</td>';
 		cell12.innerHTML = '<td class="center">' + bankName + '</td>';
-		if(customerName == '여비') {
+		if((accountNo >= 8000000 && accountNo < 9000000) || (accountNo >= 9200000 && accountNo < 9300000)) {
 			cell13.innerHTML = '<td class="center">' + cardNo + '</td>';
 			cell14.innerHTML = '<td class="center">' + '</td>';
 			cell15.innerHTML = '<td class="center">' + cardUser + '</td>';
@@ -728,7 +730,7 @@
 		}
 		cell11.innerHTML = '<td class="center">' + bankCode + '</td>';
 		cell12.innerHTML = '<td class="center">' + bankName + '</td>';
-		if(customerName == '여비') {
+		if((accountNo >= 8000000 && accountNo < 9000000) || (accountNo >= 9200000 && accountNo < 9300000)) {
 			cell13.innerHTML = '<td class="center">' + cardNo + '</td>';
 			cell14.innerHTML = '<td class="center">' + '</td>';
 			cell15.innerHTML = '<td class="center">' + cardUser + '</td>';
@@ -1056,7 +1058,7 @@ $(function(){
 		$("input[name=bankName]").val(td.eq(13).text());
 		$("input[name=cardNo]").val(td.eq(14).text());
 		$("input[name=depositNo]").val(td.eq(15).text());
-		if(td.eq(14).text()== "") {
+		if(td.eq(14).text()== null) {
 			$("input[name=depositHost]").val(td.eq(16).text());
 		} else {
 			$("input[name=cardUser]").val(td.eq(16).text());
@@ -1096,7 +1098,7 @@ $(function(){
 				var voucherList = response.voucherList;
 				console.log(response.voucherList);
 	      	  	for(let a in voucherList) {
-		      	  	if(voucherList[a].customerName == '여비') {
+		      	  	if((voucherList[a].accountNo >= 8000000 && voucherList[a].accountNo < 9000000) || (voucherList[a].accountNo >= 9200000 && voucherList[a].accountNo < 9300000)) {
 	      	  			host = voucherList[a].cardUser;
 	      	  		} else {
 	      	  			host = voucherList[a].depositHost
@@ -1286,32 +1288,24 @@ $(function(){
       	  	var customerList = result.customerList;
       	  	console.log(result.customerList);
       	  	for(let a in customerList) {
-      	  		if(customerList[a].cardNo != null) { // 카드번호값 셋팅
-      	  			var cardNo = customerList[a].cardNo;
-      	  		} else {
-      	  			cardNo = '';
-      	  		}
-      	  		
-	      	  	if(customerList[a].depositNo != null) {
-	  	  			var depositNo = customerList[a].depositNo;
-	  	  		} else {
-	  	  			depositNo = '';
-	  	  		}
-	      	  	
-      	  		if(customerList[a].customerName == '여비') {
-      	  			var host = customerList[a].cardUser;
-      	  		} else {
-      	  			host = customerList[a].depositHost
-      	  		}
+      	  		console.log("customerList[a].cardNo : " + customerList[a].cardNo);
+      	  		console.log(customerList[a].cardNo);
+	      	  	console.log("customerList[a].depositNo : " + customerList[a].depositNo);
+	  	  		console.log(customerList[a].depositNo);
+		  	  	console.log("customerList[a].cardUser : " + customerList[a].cardUser);
+	  	  		console.log(customerList[a].cardUser);
+		  	  	console.log("customerList[a].depositHost : " + customerList[a].depositHost);
+	  	  		console.log(customerList[a].depositHost);
       	  		
       	  		$("#tbody-customerList").append("<tr>" +
                         "<td class='center'>" + customerList[a].customerNo + "</td>" +
                         "<td class='center'>" + customerList[a].customerName + "</td>" +
                         "<td class='center'>" + customerList[a].bankCode + "</td>" +
                         "<td class='center'>" + customerList[a].bankName + "</td>" +
-                        "<td class='center'>" + cardNo + "</td>" +
-                        "<td class='center'>" + depositNo + "</td>" +
-                        "<td class='center'>" + host + "</td>" +
+                        "<td class='center'>" + customerList[a].cardNo + "</td>" +
+                        "<td class='center'>" + customerList[a].cardUser + "</td>" +
+                        "<td class='center'>" + customerList[a].depositNo + "</td>" +
+                        "<td class='center'>" + customerList[a].depositHost + "</td>" +
                         "</tr>");
       	  	}
       	  }
@@ -1331,8 +1325,9 @@ $(function(){
      $("input[name=bankCode]").val(td.eq(2).text());
      $("input[name=bankName]").val(td.eq(3).text());
      $("input[name=cardNo]").val(td.eq(4).text());
-     $("input[name=depositNo]").val(td.eq(5).text());
-     $("input[name=depositHost]").val(td.eq(6).text());
+     $("input[name=cardUser]").val(td.eq(5).text());
+     $("input[name=depositNo]").val(td.eq(6).text());
+     $("input[name=depositHost]").val(td.eq(7).text());
      $("#dialog-message").dialog('close');
   });
   
