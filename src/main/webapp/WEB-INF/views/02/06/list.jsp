@@ -319,7 +319,7 @@ html, body {
 				var cnt = ((table.rows.length)/2)+0.5;
 				        $("#item-table").append(
 				            		"<tr>" +
-				      		        "<td><input class='num' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
+				      		        "<td class='center'><input class='num' type='number' id='number"+cnt+"' placeholder='' name='number' readonly value='"+cnt+"'></td>" +
 				      		        "<td class='center'> <select class='chosen-select span1' id='itemCode"+cnt+"' name='itemCode' onchange='setData.item(this.id);'>"+
 				      		        
 					      		      "<c:forEach items='${itemList }' var='vo' varStatus='status'>" +

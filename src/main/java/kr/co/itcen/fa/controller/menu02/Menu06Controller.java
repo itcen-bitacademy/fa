@@ -368,8 +368,8 @@ public class Menu06Controller {
 							System.out.println(voucherVo);
 							System.out.println(itemVoList);
 							System.out.println(mappingVo);
-							Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
-							vo.setVoucherNo(no);
+//							Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+//							vo.setVoucherNo(no);
 							menu06Service.voucherUpdate(vo);
 							List<PurchaseitemVo> itemList = menu06Service.getItemList();
 							List<CustomerVo> customerList = menu06Service.getCustomerList();
