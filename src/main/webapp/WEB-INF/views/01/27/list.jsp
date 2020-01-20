@@ -1480,7 +1480,7 @@ html,body{
 				openDeleteModal('DELETED CUSTOMER',"삭제 처리되었던 거래처 입니다.\r\n 재등록 하시겠습니까?");
 				$("#deleteok").click(function(){
 
-					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록이 완료되었습니다.");
+					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록을 시작합니다.");
 					$("#corporationNo").attr("readonly",true);
 					$("#btn-check-no").hide();
 					$("#img-checkno").show();
