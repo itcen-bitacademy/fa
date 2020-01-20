@@ -1038,6 +1038,22 @@ $(function(){
 		console.log($(this));
 		var td = tr.children();
 		
+		$('#regDate').val('');
+		$('#accountNo').val('');
+		$('#accountName').val('');
+		$('#amountFlag').val('');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
+		
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
 		$("input[name=orderNo]").val(td.eq(2).text());
@@ -1058,10 +1074,11 @@ $(function(){
 		$("input[name=bankName]").val(td.eq(13).text());
 		$("input[name=cardNo]").val(td.eq(14).text());
 		$("input[name=depositNo]").val(td.eq(15).text());
-		if(td.eq(14).text()== null) {
-			$("input[name=depositHost]").val(td.eq(16).text());
-		} else {
+		
+		if(td.eq(14).text() != "") {
 			$("input[name=cardUser]").val(td.eq(16).text());
+		} else {
+			$("input[name=depositHost]").val(td.eq(16).text());
 		}
 		$("input[name=voucherUse]").val(td.eq(17).text());
 		$("input[name=insertTeam]").val(td.eq(18).text());
@@ -1096,6 +1113,9 @@ $(function(){
 				console.log("success");
 				console.log(response);
 				var voucherList = response.voucherList;
+				var host = '';
+				var cardNo = '';
+				var depositNo = '';
 				console.log(response.voucherList);
 	      	  	for(let a in voucherList) {
 		      	  	if((voucherList[a].accountNo >= 8000000 && voucherList[a].accountNo < 9000000) || (voucherList[a].accountNo >= 9200000 && voucherList[a].accountNo < 9300000)) {
@@ -1103,28 +1123,19 @@ $(function(){
 	      	  		} else {
 	      	  			host = voucherList[a].depositHost
 	      	  		}
-		      	  	console.log("host3");
-	      	  		console.log(host);
-	      	  		
+	      	  		console.log("voucherList[a].cardNo : " + voucherList[a].cardNo);
+	      	  		console.log(voucherList[a].cardNo);
+	      	  		console.log("voucherList[a].depositNo : " + voucherList[a].depositNo);
+      	  			console.log(voucherList[a].depositNo);
 	      	  		if(voucherList[a].cardNo != null) { // 카드번호값 셋팅
-	      	  			var cardNo = voucherList[a].cardNo;
-	      	  			var host = voucherList[a].cardUser;
+	      	  			cardNo = voucherList[a].cardNo;
+	      	  			host = voucherList[a].cardUser;
+	      	  			depositNo = '';
 	      	  		} else {
 	      	  			cardNo = '';
-	      	  			host = '';
+	      	  			depositNo = voucherList[a].depositNo;
+	      	  			host = voucherList[a].depositHost;
 	      	  		}
-	      	  		console.log("host1");
-	      	  		console.log(host);
-	      	  		
-		      	  	if(voucherList[a].depositNo != null) {
-		  	  			var depositNo = voucherList[a].depositNo;
-		  	  			host = voucherList[a].depositHost;
-		  	  		} else {
-		  	  			depositNo = '';
-		  	  			host = '';
-		  	  		}
-		      	  	console.log("host2");
-	      	  		console.log(host);
 	      	  		
 		      	  	if(voucherList[a].manageNo == '') {
 		      	  		var manageName = '';
@@ -1148,7 +1159,7 @@ $(function(){
 		      	  	} else {
 		      	  		bankName = '';
 		      	  	}
-		      	  	
+		      	  	console.log('host= =====' + host);
 	      	  		$("#voucher_save").append("<tr>" +
 	                        "<td>" + voucherList[a].regDate + "</td>" +
 	                        "<td>" + voucherNo + "-" + voucherList[a].orderNo + "</td>" +
@@ -1183,6 +1194,22 @@ $(function(){
 			var tr = $(this);
 			var td = tr.children();
 			
+			$('#regDate').val('');
+			$('#accountNo').val('');
+			$('#accountName').val('');
+			$('#amountFlag').val('');
+			$('#amount').val('');
+			$('#manageNo').val('');
+			$('#customerNo').val('');
+			$('#customerName').val('');
+			$('#bankCode').val('');
+			$('#bankName').val('');
+			$('#cardNo').val('');
+			$('#cardUser').val('');
+			$('#depositNo').val('');
+			$('#depositHost').val('');
+			$('#voucherUse').val('');
+			
 			var noArray = td.eq(1).text().split('-');
 			
 			$("input[name=regDate]").val(td.eq(0).text());
@@ -1200,6 +1227,7 @@ $(function(){
 			}
      	    
      	    $('#accountNo').val(td.eq(2).text()).trigger('chosen:updated');
+     	    $('#accountName').val(td.eq(3).text()).trigger('chosen:updated');
      	    $("input[name=amountFlag]").val(td.eq(4).text());
      	    $("input[name=amount]").val(td.eq(5).text());
      	     
