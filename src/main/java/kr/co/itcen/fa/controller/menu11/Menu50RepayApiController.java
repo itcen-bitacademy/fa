@@ -74,6 +74,8 @@ public class Menu50RepayApiController {
 	@RequestMapping("/" + SUBMENU + "/checkrepaylist")
 	public JSONResult checkrepaylist(
 			@RequestParam(value = "no", required = true) Long[] no) {
+		System.out.println("===== delete no =====");
+		System.out.println(" : " + no.toString());
 		List<RepayVo> list = menu50Service.getRepay(no);
 		return JSONResult.success(list);
 	}

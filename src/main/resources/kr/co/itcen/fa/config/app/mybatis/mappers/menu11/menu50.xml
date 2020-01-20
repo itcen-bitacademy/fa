@@ -42,7 +42,6 @@
 		          a.danger_name as dangerName, 
 		          a.bank_code as bankCode,
 		          a.deposit_no as depositNo, 
-		          date_format(a.debt_date,'%Y') as financialYear, 
 		          c.deposit_host as depositHost, 
 		          date_format(a.insert_date,'%Y-%m-%d %H:%i:%S') as insertDate, 
 		          b.name as bankName
@@ -79,8 +78,7 @@
 				bank_code as bankCode, deposit_no as depositNo, account_no as accountNo, 
 				voucher_no as voucherNo, delete_flag as deleteFlag, 
 				insert_id as insertId, insert_date as insertDate, update_id as updateId,
-				update_date as updateDate, 
-				date_format(debt_date, '%Y') as financialYear
+				update_date as updateDate 
 					from tb_p_debt 
 						where code = #{debtcode } 
 		]]>
@@ -269,22 +267,22 @@
 	
 	<!-- 해당 코드별 부채확인 -->
 	<select id="selectRepayAlllist" parameterType="list" resultType="repayvo">
-		<![CDATA[
-			select 	code as code,
-				pay_princ as payPrinc,
-				int_amount as intAmount,
-				date_format(pay_date, '%Y-%m-%d') as payDate
-				from tb_repay
-					where debt_type = 'P' 
-					and delete_flag = 'N' 
-						and debt_no in 
-		]]>
-			<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
-				#{item } 
-			</foreach>
-		<![CDATA[
-			order by code
-		]]>
+	<![CDATA[
+		select 	code as code,
+			pay_princ as payPrinc,
+			int_amount as intAmount,
+			date_format(pay_date,'%Y-%m-%d') as payDate
+		from tb_repay
+		where debt_type = 'P'
+			and debt_no in 
+	]]>
+		<foreach separator="," open="(" close=")" collection="list" index="index" item="item">
+			#{item } 
+		</foreach>
+	<![CDATA[
+		and delete_flag = 'N'
+		order by code
+	]]>
 	</select>
 	
 	<select id="getBankCodeInfo" parameterType="String" resultType="1customervo">

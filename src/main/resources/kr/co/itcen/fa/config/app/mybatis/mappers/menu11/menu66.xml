@@ -140,7 +140,7 @@
 			<when test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					tb_s_term_debt 
-				]]>getList
+				]]>
 			</when>
 			<when test='code != null and "L".equals(debtType)'>
 				<![CDATA[
