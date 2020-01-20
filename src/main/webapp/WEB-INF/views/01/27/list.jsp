@@ -1060,12 +1060,14 @@ html,body{
 									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" style="text-align: left;">
 										&nbsp;&nbsp;&nbsp;&nbsp;사&nbsp;업&nbsp;자&nbsp;등&nbsp;록&nbsp;번&nbsp;호&nbsp;
 									</label>
-									<div class="input-append" style="width: 220px;">
+									<div class="input-append">
 									
 									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="width: 135px;"/>
 									<input id="btn-check-no" type="button" value="중복확인">
-										<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										<!-- <img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png"> -->
+									
 									</div>
+									<i id="img-checkno" class="icon-ok bigger-180 blue" style="display: none;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
 								</div>
 
 								<div class="form-group">
