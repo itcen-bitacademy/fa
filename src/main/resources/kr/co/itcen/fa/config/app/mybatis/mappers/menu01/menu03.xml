@@ -142,6 +142,7 @@
 		  			   system_code,
 		  			   manage_no,
 		  			   card_no,
+		  			   deposit_no,
 		  			   customer_no,
 		  			   order_no
 		)
@@ -155,6 +156,7 @@
 		  		#{systemCode },
 		  		#{manageNo },
 		  		#{cardNo },
+		  		#{depositNo },
 		  		#{customerNo },
 		  		#{orderNo }
 		)
