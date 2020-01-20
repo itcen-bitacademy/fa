@@ -113,14 +113,14 @@ public class Menu05Repository {
 	}
 
 
-	public Map<String, Object> gets(String cardNo) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		List<CardVo> s = sqlSession.selectList("menu25.gets", cardNo);
-		map.put("cardList", s);
-		
-		return map;
-	}
+//	public Map<String, Object> gets(String cardNo) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		
+//		List<CardVo> s = sqlSession.selectList("menu25.gets", cardNo);
+//		map.put("cardList", s);
+//		
+//		return map;
+//	}
 
 
 	public Map<String, Object> updateBankAccount(BankAccountVo bankAccountVo) {
@@ -129,5 +129,12 @@ public class Menu05Repository {
 		return map;
 	}
 
-
+	public String getCardNo(String depositNo) {
+		List<String> list = sqlSession.selectList("menu05.get", depositNo);
+		if(list==null) {
+			return "-";
+		}else {
+			return list.get(0);
+		}
+	}
 }
