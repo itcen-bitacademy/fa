@@ -148,4 +148,12 @@
       set deposit_host = #{depositHost}
       where deposit_no = #{depositNo}
    </update>
+   
+   <select id="get" parameterType="string" resultType="string">
+		<![CDATA[
+		select	card_no
+		 from	tb_cardmanager
+		 where	deposit_no = #{depositNo }
+		]]>
+	</select>
 </mapper>
