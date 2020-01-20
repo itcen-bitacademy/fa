@@ -736,12 +736,8 @@
 		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //string으로 변환시키면서 3자리수마다 ,붙여주기
 		}
 	
-		//.keyup() - 키 입력 후 발생되는 이벤트 콤마가 추가되면서 나옴
-		//console.log("값이 뭔가요?" + $(this).val());
+
 		$("input[name=publicValue]").on('keyup', function(event){
-			// $(this).val(addCommas($(this).val().replace(/[^0-9]/g,""))); //$(this).val()의 값의 콤마를 제거하고 다시 addCommas
-			//console.log("값이 뭔가요?" + $(this).val()); //이거가 그냥 ,안붙는거
-			//console.log("값이 뭔가요222?" + $(this).val().replace(/[^0-9]/g,""));
 			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		}); 
 		
@@ -761,7 +757,7 @@
 			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		}); 
 		
-		//input창에 값을 등록버튼 눌러서 보낼때는 ,를 빼서 보내야 하는것은 맞는데 이유는 데이터베이스 안에서는 int형으로 들어가야되서 
+		//input창에 값을 등록버튼 눌러서 보낼때는 ,를 빼서 보내야 하는것은 맞는데 이유는 데이터베이스 안에서는 int형으로 들어가야되서 ,제외시켜주기
 		$("#input-form").submit(function(event) {
 		
 		$("input[name=publicValue]").val($("input[name=publicValue]").val().replace(/[^0-9]/g,""));
@@ -975,8 +971,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	$("#vehicleNo").val(td.eq(1).text()); //납부 Pop - up 에 차량코드 넣기.
 	
 	var carSectionNo = updateSection(td.eq(2).text());
-	//var carSectionNo = td.eq(2).text();
-	//$('#form_field_section_chosen').find('span').text(carSectionNo);
+
 	
 	var carSectionName = td.eq(3).text();
     $("input[name=classification]").val(carSectionName);
@@ -1060,7 +1055,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
   	var dueDate = td.eq(17).text(); // 납부예정일
   	$("#dueDate").val(dueDate); //보증금 납부 예정일에 들어감"input[name=dueDate]대신에 id준 경우
   	$("#bonapil-input").val(dueDate); //납부 버튼에 보증금 예정 납부일이 input에 넣어짐
-	//$("#walnapil-input").val(walnapil); //납부 버튼에 월사용료 예정 납부일이 input에 넣어짐
   
   	var MonthFee= td.eq(18).text();
   	$("#monthlyFee").val(MonthFee);
@@ -1171,34 +1165,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 							$("#walnapil-input").val(walnapil); 
 						
 						}
-					
-					
-					/* 	var today = new Date();	
-						var mmm = (today.getMonth() + 1); //January is 0!	
-						var mm = "0";
-						
-						
-						if(mmm < 10 ){
-							mm = mm + new String(mmm);
-			
-						}else {
-							mm = mmm;
-						}
-					
-						var currentMonth  = mm;
-						console.log("현재달" + currentMonth);
-						console.log("월사용료 예정일 달" + walString);
-						//현재달 1월과 월사용료 예정일 1월 이 같기 때문에 $("#walsa").show();
-						if(".using-month" == 2 ){
-							//console.log("월사용료 = 현재달이라서 월사용료 납부버튼 보이기");
-							$("#walsa").hide();
-						}
-						//현재달 12월과 월사용료 예정일 1월이 다르기 때문에 $("#walsa").hide(); 그 달에 한번이라도 낸적이 있으면 
-						else{
-							//console.log("월사용료 != 현재달이라서 월사용료 납부버튼 숨기기");
-							$("#walsa").show();
-						} */
-						//$("#walsa").show();
 					}
 				},
 				error: function(xhr, error){
@@ -1358,14 +1324,19 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		
 			
 			function updateTable(data, page_num) {
-				console.log("asdf: " + page_num);
+				//console.log("asdf: " + page_num);
+				
+				 function addCommas(x) {
+		   			 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //string으로 변환시키면서 3자리수마다 ,붙여주기
+				}
+				
 				var i =1;
 				
 				for(let k in data) {
 		 			$("#tbody-segumList").append("<tr>" +
 		 						 "<td class='segumList-pageNo'>" + ((i + (page_num-1)*12)) + "</td>" +
 		                         "<td class='center'>" + data[k].vehicleNo + "</td>" +
-		                         "<td class='center'>" + data[k].pay + "</td>" +
+		                         "<td class='center'>" + addCommas(data[k].pay) + "</td>" +
 		                         "<td class='center'>" + data[k].paymentDate + "</td>" +
 		                         "<td class='center'>" + data[k].dueDate + "</td>" +
 		                         "<td class='center'>" + data[k].taxbillNoPoP + "</td>" +
@@ -1546,9 +1517,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 					});
 				});
 				 
-				
-				
-			
 				//세금계산서 정보 모달
 				$("#segumList").dialog('open');
 				
