@@ -97,7 +97,7 @@
 				</if>
 				<if test="vo.flag!=null and !vo.flag.equals('')">
 					<![CDATA[
-					 and v.flag in("s", "o") 
+					 and v.flag in('s', 'o') 
 					]]> 
 				</if>
 
@@ -188,7 +188,7 @@
 				</if>
 				<if test="vo.flag!=null and !vo.flag.equals('')">
 					<![CDATA[
-					 and v.flag in("s", "o") 
+					 and v.flag in('s', 'o') 
 					]]> 
 				</if>
 			 <![CDATA[
