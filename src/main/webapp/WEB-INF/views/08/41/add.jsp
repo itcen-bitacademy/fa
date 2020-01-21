@@ -50,7 +50,7 @@
 </style>
 </head>
 <body class="skin-3">
-	<input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
+	
 	<c:import url="/WEB-INF/views/common/navbar.jsp" />
 	<div class="main-container container-fluid">
 		<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -230,7 +230,7 @@
 										</div>
 										<div style="float: left;">
 											<button class="btn btn-default btn-small" id="nabbu" 
-												style="float: right; margin-right: 20px;" type="reset">납부</button>
+												style="float: right; display:none; margin-right: 20px;" type="reset">납부</button>
 										</div>
 									</div>
 
@@ -243,7 +243,7 @@
 											</div>
 										</div>
 										<div style="float: left;">
-											<button class="btn btn-default btn-small" id="walsa" style="float: right; margin-right: 20px;" type="reset">납부</button>
+											<button class="btn btn-default btn-small" id="walsa" style="display:none;float: right; margin-right: 20px;" type="reset">납부</button>
 										</div>
 									</div>
 
@@ -267,7 +267,7 @@
 								
 									<div class="control-group">
 										<div class="controls">
-											<button class="btn btn-default btn-small" type="button"
+											<button style="display:none;" class="btn btn-default btn-small" type="button" 
 												id="segumBtn">세금계산서보기</button>
 										</div>
 									</div>
@@ -435,7 +435,9 @@
 								</div>
 								</div>
 								</div>
-								
+								<input type="hidden" value="${PayDateClosingDate }" name="PayDateClosingDate" id="PayDateClosingDate">
+								<input type="hidden" value="${DueDateClosingDate }" name="DueDateClosingDate" id="DueDateClosingDate">
+								<input type="hidden" value="${DoubleClosingDate }" name="DoubleClosingDate" id="DoubleClosingDate">
 				<!-- 페이징 시작 -->
 					<div class="row-fluid">
 							<div class="pagination">
@@ -506,7 +508,29 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 	//목표 !!! => 큰 function안에 함수들 다 넣기 
-
+//마감일자 validation
+    	function checkClosing(){ // 마감일 세팅 여부
+			console.log("::::1");
+			
+    		console.log($("#PayDateClosingDate").val() + " : " + typeof $("#PayDateClosingDate").val());
+    		console.log("새로한거");
+			if($("#PayDateClosingDate").val()=="true"){
+				console.log("::::2");
+				dialog("매입일자 마감된 일자입니다. <br>저장되지 않았습니다", true);
+				return true;
+			}
+    		if($("#DueDateClosingDate").val()=="true"){
+    			console.log("::::3");
+				dialog("보증금 납부 예정일 마감된 일자입니다. <br>저장되지 않았습니다", true);
+				return true;
+			}
+    		if($("#DoubleClosingDate").val()=="true"){
+    			console.log("::::4");
+				dialog("매입일자 및 보증금 납부 예정일이 마감된 일자입니다. <br>저장되지 않았습니다", true);
+				return true;
+			}
+			
+		}
 	
 			//차량코드 유효성 검사
 			$(document).ready(function(){
@@ -532,7 +556,7 @@
 				$("#vehicle_code").focus();
 				
 				//마감날짜 함수 실행
-				console.log("closing" + $("#closingDate").val());
+				console.log("closing" + $("#PayDateClosingDate").val());
 				checkClosing();
 				
 				
@@ -696,12 +720,7 @@
 				});
 	    	} // valid dialog마지막
 				
-	    	//마감일자 validation
-	    	function checkClosing(){ // 마감일 세팅 여부
-				if($("#closingDate").val()=="true"){
-					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-				}
-			}
+	    	
 	
 	$(function() {
 		$.fn.datepicker.dates['ko'] = {
@@ -901,6 +920,9 @@ $("#insert").click(function() {
 	if(!insert()){
 		return;
 	}		
+	if(checkClosing()){
+		return;
+	}
 	$("#input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/insert");
 	$("#input-form").attr("method","post");
 	$("#input-form").submit();
@@ -939,7 +961,7 @@ $("#clear").click(function() {
  });
 	     
 $("#segum").click(function() {
-	
+
 	$("#segum-input-form").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/segum");
 	$("#segum-input-form").attr("method","POST"); 
 	$("#segum-input-form").submit();
