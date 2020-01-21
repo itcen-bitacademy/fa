@@ -144,7 +144,7 @@ public class Menu41Controller {
 	    	
 	    } else if(!menu19Service.checkClosingDate(userVo, vehicleVo.getDueDate())) { 
 	    	System.out.println("마감되었습니다.");
-	    	model.addAttribute("DateClosingDate",true);
+	    	model.addAttribute("DueDateClosingDate",true);
 	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
 	    	System.out.println("등록되었습니다.");
