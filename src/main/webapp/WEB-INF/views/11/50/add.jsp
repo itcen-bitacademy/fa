@@ -1793,7 +1793,7 @@ h4{
 			//$(td.eq(0).children().children()).prop('checked',true);
 			$("#tbody-list").find("tr").css("background-color", "inherit");
 	        $(tr).css("background-color", "#ddd");
-	        //$('#insertbtn').hide();
+	        $('#insertbtn').hide();
 	        $("#img-checkcode").hide(); // '중복확인' 체크 이미지
 	        $('#searchbtn').show();
 	        $('#updatebtn').show();
@@ -1803,7 +1803,7 @@ h4{
 			$("input[name=no]").val(td.eq(0).attr('data-no'));
 			
 			$("input[name=code]").val(td.eq(1).text()); // 사채코드
-			//$("input[name=code]").attr('readonly', true);
+			$("input[name=code]").attr('readonly', true);
 			
 			$("#onlyHangulAndNumber").val(td.eq(2).text()); // 사채명
 			
@@ -1905,7 +1905,7 @@ h4{
 		        break;
 			}
 			$('#dangercode-field-select').val(dangerCode).trigger('chosen:updated');  
-			//$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
+			$("#duplicatecode-checkbtn").hide(); // '중복확인' 버튼
 		}
 		
 		function formDeletion(thisObj){
