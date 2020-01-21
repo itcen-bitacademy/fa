@@ -586,11 +586,11 @@ function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	if(inputForm.vo.value != ""){
+	/* if(inputForm.vo.value != ""){
 		dialog("새로운 데이터를 입력해주세요.");
 		resetForm();
 		return;
-	} 
+	}  */
 	
 	if(!isValidDebt(inputForm)){
 		console.log("유효성 위반");
@@ -670,6 +670,7 @@ function update(){
 			dialog("수정이 완료 되었습니다.");
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
+			resetForm();
 		},
 		error: function(xhr, error){
 			
@@ -1212,6 +1213,8 @@ function selectRow(thisObj){
 		changeBtnDisplay(true);
 	} */
 	
+	$("#img-checkcode").css("display","none");
+	
 	if($(thisObj).hasClass("selected") === true){
 		$(thisObj).removeClass("selected");
 		resetForm();
@@ -1223,7 +1226,7 @@ function selectRow(thisObj){
 	}
 	
 	$("#btn-chk-duplication").css("display", "none");
-	$(inputForm.code).attr("readonly", true);
+	//$(inputForm.code).attr("readonly", true);
 	
 	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;

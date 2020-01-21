@@ -137,7 +137,7 @@ public class Menu46ApiController {
 		 Map map = new HashMap();
 		 //마감인지 확인
 		 System.out.println("마감인가? : " + menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate()));
-		 if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate())){			//마감이됬으면
+		 if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate()) == true){			//마감이됬으면
 			 map.put("isClosed", true);
 			 return JSONResult.success(map);
 		 }
@@ -148,7 +148,9 @@ public class Menu46ApiController {
 			 return JSONResult.success(existRepay);
 		 
 		 //전표입력후 전표번호를 가지고온다.
+		 System.out.println("업데이트 전 voucherNo : " + sTermDebtVo.getVoucherNo());
 		 Long voucherNo = menu46Service.updateVoucherWithDebt(sTermDebtVo, authUser);
+		 System.out.println("업데이트 후 voucherNo : " + voucherNo);
 			
 		 //차입금 수정
 		 sTermDebtVo.setVoucherNo(voucherNo);
