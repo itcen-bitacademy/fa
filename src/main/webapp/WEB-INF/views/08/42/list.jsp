@@ -56,7 +56,7 @@
 					<div class="row-fluid">
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" method="post" action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
-						<div class="span5"><!-- 차변 -->
+						<div class="span6"><!-- 차변 -->
 								<div class="control-group">
 									<label style="text-align:left;" class="control-label" for="form-field-1">차량 코드</label>
 									<div class="controls">
@@ -77,17 +77,34 @@
 										<div class="controls">
 											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 											<input class="span4" readonly type="text" id="wideAddress" name="wideAddress" placeholder="주소를 선택하면 입력됩니다." value='${vehicleVo.wideAddress}'>
-											<input style="width:230px"class="span5" readonly type="text" id="cityAddress" name="cityAddress" placeholder="주소를 선택하면 입력됩니다." value='${vehicleVo.cityAddress}'>
+											<input class="span5" readonly type="text" id="cityAddress" name="cityAddress" placeholder="주소를 선택하면 입력됩니다." value='${vehicleVo.cityAddress}'>
 										</div>
 								</div>
 			
+								<div class="control-group">
+										<label style="text-align:left;" class="control-label" for="id-date-range-picker-1">매입일자</label>
+										<div class="controls">
+											<div class="input-append">
+												<span class="add-on">
+													<i class="icon-calendar"></i>
+												</span>
+											</div>
+											<input readonly class="id-date-range-picker-1" type="text" name="payDate" value="${vehicleVo.payDate }">
+											
+										</div>
+									</div>
 						
  	
 					</div><!-- 차변 span -->
 							
-						<div class="span3"><!-- 대변 -->
+					<!-- 	<div class="span3">대변
 					
-							<div class="control-group">
+					
+						</div>대변 span -->
+						
+						<div class="span6"><!-- 차변 -->
+						
+								<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-select-1">차량 분류</label>
 										<div class="controls">
 											<select class="chosen-select" id="sectionNo" name="sectionNo" data-placeholder="전체">
@@ -107,14 +124,9 @@
 									</div>
 								</div>
 							
-						</div><!-- 대변 span -->
-						
-						<div class="span4"><!-- 차변 -->
-						
-						
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">직급</label>
-										<div class="controls" style="width: 90%">
+										<div class="controls">
 											<select class="chosen-select" id="staffName" name="staffName" data-placeholder="전체">
 												<option></option>
 												<c:forEach items="${jikNameList}" var="StaffVo">
@@ -138,20 +150,9 @@
 										</div>
 									</div>
 								
-									<div class="control-group">
-										<label style="text-align:left;" class="control-label" for="id-date-range-picker-1">매입일자</label>
-										<div class="controls">
-											<div class="input-append">
-												<span class="add-on">
-													<i class="icon-calendar"></i>
-												</span>
-											</div>
-											<input readonly class="id-date-range-picker-1" type="text" name="payDate" value="${vehicleVo.payDate }">
-											
-										</div>
-									</div>
 								
-								<div class="control-group">
+								
+				<%-- 			<div class="control-group">
                               <div class="controls controles-right"><!-- 여기서 css주면 됨 -->
                                     <label style=" display:inline;">
                                     	<c:choose>
@@ -168,8 +169,28 @@
                                     <button class="btn btn-info btn-small" id="detailSearch" style="width:80px; display:inline; margin-right:150px">상세조회</button>
                                     <button class="btn btn-info btn-small" id="clear" style="width:80px; display:inline; margin-right:30px">초기화</button>
                                  </div>
-                                
-                           </div>
+                           </div> --%>
+                           
+                   			<div class="control-group" style="margin-bottom:0px;">
+										<div class="span7" style="float: right; width: 230px">
+											<c:choose>
+												<c:when test='${vehicleVo.flag eq ""}'>
+													<input name="flag" id="delete" value="" type="checkbox" checked="checked"class="ace">
+												</c:when>
+												<c:otherwise>
+													<input name="flag" id="delete" value=""  type="checkbox" class="ace">
+												</c:otherwise>
+											</c:choose>
+											<span class="lbl" style="margin-right: 15px; ">삭제포함</span>
+											
+											<button class="btn btn-info btn-small" id="detailSearch">조회</button>
+												
+											<button class="btn btn-default btn-small" id="clear"
+													style="float: right;"  >초기화</button>
+										</div>
+									</div>
+                           
+                           
 						</div>
 					</form>
 					</div>

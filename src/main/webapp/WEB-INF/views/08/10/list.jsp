@@ -40,7 +40,10 @@
      height:calc(100% - 84px);
    	}
    }
-   
+ 
+ input[readonly] {
+    background-color: #FFFF!important;
+   }
 </style>
 
 </head>
@@ -70,8 +73,11 @@
 												<input type="text" id="id" name="id" value="${landVo.id }" placeholder="토지코드를 입력해주세요" />
 											</div>
 										</div>
-										<div style="float: left; width: 50%;">
-											<label  style="margin-right: 20px;" class="control-label" for="form-field-1">토지대분류명</label> 
+									</div>
+									
+									<div class="control-group" >
+										<label  style="margin-right: 20px;" class="control-label" for="form-field-1">토지대분류명</label> 
+										<div class="controls">
 											<select class="chosen-select" id="classification" name="sectionName" data-placeholder="선택">
 											<c:forEach items="${sectionList2 }" var="sectionVo">
 												<option></option>
@@ -89,12 +95,6 @@
 													placeholder="" />
 											</div>
 										</div>
-										<div style="float: left; width: 50%">
-											<label class="control-label" for="form-field-1">거래처담당자명</label>
-											<div class="controls">
-												<input type="text" id="customerManager" name="managerName" value="${landVo.managerName }" placeholder="" />
-											</div>
-										</div>
 									</div>
 									
 									<div class="control-group">
@@ -105,10 +105,6 @@
 												<input style="width:230px"class="span5" readonly type="text" id="cityAddr" name="cityAddress" value="${landVo.cityAddress}"  placeholder="주소를 선택하면 입력됩니다.">
 											</div>
 									</div>
-
-
-									
-
 								</div>
 								<!-- 차변 span -->
 								<div class="row-fluid">
@@ -124,7 +120,15 @@
 											<input readonly class="span5" type="text" name="payDate" id="payDate">
 										</div>
 									</div>
-
+									
+									<div class="control-group" >
+										<label class="control-label" for="form-field-1">거래처담당자명</label> 
+										<div class="controls">
+											<input type="text" id="customerManager" name="managerName" value="${landVo.managerName }" placeholder="" />
+										</div>
+									</div>
+									
+									
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label">평수</label>
 										<div class="controls">
