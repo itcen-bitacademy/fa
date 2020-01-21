@@ -87,6 +87,7 @@ public class Menu43Controller {
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
 			@RequestParam(value = "customerNo", required = false) String customerNo, Model model)
 			throws ParseException {
+		System.out.println("여기는 등록");
 		intangibleAssetsVo.setInsertUserId(user.getId()); // session값으로 사용자 id가져오기
 		
 		String acqPrice = intangibleAssetsVo.getAcqPrice().replace("," ,"");
@@ -113,7 +114,7 @@ public class Menu43Controller {
 			@RequestParam(value = "customerNo", required = false) String customerNo,
 			@RequestParam(value = "purpose", required = false) String purpose
 			) throws ParseException {
-		
+		System.out.println("여기는 업데이트 !");
 		String id = 'f' + intangibleAssetsVo.getId();
 		intangibleAssetsVo.setId(id);
 

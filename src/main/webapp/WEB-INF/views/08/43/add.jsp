@@ -253,10 +253,10 @@ html, body {
 													id="add" style="float: left; margin-right: 20px;">등록</button>
 												<button class="btn btn-info btn-small" type="submit"
 													id="list" style="float: left; margin-right: 20px;">조회</button>
-												<button class="btn btn-warning btn-small" type="submit"
+												<button class="btn btn-warning btn-small" type="button"
 													id="update"
 													style="float: left; margin-right: 20px; display: none;">수정</button>
-												<button class="btn btn-danger btn-small" type="submit"
+												<button class="btn btn-danger btn-small" type="button"
 													id="delete"
 													style="float: left; margin-right: 20px; display: none;">삭제</button>
 												<button class="btn btn-default btn-small" type="reset"
@@ -506,14 +506,18 @@ html, body {
 				return;
 			if (!valid.radioCheck("taxKind", "세금 종류"))
 				return;
-
+			
 			// 무형자산 수정 : U
 			var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update";
+			
 			$("#insert-intangibleAssets-form").attr("action", url).submit();
 		}
 		
 		function deleteCheck() {
 			checkClosing();
+			var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete";
+			
+			$("#insert-intangibleAssets-form").attr("action", url).submit();
 		}
 
 		var valid = {
@@ -555,7 +559,12 @@ html, body {
 				}
 			}
 		}
-
+		// 마감일 세팅 여부
+		function checkClosing() {
+			if ($("#closingDate").val() == "true") {
+				dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
+			}
+		}
 		// 유효성 검사시 Dialog Popup 창이 모달로 떠오르게 되는 소스
 		function dialog(txt, flag) {
 			$("#dialog-txt").html(txt);
@@ -583,12 +592,7 @@ html, body {
 			checkClosing();
 			console.log("clsosing" + $("#closingDate").val());
 
-			// 마감일 세팅 여부
-			function checkClosing() {
-				if ($("#closingDate").val() == "true") {
-					dialog("마감된 일자입니다. <br>저장되지 않았습니다", true);
-				}
-			}
+			
 
 			$(".chosen-select").chosen();
 
@@ -740,14 +744,14 @@ html, body {
 							});
 
 			// 무형자산 삭제 : D
-			$("#delete")
+			/* $("#delete")
 					.click(
 							function(event) {
 								$("form")
 										.attr(
 												"action",
 												"${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/delete");
-							});
+							}); */
 
 			// 초기화 버튼
 			$("#reset").click(function() {
