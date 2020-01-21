@@ -9,6 +9,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="/fa/assets/ace/css/chosen.css" />
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 
 <style>
@@ -36,6 +37,7 @@
          		}
 	 }
 </style>
+<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
 
 </head>
 <body class="skin-3">
@@ -199,7 +201,7 @@
 
 </body>
 
-<script src="/fa/ace/assets/js/jquery-2.0.3.min.js"></script>
+
 <script
 	src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script
