@@ -70,7 +70,7 @@ html, body {
 										<label style="text-align: left;" class="control-label"
 											for="form-field-1">품목 코드</label>
 										<div class="controls">
-											<input type="text" id="form-field-1" name="id"
+											<input type="text" id="form-field-1" name="id" maxlength="9"
 												value="${vo.id }" />
 										</div>
 									</div>
@@ -222,10 +222,10 @@ html, body {
 												<td>${vo.taxKind }</td>
 												<c:choose>
 													<c:when test="${vo.flag == 'd'}">
-														<td>삭제된 항목</td>
+														<td>삭제됨</td>
 													</c:when>
 													<c:when test="${vo.flag == 'o'}">
-														<td>수정된 항목</td>
+														<td>수정됨</td>
 													</c:when>
 													<c:otherwise>
 														<td></td>
