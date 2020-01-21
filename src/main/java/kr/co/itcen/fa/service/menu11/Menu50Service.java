@@ -65,7 +65,7 @@ public class Menu50Service {
 		mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
 		mappingVo.setSystemCode(pdebtVo.getCode());// 시스템코드
 		mappingVo.setCustomerNo(pdebtVo.getBankCode());
-		mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
+		//mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
 		pdebtVo.setVoucherNo(no);
@@ -104,7 +104,7 @@ public class Menu50Service {
 		mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
 		mappingVo.setSystemCode(pdebtVo.getCode());// 제코드l190
 		mappingVo.setCustomerNo(pdebtVo.getBankCode());
-		mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
+		//mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
 		mappingVo.setVoucherNo(pdebtVo.getVoucherNo());
 
 		Long no = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, userVo);
@@ -212,7 +212,7 @@ public class Menu50Service {
 		mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
 		mappingVo.setSystemCode(pdebtVo.getCode());// 사채코드 삽입 ex) I191212001
 		mappingVo.setCustomerNo(pdebtVo.getBankCode());
-		mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
+		//mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
 
 		Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
 		repayVo.setVoucherNo(no);
