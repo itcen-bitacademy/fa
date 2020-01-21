@@ -40,6 +40,7 @@ public class Menu54Controller {
 	public String list(Model model, @PathVariable(name="page", required=false) String page) {
 		
 		System.out.println("검색기능없는 조회");
+		
 		System.out.println("-----" + page + "넘어오는 페이지");
 		
 		int ipage = 1;

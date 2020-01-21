@@ -160,7 +160,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="InsertUserid">매출담당자</label>
                                     <div class="controls">
-                                        <input type="text" id="InsertUserid" name="InsertUserid" value="${search.insertUserid }" placeholder="매출담당자">
+                                        <input type="text" id="InsertUserid" name="InsertUserid" value="${search.insertUserid }" placeholder="매출담당자 ID">
                                     </div>
                                 </div>
                                 <div class="control-group">

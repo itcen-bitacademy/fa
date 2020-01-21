@@ -227,7 +227,7 @@ html,body{
 				
 			</div><!-- /.page-header -->
 			<div class="row-fluid"> <!-- 검색조건 start -->
-					<form class="form-horizontal; center" name="searchOption" ><!--  -->
+					<form class="form-horizontal; left" name="searchOption" ><!--  -->
 					거래처 구분 : &nbsp;
 						<select class="chosen-select"
 							id="customerDiv" name="customerDiv" 
@@ -236,7 +236,7 @@ html,body{
 							 <option value="Purchase">매입 거래처</option>
 							 <option value="Sales">매출 거래처</option>
 							 <option value="Assets">자산 거래처</option>
-							 <option value="Bank">은행</option>
+							 <!-- <option value="Bank">은행</option> -->
 						</select>
 						<script type="text/javascript">
 						var customerDiv = "${param.customerDiv}";
@@ -246,9 +246,9 @@ html,body{
 						
 						&nbsp; &nbsp;&nbsp;&nbsp;조회 기간 :&nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px" readonly="readonly"/>
+							<input type="text" id="datepicker1" name="datepicker1" class="cl-date-picker"  style="width:100px;margin-top: 10px;" readonly="readonly"/>
 							
-							<span class="add-on">
+							<span class="add-on" style="margin-top: 10px;">
 								<i class="icon-calendar"></i>
 							</span>
 						</div>
@@ -258,8 +258,8 @@ html,body{
 						</script>
 						&nbsp; &nbsp; ~ &nbsp;
 						<div class="input-append">
-							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker" style="width:100px" readonly="readonly"/>
-								<span class="add-on">
+							<input type="text" id="datepicker2" name="datepicker2" class="cl-date-picker" style="width:100px;margin-top: 10px;" readonly="readonly"/>
+								<span class="add-on" style="margin-top: 10px;">
 								<i class="icon-calendar"></i>
 							</span>
 						</div>
@@ -270,7 +270,7 @@ html,body{
 						
 						
 						&nbsp; &nbsp;&nbsp; &nbsp;사업자등록번호 :&nbsp; 
-						<input type="text" id="no" name="no" placeholder="사업자등록번호" size=4 style="width:150px" style="width:100px;"maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
+						<input type="text" id="no" name="no" placeholder="사업자등록번호" size=4 style="width:150px; margin-top: 10px;" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)"/>
 						<script type="text/javascript">
 						var no = "${param.no}";
 						$("#no").val(no);

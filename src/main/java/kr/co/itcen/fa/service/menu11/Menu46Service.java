@@ -131,7 +131,7 @@ public class Menu46Service {
 		mappingVo.setVoucherUse(stermdebtVo.getName());						//사용목적
 		mappingVo.setSystemCode(stermdebtVo.getCode());						//차입금코드
 		mappingVo.setCustomerNo(stermdebtVo.getBankCode());
-		mappingVo.setDepositNo(stermdebtVo.getDepositNo());					//계좌번호
+		//mappingVo.setDepositNo(stermdebtVo.getDepositNo());					//계좌번호
 		
 		//전표입력후 전표번호를 반환
 		return menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
@@ -157,7 +157,7 @@ public class Menu46Service {
 		mappingVo.setVoucherUse(vo.getName());				//사용목적
 		mappingVo.setSystemCode(vo.getCode());				//차입금코드
 		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
+		//mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
 		
 		VoucherVo voucherVo = new VoucherVo();
 		voucherVo.setRegDate(vo.getDebtDate());
@@ -189,7 +189,7 @@ public class Menu46Service {
 		mappingVo.setVoucherUse(vo.getName());				//사용목적
 		mappingVo.setSystemCode(vo.getCode());				//차입금코드
 		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
+		//mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
 		mappingVo.setVoucherNo(vo.getVoucherNo());			
 		
 		VoucherVo voucherVo = new VoucherVo();
@@ -230,14 +230,11 @@ public class Menu46Service {
 		menu03Service.deleteVoucher(voucherVolist, userVo);
 	}
 	public List<STermDebtVo> getRepayDueList() {
-		List<STermDebtVo> list= null;
-		try {
-			System.out.println(getDateMap());
-			list = menu46Repository.getRepayDueList(getDateMap());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<STermDebtVo> list;
+		
+		System.out.println(getDateMap());
+		list = menu46Repository.getRepayDueList(getDateMap());
+
 		return list;
 	}
 	
@@ -253,25 +250,29 @@ public class Menu46Service {
 		return formatter.format(c.getTime());
 	}
 	
-	public Map getDateMap() throws ParseException {
-		Calendar calendar = new GregorianCalendar(Locale.KOREA);
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");		//현재날짜만 가져오기위해 사용
-		String dayOfSunday = getCurSunday();
+	//현재 날짜 월요일
+ 	public static String getCurMonday(){
+
+ 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+
+ 		Calendar c = Calendar.getInstance();
+
+ 		c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+
+ 		return formatter.format(c.getTime());
+
+ 	}
+
+	public Map getDateMap() {
+		String startDate = getCurMonday();
+		String endDate = getCurSunday();
 		
-		int month = calendar.get(Calendar.MONTH) + 1;
 		Map map = new HashMap();
-		map.put("curYear",calendar.get(Calendar.YEAR));
-		map.put("curMonth", month);
-		map.put("curDay",calendar.get(Calendar.DATE));
-		map.put("today", format1.format(calendar.getTime()));
-		map.put("dateOfSunday",dayOfSunday);
-		map.put("sunDay", dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
-		
-		System.out.println("curYear : " + calendar.get(Calendar.YEAR) + "curMonth : " + month);
-		System.out.println("curDay : " + calendar.get(Calendar.DATE) + "today : " + format1.format(calendar.getTime()));
-		System.out.println("dateOfSunday : " + dayOfSunday + "sunDay : " + dayOfSunday.substring(dayOfSunday.length()-2, dayOfSunday.length()));
+		map.put("startDate",startDate);
+		map.put("endDate",endDate);
 		return map;
 	}
+	
 	
 	public Map getYearDebtStat(){
 		int curYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -323,10 +324,15 @@ public class Menu46Service {
 	
 	public Map getYearIntStat() {
 		int curYear = Calendar.getInstance().get(Calendar.YEAR);
+		Map map = new HashMap();
 		
-		List<Map> sList = menu46Repository.getYearSIntStat(curYear);
-		List<Map> lList = menu46Repository.getYearLIntStat(curYear);
-		List<Map> pList = menu46Repository.getYearPIntStat(curYear);
+		map.put("searchYear", curYear);
+		map.put("debtType", "S");
+		List<Map> sList = menu46Repository.getYearIntStat(map);
+		map.replace("debtType", "L");
+		List<Map> lList = menu46Repository.getYearIntStat(map);
+		map.replace("debtType", "P");
+		List<Map> pList = menu46Repository.getYearIntStat(map);
 		
 		System.out.println("sList : " + sList);
 		System.out.println("lList : " + lList);
@@ -336,13 +342,45 @@ public class Menu46Service {
 		List<Long> lYearSumList = getYearSumList(lList, curYear);
 		List<Long> pYearSumList = getYearSumList(pList, curYear);
 		
-		Map map = new HashMap();
 		map.put("sList", sYearSumList);
 		map.put("lList", lYearSumList);
 		map.put("pList", pYearSumList);
 		map.put("xAxis", getYearRangeList(curYear));
+		
 		return map;
 	} 
+	
+	public List<Map> getDebtRatioStat() {
+		Map map = menu46Repository.getDebtRatioStat();
+		
+		List<Map> list = getDebtRatioList(map);
+		
+		return list;
+	}
+	
+	public List<Map> getDebtRatioList(Map ratioMap) {
+		float sDebtRatio = getFloatFromMap(ratioMap.get("sDebtRatio"));
+		float lDebtRatio = getFloatFromMap(ratioMap.get("lDebtRatio"));
+		float pDebtRatio = getFloatFromMap(ratioMap.get("pDebtRatio"));
+		
+		List<Map> list = new ArrayList<Map>();
+		Map map = new HashMap();
+		map.put("name", "단기차입금");
+		map.put("y", sDebtRatio);
+		list.add(map);
+		
+		map = new HashMap();
+		map.put("name", "장기차입금");
+		map.put("y", lDebtRatio);
+		list.add(map);
+		
+		map = new HashMap();
+		map.put("name", "사채");
+		map.put("y", pDebtRatio);
+		list.add(map);
+		
+		return list;
+	}
 	
 	public List<Long> getYearSumList(List<Map> list, int searchYear){
 		
@@ -407,6 +445,18 @@ public class Menu46Service {
 			resultVal= Long.valueOf(v.toString());
 		}else {
 			resultVal = (Long)value;
+		}
+			
+		return resultVal;
+	}
+	
+	public Float getFloatFromMap(Object value) {
+		Float resultVal=0f;
+		if(value instanceof BigDecimal) {
+			BigDecimal v = (BigDecimal)value;
+			resultVal= Float.valueOf(v.toString());
+		}else {
+			resultVal = (Float)value;
 		}
 			
 		return resultVal;

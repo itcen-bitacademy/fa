@@ -40,10 +40,6 @@ tr td:first-child {
 	padding-right: 10px;
 }
 
-.radio {
-	float: left;
-	width: 17%;
-}
 
 .search-input-width-first {
 	width: 130px;
@@ -92,6 +88,32 @@ tr td:first-child {
 	margin-bottom: 0; 
 	width: auto;"
 }
+
+.grid-main{
+	display: grid;
+	grid-template-rows: repeat(3, auto);
+}
+
+.grid-input{
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+}
+
+
+
+.grid-input>div{
+	display: grid;
+	grid-template-columns: 150px auto;
+	grid-template-rows: repeat(6, auto);
+	gap: 10px;
+}
+
+.div-radio{
+	display: grid;
+	grid-template-columns: 50px 50px auto;
+}
+
+.radio-span{margin-left: -20px !important}
 </style>
 </head>
 <body class="skin-3">
@@ -110,250 +132,222 @@ tr td:first-child {
 				<form id="myform" class="form-horizontal">
 				<div class="container-fluid">
 					<!-- Example row of columns -->
-					<div class="row">
-						<div class="span8">
-							<table>
-								<tr>
-									<td><label class="control-label">장기차입금코드</label></td>
-									<td>
-										<input type="hidden" name="no" id = "no" />
-										<c:choose>
-											<c:when test='${code eq ""}'>
-												<input type="text" name="code" id ="code" maxlength="10"/>
-											</c:when>
-											<c:otherwise>
-												<input type="text" name="code" id ="code" value="${code}" maxlength="10"/>
-											</c:otherwise>
-										</c:choose>
-									
-										<input id="btn-check-code" type="button" value="중복확인">
-											<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
-									
-									</td>
-								</tr>
-								<tr >
-									<td style="padding-bottom: 70px;"><label class="control-label">장기차입금명</label></td>
-									<td colspan="2">
-										<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
-									</td>
-									
-								</tr>
-								<tr>
-									<td><label class="control-label">차입금액</label></td>
-									<td><input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block; font-size:14px;">(원)</h5></td>
-								</tr>
-								<tr>
-									<td><label class="control-label">차입일자 ~ 만기일자</label></td>
-									<td colspan="2">
+					<section class="grid-main">
+						<section class="grid-input">
+							<div>
+								<label class="control-label">장기차입금코드</label>
+								<div>
+									<input type="hidden" name="no" id = "no" />
+									<c:choose>
+										<c:when test='${code eq ""}'>
+											<input type="text" name="code" id ="code" maxlength="10"/>
+										</c:when>
+										<c:otherwise>
+											<input type="text" name="code" id ="code" value="${code}" maxlength="10"/>
+										</c:otherwise>
+									</c:choose>
+									<input id="btn-check-code" type="button" value="중복확인">
+									<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
+								</div>
+								<label class="control-label">장기차입금명</label>
+								<div>
+									<textarea class='textarea' name="name" id="name" maxlength="90"></textarea>
+								</div>
+								<label class="control-label">차입금액</label>
+								<div>
+									<input type="text" id ="debtAmount" name="debtAmount" class="number-input numberformat" /> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
+								</div>
+								<label class="control-label">차입일자 ~ 만기일자</label>
+								<div>
 									<div class="control-group">
-				                        <div class="row-fluid input-prepend">			                        	
-				                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" readonly />
-				                           <span class="add-on">
-				                              <i class="icon-calendar"></i>
-				                           </span>
-				                          </div>
-				                      </div>
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">이자지급방식</label></td>
-									<td colspan="2">
-										<div class="radio" >
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="Y" />
-												<span class="lbl">연</span>
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="M" />
-												<span class="lbl">월</span>
-											</label>
-										</div>
-										<div class="radio">
-											<label>
-												<input name="intPayWay" type="radio" class="ace" value="E" />
-												<span class="lbl">해당없음</span>
-											</label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-						                              	
-									<td><label class="control-label">은행코드</label></td>
-									<td colspan="2">
+			                       	  <div class="row-fluid input-prepend">			                        	
+			                           <input type="text" name="debtExpDate" id ="id-date-range-picker-1" readonly />
+			                           <span class="add-on">
+			                             <i class="icon-calendar"></i>
+			                           </span>
+			                          </div>
+			                     	</div>
+								</div>
+								<label class="control-label">이자지급방식</label>
+								<div class="div-radio">
+									<div class="radio" >
+										<label>
+											<input name="intPayWay" type="radio" class="ace" value="Y" />
+											<span class="lbl radio-span">연</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="intPayWay" type="radio" class="ace" value="M" />
+											<span class="lbl radio-span">월</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="intPayWay" type="radio" class="ace" value="E" />
+											<span class="lbl radio-span">해당없음</span>
+										</label>
+									</div>
+								</div>
+								<label class="control-label">은행코드</label>
+								<div>
 									<div class="input-append">
 										<input type="text" class="search-input-width-first" id ="bank_code" name="bankCode" placeholder="은행코드" readonly />
-												<span class="add-on">
-				                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-				                                    </a>
-				                                 </span>
+										<span class="add-on">
+		                                    <a href="#" id="a-bankinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i></a>
+		                                 </span>
+		                                 <input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly />
 									</div>
-									
-									<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
-												<div id="dialog-message" title="은행코드" hidden="hidden">
-															<table id ="dialog-message-table" align="center">
-																<tr>
-																	<td>
-																	<label>은행코드</label>
-																	<div class="input-append">
-
-																	<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
-																		<span class="add-on">
-										                                    <a href="#" id="a-dialog-bankcode" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                                    </a>
-										                                 </span>
-																		</div>
-																	</td>
-																	<td>
-																	<label>은행명</label>
-																	<div class="input-append">
-																	<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
-																		<span class="add-on">
-										                                    <a href="#" id="a-dialog-bankname" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                                    </a>
-										                                 </span>
-																	</div>
-																	</td>
-																</tr>
-																
-															</table>
-														<!-- 은행코드 및 은행명 데이터 리스트 -->
-														<table id="modal-bank-table" class="table  table-bordered table-hover">
-															<thead>
-																<tr>
-																	<th class="center">은행코드</th>
-																	<th class="center">은행명</th>
-																</tr>
-															</thead>
-															<tbody id="tbody-bankList">
-															</tbody>
-														</table>
-												</div>
-												<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-								<input type="text" class="search-input-width-second" name="bankName" placeholder="은행명" readonly />
-								</td>
-								</tr>
-							</table>
-						</div>
-						<div class="span8">
-							<table>
-								<tr>
-									<td><label class="control-label">회계연도</label></td>
-									<td>
-										<c:choose>
-											<c:when test='${year eq ""}'>
-												<input type="number" min="1900" max="2099" step="1"  id="form-field-1" name="financialYear" placeholder="회계연도" />
-											</c:when>
-											<c:otherwise>
-												<input type="number" min="1900" max="2099" step="1" value="${year}" id="form-field-1" name="financialYear" placeholder="회계연도" />
-											</c:otherwise>
-										</c:choose>
-										
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">차입금대분류</label></td>
-									<td colspan="2">
-										<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
+								</div>
+							</div>
+							
+							<div>
+								<label class="control-label">회계연도</label>
+								<div>
+									<c:choose>
+										<c:when test='${year eq ""}'>
+											<input type="number" min="1900" max="2099" step="1"  id="form-field-1" name="financialYear" placeholder="회계연도" />
+										</c:when>
+										<c:otherwise>
+											<input type="number" min="1900" max="2099" step="1" value="${year}" id="form-field-1" name="financialYear" placeholder="회계연도" />
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<label class="control-label">차입금대분류</label>
+								<div>
+									<select class="chosen-select form-control" id="form-field-select-3" data-placeholder="차입금대분류" name="majorCode" >
 										<option value=""></option>
 										<c:forEach items="${sectionlist}" var="sectionvo">
 											<option value="${sectionvo.code}">${sectionvo.classification }</option>
 										</c:forEach>
-										</select>
-									</td>	
-								</tr>
-								<tr>
-								<td><label class="control-label">상환방법</label></td>
-									<td colspan="2">
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace" value="Y" />
-													<span class="lbl">연</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="M" />
-													<span class="lbl">월</span>
-												</label>
-											</div>
-											<div class="radio">
-												<label>
-													<input name="repayWay" type="radio" class="ace"  value="E" />
-													<span class="lbl">만기</span>
-												</label>
-											</div>
-									</td>
-									</tr>
-								<tr>
-									<td><label class="control-label">이율</label></td>
-									<td colspan="2">
-										<input type="text" id="int_rate" name="intRate" class="number-input" 
-										onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> <h5 style="display: inline-block; font-size:14px;">(%)</h5>
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">담당자</label></td>
-									<td>
-										<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
-										<h4 class="mgr-number-input-h4">담당자전화번호</h4>
-										<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
-									</td>
-								</tr>
-								<tr>
-									<td><label class="control-label">계좌</label></td>
-									<td colspan="2">
+									</select>
+								</div>
+								<label class="control-label">상환방법</label>
+								<div class="div-radio">
+									<div class="radio">
+										<label>
+											<input name="repayWay" type="radio" class="ace" value="Y" />
+											<span class="lbl radio-span">연</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="repayWay" type="radio" class="ace"  value="M" />
+											<span class="lbl radio-span">월</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input name="repayWay" type="radio" class="ace"  value="E" />
+											<span class="lbl radio-span">만기</span>
+										</label>
+									</div>
+								</div>
+								
+								<label class="control-label">이율</label>
+								<div>
+									<input type="text" id="int_rate" name="intRate" class="number-input" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" placeholder="(%) 100미만, 소수점 2자리 이하" /> 
+									<h5 style="display: inline-block; font-size:14px;">(%)</h5>
+								</div>
+								
+								<label class="control-label">담당자</label>
+								<div>
+									<input type="text" class="mgr-input" name="mgr" id="mgr" maxlength="10"/>
+									<h4 class="mgr-number-input-h4">담당자전화번호</h4>
+									<input type="text" class="mgr-call-input" name="mgrCall" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="mgrCall" maxlength="15"/>
+								</div>
+								
+								<label class="control-label">계좌</label>
+								<div>
 									<div class="input-append">
 										<input type="text" class="search-input-width-first" id="depositNo" name="depositNo" class="number-input" placeholder="계좌번호" readonly />
-												<span class="add-on">
-				                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-				                                    </a>
-				                                 </span>
+										<span class="add-on">
+		                                    <a href="#" id="a-bankaccountinfo-dialog" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+		                                    </a>
+		                                </span>
 									</div>
-												<!-- 계좌정보 Modal pop-up : start -->
-												<div id="dialog-account-message" title="계좌" hidden="hidden">
-													<table id="dialog-account-message-table">
-														<tr>
-															<td>
-																		
-															
-															<div class="input-append">
-																<label>계좌번호</label>
-																<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
-																<span class="add-on">
-										                             <a href="#" id="a-dialog-depositNo" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
-										                             </a>
-										                         </span>
-															</div>
-															</td>
-														</tr>
-													</table>
-													<!-- 계좌정보 데이터 리스트 -->
-													<table id="modal-deposit-table" class="table  table-bordered table-hover">
-														<thead>
-															<tr>
-																<th class="center">계좌번호</th>
-																<th class="center">예금주</th>
-																<th class="center">은행코드</th>
-																<th class="center">은행명</th>
-															</tr>
-														</thead>
-														<tbody id="tbody-bankaccountList">
-															
-														</tbody>
-													</table>
-												</div>
-												<!-- 계좌정보 Modal pop-up : end -->
-								
-											<input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
-									</td>
-								</tr>
-							</table>
-						</div>
+	                                 <input type="text" class="search-input-width-second" name="depositHost" placeholder="예금주" readonly/>
+								</div>
+							</div>		
+						</section>
+					</section>
+					
+					<!-- 은행코드, 은행명, 지점명 Modal pop-up : start -->
+					<div id="dialog-message" title="은행코드" hidden="hidden">
+								<table id ="dialog-message-table" align="center">
+									<tr>
+										<td>
+										<label>은행코드</label>
+										<div class="input-append">
 
+										<input type="text"  id="input-dialog-bankcode" style="width:100px;"/>
+											<span class="add-on">
+			                                    <a href="#" id="a-dialog-bankcode" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+			                                    </a>
+			                                 </span>
+											</div>
+										</td>
+										<td>
+										<label>은행명</label>
+										<div class="input-append">
+										<input type="text"  id="input-dialog-bankname" style="width:100px;"/>
+											<span class="add-on">
+			                                    <a href="#" id="a-dialog-bankname" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+			                                    </a>
+			                                 </span>
+										</div>
+										</td>
+									</tr>
+									
+								</table>
+							<!-- 은행코드 및 은행명 데이터 리스트 -->
+							<table id="modal-bank-table" class="table  table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center">은행코드</th>
+										<th class="center">은행명</th>
+									</tr>
+								</thead>
+								<tbody id="tbody-bankList">
+								</tbody>
+							</table>
 					</div>
-				</div>
+					<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
+					<!-- 계좌정보 Modal pop-up : start -->
+					<div id="dialog-account-message" title="계좌" hidden="hidden">
+						<table id="dialog-account-message-table">
+							<tr>
+								<td>
+											
+								
+								<div class="input-append">
+									<label>계좌번호</label>
+									<input type="text" id="input-dialog-depositNo" style="width: 100px;" />
+									<span class="add-on">
+			                             <a href="#" id="a-dialog-depositNo" class="a-customerinfo-dialog"><i class="icon-search icon-on-right bigger-110"></i>
+			                             </a>
+			                         </span>
+								</div>
+								</td>
+							</tr>
+						</table>
+						<!-- 계좌정보 데이터 리스트 -->
+						<table id="modal-deposit-table" class="table  table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">계좌번호</th>
+									<th class="center">예금주</th>
+									<th class="center">은행코드</th>
+									<th class="center">은행명</th>
+								</tr>
+							</thead>
+							<tbody id="tbody-bankaccountList">
+								
+							</tbody>
+						</table>
+					</div>
+					<!-- 계좌정보 Modal pop-up : end -->
+				</div> <!--  container-fluid End -->
 				<hr>
 				<div class="row-fluid">
 					<button  class="btn btn-primary btn-small mybtn" id="inputbtn" >입력</button>
@@ -736,6 +730,9 @@ tr td:first-child {
 			return false;
 		}
 	
+		
+		
+		
 		if(code != '' && code.length != 10){
 			errortitle = 'SEARCH ERROR';	
 			validationMessage = '검색할 코드는 반드시 10자리여야 합니다';
@@ -743,6 +740,7 @@ tr td:first-child {
 			return false;
 		}
 		
+		return true;
 	}
 	
 	
@@ -922,7 +920,7 @@ tr td:first-child {
 		return true;
 	}
 	
-	
+	 
 	
 	function delHangle(evt){//한글을 지우는 부분, keyup에 들어간다.
 	    var objTarger = evt.srcElement || evt.target;
@@ -993,7 +991,7 @@ tr td:first-child {
 		
 		var tr = $(this);
 		var td = tr.children();
-		
+		$('#img-checkcode').hide();
 		
 		if($(this).hasClass('selected') === false){
 			$('#updatebtn').show();
@@ -1163,7 +1161,7 @@ tr td:first-child {
 	
 	// 은행코드 검색
 	$("#a-dialog-bankcode").click(function(event){
-		alert("click dialog bankcode");
+		
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
 		
@@ -1182,7 +1180,7 @@ tr td:first-child {
 			    }
 			},
 			success: function(response){
-				alert(response);
+				
 				$("#input-dialog-bankcode").val('');
 				  $.each(response.data,function(index, item){
 	                 $("#tbody-bankList").append("<tr>" +
@@ -1199,7 +1197,7 @@ tr td:first-child {
 	
 	// 은행명 검색 : 은행목록 리스트로 가져오기
 	$("#a-dialog-bankname").click(function(event){
-		alert("click dialog bankname");
+		
 		event.preventDefault();
 		$("#tbody-bankList").find("tr").remove();
 		
@@ -1218,7 +1216,7 @@ tr td:first-child {
 			    }
 			},
 			success: function(response){
-				alert(response.data);
+				
 				$("#input-dialog-bankname").val('');
 				 $.each(response.data,function(index, item){
 		                $("#tbody-bankList").append("<tr>" +
@@ -1399,8 +1397,8 @@ tr td:first-child {
 						         	for(let a in repayList) {  			
 						         	$("#tbody-repaymentList").append("<tr>" +
 							             "<td class='center'>" + repayList[a].code + "</td>" +
-				                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-				                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                          "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+				                          "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 				                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 				                          "</tr>");
 					         	  	}
@@ -1624,7 +1622,7 @@ tr td:first-child {
 				  $.each(response.data,function(index, item){
 	                 $("#tbody-repay-due").append("<tr>" +
 	                       "<td class='center'>" + item.code + "</td>" +
-	                     "<td class='center'>" + item.repayBal + "</td>" +
+	                     "<td class='center'>" + item.repayBal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 	                     "<td class='center'>" + item.payDate + "</td>" +
 	                     "</tr>");
 	          })
@@ -1720,8 +1718,8 @@ tr td:first-child {
 		         	  		
 			         	  	$("#tbody-repaymentList").append("<tr>" +
 			                          "<td class='center'>" + repayList[a].code + "</td>" +
-			                          "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-			                          "<td class='center'>" + repayList[a].intAmount + "</td>" +
+			                          "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+			                          "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 			                          "<td class='center'>" + repayList[a].payDate + "</td>" +
 			                          "</tr>");
 			         	  	
@@ -1904,8 +1902,8 @@ tr td:first-child {
 				         	  				
 				         	  				"<tbody>"+
 				         	  			   "<tr>" +
-				                           "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-				                           "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                           "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+				                           "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 				                           "<td class='center'>" + repayList[a].payDate + "</td>" +
 				                           "</tr>" +
 				                           "</tbody>"+
@@ -1917,8 +1915,8 @@ tr td:first-child {
 			         	  			
 			         	  			dialog.append(
 			         	  				  "<tr>" +
-				                           "<td class='center'>" + repayList[a].payPrinc + "</td>" +
-				                           "<td class='center'>" + repayList[a].intAmount + "</td>" +
+				                           "<td class='center'>" + repayList[a].payPrinc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
+				                           "<td class='center'>" + repayList[a].intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</td>" +
 				                           "<td class='center'>" + repayList[a].payDate + "</td>" +
 				                           "</tr>"
 			         	  			);

@@ -107,4 +107,12 @@ public class Menu19Repository {
 	}
 	
 	
+	/**
+	 * 
+	 * 결산완료된 마감일자 미결산처리 
+	 */
+	public int updateClosingYnToFalse(ClosingDateVo closingDateVo) {
+		return sqlSession.update("menu19.updateClosingYnToFalse", closingDateVo);
+	}
+	
 }

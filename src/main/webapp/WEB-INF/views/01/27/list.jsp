@@ -85,6 +85,7 @@ html,body{
 		});
 		$("#btn-read").click(function(){
 			$("#no").attr("readonly",false);
+			$("#readspace").hide();
 			a = "read";
 		});
 		$("#btn-update").click(function(){
@@ -93,6 +94,7 @@ html,body{
 		$("#btn-delete").click(function(){
 			$("#no").attr("readonly",false);
 			a = "delete";
+			$("#readspace").hide();
 		});
 		$("#btn-reset").click(function(){
 			$("#no").attr("readonly",false);
@@ -100,6 +102,7 @@ html,body{
 			$("#btn-check-no").show();
 			$("#img-checkno").hide();
 			$("#btn-create").show();
+			$("#readspace").hide();
 			
 		});
 		
@@ -225,6 +228,7 @@ html,body{
 								$("#no").attr("readonly",true);
 								$("#btn-check-no").hide();
 								$("#img-checkno").hide();
+								$("#btn-reset").click();
 					    	}
 					    	if(result.fail) {
 					    		alert("다시 입력해주세요.");
@@ -464,6 +468,7 @@ html,body{
 		$("#btn-check-no").hide();
 		$("#img-checkno").hide();
 		$("#btn-create").hide();
+		$("#readspace").show();
 	});
 	
 	function settingInput(customerList) {
@@ -1063,8 +1068,11 @@ html,body{
 									
 									<input type="text" id="no" name="no" placeholder="사업자등록번호" class="col-xs-10 col-sm-5" maxlength="10" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)" style="width: 135px;"/>
 									<input id="btn-check-no" type="button" value="중복확인">
-										<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+										<!-- <img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png"> -->
+									
 									</div>
+									<div id="readspace" class="input-append" style="display:none; width:70px;"></div>
+									<i id="img-checkno" class="icon-ok bigger-180 blue" style="display: none; width: 70px; text-align: left;" ></i>
 								</div>
 
 								<div class="form-group">
@@ -1480,7 +1488,7 @@ html,body{
 				openDeleteModal('DELETED CUSTOMER',"삭제 처리되었던 거래처 입니다.\r\n 재등록 하시겠습니까?");
 				$("#deleteok").click(function(){
 
-					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록이 완료되었습니다.");
+					openErrorModal("CUSTOMER RECREATE","삭제된 거래처 재등록을 시작합니다.");
 					$("#corporationNo").attr("readonly",true);
 					$("#btn-check-no").hide();
 					$("#img-checkno").show();

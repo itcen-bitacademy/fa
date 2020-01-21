@@ -60,7 +60,8 @@ public class Menu09Service {
 	}
 
 	public void delLand(String id, String userId) {
-		menu09Repository.delLand(id, userId);
+		menu09Repository.delLand(id, userId);	// 토지삭제
+		
 		
 	}
 
@@ -108,5 +109,9 @@ public class Menu09Service {
 	public Long getVoucherNo(String id) {
 		Long voucherNo = menu09Repository.getVoucherNo(id);
 		return voucherNo;
+	}
+
+	public void delTaxbill(String userId, String taxbillNo) {
+		menu09Repository.deltaxbill(userId, taxbillNo);
 	}
 }

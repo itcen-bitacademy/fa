@@ -74,9 +74,14 @@ public class Menu41Repository {
 
 	
 	//삭제 리스트 
-	public boolean delete(String id) {
-		int count = sqlSession.delete("menu41.delete", id);
-		return count == 1;
+	public void delete(String userId, String id) {
+//		int count = sqlSession.delete("menu41.delete", id);
+//		return count == 1;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("id", id);
+		
+		sqlSession.update("menu41.delete", map);	
 	}
 
 	//전표등록
@@ -134,9 +139,15 @@ public class Menu41Repository {
 	}
 
 	//세금계산서 삭제
-	public boolean deleteTaxbill(String id) {
-		int count = sqlSession.delete("menu41.deleteTaxbill", id);
-		return count == 1;
+	public void deleteTaxbill(String userId, String id) {
+//		int count = sqlSession.delete("menu41.deleteTaxbill", id);
+//		return count == 1;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("id", id);
+		
+		sqlSession.update("menu41.deleteTaxbill", map);	
 	}
 	
 	//페이지수 세기
@@ -159,4 +170,69 @@ public class Menu41Repository {
 		String check = sqlSession.selectOne("menu41.checkId", id);
 		return check;
 	}
+
+	//세금계산서 정보 조회
+	public List<TaxbillVo> selectTaxList(String id, PaginationUtil pagination) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("pagination", pagination);
+		List<TaxbillVo> list = sqlSession.selectList("menu41.selectTaxbill", id);
+		System.out.println("세금계산서 정보" + list);
+		return list;
+	}
+
+
+	//세금계산서 페이지 리스트
+	public List<TaxbillVo> selectpageTaxList(String id, int page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		page = (page-1) * 12;
+		
+		map.put("id", id);
+		map.put("page", page);
+		
+		List<TaxbillVo> list = sqlSession.selectList("menu41.selectpageTaxbill", map);
+		
+		System.out.println("-----------pagelist------------");
+		System.out.println(list);
+		System.out.println("-------------------------------");
+		return list;
+	}
+
+	//세금계산서 page 그룹 리스트
+	public List<TaxbillVo> selectgroupTaxList(String id, int page_group) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		page_group = page_group * 60;
+		
+		map.put("id", id);
+		map.put("page_group", page_group);
+		
+		List<TaxbillVo> list = sqlSession.selectList("menu41.selectgroupTaxbill", map);
+		
+		System.out.println("-----------grouplist------------");
+		System.out.println(list);
+		System.out.println("-------------------------------");
+		
+		return list;
+	}
+
+	//세금계산서 총 건수 
+	public int listTaxCount(String id) {
+		return sqlSession.selectOne("menu41.taxPageCount",id);
+	}
+
+	//세금계산서 번호 삭제
+	public void deleteTaxbillNo(String userId, String taxbillNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("taxbillNo", taxbillNo);
+		
+		sqlSession.update("menu41.deleteTaxbillNo", map);		
+	}
+
+
+
 }

@@ -122,8 +122,9 @@ html, body {
 										</div>
 										<div class="input-append">
 											<input id="btn-check-no" type="button" value="중복확인">
-											<img id="img-checkno" style="display: none; width: 20px;" src="${pageContext.request.contextPath}/assets/images/check.png">
+											
 										</div>
+										<i id="img-checkno" class="icon-ok bigger-180 blue" style="display: none;"></i>
 									</div>
 									
 									
@@ -296,7 +297,7 @@ html, body {
 							<button class="btn btn-danger btn-small" id="btn-delete">삭제</button>
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
-							<button class="btn btn-default btn-small" id="btn-reset" onclick= "location.reload()">초기화</button> 
+							<button class="btn btn-default btn-small" id="btn-reset">초기화</button> 
 						</div>
 
 					</div>
@@ -349,8 +350,14 @@ html, body {
 										<td>${vo.bankName }</td>
 										<td>${vo.company }</td>
 										<td style="text-align: right;"><fmt:formatNumber value="${vo.limitation }" pattern="#,###"  /></td>
-										<td>${vo.transportation }</td>
-										<td>${vo.abroad }</td>
+										<c:choose>
+										<c:when test="${vo.transportation eq 'true'}"><td >Yes</td></c:when>
+										<c:otherwise><td >No</td></c:otherwise>
+										</c:choose>	
+										<c:choose>
+										<c:when test="${vo.abroad eq 'true'}"><td >Yes</td></c:when>
+										<c:otherwise><td >No</td></c:otherwise>
+										</c:choose>	
 										<td>${vo.insertDay }</td>
 										<td>${vo.insertUserId }</td>
 										<td>${vo.updateDay }</td>
@@ -515,8 +522,25 @@ $(function() {
 	$("#btn-reset").click(function(){
 		a = "reset";
 		$("input[name=cardNo]").attr("readonly",false);
+		
 		$("#btn-check-no").show();
 		$("#img-checkno").hide();
+		$("#btn-create").show();
+		
+		$("input").not('input[name=transportation]').not('input[name=abroad]').val('');
+		$("#btn-check-no").val('중복확인');
+		
+		$('input[name=transportation]').each(function(index,item){
+			if($(item).prop('checked') == true){
+				$(item).prop('checked',false);
+			}	
+		});
+		
+		$('input[name=abroad]').each(function(index,item){
+			if($(item).prop('checked') == true){
+				$(item).prop('checked',false);
+			}	
+		});
 		
 	});
 	
@@ -708,6 +732,20 @@ $(function() {
 		  
 		  
 		  for(let card in cardList){
+			  
+			  let transportation= '';
+			  let abroad = '';
+			  
+			  if(cardList[card].transportation==true){
+				  transportation='Yes';
+			  }else{
+				  transportation='No';
+			  }
+			  if(cardList[card].abroad==true){
+				  abroad='Yes';
+			  }else{
+				  abroad='No';
+			  }
 			  $newTbody.append(
 				"<tr>" +
 				"<td>" + cardList[card].cardNo + "</td>" +
@@ -722,8 +760,8 @@ $(function() {
 		        "<td>" + cardList[card].bankName+ "</td>" +
 		        "<td>" + cardList[card].company+ "</td>" +
 		        "<td style='text-align: right;'>" + addCommas(cardList[card].limitation)+ "</td>" +
-		        "<td>" + cardList[card].transportation+ "</td>" +
-		        "<td>" + cardList[card].abroad+ "</td>" +
+		        "<td>" + transportation+ "</td>" +
+		        "<td>" + abroad+ "</td>" +
 		        "<td>" + cardList[card].insertDay + "</td>" +
 		        "<td>" + cardList[card].insertUserId + "</td>" +
 		        "<td>" + cardList[card].updateDay + "</td>" +
@@ -797,8 +835,20 @@ $(function() {
 		$("input[name=bankName]").val(td.eq(9).text());
 		$("input[name=company]").val(td.eq(10).text());
 		$("input[name=limitation]").val(td.eq(11).text());
-		var td12 = td.eq(12).text();
-		var td13 = td.eq(13).text();
+		
+		var td12;
+		var td13;
+		if(td.eq(12).text()=='Yes'){
+			td12 = 'true';
+		}else{
+			td12 = 'false'
+		}
+		if(td.eq(13).text()=='Yes'){
+			td13 = 'true';
+		}else{
+			td13 = 'false'
+		}
+		
 		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
 		
@@ -843,8 +893,18 @@ $(function() {
 		$("input[name=bankName]").val(td.eq(9).text());
 		$("input[name=company]").val(td.eq(10).text());
 		$("input[name=limitation]").val(td.eq(11).text());
-		var td12 = td.eq(12).text();
-		var td13 = td.eq(13).text();
+		var td12;
+		var td13;
+		if(td.eq(12).text()=='Yes'){
+			td12 = 'true';
+		}else{
+			td12 = 'false'
+		}
+		if(td.eq(13).text()=='Yes'){
+			td13 = 'true';
+		}else{
+			td13 = 'false'
+		}
 		$('input:radio[name=transportation]:input[value=' + td12 + ']').prop("checked", true);
 		$('input:radio[name=abroad]:input[value=' + td13 + ']').prop("checked", true);
 		
@@ -1154,7 +1214,7 @@ $(function() {
 		}
 		if(password.length<4){
 			errortitle = 'password ERROR';
-			validationMessage = '비밀번호는\r\4자리를 이상 입력하셔야 합니다.';
+			validationMessage = '비밀번호는\r\n4자리를 이상 입력하셔야 합니다.';
 			errorfield='#password';
 			return false;
 		}

@@ -152,8 +152,15 @@ html, body {
 										<td>${vo.bankName }</td>
 										<td>${vo.company }</td>
 										<td style="text-align: right;"><fmt:formatNumber value="${vo.limitation}" pattern="#,###" /></td>
-										<td>${vo.transportation }</td>
-										<td>${vo.abroad }</td>
+										<c:choose>
+										<c:when test="${vo.transportation eq 'true'}"><td >Yes</td></c:when>
+										<c:otherwise><td >No</td></c:otherwise>
+										</c:choose>	
+										<c:choose>
+										<c:when test="${vo.abroad eq 'true'}"><td >Yes</td></c:when>
+										<c:otherwise><td >No</td></c:otherwise>
+										</c:choose>	
+										
 										<td>${vo.insertDay }</td>
 										<td>${vo.insertUserId }</td>
 										<td>${vo.updateDay }</td>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu01.Menu05Repository;
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.menu01.BankAccountVo;
 import kr.co.itcen.fa.vo.menu01.CardVo;
 
 /**
@@ -101,17 +102,25 @@ public class Menu05Service {
 		return dataResult;
 		
 	}
-
-	public Map<String, Object> gets(String cardNo) {
-		Map<String, Object> map = menu05Repository.gets(cardNo);
-		return map;
-	}
+//
+//	public Map<String, Object> gets(String cardNo) {
+//		Map<String, Object> map = menu05Repository.gets(cardNo);
+//		return map;
+//	}
 
 	public CardVo exist(CardVo vo) {
 		return menu05Repository.exist(vo);
 	}
 
+	public Map<String, Object> updateBankAccount(BankAccountVo bankAccountVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = menu05Repository.updateBankAccount(bankAccountVo);
+		return map;
+	}
 
+	public String getCardNo(String depositNo) {
+		return menu05Repository.getCardNo(depositNo);
+	}
 	
 
 }

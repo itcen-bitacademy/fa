@@ -160,6 +160,12 @@ public class Menu66Service {
 		
 		setMappingVoByDebtType(mappingVo, vo);
 		
+		System.out.println("========= updateVoucher =========");
+		System.out.println(voucherVo);
+		System.out.println(itemVoList);
+		System.out.println(mappingVo);
+		System.out.println("========= updateVoucher =========");
+		
 		return menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
 	}
 	public void deleteVoucerList(List<RepayVo> voList, UserVo authUser) {
@@ -208,17 +214,17 @@ public class Menu66Service {
 			mappingVo.setVoucherUse(sTermDebtVo.getName());// 사용목적
 			mappingVo.setSystemCode(sTermDebtVo.getCode());// 사채코드 삽입 ex) I191212001
 			mappingVo.setCustomerNo(sTermDebtVo.getBankCode());
-			mappingVo.setDepositNo(sTermDebtVo.getDepositNo());// 계좌번호
+			//mappingVo.setDepositNo(sTermDebtVo.getDepositNo());// 계좌번호
 		} else if (vo.getDebtType().equals("L")) {
 			mappingVo.setVoucherUse(lTermdebtVo.getName());// 사용목적
 			mappingVo.setSystemCode(lTermdebtVo.getCode());// 사채코드 삽입 ex) I191212001
 			mappingVo.setCustomerNo(lTermdebtVo.getBankCode());
-			mappingVo.setDepositNo(lTermdebtVo.getDepositNo());// 계좌번호
+			//mappingVo.setDepositNo(lTermdebtVo.getDepositNo());// 계좌번호
 		} else if (vo.getDebtType().equals("P")) {
 			mappingVo.setVoucherUse(pdebtVo.getName());// 사용목적
 			mappingVo.setSystemCode(pdebtVo.getCode());// 사채코드 삽입 ex) I191212001
 			mappingVo.setCustomerNo(pdebtVo.getBankCode());
-			mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
+			//mappingVo.setDepositNo(pdebtVo.getDepositNo());// 계좌번호
 		}
 	}
 }

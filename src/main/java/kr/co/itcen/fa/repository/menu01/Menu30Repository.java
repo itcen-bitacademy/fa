@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.fa.util.PaginationUtil;
+import kr.co.itcen.fa.vo.UserVo;
 import kr.co.itcen.fa.vo.menu01.PreviousVo;
 import kr.co.itcen.fa.vo.menu01.ReceiptVo;
+import kr.co.itcen.fa.vo.menu01.VoucherVo;
 import kr.co.itcen.fa.vo.menu17.ClosingDateVo;
 import kr.co.itcen.fa.vo.menu17.StatementDataVo;
 
@@ -53,8 +55,6 @@ public class Menu30Repository {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("End",End);
 		map.put("Start", Start);
-		System.out.println(End+":"+ Start);
-		System.out.println(sqlSession.selectList("menu30.select",map));
 		return sqlSession.selectList("menu30.select",map);
 	}
 
@@ -77,5 +77,27 @@ public class Menu30Repository {
 	
 	public ReceiptVo csum(ReceiptVo revo) {
 		return sqlSession.selectOne("menu30.csum", revo);
+	}
+
+	public void deleteVoucher(List<Long> list) {
+			sqlSession.delete("menu30.deleteVoucher", list);
+			sqlSession.delete("menu30.deleteItem", list);
+			sqlSession.delete("menu30.deleteMapping", list);
+		
+	}
+
+	public void createVoucher(List<VoucherVo> voucherVolist, UserVo authUser) {
+		Long no = sqlSession.selectOne("menu30.voucherVolist");
+		for(int i=0 ; i<voucherVolist.size();i++) {
+			voucherVolist.get(i).setNo(no);
+			voucherVolist.get(i).setInsertTeam(authUser.getTeamName());
+			voucherVolist.get(i).setInsertUserid(authUser.getId());
+			voucherVolist.get(i).setOrderNo(1);
+			no=no+1;
+		}
+		sqlSession.insert("menu30.insertVoucher", voucherVolist);
+		sqlSession.insert("menu30.insertItem", voucherVolist);
+		sqlSession.insert("menu30.insertMapping", voucherVolist);
+		
 	}
 }

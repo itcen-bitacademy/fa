@@ -3,6 +3,7 @@ package kr.co.itcen.fa.controller.menu11;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -77,8 +78,6 @@ public class Menu48ApiController {
         return JSONResult.success(list);
 	}
 	
-	
-	
 	@ResponseBody
 	@RequestMapping("/"+SUBMENU+"/checkrepaydue")
 	public JSONResult checkrepaydue() {
@@ -86,6 +85,35 @@ public class Menu48ApiController {
 		
         return JSONResult.success(list);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/getYearDebtStat", method = RequestMethod.POST)
+	public JSONResult getYearDebtStat() {			//insert 내테이블에만 할때 사용
+		Map map = menu48Service.getYearDebtStat();
+		return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/getMonthDebtStat", method = RequestMethod.POST)
+	public JSONResult getMonthDebtStat(@RequestParam(value="searchYear", required=false, defaultValue="2019") int searchYear) {			//insert 내테이블에만 할때 사용
+		Map map = menu48Service.getMonthDebtStat(searchYear);
+		return JSONResult.success(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/getYearIntStat", method = RequestMethod.POST)
+	public JSONResult getYearIntStat() {
+		Map map = menu48Service.getYearIntStat();
+		return JSONResult.success(map);
+	}
+//	
+	@ResponseBody
+	@RequestMapping(value="/" + SUBMENU + "/getDebtRatio", method = RequestMethod.POST)
+	public JSONResult getDebtRatio() {
+		List<Map> list = menu48Service.getDebtRatioStat();
+		return JSONResult.success(list);
+	}
+	
 	
 	
 }

@@ -133,7 +133,7 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="id-date-range-picker-2" type="text" name="dueDate" value="${vehicleVo.dueDate }" >
+											<input readonly class="id-date-range-picker-2" type="text" name="dueDate" value="${vehicleVo.dueDate }" >
 							
 										</div>
 									</div>
@@ -146,7 +146,7 @@
 													<i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input class="id-date-range-picker-1" type="text" name="payDate" value="${vehicleVo.payDate }">
+											<input readonly class="id-date-range-picker-1" type="text" name="payDate" value="${vehicleVo.payDate }">
 											
 										</div>
 									</div>

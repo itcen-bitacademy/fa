@@ -271,7 +271,7 @@
 					<div class="hr hr-18 dotted"></div>
 					<div class="span6">
 						<div id="sample-table-2_length" class="dataTables_length">
-									<button class="btn btn-info btn-small" type="submit">발행</button>
+									<button class="btn btn-info btn-small" type="button" id="btnInsert" onclick="datainsert()">발행</button>
 									<button class="btn btn-default btn-small">발행취소</button>
 									<button class="btn btn-warning btn-small" type="button" id="btnModify" onclick="update()">발행수정</button>
 						</div>
@@ -428,7 +428,7 @@
 			alert($("#taxbillNo").val());
 			
 			if($("#taxbillNo").val().trim() == ""){
-				alert("세금계산서가 발행을 먼저 해주세요.");
+				alert("세금계산서를 먼저 발행을 먼저 해주세요.");
 				console.log($("#taxbillNo").val() + "null");
 			}
 			
@@ -439,6 +439,31 @@
 						$("#insert-form").attr("action",url).submit();
 					}
 			}
+		}
+		
+		//발행에 대한 처리
+		function datainsert(){
+			
+			//var code = $("#salesNo").val();
+			
+			//alert($("#taxbillNo").val());
+			
+			if($("#sales-date").val().trim() == "" || $("#sales-no").val().trim() == ""){
+				dialog("필수사항이 빠졌습니다", true);
+				
+				//console.log($("#taxbillNo").val() + "null");
+			}else{
+				$("#insert-form").submit();
+			}
+			
+			/* if($("#taxbillNo").val().trim() != ""){
+				console.log($("#taxbillNo").val() + "not null");
+					var url = "${pageContext.request.contextPath }/12/53/update/"+code;
+					if($("#flag").val() == "true"&&code!=""){
+						$("#insert-form").attr("action",url).submit();
+					}
+			} */
+			
 		}
 		
 		// 세금계산서 번호 자동생성 함수
@@ -457,19 +482,19 @@
 	  	 	if (day.length < 2) day = "0" + day; // 한자리 일 0
 	  	 	
 	  	 	taxbillNo = year + month + day;	// ex)20191223
-	  	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	  	    var possible = "0123456789";
 	  	 	
 	  		// 스펠링 난수
-	  	    for( var i=0; i < 7; i++ ){ 
+	  	    for( var i=0; i < 6; i++ ){ 
 	  	    	middleNo += possible.charAt(Math.floor(Math.random() * possible.length)); // 난수
 	  	    }
 	  		
-	  		for( var i=0; i < 9; i++ ){
+	  		for( var i=0; i < 8; i++ ){
 	  			lastNo += possible.charAt(Math.floor(Math.random() * possible.length)); // 난수
 	  		}
 	  		
 	  	    if($("#taxbillNo").val() == ''){ // 조회한 경우가 아닐때 생성된 매출번호 set
-	  	    	taxbill = taxbillNo + 42 + middleNo + lastNo;
+	  	    	taxbill = taxbillNo+ " -" + 42 + middleNo + "- " + lastNo;
 	  	    	$("#taxbillNo").val(taxbill);		  	        
 	  	    }
         }

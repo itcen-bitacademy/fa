@@ -71,7 +71,7 @@ public class Menu50Controller {
 	@RequestMapping(value = { "/" + SUBMENU, "/" + SUBMENU + "/list" }, method = RequestMethod.POST)
 	public String list(
 			@RequestParam(value = "code", required = false, defaultValue = "") String code,
-			@RequestParam(value = "financialYear", required = false, defaultValue = "2019") int year,
+			@RequestParam(value = "financialYear", required = false, defaultValue = "") String year,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 
 		return "redirect:/" + MAINMENU + "/" + SUBMENU + "?financialYear=" + year + "&code=" + code + "&page" + page;
@@ -114,8 +114,7 @@ public class Menu50Controller {
 	public String update(
 			@ModelAttribute PdebtVo pdebtVo, 
 			@AuthUser UserVo userVo,
-			Model model, RedirectAttributes redirectAttributes, 
-			HttpServletResponse response) throws IOException {
+			Model model) throws IOException {
 		// 마감 여부 체크
 		try {
 			String deptExpDate = pdebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용

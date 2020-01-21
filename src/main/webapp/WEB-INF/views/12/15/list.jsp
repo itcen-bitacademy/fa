@@ -58,8 +58,7 @@
 		});
 		
 		$("#btn-add").on("click", function(){
-			console.log($("input[type=email]").attr("aria-invalid"));
-			return;
+			
 			$("#form-customer").attr("action", "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/add");
 			
 			if(document.getElementById("check_ok").style.display=='none' && $("#no").val()!=""){

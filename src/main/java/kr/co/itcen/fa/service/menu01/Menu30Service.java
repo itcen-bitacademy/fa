@@ -31,10 +31,6 @@ public class Menu30Service {
 	@Autowired
 	private Menu30Repository menu30Repository;
 	
-
-	@Autowired
-	private Menu03Service menu03Service;
-	
 	public DataResult<ReceiptVo> search(int page, ReceiptVo revo, @AuthUser UserVo authUser) {
 		DataResult<ReceiptVo> dataResult = new DataResult<ReceiptVo>();
 	
@@ -122,18 +118,8 @@ public class Menu30Service {
 				PreviousVo vo = new PreviousVo();
 				vo.setAccountNo(sVo.get(i).getAccountNo());
 				vo.setCustomerNo(sVo.get(i).getCustomerNo());
-				if(vo.getAccountNo().toString().substring(0,1).equals("1")) {
-					vo.setAmountFlag("d");
-				}else {
-					vo.setAmountFlag("c");
-				}
-				
-				if(vo.getAmountFlag().equals(sVo.get(i).getAmountFlag())) {
-					vo.setAmount(sVo.get(i).getAmount());
-				}else {
-					vo.setAmount(-sVo.get(i).getAmount());
-				}
-				
+				vo.setAmountFlag(sVo.get(i).getAmountFlag());
+				vo.setAmount(sVo.get(i).getAmount());
 				
 				pVo.add(vo);
 			}
@@ -151,11 +137,10 @@ public class Menu30Service {
 			}
 		}
 
-
+		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
 		for(int i=0; i<pVo.size(); i++) {						//전표 입력
 			VoucherVo voucherVo = new VoucherVo();
 			VoucherVo voucherVo2 = new VoucherVo();
-			
 			
 			
 			if(pVo.get(i).getAmountFlag().equals("c")) {
@@ -169,7 +154,7 @@ public class Menu30Service {
 				voucherVo.setVoucherUse(carry1);						//적요		
 				voucherVo.setCustomerNo(pVo.get(i).getCustomerNo());		
 			
-				menu03Service.createVoucher(voucherVo, authUser);
+				voucherVolist.add(voucherVo);
 				
 				voucherVo2.setRegDate(Start);
 				voucherVo2.setAmount(pVo.get(i).getAmount());
@@ -180,7 +165,7 @@ public class Menu30Service {
 				voucherVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
 				
 				
-				menu03Service.createVoucher(voucherVo2, authUser);
+				voucherVolist.add(voucherVo2);
 				
 			}else {
 				voucherVo.setRegDate(End);
@@ -192,7 +177,7 @@ public class Menu30Service {
 				voucherVo.setVoucherUse(carry1);						//적요		
 				voucherVo.setCustomerNo(pVo.get(i).getCustomerNo());		
 			
-				menu03Service.createVoucher(voucherVo, authUser);
+				voucherVolist.add(voucherVo);
 				
 				voucherVo2.setRegDate(Start);
 				voucherVo2.setAmount(pVo.get(i).getAmount());
@@ -202,29 +187,22 @@ public class Menu30Service {
 				voucherVo2.setVoucherUse(carry2);						//적요
 				voucherVo2.setCustomerNo(pVo.get(i).getCustomerNo());	
 				
-				menu03Service.createVoucher(voucherVo2, authUser);
+				voucherVolist.add(voucherVo2);
 			
-				
 			}
 			
-			
 		}
-		
-		
+		menu30Repository.createVoucher(voucherVolist, authUser);
 	}	
 	
 	//전월이월 삭제
 	public void closingEntriesDelete(ClosingDateVo cVo, UserVo authUser ) {
 		List<Long> list = menu30Repository.selectVoucherNo(cVo);
 		
-		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
-		for(Long no1: list) {
-			VoucherVo v = new VoucherVo();
-			v.setNo(no1);
-			
-			voucherVolist.add(v);
+		if(list.size() !=0) {
+			menu30Repository.deleteVoucher(list);
 		}
-		menu03Service.deleteVoucher(voucherVolist, authUser);
+		
 	}
 	
 	

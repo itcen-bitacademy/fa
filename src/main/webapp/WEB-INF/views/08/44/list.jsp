@@ -63,7 +63,6 @@ html, body {
 						<div class="row-fluid">
 							<!-- PAGE CONTENT BEGINS -->
 
-
 							<form class="form-horizontal" method="post"
 								action="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/list">
 								<div class="span6" style="overflow: auto;">
@@ -122,7 +121,7 @@ html, body {
 										<div class="controls">
 											<div class="input-append">
 												<span class="add-on"> <i class="icon-calendar"></i>
-												</span> <input class="span12" type="text" name="payDate"
+												</span> <input class="span12" readonly type="text" name="payDate"
 													id="payDate" class="cl-date-range-picker"
 													id="id-date-range-picker-1">
 											</div>
@@ -148,17 +147,15 @@ html, body {
 												<i class="icon-ok bigger-80"></i>조회
 											</button>
 											<label style="float: right"> <c:choose>
-													<c:when test='${vo.isChecked eq null}'>
-														<input name="isChecked" id="delete" value="d"
+													<c:when test='${vo.flag eq ""}'>
+														<input name="flag" id="flag" value="" checked="checked"
 															type="checkbox" class="ace">
-														<span class="lbl" style="margin: 10px"> 삭제포함</span>
 													</c:when>
 													<c:otherwise>
-														<input name="isChecked" id="delete" value="d"
-															checked="checked" type="checkbox" class="ace">
-														<span class="lbl" style="margin: 10px"> 삭제포함</span>
+														<input name="flag" id="flag" value="" type="checkbox"
+															class="ace">
 													</c:otherwise>
-												</c:choose>
+												</c:choose> <span class="lbl" style="margin: 10px"> 삭제포함</span>
 											</label>
 										</div>
 									</div>
@@ -170,7 +167,7 @@ html, body {
 						<div class="hr hr-18 dotted"></div>
 
 						<div class="row-fluid">
-							<label>총 ${dataResult.pagination.totalCnt }건</label>
+							<label>총 ${dataResult.pagination.totalCnt } 건</label>
 
 							<div style="overflow-x: auto;">
 								<table id="list-table"
@@ -195,17 +192,15 @@ html, body {
 											<th>용도</th>
 											<th>매입일자</th>
 											<th>구분</th>
-											<th>작성자</th>
-											<th>작성일</th>
 											<th>삭제여부</th>
 										</tr>
 									</thead>
 
 									<tbody>
-										<c:forEach items="${intangibleAssetsVo }" var="vo"
+										<c:forEach items='${dataResult.datas }' var="vo"
 											varStatus="status">
 											<tr>
-												<td id="count">${status.count }</td>
+												<td id="count">${(page-1)*11 + status.count }</td>
 												<td>${vo.id }</td>
 												<td>${vo.address }</td>
 												<td>${vo.classification }</td>
@@ -225,11 +220,12 @@ html, body {
 												<td>${vo.purpose }</td>
 												<td>${vo.payDate }</td>
 												<td>${vo.taxKind }</td>
-												<td>${vo.insertUserId }</td>
-												<td>${vo.insertDay }</td>
 												<c:choose>
 													<c:when test="${vo.flag == 'd'}">
-														<td>삭제된 항목입니다</td>
+														<td>삭제된 항목</td>
+													</c:when>
+													<c:when test="${vo.flag == 'o'}">
+														<td>수정된 항목</td>
 													</c:when>
 													<c:otherwise>
 														<td></td>
@@ -241,105 +237,116 @@ html, body {
 								</table>
 							</div>
 						</div>
-						<div class="pagination">
-							<ul>
-								<c:choose>
-									<c:when test="${dataResult.pagination.prev }">
-										<li><a
-											href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${dataResult.pagination.startPage - 1 }"><i
-												class="icon-double-angle-left"></i></a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="disabled"><a href="#"><i
-												class="icon-double-angle-left"></i></a></li>
-									</c:otherwise>
-								</c:choose>
-								<c:forEach begin="${dataResult.pagination.startPage }"
-									end="${dataResult.pagination.endPage }" var="pg">
+
+						<div class="row-fluid">
+							<div class="pagination">
+								<ul>
 									<c:choose>
-										<c:when test="${pg eq dataResult.pagination.page }">
-											<li class="active"><a
-												href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${pg }">${pg }</a></li>
+										<c:when test="${dataResult.pagination.prev }">
+											<li><a
+												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.startPage - 1 }">
+													<i class="icon-double-angle-left"></i>
+											</a></li>
 										</c:when>
 										<c:otherwise>
-											<li><a
-												href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${pg }">${pg }</a></li>
+											<li class="disabled"><a href="#"><i
+													class="icon-double-angle-left"></i></a></li>
 										</c:otherwise>
 									</c:choose>
-								</c:forEach>
-								<c:choose>
-									<c:when test="${dataResult.pagination.next }">
-										<li><a
-											href="${pageContext.servletContext.contextPath }/08/44/list${uri }&page=${dataResult.pagination.endPage + 1 }"><i
-												class="icon-double-angle-right"></i></a></li>
-									</c:when>
-									<c:otherwise>
-										<li class="disabled"><a href="#"><i
-												class="icon-double-angle-right"></i></a></li>
-									</c:otherwise>
-								</c:choose>
-							</ul>
+									<c:forEach begin="${dataResult.pagination.startPage }"
+										end="${dataResult.pagination.endPage }" var="pg">
+										<c:choose>
+											<c:when test="${pg eq dataResult.pagination.page }">
+												<li class="active"><a
+													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg }">${pg }</a></li>
+											</c:when>
+											<c:otherwise>
+												<li><a
+													href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${pg}">${pg }</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+
+									<c:choose>
+										<c:when test="${dataResult.pagination.next }">
+											<li><a
+												href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }${uri }&page=${dataResult.pagination.endPage + 1 }">
+													<i class="icon-double-angle-right"></i>
+											</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="disabled"><a href="#"> <i
+													class="icon-double-angle-right"></i></a></li>
+										</c:otherwise>
+									</c:choose>
+								</ul>
+							</div>
+
+							<!-- /row -->
+							<!-- PAGE CONTENT ENDS -->
 						</div>
-						<!-- /row -->
-						<!-- PAGE CONTENT ENDS -->
+						<!-- /.span -->
 					</div>
-					<!-- /.span -->
+					<!-- /.row-fluid -->
 				</div>
-				<!-- /.row-fluid -->
+				<!-- /.page-content -->
+
 			</div>
-			<!-- /.page-content -->
+			<!-- /.main-content -->
 
 		</div>
-		<!-- /.main-content -->
+		<!-- /.main-container -->
 
+		<!-- basic scripts -->
+		<c:import url="/WEB-INF/views/common/footer.jsp" />
+		<script
+			src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
+		<script
+			src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
+		<script
+			src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
+		<script>
+			$(function() {
+				$("#payDate").daterangepicker({
+					format : 'YYYY-MM-DD'
+
+				}).prev().on(ace.click_event, function() {
+					$(this).next().focus();
+				});
+
+				$(".chosen-select").chosen();
+
+				// 초기화 버튼
+				$("#reset").click(function() {
+					$('input[type=text]').val("");
+					$('input:checkbox').prop("checked", false);
+					$('#form-field-section').val("").trigger('chosen:updated');
+				});
+			});
+
+			function addCommas(x) {
+				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+
+			// 금액에 3자리마다 ',' 넣기
+			$(function() {
+				$("#acqPrice").on(
+						'keyup',
+						function(event) {
+							$(this).val(
+									addCommas($(this).val().replace(/[^0-9]/g,
+											"")));
+						});
+			});
+
+			// select box 값 유지
+			var classification = "${param.classification }";
+
+			if (classification != '') {
+				$('#form-field-section').val(classification).trigger(
+						'chosen:updated');
+			}
+		</script>
 	</div>
-	<!-- /.main-container -->
-
-	<!-- basic scripts -->
-	<c:import url="/WEB-INF/views/common/footer.jsp" />
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
-	<script
-		src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
-	<script>
-		$(function() {
-			$("#payDate").daterangepicker({
-				format : 'YYYY-MM-DD'
-
-			}).prev().on(ace.click_event, function() {
-				$(this).next().focus();
-			});
-
-			$(".chosen-select").chosen();
-
-			// 초기화 버튼
-			$("#reset").click(function() {
-				$('input[type=text]').val("");
-				$('input:checkbox').prop("checked", false);
-				$('#form-field-section').val("").trigger('chosen:updated');
-			});
-		});
-
-		function addCommas(x) {
-			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
-
-		// 금액에 3자리마다 ',' 넣기
-		$(function() {
-			$("#acqPrice").on('keyup', function(event) {
-				$(this).val(addCommas($(this).val().replace(/[^0-9]/g, "")));
-			});
-		});
-
-		// select box 값 유지
-		var classification = "${param.classification }";
-
-		if (classification != '') {
-			$('#form-field-section').val(classification).trigger(
-					'chosen:updated');
-		}
-	</script>
 </body>
 </html>

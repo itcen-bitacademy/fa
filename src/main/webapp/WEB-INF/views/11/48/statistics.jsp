@@ -6,12 +6,16 @@
 <html>
 <head>
 <!-- For Dialog -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+	.mybtn{margin-right:10px;}
+	
 	.navbar-inner.fixed{background: #393939;}
 	
 	body{font-family: 'Apple SD Gothic Neo','나눔고딕',NanumGothic,'맑은 고딕',Malgun Gothic,'돋움',dotum,'굴림',gulim,applegothic,sans-serif;}
+	
 	
 	html,body{
 		height:100%;
@@ -158,15 +162,18 @@
 		<div class="page-content">
 			<div class="page-header position-relative">
 				<h1 class="pull-left">통계정보</h1>
+				
 			</div>
 			<div class="tabbed">
 				<ul>
 					<li class="active">년간부채</li>
 					<li>월별부채</li>
 					<li>년간 지급이자</li>
-					<li>계정별 부채비율</li>
+					<li>계정별 부채비율</li>					
 				</ul>
+				<button class="pull-right" onclick="location.href='${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}'" >돌아가기</button>
 			</div>
+			
 			<figure class="highcharts-figure">
 			    <div id="container"></div>
 			    <p class="highcharts-description">
@@ -240,7 +247,7 @@ function setTabValue(tabs){
 }	
 
 function ChartAjaxBody(chartInfo){
-	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
+	this.url = $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
 	this.type = "POST";
 	this.dataTYpe = "json";
 	this.data="";

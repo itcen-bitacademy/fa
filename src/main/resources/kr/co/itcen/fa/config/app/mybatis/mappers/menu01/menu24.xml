@@ -16,7 +16,7 @@
 		</if>
 		<if  test='inputperiodEnd!=null and !inputperiodEnd.equals("")' >		    
 			<![CDATA[
-				and date_format(insert_day, "%Y-%m-%d %h:%m:%s") <= concat(#{inputperiodEnd }, " 24:59:59")
+				and date_format(insert_day, "%Y-%m-%d %h:%m:%s") <= concat(#{inputperiodEnd }, " 23:59:59")
 			]]>
 		</if>
 		<if  test="cardStartNo!=null ">		    
@@ -52,7 +52,7 @@
 		</if>
 		<if  test='vo.inputperiodEnd!=null and !vo.inputperiodEnd.equals("")'>		    
 			<![CDATA[
-				and date_format(insert_day, "%Y-%m-%d %h:%m:%s") <= concat(#{vo.inputperiodEnd }, " 24:59:59")
+				and date_format(insert_day, "%Y-%m-%d %h:%m:%s") <= concat(#{vo.inputperiodEnd }, " 23:59:59")
 			]]>
 		</if>
 		<if  test="vo.cardStartNo!=null ">		    

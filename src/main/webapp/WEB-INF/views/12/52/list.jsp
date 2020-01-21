@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
 <c:import url="/WEB-INF/views/common/head.jsp" />
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/datepicker.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" />
@@ -17,6 +16,26 @@
 .form-horizontal .control-label {
     text-align: left
 }
+html,body{
+   overflow-x:hidden;
+   height:100%;
+}
+.main-container{
+   height:calc(100% - 45px);
+   overflow-x: hidden;
+}
+.main-content{
+   overflow: auto;
+}
+.page-content{
+   min-width:1280px;
+}
+@media screen and (max-width: 920px) {
+   .main-container{
+      height:calc(100% - 84px);
+   }
+}
+
 </style>
 
 
@@ -332,8 +351,8 @@
 			</div>
 					<div class="row-fluid">
 						
-						<div class="span12" style="overflow-x: scroll;">
-							<table id="customer-table" class="table table-striped table-bordered table-hover" style="width:3000px;" aria-describedby="sample-table-2_info">
+						<div class="span12" style="overflow-x: auto;">
+							<table id="customer-table" class="table table-striped table-bordered table-hover" style=" width: 3000px; margin-bottom: 0;">
 								<thead>
 									<tr role="row">
 										<th>사업자번호</th>

@@ -48,6 +48,10 @@ html, body {
 		height: calc(100% - 84px);
 	}
 }
+
+.chosen-container {
+	width: 20% !important;
+}
 </style>
 </head>
 <body class="skin-3">
@@ -149,7 +153,7 @@ html, body {
 												style="text-align: right;" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
-									<div class="control-group">
+									<div class="control-group" id="taxbillNo">
 										<label style="text-align: left;" class="control-label"
 											for="form-field-1">세금계산서 번호</label>
 										<div class="controls">
@@ -213,7 +217,7 @@ html, body {
 											for="id-date-picker-1">매입일자</label>
 										<div class="controls">
 											<div class="input-append">
-												<input class="cl-date-picker" id="id-date-picker-1"
+												<input class="cl-date-picker" readonly id="id-date-picker-1"
 													type="text" name="payDate"> <span class="add-on">
 													<i class="icon-calendar"></i>
 												</span>
@@ -296,15 +300,14 @@ html, body {
 								<th>용도</th>
 								<th>매입일자</th>
 								<th>구분</th>
-								<th>작성자</th>
-								<th>작성일</th>
 							</tr>
 						</thead>
 
 						<tbody>
-							<c:forEach items="${list }" var="vo" varStatus="status">
+							<c:forEach items="${dataResult.datas }" var="vo"
+								varStatus="status">
 								<tr class="clickme">
-									<td id="count">${status.count }</td>
+									<td id="count">${(page-1)*11 + status.count }</td>
 									<td>${vo.id }</td>
 									<td>${vo.address }</td>
 									<td>${vo.classification }</td>
@@ -324,12 +327,55 @@ html, body {
 									<td>${vo.purpose }</td>
 									<td>${vo.payDate }</td>
 									<td>${vo.taxKind }</td>
-									<td>${vo.insertUserId }</td>
-									<td>${vo.insertDay }</td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+			</div>
+
+			<div class="row-fluid">
+				<div class="pagination">
+					<ul>
+						<c:choose>
+							<c:when test="${dataResult.pagination.prev }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.startPage - 1 }">
+										<i class="icon-double-angle-left"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"><i
+										class="icon-double-angle-left"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${dataResult.pagination.startPage }"
+							end="${dataResult.pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq dataResult.pagination.page }">
+									<li class="active"><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg }">${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a
+										href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${pg}">${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${dataResult.pagination.next }">
+								<li><a
+									href="${pageContext.servletContext.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }?page=${dataResult.pagination.endPage + 1 }">
+										<i class="icon-double-angle-right"></i>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="disabled"><a href="#"> <i
+										class="icon-double-angle-right"></i></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
 				</div>
 			</div>
 
@@ -379,6 +425,8 @@ html, body {
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
+			
+			$("#taxbillNo").hide();
 		});
 
 		// 입력 유효성 검사
@@ -737,7 +785,9 @@ html, body {
 
 			// 행 클릭시 수정, 삭제
 			$(".clickme").click(function() {
+				
 				$("#overlapBtn").hide();
+				$("#taxbillNo").show();
 
 				// id값 수정, 삭제 못하게 readonly로 바꿈
 				$("#id").prop('readonly', true);

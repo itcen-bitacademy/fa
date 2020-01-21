@@ -74,9 +74,8 @@ public class Menu41Service {
 
 
 	//리스트 삭제
-	public void delete(String id) {
-		System.out.println("삭제되는가" + id);
-		menu41Repository.delete(id);
+	public void delete(String userId, String id) {
+		menu41Repository.delete(userId, id);
 	}
 
 
@@ -107,6 +106,7 @@ public class Menu41Service {
 		return map;
 		
 	}
+	
 
 	//vehicle 전표번호 가져오기
 	public Long getVoucherNo(String id) {
@@ -121,8 +121,8 @@ public class Menu41Service {
 	}
 
 	//세금계산서에서 지우기
-	public void deleteTaxbill(String id) {
-		menu41Repository.deleteTaxbill(id);
+	public void deleteTaxbill(String userId, String id) {
+		menu41Repository.deleteTaxbill(userId, id);
 	}
 	
 	//페이징 하기
@@ -146,6 +146,39 @@ public class Menu41Service {
 		menu41Repository.checkId(id);
 		return menu41Repository.checkId(id) != null;
 	}
+
+	//해당 페이지 세금계산서 리스트
+	public Map<String, Object> selectpageTaxList(String id, int page) {
+		
+		int totalTaxCount = menu41Repository.listTaxCount(id);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("pagetaxlist", menu41Repository.selectpageTaxList(id, page));
+	
+		return map;
+	}
+
+
+	//세금계산서 페이징 그룹 리스트 계산
+	public Map<String, Object> selectgroupTaxList(String id, int page_group) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("grouptaxlist", menu41Repository.selectgroupTaxList(id, page_group));
+		
+		return map;
+	}
+
+
+	//세금계산서 페이징 총 건수 
+	public int taxcount(String id) {
+		int count = menu41Repository.listTaxCount(id);
+		return count;
+	}
+
+	//세금계산서 번호 삭제 플래그 주기
+	public void deleteTaxbillNo(String userId, String taxbillNo) {
+		menu41Repository.deleteTaxbillNo(userId, taxbillNo);
+	}
+
 
 
 }

@@ -284,7 +284,7 @@
     $("#account-reset-btn").click(function() {
     	$('#selectedAccountStatementType').val("B");
     	$('#accountOrder').val("");
-    	$('#accountUsedyear').val("2019");
+    	$('#accountUsedyear').val("2020");
     	$('#accountName').val("");
     	$('#selectedAccount').val(null).trigger('chosen:updated');
     });
@@ -393,7 +393,10 @@
     var maxCnt = Number("${dataResult.getDatas().get(0).getMaxcnt() }"); //가장 높은 no
     var totalcnt = 0; //행 추가시 순번 자동 생성할 데이터
 
-    console.log(max);
+    //개수가 0개 일 경우 자동 행 추가
+	if(max == "0"){
+		add_row();
+	}
     
 	// 테이블 행추가
     function add_row() {
@@ -404,9 +407,6 @@
         if(max < 12){ //총 개수가 11개 이하일 경우
         	totalcnt = cnt
         	maxCnt   = (maxCnt+cnt-(cnt-1));
-        	console.log("max < 12");
-        	console.log(maxCnt);
-
         }else if(max > 11 && cnt < 12){ //총 개수가 11개 이상이지만 현재 페이지의 개수가 11개 이하인 경우
         	totalcnt = (max+cnt-1);
         	maxCnt   = (maxCnt+cnt-(cnt-1));

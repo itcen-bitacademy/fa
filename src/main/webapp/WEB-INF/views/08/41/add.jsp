@@ -5,11 +5,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/js/08/41/41.js" />
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/js/08/41/41.js" />
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 .limitation{
@@ -116,14 +118,14 @@
 									</div>
 
 									<div class="control-group">
-										<div style="float: left; width: 50%">
+										<div style="float: left">
 											<label style="text-align:left;" class="control-label" for="form-field-1">매입일자</label>
 											<div class="controls">
-												<input class="cl-date-picker" style="width: 150px" type="text" id="payDate" name="payDate" placeholder="" />
+												<input readonly class="cl-date-picker" style="width: 150px" type="text" id="payDate" name="payDate" placeholder="" />
 												<i class="icon-calendar"></i>
 											</div>
 										</div>
-										<div style="float: left; width: 50%">
+										<div style="float: left">
 											<label style="width: 60px; margin-left: 10px; margin-right: 10px;" class="control-label" for="form-field-1">출시가</label>
 												 <input style="width: 200px; margin-left : 10px;" class=limitation type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요" />
 										</div>
@@ -211,20 +213,11 @@
 										</div>
 									</div>
 
-
-									<div class="control-group">
-									<label style="text-align:left;" class="control-label" for="form-field-1">세금계산서 번호</label>
-									<div class="controls">
-										<input type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
-									</div>
-								</div> 
-								
-
 									<div class="control-group">
 										<div style="float: left; width: 50%">
 											<label style="text-align:left;" class="control-label" for="form-field-1">보증금 납부 예정일</label>
 											<div class="controls" style="width: 90%">
-												<input class="cl-date-picker" type="text" style="width: 150px" id="dueDate" name="dueDate" placeholder="" /> <i class="icon-calendar"></i>
+												<input readonly class="cl-date-picker" type="text" style="width: 150px" id="dueDate" name="dueDate" placeholder="" /> <i class="icon-calendar"></i>
 											</div>
 										</div>
 										<div style="float: left;">
@@ -255,6 +248,15 @@
 											</div>
 										</div>
 									</div>
+									
+									<div class="control-group">
+										<label hidden="hidden" style="text-align:left;" class="control-label" id="control-label-taxbillNo" for="form-field-1">세금계산서 번호</label>
+										<div class="controls">
+											<input hidden="hidden" type="text" class="span7" id="taxbillNo" name="taxbillNo" placeholder="12자로 입력하세요"/>
+										</div>
+									</div> 
+								
+								
 									<div class="control-group">
 										<div class="controls">
 											<button class="btn btn-default btn-small" type="button"
@@ -404,6 +406,7 @@
 										class="table  table-bordered table-hover">
 										<thead>
 											<tr>
+												<th class="no">번호</th>
 												<th class="vehicle-code">차량코드</th>
 												<th class="pay">가격</th>
 												<th class="pay-day">납부일</th>
@@ -414,11 +417,18 @@
 											</tr>
 										</thead>
 										<tbody id="tbody-segumList">
+										
 										</tbody>
+										
 									</table>
+									<div class="pagination" id="taxpagination">
+									<ul id="pagination_list">
+									</ul>
 								</div>
-							</div>
-				<!-- PAGE CONTENT ENDS -->
+								</div>
+								</div>
+								
+				<!-- 페이징 시작 -->
 					<div class="row-fluid">
 							<div class="pagination">
 									<ul>
@@ -462,7 +472,7 @@
 										</c:choose>
 									</ul>
 								</div>
-							<!-- 페이징 -->
+							<!-- 페이징 마무리 -->
 							</div>
 						</div>
 						<!-- valid -->
@@ -488,7 +498,7 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 	//목표 !!! => 큰 function안에 함수들 다 넣기 
-	//$(function(){
+
 	
 			//차량코드 유효성 검사
 			$(document).ready(function(){
@@ -499,13 +509,17 @@
 				$("#search").show(); //조회 버튼 보이기
 				$("#clear").show(); //초기화 버튼 보이기
 				
-				$("#nabbu").hide();
-				$("#walsa").hide();
+			 	$("#nabbu").hide();
+				$("#walsa").hide(); 
 				$("#segumBtn").hide();
 			
 				$("#overlap-vehiclecode").hide();
 				$("#onlynumber").hide();
 				$("#null-vehiclecode").hide();
+				$("#control-label-taxbillNo").hide();
+				$("#taxbillNo").hide();
+				
+				//<p>총 ${dataResult.pagination.totalCnt } 건</p>
 				
 				$("#vehicle_code").focus();
 				
@@ -575,6 +589,7 @@
 					$("#input-form").data("checkpurchaseno", "no");
 					
 					dialog("품목코드를 중복확인 해주세요.", false);
+					return false;
 				}
 
 				else if(!valid.nullCheck("vehicle_code", "차량 코드")) return false;
@@ -713,12 +728,8 @@
 		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //string으로 변환시키면서 3자리수마다 ,붙여주기
 		}
 	
-		//.keyup() - 키 입력 후 발생되는 이벤트 콤마가 추가되면서 나옴
-		//console.log("값이 뭔가요?" + $(this).val());
+
 		$("input[name=publicValue]").on('keyup', function(event){
-			// $(this).val(addCommas($(this).val().replace(/[^0-9]/g,""))); //$(this).val()의 값의 콤마를 제거하고 다시 addCommas
-			//console.log("값이 뭔가요?" + $(this).val()); //이거가 그냥 ,안붙는거
-			//console.log("값이 뭔가요222?" + $(this).val().replace(/[^0-9]/g,""));
 			$(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		}); 
 		
@@ -738,7 +749,7 @@
 			 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 		}); 
 		
-		//input창에 값을 등록버튼 눌러서 보낼때는 ,를 빼서 보내야 하는것은 맞는데 이유는 데이터베이스 안에서는 int형으로 들어가야되서 
+		//input창에 값을 등록버튼 눌러서 보낼때는 ,를 빼서 보내야 하는것은 맞는데 이유는 데이터베이스 안에서는 int형으로 들어가야되서 ,제외시켜주기
 		$("#input-form").submit(function(event) {
 		
 		$("input[name=publicValue]").val($("input[name=publicValue]").val().replace(/[^0-9]/g,""));
@@ -818,12 +829,6 @@ $('#form-field-customerCode').change(function() {
 });
 
 
-//직급 코드 변경시 이벤트 select Box
-/* $('#staffNoId').change(function() {
-	var staffCode = $('#staffNoId option:selected').attr('staffNo');
-	$('#staffNoId').val(staffCode);
-
-}); */
 
 
 //사용개월 수 계산 함수
@@ -856,7 +861,7 @@ function calcMonth(index, item) {
 };
 
 //수정할때 select box 오류 수정하는 함수 1번
-function updateSection(sectionCode){
+function updateSection(sectionCode) {
 	var options = document.getElementById("sectionNo");
 	for(var i=0; i<options.length; ++i ){
 		if(options[i].value == sectionCode){
@@ -864,7 +869,7 @@ function updateSection(sectionCode){
 			$("#sectionNo_chosen").find("span")[0].innerHTML = options[i].innerHTML;
 		}
 	}
-} 
+};
 
 
 function setMonth() {
@@ -935,14 +940,16 @@ $(function(){
 });
 
 // 테이블의 Row 클릭시 값 가져오기
-$(document).on('click', '#sample-table-1 tr', function(event) {	
-	$("#nabbu").hide();
-	$("#walsa").hide();
+$(document).on('click', '#sample-table-1 tr', function(event) {
+	//$("#nabbu").hide();
+	//$("#walsa").hide();
 	$("#segumBtn").show();
 	$("#vehicle_code").prop('readonly',true);
 	$("#default-vehiclecode").hide();
 	$("#check-icon").hide();
 	$("#overlapBtn").hide();
+	$("#control-label-taxbillNo").show();
+	$("#taxbillNo").show();
 	
 	var str = ""
 	var tdArr = new Array();	// 배열 선언
@@ -956,12 +963,17 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 	$("#vehicleNo").val(td.eq(1).text()); //납부 Pop - up 에 차량코드 넣기.
 	
 	var carSectionNo = updateSection(td.eq(2).text());
-	//var carSectionNo = td.eq(2).text();
-	//$('#form_field_section_chosen').find('span').text(carSectionNo);
+
 	
 	var carSectionName = td.eq(3).text();
     $("input[name=classification]").val(carSectionName);
- 
+    
+	var id = td.eq(1).text();
+	
+	console.log(id);
+	
+
+    
   // 직급
   var staffName = td.eq(4).text();   
   var staffNo='';
@@ -1035,7 +1047,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
   	var dueDate = td.eq(17).text(); // 납부예정일
   	$("#dueDate").val(dueDate); //보증금 납부 예정일에 들어감"input[name=dueDate]대신에 id준 경우
   	$("#bonapil-input").val(dueDate); //납부 버튼에 보증금 예정 납부일이 input에 넣어짐
-	//$("#walnapil-input").val(walnapil); //납부 버튼에 월사용료 예정 납부일이 input에 넣어짐
   
   	var MonthFee= td.eq(18).text();
   	$("#monthlyFee").val(MonthFee);
@@ -1075,7 +1086,31 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		$("#clear").show(); //초기화 버튼 보여주기
 		$("#nabbu").show(); //납부 버튼 보여주기
 		$("#walsa").hide(); //월 사용료 납부 가리기
+		
+	    $.ajax({
+			url: "${pageContext.request.contextPath }/08/41/taxcount",
+			contentType : "application/json; charset=utf-8",
+			type: "GET",
+			dataType: "json", 
+			data: {"id" : id},
+			success: function(response){
+				if(response == 61 ) {
+					$("#walsa").hide();
+				}else{
+					$("#walsa").show();
+				}
+				console.log(response);
+			},
+			error: function(xhr, error){
+				console.error("error : " + error);
+			}
+		});
+		
 	} 
+	
+
+	
+	   
   
   $("#cusNo").val(customerCode); // 납부할때 거래처번호를 넘겨줘야 한다.
 
@@ -1094,6 +1129,7 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 					if(lastnapil== null && taxbillNo !="" && taxbillNo != null){
 						console.log("보증금 낸적이 없다.")
 						$("#nabbu").show(); //납부 버튼 보여주기
+						$("#walsa").hide();
 		              return false;
 				
 					}else {
@@ -1121,34 +1157,6 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 							$("#walnapil-input").val(walnapil); 
 						
 						}
-					
-					
-						var today = new Date();	
-						var mmm = (today.getMonth() + 1); //January is 0!	
-						var mm = "0";
-						
-						
-						if(mmm < 10 ){
-							mm = mm + new String(mmm);
-			
-						}else {
-							mm = mmm;
-						}
-					
-						var currentMonth  = mm;
-						console.log("현재달" + currentMonth);
-						console.log("월사용료 예정일 달" + walString);
-						//현재달 1월과 월사용료 예정일 1월 이 같기 때문에 $("#walsa").show();
-						if(walString == currentMonth ){
-							console.log("월사용료 = 현재달이라서 월사용료 납부버튼 보이기");
-							$("#walsa").show();
-						}
-						//현재달 12월과 월사용료 예정일 1월이 다르기 때문에 $("#walsa").hide();
-						else{
-							console.log("월사용료 != 현재달이라서 월사용료 납부버튼 숨기기");
-							$("#walsa").hide();
-						}
-						$("#walsa").show();
 					}
 				},
 				error: function(xhr, error){
@@ -1304,49 +1312,212 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 			    }
 			});
 		});
+		
+		
 			
-		//세금계산서 리스트 출력 ajax
-			$("#segumBtn").on( "click", function() {
+			function updateTable(data, page_num) {
+				//console.log("asdf: " + page_num);
+				
+				 function addCommas(x) {
+		   			 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //string으로 변환시키면서 3자리수마다 ,붙여주기
+				}
+				
+				var i =1;
+				
+				for(let k in data) {
+		 			$("#tbody-segumList").append("<tr>" +
+		 						 "<td class='segumList-pageNo'>" + ((i + (page_num-1)*12)) + "</td>" +
+		                         "<td class='center'>" + data[k].vehicleNo + "</td>" +
+		                         "<td class='center'>" + addCommas(data[k].pay) + "</td>" +
+		                         "<td class='center'>" + data[k].paymentDate + "</td>" +
+		                         "<td class='center'>" + data[k].dueDate + "</td>" +
+		                         "<td class='center'>" + data[k].taxbillNoPoP + "</td>" +
+		                         "<td class='center'>" + data[k].voucherNo + "</td>" +
+		                         "<td class='center'>" + data[k].gubun + "</td>" +
+		                         "</tr>");
+		 			i++;
+		 		}
+				
+			
+			}
+
+			function updatePagination(data, page_num, page_group, grouptaxlist) {
+				$("#pagination_list").remove();
+		 		
+		 		$newUl = $("<ul id='pagination_list'></ul>");
+		 		
+		 		$("#taxpagination").append($newUl);
+		 		
+		 		var alltaxlist_count = parseInt((data.length-1)/12 + 1);
+		 		var taxlist_size = parseInt((grouptaxlist.length-1)/12 + 1);
+		 		var taxlist_group_max = parseInt((alltaxlist_count-1)/5);
+		 		
+		 		if(0 < page_group) {
+		 			$newUl.append("<li><a class='page_go_prev' href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+		 		} else {
+		 			$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-left'></i></a></li>");
+		 		}
+		 		
+		 		for(var li = 1; li <= taxlist_size; li++) {
+		 			if(li == page_num) {
+		 				$newUl.append(
+		 					"<li class='active'><a id='select_num' href='javascript:void(0);'>" + li + "</li>"
+		 				);
+		 			} else {
+		 				$newUl.append(
+							"<li><a class='tax_page_go' href='javascript:void(0);'>" + (li + (0*5)) + "</a></li>"
+						);
+		 			}
+	 			}
+		 		
+		 		if(taxlist_group_max > page_group) {
+		 			$newUl.append("<li><a class='page_go_next' href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+		 		} else {
+		 			$newUl.append("<li class='disabled'><a href='javascript:void(0);'><i class='icon-double-angle-right'></i></a></li>");
+		 		}
+				
+			}
+			
+			
+			
+		
+		//세금계산서 리스트 출력 ajax 일단 최초화면 $("body").on("click",".tax_page_go",function(e) {
+			$("#segumBtn").on( "click",  function() {
 				
 				$("#tbody-segumList").find("tr").remove();
 				
 				var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
+				var page = 1;
+				//var page = $(this).text();
+				var page_group = (page-1)/5;
+			
 				
 				$.ajax({
 					url: "${pageContext.request.contextPath }/08/41/taxinfo",
 					contentType : "application/json; charset=utf-8",
 					type: "GET",
 					dataType: "json", 
-					data: {id : id},
+					data: {"id" : id, "page" : page, "page_group" : page_group},
 					success: function(response){
-						console.log(response.taxlist);
-						data = response.taxlist;
-				 		for(let k in data) {
-				 			$("#tbody-segumList").append("<tr>" +
-				                         "<td class='center'>" + data[k].vehicleNo + "</td>" +
-				                         "<td class='center'>" + data[k].pay + "</td>" +
-				                         "<td class='center'>" + data[k].paymentDate + "</td>" +
-				                         "<td class='center'>" + data[k].dueDate + "</td>" +
-				                         "<td class='center'>" + data[k].taxbillNoPoP + "</td>" +
-				                         "<td class='center'>" + data[k].voucherNo + "</td>" +
-				                         "<td class='center'>" + data[k].gubun + "</td>" +
-				                         "</tr>");
-				 		} 
+						console.log(response.pagetaxlist);
+						data = response.pagetaxlist;
 						
+						updateTable(response.pagetaxlist, page);
+						updatePagination(response.taxlist, page, page_group, response.grouptaxlist);
 					},
 					error: function(xhr, error){
 						console.error("error : " + error);
 					}
 				});
-		
+				
+				$("body").on("click", ".tax_page_go", function() {
+					
+					
+					var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
+					var page = $(this).text();
+					var page_group = parseInt((page-1)/5);
+					
+					$("#tbody-segumList").find("tr").remove();
+				
+					
+					$.ajax({
+						url: "${pageContext.request.contextPath }/08/41/taxinfo",
+						contentType : "application/json; charset=utf-8",
+						type: "GET",
+						dataType: "json", 
+						data: {"id" : id, "page" : page, "page_group" : page_group},
+						success: function(response){
+							console.log(response.pagetaxlist);
+							data = response.pagetaxlist;
+					 		
+							updateTable(response.pagetaxlist, page);
+							updatePagination(response.taxlist, page, page_group, response.grouptaxlist);
+						},
+						error: function(xhr, error){
+							console.error("error : " + error);
+						}
+					});
+				});
+			
+				
+				
+				//세금계산서 리스트 출력 ajax 이전 화면 $("body").on("click",".section_page_go",function(e) {
+				$("body").on("click", ".page_go_prev", function() {
+					
+					$("#tbody-segumList").find("tr").remove();
+					
+					var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
+					var page = $(this).text();
+					var page_group = parseInt((page-1)/5);
+					
+					page_group = page_group - 1;
+					page = (page_group*5) + 5;
+				
+					
+					$.ajax({
+						url: "${pageContext.request.contextPath }/08/41/taxinfo",
+						contentType : "application/json; charset=utf-8",
+						type: "GET",
+						dataType: "json", 
+						data: {"id" : id, "page" : page, "page_group" : page_group},
+						success: function(response){
+							console.log(response.pagetaxlist);
+							data = response.pagetaxlist;
+					 		
+							updateTable(response.pagetaxlist, page);
+							updatePagination(response.taxlist, page, page_group, response.grouptaxlist);
+					 		
+						},
+						error: function(xhr, error){
+							console.error("error : " + error);
+						}
+					});
+				});
+				
+				
+			
+					//세금계산서 리스트 출력 ajax 이후화면 $("body").on("click",".section_page_go",function(e) {
+					$("body").on("click", ".page_go_next", function() {
+						
+						$("#tbody-segumList").find("tr").remove();
+						
+						var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
+						var page = $(this).text();
+						var page_group = parseInt((page-1)/5);
+						
+						page_group = page_group + 1;
+						page = (page_group*5) + 1;
+					
+						
+						$.ajax({
+							url: "${pageContext.request.contextPath }/08/41/taxinfo",
+							contentType : "application/json; charset=utf-8",
+							type: "GET",
+							dataType: "json", 
+							data: {"id" : id, "page" : page, "page_group" : page_group},
+							success: function(response){
+								console.log(response.pagetaxlist);
+								data = response.pagetaxlist;
+						 		
+								updateTable(response.pagetaxlist, page);
+								updatePagination(response.taxlist, page, page_group, response.grouptaxlist);
+						 		
+							},
+							error: function(xhr, error){
+								console.error("error : " + error);
+							}
+					});
+				});
+				 
 				//세금계산서 정보 모달
 				$("#segumList").dialog('open');
+				
 				$("#segumList").dialog	({
 					title: "세금계산서정보",
 					title_html: true,
 				   	resizable: false,
 				    height: 700,
-				    width: 600,
+				    width: 800,
 				    modal: true,
 				    close: function() {
 				    	$('#tbody-sseList tr').remove();
@@ -1357,11 +1528,11 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 				          	$('#tbody-sseList tr').remove();
 				        }
 				    }
-				}); //$("#segumList").dialog	({ 의 마지막
-			});	//$("#segumBtn").on( "click", function() { 의 마지막
-		}); //보증금, 월사용료 관련 납부버튼의 마지막
-
-		
+				    
+					}); //$("#segumList").dialog	({ 의 마지막
+				});//$("#segumBtn").on( "click", function() { 의 마지막1
+			}); ///보증금, 월사용료 관련 납부버튼의 마지막function()
+			
 </script>
 
 </body>

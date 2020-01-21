@@ -67,10 +67,10 @@ public class Menu06Repository {
 		return count == 1;
 	}
 
-	public BuyTaxbillVo getTaxbillList(PurchasemanagementVo vo) {
-		BuyTaxbillVo result = sqlSession.selectOne("menu06.getTaxbillList",vo);
-		return result;
-	}
+//	public BuyTaxbillVo getTaxbillList(PurchasemanagementVo vo) {
+//		BuyTaxbillVo result = sqlSession.selectOne("menu06.getTaxbillList",vo);
+//		return result;
+//	}
 
 	public CustomerVo getAccount(PurchasemanagementVo vo) {
 		CustomerVo result = sqlSession.selectOne("menu06.getAccount",vo);
@@ -96,5 +96,10 @@ public class Menu06Repository {
 
 	public List<PurchasemanagementVo> getSearchList(PurchasemanagementVo vo) {
 		return sqlSession.selectList("menu06.getSearchList",vo);
+	}
+
+	public void taxbillDelete(PurchasemanagementVo vo) {
+		sqlSession.update("menu06.taxbillDelete", vo);
+		
 	}
 }

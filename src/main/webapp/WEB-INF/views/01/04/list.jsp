@@ -151,6 +151,7 @@
 												<th class="center">은행코드</th>
 												<th class="center">은행명</th>
 												<th class="center">카드번호</th>
+												<th class="center">소유주</th>
 												<th class="center">계좌번호</th>
 												<th class="center">소유주</th>
 											</tr>
@@ -170,13 +171,9 @@
 			
 			<div class="hr hr-18 dotted"></div>
 			<!-- buttons -->
-			<div class="row-fluid">
-				<div class="span8">
-						<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
-							formaction="${pageContext.request.contextPath}/01/04/read">조회</button>
-						<input class="btn btn-default btn btn-small" type="button" value="취 소" onclick="window.location.reload();">
-				</div><!-- /.span -->
-			</div><!-- /.row-fluid -->
+			<button class="btn btn-info btn-small" type="submit"   id="btn-read" name="btn-read"
+				formaction="${pageContext.request.contextPath}/01/04/read">조회</button>
+			<input class="btn btn-default btn btn-small" id="btn-reset" name="btn-reset" type="button" value="취 소" >
 			<div class="hr hr-18 dotted"></div>
 			</form>
 			
@@ -253,7 +250,7 @@
 									<td>${voucherVo.bankCode }</td>
 									<td>${voucherVo.bankName }</td>
 									<c:choose>
-										<c:when test="${voucherVo.customerName eq '여비' }">
+										<c:when test="${(voucherVo.accountNo >= 8000000 && voucherVo.accountNo < 9000000) || (voucherVo.accountNo >= 9200000 && voucherVo.accountNo < 9300000) }">
 											<td>${voucherVo.cardNo }</td>
 								            <td></td>
 								            <td>${voucherVo.cardUser }</td>
@@ -329,6 +326,22 @@ $(function(){
 		var tr = $(this);
 		var td = tr.children();
 		
+		$('#regDate').val('');
+		$('#accountNo').val('');
+		$('#accountName').val('');
+		$('#amountFlag').val('');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
+		
 		$("input[name=regDate]").val(td.eq(0).text());
 		$("input[name=no]").val(td.eq(1).text());
 		$('#accountNo').val(td.eq(3).text()).trigger('chosen:updated');
@@ -357,6 +370,28 @@ $(function(){
 		$("input[name='bankLocation']").prop("readonly", true);
 		$("input[name='banker']").prop("readonly", true);
 		$("input[name='bankPhoneCall']").prop("readonly", true);
+	});
+	
+	$("#btn-reset").click(function(){
+		$('#regDate').val('');
+		$('#no').val('');
+		$('#accountName').val('');
+		$('#accountNo').val("계정과목코드").trigger('chosen:updated');
+		$('#amountFlag').val("d").trigger('chosen:updated');
+		$('#useYn').val("삭제여부").trigger('chosen:updated');
+		$('#amount').val('');
+		$('#manageNo').val('');
+		$('#customerNo').val('');
+		$('#customerName').val('');
+		$('#bankCode').val('');
+		$('#bankName').val('');
+		$('#cardNo').val('');
+		$('#cardUser').val('');
+		$('#depositNo').val('');
+		$('#depositHost').val('');
+		$('#voucherUse').val('');
+		
+		$("#voucher_save").empty();
 	});
 	
 	//계정과목에 따른 계정명 불러오기
@@ -417,32 +452,25 @@ $(function(){
       	  	var customerList = result.customerList;
       	  	console.log(result.customerList);
       	  	for(let a in customerList) {
-      	  		if(customerList[a].cardNo != null) { // 카드번호값 셋팅
-      	  			var cardNo = customerList[a].cardNo;
-      	  		} else {
-      	  			cardNo = '';
-      	  		}
-      	  		
-	      	  	if(customerList[a].depositNo != null) {
-	  	  			var depositNo = customerList[a].depositNo;
-	  	  		} else {
-	  	  			depositNo = '';
+	      	  	if(customerList[a].cardNo == null) {
+	  	  			customerList[a].cardNo = "";
+	  	  			customerList[a].cardUser = "";
 	  	  		}
-	      	  	
-      	  		if(customerList[a].customerName == '여비') {
-      	  			var host = customerList[a].cardUser;
-      	  		} else {
-      	  			host = customerList[a].depositHost
-      	  		}
+	  	  		
+	  	  		if(customerList[a].depositNo == null) {
+	  	  			customerList[a].depositNo = "";
+	  	  			customerList[a].depositHost = "";
+	  	  		}
       	  		
       	  		$("#tbody-customerList").append("<tr>" +
-                        "<td class='center'>" + customerList[a].customerNo + "</td>" +
-                        "<td class='center'>" + customerList[a].customerName + "</td>" +
-                        "<td class='center'>" + customerList[a].bankCode + "</td>" +
-                        "<td class='center'>" + customerList[a].bankName + "</td>" +
-                        "<td class='center'>" + cardNo + "</td>" +
-                        "<td class='center'>" + depositNo + "</td>" +
-                        "<td class='center'>" + host + "</td>" +
+	      	  			"<td class='center'>" + customerList[a].customerNo + "</td>" +
+	                    "<td class='center'>" + customerList[a].customerName + "</td>" +
+	                    "<td class='center'>" + customerList[a].bankCode + "</td>" +
+	                    "<td class='center'>" + customerList[a].bankName + "</td>" +
+	                    "<td class='center'>" + customerList[a].cardNo + "</td>" +
+	                    "<td class='center'>" + customerList[a].cardUser + "</td>" +
+	                    "<td class='center'>" + customerList[a].depositNo + "</td>" +
+	                    "<td class='center'>" + customerList[a].depositHost + "</td>" +
                         "</tr>");
       	  	}
       	  }

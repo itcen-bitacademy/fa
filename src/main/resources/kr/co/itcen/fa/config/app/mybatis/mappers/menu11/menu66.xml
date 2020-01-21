@@ -117,7 +117,8 @@
 			update tb_repay set 
 				pay_princ = #{payPrinc}, 
 				int_amount = #{intAmount}, 
-				pay_date = #{payDate} 
+				pay_date = #{payDate}, 
+				voucher_no = #{voucherNo} 
 					where delete_flag= 'N' 
 						and debt_no = #{debtNo} 
 						and debt_type = #{debtType}
@@ -140,7 +141,7 @@
 			<when test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					tb_s_term_debt 
-				]]>getList
+				]]>
 			</when>
 			<when test='code != null and "L".equals(debtType)'>
 				<![CDATA[
@@ -191,7 +192,7 @@
 				</when>
 			</choose>
 			<![CDATA[
-				set repay_bal = repay_bal + #{tempPayPrinc} 
+				set repay_bal = repay_bal + ${tempPayPrinc} - ${payPrinc}
 				where no=${debtNo}
 			]]>
 	</update>
