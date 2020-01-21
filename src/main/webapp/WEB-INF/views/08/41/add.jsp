@@ -149,7 +149,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">보증금</label>
 										<div class="controls">
-											<input  type="text" class=limitation id="deposit" name="deposit" placeholder="금액을 입력하세요" />
+											<input type="text" class=limitation id="deposit" name="deposit" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
@@ -168,7 +168,7 @@
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
-											<label style="text-align:left;" style="width: 70px; margin-right: 10px;"
+											<label style="text-align:left;" style="width: 60px; margin-right: 10px;"
 												class="control-label" for="form-field-1">월 사용료 총 납부금액</label>
 											<input readonly type="text" class="span6" id="all-monthly-fee" value="월 누적금액">
 										</div>
@@ -217,7 +217,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">취득세</label>
 										<div class="controls">
-											<input type="text" class=limitation id="acqTax" name="acqTax"   placeholder="금액을 입력하세요" />
+											<input readonly type="text" class=limitation id="acqTax" name="acqTax"  />
 										</div>
 									</div>
 
@@ -834,6 +834,19 @@ $('#form-field-customerCode').change(function() {
 	$('#customerManager').val(managerName); 
 	
 
+});
+
+// 보증금에 따른 취득세 계산
+$("#deposit").change(function() {
+		
+	function addCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	var deposit = $("#deposit").val();
+	var realDeposit = deposit.split(',').join('');
+	$("#acqTax").val(Math.floor(realDeposit*0.04));
+	$("#acqTax").val(addCommas($("#acqTax").val().replace(/[^0-9]/g,"")));
 });
 
 
