@@ -153,7 +153,7 @@ public class Menu39Controller {
 
 		buildingvo.setUpdateUserid(authUser.getId());
 		
-		buildingvo.setId("b"+buildingvo.getId());
+		buildingvo.setId("b" + buildingvo.getId());
 		
 		Long bVoucherNo = menu39Service.getVoucherNo(buildingvo.getId());
 		
@@ -286,10 +286,9 @@ public class Menu39Controller {
 			@RequestParam(value="taxbillNo") String taxbillNo,
 			@SessionAttribute("authUser") UserVo authUser, BuildingVo buildingvo, Model model) throws ParseException{
 		
-		Long bVoucherNo = menu39Service.getVoucherNo(id);
+		id = "b" + id;
 		
-		String temp = "b" + id;
-		id = temp;
+		Long bVoucherNo = menu39Service.getVoucherNo(id);
 		
 		String userId = authUser.getId();
 		
