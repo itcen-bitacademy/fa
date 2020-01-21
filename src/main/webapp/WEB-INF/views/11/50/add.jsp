@@ -103,7 +103,7 @@ h4{
 										<input type="hidden" name="no" id = "no" />
 										<c:choose>
 											<c:when test='${code eq ""}'>
-												<input type="text" name="code" id ="code" class="p-debt-code-input" maxlength="10"/>
+												<input type="text" name="code" id ="code" class="p-debt-code-input" maxlength="10" onkeydown="codeChanged()"/>
 											</c:when>
 											<c:otherwise>
 												<input type="text" name="code" id="code" class="p-debt-code-input" value="${code}" maxlength="10"/>
@@ -111,6 +111,7 @@ h4{
 										</c:choose>
 										<input id="duplicatecode-checkbtn" name="checkcodebtn" type="button" value="중복확인">
 										<i id="img-checkcode" class="icon-ok bigger-180 blue" style="display: none;"></i>
+										<input type="hidden" name="isDuplicated" value="Y">
 									</div>
 									<label class="control-label">사채명</label>
 									<div>
@@ -465,7 +466,7 @@ h4{
 										<tr>
 											<td>
 												<label class="control-label">총액</label>
-												<input type="text" name="totalAmount" id= "totalAmount" readonly="readonly" style="text-align:right;" value="0"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
+												<input type="text" name="totalAmount" id="totalAmount" readonly="readonly" style="text-align:right;" value="0"/> <h5 style="display: inline-block; font-size:14px;">(원)</h5>
 											</td>
 										</tr>
 										</table>
@@ -579,6 +580,7 @@ h4{
 			}
 			
 		});
+		
 	});
 	
 	//--------------------------------------------------------------------------------------------------------------------------//
@@ -660,6 +662,7 @@ h4{
 		
 		// 숫자에 콤마 적용해서 데이터 처리 : 납입금 입력
 	    $("#text-id-payPrinc").bind('keyup keydown', function(){
+	    	var totalAmount;
 	        inputNumberFormat(this);
 	        var amount = $('input[name=text-name-payPrinc]').val();
 	        var coverAmount = amount.replace(/,/g, '');
@@ -668,17 +671,13 @@ h4{
 	        var intAmount = removeCommaReturn($("#intAmount").val());
 	        console.log("intAmount : " + intAmount);
 	     	
-    		var totalAmount = parseInt($("#payPrinc").val()) + parseInt(intAmount);
+    		totalAmount = parseInt($("#payPrinc").val()) + parseInt(intAmount);
     		var convertTotalAmount = numberFormat(totalAmount);
     		console.log("totalAmount : " + totalAmount);
     		
     		if(!$.isNumeric(totalAmount)) {
     			$('#totalAmount').val('0');
     			return;
-    		}
-    		
-    		function numberFormat(inputNumber) {
-    			return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     		}
     		
     		$('input[name="totalAmount"]').val(convertTotalAmount);
@@ -1305,6 +1304,12 @@ h4{
 				console.err("error" + error);
 			}
 		});
+	}
+	
+	function codeChanged(){					//code 변경 Event시 발생
+		$('#isDuplicated').val('Y');
+		$("#img-checkcode").css("display","none");
+		$("#duplicatecode-checkbtn").show(); // '중복확인' 버튼
 	}
 	
 	// 삭제시 단일 및 다중 선택하여 데이터 삭제
