@@ -77,13 +77,13 @@
 			insert into tb_s_term_debt(no, code, name, major_code, debt_amount, repay_bal, repay_way,
 			debt_date, exp_date, int_rate, int_pay_way, mgr,
 			mgr_call, bank_code, deposit_no, voucher_no, 
-			delete_flag,insert_id, insert_date, update_id, update_date)
+			delete_flag, repay_comple_flag, insert_id, insert_date, update_id, update_date)
 			values (null, #{code }, #{name }, #{majorCode}, ${debtAmount }, 
 			${debtAmount }, #{repayWay }, #{debtDate}, #{expDate},
 			${intRate }, #{intPayWay }, #{mgr }, 
 			#{mgrCall }, #{bankCode },
 			#{depositNo }, ${voucherNo}, 
-			'N', #{insertId }, now(), null, null) 
+			'N', 'N', #{insertId }, now(), null, null) 
 		]]>
 	</insert>
 	

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.itcen.fa.dto.DataResult;
 import kr.co.itcen.fa.repository.menu11.Menu66Repository;
@@ -36,6 +37,7 @@ public class Menu66Service {
 	@Autowired
 	private Menu03Service menu03Service;
 
+	@Transactional
 	public DataResult<RepayVo> list(int page, String code, String debtType) {
 		DataResult<RepayVo> dataResult = new DataResult<RepayVo>();
 		int totalCnt = menu66Repository.listCount(code, debtType);
@@ -48,6 +50,7 @@ public class Menu66Service {
 		return dataResult;
 	}
 	
+	@Transactional
 	public Map getList(RepayVo vo, int page, int pageSize){
 		int totalCnt = menu66Repository.getTotalCnt(vo);
 		System.out.println("totalCnt : " + totalCnt);
@@ -124,7 +127,8 @@ public class Menu66Service {
 	public void updateDebt(RepayVo vo) {
 		menu66Repository.restoreRepayBal(vo);
 	}
-
+	
+	@Transactional
 	public Long updateVoucher(RepayVo vo, UserVo authUser) {
 		VoucherVo voucherVo = new VoucherVo();
 		List<ItemVo> itemVoList = new ArrayList<ItemVo>();
@@ -168,6 +172,8 @@ public class Menu66Service {
 		
 		return menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, authUser);
 	}
+	
+	@Transactional
 	public void deleteVoucerList(List<RepayVo> voList, UserVo authUser) {
 		List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>();
 		
@@ -179,7 +185,7 @@ public class Menu66Service {
 		
 		menu03Service.deleteVoucher(voucherVolist, authUser);	
 	}
-
+	
 	public void deleteChecked(List<RepayVo> voList) {
 		menu66Repository.updateDeleteFlag(voList);
 	}
