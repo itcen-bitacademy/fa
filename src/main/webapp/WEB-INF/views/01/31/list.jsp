@@ -68,25 +68,23 @@
 					<!-- 계정 Modal pop-up : start -->
 					<div id="dialog-message2" title="계정" hidden="hidden">
 						<table id="dialog-message-table">
+						<tr>
+						</tr>
+						
 							<tr>
 								<td>
-									<label>계정명</label>
-									<input type="text" id="input-dialog-accountname" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountname">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
+									<div class="input-append" >
+										<select id="searchAccountOption" style="width:120px;">
+											<option value="accountNo">계정코드</option>
+											<option value="accountName">계정명</option>
+										</select>
+									<input type="text" id="input-dialog-accountname" style="width: 100px;" onkeypress="if( event.keyCode==13 ){enteraccount();}"/>
+									<a href="#" id="a-dialog-accountname"> 
+                                    	<span class="add-on">
+                                        	<i class="icon-search icon-on-right bigger-110"></i>
+                                    	</span>
 									</a>
-								</td>
-								
-								<td>
-									<label>계정코드</label>
-									<input type="text" id="input-dialog-accountno" style="width: 100px;" />
-									<a href="#" id="a-dialog-accountno">
-										<span class="btn btn-small btn-info" style="margin-bottom: 10px;">
-											<i class="icon-search icon-on-right bigger-110"></i>
-										</span>
-									</a>
+									</div>
 								</td>
 							</tr>
 						</table>
@@ -125,7 +123,7 @@
 							<span class="add-on"> 
 								<i class="icon-calendar"></i>
 							</span>
-							<button class="btn btn-small btn-info" style="margin : 0 0 0 5px" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
+							<button class="btn btn-small btn-info" id="btn-submit" style="margin : 0 0 0 5px" type="submit" formaction="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }">조회</button>
 							&nbsp;
 							<button class="btn btn-default btn-small" type="reset">취 소</button>
 						</div>
@@ -213,6 +211,11 @@
 					</div><!-- /row -->
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.span -->
+				<div id="staticBackdrop" class="hide">
+					<br>
+					<pre id="staticBackdropBody" class="bolder grey" style="text-align: center; background-color: white; border-color: white" >
+					</pre>
+				</div><!-- /.span -->
 			</div><!-- /.row-fluid -->
 			 <!-- 페이징 영역 -->
 			<div class="pagination">
@@ -284,16 +287,17 @@
 		
 		
 		
-		//계정명으로 검색
+		//계정명, 계정코드로 검색
 		$("#a-dialog-accountname").click(function(event){
 			event.preventDefault();
 			$("#tbody-accountList").find("tr").remove();
 			
 			var accountNameVal = $("#input-dialog-accountname").val();
+			var searchAccountOption = $("#searchAccountOption").val();
 			console.log(accountNameVal);
 			// ajax 통신
 			$.ajax({
-				url: "${pageContext.request.contextPath }/api/account/getaccountName?accountNameVal=" + accountNameVal,
+				url: "${pageContext.request.contextPath }/api/customer/searchOptionAccount?"+searchAccountOption+"="+accountNameVal,
 				contentType : "application/json; charset=utf-8",
 				type: "get",
 				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
@@ -303,49 +307,18 @@
 				      alert("page not found");
 				    }
 				},
-				success: function(response){
-					$("#input-dialog-accountname").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-accountList").append("<tr>" +
-			                		"<td class='center'>" + item.accountName + "</td>" +
-							        "<td class='center'>" + item.accountNo + "</td>" +
-							        "</tr>");
-			         })
-				},
-				error: function(xhr, error){
-					console.error("error : " + error);
-				}
-			});
-		});
-		
-		//계정코드로 검색
-		$("#a-dialog-accountno").click(function(event){
-			event.preventDefault();
-			$("#tbody-accountList").find("tr").remove();
-			
-			var accountNoVal = $("#input-dialog-accountno").val();
-			console.log(accountNoVal);
-			// ajax 통신
-			$.ajax({
-				url: "${pageContext.request.contextPath }/api/account/getaccountNo?accountNoVal=" + accountNoVal,
-				contentType : "application/json; charset=utf-8",
-				type: "get",
-				dataType: "json", // JSON 형식으로 받을거다!! (MIME type)
-				data: "",
-				statusCode: {
-				    404: function() {
-				      alert("page not found");
-				    }
-				},
-				success: function(response){
-					$("#input-dialog-accountno").val('');
-					 $.each(response.data,function(index, item){
-			                $("#tbody-accountList").append("<tr>" +
-			                		"<td class='center'>" + item.accountName + "</td>" +
-							        "<td class='center'>" + item.accountNo + "</td>" +
-							        "</tr>");
-			         })
-				},
+				success: function(data){
+				  	  if(data.success) {
+							$("#input-dialog-accountname").val('');
+					  	  	var accountList = data.accountList;
+					  	  	for(const a in accountList) {
+					                $("#tbody-accountList").append("<tr>" +
+						                    "<td class='center'>" + accountList[a].accountName + "</td>" +
+						                    "<td class='center'>" + accountList[a].accountNo + "</td>" +
+						                    "</tr>");
+					  	  	}
+					         }
+						},
 				error: function(xhr, error){
 					console.error("error : " + error);
 				}
@@ -354,87 +327,7 @@
 		
 		
 	</script>
-<script>
-	$(function() {
-		$("#dialog-message").dialog({
-			autoOpen : false
-		});
 
-		$("#a-customerinfo-dialog").click(function() {
-			$("#dialog-message").dialog('open');
-			
-			$("#modal-customer-table").hide();
-			$("#modal-bank-table").hide();
-			
-			$("#dialog-message").dialog({
-				title: "거래처정보",
-				title_html: true,
-			   	resizable: false,
-			    height: 500,
-			    width: 700,
-			    modal: true,
-			    close: function() {
-			    	$('#tbody-customerList tr').remove();
-			    	$('#tbody-bankList tr').remove();
-			    },
-			    buttons: {
-			    "닫기" : function() {
-			          	$(this).dialog('close');
-			          	$('#tbody-customerList tr').remove();
-			          	$('#tbody-bankList tr').remove();
-			        }
-			    }
-			});
-		});
-
-		$("#a-dialog-customerno").click(function(){
-			$("#modal-customer-table").show();
-			$("#modal-bank-table").hide();
-		});
-
-		$("#a-dialog-customername").click(function(){
-			$("#modal-customer-table").show();
-			$("#modal-bank-table").hide();
-		});
-		
-		$("#a-dialog-bankname").click(function(){
-			$("#modal-bank-table").show();
-			$("#modal-customer-table").hide();
-		});
-
-		$("#a-dialog-bankcode").click(function(){
-			$("#modal-bank-table").show();
-			$("#modal-customer-table").hide();
-		});
-		
-		
-
-		//거래처리스트(customerList)의 row의 해당 데이터 form에 추가
-		$(document.body).delegate('#tbody-customerList tr', 'click', function() {
-			var tr = $(this);
-			var td = tr.children();
-			var customerNo = td.eq(1).text();
-			var noArray = customerNo.split('-');
-			if (noArray[1] !=null || noArray[2] !=null){
-				$("input[name=customerNo]").val(noArray[0]+noArray[1]+noArray[2]);
-			} else if (noArray[1]==null){
-				$("input[name=customerNo]").val(noArray[0]);
-				
-			}
-			$("input[name=customerName]").val(td.eq(2).text());
-			$("#dialog-message").dialog('close');
-		});
-
-		$(document.body).delegate('#tbody-bankList tr', 'click', function() {
-			var tr = $(this);
-			var td = tr.children();
-			$("input[name=customerNo]").val(td.eq(0).text());
-			$("input[name=customerName]").val(td.eq(1).text());
-			$("#dialog-message").dialog('close');
-		});
-
-	});
-</script>
 
 <script>
 	$(function() {
@@ -444,7 +337,7 @@
 
 		$("#a-accountinfo-dialog").click(function() {
 			$("#dialog-message2").dialog('open');
-			
+			$("#input-dialog-accountname").focus();
 			$("#modal-account-table").show();
 			
 			$("#dialog-message2").dialog({
@@ -482,6 +375,65 @@
 			$("#dialog-message2").dialog('close');
 		});
 
+	});
+	
+	var validationMessage ='';
+	var errortitle='';
+	var errorfield ='';
+	var nochecked = false;
+	
+	function openErrorModal(title, message,errorfield) {
+		$('#staticBackdropLabel').html(title);
+		$('#staticBackdropBody').text(message);
+		
+		console.log($('#staticBackdropLabel').text());
+		console.log($('#staticBackdropBody').text());
+	
+		$( "#staticBackdrop" ).dialog({
+			resizable: false,
+			modal: true,
+			title: title,
+			buttons: [
+				{
+					text: "OK",
+					"class" : "btn btn-danger btn-mini",
+					click: function() {
+						$(this).dialog('close');
+			          	$('#staticBackdropBody').text('');
+						$(errorfield).focus();
+					}
+				}
+			]
+		});
+	
+		$("#staticBackdrop").dialog('open');//모달을 띄운다
+	}
+	
+	//search Validation
+	function SearchValidation(){
+		let datepicker1 =$('#datepicker1').val();//시작날짜
+		let datepicker2 =$('#datepicker2').val();//종료날짜
+		
+		//datepicker 관련 Valid
+		if(datepicker1 > datepicker2 && datepicker2!=''){
+			errortitle = 'DATE_RANGE_ERROR';
+			validationMessage = '조회기간 범위 오류입니다.\r\n 종료일을 시작일 이후로 설정해주세요';
+			errorfield='#datepicker2';
+			return false;
+			
+		}
+	
+		return true;
+	}
+	
+	$(function(){
+		$("#btn-submit").click(function(){
+			if(!SearchValidation()){
+				openErrorModal(errortitle,validationMessage,errorfield);
+				return false;
+			}
+			return true;
+		});
 	});
 </script>
 </body>

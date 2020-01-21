@@ -123,6 +123,11 @@ public class Menu03Controller {
 		try {
 			VoucherVo[] voucherList = mapper.readValue(itemList, VoucherVo[].class);
 			
+			if(!menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
+				resultMap.put("checkClosingDate", true);
+				return resultMap;
+			}
+			
 			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
 				VoucherVo voucherVo = new VoucherVo();
 				voucherVo.setRegDate(voucherList[0].getRegDate());
@@ -190,8 +195,12 @@ public class Menu03Controller {
 			String insertTeam = menu03Service.selectTeam(voucherList[0].getNo());
 			
 			if(!insertTeam.equals(userVo.getTeamName())) {
-				System.out.println("팀 확인중");
 				return null;
+			}
+			
+			if(!menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
+				resultMap.put("checkClosingDate", true);
+				return resultMap;
 			}
 			
 			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
@@ -253,8 +262,12 @@ public class Menu03Controller {
 			String insertTeam = menu03Service.selectTeam(voucherList[0].getNo());
 			
 			if(!insertTeam.equals(userVo.getTeamName())) {
-				System.out.println("팀 확인중");
 				return null;
+			}
+			
+			if(!menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
+				resultMap.put("checkClosingDate2", true);
+				return resultMap;
 			}
 			
 			if(menu19Service.checkClosingDate(userVo, voucherList[0].getRegDate())) {
