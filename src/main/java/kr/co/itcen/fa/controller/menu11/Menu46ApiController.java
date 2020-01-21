@@ -85,6 +85,7 @@ public class Menu46ApiController {
 	@RequestMapping(value = "/" + Menu46Controller.SUBMENU + "/repay", method = RequestMethod.POST)
 	public JSONResult repay(RepayVo repayVo,
 			@AuthUser UserVo authUser) throws ParseException {
+		System.out.println("--------------------repay() Called ---------------");
 		STermDebtVo vo = menu46Service.get(repayVo.getDebtNo());	//단기 차입금 불러온다
 		Map map = new HashMap();
 		
@@ -113,6 +114,7 @@ public class Menu46ApiController {
 		
 		map = menu46Service.getList();
 		
+		System.out.println("--------------------repay() End ---------------");
 		return JSONResult.success(map);
 	}
 	
@@ -128,6 +130,8 @@ public class Menu46ApiController {
 	@ResponseBody
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/update", method = RequestMethod.POST)
 	public JSONResult update(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
+		System.out.println("-------------------Controller update() Start-----------------------");
+		System.out.println("sTermDebtVo : " + sTermDebtVo);
 		 String deptExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
 		 String saveDeptDate = deptExpDate.substring(0, 10);
 		 String saveExpDate = deptExpDate.substring(13);
@@ -158,6 +162,7 @@ public class Menu46ApiController {
 		
 		 //Map을 받아온다
 		 map = menu46Service.getList();
+		 System.out.println("-------------------Controller update() End-----------------------");
 		 return JSONResult.success(map);
 	}
 	

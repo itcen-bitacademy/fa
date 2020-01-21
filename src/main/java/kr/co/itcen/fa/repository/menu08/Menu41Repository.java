@@ -140,8 +140,6 @@ public class Menu41Repository {
 
 	//세금계산서 삭제
 	public void deleteTaxbill(String userId, String id) {
-//		int count = sqlSession.delete("menu41.deleteTaxbill", id);
-//		return count == 1;
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);

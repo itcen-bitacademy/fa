@@ -91,7 +91,7 @@
 		<![CDATA[
 			update tb_s_term_debt 
 			set code=#{code}, name=#{name}, major_code=#{majorCode}, debt_amount=${debtAmount}, repay_way=#{repayWay}, 
-			    debt_date=now(), exp_date=now(), int_rate=${intRate}, int_pay_way=#{intPayWay}, 
+			    debt_date=#{debtDate}, exp_date=#{expDate}, int_rate=${intRate}, int_pay_way=#{intPayWay}, 
 			    mgr=#{mgr }, mgr_call=#{mgrCall}, bank_code=#{bankCode}, deposit_no=#{depositNo}, update_id=#{updateId}, update_date=now(),
 			    voucher_no=${voucherNo}
 			where no=${no }
@@ -120,7 +120,7 @@
 	<insert id="insertRepay" parameterType="repayvo">
 		<![CDATA[
 			insert into tb_repay(no, debt_no, code, pay_princ, int_amount, pay_date, debt_type, voucher_no, delete_flag, insert_id, insert_date)
-			values(null, ${debtNo}, #{code}, ${payPrinc}, ${intAmount}, #{payDate}, "S", ${voucherNo}, "N", #{insertId}, now())
+			values(null, ${debtNo}, #{code}, ${payPrinc}, ${intAmount}, #{payDate}, "G", ${voucherNo}, "N", #{insertId}, now())
 		]]>
 	</insert>
 	
