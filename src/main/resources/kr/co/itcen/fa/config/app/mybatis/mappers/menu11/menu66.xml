@@ -56,7 +56,7 @@
 			select count(*) 
 				from tb_repay where delete_flag = 'N' 
 		]]>
-			<if test='code != null and "G".equals(debtType)'>
+			<if test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					and debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%'))
 				]]>
@@ -89,7 +89,7 @@
 		          	from tb_repay where delete_flag = 'N' 
 		  ]]>        
 		          			
-			<if test='code != null and "G".equals(debtType)'>
+			<if test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					and debt_no = (select no from tb_s_term_debt where code like concat('%',#{code},'%')) 
 				]]>
@@ -138,7 +138,7 @@
 			update
 		]]>
 		<choose>		<!--  debtType에 따라 테이블이 달라진다. -->
-			<when test='code != null and "G".equals(debtType)'>
+			<when test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					tb_s_term_debt 
 				]]>
@@ -175,7 +175,7 @@
 				update 
 			]]>
 			<choose>
-				<when test='code != null and "G".equals(debtType)'>
+				<when test='code != null and "S".equals(debtType)'>
 					<![CDATA[
 						tb_s_term_debt 
 					]]>
@@ -202,7 +202,7 @@
 			<![CDATA[
 				update 
 			]]>
-				<if test='code != null and "G".equals(debtType)'>
+				<if test='code != null and "S".equals(debtType)'>
 				<![CDATA[
 					tb_s_term_debt 
 				]]>
@@ -310,7 +310,7 @@
 			<![CDATA[
 				update 
 			]]>
-				<if test='no != null and "G".equals(debtType)'>
+				<if test='no != null and "S".equals(debtType)'>
 				<![CDATA[
 					tb_s_term_debt 
 				]]>

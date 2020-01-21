@@ -91,6 +91,7 @@ public class Menu46ApiController {
 		
 		if(!menu19Service.checkClosingDate(authUser, repayVo.getPayDate())) {
 			map.put("isClosed", true);
+			return JSONResult.success(map);
 		}
 		
 		//-----------------단기차입금 update----------------------//
@@ -110,6 +111,8 @@ public class Menu46ApiController {
 		//-----------------상환 입력----------------------//
 		repayVo.setVoucherNo(voucherNo);
 		repayVo.setInsertId(authUser.getId());
+		System.out.println("voucherNo : " + voucherNo);
+		System.out.println("repayVo : " + repayVo);
 		menu46Service.insertRepay(repayVo);
 		
 		map = menu46Service.getList();

@@ -128,8 +128,8 @@ public class Menu46Service {
 		itemVo3.setAccountNo(new BankAccountVo().getAccountNo());				//보통예금 계정과목 코드
 		itemVoList.add(itemVo3);
 		
-		mappingVo.setVoucherUse(stermdebtVo.getName());						//사용목적
-		mappingVo.setSystemCode(stermdebtVo.getCode());						//차입금코드
+		mappingVo.setVoucherUse(stermdebtVo.getName());							//사용목적
+		mappingVo.setSystemCode(stermdebtVo.getCode());							//차입금코드
 		mappingVo.setCustomerNo(stermdebtVo.getBankCode());
 		//mappingVo.setDepositNo(stermdebtVo.getDepositNo());					//계좌번호
 		
