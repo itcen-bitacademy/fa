@@ -32,7 +32,7 @@
 		from tb_building b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
         where tb_section.parent_no = 3 
-           and b.flag = 's'
+           and b.flag IN('s','o')
 		]]>
 		<if test="_parameter.length()>0 ">
    			<![CDATA[
@@ -72,7 +72,7 @@
 		from tb_building as b left outer join tb_section on b.section_no = tb_section.code
 			               left outer join tb_customer on b.customer_no = tb_customer.no
         where tb_section.parent_no = 3 
-           and b.flag = 's'
+           and b.flag IN('s','o')
 		]]>
 		<if test="id.length()>0 ">
    			<![CDATA[
@@ -126,7 +126,7 @@
 	<!-- 수정 -->
 	<update id="modify" parameterType="building08vo" >
 	<![CDATA[
-		update tb_building 
+		update tb_building
 		set customer_no = #{customerNo },
 			taxbill_no = #{taxbillNo },
 			section_no = #{sectionNo },
@@ -147,6 +147,7 @@
 			acq_tax = #{acqTax },
 			pay_date = #{payDate },
 			tax_kind = #{taxKind },
+			flag = 'o',
 			update_userid = #{updateUserid},
 			update_day = now()
 		where id = #{id }

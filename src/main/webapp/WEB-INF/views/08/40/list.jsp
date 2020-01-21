@@ -50,7 +50,9 @@
      height:calc(100% - 84px);
    	}
    }
-   
+  input[readonly] {
+    background-color: #FFFF!important;
+   }
 </style>
  
 </head>
@@ -143,7 +145,7 @@
 										<div class="controls">
 											<input type="text" id="area" name="area"
 												placeholder="숫자만 입력하세요" value='${vo.area }'/> 
-											<input style="border-style: none;" type="text" placeholder="입력된 숫자이하로 검색됩니다." />
+											<input readonly style="border-style: none;" type="text" placeholder="입력된 숫자이하로 검색됩니다." />
 										</div>
 									</div>
 									
@@ -151,7 +153,7 @@
 										<label class="control-label">취득금액</label>
 										<div class="controls">
 											<input type="text" class="alignRight" name="acqPrice" id="acqPrice" placeholder="금액을 입력하세요" value="${vo.acqPrice }"/> 
-												<input style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
+												<input readonly style="border-style: none;" type="text" " placeholder="입력된 금액이하로 검색됩니다." />
 										</div>
 									</div>
 									
@@ -250,7 +252,11 @@
 										<td>${vo.combineNo }</td>
 										<td>${vo.taxbillNo }</td>
 										<td>${vo.taxKind }</td>
-										<td>${vo.flag }</td>
+										<c:choose>
+											<c:when test="${vo.flag eq 's'}"><td>작성</td></c:when>
+											<c:when test="${vo.flag eq 'o'}"><td>수정됨</td></c:when>
+											<c:when test="${vo.flag eq 'd'}"><td>삭제됨</td></c:when>
+										</c:choose>
 									</tr>
 									</c:forEach>
 								</tbody>

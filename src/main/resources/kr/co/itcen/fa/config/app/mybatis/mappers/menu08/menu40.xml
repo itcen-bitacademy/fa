@@ -40,7 +40,6 @@
            and b.section_no like concat('%',#{vo.sectionNo },'%')
            and b.wide_address like concat('%',#{vo.wideAddress },'%')
            and b.city_address like concat('%',#{vo.cityAddress },'%')
-           and b.flag like concat('%',#{vo.flag },'%')
 		]]>
 		<if test="vo.area != null">
 			<![CDATA[
@@ -55,6 +54,11 @@
 		<if test='vo.payDate != ""'>
 			<![CDATA[
 	        	and b.pay_date >= '${startDate } 00:00:00' and b.pay_date <= '${endDate } 23:59:59'
+	    	]]>
+	    </if>
+	    <if test='vo.flag != ""'>
+			<![CDATA[
+	        	and b.flag IN("s", "o")
 	    	]]>
 	    </if>
    		<![CDATA[	
@@ -82,7 +86,6 @@
            and b.section_no like concat('%',#{vo.sectionNo },'%')
            and b.wide_address like concat('%',#{vo.wideAddress },'%')
            and b.city_address like concat('%',#{vo.cityAddress },'%')
-           and b.flag like concat('%',#{vo.flag },'%')
        ]]>
 		<if test="vo.area != null">
 			<![CDATA[
@@ -99,6 +102,11 @@
         		and b.pay_date >= '${startDate } 00:00:00' and b.pay_date <= '${endDate } 23:59:59'
     		]]>
 		</if>
+		<if test='vo.flag != ""'>
+			<![CDATA[
+	        	and b.flag IN("s", "o")
+	    	]]>
+	    </if>
 	</select>
 	
 	<!-- 대분류 -->

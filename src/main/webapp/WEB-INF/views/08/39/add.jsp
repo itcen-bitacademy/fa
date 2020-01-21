@@ -119,6 +119,13 @@
 										</div>
 									</div>
 									<div class="control-group">
+										<label class="control-label" for="form-field-1">취득금액</label>
+										<div class="controls">
+											<input type="text" id="acqPrice" name="acqPrice" class="alignRight"
+												placeholder="금액을 입력하세요" />
+										</div>
+									</div>
+									<div class="control-group">
 										<div style="float:left;width:50%">											
 											<label style="text-align:left;" class="control-label" for="id-date-picker-1">매입일자</label>
 										<div class="controls" style="width:90%">
@@ -132,26 +139,21 @@
 										</div>
 									</div>
 									<div class="control-group">
+											<label class="control-label" for="form-field-1">용도</label>
+											<div class="controls">
+												<input type="text" id="purpose" name="purpose" placeholder="내용을 입력하세요" />
+											</div>
+									</div>
+									
+									<div class="control-group">
 										<label class="control-label" for="form-field-1">공시지가</label>
 										<div class="controls">
 											<input type="text" id="publicValue" name="publicValue" class="alignRight"
 												placeholder="금액을 입력하세요"/>
 										</div>
 									</div>
-									<div class="control-group">
-										<label class="control-label" for="form-field-1">기타비용</label>
-										<div class="controls">
-											<input type="text" id="etcCost" name="etcCost" class="alignRight"
-												placeholder="금액을 입력하세요"/>
-										</div>
-									</div>
-									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득금액</label>
-										<div class="controls">
-											<input type="text" id="acqPrice" name="acqPrice" class="alignRight"
-												placeholder="금액을 입력하세요" />
-										</div>
-									</div>
+									
+									
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">합병코드</label>
 										<div class="controls">
@@ -198,21 +200,12 @@
 												<input readonly type="text" name="managerName" id="managerName" placeholder="거래처 담당자" />
 											</div>
 									</div>
-									
 									<div class="control-group">
-											<label class="control-label" for="form-field-1">용도</label>
-											<div class="controls">
-												<input type="text" id="purpose" name="purpose" placeholder="내용을 입력하세요" />
-											</div>
+										<label class="control-label" for="form-field-1">취득세</label>
+										<div class="controls">
+											<input readonly type="text" id="acqTax" name="acqTax" class="alignRight" placeholder=""/>
+										</div>
 									</div>
-									
-									<div class="control-group">
-											<label class="control-label" for="form-field-1">주 구조</label>
-											<div class="controls">
-												<input type="text" id="material" name="material" placeholder="내용을 입력하세요" />
-											</div>
-									</div>
-									
 									<div class="control-group">
 										<label class="control-label" for="form-field-1">건물소유자</label>
 										<div class="controls" id="form-input-customer">
@@ -220,12 +213,21 @@
 										</div>
 									</div>
 									
+									
 									<div class="control-group">
-										<label class="control-label" for="form-field-1">취득세</label>
+											<label class="control-label" for="form-field-1">주 구조</label>
+											<div class="controls">
+												<input type="text" id="material" name="material" placeholder="내용을 입력하세요" />
+											</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="form-field-1">기타비용</label>
 										<div class="controls">
-											<input readonly type="text" id="acqTax" name="acqTax" class="alignRight" placeholder=""/>
+											<input type="text" id="etcCost" name="etcCost" class="alignRight"
+												placeholder="금액을 입력하세요"/>
 										</div>
 									</div>
+									
 										
 									<div class="control-group">
 										<label class="control-label" for="form-field-2">구분</label>
@@ -585,41 +587,33 @@
 			return false;
 		}
 		
-		
 		if (!valid.nullCheck("customerNo", "거래처")) {
 			return false;
 		}
-
-		if (!valid.nullCheck("purpose", "용도")) {
-			errorfocus = '#purpose';
+		if (!valid.nullCheck("acqPrice", "취득 금액")) {
+			errorfocus = '#acqPrice';
 			return false;
 		}
 		
 		if (!valid.nullCheck("id-date-picker-1", "매입일자")) {
 			return false;
 		}
-		
-		if (!valid.nullCheck("publicValue", "공시지가")) {
-			errorfocus = '#publicValue';
-			return false;
-		}
-		
-		if (!valid.nullCheck("material", "주 구조")) {
-			errorfocus = '#material';
-			return false;
-		}
-		
-		
 		if (!valid.nullCheck("ownerName", "건물소유자")) {
 			errorfocus = '#ownerName';
 			return false;
 		}
-		
-		if (!valid.nullCheck("acqPrice", "취득 금액")) {
-			errorfocus = '#acqPrice';
+		if (!valid.nullCheck("purpose", "용도")) {
+			errorfocus = '#purpose';
 			return false;
 		}
-		
+		if (!valid.nullCheck("material", "주 구조")) {
+			errorfocus = '#material';
+			return false;
+		}
+		if (!valid.nullCheck("publicValue", "공시지가")) {
+			errorfocus = '#publicValue';
+			return false;
+		}
 		if (!valid.radioCheck("taxKind", "구분")) {
 			return false;
 		}
