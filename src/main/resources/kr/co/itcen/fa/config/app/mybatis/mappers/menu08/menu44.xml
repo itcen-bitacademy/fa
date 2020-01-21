@@ -79,7 +79,7 @@
 			]]>
 		</if>
 		
-		<if test="flag!=null and !flag.equals('')">
+		<if test="flag != null and !flag.equals('')">
 		<![CDATA[
 	        	and tb.flag in('s', 'o')
 	    	]]>
@@ -144,7 +144,7 @@
 			]]>
 		</if>
 		
-		<if test="flag!=null and !flag.equals('')">
+		<if test="flag != null and !flag.equals('')">
 		<![CDATA[
 	        	and tb.flag in('s', 'o')
 	    	]]>

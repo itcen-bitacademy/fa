@@ -61,6 +61,8 @@ public class Menu44Controller {
 			intangibleAssetsVo.setFlag("s");
 		}
 		
+		System.out.println("###flag:" + intangibleAssetsVo.getFlag());
+		
 		// 취득금액 조회
 		if (intangibleAssetsVo.getAcqPrice() != null) {
 			String acqPrice = intangibleAssetsVo.getAcqPrice().replace(",", "");
