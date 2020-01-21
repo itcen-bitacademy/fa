@@ -431,6 +431,7 @@ html, body {
 
 		// 입력 유효성 검사
 		function insert() {
+			checkClosing();
 			// Insert 에서 중복확인버튼을 통해 주어진 checkpurchaseno의 flag를 통해 구분한다
 			var checkpurchaseno = $("#insert-intangibleAssets-form").data(
 					"checkpurchaseno");
@@ -476,6 +477,7 @@ html, body {
 
 		// 수정 유효성 검사
 		function update() {
+			checkClosing();
 			if (!valid.nullCheck("id", "무형자산 코드"))
 				return;
 			if (!valid.numberCheck("id", "무형자산 코드"))
@@ -508,6 +510,10 @@ html, body {
 			// 무형자산 수정 : U
 			var url = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/update";
 			$("#insert-intangibleAssets-form").attr("action", url).submit();
+		}
+		
+		function deleteCheck() {
+			checkClosing();
 		}
 
 		var valid = {
@@ -679,6 +685,10 @@ html, body {
 
 			$("#update").click(function() {
 				update();
+			});
+			
+			$("#delete").click(function() {
+				deleteCheck();
 			});
 
 			// 무형자산 등록 : C
