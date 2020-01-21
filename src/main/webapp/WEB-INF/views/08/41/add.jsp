@@ -35,6 +35,10 @@
      	.page-content{
         	min-width:1280px;
      	}
+     	
+     	input[readonly] {
+    		background-color: #FFFF!important;
+   		}
 
 @media screen and (max-width: 920px) {
        .main-container{
@@ -70,10 +74,10 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">차량 코드</label>
 										<div class="controls">
-											<input type="text" id="vehicle_code" name="id" style="margin:0 5px 0 0" placeholder="9자를 입력하세요"/>
+											<input type="text" id="vehicle_code" name="id" style="margin:0 5px 0 0" maxlength="9" placeholder="9자를 입력하세요"/>
 											<input id="overlapBtn" style="height:28px" type="button" value="중복확인">
 											<i id="check-icon" class="icon-ok bigger-180 blue" style="display:none;"></i>
-											<input readonly type="text" class="span6" id="default-vehiclecode" style="border:none;" style="background-color: #FFFFFF" placeholder="ex)2019년12월03일 191203001"></input>
+											<input readonly type="text" class="span6" id="default-vehiclecode" style="border:none;"  placeholder="ex)2019년12월03일 191203001"></input>
 <%-- 										<input type="hidden" id="vehicleNo" value="${saleslist[0].salesNo }">
 											<input type="text" class="span6" id="default-vehiclecode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
 											<input type="text" class="span6" id="overlap-vehiclecode" style="border:none;color:red"  value="사용중인 품목코드입니다">
@@ -100,7 +104,7 @@
 										<div class="controls">
 											<input class="span2" onclick="execDaumPostcode()" class="btn-primary box" type="button" value="주소 찾기">
 											<input class="span4" readonly type="text" id="wideAddr" name="wideAddress" placeholder="주소를 선택하면 입력됩니다."> 
-											<input style="width:230px" class="span5" readonly type="text" id="cityAddr" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
+											<input class="span5" readonly type="text" id="cityAddr" name="cityAddress" placeholder="주소를 선택하면 입력됩니다.">
 										</div>
 									</div>
 
@@ -125,10 +129,14 @@
 												<i class="icon-calendar"></i>
 											</div>
 										</div>
-										<div style="float: left">
-											<label style="width: 60px; margin-left: 10px; margin-right: 10px;" class="control-label" for="form-field-1">출시가</label>
-												 <input style="width: 200px; margin-left : 10px;" class=limitation type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요" />
-										</div>
+									
+									</div>
+									
+									<div class="control-group">
+											<label style="text-align:left;" class="control-label" for="form-field-1">출시가</label>
+												<div class="controls">
+												 <input class=limitation type="text" id="publicValue" name="publicValue" placeholder="금액을 입력하세요" />
+											</div>
 									</div>
 
 									<div class="control-group">
@@ -141,7 +149,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">보증금</label>
 										<div class="controls">
-											<input  type="text" class=limitation id="deposit" name="deposit" placeholder="금액을 입력하세요" />
+											<input type="text" class=limitation id="deposit" name="deposit" placeholder="금액을 입력하세요" />
 										</div>
 									</div>
 
@@ -160,7 +168,7 @@
 											</div>
 										</div>
 										<div style="float: left; width: 50%">
-											<label style="text-align:left;" style="width: 70px; margin-right: 10px;"
+											<label style="text-align:left;" style="width: 60px; margin-right: 10px;"
 												class="control-label" for="form-field-1">월 사용료 총 납부금액</label>
 											<input readonly type="text" class="span6" id="all-monthly-fee" value="월 누적금액">
 										</div>
@@ -209,7 +217,7 @@
 									<div class="control-group">
 										<label style="text-align:left;" class="control-label" for="form-field-1">취득세</label>
 										<div class="controls">
-											<input type="text" class=limitation id="acqTax" name="acqTax"   placeholder="금액을 입력하세요" />
+											<input readonly type="text" class=limitation id="acqTax" name="acqTax"  />
 										</div>
 									</div>
 
@@ -828,6 +836,19 @@ $('#form-field-customerCode').change(function() {
 
 });
 
+// 보증금에 따른 취득세 계산
+$("#deposit").change(function() {
+		
+	function addCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	var deposit = $("#deposit").val();
+	var realDeposit = deposit.split(',').join('');
+	$("#acqTax").val(Math.floor(realDeposit*0.04));
+	$("#acqTax").val(addCommas($("#acqTax").val().replace(/[^0-9]/g,"")));
+});
+
 
 
 
@@ -1359,13 +1380,13 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 		 		}
 		 		
 		 		for(var li = 1; li <= taxlist_size; li++) {
-		 			if(li == page_num) {
+		 			if((li + (page_group*5)) == page_num) {
 		 				$newUl.append(
-		 					"<li class='active'><a id='select_num' href='javascript:void(0);'>" + li + "</li>"
+		 					"<li class='active'><a id='select_num' href='javascript:void(0);'>" + (li + (page_group*5)) + "</li>"
 		 				);
 		 			} else {
 		 				$newUl.append(
-							"<li><a class='tax_page_go' href='javascript:void(0);'>" + (li + (0*5)) + "</a></li>"
+							"<li><a class='tax_page_go' href='javascript:void(0);'>" + (li + (page_group*5)) + "</a></li>"
 						);
 		 			}
 	 			}
@@ -1417,6 +1438,9 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 					var page = $(this).text();
 					var page_group = parseInt((page-1)/5);
 					
+					console.log(page);
+					console.log(page_group);
+					
 					$("#tbody-segumList").find("tr").remove();
 				
 					
@@ -1447,11 +1471,14 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 					$("#tbody-segumList").find("tr").remove();
 					
 					var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
-					var page = $(this).text();
+					var page = $("#select_num").text();
 					var page_group = parseInt((page-1)/5);
 					
 					page_group = page_group - 1;
 					page = (page_group*5) + 5;
+					
+					console.log(page_group);
+					console.log(page);
 				
 					
 					$.ajax({
@@ -1482,11 +1509,14 @@ $(document).on('click', '#sample-table-1 tr', function(event) {
 						$("#tbody-segumList").find("tr").remove();
 						
 						var id =  $("input[name=id]").val(); //차량코드 id값 받아와야지 세금계산서 출력 가능
-						var page = $(this).text();
+						var page = $("#select_num").text();
 						var page_group = parseInt((page-1)/5);
 						
 						page_group = page_group + 1;
 						page = (page_group*5) + 1;
+						
+						console.log(page_group);
+						console.log(page);
 					
 						
 						$.ajax({

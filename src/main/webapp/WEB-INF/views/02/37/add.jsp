@@ -121,7 +121,7 @@ html, body {
 									<input style="width: 100%" type="text" id="manage-no"
 										value="${getAboutNoData.manageNo }" name="manageNo"
 										placeholder="ex) TX2019116301143" autocomplete="off"
-										maxlength="20" />
+										maxlength="15" />
 								</div>
 							</div>
 							<div class="control-group">
@@ -375,7 +375,7 @@ html, body {
 													id="supply-value1" onkeyup="sumAllSupplyAllTax();"
 													placeholder="0" name="supplyValue" autocomplete="off"></td>
 												<td><input style="text-align: right;" type="text"
-													id="tax-value1" name="taxValue" placeholder="0"
+													id="tax-value1" name="taxValue" value="0" placeholder="0"
 													onkeyup="sumAllSupplyAllTax();" autocomplete="off"></td>
 											</tr>
 										</c:otherwise>
@@ -483,7 +483,7 @@ html, body {
 					+ '"name="supplyValue" onkeyup="sumAllSupplyAllTax();" placeholder="0" autocomplete="off"></td>';
 			cell6.innerHTML = '<td><input style="text-align:right;" type="text" id="tax-value'
 					+ cnt
-					+ '"name="taxValue" onkeyup="sumAllSupplyAllTax();" placeholder="0" autocomplete="off"></td>';
+					+ '"name="taxValue" onkeyup="sumAllSupplyAllTax();" placeholder="0" value="0" autocomplete="off"></td>';
 			cnt++;
 			addElementCommas();
 			addElementCalender();

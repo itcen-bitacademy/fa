@@ -85,11 +85,13 @@ public class Menu46ApiController {
 	@RequestMapping(value = "/" + Menu46Controller.SUBMENU + "/repay", method = RequestMethod.POST)
 	public JSONResult repay(RepayVo repayVo,
 			@AuthUser UserVo authUser) throws ParseException {
+		System.out.println("--------------------repay() Called ---------------");
 		STermDebtVo vo = menu46Service.get(repayVo.getDebtNo());	//단기 차입금 불러온다
 		Map map = new HashMap();
 		
 		if(!menu19Service.checkClosingDate(authUser, repayVo.getPayDate())) {
 			map.put("isClosed", true);
+			return JSONResult.success(map);
 		}
 		
 		//-----------------단기차입금 update----------------------//
@@ -109,10 +111,13 @@ public class Menu46ApiController {
 		//-----------------상환 입력----------------------//
 		repayVo.setVoucherNo(voucherNo);
 		repayVo.setInsertId(authUser.getId());
+		System.out.println("voucherNo : " + voucherNo);
+		System.out.println("repayVo : " + repayVo);
 		menu46Service.insertRepay(repayVo);
 		
 		map = menu46Service.getList();
 		
+		System.out.println("--------------------repay() End ---------------");
 		return JSONResult.success(map);
 	}
 	
@@ -128,6 +133,8 @@ public class Menu46ApiController {
 	@ResponseBody
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/update", method = RequestMethod.POST)
 	public JSONResult update(STermDebtVo sTermDebtVo, @AuthUser UserVo authUser) throws ParseException {
+		System.out.println("-------------------Controller update() Start-----------------------");
+		System.out.println("sTermDebtVo : " + sTermDebtVo);
 		 String deptExpDate = sTermDebtVo.getDebtExpDate(); // dateRangePicker에서 받아온 차입일자와 만기일자를 나누기 위해 변수 이용
 		 String saveDeptDate = deptExpDate.substring(0, 10);
 		 String saveExpDate = deptExpDate.substring(13);
@@ -137,7 +144,7 @@ public class Menu46ApiController {
 		 Map map = new HashMap();
 		 //마감인지 확인
 		 System.out.println("마감인가? : " + menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate()));
-		 if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate())){			//마감이됬으면
+		 if(!menu19Service.checkClosingDate(authUser, sTermDebtVo.getDebtDate()) == true){			//마감이됬으면
 			 map.put("isClosed", true);
 			 return JSONResult.success(map);
 		 }
@@ -148,7 +155,9 @@ public class Menu46ApiController {
 			 return JSONResult.success(existRepay);
 		 
 		 //전표입력후 전표번호를 가지고온다.
+		 System.out.println("업데이트 전 voucherNo : " + sTermDebtVo.getVoucherNo());
 		 Long voucherNo = menu46Service.updateVoucherWithDebt(sTermDebtVo, authUser);
+		 System.out.println("업데이트 후 voucherNo : " + voucherNo);
 			
 		 //차입금 수정
 		 sTermDebtVo.setVoucherNo(voucherNo);
@@ -156,6 +165,7 @@ public class Menu46ApiController {
 		
 		 //Map을 받아온다
 		 map = menu46Service.getList();
+		 System.out.println("-------------------Controller update() End-----------------------");
 		 return JSONResult.success(map);
 	}
 	

@@ -90,7 +90,7 @@ html, body {
 										<label style="text-align: left;" class="control-label"
 											for="form-field-1">무형자산 코드</label>
 										<div class="controls">
-											<input type="text" class="span7" id="id" name="id"
+											<input type="text" class="span7" id="id" name="id" maxlength="9"
 												placeholder="ex) 120400701 (월+일+007+번호)" /> <input
 												id="overlapBtn" style="height: 28px" type="button"
 												value="중복확인"> <i id="check-icon"

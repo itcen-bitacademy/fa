@@ -586,11 +586,11 @@ function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	if(inputForm.vo.value != ""){
+	/* if(inputForm.vo.value != ""){
 		dialog("새로운 데이터를 입력해주세요.");
 		resetForm();
 		return;
-	} 
+	}  */
 	
 	if(!isValidDebt(inputForm)){
 		console.log("유효성 위반");
@@ -670,6 +670,7 @@ function update(){
 			dialog("수정이 완료 되었습니다.");
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
+			resetForm();
 		},
 		error: function(xhr, error){
 			
@@ -905,14 +906,6 @@ function selectBankRow(thisObj){
 }
 
 //-----------------------------------상환 Model 메서드 ---------------------------------//
-function addRepayBtn(buttons){
-	buttons["상환"] =  function(){
-		var isSuccess = repay(repayForm, vo.repayBal);		//상환Form, 상환잔액 반환
-		if(isSuccess)
-			$(this).dialog('close');
-    }
-}
-
 function openRepayDialog(){
 	console.log("---------------------------openRepayDialog() called--------------------------");
 	var inputForm = $("#input-form")[0];			//선택된 차입금 form
@@ -928,7 +921,11 @@ function openRepayDialog(){
 	initRepayDialog(repayForm, vo);
 	
 	var dialogBody = new DialogBody("상환정보");
-	addRepayBtn(dialogBody.buttons);
+	dialogBody.buttons["상환"] = function(){
+		var isSuccess = repay(repayForm, vo.repayBal);		//상환Form, 상환잔액 반환
+		if(isSuccess)
+			$(this).dialog('close');
+    }
 	    	
 	$("#dialog46").dialog(dialogBody);
 	
@@ -1031,6 +1028,7 @@ function initRepayDialog(repayForm, vo){
 }
 
 function repay(repayForm, repayBal){									//상환버튼 클릭시
+	console.log("-------------------repay() called ----------------------");
 	repayBal = parseInt(repayBal);							//int로 변환
 	var payPrinc = parseInt(repayForm.payPrinc.value);		//int로 변환
 	
@@ -1040,10 +1038,12 @@ function repay(repayForm, repayBal){									//상환버튼 클릭시
 		dialog("납입원금이 잔액보다 클 수 없습니다");
 		return false;
 	}
-	if(!isValidRepay(repayForm))
+	if(!isValidRepay(repayForm)){//상환 Validation 
+		console.log("걸릿네");
 		return false;
-	
-	
+	}				
+		
+	console.log("-------------------repay() 통과 ----------------------");
 	repayForm.intAmount.value = unComma(repayForm.intAmountComma.value);
 	repayForm.payPrinc.value = unComma(repayForm.payPrincComma.value);
 	repayForm.totalPayPrinc.value = unComma(repayForm.totalPayPrincComma.value);
@@ -1072,20 +1072,27 @@ function repay(repayForm, repayBal){									//상환버튼 클릭시
 			renderingList(response.data.list);
 			renderingPage(response.data.pagination);
 			
+			console.log("-------------------repay() End ----------------------");
 			return true;
 		},
 		error: function(xhr, error){
 			console.error("error : " + error);
 		}
 	});
+	
 }
 
 function isValidRepay(repayForm){
+	var isValid = false;
 	if(repayForm.payDate.value == ''){
 		dialog("상환일자를 입력하세요.");
 	}else if(repayForm.payPrincComma.value == ''){
 		dialog("납입원금을 입력하세요.");
+	}else{
+		isValid = true;
 	}
+	
+	return isValid;
 }
 
 function convertComma2Num(commaNum){
@@ -1212,6 +1219,8 @@ function selectRow(thisObj){
 		changeBtnDisplay(true);
 	} */
 	
+	$("#img-checkcode").css("display","none");
+	
 	if($(thisObj).hasClass("selected") === true){
 		$(thisObj).removeClass("selected");
 		resetForm();
@@ -1223,7 +1232,7 @@ function selectRow(thisObj){
 	}
 	
 	$("#btn-chk-duplication").css("display", "none");
-	$(inputForm.code).attr("readonly", true);
+	//$(inputForm.code).attr("readonly", true);
 	
 	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;
@@ -1232,7 +1241,7 @@ function selectRow(thisObj){
 	inputForm.name.value = vo.name;
 	inputForm.debtAmount.value = vo.debtAmount;
 	inputForm.debtAmountComma.value = comma(vo.debtAmount);
-	inputForm.debtExpDate.value = vo.debtDate + " - " + vo.expDate;	//없는걸 찾으면 error가 발생함. 밑에줄도 실행이안됨.
+	inputForm.debtExpDate.value = vo.debtDate + " - " + vo.expDate;	
 	$(inputForm).find("input[name='intPayWay']").each(function(i, e){
 		$(this).prop("checked", false);
 		

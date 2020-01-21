@@ -1798,7 +1798,7 @@ h4{
 	        $('#searchbtn').show();
 	        $('#updatebtn').show();
 	        $('#repaybtn').show();
-	        //$('#duplicatecode-checkbtn').show('중복확인');
+	        $('#duplicatecode-checkbtn').show('중복확인');
 		
 			$("input[name=no]").val(td.eq(0).attr('data-no'));
 			

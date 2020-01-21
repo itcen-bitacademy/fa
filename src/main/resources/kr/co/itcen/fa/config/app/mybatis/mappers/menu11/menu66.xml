@@ -192,7 +192,7 @@
 				</when>
 			</choose>
 			<![CDATA[
-				set repay_bal = repay_bal + #{tempPayPrinc} 
+				set repay_bal = repay_bal + ${tempPayPrinc} - ${payPrinc}
 				where no=${debtNo}
 			]]>
 	</update>

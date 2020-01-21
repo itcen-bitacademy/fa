@@ -177,7 +177,7 @@ public class Menu39Controller {
 	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
 			//전표추가(세금계산서번호가 not null)
-			if (taxbillNo != null && bVoucherNo == null) {
+			if (taxbillNo != "" && taxbillNo != null && bVoucherNo == null) {
 				
 				//계좌(계좌번호, 은행코드, 은행이름)정보
 				CustomerVo bankInfo = menu39Service.getBankInfo(customerNo);

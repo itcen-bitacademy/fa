@@ -50,6 +50,8 @@ public class Menu46Repository {
 	
 	//수정
 	public Boolean update(STermDebtVo sTermDebtVo) {
+		System.out.println("--------repository update---------");
+		System.out.println(sTermDebtVo.getVoucherNo());
 		int count = sqlSession.update("menu46.update", sTermDebtVo);
 		return (count==1);
 	}

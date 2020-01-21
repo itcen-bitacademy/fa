@@ -46,7 +46,7 @@ public class Menu44Repository {
 		map.put("acqPrice", intangibleAssetsVo.getAcqPrice());
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
-		map.put("isChecked", intangibleAssetsVo.getIsChecked());
+		map.put("flag", intangibleAssetsVo.getFlag());
 		return sqlSession.selectOne("menu44.selectCount", map);
 	}
 
@@ -61,7 +61,7 @@ public class Menu44Repository {
 		map.put("acqPrice", intangibleAssetsVo.getAcqPrice());
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
-		map.put("isChecked", intangibleAssetsVo.getIsChecked());
+		map.put("flag", intangibleAssetsVo.getFlag());
 		map.put("pagination", paginationUtil);
 		List<IntangibleAssetsVo> result = sqlSession.selectList("menu44.getList", map);
 		
