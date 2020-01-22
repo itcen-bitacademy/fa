@@ -377,7 +377,7 @@
             <![CDATA[
             	when date_format(debt_date,"%d") BETWEEN 
             		date_format(#{startDate},"%d") AND date_format(#{endDate},"%d") then 
-            		concat(date_format(#{startDate},"%y-%m"), date_format(debt_date,"%d"))
+            		concat(date_format(#{startDate},"%y-%m-"), date_format(debt_date,"%d"))
                ]]>
             </otherwise>
         </choose>     

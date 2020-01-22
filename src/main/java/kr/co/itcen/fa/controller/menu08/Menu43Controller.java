@@ -87,6 +87,7 @@ public class Menu43Controller {
 			@RequestParam(value = "taxbillNo", required = false) String taxbillNo,
 			@RequestParam(value = "customerNo", required = false) String customerNo, Model model)
 			throws ParseException {
+		System.out.println("여기는 등록");
 		intangibleAssetsVo.setInsertUserId(user.getId()); // session값으로 사용자 id가져오기
 		
 		String acqPrice = intangibleAssetsVo.getAcqPrice().replace("," ,"");
@@ -113,7 +114,7 @@ public class Menu43Controller {
 			@RequestParam(value = "customerNo", required = false) String customerNo,
 			@RequestParam(value = "purpose", required = false) String purpose
 			) throws ParseException {
-		
+		System.out.println("여기는 업데이트 !");
 		String id = 'f' + intangibleAssetsVo.getId();
 		intangibleAssetsVo.setId(id);
 
@@ -125,101 +126,100 @@ public class Menu43Controller {
 
 		intangibleAssetsVo.setAcqPrice(intangibleAssetsVo.getAcqPrice().replace("," ,""));
 		intangibleAssetsVo.setAddiFee(intangibleAssetsVo.getAddiFee().replace("," ,""));
-
-		// 전표 등록
-		if (taxbillNo != null && voucherNo == null) {
-			CustomerVo customerVo = menu43Service.getCustomerInfo(customerNo);
-
-			VoucherVo voucherVo = new VoucherVo();
-			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-			MappingVo mappingVo = new MappingVo();
-
-			ItemVo itemVoD = new ItemVo(); // 차변(왼쪽)
-			ItemVo itemVoC = new ItemVo(); // 대변(오른쪽)
-
-			// 왼쪽 : 얻은것 무형자산 가격 :::: 오른쪽 계좌 가격
-			voucherVo.setRegDate(intangibleAssetsVo.getPayDate());
-			intangibleAssetsVo.setVoucherNo(voucherVo.getNo());
-
-			// 차변(d) : 영업권, 특허권, 상표권, 실용신안권, 의장권, 면허권, 개발비, 소프트웨어, 건설중인자산(무형) -> 전표에 등록
-			PurposeVo purposeVo = menu43Service.getPurposeInfo(purpose);
-			if (!purposeVo.getClassification().equals("산업재산권") && !purposeVo.getClassification().equals("무형자산")) {
-				itemVoD.setAccountNo(purposeVo.getAccountNo());
-				itemVoD.setAmount(acqPrice + addiFee); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			}
-
-			// 대변(c) : 현금
-			itemVoC.setAmount(acqPrice + addiFee); // 취득금액 +
-																											// 부대비용
-			itemVoC.setAmountFlag("c");
-			itemVoC.setAccountNo(1110101L); // 계정과목: 현금
-			itemVoList.add(itemVoC);
-
-			// 매핑테이블
-			mappingVo.setVoucherUse(intangibleAssetsVo.getPurpose()); // 왜 샀는지 적어준다(용도).
-			mappingVo.setSystemCode(intangibleAssetsVo.getId()); // 각 무형자산 코드번호
-			mappingVo.setDepositNo(customerVo.getDepositNo()); // 계좌번호
-			mappingVo.setBankCode(customerVo.getBankCode()); // 은행 번호
-			mappingVo.setBankName(customerVo.getBankName()); // 은행 이름
-			mappingVo.setCustomerNo(customerNo); // 거래처번호
-			mappingVo.setManageNo(taxbillNo); // 세금계산서 번호
-
-			Long voucher = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
-			intangibleAssetsVo.setVoucherNo(voucher);
-
-		} else if (voucherNo != null) { // 전표 수정
-
-			CustomerVo customerVo = menu43Service.getCustomerInfo(customerNo);
-
-			VoucherVo voucherVo = new VoucherVo();
-			List<ItemVo> itemVoList = new ArrayList<ItemVo>();
-			MappingVo mappingVo = new MappingVo();
-
-			ItemVo itemVoD = new ItemVo(); // 차변(왼쪽)
-			ItemVo itemVoC = new ItemVo(); // 대변(오른쪽)
-
-			// 왼쪽 : 얻은것 무형자산 가격 :::: 오른쪽 계좌 가격
-			voucherVo.setRegDate(intangibleAssetsVo.getPayDate());
-			intangibleAssetsVo.setVoucherNo(voucherVo.getNo());
-
-			// 차변(d) : 영업권, 특허권, 상표권, 실용신안권, 의장권, 면허권, 개발비, 소프트웨어, 건설중인자산(무형) -> 전표에 등록
-			PurposeVo purposeVo = menu43Service.getPurposeInfo(purpose);
-			if (!purposeVo.getClassification().equals("산업재산권") && !purposeVo.getClassification().equals("무형자산")) {
-				itemVoD.setAccountNo(purposeVo.getAccountNo());
-				itemVoD.setAmount(acqPrice + addiFee); // 취득금액
-				itemVoD.setAmountFlag("d");
-				itemVoList.add(itemVoD);
-			}
-
-			// 대변(c) : 현금
-			itemVoC.setAmount(acqPrice + addiFee); // 취득금액 +
-																											// 부대비용
-			itemVoC.setAmountFlag("c");
-			itemVoC.setAccountNo(1110103L); // 계정과목: 보통예금
-			itemVoList.add(itemVoC);
-
-			// 매핑테이블
-			mappingVo.setVoucherUse(intangibleAssetsVo.getPurpose()); // 왜 샀는지 적어준다(용도).
-			mappingVo.setSystemCode(intangibleAssetsVo.getId()); // 각 무형자산 코드번호
-			mappingVo.setDepositNo(customerVo.getDepositNo()); // 계좌번호
-			mappingVo.setBankCode(customerVo.getBankCode()); // 은행 번호
-			mappingVo.setBankName(customerVo.getBankName()); // 은행 이름
-			mappingVo.setCustomerNo(customerNo); // 거래처번호
-			mappingVo.setManageNo(taxbillNo); // 세금계산서 번호
-			mappingVo.setVoucherNo(voucherNo); // 전표 번호를 넣어야 수정된 것이 삭제가 됨
-
-			voucherVo.setNo(voucherNo);
-			Long updateVoucher = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
-			intangibleAssetsVo.setVoucherNo(updateVoucher);
-		}
 		
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);
 			return MAINMENU + "/" + SUBMENU;
 		} else { // 수정 가능!
+			// 전표 등록
+			if (taxbillNo != null && voucherNo == null) {
+				CustomerVo customerVo = menu43Service.getCustomerInfo(customerNo);
+
+				VoucherVo voucherVo = new VoucherVo();
+				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+				MappingVo mappingVo = new MappingVo();
+
+				ItemVo itemVoD = new ItemVo(); // 차변(왼쪽)
+				ItemVo itemVoC = new ItemVo(); // 대변(오른쪽)
+
+				// 왼쪽 : 얻은것 무형자산 가격 :::: 오른쪽 계좌 가격
+				voucherVo.setRegDate(intangibleAssetsVo.getPayDate());
+				intangibleAssetsVo.setVoucherNo(voucherVo.getNo());
+
+				// 차변(d) : 영업권, 특허권, 상표권, 실용신안권, 의장권, 면허권, 개발비, 소프트웨어, 건설중인자산(무형) -> 전표에 등록
+				PurposeVo purposeVo = menu43Service.getPurposeInfo(purpose);
+				if (!purposeVo.getClassification().equals("산업재산권") && !purposeVo.getClassification().equals("무형자산")) {
+					itemVoD.setAccountNo(purposeVo.getAccountNo());
+					itemVoD.setAmount(acqPrice + addiFee); // 취득금액
+					itemVoD.setAmountFlag("d");
+					itemVoList.add(itemVoD);
+
+				// 대변(c) : 현금
+				itemVoC.setAmount(acqPrice + addiFee); // 취득금액 +
+																												// 부대비용
+				itemVoC.setAmountFlag("c");
+				itemVoC.setAccountNo(1110101L); // 계정과목: 현금
+				itemVoList.add(itemVoC);
+				}
+
+				// 매핑테이블
+				mappingVo.setVoucherUse(intangibleAssetsVo.getPurpose()); // 왜 샀는지 적어준다(용도).
+				mappingVo.setSystemCode(intangibleAssetsVo.getId()); // 각 무형자산 코드번호
+				mappingVo.setDepositNo(customerVo.getDepositNo()); // 계좌번호
+				mappingVo.setBankCode(customerVo.getBankCode()); // 은행 번호
+				mappingVo.setBankName(customerVo.getBankName()); // 은행 이름
+				mappingVo.setCustomerNo(customerNo); // 거래처번호
+				mappingVo.setManageNo(taxbillNo); // 세금계산서 번호
+
+				Long voucher = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, user);
+				intangibleAssetsVo.setVoucherNo(voucher);
+
+			} else if (voucherNo != null) { // 전표 수정
+
+				CustomerVo customerVo = menu43Service.getCustomerInfo(customerNo);
+
+				VoucherVo voucherVo = new VoucherVo();
+				List<ItemVo> itemVoList = new ArrayList<ItemVo>();
+				MappingVo mappingVo = new MappingVo();
+
+				ItemVo itemVoD = new ItemVo(); // 차변(왼쪽)
+				ItemVo itemVoC = new ItemVo(); // 대변(오른쪽)
+
+				// 왼쪽 : 얻은것 무형자산 가격 :::: 오른쪽 계좌 가격
+				voucherVo.setRegDate(intangibleAssetsVo.getPayDate());
+				intangibleAssetsVo.setVoucherNo(voucherVo.getNo());
+
+				// 차변(d) : 영업권, 특허권, 상표권, 실용신안권, 의장권, 면허권, 개발비, 소프트웨어, 건설중인자산(무형) -> 전표에 등록
+				PurposeVo purposeVo = menu43Service.getPurposeInfo(purpose);
+				if (!purposeVo.getClassification().equals("산업재산권") && !purposeVo.getClassification().equals("무형자산")) {
+					itemVoD.setAccountNo(purposeVo.getAccountNo());
+					itemVoD.setAmount(acqPrice + addiFee); // 취득금액
+					itemVoD.setAmountFlag("d");
+					itemVoList.add(itemVoD);
+
+				// 대변(c) : 현금
+				itemVoC.setAmount(acqPrice + addiFee); // 취득금액 +
+																												// 부대비용
+				itemVoC.setAmountFlag("c");
+				itemVoC.setAccountNo(1110103L); // 계정과목: 보통예금
+				itemVoList.add(itemVoC);
+				}
+
+				// 매핑테이블
+				mappingVo.setVoucherUse(intangibleAssetsVo.getPurpose()); // 왜 샀는지 적어준다(용도).
+				mappingVo.setSystemCode(intangibleAssetsVo.getId()); // 각 무형자산 코드번호
+				mappingVo.setDepositNo(customerVo.getDepositNo()); // 계좌번호
+				mappingVo.setBankCode(customerVo.getBankCode()); // 은행 번호
+				mappingVo.setBankName(customerVo.getBankName()); // 은행 이름
+				mappingVo.setCustomerNo(customerNo); // 거래처번호
+				mappingVo.setManageNo(taxbillNo); // 세금계산서 번호
+				mappingVo.setVoucherNo(voucherNo); // 전표 번호를 넣어야 수정된 것이 삭제가 됨
+
+				voucherVo.setNo(voucherNo);
+				Long updateVoucher = menu03Service.updateVoucher(voucherVo, itemVoList, mappingVo, user);
+				intangibleAssetsVo.setVoucherNo(updateVoucher);
+			}
 			menu43Service.update(intangibleAssetsVo);
 			return "redirect:/" + MAINMENU + "/" + SUBMENU;
 		}
@@ -234,11 +234,12 @@ public class Menu43Controller {
 			@SessionAttribute("authUser") UserVo user) throws ParseException {
 
 		id = 'f' + id;
+		intangibleAssetsVo.setId(id);
 		
 		String userId = user.getId();
 		
 		Long voucherNo = menu43Service.getVoucherNo(intangibleAssetsVo); // voucherNo는 db에서 직접 가져와야함
-
+		System.out.println("voucherNo:" + voucherNo);
 		// 마감 여부 체크
 		if (!menu19Service.checkClosingDate(user, intangibleAssetsVo.getPayDate())) { // 매입일자 가져오기
 			model.addAttribute("closingDate", true);

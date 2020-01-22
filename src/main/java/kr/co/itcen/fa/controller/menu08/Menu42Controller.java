@@ -55,7 +55,7 @@ public class Menu42Controller {
 			vehicleVo.setFlag(""); //삭제포함된거
 		}
 		else { 
-			vehicleVo.setFlag("s"); // 처음 s는 의미없고 처음일때 null이아니고 공백이 아닐때 작성된거랑 수정된거가 나와야됨
+			vehicleVo.setFlag("so"); // 처음 s는 의미없고 처음일때 null이아니고 공백이 아닐때 작성된거랑 수정된거가 나와야됨
 		}
 		
 		

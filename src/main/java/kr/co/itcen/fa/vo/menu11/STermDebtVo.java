@@ -22,7 +22,6 @@ public class STermDebtVo {
 	private String intPayWay; // 이자지급방식
 	private String mgr; // 차입금담당자
 	private String mgrCall; // 차입금담당자전화
-	private String deptClassification; // 차입금대분류
 	private String bankCode; // 은행코드
 	private String bankName;	//은행이름 , 은행코드를 통해 얻어온다
 	private String depositNo; // 계좌번호
@@ -126,12 +125,7 @@ public class STermDebtVo {
 	public void setMgrCall(String mgrCall) {
 		this.mgrCall = mgrCall;
 	}
-	public String getDeptClassification() {
-		return deptClassification;
-	}
-	public void setDeptClassification(String deptClassification) {
-		this.deptClassification = deptClassification;
-	}
+
 	public String getBankCode() {
 		return bankCode;
 	}
@@ -212,7 +206,7 @@ public class STermDebtVo {
 				+ ", debtAmount=" + debtAmount + ", repayBal=" + repayBal + ", repayWay=" + repayWay
 				+ ", repayCompleFlag=" + repayCompleFlag + ", debtExpDate=" + debtExpDate + ", debtDate=" + debtDate
 				+ ", expDate=" + expDate + ", intRate=" + intRate + ", intPayWay=" + intPayWay + ", mgr=" + mgr
-				+ ", mgrCall=" + mgrCall + ", deptClassification=" + deptClassification + ", bankCode=" + bankCode
+				+ ", mgrCall=" + mgrCall + ", deptClassification="  + ", bankCode=" + bankCode
 				+ ", bankName=" + bankName + ", depositNo=" + depositNo + ", depositHost=" + depositHost
 				+ ", accountNo=" + accountNo + ", voucherNo=" + voucherNo + ", deleteFlag=" + deleteFlag + ", insertId="
 				+ insertId + ", insertDate=" + insertDate + ", updateId=" + updateId + ", updateDate=" + updateDate

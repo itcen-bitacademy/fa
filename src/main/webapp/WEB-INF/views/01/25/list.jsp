@@ -230,7 +230,7 @@ html, body {
 				    }
 				 })
 			} else {
-				alert("장비를 정지합니다");
+			//	alert("장비를 정지합니다");
 			}
 			
 		});
@@ -381,7 +381,7 @@ html, body {
 							event.preventDefault();
 							$("#tbody-bankList").find("tr").remove();
 							var searchAccountOption = $("#searchAccountOption").val();
-							alert(searchAccountOption);
+						 // alert(searchAccountOption);
 							if (searchAccountOption == 'bankCode') {
 								var bankcodeVal = $("#input-dialog-bankcode").val();
 								// ajax 통신

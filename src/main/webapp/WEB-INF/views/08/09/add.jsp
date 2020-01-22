@@ -42,7 +42,9 @@
      height:calc(100% - 84px);
    	}
    }
-   
+ #default-landcode {
+    background-color: #FFFF!important;
+   }
 </style>
 </head>
 <body class="skin-3">
@@ -71,7 +73,7 @@
 										<input type="text" id="land_code" name="id" style="margin:0 5px 0 0" placeholder="9자를 입력하세요" maxlength="9"/>
 										<input id="overlapBtn" style="height:28px" type="button" value="중복확인">
 										<i id="check-icon" class="icon-ok bigger-180 blue" style="display:none;"></i>
-										<input readonly type="text" class="span6" id="default-landcode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
+										<input readOnly type="text" class="span6" id="default-landcode" style="border:none;" placeholder="ex)2019년12월03일 191203001">
 										<!--<input readonly type="text" class="span6" id="neverchange" style="border:none;color:#0067a3"  placeholder="토지코드는 변경할수 없습니다.">
 										<input type="text" class="span6" id="onlynumber" style="border:none;color:red"  value="토지코드는 숫자만 입력하세요.">
 										<input type="text" class="span6" id="null-landcode" style="border:none;color:red"  value="품목코드는 필수 입력 사항입니다!"> -->
@@ -126,7 +128,7 @@
 									</div>
 										</div>
 								</div>
-								<div class="control-group">
+								<!-- <div class="control-group">
 										<div style="float:left;width:50%">
 											<label style="text-align:left;" class="control-label" for="form-field-2">취득금액</label>
 											<div class="controls">
@@ -137,8 +139,26 @@
 											<label style="width:70px; margin-right:10px;text-align:left;" class="control-label" for="form-field-1">취득세</label>
 											<input readonly style="text-align:right" type="text" id="acqTax" name="acqTax" />
 										</div>
+								</div> -->
+								<div class="control-group" >
+									<label style="text-align:left;" class="control-label" for="form-field-2">취득금액</label>
+									<div class="controls">
+										<input type="text" style="text-align:right;" id="acqPrice" name="acqPrice" />
+									</div>
 								</div>
-								<div class="control-group">
+								<div class="control-group" >
+									<label style="text-align:left;" class="control-label" for="form-field-1">취득세</label>
+									<div class="controls">
+										<input readonly style="text-align:right" type="text" id="acqTax" name="acqTax" />
+									</div>
+								</div>
+								<div class="control-group" >
+									<label style="text-align:left;" class="control-label" for="form-field-1">토지소유자</label>
+									<div class="controls">
+										<input type="text" id="ownerName" name="ownerName" placeholder="이름을 입력하세요"/>
+									</div>
+								</div>
+								<!-- <div class="control-group">
 										<div style="float:left;width:50%">											
 											<label style="text-align:left;" class="control-label" for="form-field-1">토지소유자</label>
 											<div class="controls">
@@ -149,9 +169,10 @@
 											<label style="width:70px; margin-right:10px;text-align:left;" class="control-label" for="form-field-1">합병코드</label>
 											<input type="text" id="combineNo" name="combineNo" placeholder="합병코드번호를 입력하세요"/>
 										</div>
-								</div>
+								</div> -->
 							</div><!-- 차변 span -->
 							<div class="span6"><!-- 대변 -->
+								<!-- <div class="control-group" style="margin-top:50px;"> -->
 								<div class="control-group" style="margin-top:50px;">
 									<label style="text-align:left;" class="control-label" >평수</label>
 									<div class="controls">
@@ -171,8 +192,8 @@
 										<input readonly type="text" id="customerManager" name="customerManager" />
 									</div>
 								</div>
-								<div class="control-group">
-										<div style="float:left;width:50%">
+								<!-- <div class="control-group">
+										<div style="float:left;"margin-left: 50px;"">
 											<label style="text-align:left;" class="control-label" for="form-field-1">공시지가</label>
 											<div class="controls">
 												<input style="text-align:right;" type="text" id="publicValue" name="publicValue" />
@@ -182,12 +203,25 @@
 											<label style="width:70px; margin-right:10px;text-align:left;" class="control-label" for="form-field-1">기타비용</label>
 											<input style="text-align:right;" type="text" id="etcCost" name="etcCost" />
 										</div>	
+								</div> -->
+								<div class="control-group" >
+									<label style="text-align:left;" class="control-label" for="form-field-1">공시지가</label>
+									<div class="controls">
+										<input style="text-align:right;" type="text" id="publicValue" name="publicValue" />
+									</div>
+								</div>
+								<div class="control-group" >
+									<label style="text-align:left;" class="control-label" for="form-field-1">기타비용</label>
+									<div class="controls">
+										<input style="text-align:right;" type="text" id="etcCost" name="etcCost" />
+									</div>
 								</div>
 								
-								<div class="control-group" id="div-taxbillNo" style="display:none;">
-									<label style="text-align:left;display:none;" class="control-label" id="label-taxbillNo" for="form-field-select-1"  >세금계산서번호</label>
+								
+								<div class="control-group" >
+									<label style="width:70px; margin-right:10px;text-align:left;" class="control-label" for="form-field-1">합병코드</label>
 									<div class="controls">
-										<input style="display:none;" type="text" class="span7" id="taxbillNo" name="taxbillNo">
+										<input type="text" id="combineNo" name="combineNo" placeholder="합병코드번호를 입력하세요"/>
 									</div>
 								</div>
 								<div class="control-group">
@@ -198,6 +232,12 @@
 
 										<input name="taxKind" type="radio" class="ace" id="zeroTax" value="영세">
 										<span class="lbl">영세</span>
+									</div>
+								</div>
+								<div class="control-group" id="div-taxbillNo" style="display:none;">
+									<label style="text-align:left;display:none;" class="control-label" id="label-taxbillNo" for="form-field-select-1"  >세금계산서번호</label>
+									<div class="controls">
+										<input style="display:none;" type="text" class="span7" id="taxbillNo" name="taxbillNo">
 									</div>
 								</div>
 							</div><!-- 대변 span -->

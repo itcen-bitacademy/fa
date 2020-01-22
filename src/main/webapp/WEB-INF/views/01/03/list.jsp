@@ -669,6 +669,11 @@ html, body {
 			success: function(response) {
 				console.log("success");
 				console.log(response);
+				
+				if(response.checkClosingDate) {
+					if(!valid.checkClosingDate("regDate", "마감일자가 지나서 입력이")) return;
+				}
+				
 				// 전표 입력시 list로 이동
 				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read";
 			},
@@ -896,15 +901,20 @@ html, body {
 			success: function(response) {
 				console.log("success");
 				console.log(response);
-				// 전표 입력시 list로 이동
 				
+				if(response.checkClosingDate) {
+					console.log("11");
+					if(!valid.checkClosingDate("regDate", "마감일자가 지나서 수정이")) return;
+				}
+				
+				// 전표 입력시 list로 이동
 				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read";
 				window.location.reload();
 			},
 			error: function(response) {
 				console.log("error");
 				console.log(response);
-				if(!valid.teamCheck("regDate", "관리팀")) return;
+				if(!valid.teamCheck("insertTeam", "관리팀")) return;
 			}
 			
 		}); // ajax
@@ -997,15 +1007,20 @@ html, body {
 			success: function(response) {
 				console.log("success");
 				console.log(response);
-				// 전표 입력시 list로 이동
 				
+				if(response.checkClosingDate2) {
+					console.log("11");
+					if(!valid.checkClosingDate2("regDate", "마감일자가 지나서 삭제가")) return;
+				}
+				
+				// 전표 입력시 list로 이동
 				window.location.href = "${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode }/read";
 				window.location.reload();
 			},
 			error: function(response) {
 				console.log("error");
 				console.log(response);
-				if(!valid.teamCheck2("regDate", "관리팀")) return;
+				if(!valid.teamCheck2("insertTeam", "관리팀")) return;
 			}
 			
 		}); // ajax
@@ -1101,11 +1116,19 @@ html, body {
     		},
     		nullCard: function(id, msg){ // null 체크
     			if($("#"+id).val()==""){
-    				dialog(msg+"정보가 없어서 입력이 불가능합니다..");
+    				dialog(msg+"정보가 없어서 입력이 불가능합니다.");
     				return false;
     			} else {
     				return true;
     			}
+    		},
+    		checkClosingDate: function(id, msg){ // null 체크
+    			dialog(msg+"불가능합니다.");
+    			return false;
+    		},
+    		checkClosingDate2: function(id, msg){ // null 체크
+    			dialog(msg+"불가능합니다.");
+    			return false;
     		}
     
     }

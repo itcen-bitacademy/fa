@@ -268,6 +268,7 @@
 						return;
 					} else {
 						if(!valid.nullCheck("no", "사업자번호")) return;
+						if(!valid.numberCheck("no", "사업자번호")) return;
 						$("#check_ok").show();
 					}
 				},

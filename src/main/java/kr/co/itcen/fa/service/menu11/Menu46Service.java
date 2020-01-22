@@ -128,10 +128,10 @@ public class Menu46Service {
 		itemVo3.setAccountNo(new BankAccountVo().getAccountNo());				//보통예금 계정과목 코드
 		itemVoList.add(itemVo3);
 		
-		mappingVo.setVoucherUse(stermdebtVo.getName());						//사용목적
-		mappingVo.setSystemCode(stermdebtVo.getCode());						//차입금코드
+		mappingVo.setVoucherUse(stermdebtVo.getName());							//사용목적
+		mappingVo.setSystemCode(stermdebtVo.getCode());							//차입금코드
 		mappingVo.setCustomerNo(stermdebtVo.getBankCode());
-		mappingVo.setDepositNo(stermdebtVo.getDepositNo());					//계좌번호
+		//mappingVo.setDepositNo(stermdebtVo.getDepositNo());					//계좌번호
 		
 		//전표입력후 전표번호를 반환
 		return menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, userVo);
@@ -157,7 +157,7 @@ public class Menu46Service {
 		mappingVo.setVoucherUse(vo.getName());				//사용목적
 		mappingVo.setSystemCode(vo.getCode());				//차입금코드
 		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
+		//mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
 		
 		VoucherVo voucherVo = new VoucherVo();
 		voucherVo.setRegDate(vo.getDebtDate());
@@ -189,7 +189,7 @@ public class Menu46Service {
 		mappingVo.setVoucherUse(vo.getName());				//사용목적
 		mappingVo.setSystemCode(vo.getCode());				//차입금코드
 		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
+		//mappingVo.setDepositNo(vo.getDepositNo());			//계좌번호
 		mappingVo.setVoucherNo(vo.getVoucherNo());			
 		
 		VoucherVo voucherVo = new VoucherVo();

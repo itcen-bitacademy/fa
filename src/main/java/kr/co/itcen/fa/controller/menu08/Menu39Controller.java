@@ -153,7 +153,7 @@ public class Menu39Controller {
 
 		buildingvo.setUpdateUserid(authUser.getId());
 		
-		buildingvo.setId("b"+buildingvo.getId());
+		buildingvo.setId("b" + buildingvo.getId());
 		
 		Long bVoucherNo = menu39Service.getVoucherNo(buildingvo.getId());
 		
@@ -177,7 +177,7 @@ public class Menu39Controller {
 	    	return MAINMENU + "/" + SUBMENU + "/add";
 	    } else {
 			//전표추가(세금계산서번호가 not null)
-			if (taxbillNo != null && bVoucherNo == null) {
+			if (taxbillNo != "" && taxbillNo != null && bVoucherNo == null) {
 				
 				//계좌(계좌번호, 은행코드, 은행이름)정보
 				CustomerVo bankInfo = menu39Service.getBankInfo(customerNo);
@@ -286,10 +286,9 @@ public class Menu39Controller {
 			@RequestParam(value="taxbillNo") String taxbillNo,
 			@SessionAttribute("authUser") UserVo authUser, BuildingVo buildingvo, Model model) throws ParseException{
 		
-		Long bVoucherNo = menu39Service.getVoucherNo(id);
+		id = "b" + id;
 		
-		String temp = "b" + id;
-		id = temp;
+		Long bVoucherNo = menu39Service.getVoucherNo(id);
 		
 		String userId = authUser.getId();
 		

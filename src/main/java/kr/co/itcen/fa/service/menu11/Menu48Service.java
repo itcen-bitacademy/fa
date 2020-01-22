@@ -72,7 +72,7 @@ public class Menu48Service {
 		mappingVo.setVoucherUse(vo.getName());//사용목적
 		mappingVo.setSystemCode(vo.getCode());//제코드l190
 		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
+		//mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 		
 		
 		
@@ -124,7 +124,7 @@ public class Menu48Service {
 		mappingVo.setSystemCode(lvo.getCode());//제코드l190
 		
 		mappingVo.setCustomerNo(lvo.getBankCode());
-		mappingVo.setDepositNo(lvo.getDepositNo());//계좌번호
+		//mappingVo.setDepositNo(lvo.getDepositNo());//계좌번호
 		
 		
 		Long no=menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, uservo);
@@ -183,7 +183,7 @@ public class Menu48Service {
 		mappingVo.setVoucherUse(vo.getName());//사용목적
 		mappingVo.setSystemCode(vo.getCode());//제코드l190
 		mappingVo.setCustomerNo(vo.getBankCode());
-		mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
+		//mappingVo.setDepositNo(vo.getDepositNo());//계좌번호
 		mappingVo.setVoucherNo(vo.getVoucherNo());
 		
 		
