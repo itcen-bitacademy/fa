@@ -121,7 +121,10 @@
 	select 
 		   no as itemcode
 		   , name as itemname
-    from tb_purchaseitem 
+    from tb_purchaseitem
+    ]]>
+    <![CDATA[
+    where delete_flag = 'N' 
 	]]>
 	</select>
 	
