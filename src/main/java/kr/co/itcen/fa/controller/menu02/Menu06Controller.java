@@ -368,8 +368,8 @@ public class Menu06Controller {
 							System.out.println(voucherVo);
 							System.out.println(itemVoList);
 							System.out.println(mappingVo);
-//							Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
-//							vo.setVoucherNo(no);
+							Long no = menu03Service.createVoucher(voucherVo, itemVoList, mappingVo, authUser);
+							vo.setVoucherNo(no);
 							menu06Service.voucherUpdate(vo);
 							List<PurchaseitemVo> itemList = menu06Service.getItemList();
 							List<CustomerVo> customerList = menu06Service.getCustomerList();
@@ -407,36 +407,45 @@ public class Menu06Controller {
 	// 전표삭제 + 매입삭제
 	@RequestMapping(value = { "/" + SUBMENU + "/delete" }, method = RequestMethod.POST)
 	public String delete(PurchasemanagementVo vo, Long number[], int quantity[], String itemCode[],
-			String itemName[], Long supplyValue[], Long taxValue[], @AuthUser UserVo authUser) {
+			String itemName[], Long supplyValue[], Long taxValue[], @AuthUser UserVo authUser, Model model) throws ParseException {
 		System.out.println(vo);
 		PurchasemanagementVo purchasemanagementVo = new PurchasemanagementVo(vo);
-		if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) {
-			if (itemCode.length > 1) {
-				
-				for (int i = 0; i < itemCode.length; i++) {
+		if (menu19Service.checkClosingDate(authUser, vo.getPurchaseDate())) {
+			if (vo.getTaxbillNo() == "" || vo.getTaxbillNo() == null || vo.getTaxbillNo().isEmpty()) {
+				if (itemCode.length > 1) {
 					
-					purchasemanagementVo.setNumber(number[i]);
-					menu06Service.delete(purchasemanagementVo);
+					for (int i = 0; i < itemCode.length; i++) {
+						
+						purchasemanagementVo.setNumber(number[i]);
+						menu06Service.delete(purchasemanagementVo);
+					}
+				} else {
+					menu06Service.delete(vo);
 				}
 			} else {
 				menu06Service.delete(vo);
+				vo.setVoucherNo(menu06Service.getVoucherNo(vo));
+				
+				// 세금계산서 삭제
+				menu06Service.taxbillDelete(vo);
+		
+				// 전표삭제
+				List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); // 여러건 동시삭제 때문에 리스트형식으로 받아옴 근데 난 하나씩만 삭제가 가능해서 그냥
+																			// 하나만 넣어 보내주면 됨
+				VoucherVo voucherVo = new VoucherVo();
+				voucherVo.setNo(vo.getVoucherNo());
+				voucherVolist.add(voucherVo);
+				menu03Service.deleteVoucher(voucherVolist, authUser);
 			}
+			return "redirect:/02";
 		} else {
-			menu06Service.delete(vo);
-			vo.setVoucherNo(menu06Service.getVoucherNo(vo));
-			
-			// 세금계산서 삭제
-			menu06Service.taxbillDelete(vo);
-	
-			// 전표삭제
-			List<VoucherVo> voucherVolist = new ArrayList<VoucherVo>(); // 여러건 동시삭제 때문에 리스트형식으로 받아옴 근데 난 하나씩만 삭제가 가능해서 그냥
-																		// 하나만 넣어 보내주면 됨
-			VoucherVo voucherVo = new VoucherVo();
-			voucherVo.setNo(vo.getVoucherNo());
-			voucherVolist.add(voucherVo);
-			menu03Service.deleteVoucher(voucherVolist, authUser);
+			model.addAttribute("closingDate", true);
+			List<PurchaseitemVo> itemList = menu06Service.getItemList();
+			List<CustomerVo> customerList = menu06Service.getCustomerList();
+			model.addAttribute("itemList", itemList);
+			model.addAttribute("customerList", customerList);
+			return MAINMENU + "/" + SUBMENU + "/list";
 		}
-		return "redirect:/02";
 	}
 
 }
