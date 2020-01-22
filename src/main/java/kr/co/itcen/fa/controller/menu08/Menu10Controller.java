@@ -91,6 +91,7 @@ public class Menu10Controller {
 									.queryParam("id",landVo.getId())
 									.queryParam("payDate",landVo.getPayDate())
 									.queryParam("sectionNo",landVo.getSectionNo())
+									.queryParam("sectionName",landVo.getSectionName())
 									.queryParam("customerNo",landVo.getCustomerNo())
 									.queryParam("wideAddress",landVo.getWideAddress())
 									.queryParam("cityAddress",landVo.getCityAddress())

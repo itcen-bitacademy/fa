@@ -117,7 +117,7 @@
 												<span class="add-on"> <i class="icon-calendar"></i>
 												</span>
 											</div>
-											<input readonly class="span5" type="text" name="payDate" id="payDate">
+											<input readonly class="span5" value="${landVo.payDate }" type="text" name="payDate" id="payDate">
 										</div>
 									</div>
 									
@@ -314,7 +314,16 @@
 $(function(){
 	$(".chosen-select").chosen(); 
 	
+	var sectionName = "${param.sectionName }";
+
+	if (sectionName != '') {
+		$('#classification').val(sectionName).trigger(
+				'chosen:updated');
+	}
+	
 });
+
+
 
 function clearBtn(){
 	$("#id").val("");  // 토지코드
@@ -350,7 +359,6 @@ $(function() {
 		 $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 	});
 });
-
 
 
 //주소
