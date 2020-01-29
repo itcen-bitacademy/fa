@@ -555,8 +555,8 @@ html,body{
 		            title: "거래처 현황",
 		            title_html: true,
 		               resizable: false,
-		             height: 1500,
-		             width: 1000,
+		             height: 800,
+		             width: 900,
 		             modal: true,
 		             close: function() {
 		             },
