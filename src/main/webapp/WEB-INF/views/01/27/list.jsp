@@ -105,6 +105,10 @@ html,body{
 			$("#readspace").hide();
 			
 		});
+		$("#btn-select").click(function(){
+			a = "select";
+		});
+		
 		
 		$("#inputform").submit(function(event) {
 	        event.preventDefault();
@@ -297,6 +301,16 @@ html,body{
 						$("#btn-create").show();
 				});
 				
+			}
+			 else if(a == "select") {
+				 console.log("왜안돼");
+				 $.ajax({
+					    url: "http://192.168.1.23:7867/customer",
+					    type: "GET",
+					    dataType: "json",
+					    crossDomain:true
+					 });
+			
 			} else {
 
 	    		openErrorModal("UNKNOWN ERROR","알수없는 에러입니다 \r\n 다시 시도해주세요.");
@@ -530,6 +544,29 @@ html,body{
 	             }
 	         });
 	      });
+	      
+		 	 $("#dialog-select").dialog({
+		         autoOpen : false
+		      });
+
+		      $("#btn-select").click(function() {
+		         $("#dialog-select").dialog('open');
+		         $("#dialog-select").dialog({
+		            title: "거래처 현황",
+		            title_html: true,
+		               resizable: false,
+		             height: 1500,
+		             width: 1000,
+		             modal: true,
+		             close: function() {
+		             },
+		             buttons: {
+		             "닫기" : function() {
+		                      $(this).dialog('close');
+		                 }
+		             }
+		         });
+		      });
 	  });
 	
 	
@@ -1278,6 +1315,7 @@ html,body{
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
 							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
+							<button class="btn btn-info btn-small" id="btn-select">거래처 현황 그래프</button>
 							</div>	<!-- /.span -->
 						
 						</div>
@@ -1391,6 +1429,9 @@ html,body{
 			</div>
 			<!-- /.row -->
 				
+	<div id="dialog-select" title="그래프" hidden="hidden">
+		<img src="http://192.168.1.23:8080/RImages/customerR.png">
+	</div>
 				
 				<!-- Validation Modal Start -->
 				<div id="staticBackdrop" class="hide">
