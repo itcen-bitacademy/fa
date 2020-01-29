@@ -279,7 +279,11 @@ function createPieChart(statMap, chartInfo){
 	        plotBackgroundColor: null,
 	        plotBorderWidth: null,
 	        plotShadow: false,
-	        type: 'pie'
+	        type: 'pie',
+	        
+	      	// Explicitly Tell the width and height of a chart
+		    width: 1590,
+		    height: 700
 	    },
 	    title: {
 	        text: chartInfo.subTitle
@@ -323,7 +327,7 @@ function createBarChart(statMap, chartInfo){
 	        
 	        // Explicitly Tell the width and height of a chart
 	        width: 1590,
-	        height: 800
+	        height: 700
 	    },
 	    title: {
 	        text: '부채통계'
