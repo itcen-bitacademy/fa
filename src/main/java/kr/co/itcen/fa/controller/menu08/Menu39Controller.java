@@ -207,7 +207,7 @@ public class Menu39Controller {
 				itemVoList.add(itemVo2);
 
 				//매핑테이블
-			    mappingVo.setVoucherUse("민준용");  // 사용용도
+			    mappingVo.setVoucherUse("회사건물증축");  // 사용용도
 			    mappingVo.setSystemCode(buildingvo.getId());  // 각 건물코드
 			    mappingVo.setDepositNo(bankInfo.getDepositNo());  // 계좌번호
 			    mappingVo.setCustomerNo(customerNo); //거래처번호
