@@ -896,10 +896,6 @@
 								
 								
 								
-								
-								
-								
-								
 								<div class="control-group">
 									<label class="control-label" for="form-field-factory-name" style="text-align:initial; width:100px;">생산공장명</label>
 									<div class="controls" style="margin-left:150px">

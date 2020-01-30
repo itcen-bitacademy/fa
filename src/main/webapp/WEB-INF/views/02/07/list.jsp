@@ -94,7 +94,7 @@ html, body {
 											</select>
 										</div>
 									</div>
-							
+									
 									<div class="control-group">
 										<label class="control-label" for="form-field-1" style="text-align:initial;">정렬기준</label>
 										<div class="controls">
@@ -153,6 +153,12 @@ html, body {
 									<p id="dialog-txt" class="bolder grey">
 									</p>
 								</div>
+								
+								<!-- ////////////////////////////////////////////////////////// -->
+								<div id="purchase_graph" title="그래프" hidden="hidden">
+									<img src="http://192.168.1.25:8080/RImages/rdata2.png">
+								</div>
+								<!-- ////////////////////////////////////////////////////////// -->
 							</form>
 							
 							<div class="row-fluid">
@@ -161,7 +167,7 @@ html, body {
 									<label id="purchaseitem_allcount">총 ${total }건</label>
 								</div>
 								<div style="float:right">
-									<button class="btn btn-warning btn-small" type="button" id="showChart" onclick="">차트 보기</button>
+									<button class="btn btn-warning btn-small" type="button" id="btn-showChart" onclick="">차트 보기</button>
 								</div>
 									<table id="searchList" class="table table-striped table-bordered table-hover">
 										<thead>
@@ -262,6 +268,42 @@ html, body {
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/bootstrap-datepicker.min.js"></script>
 	<script>
+	/////////////////통계 버튼
+	$(function() {
+		$("#btn-showChart").click(function(event) {
+			event.preventDefault();
+			
+			$.ajax({
+				url: "http://192.168.1.23:7867/buy",
+				type: "GET",
+				dataType: "json",
+				crossDomain:true
+			});
+			
+			$("#purchase_graph").dialog({
+				autoOpen : false
+			});
+			
+			$("#purchase_graph").dialog('open');
+			$("#purchase_graph").dialog({
+				title: "매입차트",
+				title_html: true,
+				resizable: false,
+				height: 800,
+				width: 1000,
+				modal: true,
+				close: function() {
+				},
+                buttons: {
+                "닫기":function() {
+                	$(this).dialog('close');
+                	}
+				}
+			});
+		});
+	});
+	/////////////////////
+	
 	var blockStartNum = "${blockStartNum}";
 	var blockLastNum = "${blockLastNum}";
 	var lastPage = parseInt("${lastPage }");
