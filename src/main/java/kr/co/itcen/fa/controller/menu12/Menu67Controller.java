@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kr.co.itcen.fa.controller.menu11.Menu46Controller;
 import kr.co.itcen.fa.security.Auth;
 import kr.co.itcen.fa.service.menu12.Menu67Service;
 
@@ -16,14 +17,14 @@ import kr.co.itcen.fa.service.menu12.Menu67Service;
  */
 @Auth
 @Controller
-@RequestMapping("/" + Menu67Controller.MAINMENU)
+@RequestMapping("/" + Menu67Controller.MAINMENU + "/" + Menu67Controller.SUBMENU)
 public class Menu67Controller {
 	
 	public static final String MAINMENU = "12";
 	public static final String SUBMENU = "67";
 	
-	/*@Autowired
-	private Menu67Service menu67Service;*/
+	@Autowired
+	private Menu67Service menu67Service;
 	
 	//기본
 /*	@RequestMapping({"",  "/add" })
@@ -36,9 +37,9 @@ public class Menu67Controller {
 		return MAINMENU + "/" + SUBMENU + "/statistics";
 	}*/
 	
-	
-	@RequestMapping({"/" + SUBMENU, "/" + SUBMENU + "/list" })
-	public String list(Model model) {
+	@RequestMapping({"", "/statistics" })
+	public String list() {
+		System.out.println("매출통계");
 		
 		return MAINMENU + "/" + SUBMENU + "/statistics";
 	}
