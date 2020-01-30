@@ -106,7 +106,14 @@ html,body{
 			
 		});
 		$("#btn-select").click(function(){
-			a = "select";
+			 console.log("R 씨바R");
+			 $.ajax({
+				    url: "http://192.168.1.25:7867/customer",
+				    type: "GET",
+				    dataType: "json",
+				    crossDomain:true
+				 });
+		
 		});
 		
 		
@@ -301,17 +308,8 @@ html,body{
 						$("#btn-create").show();
 				});
 				
-			}
-			 else if(a == "select") {
-				 console.log("왜안돼");
-				 $.ajax({
-					    url: "http://192.168.1.23:7867/customer",
-					    type: "GET",
-					    dataType: "json",
-					    crossDomain:true
-					 });
-			
-			} else {
+			}  
+			 else {
 
 	    		openErrorModal("UNKNOWN ERROR","알수없는 에러입니다 \r\n 다시 시도해주세요.");
 				//alert("예외사항 발생");
@@ -555,7 +553,7 @@ html,body{
 		            title: "거래처 현황",
 		            title_html: true,
 		               resizable: false,
-		             height: 800,
+		             height: 750,
 		             width: 900,
 		             modal: true,
 		             close: function() {
@@ -1430,7 +1428,7 @@ html,body{
 			<!-- /.row -->
 				
 	<div id="dialog-select" title="그래프" hidden="hidden">
-		<img src="http://192.168.1.23:8080/RImages/customerR.png">
+		<img src="http://192.168.1.25:8080/RImages/customerR.png">
 	</div>
 				
 				<!-- Validation Modal Start -->
