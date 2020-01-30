@@ -1087,6 +1087,7 @@ html,body{
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">거래처 관리</h1>
+					<button class="btn btn-info btn-small pull-right" id="btn-select"style="margin-top: 3px; margin-bottom: 7px;">거래처 현황 그래프</button>
 				</div>
 				
 				<!-- /.page-header -->
@@ -1315,7 +1316,6 @@ html,body{
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
 							<button class="btn btn-default btn-small" id="btn-reset" type = "reset">초기화</button>
-							<button class="btn btn-info btn-small" id="btn-select">거래처 현황 그래프</button>
 							</div>	<!-- /.span -->
 						
 						</div>
