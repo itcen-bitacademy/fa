@@ -16,6 +16,9 @@
 	.form-horizontal .control-label {
 	    text-align: left
 	}
+	#customer-table{
+		    margin-bottom: -1px;
+	}
 </style>
 </head>
 
@@ -584,7 +587,7 @@
 					
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="row-fluid">
-						<div class="span12" style="overflow-x: scroll;">
+						<div class="span12" style="overflow-x: scroll; overflow-y:hidden">
 							<div id="sample-table-2_wrapper" class="dataTables_wrapper table-responsive" style="width:3000px;" role="grid">
 								<div class="hr hr-18 dotted"></div>
 								<div class="row-fluid" style="background-color:white">

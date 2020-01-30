@@ -95,9 +95,11 @@ public class Menu30Repository {
 			voucherVolist.get(i).setOrderNo(1);
 			no=no+1;
 		}
-		sqlSession.insert("menu30.insertVoucher", voucherVolist);
-		sqlSession.insert("menu30.insertItem", voucherVolist);
-		sqlSession.insert("menu30.insertMapping", voucherVolist);
+		if(voucherVolist.size()!=0) {
+			sqlSession.insert("menu30.insertVoucher", voucherVolist);
+			sqlSession.insert("menu30.insertItem", voucherVolist);
+			sqlSession.insert("menu30.insertMapping", voucherVolist);
+		}
 		
 	}
 }

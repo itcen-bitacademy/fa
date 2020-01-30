@@ -140,6 +140,9 @@
 		           , section_code as sectioncode
 		    from tb_purchaseitem
 		    where section_code like #{sectioncode }
+		    <![CDATA[
+    			and delete_flag = 'N' 
+			]]>
 	</select>
 	
 	<!-- 	전체 페이지를 카운트 하는 코드 -->

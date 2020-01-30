@@ -215,7 +215,7 @@ tr.selected{background-color: #ddd}
 				<section>
 					<div class="ia-left"><label class="label-name">단기차입금코드</label></div>
 					<div class="ia-right">
-						<input type="text" id="code" name="code" onkeydown="codeChanged()" onchange="codeChanged()" required>
+						<input type="text" id="code" name="code" onkeydown="codeChanged()"  maxlength="10" required>
 						<button type="button" id='btn-chk-duplication' onclick="checkDuplication()">중복확인</button>
 						<i class="icon-ok bigger-180 blue" id="img-checkcode" style="display: none;"></i>
 						<input type="hidden" name="isDuplicated" value="Y">
@@ -331,7 +331,12 @@ tr.selected{background-color: #ddd}
 				</section>
 			</section>
 			<hr>
-		</form>					
+		</form>
+		<section id="page-info" class="page-info">
+			<div id="pg-total-row" class="pg-total-row">
+				<p></p>
+			</div>		
+		</section>			
 		<!-- list -->
 		<div style="overflow: auto;">
 			<table  class="table table-bordered table-hover" style=" min-width: 2000px; margin-bottom: 0; width: auto;">
@@ -456,17 +461,21 @@ $("#int-rate").on("keydown",function(e){
 	var pattern = /^((\d{1,2}|100)([.]\d{0,2})?)?$/;	
    	
 	var charCode = (e.which) ? e.which : e.keyCode;	
-	
-	if((charCode >= 48) && (charCode <= 57)){
-		value = String(value) + String.fromCharCode(e.keyCode);
+		
+	if((charCode >= 96) && (charCode <= 105)){				//숫자패드
+		charCode = charCode - 48;							//숫자 키로 변경
+	}
+		
+	console.log("기존 value : " + value);
+	if((charCode >= 48) && (charCode <= 57) ){
+		value = String(value) + String.fromCharCode(charCode);
 	}
 	
-	console.log("value : " + value);
-   	console.log("keyCode String : " + String.fromCharCode(e.keyCode));
-   	console.log("e.keyCode: " + e.keyCode);
+	console.log("수정 value : " + value);
    	console.log("charCode String : " + String.fromCharCode(charCode));
-   	console.log("charCode : " + charCode);
+   	console.log("charCode: " + charCode);
    	
+   	console.log("key down test value : " + value);
     if (!pattern.test(value)) {
         dialog("100 이하의 숫자만 입력가능하며,\n소수점 둘째자리까지만 허용됩니다.");
         return false;
@@ -475,19 +484,24 @@ $("#int-rate").on("keydown",function(e){
 }).on("keyup", function(e){
 	console.log("---------------keyup--------------");
 	var value = $(this).val();
-	console.log("value : " + value);
+	console.log("처음 value : " + value);
 	
 	var charCode = (e.which) ? e.which : e.keyCode;				//크로스 브라우징
-
-	console.log("keyCode String : " + String.fromCharCode(e.keyCode));
-	console.log("keyCode : " + e.keyCode);
+	
+	if((charCode >= 96) && (charCode <= 105)){					//숫자패드		
+		charCode = charCode - 48;								//상단 숫자키로 변경
+	}
+	
+	console.log("charCode String : " + String.fromCharCode(charCode));
+	console.log("charCode : " + charCode);
 	if((charCode < 48) || (charCode> 57)){
-		if(charCode != 190){//숫자 + .만 입력 가능
+		if(charCode != 190 && charCode != 110){					//숫자  + '.' 만 입력 가능(숫자패드 .도 포함)
 			console.log("불가능");
 			$(this).val("");
 		}
 	}
-	console.log("value : " + $(this).val());
+	
+	console.log("마지막 value : " + $(this).val());
 }).on("keypress", function(e){
 	console.log("---------------keyPress--------------");
 	var value = $(this).val();
@@ -541,6 +555,8 @@ function isValidCode(code){
 	}else if(code.value.substr(0,1) != "G"){
 		console.log("code.value.substr(0) : " + code.value.substr(0,1));
 		dialog("단기차입금코드는 G로 시작해야합니다.", code);
+	}else if(code.value.length != 10){
+		dialog("단기차입금코드는 10자 입니다.", code);
 	}else{
 		isValid = true;
 	}
@@ -586,11 +602,11 @@ function insert(){
 	console.log("---------------------insert() called ---------------------------------");
 	var inputForm = $("#input-form")[0];
 	
-	/* if(inputForm.vo.value != ""){
+	if(inputForm.vo.value != ""){
 		dialog("새로운 데이터를 입력해주세요.");
 		resetForm();
 		return;
-	}  */
+	} 
 	
 	if(!isValidDebt(inputForm)){
 		console.log("유효성 위반");
@@ -690,6 +706,10 @@ function isValidDebt(inputForm){
 		dialog("차입금액을 입력하세요.", inputForm.debtAmountComma);
 	}else if(inputForm.debtExpDate.value == ''){
 		dialog("차입일자, 만기일자를 입력하세요.", inputForm.debtExpDate);
+	}else if(inputForm.intPayWay.value == ''){
+		dialog("이자지급방식을 선택하세요.", inputForm.intPayWay);
+	}else if(inputForm.repayWay.value == ''){
+		dialog("상환방식을 선택하세요.", inputForm.repayWay);
 	}else if(inputForm.bankCode.value == ''){
 		dialog("은행을 선택하세요.", inputForm.bankCode);
 	}else if(inputForm.majorCode.value == ''){
@@ -1232,7 +1252,7 @@ function selectRow(thisObj){
 	}
 	
 	$("#btn-chk-duplication").css("display", "none");
-	//$(inputForm.code).attr("readonly", true);
+	$(inputForm.code).attr("readonly", true);
 	
 	inputForm.vo.value= inputVo.val();
 	inputForm.voucherNo.value = vo.voucherNo;
@@ -1388,8 +1408,8 @@ function renderingPage(pagination){
 		$("#pg-list").append("<li class='disabled'><a href='#'><i class='icon-double-angle-right'></i></a></li>");
 	}
 	
-	$("#above-table-right>*").remove();
-	$("#above-table-right").append("<p>총  " +pagination.totalCnt + "건</p>")
+	$("#pg-total-row>*").remove();
+	$("#pg-total-row").append("<p>총  " +pagination.totalCnt + "건</p>");
 }
 
 //---------------------------상환리스트 Dialog---------------------------//
@@ -1461,6 +1481,12 @@ function search() {
 	console.log("----------------search() called----------------");
 	var inputForm = $("#input-form")[0];
 	var conditionVo = {"code": inputForm.code.value, "financialYear":inputForm.financialYear.value};
+	
+	if(inputForm.financialyearId.value== "" && inputForm.code.value == ""){
+		dialog("하나의 검색조건을 입력해주세요");
+		return;
+	}
+	
 	$("#search-condition").val(JSON.stringify(conditionVo));
 	getListAjax(1);
 }

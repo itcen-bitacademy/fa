@@ -105,6 +105,10 @@ html,body{
 			$("#readspace").hide();
 			
 		});
+		$("#btn-select").click(function(){
+			a = "select";
+		});
+		
 		
 		$("#inputform").submit(function(event) {
 	        event.preventDefault();
@@ -297,6 +301,16 @@ html,body{
 						$("#btn-create").show();
 				});
 				
+			}
+			 else if(a == "select") {
+				 console.log("왜안돼");
+				 $.ajax({
+					    url: "http://192.168.1.23:7867/customer",
+					    type: "GET",
+					    dataType: "json",
+					    crossDomain:true
+					 });
+			
 			} else {
 
 	    		openErrorModal("UNKNOWN ERROR","알수없는 에러입니다 \r\n 다시 시도해주세요.");
@@ -530,6 +544,29 @@ html,body{
 	             }
 	         });
 	      });
+	      
+		 	 $("#dialog-select").dialog({
+		         autoOpen : false
+		      });
+
+		      $("#btn-select").click(function() {
+		         $("#dialog-select").dialog('open');
+		         $("#dialog-select").dialog({
+		            title: "거래처 현황",
+		            title_html: true,
+		               resizable: false,
+		             height: 800,
+		             width: 900,
+		             modal: true,
+		             close: function() {
+		             },
+		             buttons: {
+		             "닫기" : function() {
+		                      $(this).dialog('close');
+		                 }
+		             }
+		         });
+		      });
 	  });
 	
 	
@@ -1050,6 +1087,7 @@ html,body{
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">거래처 관리</h1>
+					<button class="btn btn-info btn-small pull-right" id="btn-select"style="margin-top: 3px; margin-bottom: 7px;">거래처 현황 그래프</button>
 				</div>
 				
 				<!-- /.page-header -->
@@ -1391,6 +1429,9 @@ html,body{
 			</div>
 			<!-- /.row -->
 				
+	<div id="dialog-select" title="그래프" hidden="hidden">
+		<img src="http://192.168.1.23:8080/RImages/customerR.png">
+	</div>
 				
 				<!-- Validation Modal Start -->
 				<div id="staticBackdrop" class="hide">

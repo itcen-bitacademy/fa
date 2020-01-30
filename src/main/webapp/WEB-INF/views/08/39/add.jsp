@@ -783,10 +783,10 @@
 				//radio button
 				if (td.eq(23).text() == "과세") {
 					$("input[id=tax]").prop('checked', true);
-				} else if (td.eq(24).text() == "영세") {
+				} else {
 					$("input[id=zeroTax]").prop('checked', true);
 				}
-
+				
 				//CRUD button
 				if ($("#taxbillNo").val() != '') {
 					$("#modify").hide();

@@ -541,8 +541,8 @@
 				$("#search").show(); //조회 버튼 보이기
 				$("#clear").show(); //초기화 버튼 보이기
 				
-			 	$("#nabbu").hide();
-				$("#walsa").hide(); 
+			 	//$("#nabbu").hide();
+				//$("#walsa").hide(); 
 				$("#segumBtn").hide();
 			
 				$("#overlap-vehiclecode").hide();

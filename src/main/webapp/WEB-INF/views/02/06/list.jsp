@@ -581,6 +581,7 @@ padding: 10px 0 0 0 ;
 		   			if(!valid.nullCheck("customerCode", "거래처 코드")) return; // 거래처 코드 널 체크
 		   			if(!valid.nullCheck("receiptDate", "입고 일자")) return;
 		   			if(!valid.nullCheck("releaseDate", "출고 일자")) return;
+		   			if(!valid.notNullCheck("taxbillNo", "세금계산서 번호")) return;
 		   			var tableSize = ($("#item-table tr").length/2)+0.5
 		   			if( tableSize > 1){
 		   				for(var i=1; i<=tableSize; i++){
@@ -625,6 +626,15 @@ padding: 10px 0 0 0 ;
 		        				return false;
 		        			} else {
 		        				return true;
+		        			}
+		        		},
+		        		
+		        		notNullCheck: function(id, msg){ // null 체크
+		        			if($("#"+id).val()==""){
+		        				return true;
+		        			} else {
+		        				dialog(msg+" 는 수정화면에서 입력 가능합니다.");
+		        				return false;
 		        			}
 		        		}
 		        
