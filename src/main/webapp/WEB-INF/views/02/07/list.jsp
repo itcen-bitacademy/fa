@@ -156,8 +156,13 @@ html, body {
 							</form>
 							
 							<div class="row-fluid">
-								<div class="span12" >
+								<div class="span12">
+								<div style="float:left">
 									<label id="purchaseitem_allcount">총 ${total }건</label>
+								</div>
+								<div style="float:right">
+									<button class="btn btn-warning btn-small" type="button" id="showChart" onclick="">차트 보기</button>
+								</div>
 									<table id="searchList" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
