@@ -475,6 +475,11 @@
 	  	 	var month = (date.getMonth()+1).toString();	 // 월	
 	  		var day = date.getDate().toString(); // 일
 	  		
+	  		//강제 적용
+	  		//var year = "2019";
+	  		//var month = "12";
+	  		//var day = "05";
+	  		
 	  		if (month.length < 2) month = "0" + month; // 한자리 월 0
 	  	 	if (day.length < 2) day = "0" + day; // 한자리 일 0
 	  	 	

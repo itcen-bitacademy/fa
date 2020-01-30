@@ -166,10 +166,10 @@
 			</div>
 			<div class="tabbed">
 				<ul>
-					<li class="active">년간부채</li>
-					<li>월별부채</li>
-					<li>년간 지급이자</li>
-					<li>계정별 부채비율</li>					
+					<li class="active">2019 월별 매출총계</li>
+					<li>2020 월별 매출총계</li>
+					<li>2019 세금계산서 발행</li>
+					<li>2020 세금계산서 발행</li>					
 				</ul>
 				<button class="pull-right" onclick="location.href='${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}'" >돌아가기</button>
 			</div>
@@ -177,7 +177,7 @@
 			<figure class="highcharts-figure">
 			    <div id="container"></div>
 			    <p class="highcharts-description">
-			        부채 통계
+			        	매출 통계
 			    </p>
 			</figure>
 		</div><!-- /.page-content End-->
@@ -241,14 +241,16 @@ function addTabClick(){
 
 /* 그래프에 뿌려주는 코드 */
 function setTabValue(tabs){
-	$(tabs[0]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearDebtStat", "년간 부채 합계", "bar", 100000000)) + "'/>");
-	$(tabs[1]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getMonthDebtStat", "월간 부채 합계", "bar", 10000000)) + "'/>");
-	$(tabs[2]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getYearIntStat", "년간 지급이자 합계", "bar", 10000000)) + "'/>");
-	$(tabs[3]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getDebtRatio", "계정별 부채비율", "pie")) + "'/>");
+	$(tabs[0]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/get2019MonthSales", "2019 월간 매출 총 합계", "bar", 10000000)) + "'/>");
+	$(tabs[1]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/get2020MonthSales", "2020 월간 매출 총 합계", "bar", 100000000)) + "'/>");
+	$(tabs[2]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/get2019MonthTaxbill", "2019 월간 세금계산서 발행 건수", "bar1", 10)) + "'/>");
+	$(tabs[3]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/get2020MonthTaxbill", "2020 월간 세금계산서 발행 건수", "bar1", 10)) + "'/>");
+	$(tabs[4]).append("<input type='hidden' value='" + JSON.stringify(new ChartInfo("/getDebtRatio", "계정별 부채비율", "pie")) + "'/>");
 }	
 
 function ChartAjaxBody(chartInfo){
-	this.url = $("#context-path").val()  + "/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
+	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
+	//this.url = $("#context-path").val() + "/api/" + 12  + "/" + 67  + chartInfo.url;
 	this.type = "POST";
 	this.dataTYpe = "json";
 	this.data="";
@@ -257,6 +259,8 @@ function ChartAjaxBody(chartInfo){
 		
 		if(chartInfo.type == "bar")
 			createBarChart(response.data, chartInfo);
+		else if(chartInfo.type == "bar1")
+			createBarChart1(response.data, chartInfo);
 		else if(chartInfo.type == "pie")
 			createPieChart(response.data, chartInfo);
 	}
@@ -279,7 +283,8 @@ function comma(str) {
 	}
 </script>
 <script>
-//High Chart
+
+//HighChart Pie
 function createPieChart(statMap, chartInfo){
 	console.log("statMap : " + statMap[0].y);
 	Highcharts.chart('container', {
@@ -317,8 +322,68 @@ function createPieChart(statMap, chartInfo){
 	    }]
 	});
 }
-// statMap 파이차트 그래프
 
+//HighChart Bar
+function createBarChart1(statMap, chartInfo){
+	Highcharts.chart('container', {
+	    chart: {
+	    	// Edit chart spacing
+	    	spacingBottom: 15,
+	    	spacingTop: 10,
+	    	spacingLeft: 10,
+	    	spacingRight: 10,
+	    	
+	        type: 'column',
+	        
+	        // Explicitly Tell the width and height of a chart
+	        width: 1590,
+	        height: 800
+	    },
+	    title: {
+	        text: '세금계산서 발행 건수'
+	    },
+	    subtitle: {
+	        text: chartInfo.subTitle
+	    },
+	    xAxis: {
+	        categories: statMap.xAxis,
+	        crosshair: true
+	    },
+	    yAxis: {
+	        min: 0,
+            startOnTick: false,
+            endOnTick: false,
+            tickInterval: chartInfo.measure,
+			labels : {
+				format: '{value:,.0f}',
+			},
+	        title: {
+	            text: '(건)'
+	        }
+	    },
+	    tooltip: {
+	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	        pointFormat: '<tr class="tr-chart-hover"><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:,.0f}건</b></td></tr>',
+	        footerFormat: '</table>',
+	        shared: true,
+	        useHTML: true
+	    },
+	    plotOptions: {
+	        column: {
+	            pointPadding: 0.2,
+	            borderWidth: 0
+	        }
+	    },
+	    series: [{
+	        name: '발행건수',
+	        data: statMap.taxbill
+	    }]
+	});
+}
+
+
+//HighChart Bar
 function createBarChart(statMap, chartInfo){
 	Highcharts.chart('container', {
 	    chart: {
@@ -335,7 +400,7 @@ function createBarChart(statMap, chartInfo){
 	        height: 800
 	    },
 	    title: {
-	        text: '부채통계'
+	        text: '매출통계'
 	    },
 	    subtitle: {
 	        text: chartInfo.subTitle
@@ -371,19 +436,10 @@ function createBarChart(statMap, chartInfo){
 	        }
 	    },
 	    series: [{
-	        name: '단기차입금',
-	        data: statMap.sList
-
-	    }, {
-	        name: '장기차입금',
-	        data: statMap.lList
-
-	    }, {
-	        name: '사채',
-	        data: statMap.pList
+	        name: '매출액',
+	        data: statMap.sales
 	    }]
 	});
-	
 }
 // series만 변경해주면 끝!!!
 
