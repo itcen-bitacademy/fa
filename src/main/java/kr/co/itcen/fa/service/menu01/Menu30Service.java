@@ -83,8 +83,14 @@ public class Menu30Service {
         cal.add(Calendar.MONTH, 1);
 
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String End = transFormat.format(cVo.getEndDate());	//차월이월 date
+		String End;
 		String Start = transFormat.format(cal.getTime());	//전월이월 date
+		if(Start.equals("2020-03-01 00:00:00")) {
+			End = "2020-02-29 23:59:59";
+		}else {	
+			End = transFormat.format(cVo.getEndDate());	//차월이월 date
+		}
+		
 		
 		String carry1;
 		String carry2;

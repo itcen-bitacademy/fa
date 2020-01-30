@@ -49,9 +49,13 @@ public class Menu30Repository {
         cal.add(Calendar.MONTH, 1);
 
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String End = transFormat.format(cVo.getEndDate());								//차월이월 date
-		String Start = transFormat.format(cal.getTime());								//전월이월 date
-		
+		String End;
+		String Start = transFormat.format(cal.getTime());	//전월이월 date
+		if(Start.equals("2020-03-01")) {
+			End = "2020-02-29";
+		}else {	
+			End = transFormat.format(cVo.getEndDate());	//차월이월 date
+		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("End",End);
 		map.put("Start", Start);
