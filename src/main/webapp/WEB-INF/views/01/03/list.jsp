@@ -54,6 +54,7 @@ html, body {
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">전표관리</h1>
+					<button class="btn btn-info btn-small pull-right" id="btn-select"style="margin-top: 3px; margin-bottom: 7px;">전표 서비스 그래프</button>
 				</div><!-- /.page-header -->
 				<form class="form-horizontal" id="input-form"  method="post">
 					<div class="row-fluid">
@@ -446,6 +447,12 @@ html, body {
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 </div><!-- /.main-container -->
+
+<!-- 팝업창 -->
+	<div id="dialog-select" title="그래프" hidden="hidden">
+		<img src="http://192.168.1.25:8080/RImages/rdata1.png">
+	</div>
+	<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
 <!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 <script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
@@ -1142,6 +1149,16 @@ $(function(){
 		$(this).prev().focus();
 	});
 	
+	$("#btn-select").click(function(){
+		a = "select";
+		 $.ajax({
+			    url: "http://192.168.1.25:7867/plot",
+			    type: "GET",
+			    dataType: "json",
+			    crossDomain:true
+			 });
+	});
+	
 	$(document.body).delegate('#voucher_list tr', 'click', function() {
 		
 		// input창에 값 셋팅해주기
@@ -1421,6 +1438,30 @@ $(function(){
 	             }
 	         });
 	      });
+	      
+	      $("#dialog-select").dialog({
+		         autoOpen : false
+		      });
+
+		      $("#btn-select").click(function() {
+		         $("#dialog-select").dialog('open');
+		         $("#dialog-select").dialog({
+		            title: "전표 서비스 그래프",
+		            title_html: true,
+		               resizable: false,
+		               height: 750,
+			             width: 900,
+		             modal: true,
+		             close: function() {
+		             },
+		             buttons: {
+		             "닫기" : function() {
+		                      $(this).dialog('close');
+		                 }
+		             }
+		         });
+		      });
+		      
 	  });
 	
   $('#dialog-message-table').on('click', '#a-dialog-customerNo', function(event) {

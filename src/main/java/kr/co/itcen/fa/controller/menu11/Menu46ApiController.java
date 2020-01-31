@@ -242,7 +242,8 @@ public class Menu46ApiController {
 	
 	@ResponseBody
 	@RequestMapping(value="/" + Menu46Controller.SUBMENU + "/getMonthDebtStat", method = RequestMethod.POST)
-	public JSONResult getMonthDebtStat(@RequestParam(value="searchYear", required=false, defaultValue="2019") int searchYear) {			//insert 내테이블에만 할때 사용
+	public JSONResult getMonthDebtStat(@RequestParam(value="searchYear", required=true) int searchYear) {			//insert 내테이블에만 할때 사용
+		System.out.println("searchYear : " + searchYear);
 		Map map = menu46Service.getMonthDebtStat(searchYear);
 		return JSONResult.success(map);
 	}

@@ -91,6 +91,7 @@ html, body {
 
 				<div class="page-header position-relative">
 					<h1 class="pull-left">카드 관리</h1>
+					
 				</div>
 
 
@@ -298,7 +299,6 @@ html, body {
 							<button class="btn btn-warning btn-small" id="btn-update">수정</button>
 							<button class="btn btn-primary btn-small" id="btn-create">입력</button>
 							<button class="btn btn-default btn-small" id="btn-reset">초기화</button>
-							<button class="btn btn-info btn-small" id="btn-select">셀렉트</button>  
 						</div>
 
 					</div>
@@ -456,12 +456,6 @@ html, body {
 		</table>
 	</div>
 	<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-	<!-- 팝업창 -->
-	<div id="dialog-select" title="그래프" hidden="hidden">
-		<img src="http://192.168.1.23:8080/RImages/rdata1.png">
-	</div>
-	<!-- 은행코드, 은행명, 지점명 Modal pop-up : end -->
-	
 	
 	
 	
@@ -551,9 +545,6 @@ $(function() {
 			}	
 		});
 		
-	});
-	$("#btn-select").click(function(){
-		a = "select";
 	});
 	
 	
@@ -725,15 +716,6 @@ $(function() {
 				    }
 				 })
 			});
-		}
-		 else if(a == "select") {
-			 $.ajax({
-				    url: "http://192.168.1.23:7867/plot",
-				    type: "GET",
-				    dataType: "json",
-				    crossDomain:true
-				 });
-		
 		}
 		else {
 			
@@ -947,7 +929,7 @@ $(function() {
 	      $("#a-bankaccountinfo-dialog").click(function() {
 	         $("#dialog-message").dialog('open');
 	         $("#dialog-message").dialog({
-	            title: "계좌정보",
+	            title: "전표 서비스 조회",
 	            title_html: true,
 	               resizable: false,
 	             height: 500,
@@ -965,29 +947,7 @@ $(function() {
 	         });
 	      });
 	      
-	 	 $("#dialog-select").dialog({
-	         autoOpen : false
-	      });
-
-	      $("#btn-select").click(function() {
-	         $("#dialog-select").dialog('open');
-	         $("#dialog-select").dialog({
-	            title: "계좌정보",
-	            title_html: true,
-	               resizable: false,
-	             height: 1500,
-	             width: 1000,
-	             modal: true,
-	             close: function() {
-	             },
-	             buttons: {
-	             "닫기" : function() {
-	                      $(this).dialog('close');
-	                 }
-	             }
-	         });
-	      });
-	      
+	 	 
 	  });
 	
 	
