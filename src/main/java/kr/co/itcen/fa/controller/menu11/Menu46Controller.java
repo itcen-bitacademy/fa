@@ -40,10 +40,4 @@ public class Menu46Controller {
 	public String add(Model model) {
 		return MAINMENU + "/" + SUBMENU + "/add";
 	}
-	
-	@RequestMapping("/statistics")
-	public String statistics() {
-		return MAINMENU + "/" + SUBMENU + "/statistics";
-	}
-	
 }

@@ -327,7 +327,6 @@ tr.selected{background-color: #ddd}
 						<button type="button" class="btn btn-success btn-small mybtn" id="btn-repay" onclick="openRepayDialog()">상환</button>
 						<button type="button" class="btn btn-default btn-small mybtn" onclick="resetForm()">초기화</button>
 						<button type="button" class="btn btn-pink btn-small mybtn" onclick="openRepayDueDialog()">금주상환예정목록</button>
-						<a href="${pageContext.request.contextPath }/${menuInfo.mainMenuCode }/${menuInfo.subMenuCode}/statistics">그래프</a>
 					</div>
 				</section>
 			</section>
