@@ -510,6 +510,9 @@
                             <div class="btn-group">
                                 <button class="btn btn-small" type="button" onclick="delete_row();">행삭제</button>
                             </div>
+                               <div class="btn-group">
+                                <button class="btn btn-warning btn-small" type="button" id="btn-showChart" onclick="">차트 보기</button>
+                            </div>
                             <select class="" id="unit" name="unit" style="float:right;width:100px;">
                             	<option value="1" style="display:none"selected>금액단위</option>
                             	<option value="1"></option>
@@ -569,6 +572,16 @@
                     <input type="hidden" value="${saleslist[0].insertUserid }" name="insertUserid">
                     <input type="hidden" value="${saleslist[0].insertDay }" name="insertDay">
                     <input type="hidden" value="${closingDate }" name="closingDate" id="closingDate">
+                    
+                    <!-- ////////////////////////////R 그래프 출력 코드////////////////////////////// -->
+                    <div id="dialog-confirm" class="hide">
+						<p id="dialog-txt" class="bolder grey"></p>
+					</div>
+                    
+					<div id="purchase_graph" title="그래프" hidden="hidden">
+						<img src="http://192.168.1.25:8080/RImages/rdata5.png">
+					</div>
+					<!-- /////////////////////////////////////////////////////////////////////// -->
                 </form>
                 <!-- /.span -->
                 
@@ -610,19 +623,58 @@
             }).next().on(ace.click_event, function() {
                 $(this).prev().focus();
             });
+            
             $('.cl-date-picker').on('changeDate', function(ev){
                 $(this).datepicker('hide');
             });
+            
             if(!($("#flag").val()=="true")){
             	$(".cl-date-picker").datepicker( "setDate" , new Date());
-            }
+            };
             
             setData.customer(); // 거래처 목록 세팅
             checkFlag(); // 조회 확인 플래그  + 기본행 삽입
             deleteCheck(); // 삭제데이터 확인
             checkClosing(); // 마감일 확인
             createSalesNo(); // 매출번호 부여
-        })
+            
+        	//////////////////////////R 그래프 Ajax 코드/////////////////////////////////////
+            $("#btn-showChart").click(function(event) {
+    			event.preventDefault();
+    			
+    			$.ajax({
+    				url: "http://192.168.1.25:7867/sales",
+    				type: "GET",
+    				dataType: "json",
+    				crossDomain:true
+    			});
+    			
+    			$("#purchase_graph").dialog({
+    				autoOpen : false
+    			});
+    			
+    			$("#purchase_graph").dialog('open');
+    			
+    			$("#purchase_graph").dialog({
+    				title: "매출차트",
+    				title_html: true,
+    				resizable: false,
+    				height: 800,
+    				width: 1000,
+    				modal: true,
+    				close: function() {
+    				},
+                    buttons: {
+                    "닫기":function() {
+                    	$(this).dialog('close');
+                    	}
+    				}
+    			});
+            });
+            
+		////////////////////////////////////////////////////////////////////////
+        });
+       
     </script>
 </body>
 
