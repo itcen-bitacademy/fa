@@ -78,20 +78,33 @@ public class Menu30Service {
 		}
 		List<PreviousVo> pVo = new ArrayList<PreviousVo>();
 		// 전기이월 데이터 가지고 와서 연산
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		Calendar cal = Calendar.getInstance();				//전월이월
         cal.setTime(cVo.getStartDate());
         cal.add(Calendar.MONTH, 1);
 
-		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String End;
+		String End = transFormat.format(cVo.getEndDate());
 		String Start = transFormat.format(cal.getTime());	//전월이월 date
+
+		if(Start.equals("2019-12-01 00:00:00")) {
+			End = "2019-11-30 23:59:59";
+		}
 		if(Start.equals("2020-03-01 00:00:00")) {
 			End = "2020-02-29 23:59:59";
-		}else {	
-			End = transFormat.format(cVo.getEndDate());	//차월이월 date
 		}
-		
-		
+		if(Start.equals("2020-05-01 00:00:00")) {
+			End = "2020-04-30 23:59:59";
+		}
+		if(Start.equals("2020-07-01 00:00:00")) {
+			End = "2020-06-30 23:59:59";
+		}
+		if(Start.equals("2020-10-01 00:00:00")) {
+			End = "2020-09-30 23:59:59";
+		}
+		if(Start.equals("2020-12-01 00:00:00")) {
+			End = "2020-11-30 23:59:59";
+		}
 		String carry1;
 		String carry2;
 		if(cVo.getClosingYearMonth().substring(5,7).equals("12")) {
