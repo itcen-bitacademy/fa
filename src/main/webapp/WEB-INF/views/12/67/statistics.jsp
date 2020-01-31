@@ -336,7 +336,7 @@ function createBarChart1(statMap, chartInfo){
 	        type: 'column',
 	        
 	        // Explicitly Tell the width and height of a chart
-	        width: 1590,
+	        width: 1280,
 	        height: 800
 	    },
 	    title: {
@@ -396,7 +396,7 @@ function createBarChart(statMap, chartInfo){
 	        type: 'column',
 	        
 	        // Explicitly Tell the width and height of a chart
-	        width: 1590,
+	        width: 1280,
 	        height: 800
 	    },
 	    title: {
