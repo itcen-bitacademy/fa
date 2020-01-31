@@ -7,6 +7,8 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
+<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
+
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
 		.controles-right{
@@ -193,6 +195,19 @@
                            
 						</div>
 					</form>
+					
+					<div id="dialog-select" title="그래프" hidden="hidden">
+					     <br>
+					     <br>
+					     <br>
+					     <br>
+					      <img src="http://192.168.1.25:8080/RImages/rdata4_vehicle.png">
+				    </div>
+				    
+				    <div class="controls" style="margin-left: 0px;">
+                     <button class="btn btn-primary btn-small" id="look_Jido" style="float:left; margin-right:20px;" type="button">지도에서 확인하기</button>
+                  </div>
+					
 					</div>
 						<div class="hr hr-18 dotted"></div>
 						<!-- 차변 대변 나누기 위한 row-fluid -->
@@ -330,6 +345,9 @@ $(function(){
 	$(".chosen-select").chosen(); 
 });
 </script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/moment.min.js"></script>
@@ -406,6 +424,40 @@ if(staffName != ''){
 	$('#staffName').val(staffName).trigger('chosen:updated'); 
 } 
 
+//지도에서 확인하기
+$(function() {
+    $.ajax({
+         url: "http://192.168.1.25:7867/assets?jasan=vehicle",
+         type: "GET",
+         dataType: "json",
+         crossDomain:true
+      });
+   
+    
+    $("#dialog-select").dialog({
+        autoOpen : false
+     });
+
+     $("#look_Jido").click(function() {
+        $("#dialog-select").dialog('open');
+        $("#dialog-select").dialog({
+           title: "차량 위치 정보",
+           title_html: true,
+              resizable: false,
+            height: 1500,
+            width: 1000,
+            modal: true,
+            close: function() {
+            },
+            buttons: {
+            "닫기" : function() {
+                     $(this).dialog('close');
+                }
+            }
+        });
+     });
+     
+ });
 
 </script>
 </body>
