@@ -1,3 +1,4 @@
+<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -145,12 +146,19 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+.grid-year{
+	display:grid;
+	grid-template-columns: repeat(2, 50px);
+}
+
+.hide{display:none;}
 </style>
 </head>
 <body>
 <input type="hidden" id="context-path" value="${pageContext.request.contextPath }"/>
 <input type="hidden" id="main-menu-code" value="${menuInfo.mainMenuCode }"/>
 <input type="hidden" id="sub-menu-code" value="${menuInfo.subMenuCode }"/>
+<%pageContext.setAttribute("curYear", Calendar.getInstance().get(Calendar.YEAR));%>
 <c:import url="/WEB-INF/views/common/navbar.jsp" />
 <div class="main-container container-fluid">
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -162,12 +170,20 @@
 			<div class="tabbed">
 				<ul>
 					<li class="active">년간부채</li>
-					<li>월별부채</li>
+					<li class="monthly">월별부채</li>
 					<li>년간 지급이자</li>
 					<li>계정별 부채비율</li>
 				</ul>
 			</div>
 			<figure class="highcharts-figure">
+				<section class="grid-year hide" id="grid-year">
+					<label>년도</label>
+					<select id="select-year">
+						<c:forEach begin="0" end="10" step="1" varStatus="status">
+							<option>${curYear-status.count+1 }</option>
+						</c:forEach>
+					</select>
+				</section>
 			    <div id="container"></div>
 			    <p class="highcharts-description">
 			        부채 통계
@@ -194,19 +210,32 @@ $(function(){
 	setBarChartTheme();
 	
 	//Tab Click Event 추가
-	addTabClick();
+	addEvent();
 });
 
-function addTabClick(){
+function addEvent(){
+	
+	//--------------------------tab 클릭 이벤트연결-----------------------------------------//
 	var tabs = document.querySelectorAll('.tabbed li');
 	setTabValue(tabs);										//각 tab에 value(url)를 설정한다.
 	console.log("tabs : " + tabs);
+	console.log("{} 타입 : " + typeof {} );
 
 	for (var i = 0, len = tabs.length; i < len; i++) {
 		tabs[i].addEventListener("click", function() {
 			if (this.classList.contains('active'))
 				return;
-
+			
+			var chartInfo = JSON.parse($(this).find("input").val());
+			
+			//각 탭별 분기
+			if(isMonthlyTabs(this)){
+				changeVisible($(".grid-year"), true);					//년도를 나타낸다
+				chartInfo.data = {"searchYear" : $("#select-year option:selected").val()};
+			}else{
+				changeVisible($(".grid-year"), false);
+			}
+			
 			var parent = this.parentNode,
 				innerTabs = parent.querySelectorAll('li');
 
@@ -215,7 +244,6 @@ function addTabClick(){
 			}
 
 			this.classList.add('active');
-			var chartInfo = JSON.parse($(this).find("input").val());
 			
 			if(chartInfo.type == "bar"){
 				setBarChartTheme();
@@ -227,9 +255,29 @@ function addTabClick(){
 		});
 	}// for End
 	
+	//최초 Ajax Call
 	var chartInfo = JSON.parse($(tabs[0]).find("input").val());
-	
 	$.ajax(new ChartAjaxBody(chartInfo));
+	
+	//--------------------------selectBox 체인지 이벤트연결-----------------------------------------//
+	$("#select-year").on("change", function(){
+		var chartInfo = JSON.parse($(".tabbed .active").find("input").val());
+		console.log("searchYear : " + $(this).val());
+		chartInfo.data = {"searchYear" : $(this).val()};
+		console.log("chartInfo.data : " + chartInfo.data.searchYear);
+		$.ajax(new ChartAjaxBody(chartInfo));
+	});
+}
+
+function isMonthlyTabs(tab){
+	monthlyTabs = document.querySelectorAll('.tabbed .monthly');
+	
+	for(var i = 0; i < monthlyTabs.length ; ++i){
+		if(tab == monthlyTabs[i])
+			return true;
+	}
+	
+	return false;
 }
 
 function setTabValue(tabs){
@@ -243,7 +291,15 @@ function ChartAjaxBody(chartInfo){
 	this.url = $("#context-path").val()  + "/api/" + $("#main-menu-code").val() + "/" + $("#sub-menu-code").val() + chartInfo.url;
 	this.type = "POST";
 	this.dataTYpe = "json";
-	this.data="";
+	
+	//넘겨줄 데이터가 있으면 삽입
+	if(typeof chartInfo.data === "object"){
+		this.data = chartInfo.data;
+		console.log("object다");
+	}else{
+		this.data="";
+	}
+	
 	this.success = function(response){
 		console.log("data : " + response.data);
 		
@@ -268,7 +324,15 @@ function ChartInfo(url, subTitle, type, measure){
 function comma(str) {
 	str = String(str);
 	return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-	}
+}
+	
+function changeVisible(elements, isVisible){
+	console.log("---------------------changeVisible Called()-----------------------");
+	if(isVisible)
+		elements.removeClass("hide");
+	else
+		elements.addClass("hide");
+}
 </script>
 <script>
 //High Chart
