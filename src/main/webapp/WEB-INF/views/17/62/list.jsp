@@ -46,7 +46,7 @@
 									<c:forEach var="cd" items="${closingDateList }">
 										<c:choose>
 											<c:when test="${cd.no eq closingDateNo }">
-												<option value="${cd.no }" selected>${cd.closingYearMonth }</option>
+												<option value="${cd.no }" data-yearMonth="${cd.closingYearMonth }"  selected>${cd.closingYearMonth }</option>
 											</c:when>
 											<c:otherwise>
 												<option value="${cd.no }">${cd.closingYearMonth }</option>
@@ -57,6 +57,12 @@
 
 								<%-- 조회버튼 --%>
 								<button class="btn btn-small btn-info" id="search-btn">조회</button>
+								<%-- 당월조회 --%>
+								<%-- <button class="btn btn-small btn-info" id="month-btn" type="button" onclick="month_data();">당월조회</button> --%>
+								<%-- 연도별조회 --%>
+								<%-- <button class="btn btn-small btn-info" id="year-btn" type="button" onclick="year_data();">연도별조회</button> --%>
+							    <%-- 전체조회 --%>
+								<button class="btn btn-small btn-info" id="all-btn" type="button" onclick="all_data();">데이터 분석</button>
 							</div>
 						</div>
 					</form>
@@ -153,6 +159,11 @@
 			<div id="dialog-confirm" class="hide">
 				<p id="dialog-txt" class="bolder grey"></p>
 			</div>
+			
+			
+			<div id="dialog-select" title="그래프" hidden="hidden">
+     		 <img src="${pageContext.request.contextPath }/assets/R/rdata6.jpg">
+  			</div>
 
 
 		</div><!-- /.page-content -->
@@ -261,6 +272,48 @@
 			]
 		});
 	}
+
+	function month_data(){
+		/*
+    	var data = $('#year-month').find('option:selected').attr('data-yearMonth');	
+    	console.log(data);
+    	
+		 $.ajax({
+			    url: "http://192.168.1.23:7867/closingDataMonth?data="+ data,
+			    type: "GET",
+			    dataType: "json",
+			    crossDomain:true
+			 });
+		*/
+		 
+    	
+	}
+	
+	function year_data(){
+    	var data = $('#year-month').find('option:selected').attr('data-yearMonth');	
+    	//data = data.substring(0,4) + "%"
+    	console.log(data);
+    	
+    	/*
+		 $.ajax({
+			    url: "http://192.168.1.23:7867/closingDataYear?data="+ data,
+			    type: "GET",
+			    dataType: "json",
+			    crossDomain:true
+			 });
+		*/
+	}
+	
+	function all_data(){
+		
+		 $.ajax({
+			    url: "http://192.168.1.25:7867/closingDataYear",
+			    type: "GET",
+			    dataType: "json",
+			    crossDomain:true
+			 });
+	}
+	
 </script>
 </body>
 </html>

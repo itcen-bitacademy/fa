@@ -20,10 +20,6 @@
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<div class="main-content">
 		<div class="page-content">
-
-
-
-
 			<div class="page-header position-relative">
 				<h1 class="pull-left">결산작업</h1>
 			</div><!-- /.page-header -->
