@@ -7,6 +7,7 @@
 <head>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/chosen.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/ace/css/daterangepicker.css" />
+<link href="${pageContext.request.contextPath }/ace/assets/css/jquery-ui-1.10.3.full.min.css" type="text/css" rel="stylesheet" />
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
  .form-horizontal .control-label {
@@ -173,7 +174,12 @@
 						</div>
 						<div class="hr hr-18 dotted"></div>
 						<!-- 차변 대변 나누기 위한 row-fluid -->
+						<div class="controls" style="margin-left: 0px;">
+							<button class="btn btn-primary btn-small" id="look_Jido" style="float:left; margin-right:20px;" type="button">지도에서 확인하기</button>
+						</div>
 						<br>
+						<br>			
+					</div>
 						<br>
 						<p>총 ${dataResult.pagination.totalCnt } 건</p>
 						<div style="overflow-x: auto;">
@@ -300,12 +306,21 @@
 			<!-- /.page-content -->
 		</div>
 		<!-- /.main-content -->
-	</div>
+	
+	<div id="dialog-select" title="그래프" hidden="hidden">
+	  <br>
+	  <br>
+	  <br>
+	  <br>
+      <img src="http://192.168.1.25:8080/RImages/rdata4_land.png">
+    </div>
 	<input type="hidden" value="" name="" id="startDate">
 	<input type="hidden" value="" name="" id="endDate">
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-2.0.3.min.js"></script>
+<script src="${pageContext.request.contextPath }/ace/assets/js/jquery-ui-1.10.3.full.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/chosen.jquery.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="${pageContext.request.contextPath }/assets/ace/js/date-time/daterangepicker.min.js"></script>
@@ -323,7 +338,39 @@ $(function(){
 	
 });
 
+$(function() {
+	 $.ajax({
+         url: "http://192.168.1.25:7867/assets?jasan=land",
+         type: "GET",
+         dataType: "json",
+         crossDomain:true
+      });
+	
+    
+    $("#dialog-select").dialog({
+        autoOpen : false
+     });
 
+     $("#look_Jido").click(function() {
+        $("#dialog-select").dialog('open');
+        $("#dialog-select").dialog({
+           title: "토지 위치 정보",
+           title_html: true,
+              resizable: false,
+            height: 1500,
+            width: 1000,
+            modal: true,
+            close: function() {
+            },
+            buttons: {
+            "닫기" : function() {
+                     $(this).dialog('close');
+                }
+            }
+        });
+     });
+     
+ });
 
 function clearBtn(){
 	$("#id").val("");  // 토지코드
