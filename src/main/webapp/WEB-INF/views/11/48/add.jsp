@@ -358,6 +358,10 @@ tr td:first-child {
 					<button class="btn btn-info btn-small mybtn" id= "search">조회</button>
 				
 					<button class="btn btn-success btn-small mybtn" id="dialog-repayment-button" type="button" class="btn">상환</button>
+					<button class="btn btn-success btn-info mybtn" id="grape-btn" type="button" style="
+					    padding-bottom: 0px;
+					    border-bottom-width: 0px;
+				" class="btn">그래프보기</button>
 					
 					
 					
@@ -1960,6 +1964,9 @@ tr td:first-child {
 			 
 			 
 		 });
+	$("#grape-btn").click(function(){
+		window.location.href = '${pageContext.request.contextPath }/11/48/statistics';
+	})
 	 $("#inputbtn").click(function(){
 			
 			if(ischecked == false){

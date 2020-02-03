@@ -149,7 +149,7 @@ width: 208px;}
 											</c:otherwise>
 											</c:choose>
 												
-												<span class="lbl">만기</span>
+												<span class="lbl span1">만기</span>
 											</label>
 										</div>
 									</td>
