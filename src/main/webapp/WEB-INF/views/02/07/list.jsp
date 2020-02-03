@@ -274,7 +274,7 @@ html, body {
 			event.preventDefault();
 			
 			$.ajax({
-				url: "http://192.168.1.23:7867/buy",
+				url: "http://192.168.1.25:7867/buy",
 				type: "GET",
 				dataType: "json",
 				crossDomain:true
