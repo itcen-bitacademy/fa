@@ -106,7 +106,7 @@ html,body{
 			
 		});
 		$("#btn-select").click(function(){
-			 console.log("R 씨바R");
+			 console.log("거래처 그래프~");
 			 $.ajax({
 				    url: "http://192.168.1.25:7867/customer",
 				    type: "GET",
